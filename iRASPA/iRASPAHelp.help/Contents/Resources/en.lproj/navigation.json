@@ -1,0 +1,182 @@
+{
+  "css": "",
+  "title": "iRASPA Help",
+  "build_id": "1",
+  "icon": "../SharedGlobalArt/AppIconDefault_iRASPAHelp.png",
+  "sections": {
+    "GetStarted": {
+      "name": "Get started in iRASPA",
+      "children": [
+        "Overview",
+        "Interface",
+        "Quickstart"
+      ]
+    },
+   "WorkingWithProjects": {
+      "name": "Working with projects",
+      "children": [
+        "ProjectNavigator",
+        "SceneNavigator",
+        "FrameNavigator"
+      ]
+    },
+   "MolecularViewer": {
+      "name": "Molecular viewer",
+      "children": [
+        "StructureImporting",
+        "MaterialTypes",
+        "RenderView",
+        "CameraView",
+        "ElementsView",
+        "InfoView",
+        "AppearanceView",
+        "CellView",
+        "AtomsView",
+        "BondsView",
+        "PythonConsole",
+        "LogConsole",
+        "StructureExporting",
+        "ColorModel",
+        "StructureFrequentlyAskedQuestions"
+      ]
+    },
+   "iCloud": {
+      "name": "iCloud",
+      "children": [
+        "Databases"
+      ]
+    },
+   "Commandline": {
+      "name": "Command-line",
+      "children": [
+        "Commandline"
+      ]
+    }
+  },
+  "birdseed_version": 5,
+  "toc": [
+    "GetStarted",
+    "WorkingWithProjects",
+    "MolecularViewer",
+    "iCloud",
+    "Commandline",
+    "Credits"
+  ],
+  "locale": "en",
+  "version": "10.12",
+  "source_schema": "apd-schema",
+  "enable_tracking": false,
+  "collect_feedback": false,
+  "platform": "mac",
+  "landing": "Landing",
+  "product": "iraspahelp",
+  "copyright": "",
+  "show_previous_next": true,
+  "topics": {
+    "Overview": {
+      "name": "iRASPA overview",
+      "href": "Overview.html"
+    },
+    "Interface": {
+      "name": "Main interface",
+      "href": "Interface.html"
+    },
+    "Quickstart": {
+      "name": "Quick start",
+      "href": "Quickstart.html"
+    },
+    "ProjectNavigator": {
+      "name": "The project navigator",
+      "href": "ProjectNavigator.html"
+    },
+    "SceneNavigator": {
+      "name": "The scene navigator",
+      "href": "SceneNavigator.html"
+    },
+    "FrameNavigator": {
+      "name": "The frame navigator",
+      "href": "FrameNavigator.html"
+    },
+    "MaterialTypes": {
+      "name": "Material types",
+      "href": "MaterialTypes.html"
+    },
+    "StructureImporting": {
+      "name": "Structure importing",
+      "href": "StructureImporting.html"
+    },
+    "StructureExporting": {
+      "name": "Structure exporting",
+      "href": "StructureExporting.html"
+    },
+    "RenderView": {
+      "name": "Render view",
+      "href": "RenderView.html"
+    },
+    "CameraView": {
+      "name": "Camera view",
+      "href": "CameraView.html"
+    },
+    "ElementsView": {
+      "name": "Elements view",
+      "href": "ElementsView.html"
+    },
+    "InfoView": {
+      "name": "Info view",
+      "href": "InfoView.html"
+    },
+    "AppearanceView": {
+      "name": "Appearance view",
+      "href": "AppearanceView.html"
+    },
+    "CellView": {
+      "name": "Cell view",
+      "href": "CellView.html"
+    },
+    "AtomsView": {
+      "name": "Atoms view",
+      "href": "AtomsView.html"
+    },
+    "BondsView": {
+      "name": "Bonds view",
+      "href": "BondsView.html"
+    },
+    "PythonConsole": {
+      "name": "Python console",
+      "href": "PythonConsole.html"
+    },
+    "LogConsole": {
+      "name": "Log console",
+      "href": "LogConsole.html"
+    },
+    "Databases": {
+      "name": "Public databases",
+      "href": "Databases.html"
+    },
+    "StructureFrequentlyAskedQuestions": {
+      "name": "FAQ",
+      "href": "StructureFrequentlyAskedQuestions.html"
+    },
+    "Commandline": {
+      "name": "Command-line",
+      "href": "Commandline.html"
+    },
+    "ColorModel": {
+      "name": "Color models",
+      "href": "ColorModel.html"
+    },
+    "Credits": {
+      "name": "Credits",
+      "href": "Credits.html",
+      "summary": "Credits."
+    },
+    "Landing": {
+      "name": "iRASPA Help",
+      "href": "Landing.html",
+      "categories": [
+        "landing"
+      ]
+    }
+  },
+  "copyright_text": "Copyright © 2017 David Dubbeldam. All rights reserved."
+}

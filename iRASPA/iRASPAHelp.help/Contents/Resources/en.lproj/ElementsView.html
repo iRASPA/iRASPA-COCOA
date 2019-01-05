@@ -1,0 +1,57 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Elements-view</title>
+    <meta name="description" content="Elements-view." />
+    <meta name="keywords" content="elements-view" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Elements-view</h1>
+
+  <figure><img src="Art/ElementsSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+  <figcaption>Figure: Elements tab-view.</figcaption>
+  </figure>
+<p>Colors are used in <samp>color-sets</samp>. Four sets are predefined: <samp>jMol</samp>, <samp>Rasmol</samp>, <samp>Rasmol modern</samp>, and <samp>Vesta</samp>. The predefined sets are immutable.</p>
+<p>To set the color of an atom:
+</p>
+<ul>
+<li>
+Go to the <samp>Elements-tab</samp> and create a new color-set. First select the color set that the new set will be based on and type in a new label for the new set.
+<figure><img src="Art/NewColorSetSnapShot.pdf" style="border: 1px solid LightGray; border-style:solid; box-shadow: 5px 5px 3px #888;" width="40%" />
+  </figure>
+</li>
+<li>
+Go to the <a href="AppearanceView.html#AppearanceView" class="xRef AppleTopic"><samp>Appearance-tab</samp></a> and apply the new color-set. Atoms can be colored by element-type (e.g. Si, Al, O) or by atom-type (e.g. O, O1, O2) if atoms of the same element needs to be colored differently.
+<figure><img src="Art/NewColorSetAppearanceSnapShot.pdf" style="border: 1px solid LightGray; border-style:solid; box-shadow: 5px 5px 3px #888;" width="40%" />
+  </figure>
+</li>
+<li>
+The custom color-set is mutable and the color for each element-type can be edited in the <samp>Elements-tab</samp>.
+If the color-set has been set (as in the previous step), then the changes are immediately visible in the render-view.
+<figure><img src="Art/NewColorSetColorSelectionSnapShot.png" style="border: 1px solid LightGray; border-style:solid; box-shadow: 5px 5px 3px #888;" width="40%" />
+  </figure>
+</li>
+</ul>
+
+<p>Atoms are defined in <samp>force field-sets</samp>. One set is predefined: <samp>Default</samp>. The predefined set is immutable and contains all the basic element types.</p>
+<p>To add a new type of atom:
+</p>
+<ul>
+<li>
+Go to the <samp>Elements-tab</samp> and create a new force field-set. First select the force field-set that the new set will be based on and type in a new label for the new set.
+<figure><img src="Art/AddAtomTypesSnapShot.pdf" style="border: 1px solid LightGray; border-style:solid; box-shadow: 5px 5px 3px #888;" width="40%" />
+  </figure>
+</li>
+<li>
+The custom force field-set is mutable for new atom-types but immutable for the standard types, since every force field set as a minimum <em>must</em> define the basic element types. In the the <samp>Elements-tab</samp>, right-click an element-type and create a new atom-type based on this element. The <samp>display-name</samp>, <samp>atomic mass</samp>, <samp>user-defined radius</samp> and force field parameters, <samp>epsilon</samp> and <samp>sigma</samp>, are editable.
+<figure><img src="Art/AddAtomTypesO1SnapShot.png" style="border: 1px solid LightGray; border-style:solid; box-shadow: 5px 5px 3px #888;" width="40%" />
+  </figure>
+</li>
+</ul>
+
+</body>
+
+</html>

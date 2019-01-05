@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>iRASPA overview</title>
+  <meta name="description" content="Overview of the capabilities of iRASPA." />
+  <meta name="keywords" content="getting, started, overview" />
+</head>
+
+<body dir="ltr" class="AppleTopic" id="intro">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Overview</h1>
+  <p>iRASPA is a visualization app for material scientists. It is designed from the ground-up for high graphics quality and maximum rendering performance. Using Apple's low-overhead <a href="https://developer.apple.com/metal/">metal API</a> (or OpenGL 4.1 + OpenCL as a fallback for pre-2012 macs), even a mac-air can render many tens of thousand of atoms in high quality at interactive framerates, while on a desktop iMac hundreds of thousands of atoms can be rendered interactively. Special capabilities of iRASPA include: ambient occlusion, adsorption surfaces, creating supercells, primitive transformation, spacegroup detection, editing, picture and movie creation.</p>
+
+  <div class="Task"> 
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Viewing structures</h2>    
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-structures">
+      <p>Structural visualization is a tool to help users to understand the structural information. However, standard rendering techniques for  fluids and crystals fail to produce visual high-level three-dimensional understanding of the structure. Ambient occlusion darkens the crevices in molecules and crystals and dramatically improves the 3-dimensional perception of the structure (see figure below)</p>      
+      <figure><img src="Art/MIL-101.png" width="80%" />
+      <figcaption>Figure: The MIL-101 structure using space-filling Van der Waals rendering, (left) without ambient occlusion, (right) with ambient occlusion.</figcaption>
+      </figure>
+      <p>Space filling viewing modes more clearly show the available pore-volume. Ball-and-stack viewing is very suitable to highlight connectivity. In the ball-and-stick model, the atoms are represented by spheres, connected by cylinders which represent the bonds. Bonds can be internal or external when they cross periodic boundaries. iRASPA draws the external bonds as solid cylinders that are cut at the border-plane. The colors of the atoms are defined by the selected "color scheme".</p>
+      <figure><img src="Art/ATS-zeolite.png" width="80%" />
+      <figcaption>Figure: The ATS-type zeolite using ball-and-stick rendering, (left) jmol color scheme, (middle) Rasmol color scheme, (right) vesta color scheme.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-editing" aria-expanded="true" class="Name">Editing structures</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-editing-structures">
+    <figure><img src="Art/SnapshotEditing.png" width="80%" />
+   <figcaption>Figure: Editing structures and atomic selection using (i) the render-view or (ii) via the atom-positions table.</figcaption>
+   </figure>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-editing" aria-expanded="true" class="Name">Adsorption surfaces</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-editing">
+    <p>It is difficult to determine the connectivity, shape, and size of a channel/cage system just by examining the atomic positions of the framework. iRASPA can visualize energy contour surface and thereby obtain siting information.</p>
+    <figure><img src="Art/AdsorptionSurface.png" width="80%" />
+      <figcaption>Figure: The atomic positions of two unit cells of the CHA-type zeolite, and the energy surface at three different values.</figcaption>
+     </figure>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-editing" aria-expanded="true" class="Name">Symmetry operations</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-symmetry-operations">
+    <p>iRASPA can perform various symmetry finding operations on crystals, for example automatic spacegroup determination of atomiic structures and finding the primitve cell. </p>
+    <figure><img src="Art/SymmetryOperation.png" width="80%" />
+      <figcaption>Figure: FAU-type zeolite, (left) conventional cell, space group 227 (`-F 4vw 2vw 3'), (right) the primitive cell.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="Task" id="end">
+    <h2 role="button" aria-controls="aria-editing" aria-expanded="true" class="Name">Creating pictures and movies</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-creating-pictures-and-movies">
+    <p>Making great pictures and movies really helps to enhance scientific content of presentations, teaching, and publications. Pictures can be made upto the resolution that the video-card supports, in 8- or 16-bits RGB or CYMK TIFF format. Background options include uniform colors, linear or radial gradients, and images.</p>
+    <video width="80%" src="SharedMovies/Gibbs-CO2-movie.mp4" type="video/mp4" controls="yes"></video>
+    <div class="caption">Video: movie illustrating the workings of a Gibbs Monte-carlo simulation with a gas and liquid box.</div>
+    </div>
+  </div>
+
+</body>
+</html>

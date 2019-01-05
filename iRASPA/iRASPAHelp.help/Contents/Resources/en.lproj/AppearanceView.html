@@ -1,0 +1,103 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Appearance-view</title>
+    <meta name="description" content="Appearance-view." />
+    <meta name="keywords" content="appearance-view" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Appearance-view</h1>
+
+  <figure><img src="Art/AppearanceSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="30%" />
+  <figcaption>Figure: Appearance tab-view.</figcaption>
+  </figure>
+  <p>In the appearance-view, the looks and feel of atoms, bonds, unit cells, and adsorption surfaces in the scene can be controlled. The appearances can be viewed and set for multiple structures simultaneously in three ways:</p>
+<ol>
+  <li>Using the project navigator.</li>
+<p>All frames of all movies of all scenes are used as the target for viewing and changing properties.</p>
+  <li>Using the scene navigator for individual settings per movie.</li>
+<p>All frames of all <em>selected</em> movies of all scenes are used as the target for viewing and changing properties.</p>
+  <li>Using the frame navigator for individual settings per frame.</li>
+<p>All <em>selected</em> frames of the <em>selected</em> movie are used as the target for viewing and changing properties.</p>
+</ol>
+ <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Atoms</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-atoms">
+      <figure><img src="Art/AppearanceAtomsSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+<p>Atoms can be drawn using a variety of looks, (1) a default-look based on ball-and-stick, (2) a fancy-style with Van der Waals sized atoms, ambient occlusion, and half-desaturated colors, and (3) a licorice-style. The figure below shows the difference between these three built-in styles. By modify the individual settings a "custom" look can be obtained.</p>
+<figure>
+   <img src="Art/Cu-BTC-Default-style.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <img src="Art/Cu-BTC-Fancy-style.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <img src="Art/Cu-BTC-Licorice-style.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <figcaption>Figure: three general built-in drawing styles, (left) Default ball-and-stick, (middle) Fancy-style, and (right) Licorice-style.</figcaption>
+</figure>
+<p>The selection style of atoms comes in three flavors: (1) transparent Worley 3D noise, (2) striped yellow sphere, and (3) glowing effect. Whether a particular style works well depends on the setting. Option (1) seems to work (reasonably) well for all settings and is therefore the default.</p>
+<figure>
+   <img src="Art/propanol-Worley-style.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <img src="Art/propanol-Striped-style.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <img src="Art/propanol-Glow-style.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <figcaption>Figure: three general built-in selection styles, (left) Worley 3D Noise style, (middle) yellow striped sphere-style, and (right) glow-style.</figcaption>
+</figure>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Bonds</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-bonds">
+      <figure><img src="Art/AppearanceBondsSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+<p>Bonds can be drawn in various styles. The "uniform" style uses a uniform color that can be selected from a color-well (Bond lighting). The "split" and "gradient"-style color the bond as a split or gradient between the atom colors making up the bond taking the relative sizes of the atoms into account.</p>
+<figure>
+   <img src="Art/S-Nitroso-N-acetylpenicillamine-uniform-bonds.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <img src="Art/S-Nitroso-N-acetylpenicillamine-split-bonds.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <img src="Art/S-Nitroso-N-acetylpenicillamine-gradient-bonds.png" style="display:inline;margin:2px 2px 2px 5px;" width="30%" />
+   <figcaption>Figure (S-Nitroso-N-acetylpenicillamine): three general built-in bond styles, (left) uniform style, (middle) split-style, and (right) gradient-style.</figcaption>
+</figure>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Unit cell</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-unit-cell">
+      <figure><img src="Art/AppearanceUnitCellSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+<p>The unit cell drawing can be switched off and on. The width of the tubes can be set, and the lighting, color, and intensity can be controlled.</p>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Adsorption surface</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-adsorption-surface">
+      <figure><img src="Art/AppearanceAdsorptionSurfaceSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+<p>Adsorption surfaces visualize the energy landscape of a crystals. The landscape depends on the probe molecule and the force field. The computation consists of two parts: (1) the computation of an energy grid, (2) 2D surface extraction from the 3D energy grid. The energy grid is recomputed when the probe molecule is changed. Surface extraction is fast and different isovalues can be selected interactively using a slider (or textfield). The lighting of the front and back of the surface can be edited, as well as the opacity.</p>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Text annotation</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-text-annotation">
+      <figure><img src="Art/AppearanceTextAnnotation.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+<p>Atoms can be annotated with text. The font can selected from a pull-down menu and the text can be scaled in size. Alignment options include combinations of: left, right, top, and bottom. The text will always face the camera, but can be occluded by other objects in the scene (e.g. the text is placed in 3D just in front of the atom like a "flat billboard"). The occlusion is natural in 3D and makres front atoms standout. However, sometimes the occlusion is undesired, for example when bonds intersect the text. Therefore, the text can be offset in x,y,z. Increasing the z-value by 0.5 moves the text 0.5 an Angstrom closer to the camera.</p>
+<figure>
+   <img src="Art/Trans14CycloHexaneDiamineText.png" style="display:inline;margin:2px 2px 2px 5px;" width="35%" />
+   <img src="Art/Trans14CycloHexaneDiamineTextShifted.png" style="display:inline;margin:2px 2px 2px 5px;" width="35%" />
+   <figcaption>Figure: The annotation of text can be offset with respect to the camera, (left) no offset, (right) offset 0.5 Angstrom towards the camera.</figcaption>
+</figure>
+<p>Partial annotation of subset of atoms can be achieved by using a second copy (see figure below) that has only visible atoms for the annotated atoms. In the left structure-list panel, use copy-and-paste to make another exact copy. For this copy, make all atoms in the atom-list viewer (right detail-view) that should not be annotated invisible.</p>
+      <figure><img src="Art/Trans14CycloHexaneDiaminePartialText.png" width="80%" />
+      <figcaption>Figure: Partial annotation of a subset of atoms.</figcaption>
+      </figure>
+
+    </div>
+  </div>
+
+
+</body>
+
+</html>

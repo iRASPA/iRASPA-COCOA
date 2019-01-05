@@ -1,0 +1,27 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Structure exporting</title>
+    <meta name="description" content="Structure exporting" />
+    <meta name="keywords" content="Structure exporting" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Structure exporting</h1>
+<p>Structures can be exported from the <a href="RenderView.html#RenderView" class="xRef AppleTopic"><samp>Render-view</samp></a> and from the <a href="AtomsView.html#AtomsView" class="xRef AppleTopic"><samp>Atoms-view</samp></a> in CIF-, PDB, or XYZ-format. The export via the render-view exports all scenes and can result in multiple files, while the atom-view export exports only the atoms of the current movie-frame (always a single file).</p>
+<h3>Structure exporting in the Render-view</h3>
+<p>Exporting the structures from the <a href="RenderView.html#RenderView" class="xRef AppleTopic"><samp>Render-view</samp></a> can be achieved from the context-menu (right-click in the view). In general, there can be several scenes, each containing movies each containing one or more frames. Therefore, the exported files will be saved into a directory of which the name can be set in the save-panel. Each scene will be a different file, but depending on the format, the movies and frames might be combined in a single file (e.g. in the PDB-format).</p>
+<figure><img src="Art/ExportPDBRenderView.png" width="80%" />
+      <figcaption>Figure (1AON): Exporting to PDB-files; the files will be exported to a directory.</figcaption>
+      </figure>
+<h3>Structure exporting in the Atom-view</h3>
+<p>Exporting the structures from the <a href="AtomsView.html#AtomsView" class="xRef AppleTopic"><samp>Atoms-view</samp></a> export the selected frame from the selected movie, and always is a single file. The filename can be set in the save-panel.</p>
+<figure><img src="Art/ExportPDBAtomView.png" width="80%" />
+      <figcaption>Figure: exporting a single frame to PDB-, CIF-, OR XYZ-file.</figcaption>
+      </figure>
+
+</body>
+
+</html>

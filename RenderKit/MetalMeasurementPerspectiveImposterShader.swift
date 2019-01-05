@@ -1,0 +1,137 @@
+//
+//  MetalMeasurementPerspectiveImposterShader.swift
+//  RenderKit
+//
+//  Created by David Dubbeldam on 17/12/2018.
+//  Copyright © 2018 David Dubbeldam. All rights reserved.
+//
+
+import Foundation
+
+class MetalMeasurementPerspectiveImposterShader
+{
+  var renderDataSource: RKRenderDataSource? = nil
+  var renderStructures: [[RKRenderStructure]] = [[]]
+  
+  var numberOfDrawnMeasurementAtoms: Int = 0
+  var renderMeasurementStructure: [RKRenderStructure] = []
+  
+  var pipeLine: MTLRenderPipelineState! = nil
+  var indexBuffer: MTLBuffer! = nil
+  var vertexBuffer: MTLBuffer! = nil
+  var instanceBuffer: MTLBuffer?
+  
+  var transparentDepthState: MTLDepthStencilState! = nil
+  
+  public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
+  {
+    let transparentDepthStateDescriptor: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
+    transparentDepthStateDescriptor.depthCompareFunction = MTLCompareFunction.lessEqual
+    transparentDepthStateDescriptor.isDepthWriteEnabled = false
+    transparentDepthState = device.makeDepthStencilState(descriptor: transparentDepthStateDescriptor)
+    
+    let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomMeasurementSphereImposterPerspectiveVertexShader")!
+    pipelineDescriptor.sampleCount = maximumNumberOfSamples
+    pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
+    pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
+    pipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+    pipelineDescriptor.colorAttachments[0].rgbBlendOperation = MTLBlendOperation.add;
+    pipelineDescriptor.colorAttachments[0].alphaBlendOperation = MTLBlendOperation.add;
+    pipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactor.one;
+    pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
+    pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
+    pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomMeasurementSphereImposterPerspectiveFragmentShader")!
+    pipelineDescriptor.vertexDescriptor = vertexDescriptor
+    do
+    {
+      self.pipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error) \(device)")
+    }
+  }
+  
+  public func buildVertexBuffers(device: MTLDevice)
+  {
+    let quad: MetalQuadGeometry = MetalQuadGeometry()
+    vertexBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:.storageModeManaged)
+    indexBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:.storageModeManaged)
+    
+    if let project: RKRenderDataSource = renderDataSource
+    {
+      let atomData: [RKInPerInstanceAttributesAtoms] = project.renderMeasurementPoints
+      
+      // needs to be stored, because the OpenGL draw-call needs them
+      self.numberOfDrawnMeasurementAtoms = atomData.count
+      self.renderMeasurementStructure = project.renderMeasurementStructure
+      
+      if self.numberOfDrawnMeasurementAtoms > 0
+      {
+        self.instanceBuffer = device.makeBuffer(bytes: atomData, length: atomData.count * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, options: .storageModeManaged)
+      }
+    }
+  }
+  
+  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
+  {
+    if let project: RKRenderDataSource = renderDataSource
+    {
+      if project.renderMeasurementPoints.count > 0
+      {
+        commandEncoder.setCullMode(MTLCullMode.back)
+        commandEncoder.setDepthStencilState(self.transparentDepthState)
+        commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+        commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+        commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+        commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
+        commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+        commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 1)
+        commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
+        
+        if let buffer: MTLBuffer = instanceBuffer
+        {
+          for k in 0..<numberOfDrawnMeasurementAtoms
+          {
+            var index = 0
+            for i in 0..<self.renderStructures.count
+            {
+              let structures: [RKRenderStructure] = self.renderStructures[i]
+              
+              for structure in structures
+              {
+                if(structure === renderMeasurementStructure[k] && structure.drawAtoms)
+                {
+                  commandEncoder.setRenderPipelineState(pipeLine)
+                  
+                  commandEncoder.setVertexBuffer(buffer, offset: k * MemoryLayout<RKInPerInstanceAttributesAtoms>.stride, index: 1)
+                  commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+                  
+                  commandEncoder.setFragmentBufferOffset(0, index: 0)
+                  
+                  commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: 1)
+                }
+                index = index + 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?
+  {
+    if sceneIndex < buffer.count
+    {
+      if movieIndex < buffer[sceneIndex].count
+      {
+        return buffer[sceneIndex][movieIndex]
+      }
+    }
+    return nil
+  }
+}

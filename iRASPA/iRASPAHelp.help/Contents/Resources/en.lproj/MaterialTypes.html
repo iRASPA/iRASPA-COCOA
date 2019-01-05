@@ -1,0 +1,232 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Camera-view</title>
+    <meta name="description" content="Material types." />
+    <meta name="keywords" content="Material types" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Material types</h1>
+
+<p>iRASPA uses material types to distinguish between various behaviours. For example, crystals are periodic and hence have a unit cell. For atomic crystals, the most natural coordinate is the fractional position. In contrast, a molecule is nonperiodic, has no unit-cell, and therefore must be defined in Cartesian coordinates.</p>
+
+<p>iRASPA therefore defines and uses the following material types:</p>
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Crystal</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-camera">
+<p>A <samp>crystal</samp> uses fractional positions, is periodic, has a unit cell, a space group, and is viewed as a collection of individual atoms. Atoms are confined to the unit cell and  bonds sticking out of the unit cell are cut at the unit cell interface.</p>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Molecular crystal</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-selection">
+<p>A <samp>molecular crystal</samp> uses Cartesian positions, is periodic, has a unit cell, a space group, and is viewed as a collection of molecules.</p>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Protein crystal</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-lights">
+<p>A <samp>protein crystal</samp> uses Cartesian positions, is periodic, has a unit cell, a space group, and is viewed as a collection of atoms. More than 50% of all atoms belong to aminoacids. Atoms are not placed back in the unit ell by default.</p>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Molecule</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-pictures-movies">
+<p>A <samp>molecule</samp> uses Cartesian positions, is non-periodic, has no unit cell, no space group, and is viewed as a collection of atoms. Althought there is no unit cell, there is a <samp>bounding-box</samp>.</p>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Protein</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-background">
+<p>A <samp>protein</samp> uses Cartesian positions, is non-periodic, has no unit cell, no space group, and is viewed as a collection of atoms. Althought there is no unit cell, there is a <samp>bounding-box</samp>. More than 50% of all atoms belong to aminoacids.</p>
+    </div>
+  </div>
+
+<table class="chartone">
+
+<tr>
+<td class="c1title">
+Condition POSCAR/CONTCAR-file<br />
+</td>
+<td class="c1title">
+Material type<br />
+</td>
+</tr>
+
+<tr>
+<td>
+POSCAR/CONTCAR-file<br />
+</td>
+<td>
+Crystal<br />
+</td>
+</tr>
+
+<tablecaption>Table: default material type at POSCAR/CONTCAR-import.</tablecaption>
+</table>
+
+<table class="chartone">
+
+<tr>
+<td class="c1title">
+Condition CIF-file<br />
+</td>
+<td class="c1title">
+Material type<br />
+</td>
+</tr>
+
+<tr>
+<td>
+cif-file fractional positions<br />
+</td>
+<td>
+Crystal<br />
+</td>
+</tr>
+
+<tr>
+<td>
+cif-file Cartesian positions<br />
+</td>
+<td>
+Molecular crystal<br />
+</td>
+</tr>
+
+<tablecaption>Table: default material type at CIF-import.</tablecaption>
+</table>
+
+<table class="chartone">
+
+<tr>
+<td class="c1title">
+Condition XYZ-file<br />
+</td>
+<td class="c1title">
+Material type<br />
+</td>
+</tr>
+
+<tr>
+<td>
+xyz-file without Lattice="ax ay az bx by bz cx cy cz" <br />
+</td>
+<td>
+Molecule<br />
+</td>
+</tr>
+
+<tr>
+<td>
+xyz-file with Lattice="ax ay az bx by bz cx cy cz" <br />
+</td>
+<td>
+Molecular crystal<br />
+</td>
+</tr>
+
+<tablecaption>Table: default material type at XYZ-import.</tablecaption>
+</table>
+
+<table class="chartone">
+
+<tr>
+<td class="c1title">
+Condition mmCIF-file<br />
+</td>
+<td class="c1title">
+Material type<br />
+</td>
+</tr>
+
+<tr>
+<td>
+mmCFI-file fractional positions, aminoacids &lt; 50% <br />
+</td>
+<td>
+Crystal<br />
+</td>
+</tr>
+
+<tr>
+<td>
+mmCIF-file Cartesian positions, aminoacids &lt; 50%<br />
+</td>
+<td>
+Molecular Crystal<br />
+</td>
+</tr>
+
+<tr>
+<td>
+mmCIF-file aminoacids &gt; 50%<br />
+</td>
+<td>
+Protein crystal<br />
+</td>
+</tr>
+
+<tablecaption>Table: default material type at mmCIF-import.</tablecaption>
+</table>
+
+<table class="chartone">
+
+<tr>
+<td class="c1title">
+Condition PDB-file<br />
+</td>
+<td class="c1title">
+Material type<br />
+</td>
+</tr>
+
+<tr>
+<td>
+pdb-file without CRYST1, aminoacids &lt; 50% <br />
+</td>
+<td>
+Molecule<br />
+</td>
+</tr>
+
+<tr>
+<td>
+pdb-file without CRYST1, aminoacids &gt; 50% <br />
+</td>
+<td>
+Protein<br />
+</td>
+</tr>
+
+<tr>
+<td>
+pdb-file with CRYST1, aminoacids &lt; 50% <br />
+</td>
+<td>
+Crystal<br />
+</td>
+</tr>
+
+<tr>
+<td>
+pdb-file with CRYST1, aminoacids &gt; 50% <br />
+</td>
+<td>
+Protein crystal<br />
+</td>
+</tr>
+
+<tablecaption>Table: default material type at PDB-import.</tablecaption>
+</table>
+
+
+</body>
+</html>

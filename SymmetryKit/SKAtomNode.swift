@@ -1,0 +1,438 @@
+/*************************************************************************************************************
+ The MIT License
+ 
+ Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ 
+ D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
+ t.j.h.vlugt@tudelft.nl        http://homepage.tudelft.nl/v9k6y
+ 
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+ 
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ *************************************************************************************************************/
+
+import Foundation
+import BinaryCodable
+import simd
+import MathKit
+
+
+public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStringConvertible, BinaryDecodable, BinaryEncodable
+{
+  private var versionNumber: Int = 3
+  private static var classVersionNumber: Int = 1
+  public var displayName: String = "Default"
+  public var asymmetricIndex: Int = 0
+  public var position: double3 = double3(0,0,0)
+  public var charge: Double = 0
+  
+  public var uniqueForceFieldName: String
+  public var elementIdentifier: Int = 0
+  public var color: NSColor = NSColor.blue
+  public var drawRadius: Double = 1.0
+  public var bondDistanceCriteria: Double = 1.0
+  public var potentialParameters: double2 = double2(0.0,0.0)
+  
+  public var tag: Int = 0
+  public var symmetryType: AsymmetricAtomType = .asymmetric
+  
+  // atom properties (bonds are visible depending on whether the atoms of the bonds are visible)
+  public var isFixed: Bool3 = Bool3(false, false, false)
+  public var isVisible: Bool = true
+  public var isVisibleEnabled: Bool = true
+  
+  public var serialNumber: Int = 0
+  public var remotenessIndicator: Character = " "         // character 'A','B','C','D',...
+  public var branchDesignator: Character = " "            // character '1','2','3',...
+  public var asymetricID: Int = 0                         // positive integer
+  public var alternateLocationIndicator: Character = " "  // character ' ' or 'A','B',...
+  public var residueName: String = ""                     // empty or 3 characters
+  public var chainIdentifier: Character = " "             // empty or 'A','B','C',...
+  public var residueSequenceNumber: Int = 0               // positive integer
+  public var codeForInsertionOfResidues: Character = " "  // empty or 'A','B','C',...
+  public var occupancy: Double = 1.0
+  public var temperaturefactor: Double = 0.0
+  public var segmentIdentifier: String = ""               // empty or 4 characters
+  
+  public var ligandAtom: Bool = false
+  public var backBoneAtom: Bool = false
+  public var fractional: Bool = false
+  public var solvent: Bool = false
+  
+  public var displacement: double3 = double3()
+  
+  // the crystallographic copies of the atom
+  public var copies: [SKAtomCopy] = []
+  
+  public enum AsymmetricAtomType: Int
+  {
+    case container = 0
+    case asymmetric = 1
+  }
+  
+  public init(displayName: String, elementId: Int, uniqueForceFieldName: String, position: double3, charge: Double, color: NSColor, drawRadius: Double, bondDistanceCriteria: Double)
+  {
+    self.elementIdentifier = elementId
+    self.displayName = displayName
+    self.uniqueForceFieldName = uniqueForceFieldName
+    self.position = position
+    self.charge = charge
+    self.color = color
+    self.drawRadius = drawRadius
+    self.bondDistanceCriteria = bondDistanceCriteria
+  }
+  
+  public init(atom: SKAsymmetricAtom)
+  {
+    self.displayName = atom.displayName
+    self.position = atom.position
+    self.charge = atom.charge
+    
+    self.uniqueForceFieldName = atom.uniqueForceFieldName
+    self.elementIdentifier = atom.elementIdentifier
+    self.color = atom.color
+    self.drawRadius = atom.drawRadius
+    self.bondDistanceCriteria = atom.bondDistanceCriteria
+    self.potentialParameters = atom.potentialParameters
+    
+    self.tag = atom.tag
+    self.symmetryType = .asymmetric
+    
+    // atom properties (bonds are visible depending on whether the atoms of the bonds are visible)
+    self.isFixed = atom.isFixed
+    self.isVisible = true
+    self.isVisibleEnabled  = true
+    self.fractional = atom.fractional
+    
+    self.serialNumber = atom.serialNumber
+    self.remotenessIndicator = atom.remotenessIndicator
+    self.branchDesignator = atom.branchDesignator
+    self.asymetricID = atom.asymetricID
+    self.alternateLocationIndicator = atom.alternateLocationIndicator
+    self.residueName = atom.residueName
+    self.chainIdentifier = atom.chainIdentifier
+    self.residueSequenceNumber = atom.residueSequenceNumber
+    self.codeForInsertionOfResidues = atom.codeForInsertionOfResidues
+    self.occupancy = atom.occupancy
+    self.temperaturefactor = atom.temperaturefactor
+    self.segmentIdentifier = atom.segmentIdentifier
+    
+    self.ligandAtom = atom.ligandAtom
+    self.backBoneAtom = atom.backBoneAtom
+  }
+  
+  public init(modelAtom: SKAsymmetricAtom, color: NSColor, drawRadius: Double, bondDistanceCriteria: Double)
+  {
+    self.displayName = modelAtom.displayName
+    self.position = modelAtom.position
+    self.charge = modelAtom.charge
+    self.fractional = modelAtom.fractional
+    
+    self.uniqueForceFieldName = modelAtom.uniqueForceFieldName
+    self.elementIdentifier = modelAtom.elementIdentifier
+    
+    self.isFixed = modelAtom.isFixed
+    
+    self.serialNumber = modelAtom.serialNumber
+    self.remotenessIndicator = modelAtom.remotenessIndicator
+    self.branchDesignator = modelAtom.branchDesignator
+    self.alternateLocationIndicator = modelAtom.alternateLocationIndicator
+    self.residueName = modelAtom.residueName
+    self.chainIdentifier = modelAtom.chainIdentifier
+    self.residueSequenceNumber = modelAtom.residueSequenceNumber
+    self.codeForInsertionOfResidues = modelAtom.codeForInsertionOfResidues
+    self.occupancy = modelAtom.occupancy
+    self.temperaturefactor = modelAtom.temperaturefactor
+    self.segmentIdentifier = modelAtom.segmentIdentifier
+    
+    self.ligandAtom = modelAtom.ligandAtom
+    self.backBoneAtom = modelAtom.backBoneAtom
+    
+    self.color = color
+    self.drawRadius = drawRadius
+    self.bondDistanceCriteria = bondDistanceCriteria
+  }
+  
+  // MARK: -
+  // MARK: Hashable protocol
+  
+  public var hashValue: Int
+  {
+    return ObjectIdentifier(self).hashValue
+  }
+  
+  // MARK: -
+  // MARK: CustomStringConvertible protocol
+  
+  public var description: String
+  {
+    return self.displayName
+  }
+  
+  
+  // MARK: -
+  // MARK: Legacy decodable support
+  
+  public init(from decoder: Decoder) throws
+  {
+    var container = try decoder.unkeyedContainer()
+    
+    let readVersionNumber: Int = try container.decode(Int.self)
+    if readVersionNumber > self.versionNumber
+    {
+      throw BinaryDecodableError.invalidArchiveVersion
+    }
+    
+    self.displayName = try container.decode(String.self)
+    self.symmetryType = try AsymmetricAtomType(rawValue: container.decode(Int.self))!
+    
+    self.uniqueForceFieldName = try container.decode(String.self)
+    self.elementIdentifier = try container.decode(Int.self)
+    self.color = NSColor(float4: try container.decode(float4.self))
+    self.drawRadius = try container.decode(Double.self)
+    self.bondDistanceCriteria = try container.decode(Double.self)
+    self.potentialParameters = try container.decode(double2.self)
+    
+    self.position = try container.decode(double3.self)
+    self.charge = try container.decode(Double.self)
+    
+    self.copies = try container.decode([SKAtomCopy].self)
+    
+    if readVersionNumber >= 3 // introduced in version 3
+    {
+      self.isFixed = try container.decode(Bool3.self)
+    }
+    else
+    {
+      let isAllFixed = try container.decode(Bool.self)
+      self.isFixed = Bool3(isAllFixed,isAllFixed,isAllFixed)
+    }
+    self.isVisible = try container.decode(Bool.self)
+    self.isVisibleEnabled = try container.decode(Bool.self)
+    
+    self.serialNumber = try container.decode(Int.self)
+    
+    self.alternateLocationIndicator = try Character(container.decode(String.self))
+    
+    self.residueName = try container.decode(String.self)
+    
+    self.chainIdentifier = try Character(container.decode(String.self))
+    
+    
+    self.residueSequenceNumber = try container.decode(Int.self)
+    self.codeForInsertionOfResidues = try Character(container.decode(String.self))
+    
+    self.occupancy = try container.decode(Double.self)
+    self.temperaturefactor = try container.decode(Double.self)
+    
+    self.segmentIdentifier = try container.decode(String.self)
+    
+    self.ligandAtom = try container.decode(Bool.self)
+    self.backBoneAtom = try container.decode(Bool.self)
+    
+    if readVersionNumber >= 2 // introduced in version 2
+    {
+      self.remotenessIndicator = try Character(container.decode(String.self))
+      self.branchDesignator = try Character(container.decode(String.self))
+      self.asymetricID = try container.decode(Int.self)
+    }
+    
+    for copy in copies
+    {
+      copy.asymmetricParentAtom = self
+    }
+  }
+  
+  // MARK: -
+  // MARK: Equatable protocol
+  
+  public static func ==(lhs: SKAsymmetricAtom, rhs: SKAsymmetricAtom) -> Bool
+  {
+    return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+  }
+  
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(SKAsymmetricAtom.classVersionNumber)
+    encoder.encode(asymmetricIndex)
+    encoder.encode(displayName)
+    encoder.encode(position)
+    encoder.encode(charge)
+    encoder.encode(uniqueForceFieldName)
+    encoder.encode(elementIdentifier)
+    encoder.encode(color)
+    encoder.encode(drawRadius)
+    
+    encoder.encode(bondDistanceCriteria)
+    encoder.encode(potentialParameters)
+    encoder.encode(tag)
+    encoder.encode(isFixed)
+    encoder.encode(isVisible)
+    encoder.encode(isVisibleEnabled)
+    
+    encoder.encode(serialNumber)
+    encoder.encode(remotenessIndicator)
+    encoder.encode(branchDesignator)
+    encoder.encode(asymetricID)
+    encoder.encode(alternateLocationIndicator)
+    encoder.encode(residueName)
+    encoder.encode(chainIdentifier)
+    encoder.encode(residueSequenceNumber)
+    encoder.encode(codeForInsertionOfResidues)
+    encoder.encode(occupancy)
+    encoder.encode(temperaturefactor)
+    encoder.encode(segmentIdentifier)
+    
+    encoder.encode(ligandAtom)
+    encoder.encode(backBoneAtom)
+    encoder.encode(fractional)
+    encoder.encode(solvent)
+      
+    encoder.encode(copies)
+  }
+  
+  public required init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let readVersionNumber: Int = try decoder.decode(Int.self)
+    if readVersionNumber > SKAsymmetricAtom.classVersionNumber
+    {
+      throw BinaryDecodableError.invalidArchiveVersion
+    }
+    
+    asymmetricIndex = try decoder.decode(Int.self)
+    displayName = try decoder.decode(String.self)
+    position = try decoder.decode(double3.self)
+    charge = try decoder.decode(Double.self)
+    uniqueForceFieldName = try decoder.decode(String.self)
+    elementIdentifier = try decoder.decode(Int.self)
+    color = try decoder.decode(NSColor.self)
+    drawRadius = try decoder.decode(Double.self)
+    
+    bondDistanceCriteria = try decoder.decode(Double.self)
+    potentialParameters = try decoder.decode(double2.self)
+    tag = try decoder.decode(Int.self)
+    isFixed = try decoder.decode(Bool3.self)
+    isVisible = try decoder.decode(Bool.self)
+    isVisibleEnabled = try decoder.decode(Bool.self)
+    
+    serialNumber = try decoder.decode(Int.self)
+    remotenessIndicator = try decoder.decode(Character.self)
+    branchDesignator = try decoder.decode(Character.self)
+    asymetricID = try decoder.decode(Int.self)
+    alternateLocationIndicator = try decoder.decode(Character.self)
+    residueName = try decoder.decode(String.self)
+    chainIdentifier = try decoder.decode(Character.self)
+    residueSequenceNumber = try decoder.decode(Int.self)
+    codeForInsertionOfResidues = try decoder.decode(Character.self)
+    occupancy = try decoder.decode(Double.self)
+    temperaturefactor = try decoder.decode(Double.self)
+    segmentIdentifier = try decoder.decode(String.self)
+    
+    ligandAtom = try decoder.decode(Bool.self)
+    backBoneAtom = try decoder.decode(Bool.self)
+    fractional = try decoder.decode(Bool.self)
+    solvent = try decoder.decode(Bool.self)
+    
+    copies = try decoder.decode([SKAtomCopy].self)
+    
+    for copy in copies
+    {
+      copy.asymmetricParentAtom = self
+    }
+  }
+  
+}
+
+public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable
+{
+  private static var classVersionNumber: Int = 1
+  
+  public var position: double3 = double3(x: 0.0, y: 0.0, z: 0.0)
+  
+  // list of bonds the atom is involved in
+  public var bonds: Set<SKBondNode> = []
+  
+  public var tag: Int = 0
+  public var type: AtomCopyType = .copy
+  
+  public weak var asymmetricParentAtom: SKAsymmetricAtom!
+  public var asymmetricIndex: Int = 0 // index for the renderer
+  
+  //public var spaceGroupRule: Int = 0
+  
+  public enum AtomCopyType: Int
+  {
+    case copy = 2
+    case duplicate = 3
+  }
+  
+  public init(asymmetricParentAtom: SKAsymmetricAtom, position: double3)
+  {
+    self.position = position
+    self.asymmetricParentAtom = asymmetricParentAtom
+  }
+  
+  // MARK: -
+  // MARK: Legacy decodable support
+  
+  public init(from decoder: Decoder) throws
+  {
+    var container = try decoder.unkeyedContainer()
+    
+    self.position = try container.decode(double3.self)
+    self.type = try AtomCopyType(rawValue: container.decode(Int.self))!
+  }
+  
+  
+  public static func == (lhs: SKAtomCopy, rhs: SKAtomCopy) -> Bool
+  {
+    return fabs(lhs.position.x - rhs.position.x)<0.01 && fabs(lhs.position.y - rhs.position.y)<0.01 && fabs(lhs.position.z - rhs.position.z)<0.01
+  }
+  
+  // MARK: -
+  // MARK: Binary Encodable support
+  
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(SKAtomCopy.classVersionNumber)
+    encoder.encode(self.position)
+    encoder.encode(self.type.rawValue)
+    encoder.encode(self.tag)
+    encoder.encode(self.asymmetricIndex)
+  }
+  
+  // MARK: -
+  // MARK: Binary Decodable support
+  
+  public required init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let readVersionNumber: Int = try decoder.decode(Int.self)
+    if readVersionNumber > SKAtomCopy.classVersionNumber
+    {
+      throw BinaryDecodableError.invalidArchiveVersion
+    }
+    self.position = try decoder.decode(double3.self)
+    self.type = try AtomCopyType(rawValue: decoder.decode(Int.self))!
+    self.tag = try decoder.decode(Int.self)
+    self.asymmetricIndex = try decoder.decode(Int.self)
+  }
+  
+}

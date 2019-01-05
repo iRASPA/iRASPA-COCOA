@@ -1,0 +1,32 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Scene navigator</title>
+    <meta name="description" content="Scene navigator" />
+    <meta name="keywords" content="Scene navigator" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Scene navigator</h1>
+<p>The second tab of the navigators is the "scene-navigator". The scene-navigator is a list of "scenes", where each scene can contain "movies". Each movie contains "frames", where the frames for the selected movie can be viewed in the frame-navigator. Each movie has a "visibility" checkbox that toggle the visibility of the movie in the rendering. New movies can be added by drag and drop from another iRASPA document, or copied by copy and paste. Movies that are in the same scene-section are visible to eachother, i.e. ambient occlusion is computed <i>per scene</i>. Any properties set in the detail-panes are for <i>all</i> the frames of the selected movie.</p>
+<figure>
+   <img src="Art/SceneNavigator-1.png" style="display:inline;margin:2px 2px 2px 5px;" width="25%" /> 
+   <img src="Art/SceneNavigator-2.png" style="display:inline;margin:2px 2px 2px 5px;" width="25%" />
+   <img src="Art/SceneNavigator-3.png" style="display:inline;margin:2px 2px 2px 5px;" width="25%" />
+   <figcaption>Figure: The distribution of movies over the scene can be changed by drag and drop, (left) each scene contains one movie, (middle) we can drag the movie of the second scene to the first scene, leading to (right) a scene with two movies and another scene with one movie. the empty scene is automatically removed. By dragging a movie to the empty canvas below we can move it to a newly created scene.</figcaption>
+</figure>
+<figure>
+   <img src="Art/AmbientOcclusionPerScene.png" width="80%" /> 
+   <figcaption>Figure: Ambient occlusion is computed per scene, (left) the water, cations and anions in the ionic liquid do not see eachother, (right) the cations and anions occlude eachother. The water is treated separately and drawn in ball-and-stick style.</figcaption>
+</figure>
+
+<p>Scenes can be a combination of movies of the different components of a system (for example: the cations, anions, and the water-solvent as three separate components), or they can be completely unrelated and place at any position relative to eachother. The latter can be used to make "collages". The origin of each movie (or frame) in world-space is set in "Cell"-detailpane and then "Cell/Boundingbox-properties".</p>
+<figure>
+   <img src="Art/IRMOF-1_10_16.png" width="80%" /> 
+   <figcaption>Figure: Three structures, IRMOF-1, IRMOF-10, and IRMOF-16, placed at different positions relative to eachother.</figcaption>
+</figure>
+</body>
+
+</html>

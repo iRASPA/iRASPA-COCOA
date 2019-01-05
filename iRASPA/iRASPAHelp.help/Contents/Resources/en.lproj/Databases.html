@@ -1,0 +1,71 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Databases</title>
+    <meta name="description" content="icloud." />
+    <meta name="keywords" content="icloud" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+<figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+<h1>iCloud-Accessible Structures</h1>
+<p>Public access to structure databases is available via the 'iCloud public' section in the project-view panel. Structures can be viewed, but not edited to save band-width. To edit and/or modify the structure, drag them into the local projects first.</p>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">CoRE MOF Database</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing">
+    <p>Metal-organic frameworks (MOFs) are a class of nanoporous crystalline materials synthesized by bonding metal nodes to multitopic organic linkers. Because of the modular nature of MOFs, an almost unlimited number of structures can be envisioned. The Cambridge Crystallographic Data Centre (CCDC) <sup><a class="xRef" href="Databases.html#ref_CCDC">[1]</a></sup> collates and curates the Cambridge Structural Database (CSD) <sup><a class="xRef" href="Databases.html#ref_CSD">[2]</a></sup> the world’s repository of small molecule crystal structures, which includes small organics as well as MOFs and other porous materials. However, experimentally refined crystal structures reported in the CSD often include solvent molecules and partially occupied or disordered atoms. Such features are crystallographically mean- ingful but must be removed prior to computer simulations of fully activated, solvent-free structures. Chung et al. developed a computation-ready, experimental (CoRE) MOF-database <sup><a class="xRef" href="Databases.html#ref_CoRE_MOF_database">[3]</a></sup>, i.e. a nearly comprehensive set of porous MOF structures that are derived directly from experimental data but are immediately suitable for molecular simulations or visualization. Each structure in the database was desolvated by an efficient graph-labeling algorithm additional solvent molecules that are bound to unsaturated metal atoms were removed. Charge-balancing ions were retained where necessary, so each CoRE MOF structure is charge neutral overall. Interpenetrated structures were also retained on the basis of a graph-labeling algorithm. The first version of the CoRE MOF database <sup><a class="xRef" href="Databases.html#ref_CoRE_MOF_database_git">[4]</a></sup> includes 4764 porous structures with a pore-limiting diameter of at least 2.4 &#8491;.</p>
+    </div>
+  </div>
+
+<div class="Task">
+    <h2 role="button" aria-controls="aria-editing" aria-expanded="true" class="Name">CoRE MOF DDEC</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-editing">
+    <p>Nazarian et al. assigned atomic point charge for 2932 experimentally synthesized MOF structures using plane-wave DFT calculations and the Density Derived Electrostatic and Chemical (DDEC) charge partitioning method and made these publicly available as a supplement to the CoRE MOF database <sup><a class="xRef" href="Databases.html#ref_CoRE_MOF_database_charges">[5]</a></sup>. By using a periodic representation of each MOF, these charges avoid problem of ambiguous bond termination inherent to cluster-based methods. Because the DDEC method was designed in part to accurately reproduce the electrostatic potential energy surface for locations outside the van der Waals radius of atoms in the material, this data set of charges is well suited for modeling adsorption in MOFs.</p>
+    </div>
+  </div>
+
+<div class="Task">
+    <h2 role="button" aria-controls="aria-editing" aria-expanded="true" class="Name">IZA Zeolite Toplogies</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-editing">
+    <p>The IZA (International Zeolite Association) Structure Commission is the authority to assign framework type codes (consisting of three capital letters) to all unique and confirmed framework topologies. 232 Framework Type Codes have been assigned to date <sup><a class="xRef" href="Databases.html#ref_iza_database">[6]</a></sup>, 176 of these appear in the 6th edition of the Atlas of Zeolite Framework Types <sup><a class="xRef" href="Databases.html#ref_iza_framework_atlas">[7]</a></sup>. The IZA approved topologies are optimized with DLS76 <sup><a class="xRef" href="Databases.html#ref_iza_DLS-76">[8]</a></sup> assuming a pure SiO2 composition.</p>
+    </div>
+  </div>
+
+
+<h2>References</h2>
+    <ol id="references">
+        <li id="ref_CCDC">
+        <a href="https://www.ccdc.cam.ac.uk">The Cambridge Crystallographic Data Centre (CCDC)</a>
+        </li>
+        <li id="ref_CSD">
+        F.H. Allen, <a href="https://doi.org/10.1107/S0108768102003890">"The Cambridge Structural Database: a quarter of a million crystal structures and rising"</a>, <i>Acta Crystallographica Section B</i>, <b>2002</b>, <i>B58</i>, pp. 380-388.
+        </li>
+        <li id="ref_CoRE_MOF_database">
+        Y.G. Chung, J. Camp, M. Haranczyk, B.J. Sikora, W. Bury, V. Krungleviciute, T. Yildirim, O.K. Farha, D.S. Sholl, R.Q. Snurr, <a href="http://pubs.acs.org/doi/abs/10.1021/cm502594j">"Computation-Ready, Experimental Metal-Organic Frameworks: A Tool to Enable High-Throughput Computation of Nanoporous Crystals"</a>, <i>Chemistry of Materials</i>, <b>2014</b>, <i>26</i> (21), pp 6185-6192.
+        </li>
+        <li id="ref_CoRE_MOF_database_git">
+        <a href="http://gregchung.github.io/CoRE-MOFs/">Computation-Ready, Experimental Metal-Organic Frameworks Database</a>
+        </li>
+        <li id="ref_CoRE_MOF_database_charges">
+        D. Nazarian, J. Camp, D.S. Sholl, <a href="http://pubs.acs.org/doi/abs/10.1021/acs.chemmater.5b03836">"A Comprehensive Set of High-Quality Point Charges for Simulations of Metal-Organic Frameworks"</a>, <i>Chemistry of Materials</i>, <b>2016</b>, <i>28</i> (3), pp 785-793.
+        </li>
+        <!-- <li id="ref_CoRE_MOF_database_DFT_refinement"> -->
+        <!-- D. Nazarian, J. Camp, Y.G. Chung, R.Q. Snurr, D.S. Sholl, <a href="http://pubs.acs.org/doi/abs/10.1021/acs.chemmater.6b04226">"Large-Scale Refinement of Metal Organic Framework Structures Using DFT"</a> <i>Chemistry of Materials</i>, <b>2016</b>, <i>29</i> (6), pp 2521-2528. -->
+        <!-- </li> -->
+        <li id="ref_iza_database">
+        <a href="http://www.iza-structure.org/databases/">Database of Zeolite Structures</a>
+        </li>
+        <li id="ref_iza_framework_atlas">
+        Ch. Baerlocher, L.B. McCusker and D.H. Olson, <a href="http://www.iza-structure.org/books/Atlas_6ed.pdf">"Atlas of Zeolite Framework Types"</a>, <i>6th revised edition</i>, Elsevier, Amsterdam, 2007
+        </li>
+        <li id="ref_iza_DLS-76">
+        <a href="https://github.com/stefsmeets/focus_package">DLS-76, Distance least squares (geometry optimization)</a>
+        </li>
+    </ol>
+
+</body>
+
+</html>
+

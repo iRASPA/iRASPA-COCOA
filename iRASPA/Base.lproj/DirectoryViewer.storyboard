@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="s3g-Ko-vfq">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Directory View Controller-->
+        <scene sceneID="rcF-0o-15J">
+            <objects>
+                <splitViewController id="s3g-Ko-vfq" customClass="DirectoryViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="LcI-ay-TiX"/>
+                        <splitViewItem canCollapse="YES" holdingPriority="251" id="Xg5-LV-lYi"/>
+                    </splitViewItems>
+                    <splitView key="splitView" misplaced="YES" dividerStyle="thin" vertical="YES" id="JXX-nd-8le">
+                        <rect key="frame" x="0.0" y="0.0" width="1300" height="750"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <connections>
+                            <outlet property="delegate" destination="s3g-Ko-vfq" id="FjD-9X-kCS"/>
+                        </connections>
+                    </splitView>
+                    <connections>
+                        <segue destination="eBe-xO-iXB" kind="relationship" relationship="splitItems" id="GbA-pn-UHo"/>
+                        <segue destination="g61-g8-Tte" kind="relationship" relationship="splitItems" id="bSD-J0-quf"/>
+                    </connections>
+                </splitViewController>
+                <customObject id="zaW-xy-Wtl" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1608" y="191"/>
+        </scene>
+        <!--Predicate Editor View Controller-->
+        <scene sceneID="I8c-Dc-abO">
+            <objects>
+                <viewController id="g61-g8-Tte" customClass="PredicateEditorViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="L3V-iT-QWK">
+                        <rect key="frame" x="0.0" y="0.0" width="500" height="750"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView wantsLayer="YES" fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vGx-KB-Wb1">
+                                <rect key="frame" x="0.0" y="0.0" width="500" height="750"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <clipView key="contentView" ambiguous="YES" id="wsh-iY-9Vm">
+                                    <rect key="frame" x="1" y="1" width="498" height="748"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <predicateEditor verticalHuggingPriority="750" ambiguous="YES" nestingMode="compound" rowHeight="25" id="EdV-D8-FwX">
+                                            <rect key="frame" x="0.0" y="0.0" width="498" height="748"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <rowTemplates>
+                                                <predicateEditorRowTemplate rowType="compound" id="mtI-eA-7bS" userLabel="Predicate And, Or, Not" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <popUpMenus>
+                                                        <menu id="yXA-vc-Djh">
+                                                            <items>
+                                                                <menuItem title="Any" state="on" id="yCO-9y-bt0">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="All" id="G8g-kR-1hQ">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="None" id="Pt2-gj-hYD">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="7FG-EO-PDi">
+                                                            <items>
+                                                                <menuItem title="of the following are true" state="on" id="qrN-UK-RgU"/>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="jGx-BY-SyK" userLabel="Predicate volumetric surface area" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">volumetricSurfaceArea</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="oqY-ky-5h8">
+                                                            <items>
+                                                                <menuItem title="Volumetric nitrogen surface area" state="on" id="OJi-AT-Kw8">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">volumetricSurfaceArea</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="HP5-nw-y6B">
+                                                            <items>
+                                                                <menuItem title="is" id="aEs-cT-Qwx">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="ggX-BU-UR6">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="CaW-PN-akd">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="Tw0-TX-Ezb">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="SuK-Dy-eFn">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="lVF-n6-d3v">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="isx-Zu-7sB" userLabel="Predicate geometric surface area" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">gravimetricSurfaceArea</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="tDs-wb-DM1">
+                                                            <items>
+                                                                <menuItem title="Geometric nitrogen surface area" state="on" id="CgQ-4C-1zP">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">gravimetricSurfaceArea</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="yNE-q5-fyO">
+                                                            <items>
+                                                                <menuItem title="is" state="on" id="DOl-fr-jFp">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="ovn-Lb-dhy">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" id="gwp-3g-rrz">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="Fa6-lm-0Z8">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="V8f-WR-1Ts">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="8W4-WW-B49">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="VcI-9x-PuQ" userLabel="Predicate helium void fraction" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">heliumVoidFraction</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="B5I-QT-EIP">
+                                                            <items>
+                                                                <menuItem title="Helium void fraction" state="on" id="Ph1-69-211">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">heliumVoidFraction</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="WEz-3f-6sI">
+                                                            <items>
+                                                                <menuItem title="is" id="BAS-U5-cQU">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="BAq-UZ-KqW">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="dOd-mh-hCL">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="SfX-iX-SBy">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="H5f-mi-88H">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="g4T-WC-bhk">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="Yl6-xa-EJ8" userLabel="Predicate di" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">largestOverallCavityDiameter</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="x3P-bo-2fl">
+                                                            <items>
+                                                                <menuItem title="Largest cavity diameter" state="on" id="QZV-BO-K2P">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">largestOverallCavityDiameter</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="n3Z-4Q-cXH">
+                                                            <items>
+                                                                <menuItem title="is" id="79u-Hq-2v5">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="aXl-DS-SHQ">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="iJg-7o-0HS">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="Hnq-zE-nb8">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="2Tn-ME-kQY">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="Aa3-PV-MfN">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="ngz-jS-1wS" userLabel="Predicate df" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">restrictingPoreDiameter</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="bcM-56-wkB">
+                                                            <items>
+                                                                <menuItem title="Restricting pore diameter" state="on" id="FYh-ov-QWw">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">restrictingPoreDiameter</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="9Uh-iV-Zve">
+                                                            <items>
+                                                                <menuItem title="is" id="GVE-CZ-118">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="E9f-nk-YdH">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="sPH-7j-RUW">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="bvg-95-Snc">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="Rh7-Pd-qYE">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="rLo-I2-9gM">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="xcv-DY-zC9" userLabel="Predicate dif" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">largestDiameterAlongViablePath</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="NXM-S1-EUS">
+                                                            <items>
+                                                                <menuItem title="Largest diameter along path" state="on" id="nwU-Tm-pkO">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">largestDiameterAlongViablePath</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="19u-6Q-RdS">
+                                                            <items>
+                                                                <menuItem title="is" id="ybX-pN-Qjb">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="2xV-5s-XJR">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="jzb-Dx-hPf">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="aP4-eo-cM5">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="XGz-8U-R4b">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="YCX-qE-A2b">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="NZV-cX-i6w" userLabel="Predicate framework density" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">density</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="IKv-X2-ERS">
+                                                            <items>
+                                                                <menuItem title="Framework density" state="on" id="CYp-Lk-sjk">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">density</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="cGt-ef-89L">
+                                                            <items>
+                                                                <menuItem title="is" id="ZI5-nF-Kbn">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="JzK-le-5Mg">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="9bW-rC-NrC">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="BeK-rc-N2x">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="nkM-Gr-sR9">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="6b7-uV-FX2">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="be4-tr-0nf" userLabel="Predicate framework mass" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">mass</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="hFE-KB-YjP">
+                                                            <items>
+                                                                <menuItem title="Framework mass" state="on" id="Cul-r9-NEn">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">mass</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="gt2-Di-IjE">
+                                                            <items>
+                                                                <menuItem title="is" id="i8m-4u-Ibt">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="hBv-pN-85Q">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="QjQ-JG-tdg">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="sby-8F-af2">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="nkO-Je-8yy">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="AjT-PC-cft">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="9uo-7o-eeb" userLabel="Predicate framework specific volume" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">specificVolume</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="4g4-ra-JnP">
+                                                            <items>
+                                                                <menuItem title="Framework specific volume" state="on" id="cSF-kJ-biE">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">specificVolume</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="Q5C-xg-KZI">
+                                                            <items>
+                                                                <menuItem title="is" id="AFn-dQ-4a9">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="uf8-cQ-lc0">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="v8P-y7-wJw">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="vxq-4W-FYz">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="PCQ-aW-6zJ">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="WIt-N4-BpW">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="Mhe-EB-cfi" userLabel="Predicate framework number of channels" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">accessiblePoreVolume</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="500"/>
+                                                    <popUpMenus>
+                                                        <menu id="K0T-ec-W1Q">
+                                                            <items>
+                                                                <menuItem title="Framework accessible volume" state="on" id="lc0-Us-BEz" userLabel="Framework accessible volume">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">accessiblePoreVolume</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="llQ-RL-6Ad">
+                                                            <items>
+                                                                <menuItem title="is" id="dVU-hN-AKq">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="LGU-5X-Bsh">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="jlR-DC-ew1">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="tfM-vX-PEZ">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="W2w-Gi-ZTx">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="sXW-Wz-2qR">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="cAs-Io-sAI" userLabel="Predicate framework number of channels" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">numberOfChannelSystems</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="300"/>
+                                                    <popUpMenus>
+                                                        <menu id="Iy8-Ij-gpZ">
+                                                            <items>
+                                                                <menuItem title="Number of channels" state="on" id="FjZ-6F-9uB" userLabel="Framework accessible volume">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">numberOfChannelSystems</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="fjz-lN-KcE">
+                                                            <items>
+                                                                <menuItem title="is" id="QAT-BU-IHn">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="cRo-CA-Ium">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="ogm-BP-v2k">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="BrN-Gl-4eW">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="PwB-qr-PSc">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="KTy-hP-7Fv">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="reJ-8U-hyg" userLabel="Predicate framework number of pockets" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">numberOfInaccesiblePockets</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="300"/>
+                                                    <popUpMenus>
+                                                        <menu id="E20-03-ikM">
+                                                            <items>
+                                                                <menuItem title="Number of pockets" state="on" id="LXA-xg-YSr" userLabel="Framework accessible volume">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">numberOfInaccesiblePockets</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="rwu-d3-pdk">
+                                                            <items>
+                                                                <menuItem title="is" id="NFS-dV-S3m">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="hBj-Zf-Tpg">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="jBM-sX-zgS">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="OxO-48-E7H">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="bX1-Lu-QzN">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="bfc-LA-dLY">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="6zy-Vb-JeF" userLabel="Predicate framework dimensionality" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">dimensionalityPoreSystem</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="300"/>
+                                                    <popUpMenus>
+                                                        <menu id="iJr-WF-K37">
+                                                            <items>
+                                                                <menuItem title="Dimensionality" state="on" id="OhS-R4-lBt" userLabel="Framework accessible volume">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">dimensionalityPoreSystem</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="U0A-TL-Ie1">
+                                                            <items>
+                                                                <menuItem title="is" id="uqJ-Tq-f5H">
+                                                                    <integer key="representedObject" value="4"/>
+                                                                </menuItem>
+                                                                <menuItem title="is not" id="VVf-Rk-1YK">
+                                                                    <integer key="representedObject" value="5"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than" state="on" id="IMT-eq-VAb">
+                                                                    <integer key="representedObject" value="2"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than or equal to" id="LTp-AU-H7t">
+                                                                    <integer key="representedObject" value="1"/>
+                                                                </menuItem>
+                                                                <menuItem title="is greater than or equal to" id="FSQ-WS-Nhl">
+                                                                    <integer key="representedObject" value="3"/>
+                                                                </menuItem>
+                                                                <menuItem title="is less than" id="4FX-qV-bxY">
+                                                                    <integer key="representedObject" value="0"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                                <predicateEditorRowTemplate rowType="simple" id="gjB-Ve-fqI" userLabel="Predicate framework type" customClass="iRASPAPredicateEditorRowTemplate" customModule="iRASPA" customModuleProvider="target">
+                                                    <array key="leftExpressionObject">
+                                                        <expression type="keyPath">
+                                                            <string key="keyPath">materialType</string>
+                                                        </expression>
+                                                    </array>
+                                                    <integer key="rightExpressionObject" value="700"/>
+                                                    <popUpMenus>
+                                                        <menu id="tf0-E1-2B0">
+                                                            <items>
+                                                                <menuItem title="Type" state="on" id="yFJ-FY-elM" userLabel="Framework type">
+                                                                    <expression key="representedObject" type="keyPath">
+                                                                        <string key="keyPath">materialType</string>
+                                                                    </expression>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                        <menu id="nis-Bb-9Zz">
+                                                            <items>
+                                                                <menuItem title="matches" state="on" id="lbV-FO-8zT">
+                                                                    <integer key="representedObject" value="6"/>
+                                                                </menuItem>
+                                                                <menuItem title="is like" id="Ya6-2L-tyr">
+                                                                    <integer key="representedObject" value="7"/>
+                                                                </menuItem>
+                                                                <menuItem title="contains" id="qY0-4E-FCC">
+                                                                    <integer key="representedObject" value="99"/>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </popUpMenus>
+                                                </predicateEditorRowTemplate>
+                                            </rowTemplates>
+                                            <connections>
+                                                <binding destination="g61-g8-Tte" name="value" keyPath="predicate" id="K3X-KB-IZH"/>
+                                            </connections>
+                                        </predicateEditor>
+                                    </subviews>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="DXs-ps-IER">
+                                    <rect key="frame" x="-100" y="-100" width="360" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="y4B-KI-8eW">
+                                    <rect key="frame" x="-14" y="1" width="15" height="0.0"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="predicateEditor" destination="EdV-D8-FwX" id="qmM-xU-2ec"/>
+                    </connections>
+                </viewController>
+                <customObject id="ds4-Eg-WjF" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="zad-Bq-tPM"/>
+            </objects>
+            <point key="canvasLocation" x="2788" y="191"/>
+        </scene>
+        <!--Directory Collection Split View Controller-->
+        <scene sceneID="Bcc-VK-pHO">
+            <objects>
+                <splitViewController id="eBe-xO-iXB" customClass="DirectoryCollectionSplitViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="0jW-mF-Ml4"/>
+                        <splitViewItem holdingPriority="251" id="z4m-4r-T56"/>
+                    </splitViewItems>
+                    <splitView key="splitView" misplaced="YES" dividerStyle="thin" id="rhQ-b6-NJq">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="750"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <connections>
+                            <outlet property="delegate" destination="eBe-xO-iXB" id="by0-Yt-D5u"/>
+                        </connections>
+                    </splitView>
+                    <connections>
+                        <segue destination="tMJ-c6-9Da" kind="relationship" relationship="splitItems" id="R6S-bT-GFO"/>
+                        <segue destination="CVT-Lq-RDc" kind="relationship" relationship="splitItems" id="8ql-yW-kPV"/>
+                    </connections>
+                </splitViewController>
+                <customObject id="f6a-QD-8TL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="872" y="1122"/>
+        </scene>
+        <!--Directory Collection View Controller-->
+        <scene sceneID="aIg-JV-KM4">
+            <objects>
+                <viewController id="tMJ-c6-9Da" customClass="DirectoryCollectionViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <stackView key="view" distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="GTU-6x-t6x">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="779"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JN5-Mu-MtS">
+                                <rect key="frame" x="0.0" y="24" width="600" height="755"/>
+                                <clipView key="contentView" id="oGN-si-jEc">
+                                    <rect key="frame" x="1" y="1" width="598" height="753"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <collectionView selectable="YES" allowsMultipleSelection="YES" id="Bx6-38-sTy">
+                                            <rect key="frame" x="0.0" y="0.0" width="598" height="753"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="xV6-qK-Dly">
+                                                <size key="itemSize" width="50" height="50"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="tMJ-c6-9Da" id="7mw-Fw-AqH"/>
+                                                <outlet property="delegate" destination="tMJ-c6-9Da" id="Kxp-qe-57w"/>
+                                            </connections>
+                                        </collectionView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="6Xc-AO-zn6">
+                                    <rect key="frame" x="-100" y="-100" width="0.0" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="UHg-fo-h0c">
+                                    <rect key="frame" x="583" y="1" width="16" height="753"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <box placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="24" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="kVA-aZ-dPx" customClass="BottomToolbarPanel" customModule="iRASPA" customModuleProvider="target">
+                                <rect key="frame" x="-3" y="-4" width="606" height="30"/>
+                                <view key="contentView" id="nbR-2Z-dp1">
+                                    <rect key="frame" x="3" y="3" width="600" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" placeholderIntrinsicWidth="105" placeholderIntrinsicHeight="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tk3-B2-8u5">
+                                            <rect key="frame" x="483" y="4" width="109" height="17"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of items:" id="gRs-oY-ROY">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="Tk3-B2-8u5" secondAttribute="bottom" constant="4" id="4yL-xO-oYE"/>
+                                        <constraint firstItem="Tk3-B2-8u5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="nbR-2Z-dp1" secondAttribute="leading" constant="20" symbolic="YES" id="Dwa-cA-stU"/>
+                                        <constraint firstAttribute="trailing" secondItem="Tk3-B2-8u5" secondAttribute="trailing" constant="10" id="r8K-GD-2ls"/>
+                                    </constraints>
+                                </view>
+                            </box>
+                        </subviews>
+                        <visibilityPriorities>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                        </visibilityPriorities>
+                        <customSpacing>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                        </customSpacing>
+                    </stackView>
+                    <connections>
+                        <outlet property="collectionView" destination="Bx6-38-sTy" id="YGC-hj-bLP"/>
+                        <outlet property="textLabel" destination="Tk3-B2-8u5" id="g89-yE-5Ys"/>
+                    </connections>
+                </viewController>
+                <customObject id="9Qa-j4-p93" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="307" y="1972.5"/>
+        </scene>
+        <!--Log View Controller-->
+        <scene sceneID="wuN-5g-s1z">
+            <objects>
+                <viewController id="CVT-Lq-RDc" customClass="LogViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <stackView key="view" distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="ezZ-jz-r19">
+                        <rect key="frame" x="0.0" y="0.0" width="985" height="181"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView wantsLayer="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ze0-2Z-5Jn">
+                                <rect key="frame" x="0.0" y="26" width="985" height="155"/>
+                                <clipView key="contentView" drawsBackground="NO" id="3W8-pW-qod">
+                                    <rect key="frame" x="1" y="1" width="983" height="153"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" horizontallyResizable="YES" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" usesRuler="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="dUy-pv-dzI" customClass="LogScriptTextView" customModule="LogViewKit">
+                                            <rect key="frame" x="0.0" y="0.0" width="983" height="153"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="minSize" width="983" height="153"/>
+                                            <size key="maxSize" width="10000000" height="10000000"/>
+                                            <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="CVT-Lq-RDc" id="2ao-HE-bnH"/>
+                                            </connections>
+                                        </textView>
+                                    </subviews>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="fE9-BZ-5Lr">
+                                    <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Cbz-Pe-19u">
+                                    <rect key="frame" x="968" y="1" width="16" height="153"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <box placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="26" boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="RmR-Fs-GOf" customClass="BottomToolbarPanel" customModule="iRASPA" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="985" height="26"/>
+                                <view key="contentView" id="bsW-mr-L8R">
+                                    <rect key="frame" x="0.0" y="0.0" width="985" height="26"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <color key="fillColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </box>
+                        </subviews>
+                        <visibilityPriorities>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                        </visibilityPriorities>
+                        <customSpacing>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                        </customSpacing>
+                    </stackView>
+                    <connections>
+                        <outlet property="logScriptView" destination="dUy-pv-dzI" id="kDI-RZ-DVJ"/>
+                        <outlet property="logScrollView" destination="Ze0-2Z-5Jn" id="LeZ-rG-6MG"/>
+                    </connections>
+                </viewController>
+                <customObject id="DcD-MN-Bgw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1554" y="1764"/>
+        </scene>
+    </scenes>
+</document>
