@@ -1,0 +1,45 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Command-line</title>
+    <meta name="description" content="Command-line." />
+    <meta name="keywords" content="command-line" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Command-line</h1>
+  <p> The iRASPA-app is accompanied by a command-line utility that is accesible from the terminal. A common scenario is to screen lots of structures using scripts (e.g. bash, python, perl). The executable is located at:
+  <pre>
+  /Applications/iRASPA.app/Contents/Library/iRASPA-CLI/iRASPA-CLI.app/Contents/MacOS/iRASPA-CLI
+  </pre>
+ The utility can read 'cif' and 'pdb'-files directly and allows fast computation of surface areas and helium void-fractions. Before use, the permissions for accessing files using the utility need to be setup in the preferences panel.
+</p>
+
+<figure><img src="Art/CommandlinePreferences.png" width="80%" />
+      <figcaption>Figure: set the top-level directories for access permission for reading and writing files using the command-line utility.</figcaption>
+      </figure>
+
+<p>
+ To allow convenient access to the utility create a symbolic link in <samp>/usr/local/bin/</samp> 
+  <pre>
+  ln -s /Applications/iRASPA.app/Contents/Library/iRASPA-CLI/iRASPA-CLI.app/Contents/MacOS/iRASPA-CLI /usr/local/bin/iRASPA-CLI.app
+  </pre>
+ </p>
+
+
+  <p><pre><code>
+Usage: iRASPA-CLI [options] [file ...]
+  -s, --surfacearea
+      Computes the surface area.
+  -v, --voidfraction
+      Computes the void fraction.
+  -h, --help
+      Prints a help message.
+  </code></pre>
+  </p>
+
+</body>
+
+</html>

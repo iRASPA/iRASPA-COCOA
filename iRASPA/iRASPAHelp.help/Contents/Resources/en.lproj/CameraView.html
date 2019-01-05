@@ -1,0 +1,75 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Camera-view</title>
+    <meta name="description" content="Camera-view." />
+    <meta name="keywords" content="camera-view" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Camera-view</h1>
+
+  <figure><img src="Art/CameraSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="30%" />
+  <figcaption>Figure: Camera view.</figcaption>
+  </figure>
+  <p>When rendering a scene, there are usually three basic transforms in use:</p>
+<ol>
+  <li>World transform</li>
+  <p>The world transform (using the model matrix) will transform structure from object space (e.g. the positions of the molecule or the atoms in the unit cell) into world space. Each object has a position and orientation in the world.</p>
+  <li>View transform</li>
+  <p>When viewed the world through an imaginairy camera, the world space positions need to be transformed into a space that is relative to the view of the camera. This is called "camera space" (or "eye space").</p>
+  <li>Projection transform</li>
+  <p>The projection transform projects the 3D camera space onto the screen as a 2D image. Orthographic projection is a type of parallel projection that involves no perspective correction. Objects on the sceen will appear the same size no matter to far away they are. In perspective projection, objects that are further away appear smaller.</p>
+</ol> 
+<p>The camera in iRASPA is always fixed and directed towards the center of the scene. The mouse is used to align the world correctly with respect to the camera. For example, dragging from left to right rotates the world objects counter-clockwise around the y-axis, and scrolling forward with scroll-wheel moves the world-objects further away from the camera.</p>
+<blockquote> The world coordinate system is right-handed: the positive x- and y-axes point right and up, and the z points toward the viewer.</blockquote>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Camera</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-camera">
+      <figure><img src="Art/CameraCameraSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+<p>In the camera-view the properties of the camera can be viewed (but not edited), like the center of the scene, view-matrix, the Euler-angles of the rotation, and the virtual position of the camera in world-space. Mutable properties that can be set are the type of projection, the direction of camera-reset of the distance, and the orientation).</p>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Selection</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-selection">
+      <figure><img src="Art/CameraSelectionSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+Individual selection style and appearance for world-objects are set in the Appearance-view, but here the overall luminance of the selection can be set.
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Lights</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-lights">
+      <figure><img src="Art/CameraLightsSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+Individual lighting style and appearance for world-objects are set in the Appearance-view, but here the properties of the camera light can be set.
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Pictures/Movies</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-pictures-movies">
+      <figure><img src="Art/CameraPictureMovieSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+<p>Making great pictures and movies really helps to enhance scientific content of presentations, teaching, and publications. Pictures can be made upto the resolution that the video-card supports, in 8- or 16-bits RGB or CYMK TIFF format.</p>
+    </div>
+  </div>
+
+  <div class="Task">
+    <h2 role="button" aria-controls="aria-viewing" aria-expanded="true" class="Name">Background</h2>
+    <div class="TaskBody" role="region" aria-hidden="false" id="aria-viewing-background">
+      <figure><img src="Art/CameraBackgroundSnapShot.pdf" style="border: 1px solid LightGray;border-style:solid;" width="40%" />
+      </figure>
+<p>By default, the background color is white, because this is most suitable for journal and book publications. Background options include uniform colors, linear or radial gradients, and images.</p>
+    </div>
+  </div>
+
+</body>
+</html>

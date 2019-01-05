@@ -1,0 +1,33 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Structure importing</title>
+    <meta name="description" content="Structure importing" />
+    <meta name="keywords" content="Structure importing" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Structure importing</h1>
+  <p>The project-navgiator has 3 sections: GALLERY, LOCAL PROJECTS, and ICLOUD PUBLIC. The gallery contains some examples to play around with, in "local projects" you can put your own projects with editting capability, and the icloud-part contains cloud-stored databases. The gallery and cloud sections are immutable, but can be dragged and dropped or copy-and-pasted to your "local projects"-section, after which they can be editted for content and appearance.</p>
+<figure><img src="Art/GalleryProjectNavigator.png" width="80%" />
+      <figcaption>Figure: Gallery of examples to get you started with iRASPA. The selected project, here MIL-101, will be shown in the detail-views on the right.</figcaption>
+      </figure>
+  <p>You can view and edit your own structures by importing them. The most common formats for structures are CIF-files and PDB-files. The easiest way of importing these types of files is to drag them from the Finder and then drop them in the project-navigator in the "local projects"-section. Alternatively, you can use the menu options "File" and then "Import".</p>
+<figure><img src="Art/ImportingFromFinder.png" width="80%" />
+      <figcaption>Figure: To quickly import a CIF-File, drag it from the Finder to the project-navigator in the "local projects"-sections. The blue-line denotes the insertion point.</figcaption>
+      </figure>
+<p>Structures are published in chemical information files like PDB, CIF, XYZ, etc. Each format has its specific (dis-)advantages. Biomolecules like 1AON are usually in PDB-format. The 1AON protein consists of 21 subunit chains that are not connected (indicated by the <samp>TER</samp>-recordtype. Such a structure would be imported into iRASPA as a structure-project with 21 movies consisting of one frame. The <a href="SceneNavigator.html#SceneNavigator" class="xRef AppleTopic"><samp>Scene-navigator</samp></a> shows the 21 units lists as movies in one scene (see picture below).</p>
+<figure><img src="Art/ExportPDBRenderView.png" width="80%" />
+      <figcaption>Figure (1AON): Importing proteins via PDB-files. The protein will be scene with each subunit (separated by the <samp>TER</samp>-recordtyp) a movie (subunit) of a scene. Each movie contains here 1 single frame.</figcaption>
+      </figure>
+<p>The <samp>MODEL/ENDMDL</samp> PDB-records are used for multiple frames and hence often used for movies. The individual frames can be viewed using the <a href="FrameNavigator.html#FrameNavigator" class="xRef AppleTopic"><samp>Frame-navigator</samp></a>.</p>
+<p>The proteint PDB-files usually also contain solvent atoms. In iRASPA the visibility of movies can be individually switch on and off, which quickly shows which subunit is the solvent. In the <a href="SceneNavigator.html#SceneNavigator" class="xRef AppleTopic"><samp>Scene-navigator</samp></a> the solvent-movie can dragged to the empty canvas at the bottom of the navigator to form its own scene (see figure below for the hemoglobin biomolecule). When exporting as a PDB-file, the two scenes will be written to separate files.</p>
+<figure><img src="Art/Hemoglobin.png" width="80%" />
+      <figcaption>Figure (hemoglobin): Separating the solvent from the subunits of the biomolecule.</figcaption>
+      </figure>
+
+</body>
+
+</html>

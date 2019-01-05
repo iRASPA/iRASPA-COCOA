@@ -1,0 +1,18 @@
+{
+  "images" : [
+    {
+      "idiom" : "mac",
+      "filename" : "SKPause.pdf",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "mac",
+      "filename" : "SKPause-1.pdf",
+      "scale" : "2x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

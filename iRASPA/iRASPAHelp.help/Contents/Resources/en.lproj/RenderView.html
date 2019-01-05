@@ -1,0 +1,218 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Command-line</title>
+    <meta name="description" content="Render-view." />
+    <meta name="keywords" content="render-view" />
+  </head>
+
+<body dir="ltr" class="AppleTopic">
+  <figure class="topicIcon"><img src="../SharedGlobalArt/AppIconDefault_iRASPAHelp.png" alt="" height="30" width="30" /></figure>
+  <h1>Render-view</h1>
+
+  <figure><img src="Art/RenderViewSnapShot.png" style="border: 1px solid LightGray; border-style:solid; box-shadow: 5px 5px 3px #888;" width="80%" />
+  <figcaption>Figure: Render view.</figcaption>
+  </figure>
+  <p>The render-view projects the 3D world to a 2D screen using either orthographic or perspective projection. The structures and molecules are defined in their own "model"-coordinate space. They are combined, using (1) an origin, and (2) an orientation, to form the world-space. The camera is directed at the center of the scene with the y-axis as up. The chosen default coordinate system for the render-view is right-handed: the positive x- and y-axes point right and up, and the z points toward the viewer.This choice is consistent with most math and physics text books. Positive rotation is counterclockwise about the axis of rotation.</p>
+<p>The mouse control is implemented as a "virtual trackball" behavior which allows the user to define 3D rotation using mouse operations in a 2D window. The trackball works by assuming that a sphere encloses the 3D view. The user rolls this virtual sphere with the mouse. For example, if you click on the center of the sphere and move the mouse straight to the right, you rotate the scene around the y-axis. Clicking more towards the left edge of the center and move the mouse straight to the right, you rotate the scene around the y-axis with a higher speed. You can click on the "edge" of the sphere and roll it around in a circle to get a z-axis rotation. The trackball uses quaternions under the hood (Euler angles are less convenient due to gimbal lock problems)</p>
+
+<table class="chartone">
+<tr>
+<td class="c1title">
+Mouse/keyboard triggers<br />
+</td >
+<td class="c1title">
+Action<br />
+</td>
+</tr>
+
+<tr>
+<td>
+mouse drag left/right<br />
+</td>
+<td>
+rotate the scene left/right<br />
+</td>
+</tr>
+
+<tr>
+<td>
+mouse drag up/down<br />
+</td>
+<td>
+rotate the scene up/down<br />
+</td>
+</tr>
+
+<tr>
+<td>
+right mouse click<br />
+</td>
+<td>
+context menu<br />
+</td>
+</tr>
+
+<tr>
+<td>
+alt + right-mouse drag<br />
+</td>
+<td>
+pan the scene<br />
+</td>
+</tr>
+
+<tr>
+<td>
+mouse scroll-wheel or pinch gesture<br />
+</td>
+<td>
+zoom in/out<br />
+</td>
+</tr>
+
+<tablecaption>Table: rotating and moving the scene.</tablecaption>
+</table>
+
+<p>Selection and picking are integral parts of structure editing. Mouse picking means that the user clicks an object in the scene to select it, or interact with it otherwise. iRASPA provides pixel-perfect mouse picking for objects and area-selection. The selection of the render-view is in sync with the selection of the data-views in tabular form. For individual picking, mouse-clicking an object selects it. If the modifier key "cmd" is used, then the object is added to the selection. If that atom was already selected it would be deselected ("toggling"). In the render-view, the user can select a rectangular screen-area using the modifier key "cmd" + dragging to add the atoms in that frustum to the selection, or use the modifier key "shift" + dragging to replace the selection.</p>
+
+<table class="chartone">
+
+<tr>
+<td class="c1title">
+Mouse/keyboard triggers<br />
+</td>
+<td class="c1title">
+Action<br />
+</td>
+</tr>
+
+<tr>
+<td>
+mouse click background<br />
+</td>
+<td>
+unselect all<br />
+</td>
+</tr>
+
+<tr>
+<td>
+mouse-click object<br />
+</td>
+<td>
+select the object<br />
+</td>
+</tr>
+
+<tr>
+<td>
+cmd + mouse-click unselected object<br />
+</td>
+<td>
+add object to selection<br />
+</td>
+</tr>
+
+<tr>
+<td>
+cmd + mouse-click selected object<br />
+</td>
+<td>
+remove object from selection<br />
+</td>
+</tr>
+
+<tr>
+<td>
+cmd + mouse-drag<br />
+</td>
+<td>
+add object in rectangular area to selection<br />
+</td>
+</tr>
+
+<tr>
+<td>
+shift + mouse-drag<br />
+</td>
+<td>
+replace selection by objects in rectangular area<br />
+</td>
+</tr>
+
+<tr>
+<td>
+hoovering mouse over object<br />
+</td>
+<td>
+shows tooltip<br />
+</td>
+</tr>
+
+<tr>
+<td>
+alt + cmd + left-mouse drag<br />
+</td>
+<td>
+displace selected atoms<br />
+</td>
+</tr>
+
+<tablecaption>Table: selection.</tablecaption>
+</table>
+
+<table class="chartone">
+
+<tr>
+<td class="c1title">
+Mouse/keyboard triggers<br />
+</td>
+<td class="c1title">
+Action<br />
+</td>
+</tr>
+
+<tr>
+<td>
+alt + left mouse clicking on atoms 1 and 2<br />
+</td>
+<td>
+measure distance<br />
+</td>
+</tr>
+
+<tr>
+<td>
+alt + left mouse clicking on atoms 1, 2 and 3<br />
+</td>
+<td>
+measure angle<br />
+</td>
+</tr>
+
+<tr>
+<td>
+alt + left mouse clicking on atoms 1, 2, 3 and 4<br />
+</td>
+<td>
+measure dihedral angle<br />
+</td>
+</tr>
+
+
+<tr>
+<td>
+alt + background click<br />
+</td>
+<td>
+clear measurement<br />
+</td>
+</tr>
+
+<tablecaption>Table: measurements.</tablecaption>
+</table>
+</body>
+
+</html>

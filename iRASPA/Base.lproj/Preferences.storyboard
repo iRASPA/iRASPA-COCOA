@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="lDy-gc-II8">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Preferences-->
+        <scene sceneID="BUM-Kq-T5t">
+            <objects>
+                <tabViewController title="Preferences" selectedTabViewItemIndex="0" canPropagateSelectedChildViewControllerTitle="NO" id="N3b-Db-pad" sceneMemberID="viewController">
+                    <tabViewItems>
+                        <tabViewItem id="rE3-J9-QfB"/>
+                        <tabViewItem id="0hN-C6-4S8"/>
+                        <tabViewItem id="76Y-Bc-Ekn"/>
+                    </tabViewItems>
+                    <tabView key="tabView" misplaced="YES" type="noTabsNoBorder" id="lKd-sZ-1Mv">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <font key="font" metaFont="message"/>
+                        <connections>
+                            <outlet property="delegate" destination="N3b-Db-pad" id="Bcx-gV-Q5Z"/>
+                        </connections>
+                    </tabView>
+                    <connections>
+                        <outlet property="tabView" destination="lKd-sZ-1Mv" id="S4h-Wt-2Lh"/>
+                        <segue destination="dAK-62-iur" kind="relationship" relationship="tabItems" id="vc2-fj-3SC"/>
+                        <segue destination="eTl-7O-cbU" kind="relationship" relationship="tabItems" id="MqT-ox-P54"/>
+                        <segue destination="ErL-rs-pho" kind="relationship" relationship="tabItems" id="qJY-2y-Zyz"/>
+                    </connections>
+                </tabViewController>
+                <customObject id="scf-8d-zse" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1027" y="-909"/>
+        </scene>
+        <!--Preferences-->
+        <scene sceneID="nU5-Uu-7Ok">
+            <objects>
+                <viewController title="Preferences" id="lDy-gc-II8" sceneMemberID="viewController">
+                    <view key="view" id="Mg6-tv-iBA">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="4LT-34-SvE">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="BI7-Oe-MaF"/>
+                                    <constraint firstAttribute="width" constant="450" id="WWx-fo-fXt"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="N3b-Db-pad" kind="embed" id="TQf-x9-Khp"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="4LT-34-SvE" firstAttribute="top" secondItem="Mg6-tv-iBA" secondAttribute="top" id="2qm-IA-Lbc"/>
+                            <constraint firstAttribute="trailing" secondItem="4LT-34-SvE" secondAttribute="trailing" id="VWw-HZ-OmF"/>
+                            <constraint firstAttribute="bottom" secondItem="4LT-34-SvE" secondAttribute="bottom" id="t0N-l8-KFN"/>
+                            <constraint firstItem="4LT-34-SvE" firstAttribute="leading" secondItem="Mg6-tv-iBA" secondAttribute="leading" id="zWZ-Dq-Ju4"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="QUo-Jt-rIV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1027" y="-1264"/>
+        </scene>
+        <!--General-->
+        <scene sceneID="D4c-Oy-4UR">
+            <objects>
+                <viewController title="General" id="dAK-62-iur" customClass="GeneralPreferences" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="8cO-JO-sGN">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="100"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="General settings" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="dQ7-i1-ieW">
+                                <rect key="frame" x="17" y="12" width="416" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <view key="contentView" id="fCI-62-wHP">
+                                    <rect key="frame" x="1" y="1" width="414" height="78"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="grk-ZB-NQc">
+                                            <rect key="frame" x="18" y="46" width="201" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Show tooltip in renderer" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zSD-B6-1hO">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="changeTooltip:" target="dAK-62-iur" id="D9Z-z2-NXN"/>
+                                            </connections>
+                                        </button>
+                                        <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HL0-1y-A2e">
+                                            <rect key="frame" x="18" y="16" width="142" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="Autosaving" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="n57-Vp-DI4">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="changeAutosaving:" target="dAK-62-iur" id="Jwq-Bt-zqJ"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                            </box>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="autosavingCheckBox" destination="HL0-1y-A2e" id="M1H-5n-bvx"/>
+                        <outlet property="toolTipCheckBox" destination="grk-ZB-NQc" id="j46-ct-I0l"/>
+                    </connections>
+                </viewController>
+                <customObject id="sfO-jY-avE" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="477" y="-488"/>
+        </scene>
+        <!--Animations-->
+        <scene sceneID="g0h-vY-mxf">
+            <objects>
+                <viewController title="Animations" id="eTl-7O-cbU" customClass="AnimationPreferences" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="w2f-mf-4H8">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="100"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Animation settings" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="LKB-pQ-lE8">
+                                <rect key="frame" x="17" y="16" width="416" height="66"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <view key="contentView" id="Vyc-D3-wnQ">
+                                    <rect key="frame" x="1" y="1" width="414" height="64"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H66-BO-0Fa">
+                                            <rect key="frame" x="18" y="27" width="83" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Selection" id="V1Y-Hh-Pro">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iaN-hg-2H5">
+                                            <rect key="frame" x="124" y="22" width="273" height="26"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <popUpButtonCell key="cell" type="push" title="Always on" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="RvG-Ag-1yO" id="ROi-ht-fBk">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="menu"/>
+                                                <menu key="menu" id="XSP-ch-uzV">
+                                                    <items>
+                                                        <menuItem title="Always on" state="on" id="RvG-Ag-1yO"/>
+                                                        <menuItem title="When connected to power source" id="miP-5k-r8f"/>
+                                                        <menuItem title="Always off" id="i78-OK-HJu"/>
+                                                    </items>
+                                                </menu>
+                                            </popUpButtonCell>
+                                            <connections>
+                                                <action selector="changeSelectionAnimation:" target="eTl-7O-cbU" id="nQ6-6R-Jrn"/>
+                                            </connections>
+                                        </popUpButton>
+                                    </subviews>
+                                </view>
+                            </box>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="selectionAnimationPopUpButton" destination="iaN-hg-2H5" id="2Id-LQ-eUx"/>
+                    </connections>
+                </viewController>
+                <customObject id="7df-HE-buL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1027" y="-513"/>
+        </scene>
+        <!--Command-line-->
+        <scene sceneID="bfm-IB-8vk">
+            <objects>
+                <viewController title="Command-line" id="ErL-rs-pho" customClass="CommandLinePreferences" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="s0E-Te-EbZ">
+                        <rect key="frame" x="0.0" y="0.0" width="451" height="100"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Read permission for:" translatesAutoresizingMaskIntoConstraints="NO" id="DrV-v1-Dd6">
+                                <rect key="frame" x="2" y="49" width="447" height="43"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <view key="contentView" id="PqE-xS-caG">
+                                    <rect key="frame" x="1" y="1" width="445" height="27"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <pathControl focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BAe-Db-c9b">
+                                            <rect key="frame" x="17" y="3" width="411" height="26"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <pathCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" placeholderString="Drag a file system object to this area or click to set path" pathStyle="popUp" id="kfw-MK-t7S">
+                                                <font key="font" metaFont="system"/>
+                                            </pathCell>
+                                            <connections>
+                                                <action selector="readPathControlSingleClick:" target="ErL-rs-pho" id="iSm-qI-ctM"/>
+                                                <outlet property="delegate" destination="ErL-rs-pho" id="Quj-JN-Xem"/>
+                                            </connections>
+                                        </pathControl>
+                                    </subviews>
+                                </view>
+                            </box>
+                            <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Write permission for:" translatesAutoresizingMaskIntoConstraints="NO" id="KqL-r5-hBW">
+                                <rect key="frame" x="2" y="3" width="447" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <view key="contentView" id="sm0-Ra-RkU">
+                                    <rect key="frame" x="1" y="1" width="445" height="26"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <pathControl focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZWv-6w-LjQ">
+                                            <rect key="frame" x="19" y="2" width="411" height="26"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <pathCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" placeholderString="Drag a file system object to this area or click to set path" pathStyle="popUp" id="jDF-PS-epK">
+                                                <font key="font" metaFont="system"/>
+                                            </pathCell>
+                                            <connections>
+                                                <action selector="writePathControlSingleClick:" target="ErL-rs-pho" id="i7A-Gv-zc4"/>
+                                                <outlet property="delegate" destination="ErL-rs-pho" id="afV-JN-eVb"/>
+                                            </connections>
+                                        </pathControl>
+                                    </subviews>
+                                </view>
+                            </box>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="readPermissionPathControl" destination="BAe-Db-c9b" id="dkb-ur-S02"/>
+                        <outlet property="writePermissionPathControl" destination="ZWv-6w-LjQ" id="hq3-qx-tBb"/>
+                    </connections>
+                </viewController>
+                <customObject id="YTa-LQ-Zv0" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1573.5" y="-506"/>
+        </scene>
+    </scenes>
+</document>

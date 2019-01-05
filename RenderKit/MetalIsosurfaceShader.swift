@@ -1,0 +1,328 @@
+//
+//  MetalIsosurfaceShader.swift
+//  RenderKit
+//
+//  Created by David Dubbeldam on 17/12/2018.
+//  Copyright © 2018 David Dubbeldam. All rights reserved.
+//
+
+import Foundation
+import LogViewKit
+import SymmetryKit
+import SimulationKit
+import simd
+
+class MetalIsosurfaceShader
+{
+  var renderDataSource: RKRenderDataSource? = nil
+  var renderStructures: [[RKRenderStructure]] = [[]]
+  
+  var opaquePipeLine: MTLRenderPipelineState! = nil
+  var transparentPipeLine: MTLRenderPipelineState! = nil
+  var vertexBuffer: [[MTLBuffer?]] = []
+  var instanceBuffer: [[MTLBuffer?]] = [[]]
+  var transparentDepthState: MTLDepthStencilState! = nil
+  var depthState: MTLDepthStencilState! = nil
+  
+  // fix
+  //var energyGridUnitCell: SKMetalFramework?
+  
+  let cachedAdsorptionSurfaces: [Int: NSCache<AnyObject, AnyObject>] = [32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
+  
+  public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
+  {
+    let depthStateDesc: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
+    depthStateDesc.depthCompareFunction = MTLCompareFunction.lessEqual
+    depthStateDesc.isDepthWriteEnabled = true
+    depthState = device.makeDepthStencilState(descriptor: depthStateDesc)
+    
+    let transparentDepthStateDescriptor: MTLDepthStencilDescriptor = MTLDepthStencilDescriptor()
+    transparentDepthStateDescriptor.depthCompareFunction = MTLCompareFunction.lessEqual
+    transparentDepthStateDescriptor.isDepthWriteEnabled = false
+    transparentDepthState = device.makeDepthStencilState(descriptor: transparentDepthStateDescriptor)
+    
+    let opaquePipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    opaquePipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
+    opaquePipelineDescriptor.vertexFunction = library.makeFunction(name: "IsosurfaceVertexShader")!
+    opaquePipelineDescriptor.sampleCount = maximumNumberOfSamples
+    opaquePipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
+    opaquePipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
+    opaquePipelineDescriptor.fragmentFunction = library.makeFunction(name: "IsosurfaceFragmentShader")!
+    opaquePipelineDescriptor.vertexDescriptor = vertexDescriptor
+    do
+    {
+      self.opaquePipeLine = try device.makeRenderPipelineState(descriptor: opaquePipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error) \(device)")
+    }
+    
+    let transparentPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    transparentPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
+    transparentPipelineDescriptor.vertexFunction = library.makeFunction(name: "IsosurfaceVertexShader")!
+    transparentPipelineDescriptor.sampleCount = maximumNumberOfSamples
+    transparentPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
+    transparentPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
+    transparentPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+    transparentPipelineDescriptor.colorAttachments[0].rgbBlendOperation = MTLBlendOperation.add;
+    transparentPipelineDescriptor.colorAttachments[0].alphaBlendOperation = MTLBlendOperation.add;
+    transparentPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactor.one;
+    transparentPipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
+    transparentPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
+    transparentPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
+    transparentPipelineDescriptor.fragmentFunction = library.makeFunction(name: "IsosurfaceFragmentShader")!
+    transparentPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    do
+    {
+      self.transparentPipeLine = try device.makeRenderPipelineState(descriptor: transparentPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating render pipeline state \(error) \(device)")
+    }
+
+  }
+  
+  public func buildVertexBuffers()
+  {
+    self.vertexBuffer = []
+    if let _: RKRenderDataSource = renderDataSource
+    {
+      for i in 0..<self.renderStructures.count
+      {
+        var buffers: [MTLBuffer?] = []
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        for _ in structures
+        {
+          buffers.append(nil)
+        }
+        self.vertexBuffer.append(buffers)
+      }
+    }
+  }
+  
+  public func buildInstanceBuffers(device: MTLDevice)
+  {
+    if let _: RKRenderDataSource = renderDataSource
+    {
+      instanceBuffer = []
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = renderStructures[i]
+        var sceneInstance: [MTLBuffer?] = [MTLBuffer?]()
+        
+        if structures.isEmpty
+        {
+          sceneInstance.append(nil)
+        }
+        else
+        {
+          for structure in structures
+          {
+            let renderLatticeVectors: [float4] = structure.cell.renderTranslationVectors
+            let buffer: MTLBuffer = device.makeBuffer(bytes: renderLatticeVectors, length: MemoryLayout<float4>.stride * renderLatticeVectors.count, options:.storageModeManaged)!
+            sceneInstance.append(buffer)
+          }
+        }
+        instanceBuffer.append(sceneInstance)
+      }
+    }
+  }
+  
+  public func renderOpaqueIsosurfaceWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
+  {
+    commandEncoder.setDepthStencilState(depthState)
+    commandEncoder.setRenderPipelineState(opaquePipeLine)
+    commandEncoder.setCullMode(MTLCullMode.none)
+    commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+    commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+    commandEncoder.setVertexBuffer(isosurfaceUniformBuffers, offset: 0, index: 4)
+    commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 5)
+    commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+    commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
+    commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: 0, index: 2)
+    
+    var index = 0
+    for i in 0..<self.renderStructures.count
+    {
+      let structures: [RKRenderStructure] = self.renderStructures[i]
+      
+      for (j,structure) in structures.enumerated()
+      {
+        if let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
+           let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
+           structure.drawAdsorptionSurface
+        {
+          let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
+          if (structure.isVisible &&  structure.adsorptionSurfaceOpacity>0.99999 && vertexCount>0)
+          {
+            commandEncoder.setVertexBuffer(isosurfaceVertexBuffer, offset: 0, index: 0)
+            commandEncoder.setVertexBuffer(instanceIsosurfaceVertexBuffer, offset: 0, index: 1)
+            commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 3)
+            commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 4)
+            commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 1)
+            commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
+            
+            commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<float4>.stride)
+          }
+        }
+        index = index + 1
+      }
+    }
+    commandEncoder.setCullMode(MTLCullMode.back)
+  }
+  
+  
+  
+  public func renderTransparentIsosurfacesWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, isosurfaceUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
+  {
+    if let _: RKRenderDataSource = renderDataSource
+    {
+      commandEncoder.setRenderPipelineState(transparentPipeLine)
+      
+      // for transparent surface:
+      // disable depth-buffer updates (depth-buffer testing is still active)
+      // the depth buffer maintains the relationship between opaque and transparent objects,
+      // but does not prevent the transparent objects from occluding each other.
+      commandEncoder.setDepthStencilState(self.transparentDepthState)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setVertexBuffer(isosurfaceUniformBuffers, offset: 0, index: 4)
+      commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 5)
+      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
+      commandEncoder.setFragmentBuffer(isosurfaceUniformBuffers, offset: 0, index: 2)
+      
+      var index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
+            let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
+            structure.drawAdsorptionSurface
+          {
+            let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
+            if (structure.isVisible &&  structure.adsorptionSurfaceOpacity<=0.99999 && vertexCount>0)
+            {
+              commandEncoder.setVertexBuffer(isosurfaceVertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceIsosurfaceVertexBuffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setVertexBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 4)
+              commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 1)
+              commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
+              
+              commandEncoder.setCullMode(MTLCullMode.front)
+              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<float4>.stride)
+              
+              commandEncoder.setCullMode(MTLCullMode.back)
+              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<float4>.stride)
+            }
+          }
+          index = index + 1
+        }
+      }
+    }
+  }
+  
+  func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?
+  {
+    if sceneIndex < buffer.count
+    {
+      if movieIndex < buffer[sceneIndex].count
+      {
+        return buffer[sceneIndex][movieIndex]
+      }
+    }
+    return nil
+  }
+  
+  public func updateAdsorptionSurface(device: MTLDevice, commandQueue: MTLCommandQueue, windowController: NSWindowController?, completionHandler: @escaping () -> ())
+  {
+    if let _: RKRenderDataSource = renderDataSource
+    {
+      var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
+      mach_timebase_info(&info)
+      
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        
+        for (j, structure) in structures.enumerated()
+        {
+          //let isosurface: RKIsosurface = structure.renderAdsorptionSurface
+          
+          if let structure = structure as? RKRenderAdsorptionSurfaceStructure, structure.drawAdsorptionSurface
+          {
+            
+            var data: [Float] = []
+            let size: Int = structure.adsorptionSurfaceSize
+            if let cachedVersion: Data = cachedAdsorptionSurfaces[size]?.object(forKey: structure) as? Data
+            {
+              data = [Float](repeating: Float(0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
+              let _ = cachedVersion.copyBytes(to: UnsafeMutableBufferPointer(start: &data, count: cachedVersion.count), from: 0..<cachedVersion.count)
+              
+              LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal energy grid from cache")
+            }
+            else
+            {
+              
+              let startTime: UInt64  = mach_absolute_time()
+              
+              let cell: SKCell = structure.cell
+              let positions: [double3] = structure.atomUnitCellPositions
+              let potentialParameters: [double2] = structure.potentialParameters
+              let probeParameters: double2 = structure.adsorptionSurfaceProbeParameters
+              
+              let numberOfReplicas: int3 = cell.numberOfReplicas(forCutoff: 12.0)
+              let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
+              
+              
+              data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
+              
+              let endTime: UInt64  = mach_absolute_time()
+              
+              DispatchQueue.global().async {
+                let minimumGridEnergyValue = data.min()
+                
+                DispatchQueue.main.async {
+                  structure.minimumGridEnergyValue = minimumGridEnergyValue
+                }
+                
+                completionHandler()
+              }
+              
+              let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000001
+              LogQueue.shared.verbose(destination: windowController, message: "Time elapsed for creation of \(structure.displayName)-Metal energy grid is \(time) milliseconds")
+              
+              if let cache: NSCache = cachedAdsorptionSurfaces[structure.adsorptionSurfaceSize]
+              {
+                let cachedData: Data = Data(buffer: UnsafeBufferPointer(start: data, count: data.count))
+                cache.setObject(cachedData as AnyObject, forKey: structure)
+              }
+            }
+            
+            let startTime: UInt64  = mach_absolute_time()
+            let marchingCubes = SKMetalMarchingCubes(device: device, commandQueue: commandQueue)
+            marchingCubes.isoValue = Float(structure.adsorptionSurfaceIsoValue)
+            
+            
+            
+            marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
+            
+            let endTime: UInt64  = mach_absolute_time()
+            
+            let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000001
+            
+            LogQueue.shared.verbose(destination: windowController, message: "Time elapsed for creation of \(structure.displayName)-Metal energy surface is \(time) milliseconds")
+          }
+        }
+      }
+    }
+  }
+  
+}
