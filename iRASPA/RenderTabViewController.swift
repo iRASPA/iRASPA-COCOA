@@ -1156,7 +1156,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         }
         
       }
-      self.reloadRenderData()
+      self.reloadRenderDataSelectedAtoms()
     }
   }
   
