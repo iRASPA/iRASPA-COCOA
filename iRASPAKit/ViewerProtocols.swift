@@ -180,6 +180,7 @@ public protocol AtomVisualAppearanceViewer: StructureViewer
   var renderAtomValue: Double? {get set}
   var renderAtomScaleFactor: Double? {get set}
   
+  
   var renderDrawAtoms: Bool? {get set}
   
   var renderAtomAmbientOcclusion: Bool? {get set}
@@ -196,7 +197,53 @@ public protocol AtomVisualAppearanceViewer: StructureViewer
   var renderAtomSpecularIntensity: Double? {get set}
   var renderAtomShininess: Double? {get set}
 }
-
+  
+public protocol PrimitiveVisualAppearanceViewer: StructureViewer
+{
+  var renderDrawAtoms: Bool? {get set}
+  
+  var renderPrimitiveOrientation: simd_quatd? {get set}
+  var renderPrimitiveRotationDelta: Double?  {get set}
+  var renderPrimitiveEulerAngleX: Double?  {get set}
+  var renderPrimitiveEulerAngleY: Double?  {get set}
+  var renderPrimitiveEulerAngleZ: Double?  {get set}
+  var renderPrimitiveTransformationMatrix: double3x3?  {get set}
+  var renderPrimitiveTransformationMatrixAX: Double?  {get set}
+  var renderPrimitiveTransformationMatrixAY: Double?  {get set}
+  var renderPrimitiveTransformationMatrixAZ: Double?  {get set}
+  var renderPrimitiveTransformationMatrixBX: Double?  {get set}
+  var renderPrimitiveTransformationMatrixBY: Double? {get set}
+  var renderPrimitiveTransformationMatrixBZ: Double? {get set}
+  var renderPrimitiveTransformationMatrixCX: Double? {get set}
+  var renderPrimitiveTransformationMatrixCY: Double? {get set}
+  var renderPrimitiveTransformationMatrixCZ: Double? {get set}
+  
+  var renderPrimitiveOpacity: Double? {get set}
+  var renderPrimitiveNumberOfSides: Int? {get set}
+  var renderPrimitiveIsCapped: Bool? {get set}
+  var renderPrimitiveIsFractional: Bool? {get set}
+  var renderPrimitiveThickness: Double? {get set}
+  
+  var renderPrimitiveFrontSideHDR: Bool? {get set}
+  var renderPrimitiveFrontSideHDRExposure: Double? {get set}
+  var renderPrimitiveFrontSideAmbientIntensity: Double? {get set}
+  var renderPrimitiveFrontSideDiffuseIntensity: Double? {get set}
+  var renderPrimitiveFrontSideSpecularIntensity: Double? {get set}
+  var renderPrimitiveFrontSideShininess: Double? {get set}
+  var renderPrimitiveFrontSideAmbientColor: NSColor? {get set}
+  var renderPrimitiveFrontSideDiffuseColor: NSColor? {get set}
+  var renderPrimitiveFrontSideSpecularColor: NSColor? {get set}
+  
+  var renderPrimitiveBackSideHDR: Bool? {get set}
+  var renderPrimitiveBackSideHDRExposure: Double? {get set}
+  var renderPrimitiveBackSideAmbientIntensity: Double? {get set}
+  var renderPrimitiveBackSideDiffuseIntensity: Double? {get set}
+  var renderPrimitiveBackSideSpecularIntensity: Double? {get set}
+  var renderPrimitiveBackSideShininess: Double? {get set}
+  var renderPrimitiveBackSideAmbientColor: NSColor? {get set}
+  var renderPrimitiveBackSideDiffuseColor: NSColor? {get set}
+  var renderPrimitiveBackSideSpecularColor: NSColor? {get set}
+}
 
 
 public protocol BondVisualAppearanceViewer: StructureViewer
@@ -243,23 +290,23 @@ public protocol AdsorptionSurfaceVisualAppearanceViewer: StructureViewer
   
   var renderMinimumGridEnergyValue: Float? {get set}
   
-  var renderFrontAdsorptionSurfaceHDR: Bool? {get set}
-  var renderFrontAdsorptionSurfaceHDRExposure: Double? {get set}
-  var renderFrontAdsorptionSurfaceAmbientIntensity: Double? {get set}
-  var renderFrontAdsorptionSurfaceDiffuseIntensity: Double? {get set}
-  var renderFrontAdsorptionSurfaceSpecularIntensity: Double? {get set}
-  var renderFrontAdsorptionSurfaceShininess: Double? {get set}
-  var renderFrontAdsorptionSurfaceAmbientColor: NSColor? {get set}
-  var renderFrontAdsorptionSurfaceDiffuseColor: NSColor? {get set}
-  var renderFrontAdsorptionSurfaceSpecularColor: NSColor? {get set}
+  var renderAdsorptionSurfaceFrontSideHDR: Bool? {get set}
+  var renderAdsorptionSurfaceFrontSideHDRExposure: Double? {get set}
+  var renderAdsorptionSurfaceFrontSideAmbientIntensity: Double? {get set}
+  var renderAdsorptionSurfaceFrontSideDiffuseIntensity: Double? {get set}
+  var renderAdsorptionSurfaceFrontSideSpecularIntensity: Double? {get set}
+  var renderAdsorptionSurfaceFrontSideShininess: Double? {get set}
+  var renderAdsorptionSurfaceFrontSideAmbientColor: NSColor? {get set}
+  var renderAdsorptionSurfaceFrontSideDiffuseColor: NSColor? {get set}
+  var renderAdsorptionSurfaceFrontSideSpecularColor: NSColor? {get set}
   
-  var renderBackAdsorptionSurfaceHDR: Bool? {get set}
-  var renderBackAdsorptionSurfaceHDRExposure: Double? {get set}
-  var renderBackAdsorptionSurfaceAmbientIntensity: Double? {get set}
-  var renderBackAdsorptionSurfaceDiffuseIntensity: Double? {get set}
-  var renderBackAdsorptionSurfaceSpecularIntensity: Double? {get set}
-  var renderBackAdsorptionSurfaceShininess: Double? {get set}
-  var renderBackAdsorptionSurfaceAmbientColor: NSColor? {get set}
-  var renderBackAdsorptionSurfaceDiffuseColor: NSColor? {get set}
-  var renderBackAdsorptionSurfaceSpecularColor: NSColor? {get set}
+  var renderAdsorptionSurfaceBackSideHDR: Bool? {get set}
+  var renderAdsorptionSurfaceBackSideHDRExposure: Double? {get set}
+  var renderAdsorptionSurfaceBackSideAmbientIntensity: Double? {get set}
+  var renderAdsorptionSurfaceBackSideDiffuseIntensity: Double? {get set}
+  var renderAdsorptionSurfaceBackSideSpecularIntensity: Double? {get set}
+  var renderAdsorptionSurfaceBackSideShininess: Double? {get set}
+  var renderAdsorptionSurfaceBackSideAmbientColor: NSColor? {get set}
+  var renderAdsorptionSurfaceBackSideDiffuseColor: NSColor? {get set}
+  var renderAdsorptionSurfaceBackSideSpecularColor: NSColor? {get set}
 }

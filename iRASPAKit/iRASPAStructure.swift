@@ -40,14 +40,10 @@ public let NSPasteboardTypeFrame: NSPasteboard.PasteboardType = NSPasteboard.Pas
 
 public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting
 {
-  
-  
   public static func == (lhs: iRASPAStructure, rhs: iRASPAStructure) -> Bool
   {
     return lhs.structure === rhs.structure
   }
-  
-  
   
   public var type: SKStructure.Kind
   public var structure: Structure
@@ -87,6 +83,24 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
     self.type = .protein
     self.structure = protein
   }
+
+  public init(spherePrimitive: EllipsoidPrimitive)
+  {
+    self.type = .ellipsoidPrimitive
+    self.structure = spherePrimitive
+  }
+  
+  public init(polygonalPrismPrimitive: PolygonalPrismPrimitive)
+  {
+    self.type = .polygonalPrismPrimitive
+    self.structure = polygonalPrismPrimitive
+  }
+  
+  public init(cylinderPrimitive: CylinderPrimitive)
+  {
+    self.type = .cylinderPrimitive
+    self.structure = cylinderPrimitive
+  }
   
   public init(frame: iRASPAStructure)
   {
@@ -94,9 +108,11 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
     self.structure = frame.structure
   }
   
+  
+  
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
-    let type: SKStructure.Kind = SKStructure.Kind(rawValue: try decoder.decode(Int64.self))!
+    let type: SKStructure.Kind = SKStructure.Kind(rawValue: try decoder.decode(Int.self)) ?? .structure
     self.type = type
     
     switch(type)
@@ -113,6 +129,12 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
       self.structure = try decoder.decode(Protein.self)
     case .proteinCrystal:
       self.structure = try decoder.decode(ProteinCrystal.self)
+    case .ellipsoidPrimitive:
+      self.structure = try decoder.decode(EllipsoidPrimitive.self)
+    case .cylinderPrimitive:
+      self.structure = try decoder.decode(CylinderPrimitive.self)
+    case .polygonalPrismPrimitive:
+      self.structure = try decoder.decode(PolygonalPrismPrimitive.self)
     default:
       fatalError()
     }
@@ -130,7 +152,10 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
   public init(from decoder: Decoder) throws
   {
     var container = try decoder.unkeyedContainer()
-    let type: SKStructure.Kind = SKStructure.Kind(rawValue: try container.decode(Int64.self))!
+    guard let type: SKStructure.Kind = SKStructure.Kind(rawValue: try container.decode(Int.self)) else
+    {
+      throw BinaryDecodableError.invalidArchiveVersion
+    }
     
     self.type = type
     switch(type)
@@ -147,6 +172,12 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
       self.structure = try container.decode(Protein.self)
     case .proteinCrystal:
       self.structure = try container.decode(ProteinCrystal.self)
+    case .ellipsoidPrimitive:
+      self.structure = try container.decode(EllipsoidPrimitive.self)
+    case .cylinderPrimitive:
+      self.structure = try container.decode(CylinderPrimitive.self)
+    case .polygonalPrismPrimitive:
+      self.structure = try container.decode(PolygonalPrismPrimitive.self)
     default:
       fatalError()
     }

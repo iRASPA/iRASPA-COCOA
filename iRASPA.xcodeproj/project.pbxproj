@@ -16,6 +16,7 @@
 		9300AEA91F21020B0052DA45 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
 		9300AEAA1F2102100052DA45 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
 		930663C51E7C4808004F9299 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 930663C41E7C4808004F9299 /* Credits.rtf */; };
+		930C1FA72201E576006AEF30 /* MetalCubeGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C1FA62201E576006AEF30 /* MetalCubeGeometry.swift */; };
 		930C97631FCEC52A00B4611E /* AppearanceTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97621FCEC52A00B4611E /* AppearanceTableRowView.swift */; };
 		930C97651FCEC69E00B4611E /* CameraTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97641FCEC69E00B4611E /* CameraTableRowView.swift */; };
 		930C97671FCEC6AD00B4611E /* InfoTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */; };
@@ -54,7 +55,7 @@
 		930DD5EA1E26B62E00B8FE9B /* PickingShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5E11E26B62E00B8FE9B /* PickingShader.metal */; };
 		930DD5EB1E26B62E00B8FE9B /* QuadShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5E21E26B62E00B8FE9B /* QuadShader.metal */; };
 		930DD5EC1E26B62E00B8FE9B /* UnitCellShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5E31E26B62E00B8FE9B /* UnitCellShader.metal */; };
-		930DD5F31E26B65C00B8FE9B /* MetalCubeGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5ED1E26B65C00B8FE9B /* MetalCubeGeometry.swift */; };
+		930DD5F31E26B65C00B8FE9B /* MetalBoxGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5ED1E26B65C00B8FE9B /* MetalBoxGeometry.swift */; };
 		930DD5F41E26B65C00B8FE9B /* MetalCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5EE1E26B65C00B8FE9B /* MetalCylinderGeometry.swift */; };
 		930DD5F51E26B65C00B8FE9B /* MetalQuadGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5EF1E26B65C00B8FE9B /* MetalQuadGeometry.swift */; };
 		930DD5F61E26B65C00B8FE9B /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F01E26B65C00B8FE9B /* MetalRenderer.swift */; };
@@ -108,9 +109,14 @@
 		9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */; };
 		9314E33F1E34A78E00680364 /* ViewerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33E1E34A78E00680364 /* ViewerProtocols.swift */; };
 		93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159FDD1F54235200D8700E /* SKXYZParser.swift */; };
+		9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */; };
 		932137D41F2B533800DAEBDF /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932137D31F2B533800DAEBDF /* Errors.swift */; };
 		93260AE41E2A46350066EC08 /* iRASPADocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AE31E2A46350066EC08 /* iRASPADocument.swift */; };
 		93260AEC1E2A63D70066EC08 /* iRASPAWIndowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AEB1E2A63D70066EC08 /* iRASPAWIndowController.swift */; };
+		93274E7D2205A0F5004031BA /* MetalPolygonalPrismShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */; };
+		93274E812205A813004031BA /* PolygonalPrismShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93274E802205A813004031BA /* PolygonalPrismShader.metal */; };
+		93274E832205AA13004031BA /* EllipsoidPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E822205AA13004031BA /* EllipsoidPrimitive.swift */; };
+		93274E852205AA54004031BA /* PolygonalPrismPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */; };
 		932A1C941F967D62000A0037 /* AngleNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */; };
 		932A49561E537EF400F71AE7 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A49551E537EF400F71AE7 /* LogViewController.swift */; };
 		932A495C1E544FDA00F71AE7 /* LogToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495B1E544FDA00F71AE7 /* LogToolBar.swift */; };
@@ -304,6 +310,9 @@
 		938B44F51EB7BEC0006B7704 /* FetchRecordFromCloudOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B44F41EB7BEC0006B7704 /* FetchRecordFromCloudOperation.swift */; };
 		938B44F71EB7BF81006B7704 /* ChildrenOfParentQueryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B44F61EB7BF81006B7704 /* ChildrenOfParentQueryOperation.swift */; };
 		938B44FC1EB8F7B4006B7704 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B44FB1EB8F7B4006B7704 /* Reachability.swift */; };
+		938F96BF2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938F96BE2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift */; };
+		938F96C12203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938F96C02203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift */; };
+		938F96C3220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938F96C2220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift */; };
 		939155741E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939155731E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift */; };
 		93915C411FCD99B7006188F0 /* iRASPAProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93915C401FCD99B7006188F0 /* iRASPAProtocols.swift */; };
 		939208822002190B009F0E16 /* AtomMeasurementShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 939208812002190B009F0E16 /* AtomMeasurementShader.metal */; };
@@ -327,7 +336,7 @@
 		93A31C9F1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9E1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift */; };
 		93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */; };
 		93ACDD451FBF266900D6527C /* CommandLinePreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */; };
-		93B07D321EA8AEAE00BBDF65 /* VisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B07D311EA8AEAE00BBDF65 /* VisualAppearanceViewerProtocolExtension.swift */; };
+		93B07D321EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */; };
 		93B0BF1D1E2BCEB40089D292 /* iRASPAHelp.help in Resources */ = {isa = PBXBuildFile; fileRef = 930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */; };
 		93B56CD2202F1D8D0044057C /* SKmmCIFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B56CD1202F1D8D0044057C /* SKmmCIFWriter.swift */; };
 		93B5EE511FC2CACF009922F2 /* LocalAboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B5EE501FC2CACF009922F2 /* LocalAboutWindowController.swift */; };
@@ -402,13 +411,21 @@
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
 		93DE92D1207E2BB00084D303 /* NSPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */; };
 		93E7594B21DBC056009B9C5C /* iRASPADocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */; };
+		93E92DEF21F5BC6300A0DBE6 /* MetalSphereShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalSphereShader.swift */; };
+		93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */; };
+		93E92DF521F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF421F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift */; };
 		93EA0C361E69EA810051E911 /* AtomGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA0C351E69EA810051E911 /* AtomGroupView.swift */; };
 		93EAABA81ED9787D00FE61D8 /* SKCIFParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABA71ED9787D00FE61D8 /* SKCIFParser.swift */; };
 		93EAABAA1ED978E200FE61D8 /* SKParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABA91ED978E200FE61D8 /* SKParser.swift */; };
 		93EAABAD1ED9847700FE61D8 /* SKElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABAC1ED9847700FE61D8 /* SKElement.swift */; };
 		93EAABAF1EDACDEE00FE61D8 /* SKPDBParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABAE1EDACDEE00FE61D8 /* SKPDBParser.swift */; };
+		93EACCBA2204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCB92204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift */; };
+		93EACCBC2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCBB2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift */; };
+		93EACCBE2206022B00AB8026 /* MetalCylinderShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCBD2206022B00AB8026 /* MetalCylinderShader.swift */; };
+		93EACCC022061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCBF22061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift */; };
 		93EE6F461F122F1400986876 /* ProjectSlideBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE6F451F122F1400986876 /* ProjectSlideBorderView.swift */; };
 		93EF65411F21DBD10062816E /* CloudCoREMOFDDECDatabase_v1.0.data in Resources */ = {isa = PBXBuildFile; fileRef = 93EF65401F21DBC60062816E /* CloudCoREMOFDDECDatabase_v1.0.data */; };
+		93EFDF992205FBC400BE96CD /* CylinderPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */; };
 		93F12B5A2034816F00FFABC3 /* SpaceGroupProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F12B592034816F00FFABC3 /* SpaceGroupProtocol.swift */; };
 		93F12B5C203830B500FFABC3 /* SymmetryKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F12B5B203830B500FFABC3 /* SymmetryKitErrors.swift */; };
 		93F1E7FB20244A060050ECAC /* SKCIFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F1E7FA20244A060050ECAC /* SKCIFWriter.swift */; };
@@ -453,9 +470,6 @@
 		93F9363F1EBCDC500094C509 /* ProjectRASPANode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F9363E1EBCDC500094C509 /* ProjectRASPANode.swift */; };
 		93F936411EBCE2600094C509 /* ProjectGULPNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F936401EBCE2600094C509 /* ProjectGULPNode.swift */; };
 		93F936431EBCE26E0094C509 /* ProjectCP2KNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F936421EBCE26E0094C509 /* ProjectCP2KNode.swift */; };
-		93F959561FF02674003C2890 /* SphereObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F959551FF02674003C2890 /* SphereObject.swift */; };
-		93F959581FF02892003C2890 /* CylinderObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F959571FF02892003C2890 /* CylinderObject.swift */; };
-		93F9595A1FF028BA003C2890 /* CubeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F959591FF028BA003C2890 /* CubeObject.swift */; };
 		93FC88A11F5042E80009478E /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93FC88A31F5042E80009478E /* Preferences.storyboard */; };
 		93FC88A51F5058A70009478E /* GeneralPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FC88A41F5058A70009478E /* GeneralPreferenceViewController.swift */; };
 		93FC88A71F515B0D0009478E /* NSHorizontalSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FC88A61F515B0D0009478E /* NSHorizontalSplitViewController.swift */; };
@@ -775,6 +789,7 @@
 		930090EE1EB86DD00050FBC6 /* SaveProjectToCloudOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveProjectToCloudOperation.swift; sourceTree = "<group>"; };
 		9300AE9B1F1FC86B0052DA45 /* CloudCoREMOFDatabase_v1.0.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = CloudCoREMOFDatabase_v1.0.data; sourceTree = "<group>"; };
 		930663C41E7C4808004F9299 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		930C1FA62201E576006AEF30 /* MetalCubeGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCubeGeometry.swift; sourceTree = "<group>"; };
 		930C97621FCEC52A00B4611E /* AppearanceTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceTableRowView.swift; sourceTree = "<group>"; };
 		930C97641FCEC69E00B4611E /* CameraTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTableRowView.swift; sourceTree = "<group>"; };
 		930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableRowView.swift; sourceTree = "<group>"; };
@@ -813,7 +828,7 @@
 		930DD5E11E26B62E00B8FE9B /* PickingShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PickingShader.metal; sourceTree = "<group>"; };
 		930DD5E21E26B62E00B8FE9B /* QuadShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = QuadShader.metal; sourceTree = "<group>"; };
 		930DD5E31E26B62E00B8FE9B /* UnitCellShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = UnitCellShader.metal; sourceTree = "<group>"; };
-		930DD5ED1E26B65C00B8FE9B /* MetalCubeGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalCubeGeometry.swift; sourceTree = "<group>"; };
+		930DD5ED1E26B65C00B8FE9B /* MetalBoxGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalBoxGeometry.swift; sourceTree = "<group>"; };
 		930DD5EE1E26B65C00B8FE9B /* MetalCylinderGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalCylinderGeometry.swift; sourceTree = "<group>"; };
 		930DD5EF1E26B65C00B8FE9B /* MetalQuadGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalQuadGeometry.swift; sourceTree = "<group>"; };
 		930DD5F01E26B65C00B8FE9B /* MetalRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalRenderer.swift; sourceTree = "<group>"; };
@@ -864,9 +879,14 @@
 		9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		9314E33E1E34A78E00680364 /* ViewerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewerProtocols.swift; sourceTree = "<group>"; };
 		93159FDD1F54235200D8700E /* SKXYZParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXYZParser.swift; sourceTree = "<group>"; };
+		9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedCylinderGeometry.swift; sourceTree = "<group>"; };
 		932137D31F2B533800DAEBDF /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		93260AE31E2A46350066EC08 /* iRASPADocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPADocument.swift; sourceTree = "<group>"; tabWidth = 2; };
 		93260AEB1E2A63D70066EC08 /* iRASPAWIndowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPAWIndowController.swift; sourceTree = "<group>"; tabWidth = 2; };
+		93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPolygonalPrismShader.swift; sourceTree = "<group>"; };
+		93274E802205A813004031BA /* PolygonalPrismShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PolygonalPrismShader.metal; sourceTree = "<group>"; };
+		93274E822205AA13004031BA /* EllipsoidPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsoidPrimitive.swift; sourceTree = "<group>"; };
+		93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolygonalPrismPrimitive.swift; sourceTree = "<group>"; };
 		932A1C931F967D62000A0037 /* AngleNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleNumberFormatter.swift; sourceTree = "<group>"; };
 		932A49551E537EF400F71AE7 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		932A495B1E544FDA00F71AE7 /* LogToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogToolBar.swift; sourceTree = "<group>"; };
@@ -1063,6 +1083,9 @@
 		938B44F41EB7BEC0006B7704 /* FetchRecordFromCloudOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchRecordFromCloudOperation.swift; sourceTree = "<group>"; };
 		938B44F61EB7BF81006B7704 /* ChildrenOfParentQueryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildrenOfParentQueryOperation.swift; sourceTree = "<group>"; };
 		938B44FB1EB8F7B4006B7704 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		938F96BE2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
+		938F96C02203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitCellVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
+		938F96C2220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		939155731E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAndInterpreterSplitViewController.swift; sourceTree = "<group>"; };
 		93915C401FCD99B7006188F0 /* iRASPAProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProtocols.swift; sourceTree = "<group>"; };
 		939208812002190B009F0E16 /* AtomMeasurementShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = AtomMeasurementShader.metal; sourceTree = "<group>"; };
@@ -1087,7 +1110,7 @@
 		93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportProjectOperation.swift; sourceTree = "<group>"; };
 		93ACDD431FBB5DC200D6527C /* iRASPA-CLI.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "iRASPA-CLI.entitlements"; sourceTree = "<group>"; };
 		93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLinePreferenceViewController.swift; sourceTree = "<group>"; };
-		93B07D311EA8AEAE00BBDF65 /* VisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
+		93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		93B56CD1202F1D8D0044057C /* SKmmCIFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKmmCIFWriter.swift; sourceTree = "<group>"; };
 		93B5EE501FC2CACF009922F2 /* LocalAboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAboutWindowController.swift; sourceTree = "<group>"; };
 		93B5EE541FC2D200009922F2 /* LocalAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAboutViewController.swift; sourceTree = "<group>"; };
@@ -1153,13 +1176,21 @@
 		93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPasteboardItem.swift; sourceTree = "<group>"; };
 		93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPADocumentController.swift; sourceTree = "<group>"; };
+		93E92DEE21F5BC6300A0DBE6 /* MetalSphereShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalSphereShader.swift; sourceTree = "<group>"; };
+		93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBondCylinderGeometry.swift; sourceTree = "<group>"; };
+		93E92DF421F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		93EA0C351E69EA810051E911 /* AtomGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomGroupView.swift; sourceTree = "<group>"; };
 		93EAABA71ED9787D00FE61D8 /* SKCIFParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFParser.swift; sourceTree = "<group>"; };
 		93EAABA91ED978E200FE61D8 /* SKParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKParser.swift; sourceTree = "<group>"; };
 		93EAABAC1ED9847700FE61D8 /* SKElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKElement.swift; sourceTree = "<group>"; };
 		93EAABAE1EDACDEE00FE61D8 /* SKPDBParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPDBParser.swift; sourceTree = "<group>"; };
+		93EACCB92204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalNSidedPrismGeometry.swift; sourceTree = "<group>"; };
+		93EACCBB2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedNSidedPrismGeometry.swift; sourceTree = "<group>"; };
+		93EACCBD2206022B00AB8026 /* MetalCylinderShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCylinderShader.swift; sourceTree = "<group>"; };
+		93EACCBF22061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		93EE6F451F122F1400986876 /* ProjectSlideBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSlideBorderView.swift; sourceTree = "<group>"; };
 		93EF65401F21DBC60062816E /* CloudCoREMOFDDECDatabase_v1.0.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = CloudCoREMOFDDECDatabase_v1.0.data; sourceTree = "<group>"; };
+		93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylinderPrimitive.swift; sourceTree = "<group>"; };
 		93F12B592034816F00FFABC3 /* SpaceGroupProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupProtocol.swift; sourceTree = "<group>"; };
 		93F12B5B203830B500FFABC3 /* SymmetryKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetryKitErrors.swift; sourceTree = "<group>"; };
 		93F1E7FA20244A060050ECAC /* SKCIFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFWriter.swift; sourceTree = "<group>"; };
@@ -1200,9 +1231,6 @@
 		93F9363E1EBCDC500094C509 /* ProjectRASPANode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectRASPANode.swift; sourceTree = "<group>"; };
 		93F936401EBCE2600094C509 /* ProjectGULPNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectGULPNode.swift; sourceTree = "<group>"; };
 		93F936421EBCE26E0094C509 /* ProjectCP2KNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectCP2KNode.swift; sourceTree = "<group>"; };
-		93F959551FF02674003C2890 /* SphereObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereObject.swift; sourceTree = "<group>"; };
-		93F959571FF02892003C2890 /* CylinderObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylinderObject.swift; sourceTree = "<group>"; };
-		93F959591FF028BA003C2890 /* CubeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeObject.swift; sourceTree = "<group>"; };
 		93FC88A21F5042E80009478E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Preferences.storyboard; sourceTree = "<group>"; };
 		93FC88A41F5058A70009478E /* GeneralPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralPreferenceViewController.swift; sourceTree = "<group>"; };
 		93FC88A61F515B0D0009478E /* NSHorizontalSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSHorizontalSplitViewController.swift; sourceTree = "<group>"; };
@@ -1459,8 +1487,14 @@
 				930DD5FB1E26B6AA00B8FE9B /* RenderKit.MetalViewController.xib */,
 				930DD5F91E26B67B00B8FE9B /* MetalViewController.swift */,
 				930DD5F21E26B65C00B8FE9B /* MetalView.swift */,
-				930DD5ED1E26B65C00B8FE9B /* MetalCubeGeometry.swift */,
+				930DD5ED1E26B65C00B8FE9B /* MetalBoxGeometry.swift */,
+				930C1FA62201E576006AEF30 /* MetalCubeGeometry.swift */,
 				930DD5EE1E26B65C00B8FE9B /* MetalCylinderGeometry.swift */,
+				9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */,
+				93E92DF421F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift */,
+				93EACCB92204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift */,
+				93EACCBB2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift */,
+				93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */,
 				930DD5EF1E26B65C00B8FE9B /* MetalQuadGeometry.swift */,
 				930DD5F11E26B65C00B8FE9B /* MetalSphereGeometry.swift */,
 				930DD5F01E26B65C00B8FE9B /* MetalRenderer.swift */,
@@ -1497,6 +1531,9 @@
 				93793B0C21C81586004CAD9C /* MetalAtomSelectionStripesPerspectiveImposterShader.swift */,
 				93793AFE21C80B45004CAD9C /* MetalAmbientOcclusionShader.swift */,
 				93793B1C21C94C3F004CAD9C /* MetalQuadShader.swift */,
+				93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */,
+				93E92DEE21F5BC6300A0DBE6 /* MetalSphereShader.swift */,
+				93EACCBD2206022B00AB8026 /* MetalCylinderShader.swift */,
 				930DD5481E26B3B200B8FE9B /* shaders */,
 				930DD5151E26B2CC00B8FE9B /* Info.plist */,
 				93793B4621DE0FB6004CAD9C /* LICENSE */,
@@ -1512,6 +1549,7 @@
 				93584CC71FFFC4C7005F01A7 /* CellularNoise.metal */,
 				93584CCC20011E5E005F01A7 /* Noise3D.metal */,
 				93584CD620011FC6005F01A7 /* Noise2D.metal */,
+				93274E802205A813004031BA /* PolygonalPrismShader.metal */,
 				93584CD820011FEC005F01A7 /* Noise3DGrad.metal */,
 				93584CDA2001200B005F01A7 /* Noise4D.metal */,
 				93584CDC2001206D005F01A7 /* PsrdNoise2D.metal */,
@@ -1563,7 +1601,11 @@
 				93F12B592034816F00FFABC3 /* SpaceGroupProtocol.swift */,
 				9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */,
 				93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */,
-				93B07D311EA8AEAE00BBDF65 /* VisualAppearanceViewerProtocolExtension.swift */,
+				93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */,
+				938F96C2220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift */,
+				938F96C02203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift */,
+				938F96BE2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift */,
+				93EACCBF22061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1599,9 +1641,9 @@
 				930DD6411E26BA5D00B8FE9B /* Molecule.swift */,
 				930DD6421E26BA5D00B8FE9B /* Protein.swift */,
 				930DD6441E26BA5D00B8FE9B /* Structure.swift */,
-				93F959551FF02674003C2890 /* SphereObject.swift */,
-				93F959571FF02892003C2890 /* CylinderObject.swift */,
-				93F959591FF028BA003C2890 /* CubeObject.swift */,
+				93274E822205AA13004031BA /* EllipsoidPrimitive.swift */,
+				93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */,
+				93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */,
 			);
 			name = Structures;
 			sourceTree = "<group>";
@@ -2875,7 +2917,7 @@
 				930DD5FA1E26B67B00B8FE9B /* MetalViewController.swift in Sources */,
 				93584CDD2001206D005F01A7 /* PsrdNoise2D.metal in Sources */,
 				930DD5F41E26B65C00B8FE9B /* MetalCylinderGeometry.swift in Sources */,
-				930DD5F31E26B65C00B8FE9B /* MetalCubeGeometry.swift in Sources */,
+				930DD5F31E26B65C00B8FE9B /* MetalBoxGeometry.swift in Sources */,
 				93793B0721C81529004CAD9C /* MetalAtomSelectionWorleyNoise3DPerspectiveImposterShader.swift in Sources */,
 				93793B2F21D94462004CAD9C /* RKInPerInstanceAttributesText.swift in Sources */,
 				93793AEB21C7B7EA004CAD9C /* MetalExternalBondShader.swift in Sources */,
@@ -2883,7 +2925,9 @@
 				93584CDB2001200B005F01A7 /* Noise4D.metal in Sources */,
 				934A853B200A063700737BEB /* RKFontAtlas.swift in Sources */,
 				93793AFF21C80B45004CAD9C /* MetalAmbientOcclusionShader.swift in Sources */,
+				93274E812205A813004031BA /* PolygonalPrismShader.metal in Sources */,
 				93793B1721C8EB1E004CAD9C /* MetalAtomSelectionGlowPerspectiveImposterShader.swift in Sources */,
+				93EACCBE2206022B00AB8026 /* MetalCylinderShader.swift in Sources */,
 				930DD5E41E26B62E00B8FE9B /* AmbientOcclusionShader.metal in Sources */,
 				930DD5E91E26B62E00B8FE9B /* IsosurfaceShader.metal in Sources */,
 				93793B2B21D943F1004CAD9C /* RKTextVertex.swift in Sources */,
@@ -2897,6 +2941,8 @@
 				93793B1521C8EB05004CAD9C /* MetalAtomSelectionGlowOrthographicImposterShader.swift in Sources */,
 				934A853F200A56E600737BEB /* TextShader.metal in Sources */,
 				93793B3D21D9457A004CAD9C /* RKLight.swift in Sources */,
+				93EACCBA2204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift in Sources */,
+				930C1FA72201E576006AEF30 /* MetalCubeGeometry.swift in Sources */,
 				93793B0921C8154B004CAD9C /* MetalAtomSelectionStripesShader.swift in Sources */,
 				93793AE321C7998C004CAD9C /* MetalAtomShader.swift in Sources */,
 				93793AE521C799B7004CAD9C /* MetalAtomOrthographicImposterShader.swift in Sources */,
@@ -2912,14 +2958,18 @@
 				93793AF321C7CB76004CAD9C /* MetalBoundingBoxCylinderShader.swift in Sources */,
 				930DD5F81E26B65C00B8FE9B /* MetalView.swift in Sources */,
 				930DD5411E26B38D00B8FE9B /* RKCamera.swift in Sources */,
+				9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */,
+				93EACCBC2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift in Sources */,
 				93793B1F21CA4F7D004CAD9C /* BackgroundShader.metal in Sources */,
 				930DD5441E26B38D00B8FE9B /* RKMovieCreator.swift in Sources */,
+				93E92DEF21F5BC6300A0DBE6 /* MetalSphereShader.swift in Sources */,
 				93793B3B21D94551004CAD9C /* RKIsosurfaceUniforms.swift in Sources */,
 				93584CCB1FFFC916005F01A7 /* SelectionShaders.metal in Sources */,
 				93584CD720011FC6005F01A7 /* Noise2D.metal in Sources */,
 				93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */,
 				930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */,
 				93793AED21C7C04C004CAD9C /* MetalUnitCellCylinderShader.swift in Sources */,
+				93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */,
 				93793B0521C8150E004CAD9C /* MetalAtomSelectionWorleyNoise3DOrthographicImposterShader.swift in Sources */,
 				93793B3521D944D8004CAD9C /* RKTransformationUniforms.swift in Sources */,
 				93793B1D21C94C3F004CAD9C /* MetalQuadShader.swift in Sources */,
@@ -2947,12 +2997,14 @@
 				93793B1921C8F0ED004CAD9C /* MetalAtomSelectionShader.swift in Sources */,
 				93793B0D21C81586004CAD9C /* MetalAtomSelectionStripesPerspectiveImposterShader.swift in Sources */,
 				93793AE921C7B770004CAD9C /* MetalInternalBondShader.swift in Sources */,
+				93E92DF521F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift in Sources */,
 				93584CD520011F75005F01A7 /* ClassicNoise4D.metal in Sources */,
 				93793B3121D94494004CAD9C /* RKInPerInstanceAttributesAtoms.swift in Sources */,
 				93793B3321D944B2004CAD9C /* RKInPerInstanceAttributesBonds.swift in Sources */,
 				93793B2D21D94421004CAD9C /* RKBondVertex.swift in Sources */,
 				930DD5EB1E26B62E00B8FE9B /* QuadShader.metal in Sources */,
 				93793B0B21C8156B004CAD9C /* MetalAtomSelectionStripesOrthographicImposterShader.swift in Sources */,
+				93274E7D2205A0F5004031BA /* MetalPolygonalPrismShader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2961,23 +3013,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				930DD64B1E26BA5D00B8FE9B /* Structure.swift in Sources */,
+				93EACCC022061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				930DD6641E26BAFC00B8FE9B /* Scene.swift in Sources */,
 				930DD6361E26B9F500B8FE9B /* Array.swift in Sources */,
 				932A1C941F967D62000A0037 /* AngleNumberFormatter.swift in Sources */,
 				93F9363F1EBCDC500094C509 /* ProjectRASPANode.swift in Sources */,
-				93F959581FF02892003C2890 /* CylinderObject.swift in Sources */,
 				937337731EB3238900E0655F /* DocumentData.swift in Sources */,
 				9314E33F1E34A78E00680364 /* ViewerProtocols.swift in Sources */,
 				938B44F71EB7BF81006B7704 /* ChildrenOfParentQueryOperation.swift in Sources */,
 				93F936391EB910B90094C509 /* ProgressIndicatorProtocol.swift in Sources */,
 				930DD6651E26BAFC00B8FE9B /* SceneList.swift in Sources */,
 				938B44EF1EB7B66C006B7704 /* ImportChildNodesFromCloudOperation.swift in Sources */,
+				938F96BF2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */,
 				93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */,
 				938B44E71EB7AE74006B7704 /* ImportNodesFromCloud.swift in Sources */,
 				93F936411EBCE2600094C509 /* ProjectGULPNode.swift in Sources */,
+				938F96C12203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				930DD6461E26BA5D00B8FE9B /* Crystal.swift in Sources */,
-				93B07D321EA8AEAE00BBDF65 /* VisualAppearanceViewerProtocolExtension.swift in Sources */,
+				93B07D321EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				930DD65F1E26BAD400B8FE9B /* ProjectVaspNode.swift in Sources */,
 				930DD6491E26BA5D00B8FE9B /* Protein.swift in Sources */,
 				930DD65B1E26BAAD00B8FE9B /* ProjectNode.swift in Sources */,
@@ -2989,6 +3043,7 @@
 				938B44EB1EB7B258006B7704 /* RequestDiscoveryPermissionCloudUserOperation.swift in Sources */,
 				93F12B5A2034816F00FFABC3 /* SpaceGroupProtocol.swift in Sources */,
 				938B44E51EB7AB2F006B7704 /* FetchCurrentUserRcordOperation.swift in Sources */,
+				938F96C3220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				933CFE171F14B47700BC9DCA /* iRASPAProject.swift in Sources */,
 				936E236D1F17C998007F6230 /* DeleteAllRecordsOperation.swift in Sources */,
 				937861EE1EEC6F5000E0C5DD /* ProjectTreeNode.swift in Sources */,
@@ -2999,11 +3054,10 @@
 				93A31C9B1EB4CD030010101B /* ReadStructureGroupOperation.swift in Sources */,
 				9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */,
 				933F4F241FB1C24D00753D08 /* Errors.swift in Sources */,
-				93F9595A1FF028BA003C2890 /* CubeObject.swift in Sources */,
+				93274E852205AA54004031BA /* PolygonalPrismPrimitive.swift in Sources */,
 				938B44E91EB7AFC1006B7704 /* CloudAccountAvailableOperation.swift in Sources */,
 				930DD6481E26BA5D00B8FE9B /* Molecule.swift in Sources */,
 				9373377B1EB5D60800E0655F /* ProjectProgressIndicator.swift in Sources */,
-				93F959561FF02674003C2890 /* SphereObject.swift in Sources */,
 				93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */,
 				930DD6581E26BAAD00B8FE9B /* ProjectGroup.swift in Sources */,
 				93F936371EB900A10094C509 /* MyNSClipView.swift in Sources */,
@@ -3013,6 +3067,7 @@
 				93B8F2E31EB1DDF00052BDF8 /* Cloud.swift in Sources */,
 				9373377D1EB5FFF900E0655F /* ImportCloudProjectOperation.swift in Sources */,
 				93F936311EB8FFC30094C509 /* NSSquareButton.swift in Sources */,
+				93274E832205AA13004031BA /* EllipsoidPrimitive.swift in Sources */,
 				938B44ED1EB7B38C006B7704 /* CloudSubscribeOperation.swift in Sources */,
 				930DD64A1E26BA5D00B8FE9B /* ProteinCrystal.swift in Sources */,
 				93B8F2E51EB1DE630052BDF8 /* Notifications.swift in Sources */,
@@ -3022,6 +3077,7 @@
 				93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */,
 				933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */,
 				9354FE4A1F45A6A400155DC3 /* CartesianNumberFormatter.swift in Sources */,
+				93EFDF992205FBC400BE96CD /* CylinderPrimitive.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

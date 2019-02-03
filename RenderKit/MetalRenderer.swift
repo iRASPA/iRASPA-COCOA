@@ -95,6 +95,10 @@ public class MetalRenderer
   var blurHorizontalPictureShader: MetalBlurHorizontalPictureShader =  MetalBlurHorizontalPictureShader()
   var blurVerticalPictureShader: MetalBlurVerticalPictureShader =  MetalBlurVerticalPictureShader()
   
+  var metalSphereShader: MetalSphereShader =  MetalSphereShader()
+  var metalCylinderShader: MetalCylinderShader =  MetalCylinderShader()
+  var metalPolygonalPrismShader: MetalPolygonalPrismShader = MetalPolygonalPrismShader()
+  
   var frameUniformBuffer: MTLBuffer! = nil
   var structureUniformBuffers: MTLBuffer! = nil
   var isosurfaceUniformBuffers: MTLBuffer! = nil
@@ -180,6 +184,16 @@ public class MetalRenderer
     
     atomSelectionGlowPictureShader.renderDataSource = renderDataSource
     atomSelectionGlowPictureShader.renderStructures = renderStructures
+    
+    
+    metalSphereShader.renderDataSource  = renderDataSource
+    metalSphereShader.renderStructures = renderStructures
+    
+    metalCylinderShader.renderDataSource  = renderDataSource
+    metalCylinderShader.renderStructures = renderStructures
+   
+    metalPolygonalPrismShader.renderDataSource  = renderDataSource
+    metalPolygonalPrismShader.renderStructures = renderStructures
   }
   
   
@@ -209,7 +223,7 @@ public class MetalRenderer
       {
         let structures: [RKRenderStructure] = renderDataSource.renderStructuresForScene(i)
         renderStructures.append(structures)
-        self.textShader.renderTextFontString.append(structures.map{$0.renderTextFont})
+        self.textShader.renderTextFontString.append(structures.map{($0 as? RKRenderAtomSource)?.renderTextFont ?? ""})
       }
       
       setDataSources(renderDataSource: renderDataSource, renderStructures: renderStructures)
@@ -239,7 +253,7 @@ public class MetalRenderer
       {
         let structures: [RKRenderStructure] = renderDataSource.renderStructuresForScene(i)
         renderStructures.append(structures)
-        self.textShader.renderTextFontString.append(structures.map{$0.renderTextFont})
+        self.textShader.renderTextFontString.append(structures.map{($0 as? RKRenderAtomSource)?.renderTextFont ?? ""})
       }
       
       setDataSources(renderDataSource: renderDataSource, renderStructures: renderStructures)
@@ -335,6 +349,13 @@ public class MetalRenderer
     atomSelectionGlowPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     blurHorizontalPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     blurVerticalPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
+    
+    metalSphereShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
+    metalCylinderShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+   
+    metalPolygonalPrismShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
   }
 
   
@@ -408,6 +429,10 @@ public class MetalRenderer
     atomSelectionGlowPictureShader.buildVertexBuffers(device: device)
     blurHorizontalPictureShader.buildVertexBuffers(device: device)
     blurVerticalPictureShader.buildVertexBuffers(device: device)
+    
+    metalSphereShader.buildVertexBuffers(device: device)
+    metalCylinderShader.buildVertexBuffers(device: device)
+    metalPolygonalPrismShader.buildVertexBuffers(device: device)
     
     var uniforms: RKTransformationUniforms = transformUniforms()
     self.frameUniformBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)
@@ -529,6 +554,15 @@ public class MetalRenderer
       }
     }
     
+   
+    self.metalSphereShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+   
+     self.metalCylinderShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    
+    self.metalPolygonalPrismShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    
+  
+    
     self.internalBondShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
     self.externalBondShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
@@ -573,6 +607,13 @@ public class MetalRenderer
     }
     
     self.textShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+    
+  
+    self.metalSphereShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    
+    self.metalCylinderShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+  
+    self.metalPolygonalPrismShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     
     self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     

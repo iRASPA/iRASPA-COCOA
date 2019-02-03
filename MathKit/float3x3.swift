@@ -31,3 +31,38 @@
 
 import Foundation
 import simd
+
+extension float3x3
+{
+  public init(simd_quatd q: simd_quatd)
+  {
+    let sqw: Double = q.vector.w*q.vector.w
+    let sqx: Double = q.vector.x*q.vector.x
+    let sqy: Double = q.vector.y*q.vector.y
+    let sqz: Double = q.vector.z*q.vector.z
+    
+    self.init()
+    
+    // invs (inverse square length) is only required if quaternion is not already normalised
+    let invs: Double = 1 / (sqx + sqy + sqz + sqw)
+    self[0,0] = Float(( sqx - sqy - sqz + sqw) * invs)  // since sqw + sqx + sqy + sqz =1/invs*invs
+    self[1,1] = Float((-sqx + sqy - sqz + sqw) * invs)
+    self[2,2] = Float((-sqx - sqy + sqz + sqw) * invs)
+    
+    
+    var tmp1: Double = q.vector.x*q.vector.y
+    var tmp2: Double = q.vector.z*q.vector.w
+    self[0,1] = Float(2.0 * (tmp1 + tmp2)*invs)
+    self[1,0] = Float(2.0 * (tmp1 - tmp2)*invs)
+    
+    tmp1 = q.vector.x*q.vector.z
+    tmp2 = q.vector.y*q.vector.w
+    self[0,2] = Float(2.0 * (tmp1 - tmp2) * invs)
+    self[2,0] = Float(2.0 * (tmp1 + tmp2) * invs)
+    
+    tmp1 = q.vector.y * q.vector.z
+    tmp2 = q.vector.x * q.vector.w
+    self[1,2] = Float(2.0 * (tmp1 + tmp2) * invs)
+    self[2,1] = Float(2.0 * (tmp1 - tmp2) * invs)
+  }
+}

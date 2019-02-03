@@ -1056,7 +1056,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       for i in 0..<crystalProjectData.renderStructures.count
       {
         let structure: RKRenderStructure = crystalProjectData.renderStructures[i]
-        if structure.isVisible
+        if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
+           structure.isVisible
         {
           let indexSet: IndexSet = camera.selectPositionsInRectangle(structure.atomPositions, inRect: rect, withOrigin: structure.origin, inViewPort: bounds)
         

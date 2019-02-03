@@ -503,7 +503,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     }
   }
 
-  @IBAction func addCrystal(_ sender: NSMenuItem)
+  @IBAction func addCrystal(_ sender: AnyObject)
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
@@ -718,7 +718,155 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }
   }
+  
+  @IBAction func addEllipsoidPrimitive(_ sender: NSMenuItem)
+  {
+    if let proxyProject = self.proxyProject, proxyProject.isEditable,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+      let selectedRow=self.structuresOutlineView?.selectedRow
+    {
+      var index: Int = selectedRow
+      var toItem: Scene? = nil
+      
+      let scene: Scene = Scene()
+      scene.displayName = "New ellipsoid"
+      let spherePrimitive: EllipsoidPrimitive = EllipsoidPrimitive(name: "Ellipsoid")
+      
+      if index < 0
+      {
+        index=0
+        self.addSceneNode(scene, atIndex: 0)
+        toItem=scene
+      }
+      else
+      {
+        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        {
+          toItem = scene
+          index = childIndex + 1
+          if let previousCell = movie.frames.first?.structure.cell
+          {
+            spherePrimitive.cell = previousCell
+          }
+        }
+      }
+      
+      
+      let frame: iRASPAStructure = iRASPAStructure(spherePrimitive: spherePrimitive)
+      let movie: Movie = Movie(name: "New Ellipsoid", structure: frame)
+      movie.selectedFrame = frame
+      movie.selectedFrames.insert(frame)
+      
+      let newSelectedScene: Scene? = project.sceneList.selectedScene
+      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
+      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      
+      self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
+    }
+  }
+  
+  @IBAction func addPolygonalPrismPrimitive(_ sender: NSMenuItem)
+  {
+    if let proxyProject = self.proxyProject, proxyProject.isEditable,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+      let selectedRow=self.structuresOutlineView?.selectedRow
+    {
+      var index: Int = selectedRow
+      var toItem: Scene? = nil
+      
+      let scene: Scene = Scene()
+      scene.displayName = "New polygonal prism"
+      let polygonalPrimitive: PolygonalPrismPrimitive = PolygonalPrismPrimitive(name: "Polygonal prism")
+      polygonalPrimitive.primitiveNumberOfSides = 4
+      
+      if index < 0
+      {
+        index=0
+        self.addSceneNode(scene, atIndex: 0)
+        toItem=scene
+      }
+      else
+      {
+        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        {
+          toItem = scene
+          index = childIndex + 1
+          if let previousCell = movie.frames.first?.structure.cell
+          {
+            polygonalPrimitive.cell = previousCell
+          }
+        }
+      }
+      
+      let frame: iRASPAStructure = iRASPAStructure(polygonalPrismPrimitive: polygonalPrimitive)
+      let movie: Movie = Movie(name: "New polygonal prism", structure: frame)
+      movie.selectedFrame = frame
+      movie.selectedFrames.insert(frame)
+      
+      let newSelectedScene: Scene? = project.sceneList.selectedScene
+      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
+      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      
+      self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
+    }
+  }
 
+  @IBAction func addCylinderPrimitive(_ sender: NSMenuItem)
+  {
+    if let proxyProject = self.proxyProject, proxyProject.isEditable,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+      let selectedRow=self.structuresOutlineView?.selectedRow
+    {
+      var index: Int = selectedRow
+      var toItem: Scene? = nil
+      
+      let scene: Scene = Scene()
+      scene.displayName = "New cylinder"
+      let cylinderPrimitive: CylinderPrimitive = CylinderPrimitive(name: "Cylinder")
+      cylinderPrimitive.primitiveNumberOfSides = 41
+      
+      if index < 0
+      {
+        index=0
+        self.addSceneNode(scene, atIndex: 0)
+        toItem=scene
+      }
+      else
+      {
+        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        {
+          toItem = scene
+          index = childIndex + 1
+          if let previousCell = movie.frames.first?.structure.cell
+          {
+            cylinderPrimitive.cell = previousCell
+          }
+        }
+      }
+      
+      
+      let frame: iRASPAStructure = iRASPAStructure(cylinderPrimitive: cylinderPrimitive)
+      let movie: Movie = Movie(name: "New cylinder", structure: frame)
+      movie.selectedFrame = frame
+      movie.selectedFrames.insert(frame)
+      
+      let newSelectedScene: Scene? = project.sceneList.selectedScene
+      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
+      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      
+      self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
+    }
+  }
+  
+  
+  
+  
   // MARK: NSOutlineView required datasource methods
   // ===============================================================================================================================
   

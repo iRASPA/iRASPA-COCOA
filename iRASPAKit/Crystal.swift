@@ -38,7 +38,7 @@ import SimulationKit
 import OperationKit
 import LogViewKit
 
-public final class Crystal: Structure, NSCopying, RKRenderAdsorptionSurfaceStructure, SpaceGroupProtocol
+public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -69,7 +69,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAdsorptionSurfaceStruc
     return true
   }
   
-  override var materialType: MaterialType
+  override var materialType: SKStructure.Kind
   {
     return .crystal
   }
@@ -959,8 +959,6 @@ public final class Crystal: Structure, NSCopying, RKRenderAdsorptionSurfaceStruc
     let minimumReplica = cell.minimumReplica
     let maximumReplica = cell.maximumReplica
     
-    let rotationMatrix: double4x4 = double4x4(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
-    
     let c0: double3 = self.cell.unitCell * (double3(x: Double(minimumReplica.x),  y: Double(minimumReplica.y),  z: Double(minimumReplica.z)))
     let c1: double3 = self.cell.unitCell * (double3(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(minimumReplica.z)))
     let c2: double3 = self.cell.unitCell * (double3(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(minimumReplica.z)))
@@ -969,6 +967,8 @@ public final class Crystal: Structure, NSCopying, RKRenderAdsorptionSurfaceStruc
     let c5: double3 = self.cell.unitCell * (double3(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1)))
     let c6: double3 = self.cell.unitCell * (double3(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
     let c7: double3 = self.cell.unitCell * (double3(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
+    
+    let rotationMatrix: double4x4 = double4x4(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
     
     let r0 = rotationMatrix * double4(c0.x,c0.y,c0.z,1.0)
     let r1 = rotationMatrix * double4(c1.x,c1.y,c1.z,1.0)

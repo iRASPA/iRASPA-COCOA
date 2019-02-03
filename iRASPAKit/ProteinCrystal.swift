@@ -38,7 +38,7 @@ import LogViewKit
 import SimulationKit
 import OperationKit
 
-public final class ProteinCrystal: Structure, NSCopying, RKRenderAdsorptionSurfaceStructure, SpaceGroupProtocol
+public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
 {
   private var versionNumber: Int = 2
   private static var classVersionNumber: Int = 1
@@ -58,7 +58,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAdsorptionSurfa
     reComputeBoundingBox()
   }
   
-  override var materialType: MaterialType
+  override var materialType: SKStructure.Kind
   {
     return .proteinCrystal
   }

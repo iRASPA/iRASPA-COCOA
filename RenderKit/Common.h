@@ -230,6 +230,25 @@ typedef struct
   float bondAnnotationTextScaling;
   float selectionScaling;
   bool pad;
+  
+  float4x4 transformationMatrix;
+  float4x4 transformationNormalMatrix;
+  
+  float4 primitiveAmbientFrontSide;
+  float4 primitiveDiffuseFrontSide;
+  float4 primitiveSpecularFrontSide;
+  bool primitiveFrontSideHDR;
+  float primitiveFrontSideHDRExposure;
+  float pad3;
+  float primitiveShininessFrontSide;
+  
+  float4 primitiveAmbientBackSide;
+  float4 primitiveDiffuseBackSide;
+  float4 primitiveSpecularBackSide;
+  bool primitiveBackSideHDR;
+  float primitiveBackSideHDRExposure;
+  float pad6;
+  float primitiveShininessBackSide;
 } StructureUniforms;
 
 typedef struct

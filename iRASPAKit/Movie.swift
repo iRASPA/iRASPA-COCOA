@@ -41,7 +41,7 @@ import simd
 
 public let NSPasteboardTypeMovie: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Movie")
 
-public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, PrimitiveVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1

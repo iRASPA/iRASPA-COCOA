@@ -73,11 +73,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   var list: [NSDictionary] = []
   var heights : [String : CGFloat] = [:]
+  let primitiveVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "PrimitiveVisualAppearanceCell")]
   let atomsVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "AtomsVisualAppearanceCell")]
   let bondsVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType"): NSString(string: "BondsVisualAppearanceCell")]
   let unitCellVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "UnitCellVisualAppearanceCell")]
   let adsorptionVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "AdsorptionVisualAppearanceCell")]
   let annotationVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "AnnotationVisualAppearanceCell")]
+  
   
   var surfaceUpdateBlock: () -> () = {}
 
@@ -118,16 +120,20 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
+    let primitiveVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "PrimitiveVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [primitiveVisualAppearanceCell] as AnyObject]
     let atomsVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "AtomsVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [atomsVisualAppearanceCell] as AnyObject]
     let bondsVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "BondsVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [bondsVisualAppearanceCell] as AnyObject]
     let unitCellVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "UnitCellVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [unitCellVisualAppearanceCell] as AnyObject]
     let adsorptionVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType"):NSString(string: "AdsorptionVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [adsorptionVisualAppearanceCell] as AnyObject]
     let annotationVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "AnnotationVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [annotationVisualAppearanceCell] as AnyObject]
     
-    self.list = [atomsVisualAppearanceDictionary,bondsVisualAppearanceDictionary,unitCellVisualAppearanceDictionary,adsorptionVisualAppearanceDictionary, annotationVisualAppearanceDictionary]
+    
+    self.list = [primitiveVisualAppearanceDictionary, atomsVisualAppearanceDictionary,bondsVisualAppearanceDictionary,unitCellVisualAppearanceDictionary,adsorptionVisualAppearanceDictionary, annotationVisualAppearanceDictionary]
     
     self.heights =
     [
+      "PrimitiveVisualAppearanceGroup" : 17.0,
+      "PrimitiveVisualAppearanceCell" : 725.0,
       "AtomsVisualAppearanceGroup" : 17.0,
       "AtomsVisualAppearanceCell" : 675.0,
       "BondsVisualAppearanceGroup" : 17.0,
@@ -137,7 +143,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       "AdsorptionVisualAppearanceGroup": 17.0,
       "AdsorptionVisualAppearanceCell" : 568.0,
       "AnnotationVisualAppearanceGroup" : 17.0,
-      "AnnotationVisualAppearanceCell" : 204,
+      "AnnotationVisualAppearanceCell" : 204.0
     ]
   }
   
@@ -276,6 +282,722 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       switch(string)
       {
+      case "PrimitiveVisualAppearanceCell":
+        if let textFieldRotationAngle: NSTextField = view.viewWithTag(1) as? NSTextField,
+           let textFieldYawPlusX: NSButton = view.viewWithTag(2) as? NSButton,
+           let textFieldYawPlusY: NSButton = view.viewWithTag(3) as? NSButton,
+           let textFieldYawPlusZ: NSButton = view.viewWithTag(4) as? NSButton,
+           let textFieldYawMinusX: NSButton = view.viewWithTag(5) as? NSButton,
+           let textFieldYawMinusY: NSButton = view.viewWithTag(6) as? NSButton,
+           let textFieldYawMinusZ: NSButton = view.viewWithTag(7) as? NSButton
+        {
+          textFieldRotationAngle.isEditable = false
+          textFieldYawPlusX.isEnabled = false
+          textFieldYawPlusY.isEnabled = false
+          textFieldYawPlusZ.isEnabled = false
+          textFieldYawMinusX.isEnabled = false
+          textFieldYawMinusY.isEnabled = false
+          textFieldYawMinusZ.isEnabled = false
+          if let renderRotationDelta: Double = (self.representedObject as? [PrimitiveVisualAppearanceViewer])?.renderPrimitiveRotationDelta
+          {
+            textFieldRotationAngle.isEditable = enabled
+            textFieldYawPlusX.isEnabled = enabled
+            textFieldYawPlusY.isEnabled = enabled
+            textFieldYawPlusZ.isEnabled = enabled
+            textFieldYawMinusX.isEnabled = enabled
+            textFieldYawMinusY.isEnabled = enabled
+            textFieldYawMinusZ.isEnabled = enabled
+            
+            textFieldRotationAngle.doubleValue = renderRotationDelta
+            textFieldYawPlusX.title =  "Rotate +\(renderRotationDelta)°"
+            textFieldYawPlusY.title =  "Rotate -\(renderRotationDelta)°"
+            textFieldYawPlusZ.title =  "Rotate +\(renderRotationDelta)°"
+            textFieldYawMinusX.title =  "Rotate -\(renderRotationDelta)°"
+            textFieldYawMinusY.title =  "Rotate +\(renderRotationDelta)°"
+            textFieldYawMinusZ.title =  "Rotate -\(renderRotationDelta)°"
+          }
+        }
+        
+        if let sliderEulerAngleX: NSSlider = view.viewWithTag(10) as? NSSlider,
+          let sliderEulerAngleZ: NSSlider = view.viewWithTag(11) as? NSSlider,
+          let sliderEulerAngleY: NSSlider = view.viewWithTag(12) as? NSSlider,
+          let textFieldEulerAngleX: NSTextField = view.viewWithTag(13) as? NSTextField,
+          let textFieldEulerAngleY: NSTextField = view.viewWithTag(14) as? NSTextField,
+          let textFieldEulerAngleZ: NSTextField = view.viewWithTag(15) as? NSTextField
+        {
+          sliderEulerAngleX.isEnabled = false
+          sliderEulerAngleZ.isEnabled = false
+          sliderEulerAngleY.isEnabled = false
+          textFieldEulerAngleX.isEditable = false
+          textFieldEulerAngleY.isEditable = false
+          textFieldEulerAngleZ.isEditable = false
+          sliderEulerAngleX.stringValue = ""
+          sliderEulerAngleZ.stringValue = ""
+          sliderEulerAngleY.stringValue = ""
+          textFieldEulerAngleX.stringValue = ""
+          textFieldEulerAngleY.stringValue = ""
+          textFieldEulerAngleZ.stringValue = ""
+          
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            if let renderEulerAngleX: Double = representedStructure.renderPrimitiveEulerAngleX,
+              let renderEulerAngleY: Double = representedStructure.renderPrimitiveEulerAngleY,
+              let renderEulerAngleZ: Double = representedStructure.renderPrimitiveEulerAngleZ
+            {
+              sliderEulerAngleX.isEnabled = enabled
+              sliderEulerAngleZ.isEnabled = enabled
+              sliderEulerAngleY.isEnabled = enabled
+              textFieldEulerAngleX.isEditable = enabled
+              textFieldEulerAngleY.isEditable = enabled
+              textFieldEulerAngleZ.isEditable = enabled
+              sliderEulerAngleX.doubleValue = renderEulerAngleX * 180.0/Double.pi
+              sliderEulerAngleZ.doubleValue = renderEulerAngleZ * 180.0/Double.pi
+              sliderEulerAngleY.doubleValue = renderEulerAngleY * 180.0/Double.pi
+              textFieldEulerAngleX.doubleValue = renderEulerAngleX * 180.0/Double.pi
+              textFieldEulerAngleY.doubleValue = renderEulerAngleZ * 180.0/Double.pi
+              textFieldEulerAngleZ.doubleValue = renderEulerAngleY * 180.0/Double.pi
+            }
+            else
+            {
+              textFieldEulerAngleX.stringValue = "Multiple Values"
+              textFieldEulerAngleY.stringValue = "Multiple Values"
+              textFieldEulerAngleZ.stringValue = "Multiple Values"
+            }
+          }
+        }
+        
+        if let textFieldAtomScalingAX: NSTextField = view.viewWithTag(20) as? NSTextField,
+          let textFieldAtomScalingBX: NSTextField = view.viewWithTag(21) as? NSTextField,
+          let textFieldAtomScalingCX: NSTextField = view.viewWithTag(22) as? NSTextField,
+          let textFieldAtomScalingAY: NSTextField = view.viewWithTag(23) as? NSTextField,
+          let textFieldAtomScalingBY: NSTextField = view.viewWithTag(24) as? NSTextField,
+          let textFieldAtomScalingCY: NSTextField = view.viewWithTag(25) as? NSTextField,
+          let textFieldAtomScalingAZ: NSTextField = view.viewWithTag(26) as? NSTextField,
+          let textFieldAtomScalingBZ: NSTextField = view.viewWithTag(27) as? NSTextField,
+          let textFieldAtomScalingCZ: NSTextField = view.viewWithTag(28) as? NSTextField
+        {
+          textFieldAtomScalingAX.isEditable = false
+          textFieldAtomScalingAY.isEditable = false
+          textFieldAtomScalingAZ.isEditable = false
+          textFieldAtomScalingBX.isEditable = false
+          textFieldAtomScalingBY.isEditable = false
+          textFieldAtomScalingBZ.isEditable = false
+          textFieldAtomScalingCX.isEditable = false
+          textFieldAtomScalingCY.isEditable = false
+          textFieldAtomScalingCZ.isEditable = false
+          textFieldAtomScalingAX.stringValue = ""
+          textFieldAtomScalingAY.stringValue = ""
+          textFieldAtomScalingAZ.stringValue = ""
+          textFieldAtomScalingBX.stringValue = ""
+          textFieldAtomScalingBY.stringValue = ""
+          textFieldAtomScalingBZ.stringValue = ""
+          textFieldAtomScalingCX.stringValue = ""
+          textFieldAtomScalingCY.stringValue = ""
+          textFieldAtomScalingCZ.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldAtomScalingAX.isEditable = enabled
+            textFieldAtomScalingAY.isEditable = enabled
+            textFieldAtomScalingAZ.isEditable = enabled
+            textFieldAtomScalingBX.isEditable = enabled
+            textFieldAtomScalingBY.isEditable = enabled
+            textFieldAtomScalingBZ.isEditable = enabled
+            textFieldAtomScalingCX.isEditable = enabled
+            textFieldAtomScalingCY.isEditable = enabled
+            textFieldAtomScalingCZ.isEditable = enabled
+            if let renderPrimitiveTransformationMatrix: double3x3 = representedStructure.renderPrimitiveTransformationMatrix
+            {
+              textFieldAtomScalingAX.doubleValue = renderPrimitiveTransformationMatrix[0,0]
+              textFieldAtomScalingAY.doubleValue = renderPrimitiveTransformationMatrix[0,1]
+              textFieldAtomScalingAZ.doubleValue = renderPrimitiveTransformationMatrix[0,2]
+              textFieldAtomScalingBX.doubleValue = renderPrimitiveTransformationMatrix[1,0]
+              textFieldAtomScalingBY.doubleValue = renderPrimitiveTransformationMatrix[1,1]
+              textFieldAtomScalingBZ.doubleValue = renderPrimitiveTransformationMatrix[1,2]
+              textFieldAtomScalingCX.doubleValue = renderPrimitiveTransformationMatrix[2,0]
+              textFieldAtomScalingCY.doubleValue = renderPrimitiveTransformationMatrix[2,1]
+              textFieldAtomScalingCZ.doubleValue = renderPrimitiveTransformationMatrix[2,2]
+            }
+            else
+            {
+              textFieldAtomScalingAX.stringValue = "Mult. Val."
+              textFieldAtomScalingAY.stringValue = "Mult. Val."
+              textFieldAtomScalingAZ.stringValue = "Mult. Val."
+              textFieldAtomScalingBX.stringValue = "Mult. Val."
+              textFieldAtomScalingBY.stringValue = "Mult. Val."
+              textFieldAtomScalingBZ.stringValue = "Mult. Val."
+              textFieldAtomScalingCX.stringValue = "Mult. Val."
+              textFieldAtomScalingCY.stringValue = "Mult. Val."
+              textFieldAtomScalingCZ.stringValue = "Mult. Val."
+            }
+          }
+        }
+        
+        if let textFieldOpacity: NSTextField = view.viewWithTag(35) as? NSTextField
+        {
+          textFieldOpacity.isEditable = false
+          textFieldOpacity.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldOpacity.isEditable = enabled
+            if let opacity = representedStructure.renderPrimitiveOpacity
+            {
+              textFieldOpacity.doubleValue = opacity
+            }
+            else
+            {
+              textFieldOpacity.stringValue = "Mult. Val."
+            }
+          }
+        }
+        if let sliderOpacity: NSSlider = view.viewWithTag(36) as? NSSlider
+        {
+          sliderOpacity.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderOpacity.isEnabled = enabled
+            if let opacity = representedStructure.renderPrimitiveOpacity
+            {
+              sliderOpacity.minValue = 0.0
+              sliderOpacity.maxValue = 1.0
+              sliderOpacity.doubleValue = opacity
+            }
+            else
+            {
+              sliderOpacity.minValue = 0.0
+              sliderOpacity.maxValue = 1.0
+              sliderOpacity.doubleValue = 0.5
+            }
+          }
+        }
+        if let textFieldNumberOfSides: NSTextField = view.viewWithTag(37) as? NSTextField
+        {
+          textFieldNumberOfSides.isEditable = false
+          textFieldNumberOfSides.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldNumberOfSides.isEditable = enabled
+            if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
+            {
+              textFieldNumberOfSides.integerValue = numberOfSides
+            }
+            else
+            {
+              textFieldNumberOfSides.stringValue = "Mult. Val."
+            }
+          }
+        }
+        if let sliderNumberOfSides: NSSlider = view.viewWithTag(38) as? NSSlider
+        {
+          sliderNumberOfSides.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderNumberOfSides.isEnabled = enabled
+            if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
+            {
+              sliderNumberOfSides.minValue = 2
+              sliderNumberOfSides.maxValue = 16
+              sliderNumberOfSides.integerValue = numberOfSides
+            }
+            else
+            {
+              sliderNumberOfSides.minValue = 2
+              sliderNumberOfSides.maxValue = 16
+              sliderNumberOfSides.doubleValue = 6
+            }
+          }
+        }
+        
+        if let button: NSButton = view.viewWithTag(39) as? NSButton
+        {
+          button.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            button.isEnabled = enabled
+            
+            if let renderPrimitiveIsCapped: Bool = representedStructure.renderPrimitiveIsCapped
+            {
+              button.allowsMixedState = false
+              button.state = renderPrimitiveIsCapped ? NSControl.StateValue.on : NSControl.StateValue.off
+            }
+            else
+            {
+              button.allowsMixedState = true
+              button.state = NSControl.StateValue.mixed
+            }
+          }
+        }
+        if let button: NSButton = view.viewWithTag(40) as? NSButton
+        {
+          button.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            button.isEnabled = enabled
+            
+            if let renderPrimitiveIsFractional: Bool = representedStructure.renderPrimitiveIsFractional
+            {
+              button.allowsMixedState = false
+              button.state = renderPrimitiveIsFractional ? NSControl.StateValue.on : NSControl.StateValue.off
+            }
+            else
+            {
+              button.allowsMixedState = true
+              button.state = NSControl.StateValue.mixed
+            }
+          }
+        }
+        
+        
+        // High dynamic range
+        if let button: NSButton = view.viewWithTag(41) as? NSButton
+        {
+          button.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            button.isEnabled = enabled
+            
+            if let renderPrimitiveFrontSideHDR: Bool = representedStructure.renderPrimitiveFrontSideHDR
+            {
+              button.allowsMixedState = false
+              button.state = renderPrimitiveFrontSideHDR ? NSControl.StateValue.on : NSControl.StateValue.off
+            }
+            else
+            {
+              button.allowsMixedState = true
+              button.state = NSControl.StateValue.mixed
+            }
+          }
+        }
+        
+        // Exposure
+        if let textFieldExposure: NSTextField = view.viewWithTag(42) as? NSTextField
+        {
+          textFieldExposure.isEditable = false
+          textFieldExposure.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldExposure.isEditable = enabled
+            if let renderPrimitiveFrontSideHDRExposure: Double = representedStructure.renderPrimitiveFrontSideHDRExposure
+            {
+              textFieldExposure.doubleValue = renderPrimitiveFrontSideHDRExposure
+            }
+            else
+            {
+              textFieldExposure.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderExposure: NSSlider = view.viewWithTag(43) as? NSSlider
+        {
+          sliderExposure.isEnabled = false
+          sliderExposure.minValue = 0.0
+          sliderExposure.maxValue = 3.0
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderExposure.isEnabled = enabled
+            if let renderPrimitiveFrontSideHDRExposure: Double = representedStructure.renderPrimitiveFrontSideHDRExposure
+            {
+              sliderExposure.doubleValue = renderPrimitiveFrontSideHDRExposure
+            }
+          }
+        }
+        
+        
+        // ambient intensity and color
+        if let textFieldFrontAmbientIntensity: NSTextField = view.viewWithTag(44) as? NSTextField
+        {
+          textFieldFrontAmbientIntensity.isEditable = false
+          textFieldFrontAmbientIntensity.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldFrontAmbientIntensity.isEditable = enabled
+            if let ambientIntensity = representedStructure.renderPrimitiveFrontSideAmbientIntensity
+            {
+              textFieldFrontAmbientIntensity.doubleValue = ambientIntensity
+            }
+            else
+            {
+              textFieldFrontAmbientIntensity.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(45) as? NSSlider
+        {
+          sliderFrontAmbientIntensity.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderFrontAmbientIntensity.isEnabled = enabled
+            if let ambientIntensity = representedStructure.renderPrimitiveFrontSideAmbientIntensity
+            {
+              sliderFrontAmbientIntensity.minValue = 0.0
+              sliderFrontAmbientIntensity.maxValue = 1.0
+              sliderFrontAmbientIntensity.doubleValue = ambientIntensity
+            }
+          }
+        }
+        if let ambientFrontSideColor: NSColorWell = view.viewWithTag(46) as? NSColorWell
+        {
+          ambientFrontSideColor.isEnabled = false
+          ambientFrontSideColor.color = NSColor.lightGray
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            ambientFrontSideColor.isEnabled = enabled
+            if let color = representedStructure.renderPrimitiveFrontSideAmbientColor
+            {
+              ambientFrontSideColor.color = color
+            }
+          }
+        }
+        
+        // diffuse intensity and color
+        if let textFieldFrontDiffuseIntensity: NSTextField = view.viewWithTag(47) as? NSTextField
+        {
+          textFieldFrontDiffuseIntensity.isEditable = false
+          textFieldFrontDiffuseIntensity.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldFrontDiffuseIntensity.isEditable = enabled
+            if let diffuseIntensity = representedStructure.renderPrimitiveFrontSideDiffuseIntensity
+            {
+              textFieldFrontDiffuseIntensity.doubleValue = diffuseIntensity
+            }
+            else
+            {
+              textFieldFrontDiffuseIntensity.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(48) as? NSSlider
+        {
+          sliderFrontDiffuseIntensity.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderFrontDiffuseIntensity.isEnabled = enabled
+            if let diffuseIntensity = representedStructure.renderPrimitiveFrontSideDiffuseIntensity
+            {
+              sliderFrontDiffuseIntensity.minValue = 0.0
+              sliderFrontDiffuseIntensity.maxValue = 1.0
+              sliderFrontDiffuseIntensity.doubleValue = diffuseIntensity
+            }
+          }
+        }
+        if let diffuseFrontSideColor: NSColorWell = view.viewWithTag(49) as? NSColorWell
+        {
+          diffuseFrontSideColor.isEnabled = false
+          diffuseFrontSideColor.color = NSColor.lightGray
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            diffuseFrontSideColor.isEnabled = enabled
+            if let color = representedStructure.renderPrimitiveFrontSideDiffuseColor
+            {
+              diffuseFrontSideColor.color = color
+            }
+          }
+        }
+        
+        // specular intensity and color
+        if let textFieldFrontSpecularIntensity: NSTextField = view.viewWithTag(50) as? NSTextField
+        {
+          textFieldFrontSpecularIntensity.isEditable = false
+          textFieldFrontSpecularIntensity.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldFrontSpecularIntensity.isEditable = enabled
+            if let specularIntensity = representedStructure.renderPrimitiveFrontSideSpecularIntensity
+            {
+              textFieldFrontSpecularIntensity.doubleValue = specularIntensity
+            }
+            else
+            {
+              textFieldFrontSpecularIntensity.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(51) as? NSSlider
+        {
+          sliderFrontSpecularIntensity.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderFrontSpecularIntensity.isEnabled = enabled
+            if let specularIntensity = representedStructure.renderPrimitiveFrontSideSpecularIntensity
+            {
+              sliderFrontSpecularIntensity.minValue = 0.0
+              sliderFrontSpecularIntensity.maxValue = 1.0
+              sliderFrontSpecularIntensity.doubleValue = specularIntensity
+            }
+          }
+        }
+        if let specularFrontSideColor: NSColorWell = view.viewWithTag(52) as? NSColorWell
+        {
+          specularFrontSideColor.isEnabled = false
+          specularFrontSideColor.color = NSColor.lightGray
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            specularFrontSideColor.isEnabled = enabled
+            if let color = representedStructure.renderPrimitiveFrontSideSpecularColor
+            {
+              specularFrontSideColor.color = color
+            }
+          }
+        }
+        
+        
+        
+        if let textFieldFrontShininess: NSTextField = view.viewWithTag(53) as? NSTextField
+        {
+          textFieldFrontShininess.isEditable = false
+          textFieldFrontShininess.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldFrontShininess.isEditable = enabled
+            if let shininess = representedStructure.renderPrimitiveFrontSideShininess
+            {
+              textFieldFrontShininess.doubleValue = shininess
+            }
+            else
+            {
+              textFieldFrontShininess.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderFrontShininess: NSSlider = view.viewWithTag(54) as? NSSlider
+        {
+          sliderFrontShininess.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderFrontShininess.isEnabled = enabled
+            if let shininess = representedStructure.renderPrimitiveFrontSideShininess
+            {
+              sliderFrontShininess.minValue = 0.0
+              sliderFrontShininess.maxValue = 256.0
+              sliderFrontShininess.doubleValue = shininess
+            }
+          }
+        }
+        
+        // High dynamic range
+        if let button: NSButton = view.viewWithTag(57) as? NSButton
+        {
+          button.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            button.isEnabled = enabled
+            if let renderPrimitiveHDR: Bool = representedStructure.renderPrimitiveBackSideHDR
+            {
+              button.allowsMixedState = false
+              button.state = renderPrimitiveHDR ? NSControl.StateValue.on : NSControl.StateValue.off
+            }
+            else
+            {
+              button.allowsMixedState = true
+              button.state = NSControl.StateValue.mixed
+            }
+          }
+        }
+        
+        // Exposure
+        if let textFieldExposure: NSTextField = view.viewWithTag(58) as? NSTextField
+        {
+          textFieldExposure.isEditable = false
+          textFieldExposure.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldExposure.isEditable = enabled
+            if let renderPrimitiveBackSideHDRExposure: Double = representedStructure.renderPrimitiveBackSideHDRExposure
+            {
+              textFieldExposure.doubleValue = renderPrimitiveBackSideHDRExposure
+            }
+            else
+            {
+              textFieldExposure.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderExposure: NSSlider = view.viewWithTag(59) as? NSSlider
+        {
+          sliderExposure.isEnabled = false
+          sliderExposure.minValue = 0.0
+          sliderExposure.maxValue = 3.0
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderExposure.isEnabled = enabled
+            if let renderPrimitiveBackSideHDRExposure: Double = representedStructure.renderPrimitiveBackSideHDRExposure
+            {
+              sliderExposure.doubleValue = renderPrimitiveBackSideHDRExposure
+            }
+          }
+        }
+        
+        
+        // Ambient color
+        if let textFieldBackAmbientIntensity: NSTextField = view.viewWithTag(60) as? NSTextField
+        {
+          textFieldBackAmbientIntensity.isEditable = false
+          textFieldBackAmbientIntensity.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldBackAmbientIntensity.isEditable = enabled
+            if let ambientIntensity = representedStructure.renderPrimitiveBackSideAmbientIntensity
+            {
+              textFieldBackAmbientIntensity.doubleValue = ambientIntensity
+            }
+            else
+            {
+              textFieldBackAmbientIntensity.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(61) as? NSSlider
+        {
+          sliderBackAmbientIntensity.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderBackAmbientIntensity.isEnabled = enabled
+            if let ambientIntensity = representedStructure.renderPrimitiveBackSideAmbientIntensity
+            {
+              sliderBackAmbientIntensity.minValue = 0.0
+              sliderBackAmbientIntensity.maxValue = 1.0
+              sliderBackAmbientIntensity.doubleValue = ambientIntensity
+            }
+          }
+        }
+        if let ambientBackSideColor: NSColorWell = view.viewWithTag(62) as? NSColorWell
+        {
+          ambientBackSideColor.isEnabled = false
+          ambientBackSideColor.color = NSColor.lightGray
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            ambientBackSideColor.isEnabled = enabled
+            if let color = representedStructure.renderPrimitiveBackSideAmbientColor
+            {
+              ambientBackSideColor.color = color
+            }
+          }
+        }
+        
+        // Diffuse color
+        if let textFieldBackDiffuseIntensity: NSTextField = view.viewWithTag(63) as? NSTextField
+        {
+          textFieldBackDiffuseIntensity.isEditable = false
+          textFieldBackDiffuseIntensity.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldBackDiffuseIntensity.isEditable = enabled
+            if let diffuseIntensity = representedStructure.renderPrimitiveBackSideDiffuseIntensity
+            {
+              textFieldBackDiffuseIntensity.doubleValue = diffuseIntensity
+            }
+            else
+            {
+              textFieldBackDiffuseIntensity.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(64) as? NSSlider
+        {
+          sliderBackDiffuseIntensity.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderBackDiffuseIntensity.isEnabled = enabled
+            if let diffuseIntensity = representedStructure.renderPrimitiveBackSideDiffuseIntensity
+            {
+              sliderBackDiffuseIntensity.minValue = 0.0
+              sliderBackDiffuseIntensity.maxValue = 1.0
+              sliderBackDiffuseIntensity.doubleValue = diffuseIntensity
+            }
+          }
+        }
+        if let diffuseBackSideColor: NSColorWell = view.viewWithTag(65) as? NSColorWell
+        {
+          diffuseBackSideColor.isEnabled = false
+          diffuseBackSideColor.color = NSColor.lightGray
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            diffuseBackSideColor.isEnabled = enabled
+            if let color = representedStructure.renderPrimitiveBackSideDiffuseColor
+            {
+              diffuseBackSideColor.color = color
+            }
+          }
+        }
+        
+        // Specular color
+        if let textFieldBackSpecularIntensity: NSTextField = view.viewWithTag(66) as? NSTextField
+        {
+          textFieldBackSpecularIntensity.isEditable = false
+          textFieldBackSpecularIntensity.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldBackSpecularIntensity.isEditable = enabled
+            if let specularIntensity = representedStructure.renderPrimitiveBackSideSpecularIntensity
+            {
+              textFieldBackSpecularIntensity.doubleValue = specularIntensity
+            }
+            else
+            {
+              textFieldBackSpecularIntensity.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(67) as? NSSlider
+        {
+          sliderBackSpecularIntensity.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderBackSpecularIntensity.isEnabled = enabled
+            if let specularIntensity = representedStructure.renderPrimitiveBackSideSpecularIntensity
+            {
+              sliderBackSpecularIntensity.minValue = 0.0
+              sliderBackSpecularIntensity.maxValue = 1.0
+              sliderBackSpecularIntensity.doubleValue = specularIntensity
+            }
+          }
+        }
+        if let specularBackSideColor: NSColorWell = view.viewWithTag(68) as? NSColorWell
+        {
+          specularBackSideColor.isEnabled = false
+          specularBackSideColor.color = NSColor.lightGray
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            specularBackSideColor.isEnabled = enabled
+            if let color = representedStructure.renderPrimitiveBackSideSpecularColor
+            {
+              specularBackSideColor.color = color
+            }
+          }
+        }
+        
+        // Shininess
+        if let textFieldBackShininess: NSTextField = view.viewWithTag(69) as? NSTextField
+        {
+          textFieldBackShininess.isEditable = false
+          textFieldBackShininess.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldBackShininess.isEditable = enabled
+            if let shininess = representedStructure.renderPrimitiveBackSideShininess
+            {
+              textFieldBackShininess.doubleValue = shininess
+            }
+            else
+            {
+              textFieldBackShininess.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderBackShininess: NSSlider = view.viewWithTag(70) as? NSSlider
+        {
+          sliderBackShininess.isEnabled = false
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderBackShininess.isEnabled = enabled
+            if let shininess = representedStructure.renderPrimitiveBackSideShininess
+            {
+              sliderBackShininess.minValue = 0.0
+              sliderBackShininess.maxValue = 256.0
+              sliderBackShininess.doubleValue = shininess
+            }
+          }
+        }
       case "AtomsVisualAppearanceCell":
         // Representation type
         if let popUpbuttonRepresentationType: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
@@ -674,6 +1396,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
           }
         }
+        
         if let sliderAtomScaling: NSSlider = view.viewWithTag(33) as? NSSlider
         {
           sliderAtomScaling.isEnabled = false
@@ -689,7 +1412,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
-        // Atom bloom level
         if let textFieldAtomBloomLevel: NSTextField = view.viewWithTag(34) as? NSTextField
         {
           textFieldAtomBloomLevel.isEditable = false
@@ -1555,7 +2277,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           {
             button.isEnabled = enabled && adsorptionSurfaceOn
             
-            if let renderAdsorptionSurfaceHDR: Bool = representedStructure.renderFrontAdsorptionSurfaceHDR
+            if let renderAdsorptionSurfaceHDR: Bool = representedStructure.renderAdsorptionSurfaceFrontSideHDR
             {
               button.allowsMixedState = false
               button.state = renderAdsorptionSurfaceHDR ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1576,9 +2298,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldExposure.isEditable = enabled && adsorptionSurfaceOn
-            if let renderFrontAdsorptionSurfaceHDRExposure: Double = representedStructure.renderFrontAdsorptionSurfaceHDRExposure
+            if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure
             {
-              textFieldExposure.doubleValue = renderFrontAdsorptionSurfaceHDRExposure
+              textFieldExposure.doubleValue = renderAdsorptionSurfaceFrontSideHDRExposure
             }
             else
             {
@@ -1594,9 +2316,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderExposure.isEnabled = enabled && adsorptionSurfaceOn
-            if let renderFrontAdsorptionSurfaceHDRExposure: Double = representedStructure.renderFrontAdsorptionSurfaceHDRExposure
+            if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure
             {
-              sliderExposure.doubleValue = renderFrontAdsorptionSurfaceHDRExposure
+              sliderExposure.doubleValue = renderAdsorptionSurfaceFrontSideHDRExposure
             }
           }
         }
@@ -1610,9 +2332,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldFrontAmbientIntensity.isEditable = enabled && adsorptionSurfaceOn
-            if let ambientIntensity = representedStructure.renderFrontAdsorptionSurfaceAmbientIntensity
+            if let ambientIntensity = representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity
             {
               textFieldFrontAmbientIntensity.doubleValue = ambientIntensity
+            }
+            else
+            {
+              textFieldFrontAmbientIntensity.stringValue = "Multiple Values"
             }
           }
         }
@@ -1622,7 +2348,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderFrontAmbientIntensity.isEnabled = enabled && adsorptionSurfaceOn
-            if let ambientIntensity = representedStructure.renderFrontAdsorptionSurfaceAmbientIntensity
+            if let ambientIntensity = representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity
             {
               sliderFrontAmbientIntensity.minValue = 0.0
               sliderFrontAmbientIntensity.maxValue = 1.0
@@ -1637,7 +2363,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             ambientFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
-            if let color = representedStructure.renderFrontAdsorptionSurfaceAmbientColor
+            if let color = representedStructure.renderAdsorptionSurfaceFrontSideAmbientColor
             {
               ambientFrontSideColor.color = color
             }
@@ -1652,9 +2378,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldFrontDiffuseIntensity.isEditable = enabled && adsorptionSurfaceOn
-            if let diffuseIntensity = representedStructure.renderFrontAdsorptionSurfaceDiffuseIntensity
+            if let diffuseIntensity = representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity
             {
               textFieldFrontDiffuseIntensity.doubleValue = diffuseIntensity
+            }
+            else
+            {
+              textFieldFrontDiffuseIntensity.stringValue = "Multiple Values"
             }
           }
         }
@@ -1664,7 +2394,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderFrontDiffuseIntensity.isEnabled = enabled && adsorptionSurfaceOn
-            if let diffuseIntensity = representedStructure.renderFrontAdsorptionSurfaceDiffuseIntensity
+            if let diffuseIntensity = representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity
             {
               sliderFrontDiffuseIntensity.minValue = 0.0
               sliderFrontDiffuseIntensity.maxValue = 1.0
@@ -1679,7 +2409,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             diffuseFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
-            if let color = representedStructure.renderFrontAdsorptionSurfaceDiffuseColor
+            if let color = representedStructure.renderAdsorptionSurfaceFrontSideDiffuseColor
             {
               diffuseFrontSideColor.color = color
             }
@@ -1694,9 +2424,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldFrontSpecularIntensity.isEditable = enabled && adsorptionSurfaceOn
-            if let specularIntensity = representedStructure.renderFrontAdsorptionSurfaceSpecularIntensity
+            if let specularIntensity = representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity
             {
               textFieldFrontSpecularIntensity.doubleValue = specularIntensity
+            }
+            else
+            {
+              textFieldFrontSpecularIntensity.stringValue = "Multiple Values"
             }
           }
         }
@@ -1706,7 +2440,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderFrontSpecularIntensity.isEnabled = enabled && adsorptionSurfaceOn
-            if let specularIntensity = representedStructure.renderFrontAdsorptionSurfaceSpecularIntensity
+            if let specularIntensity = representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity
             {
               sliderFrontSpecularIntensity.minValue = 0.0
               sliderFrontSpecularIntensity.maxValue = 1.0
@@ -1721,7 +2455,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             specularFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
-            if let color = representedStructure.renderFrontAdsorptionSurfaceSpecularColor
+            if let color = representedStructure.renderAdsorptionSurfaceFrontSideSpecularColor
             {
               specularFrontSideColor.color = color
             }
@@ -1737,9 +2471,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldFrontShininess.isEditable = enabled && adsorptionSurfaceOn
-            if let shininess = representedStructure.renderFrontAdsorptionSurfaceShininess
+            if let shininess = representedStructure.renderAdsorptionSurfaceFrontSideShininess
             {
               textFieldFrontShininess.doubleValue = shininess
+            }
+            else
+            {
+              textFieldFrontShininess.stringValue = "Multiple Values"
             }
           }
         }
@@ -1749,7 +2487,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderFrontShininess.isEnabled = enabled && adsorptionSurfaceOn
-            if let shininess = representedStructure.renderFrontAdsorptionSurfaceShininess
+            if let shininess = representedStructure.renderAdsorptionSurfaceFrontSideShininess
             {
               sliderFrontShininess.minValue = 0.0
               sliderFrontShininess.maxValue = 256.0
@@ -1765,7 +2503,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             button.isEnabled = enabled && adsorptionSurfaceOn
-            if let renderAdsorptionSurfaceHDR: Bool = representedStructure.renderBackAdsorptionSurfaceHDR
+            if let renderAdsorptionSurfaceHDR: Bool = representedStructure.renderAdsorptionSurfaceBackSideHDR
             {
               button.allowsMixedState = false
               button.state = renderAdsorptionSurfaceHDR ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1786,9 +2524,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldExposure.isEditable = enabled && adsorptionSurfaceOn
-            if let renderBackAdsorptionSurfaceHDRExposure: Double = representedStructure.renderBackAdsorptionSurfaceHDRExposure
+            if let renderAdsorptionSurfaceBackSideHDRExposure: Double = representedStructure.renderAdsorptionSurfaceBackSideHDRExposure
             {
-              textFieldExposure.doubleValue = renderBackAdsorptionSurfaceHDRExposure
+              textFieldExposure.doubleValue = renderAdsorptionSurfaceBackSideHDRExposure
             }
             else
             {
@@ -1804,9 +2542,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderExposure.isEnabled = enabled && adsorptionSurfaceOn
-            if let renderBackAdsorptionSurfaceHDRExposure: Double = representedStructure.renderBackAdsorptionSurfaceHDRExposure
+            if let renderAdsorptionSurfaceBackSideHDRExposure: Double = representedStructure.renderAdsorptionSurfaceBackSideHDRExposure
             {
-              sliderExposure.doubleValue = renderBackAdsorptionSurfaceHDRExposure
+              sliderExposure.doubleValue = renderAdsorptionSurfaceBackSideHDRExposure
             }
           }
         }
@@ -1820,9 +2558,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldBackAmbientIntensity.isEditable = enabled && adsorptionSurfaceOn
-            if let ambientIntensity = representedStructure.renderBackAdsorptionSurfaceAmbientIntensity
+            if let ambientIntensity = representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity
             {
               textFieldBackAmbientIntensity.doubleValue = ambientIntensity
+            }
+            else
+            {
+              textFieldBackAmbientIntensity.stringValue = "Multiple Values"
             }
           }
         }
@@ -1832,7 +2574,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderBackAmbientIntensity.isEnabled = enabled && adsorptionSurfaceOn
-            if let ambientIntensity = representedStructure.renderBackAdsorptionSurfaceAmbientIntensity
+            if let ambientIntensity = representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity
             {
               sliderBackAmbientIntensity.minValue = 0.0
               sliderBackAmbientIntensity.maxValue = 1.0
@@ -1847,7 +2589,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             ambientBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
-            if let color = representedStructure.renderBackAdsorptionSurfaceAmbientColor
+            if let color = representedStructure.renderAdsorptionSurfaceBackSideAmbientColor
             {
               ambientBackSideColor.color = color
             }
@@ -1862,9 +2604,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldBackDiffuseIntensity.isEditable = enabled && adsorptionSurfaceOn
-            if let diffuseIntensity = representedStructure.renderBackAdsorptionSurfaceDiffuseIntensity
+            if let diffuseIntensity = representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity
             {
               textFieldBackDiffuseIntensity.doubleValue = diffuseIntensity
+            }
+            else
+            {
+              textFieldBackDiffuseIntensity.stringValue = "Multiple Values"
             }
           }
         }
@@ -1874,7 +2620,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderBackDiffuseIntensity.isEnabled = enabled && adsorptionSurfaceOn
-            if let diffuseIntensity = representedStructure.renderBackAdsorptionSurfaceDiffuseIntensity
+            if let diffuseIntensity = representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity
             {
               sliderBackDiffuseIntensity.minValue = 0.0
               sliderBackDiffuseIntensity.maxValue = 1.0
@@ -1889,7 +2635,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             diffuseBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
-            if let color = representedStructure.renderBackAdsorptionSurfaceDiffuseColor
+            if let color = representedStructure.renderAdsorptionSurfaceBackSideDiffuseColor
             {
               diffuseBackSideColor.color = color
             }
@@ -1904,9 +2650,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldBackSpecularIntensity.isEditable = enabled && adsorptionSurfaceOn
-            if let specularIntensity = representedStructure.renderBackAdsorptionSurfaceSpecularIntensity
+            if let specularIntensity = representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity
             {
               textFieldBackSpecularIntensity.doubleValue = specularIntensity
+            }
+            else
+            {
+              textFieldBackSpecularIntensity.stringValue = "Multiple Values"
             }
           }
         }
@@ -1916,7 +2666,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderBackSpecularIntensity.isEnabled = enabled && adsorptionSurfaceOn
-            if let specularIntensity = representedStructure.renderBackAdsorptionSurfaceSpecularIntensity
+            if let specularIntensity = representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity
             {
               sliderBackSpecularIntensity.minValue = 0.0
               sliderBackSpecularIntensity.maxValue = 1.0
@@ -1931,7 +2681,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             specularBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
-            if let color = representedStructure.renderBackAdsorptionSurfaceSpecularColor
+            if let color = representedStructure.renderAdsorptionSurfaceBackSideSpecularColor
             {
               specularBackSideColor.color = color
             }
@@ -1946,9 +2696,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             textFieldBackShininess.isEditable = enabled && adsorptionSurfaceOn
-            if let shininess = representedStructure.renderBackAdsorptionSurfaceShininess
+            if let shininess = representedStructure.renderAdsorptionSurfaceBackSideShininess
             {
               textFieldBackShininess.doubleValue = shininess
+            }
+            else
+            {
+              textFieldBackShininess.stringValue = "Multiple Values"
             }
           }
         }
@@ -1958,7 +2712,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
           {
             sliderBackShininess.isEnabled = enabled && adsorptionSurfaceOn
-            if let shininess = representedStructure.renderBackAdsorptionSurfaceShininess
+            if let shininess = representedStructure.renderAdsorptionSurfaceBackSideShininess
             {
               sliderBackShininess.minValue = 0.0
               sliderBackShininess.maxValue = 256.0
@@ -2176,6 +2930,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           
         }
+     
       default:
         break
       }
@@ -2235,7 +2990,1231 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
+  // MARK: primitive properties
+  // ===============================================================================================================================
   
+  @IBAction func changedPrimitiveEulerAngleX(_ sender: NSTextField)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      var angles: double3 = renderOrientation.EulerAngles
+      angles.x = sender.doubleValue * Double.pi/180.0
+      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  @IBAction func changedPrimitiveEulerAngleY(_ sender: NSTextField)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      var angles: double3 = renderOrientation.EulerAngles
+      angles.y = sender.doubleValue * Double.pi/180.0
+      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  @IBAction func changedPrimitiveEulerAngleZ(_ sender: NSTextField)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      var angles: double3 = renderOrientation.EulerAngles
+      angles.z = sender.doubleValue * Double.pi/180.0
+      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  @IBAction func rotatePrimitiveYawPlus(_ sender: NSButton)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      let dq: simd_quatd = simd_quatd(yaw: renderRotationDelta)
+      
+      structure.renderPrimitiveOrientation = renderOrientation * dq
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  
+  @IBAction func rotatePrimitiveYawMinus(_ sender: NSButton)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      let dq: simd_quatd = simd_quatd(yaw: -renderRotationDelta)
+      
+      structure.renderPrimitiveOrientation = renderOrientation * dq
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+    
+  }
+  
+  @IBAction func rotatePrimitivePitchPlus(_ sender: NSButton)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      let dq: simd_quatd = simd_quatd(pitch: renderRotationDelta)
+      
+      structure.renderPrimitiveOrientation = renderOrientation * dq
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  
+  @IBAction func rotatePrimitivePitchMinus(_ sender: NSButton)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      let dq: simd_quatd = simd_quatd(pitch: -renderRotationDelta)
+      
+      structure.renderPrimitiveOrientation = renderOrientation * dq
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  @IBAction func rotatePrimitiveRollPlus(_ sender: NSButton)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      let dq: simd_quatd = simd_quatd(roll: renderRotationDelta)
+      
+      structure.renderPrimitiveOrientation = renderOrientation * dq
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  
+  @IBAction func rotatePrimitiveRollMinus(_ sender: NSButton)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+    {
+      let dq: simd_quatd = simd_quatd(roll: -renderRotationDelta)
+      
+      structure.renderPrimitiveOrientation = renderOrientation * dq
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  @IBAction func changePrimitiveRotationYawSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderOrientation = structure.renderPrimitiveOrientation
+    {
+      var angles: double3 = renderOrientation.EulerAngles
+      angles.x = sender.doubleValue * Double.pi/180.0
+      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        else if endingDrag
+        {
+          if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+          {
+            self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+          }
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+          
+          self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+        }
+        else
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveRotationPitchSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderOrientation = structure.renderPrimitiveOrientation
+    {
+      var angles: double3 = renderOrientation.EulerAngles
+      angles.z = sender.doubleValue * Double.pi/180.0
+      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        else if endingDrag
+        {
+          if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+          {
+            self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+          }
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+          self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+        }
+        else
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveRotationRollSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      let renderOrientation = structure.renderPrimitiveOrientation
+    {
+      var angles: double3 = renderOrientation.EulerAngles
+      angles.y = sender.doubleValue * Double.pi/180.0
+      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        else if endingDrag
+        {
+          if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
+          {
+            self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+          }
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+          self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+        }
+        else
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changedPrimitiveRotationAngle(_ sender: NSTextField)
+  {
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      structure.renderPrimitiveRotationDelta = sender.doubleValue
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+    }
+  }
+  
+  
+  @IBAction func changeTransformationAXTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixAX = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTransformationAYTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixAY = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTransformationAZTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixAZ = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTransformationBXTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixBX = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTransformationBYTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixBY = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTransformationBZTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixBZ = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTransformationCXTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixCX = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTransformationCYTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixCY = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTransformationCZTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveTransformationMatrixCZ = sender.doubleValue
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveOpaquenessSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveOpacity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveOpaquenessTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveOpacity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveNumberOfSidesSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveNumberOfSidesTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadRenderData()
+
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func togglePrimitiveIsCapped(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      sender.allowsMixedState = false
+      representedStructure.renderPrimitiveIsCapped = (sender.state == NSControl.StateValue.on)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func togglePrimitiveIsFractional(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      sender.allowsMixedState = false
+      representedStructure.renderPrimitiveIsFractional = (sender.state == NSControl.StateValue.on)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  // High dynamic range
+  @IBAction func togglePrimitiveFrontSideHDR(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      sender.allowsMixedState = false
+      representedStructure.renderPrimitiveFrontSideHDR = (sender.state == NSControl.StateValue.on)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveFrontSideHDRExporeTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  // Exposure slider
+  @IBAction func changePrimitiveFrontSideExposureSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveFrontSideAmbientTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveFrontSideAmbientIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveFrontSideAmbientColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideAmbientColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveFrontSideDiffuseTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveFrontSideDiffuseIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveFrontSideDiffuseColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideDiffuseColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveFrontSideSpecularTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveFrontSideSpecularIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  
+  @IBAction func changePrimitiveFrontSideSpecularColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideSpecularColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveFrontSideShininessTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveFrontSideShininessSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveFrontSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func togglePrimitiveBackSideHDR(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      sender.allowsMixedState = false
+      representedStructure.renderPrimitiveBackSideHDR = (sender.state == NSControl.StateValue.on)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveBackSideHDRExporeTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideHDRExposure = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  // Exposure slider
+  @IBAction func changePrimitiveBackSideExposureSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideHDRExposure = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveBackSideAmbientTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveBackSideAmbientIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveBackSideAmbientColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideAmbientColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveBackSideDiffuseTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveBackSideDiffuseIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveBackSideDiffuseColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideDiffuseColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveBackSideSpecularTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveBackSideSpecularIntensitySlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveBackSideSpecularColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideSpecularColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveBackSideShininessTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveBackSideShininessSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveBackSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
   
   // MARK: Atom actions
   // ===============================================================================================================================
@@ -2836,10 +4815,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  
-  
-  
-  
+ 
   @IBAction func toggleAmbientOcclusion(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
@@ -3751,7 +5727,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeIsovalueSlider(_ sender: NSSlider)
+  @IBAction func changeAdsorptionSurfaceIsovalueSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -3789,7 +5765,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeIsovalueTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceIsovalueTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -3809,7 +5785,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   
   
-  @IBAction func changeOpaquenessSlider(_ sender: NSSlider)
+  @IBAction func changeAdsorptionSurfaceOpaquenessSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -3842,7 +5818,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeOpaquenessTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceOpaquenessTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -3860,13 +5836,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // High dynamic range
-  @IBAction func toggleFrontSideHDR(_ sender: NSButton)
+  @IBAction func toggleAdsorptionSurfaceFrontSideHDR(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
       sender.allowsMixedState = false
-      representedStructure.renderFrontAdsorptionSurfaceHDR = (sender.state == NSControl.StateValue.on)
+      representedStructure.renderAdsorptionSurfaceFrontSideHDR = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -3877,12 +5853,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeFrontSideHDRExporeTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceFrontSideHDRExporeTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceHDRExposure = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -3895,12 +5871,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // Exposure slider
-  @IBAction func changeFrontSideExposureSlider(_ sender: NSSlider)
+  @IBAction func changeAdsorptionSurfaceFrontSideExposureSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceHDRExposure = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -3913,12 +5889,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeFrontSideAmbientTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceFrontSideAmbientTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceAmbientIntensity = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -3931,64 +5907,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  @IBAction func changeFrontSideAmbientIntensitySlider(_ sender: NSSlider)
+  @IBAction func changeAdsorptionSurfaceFrontSideAmbientIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceAmbientIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  @IBAction func changeFrontSideAmbientColor(_ sender: NSColorWell)
-  {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
-    {
-      representedStructure.renderFrontAdsorptionSurfaceAmbientColor = sender.color
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  @IBAction func changeFrontSideDiffuseTextField(_ sender: NSTextField)
-  {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
-    {
-      representedStructure.renderFrontAdsorptionSurfaceDiffuseIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  
-  @IBAction func changeFrontSideDiffuseIntensitySlider(_ sender: NSSlider)
-  {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
-    {
-      representedStructure.renderFrontAdsorptionSurfaceDiffuseIntensity = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4001,13 +5925,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  
-  @IBAction func changeFrontSideDiffuseColor(_ sender: NSColorWell)
+  @IBAction func changeAdsorptionSurfaceFrontSideAmbientColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceDiffuseColor = sender.color
+      representedStructure.renderAdsorptionSurfaceFrontSideAmbientColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4018,12 +5941,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeFrontSideSpecularTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceFrontSideDiffuseTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceSpecularIntensity = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4036,12 +5959,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  @IBAction func changeFrontSideSpecularIntensitySlider(_ sender: NSSlider)
+  @IBAction func changeAdsorptionSurfaceFrontSideDiffuseIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceSpecularIntensity = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4055,13 +5978,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  
-  @IBAction func changeFrontSideSpecularColor(_ sender: NSColorWell)
+  @IBAction func changeAdsorptionSurfaceFrontSideDiffuseColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceSpecularColor = sender.color
+      representedStructure.renderAdsorptionSurfaceFrontSideDiffuseColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4072,12 +5994,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeFrontSideShininessTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceFrontSideSpecularTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceShininess = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4089,12 +6011,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeFrontSideShininessSlider(_ sender: NSSlider)
+  
+  @IBAction func changeAdsorptionSurfaceFrontSideSpecularIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderFrontAdsorptionSurfaceShininess = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4107,13 +6030,66 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func toggleBackSideHDR(_ sender: NSButton)
+  
+  
+  @IBAction func changeAdsorptionSurfaceFrontSideSpecularColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    {
+      representedStructure.renderAdsorptionSurfaceFrontSideSpecularColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAdsorptionSurfaceFrontSideShininessTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    {
+      representedStructure.renderAdsorptionSurfaceFrontSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAdsorptionSurfaceFrontSideShininessSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    {
+      representedStructure.renderAdsorptionSurfaceFrontSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func toggleAdsorptionSurfaceBackSideHDR(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
       sender.allowsMixedState = false
-      representedStructure.renderBackAdsorptionSurfaceHDR = (sender.state == NSControl.StateValue.on)
+      representedStructure.renderAdsorptionSurfaceBackSideHDR = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4124,12 +6100,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeBackSideHDRExporeTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceBackSideHDRExporeTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceHDRExposure = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceBackSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4142,12 +6118,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // Exposure slider
-  @IBAction func changeBackSideExposureSlider(_ sender: NSSlider)
+  @IBAction func changeAdsorptionSurfaceBackSideExposureSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceHDRExposure = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceBackSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4161,12 +6137,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  @IBAction func changeBackSideAmbientTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceBackSideAmbientTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceAmbientIntensity = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4179,65 +6155,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  @IBAction func changeBackSideAmbientIntensitySlider(_ sender: NSSlider)
+  @IBAction func changeAdsorptionSurfaceBackSideAmbientIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceAmbientIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  
-  @IBAction func changeBackSideAmbientColor(_ sender: NSColorWell)
-  {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
-    {
-      representedStructure.renderBackAdsorptionSurfaceAmbientColor = sender.color
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  @IBAction func changeBackSideDiffuseTextField(_ sender: NSTextField)
-  {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
-    {
-      representedStructure.renderBackAdsorptionSurfaceDiffuseIntensity = sender.doubleValue
-      
-      self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
-      
-      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.proxyProject?.representedObject.isEdited = true
-    }
-  }
-  
-  
-  @IBAction func changeBackSideDiffuseIntensitySlider(_ sender: NSSlider)
-  {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
-    {
-      representedStructure.renderBackAdsorptionSurfaceDiffuseIntensity = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4251,12 +6174,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  @IBAction func changeBackSideDiffuseColor(_ sender: NSColorWell)
+  @IBAction func changeAdsorptionSurfaceBackSideAmbientColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceDiffuseColor = sender.color
+      representedStructure.renderAdsorptionSurfaceBackSideAmbientColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4267,12 +6190,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeBackSideSpecularTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceBackSideDiffuseTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceSpecularIntensity = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4285,12 +6208,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  @IBAction func changeBackSideSpecularIntensitySlider(_ sender: NSSlider)
+  @IBAction func changeAdsorptionSurfaceBackSideDiffuseIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceSpecularIntensity = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4304,12 +6227,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  @IBAction func changeBackSideSpecularColor(_ sender: NSColorWell)
+  @IBAction func changeAdsorptionSurfaceBackSideDiffuseColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceSpecularColor = sender.color
+      representedStructure.renderAdsorptionSurfaceBackSideDiffuseColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4320,13 +6243,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  
-  @IBAction func changeBackSideShininessTextField(_ sender: NSTextField)
+  @IBAction func changeAdsorptionSurfaceBackSideSpecularTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceShininess = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4338,12 +6260,66 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeBackSideShininessSlider(_ sender: NSSlider)
+  
+  @IBAction func changeAdsorptionSurfaceBackSideSpecularIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
     {
-      representedStructure.renderBackAdsorptionSurfaceShininess = sender.doubleValue
+      representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changeAdsorptionSurfaceBackSideSpecularColor(_ sender: NSColorWell)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    {
+      representedStructure.renderAdsorptionSurfaceBackSideSpecularColor = sender.color
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changeAdsorptionSurfaceBackSideShininessTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    {
+      representedStructure.renderAdsorptionSurfaceBackSideShininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAdsorptionSurfaceBackSideShininessSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    {
+      representedStructure.renderAdsorptionSurfaceBackSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
       
@@ -4631,4 +6607,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     
     sender.doubleValue = 0
   }
+  
+  
 }

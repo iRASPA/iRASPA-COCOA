@@ -33,17 +33,23 @@ import Foundation
 
 public class SKStructure
 {
-  public enum Kind: Int64
+  public enum Kind: Int
   {
-    case none = 0
+    case unknown = 0
     case structure = 1
     case crystal = 2
     case molecularCrystal = 3
     case molecule = 4
     case protein = 5
     case proteinCrystal = 6
+    
     case proteinCrystalSolvent = 7
     case crystalSolvent = 8
+    case molecularCrystalSolvent = 9
+    
+    case ellipsoidPrimitive = 10
+    case cylinderPrimitive = 11
+    case polygonalPrismPrimitive = 12
   }
   
   public var kind: Kind = .crystal

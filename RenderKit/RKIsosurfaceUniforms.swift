@@ -65,20 +65,22 @@ public struct RKIsosurfaceUniforms
     self.unitCellMatrix = float4x4(Double3x3: unitCellMatrix)
     self.unitCellNormalMatrix = float4x4(Double3x3: unitCellMatrix.inverse.transpose)
     
+    if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource
+    {
+      self.frontHDR = structure.adsorptionSurfaceFrontSideHDR ? 1 : 0
+      self.frontHDRExposure = Float(structure.adsorptionSurfaceFrontSideHDRExposure)
+      self.ambientBackSide = Float(structure.adsorptionSurfaceBackSideAmbientIntensity) * float4(color: structure.adsorptionSurfaceBackSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.diffuseBackSide = Float(structure.adsorptionSurfaceBackSideDiffuseIntensity) * float4(color: structure.adsorptionSurfaceBackSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.specularBackSide = Float(structure.adsorptionSurfaceBackSideSpecularIntensity) * float4(color: structure.adsorptionSurfaceBackSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.shininessBackSide = Float(structure.adsorptionSurfaceBackSideShininess)
     
-    self.frontHDR = structure.adsorptionSurfaceFrontSideHDR ? 1 : 0
-    self.frontHDRExposure = Float(structure.adsorptionSurfaceFrontSideHDRExposure)
-    self.ambientBackSide = Float(structure.adsorptionSurfaceBackSideAmbientIntensity) * float4(color: structure.adsorptionSurfaceBackSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
-    self.diffuseBackSide = Float(structure.adsorptionSurfaceBackSideDiffuseIntensity) * float4(color: structure.adsorptionSurfaceBackSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
-    self.specularBackSide = Float(structure.adsorptionSurfaceBackSideSpecularIntensity) * float4(color: structure.adsorptionSurfaceBackSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
-    self.shininessBackSide = Float(structure.adsorptionSurfaceBackSideShininess)
-    
-    self.backHDR = structure.adsorptionSurfaceBackSideHDR ? 1 : 0
-    self.backHDRExposure = Float(structure.adsorptionSurfaceBackSideHDRExposure)
-    self.ambientFrontSide = Float(structure.adsorptionSurfaceFrontSideAmbientIntensity) * float4(color: structure.adsorptionSurfaceFrontSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
-    self.diffuseFrontSide = Float(structure.adsorptionSurfaceFrontSideDiffuseIntensity) * float4(color: structure.adsorptionSurfaceFrontSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
-    self.specularFrontSide = Float(structure.adsorptionSurfaceFrontSideSpecularIntensity) * float4(color: structure.adsorptionSurfaceFrontSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
-    self.shininessFrontSide = Float(structure.adsorptionSurfaceFrontSideShininess)
+      self.backHDR = structure.adsorptionSurfaceBackSideHDR ? 1 : 0
+      self.backHDRExposure = Float(structure.adsorptionSurfaceBackSideHDRExposure)
+      self.ambientFrontSide = Float(structure.adsorptionSurfaceFrontSideAmbientIntensity) * float4(color: structure.adsorptionSurfaceFrontSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.diffuseFrontSide = Float(structure.adsorptionSurfaceFrontSideDiffuseIntensity) * float4(color: structure.adsorptionSurfaceFrontSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.specularFrontSide = Float(structure.adsorptionSurfaceFrontSideSpecularIntensity) * float4(color: structure.adsorptionSurfaceFrontSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.shininessFrontSide = Float(structure.adsorptionSurfaceFrontSideShininess)
+    }
   }
   
 }
