@@ -663,9 +663,9 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
     do
     {
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
-      binaryEncoder.encode(self)
+      binaryEncoder.encode(self, encodeRepresentedObject: true, encodeChildren: false)
       let data = Data(binaryEncoder.data)
-      let copy: ProjectTreeNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectTreeNode.self)
+      let copy: ProjectTreeNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: false)
       copy.isEditable = self.isEditable
       copy.lockedChildren = self.lockedChildren
       return copy
@@ -1191,7 +1191,6 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
         else if let fileWrapper = self.representedObject.fileWrapper?.fileWrappers?["nl.darkwing.iRASPA_Project_" + self.representedObject.fileNameUUID],
            let data: Data = fileWrapper.regularFileContents
         {
-          debugPrint("old format \(data.count)")
           let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
         
           // modify self to the unwrapped state
@@ -1206,10 +1205,8 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
       }
       else if self.representedObject.storageType == iRASPAProject.StorageType.publicCloud
       {
-        debugPrint("publicCloud")
         let loadingStatus: iRASPAProject = iRASPAProject(projectType: .structure, fileName: self.representedObject.fileNameUUID, nodeType: self.representedObject.nodeType, storageType: self.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loading)
           
-          //iRASPAProject(fileName: self.representedObject.fileNameUUID, nodeType: self.representedObject.nodeType, storageType: self.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loading, projectType: iRASPAProject.structure)
         self.representedObject = loadingStatus
         let operation: ImportProjectFromCloudOperation = ImportProjectFromCloudOperation(projectTreeNode: self, outlineView:  outlineView, forceFieldSets: forceFieldSets, reloadCompletionBlock: reloadCompletionBlock)
         projectQueue?.addOperation(operation)
