@@ -38,7 +38,7 @@ import LogViewKit
 import SimulationKit
 import OperationKit
 
-public final class MolecularCrystal: Structure, NSCopying, RKRenderAdsorptionSurfaceStructure, SpaceGroupProtocol
+public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
 {
   
   private var versionNumber: Int = 2
@@ -58,7 +58,7 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAdsorptionSur
     reComputeBoundingBox()
   }
   
-  override var materialType: MaterialType
+  override var materialType: SKStructure.Kind
   {
     return .molecularCrystal
   }

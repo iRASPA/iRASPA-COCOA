@@ -35,8 +35,6 @@ import simd
 
 public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
 {
- 
-  
   private var versionNumber: Int = 3
   private static var classVersionNumber: Int = 1
   

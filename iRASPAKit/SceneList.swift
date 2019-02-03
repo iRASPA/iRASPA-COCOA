@@ -38,8 +38,8 @@ import simd
 
 
 // A scene contains a list of Movies: FKArrayController<Scene>
-public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
-{
+public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, PrimitiveVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+{  
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   //public var numberOfFramesPerSecond: Int = 15

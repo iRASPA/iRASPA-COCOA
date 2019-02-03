@@ -39,7 +39,7 @@ import MathKit
 import simd
 
 // An Movie is a list of Movie's. It is a set of actors that each contain a list of frames for that actor
-public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
+public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, PrimitiveVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
 {
   // a Scene has a surface for the whole scene
   // all movies in the scene add to the scene potential energy surface
@@ -198,10 +198,10 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
           }
         case .crystalSolvent:
           iRASPAstructure = iRASPAStructure(structure: Structure(name: displayName))
-        case .none:
-          iRASPAstructure = iRASPAStructure(structure: Structure(name: displayName))
         case .structure:
           iRASPAstructure = iRASPAStructure(structure: Structure(name: displayName))
+        default:
+          fatalError()
         }
         
         if let chemicalFormulaSum: String = frame.chemicalFormulaSum

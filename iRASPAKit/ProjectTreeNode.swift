@@ -1183,9 +1183,9 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
               break
             }
           }
-          catch
+          catch let error
           {
-            LogQueue.shared.error(destination: nil, message: "unwrapping failed")
+            LogQueue.shared.error(destination: nil, message: error.localizedDescription)
           }
         }
         else if let fileWrapper = self.representedObject.fileWrapper?.fileWrappers?["nl.darkwing.iRASPA_Project_" + self.representedObject.fileNameUUID],

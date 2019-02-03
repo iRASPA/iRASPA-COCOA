@@ -44,67 +44,14 @@ public class MetalCylinderGeometry
   
   public convenience init()
   {
-    self.init(r: 1.0, s: 20)
-  }
-  
-  public init(r: Double, s: Int)
-  {
-    slices = s
-    numberOfVertexes = 2 * slices
-    numberOfIndices = 2 * slices + 2
-    
-    vertices = [RKVertex](repeating: RKVertex(), count: numberOfVertexes)
-    indices = [UInt16](repeating: UInt16(0), count: numberOfIndices)
-    
-    let delta: Double = 2.0 * Double.pi / Double(slices)
-    
-    var index: Int = 0
-    for i in 0..<slices
-    {
-      let cosTheta: Double = cos(delta * Double(i))
-      let sinTheta: Double = sin(delta * Double(i))
-      
-      let normal2: float4 = float4(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      let position2: float4 = float4(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
-      vertices[index] = RKVertex(position: position2, normal: normal2, st: float2())
-      indices[index] = UInt16(index)
-      index = index + 1
-      
-      let normal1: float4 = float4(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      let position1: float4 = float4(x: Float(r * cosTheta), y: 0.0, z: Float(r * sinTheta), w: 0.0)
-      vertices[index] = RKVertex(position: position1, normal: normal1, st: float2())
-      indices[index] = UInt16(index)
-      index = index + 1
-      
-      
-    }
-    
-    indices[index] = UInt16(0)
-    index = index + 1
-    indices[index] = UInt16(1)
-    index = index + 1
-  }
-}
-
-public class MetalCappedCylinderGeometry
-{
-  var slices: Int
-  public var numberOfIndices: Int
-  public var numberOfVertexes: Int
-  
-  public var vertices: [RKVertex]
-  public var indices: [UInt16]
-  
-  public convenience init()
-  {
     self.init(r: 1.0, s: 21)
   }
   
   public init(r: Double, s: Int)
   {
     slices = s
-    numberOfVertexes = 4 * slices + 2
-    numberOfIndices = 12 * slices
+    numberOfVertexes = 2 * slices
+    numberOfIndices = 6 * slices
     
     vertices = [RKVertex](repeating: RKVertex(), count: numberOfVertexes)
     indices = [UInt16](repeating: UInt16(), count: numberOfIndices)
@@ -122,50 +69,9 @@ public class MetalCappedCylinderGeometry
       vertices[index] = RKVertex(position: position2, normal: normal2, st: float2())
       index = index + 1
       
-      let position1: float4 = float4(x: Float(r * cosTheta), y: 0.0, z: Float(r * sinTheta), w: 0.0)
+      let position1: float4 = float4(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
       let normal1: float4 = float4(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
       vertices[index] = RKVertex(position: position1, normal: normal1, st: float2())
-      index = index + 1
-      
-
-    }
-    
-    // first cap
-    // ==========================================================================
-    
-    let position_cap1: float4 = float4(x: 0.0, y: 0.0, z: 0.0, w: 0.0)
-    let normal_cap1: float4 = float4(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
-    vertices[index] = RKVertex(position: position_cap1, normal: normal_cap1, st: float2())
-    let ref_cap_1: Int = index;
-    index = index + 1
-    
-    
-    for i in 0..<slices
-    {
-      let cosTheta: Double = r * cos(delta * Double(i))
-      let sinTheta: Double = r * sin(delta * Double(i))
-      let position_cap1: float4 = float4(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      let normal_cap1: float4 = float4(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
-      vertices[index] = RKVertex(position: position_cap1, normal: normal_cap1, st: float2())
-      index = index + 1
-    }
-    
-    // second cap
-    // ==========================================================================
-    
-    let position_cap2: float4 = float4(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-    let normal_cap2: float4 = float4(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-    vertices[index] = RKVertex(position: position_cap2, normal: normal_cap2, st: float2())
-    let ref_cap_2: Int = index;
-    index = index + 1
-    
-    for i in 0..<slices
-    {
-      let cosTheta: Double = r * cos(delta * Double(i))
-      let sinTheta: Double = r * sin(delta * Double(i))
-      let position_cap2: float4 = float4(x: Float(cosTheta), y: 1.0, z: Float(sinTheta), w: 0.0)
-      let normal_cap2: float4 = float4(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-      vertices[index] = RKVertex(position: position_cap2, normal: normal_cap2, st: float2())
       index = index + 1
     }
     
@@ -183,32 +89,6 @@ public class MetalCappedCylinderGeometry
       indices[index]=UInt16((2 * i + 1) % (2 * slices))
       index = index + 1
       indices[index]=UInt16((2 * i + 3) % (2 * slices))
-      index = index + 1
-    }
-    
-    // first cap
-    // ==========================================================================
-    
-    for i in 0..<slices
-    {
-      indices[index]=UInt16(ref_cap_1)
-      index = index + 1
-      indices[index]=UInt16(ref_cap_1 + 1 + ((i + 1) % slices))
-      index = index + 1
-      indices[index]=UInt16(ref_cap_1 + 1 + ((i) % slices))
-      index = index + 1
-    }
-    
-    // second cap
-    // ==========================================================================
-    
-    for i in 0..<slices
-    {
-      indices[index]=UInt16(ref_cap_2)
-      index = index + 1
-      indices[index]=UInt16(ref_cap_2 + 1 + ((i) % slices))
-      index = index + 1
-      indices[index]=UInt16(ref_cap_2 + 1 + ((i + 1) % slices))
       index = index + 1
     }
   }

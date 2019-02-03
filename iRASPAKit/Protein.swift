@@ -39,7 +39,7 @@ import SimulationKit
 import LogViewKit
 import OperationKit
 
-public final class Protein: Structure, NSCopying
+public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -56,7 +56,7 @@ public final class Protein: Structure, NSCopying
     super.init(name: name)
   }
   
-  override var materialType: MaterialType
+  override var materialType: SKStructure.Kind
   {
     return .protein
   }

@@ -420,8 +420,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
             }
           }
           
-          
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
+          if let _ = self.representedObject as? RKRenderObjectSource
+          {
+            view?.textField?.isEditable = false
+          }
         case NSUserInterfaceItemIdentifier(rawValue: "atomPositionXColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomPositionX"), owner: self) as? NSTableCellView
           view?.textField?.doubleValue=atomNode.position.x
@@ -670,11 +673,24 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     {
       self.observeNotifications = false
       
-      let displayName: String = PredefinedElements.sharedInstance.elementSet[6].chemicalSymbol
+      let element: Int
+      let displayName: String
+      if let _  = self.representedObject as? RKRenderObjectSource
+      {
+        element = 0
+        displayName = "center"
+      }
+      else
+      {
+        element = 6
+        displayName = PredefinedElements.sharedInstance.elementSet[element].chemicalSymbol
+      }
+      
+      
       let color: NSColor = document.colorSets[structure.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
-      let drawRadius: Double = structure.drawRadius(elementId: 6)
+      let drawRadius: Double = structure.drawRadius(elementId: element)
       let bondDistanceCriteria: Double = document.forceFieldSets[structure.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
-      let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  6, uniqueForceFieldName: displayName, position: double3(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+      let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  element, uniqueForceFieldName: displayName, position: double3(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
       structure.expandSymmetry(asymmetricAtom: asymmetricAtom)
       let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
       

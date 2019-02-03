@@ -39,7 +39,7 @@ import SimulationKit
 import OperationKit
 import BinaryCodable
 
-public final class Molecule: Structure, NSCopying
+public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -50,7 +50,7 @@ public final class Molecule: Structure, NSCopying
     reComputeBoundingBox()
   }
   
-  override var materialType: MaterialType
+  override var materialType: SKStructure.Kind
   {
     return .molecule
   }

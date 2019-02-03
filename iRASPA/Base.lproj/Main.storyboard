@@ -111,6 +111,31 @@
                                                             <action selector="addProtein:" target="Ady-hI-5gd" id="C1U-Y5-96A"/>
                                                         </connections>
                                                     </menuItem>
+                                                    <menuItem title="Objects" id="WvN-oW-JtI">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <menu key="submenu" title="Objects" id="q81-1F-c5Z">
+                                                            <items>
+                                                                <menuItem title="Ellipsoid" id="1O8-LR-tZG">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                    <connections>
+                                                                        <action selector="addEllipsoidPrimitive:" target="Ady-hI-5gd" id="Vy3-Qm-qtG"/>
+                                                                    </connections>
+                                                                </menuItem>
+                                                                <menuItem title="Cylinder" id="MzS-m8-rt0">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                    <connections>
+                                                                        <action selector="addCylinderPrimitive:" target="Ady-hI-5gd" id="wTZ-su-uqB"/>
+                                                                    </connections>
+                                                                </menuItem>
+                                                                <menuItem title="Polygonal prism" id="X1N-VI-cwY">
+                                                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                                                    <connections>
+                                                                        <action selector="addPolygonalPrismPrimitive:" target="Ady-hI-5gd" id="fCx-c8-dqJ"/>
+                                                                    </connections>
+                                                                </menuItem>
+                                                            </items>
+                                                        </menu>
+                                                    </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="AeZ-tS-pVH"/>
                                                     <menuItem title="Atom" id="hUG-eb-3cj">
                                                         <modifierMask key="keyEquivalentModifierMask"/>

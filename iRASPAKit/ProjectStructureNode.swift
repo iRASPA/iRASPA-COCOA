@@ -36,14 +36,10 @@ import SimulationKit
 import RenderKit
 import SymmetryKit
 
-//public typealias MeasurementPoint = (structure: RKRenderStructure, copy: AtomCopy, replicaPosition: int3)
-
 public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource
 {
- 
-  
   private var versionNumber: Int = 2
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   
   public var sceneList: SceneList = SceneList()
   public var renderLights: [RKRenderLight] = [RKRenderLight(),RKRenderLight(),RKRenderLight(),RKRenderLight()]
@@ -69,7 +65,6 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   public var backgroundRadialGradientToColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var backgroundLinearGradientAngle: Double = 45.0
   public var backgroundRadialGradientRoundness: Double = 0.4
-  
   
   public var renderImagePhysicalSizeInInches: Double = 6.5
   public var renderImageNumberOfPixels: Int = 1600
@@ -379,15 +374,19 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
      
       let w: Double = (atomInfo.copy.asymmetricParentAtom.isVisible && atomInfo.copy.asymmetricParentAtom.isVisibleEnabled) ? 1.0 : -1.0
       
-      let position = atomInfo.structure.CartesianPosition(for: atomInfo.copy.position, replicaPosition: atomInfo.replicaPosition)
-      let atomPosition: float4 = float4(x: Float(position.x), y: Float(position.y), z: Float(position.z), w: Float(w))
+      if let structure: RKRenderAtomSource = atomInfo.structure as? RKRenderAtomSource
+      {
+        let position = structure.CartesianPosition(for: atomInfo.copy.position, replicaPosition: atomInfo.replicaPosition)
+        let atomPosition: float4 = float4(x: Float(position.x), y: Float(position.y), z: Float(position.z), w: Float(w))
       
-      let radius: Double = atomInfo.copy.asymmetricParentAtom.drawRadius
-      let ambient: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-      let diffuse: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-      let specular: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        let radius: Double = atomInfo.copy.asymmetricParentAtom.drawRadius
+        let ambient: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+        let diffuse: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+        let specular: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       
-      return RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
+        return RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
+      }
+      return nil
     })
   }
   

@@ -465,7 +465,7 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <action selector="changeSceneDisplayName:" target="Ihf-P0-mYS" id="6H6-q7-Qx3"/>
+                                                                        <action selector="changeSceneDisplayName:" target="Ihf-P0-mYS" id="vCM-eg-gPF"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
@@ -487,7 +487,7 @@
                                                                                 <font key="font" metaFont="system"/>
                                                                             </buttonCell>
                                                                             <connections>
-                                                                                <action selector="toggleStructureVisibility:" target="Ihf-P0-mYS" id="Aep-CQ-cJK"/>
+                                                                                <action selector="toggleStructureVisibility:" target="Ihf-P0-mYS" id="Ap3-Bj-cg5"/>
                                                                             </connections>
                                                                         </button>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dwO-WE-w5q">
@@ -498,7 +498,7 @@
                                                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                             </textFieldCell>
                                                                             <connections>
-                                                                                <action selector="changeMovieDisplayName:" target="Ihf-P0-mYS" id="6J0-kP-RKR"/>
+                                                                                <action selector="changeMovieDisplayName:" target="Ihf-P0-mYS" id="OgV-2q-LNK"/>
                                                                             </connections>
                                                                         </textField>
                                                                         <progressIndicator wantsLayer="YES" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="HZY-BM-10c" customClass="ProjectProgressIndicator" customModule="iRASPAKit">
@@ -513,9 +513,6 @@
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                                 <font key="font" metaFont="miniSystem"/>
                                                                             </buttonCell>
-                                                                            <connections>
-                                                                                <action selector="cancelImportWithSender:" target="Ihf-P0-mYS" id="r7Q-sX-hQx"/>
-                                                                            </connections>
                                                                         </button>
                                                                     </subviews>
                                                                     <visibilityPriorities>
@@ -584,7 +581,7 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <action selector="addCrystal:" target="Ihf-P0-mYS" id="64R-nG-mhC"/>
+                                                        <action selector="addCrystal:" target="Ihf-P0-mYS" id="3Kx-aB-fwu"/>
                                                         <outlet property="menu" destination="jvV-Dy-kal" id="J8d-w7-3ok"/>
                                                     </connections>
                                                 </button>
@@ -595,7 +592,7 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                     <connections>
-                                                        <action selector="deleteSelectedStructures:" target="Ihf-P0-mYS" id="wRV-42-8P8"/>
+                                                        <action selector="deleteSelectedStructures:" target="Ihf-P0-mYS" id="2g1-lV-Kt1"/>
                                                     </connections>
                                                 </button>
                                                 <box boxType="custom" borderType="none" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="VoW-P5-q6k">
@@ -651,28 +648,53 @@
                     <items>
                         <menuItem title="Add Crystal" tag="1" keyEquivalent="1" id="xX5-m0-Lkz" userLabel="Add Crystal">
                             <connections>
-                                <action selector="addCrystal:" target="Ihf-P0-mYS" id="w6I-WK-xd0"/>
+                                <action selector="addCrystal:" target="Ihf-P0-mYS" id="ebS-g7-TNw"/>
                             </connections>
                         </menuItem>
                         <menuItem title="Add Molecular crystal" keyEquivalent="2" id="DOk-0m-owF">
                             <connections>
-                                <action selector="addMolecularCrystal:" target="Ihf-P0-mYS" id="yTu-F2-3DX"/>
+                                <action selector="addMolecularCrystal:" target="Ihf-P0-mYS" id="hHu-Xb-JdW"/>
                             </connections>
                         </menuItem>
                         <menuItem title="Add Molecule" keyEquivalent="3" id="muR-Z9-sae" userLabel="Add Molecule">
                             <connections>
-                                <action selector="addMolecule:" target="Ihf-P0-mYS" id="CMD-oq-eOE"/>
+                                <action selector="addMolecule:" target="Ihf-P0-mYS" id="ad9-KJ-iIj"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Add Protein" keyEquivalent="3" id="pCe-xU-zfX" userLabel="Add Protein">
+                        <menuItem title="Add Protein" keyEquivalent="4" id="pCe-xU-zfX" userLabel="Add Protein">
                             <connections>
-                                <action selector="addProtein:" target="Ihf-P0-mYS" id="zdV-ZC-pJc"/>
+                                <action selector="addProtein:" target="Ihf-P0-mYS" id="wF8-Ou-aqM"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Add Protein crystal" keyEquivalent="3" id="uN8-UC-za6" userLabel="Add Protein crystal">
+                        <menuItem title="Add Protein crystal" keyEquivalent="5" id="uN8-UC-za6" userLabel="Add Protein crystal">
                             <connections>
-                                <action selector="addProteinCrystal:" target="Ihf-P0-mYS" id="k5F-6I-ZiF"/>
+                                <action selector="addProteinCrystal:" target="Ihf-P0-mYS" id="QFe-lC-dAd"/>
                             </connections>
+                        </menuItem>
+                        <menuItem title="Add Objects" id="xGp-L1-szQ">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Add Objects" id="d98-LF-qMp">
+                                <items>
+                                    <menuItem title="Ellipsoid" id="RaT-FZ-Ofn">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="addEllipsoidPrimitive:" target="Ihf-P0-mYS" id="SFT-PW-h1T"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Cylinder" id="5vG-bx-ocx">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="addCylinderPrimitive:" target="Ihf-P0-mYS" id="oKq-lt-NOu"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Polygonal prism" id="RXK-7F-kYl">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="addPolygonalPrismPrimitive:" target="Ihf-P0-mYS" id="sbV-YO-Ok3"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
                         </menuItem>
                     </items>
                     <connections>
@@ -856,12 +878,12 @@
                                 <action selector="addMolecule:" target="xIH-6N-knL" id="rGn-3A-WzA"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Add Protein" keyEquivalent="3" id="RMC-nN-w7D" userLabel="Add Protein">
+                        <menuItem title="Add Protein" keyEquivalent="4" id="RMC-nN-w7D" userLabel="Add Protein">
                             <connections>
                                 <action selector="addProtein:" target="xIH-6N-knL" id="s23-05-fOH"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Add Protein crystal" keyEquivalent="3" id="JDc-Lg-RBz" userLabel="Add Protein crystal">
+                        <menuItem title="Add Protein crystal" keyEquivalent="5" id="JDc-Lg-RBz" userLabel="Add Protein crystal">
                             <connections>
                                 <action selector="addProteinCrystal:" target="xIH-6N-knL" id="Emy-fU-tIg"/>
                             </connections>

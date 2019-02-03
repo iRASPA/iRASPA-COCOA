@@ -1,10 +1,34 @@
-//
-//  MetalAmbientOcclusionShadowMapShader.swift
-//  RenderKit
-//
-//  Created by David Dubbeldam on 17/12/2018.
-//  Copyright © 2018 David Dubbeldam. All rights reserved.
-//
+/*************************************************************************************************************
+ The MIT License
+ 
+ Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ 
+ D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
+ scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
+ t.j.h.vlugt@tudelft.nl        http://homepage.tudelft.nl/v9k6y
+ 
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+ 
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+ *************************************************************************************************************/
+
 
 import Foundation
 import SymmetryKit
@@ -105,29 +129,31 @@ class MetalAmbientOcclusionShader
         let structures: [RKRenderStructure] = self.renderStructures[i]
         for structure in structures
         {
-          let numberOfAtoms: Int = structure.renderAtoms.count
-          
-          switch(numberOfAtoms)
+          if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource
           {
-          case 0...64:
-            structure.atomAmbientOcclusionTextureSize = min(256,Int(maxSize))
-          case 65...256:
-            structure.atomAmbientOcclusionTextureSize = min(512,Int(maxSize))
-          case 257...1024:
-            structure.atomAmbientOcclusionTextureSize = min(1024,Int(maxSize))
-          case 1025...65536:
-            structure.atomAmbientOcclusionTextureSize = min(2048,Int(maxSize))
-          case 65537...524288:
-            structure.atomAmbientOcclusionTextureSize = min(4096,Int(maxSize))
-          default:
-            structure.atomAmbientOcclusionTextureSize = min(8192,Int(maxSize))
+            let numberOfAtoms: Int = structure.renderAtoms.count
+          
+            switch(numberOfAtoms)
+            {
+            case 0...64:
+              structure.atomAmbientOcclusionTextureSize = min(256,Int(maxSize))
+            case 65...256:
+              structure.atomAmbientOcclusionTextureSize = min(512,Int(maxSize))
+            case 257...1024:
+              structure.atomAmbientOcclusionTextureSize = min(1024,Int(maxSize))
+            case 1025...65536:
+              structure.atomAmbientOcclusionTextureSize = min(2048,Int(maxSize))
+            case 65537...524288:
+              structure.atomAmbientOcclusionTextureSize = min(4096,Int(maxSize))
+            default:
+              structure.atomAmbientOcclusionTextureSize = min(8192,Int(maxSize))
+            }
+          
+          
+            structure.atomAmbientOcclusionPatchNumber = Int(sqrt(Double(numberOfAtoms)))+1
+            structure.atomAmbientOcclusionPatchSize = structure.atomAmbientOcclusionTextureSize/structure.atomAmbientOcclusionPatchNumber
+          
           }
-          
-          
-          structure.atomAmbientOcclusionPatchNumber = Int(sqrt(Double(numberOfAtoms)))+1
-          structure.atomAmbientOcclusionPatchSize = structure.atomAmbientOcclusionTextureSize/structure.atomAmbientOcclusionPatchNumber
-          
-          
         }
       }
     }
@@ -146,7 +172,7 @@ class MetalAmbientOcclusionShader
         let structures: [RKRenderStructure] = self.renderStructures[i]
         for structure in structures
         {
-          let textureSize: Int = structure.atomAmbientOcclusionTextureSize
+          let textureSize: Int = (structure as? RKRenderAtomSource)?.atomAmbientOcclusionTextureSize ?? 1
           let ambientOcclusionTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.r16Float, width: textureSize, height: textureSize,   mipmapped: false)
           ambientOcclusionTextureDescriptor.textureType = MTLTextureType.type2D
           ambientOcclusionTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
@@ -199,7 +225,8 @@ class MetalAmbientOcclusionShader
           
           
           
-          if structure.atomAmbientOcclusion && structure.isVisible
+          if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
+             structure.atomAmbientOcclusion && structure.isVisible
           {
             let textureSize: Int = structure.atomAmbientOcclusionTextureSize
             

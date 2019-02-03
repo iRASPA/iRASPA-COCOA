@@ -138,49 +138,16 @@ public protocol RKRenderStructure: class
   var displayName: String {get}
   var isVisible: Bool {get}
   
-  var atomPositions: [double3] {get}
-  var bondPositions: [double3] {get}
-  
-  var potentialParameters: [double2] {get}
-  
-  var renderAtoms: [RKInPerInstanceAttributesAtoms] {get}
-  
-  var renderTextData: [RKInPerInstanceAttributesText] {get}
-  var renderTextType: RKTextType {get}
-  var renderTextFont: String {get}
-  var renderTextAlignment: RKTextAlignment {get}
-  var renderTextStyle: RKTextStyle {get}
-  var renderTextColor: NSColor {get}
-  var renderTextScaling: Double {get}
-  var renderTextOffset: double3 {get}
-
-  var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms] {get}
-  var renderSelectionStyle: RKSelectionStyle {get}
-  var renderSelectionScaling: Double {get}
-  var renderSelectionStripesDensity: Double {get}
-  var renderSelectionStripesFrequency: Double {get}
-  var renderSelectionWorleyNoise3DFrequency: Double {get}
-  var renderSelectionWorleyNoise3DJitter: Double {get}
-  
-  func CartesianPosition(for position: double3, replicaPosition: int3) -> double3
-  
-  var renderInternalBonds: [RKInPerInstanceAttributesBonds] {get}
-  var renderExternalBonds: [RKInPerInstanceAttributesBonds] {get}
-  var renderSelectedBonds: [RKInPerInstanceAttributesBonds] {get}
-  
-  var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms] {get}
-  var renderUnitCellCylinders: [RKInPerInstanceAttributesBonds] {get}
-  
-  var numberOfAtoms: Int {get}
-  var numberOfInternalBonds: Int {get}
-  var numberOfExternalBonds: Int {get}
-  
-  var drawUnitCell: Bool {get}
-  var drawAtoms: Bool {get}
-  var drawBonds: Bool {get}
-  
   var orientation: simd_quatd {get}
   var origin: double3 {get}
+ 
+  var cell: SKCell {get set}
+}
+
+public protocol RKRenderAtomSource: RKRenderStructure
+{
+  var numberOfAtoms: Int {get}
+  var drawAtoms: Bool {get}
   
   // material properties
   var atomAmbientColor: NSColor {get set}
@@ -190,14 +157,6 @@ public protocol RKRenderStructure: class
   var atomDiffuseIntensity: Double {get set}
   var atomSpecularIntensity: Double {get set}
   var atomShininess: Double {get set}
-
-  
-  
-  var cell: SKCell {get set}
-    
-  var atomCacheAmbientOcclusionTexture: [CUnsignedChar] {get set}
-  
-  var hasExternalBonds: Bool {get}
   
   var atomHue: Double {get}
   var atomSaturation: Double {get}
@@ -213,7 +172,39 @@ public protocol RKRenderStructure: class
   var atomHDRExposure: Double {get}
   var atomHDRBloomLevel: Double {get}
   var clipAtomsAtUnitCell: Bool {get}
+  var atomPositions: [double3] {get}
+  var renderAtoms: [RKInPerInstanceAttributesAtoms] {get}
+  
+  var renderTextData: [RKInPerInstanceAttributesText] {get}
+  var renderTextType: RKTextType {get}
+  var renderTextFont: String {get}
+  var renderTextAlignment: RKTextAlignment {get}
+  var renderTextStyle: RKTextStyle {get}
+  var renderTextColor: NSColor {get}
+  var renderTextScaling: Double {get}
+  var renderTextOffset: double3 {get}
+  
+  var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms] {get}
+  var renderSelectionStyle: RKSelectionStyle {get}
+  var renderSelectionScaling: Double {get}
+  var renderSelectionStripesDensity: Double {get}
+  var renderSelectionStripesFrequency: Double {get}
+  var renderSelectionWorleyNoise3DFrequency: Double {get}
+  var renderSelectionWorleyNoise3DJitter: Double {get}
+  
+  func CartesianPosition(for position: double3, replicaPosition: int3) -> double3
+}
 
+public protocol RKRenderBondSource: RKRenderStructure
+{
+  var numberOfInternalBonds: Int {get}
+  var numberOfExternalBonds: Int {get}
+  var bondPositions: [double3] {get}
+  var renderInternalBonds: [RKInPerInstanceAttributesBonds] {get}
+  var renderExternalBonds: [RKInPerInstanceAttributesBonds] {get}
+  var renderSelectedBonds: [RKInPerInstanceAttributesBonds] {get}
+  var drawBonds: Bool {get}
+  
   var bondAmbientColor: NSColor {get set}
   var bondDiffuseColor: NSColor {get set}
   var bondSpecularColor: NSColor {get set}
@@ -221,6 +212,8 @@ public protocol RKRenderStructure: class
   var bondDiffuseIntensity: Double {get set}
   var bondSpecularIntensity: Double {get set}
   var bondShininess: Double {get set}
+  
+  var hasExternalBonds: Bool {get}
   
   var bondScaleFactor: Double {get}
   var bondColorMode: RKBondColorMode {get}
@@ -233,11 +226,22 @@ public protocol RKRenderStructure: class
   var bondHue: Double {get}
   var bondSaturation: Double {get}
   var bondValue: Double {get}
+}
 
-  // unit cell
+public protocol RKRenderUnitCellSource: RKRenderStructure
+{
+  var drawUnitCell: Bool {get}
+  var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms] {get}
+  var renderUnitCellCylinders: [RKInPerInstanceAttributesBonds] {get}
+  
   var unitCellScaleFactor: Double {get}
   var unitCellDiffuseColor: NSColor {get}
   var unitCellDiffuseIntensity: Double {get}
+}
+
+public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
+{
+  var potentialParameters: [double2] {get}
   
   // adsorption surface
   var drawAdsorptionSurface: Bool {get set}
@@ -266,16 +270,72 @@ public protocol RKRenderStructure: class
   var adsorptionSurfaceBackSideAmbientIntensity: Double {get set}
   var adsorptionSurfaceBackSideSpecularIntensity: Double {get set}
   var adsorptionSurfaceBackSideShininess: Double {get set}
-
-}
-
-public protocol RKRenderAdsorptionSurfaceStructure: RKRenderStructure
-{
+  
   var atomUnitCellPositions: [double3] {get}
   var minimumGridEnergyValue: Float? {get set}
   var structureHeliumVoidFraction: Double {get set}
   var structureNitrogenSurfaceArea: Double {get set}
 }
+
+public protocol RKRenderObjectSource: RKRenderStructure
+{
+  var primitiveTransformationMatrix: double3x3 {get}
+  var primitiveOrientation: simd_quatd {get}
+  
+  var primitiveOpacity: Double {get}
+  var primitiveIsCapped: Bool {get}
+  var primitiveIsFractional: Bool {get}
+  var primitiveNumberOfSides: Int {get}
+  var primitiveThickness: Double {get}
+  
+  var primitiveFrontSideHDR: Bool {get}
+  var primitiveFrontSideHDRExposure: Double {get}
+  var primitiveFrontSideAmbientColor: NSColor {get}
+  var primitiveFrontSideDiffuseColor: NSColor {get}
+  var primitiveFrontSideSpecularColor: NSColor {get}
+  var primitiveFrontSideDiffuseIntensity: Double {get}
+  var primitiveFrontSideAmbientIntensity: Double {get}
+  var primitiveFrontSideSpecularIntensity: Double {get}
+  var primitiveFrontSideShininess: Double {get}
+  
+  var primitiveBackSideHDR: Bool {get}
+  var primitiveBackSideHDRExposure: Double {get}
+  var primitiveBackSideAmbientColor: NSColor {get}
+  var primitiveBackSideDiffuseColor: NSColor {get}
+  var primitiveBackSideSpecularColor: NSColor {get}
+  var primitiveBackSideDiffuseIntensity: Double {get}
+  var primitiveBackSideAmbientIntensity: Double {get}
+  var primitiveBackSideSpecularIntensity: Double {get}
+  var primitiveBackSideShininess: Double {get}
+}
+
+
+public protocol RKRenderSphereObjectsSource: RKRenderObjectSource
+{
+  var numberOfAtoms: Int {get}
+  var drawAtoms: Bool {get}
+  
+  var renderSphereObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
+
+public protocol RKRenderCylinderObjectsSource: RKRenderObjectSource
+{
+  var numberOfAtoms: Int {get}
+  var drawAtoms: Bool {get}
+  
+  var renderCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
+
+
+public protocol RKRenderPolygonalPrimSource: RKRenderObjectSource
+{
+  var numberOfAtoms: Int {get}
+  var drawAtoms: Bool {get}
+  
+  var renderPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
+
+
 
 public protocol RKRenderCameraSource: class
 {

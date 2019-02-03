@@ -230,8 +230,6 @@ public class MetalViewController: NSViewController, RenderViewController
     return Data()
   }
 
-  
-    
   public func makeCVPicture(_ pixelBuffer: CVPixelBuffer)
   {
     if let _: RKRenderDataSource = self.renderDataSource
@@ -259,7 +257,6 @@ public class MetalViewController: NSViewController, RenderViewController
     (self.view as? MetalView)?.updateLightUniforms()
   }
 
-  
   public func updateVertexArrays()
   {
     (self.view as? MetalView)?.buildVertexBuffers()
@@ -284,7 +281,6 @@ public class MetalViewController: NSViewController, RenderViewController
   {
     for  structure in structures
     {
-      //self.metalView.renderer.cachedAmbientOcclusionTextures[structure] = nil
       (self.view as? MetalView)?.renderer.ambientOcclusionShader.cachedAmbientOcclusionTextures.removeObject(forKey: structure)
     }
   }
@@ -298,19 +294,17 @@ public class MetalViewController: NSViewController, RenderViewController
   {
     for  structure in structures
     {
-      //self.metalView.renderer.cachedAdsorptionSurfaces[128]?[structure] = nil
       (self.view as? MetalView)?.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeObject(forKey: structure)
     }
   }
   
   public func computeVoidFractions(structures: [RKRenderStructure])
   {
-    //(self.view as? MetalView)?.computeVoidFractions(structures: structures)
     guard let device = device else {return }
     
     for structure in structures
     {
-      if let structure = structure as? RKRenderAdsorptionSurfaceStructure
+      if let structure = structure as? RKRenderAdsorptionSurfaceSource
       {
         var data: [Float] = []
         
@@ -338,14 +332,12 @@ public class MetalViewController: NSViewController, RenderViewController
   
   public func computeNitrogenSurfaceArea(structures: [RKRenderStructure])
   {
-    //(self.view as? MetalView)?.computeNitrogenSurfaceArea(structures: structures)
     guard let device = device else {return }
     guard let commandQueue = commandQueue else {return }
     
-    
     for structure in structures
     {
-      if let structure = structure as? RKRenderAdsorptionSurfaceStructure
+      if let structure = structure as? RKRenderAdsorptionSurfaceSource
       {
         var data: [Float] = []
         
@@ -403,12 +395,7 @@ public class MetalViewController: NSViewController, RenderViewController
     (self.view as? MetalView)?.reloadBackgroundImage()
   }
   
-  
 
-  
- 
-  
-  
   
   // MARK: Copy / Paste / Cut / Delete
   // ===============================================================================================================================
@@ -416,45 +403,13 @@ public class MetalViewController: NSViewController, RenderViewController
   
   @objc func copy(_ sender: AnyObject)
   {
-    
-    /*
-    let pasteboard = NSPasteboard.generalPasteboard()
-    pasteboard.clearContents()
-    
-    NSPasteboardProjectNode.pasteBoardProtocol.writing = true
-    let nodes: [NSPasteboardProjectNode] = self.selectedItems()
-    pasteboard.writeObjects(nodes)
-    NSPasteboardProjectNode.pasteBoardProtocol.writing = false
-    */
   }
   
   @objc func paste(_ sender: AnyObject)
   {
-    /*
-    let pasteboard = NSPasteboard.generalPasteboard()
-    if let objects: [AnyObject] = pasteboard.readObjectsForClasses([NSPasteboardProjectNode.self], options: nil)
-    {
-    for object in objects
-    {
-    let node: AtomTreeNode<ProjectNode> = (object as! NSPasteboardProjectNode).pasteboardItem as! TreeNode<ProjectNode>
-    
-    self.addNode([node], inItem: nil, atIndex: 0)
-    
-    }
-    self.reloadData()
-    
-    }
-    */
-    
   }
   
   @objc func cut(_ sender: AnyObject)
   {
   }
-  
- 
-  
-
-  
-  
 }

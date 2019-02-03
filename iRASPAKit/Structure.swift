@@ -31,6 +31,7 @@
 
 import Foundation
 import simd
+import Accelerate
 import BinaryCodable
 import RenderKit
 import SymmetryKit
@@ -49,7 +50,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 4
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   public var displayName: String = "test123"
   
   public var origin: double3 = double3(x: 0.0, y: 0.0, z: 0.0)
@@ -70,17 +71,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   
   public var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
   
-  public enum MaterialType: Int
-  {
-    case structure = 0
-    case crystal = 1
-    case molecularCrystal = 2
-    case molecule = 3
-    case protein = 4
-    case proteinCrystal = 5
-  }
-  
-  var materialType: MaterialType
+  var materialType: SKStructure.Kind
   {
     return .structure
   }
@@ -188,57 +179,36 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     case manyNegativeEigenvalues = 5
   }
   
-  public var creationDate: Date = Date()
-  public var creationTemperature: String = ""
-  public var creationTemperatureScale: TemperatureScale = .Kelvin
-  public var creationPressure: String = ""
-  public var creationPressureScale: PressureScale = .Pascal
-  public var creationMethod: CreationMethod = .unknown
-  public var creationUnitCellRelaxationMethod: UnitCellRelaxationMethod = .unknown
-  public var creationAtomicPositionsSoftwarePackage: String = ""
-  public var creationAtomicPositionsIonsRelaxationAlgorithm: IonsRelaxationAlgorithm = .unknown
-  public var creationAtomicPositionsIonsRelaxationCheck: IonsRelaxationCheck = .unknown
-  public var creationAtomicPositionsForcefield: String = ""
-  public var creationAtomicPositionsForcefieldDetails: String = ""
-  public var creationAtomicChargesSoftwarePackage: String = ""
-  public var creationAtomicChargesAlgorithms: String = ""
-  public var creationAtomicChargesForcefield: String = ""
-  public var creationAtomicChargesForcefieldDetails: String = ""
+  // primitive properties
+  public var primitiveTransformationMatrix: double3x3 = double3x3(1.0)
+  public var primitiveOrientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
+  public var primitiveRotationDelta: Double = 5.0
   
-  public var chemicalFormulaMoiety: String = ""
-  public var chemicalFormulaSum: String = ""
-  public var chemicalNameSystematic: String = ""
-  public var cellFormulaUnitsZ: Int = 0
+  public var primitiveOpacity: Double = 1.0
+  public var primitiveIsCapped: Bool = false
+  public var primitiveIsFractional: Bool = true
+  public var primitiveNumberOfSides: Int = 6
+  public var primitiveThickness: Double = 0.05
   
+  public var primitiveFrontSideHDR: Bool = true
+  public var primitiveFrontSideHDRExposure: Double = 2.0
+  public var primitiveFrontSideAmbientColor: NSColor = NSColor.white
+  public var primitiveFrontSideDiffuseColor: NSColor = NSColor.yellow
+  public var primitiveFrontSideSpecularColor: NSColor = NSColor.white
+  public var primitiveFrontSideAmbientIntensity: Double = 0.1
+  public var primitiveFrontSideDiffuseIntensity: Double = 1.0
+  public var primitiveFrontSideSpecularIntensity: Double = 0.2
+  public var primitiveFrontSideShininess: Double = 4.0
   
-  public var citationArticleTitle: String = ""
-  public var citationJournalTitle: String = ""
-  public var citationAuthors: String = ""
-  public var citationJournalVolume: String = ""
-  public var citationJournalNumber: String = ""
-  public var citationJournalPageNumbers: String = ""
-  public var citationDOI: String = ""
-  public var citationPublicationDate: Date = Date()
-  public var citationDatebaseCodes: String = ""
-
-  public var experimentalMeasurementRadiation: String = ""                               // _diffrn_radiation_type
-  public var experimentalMeasurementWaveLength: String = ""                              // _diffrn_radiation_wavelength
-  public var experimentalMeasurementThetaMin: String = ""                                // _cell_measurement_theta_min
-  public var experimentalMeasurementThetaMax: String = ""                                // _cell_measurement_theta_max
-  public var experimentalMeasurementIndexLimitsHmin: String = ""                         // _diffrn_reflns_limit_h_min
-  public var experimentalMeasurementIndexLimitsHmax: String = ""                         // _diffrn_reflns_limit_h_max
-  public var experimentalMeasurementIndexLimitsKmin: String = ""                         // _diffrn_reflns_limit_k_min
-  public var experimentalMeasurementIndexLimitsKmax: String = ""                         // _diffrn_reflns_limit_k_max
-  public var experimentalMeasurementIndexLimitsLmin: String = ""                         // _diffrn_reflns_limit_l_min
-  public var experimentalMeasurementIndexLimitsLmax: String = ""                         // _diffrn_reflns_limit_l_max
-  public var experimentalMeasurementNumberOfSymmetryIndependentReflections: String = ""  // _reflns_number_total
-  public var experimentalMeasurementSoftware: String = ""
-  public var experimentalMeasurementRefinementDetails: String = ""                       // _refine_special_details
-  public var experimentalMeasurementGoodnessOfFit: String = ""                           // _refine_ls_goodness_of_fit_ref
-  public var experimentalMeasurementRFactorGt: String = ""                               // _refine_ls_R_factor_gt
-  public var experimentalMeasurementRFactorAll: String = ""                              // _refine_ls_R_factor_all
-  
-  
+  public var primitiveBackSideHDR: Bool = true
+  public var primitiveBackSideHDRExposure: Double = 2.0
+  public var primitiveBackSideAmbientColor: NSColor = NSColor.white
+  public var primitiveBackSideDiffuseColor: NSColor = NSColor(red: 0.0, green: 0.5490196, blue: 1.0, alpha: 1.0) // Aqua
+  public var primitiveBackSideSpecularColor: NSColor = NSColor.white
+  public var primitiveBackSideAmbientIntensity: Double = 0.1
+  public var primitiveBackSideDiffuseIntensity: Double = 1.0
+  public var primitiveBackSideSpecularIntensity: Double = 0.2
+  public var primitiveBackSideShininess: Double = 4.0
   
   
   // atoms
@@ -283,6 +253,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   public var atomDiffuseIntensity: Double = 1.0
   public var atomSpecularIntensity: Double = 1.0
   public var atomShininess: Double = 4.0
+  
   
   // bonds
   public var bonds: SKBondSetController = SKBondSetController()
@@ -425,7 +396,58 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     case `default` = 0
     case fancy = 1
     case licorice = 2
+    case objects = 3
   }
+  
+  public var creationDate: Date = Date()
+  public var creationTemperature: String = ""
+  public var creationTemperatureScale: TemperatureScale = .Kelvin
+  public var creationPressure: String = ""
+  public var creationPressureScale: PressureScale = .Pascal
+  public var creationMethod: CreationMethod = .unknown
+  public var creationUnitCellRelaxationMethod: UnitCellRelaxationMethod = .unknown
+  public var creationAtomicPositionsSoftwarePackage: String = ""
+  public var creationAtomicPositionsIonsRelaxationAlgorithm: IonsRelaxationAlgorithm = .unknown
+  public var creationAtomicPositionsIonsRelaxationCheck: IonsRelaxationCheck = .unknown
+  public var creationAtomicPositionsForcefield: String = ""
+  public var creationAtomicPositionsForcefieldDetails: String = ""
+  public var creationAtomicChargesSoftwarePackage: String = ""
+  public var creationAtomicChargesAlgorithms: String = ""
+  public var creationAtomicChargesForcefield: String = ""
+  public var creationAtomicChargesForcefieldDetails: String = ""
+  
+  public var chemicalFormulaMoiety: String = ""
+  public var chemicalFormulaSum: String = ""
+  public var chemicalNameSystematic: String = ""
+  public var cellFormulaUnitsZ: Int = 0
+  
+  
+  public var citationArticleTitle: String = ""
+  public var citationJournalTitle: String = ""
+  public var citationAuthors: String = ""
+  public var citationJournalVolume: String = ""
+  public var citationJournalNumber: String = ""
+  public var citationJournalPageNumbers: String = ""
+  public var citationDOI: String = ""
+  public var citationPublicationDate: Date = Date()
+  public var citationDatebaseCodes: String = ""
+  
+  public var experimentalMeasurementRadiation: String = ""                               // _diffrn_radiation_type
+  public var experimentalMeasurementWaveLength: String = ""                              // _diffrn_radiation_wavelength
+  public var experimentalMeasurementThetaMin: String = ""                                // _cell_measurement_theta_min
+  public var experimentalMeasurementThetaMax: String = ""                                // _cell_measurement_theta_max
+  public var experimentalMeasurementIndexLimitsHmin: String = ""                         // _diffrn_reflns_limit_h_min
+  public var experimentalMeasurementIndexLimitsHmax: String = ""                         // _diffrn_reflns_limit_h_max
+  public var experimentalMeasurementIndexLimitsKmin: String = ""                         // _diffrn_reflns_limit_k_min
+  public var experimentalMeasurementIndexLimitsKmax: String = ""                         // _diffrn_reflns_limit_k_max
+  public var experimentalMeasurementIndexLimitsLmin: String = ""                         // _diffrn_reflns_limit_l_min
+  public var experimentalMeasurementIndexLimitsLmax: String = ""                         // _diffrn_reflns_limit_l_max
+  public var experimentalMeasurementNumberOfSymmetryIndependentReflections: String = ""  // _reflns_number_total
+  public var experimentalMeasurementSoftware: String = ""
+  public var experimentalMeasurementRefinementDetails: String = ""                       // _refine_special_details
+  public var experimentalMeasurementGoodnessOfFit: String = ""                           // _refine_ls_goodness_of_fit_ref
+  public var experimentalMeasurementRFactorGt: String = ""                               // _refine_ls_R_factor_gt
+  public var experimentalMeasurementRFactorAll: String = ""                              // _refine_ls_R_factor_all
   
 
   
@@ -783,6 +805,21 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
         self.selectionScaling = 1.5
         
         self.setRepresentationType(type: .unity)
+      case .objects:
+        atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        atomAmbientIntensity = 0.1
+        atomDiffuseIntensity = 0.6
+        atomSpecularIntensity = 0.1
+        atomShininess = 4.0
+        drawAtoms = true
+        atomScaleFactor = 1.0
+        atomForceFieldIdentifier = "Default"
+        atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
+        atomColorOrder = .elementOnly
+        atomAmbientOcclusion = false
+        
+        self.setRepresentationType(type: .unity)
       }
     }
     
@@ -816,6 +853,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       case .fancy:
         self.setRepresentationColorScheme(scheme: SKColorSets.ColorScheme.rasmol.rawValue, colorSets: colorSets)
       case .licorice:
+        self.setRepresentationColorScheme(scheme: SKColorSets.ColorScheme.jmol.rawValue, colorSets: colorSets)
+      case .objects:
         self.setRepresentationColorScheme(scheme: SKColorSets.ColorScheme.jmol.rawValue, colorSets: colorSets)
       }
     }
@@ -946,6 +985,20 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       (selectionScaling ==~ 1.5)
     {
       self.atomRepresentationStyle = .licorice
+    }
+    else if drawAtoms == true &&
+      atomRepresentationType == .unity &&
+      atomForceFieldIdentifier == "Default" &&
+      atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
+      atomColorOrder == .elementOnly &&
+      (atomScaleFactor ==~ 1.0) &&
+      atomAmbientOcclusion == false &&
+      (atomAmbientIntensity ==~ 0.1) &&
+      (atomDiffuseIntensity ==~ 0.6) &&
+      (atomSpecularIntensity ==~ 0.1) &&
+      (atomShininess ==~ 4.0)
+    {
+      self.atomRepresentationStyle = .objects
     }
     else
     {
@@ -2279,6 +2332,36 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     encoder.encode(orientation)
     encoder.encode(rotationDelta)
     
+    encoder.encode(primitiveTransformationMatrix)
+    encoder.encode(primitiveOrientation)
+    encoder.encode(primitiveRotationDelta)
+    
+    encoder.encode(primitiveOpacity)
+    encoder.encode(primitiveIsCapped)
+    encoder.encode(primitiveIsFractional)
+    encoder.encode(primitiveNumberOfSides)
+    encoder.encode(primitiveThickness)
+    
+    encoder.encode(primitiveFrontSideHDR)
+    encoder.encode(primitiveFrontSideHDRExposure)
+    encoder.encode(primitiveFrontSideAmbientColor)
+    encoder.encode(primitiveFrontSideDiffuseColor)
+    encoder.encode(primitiveFrontSideSpecularColor)
+    encoder.encode(primitiveFrontSideDiffuseIntensity)
+    encoder.encode(primitiveFrontSideAmbientIntensity)
+    encoder.encode(primitiveFrontSideSpecularIntensity)
+    encoder.encode(primitiveFrontSideShininess)
+    
+    encoder.encode(primitiveBackSideHDR)
+    encoder.encode(primitiveBackSideHDRExposure)
+    encoder.encode(primitiveBackSideAmbientColor)
+    encoder.encode(primitiveBackSideDiffuseColor)
+    encoder.encode(primitiveBackSideSpecularColor)
+    encoder.encode(primitiveBackSideDiffuseIntensity)
+    encoder.encode(primitiveBackSideAmbientIntensity)
+    encoder.encode(primitiveBackSideSpecularIntensity)
+    encoder.encode(primitiveBackSideShininess)
+    
     encoder.encode(Double(minimumGridEnergyValue ?? 0.0))
     
     encoder.encode(atoms)
@@ -2519,12 +2602,43 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     orientation = try decoder.decode(simd_quatd.self)
     rotationDelta = try decoder.decode(Double.self)
     
+    if readVersionNumber >= 2 // introduced in version 2
+    {
+      primitiveTransformationMatrix = try decoder.decode(double3x3.self)
+      primitiveOrientation = try decoder.decode(simd_quatd.self)
+      primitiveRotationDelta = try decoder.decode(Double.self)
+      
+      primitiveOpacity = try decoder.decode(Double.self)
+      primitiveIsCapped = try decoder.decode(Bool.self)
+      primitiveIsFractional = try decoder.decode(Bool.self)
+      primitiveNumberOfSides = try decoder.decode(Int.self)
+      primitiveThickness = try decoder.decode(Double.self)
+      
+      primitiveFrontSideHDR = try decoder.decode(Bool.self)
+      primitiveFrontSideHDRExposure = try decoder.decode(Double.self)
+      primitiveFrontSideAmbientColor = try decoder.decode(NSColor.self)
+      primitiveFrontSideDiffuseColor = try decoder.decode(NSColor.self)
+      primitiveFrontSideSpecularColor = try decoder.decode(NSColor.self)
+      primitiveFrontSideDiffuseIntensity = try decoder.decode(Double.self)
+      primitiveFrontSideAmbientIntensity = try decoder.decode(Double.self)
+      primitiveFrontSideSpecularIntensity = try decoder.decode(Double.self)
+      primitiveFrontSideShininess = try decoder.decode(Double.self)
+      
+      primitiveBackSideHDR = try decoder.decode(Bool.self)
+      primitiveBackSideHDRExposure = try decoder.decode(Double.self)
+      primitiveBackSideAmbientColor = try decoder.decode(NSColor.self)
+      primitiveBackSideDiffuseColor = try decoder.decode(NSColor.self)
+      primitiveBackSideSpecularColor = try decoder.decode(NSColor.self)
+      primitiveBackSideDiffuseIntensity = try decoder.decode(Double.self)
+      primitiveBackSideAmbientIntensity = try decoder.decode(Double.self)
+      primitiveBackSideSpecularIntensity = try decoder.decode(Double.self)
+      primitiveBackSideShininess = try decoder.decode(Double.self)
+    }
+    
     minimumGridEnergyValue = Float(try decoder.decode(Double.self))
     
     atoms = try decoder.decode(SKAtomTreeController.self)
     drawAtoms = try decoder.decode(Bool.self)
-    
-    
     
     atomRepresentationType = try RepresentationType(rawValue: decoder.decode(Int.self))!
     atomRepresentationStyle = try RepresentationStyle(rawValue: decoder.decode(Int.self)) ??  RepresentationStyle.custom

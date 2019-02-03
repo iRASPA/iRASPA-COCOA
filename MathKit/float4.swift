@@ -48,7 +48,14 @@ extension float4
   
   public init(color: NSColor, opacity: Double)
   {
-    self.init(x: Float(color.redComponent), y: Float(color.greenComponent), z: Float(color.blueComponent), w: Float(opacity))
+    if let color = color.usingColorSpace(NSColorSpace.genericRGB)
+    {
+      self.init(x: Float(color.redComponent), y: Float(color.greenComponent), z: Float(color.blueComponent), w: Float(opacity))
+    }
+    else
+    {
+      self.init(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+    }
   }
   
   public init(value: Double)

@@ -42,12 +42,12 @@ extension CellViewer
     self.structureViewerStructures.forEach{$0.recomputeDensityProperties()}
   }
   
-  public var renderMaterialType: Structure.MaterialType?
+  public var renderMaterialType: SKStructure.Kind?
   {
     get
     {
       let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.materialType.rawValue })
-      return Set(set).count == 1 ? Structure.MaterialType(rawValue: set.first!) : nil
+      return Set(set).count == 1 ? SKStructure.Kind(rawValue: set.first!) : nil
     }
   }
   
@@ -803,12 +803,12 @@ extension Array where Iterator.Element == CellViewer
     self.structureViewerStructures.forEach{$0.recomputeDensityProperties()}
   }
   
-  public var renderMaterialType: Structure.MaterialType?
+  public var renderMaterialType: SKStructure.Kind?
   {
     get
     {
       let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.materialType.rawValue })
-      return Set(set).count == 1 ? Structure.MaterialType(rawValue: set.first!) : nil
+      return Set(set).count == 1 ? SKStructure.Kind(rawValue: set.first!) : nil
     }
   }
   
