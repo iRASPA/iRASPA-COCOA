@@ -67,7 +67,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     super.viewDidLoad()
     
-    
+    self.atomOutlineView?.dataSource = nil
+    self.atomOutlineView?.delegate = nil
     
     // check that it works with strong-references off (for compatibility with 'El Capitan')
     if #available(OSX 10.12, *)
@@ -121,6 +122,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     super.viewWillAppear()
     
+    self.atomOutlineView?.dataSource = self
+    self.atomOutlineView?.delegate = self
+    
     self.reloadData()
   }
   
@@ -136,6 +140,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   override func viewWillDisappear()
   {
     super.viewWillDisappear()
+    
+    self.atomOutlineView?.dataSource = nil
+    self.atomOutlineView?.delegate = nil
     
     NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationStrings.RendererSelectionDidChangeNotification), object: self.representedObject)
     

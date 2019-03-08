@@ -60,6 +60,9 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     super.viewDidLoad()
     
+    self.bondTableView?.dataSource = nil
+    self.bondTableView?.delegate = nil
+    
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
@@ -87,6 +90,9 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     super.viewWillAppear()
     
+    self.bondTableView?.dataSource = self
+    self.bondTableView?.delegate = self
+    
     self.reloadData()
   }
   
@@ -106,6 +112,9 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   override func viewWillDisappear()
   {
     super.viewWillDisappear()
+    
+    self.bondTableView?.dataSource = nil
+    self.bondTableView?.delegate = nil
     
     if let structure = self.representedObject as? Structure
     {
