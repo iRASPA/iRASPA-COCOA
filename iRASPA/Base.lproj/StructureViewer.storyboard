@@ -2515,13 +2515,13 @@
                                                                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" tag="91" translatesAutoresizingMaskIntoConstraints="NO" id="aei-qQ-IUM" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
                                                                     <rect key="frame" x="113" y="126" width="161" height="26"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                    <popUpButtonCell key="cell" type="push" title="Unknown" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="9x5-Do-xLf" id="Y8c-dr-gtf">
+                                                                    <popUpButtonCell key="cell" type="push" title="Unknown" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="9x5-Do-xLf" id="Y8c-dr-gtf">
                                                                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="menu"/>
                                                                         <menu key="menu" id="xjU-Jo-Rjs">
                                                                             <items>
-                                                                                <menuItem title="Unknown" id="9x5-Do-xLf"/>
-                                                                                <menuItem title="Structure" state="on" id="8hB-ex-Y7U"/>
+                                                                                <menuItem title="Unknown" state="on" id="9x5-Do-xLf"/>
+                                                                                <menuItem title="Structure" id="8hB-ex-Y7U"/>
                                                                                 <menuItem title="Crystal" id="Cao-y3-ptB"/>
                                                                                 <menuItem title="Molecular crystal" id="zPm-ut-b1f"/>
                                                                                 <menuItem title="Molecule" id="gTm-Bg-d2W"/>
@@ -4725,6 +4725,19 @@
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="FindAndImposeSymmetry:" target="L26-B0-eRn" id="9v9-L5-ero"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </menuItem>
+                        <menuItem title="Selection" id="DZz-iK-mHB">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Selection" id="wMK-kB-PjB">
+                                <items>
+                                    <menuItem title="Invert" id="1YF-gj-uzt">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="selectionInversion:" target="L26-B0-eRn" id="sS3-gX-Qtf"/>
                                         </connections>
                                     </menuItem>
                                 </items>
