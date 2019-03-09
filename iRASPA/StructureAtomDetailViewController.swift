@@ -1651,6 +1651,15 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       return false
     }
     
+    if (menuItem.action == #selector(selectionInversion))
+    {
+      if let numberOfRows = self.atomOutlineView?.numberOfRows
+      {
+        return numberOfRows >= 1
+      }
+      return false
+    }
+    
     if (menuItem.action == #selector(visibilityMatchSelection))
     {
       if let numberOfSelectedRows = self.atomOutlineView?.selectedRowIndexes.count
