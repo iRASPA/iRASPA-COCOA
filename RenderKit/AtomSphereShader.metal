@@ -45,9 +45,18 @@ vertex AtomSphereVertexShaderOut AtomSphereVertexShader(const device InPerVertex
   
   float4 scale = structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+  if (structureUniforms.colorAtomsWithBondColor)
+  {
+    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
+    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
+    vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  }
+  else
+  {
+    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
+    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
+    vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+  }
   
 
   vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * vertices[vid].normal).xyz;
@@ -168,9 +177,19 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterOrthographicVertexSha
   AtomSphereImposterVertexShaderOut vert;
   
   float4 scale = structureUniforms.atomScaleFactor * positions[iid].scale;
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+  
+  if (structureUniforms.colorAtomsWithBondColor)
+  {
+    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
+    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
+    vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  }
+  else
+  {
+    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
+    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
+    vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+  }
   
   vert.N = float3(0,0,1);
   vert.instancePosition = positions[iid].position;
@@ -312,10 +331,19 @@ vertex AtomSphereImposterVertexShaderOut AtomSphereImposterPerspectiveVertexShad
   AtomSphereImposterVertexShaderOut vert;
   
   float4 scale = structureUniforms.atomScaleFactor * positions[iid].scale;
-  vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
-  vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
-  vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
-
+  
+  if (structureUniforms.colorAtomsWithBondColor)
+  {
+    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
+    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.bondDiffuseColor;
+    vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
+  }
+  else
+  {
+    vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
+    vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
+    vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
+  }
   
   vert.N = float3(0,0,1);
   vert.instancePosition = positions[iid].position;

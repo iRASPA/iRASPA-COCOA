@@ -162,6 +162,7 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var atomSaturation: Double {get}
   var atomValue: Double {get}
   
+  var colorAtomsWithBondColor: Bool {get}
   var atomScaleFactor: Double {get}
   var atomAmbientOcclusion: Bool {get}
   var atomAmbientOcclusionPatchNumber: Int {get set}

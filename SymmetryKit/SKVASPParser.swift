@@ -269,9 +269,6 @@ public final class SKVASPParser: SKParser, ProgressReporting
         scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
       }
     }
-    debugPrint("addFrameToStructure VASP \(currentMovie), \(currentFrame) \(atoms.count) \(cell)")
   }
-  
-  
 }
 

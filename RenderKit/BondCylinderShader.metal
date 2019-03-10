@@ -81,9 +81,9 @@ vertex InternalBondVertexShaderOut BondCylinderVertexShader(const device InPerVe
   vert.mix.w = scale.x/scale.z;
   
   
-  scale.x = 0.15*structureUniforms.bondScaling;
+  scale.x = structureUniforms.bondScaling;
   scale.y = bondLength;
-  scale.z = 0.15*structureUniforms.bondScaling;
+  scale.z = structureUniforms.bondScaling;
   scale.w = 1.0;
   
   dr = normalize(dr);
@@ -224,9 +224,9 @@ vertex ExternalBondVertexShaderOut ExternalBondCylinderVertexShader(const device
   vert.mix.w = scale.x/scale.z;
   
   
-  scale.x = 0.15*structureUniforms.bondScaling;
+  scale.x = structureUniforms.bondScaling;
   scale.y = bondLength;
-  scale.z = 0.15*structureUniforms.bondScaling;
+  scale.z = structureUniforms.bondScaling;
   scale.w = 1.0;
   
   dr = normalize(dr);
@@ -374,9 +374,9 @@ vertex StencilExternalBondVertexShaderOut StencilExternalBondCylinderVertexShade
   float3 dr = (pos1 - pos2).xyz;
   float bondLength = length(dr);
   
-  scale.x = 0.15*structureUniforms.bondScaling;
+  scale.x = structureUniforms.bondScaling;
   scale.y = bondLength;
-  scale.z = 0.15*structureUniforms.bondScaling;
+  scale.z = structureUniforms.bondScaling;
   scale.w = 1.0;
   
   dr = normalize(dr);
@@ -580,7 +580,7 @@ vertex LicoriceSphereVertexShaderOut LicoriceSphereVertexShader(const device InP
 {
   LicoriceSphereVertexShaderOut vert;
   
-  float4 scale = float4(0.15*structureUniforms.bondScaling,0.15*structureUniforms.bondScaling,0.15*structureUniforms.bondScaling,1.0);
+  float4 scale = float4(structureUniforms.bondScaling,structureUniforms.bondScaling,structureUniforms.bondScaling,1.0);
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
   
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
@@ -689,7 +689,7 @@ vertex AtomSphereImposterVertexShaderOut LicoriceSphereImposterOrthographicVerte
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = float4(0.15*structureUniforms.bondScaling,0.15*structureUniforms.bondScaling,0.15*structureUniforms.bondScaling,1.0);
+  float4 scale = float4(structureUniforms.bondScaling,structureUniforms.bondScaling,structureUniforms.bondScaling,1.0);
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
   if (structureUniforms.bondColorMode == 0)
@@ -814,7 +814,7 @@ vertex AtomSphereImposterVertexShaderOut LicoriceSphereImposterPerspectiveVertex
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = float4(0.15*structureUniforms.bondScaling,0.15*structureUniforms.bondScaling,0.15*structureUniforms.bondScaling,1.0);
+  float4 scale = float4(structureUniforms.bondScaling,structureUniforms.bondScaling,structureUniforms.bondScaling,1.0);
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.bondAmbientColor;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.bondSpecularColor;
   if (structureUniforms.bondColorMode == 0)
