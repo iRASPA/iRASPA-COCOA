@@ -629,7 +629,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       case .sticks_and_balls:
         asymmetricAtom.drawRadius = PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
       case .unity:
-        asymmetricAtom.drawRadius = 0.15 * bondScaleFactor
+        asymmetricAtom.drawRadius = bondScaleFactor
       }
     }
   }
@@ -719,7 +719,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
         
         drawBonds = true
         bondColorMode = .uniform
-        bondScaleFactor = 1.0
+        bondScaleFactor = 0.15
         bondAmbientColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         bondDiffuseColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
         bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -770,6 +770,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
         
         self.setRepresentationType(type: .vdw)
       case .licorice:
+        atomHue = 1.0
+        atomSaturation = 1.0
+        atomValue = 1.0
         atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         atomAmbientIntensity = 0.1
@@ -777,6 +780,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
         atomSpecularIntensity = 1.0
         atomShininess = 4.0
         drawAtoms = true
+        atomHDR = true
+        atomHDRBloomLevel = 1.0
+        atomHDRExposure = 1.5
         atomScaleFactor = 1.0
         atomForceFieldIdentifier = "Default"
         atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
@@ -785,7 +791,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
         
         drawBonds = true
         bondColorMode = .split
-        bondScaleFactor = 1.5
+        bondScaleFactor = 0.25
         bondAmbientColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         bondDiffuseColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
         bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -834,7 +840,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       case .sticks_and_balls:
         asymmetricAtom.drawRadius = PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
       case .unity:
-        asymmetricAtom.drawRadius = 0.15 * bondScaleFactor
+        asymmetricAtom.drawRadius = bondScaleFactor
       }
     }
   }
@@ -881,13 +887,14 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
        (atomDiffuseIntensity ==~ 1.0) &&
        (atomSpecularIntensity ==~ 1.0) &&
        (atomShininess ==~ 6.0) &&
+       (atomScaleFactor ==~ 0.7) &&
        atomRepresentationType == .sticks_and_balls &&
        atomForceFieldIdentifier == "Default" &&
        atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
        atomColorOrder == .elementOnly &&
        drawBonds == true &&
        bondColorMode == .uniform &&
-       (bondScaleFactor ==~ 1.0) &&
+       (bondScaleFactor ==~ 0.15) &&
        bondAmbientOcclusion == false &&
        bondHDR == true &&
        (bondHDRExposure ==~ 1.5) &&
@@ -946,11 +953,16 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       self.atomRepresentationStyle = .fancy
     }
     else if drawAtoms == true &&
+      (atomHue ==~ 1.0) &&
+      (atomSaturation ==~ 1.0) &&
+      (atomValue ==~ 1.0) &&
       atomRepresentationType == .unity &&
       atomForceFieldIdentifier == "Default" &&
       atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
       atomColorOrder == .elementOnly &&
       (atomScaleFactor ==~ 1.0) &&
+      atomHDR == true &&
+      (atomHDRExposure ==~ 1.5) &&
       atomAmbientOcclusion == false &&
       (atomAmbientIntensity ==~ 0.1) &&
       (atomDiffuseIntensity ==~ 1.0) &&
@@ -958,7 +970,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       (atomShininess ==~ 4.0) &&
       drawBonds == true &&
       bondColorMode == .split &&
-      (bondScaleFactor ==~ 1.5) &&
+      (bondScaleFactor ==~ 0.25) &&
       bondAmbientOcclusion == false &&
       bondHDR == true &&
       (bondHDRExposure ==~ 1.5) &&
@@ -1029,8 +1041,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
           atomScaleFactor = 1.0
           asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
       case .unity:
-        atomScaleFactor = 1.0
-        asymmetricAtoms.forEach{$0.drawRadius = 0.15 * bondScaleFactor}
+        asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
       }
     }
   }
@@ -1046,7 +1057,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     case .sticks_and_balls:
       return PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
     case .unity:
-      return 0.15 * bondScaleFactor
+      return bondScaleFactor
     }
   }
   
@@ -2887,10 +2898,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     
     super.init()
     
-    if(self.atomRepresentationStyle == RepresentationStyle.licorice)
-    {
-      self.setRepresentationStyle(style: RepresentationStyle.licorice)
-    }
+    self.setRepresentationStyle(style: self.atomRepresentationStyle)
   }
   
 }

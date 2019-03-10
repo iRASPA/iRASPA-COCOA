@@ -67,7 +67,14 @@ extension BondVisualAppearanceViewer
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondScaleFactor = newValue ?? 1.0}
+      self.structureViewerStructures.forEach{
+        $0.bondScaleFactor = newValue ?? 1.0
+        if($0.atomRepresentationType == .unity)
+        {
+          let asymmetricAtoms: [SKAsymmetricAtom] = $0.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+          asymmetricAtoms.forEach{$0.drawRadius = newValue ?? 1.0}
+        }
+      }
     }
   }
   
@@ -311,7 +318,14 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondScaleFactor = newValue ?? 1.0}
+      self.structureViewerStructures.forEach{
+        $0.bondScaleFactor = newValue ?? 1.0
+        if($0.atomRepresentationType == .unity)
+        {
+          let asymmetricAtoms: [SKAsymmetricAtom] = $0.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+          asymmetricAtoms.forEach{$0.drawRadius = newValue ?? 1.0}
+        }
+      }
     }
   }
   

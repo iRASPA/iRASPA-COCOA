@@ -109,7 +109,7 @@ public struct RKStructureUniforms
   public var atomAnnotationTextScaling: Float = 1.0
   public var bondAnnotationTextScaling: Float = 1.0
   public var selectionScaling: Float = 1.25
-  public var pad: Int32 = 0
+  public var colorAtomsWithBondColor: Bool = false
   
   //----------------------------------------  512 bytes boundary
   
@@ -151,6 +151,8 @@ public struct RKStructureUniforms
     if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource
     {
       let hsv: double4 = double4(x: structure.atomHue, y: structure.atomSaturation, z: structure.atomValue, w: 0.0)
+      
+      self.colorAtomsWithBondColor = structure.colorAtomsWithBondColor
     
       self.atomScaleFactor = GLfloat(structure.atomScaleFactor)
       self.changeHueSaturationValue = float4(Double4: hsv)

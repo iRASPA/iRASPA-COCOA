@@ -50,6 +50,11 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
     reComputeBoundingBox()
   }
   
+  public var colorAtomsWithBondColor: Bool
+  {
+    return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
+  }
+  
   override var materialType: SKStructure.Kind
   {
     return .molecule

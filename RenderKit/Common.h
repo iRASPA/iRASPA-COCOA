@@ -229,7 +229,7 @@ typedef struct
   float atomAnnotationTextScaling;
   float bondAnnotationTextScaling;
   float selectionScaling;
-  bool pad;
+  bool colorAtomsWithBondColor;
   
   float4x4 transformationMatrix;
   float4x4 transformationNormalMatrix;

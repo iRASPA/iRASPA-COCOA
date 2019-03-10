@@ -1719,7 +1719,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           sliderBondScaling.isEnabled = false
           sliderBondScaling.minValue = 0.1
-          sliderBondScaling.maxValue = 2.0
+          sliderBondScaling.maxValue = 1.0
           if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
           {
             sliderBondScaling.isEnabled = enabled
@@ -5136,6 +5136,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadRenderData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
@@ -5156,6 +5157,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       self.updateOutlineView(identifiers: [self.bondsVisualAppearanceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadRenderData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.document?.updateChangeCount(.changeDone)

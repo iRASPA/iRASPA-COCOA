@@ -59,6 +59,11 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     reComputeBoundingBox()
   }
   
+  public var colorAtomsWithBondColor: Bool
+  {
+    return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
+  }
+  
   public override var clipAtomsAtUnitCell: Bool
   {
     return atomRepresentationType == .unity

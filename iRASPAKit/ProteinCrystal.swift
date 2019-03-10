@@ -58,6 +58,11 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
     reComputeBoundingBox()
   }
   
+  public var colorAtomsWithBondColor: Bool
+  {
+    return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
+  }
+  
   override var materialType: SKStructure.Kind
   {
     return .proteinCrystal

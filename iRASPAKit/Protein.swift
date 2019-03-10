@@ -56,6 +56,11 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     super.init(name: name)
   }
   
+  public var colorAtomsWithBondColor: Bool
+  {
+    return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
+  }
+  
   override var materialType: SKStructure.Kind
   {
     return .protein

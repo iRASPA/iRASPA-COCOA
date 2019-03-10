@@ -58,6 +58,11 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
     reComputeBoundingBox()
   }
   
+  public var colorAtomsWithBondColor: Bool
+  {
+    return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
+  }
+  
   override var materialType: SKStructure.Kind
   {
     return .molecularCrystal
