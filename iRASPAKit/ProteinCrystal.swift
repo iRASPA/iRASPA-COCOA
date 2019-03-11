@@ -1255,6 +1255,17 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
     return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
   }
   
+  public override func setSpaceGroup(number: Int) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let crystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    
+    crystal.spaceGroupHallNumber = number
+    
+    // set space group to P1 after removal of symmetry
+    return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
+  }
+  
   // MARK: -
   // MARK: Compute bonds
   
