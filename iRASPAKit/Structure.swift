@@ -2320,6 +2320,10 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   
   public var renderCanDrawAdsorptionSurface: Bool {return false}
   
+  public func setSpaceGroup(number: Int) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    return nil
+  }
   
   // MARK: -
   // MARK: Binary Encodable support

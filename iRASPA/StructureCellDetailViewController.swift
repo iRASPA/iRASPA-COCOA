@@ -3030,19 +3030,58 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   // MARK: Spacegroup
   // ===============================================================================================================================
   
+  // undo for large-changes: completely replace all atoms and bonds by new ones
+  func setStructureState(structure: Structure, cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)
+  {
+    if let document: iRASPADocument = self.windowController?.currentDocument,
+      let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let oldCell: SKCell = structure.cell
+      let oldSpaceGroup: SKSpacegroup = structure.spaceGroup
+      let oldAtoms: SKAtomTreeController = structure.atoms
+      let oldBonds: SKBondSetController = structure.bonds
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.setStructureState(structure: structure, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
+      
+      structure.cell = cell
+      structure.spaceGroup = spaceGroup
+      structure.atoms = atoms
+      structure.bonds = bonds
+      
+      structure.reComputeBoundingBox()
+      
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      structure.setRepresentationColorScheme(scheme: structure.atomColorSchemeIdentifier, colorSets: document.colorSets)
+      structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.cellOutlineView?.reloadData()
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.SpaceGroupShouldReloadNotification), object: self.windowController)
+    }
+  }
+  
   func setSpaceGroupHallNumber(structures: [Structure], number: [Int])
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      let oldValue = structures.map{$0.spaceGroupHallNumber!}
-      
       self.proxyProject?.representedObject.undoManager.setActionName(NSLocalizedString("Change space group", comment: "Change space group"))
-      self.proxyProject?.representedObject.undoManager.registerUndo(withTarget: self) {$0.setSpaceGroupHallNumber(structures: structures, number: oldValue)}
-      
+     
       for (index, structure) in structures.enumerated()
       {
-        structure.spaceGroupHallNumber = number[index]
+        if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.setSpaceGroup(number: number[index])
+        {
+          self.setStructureState(structure: structure, cell: state.cell, spaceGroup: state.spaceGroup, atoms: state.atoms, bonds: state.bonds)
+        }
       
         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
       }
@@ -3054,8 +3093,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      
-    
       self.updateOutlineView(identifiers: [self.symmetryCell])
     }
   }

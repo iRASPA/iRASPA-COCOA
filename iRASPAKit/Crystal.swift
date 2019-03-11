@@ -121,11 +121,6 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   public func copy(with zone: NSZone?) -> Any
   {
-    //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
-    //let data: Data = try! propertyListEncoder.encode(self)
-    //let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-    //let crystal: Crystal = try! propertyListDecoder.decode(Crystal.self, from: data)
-    
     let binaryEncoder: BinaryEncoder = BinaryEncoder()
     binaryEncoder.encode(self)
     let data: Data = Data(binaryEncoder.data)
@@ -1194,6 +1189,18 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     // set space group to P1 after removal of symmetry
     return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
   }
+  
+  public override func setSpaceGroup(number: Int) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+     // copy the structure for undo (via the atoms, and bonds-properties)
+    let crystal: Crystal =  self.copy() as! Crystal
+  
+    crystal.spaceGroupHallNumber = number
+    
+    // set space group to P1 after removal of symmetry
+    return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
+  }
+  
   
   public func primitive(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
