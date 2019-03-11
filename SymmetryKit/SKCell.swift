@@ -532,8 +532,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
     set(newValue)
     {
-      let multiplier: Double = newValue/self.a
-      self.unitCell = double3x3([multiplier * unitCell[0], unitCell[1], unitCell[2]])
+      let value: (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double) = self.latticeParameters
+      self.latticeParameters = (newValue, value.b, value.c, value.alpha, value.beta, value.gamma)
     }
   }
   
@@ -545,8 +545,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
     set(newValue)
     {
-      let multiplier: Double = newValue/self.b
-      self.unitCell = double3x3([unitCell[0], multiplier * unitCell[1], unitCell[2]])
+      let value: (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double) = self.latticeParameters
+      self.latticeParameters = (value.a, newValue, value.c, value.alpha, value.beta, value.gamma)
     }
   }
   
@@ -558,8 +558,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
     set(newValue)
     {
-      let multiplier: Double = newValue/self.c
-      self.unitCell = double3x3([unitCell[0], unitCell[1], multiplier * unitCell[2]])
+      let value: (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double) = self.latticeParameters
+      self.latticeParameters = (value.a, value.b, newValue, value.alpha, value.beta, value.gamma)
     }
   }
   
@@ -576,12 +576,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
     set(newValue)
     {
-      let beta: Double = self.beta
-      let gamma: Double = self.gamma
-      let temp: Double = (cos(newValue) - cos(gamma) * cos(beta)) / sin(gamma)
-      
-      let v3: double3 = double3(x: c * cos(beta), y: c * temp, z: c * sqrt(1.0 - cos(beta)*cos(beta)-temp*temp))
-      unitCell = double3x3([unitCell[0], unitCell[1], v3])
+      let value: (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double) = self.latticeParameters
+      self.latticeParameters = (value.a, value.b, value.c, newValue, value.beta, value.gamma)
     }
   }
   
@@ -598,12 +594,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
     set(newValue)
     {
-      let alpha: Double = self.alpha
-      let gamma: Double = self.gamma
-      let temp: Double = (cos(alpha) - cos(gamma) * cos(newValue)) / sin(gamma)
-      
-      let v3: double3 = double3(x: c * cos(newValue), y: c * temp, z: c * sqrt(1.0 - cos(newValue)*cos(newValue)-temp*temp))
-      self.unitCell = double3x3([unitCell[0], unitCell[1], v3])
+      let value: (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double) = self.latticeParameters
+      self.latticeParameters = (value.a, value.b, value.c, value.alpha, newValue, value.gamma)
     }
   }
   
@@ -620,27 +612,48 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
     set(newValue)
     {
-      let temp: Double = (cos(alpha) - cos(newValue) * cos(beta)) / sin(newValue)
-      
-      let v2: double3 = double3(x: b * cos(newValue), y: b * sin(newValue), z: 0.0)
-      let v3: double3 = double3(x: c * cos(beta), y: c * temp, z: c * sqrt(1.0 - cos(beta)*cos(beta)-temp*temp))
-      self.unitCell = double3x3([unitCell[0], v2, v3])
+      let value: (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double) = self.latticeParameters
+      self.latticeParameters = (value.a, value.b, value.c, value.alpha, value.beta, newValue)
     }
   }
   
   public var latticeParameters: (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double)
   {
-    let column1: double3 = unitCell[0]
-    let column2: double3 = unitCell[1]
-    let column3: double3 = unitCell[2]
-    let length1: Double = length(column1)
-    let length2: Double = length(column2)
-    let length3: Double = length(column3)
+    get
+    {
+      let column1: double3 = unitCell[0]
+      let column2: double3 = unitCell[1]
+      let column3: double3 = unitCell[2]
+      let length1: Double = length(column1)
+      let length2: Double = length(column2)
+      let length3: Double = length(column3)
     
-    return (length1,length2,length3,
-            acos(dot(column2, column3) / (length2 * length3)),
-            acos(dot(column1, column3) / (length1 * length3)),
-            acos(dot(column1, column2) / (length1 * length2)))
+      return (length1,length2,length3,
+              acos(dot(column2, column3) / (length2 * length3)),
+              acos(dot(column1, column3) / (length1 * length3)),
+              acos(dot(column1, column2) / (length1 * length2)))
+    }
+    set(newValue)
+    {
+      let temp: Double = (cos(newValue.alpha) - cos(newValue.gamma) * cos(newValue.beta)) / sin(newValue.gamma)
+      
+      let v1: double3 = double3(x: newValue.a, y: 0.0, z: 0.0)
+      let v2: double3 = double3(x: newValue.b * cos(newValue.gamma), y: newValue.b * sin(newValue.gamma), z: 0.0)
+      let v3: double3 = double3(x: newValue.c * cos(newValue.beta), y: newValue.c * temp, z: newValue.c * sqrt(1.0 - cos(newValue.beta)*cos(newValue.beta)-temp*temp))
+      unitCell = double3x3([v1, v2, v3])
+      inverseUnitCell = unitCell.inverse
+      fullCell = unitCell
+      
+      let dx = maximumReplica.x - minimumReplica.x + 1
+      let dy = maximumReplica.y - minimumReplica.y + 1
+      let dz = maximumReplica.z - minimumReplica.z + 1
+      
+      fullCell[0][0] *= Double(dx);  fullCell[1][0] *= Double(dy);  fullCell[2][0] *= Double(dz);
+      fullCell[0][1] *= Double(dx);  fullCell[1][1] *= Double(dy);  fullCell[2][1] *= Double(dz);
+      fullCell[0][2] *= Double(dx);  fullCell[1][2] *= Double(dy);  fullCell[2][2] *= Double(dz);
+      
+      inverseFullCell = fullCell.inverse
+    }
   }
   
   public var orthorhombic: Bool
