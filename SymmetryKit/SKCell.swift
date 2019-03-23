@@ -46,7 +46,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   
   public var boundingBox: SKBoundingBox = SKBoundingBox()
   
-  public var origin: double3 = double3(x: 0.0, y: 0.0, z: 0.0)
+  public var origin: double3 = double3(x: 0.0, y: 0.0, z: 0.0) // obsolete
   
   public var precision: Double = 1e-4
   
@@ -653,6 +653,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
       fullCell[0][2] *= Double(dx);  fullCell[1][2] *= Double(dy);  fullCell[2][2] *= Double(dz);
       
       inverseFullCell = fullCell.inverse
+      
+      self.boundingBox = self.enclosingBoundingBox
     }
   }
   
