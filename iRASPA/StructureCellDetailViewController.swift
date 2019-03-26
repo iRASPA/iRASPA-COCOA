@@ -65,9 +65,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   let simulationCellPropertiesCell: [NSString: AnyObject] = [NSString(string: "cellType") :NSString(string: "SimulationCellPropertiesCell")]
   let simulationCellReplicaCell: [NSString: AnyObject] = [NSString(string: "cellType") :NSString(string: "SimulationCellReplicaCell")]
   let simulationCellModelMatrix: [NSString: AnyObject] = [NSString(string: "cellType") :NSString(string: "SimulationCellModelMatrix")]
-  
+  let simulationCellContentTransform: [NSString: AnyObject] = [NSString(string: "cellType") :NSString(string: "SimulationCellContentTransformCell")]
   let structuralPropertiesCell: [NSString: AnyObject] = [NSString(string: "cellType") : NSString(string: "StructuralPropertiesCell")]
-  
   let symmetryCell: [NSString: AnyObject] = [NSString(string: "cellType") : NSString(string: "SymmetryCell")]
   
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
@@ -92,7 +91,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
                                       simulationCellReplicaCell,
                                       simulationCellModelMatrix] as AnyObject]
     
-    
+    let cellContentTransformDictionary: NSDictionary =
+      [NSString(string: "cellType"):NSString(string: "SimulationCellContentTransformGroup") as AnyObject,
+       NSString(string: "children"): [simulationCellContentTransform] as AnyObject]
     
     let structuralPropertiesDictionary: NSDictionary =
       [NSString(string: "cellType"):NSString(string: "StructuralPropertiesGroup") as AnyObject,
@@ -102,7 +103,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       [NSString(string: "cellType"):NSString(string: "SymmetryPropertiesGroup") as AnyObject,
        NSString(string: "children"): [symmetryCell] as AnyObject]
     
-    self.list = [cellStructureDictionary, structuralPropertiesDictionary, symmetryDictionary]
+    self.list = [cellStructureDictionary, cellContentTransformDictionary, structuralPropertiesDictionary, symmetryDictionary]
     
     self.heights =
     [
@@ -110,6 +111,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       "SimulationCellBoundingBoxCell" : 135.0,
       "SimulationCellPropertiesCell" : 247.0,
       "SimulationCellReplicaCell" : 78.0,
+      "SimulationCellContentTransformGroup" : 17.0,
+      "SimulationCellContentTransformCell" : 150.0,
       "StructuralPropertiesGroup" : 17.0,
       "SimulationCellModelMatrix" : 189.0,
       "SymmetryPropertiesGroup" : 17.0,
@@ -1054,6 +1057,113 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
               textFieldEulerAngleX.stringValue = "Multiple Values"
               textFieldEulerAngleY.stringValue = "Multiple Values"
               textFieldEulerAngleZ.stringValue = "Multiple Values"
+            }
+          }
+        }
+      case "SimulationCellContentTransformCell":
+        if let button: NSButton = view.viewWithTag(120) as? NSButton
+        {
+          button.isEnabled = false
+          if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+          {
+            button.isEnabled = enabled
+            if let renderContentFlipX: Bool = representedStructure.renderContentFlipX
+            {
+              button.allowsMixedState = false
+              button.state = renderContentFlipX ? NSControl.StateValue.on : NSControl.StateValue.off
+            }
+            else
+            {
+              button.allowsMixedState = true
+              button.state = NSControl.StateValue.mixed
+            }
+          }
+        }
+        if let button: NSButton = view.viewWithTag(121) as? NSButton
+        {
+          button.isEnabled = false
+          if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+          {
+            button.isEnabled = enabled
+            if let renderContentFlipY: Bool = representedStructure.renderContentFlipY
+            {
+              button.allowsMixedState = false
+              button.state = renderContentFlipY ? NSControl.StateValue.on : NSControl.StateValue.off
+            }
+            else
+            {
+              button.allowsMixedState = true
+              button.state = NSControl.StateValue.mixed
+            }
+          }
+        }
+        if let button: NSButton = view.viewWithTag(122) as? NSButton
+        {
+          button.isEnabled = false
+          if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+          {
+            button.isEnabled = enabled
+            if let renderContentFlipZ: Bool = representedStructure.renderContentFlipZ
+            {
+              button.allowsMixedState = false
+              button.state = renderContentFlipZ ? NSControl.StateValue.on : NSControl.StateValue.off
+            }
+            else
+            {
+              button.allowsMixedState = true
+              button.state = NSControl.StateValue.mixed
+            }
+          }
+        }
+       
+        if let textFieldCenterShiftX: NSTextField = view.viewWithTag(123) as? NSTextField
+        {
+          textFieldCenterShiftX.isEditable = false
+          textFieldCenterShiftX.stringValue = "test"
+          if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+          {
+            textFieldCenterShiftX.isEditable = enabled
+            if let renderCenterShiftX: Double = representedStructure.renderContentShiftX
+            {
+              textFieldCenterShiftX.doubleValue =  renderCenterShiftX
+            }
+            else
+            {
+              textFieldCenterShiftX.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let textFieldCenterShiftY: NSTextField = view.viewWithTag(124) as? NSTextField
+        {
+          textFieldCenterShiftY.isEditable = false
+          textFieldCenterShiftY.stringValue = "test"
+          if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+          {
+            textFieldCenterShiftY.isEditable = enabled
+            if let renderCenterShiftY: Double = representedStructure.renderContentShiftY
+            {
+              textFieldCenterShiftY.doubleValue =  renderCenterShiftY
+            }
+            else
+            {
+              textFieldCenterShiftY.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let textFieldCenterShiftZ: NSTextField = view.viewWithTag(125) as? NSTextField
+        {
+          textFieldCenterShiftZ.isEditable = false
+          textFieldCenterShiftZ.stringValue = "test"
+          if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+          {
+            textFieldCenterShiftZ.isEditable = enabled
+            if let renderCenterShiftZ: Double = representedStructure.renderContentShiftZ
+            {
+              textFieldCenterShiftZ.doubleValue =  renderCenterShiftZ
+            }
+            else
+            {
+              textFieldCenterShiftZ.stringValue = "Multiple Values"
             }
           }
         }
@@ -2449,6 +2559,334 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.proxyProject?.representedObject.isEdited = true
     }
   }
+  
+  // MARK: Content shift
+  // ===============================================================================================================================
+  
+  @IBAction func changedContentShiftX(_ sender: NSTextField)
+  {
+    let newValue: Double = sender.doubleValue
+    
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [CellViewer] = self.representedObject as? [CellViewer]
+    {
+      structure.renderContentShiftX = newValue
+      
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperCellContentShiftX(_ sender: NSStepper)
+  {
+    let deltaValue: Double = sender.doubleValue
+    
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
+       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       let renderContentShiftX: Double = structure.renderContentShiftX
+    {
+      let newValue: Double = renderContentShiftX + deltaValue * 0.01
+      
+      structure.renderContentShiftX = newValue
+        
+      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+      {
+        structure.reComputeBoundingBox()
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+        project.checkValidatyOfMeasurementPoints()
+      }
+        
+  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+        
+      self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+        
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+    }
+    
+    sender.doubleValue = 0.0
+  }
+  
+  @IBAction func changedContentShiftY(_ sender: NSTextField)
+  {
+    let newValue: Double = sender.doubleValue
+    
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [CellViewer] = self.representedObject as? [CellViewer]
+    {
+      structure.renderContentShiftY = newValue
+      
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperCellContentShiftY(_ sender: NSStepper)
+  {
+    let deltaValue: Double = sender.doubleValue
+    
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
+      var structure: [CellViewer] = self.representedObject as? [CellViewer],
+      let renderContentShiftY: Double = structure.renderContentShiftY
+    {
+      let newValue: Double = renderContentShiftY + deltaValue * 0.01
+      
+      structure.renderContentShiftY = newValue
+      
+      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+      {
+        structure.reComputeBoundingBox()
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+        project.checkValidatyOfMeasurementPoints()
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+    }
+    
+    sender.doubleValue = 0.0
+  }
+  
+  @IBAction func changedContentShiftZ(_ sender: NSTextField)
+  {
+    let newValue: Double = sender.doubleValue
+    
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
+      var structure: [CellViewer] = self.representedObject as? [CellViewer]
+    {
+      structure.renderContentShiftZ = newValue
+      
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      
+      if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperCellContentShiftZ(_ sender: NSStepper)
+  {
+    let deltaValue: Double = sender.doubleValue
+    
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
+      var structure: [CellViewer] = self.representedObject as? [CellViewer],
+      let renderContentShiftZ: Double = structure.renderContentShiftZ
+    {
+      let newValue: Double = renderContentShiftZ + deltaValue * 0.01
+      
+      structure.renderContentShiftZ = newValue
+      
+      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+      {
+        structure.reComputeBoundingBox()
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+        project.checkValidatyOfMeasurementPoints()
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+    }
+    
+    sender.doubleValue = 0.0
+  }
+  
+  @IBAction func toggleFlipContentX(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var structure: [CellViewer] = representedObject as? [CellViewer]
+    {
+      sender.allowsMixedState = false
+      structure.renderContentFlipX = (sender.state == NSControl.StateValue.on)
+      
+      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+      {
+        structure.reComputeBoundingBox()
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+        project.checkValidatyOfMeasurementPoints()
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+    }
+  }
+  
+  @IBAction func toggleFlipContentY(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var structure: [CellViewer] = representedObject as? [CellViewer]
+    {
+      sender.allowsMixedState = false
+      structure.renderContentFlipY = (sender.state == NSControl.StateValue.on)
+      
+      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+      {
+        structure.reComputeBoundingBox()
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+        project.checkValidatyOfMeasurementPoints()
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+    }
+  }
+  
+  
+  @IBAction func toggleFlipContentZ(_ sender: NSButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var structure: [CellViewer] = representedObject as? [CellViewer]
+    {
+      sender.allowsMixedState = false
+      structure.renderContentFlipZ = (sender.state == NSControl.StateValue.on)
+      
+      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+      {
+        structure.reComputeBoundingBox()
+        project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+        project.checkValidatyOfMeasurementPoints()
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+    }
+  }
+  
+  
+  // undo for large-changes: completely replace all atoms and bonds by new ones
+  func applyCellContentShift(structure: Structure, cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)
+  {
+    if let document: iRASPADocument = self.windowController?.currentDocument,
+      let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let oldCell: SKCell = structure.cell
+      let oldSpaceGroup: SKSpacegroup = structure.spaceGroup
+      let oldAtoms: SKAtomTreeController = structure.atoms
+      let oldBonds: SKBondSetController = structure.bonds
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.applyCellContentShift(structure: structure, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
+      
+      structure.cell = cell
+      structure.spaceGroup = spaceGroup
+      structure.atoms = atoms
+      structure.bonds = bonds
+      
+      structure.reComputeBoundingBox()
+      
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      structure.setRepresentationColorScheme(scheme: structure.atomColorSchemeIdentifier, colorSets: document.colorSets)
+      structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.cellOutlineView?.reloadData()
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.SpaceGroupShouldReloadNotification), object: self.windowController)
+    }
+  }
+  
+  
+ 
+  
+  @IBAction func applyContentShift(_ sender: NSButton)
+  {
+    if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
+      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    {
+      self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allFrames)
+      for (index, structure) in cellViewer.structureViewerStructures.enumerated()
+      {
+        //cellViewer.applyContentShift()
+        if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.applyCellContentShift()
+        {
+          self.applyCellContentShift(structure: structure, cell: state.cell, spaceGroup: state.spaceGroup, atoms: state.atoms, bonds: state.bonds)
+        }
+      }
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.simulationCellContentTransform])
+    }
+  }
+  
   
   // MARK: Rotation
   // ===============================================================================================================================

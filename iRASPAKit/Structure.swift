@@ -2325,6 +2325,58 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     return nil
   }
   
+  public func applyCellContentShift() -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+      
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+      
+      
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let atomCopies: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
+      
+    let spaceGroup = SKSpacegroup(HallNumber: 1)
+    var superCell = SKCell(superCell: self.cell)
+    superCell.contentShift = double3(0.0,0.0,0.0)
+      
+    let superCellAtoms: SKAtomTreeController = SKAtomTreeController()
+      
+    for k1 in minimumReplicaX...maximumReplicaX
+    {
+      for k2 in minimumReplicaY...maximumReplicaY
+      {
+        for k3 in minimumReplicaZ...maximumReplicaZ
+        {
+          for atom in atomCopies
+          {
+            let CartesianPosition: double3 = atom.position + cell.unitCell * double3(Double(k1),Double(k2),Double(k3)) + self.cell.contentShift
+            let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(atom: atom.asymmetricParentAtom)
+            newAtom.position = CartesianPosition
+              
+            let copy: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: newAtom, position: CartesianPosition)
+            copy.type = .copy
+            newAtom.copies.append(copy)
+              
+            let node = SKAtomTreeNode(representedObject: newAtom)
+            superCellAtoms.appendNode(node, atArrangedObjectIndexPath: [])
+          }
+        }
+      }
+    }
+      
+    self.tag(atoms: superCellAtoms)
+      
+    let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+      
+    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: superCell, atomList: atomList))
+      
+    return (cell: superCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
+  }
+  
   // MARK: -
   // MARK: Binary Encodable support
   

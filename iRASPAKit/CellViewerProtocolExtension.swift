@@ -565,6 +565,96 @@ extension CellViewer
     }
   }
   
+  public var renderContentShiftX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentShift.x = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentShiftY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentShift.y = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentShiftZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentShift.z = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentFlipX: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentFlip.x = newValue ?? false
+      }
+    }
+  }
+  
+  public var renderContentFlipY: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentFlip.y = newValue ?? false
+      }
+    }
+  }
+  
+  public var renderContentFlipZ: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentFlip.z = newValue ?? false
+      }
+    }
+  }
+  
   public var renderOrientation: simd_quatd?
   {
     get
@@ -1355,6 +1445,97 @@ extension Array where Iterator.Element == CellViewer
       }
     }
   }
+  
+  public var renderContentShiftX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentShift.x = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentShiftY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentShift.y = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentShiftZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentShift.z = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentFlipX: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentFlip.x = newValue ?? false
+      }
+    }
+  }
+  
+  public var renderContentFlipY: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentFlip.y = newValue ?? false
+      }
+    }
+  }
+  
+  public var renderContentFlipZ: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{
+        $0.cell.contentFlip.z = newValue ?? false
+      }
+    }
+  }
+  
   
   public var renderOrientation: simd_quatd?
   {

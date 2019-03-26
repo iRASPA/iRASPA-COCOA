@@ -386,7 +386,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       
       for copy in copies
       {
-        let cartesianPosition: double3 = copy.position
+        let cartesianPosition: double3 = copy.position + self.cell.contentShift
         copy.asymmetricIndex = asymetricIndex
         
         //let w: Double = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
@@ -423,7 +423,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       for copy in copies
       {
-        let cartesianPosition: double3 = copy.position + asymetricAtom.displacement
+        let cartesianPosition: double3 = copy.position + asymetricAtom.displacement + self.cell.contentShift
         
         //let w: Double = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
         let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
@@ -454,7 +454,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     for atomNode in atomNodes
     {
       let atom = atomNode.representedObject
-      let pos: double3 = atom.position
+      let pos: double3 = atom.position + self.cell.contentShift
         
       let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
       let w: Double = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
@@ -504,8 +504,8 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       {
         if bond.boundaryType == .internal
         {
-          let pos1: double3 = bond.atom1.position
-          let pos2: double3 = bond.atom2.position
+          let pos1: double3 = bond.atom1.position + self.cell.contentShift
+          let pos2: double3 = bond.atom2.position + self.cell.contentShift
           let bondLength: Double = length(pos2-pos1)
           
           let color1: NSColor = bond.atom1.asymmetricParentAtom.color
