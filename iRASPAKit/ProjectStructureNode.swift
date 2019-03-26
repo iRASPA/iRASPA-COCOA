@@ -376,7 +376,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
       
       if let structure: RKRenderAtomSource = atomInfo.structure as? RKRenderAtomSource
       {
-        let position = structure.CartesianPosition(for: atomInfo.copy.position, replicaPosition: atomInfo.replicaPosition)
+        let position = structure.CartesianPosition(for: atomInfo.copy.position + structure.cell.contentShift, replicaPosition: atomInfo.replicaPosition)
         let atomPosition: float4 = float4(x: Float(position.x), y: Float(position.y), z: Float(position.z), w: Float(w))
       
         let radius: Double = atomInfo.copy.asymmetricParentAtom.drawRadius

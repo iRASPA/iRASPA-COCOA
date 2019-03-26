@@ -72,6 +72,16 @@ public extension double3
 
 public extension double3
 {
+  public static func flip(v: double3, flip: Bool3, boundary: double3) -> double3
+  {
+    return double3(flip.x ? boundary.x - v.x : v.x,
+                   flip.y ? boundary.y - v.y : v.y,
+                   flip.z ? boundary.z - v.z : v.z)
+  }
+}
+
+public extension double3
+{
   public static func randomVectorOnUnitSphere() -> double3
   {
     var ran1,ran2,ranh,ransq: Double

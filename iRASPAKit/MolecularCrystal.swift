@@ -602,7 +602,7 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
           {
             for k3 in minimumReplicaZ...maximumReplicaZ
             {
-              let cartesianPosition: double3 = pos + cell.unitCell * double3(x: Double(k1), y: Double(k2), z: Double(k3))
+              let cartesianPosition: double3 = pos + cell.unitCell * double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
               
               let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
               let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
@@ -651,7 +651,7 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       for copy in copies
       {
-        let pos: double3 = copy.position + asymetricAtom.displacement
+        let pos: double3 = copy.position + asymetricAtom.displacement + self.cell.contentShift
         
         for k1 in minimumReplicaX...maximumReplicaX
         {
@@ -773,7 +773,7 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
           {
             let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
             
-            let cartesianPosition: double3 = pos + cell.unitCell * double3(x: Double(k1), y: Double(k2), z: Double(k3))
+            let cartesianPosition: double3 = pos + cell.unitCell * double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
             
             let w: Double = (atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
             let position: double4 = rotationMatrix * double4(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: w)
@@ -809,8 +809,8 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
           {
             for k3 in minimumReplicaZ...maximumReplicaZ
             {
-              let pos1: double3 = bond.atom1.position + cell.unitCell * double3(x: Double(k1), y: Double(k2), z: Double(k3))
-              let pos2: double3 = bond.atom2.position + cell.unitCell * double3(x: Double(k1), y: Double(k2), z: Double(k3))
+              let pos1: double3 = bond.atom1.position + cell.unitCell * double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+              let pos2: double3 = bond.atom2.position + cell.unitCell * double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
               let bondLength: Double = length(pos2-pos1)
               
               let drawRadius1: Double = bond.atom1.asymmetricParentAtom.drawRadius / bondLength
@@ -972,9 +972,9 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
             var cylinder: RKBondVertex = RKBondVertex()
             
             let pos1: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3)))
-            cylinder.position1=float4(x: Float(pos1.x + self.cell.origin.x), y: Float(pos1.y + self.cell.origin.y), z: Float(pos1.z + self.cell.origin.z), w: 1.0)
+            cylinder.position1=float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
             let pos2: double3 = cell.convertToCartesian(double3(x: Double(k1+1), y: Double(k2), z: Double(k3)))
-            cylinder.position2=float4(x: Float(pos2.x + self.cell.origin.x), y: Float(pos2.y + self.cell.origin.y), z: Float(pos2.z + self.cell.origin.z), w: 1.0)
+            cylinder.position2=float4(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
             
             data.append(RKInPerInstanceAttributesBonds(position1: float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
                                                        position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
@@ -988,9 +988,9 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
             var cylinder: RKBondVertex = RKBondVertex()
             
             let pos1: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3)))
-            cylinder.position1=float4(x: Float(pos1.x + self.cell.origin.x), y: Float(pos1.y + self.cell.origin.y), z: Float(pos1.z + self.cell.origin.z), w: 1.0)
+            cylinder.position1=float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
             let pos2: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2+1), z: Double(k3)))
-            cylinder.position2=float4(x: Float(pos2.x + self.cell.origin.x), y: Float(pos2.y + self.cell.origin.y), z: Float(pos2.z + self.cell.origin.z), w: 1.0)
+            cylinder.position2=float4(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
             
             data.append(RKInPerInstanceAttributesBonds(position1: float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
                                                        position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
@@ -1004,9 +1004,9 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
             var cylinder: RKBondVertex = RKBondVertex()
             
             let pos1: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3)))
-            cylinder.position1=float4(x: Float(pos1.x + self.cell.origin.x), y: Float(pos1.y + self.cell.origin.y), z: Float(pos1.z + self.cell.origin.z), w: 1.0)
+            cylinder.position1=float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
             let pos2: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3+1)))
-            cylinder.position2=float4(x: Float(pos2.x + self.cell.origin.x), y: Float(pos2.y + self.cell.origin.y), z: Float(pos2.z + self.cell.origin.z), w: 1.0)
+            cylinder.position2=float4(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
             
             data.append(RKInPerInstanceAttributesBonds(position1: float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
                                                        position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
@@ -1278,10 +1278,65 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
-    //superCellAtoms.flattenedLeafNodes().flatMap{$0.representedObject}.forEach{atom in
-    //  let elementId: Int = atom.elementIdentifier
-    //  atom.bondDistanceCriteria = PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
-    //}
+    let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
+    
+    return (cell: newCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
+  }
+  
+  public override func applyCellContentShift() -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+    
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+    
+    
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let atomCopies: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    
+    let spaceGroup = SKSpacegroup(HallNumber: 1)
+    var newCell = SKCell(superCell: self.cell)
+    newCell.contentShift = double3(0.0,0.0,0.0)
+    
+    let dx: Int = Int(maximumReplicaX - minimumReplicaX)
+    let dy: Int = Int(maximumReplicaY - minimumReplicaY)
+    let dz: Int = Int(maximumReplicaZ - minimumReplicaZ)
+    
+    let superCellAtoms: SKAtomTreeController = SKAtomTreeController()
+    
+    for k1 in 0...dx
+    {
+      for k2 in 0...dy
+      {
+        for k3 in 0...dz
+        {
+          for atom in atomCopies
+          {
+            let pos: double3 =  fract(self.cell.inverseUnitCell * atom.position + self.cell.contentShift)
+            let fractionalPosition: double3 = double3(x: (pos.x + Double(k1)) / Double(dx + 1),
+                                                      y: (pos.y + Double(k2)) / Double(dy + 1),
+                                                      z: (pos.z + Double(k3)) / Double(dz + 1))
+            let CartesianPosition = newCell.unitCell * fractionalPosition
+            let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(atom: atom.asymmetricParentAtom)
+            newAtom.position = CartesianPosition
+            
+            let copy: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: newAtom, position: CartesianPosition)
+            copy.type = .copy
+            newAtom.copies.append(copy)
+            
+            let node = SKAtomTreeNode(representedObject: newAtom)
+            superCellAtoms.appendNode(node, atArrangedObjectIndexPath: [])
+          }
+        }
+      }
+    }
+    
+    self.tag(atoms: superCellAtoms)
+    
+    let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
     

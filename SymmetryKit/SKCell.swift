@@ -32,11 +32,12 @@
 import Foundation
 import BinaryCodable
 import simd
+import MathKit
 
 public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 3
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   
   public var zValue: Int = 1
   public var inverseUnitCell: double3x3 = double3x3()
@@ -46,7 +47,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   
   public var boundingBox: SKBoundingBox = SKBoundingBox()
   
-  public var origin: double3 = double3(x: 0.0, y: 0.0, z: 0.0) // obsolete
+  public var contentShift: double3 = double3(x: 0.0, y: 0.0, z: 0.0)
+  public var contentFlip: Bool3 = Bool3(false,false,false)
   
   public var precision: Double = 1e-4
   
@@ -89,7 +91,6 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   {
     didSet
     {
-      
       inverseUnitCell = unitCell.inverse
       fullCell = unitCell
       
@@ -161,7 +162,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     self.fullCell = cell.fullCell
     self.inverseFullCell = cell.inverseFullCell
     self.boundingBox = cell.boundingBox
-    self.origin = cell.origin
+    self.contentShift = cell.contentShift
   }
   
   public init(unitCell: double3x3)
@@ -266,7 +267,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     self.fullCell = try container.decode(double3x3.self)
     self.inverseFullCell = try container.decode(double3x3.self)
     self.boundingBox = try container.decode(SKBoundingBox.self)
-    self.origin = try container.decode(double3.self)
+    self.contentShift = try container.decode(double3.self)
     self.minimumReplica = try container.decode(int3.self)
     self.maximumReplica = try container.decode(int3.self)
     
@@ -842,9 +843,11 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     
     encoder.encode(boundingBox)
     
-    encoder.encode(origin)
+    encoder.encode(contentShift)
     
     encoder.encode(precision)
+    
+    encoder.encode(contentFlip)
   }
   
   public init(fromBinary decoder: BinaryDecoder) throws
@@ -867,9 +870,14 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     
     boundingBox = try decoder.decode(SKBoundingBox.self)
     
-    origin = try decoder.decode(double3.self)
+    contentShift = try decoder.decode(double3.self)
     
     precision = try decoder.decode(Double.self)
+    
+    if readVersionNumber >= 2 // introduced in version 2
+    {
+      contentFlip = try decoder.decode(Bool3.self)
+    }
   }
   
 }
