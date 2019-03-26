@@ -267,7 +267,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       // also remove scene if the removal of the node would make it empty
       for scene in project.sceneList.scenes
       {
-        if let index: Int = project.sceneList.scenes.index(of: scene)
+        if let index: Int = project.sceneList.scenes.firstIndex(of: scene)
         {
           if scene.movies.isEmpty
           {
@@ -1326,7 +1326,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       // also remove scene if the removal of the node would make it empty
       for scene in project.sceneList.scenes
       {
-        if let index: Int = project.sceneList.scenes.index(of: scene)
+        if let index: Int = project.sceneList.scenes.firstIndex(of: scene)
         {
           if scene.structureViewerStructures.isEmpty
           {

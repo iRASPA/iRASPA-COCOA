@@ -66,6 +66,8 @@ public class RequestDiscoveryPermissionCloudUserOperation: Operation
         case .denied:
           LogQueue.shared.warning(destination: nil, message: "iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email")
           // NSWorkspace.shared().openFile("/System/Library/PreferencePanes/iCloudPref.prefPane")
+        @unknown default:
+          fatalError()
         }
       }
     }

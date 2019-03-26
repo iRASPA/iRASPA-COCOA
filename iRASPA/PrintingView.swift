@@ -32,7 +32,7 @@
 import Cocoa
 
 public extension NSImage {
-  public func imageRotatedByDegreess(degrees:CGFloat) -> NSImage {
+  func imageRotatedByDegreess(degrees:CGFloat) -> NSImage {
     
     var imageBounds = NSZeroRect ; imageBounds.size = self.size
     let pathBounds = NSBezierPath(rect: imageBounds)

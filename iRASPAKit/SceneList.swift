@@ -225,7 +225,7 @@ public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualA
       for movie in scene.movies
       {
         if let selectedFrame = movie.selectedFrame,
-           let selectedIndex = movie.frames.index(of: selectedFrame),
+           let selectedIndex = movie.frames.firstIndex(of: selectedFrame),
            selectedIndex + 1 < movie.frames.count
         {
           let advancedSelectedFrame = movie.frames[selectedIndex + 1]
@@ -262,7 +262,7 @@ public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualA
     let count: Int = self.scenes.count
     for i: Int in 0..<count
     {
-      if let index: Int = scenes[i].movies.index(of: movie)
+      if let index: Int = scenes[i].movies.firstIndex(of: movie)
       {
         return [i,index]
       }

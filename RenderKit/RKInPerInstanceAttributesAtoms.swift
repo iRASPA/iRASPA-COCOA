@@ -52,6 +52,6 @@ public struct RKInPerInstanceAttributesAtoms
     self.ambient = ambient
     self.diffuse = diffuse
     self.specular = specular
-    self.scale = float4(scale)
+    self.scale = float4(repeating: scale)
   }
 }

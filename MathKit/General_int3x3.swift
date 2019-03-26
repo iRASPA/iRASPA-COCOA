@@ -50,7 +50,7 @@ public struct MKint3x3: Equatable
   
   public init()
   {
-    self.numerator = [int3(0),int3(0),int3(0)]
+    self.numerator = [int3(0,0,0),int3(0,0,0),int3(0,0,0)]
     self.denominator = 1
   }
   

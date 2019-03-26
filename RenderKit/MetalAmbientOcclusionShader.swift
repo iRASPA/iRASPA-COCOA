@@ -235,8 +235,9 @@ class MetalAmbientOcclusionShader
             {
               let region: MTLRegion = MTLRegionMake2D(0, 0, textureSize, textureSize)
               let ambientOcclusiontexture: MTLTexture = self.textures[i][j]
-              cachedVersion.withUnsafeBytes(){bytePointer in
-                ambientOcclusiontexture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: bytePointer, bytesPerRow: 2 * region.size.width, bytesPerImage: 2 * region.size.width * region.size.height)
+              
+              cachedVersion.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> () in
+                ambientOcclusiontexture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: ptr.baseAddress!, bytesPerRow: 2 * region.size.width, bytesPerImage: 2 * region.size.width * region.size.height)
               }
             }
             else

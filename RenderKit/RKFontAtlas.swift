@@ -395,7 +395,7 @@ public class RKFontAtlas
     var distanceMap = [Float](repeating: maxDist, count: count)
   
     // nearest boundary point map - zero out nearest boundary point map
-    var boundaryPointMap = [int2](repeating: int2(0), count: count)
+    var boundaryPointMap = [int2](repeating: int2(0,0), count: count)
     let distUnit :Float = 1
     let distDiag :Float = sqrtf(2)
     // Immediate interior/exterior phase: mark all points along the boundary as such

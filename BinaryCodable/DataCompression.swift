@@ -35,23 +35,23 @@ public extension Data
   /// Compresses the data.
   /// - parameter withAlgorithm: Compression algorithm to use. See the `CompressionAlgorithm` type
   /// - returns: compressed data
-  public func compress(withAlgorithm algo: CompressionAlgorithm) -> Data?
+  func compress(withAlgorithm algo: CompressionAlgorithm) -> Data?
   {
-    return self.withUnsafeBytes { (sourcePtr: UnsafePointer<UInt8>) -> Data? in
+    return self.withUnsafeBytes({ (sourcePtr: UnsafeRawBufferPointer) -> Data? in
       let config = (operation: COMPRESSION_STREAM_ENCODE, algorithm: algo.lowLevelType)
-      return perform(config, source: sourcePtr, sourceSize: count)
-    }
+      return perform(config, source: sourcePtr.baseAddress!.assumingMemoryBound(to: UInt8.self), sourceSize: count)
+    })
   }
   
   /// Decompresses the data.
   /// - parameter withAlgorithm: Compression algorithm to use. See the `CompressionAlgorithm` type
   /// - returns: decompressed data
-  public func decompress(withAlgorithm algo: CompressionAlgorithm) -> Data?
+  func decompress(withAlgorithm algo: CompressionAlgorithm) -> Data?
   {
-    return self.withUnsafeBytes { (sourcePtr: UnsafePointer<UInt8>) -> Data? in
+    return self.withUnsafeBytes({ (sourcePtr: UnsafeRawBufferPointer) -> Data? in
       let config = (operation: COMPRESSION_STREAM_DECODE, algorithm: algo.lowLevelType)
-      return perform(config, source: sourcePtr, sourceSize: count)
-    }
+      return perform(config, source: sourcePtr.baseAddress!.assumingMemoryBound(to: UInt8.self), sourceSize: count)
+    })
   }
   
   /// Please consider the [libcompression documentation](https://developer.apple.com/reference/compression/1665429-data_compression)
@@ -60,7 +60,7 @@ public extension Data
   /// lzfse : Apples custom Lempel-Ziv style compression algorithm. Claims to compress as good as zlib but 2 to 3 times faster.
   /// lzma  : Horribly slow. Compression as well as decompression. Compresses better than zlib though.
   /// lz4   : Fast, but compression rate is very bad. Apples lz4 implementation often to not compress at all.
-  public enum CompressionAlgorithm
+  enum CompressionAlgorithm
   {
     case zlib
     case lzfse
@@ -71,35 +71,35 @@ public extension Data
   /// Compresses the data using the zlib deflate algorithm.
   /// - returns: raw deflated data according to [RFC-1951](https://tools.ietf.org/html/rfc1951).
   /// - note: Fixed at compression level 5 (best trade off between speed and time)
-  public func deflate() -> Data?
+  func deflate() -> Data?
   {
-    return self.withUnsafeBytes { (sourcePtr: UnsafePointer<UInt8>) -> Data? in
+    return self.withUnsafeBytes { (sourcePtr: UnsafeRawBufferPointer) -> Data? in
       let config = (operation: COMPRESSION_STREAM_ENCODE, algorithm: COMPRESSION_ZLIB)
-      return perform(config, source: sourcePtr, sourceSize: count)
+      return perform(config, source: sourcePtr.baseAddress!.assumingMemoryBound(to: UInt8.self), sourceSize: count)
     }
   }
   
   /// Decompresses the data using the zlib deflate algorithm. Self is expected to be a raw deflate
   /// stream according to [RFC-1951](https://tools.ietf.org/html/rfc1951).
   /// - returns: uncompressed data
-  public func inflate() -> Data?
+  func inflate() -> Data?
   {
-    return self.withUnsafeBytes { (sourcePtr: UnsafePointer<UInt8>) -> Data? in
+    return self.withUnsafeBytes { (sourcePtr: UnsafeRawBufferPointer) -> Data? in
       let config = (operation: COMPRESSION_STREAM_DECODE, algorithm: COMPRESSION_ZLIB)
-      return perform(config, source: sourcePtr, sourceSize: count)
+      return perform(config, source: sourcePtr.baseAddress!.assumingMemoryBound(to: UInt8.self), sourceSize: count)
     }
   }
   
   /// Compresses the data using the deflate algorithm and makes it comply to the zlib format.
   /// - returns: deflated data in zlib format [RFC-1950](https://tools.ietf.org/html/rfc1950)
   /// - note: Fixed at compression level 5 (best trade off between speed and time)
-  public func zip() -> Data?
+  func zip() -> Data?
   {
-    let header = Data(bytes: [0x78, 0x5e])
+    let header = Data([0x78, 0x5e])
     
-    let deflated = self.withUnsafeBytes { (sourcePtr: UnsafePointer<UInt8>) -> Data? in
+    let deflated = self.withUnsafeBytes { (sourcePtr: UnsafeRawBufferPointer) -> Data? in
       let config = (operation: COMPRESSION_STREAM_ENCODE, algorithm: COMPRESSION_ZLIB)
-      return perform(config, source: sourcePtr, sourceSize: count, preload: header)
+      return perform(config, source: sourcePtr.baseAddress!.assumingMemoryBound(to: UInt8.self), sourceSize: count, preload: header)
     }
     
     guard var result = deflated else { return nil }
@@ -113,14 +113,14 @@ public extension Data
   /// Decompresses the data using the zlib deflate algorithm. Self is expected to be a zlib deflate
   /// stream according to [RFC-1950](https://tools.ietf.org/html/rfc1950).
   /// - returns: uncompressed data
-  public func unzip(skipCheckSumValidation: Bool = true) -> Data?
+  func unzip(skipCheckSumValidation: Bool = true) -> Data?
   {
     // 2 byte header + 4 byte adler32 checksum
     let overhead = 6
     guard count > overhead else { return nil }
     
-    let header: UInt16 = withUnsafeBytes { (ptr: UnsafePointer<UInt16>) -> UInt16 in
-      return ptr.pointee.bigEndian
+    let header: UInt16 = withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> UInt16 in
+      return ptr.load(as: UInt16.self).bigEndian
     }
     
     // check for the deflate stream bit
@@ -128,21 +128,18 @@ public extension Data
     // check the header checksum
     guard header % 31 == 0 else { return nil }
     
-    let cresult: Data? = withUnsafeBytes { (ptr: UnsafePointer<UInt8>) -> Data? in
-      let source = ptr.advanced(by: 2)
+    let cresult: Data? = withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> Data? in
+      let source = ptr.baseAddress!.advanced(by: 2)
       let config = (operation: COMPRESSION_STREAM_DECODE, algorithm: COMPRESSION_ZLIB)
-      return perform(config, source: source, sourceSize: count - overhead)
+      return perform(config, source: source.assumingMemoryBound(to: UInt8.self), sourceSize: count - overhead)
     }
     
     guard let inflated = cresult else { return nil }
     
     if skipCheckSumValidation { return inflated }
     
-    let cksum: UInt32 = withUnsafeBytes { (bytePtr: UnsafePointer<UInt8>) -> UInt32 in
-      let last = bytePtr.advanced(by: count - 4)
-      return last.withMemoryRebound(to: UInt32.self, capacity: 1) { (intPtr) -> UInt32 in
-        return intPtr.pointee.bigEndian
-      }
+    let cksum: UInt32 = withUnsafeBytes { (bytePtr: UnsafeRawBufferPointer) -> UInt32 in
+      return bytePtr.load(fromByteOffset: -4, as: UInt32.self)
     }
     
     return cksum == inflated.adler32().checksum ? inflated : nil
@@ -151,18 +148,18 @@ public extension Data
   /// Compresses the data using the deflate algorithm and makes it comply to the gzip stream format.
   /// - returns: deflated data in gzip format [RFC-1952](https://tools.ietf.org/html/rfc1952)
   /// - note: Fixed at compression level 5 (best trade off between speed and time)
-  public func gzip() -> Data?
+  func gzip() -> Data?
   {
-    var header = Data(bytes: [0x1f, 0x8b, 0x08, 0x00]) // magic, magic, deflate, noflags
+    var header = Data([0x1f, 0x8b, 0x08, 0x00]) // magic, magic, deflate, noflags
     
     var unixtime = UInt32(Date().timeIntervalSince1970).littleEndian
     header.append(Data(bytes: &unixtime, count: MemoryLayout<UInt32>.size))
     
     header.append(contentsOf: [0x00, 0x03])  // normal compression level, unix file type
     
-    let deflated = self.withUnsafeBytes { (sourcePtr: UnsafePointer<UInt8>) -> Data? in
+    let deflated = self.withUnsafeBytes { (sourcePtr: UnsafeRawBufferPointer) -> Data? in
       let config = (operation: COMPRESSION_STREAM_ENCODE, algorithm: COMPRESSION_ZLIB)
-      return perform(config, source: sourcePtr, sourceSize: count, preload: header)
+      return perform(config, source: sourcePtr.baseAddress!.assumingMemoryBound(to: UInt8.self), sourceSize: count, preload: header)
     }
     
     guard var result = deflated else { return nil }
@@ -181,7 +178,7 @@ public extension Data
   /// Decompresses the data using the gzip deflate algorithm. Self is expected to be a gzip deflate
   /// stream according to [RFC-1952](https://tools.ietf.org/html/rfc1952).
   /// - returns: uncompressed data
-  public func gunzip() -> Data?
+  func gunzip() -> Data?
   {
     // 10 byte header + data +  8 byte footer. See https://tools.ietf.org/html/rfc1952#section-2
     let overhead = 10 + 8
@@ -189,21 +186,21 @@ public extension Data
     
     
     typealias GZipHeader = (id1: UInt8, id2: UInt8, cm: UInt8, flg: UInt8, xfl: UInt8, os: UInt8)
-    let hdr: GZipHeader = withUnsafeBytes { (ptr: UnsafePointer<UInt8>) -> GZipHeader in
+    let hdr: GZipHeader = withUnsafeBytes { (sourcePtr: UnsafeRawBufferPointer) -> GZipHeader in
       // +---+---+---+---+---+---+---+---+---+---+
       // |ID1|ID2|CM |FLG|     MTIME     |XFL|OS |
       // +---+---+---+---+---+---+---+---+---+---+
+      let ptr = sourcePtr.baseAddress!.assumingMemoryBound(to: UInt8.self)
       return (id1: ptr[0], id2: ptr[1], cm: ptr[2], flg: ptr[3], xfl: ptr[8], os: ptr[9])
     }
     
     typealias GZipFooter = (crc32: UInt32, isize: UInt32)
-    let ftr: GZipFooter = withUnsafeBytes { (bptr: UnsafePointer<UInt8>) -> GZipFooter in
+    let ftr: GZipFooter = withUnsafeBytes { (bptr: UnsafeRawBufferPointer) -> GZipFooter in
       // +---+---+---+---+---+---+---+---+
       // |     CRC32     |     ISIZE     |
       // +---+---+---+---+---+---+---+---+
-      return bptr.advanced(by: count - 8).withMemoryRebound(to: UInt32.self, capacity: 2) { ptr in
-        return (ptr[0].littleEndian, ptr[1].littleEndian)
-      }
+      let ptr = bptr.baseAddress!.advanced(by: -8).assumingMemoryBound(to: UInt32.self)
+      return (ptr[0].littleEndian, ptr[1].littleEndian)
     }
     
     // Wrong gzip magic or unsupported compression method
@@ -214,8 +211,10 @@ public extension Data
     let has_fname: Bool = hdr.flg & 0b01000 != 0
     let has_cmmnt: Bool = hdr.flg & 0b10000 != 0
     
-    let cresult: Data? = withUnsafeBytes { (ptr: UnsafePointer<UInt8>) -> Data? in
+    let cresult: Data? = withUnsafeBytes { (sourcePtr: UnsafeRawBufferPointer) -> Data? in
       var pos = 10 ; let limit = count - 8
+      
+      let ptr = sourcePtr.baseAddress!.assumingMemoryBound(to: UInt8.self)
       
       if has_extra {
         pos += ptr.advanced(by: pos).withMemoryRebound(to: UInt16.self, capacity: 1) {
@@ -247,7 +246,7 @@ public extension Data
   
   /// Calculate the Adler32 checksum of the data.
   /// - returns: Adler32 checksum type. Can still be further advanced.
-  public func adler32() -> Adler32
+  func adler32() -> Adler32
   {
     var res = Adler32()
     res.advance(withChunk: self)
@@ -256,7 +255,7 @@ public extension Data
   
   /// Calculate the Crc32 checksum of the data.
   /// - returns: Crc32 checksum type. Can still be further advanced.
-  public func crc32() -> Crc32
+  func crc32() -> Crc32
   {
     var res = Crc32()
     res.advance(withChunk: self)
@@ -289,8 +288,8 @@ public struct Crc32: CustomStringConvertible
   public mutating func advance(withChunk chunk: Data)
   {
     if let fastCrc32 = Crc32.zLibCrc32 {
-      checksum = chunk.withUnsafeBytes({ (ptr: UnsafePointer<UInt8>) -> UInt32 in
-        return fastCrc32(checksum, ptr, UInt32(chunk.count))
+      checksum = chunk.withUnsafeBytes({ (ptr: UnsafeRawBufferPointer) -> UInt32 in
+        return fastCrc32(checksum, ptr.baseAddress!.assumingMemoryBound(to: UInt8.self), UInt32(chunk.count))
       })
     }
     else {
@@ -388,8 +387,8 @@ public struct Adler32: CustomStringConvertible
   public mutating func advance(withChunk chunk: Data)
   {
     if let fastAdler32 = Adler32.zLibAdler32 {
-      checksum = chunk.withUnsafeBytes({ (ptr: UnsafePointer<UInt8>) -> UInt32 in
-        return fastAdler32(checksum, ptr, UInt32(chunk.count))
+      checksum = chunk.withUnsafeBytes({ (ptr: UnsafeRawBufferPointer) -> UInt32 in
+        return fastAdler32(checksum, ptr.baseAddress!.assumingMemoryBound(to: UInt8.self), UInt32(chunk.count))
       })
     }
     else {

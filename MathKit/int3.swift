@@ -32,34 +32,12 @@
 import Foundation
 import simd
 
-extension int3: Decodable
-{
-  // MARK: -
-  // MARK: Decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let x = try container.decode(Int32.self)
-    let y = try container.decode(Int32.self)
-    let z = try container.decode(Int32.self)
-    self.init(x,y,z)
-  }
-}
 
-extension int3: Hashable
+extension int3
 {
   public var squaredNorm: Int
   {
     return Int(self.x*self.x + self.y*self.y + self.z*self.z)
-  }
-  
-  public func hash(into hasher: inout Hasher)
-  {
-    hasher.combine(self.x)
-    hasher.combine(self.y)
-    hasher.combine(self.z)
   }
   
   public func modulo(_ b: Int) -> int3

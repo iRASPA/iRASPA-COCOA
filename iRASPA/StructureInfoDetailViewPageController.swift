@@ -112,7 +112,7 @@ class StructureInfoDetailViewPageController: NSPageController, WindowControllerC
         
         if let selectedScene: Scene = project.sceneList.selectedScene,
           let selectedMovie: Movie = selectedScene.selectedMovie,
-          let selectionIndex = movies.index(of: selectedMovie)
+          let selectionIndex = movies.firstIndex(of: selectedMovie)
         {
           self.selectedIndex = selectionIndex
         }
@@ -125,7 +125,7 @@ class StructureInfoDetailViewPageController: NSPageController, WindowControllerC
           self.arrangedObjects = frames.isEmpty ? [[]] : frames
           
           if let selectedFrame: iRASPAStructure = selectionMovie.selectedFrame,
-            let selectionIndex: Int = selectionMovie.frames.index(of: selectedFrame)
+            let selectionIndex: Int = selectionMovie.frames.firstIndex(of: selectedFrame)
           {
             self.selectedIndex = selectionIndex
           }
@@ -157,7 +157,7 @@ class StructureInfoDetailViewPageController: NSPageController, WindowControllerC
         let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
         
         if let selectedMovie: Movie = project.sceneList.selectedScene?.selectedMovie,
-          let selectionIndex = movies.index(of: selectedMovie)
+          let selectionIndex = movies.firstIndex(of: selectedMovie)
         {
           if selectionIndex != self.selectedIndex
           {
@@ -184,7 +184,7 @@ class StructureInfoDetailViewPageController: NSPageController, WindowControllerC
         if let selectedScene: Scene = project.sceneList.selectedScene,
           let selectedMovie: Movie = selectedScene.selectedMovie,
           let selectedFrame: iRASPAStructure = selectedMovie.selectedFrame,
-          let selectionIndex: Int = selectedMovie.frames.index(of: selectedFrame)
+          let selectionIndex: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
         {
           if selectionIndex != self.selectedIndex
           {

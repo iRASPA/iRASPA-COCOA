@@ -2315,7 +2315,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   
   public func computeChangedBondLength(bond: SKBondNode, to: Double) -> (double3,double3)
   {
-    return (double3(0),double3(0))
+    return (double3(0.0,0.0,0.0),double3(0.0,0.0,0.0))
   }
   
   public var renderCanDrawAdsorptionSurface: Bool {return false}

@@ -32,7 +32,7 @@
 import Foundation
 import simd
 
-public struct Bool3: Decodable
+public struct Bool3
 {
   public var x: Bool
   public var y: Bool
@@ -44,19 +44,6 @@ public struct Bool3: Decodable
     self.x = x
     self.y = y
     self.z = z
-  }
-  
-  // MARK: -
-  // MARK: Decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let x = try container.decode(Bool.self)
-    let y = try container.decode(Bool.self)
-    let z = try container.decode(Bool.self)
-    self.init(x,y,z)
   }
 }
 

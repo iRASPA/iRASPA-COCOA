@@ -2871,7 +2871,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allFrames)
-      for (index, structure) in cellViewer.structureViewerStructures.enumerated()
+      for structure in cellViewer.structureViewerStructures
       {
         //cellViewer.applyContentShift()
         if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.applyCellContentShift()

@@ -1082,7 +1082,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
             if (self.itemsAreSiblings(node, item: item as? SKAtomTreeNode))
             {
               // Moving it from within the same parent! Account for the remove, if it is past the oldIndex
-              if let oldIndex = node.parentNode?.childNodes.index(of: node) , (childIndex > oldIndex)
+              if let oldIndex = node.parentNode?.childNodes.firstIndex(of: node) , (childIndex > oldIndex)
               {
                childIndex -= 1 // account for the remove
               }

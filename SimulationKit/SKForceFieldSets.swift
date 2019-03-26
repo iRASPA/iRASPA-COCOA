@@ -81,13 +81,13 @@ public final class SKForceFieldSets: Decodable, BinaryDecodable, BinaryEncodable
   {
     get
     {
-      let index: Int = self.forceFieldSets.index(where: {$0.displayName == displayName}) ?? 0
+      let index: Int = self.forceFieldSets.firstIndex(where: {$0.displayName == displayName}) ?? 0
       return self.forceFieldSets[index]
     }
     
     set(newValue)
     {
-      if let index: Int = self.forceFieldSets.index(where: {$0.displayName == displayName}),
+      if let index: Int = self.forceFieldSets.firstIndex(where: {$0.displayName == displayName}),
          let newValue = newValue
       {
         self.forceFieldSets[index] = newValue

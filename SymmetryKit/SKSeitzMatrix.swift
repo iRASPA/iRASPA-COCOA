@@ -229,23 +229,22 @@ public struct SKSeitzMatrix: Equatable, Hashable
     return .unknown
   }
 
-  
-  public var hashValue: Int
+  public func hash(into hasher: inout Hasher)
   {
+    hasher.combine(self.rotation[0,0])
+    hasher.combine(self.rotation[0,1])
+    hasher.combine(self.rotation[0,2])
+    hasher.combine(self.rotation[1,0])
+    hasher.combine(self.rotation[1,1])
+    hasher.combine(self.rotation[1,2])
+    hasher.combine(self.rotation[2,0])
+    hasher.combine(self.rotation[2,1])
+    hasher.combine(self.rotation[2,2])
+    
     let normalizedTranslation: int3 = self.translation.modulo(12)
-    let r1: Int32 = (self.rotation[0,0]+1)
-    let r2: Int32 = (3 * (self.rotation[0,1]+1))
-    let r3: Int32 = ((3*3) * (self.rotation[0,2]+1))
-    let r4: Int32 = ((3*3*3) * (self.rotation[1,0]+1))
-    let r5: Int32 = ((3*3*3*3) * (self.rotation[1,1]+1))
-    let r6: Int32 = ((3*3*3*3*3) * (self.rotation[1,2]+1))
-    let r7: Int32 = ((3*3*3*3*3*3) * (self.rotation[2,0]+1))
-    let r8: Int32 = ((3*3*3*3*3*3*3) * (self.rotation[2,1]+1))
-    let r9: Int32 = ((3*3*3*3*3*3*3*3) * (self.rotation[2,2]+1))
-    let v1: Int32 = ((3*3*3*3*3*3*3*3*12) * normalizedTranslation.x)
-    let v2: Int32 = ((3*3*3*3*3*3*3*3*12*12) * normalizedTranslation.y)
-    let v3: Int32 = ((3*3*3*3*3*3*3*3*12*12*12) * normalizedTranslation.z)
-    return Int(r1 + r2 + r3 + r4 + r5 + r6 + r7 + r8 + r9 + v1 + v2 + v3)
+    hasher.combine(normalizedTranslation.x)
+    hasher.combine(normalizedTranslation.y)
+    hasher.combine(normalizedTranslation.z)
   }
   
   public static func ==(lhs: SKSeitzMatrix, rhs: SKSeitzMatrix) -> Bool
@@ -267,7 +266,7 @@ public struct SKSeitzMatrix: Equatable, Hashable
   public var inverse: SKSeitzMatrix
   {
     let inverseRotation: SKRotationMatrix = self.rotation.inverse
-    let inverseTranslation: int3 = -(inverseRotation * translation)
+    let inverseTranslation: int3 = 0 &- (inverseRotation * translation)
     return SKSeitzMatrix(rotation: inverseRotation, translation: inverseTranslation)
   }
 

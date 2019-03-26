@@ -82,7 +82,7 @@ public final class SKColorSets: Decodable, BinaryDecodable, BinaryEncodable
   {
     get
     {
-      if let index: Int = self.colorSets.index(where: {$0.displayName == displayName})
+      if let index: Int = self.colorSets.firstIndex(where: {$0.displayName == displayName})
       {
         return self.colorSets[index]
       }
@@ -91,7 +91,7 @@ public final class SKColorSets: Decodable, BinaryDecodable, BinaryEncodable
     
     set(newValue)
     {
-      if let index: Int = self.colorSets.index(where: {$0.displayName == displayName}),
+      if let index: Int = self.colorSets.firstIndex(where: {$0.displayName == displayName}),
          let newValue = newValue
       {
         self.colorSets[index] = newValue

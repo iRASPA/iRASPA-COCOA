@@ -58,7 +58,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
   var spaceGroup: SKSpacegroup = SKSpacegroup()
   var scaleMatrixDefined: [Bool] = [false, false, false]
   var scaleMatrix: double3x3 = double3x3(1.0)
-  var translation: double3 = double3(0)
+  var translation: double3 = double3(0.0,0.0,0.0)
   var a: Double = 20.0
   var b: Double = 20.0
   var c: Double = 20.0

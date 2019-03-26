@@ -218,7 +218,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let atom1: double3 = bond.atom1.position
     let atom2: double3 = bond.atom2.position
     var ds: double3 = atom2 - atom1
-    ds -= floor(ds + double3(0.5))
+    ds -= floor(ds + double3(0.5,0.5,0.5))
     return self.cell.unitCell * ds
   }
   
@@ -227,7 +227,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let atom1: double3 = bond.atom1.position
     let atom2: double3 = bond.atom2.position
     var ds: double3 = atom2 - atom1
-    ds -= floor(ds + double3(0.5))
+    ds -= floor(ds + double3(0.5,0.5,0.5))
     return length(self.cell.unitCell * ds)
   }
   
@@ -592,7 +592,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     for (index, atom) in atoms.enumerated()
     {
-      data[index] = (fract(atom.position + self.cell.contentShift), atom.asymmetricParentAtom.elementIdentifier)
+      data[index] = (fract(atom.position), atom.asymmetricParentAtom.elementIdentifier)
     }
     return data
   }
@@ -856,7 +856,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
       for image in images
       {
-        let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: fract(image) + self.cell.contentShift)
+        let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: fract(image))
         newAtom.type = .copy
         asymmetricAtom.copies.append(newAtom)
       }
@@ -871,7 +871,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       
     for image in images
     {
-      let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: fract(image) + self.cell.contentShift)
+      let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: fract(image))
       newAtom.type = .copy
       asymmetricAtom.copies.append(newAtom)
     }
@@ -1043,7 +1043,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let images: [double3] = self.spaceGroup.listOfSymmetricPositions(asymetricAtom.position)
     for (index, image) in images.enumerated()
     {
-      asymetricAtom.copies[index].position = fract(image + self.cell.contentShift)
+      asymetricAtom.copies[index].position = fract(image)
       asymetricAtom.copies[index].type = .copy
     }
     
@@ -1216,7 +1216,6 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       let primitiveSpaceGroup = SKSpacegroup(HallNumber: 1)
       let primitiveAtoms = SKAtomTreeController()
       
-      
       for asymmetricAtom in primitive.primitiveAtoms
       {
         let displayName: String = PredefinedElements.sharedInstance.elementSet[asymmetricAtom.type].chemicalSymbol
@@ -1235,15 +1234,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
         primitiveAtoms.appendNode(node, atArrangedObjectIndexPath: [])
       }
 
-      
       self.tag(atoms: primitiveAtoms)
       
       let atomList: [SKAtomCopy] = primitiveAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-      
-      //primitiveAtoms.flattenedLeafNodes().flatMap{$0.representedObject}.forEach{atom in
-      //  let elementId: Int = atom.elementIdentifier
-      //  atom.bondDistanceCriteria = PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
-      //}
       
       let bonds: Set<SKBondNode> = self.computeBonds(cell: primitiveCell, atomList: atomList)
       let primitiveBonds: SKBondSetController = SKBondSetController(arrangedObjects: bonds)

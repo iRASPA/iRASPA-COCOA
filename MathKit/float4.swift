@@ -79,23 +79,6 @@ extension float4
   
 }
 
-extension float4: Decodable
-{
-  // MARK: -
-  // MARK: Decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let x = try container.decode(Float.self)
-    let y = try container.decode(Float.self)
-    let z = try container.decode(Float.self)
-    let w = try container.decode(Float.self)
-    self.init(x,y,z,w)
-  }
-}
-
 
 
 

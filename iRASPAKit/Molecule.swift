@@ -337,7 +337,7 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
     
     if atoms.isEmpty
     {
-      return SKBoundingBox(minimum: double3(0.0), maximum: double3(0.0))
+      return SKBoundingBox(minimum: double3(0.0,0.0,0.0), maximum: double3(0.0,0.0,0.0))
     }
     
     for atom in atoms

@@ -22,8 +22,11 @@ extension Data {
         case unwritableFile
     }
 
-    func scanValue<T>(start: Int) -> T {
-        return self.subdata(in: start..<start+MemoryLayout<T>.size).withUnsafeBytes { $0.pointee }
+    func scanValue<T>(start: Int) -> T
+    {
+      return self.subdata(in: start..<start+MemoryLayout<T>.size).withUnsafeBytes({ (ptr: UnsafeRawBufferPointer) -> T in
+        ptr.load(as: T.self)
+      })
     }
 
     static func readStruct<T>(from file: UnsafeMutablePointer<FILE>, at offset: Int) -> T? where T: DataSerializable {
@@ -72,7 +75,11 @@ extension Data {
 
     static func write(chunk: Data, to file: UnsafeMutablePointer<FILE>) throws -> Int {
         var sizeWritten = 0
-        chunk.withUnsafeBytes { sizeWritten = fwrite($0, 1, chunk.count, file) }
+      
+        chunk.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> () in
+          sizeWritten = fwrite(ptr.baseAddress!, 1, chunk.count, file)
+        }
+      
         let error = ferror(file)
         if error > 0 {
             throw DataError.unwritableFile

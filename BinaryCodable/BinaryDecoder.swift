@@ -31,6 +31,7 @@
 
 import Foundation
 import MathKit
+import simd
 
 /// A protocol for types which can be decoded from binary.
 public protocol BinaryDecodable
@@ -202,6 +203,71 @@ public extension BinaryDecoder
     return Character(Unicode.Scalar( UInt16(bigEndian: swapped)) ?? "X")
   }
   
+  func decode(_ type: int3.Type) throws -> int3
+  {
+    let x: Int32 = try decode(Int32.self)
+    let y: Int32 = try decode(Int32.self)
+    let z: Int32 = try decode(Int32.self)
+    return int3(x,y,z)
+  }
+  
+  func decode(_ type: Bool3.Type) throws -> Bool3
+  {
+    let x: Bool = try decode(Bool.self)
+    let y: Bool = try decode(Bool.self)
+    let z: Bool = try decode(Bool.self)
+    return Bool3(x,y,z)
+  }
+  
+  func decode(_ type: float2.Type) throws -> float2
+  {
+    let x: Float = try decode(Float.self)
+    let y: Float = try decode(Float.self)
+    return float2(x,y)
+  }
+  
+  func decode(_ type: double2.Type) throws -> double2
+  {
+    let x: Double = try decode(Double.self)
+    let y: Double = try decode(Double.self)
+    return double2(x,y)
+  }
+  
+  func decode(_ type: float3.Type) throws -> float3
+  {
+    let x: Float = try decode(Float.self)
+    let y: Float = try decode(Float.self)
+    let z: Float = try decode(Float.self)
+    return float3(x,y,z)
+  }
+  
+  func decode(_ type: double3.Type) throws -> double3
+  {
+    let x: Double = try decode(Double.self)
+    let y: Double = try decode(Double.self)
+    let z: Double = try decode(Double.self)
+    return double3(x,y,z)
+  }
+  
+  func decode(_ type: float4.Type) throws -> float4
+  {
+    let x: Float = try decode(Float.self)
+    let y: Float = try decode(Float.self)
+    let z: Float = try decode(Float.self)
+    let w: Float = try decode(Float.self)
+    return float4(x,y,z,w)
+  }
+  
+  
+  func decode(_ type: double4.Type) throws -> double4
+  {
+    let x: Double = try decode(Double.self)
+    let y: Double = try decode(Double.self)
+    let z: Double = try decode(Double.self)
+    let w: Double = try decode(Double.self)
+    return double4(x,y,z,w)
+  }
+  
   
   func decode(_ type: String.Type) throws -> String
   {
@@ -224,22 +290,22 @@ public extension BinaryDecoder
      return String("")
   }
   
-  public func decode(_ type: Data.Type) throws -> Data
+  func decode(_ type: Data.Type) throws -> Data
   {
     let count: UInt32 = try self.decode(UInt32.self)
     if(count != 0xFFFFFFFF)
     {
       var data: Data = Data(count: Int(count))
       
-      try data.withUnsafeMutableBytes { (rawPtr: UnsafeMutablePointer) in
-          try self.read(Int(count), into: rawPtr)
+      try data.withUnsafeMutableBytes { (rawPtr) in
+          try self.read(Int(count), into: rawPtr.baseAddress!)
       }
       return data
     }
     return Data()
   }
   
-  public func decode(_ type: Dictionary<String, NSColor>.Type) throws -> Dictionary<String, NSColor>
+  func decode(_ type: Dictionary<String, NSColor>.Type) throws -> Dictionary<String, NSColor>
   {
     var dictionary: Dictionary<String, NSColor> = Dictionary<String, NSColor>()
     let count: UInt32 = try self.decode(UInt32.self)
@@ -256,7 +322,7 @@ public extension BinaryDecoder
     return dictionary
   }
   
-  public func decode(_ type: NSColor.Type) throws -> NSColor
+  func decode(_ type: NSColor.Type) throws -> NSColor
   {
     var swappedSpec = Int8()
     try read(into: &swappedSpec)
@@ -286,7 +352,7 @@ public extension BinaryDecoder
   }
   
   
-  public func decode(_ type: Dictionary<String, NSColor>) throws -> Dictionary<String, NSColor>
+  func decode(_ type: Dictionary<String, NSColor>) throws -> Dictionary<String, NSColor>
   {
       let count: UInt32 = try self.decode(UInt32.self)
       //debugPrint("array count: \(count)")

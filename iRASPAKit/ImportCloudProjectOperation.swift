@@ -140,7 +140,7 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
           {
             do
             {
-              let data: Data = try Data.init(contentsOf: asset.fileURL)
+              let data: Data = try Data.init(contentsOf: asset.fileURL!)
               
               let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
               let project: iRASPAProject = try propertyListDecoder.decodeCompressed(iRASPAProject.self, from: data)
