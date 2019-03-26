@@ -359,7 +359,7 @@ extension SKSpacegroup
     
     for i in 0..<dataBaseSpaceGroupGenerators.count
     {
-      guard let index: Int = seitzMatrices.index(where: {$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}) else {return nil}
+      guard let index: Int = seitzMatrices.firstIndex(where: {$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}) else {return nil}
       translations[i] = seitzMatrices[index].translation
     }
     

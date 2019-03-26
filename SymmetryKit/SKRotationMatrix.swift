@@ -47,7 +47,7 @@ public struct SKPointSymmetrySet
 
 public extension double3x3
 {
-  public init(rotationMatrix a: SKRotationMatrix)
+  init(rotationMatrix a: SKRotationMatrix)
   {
     let col1 = a[0]
     let col2 = a[1]
@@ -69,57 +69,57 @@ public extension SKRotationMatrix
 {
   // S.R. Hall, "Space-group notation with an explicit origin", Acta. Cryst. A, 37, 517-525, 981
   
-  public static let zero: SKRotationMatrix = SKRotationMatrix([int3(0,0,0),int3(0,0,0),int3(0,0,0)])
-  public static let identity: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
-  public static let inversionIdentity: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,-1,0),int3(0,0,-1)])
+  static let zero: SKRotationMatrix = SKRotationMatrix([int3(0,0,0),int3(0,0,0),int3(0,0,0)])
+  static let identity: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
+  static let inversionIdentity: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,-1,0),int3(0,0,-1)])
   
   // rotations for principle axes
-  public static let r_2_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,-1,0),int3(0,0,-1)])
-  public static let r_2i_100: SKRotationMatrix = r_2_100
-  public static let r_3_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,1),int3(0,-1,-1)])
-  public static let r_3i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,-1,-1),int3(0,1,0)])
-  public static let r_4_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,1),int3(0,-1,0)])
-  public static let r_4i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,-1),int3(0,1,0)])
-  public static let r_6_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,1,1),int3(0,-1,0)])
-  public static let r_6i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,-1),int3(0,1,1)])
+  static let r_2_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,-1,0),int3(0,0,-1)])
+  static let r_2i_100: SKRotationMatrix = r_2_100
+  static let r_3_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,1),int3(0,-1,-1)])
+  static let r_3i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,-1,-1),int3(0,1,0)])
+  static let r_4_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,1),int3(0,-1,0)])
+  static let r_4i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,-1),int3(0,1,0)])
+  static let r_6_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,1,1),int3(0,-1,0)])
+  static let r_6i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,-1),int3(0,1,1)])
   
-  public static let r_2_010: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,1,0),int3(0,0,-1)])
-  public static let r_2i_010: SKRotationMatrix = r_2_010
-  public static let r_3_010: SKRotationMatrix = SKRotationMatrix([int3(-1,0,-1),int3(0,1,0),int3(1,0,0)])
-  public static let r_3i_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,1,0),int3(-1,0,-1)])
-  public static let r_4_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,1,0),int3(1,0,0)])
-  public static let r_4i_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,1,0),int3(-1,0,0)])
-  public static let r_6_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,1,0),int3(1,0,1)])
-  public static let r_6i_010: SKRotationMatrix = SKRotationMatrix([int3(1,0,1),int3(0,1,0),int3(-1,0,0)])
+  static let r_2_010: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,1,0),int3(0,0,-1)])
+  static let r_2i_010: SKRotationMatrix = r_2_010
+  static let r_3_010: SKRotationMatrix = SKRotationMatrix([int3(-1,0,-1),int3(0,1,0),int3(1,0,0)])
+  static let r_3i_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,1,0),int3(-1,0,-1)])
+  static let r_4_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,1,0),int3(1,0,0)])
+  static let r_4i_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,1,0),int3(-1,0,0)])
+  static let r_6_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,1,0),int3(1,0,1)])
+  static let r_6i_010: SKRotationMatrix = SKRotationMatrix([int3(1,0,1),int3(0,1,0),int3(-1,0,0)])
 
-  public static let r_2_001: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,-1,0),int3(0,0,1)])
-  public static let r_2i_001: SKRotationMatrix = r_2_001
-  public static let r_3_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(-1,-1,0),int3(0,0,1)])
-  public static let r_3i_001: SKRotationMatrix = SKRotationMatrix([int3(-1,-1,0),int3(1,0,0),int3(0,0,1)])
-  public static let r_4_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(-1,0,0),int3(0,0,1)])
-  public static let r_4i_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(1,0,0),int3(0,0,1)])
-  public static let r_6_001: SKRotationMatrix = SKRotationMatrix([int3(1,1,0),int3(-1,0,0),int3(0,0,1)])
-  public static let r_6i_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(1,1,0),int3(0,0,1)])
+  static let r_2_001: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,-1,0),int3(0,0,1)])
+  static let r_2i_001: SKRotationMatrix = r_2_001
+  static let r_3_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(-1,-1,0),int3(0,0,1)])
+  static let r_3i_001: SKRotationMatrix = SKRotationMatrix([int3(-1,-1,0),int3(1,0,0),int3(0,0,1)])
+  static let r_4_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(-1,0,0),int3(0,0,1)])
+  static let r_4i_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(1,0,0),int3(0,0,1)])
+  static let r_6_001: SKRotationMatrix = SKRotationMatrix([int3(1,1,0),int3(-1,0,0),int3(0,0,1)])
+  static let r_6i_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(1,1,0),int3(0,0,1)])
   
-  public static let r_3_111: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(0,0,1),int3(1,0,0)])
-  public static let r_3i_111: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(1,0,0),int3(0,1,0)])
+  static let r_3_111: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(0,0,1),int3(1,0,0)])
+  static let r_3i_111: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(1,0,0),int3(0,1,0)])
   
-  public static let r_2prime_100: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,0,-1),int3(0,-1,0)])   // b-c
-  public static let r_2iprime_100: SKRotationMatrix = r_2prime_100
-  public static let r_2doubleprime_100: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,0,1),int3(0,1,0)]) // b+c
-  public static let r_2idoubleprime_100: SKRotationMatrix = r_2doubleprime_100
+  static let r_2prime_100: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,0,-1),int3(0,-1,0)])   // b-c
+  static let r_2iprime_100: SKRotationMatrix = r_2prime_100
+  static let r_2doubleprime_100: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,0,1),int3(0,1,0)]) // b+c
+  static let r_2idoubleprime_100: SKRotationMatrix = r_2doubleprime_100
   
-  public static let r_2prime_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,-1,0),int3(-1,0,0)]) // a-c
-  public static let r_2iprime_010: SKRotationMatrix = r_2prime_010
-  public static let r_2doubleprime_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,-1,0),int3(1,0,0)]) // a+c
-  public static let r_2idoubleprime_010: SKRotationMatrix = r_2doubleprime_010
+  static let r_2prime_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,-1,0),int3(-1,0,0)]) // a-c
+  static let r_2iprime_010: SKRotationMatrix = r_2prime_010
+  static let r_2doubleprime_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,-1,0),int3(1,0,0)]) // a+c
+  static let r_2idoubleprime_010: SKRotationMatrix = r_2doubleprime_010
   
-  public static let r_2prime_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(-1,0,0),int3(0,0,-1)]) // a-b
-  public static let r_2iprime_001: SKRotationMatrix = r_2prime_001
-  public static let r_2doubleprime_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(1,0,0),int3(0,0,-1)]) // a+b
-  public static let r_2idoubleprime_001: SKRotationMatrix = r_2doubleprime_001
+  static let r_2prime_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(-1,0,0),int3(0,0,-1)]) // a-b
+  static let r_2iprime_001: SKRotationMatrix = r_2prime_001
+  static let r_2doubleprime_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(1,0,0),int3(0,0,-1)]) // a+b
+  static let r_2idoubleprime_001: SKRotationMatrix = r_2doubleprime_001
   
-  public static let generators: [SKPointGroup.Holohedry : (required: [SKRotationMatrix], optional: [SKRotationMatrix]) ]  =
+  static let generators: [SKPointGroup.Holohedry : (required: [SKRotationMatrix], optional: [SKRotationMatrix]) ]  =
   [
     .triclinic : (required: [SKRotationMatrix.identity], optional: []),
     .monoclinic : (required: [SKRotationMatrix.r_2_001,SKRotationMatrix.r_2_100,SKRotationMatrix.r_2_010], optional: []),
@@ -130,7 +130,7 @@ public extension SKRotationMatrix
     .cubic : (required: [SKRotationMatrix.r_4_001,SKRotationMatrix.r_2_001], optional: [SKRotationMatrix.r_3_111])
   ]
   
-  public init(random: Int = 0)
+  init(random: Int = 0)
   {
     var c1: int3
     var c2: int3
@@ -161,7 +161,7 @@ public extension SKRotationMatrix
     self.init([c1,c2,c3])
   }
   
-  public init(_ m: double3x3)
+  init(_ m: double3x3)
   {
     let c1: int3 = int3(Int32(rint(m[0].x)),
                         Int32(rint(m[0].y)),
@@ -175,7 +175,7 @@ public extension SKRotationMatrix
     self.init([c1,c2,c3])
   }
   
-  public enum rotationType: Int
+  enum rotationType: Int
   {
     case axis_6m = -6
     case axis_4m = -4
@@ -202,7 +202,7 @@ public extension SKRotationMatrix
     }
   }
   
-  public var type: rotationType
+  var type: rotationType
   {
     let determinant: Int = self.determinant
     
@@ -260,7 +260,7 @@ public extension SKRotationMatrix
   /// - parameter type: the rotationType -6,..,6, if zero or omitted the current order is returned
   ///
   /// - returns: the rotational order
-  public func order(type: Int = 0) -> Int
+  func order(type: Int = 0) -> Int
   {
     var N: Int = type
     
@@ -283,7 +283,7 @@ public extension SKRotationMatrix
   /// - parameter type: the rotationType -6,..,6
   ///
   /// - returns: self**(order() - 1)
-  public func power(exponent: Int) -> SKRotationMatrix
+  func power(exponent: Int) -> SKRotationMatrix
   {
     if (exponent == 1) {return self}
     var result: SKRotationMatrix = self
@@ -299,7 +299,7 @@ public extension SKRotationMatrix
   /// - parameter type: the rotationType -6,..,6
   ///
   /// - returns: identity + self + self*self + ... + self**(order() - 1)
-  public func accumulate(type: Int = 0) -> SKRotationMatrix
+  func accumulate(type: Int = 0) -> SKRotationMatrix
   {
     let order: Int = self.order(type: type)
     if (order == 1) {return self}
@@ -323,7 +323,7 @@ public extension SKRotationMatrix
   /// - parameter rotationOrder: the rotation order
   ///
   /// - returns: a list of perpendicular eigenvectors
-  public  func orthogonalToAxisDirection(rotationOrder: Int) -> [int3]
+  func orthogonalToAxisDirection(rotationOrder: Int) -> [int3]
   {
     var orthoAxes: [int3] = []
    
@@ -349,7 +349,7 @@ public extension SKRotationMatrix
   }
 
   
-  public var adjoint: SKRotationMatrix
+  var adjoint: SKRotationMatrix
   {
     let c1: int3 = int3(-self[1,2] * self[2,1] + self[1,1] * self[2,2],self[1,2] * self[2,0] - self[1,0] * self[2,2],-self[1,1] * self[2,0] + self[1,0] * self[2,1])
     let c2: int3 = int3(self[0,2] * self[2,1] - self[0,1] * self[2,2], -self[0,2] * self[2,0] + self[0,0] * self[2,2], self[0,1] * self[2,0] - self[0,0] * self[2,1])
@@ -393,7 +393,7 @@ public extension SKRotationMatrix
     return (self == SKRotationMatrix.inversion)
   }
   
-  public static func rationalize(fValue: Double, denomintor: Int) -> Int?
+  static func rationalize(fValue: Double, denomintor: Int) -> Int?
   {
     var iValue: Int
     if (denomintor == 0) {return nil}
@@ -413,10 +413,7 @@ public extension SKRotationMatrix
     return iValue
   }
 
-
-  
-  
-  public var properRotation: SKRotationMatrix
+  var properRotation: SKRotationMatrix
   {
     if (self.determinant == -1)
     {
@@ -426,7 +423,7 @@ public extension SKRotationMatrix
   }
   
   
-  public var properRotation2: SKRotationMatrix
+  var properRotation2: SKRotationMatrix
   {
     if (self.determinant < 0)
     {
@@ -435,8 +432,7 @@ public extension SKRotationMatrix
     return self
   }
   
-  
-  public var rotationAxis: int3
+  var rotationAxis: int3
   {
     // rotation axis is the eigenvector with eigenvalue lambda==1
     for i in 0..<SKRotationMatrix.allPossibleRotationAxes.count
@@ -450,9 +446,7 @@ public extension SKRotationMatrix
     return int3(0,0,0)
   }
  
-
-  
-  public var rotationAxes: [int3]
+  var rotationAxes: [int3]
   {
     // No specific axis for I and -I
     //if self.isIdentity { return nil}
@@ -473,7 +467,7 @@ public extension SKRotationMatrix
   }
   
   // Determining the lattice symmetry is equivalent to determining the Bravais type.
-  public static func findLatticeSymmetry(unitCell min_lattice: double3x3, anglePrecision: Double = 3.0) -> SKPointSymmetrySet
+  static func findLatticeSymmetry(unitCell min_lattice: double3x3, anglePrecision: Double = 3.0) -> SKPointSymmetrySet
   {
     var pointSymmetries: Set<SKRotationMatrix> = []
     
@@ -523,7 +517,7 @@ public extension SKRotationMatrix
   /// - parameter unitCell: unit cell of the lattice
   ///
   /// - returns: the symmetry elements, i.e. a list of integer rotation matrices
-  public static func findLatticeSymmetry(unitCell min_lattice: double3x3, symmetryPrecision: Double = 1e-4) -> SKPointSymmetrySet
+  static func findLatticeSymmetry(unitCell min_lattice: double3x3, symmetryPrecision: Double = 1e-4) -> SKPointSymmetrySet
   {
     var pointSymmetries: Set<SKRotationMatrix> = Set<SKRotationMatrix>(minimumCapacity: 192)
     let metric_orig: double3x3 = min_lattice.transpose * min_lattice
@@ -589,7 +583,7 @@ public extension SKRotationMatrix
   
   // all possible rotation axes written in terms of integers
   // convention: e3 is positive, if e3=0, then e2 is positive. If e3=e2=0 then e1 is chosen as positive
-  public static let allPossibleRotationAxes: [int3] =
+  static let allPossibleRotationAxes: [int3] =
   [
     /*
     int3( 1, 0, 0),
@@ -846,18 +840,17 @@ public extension SKRotationMatrix
 
 extension SKRotationMatrix: Hashable
 {
-  public var hashValue: Int
+  public func hash(into hasher: inout Hasher)
   {
-    let v1: Int32 = self[0,0]+1
-    let v2: Int32 = 3 * (self[0,1]+1)
-    let v3: Int32 = (3*3) * (self[0,2]+1)
-    let v4: Int32 = (3*3*3) * (self[1,0]+1)
-    let v5: Int32 = (3*3*3*3) * (self[1,1]+1)
-    let v6: Int32 = (3*3*3*3*3) * (self[1,2]+1)
-    let v7: Int32 = (3*3*3*3*3*3) * (self[2,0]+1)
-    let v8: Int32 = (3*3*3*3*3*3*3) * (self[2,1]+1)
-    let v9: Int32 = (3*3*3*3*3*3*3*3) * (self[2,2]+1)
-    return Int(v1 + v2 + v3 + v4 + v5 + v6 + v7 + v8 + v9)
+    hasher.combine(self[0,0])
+    hasher.combine(self[0,1])
+    hasher.combine(self[0,2])
+    hasher.combine(self[1,0])
+    hasher.combine(self[1,1])
+    hasher.combine(self[1,2])
+    hasher.combine(self[2,0])
+    hasher.combine(self[2,1])
+    hasher.combine(self[2,2])
   }
   
   /*

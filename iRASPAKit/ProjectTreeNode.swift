@@ -757,7 +757,7 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
       if let parentNode = parentNode
       {
         let path: IndexPath = parentNode.indexPath
-        let index: Int = parentNode.childNodes.index(of: self)!
+        let index: Int = parentNode.childNodes.firstIndex(of: self)!
         
         if (path.count > 0)
         {
@@ -808,7 +808,7 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
   public func removeFromParent()
   {
     if let parentNode = parentNode,
-      let index: Int = parentNode.childNodes.index(of: self)
+      let index: Int = parentNode.childNodes.firstIndex(of: self)
     {
       parentNode.childNodes.remove(at: index)
       self.parentNode = nil

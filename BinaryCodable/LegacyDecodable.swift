@@ -30,9 +30,27 @@
  *************************************************************************************************************/
 
 import Foundation
+import MathKit
 import simd
 
-extension double4: Decodable
+
+ // MARK: -
+ // MARK: Decodable support
+
+extension Bool3: Decodable
+{
+  public init(from decoder: Decoder) throws
+  {
+    var container = try decoder.unkeyedContainer()
+ 
+    let x = try container.decode(Bool.self)
+    let y = try container.decode(Bool.self)
+    let z = try container.decode(Bool.self)
+    self.init(x,y,z)
+  }
+}
+
+extension simd_quatd: Decodable
 {
   // MARK: -
   // MARK: Decodable support
@@ -40,11 +58,29 @@ extension double4: Decodable
   public init(from decoder: Decoder) throws
   {
     var container = try decoder.unkeyedContainer()
+    self.init()
     
-    let x = try container.decode(Double.self)
-    let y = try container.decode(Double.self)
-    let z = try container.decode(Double.self)
-    let w = try container.decode(Double.self)
-    self.init(x,y,z,w)
+    self.vector = try container.decode(double4.self)
+  }
+}
+
+extension double3x3: Decodable
+{
+  // MARK: -
+  // MARK: Decodable support
+  
+  public init(from decoder: Decoder) throws
+  {
+    var container = try decoder.unkeyedContainer()
+    self.init()
+    self[0][0] = try container.decode(Double.self)
+    self[0][1] = try container.decode(Double.self)
+    self[0][2] = try container.decode(Double.self)
+    self[1][0] = try container.decode(Double.self)
+    self[1][1] = try container.decode(Double.self)
+    self[1][2] = try container.decode(Double.self)
+    self[2][0] = try container.decode(Double.self)
+    self[2][1] = try container.decode(Double.self)
+    self[2][2] = try container.decode(Double.self)
   }
 }

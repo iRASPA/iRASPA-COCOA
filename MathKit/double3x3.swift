@@ -42,30 +42,11 @@ extension double3x3
   }
 }
 
-extension double3x3: Decodable
-{
-  // MARK: -
-  // MARK: Decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    self.init()
-    self[0][0] = try container.decode(Double.self)
-    self[0][1] = try container.decode(Double.self)
-    self[0][2] = try container.decode(Double.self)
-    self[1][0] = try container.decode(Double.self)
-    self[1][1] = try container.decode(Double.self)
-    self[1][2] = try container.decode(Double.self)
-    self[2][0] = try container.decode(Double.self)
-    self[2][1] = try container.decode(Double.self)
-    self[2][2] = try container.decode(Double.self)
-  }
-}
+
 
 public extension double3x3
 {
-  public init(int3x3 a:  int3x3)
+  init(int3x3 a:  int3x3)
   {
     let col1 = a[0]
     let col2 = a[1]
@@ -74,19 +55,9 @@ public extension double3x3
                double3(x: Double(col2.x), y: Double(col2.y),z: Double(col2.z)),
                double3(x: Double(col3.x), y: Double(col3.y),z: Double(col3.z))])
   }
-  /*
-  public var determinant: Double
-  {
-    get
-    {
-      let temp1: Double = (self[1,1] * self[2,2]) - (self[1,2] * self[2,1])
-      let temp2: Double = (self[1][2] * self[2][0]) - (self[1][0] * self[2][2])
-      let temp3: Double = (self[1][0] * self[2][1]) - (self[1][1] * self[2][0])
-      return (self[0][0] * temp1) + (self[0][1] * temp2) + (self[0][2] * temp3)
-    }
-  }*/
   
-  public static func * (left: double3x3, right: int3) -> double3
+  
+  static func * (left: double3x3, right: int3) -> double3
   {
     return double3(x: left[0][0] * Double(right.x) + left[1][0] * Double(right.y) + left[2][0] * Double(right.z),
                    y: left[0][1] * Double(right.x) + left[1][1] * Double(right.y) + left[2][1] * Double(right.z),
@@ -95,7 +66,7 @@ public extension double3x3
   
   
   
-  public static func * (left: int3, right: double3x3) -> double3
+  static func * (left: int3, right: double3x3) -> double3
   {
     return double3(x: Double(left.x) * right[0][0] + Double(left.y) * right[0][1] + Double(left.z) * right[0][2],
                    y: Double(left.x) * right[1][0] + Double(left.y) * right[1][1] + Double(left.z) * right[1][2],

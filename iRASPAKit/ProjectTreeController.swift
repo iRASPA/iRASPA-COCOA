@@ -223,7 +223,7 @@ public final class ProjectTreeController: Decodable, BinaryDecodable, BinaryEnco
     {
       let node: ProjectTreeNode = parentNode.filteredAndSortedNodes[index]
       
-      return parentNode.childNodes.index(of: node)!
+      return parentNode.childNodes.firstIndex(of: node)!
     }
     else // return last index to add a new item
     {

@@ -174,9 +174,9 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
   // MARK: -
   // MARK: Hashable protocol
   
-  public var hashValue: Int
+  public func hash(into hasher: inout Hasher)
   {
-    return ObjectIdentifier(self).hashValue
+    ObjectIdentifier(self).hash(into: &hasher)
   }
   
   // MARK: -

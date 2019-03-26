@@ -55,6 +55,8 @@ class CloudAccountAvailableOperation: Operation
           LogQueue.shared.warning(destination: nil, message: "iCloud account authentication error: enable iCloud and iCloud-drive")
         case .restricted:
           LogQueue.shared.warning(destination: nil, message: "iCloud account restricted")
+        @unknown default:
+           fatalError()
         }
       }
     }

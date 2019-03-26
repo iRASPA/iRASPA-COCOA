@@ -96,7 +96,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   {
     // use at least 5,5,5 as the minimum-size
     let center: double3 = boundingBox.minimum + (boundingBox.maximum - boundingBox.minimum) * 0.5
-    let width: double3 = max(double3(5.0),boundingBox.maximum - boundingBox.minimum)
+    let width: double3 = max(double3(5.0,5.0,5.0),boundingBox.maximum - boundingBox.minimum)
     return SKBoundingBox(center: center, width: width)
   }
   

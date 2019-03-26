@@ -31,6 +31,7 @@
 
 import CoreFoundation
 import MathKit
+import simd
 
 /// A protocol for types which can be encoded to binary.
 public protocol BinaryEncodable
@@ -117,6 +118,62 @@ public extension BinaryEncoder
     appendBytes(of: value.bitPattern.bigEndian)
   }
   
+  func encode(_ value: int3)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+    self.encode(value.z)
+  }
+  
+  func encode(_ value: Bool3)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+    self.encode(value.z)
+  }
+  
+  func encode(_ value: float2)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+  }
+  
+  func encode(_ value: double2)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+  }
+  
+  func encode(_ value: float3)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+    self.encode(value.z)
+  }
+  
+  func encode(_ value: double3)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+    self.encode(value.z)
+  }
+  
+  func encode(_ value: float4)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+    self.encode(value.z)
+    self.encode(value.w)
+  }
+  
+  func encode(_ value: double4)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+    self.encode(value.z)
+    self.encode(value.w)
+  }
+  
   func encode(_ value: String)
   {
     let array: [UInt16] = Array(value.utf16)
@@ -150,7 +207,7 @@ public extension BinaryEncoder
     data.append(contentsOf: value)
   }
   
-  public func encode(_ type: Dictionary<String, NSColor>)
+  func encode(_ type: Dictionary<String, NSColor>)
   {
     if(type.isEmpty)
     {

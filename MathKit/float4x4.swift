@@ -34,7 +34,6 @@ import simd
 
 extension float4x4
 {
-  
   public init(Double4x4: double4x4)
   {
     self.init([float4(Double4: Double4x4[0]), float4(Double4: Double4x4[1]), float4(Double4: Double4x4[2]), float4(Double4: Double4x4[3])])

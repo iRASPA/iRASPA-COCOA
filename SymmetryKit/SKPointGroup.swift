@@ -181,7 +181,7 @@ public struct SKPointGroup
         // the second axis is the shortest orthogonal axis
         axes[0] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <  length_squared($1) ? $0 : $1})
         
-        if let index: Int = orthogonalAxes.index(of: axes[0])
+        if let index: Int = orthogonalAxes.firstIndex(of: axes[0])
         {
           orthogonalAxes.remove(at: index)
           
@@ -203,7 +203,7 @@ public struct SKPointGroup
         
         
         // outside access to 'allPossibleRotationAxes' FIX or CHECK
-        let uniqueAxis: [int3] = Array(Set(allAxes)).sorted{SKRotationMatrix.allPossibleRotationAxes.index(of: $0)! < SKRotationMatrix.allPossibleRotationAxes.index(of: $1)!}
+        let uniqueAxis: [int3] = Array(Set(allAxes)).sorted{SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $0)! < SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $1)!}
         //let uniqueAxis: [int3] = allAxes.sorted{length_squared($0) < length_squared($1)}
         
         if uniqueAxis.count >= 3
@@ -253,7 +253,7 @@ public struct SKPointGroup
               }
             }
             
-            if SKRotationMatrix.allPossibleRotationAxes.contains(-axisVector)
+            if SKRotationMatrix.allPossibleRotationAxes.contains(0 &- axisVector)
             {
               axes[1] = axisVector
 
@@ -495,7 +495,6 @@ public struct SKPointGroup
     default:
       fatalError()
     }
-    fatalError()
   }
   
 

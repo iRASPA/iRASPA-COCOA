@@ -901,7 +901,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   private static func distanceSquared(a: double3, b: double3) -> Double
   {
     var dr: double3 = abs(a - b)
-    dr -= floor(dr + double3(0.5))
+    dr -= floor(dr + double3(0.5,0.5,0.5))
     return length_squared(dr)
   }
   
@@ -1164,7 +1164,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         if atoms[i].type == atoms[j].type
         {
           var dr: double3 = abs(pos_rot - atoms[j].fractionalPosition)
-          dr -= floor(dr + double3(0.5))
+          dr -= floor(dr + double3(0.5,0.5,0.5))
           //var dr: double3 = pos_rot - fractionalPositions[j]
           //dr.x -= Double(dr.x<0.0 ? Int(dr.x-0.5) : Int(dr.x+0.5))
           //dr.y -= Double(dr.y<0.0 ? Int(dr.y-0.5) : Int(dr.y+0.5))
@@ -1189,7 +1189,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   public static func isOverlap(a: double3, b: double3, lattice: double3x3, symmetryPrecision: Double = 1e-5) -> Bool
   {
     var dr: double3 = abs(a - b)
-    dr -= floor(dr + double3(0.5))
+    dr -= floor(dr + double3(0.5,0.5,0.5))
     if length_squared(lattice * dr) < symmetryPrecision * symmetryPrecision
     {
       return true

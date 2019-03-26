@@ -32,23 +32,8 @@
 import Foundation
 import simd
 
-extension double3: Decodable
-{
-  // MARK: -
-  // MARK: Lgeacy decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let x = try container.decode(Double.self)
-    let y = try container.decode(Double.self)
-    let z = try container.decode(Double.self)
-    self.init(x,y,z)
-  }
-}
 
-extension double3: Hashable
+extension double3
 {
   public var hashValue: Int
   {
@@ -64,7 +49,7 @@ extension double3: Hashable
 
 public extension double3
 {
-  public init(_ a:  int3)
+  init(_ a:  int3)
   {
     self.init(Double(a.x), Double(a.y), Double(a.z))
   }
@@ -72,7 +57,7 @@ public extension double3
 
 public extension double3
 {
-  public static func flip(v: double3, flip: Bool3, boundary: double3) -> double3
+  static func flip(v: double3, flip: Bool3, boundary: double3) -> double3
   {
     return double3(flip.x ? boundary.x - v.x : v.x,
                    flip.y ? boundary.y - v.y : v.y,
@@ -82,7 +67,7 @@ public extension double3
 
 public extension double3
 {
-  public static func randomVectorOnUnitSphere() -> double3
+  static func randomVectorOnUnitSphere() -> double3
   {
     var ran1,ran2,ranh,ransq: Double
       

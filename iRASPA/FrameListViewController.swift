@@ -304,7 +304,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
         }
         
         if let selectedFrame = selectedMovie.selectedFrame,
-           let selectedRow: Int = selectedMovie.frames.index(of: selectedFrame)
+           let selectedRow: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
         {
           if (selectedRow == row)
           {
@@ -340,7 +340,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
         }
         
         if let selectedFrame = selectedMovie.selectedFrame,
-            let selectedRow: Int = selectedMovie.frames.index(of: selectedFrame)
+            let selectedRow: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
         {
           if (row == selectedRow)
           {
@@ -391,7 +391,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       frame.structure.displayName = newValue
       
       // reload item in the outlineView
-      if let row: Int = selectedMovie.frames.index(of: frame)
+      if let row: Int = selectedMovie.frames.firstIndex(of: frame)
       {
         self.framesTableView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
       }
@@ -576,7 +576,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       var selectedRowIndexes: IndexSet = IndexSet()
       for frame in selectedFrames
       {
-        if let index: Int = selectedMovie.frames.index(of: frame)
+        if let index: Int = selectedMovie.frames.firstIndex(of: frame)
         {
           selectedRowIndexes.insert(index)
         }
@@ -584,7 +584,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       self.framesTableView?.selectRowIndexes(selectedRowIndexes, byExtendingSelection: false)
       
       if let selectedFrame = selectedMovie.selectedFrame,
-         let selectedRow: Int = selectedMovie.frames.index(of: selectedFrame)
+         let selectedRow: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
       {
         self.framesTableView?.enumerateAvailableRowViews({ (rowView, row) in
           if (row == selectedRow)
@@ -632,7 +632,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
          let project = proxyProject.representedObject.loadedProjectStructureNode,
          let selectedScene: Scene = project.sceneList.selectedScene,
          let selectedMovie: Movie = selectedScene.selectedMovie,
-         let oldSelectedRow: Int = selectedMovie.selectedFrame != nil ? selectedMovie.frames.index(of: selectedMovie.selectedFrame!) : -1,
+         let oldSelectedRow: Int = selectedMovie.selectedFrame != nil ? selectedMovie.frames.firstIndex(of: selectedMovie.selectedFrame!) : -1,
          let selectedRow: Int = self.framesTableView?.selectedRow, selectedRow >= 0,
          let selectedRows: IndexSet = self.framesTableView?.selectedRowIndexes, ((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
       {
@@ -764,7 +764,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     {
       var insertionIndex: Int = 0
       if let selectedFrame: iRASPAStructure = movie.selectedFrame,
-        let index = movie.frames.index(of: selectedFrame)
+        let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
       }
@@ -785,7 +785,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     {
       var insertionIndex: Int = 0
       if let selectedFrame: iRASPAStructure = movie.selectedFrame,
-        let index = movie.frames.index(of: selectedFrame)
+        let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
       }
@@ -806,7 +806,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     {
       var insertionIndex: Int = 0
       if let selectedFrame: iRASPAStructure = movie.selectedFrame,
-        let index = movie.frames.index(of: selectedFrame)
+        let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
       }
@@ -827,7 +827,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     {
       var insertionIndex: Int = 0
       if let selectedFrame: iRASPAStructure = movie.selectedFrame,
-        let index = movie.frames.index(of: selectedFrame)
+        let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
       }
@@ -848,7 +848,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     {
       var insertionIndex: Int = 0
       if let selectedFrame: iRASPAStructure = movie.selectedFrame,
-        let index = movie.frames.index(of: selectedFrame)
+        let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
       }

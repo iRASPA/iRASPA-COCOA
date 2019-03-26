@@ -135,9 +135,9 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
         self.arrangedObjects = frames.isEmpty ? [[]] : frames
         
         if let selectedScene: Scene = project.sceneList.selectedScene,
-          let sceneIndex: Int = project.sceneList.scenes.index(of: selectedScene),
+          let sceneIndex: Int = project.sceneList.scenes.firstIndex(of: selectedScene),
           let selectedMovie: Movie = selectedScene.selectedMovie,
-          let movieIndex: Int = selectedScene.movies.index(of: selectedMovie)
+          let movieIndex: Int = selectedScene.movies.firstIndex(of: selectedMovie)
         {
           let selectionIndex: Int = project.sceneList.rowForSectionTuple(sceneIndex, movieIndex: movieIndex)
           self.selectedIndex = selectionIndex
@@ -150,7 +150,7 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
           self.arrangedObjects = frames.isEmpty ? [[]] : frames
           
           if let selectedFrame: iRASPAStructure = selectionMovie.selectedFrame,
-            let selectionIndex: Int = selectionMovie.frames.index(of: selectedFrame)
+            let selectionIndex: Int = selectionMovie.frames.firstIndex(of: selectedFrame)
           {
             self.selectedIndex = selectionIndex
           }
@@ -174,9 +174,9 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
       {
       case 1:
         if let selectedScene: Scene = project.sceneList.selectedScene,
-          let sceneIndex: Int = project.sceneList.scenes.index(of: selectedScene),
+          let sceneIndex: Int = project.sceneList.scenes.firstIndex(of: selectedScene),
           let selectedMovie: Movie = selectedScene.selectedMovie,
-          let movieIndex: Int = selectedScene.movies.index(of: selectedMovie)
+          let movieIndex: Int = selectedScene.movies.firstIndex(of: selectedMovie)
         {
           let selectionIndex: Int = project.sceneList.rowForSectionTuple(sceneIndex, movieIndex: movieIndex)
         
@@ -195,7 +195,7 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
         if let selectedScene: Scene = project.sceneList.selectedScene,
            let selectedMovie: Movie = selectedScene.selectedMovie,
            let selectedFrame: iRASPAStructure = selectedMovie.selectedFrame,
-           let selectionIndex: Int = selectedMovie.frames.index(of: selectedFrame)
+           let selectionIndex: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
         {
           if let index: Int = (self.parent as? NSTabViewController)?.selectedTabViewItemIndex
           {

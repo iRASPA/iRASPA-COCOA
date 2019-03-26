@@ -97,7 +97,7 @@ extension Data {
         let mask = 0xffffffff as UInt32
         let bufferSize = self.count/MemoryLayout<UInt8>.size
         var result = checksum ^ mask
-        self.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
+        self.withUnsafeBytes { (bytes) in
             let bins = stride(from: 0, to: bufferSize, by: 256)
             for bin in bins {
                 for binIndex in 0..<256 {
@@ -193,7 +193,10 @@ extension Data {
             let shouldProvideData = progress.configuration.flags != Int32(COMPRESSION_STREAM_FINALIZE.rawValue)
             if shouldProvideData || progress.configuration.operation == COMPRESSION_STREAM_ENCODE {
                 chunk = try provider(progress.advance.position, progress.advance.readSize)
-                chunk.withUnsafeBytes { stream.src_ptr = $0 }
+              
+                chunk.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> () in
+                  stream.src_ptr = ptr.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                }
                 if progress.configuration.operation == COMPRESSION_STREAM_ENCODE {
                     checksum = chunk.crc32(checksum: checksum)
                 }

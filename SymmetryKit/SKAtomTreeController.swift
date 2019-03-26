@@ -162,7 +162,7 @@ public class SKAtomTreeController: Decodable, BinaryDecodable, BinaryEncodable
     {
       let node: SKAtomTreeNode = parentNode.filteredAndSortedNodes[index]
       
-      return parentNode.childNodes.index(of: node)!
+      return parentNode.childNodes.firstIndex(of: node)!
     }
     else // return last index to add a new item
     {

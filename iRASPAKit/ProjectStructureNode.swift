@@ -532,8 +532,8 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
       //var data: [UInt8] = Array<UInt8>(repeating: 0, count: Int(dataLength))
       var imageData: Data = Data(count: Int(dataLength))
       
-      try imageData.withUnsafeMutableBytes { (rawPtr: UnsafeMutablePointer) in
-        try decoder.read(Int(dataLength), into: rawPtr)
+      try imageData.withUnsafeMutableBytes { (rawPtr: UnsafeMutableRawBufferPointer) in
+        try decoder.read(Int(dataLength), into: rawPtr.baseAddress!)
       }
       if let dataProvider: CGDataProvider = CGDataProvider(data: imageData as CFData)
       {

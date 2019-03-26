@@ -140,6 +140,8 @@ public class Cloud
           break
         case .recordUpdated:
           break
+        @unknown default:
+          fatalError()
         }
       }
     }

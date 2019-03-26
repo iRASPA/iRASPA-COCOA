@@ -37,6 +37,124 @@ public typealias BinaryCodable = BinaryEncodable & BinaryDecodable
 
 /// Implementations of BinaryCodable for built-in types.
 
+extension Int32: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(Int32(self))
+  }
+}
+
+extension Int32: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let x: Int32 = try decoder.decode(Int32.self)
+    self.init(x)
+  }
+}
+
+extension Float: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(self)
+  }
+}
+
+extension Float: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let x: Float = try decoder.decode(Float.self)
+    self.init(x)
+  }
+}
+
+
+extension SIMD2: BinaryEncodable where Scalar: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(self.x)
+    encoder.encode(self.y)
+  }
+}
+
+extension SIMD2: BinaryDecodable where Scalar: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let x: Scalar = try decoder.decode(Scalar.self)
+    let y: Scalar = try decoder.decode(Scalar.self)
+    self.init(x: x, y: y)
+  }
+}
+
+extension Bool3: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(self.x)
+    encoder.encode(self.y)
+    encoder.encode(self.z)
+  }
+}
+
+extension Bool3: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let x: Bool = try decoder.decode(Bool.self)
+    let y: Bool = try decoder.decode(Bool.self)
+    let z: Bool = try decoder.decode(Bool.self)
+    self.init(x, y, z)
+  }
+}
+
+extension SIMD3: BinaryEncodable where Scalar: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(self.x)
+    encoder.encode(self.y)
+    encoder.encode(self.z)
+  }
+}
+
+extension SIMD3: BinaryDecodable where Scalar: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let x: Scalar = try decoder.decode(Scalar.self)
+    let y: Scalar = try decoder.decode(Scalar.self)
+    let z: Scalar = try decoder.decode(Scalar.self)
+    self.init(x: x, y: y, z: z)
+  }
+}
+
+extension SIMD4: BinaryEncodable where Scalar: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(self.x)
+    encoder.encode(self.y)
+    encoder.encode(self.z)
+    encoder.encode(self.w)
+  }
+}
+
+extension SIMD4: BinaryDecodable where Scalar: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let x: Scalar = try decoder.decode(Scalar.self)
+    let y: Scalar = try decoder.decode(Scalar.self)
+    let z: Scalar = try decoder.decode(Scalar.self)
+    let w: Scalar = try decoder.decode(Scalar.self)
+    self.init(x: x, y: y, z: z, w: w)
+  }
+}
 
 extension Array: BinaryEncodable where Element: BinaryEncodable
 {
@@ -105,46 +223,6 @@ extension Array: BinaryDecodableRecursive where Element: BinaryDecodableRecursiv
 
 
 
-extension double2: BinaryEncodable
-{
-  public func binaryEncode(to encoder: BinaryEncoder)
-  {
-    encoder.encode(self.x)
-    encoder.encode(self.y)
-  }
-}
-
-extension double2: BinaryDecodable
-{
-  public init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let x: Double = try decoder.decode(Double.self)
-    let y: Double = try decoder.decode(Double.self)
-    self.init(x: x, y:y)
-  }
-}
-
-extension double3: BinaryEncodable
-{
-  public func binaryEncode(to encoder: BinaryEncoder)
-  {
-    encoder.encode(self.x)
-    encoder.encode(self.y)
-    encoder.encode(self.z)
-  }
-}
-
-extension double3: BinaryDecodable
-{
-  public init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let x: Double = try decoder.decode(Double.self)
-    let y: Double = try decoder.decode(Double.self)
-    let z: Double = try decoder.decode(Double.self)
-    self.init(x: x, y:y, z: z)
-  }
-}
-
 extension simd_quatd: BinaryEncodable
 {
   public func binaryEncode(to encoder: BinaryEncoder)
@@ -168,47 +246,6 @@ extension simd_quatd: BinaryDecodable
   }
 }
 
-extension Bool3: BinaryEncodable
-{
-  public func binaryEncode(to encoder: BinaryEncoder)
-  {
-    encoder.encode(self.x)
-    encoder.encode(self.y)
-    encoder.encode(self.z)
-  }
-}
-
-extension Bool3: BinaryDecodable
-{
-  public init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let x: Bool = try decoder.decode(Bool.self)
-    let y: Bool = try decoder.decode(Bool.self)
-    let z: Bool = try decoder.decode(Bool.self)
-    self.init(x, y, z)
-  }
-}
-
-extension int3: BinaryEncodable
-{
-  public func binaryEncode(to encoder: BinaryEncoder)
-  {
-    encoder.encode(Int32(self.x))
-    encoder.encode(Int32(self.y))
-    encoder.encode(Int32(self.z))
-  }
-}
-
-extension int3: BinaryDecodable
-{
-  public init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let x: Int32 = try decoder.decode(Int32.self)
-    let y: Int32 = try decoder.decode(Int32.self)
-    let z: Int32 = try decoder.decode(Int32.self)
-    self.init(x: x, y: y, z: z)
-  }
-}
 
 extension double3x3: BinaryEncodable
 {

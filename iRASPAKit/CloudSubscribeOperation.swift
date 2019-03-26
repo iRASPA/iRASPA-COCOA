@@ -47,7 +47,7 @@ public class CloudSubscribeOperation: FKGroupOperation
     
     if #available(OSX 10.12, *)
     {
-      projectSubscription = CKQuerySubscription(recordType: "ProjectNode", predicate: predicate, subscriptionID: subscriptionID, options: [.firesOnRecordCreation, .firesOnRecordDeletion, .firesOnRecordUpdate])
+      projectSubscription = CKQuerySubscription(recordType: "ProjectNode", predicate: predicate, subscriptionID: subscriptionID, options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordDeletion, CKQuerySubscription.Options.firesOnRecordUpdate])
       
       // silent push notification
       let notificationInfo = CKSubscription.NotificationInfo()

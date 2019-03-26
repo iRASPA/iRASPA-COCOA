@@ -33,19 +33,8 @@ import Foundation
 import simd
 import simd.quaternion
 
-extension simd_quatd: Decodable
+extension simd_quatd
 {
-  // MARK: -
-  // MARK: Decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    self.init()
-    
-    self.vector = try container.decode(double4.self)
-  }
-  
   public init(pitch: Double)
   {
     let half_theta: Double = 0.5 * pitch * Double.pi/180.0

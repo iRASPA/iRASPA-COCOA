@@ -38,7 +38,6 @@ extension Int32
     return a - b * Int32(floor(Double(a) / Double(b)))
   }
   
-  
   public static func greatestCommonDivisor(a arg1: Int32, b arg2: Int32) -> Int32
   {
     var a: Int32 = arg1

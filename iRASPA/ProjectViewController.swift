@@ -820,7 +820,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         // update filteredChildren
         inItem?.updateFilteredChildrenRecursively(projectData.filterPredicate)
-        if let index: Int = inItem?.filteredAndSortedNodes.index(of: treeNode)
+        if let index: Int = inItem?.filteredAndSortedNodes.firstIndex(of: treeNode)
         {
           self.projectOutlineView?.insertItems(at: IndexSet(integer: index), inParent: inItem, withAnimation: animationOptions)
         }
@@ -892,7 +892,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       node.unwrapLazyLocalPresentedObjectIfNeeded()
       
-      let index: Int? = fromItem?.filteredAndSortedNodes.index(of: node)
+      let index: Int? = fromItem?.filteredAndSortedNodes.firstIndex(of: node)
       
       projectData.removeNode(node)
       
@@ -987,7 +987,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         undoManager.registerUndo(withTarget: self, handler: {$0.moveNode(node, toItem: fromItem, childIndex: lastIndex)})
       }
       
-      let index: Int? = fromItem?.filteredAndSortedNodes.index(of: node)
+      let index: Int? = fromItem?.filteredAndSortedNodes.firstIndex(of: node)
     
       // remove old node
       let projectData: ProjectTreeController = document.documentData.projectData
@@ -1014,7 +1014,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         // update filteredChildren
         toItem?.updateFilteredChildrenRecursively(projectData.filterPredicate)
-        if let index: Int = toItem?.filteredAndSortedNodes.index(of: node)
+        if let index: Int = toItem?.filteredAndSortedNodes.firstIndex(of: node)
         {
           self.projectOutlineView?.insertItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: [.effectGap])
         }
@@ -1273,7 +1273,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         if (self.itemsAreSiblings(node, parentItem: item))
         {
           // Moving it from within the same parent! Account for the remove, if it is past the oldIndex
-          if let oldIndex = node.parentNode?.childNodes.index(of: node) , childIndex > oldIndex
+          if let oldIndex = node.parentNode?.childNodes.firstIndex(of: node) , childIndex > oldIndex
           {
             childIndex = childIndex - 1 // account for the remove
           }
