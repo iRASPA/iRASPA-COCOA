@@ -729,6 +729,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
       
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+      
+      clearMeasurement()
     }
   }
   
