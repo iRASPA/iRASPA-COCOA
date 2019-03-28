@@ -1375,6 +1375,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
     self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
     self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+    self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
     
     self.updateNetChargeTextField()
     
