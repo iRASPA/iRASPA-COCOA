@@ -106,6 +106,7 @@
 		930DD7241E2808B700B8FE9B /* AtomSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD7191E2808B700B8FE9B /* AtomSearchField.swift */; };
 		930DD7251E2808B700B8FE9B /* AtomTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD71A1E2808B700B8FE9B /* AtomTableRowView.swift */; };
 		930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 930DD7581E280A3C00B8FE9B /* BondCylinderShader.metal */; };
+		930F71EF224CE4D7006C1201 /* RealMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F71EE224CE4D7006C1201 /* RealMatrix.swift */; };
 		9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */; };
 		9314E33F1E34A78E00680364 /* ViewerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33E1E34A78E00680364 /* ViewerProtocols.swift */; };
 		93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159FDD1F54235200D8700E /* SKXYZParser.swift */; };
@@ -875,6 +876,7 @@
 		930DD71A1E2808B700B8FE9B /* AtomTableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomTableRowView.swift; sourceTree = "<group>"; };
 		930DD7581E280A3C00B8FE9B /* BondCylinderShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = BondCylinderShader.metal; sourceTree = "<group>"; };
 		930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = iRASPAHelp.help; sourceTree = "<group>"; };
+		930F71EE224CE4D7006C1201 /* RealMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealMatrix.swift; sourceTree = "<group>"; };
 		9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		9314E33E1E34A78E00680364 /* ViewerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewerProtocols.swift; sourceTree = "<group>"; };
 		93159FDD1F54235200D8700E /* SKXYZParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXYZParser.swift; sourceTree = "<group>"; };
@@ -1971,6 +1973,7 @@
 			children = (
 				938388491E26A60700112FBA /* HermiteNormalForm.swift */,
 				9383884A1E26A60700112FBA /* IntegerMatrix.swift */,
+				930F71EE224CE4D7006C1201 /* RealMatrix.swift */,
 				9383884C1E26A60700112FBA /* Matrix.swift */,
 				9383884D1E26A60700112FBA /* SmithNormalForm.swift */,
 			);
@@ -3210,6 +3213,7 @@
 				9340A6F12015123B00F33D1D /* NSFont.swift in Sources */,
 				9383885B1E26A64200112FBA /* int3x9.swift in Sources */,
 				939B206D1EF2CF600061DE8D /* double3.swift in Sources */,
+				930F71EF224CE4D7006C1201 /* RealMatrix.swift in Sources */,
 				93FDA72D205522F8000C4AD7 /* bool3.swift in Sources */,
 				938388481E26A5CD00112FBA /* GreatestCommonDivisor.swift in Sources */,
 				939B20691EF2CF140061DE8D /* float3x3.swift in Sources */,
