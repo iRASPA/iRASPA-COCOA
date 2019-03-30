@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -200,7 +200,7 @@
                                                                             </constraints>
                                                                         </progressIndicator>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PtM-DX-Zu8">
-                                                                            <rect key="frame" x="185" y="1" width="14" height="17"/>
+                                                                            <rect key="frame" x="185" y="2" width="14" height="14"/>
                                                                             <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" controlSize="mini" transparent="YES" imageScaling="proportionallyDown" inset="2" id="7Vv-q1-s3g">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                                 <font key="font" metaFont="miniSystem"/>
@@ -293,7 +293,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="204" height="24"/>
                                             <subviews>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="MeV-cP-uiH" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="4" y="0.0" width="20" height="23"/>
+                                                    <rect key="frame" x="3.5" y="1" width="21" height="21"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="k3Q-Ei-zWu">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -304,7 +304,7 @@
                                                     </connections>
                                                 </button>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="QIh-cc-DBn" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="26" y="0.0" width="20" height="23"/>
+                                                    <rect key="frame" x="25.5" y="1" width="21" height="21"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xp3-V2-izm">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -508,7 +508,7 @@
                                                                             </constraints>
                                                                         </progressIndicator>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="677-XU-cCq">
-                                                                            <rect key="frame" x="208" y="0.0" width="14" height="17"/>
+                                                                            <rect key="frame" x="208" y="0.0" width="14" height="14"/>
                                                                             <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" controlSize="mini" transparent="YES" imageScaling="proportionallyDown" inset="2" id="Td4-01-48k">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                                 <font key="font" metaFont="miniSystem"/>
@@ -575,7 +575,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="227" height="24"/>
                                             <subviews>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="wng-ld-3JG" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="4" y="0.0" width="20" height="23"/>
+                                                    <rect key="frame" x="3.5" y="1" width="21" height="21"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="77u-Y8-lkM">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -586,7 +586,7 @@
                                                     </connections>
                                                 </button>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="ktY-wN-rEV" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="26" y="0.0" width="20" height="23"/>
+                                                    <rect key="frame" x="25.5" y="1" width="21" height="21"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="P6G-dI-vZ3">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -793,7 +793,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="227" height="24"/>
                                             <subviews>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="JRm-up-7jg" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="4" y="0.0" width="20" height="23"/>
+                                                    <rect key="frame" x="3.5" y="1" width="21" height="21"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZLO-Jd-9TH">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -804,7 +804,7 @@
                                                     </connections>
                                                 </button>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="3Ii-5k-ESu" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="26" y="0.0" width="20" height="23"/>
+                                                    <rect key="frame" x="25.5" y="1" width="21" height="21"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bBr-wf-gGv">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
