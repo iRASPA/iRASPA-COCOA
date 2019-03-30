@@ -253,33 +253,37 @@ class MetalView: MTKView
   
   override func draw(_ dirtyRect: NSRect)
   {
-    _ = _inflightSemaphore.wait(timeout: DispatchTime.distantFuture)
-    
-    var uniforms: RKTransformationUniforms = renderer.transformUniforms()
-    memcpy(frameUniformBuffers[constantDataBufferIndex].contents(),&uniforms, MemoryLayout<RKTransformationUniforms>.stride)
-    frameUniformBuffers[constantDataBufferIndex].didModifyRange(0..<MemoryLayout<RKTransformationUniforms>.stride)
-
-    let commandBuffer: MTLCommandBuffer = self.commandQueue.makeCommandBuffer()!
-    commandBuffer.addCompletedHandler{(_) in
-      self._inflightSemaphore.signal()
-    }
-    
-    renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: drawableSize)
-    
-    renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: drawableSize)
-    
-    if let renderPass: MTLRenderPassDescriptor = self.currentRenderPassDescriptor
+    if let _ = device,
+       let _ = window
     {
-      renderer.drawOnScreen(commandBuffer: commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: drawableSize)
-      
-      if let drawable = self.currentDrawable
-      {
-        commandBuffer.present(drawable)
-      }
-      commandBuffer.commit()
-    }
+      _ = _inflightSemaphore.wait(timeout: DispatchTime.distantFuture)
     
-    constantDataBufferIndex = (constantDataBufferIndex + 1) % frameUniformBuffers.count
+      var uniforms: RKTransformationUniforms = renderer.transformUniforms()
+      memcpy(frameUniformBuffers[constantDataBufferIndex].contents(),&uniforms, MemoryLayout<RKTransformationUniforms>.stride)
+      frameUniformBuffers[constantDataBufferIndex].didModifyRange(0..<MemoryLayout<RKTransformationUniforms>.stride)
+
+      let commandBuffer: MTLCommandBuffer = self.commandQueue.makeCommandBuffer()!
+      commandBuffer.addCompletedHandler{(_) in
+        self._inflightSemaphore.signal()
+      }
+    
+      renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: drawableSize)
+    
+      renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: drawableSize)
+    
+      if let renderPass: MTLRenderPassDescriptor = self.currentRenderPassDescriptor
+      {
+        renderer.drawOnScreen(commandBuffer: commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: drawableSize)
+      
+        if let drawable = self.currentDrawable
+        {
+          commandBuffer.present(drawable)
+        }
+        commandBuffer.commit()
+      }
+    
+      constantDataBufferIndex = (constantDataBufferIndex + 1) % frameUniformBuffers.count
+    }
   }
 
 
