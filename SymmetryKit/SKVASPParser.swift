@@ -217,10 +217,12 @@ public final class SKVASPParser: SKParser, ProgressReporting
               let orthogonalYCoordinate: Double = Double(words[1]),
               let orthogonalZCoordinate: Double = Double(words[2])
             {
-              let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+              let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+              let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: chemicalElement, position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
               
               atom.elementIdentifier = atomicNumber
-              atom.displayName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+              atom.displayName = chemicalElement
+              atom.uniqueForceFieldName = chemicalElement
               atom.position = double3(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
               atom.fractional = fractional
               

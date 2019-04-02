@@ -165,8 +165,10 @@ public final class SKXYZParser: SKParser, ProgressReporting
                    let orthogonalYCoordinate: Double = Double(words[2]),
                    let orthogonalZCoordinate: Double = Double(words[3])
                 {
+                  let chemicalSymbol: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
                   atom.elementIdentifier = atomicNumber
-                  atom.displayName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+                  atom.displayName = chemicalSymbol
+                  atom.uniqueForceFieldName = chemicalSymbol
                   atom.position = double3(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
                   atoms.append(atom)
                 }

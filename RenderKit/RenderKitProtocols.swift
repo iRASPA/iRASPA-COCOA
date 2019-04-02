@@ -173,7 +173,7 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var atomHDRExposure: Double {get}
   var atomHDRBloomLevel: Double {get}
   var clipAtomsAtUnitCell: Bool {get}
-  var atomPositions: [double3] {get}
+  var atomPositions: [double4] {get}
   var renderAtoms: [RKInPerInstanceAttributesAtoms] {get}
   
   var renderTextData: [RKInPerInstanceAttributesText] {get}

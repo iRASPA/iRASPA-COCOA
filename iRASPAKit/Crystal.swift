@@ -379,6 +379,8 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
               let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
               let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
               
+              
+              
               let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled) ? 1.0 : -1.0
               let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
               let radius: Float = Float(copy.asymmetricParentAtom.drawRadius)
@@ -418,6 +420,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   {
     var index: Int
     
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
     let numberOfReplicas: Int = self.cell.numberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -438,6 +443,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
     {
+      let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
+      let typeIsVisible: Bool = atomType?.isVisible ?? true
+      
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
       for copy in copies
@@ -454,7 +462,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
               let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
               let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
             
-              let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
+              let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
               let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
             
               let radius: Double = copy.asymmetricParentAtom.drawRadius
@@ -476,6 +484,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   {
     var index: Int
     
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
     let numberOfReplicas: Int = self.cell.numberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -496,11 +507,15 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     for asymetricAtom in asymmetricAtoms
     {
+      let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
+      let typeIsVisible: Bool = atomType?.isVisible ?? true
+      
       let displacement = self.cell.convertToFractional(asymetricAtom.displacement)
       
       let images: [double3] = spaceGroup.listOfSymmetricPositions(asymetricAtom.position + displacement)
       for image in images
       {
+        
         let pos: double3 = double3.flip(v: fract(image), flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
         
         for k1 in minimumReplicaX...maximumReplicaX
@@ -512,7 +527,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
               let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
               let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
               
-              let w: Double = (asymetricAtom.isVisible && asymetricAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
+              let w: Double = (typeIsVisible && asymetricAtom.isVisible && asymetricAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
               let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
               
               let radius: Double = asymetricAtom.drawRadius
@@ -532,9 +547,12 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   
   
-  public override var atomPositions: [double3]
+  public override var atomPositions: [double4]
   {
     var index: Int
+    
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.numberOfReplicas
     
@@ -550,11 +568,14 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
-    var data: [double3] = [double3](repeating: double3(), count: numberOfReplicas * atoms.count)
+    var data: [double4] = [double4](repeating: double4(), count: numberOfReplicas * atoms.count)
     
     index = 0
     for atom in atoms
     {
+      let atomType: SKForceFieldType? = forceFieldSet?[atom.asymmetricParentAtom.uniqueForceFieldName]
+      let typeIsVisible: Bool = atomType?.isVisible ?? true
+      
       let pos: double3 = double3.flip(v: atom.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
       
       for k1 in minimumReplicaX...maximumReplicaX
@@ -568,10 +589,10 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
             let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
             let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
             
-            let w: Double = (atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
+            let w: Double = (typeIsVisible && atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
             let position: double4 = rotationMatrix * double4(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: w)
             
-            data[index] = double3(x: position.x, y: position.y, z: position.z)
+            data[index] = position
             index = index + 1
           }
         }
@@ -725,6 +746,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     {
       var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
      
+      let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+      let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+      
       let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
       let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
       let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
@@ -737,26 +761,36 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       {
         if bond.atom1.type == .copy &&  bond.atom2.type == .copy && bond.boundaryType == .internal
         {
+          let atom1: SKAtomCopy = bond.atom1
+          let atom2: SKAtomCopy = bond.atom2
+          let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
+          let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
+          
+          let atomPos1 = double3.flip(v: atom1.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+          let atomPos2 = double3.flip(v: atom2.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+          
+          let color1: NSColor = asymmetricAtom1.color
+          let color2: NSColor = asymmetricAtom2.color
+          
+          let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
+          let typeIsVisible1: Bool = atomType1?.isVisible ?? true
+          let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
+          let typeIsVisible2: Bool = atomType2?.isVisible ?? true
+          
           for k1 in minimumReplicaX...maximumReplicaX
           {
             for k2 in minimumReplicaY...maximumReplicaY
             {
               for k3 in minimumReplicaZ...maximumReplicaZ
               {
-                let atomPos1 = double3.flip(v: bond.atom1.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
-                let pos1: double3 = cell.convertToCartesian(atomPos1 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + bond.atom1.asymmetricParentAtom.displacement
-                let atomPos2 = double3.flip(v: bond.atom2.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
-                let pos2: double3 = cell.convertToCartesian(atomPos2 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + bond.atom2.asymmetricParentAtom.displacement
+                let pos1: double3 = cell.convertToCartesian(atomPos1 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom1.displacement
+                let pos2: double3 = cell.convertToCartesian(atomPos2 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom2.displacement
                 let bondLength: Double = length(pos2-pos1)
                 
-                let drawRadius1: Double = bond.atom1.asymmetricParentAtom.drawRadius / bondLength
-                let drawRadius2: Double = bond.atom2.asymmetricParentAtom.drawRadius / bondLength
+                let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength
+                let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength
                 
-                let color1: NSColor = bond.atom1.asymmetricParentAtom.color
-                let color2: NSColor = bond.atom2.asymmetricParentAtom.color
-                
-                let w: Double = ((bond.atom1.asymmetricParentAtom.isVisible && bond.atom2.asymmetricParentAtom.isVisible) &&
-                  (bond.atom1.asymmetricParentAtom.isVisibleEnabled && bond.atom2.asymmetricParentAtom.isVisibleEnabled)) ? 1.0 : -1.0
+                let w: Double = (typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) && (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
                 data.append(RKInPerInstanceAttributesBonds(position1: float4(xyz: pos1, w: w),
                   position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
                   color1: float4(color: color1),
@@ -780,6 +814,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
     let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
@@ -792,17 +829,30 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     {
       if bond.atom1.type == .copy &&  bond.atom2.type == .copy && bond.boundaryType == .external
       {
+        let atom1: SKAtomCopy = bond.atom1
+        let atom2: SKAtomCopy = bond.atom2
+        let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
+        let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
+        
+        let atomPos1 = double3.flip(v: atom1.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+        let atomPos2 = double3.flip(v: atom2.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+        
+        let color1: NSColor = asymmetricAtom1.color
+        let color2: NSColor = asymmetricAtom2.color
+        
+        let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
+        let typeIsVisible1: Bool = atomType1?.isVisible ?? true
+        let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
+        let typeIsVisible2: Bool = atomType2?.isVisible ?? true
+        
         for k1 in minimumReplicaX...maximumReplicaX
         {
           for k2 in minimumReplicaY...maximumReplicaY
           {
             for k3 in minimumReplicaZ...maximumReplicaZ
             {
-              let atomPos1 = double3.flip(v: bond.atom1.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
               let frac_pos1: double3 = atomPos1 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
-              let atomPos2 = double3.flip(v: bond.atom2.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
               let frac_pos2: double3 = atomPos2 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
-              
               var dr: double3 = frac_pos2 - frac_pos1
               
               // apply boundary condition
@@ -810,20 +860,16 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
               dr.y -= rint(dr.y)
               dr.z -= rint(dr.z)
               
-              let pos1: double3 = cell.convertToCartesian(frac_pos1) + bond.atom1.asymmetricParentAtom.displacement
-              let pos2: double3 = cell.convertToCartesian(frac_pos2) + bond.atom2.asymmetricParentAtom.displacement
+              let pos1: double3 = cell.convertToCartesian(frac_pos1) + asymmetricAtom1.displacement
+              let pos2: double3 = cell.convertToCartesian(frac_pos2) + asymmetricAtom2.displacement
               
               dr = cell.convertToCartesian(dr)
               let bondLength: Double = length(dr)
               
-              let drawRadius1: Double = bond.atom1.asymmetricParentAtom.drawRadius / bondLength;
-              let drawRadius2: Double = bond.atom2.asymmetricParentAtom.drawRadius / bondLength;
+              let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength;
+              let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength;
               
-              let color1: NSColor = bond.atom1.asymmetricParentAtom.color
-              let color2: NSColor = bond.atom2.asymmetricParentAtom.color
-              
-              let w: Double = ((bond.atom1.asymmetricParentAtom.isVisible && bond.atom2.asymmetricParentAtom.isVisible) &&
-                (bond.atom1.asymmetricParentAtom.isVisibleEnabled && bond.atom2.asymmetricParentAtom.isVisibleEnabled)) ? 1.0 : -1.0
+              let w: Double = (typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) && (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
               
               data.append(RKInPerInstanceAttributesBonds(position1: float4(xyz: pos1, w: w),
                 position2: float4(x: pos1.x+dr.x, y: pos1.y+dr.y, z: pos1.z+dr.z, w: w),
