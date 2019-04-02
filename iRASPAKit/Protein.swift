@@ -372,6 +372,9 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   {
     var index: Int
     
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
@@ -382,6 +385,9 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
     {
+      let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
+      let typeIsVisible: Bool = atomType?.isVisible ?? true
+      
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
       for copy in copies
@@ -390,7 +396,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
         copy.asymmetricIndex = asymetricIndex
         
         //let w: Double = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
-        let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
+        let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
         let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
         
         let radius: Double = copy.asymmetricParentAtom?.drawRadius ?? 1.0
@@ -410,6 +416,9 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   {
     var index: Int
     
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.allSelectedNodes.compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
@@ -420,13 +429,16 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     for asymetricAtom in asymmetricAtoms
     {
+      let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
+      let typeIsVisible: Bool = atomType?.isVisible ?? true
+      
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       for copy in copies
       {
         let cartesianPosition: double3 = copy.position + asymetricAtom.displacement + self.cell.contentShift
         
         //let w: Double = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
-        let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
+        let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
         let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
         
         let radius: Double = copy.asymmetricParentAtom?.drawRadius ?? 1.0
@@ -442,25 +454,32 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   }
 
   
-  public override var atomPositions: [double3]
+  public override var atomPositions: [double4]
   {
     var index: Int
     
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
     let atomNodes: [SKAtomTreeNode] = self.atoms.flattenedLeafNodes()
     let numberOfAtoms: Int = atomNodes.compactMap{$0.representedObject}.count
-    var data: [double3] = [double3](repeating: double3(), count: numberOfAtoms)
+    var data: [double4] = [double4](repeating: double4(), count: numberOfAtoms)
     
     index = 0
     for atomNode in atomNodes
     {
       let atom = atomNode.representedObject
+      
+      let atomType: SKForceFieldType? = forceFieldSet?[atom.uniqueForceFieldName]
+      let typeIsVisible: Bool = atomType?.isVisible ?? true
+      
       let pos: double3 = atom.position + self.cell.contentShift
         
       let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-      let w: Double = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
+      let w: Double = (typeIsVisible && atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
       let position: double4 = rotationMatrix * double4(x: pos.x, y: pos.y, z: pos.z, w: w)
         
-      data[index] = double3(x: position.x, y: position.y, z: position.z)
+      data[index] = position
       index = index + 1
     }
     return data
@@ -494,50 +513,56 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   public override var renderInternalBonds: [RKInPerInstanceAttributesBonds]
   {
-    get
-    {
-      var index: Int = 0
-      var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds](repeating: RKInPerInstanceAttributesBonds(), count: bonds.arrangedObjects.count * numberOfReplicas())
+    var index: Int = 0
+    var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds](repeating: RKInPerInstanceAttributesBonds(), count: bonds.arrangedObjects.count * numberOfReplicas())
       
-      index = 0
-      for bond in bonds.arrangedObjects
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+      
+    index = 0
+    for bond in bonds.arrangedObjects
+    {
+      if bond.boundaryType == .internal
       {
-        if bond.boundaryType == .internal
-        {
-          let pos1: double3 = bond.atom1.position + self.cell.contentShift
-          let pos2: double3 = bond.atom2.position + self.cell.contentShift
-          let bondLength: Double = length(pos2-pos1)
+        let atom1: SKAtomCopy = bond.atom1
+        let atom2: SKAtomCopy = bond.atom2
+        let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
+        let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
+        
+        let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
+        let typeIsVisible1: Bool = atomType1?.isVisible ?? true
+        let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
+        let typeIsVisible2: Bool = atomType2?.isVisible ?? true
+        
+        let pos1: double3 = atom1.position + self.cell.contentShift
+        let pos2: double3 = atom2.position + self.cell.contentShift
+        let bondLength: Double = length(pos2-pos1)
           
-          let color1: NSColor = bond.atom1.asymmetricParentAtom.color
-          let color2: NSColor = bond.atom2.asymmetricParentAtom.color
+        let color1: NSColor = asymmetricAtom1.color
+        let color2: NSColor = asymmetricAtom2.color
           
-          let drawRadius1: Double = bond.atom1.asymmetricParentAtom.drawRadius / bondLength;
-          let drawRadius2: Double = bond.atom2.asymmetricParentAtom.drawRadius / bondLength;
+        let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength;
+        let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength;
           
-          let w: Double = ((bond.atom1.asymmetricParentAtom.isVisible && bond.atom2.asymmetricParentAtom.isVisible) &&
-            (bond.atom1.asymmetricParentAtom.isVisibleEnabled && bond.atom2.asymmetricParentAtom.isVisibleEnabled)) ? 1.0 : -1.0
+        let w: Double = (typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) &&
+            (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
           
-          data[index] = RKInPerInstanceAttributesBonds(position1: float4(x: pos1.x, y: pos1.y, z: pos1.z, w: w),
+        data[index] = RKInPerInstanceAttributesBonds(position1: float4(x: pos1.x, y: pos1.y, z: pos1.z, w: w),
                                                        position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
                                                        color1: float4(color: color1),
                                                        color2: float4(color: color2),
                                                        scale: float4(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2))
-          index = index + 1
-          
-        }
+        index = index + 1
       }
-      return data
     }
+    return data
   }
   
   
   public override var renderExternalBonds: [RKInPerInstanceAttributesBonds]
   {
-    get
-    {
-      let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
-      return data
-    }
+    let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
+    return data
   }
   
   

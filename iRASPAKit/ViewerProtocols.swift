@@ -36,6 +36,11 @@ import RenderKit
 import SymmetryKit
 import SimulationKit
 
+public protocol ForceFieldDefiner: class
+{
+  var forceFieldSets: SKForceFieldSets {get}
+}
+
 public protocol StructureViewer: class
 {
   var structureViewerStructures: [Structure] {get}

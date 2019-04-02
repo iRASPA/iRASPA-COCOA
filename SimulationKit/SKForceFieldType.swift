@@ -35,10 +35,10 @@ import MathKit
 import simd
 
 // Note that this is 'value'-type
-public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
+public class SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   public var forceFieldStringIdentifier: String = ""
   public var editable: Bool = true
   public var atomicNumber: Int = 6
@@ -46,6 +46,7 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
   public var potentialParameters: double2 = double2(0.0,0.0)
   public var mass: Double = 0.0
   public var userDefinedRadius: Double = 0.0
+  public var isVisible: Bool = true
   
   public init(forceFieldStringIdentifier: String, atomicNumber: Int, sortIndex: Int, potentialParameters: double2, mass: Double, userDefinedRadius: Double)
   {
@@ -60,7 +61,7 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
   // MARK: -
   // MARK: Decodable support
   
-  public init(from decoder: Decoder) throws
+  required public init(from decoder: Decoder) throws
   {
     var container = try decoder.unkeyedContainer()
     
@@ -75,6 +76,7 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
     self.potentialParameters  = try container.decode(double2.self)
     self.mass = try container.decode(Double.self)
     self.userDefinedRadius = try container.decode(Double.self)
+    self.isVisible = true
   }
   
   // MARK: -
@@ -90,12 +92,13 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
     encoder.encode(self.potentialParameters)
     encoder.encode(self.mass)
     encoder.encode(self.userDefinedRadius)
+    encoder.encode(self.isVisible)
   }
   
   // MARK: -
   // MARK: Binary Decodable support
   
-  public init(fromBinary decoder: BinaryDecoder) throws
+  required public init(fromBinary decoder: BinaryDecoder) throws
   {
     let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > SKForceFieldType.classVersionNumber
@@ -112,6 +115,12 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
     self.potentialParameters  = try decoder.decode(double2.self)
     self.mass = try decoder.decode(Double.self)
     self.userDefinedRadius = try decoder.decode(Double.self)
+    
+    self.isVisible = true
+    if readVersionNumber >= 2 // introduced in version 2
+    {
+      isVisible = try decoder.decode(Bool.self)
+    }
   }
   
 }

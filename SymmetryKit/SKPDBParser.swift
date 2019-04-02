@@ -503,7 +503,6 @@ public final class SKPDBParser: SKParser, ProgressReporting
                   self.spaceGroup = spaceGroup
                 }
               }
-              
               break
             }
             let spaceGroupString: String = (scannedLine.substring(with: NSRange(location: 55, length: 11)).trimmingCharacters(in: NSCharacterSet.whitespaces).lowercased().capitalizeFirst)
@@ -543,7 +542,6 @@ public final class SKPDBParser: SKParser, ProgressReporting
             }
             
             let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
-            //let atom: AsymmetricAtomNode = AsymmetricAtomNode()
             
             let atomSerialNumberString: String = scannedLine.substring(with: NSRange(location: 6, length: 5))
             if let integerValue: Int = Int(atomSerialNumberString)
@@ -566,6 +564,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
               let atomNameString = String(atomName.prefix(2)).trimmingCharacters(in: CharacterSet.whitespaces) as String
               if let atomicNumber: Int = SKElement.atomData[atomNameString.capitalizeFirst]?["atomicNumber"] as? Int
               {
+                atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
                 atom.elementIdentifier = atomicNumber
               }
             }
@@ -592,6 +591,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
                 let atomicNumber: Int = SKElement.atomData[name.capitalizeFirst]!["atomicNumber"]! as? Int
               {
                 atom.elementIdentifier = atomicNumber
+                atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
               }
             }
             
@@ -698,6 +698,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
             if let atomicNumber: Int = SKElement.atomData[elementSymbolString.capitalizeFirst]?["atomicNumber"] as? Int
             {
               atom.elementIdentifier = atomicNumber
+              atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
             }
             
             guard (scannedLine.length >= 80) else

@@ -44,7 +44,7 @@ import Compression
 
 
 
-class iRASPADocument: NSDocument
+class iRASPADocument: NSDocument, ForceFieldDefiner
 {
   var documentData: DocumentData = DocumentData()
   var colorSets: SKColorSets = SKColorSets()

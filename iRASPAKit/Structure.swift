@@ -2264,7 +2264,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   
   
   
-  public var atomPositions: [double3]
+  public var atomPositions: [double4]
   {
     return []
   }
@@ -2789,9 +2789,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       bond.atom1.bonds.insert(bond)
       bond.atom2.bonds.insert(bond)
     }
-    
-    
-    
     
     drawBonds = try decoder.decode(Bool.self)
     bondScaleFactor = try decoder.decode(Double.self)

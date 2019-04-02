@@ -587,8 +587,6 @@ public final class SKCIFParser: SKParser, ProgressReporting
             atom.displayName = label
           }
           
-          
-          
           if let stringFractionalX = dictionary["_atom_site_fract_x"],
              let stringFractionalY = dictionary["_atom_site_fract_y"],
              let stringFractionalZ = dictionary["_atom_site_fract_z"]
@@ -621,6 +619,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
           if let atomicNumber: Int = SKElement.atomData[chemicalSymbol]?["atomicNumber"] as? Int
           {
             atom.elementIdentifier = atomicNumber
+            atom.uniqueForceFieldName = chemicalSymbol
             atoms.append(atom)
           }
           else
@@ -733,6 +732,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
           if let atomicNumber: Int = SKElement.atomData[chemicalSymbol]?["atomicNumber"] as? Int
           {
             atom.elementIdentifier = atomicNumber
+            atom.uniqueForceFieldName = chemicalSymbol
             
             if atom.solvent
             {
@@ -750,6 +750,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
             if let atomicNumber: Int = SKElement.atomData[chemicalElement]?["atomicNumber"] as? Int
             {
               atom.elementIdentifier = atomicNumber
+              atom.uniqueForceFieldName = chemicalElement
               if atom.solvent
               {
                 solvent.append(atom)

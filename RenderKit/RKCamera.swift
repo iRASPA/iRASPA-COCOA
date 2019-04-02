@@ -738,7 +738,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   
   
   // http://www.3dkingdoms.com/selection.html
-  public func selectPositionsInRectangle(_ positions: [double3], inRect rect: NSRect, withOrigin origin: double3, inViewPort bounds: NSRect) -> IndexSet
+  public func selectPositionsInRectangle(_ positions: [double4], inRect rect: NSRect, withOrigin origin: double3, inViewPort bounds: NSRect) -> IndexSet
   {
     let Points0: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 0.0), inViewPort: bounds)
     let Points1: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 1.0), inViewPort: bounds)
@@ -762,11 +762,12 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     let numberOfObjects: Int = positions.count
     for j in 0..<numberOfObjects
     {
-      let position: double3 = positions[j] + origin
+      let position: double3 = double3(positions[j].x,positions[j].y,positions[j].z) + origin
       if((dot(position-Points0,FrustrumPlane0)<0) &&
         (dot(position-Points2,FrustrumPlane1)<0) &&
         (dot(position-Points4,FrustrumPlane2)<0) &&
-        (dot(position-Points6,FrustrumPlane3)<0))
+        (dot(position-Points6,FrustrumPlane3)<0)) &&
+        positions[j].w>0.0
       {
         indexSet.add(j)
       }

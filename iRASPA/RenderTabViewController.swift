@@ -837,29 +837,29 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-    var selectedTreeNodes: Set<SKAtomTreeNode> = structure.atoms.selectedTreeNodes
-    if (!extending)
-    {
-      selectedTreeNodes = []
-    }
-    let numberOfReplicas: Int = structure.numberOfReplicas()
-    let nodes: [SKAtomTreeNode] = structure.atoms.flattenedLeafNodes()
+      var selectedTreeNodes: Set<SKAtomTreeNode> = structure.atoms.selectedTreeNodes
+      if (!extending)
+      {
+        selectedTreeNodes = []
+      }
+      let numberOfReplicas: Int = structure.numberOfReplicas()
+      let nodes: [SKAtomTreeNode] = structure.atoms.flattenedLeafNodes()
     
       let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
     
-    for index in indexSet
-    {
-      // take replicas into account
-      selectedTreeNodes.insert(nodes[atoms[index / numberOfReplicas].asymmetricIndex])
-    }
+      for index in indexSet
+      {
+        // take replicas into account
+        selectedTreeNodes.insert(nodes[atoms[index / numberOfReplicas].asymmetricIndex])
+      }
     
-    if selectedTreeNodes != structure.atoms.selectedTreeNodes
-    {
-      project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
-      self.setCurrentSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
-    }
+      if selectedTreeNodes != structure.atoms.selectedTreeNodes
+      {
+        project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
+        self.setCurrentSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
+      }
     
-    (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
   }
   

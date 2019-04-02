@@ -146,7 +146,6 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     
     if let document = self.windowController?.document as? iRASPADocument
     {
-      
       let forceFieldData: SKForceFieldSet = document.forceFieldSets[selectedForceFieldSetIndex]
       let uniqueForceFieldName = forceFieldData.atomTypeList[row].forceFieldStringIdentifier
       let atomicNumber: Int = forceFieldData.atomTypeList[row].atomicNumber
@@ -158,6 +157,13 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "elementView"), owner: self) as? NSTableCellView
       
       let editable: Bool = forceFieldData.editable
+      
+      if let visibilityCheckBox: NSButton = view?.viewWithTag(50) as? NSButton
+      {
+        visibilityCheckBox.isEnabled = editable
+        let isVisible: Bool = document.forceFieldSets[selectedForceFieldSetIndex][uniqueForceFieldName]?.isVisible ?? true
+        visibilityCheckBox.state = isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
+      }
       
       if let sortIndexView: NSTextField = view?.viewWithTag(1) as? NSTextField
       {
@@ -255,7 +261,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   
   func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat
   {
-    return 210.0
+    return 230.0
   }
   
   func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView?
@@ -311,7 +317,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       forceFieldTableView.beginUpdates()
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldData: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
-      var forceFieldType: SKForceFieldType = forceFieldData.atomTypeList[clickedRow]
+      let forceFieldType: SKForceFieldType = forceFieldData.atomTypeList[clickedRow]
       let elementId: Int = forceFieldData.atomTypeList[clickedRow].atomicNumber
       let newUniqueForceFieldName = forceFieldData.uniqueName(for: elementId)
       forceFieldType.forceFieldStringIdentifier = newUniqueForceFieldName
@@ -477,7 +483,6 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       let forceFieldData: SKForceFieldSet = document.forceFieldSets[selectedForceFieldSetIndex]
       let uniqueForceFieldName = forceFieldData.atomTypeList[row].forceFieldStringIdentifier
       
-      debugPrint("set color to: \(sender.color)")
       document.colorSets[selectedColorSetIndex][uniqueForceFieldName] = sender.color
       
       project.structures.forEach{$0.setRepresentationColorScheme(scheme: $0.atomColorSchemeIdentifier, colorSets: document.colorSets)}
@@ -553,6 +558,26 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     }
   }
   
+  @IBAction func changeAtomVisibility(_ sender: NSButton)
+  {
+    if let document: iRASPADocument = self.windowController?.currentDocument,
+       document.forceFieldSets[selectedForceFieldSetIndex].editable,
+       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+    {
+      let forceFieldSets: SKForceFieldSets = document.forceFieldSets
+      let forceFieldSet: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
+      
+      forceFieldSet.atomTypeList[row].isVisible = (sender.state == NSControl.StateValue.on)
+      self.reloadData()
+      
+      //project.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      document.updateChangeCount(.changeDone)
+    }
+  }
   
   @IBAction func changeAtomMass(_ sender: NSTextField)
   {
