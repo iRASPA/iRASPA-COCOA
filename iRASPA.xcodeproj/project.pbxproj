@@ -329,6 +329,7 @@
 		939B206D1EF2CF600061DE8D /* double3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B206C1EF2CF600061DE8D /* double3.swift */; };
 		939B206F1EF2D0310061DE8D /* int3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B206E1EF2D0310061DE8D /* int3.swift */; };
 		939B20731EF2D0920061DE8D /* Int32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B20721EF2D0920061DE8D /* Int32.swift */; };
+		939FFA7F225362B1000A1A46 /* SKXDATCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */; };
 		93A0BE381F24ED15001647D7 /* Gallery.irspdoc in Resources */ = {isa = PBXBuildFile; fileRef = 93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */; };
 		93A31C991EB4CC300010101B /* ReadStructureOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C981EB4CC300010101B /* ReadStructureOperation.swift */; };
 		93A31C9B1EB4CD030010101B /* ReadStructureGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9A1EB4CD030010101B /* ReadStructureGroupOperation.swift */; };
@@ -478,7 +479,7 @@
 		93FD046F1EC1B172005226F4 /* AtomNetChargeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FD046E1EC1B172005226F4 /* AtomNetChargeTextField.swift */; };
 		93FDA72D205522F8000C4AD7 /* bool3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FDA72C205522F8000C4AD7 /* bool3.swift */; };
 		93FDA72F20554DDB000C4AD7 /* SKVASPWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FDA72E20554DDB000C4AD7 /* SKVASPWriter.swift */; };
-		93FDA73120554DF6000C4AD7 /* SKVASPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FDA73020554DF6000C4AD7 /* SKVASPParser.swift */; };
+		93FDA73120554DF6000C4AD7 /* SKPOSCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FDA73020554DF6000C4AD7 /* SKPOSCARParser.swift */; };
 		93FFF0B2203B6DA800DB696A /* ExportPictureAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FFF0B1203B6DA800DB696A /* ExportPictureAccessoryViewController.xib */; };
 		93FFF0B4203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FFF0B3203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift */; };
 /* End PBXBuildFile section */
@@ -1102,6 +1103,7 @@
 		939B206C1EF2CF600061DE8D /* double3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = double3.swift; sourceTree = "<group>"; };
 		939B206E1EF2D0310061DE8D /* int3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = int3.swift; sourceTree = "<group>"; };
 		939B20721EF2D0920061DE8D /* Int32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int32.swift; sourceTree = "<group>"; };
+		939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXDATCARParser.swift; sourceTree = "<group>"; };
 		93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Gallery.irspdoc; sourceTree = "<group>"; };
 		93A31C981EB4CC300010101B /* ReadStructureOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadStructureOperation.swift; sourceTree = "<group>"; };
 		93A31C9A1EB4CD030010101B /* ReadStructureGroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadStructureGroupOperation.swift; sourceTree = "<group>"; };
@@ -1239,7 +1241,7 @@
 		93FD046E1EC1B172005226F4 /* AtomNetChargeTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomNetChargeTextField.swift; sourceTree = "<group>"; };
 		93FDA72C205522F8000C4AD7 /* bool3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bool3.swift; sourceTree = "<group>"; };
 		93FDA72E20554DDB000C4AD7 /* SKVASPWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVASPWriter.swift; sourceTree = "<group>"; };
-		93FDA73020554DF6000C4AD7 /* SKVASPParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVASPParser.swift; sourceTree = "<group>"; };
+		93FDA73020554DF6000C4AD7 /* SKPOSCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPOSCARParser.swift; sourceTree = "<group>"; };
 		93FFF0B1203B6DA800DB696A /* ExportPictureAccessoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExportPictureAccessoryViewController.xib; sourceTree = "<group>"; };
 		93FFF0B3203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportPictureAccessoryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2131,7 +2133,8 @@
 				93EAABA71ED9787D00FE61D8 /* SKCIFParser.swift */,
 				93EAABAE1EDACDEE00FE61D8 /* SKPDBParser.swift */,
 				93159FDD1F54235200D8700E /* SKXYZParser.swift */,
-				93FDA73020554DF6000C4AD7 /* SKVASPParser.swift */,
+				93FDA73020554DF6000C4AD7 /* SKPOSCARParser.swift */,
+				939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */,
 				93EAABA91ED978E200FE61D8 /* SKParser.swift */,
 				93793B2621D7FE59004CAD9C /* SKStructure.swift */,
 			);
@@ -2883,13 +2886,14 @@
 				93F1E7FB20244A060050ECAC /* SKCIFWriter.swift in Sources */,
 				93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */,
 				93F12B5C203830B500FFABC3 /* SymmetryKitErrors.swift in Sources */,
+				939FFA7F225362B1000A1A46 /* SKXDATCARParser.swift in Sources */,
 				930DD4EB1E26AA5200B8FE9B /* SKSeitzMatrix.swift in Sources */,
 				93B777361FA47AD300A5DF86 /* SKColorSets.swift in Sources */,
 				937807D721C5847000EC4466 /* OrderedDictionary.swift in Sources */,
 				93F3A59721873A1D008E41A2 /* SKBondNode.swift in Sources */,
 				93F3A5912187399E008E41A2 /* SKAtomTreeController.swift in Sources */,
 				93EAABAD1ED9847700FE61D8 /* SKElement.swift in Sources */,
-				93FDA73120554DF6000C4AD7 /* SKVASPParser.swift in Sources */,
+				93FDA73120554DF6000C4AD7 /* SKPOSCARParser.swift in Sources */,
 				9374794D1FB9EAFC008C4411 /* SKSymmetryCell.swift in Sources */,
 				93793B2721D7FE59004CAD9C /* SKStructure.swift in Sources */,
 				933700CA1EDC610800DD5961 /* SKSpaceGroupSetting.swift in Sources */,
@@ -4231,6 +4235,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "iRASPA-CLI/Info.plist";
 				INSTALL_PATH = "";
@@ -4257,6 +4262,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "iRASPA-CLI/Info.plist";
 				INSTALL_PATH = "";

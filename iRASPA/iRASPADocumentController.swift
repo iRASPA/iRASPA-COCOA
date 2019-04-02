@@ -71,6 +71,11 @@ class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
     {
       return true
     }
+    
+    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")
+    {
+      return true
+    }
 
     return false
   }

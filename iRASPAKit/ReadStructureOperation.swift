@@ -66,23 +66,27 @@ class ReadStructureOperation: FKOperation
 
 
     let fileName = url.lastPathComponent.lowercased()
-    switch(url.pathExtension.lowercased())
+    switch(url.pathExtension.uppercased())
     {
-    case "cif":
+    case "CIF":
       parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
      // parser?.scene.displayName = displayName
-    case "pdb":
+    case "PDB":
       parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
      // parser?.scene.displayName = displayName
-    case "xyz":
+    case "XYZ":
       parser = SKXYZParser(displayName: displayName, string: string, windowController: nil)
       // parser?.scene.displayName = displayName
-    case "poscar", "contcar":
-      parser = SKVASPParser(displayName: displayName, string: string, windowController: nil)
+    case "POSCAR", "CONTCAR":
+      parser = SKPOSCARParser(displayName: displayName, string: string, windowController: nil)
     case "":
-      if fileName == "poscar" || fileName == "contcar"
+      if fileName == "POSCAR" || fileName == "CONTCAR"
       {
-        parser = SKVASPParser(displayName: displayName, string: string, windowController: nil)
+        parser = SKPOSCARParser(displayName: displayName, string: string, windowController: nil)
+      }
+      else if fileName == "XDATCAR"
+      {
+        parser = SKXDATCARParser(displayName: displayName, string: string, windowController: nil)
       }
     default:
       fatalError("Unknown structure")

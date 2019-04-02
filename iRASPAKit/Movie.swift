@@ -356,7 +356,15 @@ public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboard
             return
           case _ where NSWorkspace.shared.type(type, conformsToType: String(typePOSCAR)) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
             guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-            let poscarParser: SKVASPParser = SKVASPParser(displayName: displayName, string: dataString, windowController: nil)
+            let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
+            try? poscarParser.startParsing()
+            let scene: Scene = Scene(parser: poscarParser.scene)
+            guard let movie = scene.movies.first else {return nil}
+            self.init(movie: movie)
+            return
+          case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
+            guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+            let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
             try? poscarParser.startParsing()
             let scene: Scene = Scene(parser: poscarParser.scene)
             guard let movie = scene.movies.first else {return nil}

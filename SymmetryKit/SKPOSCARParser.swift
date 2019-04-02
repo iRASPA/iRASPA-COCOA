@@ -34,7 +34,7 @@ import simd
 import MathKit
 import LogViewKit
 
-public final class SKVASPParser: SKParser, ProgressReporting
+public final class SKPOSCARParser: SKParser, ProgressReporting
 {
   weak var windowController: NSWindowController? = nil
   var cellFormulaUnitsZ: Int = 0
