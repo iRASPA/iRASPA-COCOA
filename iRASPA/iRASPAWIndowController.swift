@@ -171,8 +171,10 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
       }
     }
     
-    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" ||
-      url.lastPathComponent.uppercased() == "CONTCAR")
+    if url.pathExtension.isEmpty &&
+      (url.lastPathComponent.uppercased() == "POSCAR" ||
+       url.lastPathComponent.uppercased() == "CONTCAR" ||
+        url.lastPathComponent.uppercased() == "XDATCAR")
     {
       return true
     }

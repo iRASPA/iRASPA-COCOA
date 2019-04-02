@@ -317,7 +317,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       forceFieldTableView.beginUpdates()
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldData: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
-      let forceFieldType: SKForceFieldType = forceFieldData.atomTypeList[clickedRow]
+      var forceFieldType: SKForceFieldType = forceFieldData.atomTypeList[clickedRow]
       let elementId: Int = forceFieldData.atomTypeList[clickedRow].atomicNumber
       let newUniqueForceFieldName = forceFieldData.uniqueName(for: elementId)
       forceFieldType.forceFieldStringIdentifier = newUniqueForceFieldName
@@ -569,8 +569,6 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       
       forceFieldSet.atomTypeList[row].isVisible = (sender.state == NSControl.StateValue.on)
       self.reloadData()
-      
-      //project.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()

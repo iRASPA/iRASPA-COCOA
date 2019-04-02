@@ -35,7 +35,7 @@ import MathKit
 import simd
 
 // Note that this is 'value'-type
-public class SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
+public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 2
@@ -61,7 +61,7 @@ public class SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
   // MARK: -
   // MARK: Decodable support
   
-  required public init(from decoder: Decoder) throws
+  public init(from decoder: Decoder) throws
   {
     var container = try decoder.unkeyedContainer()
     
@@ -98,7 +98,7 @@ public class SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
   // MARK: -
   // MARK: Binary Decodable support
   
-  required public init(fromBinary decoder: BinaryDecoder) throws
+  public init(fromBinary decoder: BinaryDecoder) throws
   {
     let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > SKForceFieldType.classVersionNumber

@@ -455,14 +455,47 @@ class iRASPADocument: NSDocument, ForceFieldDefiner
     }
   }
   
-  func readVASPFileFormat(url: URL) throws
+  func readPOSCARFileFormat(url: URL) throws
   {
     if let data: Data = try? Data.init(contentsOf: url),
       let VASPString: String = String(data: data, encoding: String.Encoding.ascii)
     {
       let displayName: String = url.lastPathComponent
       
-      let VASPParser: SKVASPParser = SKVASPParser(displayName: displayName, string: VASPString, windowController: self.windowControllers.first)
+      let VASPParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: VASPString, windowController: self.windowControllers.first)
+      do
+      {
+        try VASPParser.startParsing()
+        let scene: Scene = Scene(parser: VASPParser.scene)
+        let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+        let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+        let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
+        
+        DispatchQueue.main.async {
+          self.documentData.projectLocalRootNode.childNodes.insert(proxyProject, at: 0)
+          
+          self.fileType = iRASPAUniversalDocumentUTI
+          self.fileURL = nil                   // disassociate document from file; makes document "untitled"
+          self.displayName = displayName
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()}
+        }
+      }
+      catch
+      {
+        LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing PDB-file failed with error, " + error.localizedDescription)
+        return
+      }
+    }
+  }
+  
+  func readXDATCARFileFormat(url: URL) throws
+  {
+    if let data: Data = try? Data.init(contentsOf: url),
+      let VASPString: String = String(data: data, encoding: String.Encoding.ascii)
+    {
+      let displayName: String = url.lastPathComponent
+      
+      let VASPParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: VASPString, windowController: self.windowControllers.first)
       do
       {
         try VASPParser.startParsing()
@@ -503,10 +536,17 @@ class iRASPADocument: NSDocument, ForceFieldDefiner
     case iRASPA_XYZ_UTI:
       try readXYZFileFormat(url: url)
     default:
-      if (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" ||
-                                        url.lastPathComponent.uppercased() == "CONTCAR"))
+      if (url.pathExtension.isEmpty)
       {
-        try readVASPFileFormat(url: url)
+        if (url.lastPathComponent.uppercased() == "POSCAR" ||
+            url.lastPathComponent.uppercased() == "CONTCAR")
+        {
+          try readPOSCARFileFormat(url: url)
+        }
+        else if (url.lastPathComponent.uppercased() == "XDATCAR")
+        {
+          try readXDATCARFileFormat(url: url)
+        }
       }
     }
     

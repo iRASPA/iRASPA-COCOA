@@ -604,7 +604,17 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
             return
           case _ where NSWorkspace.shared.type(type, conformsToType: String(typePOSCAR)) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
             guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-            let poscarParser: SKVASPParser = SKVASPParser(displayName: displayName, string: dataString, windowController: nil)
+            let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
+            try? poscarParser.startParsing()
+            let scene: Scene = Scene(parser: poscarParser.scene)
+            let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+            let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+            self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+            self.isEditable = true
+            return
+          case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
+            guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+            let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
             try? poscarParser.startParsing()
             let scene: Scene = Scene(parser: poscarParser.scene)
             let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
