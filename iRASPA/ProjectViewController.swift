@@ -2210,24 +2210,19 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         self.projectOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
       }
     
-      // FIX
-      /*self.windowController?.document?.performSynchronousFileAccess*/
-      //{
-        do
-        {
-          try proxyProject.unwrapProject(outlineView: projectOutlineView, queue: self.projectQueue, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, reloadCompletionBlock: {
+      do
+      {
+        try proxyProject.unwrapProject(outlineView: projectOutlineView, queue: self.projectQueue, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, reloadCompletionBlock: {
                 self.switchToCurrentProject()
-            })
+          })
           
-          proxyProject.representedObject.loadedProjectStructureNode?.undoManager = proxyProject.representedObject.undoManager
-        }
-        catch let error
-        {
-          LogQueue.shared.error(destination: self.windowController, message: "(\(proxyProject.displayName))" + error.localizedDescription)
-        }
-     // }
+        proxyProject.representedObject.loadedProjectStructureNode?.undoManager = proxyProject.representedObject.undoManager
+      }
+      catch let error
+      {
+        LogQueue.shared.error(destination: self.windowController, message: "(\(proxyProject.displayName))" + error.localizedDescription)
+      }
         
-      
       if let _: ProjectGroup = proxyProject.representedObject.project as? ProjectGroup
       {
         self.windowController?.masterTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.directoryBrowser.rawValue

@@ -130,6 +130,12 @@ extension iRASPADocument
             // The projects will be loaded 'on-demand'
             
             let cloudProjectTreeNode: ProjectTreeNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectTreeNode.self)
+            
+            for node in cloudProjectTreeNode.flattenedGroupNodes()
+            {
+              node.representedObject.project = ProjectGroup(name: node.displayName)
+              node.representedObject.lazyStatus = .loaded
+            }
            
             DispatchQueue.main.async {
               let windowController: iRASPAWindowController? = self.windowControllers.first as? iRASPAWindowController
@@ -185,6 +191,12 @@ extension iRASPADocument
             
             let cloudProjectTreeNode: ProjectTreeNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectTreeNode.self)
             
+            for node in cloudProjectTreeNode.flattenedGroupNodes()
+            {
+              node.representedObject.project = ProjectGroup(name: node.displayName)
+              node.representedObject.lazyStatus = .loaded
+            }
+            
             DispatchQueue.main.async {
               let windowController: iRASPAWindowController? = self.windowControllers.first as? iRASPAWindowController
               let projectOutlineView: ProjectOutlineView? = windowController?.masterTabViewController?.masterViewController?.projectViewController?.projectOutlineView
@@ -237,6 +249,12 @@ extension iRASPADocument
             // The projects will be loaded 'on-demand'
             
             let cloudProjectTreeNode: ProjectTreeNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectTreeNode.self)
+            
+            for node in cloudProjectTreeNode.flattenedGroupNodes()
+            {
+              node.representedObject.project = ProjectGroup(name: node.displayName)
+              node.representedObject.lazyStatus = .loaded
+            }
             
             DispatchQueue.main.async {
               let windowController: iRASPAWindowController? = self.windowControllers.first as? iRASPAWindowController
