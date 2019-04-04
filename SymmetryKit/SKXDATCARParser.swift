@@ -48,7 +48,10 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
   var a: double3 = double3(20.0,0.0,0.0)
   var b: double3 = double3(0.0,20.0,0.0)
   var c: double3 = double3(0.0,0.0,20.0)
-  var cell: SKCell = SKCell(a: 20.0, b: 20.0, c: 20.0, alpha: 90.0*Double.pi/180.0, beta: 90.0*Double.pi/180.0, gamma: 90.0*Double.pi/180.0)
+  
+  var currentCell: SKCell = SKCell(a: 20.0, b: 20.0, c: 20.0, alpha: 90.0*Double.pi/180.0, beta: 90.0*Double.pi/180.0, gamma: 90.0*Double.pi/180.0)
+  var currentElements: [String] = []
+  var currentNumberOfAtomsForElement: [Int] = []
   
   var displayName: String = ""
   
@@ -62,7 +65,6 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
   
   public init(displayName: String, string: String, windowController: NSWindowController?)
   {
-    //self.ProjectTreeNode = ProjectTreeNode
     self.displayName = displayName
     self.windowController = windowController
     
@@ -99,149 +101,82 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
       progress.completedUnitCount += 1
     }
     
-    
-    // skip commentline
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    while let cellInformation: (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int]) = readHeader()
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": contains no data")
-      return
-    }
-    
-    // scan scaleFactor
-    var scaleFactor: Double = 1.0
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 1, let scale = Double(words[0])
-    {
-      scaleFactor = scale
-    }
-    else
-    {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 2nd line should be the scale factor.")
-      return
-    }
-    
-    // read box first vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2])
-    {
-      a = scaleFactor *  double3(ax,ay,az)
-    }
-    else
-    {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 3nd line should be the first vector of the box.")
-      return
-    }
-    
-    // read box second vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
-    {
-      if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let bx = Double(words[0]), let by = Double(words[1]), let bz = Double(words[2])
+      var atoms: [SKAsymmetricAtom] = []
+      for (index,chemicalElement) in cellInformation.elements.enumerated()
       {
-        b = scaleFactor *  double3(bx,by,bz)
-      }
-    }
-    else
-    {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 4nd line should be the third vector of the box.")
-      return
-    }
-    
-    // read box third vector
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let cx = Double(words[0]), let cy = Double(words[1]), let cz = Double(words[2])
-    {
-      c = scaleFactor *  double3(cx,cy,cz)
-    }
-    else
-    {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 5nd line should be the third vector of the box.")
-      return
-    }
-    
-    cell = SKCell(unitCell: double3x3(a, b, c))
-    
-    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let elements: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-      scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let numberOfAtoms: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty})
-    {
-      let numberOfAtomsForElement: [Int] = numberOfAtoms.compactMap{Int($0)}
-      
-      
-      while let fractional = readHeader()
-      {
-        var atoms: [SKAsymmetricAtom] = []
-        for (index,chemicalElement) in elements.enumerated()
+        for _ in 0..<cellInformation.numberOfAtomsForElement[index]
         {
-          for _ in 0..<numberOfAtomsForElement[index]
-          {
-            if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+          if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
               let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
               words.count >= 3,
-              let orthogonalXCoordinate: Double = Double(words[0]),
-              let orthogonalYCoordinate: Double = Double(words[1]),
-              let orthogonalZCoordinate: Double = Double(words[2]),
-              let atomicNumber: Int = SKElement.atomData[chemicalElement.lowercased().capitalizeFirst]?["atomicNumber"] as? Int
+            let orthogonalXCoordinate: Double = Double(words[0]),
+            let orthogonalYCoordinate: Double = Double(words[1]),
+            let orthogonalZCoordinate: Double = Double(words[2]),
+            let atomicNumber: Int = SKElement.atomData[chemicalElement.lowercased().capitalizeFirst]?["atomicNumber"] as? Int
+          {
+            let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: chemicalElement, elementId: 0, uniqueForceFieldName: chemicalElement, position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+              
+            atom.elementIdentifier = atomicNumber
+            atom.displayName = chemicalElement
+            atom.uniqueForceFieldName = chemicalElement
+            atom.position = double3(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+            atom.fractional = true
+              
+            if words.count >= 6,
+               let firstChacterX: Character = words[3].lowercased().first,
+               let firstChacterY: Character = words[4].lowercased().first,
+               let firstChacterZ: Character = words[5].lowercased().first
             {
-              let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: chemicalElement, elementId: 0, uniqueForceFieldName: chemicalElement, position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
-              
-              atom.elementIdentifier = atomicNumber
-              atom.displayName = chemicalElement
-              atom.uniqueForceFieldName = chemicalElement
-              atom.position = double3(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
-              atom.fractional = fractional
-              
-              if words.count >= 6,
-                let firstChacterX: Character = words[3].lowercased().first,
-                let firstChacterY: Character = words[4].lowercased().first,
-                let firstChacterZ: Character = words[5].lowercased().first
-              {
-                atom.isFixed = Bool3(firstChacterX == "f",firstChacterY == "f",firstChacterZ == "f")
-              }
-              
-              atoms.append(atom)
+              atom.isFixed = Bool3(firstChacterX == "f",firstChacterY == "f",firstChacterZ == "f")
             }
+              
+            atoms.append(atom)
           }
         }
-        addFrameToStructure(atoms: atoms, periodic: true)
-        currentFrame += 1
       }
+      addFrameToStructure(cell: cellInformation.cell, atoms: atoms, periodic: true)
+      currentFrame += 1
     }
   }
   
-  func readHeader() -> Bool?
+  func readHeader() -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
   {
     var scannedLine: NSString?
     
     let previousScanLocation = self.scanner.scanLocation
-    guard scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-      words.count >= 1 else {return nil}
     
-    if let firstCharacter = words[0].lowercased().first,
-        firstCharacter == "s"  // "Selective dynamics"
-    {
-      //selectiveDynamics = true
-      // nothing needs to be done, line is read
-    }
-    else
+    // check if 'cell-information' is printed
+    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+       let firstCharacter = words[0].lowercased().first,
+         firstCharacter == "d"
     {
       self.scanner.scanLocation = previousScanLocation
+      return readCellInformation()
     }
     
-    guard scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
-      let words2: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
-      words2.count >= 1 else {return nil}
+    self.scanner.scanLocation = previousScanLocation
+    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+        let firstCharacter = words[0].lowercased().first,
+        firstCharacter == "d"
+    {
+      return (currentCell, currentElements, currentNumberOfAtomsForElement)
+    }
     
-      if let firstCharacter = words[0].lowercased().first,
-        firstCharacter == "c"  // "Cartesian"
-      {
-        return false
-      }
-    return true
+    return nil
   }
   
-  private func addFrameToStructure(atoms: [SKAsymmetricAtom], periodic: Bool)
+  private func addFrameToStructure(cell: SKCell, atoms: [SKAsymmetricAtom], periodic: Bool)
   {
     if (atoms.count > 0)
     {
@@ -264,5 +199,84 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
         scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
       }
     }
+  }
+  
+  func readCellInformation() -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
+  {
+    var scannedLine: NSString?
+    
+    // skip commentline
+    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    {
+      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": contains no data")
+      return nil
+    }
+    
+    // scan scaleFactor
+    var scaleFactor: Double = 1.0
+    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 1, let scale = Double(words[0])
+    {
+      scaleFactor = scale
+    }
+    else
+    {
+      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 2nd line should be the scale factor.")
+      return nil
+    }
+    
+    // read box first vector
+    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2])
+    {
+      a = scaleFactor *  double3(ax,ay,az)
+    }
+    else
+    {
+      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 3nd line should be the first vector of the box.")
+      return nil
+    }
+    
+    // read box second vector
+    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    {
+      if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let bx = Double(words[0]), let by = Double(words[1]), let bz = Double(words[2])
+      {
+        b = scaleFactor *  double3(bx,by,bz)
+      }
+    }
+    else
+    {
+      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 4nd line should be the third vector of the box.")
+      return nil
+    }
+    
+    // read box third vector
+    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+      let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let cx = Double(words[0]), let cy = Double(words[1]), let cz = Double(words[2])
+    {
+      c = scaleFactor *  double3(cx,cy,cz)
+    }
+    else
+    {
+      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 5nd line should be the third vector of the box.")
+      return nil
+    }
+    
+    let cell = SKCell(unitCell: double3x3(a, b, c))
+    
+    if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+    let elements: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+    scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
+    let numberOfAtoms: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
+    scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+    {
+      let numberOfAtoms = numberOfAtoms.compactMap{Int($0)}
+      self.currentElements = elements
+      self.currentNumberOfAtomsForElement = numberOfAtoms
+      self.currentCell = cell
+      return (cell, elements, numberOfAtoms)
+    }
+    return nil
   }
 }
