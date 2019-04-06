@@ -330,6 +330,7 @@
 		939B206F1EF2D0310061DE8D /* int3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B206E1EF2D0310061DE8D /* int3.swift */; };
 		939B20731EF2D0920061DE8D /* Int32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B20721EF2D0920061DE8D /* Int32.swift */; };
 		939FFA7F225362B1000A1A46 /* SKXDATCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */; };
+		93A067AF2257D7C70099A880 /* CaseInsensitiveString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */; };
 		93A0BE381F24ED15001647D7 /* Gallery.irspdoc in Resources */ = {isa = PBXBuildFile; fileRef = 93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */; };
 		93A31C991EB4CC300010101B /* ReadStructureOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C981EB4CC300010101B /* ReadStructureOperation.swift */; };
 		93A31C9B1EB4CD030010101B /* ReadStructureGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9A1EB4CD030010101B /* ReadStructureGroupOperation.swift */; };
@@ -1104,6 +1105,7 @@
 		939B206E1EF2D0310061DE8D /* int3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = int3.swift; sourceTree = "<group>"; };
 		939B20721EF2D0920061DE8D /* Int32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int32.swift; sourceTree = "<group>"; };
 		939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXDATCARParser.swift; sourceTree = "<group>"; };
+		93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveString.swift; sourceTree = "<group>"; };
 		93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Gallery.irspdoc; sourceTree = "<group>"; };
 		93A31C981EB4CC300010101B /* ReadStructureOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadStructureOperation.swift; sourceTree = "<group>"; };
 		93A31C9A1EB4CD030010101B /* ReadStructureGroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadStructureGroupOperation.swift; sourceTree = "<group>"; };
@@ -2137,6 +2139,7 @@
 				939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */,
 				93EAABA91ED978E200FE61D8 /* SKParser.swift */,
 				93793B2621D7FE59004CAD9C /* SKStructure.swift */,
+				93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */,
 			);
 			name = Parsers;
 			sourceTree = "<group>";
@@ -2897,6 +2900,7 @@
 				9374794D1FB9EAFC008C4411 /* SKSymmetryCell.swift in Sources */,
 				93793B2721D7FE59004CAD9C /* SKStructure.swift in Sources */,
 				933700CA1EDC610800DD5961 /* SKSpaceGroupSetting.swift in Sources */,
+				93A067AF2257D7C70099A880 /* CaseInsensitiveString.swift in Sources */,
 				930DD4EE1E26AA5200B8FE9B /* SKTranformationMatrix.swift in Sources */,
 				930DD4EF1E26AA5200B8FE9B /* SKVASPReader.swift in Sources */,
 				930DD4EA1E26AA5200B8FE9B /* SKRotationMatrix.swift in Sources */,

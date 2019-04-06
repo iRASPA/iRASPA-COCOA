@@ -63,7 +63,7 @@ public class SKCIFWriter
     dataString += String("_cell_length_b \(numberFormatter.string(from: NSNumber(value: cell.b))!)\n")
     dataString += String("_cell_length_c \(numberFormatter.string(from: NSNumber(value: cell.c))!)\n")
     dataString += String("_cell_angle_alpha \(numberFormatter.string(from: NSNumber(value: cell.alpha * 180.0/Double.pi))!)\n")
-    dataString += String("_cell_angle_beta \(numberFormatter.string(from: NSNumber(value: cell.beta * 180.0/Double.pi))!)\n")
+    dataString += String("_cell_angle_beta  \(numberFormatter.string(from: NSNumber(value: cell.beta * 180.0/Double.pi))!)\n")
     dataString += String("_cell_angle_gamma \(numberFormatter.string(from: NSNumber(value: cell.gamma * 180.0/Double.pi))!)\n") + "\n\n"
     
     let spaceGroup = SKSpacegroup(HallNumber: spaceGroupHallNumber ?? 1)
@@ -75,6 +75,7 @@ public class SKCIFWriter
     dataString += String("loop_\n")
     dataString += String("_atom_site_label\n")
     dataString += String("_atom_site_type_symbol\n")
+    dataString += String("_atom_site_forcefield_label\n")
     
     if exportFractional
     {
@@ -96,12 +97,13 @@ public class SKCIFWriter
       
       let name = atom.displayName.padding(toLength: 8, withPad:  " ", startingAt: 0)
       let chemicalElement = PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol.padding(toLength: 3, withPad:  " ", startingAt: 0)
+      let forcefieldName: String = atom.uniqueForceFieldName.padding(toLength: 5, withPad:  " ", startingAt: 0)
       
       let positionX: String = numberFormatter.string(from: NSNumber(value: position.x))!
       let positionY: String = numberFormatter.string(from: NSNumber(value: position.y))!
       let positionZ: String = numberFormatter.string(from: NSNumber(value: position.z))!
       let charge: String = numberFormatter.string(from: NSNumber(value: atom.charge))!
-      dataString += String("\(name) \(chemicalElement) \(positionX) \(positionY) \(positionZ) \(charge)\n")
+      dataString += String("\(name) \(chemicalElement) \(forcefieldName) \(positionX) \(positionY) \(positionZ) \(charge)\n")
     }
     
     return dataString
