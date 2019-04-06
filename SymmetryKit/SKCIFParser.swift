@@ -84,7 +84,6 @@ public final class SKCIFParser: SKParser, ProgressReporting
   var Df: Double?
   var Dif: Double?
  
-  
   var currentMovie: Int = 0
   var currentSolventMovie: Int = 1
   
@@ -92,19 +91,14 @@ public final class SKCIFParser: SKParser, ProgressReporting
   
   public var progress: Progress
   
-  
-  //unowned var ProjectTreeNode : ProjectTreeNode
-  
   func checkForComment() -> Bool
   {
     let _: Int = self.scanner.scanLocation
     return true
   }
   
-  
   public init(displayName: String, string: String, windowController: NSWindowController?, onlyAsymmetricUnit: Bool = false)
   {
-    //self.ProjectTreeNode = ProjectTreeNode
     self.name = displayName
     self.windowController = windowController
     self.onlyAsymmetricUnit = onlyAsymmetricUnit
@@ -134,18 +128,14 @@ public final class SKCIFParser: SKParser, ProgressReporting
     
     LogQueue.shared.verbose(destination: windowController, message: "start reading CIF-file: \(name)")
     
-    
-    
-   
-    
-    
     while(!scanner.isAtEnd)
     {
       // scan to first keyword
       let previousScanLocation: Int = self.scanner.scanLocation
       scanner.scanCharacters(from: keywordSet,into: &tempstring)
       
-      if let keyword: String = tempstring?.lowercased as String?
+      if let tempstring: String = tempstring as String?,
+         let keyword: CaseInsensitiveString = CaseInsensitiveString(tempstring)
       {
         if (keyword.hasPrefix("_audit"))
         {
@@ -314,34 +304,33 @@ public final class SKCIFParser: SKParser, ProgressReporting
     return nil
   }
   
-  func parseName(_ keyword: String)
+  func parseName(_ keyword: CaseInsensitiveString)
   {
-    
-    self.name = keyword
+    self.name = keyword.description
     let range = name.startIndex..<name.index(name.startIndex, offsetBy: 5)
     self.name.removeSubrange(range)
   }
   
-  func parseiRASPA(_ keyword: String)
+  func parseiRASPA(_ keyword: CaseInsensitiveString)
   {
     switch(keyword)
     {
-    case "_iraspa_number_of_channels".lowercased():
+    case "_iraspa_number_of_channels":
       let value: Int = scanInteger()
       self.numberOfChannels = value
-    case "_iraspa_number_of_pockets".lowercased():
+    case "_iraspa_number_of_pockets":
       let value: Int = scanInteger()
       self.numberOfPockets = value
-    case "_iraspa_dimensionality".lowercased():
+    case "_iraspa_dimensionality":
       let value: Int = scanInteger()
       self.dimensionality = value
-    case "_iraspa_Di".lowercased():
+    case "_iraspa_Di":
       let value: Double = scanDouble()
       self.Di = value
-    case "_iraspa_Df".lowercased():
+    case "_iraspa_Df":
       let value: Double = scanDouble()
       self.Df = value
-    case "_iraspa_Dif".lowercased():
+    case "_iraspa_Dif":
       let value: Double = scanDouble()
       self.Dif = value
     default:
@@ -350,24 +339,24 @@ public final class SKCIFParser: SKParser, ProgressReporting
   }
   
   
-  func parseSymmetry(_ keyword: String)
+  func parseSymmetry(_ keyword: CaseInsensitiveString)
   {
     switch(keyword)
     {
     case "_symmetry_cell_setting":
       break
-    case "_space_group_name_Hall".lowercased(),
-         "_symmetry_space_group_name_Hall".lowercased(),
-         "_symmetry.space_group_name_Hall".lowercased():
+    case "_space_group_name_Hall",
+         "_symmetry_space_group_name_Hall",
+         "_symmetry.space_group_name_Hall":
       if let string: String = scanString(),
          let spaceGroup = SKSpacegroup(Hall: string)
       {
         self.spaceGroup = spaceGroup
         spaceGroupFound = .HallSymbolFound
       }
-    case "_space_group_name_H-M_alt".lowercased(),
-         "_symmetry_space_group_name_H-M".lowercased(),
-         "_symmetry.pdbx_full_space_group_name_H-M".lowercased():
+    case "_space_group_name_H-M_alt",
+         "_symmetry_space_group_name_H-M",
+         "_symmetry.pdbx_full_space_group_name_H-M":
       if (spaceGroupFound != .HallSymbolFound)
       {
         if let string: String = scanString(),
@@ -377,9 +366,9 @@ public final class SKCIFParser: SKParser, ProgressReporting
           spaceGroupFound = .HMSymbolFound
         }
       }
-    case "_space_group_IT_number".lowercased(),
-         "_symmetry_Int_Tables_number".lowercased(),
-         "_symmetry.Int_Tables_number".lowercased():
+    case "_space_group_IT_number",
+         "_symmetry_Int_Tables_number",
+         "_symmetry.Int_Tables_number":
       if (spaceGroupFound == .notFound)
       {
         let number: Int = scanInteger()
@@ -395,7 +384,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
   }
   
   
-  func parseChemical(_ keyword: String)
+  func parseChemical(_ keyword: CaseInsensitiveString)
   {
     if let keyword: ChemicalFormula = ChemicalFormula(rawValue: keyword)
     {
@@ -426,7 +415,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
     }
   }
   
-  func parseAudit(_ keyword: String)
+  func parseAudit(_ keyword: CaseInsensitiveString)
   {
     switch(keyword)
     {
@@ -445,32 +434,32 @@ public final class SKCIFParser: SKParser, ProgressReporting
     }
   }
   
-  func parseCell(_ keyword: String)
+  func parseCell(_ keyword: CaseInsensitiveString)
   {
     switch(keyword)
     {
-    case "_cell_length_a".lowercased(),"_cell.length_a".lowercased():
+    case "_cell_length_a","_cell.length_a":
       a = scanDouble()
     // assign a to cell-data
-    case "_cell_length_b".lowercased(),"_cell.length_b".lowercased():
+    case "_cell_length_b","_cell.length_b":
       b = scanDouble()
     // assign b to cell-data
-    case "_cell_length_c".lowercased(),"_cell.length_c".lowercased():
+    case "_cell_length_c","_cell.length_c":
       c = scanDouble()
     // assign c to cell-data
-    case "_cell_angle_alpha".lowercased(),"_cell.angle_alpha".lowercased():
+    case "_cell_angle_alpha","_cell.angle_alpha":
       alpha = scanDouble()
     // assign alpha to cell-data
-    case "_cell_angle_beta".lowercased(),"_cell.angle_beta".lowercased():
+    case "_cell_angle_beta","_cell.angle_beta":
       beta = scanDouble()
     // assign beta to cell-data
-    case "_cell_angle_gamma".lowercased(),"_cell.angle_gamma".lowercased():
+    case "_cell_angle_gamma","_cell.angle_gamma":
       gamma = scanDouble()
     // assign gamma to cell-data
-    case "_cell_volume".lowercased():
+    case "_cell_volume":
       //let volume: Double = scanDouble()
       break
-    case "_cell_formula_units_Z".lowercased(),"_cell.Z_PDB".lowercased():
+    case "_cell_formula_units_Z","_cell.Z_PDB":
       cellFormulaUnitsZ = scanInteger()
       break
     default:
@@ -533,7 +522,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
   {
     var tempString: NSString? = nil
     var previousScanLocation: Int
-    var tags: [String] = [String]()
+    var tags: [CaseInsensitiveString] = [CaseInsensitiveString]()
     
     // part 1: read the 'tags'
     previousScanLocation = self.scanner.scanLocation
@@ -549,7 +538,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
         else if (keyword.hasPrefix("_"))
         {
           // found a tag -> add it to the tags-array
-          tags.append(keyword)
+          tags.append(CaseInsensitiveString(stringLiteral: keyword))
           
         }
       }
@@ -565,7 +554,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
     
     repeat
     {
-      var dictionary: Dictionary<String,String> = Dictionary<String,String>()
+      var dictionary: Dictionary<CaseInsensitiveString,String> = Dictionary<CaseInsensitiveString,String>()
       for tag in tags
       {
         value =  parseValue()
@@ -578,7 +567,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
       
       if (value != nil)
       {
-        if let chemicalSymbol: String = dictionary["_atom_site_type_symbol"]
+        if let chemicalSymbol: String = dictionary["_atom_site_type_symbol"]?.lowercased().capitalizeFirst
         {
           let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
           
@@ -619,7 +608,8 @@ public final class SKCIFParser: SKParser, ProgressReporting
           if let atomicNumber: Int = SKElement.atomData[chemicalSymbol]?["atomicNumber"] as? Int
           {
             atom.elementIdentifier = atomicNumber
-            atom.uniqueForceFieldName = chemicalSymbol
+            atom.uniqueForceFieldName = dictionary["_atom_site_forcefield_label"] ?? chemicalSymbol
+            
             atoms.append(atom)
           }
           else
@@ -629,11 +619,12 @@ public final class SKCIFParser: SKParser, ProgressReporting
             if let atomicNumber: Int = SKElement.atomData[chemicalElement]?["atomicNumber"] as? Int
             {
               atom.elementIdentifier = atomicNumber
+              atom.uniqueForceFieldName = dictionary["_atom_site_forcefield_label"] ?? chemicalSymbol
               atoms.append(atom)
             }
           }
         }
-        else if let chemicalSymbol: String = dictionary["_atom_site.type_symbol"]
+        else if let chemicalSymbol: String = dictionary["_atom_site.type_symbol"]?.lowercased().capitalizeFirst
         {
           let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
           
@@ -732,7 +723,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
           if let atomicNumber: Int = SKElement.atomData[chemicalSymbol]?["atomicNumber"] as? Int
           {
             atom.elementIdentifier = atomicNumber
-            atom.uniqueForceFieldName = chemicalSymbol
+            atom.uniqueForceFieldName = dictionary["_atom_site.forcefield_label"] ?? chemicalSymbol
             
             if atom.solvent
             {
@@ -750,7 +741,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
             if let atomicNumber: Int = SKElement.atomData[chemicalElement]?["atomicNumber"] as? Int
             {
               atom.elementIdentifier = atomicNumber
-              atom.uniqueForceFieldName = chemicalElement
+              atom.uniqueForceFieldName = dictionary["_atom_site.forcefield_label"] ?? chemicalSymbol
               if atom.solvent
               {
                 solvent.append(atom)
@@ -777,7 +768,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
 // Core dictionary (coreCIF) version 2.4.5 definitions
 extension SKCIFParser
 {
-  enum AtomSite: String
+  enum AtomSite: CaseInsensitiveString
   {
     case atom_site_adp_type = "_atom_site_adp_type"
     case atom_site_aniso_B_11 = "_atom_site_aniso_B_11"
@@ -835,7 +826,7 @@ extension SKCIFParser
     case atom_site_Wyckoff_symbol = "_atom_site_Wyckoff_symbol"
   }
   
-  enum AtomSites: String
+  enum AtomSites: CaseInsensitiveString
   {
     case atom_sites_Cartn_tran_matrix_11 = "_atom_sites_Cartn_tran_matrix_11"
     case atom_sites_Cartn_tran_matrix_12 = "_atom_sites_Cartn_tran_matrix_12"
@@ -868,7 +859,7 @@ extension SKCIFParser
     case atom_sites_special_details = "_atom_sites_special_details"
   }
   
-  enum AtomType: String
+  enum AtomType: CaseInsensitiveString
   {
     case atom_type_analytical_mass_percent = "_atom_type_analytical_mass_%"
     case atom_type_description = "_atom_type_description"
@@ -894,7 +885,7 @@ extension SKCIFParser
     case atom_type_symbol = "_atom_type_symbol"
   }
   
-  enum Audit: String
+  enum Audit: CaseInsensitiveString
   {
     case audit_block_code = "_audit_block_code"
     case audit_block_doi = "_audit_block_doi"
@@ -903,19 +894,19 @@ extension SKCIFParser
     case audit_update_record = "_audit_update_record"
   }
   
-  enum AuditAuthor: String
+  enum AuditAuthor: CaseInsensitiveString
   {
     case audit_author_address = "_audit_author_address"
     case audit_author_name = "_audit_author_name"
   }
   
-  enum  AuditConform: String
+  enum  AuditConform: CaseInsensitiveString
   {
     case audit_conform_dict_location = "_audit_conform_dict_location"
     case audit_conform_dict_name = "_audit_conform_dict_name"
     case audit_conform_dict_version = "_audit_conform_dict_version"
   }
-  enum AuditContactAuthor: String
+  enum AuditContactAuthor: CaseInsensitiveString
   {
     case audit_contact_author_address = "_audit_contact_author_address"
     case audit_contact_author_email = "_audit_contact_author_email"
@@ -923,13 +914,13 @@ extension SKCIFParser
     case audit_contact_author_name = "_audit_contact_author_name"
     case audit_contact_author_phone = "_audit_contact_author_phone"
   }
-  enum AuditLink: String
+  enum AuditLink: CaseInsensitiveString
   {
     case audit_link_block_code = "_audit_link_block_code"
     case audit_link_block_description = "_audit_link_block_description"
   }
   
-  enum Cell: String
+  enum Cell: CaseInsensitiveString
   {
     case cell_angle_alpha = "_cell_angle_alpha"
     case cell_angle_beta = "_cell_angle_beta"
@@ -955,7 +946,7 @@ extension SKCIFParser
     case cell_volume = "_cell_volume"
   }
   
-  enum CellMeasurementRefln: String
+  enum CellMeasurementRefln: CaseInsensitiveString
   {
     case cell_measurement_refln_index_h = "_cell_measurement_refln_index_h"
     case cell_measurement_refln_index_k = "_cell_measurement_refln_index_k"
@@ -963,7 +954,7 @@ extension SKCIFParser
     case cell_measurement_refln_theta = "_cell_measurement_refln_theta"
   }
   
-  enum Chemical: String
+  enum Chemical: CaseInsensitiveString
   {
     case chemical_absolute_configuration = "_chemical_absolute_configuration"
     case chemical_compound_source = "_chemical_compound_source"
@@ -992,7 +983,7 @@ extension SKCIFParser
     case chemical_temperature_sublimation_lt = "_chemical_temperature_sublimation_lt"
   }
   
-  enum ChemicalConnAtom: String
+  enum ChemicalConnAtom: CaseInsensitiveString
   {
     case chemical_conn_atom_charge = "_chemical_conn_atom_charge"
     case chemical_conn_atom_display_x = "_chemical_conn_atom_display_x"
@@ -1003,14 +994,14 @@ extension SKCIFParser
     case chemical_conn_atom_type_symbol = "_chemical_conn_atom_type_symbol"
   }
   
-  enum ChemicalConnBond: String
+  enum ChemicalConnBond: CaseInsensitiveString
   {
     case chemical_conn_bond_atom_1 = "_chemical_conn_bond_atom_1"
     case chemical_conn_bond_atom_2 = "_chemical_conn_bond_atom_2"
     case chemical_conn_bond_type = "_chemical_conn_bond_type"
   }
   
-  enum ChemicalFormula: String
+  enum ChemicalFormula: CaseInsensitiveString
   {
     case chemical_formula_analytical = "_chemical_formula_analytical"
     case chemical_formula_iupac = "_chemical_formula_iupac"
@@ -1021,7 +1012,7 @@ extension SKCIFParser
     case chemical_formula_weight_meas = "_chemical_formula_weight_meas"
   }
   
-  enum Citation: String
+  enum Citation: CaseInsensitiveString
   {
     case citation_abstract = "_citation_abstract"
     case citation_abstract_id_CAS = "_citation_abstract_id_CAS"
@@ -1051,21 +1042,21 @@ extension SKCIFParser
     case citation_year = "_citation_year"
   }
   
-  enum CitationAuthor: String
+  enum CitationAuthor: CaseInsensitiveString
   {
     case citation_author_citation_id = "_citation_author_citation_id"
     case citation_author_name = "_citation_author_name"
     case citation_author_ordinal = "_citation_author_ordinal"
   }
   
-  enum CitationEditor: String
+  enum CitationEditor: CaseInsensitiveString
   {
     case citation_editor_citation_id = "_citation_editor_citation_id"
     case citation_editor_name = "_citation_editor_name"
     case citation_editor_ordinal = "_citation_editor_ordinal"
   }
   
-  enum Computing: String
+  enum Computing: CaseInsensitiveString
   {
     case computing_cell_refinement = "_computing_cell_refinement"
     case computing_data_collection = "_computing_data_collection"
@@ -1076,7 +1067,7 @@ extension SKCIFParser
     case computing_structure_solution = "_computing_structure_solution"
   }
   
-  enum Database: String
+  enum Database: CaseInsensitiveString
   {
     case database_code_CAS = "_database_code_CAS"
     case database_code_COD = "_database_code_COD"
@@ -1095,7 +1086,7 @@ extension SKCIFParser
     case database_journal_CSD = "_database_journal_CSD"
   }
   
-  enum Diffrn: String
+  enum Diffrn: CaseInsensitiveString
   {
     case diffrn_ambient_environment = "_diffrn_ambient_environment"
     case diffrn_ambient_pressure = "_diffrn_ambient_pressure"
@@ -1111,14 +1102,14 @@ extension SKCIFParser
     case diffrn_symmetry_description = "_diffrn_symmetry_description"
   }
   
-  enum DiffrnAttenuator: String
+  enum DiffrnAttenuator: CaseInsensitiveString
   {
     case diffrn_attenuator_code = "_diffrn_attenuator_code"
     case diffrn_attenuator_material = "_diffrn_attenuator_material"
     case diffrn_attenuator_scale = "_diffrn_attenuator_scale"
   }
   
-  enum DiffrnDetector: String
+  enum DiffrnDetector: CaseInsensitiveString
   {
     case diffrn_detector = "_diffrn_detector"
     case diffrn_detector_area_resol_mean = "_diffrn_detector_area_resol_mean"
@@ -1129,7 +1120,7 @@ extension SKCIFParser
     case diffrn_radiation_detector_dtime = "_diffrn_radiation_detector_dtime"
   }
   
-  enum DiffrnMeasurement: String
+  enum DiffrnMeasurement: CaseInsensitiveString
   {
     case diffrn_measurement_details = "_diffrn_measurement_details"
     case diffrn_measurement_device = "_diffrn_measurement_device"
@@ -1139,7 +1130,7 @@ extension SKCIFParser
     case diffrn_measurement_specimen_support = "_diffrn_measurement_specimen_support"
   }
   
-  enum DiffrnOrientMatrix: String
+  enum DiffrnOrientMatrix: CaseInsensitiveString
   {
     case diffrn_orient_matrix_type = "_diffrn_orient_matrix_type"
     case diffrn_orient_matrix_UB_11 = "_diffrn_orient_matrix_UB_11"
@@ -1153,7 +1144,7 @@ extension SKCIFParser
     case diffrn_orient_matrix_UB_33 = "_diffrn_orient_matrix_UB_33"
   }
   
-  enum DiffrnOrientRefln: String
+  enum DiffrnOrientRefln: CaseInsensitiveString
   {
     case diffrn_orient_refln_angle_chi = "_diffrn_orient_refln_angle_chi"
     case diffrn_orient_refln_angle_kappa = "_diffrn_orient_refln_angle_kappa"
@@ -1166,7 +1157,7 @@ extension SKCIFParser
     case diffrn_orient_refln_index_l = "_diffrn_orient_refln_index_l"
   }
   
-  enum DiffrnRadiation: String
+  enum DiffrnRadiation: CaseInsensitiveString
   {
     case diffrn_radiation_collimation = "_diffrn_radiation_collimation"
     case diffrn_radiation_filter_edge = "_diffrn_radiation_filter_edge"
@@ -1179,7 +1170,7 @@ extension SKCIFParser
     case diffrn_radiation_xray_symbol = "_diffrn_radiation_xray_symbol"
   }
   
-  enum DiffrnRadiationWavelength: String
+  enum DiffrnRadiationWavelength: CaseInsensitiveString
   {
     case diffrn_radiation_wavelength = "_diffrn_radiation_wavelength"
     case diffrn_radiation_wavelength_details = "_diffrn_radiation_wavelength_details"
@@ -1188,7 +1179,7 @@ extension SKCIFParser
     case diffrn_radiation_wavelength_wt = "_diffrn_radiation_wavelength_wt"
   }
   
-  enum DiffrnRefln: String
+  enum DiffrnRefln: CaseInsensitiveString
   {
     case diffrn_refln_angle_chi = "_diffrn_refln_angle_chi"
     case diffrn_refln_angle_kappa = "_diffrn_refln_angle_kappa"
@@ -1225,7 +1216,7 @@ extension SKCIFParser
     case diffrn_refln_wavelength_id = "_diffrn_refln_wavelength_id"
   }
   
-  enum DiffrnReflns: String
+  enum DiffrnReflns: CaseInsensitiveString
   {
     case diffrn_reflns_av_R_equivalents = "_diffrn_reflns_av_R_equivalents"
     case diffrn_reflns_av_sigmaI_divided_by_netI = "_diffrn_reflns_av_sigmaI/netI"
@@ -1258,7 +1249,7 @@ extension SKCIFParser
     case diffrn_reflns_transf_matrix_33 = "_diffrn_reflns_transf_matrix_33"
   }
   
-  enum DiffrnReflnsClass: String
+  enum DiffrnReflnsClass: CaseInsensitiveString
   {
     case diffrn_reflns_class_av_R_eq = "_diffrn_reflns_class_av_R_eq"
     case diffrn_reflns_class_av_sgI_divided_by_I = "_diffrn_reflns_class_av_sgI/I"
@@ -1270,12 +1261,12 @@ extension SKCIFParser
     case diffrn_reflns_class_number = "_diffrn_reflns_class_number"
   }
   
-  enum DiffrnScaleGroup: String
+  enum DiffrnScaleGroup: CaseInsensitiveString
   {
     case diffrn_scale_group_code = "_diffrn_scale_group_code"
     case diffrn_scale_group_I_net = "_diffrn_scale_group_I_net"
   }
-  enum DiffrnSource: String
+  enum DiffrnSource: CaseInsensitiveString
   {
     case diffrn_radiation_source = "_diffrn_radiation_source"
     case diffrn_source = "_diffrn_source"
@@ -1289,7 +1280,7 @@ extension SKCIFParser
     case diffrn_source_voltage = "_diffrn_source_voltage"
   }
   
-  enum DiffrnStandardRefln: String
+  enum DiffrnStandardRefln: CaseInsensitiveString
   {
     case diffrn_standard_refln_code = "_diffrn_standard_refln_code"
     case diffrn_standard_refln_index_h = "_diffrn_standard_refln_index_h"
@@ -1297,7 +1288,7 @@ extension SKCIFParser
     case diffrn_standard_refln_index_l = "_diffrn_standard_refln_index_l"
   }
   
-  enum DiffrnStandards: String
+  enum DiffrnStandards: CaseInsensitiveString
   {
     case diffrn_standards_decay_percentage = "_diffrn_standards_decay_%"
     case diffrn_standards_interval_count = "_diffrn_standards_interval_count"
@@ -1307,7 +1298,7 @@ extension SKCIFParser
     case diffrn_standards_scale_u = "_diffrn_standards_scale_u"
   }
   
-  enum Exptl: String
+  enum Exptl: CaseInsensitiveString
   {
     case exptl_absorpt_coefficient_mu = "_exptl_absorpt_coefficient_mu"
     case exptl_absorpt_correction_T_max = "_exptl_absorpt_correction_T_max"
@@ -1320,7 +1311,7 @@ extension SKCIFParser
     case exptl_transmission_factor_min = "_exptl_transmission_factor_min"
   }
   
-  enum ExptlCrystal: String
+  enum ExptlCrystal: CaseInsensitiveString
   {
     case exptl_crystal_colour = "_exptl_crystal_colour"
     case exptl_crystal_colour_lustre = "_exptl_crystal_colour_lustre"
@@ -1348,7 +1339,7 @@ extension SKCIFParser
     case exptl_crystal_thermal_history = "_exptl_crystal_thermal_history"
   }
   
-  enum ExptlCrystalFace: String
+  enum ExptlCrystalFace: CaseInsensitiveString
   {
     case _exptl_crystal_face_diffr_chi = "_exptl_crystal_face_diffr_chi"
     case _exptl_crystal_face_diffr_kappa = "_exptl_crystal_face_diffr_kappa"
@@ -1360,12 +1351,12 @@ extension SKCIFParser
     case _exptl_crystal_face_perp_dist = "_exptl_crystal_face_perp_dist"
   }
   
-  enum Geom: String
+  enum Geom: CaseInsensitiveString
   {
     case geom_special_details = "_geom_special_details"
   }
   
-  enum GeomAngle: String
+  enum GeomAngle: CaseInsensitiveString
   {
     case geom_angle = "_geom_angle"
     case geom_angle_atom_site_label_1 = "_geom_angle_atom_site_label_1"
@@ -1377,7 +1368,7 @@ extension SKCIFParser
     case geom_angle_site_symmetry_3 = "_geom_angle_site_symmetry_3"
   }
   
-  enum GeomBond: String
+  enum GeomBond: CaseInsensitiveString
   {
     case geom_bond_atom_site_label_1 = "_geom_bond_atom_site_label_1"
     case geom_bond_atom_site_label_2 = "_geom_bond_atom_site_label_2"
@@ -1389,7 +1380,7 @@ extension SKCIFParser
     case geom_bond_valence = "_geom_bond_valence"
   }
   
-  enum GeomContact: String
+  enum GeomContact: CaseInsensitiveString
   {
     case geom_contact_atom_site_label_1 = "_geom_contact_atom_site_label_1"
     case geom_contact_atom_site_label_2 = "_geom_contact_atom_site_label_2"
@@ -1399,7 +1390,7 @@ extension SKCIFParser
     case geom_contact_site_symmetry_2 = "_geom_contact_site_symmetry_2"
   }
   
-  enum GeomHbond: String
+  enum GeomHbond: CaseInsensitiveString
   {
     case geom_hbond_angle_DHA = "_geom_hbond_angle_DHA"
     case geom_hbond_atom_site_label_D = "_geom_hbond_atom_site_label_D"
@@ -1414,7 +1405,7 @@ extension SKCIFParser
     case geom_hbond_site_symmetry_A = "_geom_hbond_site_symmetry_A"
   }
   
-  enum GeomTorsion: String
+  enum GeomTorsion: CaseInsensitiveString
   {
     case geom_torsion = "_geom_torsion"
     case geom_torsion_atom_site_label_1 = "_geom_torsion_atom_site_label_1"
@@ -1428,7 +1419,7 @@ extension SKCIFParser
     case geom_torsion_site_symmetry_4 = "_geom_torsion_site_symmetry_4"
   }
   
-  enum Journal: String
+  enum Journal: CaseInsensitiveString
   {
     case journal_coden_ASTM = "_journal_coden_ASTM"
     case journal_coden_Cambridge = "_journal_coden_Cambridge"
@@ -1470,14 +1461,14 @@ extension SKCIFParser
     case journal_year = "_journal_year"
   }
   
-  enum JournalIndex: String
+  enum JournalIndex: CaseInsensitiveString
   {
     case journal_index_subterm = "_journal_index_subterm"
     case journal_index_term = "_journal_index_term"
     case journal_index_type = "_journal_index_type"
   }
   
-  enum Publ: String
+  enum Publ: CaseInsensitiveString
   {
     case publ_contact_author = "_publ_contact_author"
     case publ_contact_author_address = "_publ_contact_author_address"
@@ -1513,7 +1504,7 @@ extension SKCIFParser
     case publ_section_keywords = "_publ_section_keywords"
   }
   
-  enum PublAuthor: String
+  enum PublAuthor: CaseInsensitiveString
   {
     case publ_author_address = "_publ_author_address"
     case publ_author_email = "_publ_author_email"
@@ -1523,7 +1514,7 @@ extension SKCIFParser
     case publ_author_name = "_publ_author_name"
   }
   
-  enum PublBody: String
+  enum PublBody: CaseInsensitiveString
   {
     case publ_body_contents = "_publ_body_contents"
     case publ_body_element = "_publ_body_element"
@@ -1532,14 +1523,14 @@ extension SKCIFParser
     case publ_body_title = "_publ_body_title"
   }
   
-  enum PublManuscriptIncl: String
+  enum PublManuscriptIncl: CaseInsensitiveString
   {
     case publ_manuscript_incl_extra_defn = "_publ_manuscript_incl_extra_defn"
     case publ_manuscript_incl_extra_info = "_publ_manuscript_incl_extra_info"
     case publ_manuscript_incl_extra_item = "_publ_manuscript_incl_extra_item"
   }
   
-  enum Refine: String
+  enum Refine: CaseInsensitiveString
   {
     case refine_diff_density_max = "_refine_diff_density_max"
     case refine_diff_density_min = "_refine_diff_density_min"
@@ -1589,7 +1580,7 @@ extension SKCIFParser
     case refine_special_details = "_refine_special_details"
   }
   
-  enum RefineLsClass: String
+  enum RefineLsClass: CaseInsensitiveString
   {
     case refine_ls_class_code = "_refine_ls_class_code"
     case refine_ls_class_d_res_high = "_refine_ls_class_d_res_high"
@@ -1601,7 +1592,7 @@ extension SKCIFParser
     case refine_ls_class_wR_factor_all = "_refine_ls_class_wR_factor_all"
   }
   
-  enum Reflns: String
+  enum Reflns: CaseInsensitiveString
   {
     case reflns_d_resolution_high = "_reflns_d_resolution_high"
     case reflns_d_resolution_low = "_reflns_d_resolution_low"
@@ -1622,7 +1613,7 @@ extension SKCIFParser
     case reflns_threshold_expression = "_reflns_threshold_expression"
   }
   
-  enum ReflnsClass: String
+  enum ReflnsClass: CaseInsensitiveString
   {
     case reflns_class_code = "_reflns_class_code"
     case reflns_class_d_res_high = "_reflns_class_d_res_high"
@@ -1637,7 +1628,7 @@ extension SKCIFParser
     case reflns_class_wR_factor_all = "_reflns_class_wR_factor_all"
   }
   
-  enum ReflnsScale: String
+  enum ReflnsScale: CaseInsensitiveString
   {
     case reflns_scale_group_code = "_reflns_scale_group_code"
     case reflns_scale_meas_F = "_reflns_scale_meas_F"
@@ -1645,7 +1636,7 @@ extension SKCIFParser
     case reflns_scale_meas_intensity = "_reflns_scale_meas_intensity"
   }
   
-  enum ReflnsShell: String
+  enum ReflnsShell: CaseInsensitiveString
   {
     case reflns_shell_d_res_high = "_reflns_shell_d_res_high"
     case reflns_shell_d_res_low = "_reflns_shell_d_res_low"
@@ -1672,7 +1663,7 @@ extension SKCIFParser
     case reflns_shell_Rmerge_I_obs = "_reflns_shell_Rmerge_I_obs"
   }
   
-  enum SpaceGroup: String
+  enum SpaceGroup: CaseInsensitiveString
   {
     case space_group_crystal_system = "_space_group_crystal_system"
     case space_group_id = "_space_group_id"
@@ -1681,14 +1672,14 @@ extension SKCIFParser
     case space_group_name_Hall = "_space_group_name_Hall"
   }
   
-  enum SpaceGroupSymop: String
+  enum SpaceGroupSymop: CaseInsensitiveString
   {
     case space_group_symop_id = "_space_group_symop_id"
     case space_group_symop_operation_xyz = "_space_group_symop_operation_xyz"
     case space_group_symop_sg_id = "_space_group_symop_sg_id"
   }
   
-  enum Symmetry: String
+  enum Symmetry: CaseInsensitiveString
   {
     case symmetry_cell_setting = "_symmetry_cell_setting"
     case symmetry_Int_Tables_number = "_symmetry_Int_Tables_number"
@@ -1702,7 +1693,7 @@ extension SKCIFParser
     case symmetry_equiv_pos_site_id = "_symmetry_equiv_pos_site_id"
   }
   
-  enum ValenceParam: String
+  enum ValenceParam: CaseInsensitiveString
   {
     case valence_param_atom_1 = "_valence_param_atom_1"
     case valence_param_atom_1_valence = "_valence_param_atom_1_valence"
@@ -1715,7 +1706,7 @@ extension SKCIFParser
     case valence_param_Ro = "_valence_param_Ro"
   }
   
-  enum ValenceRef: String
+  enum ValenceRef: CaseInsensitiveString
   {
     case valence_ref_id = "_valence_ref_id"
     case valence_ref_reference = "_valence_ref_reference"
