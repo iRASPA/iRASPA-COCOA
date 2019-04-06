@@ -241,19 +241,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     // load all data for the project-views
     self.reloadData()
     
-    // expand the 'PROJECTS'-item (without animation)
-    // (otherwise nothing is shown and the expand-icon is hidden)
-    NSAnimationContext.beginGrouping()
-    NSAnimationContext.current.duration=0
-    
-    self.projectOutlineView?.expandItem(nil)
-    if let documentData: DocumentData = (self.windowController?.document as? iRASPADocument)?.documentData
-    {
-      self.restoreExpandedState(nodes: documentData.projectData.rootNodes)
-    }
-    
-    NSAnimationContext.endGrouping()
-    
     self.reloadSelection()
     
     windowController?.masterViewControllerTabChanged(tab: 0)
@@ -2116,6 +2103,19 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   func reloadData()
   {
     self.reloadData(filter: true)
+    
+    // expand the 'PROJECTS'-item (without animation)
+    // (otherwise nothing is shown and the expand-icon is hidden)
+    NSAnimationContext.beginGrouping()
+    NSAnimationContext.current.duration=0
+    
+    self.projectOutlineView?.expandItem(nil)
+    if let documentData: DocumentData = (self.windowController?.document as? iRASPADocument)?.documentData
+    {
+      self.restoreExpandedState(nodes: documentData.projectData.rootNodes)
+    }
+    
+    NSAnimationContext.endGrouping()
   }
   
   
