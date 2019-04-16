@@ -194,6 +194,55 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     return (atoms: protein.atoms, bonds: protein.bonds)
   }
   
+  private func centerOfMassOfSelection() -> double3
+  {
+    var com: double3 = double3(0.0, 0.0, 0.0)
+    var M: Double = 0.0
+    
+    let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
+    for atom in atoms
+    {
+      let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
+      let mass: Double = PredefinedElements.sharedInstance.elementSet[elementIdentifier].mass
+      com += mass * atom.position
+      M += mass
+    }
+    com /= M
+    
+    return com
+  }
+  
+  public override func rotateSelection(using rotationMatrix: double3x3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let crystal: Protein =  self.copy() as! Protein
+    
+    for node in self.atoms.selectedTreeNodes
+    {
+      node.representedObject.displacement = double3(0,0,0)
+    }
+    
+    let com: double3 = centerOfMassOfSelection()
+    
+    for node in crystal.atoms.selectedTreeNodes
+    {
+      let pos = node.representedObject.position - com
+      let position: double3 = rotationMatrix * pos + com
+      node.representedObject.position = position
+    }
+    
+    crystal.expandSymmetry()
+    
+    crystal.reComputeBoundingBox()
+    
+    crystal.tag(atoms: crystal.atoms)
+    
+    crystal.reComputeBonds()
+    
+    return (atoms: crystal.atoms, bonds: crystal.bonds)
+  }
+  
+  
   public override func computeChangedBondLength(bond: SKBondNode, to bondLength: Double) -> (double3, double3)
   {
     let pos1 = bond.atom1.position

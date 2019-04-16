@@ -2313,6 +2313,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     return nil
   }
   
+  public func rotateSelection(using: double3x3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    return nil
+  }
+  
   public func computeChangedBondLength(bond: SKBondNode, to: Double) -> (double3,double3)
   {
     return (double3(0.0,0.0,0.0),double3(0.0,0.0,0.0))
