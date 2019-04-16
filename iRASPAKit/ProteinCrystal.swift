@@ -196,6 +196,69 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
     return (atoms: proteinCrystal.atoms, bonds: proteinCrystal.bonds)
   }
   
+  private func fractionalCenterOfMassOfSelection() -> double3
+  {
+    var centerOfMassCosTheta: double3 = double3(0.0, 0.0, 0.0)
+    var centerOfMassSinTheta: double3 = double3(0.0, 0.0, 0.0)
+    var M: Double = 0.0
+    
+    let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
+    for atom in atoms
+    {
+      let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
+      let mass: Double = PredefinedElements.sharedInstance.elementSet[elementIdentifier].mass
+      let pos: double3 = self.cell.convertToFractional(atom.position) * 2.0 * Double.pi
+      let cosTheta: double3 = double3(cos(pos.x), cos(pos.y), cos(pos.z))
+      let sinTheta: double3 = double3(sin(pos.x), sin(pos.y), sin(pos.z))
+      centerOfMassCosTheta += mass * cosTheta
+      centerOfMassSinTheta += mass * sinTheta
+      M += mass
+    }
+    centerOfMassCosTheta /= M
+    centerOfMassSinTheta /= M
+    
+    let com = double3((atan2(-centerOfMassSinTheta.x, -centerOfMassCosTheta.x) + Double.pi)/(2.0 * Double.pi),
+                      (atan2(-centerOfMassSinTheta.y, -centerOfMassCosTheta.y) + Double.pi)/(2.0 * Double.pi),
+                      (atan2(-centerOfMassSinTheta.z, -centerOfMassCosTheta.z) + Double.pi)/(2.0 * Double.pi))
+    
+    return com
+  }
+  
+  public override func rotateSelection(using rotationMatrix: double3x3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let crystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    
+    for node in self.atoms.selectedTreeNodes
+    {
+      node.representedObject.displacement = double3(0,0,0)
+    }
+    
+    let comFrac: double3 = fractionalCenterOfMassOfSelection()
+    let inverseCell = self.cell.inverseUnitCell
+    
+    for node in crystal.atoms.selectedTreeNodes
+    {
+      let fractionalPosition = inverseCell * node.representedObject.position
+      var ds: double3 = fractionalPosition - comFrac
+      ds -= floor(ds + double3(0.5,0.5,0.5))
+      let translatedPositionCartesian: double3 = self.cell.convertToCartesian(ds)
+      let position: double3 = rotationMatrix * translatedPositionCartesian + self.cell.convertToCartesian(comFrac)
+      node.representedObject.position = position
+    }
+    
+    crystal.expandSymmetry()
+    
+    crystal.reComputeBoundingBox()
+    
+    crystal.tag(atoms: crystal.atoms)
+    
+    crystal.reComputeBonds()
+    
+    return (atoms: crystal.atoms, bonds: crystal.bonds)
+  }
+  
+  
   public override func expandSymmetry()
   {
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}

@@ -282,6 +282,8 @@ class RenderTabView: NSView, CALayerDelegate, ProjectConsumer
   
   override func mouseExited(with event: NSEvent)
   {
+    self.allSubViewsOf(type: NSButton.self).forEach({$0.isEnabled = false})
+    
     super.mouseExited(with: event)
     stopMouseMoveTimer()
     self.mouseMoveTimerRunning = false
@@ -289,6 +291,8 @@ class RenderTabView: NSView, CALayerDelegate, ProjectConsumer
   
   override func mouseEntered(with event: NSEvent)
   {
+    self.allSubViewsOf(type: NSButton.self).forEach({$0.isEnabled = true})
+    
     super.mouseEntered(with: event)
   }
   
@@ -326,8 +330,6 @@ class RenderTabView: NSView, CALayerDelegate, ProjectConsumer
       self.toolTipTag = nil
     }
     stopMouseMoveTimer()
-    
-   
   }
  
   

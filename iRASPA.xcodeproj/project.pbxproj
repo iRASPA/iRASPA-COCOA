@@ -298,6 +298,7 @@
 		9383885C1E26A64200112FBA /* int9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388551E26A64200112FBA /* int9.swift */; };
 		9383885D1E26A64200112FBA /* int9x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388561E26A64200112FBA /* int9x3.swift */; };
 		9383885E1E26A64200112FBA /* int9x9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388571E26A64200112FBA /* int9x9.swift */; };
+		938446E22264895D00C0A0AC /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938446E12264895D00C0A0AC /* NSView.swift */; };
 		938657AF1F2349F60029395C /* CloudIZADatabase.data in Resources */ = {isa = PBXBuildFile; fileRef = 938657AE1F2349E20029395C /* CloudIZADatabase.data */; };
 		9386FBB12019DEAA00442E5C /* RKCachedFontAtlas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9386FBB02019DEAA00442E5C /* RKCachedFontAtlas.swift */; };
 		938B1C711F2682410017116B /* DirectoryCollectionSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B1C701F2682410017116B /* DirectoryCollectionSplitViewController.swift */; };
@@ -1073,6 +1074,7 @@
 		938388551E26A64200112FBA /* int9.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = int9.swift; sourceTree = "<group>"; };
 		938388561E26A64200112FBA /* int9x3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = int9x3.swift; sourceTree = "<group>"; };
 		938388571E26A64200112FBA /* int9x9.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = int9x9.swift; sourceTree = "<group>"; };
+		938446E12264895D00C0A0AC /* NSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		938657AE1F2349E20029395C /* CloudIZADatabase.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = CloudIZADatabase.data; sourceTree = "<group>"; };
 		9386FBB02019DEAA00442E5C /* RKCachedFontAtlas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKCachedFontAtlas.swift; sourceTree = "<group>"; };
 		938B1C701F2682410017116B /* DirectoryCollectionSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryCollectionSplitViewController.swift; sourceTree = "<group>"; };
@@ -1684,6 +1686,7 @@
 				930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */,
 				930C97681FCEC6C200B4611E /* ElementsTableRowView.swift */,
 				930C976A1FCEC6D300B4611E /* CellTableRowView.swift */,
+				938446E12264895D00C0A0AC /* NSView.swift */,
 				93EA0C351E69EA810051E911 /* AtomGroupView.swift */,
 				93D1B52D1F45ECD300D0F932 /* NSPageView.swift */,
 				93475A9A1FC98E71006F6A19 /* NSViewController.swift */,
@@ -3181,6 +3184,7 @@
 				93915C411FCD99B7006188F0 /* iRASPAProtocols.swift in Sources */,
 				93FD046F1EC1B172005226F4 /* AtomNetChargeTextField.swift in Sources */,
 				932A495E1E5450EB00F71AE7 /* InterpreterToolBar.swift in Sources */,
+				938446E22264895D00C0A0AC /* NSView.swift in Sources */,
 				930DD6CD1E28064300B8FE9B /* AppDelegate.swift in Sources */,
 				930DD6EB1E28071200B8FE9B /* ProjectOutlineView.swift in Sources */,
 				93784A951E61B6EB00A7FF23 /* StructureCameraDetailViewController.swift in Sources */,

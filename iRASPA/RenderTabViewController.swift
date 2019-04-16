@@ -43,6 +43,12 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   weak var renderDataSource: RKRenderDataSource?
   
+  let ancherDistance: CGFloat = 8
+  @IBOutlet var transformationPanel: NSStackView?
+  var transformationPanelLeftLayoutConstraint : NSLayoutConstraint?
+  var transformationPanelTopLayoutConstraint : NSLayoutConstraint?
+
+  
   enum Tracking {
     case none
     case panning
@@ -209,8 +215,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     aspectRationConstraint_3_1 = NSLayoutConstraint(item: self.view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.view, attribute: NSLayoutConstraint.Attribute.height, multiplier: 3.0, constant: 1.0)
     self.view.addConstraint(aspectRationConstraint_3_1)
     aspectRationConstraint_3_1.isActive = false
-    
-    
   }
   
   override func viewDidAppear()
@@ -227,6 +231,25 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       let trackingArea = NSTrackingArea(rect: view.bounds, options: options, owner: view, userInfo: nil)
       view.trackingArea = trackingArea
       view.addTrackingArea(trackingArea)
+      
+      if let transformationPanel = self.transformationPanel
+      {
+        transformationPanel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(transformationPanel)
+        transformationPanelLeftLayoutConstraint = transformationPanel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: ancherDistance)
+        transformationPanelLeftLayoutConstraint?.isActive = true
+        transformationPanelTopLayoutConstraint = transformationPanel.topAnchor.constraint(equalTo: view.topAnchor, constant: ancherDistance)
+        transformationPanelTopLayoutConstraint?.isActive = true
+        transformationPanel.isHidden = true
+        transformationPanel.wantsLayer = true
+        transformationPanel.layer?.opacity = 0.0
+      }
+      
+      if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+      {
+        let selectionEmpty: Bool = !project.structures.map{$0.atoms.selectedTreeNodes.isEmpty}.contains(false)
+        showTransformationPanel(oldSelectionEmpty: selectionEmpty, newSelectionEmpty: selectionEmpty)
+      }
     }
   }
   
@@ -241,6 +264,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         view.removeTrackingArea(view.trackingArea!)
       }
     }
+    
+    transformationPanelLeftLayoutConstraint?.isActive = false
+    transformationPanelTopLayoutConstraint?.isActive = false
   }
 
   // MARK: protocol ProjectConsumer
@@ -254,8 +280,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         self.renderDataSource = project
         
-        //project.renderCamera?.boundingBox = project.renderBoundingBox
-        //project.renderCamera?.updateCameraForWindowResize(width: Double(self.view.bounds.width), height: Double(self.view.bounds.height))
+        let selectionEmpty: Bool = !project.structures.map{$0.atoms.selectedTreeNodes.isEmpty}.contains(false)
+        showTransformationPanel(oldSelectionEmpty: selectionEmpty, newSelectionEmpty: selectionEmpty)
         
         // all renders need to have the current project: for exmaple: select metal, rch project, switch to openGL
         for tabViewItem in self.tabViewItems
@@ -280,9 +306,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         renderViewController.renderDataSource = nil
         renderViewController.renderCameraSource = nil
+        showTransformationPanel(oldSelectionEmpty: false,newSelectionEmpty: false)
       }
     }
-    
   }
 
   // detect changes in the view-bounds, use these to update the 'Camera'-detail view (pictures and movies uses the aspect-ratio)
@@ -779,7 +805,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
     func reversed() -> DeleteData
     {
-      return DeleteData.init(structure: structure, atoms: atoms.reversed(), selectedBonds: selectedBonds, indexPaths: indexPaths.reversed())
+      return DeleteData(structure: structure, atoms: atoms.reversed(), selectedBonds: selectedBonds, indexPaths: indexPaths.reversed())
     }
   }
   
@@ -808,6 +834,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         data.structure.atoms.selectedTreeNodes = []
         
         self.proxyProject?.representedObject.isEdited = true
+        
+        showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
         
         self.invalidateIsosurface(cachedIsosurfaces: [data.structure])
         self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [data.structure])
@@ -846,6 +874,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           bond.atom2.bonds.insert(bond)
           data.structure.bonds.arrangedObjects.insert(bond)
         }
+        
+        showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
       
         self.proxyProject?.representedObject.isEdited = true
       
@@ -883,7 +913,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
             let indexPaths: [IndexPath] = selectedAtoms.map{$0.indexPath}
             let selectedBonds: [SKBondNode] = structure.atoms.allSelectedNodes.compactMap{$0.representedObject}.flatMap{$0.copies}.flatMap{$0.bonds}
             
-            let data: DeleteData = DeleteData.init(structure: structure, atoms: selectedAtoms, selectedBonds: selectedBonds, indexPaths: indexPaths)
+            let data: DeleteData = DeleteData(structure: structure, atoms: selectedAtoms, selectedBonds: selectedBonds, indexPaths: indexPaths)
             
             deleteData.append(data)
           }
@@ -903,6 +933,49 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   // MARK: selection
   // ===============================================================================================================================
+  
+  func showTransformationPanel(oldSelectionEmpty: Bool, newSelectionEmpty: Bool)
+  {
+    switch(oldSelectionEmpty,newSelectionEmpty)
+    {
+    case (true,false):
+      // show view
+      self.transformationPanel?.isHidden = false
+      self.transformationPanel?.layer?.opacity = 0.0
+      self.transformationPanelLeftLayoutConstraint?.constant = -20
+      NSAnimationContext.runAnimationGroup ({ [weak self] (context: NSAnimationContext) in
+        context.timingFunction = CAMediaTimingFunction(name: .easeIn)
+        context.duration = 0.25
+        context.allowsImplicitAnimation = true
+        self?.transformationPanelLeftLayoutConstraint?.animator().constant = ancherDistance
+        self?.transformationPanel?.animator().layer?.opacity = 1.0
+      }) {}
+    case (false,true):
+      // hide view
+      transformationPanelLeftLayoutConstraint?.constant = ancherDistance
+      NSAnimationContext.runAnimationGroup ({ [weak self] (context: NSAnimationContext) in
+        context.timingFunction = CAMediaTimingFunction(name: .easeIn)
+        context.duration = 0.25
+        context.allowsImplicitAnimation = true
+        transformationPanel?.animator().layer?.opacity = 0.0
+        self?.transformationPanelLeftLayoutConstraint?.animator().constant = -20
+        })
+      {
+        self.transformationPanel?.isHidden = true
+        self.transformationPanel?.layer?.opacity = 0.0
+      }
+    case (true,true):
+      // hide view
+      self.transformationPanel?.isHidden = true
+      self.transformationPanel?.layer?.opacity = 0.0
+      self.transformationPanelLeftLayoutConstraint?.constant = -20
+    case (false,false):
+      // show view
+      self.transformationPanel?.layer?.opacity = 1.0
+      self.transformationPanel?.isHidden = false
+      self.transformationPanelLeftLayoutConstraint?.constant = ancherDistance
+    }
+  }
  
   func setCurrentSelection(structure: Structure, selection: Set<SKAtomTreeNode>, from: Set<SKAtomTreeNode>)
   {
@@ -914,10 +987,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
     // save off the current selectedNode and current selection for undo/redo
     project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(structure: structure, selection: from, from: selection)})
+   
+      showTransformationPanel(oldSelectionEmpty: structure.atoms.selectedTreeNodes.isEmpty,newSelectionEmpty: selection.isEmpty)
       
     structure.atoms.selectedTreeNodes = selection
-    
-   
     
     self.renderViewController.reloadRenderDataSelectedAtoms()
     NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: structure)
@@ -929,11 +1002,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-    project.undoManager.setActionName(NSLocalizedString("Clear selection", comment: "Clear selection"))
-    self.setCurrentSelection(structure: structure, selection: [], from: structure.atoms.selectedTreeNodes)
-    
-    
-    (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+      project.undoManager.setActionName(NSLocalizedString("Clear selection", comment: "Clear selection"))
+      self.setCurrentSelection(structure: structure, selection: [], from: structure.atoms.selectedTreeNodes)
+  
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
   }
   
@@ -1173,6 +1245,29 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       self.reloadRenderDataSelectedAtoms()
       
       
+    }
+  }
+  
+  func setAtomToSelection(_ pick: [Int32])
+  {
+    if (pick[0] == 1)
+    {
+      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+      {
+        let structureIdentifier: Int = Int(pick[1])
+        let movieIdentifier: Int = Int(pick[2])
+        let pickedAtom: Int = Int(pick[3])
+        
+        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
+        let structure: RKRenderStructure = structures[movieIdentifier]
+        
+        if structure.isVisible
+        {
+          self.setAtomSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedAtom), byExtendingSelection: false)
+          self.reloadRenderDataSelectedAtoms()
+          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+        }
+      }
     }
   }
   
@@ -2350,10 +2445,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if (tracking == .backgroundClick)
         {
           let pick: [Int32] = pickPoint(point)
-          clearSelection()
+          
+          if (pick[0]==0)
+          {
+            clearSelection()
+          }
+          
           if (pick[0]>0)
           {
-            addAtomToSelection(pick)
+            setAtomToSelection(pick)
           }
         }
       }
@@ -2362,4 +2462,322 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       tracking = .none
     }
   }
+  
+  /*
+  override func flagsChanged(with event: NSEvent)
+  {
+    debugPrint("changed!! \(event.modifierFlags)")
+    super.flagsChanged(with: event)
+  }
+ */
+  
+  // MARK: Tranformation Panel
+  // ===============================================================================================================================
+  @IBAction func deleteSelectedAtoms(_ sender: NSButton)
+  {
+    self.deleteSelection()
+  }
+  
+  @IBAction func translateSelectedAtomsPlusX(_ sender: NSButton)
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          let shift: double3 = double3(0.1, 0.0, 0.0)
+          
+          project.undoManager.setActionName(NSLocalizedString("Displace selection plus x", comment: "Displace selection plus x"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.finalizeTranslateSelection(by: shift)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+        
+      }
+    }
+  }
+  
+  @IBAction func translateSelectedAtomsMinusX(_ sender: NSButton)
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          let shift: double3 = double3(-0.1, 0.0, 0.0)
+          
+          project.undoManager.setActionName(NSLocalizedString("Displace selection minus x", comment: "Displace selection minus x"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.finalizeTranslateSelection(by: shift)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func translateSelectedAtomsPlusY(_ sender: NSButton)
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          let shift: double3 = double3(0.0, 0.1, 0.0)
+          
+          project.undoManager.setActionName(NSLocalizedString("Displace selection plus y", comment: "Displace selection plus y"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.finalizeTranslateSelection(by: shift)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+        
+      }
+    }
+  }
+  
+  @IBAction func translateSelectedAtomsMinusY(_ sender: NSButton)
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          let shift: double3 = double3(0.0, -0.1, 0.0)
+          
+          project.undoManager.setActionName(NSLocalizedString("Displace selection minus y", comment: "Displace selection minus y"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.finalizeTranslateSelection(by: shift)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func translateSelectedAtomsPlusZ(_ sender: NSButton)
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          let shift: double3 = double3(0.0, 0.0, 0.1)
+          
+          project.undoManager.setActionName(NSLocalizedString("Displace selection plus z", comment: "Displace selection plus z"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.finalizeTranslateSelection(by: shift)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+        
+      }
+    }
+  }
+  
+  @IBAction func translateSelectedAtomsMinusZ(_ sender: NSButton)
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          let shift: double3 = double3(0.0, 0.0, -0.1)
+          
+          project.undoManager.setActionName(NSLocalizedString("Displace selection minus z", comment: "Displace selection minus z"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.finalizeTranslateSelection(by: shift)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
+  
+  @IBAction func rotateSelectedAtomsPlusX(_ sender: NSButton)
+  {
+    let theta: Double = 2.5 * Double.pi/180.0
+    
+    let rotationMatrix: double3x3 = double3x3(double3(1.0, 0.0, 0.0),
+                                              double3(0.0, cos(theta), -sin(theta)),
+                                              double3(0.0, sin(theta), cos(theta)))
+    
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          project.undoManager.setActionName(NSLocalizedString("Rotate selection plus x", comment: "Rotate selection plus x"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelection(using: rotationMatrix)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func rotateSelectedAtomsMinusX(_ sender: NSButton)
+  {
+    let theta: Double = -2.5 * Double.pi/180.0
+    
+    let rotationMatrix: double3x3 = double3x3(double3(1.0, 0.0, 0.0),
+                                              double3(0.0, cos(theta), -sin(theta)),
+                                              double3(0.0, sin(theta), cos(theta)))
+    
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          project.undoManager.setActionName(NSLocalizedString("Rotate selection minus x", comment: "Rotate selection minus x"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelection(using: rotationMatrix)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func rotateSelectedAtomsPlusY(_ sender: NSButton)
+  {
+    let theta: Double = 2.5 * Double.pi/180.0
+    let rotationMatrix: double3x3 = double3x3(double3(cos(theta), 0.0, sin(theta)),
+                                              double3(0.0, 1.0, 0.0),
+                                              double3(-sin(theta), 0.0, cos(theta)))
+    
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          project.undoManager.setActionName(NSLocalizedString("Rotate selection plus y", comment: "Rotate selection plus y"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelection(using: rotationMatrix)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func rotateSelectedAtomsMinusY(_ sender: NSButton)
+  {
+    let theta: Double = -2.5 * Double.pi/180.0
+    let rotationMatrix: double3x3 = double3x3(double3(cos(theta), 0.0, sin(theta)),
+                                              double3(0.0, 1.0, 0.0),
+                                              double3(-sin(theta), 0.0, cos(theta)))
+    
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          project.undoManager.setActionName(NSLocalizedString("Rotate selection minus y", comment: "Rotate selection minus y"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelection(using: rotationMatrix)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func rotateSelectedAtomsPlusZ(_ sender: NSButton)
+  {
+    let theta: Double = 2.5 * Double.pi/180.0
+    
+    let rotationMatrix: double3x3 = double3x3(double3(cos(theta), -sin(theta), 0.0),
+                                              double3(sin(theta), cos(theta), 0.0),
+                                              double3(0.0, 0.0, 1.0))
+    
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          project.undoManager.setActionName(NSLocalizedString("Rotate selection plus z", comment: "Rotate selection plus z"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelection(using: rotationMatrix)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func rotateSelectedAtomsMinusZ(_ sender: NSButton)
+  {
+    let theta: Double = -2.5 * Double.pi/180.0
+    
+    let rotationMatrix: double3x3 = double3x3(double3(cos(theta), -sin(theta), 0.0),
+                                              double3(sin(theta), cos(theta), 0.0),
+                                              double3(0.0, 0.0, 1.0))
+    
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+        {
+          project.undoManager.setActionName(NSLocalizedString("Rotate selection minus z", comment: "Rotate selection minus z"))
+          
+          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelection(using: rotationMatrix)
+          {
+            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
+          }
+        }
+      }
+    }
+  }
+  
 }

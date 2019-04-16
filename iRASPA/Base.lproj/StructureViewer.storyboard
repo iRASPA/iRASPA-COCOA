@@ -262,10 +262,306 @@
                         </connections>
                     </tabView>
                     <connections>
+                        <outlet property="transformationPanel" destination="hIS-jn-E02" id="v62-Ft-zHD"/>
                         <segue destination="y97-8R-XET" kind="relationship" relationship="tabItems" id="fMZ-74-Yty"/>
                     </connections>
                 </tabViewController>
                 <customObject id="ydg-sy-G53" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <stackView wantsLayer="YES" distribution="fillEqually" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="hIS-jn-E02">
+                    <rect key="frame" x="0.0" y="0.0" width="200" height="277"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                    <subviews>
+                        <stackView distribution="equalCentering" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" ambiguous="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ji-OV-LqA">
+                            <rect key="frame" x="0.0" y="244" width="32" height="33"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" ambiguous="YES" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="Aub-6u-m6x">
+                                    <rect key="frame" x="0.0" y="1" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="Pq3-te-TKL"/>
+                                        <constraint firstAttribute="height" constant="32" id="cwc-1F-kBG"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="DeleteIcon" imagePosition="overlaps" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="gMW-Fn-Xns">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="deleteSelectedAtoms:" target="jba-0R-BH0" id="Fvk-QU-UEZ"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yQ6-9P-0BW">
+                            <rect key="frame" x="0.0" y="204" width="72" height="32"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="gk4-F0-fPf">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="xox-SQ-Q5A"/>
+                                        <constraint firstAttribute="width" constant="32" id="zrT-PL-GbX"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Translation -x" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="ZTU-x0-w4B">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="translateSelectedAtomsMinusX:" target="jba-0R-BH0" id="PkW-Z3-ocC"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="gHP-si-cpf">
+                                    <rect key="frame" x="40" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="ICW-gh-aKs"/>
+                                        <constraint firstAttribute="height" constant="32" id="ynz-tA-hzu"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Translation x" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="HWD-En-dKP">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="translateSelectedAtomsPlusX:" target="jba-0R-BH0" id="MWH-SE-JeY"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DwJ-j8-Gsh">
+                            <rect key="frame" x="0.0" y="163" width="72" height="33"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="rxL-Js-3ra">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="CYa-3O-MB6"/>
+                                        <constraint firstAttribute="width" constant="32" id="SHO-hX-OMq"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Translation -y" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Jk7-8P-hXV">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="translateSelectedAtomsMinusY:" target="jba-0R-BH0" id="Dm6-cB-8lz"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="lDk-MT-ohf">
+                                    <rect key="frame" x="40" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="TVI-jW-6pY"/>
+                                        <constraint firstAttribute="width" constant="32" id="VWh-A7-JqR"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Translation y" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="6hu-oo-0dt">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="translateSelectedAtomsPlusY:" target="jba-0R-BH0" id="ER0-4n-Oba"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="25j-Ks-uUc">
+                            <rect key="frame" x="0.0" y="122" width="72" height="33"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="0fe-TV-OL3">
+                                    <rect key="frame" x="0.0" y="1" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="FmA-7x-jd2"/>
+                                        <constraint firstAttribute="width" constant="32" id="khr-D3-B7B"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Translation -z" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="H7F-Dn-YUj">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="translateSelectedAtomsMinusZ:" target="jba-0R-BH0" id="eC5-ON-u8r"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="QLj-wr-fHw">
+                                    <rect key="frame" x="40" y="1" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="24k-6f-2rC"/>
+                                        <constraint firstAttribute="height" constant="32" id="2bJ-oe-bgL"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Translation z" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Az8-On-6Rc">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="translateSelectedAtomsPlusZ:" target="jba-0R-BH0" id="Bj5-rm-2x7"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gfY-YE-Ura">
+                            <rect key="frame" x="0.0" y="81" width="72" height="33"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="EjV-g6-KXf">
+                                    <rect key="frame" x="0.0" y="1" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="Ebm-vv-5rC"/>
+                                        <constraint firstAttribute="height" constant="32" id="vKt-MT-bEF"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Rotation -x" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="oQN-RB-YUG">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="rotateSelectedAtomsMinusX:" target="jba-0R-BH0" id="iHm-FD-LLh"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="BnJ-fn-qmb">
+                                    <rect key="frame" x="40" y="1" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="32" id="8UA-Mh-86d"/>
+                                        <constraint firstAttribute="height" constant="32" id="q3F-ZP-yWR"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Rotation x" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="fKa-2L-NKV">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="rotateSelectedAtomsPlusX:" target="jba-0R-BH0" id="wRQ-16-n0A"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1mb-jd-4S3">
+                            <rect key="frame" x="0.0" y="41" width="72" height="32"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="V6N-y9-x9x">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="gc4-nK-Zsr"/>
+                                        <constraint firstAttribute="width" constant="32" id="lLd-F0-lDH"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Rotation -y" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="K22-LM-J29">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="rotateSelectedAtomsMinusY:" target="jba-0R-BH0" id="UJv-2A-1Wf"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="E2T-Kg-WtG">
+                                    <rect key="frame" x="40" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="HZ0-DP-rmD"/>
+                                        <constraint firstAttribute="width" constant="32" id="ZLe-Uk-PZ9"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Rotation y" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="ZiH-T0-4w4">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="rotateSelectedAtomsPlusY:" target="jba-0R-BH0" id="PLA-Ob-pr7"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jKf-Wa-1ln">
+                            <rect key="frame" x="0.0" y="0.0" width="72" height="33"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="3Q3-jd-ekf">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="9Bn-6o-t2W"/>
+                                        <constraint firstAttribute="width" constant="32" id="wWS-jX-vhJ"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Rotation -z" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="470-2f-t9u">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="rotateSelectedAtomsMinusZ:" target="jba-0R-BH0" id="3Q4-rc-CWd"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" alphaValue="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="Ba1-pr-qH7">
+                                    <rect key="frame" x="40" y="0.0" width="32" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="32" id="BdJ-KH-clO"/>
+                                        <constraint firstAttribute="width" constant="32" id="okU-ty-mYo"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="Rotation z" imagePosition="overlaps" alignment="center" continuous="YES" state="on" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Wrl-PS-QPc">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="rotateSelectedAtomsPlusZ:" target="jba-0R-BH0" id="60l-Zr-myD"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
             </objects>
             <point key="canvasLocation" x="300" y="2061"/>
         </scene>
@@ -9679,11 +9975,24 @@
         </scene>
     </scenes>
     <resources>
+        <image name="DeleteIcon" width="128" height="128"/>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
         <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
+        <image name="Rotation -x" width="256" height="256"/>
+        <image name="Rotation -y" width="256" height="256"/>
+        <image name="Rotation -z" width="256" height="256"/>
+        <image name="Rotation x" width="256" height="256"/>
+        <image name="Rotation y" width="256" height="256"/>
+        <image name="Rotation z" width="256" height="256"/>
         <image name="ShowHideViewOnLeft-ON" width="15" height="15"/>
         <image name="ShowHideViewOnRight-ON" width="15" height="15"/>
+        <image name="Translation -x" width="256" height="256"/>
+        <image name="Translation -y" width="256" height="256"/>
+        <image name="Translation -z" width="256" height="256"/>
+        <image name="Translation x" width="256" height="256"/>
+        <image name="Translation y" width="256" height="256"/>
+        <image name="Translation z" width="256" height="256"/>
     </resources>
 </document>
