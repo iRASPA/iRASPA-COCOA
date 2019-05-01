@@ -44,6 +44,11 @@ protocol WindowControllerConsumer: class
   var windowController: iRASPAWindowController? {get set}
 }
 
+protocol GlobalModifierFlagsConsumer: class
+{
+  func globalModifierFlagsChanged(_ value: NSEvent.ModifierFlags)
+}
+
 // protocol to use the projectController generically for all projects
 protocol ProjectController: SelectionIndex
 {

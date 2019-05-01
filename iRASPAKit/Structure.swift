@@ -98,6 +98,10 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     }
   }
   
+  public var selectionCOMTranslation: double3 = double3(0.0, 0.0, 0.0)
+  public var selectionRotationIndex: Int = 0
+  public var selectionBodyFixedBasis: double3x3 = double3x3(diagonal: double3(1.0, 1.0, 1.0))
+  
   public var structureType: StructureType = .framework
   public var structureMaterialType: String = "Unspecified"
   public var structureMass: Double = 0.0
@@ -2313,7 +2317,52 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     return nil
   }
   
-  public func rotateSelection(using: double3x3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public func centerOfMassOfSelection() -> double3
+  {
+    return double3(0.0,0.0,0.0)
+  }
+  
+  public func matrixOfInertia() -> double3x3
+  {
+    return double3x3()
+  }
+  
+  // -1: always update
+  // 0: x
+  // 1: y
+  // 2: z
+  // update when index changes, so when a new direction of rotation has been chosen
+  public func recomputeSelectionBodyFixedBasis(index: Int)
+  {
+    if index < 0 || self.selectionRotationIndex != index
+    {
+      self.selectionRotationIndex = index
+      self.selectionCOMTranslation = centerOfMassOfSelection()
+      let intertiaMatrix: double3x3 = matrixOfInertia()
+
+      var eigenvectors: double3x3 = double3x3()
+      var eigenvalues: double3 = double3()
+      intertiaMatrix.EigenSystemSymmetric3x3(Q: &eigenvectors, w: &eigenvalues)
+      self.selectionBodyFixedBasis = eigenvectors
+    }
+  }
+  
+  public func translateSelectionCartesian(by translation: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    return nil
+  }
+  
+  public func rotateSelectionCartesian(using: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    return nil
+  }
+  
+  public func translateSelectionBodyFrame(by: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    return nil
+  }
+  
+  public func rotateSelectionBodyFrame(using: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     return nil
   }

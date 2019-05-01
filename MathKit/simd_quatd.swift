@@ -57,6 +57,8 @@ extension simd_quatd
     self.vector = double4(0.0, 0.0,sin(half_theta), cos(half_theta))
   }
   
+ 
+  
   // http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm
   public init(EulerAngles angles: double3)
   {

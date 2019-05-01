@@ -1084,7 +1084,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     return (atoms: crystal.atoms, bonds: crystal.bonds)
   }
   
-  private func fractionalCenterOfMassOfSelection() -> double3
+  public override func centerOfMassOfSelection() -> double3
   {
     var centerOfMassCosTheta: double3 = double3(0.0, 0.0, 0.0)
     var centerOfMassSinTheta: double3 = double3(0.0, 0.0, 0.0)
@@ -1109,10 +1109,38 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
                       (atan2(-centerOfMassSinTheta.y, -centerOfMassCosTheta.y) + Double.pi)/(2.0 * Double.pi),
                       (atan2(-centerOfMassSinTheta.z, -centerOfMassCosTheta.z) + Double.pi)/(2.0 * Double.pi))
     
-    return com
+    return  self.cell.convertToCartesian(com)
   }
   
-  public override func rotateSelection(using rotationMatrix: double3x3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func matrixOfInertia() -> double3x3
+  {
+    var inertiaMatrix: double3x3 = double3x3()
+    let com: double3 = self.selectionCOMTranslation
+    let fracCom: double3 = self.cell.convertToFractional(com)
+    
+    let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
+    for atom in atoms
+    {
+      let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
+      let mass: Double = PredefinedElements.sharedInstance.elementSet[elementIdentifier].mass
+      var ds: double3 = atom.position - fracCom
+      ds -= floor(ds + double3(0.5,0.5,0.5))
+      let dr: double3 = self.cell.convertToCartesian(ds)
+      inertiaMatrix[0][0] += mass * (dr.y * dr.y + dr.z * dr.z)
+      inertiaMatrix[0][1] -= mass * dr.x * dr.y
+      inertiaMatrix[0][2] -= mass * dr.x * dr.z
+      inertiaMatrix[1][0] -= mass * dr.y * dr.x
+      inertiaMatrix[1][1] += mass * (dr.x * dr.x + dr.z * dr.z)
+      inertiaMatrix[1][2] -= mass * dr.y * dr.z
+      inertiaMatrix[2][0] -= mass * dr.z * dr.x
+      inertiaMatrix[2][1] -= mass * dr.z * dr.y
+      inertiaMatrix[2][2] += mass * (dr.x * dr.x + dr.y * dr.y)
+    }
+    
+    return inertiaMatrix
+  }
+  
+  public override func translateSelectionCartesian(by translation: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
     let crystal: Crystal =  self.copy() as! Crystal
@@ -1122,7 +1150,110 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       node.representedObject.displacement = double3(0,0,0)
     }
     
-    let comFrac: double3 = fractionalCenterOfMassOfSelection()
+    self.selectionCOMTranslation += translation
+    let fractionalTranslation: double3 = self.cell.convertToFractional(translation)
+    
+    for node in crystal.atoms.selectedTreeNodes
+    {
+      let pos: double3 = node.representedObject.position + fractionalTranslation
+      node.representedObject.position = pos
+    }
+    
+    crystal.expandSymmetry()
+    
+    crystal.reComputeBoundingBox()
+    
+    crystal.tag(atoms: crystal.atoms)
+    
+    crystal.reComputeBonds()
+    
+    return (atoms: crystal.atoms, bonds: crystal.bonds)
+  }
+  
+  
+  public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let crystal: Crystal =  self.copy() as! Crystal
+    
+    for node in self.atoms.selectedTreeNodes
+    {
+      node.representedObject.displacement = double3(0,0,0)
+    }
+    
+    let comFrac: double3 = self.cell.convertToFractional(self.selectionCOMTranslation)
+    let rotationMatrix: double3x3 = double3x3(quaternion)
+    
+    for node in crystal.atoms.selectedTreeNodes
+    {
+      var ds: double3 = fract(node.representedObject.position) - comFrac
+      ds -= floor(ds + double3(0.5,0.5,0.5))
+      let translatedPositionCartesian: double3 = self.cell.convertToCartesian(ds)
+      let position: double3 = rotationMatrix * translatedPositionCartesian
+      node.representedObject.position = fract(self.cell.convertToFractional(position) + comFrac)
+    }
+    
+    crystal.expandSymmetry()
+    
+    crystal.reComputeBoundingBox()
+    
+    crystal.tag(atoms: crystal.atoms)
+    
+    crystal.reComputeBonds()
+    
+    return (atoms: crystal.atoms, bonds: crystal.bonds)
+  }
+  
+  public override func translateSelectionBodyFrame(by shift: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let crystal: Crystal =  self.copy() as! Crystal
+    
+    for node in self.atoms.selectedTreeNodes
+    {
+      node.representedObject.displacement = double3(0,0,0)
+    }
+    
+    recomputeSelectionBodyFixedBasis(index: 3)
+    
+    let basis: double3x3 = self.selectionBodyFixedBasis
+    let translation: double3 = basis.inverse * shift
+    let fractionalTranslation: double3 = self.cell.convertToFractional(translation)
+    
+    self.selectionCOMTranslation += translation
+    
+    for node in crystal.atoms.selectedTreeNodes
+    {
+      let pos: double3 = node.representedObject.position + fractionalTranslation
+      node.representedObject.position = pos
+    }
+    
+    crystal.expandSymmetry()
+    
+    crystal.reComputeBoundingBox()
+    
+    crystal.tag(atoms: crystal.atoms)
+    
+    crystal.reComputeBonds()
+    
+    return (atoms: crystal.atoms, bonds: crystal.bonds)
+  }
+  
+  public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let crystal: Crystal =  self.copy() as! Crystal
+    
+    for node in self.atoms.selectedTreeNodes
+    {
+      node.representedObject.displacement = double3(0,0,0)
+    }
+    
+    recomputeSelectionBodyFixedBasis(index: index)
+    
+    let comFrac: double3 = self.cell.convertToFractional(self.selectionCOMTranslation)
+    let basis: double3x3 = self.selectionBodyFixedBasis
+    let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
     
     for node in crystal.atoms.selectedTreeNodes
     {

@@ -84,3 +84,51 @@ public extension double3
   }
 }
 
+extension double3
+{
+  public func RotateAboutArbitraryLine(origin: double3, dir d: double3, theta: Double) -> double3
+  {
+    var vec: double3 = double3()
+  
+    // normalize the direction vector
+    var dir: double3 = normalize(d)
+    
+    var p: double3 = self
+  
+    vec.x=origin.x*(pow(dir.y,2)+pow(dir.z,2)) +
+    dir.x*(-origin.y*dir.y-origin.z*dir.z+dir.x*p.x+dir.y*p.y+dir.z*p.z) +
+  ((p.x-origin.x)*(pow(dir.y,2)+pow(dir.z,2))+dir.x*(origin.y*dir.y+origin.z*dir.z-dir.y*p.y-dir.z*p.z))*cos(theta) +
+  (origin.y*dir.z-origin.z*dir.y-dir.z*p.y+dir.y*p.z)*sin(theta);
+  
+  vec.y=origin.y*(pow(dir.x,2)+pow(dir.z,2)) +
+  dir.y*(-origin.x*dir.x-origin.z*dir.z+dir.x*p.x+dir.y*p.y+dir.z*p.z) +
+  ((p.y-origin.y)*(pow(dir.x,2)+pow(dir.z,2))+dir.y*(origin.x*dir.x+origin.z*dir.z-dir.x*p.x-dir.z*p.z))*cos(theta) +
+  (-origin.x*dir.z+origin.z*dir.x+dir.z*p.x-dir.x*p.z)*sin(theta);
+  
+  vec.z=origin.z*(pow(dir.x,2)+pow(dir.y,2)) +
+  dir.z*(-origin.x*dir.x-origin.y*dir.y+dir.x*p.x+dir.y*p.y+dir.z*p.z) +
+  ((p.z-origin.z)*(pow(dir.x,2)+pow(dir.y,2))+dir.z*(origin.x*dir.x+origin.y*dir.y-dir.x*p.x-dir.y*p.y))*cos(theta) +
+  (origin.x*dir.y-origin.y*dir.x-dir.y*p.x+dir.x*p.y)*sin(theta);
+  
+  return vec
+  }
+
+}
+
+extension double3
+{
+  public static func *(left: simd_quatd, right: double3) -> double3
+  {
+    // Extract the vector part of the quaternion
+    let u: double3 = left.imag
+  
+    // Extract the scalar part of the quaternion
+    let s: Double = left.real
+  
+    // Do the math
+    let vprime1 = 2.0 * dot(u, right) * u
+    let vrpime2 = (s*s - dot(u, u)) * right
+    let vprime3 = 2.0 * s * cross(u, right)
+    return vprime1 + vrpime2 + vprime3
+  }
+}

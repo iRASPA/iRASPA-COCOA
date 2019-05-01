@@ -57,6 +57,25 @@ extension WindowControllerConsumer
   }
 }
 
+extension WindowControllerConsumer
+{
+  // if called in 'WindowDidLoad', using:
+  // propagate(self, toChildrenOf: self.contentViewController!)
+  // then all view-controllers will have 'windowController' set _before_ 'viewDidLoad'
+  // except for lazily-loaded viewcontroller (e.g. contentViews)
+  func propagateFlags(_ flags: NSEvent.ModifierFlags, toChildrenOf parent: NSViewController)
+  {
+    if let consumer: GlobalModifierFlagsConsumer = parent as? GlobalModifierFlagsConsumer
+    {
+      consumer.globalModifierFlagsChanged(flags)
+    }
+    
+    for child in parent.children
+    {
+      propagateFlags(flags, toChildrenOf: child)
+    }
+  }
+}
 
 class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowControllerConsumer, NSSharingServicePickerDelegate, NSSharingServiceDelegate, NSWindowDelegate, NSOpenSavePanelDelegate
 {
@@ -230,6 +249,12 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
       sharingServicePicker.show(relativeTo: sender.bounds, of: sender, preferredEdge: NSRectEdge.minX)
     }
    }
+  
+  override func flagsChanged(with event: NSEvent)
+  {
+    propagateFlags(event.modifierFlags, toChildrenOf: self.contentViewController!)
+    super.flagsChanged(with: event)
+  }
   
   func sharingServicePicker(_ sharingServicePicker: NSSharingServicePicker, sharingServicesForItems items: [Any], proposedSharingServices proposedServices: [NSSharingService]) -> [NSSharingService]
   {
