@@ -327,10 +327,12 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       return double2(236.1,3.72)
     case .xenon:
       // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return double2(226.14,3.949);
+      return double2(226.14,3.949)
     case .krypton:
       // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return double2(162.58,3.6274);
+      return double2(162.58,3.6274)
+    case .argon:
+      return double2(119.8,3.34)
     }
   }
   
@@ -344,6 +346,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     case co2 = 5
     case xenon = 6
     case krypton = 7
+    case argon = 8
   }
 
   public var drawAdsorptionSurface: Bool = false
