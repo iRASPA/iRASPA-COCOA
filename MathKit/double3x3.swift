@@ -31,6 +31,7 @@
 
 import Foundation
 import simd
+import Accelerate
 
 extension double3x3
 {
@@ -178,3 +179,170 @@ extension double3x3: Hashable
   }
 }
 
+extension double3x3
+{
+  public func EigenSystemSymmetric3x3(Q: inout double3x3, w: inout double3)
+  {
+    
+    let decompositionJobV = UnsafeMutablePointer<Int8>(mutating: ("V" as NSString).utf8String)
+    let upload = UnsafeMutablePointer<Int8>(mutating: ("U" as NSString).utf8String)
+    var data: [Double] = [self[0][0], self[0][1], self[0][2], self[1][0], self[1][1], self[1][2], self[2][0], self[2][1], self[2][2]]
+    var work: [Double] = [Double](repeating: 0, count: Int(9*3))
+    var lwork: Int32 = 9 * 3
+    var eigenvalues: [Double] = [Double](repeating: 0, count: 3)
+    var error: Int32 = 0
+    var N: Int32 = 3
+    var M: Int32 = 3
+    
+    dsyev_(decompositionJobV, upload, &M, &data, &N, &eigenvalues, &work, &lwork, &error)
+    
+    w = double3(eigenvalues[2],eigenvalues[1],eigenvalues[0])
+    let axis1: double3 = normalize(double3(data[0],data[1],data[2]))
+    let axis2: double3 = normalize(double3(data[3],data[4],data[5]))
+    let axis3: double3 = normalize(double3(data[6],data[7],data[8]))
+    Q = double3x3([axis3,axis2,axis1])
+    if Q.determinant<0
+    {
+      Q = double3x3([-axis3,-axis2,-axis1])
+    }
+  }
+  
+  public func EigenSystem3x3(Q: inout double3x3, w: inout double3)
+  {
+    let n: Int = 3;
+    var sd: Double = 0.0
+    var so: Double = 0.0                  // Sums of diagonal resp. off-diagonal elements
+    var s, c, t: Double;                 // sin(phi), cos(phi), tan(phi) and temporary storage
+    var g, h, z, theta: Double;          // More temporary storage
+    var thresh: Double;
+    
+    var A: double3x3 = self
+    
+    // Initialize Q to the identitity matrix
+    for i in 0..<n
+    {
+      Q[i][i] = 1.0;
+      for j in 0..<i
+      {
+        Q[i][j] = 0.0
+        Q[j][i] = 0.0;
+      }
+    }
+    
+    // Initialize w to diag(A)
+    for i in 0..<n
+    {
+      w[i] = A[i][i];
+    }
+    
+    // Calculate SQR(tr(A))
+    sd = 0.0;
+    for i in 0..<n
+    {
+      sd += fabs(w[i]);
+    }
+    sd = pow(sd,2);
+    // Main iteration loop
+    for nIter in 0..<50
+    {
+      // Test for convergence
+      so = 0.0;
+      for p in 0..<n
+      {
+        for q in p+1..<n
+        {
+          so += fabs(A[p][q]);
+        }
+      }
+      if (so == 0.0)
+      {
+        let combined = zip([w[0],w[1],w[2]],[Q[0],Q[1],Q[2]]).sorted {$0.0 > $1.0}
+        w = double3(combined.map {$0.0})
+        Q = double3x3(combined.map {$0.1})
+        return
+      }
+      
+      if (nIter < 4)
+      {
+        thresh = 0.2 * so / pow(Double(n),2);
+      }
+      else
+      {
+        thresh = 0.0;
+      }
+      
+      // Do sweep
+      for p in 0..<n
+      {
+        for q in p+1..<n
+        {
+          g = 100.0 * fabs(A[p][q]);
+          if (nIter > 4  &&  fabs(w[p]) + g == fabs(w[p]) &&  fabs(w[q]) + g == fabs(w[q]))
+          {
+            A[p][q] = 0.0;
+          }
+          else if (fabs(A[p][q]) > thresh)
+          {
+            // Calculate Jacobi transformation
+            h = w[q] - w[p];
+            if (fabs(h) + g == fabs(h))
+            {
+              t = A[p][q] / h;
+            }
+            else
+            {
+              theta = 0.5 * h / A[p][q];
+              if (theta < 0.0)
+              {
+              t = -1.0 / (sqrt(1.0 + pow(theta,2)) - theta);
+              }
+              else
+              {
+              t = 1.0 / (sqrt(1.0 + pow(theta,2)) + theta);
+              }
+            }
+            c = 1.0/sqrt(1.0 + pow(t,2));
+            s = t * c;
+            z = t * A[p][q];
+            
+            // Apply Jacobi transformation
+            A[p][q] = 0.0;
+            w[p] -= z;
+            w[q] += z;
+            for r in 0..<p
+            {
+              t = A[r][p];
+              A[r][p] = c*t - s*A[r][q];
+              A[r][q] = s*t + c*A[r][q];
+            }
+            for r in p+1..<q
+            {
+              t = A[p][r];
+              A[p][r] = c*t - s*A[r][q];
+              A[r][q] = s*t + c*A[r][q];
+            }
+            for r in q+1..<n
+            {
+              t = A[p][r];
+              A[p][r] = c*t - s*A[q][r];
+              A[q][r] = s*t + c*A[q][r];
+            }
+            
+            // Update eigenvectors
+            for r in 0..<n
+            {
+              t = Q[r][p];
+              Q[r][p] = c*t - s*Q[r][q];
+              Q[r][q] = s*t + c*Q[r][q];
+            }
+          }
+        }
+      }
+    }
+    let combined = zip([w[0],w[1],w[2]],[Q[0],Q[1],Q[2]]).sorted {$0.0 > $1.0}
+    w = double3(combined.map {$0.0})
+    Q = double3x3(combined.map {$0.1})
+  }
+  
+  
+}

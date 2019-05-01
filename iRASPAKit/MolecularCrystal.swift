@@ -164,6 +164,7 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
     
   }
   
+  
   public override func finalizeTranslateSelection(by shift: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
@@ -190,10 +191,11 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
     return (atoms: molecularCrystal.atoms, bonds: molecularCrystal.bonds)
   }
   
-  private func fractionalCenterOfMassOfSelection() -> double3
+  public override func centerOfMassOfSelection() -> double3
   {
     var centerOfMassCosTheta: double3 = double3(0.0, 0.0, 0.0)
     var centerOfMassSinTheta: double3 = double3(0.0, 0.0, 0.0)
+    var centerOfMass: double3 = double3(0.0, 0.0, 0.0)
     var M: Double = 0.0
     
     let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
@@ -201,57 +203,198 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
       let mass: Double = PredefinedElements.sharedInstance.elementSet[elementIdentifier].mass
-      let pos: double3 = self.cell.convertToFractional(atom.position) * 2.0 * Double.pi
+      let fracPos: double3 = self.cell.convertToFractional(atom.position)
+      let pos: double3 = fracPos * 2.0 * Double.pi
       let cosTheta: double3 = double3(cos(pos.x), cos(pos.y), cos(pos.z))
       let sinTheta: double3 = double3(sin(pos.x), sin(pos.y), sin(pos.z))
       centerOfMassCosTheta += mass * cosTheta
       centerOfMassSinTheta += mass * sinTheta
+      centerOfMass += atom.position
       M += mass
     }
     centerOfMassCosTheta /= M
     centerOfMassSinTheta /= M
+    centerOfMass /= M
     
     let com = double3((atan2(-centerOfMassSinTheta.x, -centerOfMassCosTheta.x) + Double.pi)/(2.0 * Double.pi),
                       (atan2(-centerOfMassSinTheta.y, -centerOfMassCosTheta.y) + Double.pi)/(2.0 * Double.pi),
                       (atan2(-centerOfMassSinTheta.z, -centerOfMassCosTheta.z) + Double.pi)/(2.0 * Double.pi))
+    let periodicCOM: double3 = self.cell.convertToCartesian(com)
     
-    return com
+    if length_squared(cell.applyFullCellBoundaryCondition(periodicCOM-com)) < 1e-6
+    {
+      return com
+    }
+    
+    return periodicCOM
   }
   
-  public override func rotateSelection(using rotationMatrix: double3x3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  
+  public override func matrixOfInertia() -> double3x3
+  {
+    var inertiaMatrix: double3x3 = double3x3()
+    let com: double3 = self.selectionCOMTranslation
+    let fracCom: double3 = self.cell.convertToFractional(com)
+    
+    let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
+    for atom in atoms
+    {
+      let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
+      let mass: Double = PredefinedElements.sharedInstance.elementSet[elementIdentifier].mass
+      let fracPos: double3 = self.cell.convertToFractional(atom.position)
+      var ds: double3 = fracPos - fracCom
+      ds -= floor(ds + double3(0.5,0.5,0.5))
+      let dr: double3 = self.cell.convertToCartesian(ds)
+      inertiaMatrix[0][0] += mass * (dr.y * dr.y + dr.z * dr.z)
+      inertiaMatrix[0][1] -= mass * dr.x * dr.y
+      inertiaMatrix[0][2] -= mass * dr.x * dr.z
+      inertiaMatrix[1][0] -= mass * dr.y * dr.x
+      inertiaMatrix[1][1] += mass * (dr.x * dr.x + dr.z * dr.z)
+      inertiaMatrix[1][2] -= mass * dr.y * dr.z
+      inertiaMatrix[2][0] -= mass * dr.z * dr.x
+      inertiaMatrix[2][1] -= mass * dr.z * dr.y
+      inertiaMatrix[2][2] += mass * (dr.x * dr.x + dr.y * dr.y)
+    }
+    
+    return inertiaMatrix
+  }
+  
+  public override func translateSelectionCartesian(by translation: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: MolecularCrystal =  self.copy() as! MolecularCrystal
+    let molecularCrystal: MolecularCrystal =  self.copy() as! MolecularCrystal
     
     for node in self.atoms.selectedTreeNodes
     {
       node.representedObject.displacement = double3(0,0,0)
     }
     
-    let comFrac: double3 = fractionalCenterOfMassOfSelection()
-    let inverseCell = self.cell.inverseUnitCell
+    self.selectionCOMTranslation += translation
     
-    for node in crystal.atoms.selectedTreeNodes
+    for node in molecularCrystal.atoms.selectedTreeNodes
     {
-      let fractionalPosition = inverseCell * node.representedObject.position
-      var ds: double3 = fractionalPosition - comFrac
-      ds -= floor(ds + double3(0.5,0.5,0.5))
-      let translatedPositionCartesian: double3 = self.cell.convertToCartesian(ds)
-      let position: double3 = rotationMatrix * translatedPositionCartesian + self.cell.convertToCartesian(comFrac)
-      node.representedObject.position = position
+      let pos: double3 = node.representedObject.position + translation
+      node.representedObject.position = pos
     }
     
-    crystal.expandSymmetry()
+    molecularCrystal.expandSymmetry()
     
-    crystal.reComputeBoundingBox()
+    molecularCrystal.reComputeBoundingBox()
     
-    crystal.tag(atoms: crystal.atoms)
+    molecularCrystal.tag(atoms: molecularCrystal.atoms)
     
-    crystal.reComputeBonds()
+    molecularCrystal.reComputeBonds()
     
-    return (atoms: crystal.atoms, bonds: crystal.bonds)
+    return (atoms: molecularCrystal.atoms, bonds: molecularCrystal.bonds)
   }
   
+  
+  public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let molecularCrystal: MolecularCrystal =  self.copy() as! MolecularCrystal
+    
+    for node in self.atoms.selectedTreeNodes
+    {
+      node.representedObject.displacement = double3(0,0,0)
+    }
+    
+    let com: double3 = self.selectionCOMTranslation
+    let comFrac: double3 = self.cell.convertToFractional(com)
+    let rotationMatrix: double3x3 = double3x3(quaternion)
+    
+    for node in molecularCrystal.atoms.selectedTreeNodes
+    {
+      let fracPos: double3 = self.cell.convertToFractional(node.representedObject.position)
+      var ds: double3 = fracPos - comFrac
+      ds -= floor(ds + double3(0.5,0.5,0.5))
+      let translatedPositionCartesian: double3 = self.cell.convertToCartesian(ds)
+      let position: double3 = rotationMatrix * translatedPositionCartesian
+      node.representedObject.position = position + com
+    }
+    
+    molecularCrystal.expandSymmetry()
+    
+    molecularCrystal.reComputeBoundingBox()
+    
+    molecularCrystal.tag(atoms: molecularCrystal.atoms)
+    
+    molecularCrystal.reComputeBonds()
+    
+    return (atoms: molecularCrystal.atoms, bonds: molecularCrystal.bonds)
+  }
+  
+  public override func translateSelectionBodyFrame(by shift: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let molecularCrystal: MolecularCrystal =  self.copy() as! MolecularCrystal
+    
+    for node in self.atoms.selectedTreeNodes
+    {
+      node.representedObject.displacement = double3(0,0,0)
+    }
+    
+    recomputeSelectionBodyFixedBasis(index: 3)
+    
+    let basis: double3x3 = self.selectionBodyFixedBasis
+    let translation: double3 = basis.inverse * shift
+    
+    self.selectionCOMTranslation += translation
+    
+    for node in molecularCrystal.atoms.selectedTreeNodes
+    {
+      let pos: double3 = node.representedObject.position + translation
+      node.representedObject.position = pos
+    }
+    
+    molecularCrystal.expandSymmetry()
+    
+    molecularCrystal.reComputeBoundingBox()
+    
+    molecularCrystal.tag(atoms: molecularCrystal.atoms)
+    
+    molecularCrystal.reComputeBonds()
+    
+    return (atoms: molecularCrystal.atoms, bonds: molecularCrystal.bonds)
+  }
+  
+  public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    // copy the structure for undo (via the atoms, and bonds-properties)
+    let molecularCrystal: MolecularCrystal =  self.copy() as! MolecularCrystal
+    
+    for node in self.atoms.selectedTreeNodes
+    {
+      node.representedObject.displacement = double3(0,0,0)
+    }
+    
+    recomputeSelectionBodyFixedBasis(index: index)
+    
+    let com: double3 = self.selectionCOMTranslation
+    let comFrac: double3 = self.cell.convertToFractional(com)
+    let basis: double3x3 = self.selectionBodyFixedBasis
+    let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
+    
+    for node in molecularCrystal.atoms.selectedTreeNodes
+    {
+      let posFrac: double3 = self.cell.convertToFractional(node.representedObject.position)
+      var ds: double3 = posFrac - comFrac
+      ds -= floor(ds + double3(0.5,0.5,0.5))
+      let translatedPositionCartesian: double3 = self.cell.convertToCartesian(ds)
+      let position: double3 = rotationMatrix * translatedPositionCartesian
+      node.representedObject.position = position + com
+    }
+    
+    molecularCrystal.expandSymmetry()
+    
+    molecularCrystal.reComputeBoundingBox()
+    
+    molecularCrystal.tag(atoms: molecularCrystal.atoms)
+    
+    molecularCrystal.reComputeBonds()
+    
+    return (atoms: molecularCrystal.atoms, bonds: molecularCrystal.bonds)
+  }
   
   public override func expandSymmetry()
   {
