@@ -116,7 +116,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       "StructuralPropertiesGroup" : 17.0,
       "SimulationCellModelMatrix" : 189.0,
       "SymmetryPropertiesGroup" : 17.0,
-      "StructuralPropertiesCell" : 501.0,
+      "StructuralPropertiesCell" : 551.0,
       "SymmetryCell" : 389.0
     ]
   }
@@ -1480,6 +1480,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
             }
           }
         }
+        
+        // Probe molecule
+        if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(122) as? iRASPAPopUpButton
+        {
+          popUpbuttonProbeParticle.isEditable = false
+          if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+          {
+            popUpbuttonProbeParticle.isEditable = enabled
+            if let probeMolecule: Structure.ProbeMolecule = representedStructure.renderFrameworkProbeMolecule
+            {
+              popUpbuttonProbeParticle.selectItem(at: probeMolecule.rawValue)
+            }
+          }
+        }
+        
         if let buttonComputeVolumetricSurfaceArea: NSButton = view.viewWithTag(21) as? NSButton
         {
           buttonComputeVolumetricSurfaceArea.isEnabled = false
@@ -3358,6 +3373,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allFrames)
       
       cellViewer.renderRecomputeDensityProperties()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+    }
+  }
+  
+  @IBAction func changeFrameworkProbeMolecule(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var cellViewer: [CellViewer] = representedObject as? [CellViewer]
+    {
+      cellViewer.renderFrameworkProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)!
+      
+     
+     cellViewer.renderRecomputeDensityProperties()
+    self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: cellViewer.allFrames)
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true

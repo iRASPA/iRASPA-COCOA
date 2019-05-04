@@ -274,6 +274,8 @@ public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
   
   var atomUnitCellPositions: [double3] {get}
   var minimumGridEnergyValue: Float? {get set}
+  
+  var frameworkProbeParameters: double2 {get}
   var structureHeliumVoidFraction: Double {get set}
   var structureNitrogenSurfaceArea: Double {get set}
 }

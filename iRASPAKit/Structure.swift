@@ -50,7 +50,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 4
-  private static var classVersionNumber: Int = 2
+  private static var classVersionNumber: Int = 3
   public var displayName: String = "test123"
   
   public var origin: double3 = double3(x: 0.0, y: 0.0, z: 0.0)
@@ -336,6 +336,34 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     }
   }
   
+  public var frameworkProbeParameters: double2
+  {
+    switch(frameworkProbeMolecule)
+    {
+    case .helium:
+      return double2(10.9, 2.64)
+    case .nitrogen:
+      return double2(36.0,3.31)
+    case .methane:
+      return double2(158.5,3.72)
+    case .hydrogen:
+      return double2(36.7,2.958)
+    case .water:
+      return double2(89.633,3.097)
+    case .co2:
+      // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
+      return double2(236.1,3.72)
+    case .xenon:
+      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
+      return double2(226.14,3.949)
+    case .krypton:
+      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
+      return double2(162.58,3.6274)
+    case .argon:
+      return double2(119.8,3.34)
+    }
+  }
+  
   public enum ProbeMolecule: Int
   {
     case helium = 0
@@ -348,6 +376,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     case krypton = 7
     case argon = 8
   }
+  
+  public var frameworkProbeMolecule: ProbeMolecule = .nitrogen
 
   public var drawAdsorptionSurface: Bool = false
   public var adsorptionSurfaceOpacity: Double = 1.0
@@ -2486,6 +2516,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     encoder.encode(primitiveBackSideSpecularIntensity)
     encoder.encode(primitiveBackSideShininess)
     
+    encoder.encode(frameworkProbeMolecule.rawValue)
+    
     encoder.encode(Double(minimumGridEnergyValue ?? 0.0))
     
     encoder.encode(atoms)
@@ -2757,6 +2789,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       primitiveBackSideAmbientIntensity = try decoder.decode(Double.self)
       primitiveBackSideSpecularIntensity = try decoder.decode(Double.self)
       primitiveBackSideShininess = try decoder.decode(Double.self)
+    }
+    
+    if readVersionNumber >= 3 // introduced in version 3
+    {
+      frameworkProbeMolecule = try Structure.ProbeMolecule(rawValue: decoder.decode(Int.self))!
     }
     
     minimumGridEnergyValue = Float(try decoder.decode(Double.self))

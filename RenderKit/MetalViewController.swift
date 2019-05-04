@@ -344,7 +344,7 @@ public class MetalViewController: NSViewController, RenderViewController
         let cell: SKCell = structure.cell
         let positions: [double3] = structure.atomUnitCellPositions
         let potentialParameters: [double2] = structure.potentialParameters
-        let probeParameters: double2 = double2(36.0,3.31)
+        let probeParameters: double2 = structure.frameworkProbeParameters
         
         let numberOfReplicas: int3 = cell.numberOfReplicas(forCutoff: 12.0)
         let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
