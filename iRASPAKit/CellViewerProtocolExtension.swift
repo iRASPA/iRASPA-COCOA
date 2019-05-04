@@ -129,6 +129,19 @@ extension CellViewer
     }
   }
   
+  public var renderFrameworkProbeMolecule: Structure.ProbeMolecule?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.frameworkProbeMolecule.rawValue })
+      return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{$0.frameworkProbeMolecule = newValue ?? .helium}
+    }
+  }
+  
   public var renderStructureVolumetricNitrogenSurfaceArea: Double?
   {
     get
@@ -977,6 +990,19 @@ extension Array where Iterator.Element == CellViewer
     set(newValue)
     {
       self.structureViewerStructures.forEach{$0.structureAccessiblePoreVolume = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderFrameworkProbeMolecule: Structure.ProbeMolecule?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.frameworkProbeMolecule.rawValue })
+      return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.structureViewerStructures.forEach{$0.frameworkProbeMolecule = newValue ?? .helium}
     }
   }
   
