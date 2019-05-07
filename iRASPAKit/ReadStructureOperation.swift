@@ -64,8 +64,7 @@ class ReadStructureOperation: FKOperation
       return
     }
 
-
-    let fileName = url.lastPathComponent.lowercased()
+    let fileName = url.lastPathComponent.uppercased()
     switch(url.pathExtension.uppercased())
     {
     case "CIF":
