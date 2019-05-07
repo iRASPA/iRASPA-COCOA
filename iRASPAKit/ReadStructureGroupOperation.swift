@@ -74,7 +74,6 @@ class ReadStructureGroupOperation: FKGroupOperation
       lock.lock()
       scenes.append(scene)
       lock.unlock()
-      ////Swift.print("appending")
     }
   }
 }
