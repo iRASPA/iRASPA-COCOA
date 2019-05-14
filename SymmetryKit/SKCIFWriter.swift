@@ -51,6 +51,7 @@ public class SKCIFWriter
     numberFormatter.minimumIntegerDigits = 1
     numberFormatter.negativePrefix = "-"
     numberFormatter.positivePrefix = " "
+    numberFormatter.paddingCharacter = " "
     numberFormatter.usesGroupingSeparator = false
     numberFormatter.groupingSeparator = ""
     numberFormatter.decimalSeparator = "."

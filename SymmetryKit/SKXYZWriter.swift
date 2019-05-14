@@ -54,6 +54,7 @@ public class SKXYZWriter
     numberFormatter.formatWidth=12
     numberFormatter.negativePrefix = "-"
     numberFormatter.positivePrefix = " "
+    numberFormatter.paddingCharacter = " "
     numberFormatter.usesGroupingSeparator = false
     numberFormatter.groupingSeparator = ""
     numberFormatter.decimalSeparator = "."
