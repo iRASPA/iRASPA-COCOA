@@ -318,7 +318,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         renderViewController.renderDataSource = nil
         renderViewController.renderCameraSource = nil
-        showTransformationPanel(oldSelectionEmpty: false,newSelectionEmpty: false)
+        showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
       }
     }
   }
