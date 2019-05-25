@@ -36,7 +36,7 @@ import SymmetryKit
 
 class AtomOutlineView: NSOutlineView
 {  
-  override var isOpaque: Bool { return false }
+  override var isOpaque: Bool { return true }
   
   override var acceptsFirstResponder: Bool { return true }
   

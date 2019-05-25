@@ -1877,8 +1877,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         if let node: ProjectTreeNode = self.projectOutlineView?.item(atRow: index) as? ProjectTreeNode,
            node.isDescendantOfNode(document.documentData.projectRootNode)
         {
-          toItem = node.parentNode
-          index = (node.indexPath.last ?? 0) + 1
+          if node.representedObject.isProjectGroup
+          {
+            toItem = node
+            index = 0
+          }
+          else
+          {
+            toItem = node.parentNode
+            index = (node.indexPath.last ?? 0) + 1
+          }
         }
         else
         {
@@ -1926,8 +1934,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         if let node: ProjectTreeNode = self.projectOutlineView?.item(atRow: index) as? ProjectTreeNode,
            node.isDescendantOfNode(document.documentData.projectRootNode)
         {
-          toItem = node.parentNode
-          index = (node.indexPath.last ?? 0) + 1
+          if node.representedObject.isProjectGroup
+          {
+            toItem = node
+            index = 0
+          }
+          else
+          {
+            toItem = node.parentNode
+            index = (node.indexPath.last ?? 0) + 1
+          }
         }
         else
         {
@@ -1974,8 +1990,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         if let node: ProjectTreeNode = self.projectOutlineView?.item(atRow: index) as? ProjectTreeNode,
            node.isDescendantOfNode(document.documentData.projectRootNode)
         {
-          toItem = node.parentNode
-          index = (node.indexPath.last ?? 0) + 1
+          if node.representedObject.isProjectGroup
+          {
+            toItem = node
+            index = 0
+          }
+          else
+          {
+            toItem = node.parentNode
+            index = (node.indexPath.last ?? 0) + 1
+          }
         }
         else
         {
