@@ -95,10 +95,9 @@ extension iRASPADocument
           let windowController: iRASPAWindowController? = self.windowControllers.first as? iRASPAWindowController
           let projectOutlineView: ProjectOutlineView? = windowController?.masterTabViewController?.masterViewController?.projectViewController?.projectOutlineView
           
-          self.documentData.galleryLocalRootNode.childNodes = documentDataGallery.projectLocalRootNode.childNodes
-          for child in self.documentData.galleryLocalRootNode.childNodes
+          for (index, child) in documentDataGallery.projectLocalRootNode.childNodes.enumerated()
           {
-            child.parentNode = self.documentData.galleryLocalRootNode
+            child.insert(inParent: self.documentData.galleryLocalRootNode, atIndex: index)
           }
           
           self.documentData.galleryLocalRootNode.flattenedNodes().forEach{$0.isEditable = false}
@@ -145,10 +144,9 @@ extension iRASPADocument
               
               projectOutlineView?.beginUpdates()
               
-              self.documentData.cloudCoREMOFRootNode.childNodes = cloudProjectTreeNode.childNodes
-              for child in self.documentData.cloudCoREMOFRootNode.childNodes
+              for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.parentNode = self.documentData.cloudCoREMOFRootNode
+                child.insert(inParent: self.documentData.cloudCoREMOFRootNode, atIndex: index)
               }
               
               self.documentData.cloudCoREMOFRootNode.flattenedNodes().forEach{$0.isEditable = false}
@@ -204,10 +202,9 @@ extension iRASPADocument
               // update project outlineview
               projectOutlineView?.beginUpdates()
               
-              self.documentData.cloudCoREMOFDDECRootNode.childNodes = cloudProjectTreeNode.childNodes
-              for child in self.documentData.cloudCoREMOFDDECRootNode.childNodes
+              for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.parentNode = self.documentData.cloudCoREMOFDDECRootNode
+                child.insert(inParent: self.documentData.cloudCoREMOFDDECRootNode, atIndex: index)
               }
               
               self.documentData.cloudCoREMOFDDECRootNode.flattenedNodes().forEach{$0.isEditable = false}
@@ -264,10 +261,9 @@ extension iRASPADocument
               projectOutlineView?.beginUpdates()
               
               
-              self.documentData.cloudIZARootNode.childNodes = cloudProjectTreeNode.childNodes
-              for child in self.documentData.cloudIZARootNode.childNodes
+              for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.parentNode = self.documentData.cloudIZARootNode
+                child.insert(inParent: self.documentData.cloudIZARootNode, atIndex: index)
               }
               
               self.documentData.projectData.updateFilteredNodes()
