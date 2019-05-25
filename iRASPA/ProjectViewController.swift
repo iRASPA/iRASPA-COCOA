@@ -2491,6 +2491,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     {
       if let document: iRASPADocument = windowController?.document as? iRASPADocument
       {
+        document.undoManager?.beginUndoGrouping()
         let treeController: ProjectTreeController = document.documentData.projectData
         
         // save-off the current selection for undo/redo
@@ -2513,7 +2514,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           }
         })
         
-        
+        document.undoManager?.endUndoGrouping()
       }
     }
     self.projectOutlineView?.endUpdates()

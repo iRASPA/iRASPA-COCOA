@@ -1460,6 +1460,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       // avoid sending notification due to selection change
       self.observeNotifications = false
       
+      self.atomOutlineView?.beginUpdates()
       project.undoManager.beginUndoGrouping()
       
       let selectedAtoms: [SKAtomTreeNode] = structure.atoms.selectedTreeNodes.sorted(by: { $0.indexPath > $1.indexPath })
@@ -1468,7 +1469,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       deleteSelectedAtomsFor(structure: structure, atoms: selectedAtoms, bonds: selectedBonds, from: indexPaths)
       
       project.undoManager.setActionName(NSLocalizedString("Delete selection", comment:"Delete selection"))
+      
       project.undoManager.endUndoGrouping()
+      self.atomOutlineView?.endUpdates()
       
       self.observeNotifications = observeNotificationsStored
     }
