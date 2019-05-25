@@ -333,7 +333,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         // make sure to run this on the main thread
         DispatchQueue.main.async
           {
-            self.documentData.projectLocalRootNode.childNodes.insert(projectTreeNode, at: 0)
+            projectTreeNode.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
             
             self.fileType = iRASPAUniversalDocumentUTI
             self.fileURL = nil    // disassociate document from file; makes document "untitled"
@@ -361,7 +361,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     if let data: Data = try? Data.init(contentsOf: url),
        let cifString: String = String(data: data, encoding: String.Encoding.ascii)
     {
-      let displayName: String = url.lastPathComponent
+      let displayName: String = url.deletingPathExtension().lastPathComponent
       
       let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: cifString, windowController: self.windowControllers.first)
       do
@@ -373,7 +373,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          self.documentData.projectLocalRootNode.childNodes.insert(proxyProject, at: 0)
+          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
@@ -394,7 +394,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     if let data: Data = try? Data.init(contentsOf: url),
       let pdbString: String = String(data: data, encoding: String.Encoding.ascii)
     {
-      let displayName: String = url.lastPathComponent
+      let displayName: String = url.deletingPathExtension().lastPathComponent
       
       let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: pdbString, windowController: self.windowControllers.first, onlyAsymmetricUnit: true)
       do
@@ -406,7 +406,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          self.documentData.projectLocalRootNode.childNodes.insert(proxyProject, at: 0)
+           proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
@@ -427,7 +427,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     if let data: Data = try? Data.init(contentsOf: url),
        let xyzString: String = String(data: data, encoding: String.Encoding.ascii)
     {
-      let displayName: String = url.lastPathComponent
+      let displayName: String = url.deletingPathExtension().lastPathComponent
       
       let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: xyzString, windowController: self.windowControllers.first)
       do
@@ -439,7 +439,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          self.documentData.projectLocalRootNode.childNodes.insert(proxyProject, at: 0)
+          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
@@ -460,7 +460,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     if let data: Data = try? Data.init(contentsOf: url),
       let VASPString: String = String(data: data, encoding: String.Encoding.ascii)
     {
-      let displayName: String = url.lastPathComponent
+      let displayName: String = url.deletingPathExtension().lastPathComponent
       
       let VASPParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: VASPString, windowController: self.windowControllers.first)
       do
@@ -472,7 +472,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          self.documentData.projectLocalRootNode.childNodes.insert(proxyProject, at: 0)
+          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
@@ -493,7 +493,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     if let data: Data = try? Data.init(contentsOf: url),
       let VASPString: String = String(data: data, encoding: String.Encoding.ascii)
     {
-      let displayName: String = url.lastPathComponent
+      let displayName: String = url.deletingPathExtension().lastPathComponent
       
       let VASPParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: VASPString, windowController: self.windowControllers.first)
       do
@@ -505,7 +505,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         let proxyProject: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project))
         
         DispatchQueue.main.async {
-          self.documentData.projectLocalRootNode.childNodes.insert(proxyProject, at: 0)
+          proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
