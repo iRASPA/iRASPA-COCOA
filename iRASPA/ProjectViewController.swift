@@ -853,12 +853,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     }
   }
 
-  
-  
-  
-  
-  
-  
   func removeNode(_ node: ProjectTreeNode, fromItem: ProjectTreeNode?, atIndex: Int, animationOptions: NSTableView.AnimationOptions = [.slideLeft, .effectFade])
   {
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
@@ -873,7 +867,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
       }
    
-    
       let fromItem: ProjectTreeNode? = node.parentNode
       let projectData: ProjectTreeController = document.documentData.projectData
       
@@ -2054,17 +2047,18 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       treeController.selectedTreeNode = newValue.selected
       treeController.selectedTreeNodes = newValue.selection
     
-      // switch to a new project after the reload of the project-outlineview
-      CATransaction.begin()
-      CATransaction.setCompletionBlock({
+      NSAnimationContext.beginGrouping()
+      
+      NSAnimationContext.current.completionHandler = { () -> Void in
         if switchToNewProject
         {
           self.switchToCurrentProject()
-          
         }
-      })
-      self.reloadData()
-      CATransaction.commit()
+      }
+      
+      self.reloadSelection()
+      
+      NSAnimationContext.endGrouping()
     }
   }
 
@@ -2095,6 +2089,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           {
             rowView.secondaryHighlighted = (row == selectedRow)
             rowView.needsDisplay = true
+            self.projectOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
           }
         })
       }
@@ -2489,27 +2484,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     observeNotifications = savedObserveNotifications
   }
   
-  @IBAction func deleteSelectedNode(_ sender: NSMenuItem)
-  {
-    if let _: iRASPADocument = windowController?.document as? iRASPADocument
-    {
-      //let index=self.projectOutlineView?.clickedRow ?? 0
-    }
-  }
-  
-  
- 
   
   func deleteSelection()
   {
-    CATransaction.begin()
+    NSAnimationContext.beginGrouping()
     self.projectOutlineView?.beginUpdates()
-      
-    CATransaction.setCompletionBlock { () -> Void in
-      assert(Thread.isMainThread)
-      self.reloadData()
-      self.switchToCurrentProject()
-    }
     
     if let indexes: IndexSet = self.projectOutlineView?.selectedRowIndexes, (indexes.count > 0)
     {
@@ -2528,12 +2507,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             if node.isDescendantOfNode(document.documentData.projectRootNode)
             {
               self.removeNode(node, fromItem: node.parentNode, atIndex: node.indexPath.last ?? 0)
-            
-              // remove it from the document file-wrapper
-              //if let fileWrapper = document.documentFileWrapper?.fileWrappers?["nl.darkwing.iRASPA_Project_" + node.representedObject.fileName]
-              //{
-              //  document.documentFileWrapper?.removeFileWrapper(fileWrapper)
-             // }
             }
           }
         })
@@ -2541,9 +2514,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         document.undoManager?.endUndoGrouping()
       }
     }
+    
     self.projectOutlineView?.endUpdates()
-      
-    CATransaction.commit()
+    NSAnimationContext.endGrouping()
   }
 
   
