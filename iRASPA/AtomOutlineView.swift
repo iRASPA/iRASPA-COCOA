@@ -36,7 +36,11 @@ import SymmetryKit
 
 class AtomOutlineView: NSOutlineView
 {  
-  override var isOpaque: Bool { return true }
+  override var isOpaque: Bool
+  {
+    // must be false on Mojave
+    return false
+  }
   
   override var acceptsFirstResponder: Bool { return true }
   

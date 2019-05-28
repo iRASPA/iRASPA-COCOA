@@ -648,7 +648,8 @@ public final class SKPDBParser: SKParser, ProgressReporting
               atoms.append(atom)
               break
             }
-            let occupancyString: String = scannedLine.substring(with: NSRange(location: 54, length: 6))
+            let occupancyString: String = scannedLine.substring(with: NSRange(location: 54, length: 6)).trimmingCharacters(in: .whitespaces)
+            
             if let occupancy: Double = Double(occupancyString)
             {
               atom.occupancy = occupancy
@@ -663,8 +664,8 @@ public final class SKPDBParser: SKParser, ProgressReporting
               atoms.append(atom)
               break
             }
-            let temperatureFactorString: String = scannedLine.substring(with: NSRange(location: 60, length: 6))
-            if let temperatureFactor = Double(temperatureFactorString.trimmingCharacters(in: .whitespaces))
+            let temperatureFactorString: String = scannedLine.substring(with: NSRange(location: 60, length: 6)).trimmingCharacters(in: .whitespaces)
+            if let temperatureFactor = Double(temperatureFactorString)
             {
               atom.temperaturefactor = temperatureFactor
             }

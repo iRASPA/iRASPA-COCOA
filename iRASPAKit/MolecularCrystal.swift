@@ -813,9 +813,13 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
               let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
               let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
               
-              let radius: Double = copy.asymmetricParentAtom.drawRadius
+              let radius: Double = copy.asymmetricParentAtom.drawRadius * copy.asymmetricParentAtom.occupancy
               let ambient: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
-              let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
+              var diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
+              if(copy.asymmetricParentAtom.occupancy<1.0)
+              {
+                diffuse = NSColor.white
+              }
               let specular: NSColor = self.atomSpecularColor
               
               data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
@@ -876,7 +880,7 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
               let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
               let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
               
-              let radius: Double = copy.asymmetricParentAtom.drawRadius
+              let radius: Double = copy.asymmetricParentAtom.drawRadius * copy.asymmetricParentAtom.occupancy
               let ambient: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
               let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
               let specular: NSColor = self.atomSpecularColor
