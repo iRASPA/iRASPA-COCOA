@@ -1258,6 +1258,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
       // reload the selection in the renderere
       self.windowController?.detailTabViewController?.renderViewController?.reloadRenderDataSelectedAtoms()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: structure.atoms.selectedTreeNodes.isEmpty,newSelectionEmpty: selection.isEmpty)
     
       // reload the selection in the atom-outlineview
       self.programmaticallySetSelection()
@@ -1377,6 +1379,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
     self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
     
     self.updateNetChargeTextField()
     
@@ -1443,6 +1447,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
   self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      
+      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
       
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
     }
