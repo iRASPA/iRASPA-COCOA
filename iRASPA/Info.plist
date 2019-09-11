@@ -7,6 +7,8 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>irspdoc</string>
@@ -31,6 +33,8 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>iraspa</string>
@@ -79,6 +83,8 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>pdb</string>
@@ -99,6 +105,8 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>xyz</string>
@@ -119,6 +127,8 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>irspdoc</string>
@@ -146,6 +156,8 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>CFBundleTypeIconFile</key>
 			<string>CrystalProject</string>
 			<key>CFBundleTypeName</key>
@@ -179,9 +191,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.27</string>
+	<string>1.1.28</string>
 	<key>CFBundleVersion</key>
-	<string>63</string>
+	<string>65</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>

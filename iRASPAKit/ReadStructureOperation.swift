@@ -32,6 +32,7 @@
 import Foundation
 import SymmetryKit
 import OperationKit
+import LogViewKit
 
 class ReadStructureOperation: FKOperation
 {
@@ -50,8 +51,7 @@ class ReadStructureOperation: FKOperation
     // create a new Progress-object (Progress-objects can not be resused)
     progress = Progress.discreteProgress(totalUnitCount: Int64(100))
     progress.completedUnitCount = 0
-    
-    
+        
     let displayName: String = (url.lastPathComponent as NSString).deletingPathExtension
     
     let string: String
@@ -61,7 +61,15 @@ class ReadStructureOperation: FKOperation
     }
     catch
     {
-      return
+      do
+      {
+        string = try String(contentsOf: self.url, encoding: String.Encoding.ascii)
+      }
+      catch let error
+      {
+        LogQueue.shared.warning(destination: windowController, message: "\(error.localizedDescription)")
+        return
+      }
     }
 
     let fileName = url.lastPathComponent.uppercased()
@@ -69,13 +77,10 @@ class ReadStructureOperation: FKOperation
     {
     case "CIF":
       parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
-     // parser?.scene.displayName = displayName
     case "PDB":
       parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
-     // parser?.scene.displayName = displayName
     case "XYZ":
       parser = SKXYZParser(displayName: displayName, string: string, windowController: nil)
-      // parser?.scene.displayName = displayName
     case "POSCAR", "CONTCAR":
       parser = SKPOSCARParser(displayName: displayName, string: string, windowController: nil)
     case "":
