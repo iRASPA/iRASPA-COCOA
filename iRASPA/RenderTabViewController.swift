@@ -1162,7 +1162,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         
         let structures: [RKRenderStructure] = project.renderStructuresForScene(structureIdentifier)
         let structure: RKRenderStructure = structures[movieIdentifier]
-        let replicaPosition: int3 = structure.cell.replicaFromIndex(pickedAtom)
+        let replicaPosition: SIMD3<Int32> = structure.cell.replicaFromIndex(pickedAtom)
         
         let numberOfReplicas: Int = (structure as! Structure).numberOfReplicas()
         let nodes: [SKAtomTreeNode] = (structure as! Structure).atoms.flattenedLeafNodes()
@@ -1354,7 +1354,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle)
   }
   
-  func shiftSelection(to: double3, origin: double3, depth: Double)
+  func shiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -1366,7 +1366,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let modelMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: structure.cell.boundingBox.center)
 
-          let shift: double3 = camera.myGluUnProject(double3(x: to.x, y: to.y, z: depth), modelMatrix: modelMatrix,  inViewPort: self.view.bounds) - camera.myGluUnProject(double3(x: origin.x, y: origin.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds)
+          let shift: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: to.x, y: to.y, z: depth), modelMatrix: modelMatrix,  inViewPort: self.view.bounds) - camera.myGluUnProject(SIMD3<Double>(x: origin.x, y: origin.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds)
           
           structure.translateSelection(by: shift)
         }
@@ -1376,7 +1376,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  func finalizeShiftSelection(to: double3, origin: double3, depth: Double)
+  func finalizeShiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -1389,7 +1389,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let modelMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: structure.cell.boundingBox.center)
           
-          let shift: double3 = camera.myGluUnProject(double3(x: to.x, y: to.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds) - camera.myGluUnProject(double3(x: origin.x, y: origin.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds)
+          let shift: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: to.x, y: to.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds) - camera.myGluUnProject(SIMD3<Double>(x: origin.x, y: origin.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds)
           
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection", comment: "Displace selection"))
@@ -1412,7 +1412,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  func rotateSelection(by: double3)
+  func rotateSelection(by: SIMD3<Double>)
   {
     
   }
@@ -1720,7 +1720,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                     
                     let exportAtoms: [SKAsymmetricAtom] = state.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> SKAsymmetricAtom? in
                       let atom = atomModel
-                      atom.position = structure.CartesianPosition(for: atomModel.position, replicaPosition: int3())
+                      atom.position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
                       return atom
                     })
                     let exportCell: SKCell? = structure.periodic ? structure.cell : nil
@@ -1730,7 +1730,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                   atomData.append(tempData)
                 }
                 
-                let string = SKPDBWriter.shared.string(displayName: scene.displayName, movies: atomData, origin: double3(0,0,0))
+                let string = SKPDBWriter.shared.string(displayName: scene.displayName, movies: atomData, origin: SIMD3<Double>(0,0,0))
                 
                 if let data = string.data(using: .ascii)
                 {
@@ -1816,11 +1816,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                     switch(structure)
                     {
                     case let crystal as Crystal:
-                      stringData = SKmmCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, atomsAreFractional: true, exportFractional: false, withProteinInfo: false, origin: double3(0,0,0))
+                      stringData = SKmmCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, atomsAreFractional: true, exportFractional: false, withProteinInfo: false, origin: SIMD3<Double>(0,0,0))
                     case let proteinCrystal as ProteinCrystal:
-                      stringData = SKmmCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: double3(0,0,0))
+                      stringData = SKmmCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: SIMD3<Double>(0,0,0))
                     case let molecularCrystal as MolecularCrystal:
-                      stringData = SKmmCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: false, origin: double3(0,0,0))
+                      stringData = SKmmCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: false, origin: SIMD3<Double>(0,0,0))
                     case let protein as Protein:
                       let boundingBox = protein.cell.boundingBox
                       stringData = SKmmCIFWriter.shared.string(displayName: protein.displayName, spaceGroupHallNumber: protein.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: boundingBox.minimum)
@@ -1919,11 +1919,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                     switch(structure)
                     {
                     case let crystal as Crystal:
-                      stringData = SKCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, exportFractional: true, origin: double3(0,0,0))
+                      stringData = SKCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, exportFractional: true, origin: SIMD3<Double>(0,0,0))
                     case let proteinCrystal as ProteinCrystal:
-                      stringData = SKCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, exportFractional: false, origin: double3(0,0,0))
+                      stringData = SKCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, exportFractional: false, origin: SIMD3<Double>(0,0,0))
                     case let molecularCrystal as MolecularCrystal:
-                      stringData = SKCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, exportFractional: false, origin: double3(0,0,0))
+                      stringData = SKCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, exportFractional: false, origin: SIMD3<Double>(0,0,0))
                     case let protein as Protein:
                       let boundingBox = protein.cell.boundingBox
                       stringData = SKCIFWriter.shared.string(displayName: protein.displayName, spaceGroupHallNumber: protein.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, exportFractional: false, origin: boundingBox.minimum)
@@ -2027,8 +2027,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                   {
                     let structure = iRASPAstructure.structure
                     
-                    let exportAtoms: [(elementIdentifier: Int, position: double3)] = structure.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> (elementIdentifier: Int, position: double3)? in
-                      let position = structure.CartesianPosition(for: atomModel.position, replicaPosition: int3())
+                    let exportAtoms: [(elementIdentifier: Int, position: SIMD3<Double>)] = structure.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> (elementIdentifier: Int, position: SIMD3<Double>)? in
+                      let position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
                       return (atomModel.elementIdentifier, position)
                     })
                     
@@ -2038,15 +2038,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                     case let crystal as Crystal:
                       let unitCell = crystal.cell.unitCell
                       let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-                      stringData = SKXYZWriter.shared.string(displayName: crystal.displayName, commentString: commentString, atoms: exportAtoms, origin: double3(0,0,0))
+                      stringData = SKXYZWriter.shared.string(displayName: crystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
                     case let proteinCrystal as ProteinCrystal:
                       let unitCell = proteinCrystal.cell.unitCell
                       let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-                      stringData = SKXYZWriter.shared.string(displayName: proteinCrystal.displayName, commentString: commentString, atoms: exportAtoms, origin: double3(0,0,0))
+                      stringData = SKXYZWriter.shared.string(displayName: proteinCrystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
                     case let molecularCrystal as MolecularCrystal:
                       let unitCell = molecularCrystal.cell.unitCell
                       let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-                      stringData = SKXYZWriter.shared.string(displayName: molecularCrystal.displayName, commentString: commentString, atoms: exportAtoms, origin: double3(0,0,0))
+                      stringData = SKXYZWriter.shared.string(displayName: molecularCrystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
                     case let protein as Protein:
                       let boundingBox = protein.cell.boundingBox
                       let unitCell = SKCell(boundingBox: boundingBox).unitCell
@@ -2160,21 +2160,21 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                     switch(structure)
                     {
                     case let crystal as Crystal:
-                      let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
-                      stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell , atoms: atoms, atomsAreFractional: true, origin: double3(0,0,0))
+                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
+                      stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell , atoms: atoms, atomsAreFractional: true, origin: SIMD3<Double>(0,0,0))
                     case let proteinCrystal as ProteinCrystal:
-                      let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
-                      stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: double3(0,0,0))
+                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
+                      stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
                     case let crystal as MolecularCrystal:
-                      let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
-                      stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell, atoms: atoms, atomsAreFractional: false, origin: double3(0,0,0))
+                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+                      stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
                     case let protein as Protein:
                       let boundingBox = protein.cell.boundingBox
-                      let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
                       stringData = SKVASPWriter.shared.string(displayName: protein.displayName, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, origin: boundingBox.minimum)
                     case let molecule as Molecule:
                       let boundingBox = molecule.cell.boundingBox
-                      let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
                       stringData = SKVASPWriter.shared.string(displayName: molecule.displayName, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, origin: boundingBox.minimum)
                     default:
                       stringData = ""
@@ -2372,7 +2372,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
          if let point = startPoint,
             let pickedDepth = pickedDepth
          {
-           shiftSelection(to: double3(Double(location.x),Double(location.y),0.0), origin: double3(Double(point.x),Double(point.y),0.0), depth: Double(pickedDepth))
+           shiftSelection(to: SIMD3<Double>(Double(location.x),Double(location.y),0.0), origin: SIMD3<Double>(Double(point.x),Double(point.y),0.0), depth: Double(pickedDepth))
          }
       case .measurement:
         if let _ = startPoint
@@ -2440,7 +2440,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let startPoint = startPoint,
            let pickedDepth = pickedDepth
         {
-          finalizeShiftSelection(to: double3(Double(point.x),Double(point.y),0.0), origin: double3(Double(startPoint.x),Double(startPoint.y),0.0), depth: Double(pickedDepth))
+          finalizeShiftSelection(to: SIMD3<Double>(Double(point.x),Double(point.y),0.0), origin: SIMD3<Double>(Double(startPoint.x),Double(startPoint.y),0.0), depth: Double(pickedDepth))
         }
       case .measurement:
         if let _: RKRenderDataSource = renderDataSource
@@ -2505,7 +2505,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
            !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.1, 0.0, 0.0)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.1, 0.0, 0.0)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection +x", comment: "Displace selection +x"))
           
@@ -2529,7 +2529,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(-0.1, 0.0, 0.0)
+          let shift: SIMD3<Double> = SIMD3<Double>(-0.1, 0.0, 0.0)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection -x", comment: "Displace selection -x"))
           
@@ -2553,7 +2553,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.0, 0.1, 0.0)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.1, 0.0)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection +y", comment: "Displace selection +y"))
           
@@ -2578,7 +2578,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.0, -0.1, 0.0)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.0, -0.1, 0.0)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection -y", comment: "Displace selection -y"))
           
@@ -2602,7 +2602,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.0, 0.0, 0.1)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.1)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection +z", comment: "Displace selection +z"))
           
@@ -2627,7 +2627,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.0, 0.0, -0.1)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, -0.1)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection -z", comment: "Displace selection -z"))
           
@@ -2653,7 +2653,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.1, 0.0, 0.0)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.1, 0.0, 0.0)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection +1", comment: "Displace selection +1"))
           
@@ -2678,7 +2678,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(-0.1, 0.0, 0.0)
+          let shift: SIMD3<Double> = SIMD3<Double>(-0.1, 0.0, 0.0)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection -1", comment: "Displace selection -1"))
           
@@ -2702,7 +2702,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.0, 0.1, 0.0)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.1, 0.0)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection +2", comment: "Displace selection +2"))
           
@@ -2727,7 +2727,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.0, -0.1, 0.0)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.0, -0.1, 0.0)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection -2", comment: "Displace selection -2"))
           
@@ -2751,7 +2751,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.0, 0.0, 0.1)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.1)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection +3", comment: "Displace selection +3"))
           
@@ -2776,7 +2776,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atoms.selectedTreeNodes.isEmpty
         {
-          let shift: double3 = double3(0.0, 0.0, -0.1)
+          let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, -0.1)
           
           project.undoManager.setActionName(NSLocalizedString("Displace selection -3", comment: "Displace selection -3"))
           
@@ -2794,7 +2794,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsCartesianPlusX(_ sender: NSButton)
   {
     let theta: Double = 2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(1.0,0.0,0.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -2819,7 +2819,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsCartesianMinusX(_ sender: NSButton)
   {
     let theta: Double = -2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(1.0,0.0,0.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
    
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -2844,7 +2844,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsCartesianPlusY(_ sender: NSButton)
   {
     let theta: Double = 2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(0.0,1.0,0.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -2869,7 +2869,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsCartesianMinusY(_ sender: NSButton)
   {
     let theta: Double = -2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(0.0,1.0,0.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -2894,7 +2894,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsCartesianPlusZ(_ sender: NSButton)
   {
     let theta: Double = 2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(0.0,0.0,1.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,0.0,1.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -2919,7 +2919,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsCartesianMinusZ(_ sender: NSButton)
   {
     let theta: Double = -2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(0.0,0.0,1.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,0.0,1.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -2946,7 +2946,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsBodyFramePlusX(_ sender: NSButton)
   {
     let theta: Double = 2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(1.0,0.0,0.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -2970,7 +2970,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsBodyFrameMinusX(_ sender: NSButton)
   {
     let theta: Double = -2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(1.0,0.0,0.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
 
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
@@ -2996,7 +2996,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsBodyFramePlusY(_ sender: NSButton)
   {
     let theta: Double = 2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(0.0,1.0,0.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -3021,7 +3021,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsBodyFrameMinusY(_ sender: NSButton)
   {
     let theta: Double = -2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(0.0,1.0,0.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -3046,7 +3046,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsBodyFramePlusZ(_ sender: NSButton)
   {
     let theta: Double = 2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(0.0,0.0,1.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,0.0,1.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
@@ -3071,7 +3071,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func rotateSelectedAtomsInertiaMinusZ(_ sender: NSButton)
   {
     let theta: Double = -2.5 * Double.pi/180.0
-    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: double3(0.0,0.0,1.0))
+    let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,0.0,1.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,

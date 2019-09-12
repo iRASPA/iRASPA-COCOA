@@ -43,7 +43,7 @@ public class SKXYZWriter
   
  
   
-  public func string(displayName: String, commentString: String, atoms: [(elementIdentifier: Int, position: double3)], origin: double3) -> String
+  public func string(displayName: String, commentString: String, atoms: [(elementIdentifier: Int, position: SIMD3<Double>)], origin: SIMD3<Double>) -> String
   {
     var dataString: String = ""
     
@@ -63,7 +63,7 @@ public class SKXYZWriter
     dataString += commentString + "\n"
     for atom in atoms
     {
-      let position: double3 = atom.position - origin
+      let position: SIMD3<Double> = atom.position - origin
       let chemicalElement = PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol.padding(toLength: 3, withPad:  " ", startingAt: 0)
       
       let positionX: String = numberFormatter.string(from: NSNumber(value: position.x))!

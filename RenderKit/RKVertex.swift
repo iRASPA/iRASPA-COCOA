@@ -35,19 +35,19 @@ import simd
 
 public struct RKVertex: CustomStringConvertible
 {
-  public var position: float4
-  public var normal: float4
-  public var st: float2
-  public var pad: float2 = float2()
+  public var position:  SIMD4<Float>
+  public var normal:  SIMD4<Float>
+  public var st: SIMD2<Float>
+  public var pad: SIMD2<Float> = SIMD2<Float>()
   
   public init()
   {
-    self.position = float4(x: 0.0, y: 0.0, z: 0.0, w:1.0)
-    self.normal = float4(x: 0.0, y: 0.0, z: 0.0, w:0.0)
-    self.st = float2(x: 0.0, y: 0.0)
+    self.position =  SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w:1.0)
+    self.normal =  SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w:0.0)
+    self.st = SIMD2<Float>(x: 0.0, y: 0.0)
   }
   
-  public init(position: float4, normal: float4, st: float2)
+  public init(position:  SIMD4<Float>, normal:  SIMD4<Float>, st: SIMD2<Float>)
   {
     self.position = position
     self.normal =  normal

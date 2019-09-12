@@ -301,13 +301,13 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   
 
-  func setBondAtomPositions(atom1: SKAsymmetricAtom, pos1: double3, atom2: SKAsymmetricAtom, pos2: double3)
+  func setBondAtomPositions(atom1: SKAsymmetricAtom, pos1: SIMD3<Double>, atom2: SKAsymmetricAtom, pos2: SIMD3<Double>)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let structure: Structure = self.representedObject as? Structure
     {
-      let oldPos1: double3 = atom1.position
-      let oldPos2: double3 = atom2.position
+      let oldPos1: SIMD3<Double> = atom1.position
+      let oldPos2: SIMD3<Double> = atom2.position
       if project.undoManager.isUndoing
       {
         project.undoManager.setActionName(NSLocalizedString("Change bond-length", comment: "Change bond-length"))
@@ -347,7 +347,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       
       let bondLength: Double = number.doubleValue
       
-      let newPos: (double3, double3) = structure.computeChangedBondLength(bond: bond, to: bondLength)
+      let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
       setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
       
       
@@ -393,7 +393,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
           
           let bondLength: Double = sender.doubleValue
           
-          let newPos: (double3, double3) = structure.computeChangedBondLength(bond: bond, to: bondLength)
+          let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
           setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
 
         }

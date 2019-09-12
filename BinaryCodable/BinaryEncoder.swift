@@ -118,7 +118,7 @@ public extension BinaryEncoder
     appendBytes(of: value.bitPattern.bigEndian)
   }
   
-  func encode(_ value: int3)
+  func encode(_ value: SIMD3<Int32>)
   {
     self.encode(value.x)
     self.encode(value.y)
@@ -132,33 +132,33 @@ public extension BinaryEncoder
     self.encode(value.z)
   }
   
-  func encode(_ value: float2)
+  func encode(_ value: SIMD2<Float>)
   {
     self.encode(value.x)
     self.encode(value.y)
   }
   
-  func encode(_ value: double2)
+  func encode(_ value: SIMD2<Double>)
   {
     self.encode(value.x)
     self.encode(value.y)
   }
   
-  func encode(_ value: float3)
-  {
-    self.encode(value.x)
-    self.encode(value.y)
-    self.encode(value.z)
-  }
-  
-  func encode(_ value: double3)
+  func encode(_ value: SIMD3<Float>)
   {
     self.encode(value.x)
     self.encode(value.y)
     self.encode(value.z)
   }
   
-  func encode(_ value: float4)
+  func encode(_ value: SIMD3<Double>)
+  {
+    self.encode(value.x)
+    self.encode(value.y)
+    self.encode(value.z)
+  }
+  
+  func encode(_ value: SIMD4<Float>)
   {
     self.encode(value.x)
     self.encode(value.y)
@@ -166,7 +166,7 @@ public extension BinaryEncoder
     self.encode(value.w)
   }
   
-  func encode(_ value: double4)
+  func encode(_ value: SIMD4<Double>)
   {
     self.encode(value.x)
     self.encode(value.y)

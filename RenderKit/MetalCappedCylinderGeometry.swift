@@ -64,14 +64,14 @@ public class MetalCappedCylinderGeometry
       let cosTheta: Double = cos(delta * Double(i))
       let sinTheta: Double = sin(delta * Double(i))
       
-      let normal2: float4 = float4(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      let position2: float4 = float4(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
-      vertices[index] = RKVertex(position: position2, normal: normal2, st: float2())
+      let normal2: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
+      let position2: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
+      vertices[index] = RKVertex(position: position2, normal: normal2, st: SIMD2<Float>())
       index = index + 1
       
-      let position1: float4 = float4(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
-      let normal1: float4 = float4(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      vertices[index] = RKVertex(position: position1, normal: normal1, st: float2())
+      let position1: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
+      let normal1: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
+      vertices[index] = RKVertex(position: position1, normal: normal1, st: SIMD2<Float>())
       index = index + 1
       
       
@@ -80,9 +80,9 @@ public class MetalCappedCylinderGeometry
     // first cap
     // ==========================================================================
     
-    let position_cap1: float4 = float4(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
-    let normal_cap1: float4 = float4(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
-    vertices[index] = RKVertex(position: position_cap1, normal: normal_cap1, st: float2())
+    let position_cap1: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
+    let normal_cap1: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
+    vertices[index] = RKVertex(position: position_cap1, normal: normal_cap1, st: SIMD2<Float>())
     let ref_cap_1: Int = index;
     index = index + 1
     
@@ -91,18 +91,18 @@ public class MetalCappedCylinderGeometry
     {
       let cosTheta: Double = r * cos(delta * Double(i))
       let sinTheta: Double = r * sin(delta * Double(i))
-      let position_cap1: float4 = float4(x: Float(cosTheta), y: -1.0, z: Float(sinTheta), w: 0.0)
-      let normal_cap1: float4 = float4(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
-      vertices[index] = RKVertex(position: position_cap1, normal: normal_cap1, st: float2())
+      let position_cap1: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: -1.0, z: Float(sinTheta), w: 0.0)
+      let normal_cap1: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
+      vertices[index] = RKVertex(position: position_cap1, normal: normal_cap1, st: SIMD2<Float>())
       index = index + 1
     }
     
     // second cap
     // ==========================================================================
     
-    let position_cap2: float4 = float4(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-    let normal_cap2: float4 = float4(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-    vertices[index] = RKVertex(position: position_cap2, normal: normal_cap2, st: float2())
+    let position_cap2: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
+    let normal_cap2: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
+    vertices[index] = RKVertex(position: position_cap2, normal: normal_cap2, st: SIMD2<Float>())
     let ref_cap_2: Int = index;
     index = index + 1
     
@@ -110,9 +110,9 @@ public class MetalCappedCylinderGeometry
     {
       let cosTheta: Double = r * cos(delta * Double(i))
       let sinTheta: Double = r * sin(delta * Double(i))
-      let position_cap2: float4 = float4(x: Float(cosTheta), y: 1.0, z: Float(sinTheta), w: 0.0)
-      let normal_cap2: float4 = float4(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-      vertices[index] = RKVertex(position: position_cap2, normal: normal_cap2, st: float2())
+      let position_cap2: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 1.0, z: Float(sinTheta), w: 0.0)
+      let normal_cap2: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
+      vertices[index] = RKVertex(position: position_cap2, normal: normal_cap2, st: SIMD2<Float>())
       index = index + 1
     }
     

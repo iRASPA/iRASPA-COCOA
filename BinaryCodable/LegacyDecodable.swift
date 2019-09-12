@@ -60,7 +60,7 @@ extension simd_quatd: Decodable
     var container = try decoder.unkeyedContainer()
     self.init()
     
-    self.vector = try container.decode(double4.self)
+    self.vector = try container.decode(SIMD4<Double>.self)
   }
 }
 

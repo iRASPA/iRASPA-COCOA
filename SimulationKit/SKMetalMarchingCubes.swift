@@ -346,7 +346,7 @@ public class SKMetalMarchingCubes
       {
         
         // 3 points consisting of a position, a normal, and texture coordinates
-        isosurfaceVertexBuffer = device.makeBuffer(length: Int(sum2) * 3 * 3 * MemoryLayout<float4>.stride, options: .storageModeShared)
+        isosurfaceVertexBuffer = device.makeBuffer(length: Int(sum2) * 3 * 3 * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeShared)
         
         
         if sum2>0

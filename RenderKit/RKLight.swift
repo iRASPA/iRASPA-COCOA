@@ -35,12 +35,12 @@ import simd
 
 public struct RKLight
 {
-  public var position: float4 = float4(x:0.0, y:0.0, z: 100.0, w: 0.0)  // w=0 directional light, w=1.0 positional light
-  public var ambient: float4 = float4(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-  public var diffuse: float4 = float4(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-  public var specular: float4 = float4(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+  public var position: SIMD4<Float> = SIMD4<Float>(x:0.0, y:0.0, z: 100.0, w: 0.0)  // w=0 directional light, w=1.0 positional light
+  public var ambient: SIMD4<Float> = SIMD4<Float>(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+  public var diffuse: SIMD4<Float> = SIMD4<Float>(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+  public var specular: SIMD4<Float> = SIMD4<Float>(color: NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
   
-  public var spotDirection: float4 = float4(x:1.0, y:1.0, z: 1.0, w:0.0)
+  public var spotDirection: SIMD4<Float> = SIMD4<Float>(x:1.0, y:1.0, z: 1.0, w:0.0)
   public var constantAttenuation: Float = 1.0
   public var linearAttenuation: Float = 1.0
   public var quadraticAttenuation: Float = 1.0
@@ -64,9 +64,9 @@ public struct RKLight
   
   public init(project: RKRenderDataSource, light: Int)
   {
-    self.ambient = GLfloat(project.renderLights[light].ambientIntensity) * float4(color: project.renderLights[light].ambient)
-    self.diffuse = GLfloat(project.renderLights[light].diffuseIntensity) * float4(color: project.renderLights[light].diffuse)
-    self.specular = GLfloat(project.renderLights[light].specularIntensity) * float4(color: project.renderLights[light].specular)
+    self.ambient = GLfloat(project.renderLights[light].ambientIntensity) * SIMD4<Float>(color: project.renderLights[light].ambient)
+    self.diffuse = GLfloat(project.renderLights[light].diffuseIntensity) * SIMD4<Float>(color: project.renderLights[light].diffuse)
+    self.specular = GLfloat(project.renderLights[light].specularIntensity) * SIMD4<Float>(color: project.renderLights[light].specular)
     self.shininess = GLfloat(project.renderLights[light].shininess)
   }
 }

@@ -34,12 +34,12 @@ import simd
 
 public struct int3x3: Equatable
 {
-  var numerator: [int3]
+  var numerator: [SIMD3<Int32>]
   var denominator: Int
   
   public init()
   {
-    self.numerator = [int3(0,0,0),int3(0,0,0),int3(0,0,0)]
+    self.numerator = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)]
     self.denominator = 1
   }
   
@@ -52,11 +52,11 @@ public struct int3x3: Equatable
   
   public init(scalar: Int32, denominator: Int = 1)
   {
-    self.numerator = [int3(scalar,0,0),int3(0,scalar,0),int3(0,0,scalar)]
+    self.numerator = [SIMD3<Int32>(scalar,0,0),SIMD3<Int32>(0,scalar,0),SIMD3<Int32>(0,0,scalar)]
     self.denominator = denominator
   }
   
-  public init(_ columns: [int3], denominator: Int = 1)
+  public init(_ columns: [SIMD3<Int32>], denominator: Int = 1)
   {
     self.numerator = columns
     self.denominator = denominator
@@ -64,19 +64,19 @@ public struct int3x3: Equatable
   
   public init(_ scalar: Int32, denominator: Int = 1)
   {
-    self.init([int3(scalar,0,0),int3(0,scalar,0),int3(0,0,scalar)])
+    self.init([SIMD3<Int32>(scalar,0,0),SIMD3<Int32>(0,scalar,0),SIMD3<Int32>(0,0,scalar)])
     self.denominator = denominator
   }
   
-  public init(rows: [int3], denominator: Int = 1)
+  public init(rows: [SIMD3<Int32>], denominator: Int = 1)
   {
-    self.numerator = [int3(rows[0].x,rows[1].x,rows[2].x), int3(rows[0].y,rows[1].y,rows[2].y), int3(rows[0].z,rows[1].z,rows[2].z)]
+    self.numerator = [SIMD3<Int32>(rows[0].x,rows[1].x,rows[2].x), SIMD3<Int32>(rows[0].y,rows[1].y,rows[2].y), SIMD3<Int32>(rows[0].z,rows[1].z,rows[2].z)]
     self.denominator = denominator
   }
   
   public static var identity: int3x3
   {
-    return int3x3([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
+    return int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
   }
   
   public var elements: [Int]
@@ -99,7 +99,7 @@ public struct int3x3: Equatable
     }
   }
   
-  public subscript(column: Int) -> int3
+  public subscript(column: Int) -> SIMD3<Int32>
   {
     get
     {
@@ -140,15 +140,15 @@ public struct int3x3: Equatable
   {
     get
     {
-      return int3x3([int3(self[0,0],self[1,0],self[2,0]),
-                     int3(self[0,1],self[1,1],self[2,1]),
-                     int3(self[0,2],self[1,2],self[2,2])], denominator: self.denominator)
+      return int3x3([SIMD3<Int32>(self[0,0],self[1,0],self[2,0]),
+                     SIMD3<Int32>(self[0,1],self[1,1],self[2,1]),
+                     SIMD3<Int32>(self[0,2],self[1,2],self[2,2])], denominator: self.denominator)
     }
   }
   
   public var isZero: Bool
   {
-    return (self[0] == int3(0,0,0) &&  self[1] == int3(0,0,0) && self[2] == int3(0,0,0))
+    return (self[0] == SIMD3<Int32>(0,0,0) &&  self[1] == SIMD3<Int32>(0,0,0) && self[2] == SIMD3<Int32>(0,0,0))
   }
   
   public var trace: Int
@@ -191,17 +191,17 @@ public struct int3x3: Equatable
   }
   
   
-  public func rowEchelonFormBackSubstitution(t: double3, freeVars: [Int]) -> double3
+  public func rowEchelonFormBackSubstitution(t: SIMD3<Double>, freeVars: [Int]) -> SIMD3<Double>
   {
     let rank: Int = 3 - freeVars.count
-    var sol: double3 = double3()
+    var sol: SIMD3<Double> = SIMD3<Double>()
     
     
     for r in rank..<3
     {
       if (t[r] != 0)
       {
-        return double3(-10,-10,-10)
+        return SIMD3<Double>(-10,-10,-10)
       }
     }
     
@@ -323,11 +323,11 @@ public struct int3x3: Equatable
     return m
   }
   
-  public func rowEchelonFormBackSubstitutionRosetta(t: double3, freeVars: [Int]) -> double3
+  public func rowEchelonFormBackSubstitutionRosetta(t: SIMD3<Double>, freeVars: [Int]) -> SIMD3<Double>
   {
     let rank: Int = 3 - freeVars.count
     //assert(rank == 2)
-    var sol: double3 = double3(0.0,0.0,0.0)
+    var sol: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
     
     
     for r in rank..<3
@@ -371,11 +371,11 @@ public struct int3x3: Equatable
     return sol
   }
 
-  public func rowEchelonFormBackSubstitutionRosetta(freeVars: [Int]) -> double3
+  public func rowEchelonFormBackSubstitutionRosetta(freeVars: [Int]) -> SIMD3<Double>
   {
     let rank: Int = 3 - freeVars.count
     //assert(rank == 2)
-    var sol: double3 = double3(0.0,0.0,0.0)
+    var sol: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
     
     
     switch(rank)
@@ -385,7 +385,7 @@ public struct int3x3: Equatable
       let z: Double = 1.0
       let y: Double = z * Double(self[2][1]) / Double(self[1][1])
       let x: Double = (y + Double(self[2][0])) / Double(self[0][0])
-      return double3(x,y,z)
+      return SIMD3<Double>(x,y,z)
       
     default:
       break
@@ -580,13 +580,13 @@ public struct int3x3: Equatable
   
   public static func * (left: int3x3, right: int3x3) -> int3x3
   {
-    return int3x3([int3(left[0,0] * right[0,0] + left[1,0] * right[0,1] + left[2,0] * right[0,2],
+    return int3x3([ SIMD3<Int32>(left[0,0] * right[0,0] + left[1,0] * right[0,1] + left[2,0] * right[0,2],
                         left[0,1] * right[0,0] + left[1,1] * right[0,1] + left[2,1] * right[0,2],
                         left[0,2] * right[0,0] + left[1,2] * right[0,1] + left[2,2] * right[0,2]),
-                   int3(left[0,0] * right[1,0] + left[1,0] * right[1,1] + left[2,0] * right[1,2],
+                    SIMD3<Int32>(left[0,0] * right[1,0] + left[1,0] * right[1,1] + left[2,0] * right[1,2],
                         left[0,1] * right[1,0] + left[1,1] * right[1,1] + left[2,1] * right[1,2],
                         left[0,2] * right[1,0] + left[1,2] * right[1,1] + left[2,2] * right[1,2]),
-                   int3(left[0,0] * right[2,0] + left[1,0] * right[2,1] + left[2,0] * right[2,2],
+                    SIMD3<Int32>(left[0,0] * right[2,0] + left[1,0] * right[2,1] + left[2,0] * right[2,2],
                         left[0,1] * right[2,0] + left[1,1] * right[2,1] + left[2,1] * right[2,2],
                         left[0,2] * right[2,0] + left[1,2] * right[2,1] + left[2,2] * right[2,2])], denominator: left.denominator * right.denominator)
   }
@@ -598,30 +598,30 @@ public struct int3x3: Equatable
   
   public static func * (left: int3x3, right: double3x3) -> double3x3
   {
-    let temp1: double3 = double3(Double(left[0,0]) * right[0,0] + Double(left[1,0]) * right[0,1] + Double(left[2,0]) * right[0,2],
+    let temp1: SIMD3<Double> = SIMD3<Double>(Double(left[0,0]) * right[0,0] + Double(left[1,0]) * right[0,1] + Double(left[2,0]) * right[0,2],
                                  Double(left[0,1]) * right[0,0] + Double(left[1,1]) * right[0,1] + Double(left[2,1]) * right[0,2],
                                  Double(left[0,2]) * right[0,0] + Double(left[1,2]) * right[0,1] + Double(left[2,2]) * right[0,2])
-    let temp2: double3 = double3(Double(left[0,0]) * right[1,0] + Double(left[1,0]) * right[1,1] + Double(left[2,0]) * right[1,2],
+    let temp2: SIMD3<Double> = SIMD3<Double>(Double(left[0,0]) * right[1,0] + Double(left[1,0]) * right[1,1] + Double(left[2,0]) * right[1,2],
                                  Double(left[0,1]) * right[1,0] + Double(left[1,1]) * right[1,1] + Double(left[2,1]) * right[1,2],
                                  Double(left[0,2]) * right[1,0] + Double(left[1,2]) * right[1,1] + Double(left[2,2]) * right[1,2])
-    let temp3: double3 = double3(Double(left[0,0]) * right[2,0] + Double(left[1,0]) * right[2,1] + Double(left[2,0]) * right[2,2],
+    let temp3: SIMD3<Double> = SIMD3<Double>(Double(left[0,0]) * right[2,0] + Double(left[1,0]) * right[2,1] + Double(left[2,0]) * right[2,2],
                                  Double(left[0,1]) * right[2,0] + Double(left[1,1]) * right[2,1] + Double(left[2,1]) * right[2,2],
                                  Double(left[0,2]) * right[2,0] + Double(left[1,2]) * right[2,1] + Double(left[2,2]) * right[2,2])
     return double3x3([temp1, temp2, temp3])
   }
   
-  public static func * (left: int3x3, right: int3) -> int3
+  public static func * (left: int3x3, right: SIMD3<Int32>) -> SIMD3<Int32>
   {
-    return int3(x: left[0,0] * right.x + left[1,0] * right.y + left[2,0] * right.z,
+    return SIMD3<Int32>(x: left[0,0] * right.x + left[1,0] * right.y + left[2,0] * right.z,
                 y: left[0,1] * right.x + left[1,1] * right.y + left[2,1] * right.z,
                 z: left[0,2] * right.x + left[1,2] * right.y + left[2,2] * right.z)
   }
   
 
   
-  public static func * (left: int3x3, right: double3) -> double3
+  public static func * (left: int3x3, right: SIMD3<Double>) -> SIMD3<Double>
   {
-    return double3(x: Double(left[0,0]) * right.x + Double(left[1,0]) * right.y + Double(left[2,0]) * right.z,
+    return SIMD3<Double>(x: Double(left[0,0]) * right.x + Double(left[1,0]) * right.y + Double(left[2,0]) * right.z,
                    y: Double(left[0,1]) * right.x + Double(left[1,1]) * right.y + Double(left[2,1]) * right.z,
                    z: Double(left[0,2]) * right.x + Double(left[1,2]) * right.y + Double(left[2,2]) * right.z)
   }
@@ -629,31 +629,31 @@ public struct int3x3: Equatable
   
   static public func + (left: int3x3, right: int3x3) -> int3x3
   {
-    return int3x3([int3(x: left[0,0] + right[0,0], y: left[0,1] + right[0,1], z: left[0,2] + right[0,2]),
-                   int3(x: left[1,0] + right[1,0], y: left[1,1] + right[1,1], z: left[1,2] + right[1,2]),
-                   int3(x: left[2,0] + right[2,0], y: left[2,1] + right[2,1], z: left[2,2] + right[2,2])])
+    return int3x3([SIMD3<Int32>(x: left[0,0] + right[0,0], y: left[0,1] + right[0,1], z: left[0,2] + right[0,2]),
+                   SIMD3<Int32>(x: left[1,0] + right[1,0], y: left[1,1] + right[1,1], z: left[1,2] + right[1,2]),
+                   SIMD3<Int32>(x: left[2,0] + right[2,0], y: left[2,1] + right[2,1], z: left[2,2] + right[2,2])])
   }
   
   static public func - (left: int3x3, right: int3x3) -> int3x3
   {
-    return int3x3([int3(x: left[0,0] - right[0,0], y: left[0,1] - right[0,1], z: left[0,2] - right[0,2]),
-                   int3(x: left[1,0] - right[1,0], y: left[1,1] - right[1,1], z: left[1,2] - right[1,2]),
-                   int3(x: left[2,0] - right[2,0], y: left[2,1] - right[2,1], z: left[2,2] - right[2,2])])
+    return int3x3([SIMD3<Int32>(x: left[0,0] - right[0,0], y: left[0,1] - right[0,1], z: left[0,2] - right[0,2]),
+                   SIMD3<Int32>(x: left[1,0] - right[1,0], y: left[1,1] - right[1,1], z: left[1,2] - right[1,2]),
+                   SIMD3<Int32>(x: left[2,0] - right[2,0], y: left[2,1] - right[2,1], z: left[2,2] - right[2,2])])
   }
   
   public static prefix func - (left: int3x3) -> int3x3
   {
-    return int3x3([int3(-left[0,0], -left[0,1], -left[0,2]),
-                   int3(-left[1,0], -left[1,1], -left[1,2]),
-                   int3(-left[2,0], -left[2,1], -left[2,2])])
+    return int3x3([SIMD3<Int32>(-left[0,0], -left[0,1], -left[0,2]),
+                   SIMD3<Int32>(-left[1,0], -left[1,1], -left[1,2]),
+                   SIMD3<Int32>(-left[2,0], -left[2,1], -left[2,2])])
     
   }
   
   public static func / (left: int3x3, right: Int) -> int3x3
   {
-    return int3x3([int3(left[0,0] / Int32(right), left[0,1] / Int32(right), left[0,2] / Int32(right)),
-                   int3(left[1,0] / Int32(right), left[1,1] / Int32(right), left[1,2] / Int32(right)),
-                   int3(left[2,0] / Int32(right), left[2,1] / Int32(right), left[2,2] / Int32(right))])
+    return int3x3([SIMD3<Int32>(left[0,0] / Int32(right), left[0,1] / Int32(right), left[0,2] / Int32(right)),
+                   SIMD3<Int32>(left[1,0] / Int32(right), left[1,1] / Int32(right), left[1,2] / Int32(right)),
+                   SIMD3<Int32>(left[2,0] / Int32(right), left[2,1] / Int32(right), left[2,2] / Int32(right))])
     
   }
 }

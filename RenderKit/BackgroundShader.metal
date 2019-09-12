@@ -46,7 +46,7 @@ struct BackgroundVertexShaderOut
 };
 
 
-vertex BackgroundVertexShaderOut backgroundQuadVertex(device InPerVertex *pPosition [[ buffer(0) ]],
+vertex BackgroundVertexShaderOut backgroundQuadVertex(const device InPerVertex *pPosition [[ buffer(0) ]],
                                                       uint vid [[ vertex_id ]])
 {
   BackgroundVertexShaderOut outVertices;

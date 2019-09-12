@@ -42,14 +42,14 @@ import simd
 public struct SKChangeOfBasis
 {
   private var changeOfBasis : MKint3x3
-  private var translation: int3 = int3()
+  private var translation: SIMD3<Int32> = SIMD3<Int32>()
   private var inverseChangeOfBasis : MKint3x3
   
   
   public init(rotation: MKint3x3)
   {
     self.changeOfBasis = rotation
-    self.translation = int3(0,0,0)
+    self.translation = SIMD3<Int32>(0,0,0)
     self.inverseChangeOfBasis = self.changeOfBasis.inverse
     
     //self.changeOfBasis.cleaunUp()
@@ -59,7 +59,7 @@ public struct SKChangeOfBasis
   public init(rotation: SKRotationMatrix)
   {
     self.changeOfBasis = MKint3x3(rotation)
-    self.translation = int3(0,0,0)
+    self.translation = SIMD3<Int32>(0,0,0)
     self.inverseChangeOfBasis = self.changeOfBasis.inverse
     
     //self.changeOfBasis.cleaunUp()
@@ -80,7 +80,7 @@ public struct SKChangeOfBasis
   public static func * (left: SKChangeOfBasis, right: SKSeitzMatrix) -> SKSeitzMatrix
   {
     let rotation: MKint3x3 = left.inverseChangeOfBasis * MKint3x3(right.rotation) * left.changeOfBasis
-    let translation: int3 = (left.inverseChangeOfBasis * right.translation - (rotation - MKint3x3.identity) * left.translation)
+    let translation: SIMD3<Int32> = (left.inverseChangeOfBasis * right.translation - (rotation - MKint3x3.identity) * left.translation)
     return SKSeitzMatrix(rotation: rotation.Int3x3, translation: translation / Int32(left.inverseChangeOfBasis.denominator))
   }
   
@@ -94,12 +94,12 @@ public struct SKChangeOfBasis
     return (left.inverseChangeOfBasis * MKint3x3(right) * left.changeOfBasis).Int3x3
   }
   
-  public static func * (left: SKChangeOfBasis, right: double3) -> double3
+  public static func * (left: SKChangeOfBasis, right: SIMD3<Double>) -> SIMD3<Double>
   {
     return (left.inverseChangeOfBasis * right) / Double(left.inverseChangeOfBasis.denominator)
   }
   
-  public static func * (left: SKChangeOfBasis, right: int3) -> int3
+  public static func * (left: SKChangeOfBasis, right: SIMD3<Int32>) -> SIMD3<Int32>
   {
     return left.inverseChangeOfBasis * right / Int32(left.inverseChangeOfBasis.denominator)
   }

@@ -43,7 +43,7 @@ extension NSColor
     self.init(calibratedRed: redColor, green: greenColor, blue: blueColor, alpha: 1.0)
   }
   
-  public convenience init(float4: float4)
+  public convenience init(float4: SIMD4<Float>)
   {
     self.init(calibratedRed: CGFloat(float4.x), green: CGFloat(float4.y), blue: CGFloat(float4.z), alpha: CGFloat(float4.w))
   }

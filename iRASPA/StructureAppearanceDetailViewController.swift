@@ -3000,7 +3000,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.x = sender.doubleValue * Double.pi/180.0
       structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -3028,7 +3028,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.y = sender.doubleValue * Double.pi/180.0
       structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -3056,7 +3056,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.z = sender.doubleValue * Double.pi/180.0
       structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -3268,7 +3268,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
       let renderOrientation = structure.renderPrimitiveOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.x = sender.doubleValue * Double.pi/180.0
       structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -3317,7 +3317,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
       let renderOrientation = structure.renderPrimitiveOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.z = sender.doubleValue * Double.pi/180.0
       structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -3364,7 +3364,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
       let renderOrientation = structure.renderPrimitiveOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.y = sender.doubleValue * Double.pi/180.0
       structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox

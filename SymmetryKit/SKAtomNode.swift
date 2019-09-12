@@ -41,7 +41,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
   private static var classVersionNumber: Int = 1
   public var displayName: String = "Default"
   public var asymmetricIndex: Int = 0
-  public var position: double3 = double3(0,0,0)
+  public var position: SIMD3<Double> = SIMD3<Double>(0,0,0)
   public var charge: Double = 0
   
   public var uniqueForceFieldName: String
@@ -49,7 +49,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
   public var color: NSColor = NSColor.blue
   public var drawRadius: Double = 1.0
   public var bondDistanceCriteria: Double = 1.0
-  public var potentialParameters: double2 = double2(0.0,0.0)
+  public var potentialParameters:  SIMD2<Double> =  SIMD2<Double>(0.0,0.0)
   
   public var tag: Int = 0
   public var symmetryType: AsymmetricAtomType = .asymmetric
@@ -77,7 +77,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
   public var fractional: Bool = false
   public var solvent: Bool = false
   
-  public var displacement: double3 = double3()
+  public var displacement: SIMD3<Double> = SIMD3<Double>()
   
   // the crystallographic copies of the atom
   public var copies: [SKAtomCopy] = []
@@ -88,7 +88,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     case asymmetric = 1
   }
   
-  public init(displayName: String, elementId: Int, uniqueForceFieldName: String, position: double3, charge: Double, color: NSColor, drawRadius: Double, bondDistanceCriteria: Double)
+  public init(displayName: String, elementId: Int, uniqueForceFieldName: String, position: SIMD3<Double>, charge: Double, color: NSColor, drawRadius: Double, bondDistanceCriteria: Double)
   {
     self.elementIdentifier = elementId
     self.displayName = displayName
@@ -206,12 +206,12 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     
     self.uniqueForceFieldName = try container.decode(String.self)
     self.elementIdentifier = try container.decode(Int.self)
-    self.color = NSColor(float4: try container.decode(float4.self))
+    self.color = NSColor(float4: try container.decode(SIMD4<Float>.self))
     self.drawRadius = try container.decode(Double.self)
     self.bondDistanceCriteria = try container.decode(Double.self)
-    self.potentialParameters = try container.decode(double2.self)
+    self.potentialParameters = try container.decode(SIMD2<Double>.self)
     
-    self.position = try container.decode(double3.self)
+    self.position = try container.decode(SIMD3<Double>.self)
     self.charge = try container.decode(Double.self)
     
     self.copies = try container.decode([SKAtomCopy].self)
@@ -319,7 +319,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     
     asymmetricIndex = try decoder.decode(Int.self)
     displayName = try decoder.decode(String.self)
-    position = try decoder.decode(double3.self)
+    position = try decoder.decode(SIMD3<Double>.self)
     charge = try decoder.decode(Double.self)
     uniqueForceFieldName = try decoder.decode(String.self)
     elementIdentifier = try decoder.decode(Int.self)
@@ -327,7 +327,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     drawRadius = try decoder.decode(Double.self)
     
     bondDistanceCriteria = try decoder.decode(Double.self)
-    potentialParameters = try decoder.decode(double2.self)
+    potentialParameters = try decoder.decode(SIMD2<Double>.self)
     tag = try decoder.decode(Int.self)
     isFixed = try decoder.decode(Bool3.self)
     isVisible = try decoder.decode(Bool.self)
@@ -365,7 +365,7 @@ public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
   
-  public var position: double3 = double3(x: 0.0, y: 0.0, z: 0.0)
+  public var position: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
   
   // list of bonds the atom is involved in
   public var bonds: Set<SKBondNode> = []
@@ -384,7 +384,7 @@ public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable
     case duplicate = 3
   }
   
-  public init(asymmetricParentAtom: SKAsymmetricAtom, position: double3)
+  public init(asymmetricParentAtom: SKAsymmetricAtom, position: SIMD3<Double>)
   {
     self.position = position
     self.asymmetricParentAtom = asymmetricParentAtom
@@ -397,7 +397,7 @@ public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable
   {
     var container = try decoder.unkeyedContainer()
     
-    self.position = try container.decode(double3.self)
+    self.position = try container.decode(SIMD3<Double>.self)
     self.type = try AtomCopyType(rawValue: container.decode(Int.self))!
   }
   
@@ -429,7 +429,7 @@ public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable
     {
       throw BinaryDecodableError.invalidArchiveVersion
     }
-    self.position = try decoder.decode(double3.self)
+    self.position = try decoder.decode(SIMD3<Double>.self)
     self.type = try AtomCopyType(rawValue: decoder.decode(Int.self))!
     self.tag = try decoder.decode(Int.self)
     self.asymmetricIndex = try decoder.decode(Int.self)

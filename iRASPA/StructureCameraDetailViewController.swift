@@ -383,7 +383,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
           sliderEulerAngleY.isEnabled = false
           textFieldEulerAngleZ.isEnabled = false
           sliderEulerAngleZ.isEnabled = false
-          if let EulerAngles: double3 = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.EulerAngles
+          if let EulerAngles: SIMD3<Double> = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.EulerAngles
           {
             textFieldEulerAngleX.isEnabled = true
             sliderEulerAngleX.isEnabled = true
@@ -485,7 +485,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
            let textFieldCameraPositionZ: NSTextField = view.viewWithTag(22) as? NSTextField,
            let textFieldCameraDistance: NSTextField = view.viewWithTag(23) as? NSTextField
         {
-          if let position: double3 = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.position
+          if let position: SIMD3<Double> = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.position
           {
             textFieldCameraPositionX.doubleValue = position.x
             textFieldCameraPositionY.doubleValue = position.y
@@ -939,7 +939,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       let view: NSTableCellView = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
       let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
-      let EulerAngles: double3 = renderCamera.EulerAngles
+      let EulerAngles: SIMD3<Double> = renderCamera.EulerAngles
       
       if let textFieldEulerAngleX: NSTextField = view.viewWithTag(40) as? NSTextField
       {
@@ -972,8 +972,8 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       }
       
       
-      let position: double3 = renderCamera.position
-      let centerOfScene: double3 = renderCamera.centerOfScene
+      let position: SIMD3<Double> = renderCamera.position
+      let centerOfScene: SIMD3<Double> = renderCamera.centerOfScene
       
       if let textFieldCamerPositionX: NSTextField = view.viewWithTag(20) as? NSTextField
       {
@@ -1135,10 +1135,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       if let nf: NumberFormatter = sender.formatter as?  NumberFormatter,
         let number: NSNumber = nf.number(from: sender.stringValue)
       {
-        let EulerAngles: double3 = renderCamera.EulerAngles
+        let EulerAngles: SIMD3<Double> = renderCamera.EulerAngles
         let newValue: Double = number.doubleValue
         
-        renderCamera.worldRotation = simd_quatd(EulerAngles: double3(x: newValue * Double.pi/180.0, y: EulerAngles.y, z: EulerAngles.z))
+        renderCamera.worldRotation = simd_quatd(EulerAngles: SIMD3<Double>(x: newValue * Double.pi/180.0, y: EulerAngles.y, z: EulerAngles.z))
         
         self.windowController?.detailTabViewController?.renderViewController?.redraw()
         
@@ -1156,10 +1156,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   {
     if let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
-      let EulerAngles: double3 = renderCamera.EulerAngles
+      let EulerAngles: SIMD3<Double> = renderCamera.EulerAngles
       let newValue: Double = sender.doubleValue
       
-      renderCamera.worldRotation = simd_quatd(EulerAngles: double3(x: newValue * Double.pi/180.0, y: EulerAngles.y, z: EulerAngles.z))
+      renderCamera.worldRotation = simd_quatd(EulerAngles: SIMD3<Double>(x: newValue * Double.pi/180.0, y: EulerAngles.y, z: EulerAngles.z))
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -1174,10 +1174,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   {
     if let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
-      let EulerAngles: double3 = renderCamera.EulerAngles
+      let EulerAngles: SIMD3<Double> = renderCamera.EulerAngles
       let newValue: Double = sender.doubleValue
       
-      renderCamera.worldRotation = simd_quatd(EulerAngles: double3(x: EulerAngles.x, y: EulerAngles.y, z: newValue * Double.pi/180.0))
+      renderCamera.worldRotation = simd_quatd(EulerAngles: SIMD3<Double>(x: EulerAngles.x, y: EulerAngles.y, z: newValue * Double.pi/180.0))
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -1192,10 +1192,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   {
     if let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
-      let EulerAngles: double3 = renderCamera.EulerAngles
+      let EulerAngles: SIMD3<Double> = renderCamera.EulerAngles
       let newValue: Double = sender.doubleValue
       
-      renderCamera.worldRotation = simd_quatd(EulerAngles: double3(x: EulerAngles.x, y: EulerAngles.y, z: newValue * Double.pi/180.0))
+      renderCamera.worldRotation = simd_quatd(EulerAngles: SIMD3<Double>(x: EulerAngles.x, y: EulerAngles.y, z: newValue * Double.pi/180.0))
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -1211,10 +1211,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   {
     if let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
-      let EulerAngles: double3 = renderCamera.EulerAngles
+      let EulerAngles: SIMD3<Double> = renderCamera.EulerAngles
       let newValue: Double = sender.doubleValue
       
-      renderCamera.worldRotation = simd_quatd(EulerAngles: double3(x: EulerAngles.x, y: newValue * Double.pi/180.0, z: EulerAngles.z))
+      renderCamera.worldRotation = simd_quatd(EulerAngles: SIMD3<Double>(x: EulerAngles.x, y: newValue * Double.pi/180.0, z: EulerAngles.z))
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -1227,10 +1227,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   {
     if let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
-      let EulerAngles: double3 = renderCamera.EulerAngles
+      let EulerAngles: SIMD3<Double> = renderCamera.EulerAngles
       let newValue: Double = sender.doubleValue
       
-      renderCamera.worldRotation = simd_quatd(EulerAngles: double3(x: EulerAngles.x, y: newValue * Double.pi/180.0, z: EulerAngles.z))
+      renderCamera.worldRotation = simd_quatd(EulerAngles: SIMD3<Double>(x: EulerAngles.x, y: newValue * Double.pi/180.0, z: EulerAngles.z))
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       

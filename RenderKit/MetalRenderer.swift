@@ -289,10 +289,10 @@ public class MetalRenderer
     vertexDescriptor.attributes[0].offset = 0;
     vertexDescriptor.attributes[0].format = .float4
     vertexDescriptor.attributes[0].bufferIndex = 0
-    vertexDescriptor.attributes[1].offset = MemoryLayout<float4>.stride
+    vertexDescriptor.attributes[1].offset = MemoryLayout<SIMD4<Float>>.stride
     vertexDescriptor.attributes[1].format = .float4
     vertexDescriptor.attributes[1].bufferIndex = 0
-    vertexDescriptor.attributes[2].offset = MemoryLayout<float4>.stride * 2
+    vertexDescriptor.attributes[2].offset = MemoryLayout<SIMD4<Float>>.stride * 2
     vertexDescriptor.attributes[2].format = .float2
     vertexDescriptor.attributes[2].bufferIndex = 0
     vertexDescriptor.layouts[0].stepFunction = .perVertex

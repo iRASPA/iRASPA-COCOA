@@ -815,7 +815,7 @@ extension CellViewer
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = double3(newValue ?? 0.0,$0.orientation.EulerAngles.y,$0.orientation.EulerAngles.z)}
+      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.orientation.EulerAngles.y,$0.orientation.EulerAngles.z)}
     }
   }
   
@@ -828,7 +828,7 @@ extension CellViewer
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = double3($0.orientation.EulerAngles.x, newValue ?? 0.0,$0.orientation.EulerAngles.z)}
+      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, newValue ?? 0.0,$0.orientation.EulerAngles.z)}
     }
   }
   
@@ -841,14 +841,14 @@ extension CellViewer
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = double3($0.orientation.EulerAngles.x, $0.orientation.EulerAngles.y, newValue ?? 0.0)}
+      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, $0.orientation.EulerAngles.y, newValue ?? 0.0)}
     }
   }
   
   public var renderBoundingBox: SKBoundingBox
   {
-    var minimum: double3 = double3(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
-    var maximum: double3 = double3(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
+    var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
+    var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
     
     for frame in self.structureViewerStructures
     {
@@ -1710,7 +1710,7 @@ extension Array where Iterator.Element == CellViewer
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = double3(newValue ?? 0.0,$0.orientation.EulerAngles.y,$0.orientation.EulerAngles.z)}
+      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.orientation.EulerAngles.y,$0.orientation.EulerAngles.z)}
     }
   }
   
@@ -1723,7 +1723,7 @@ extension Array where Iterator.Element == CellViewer
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = double3($0.orientation.EulerAngles.x, newValue ?? 0.0,$0.orientation.EulerAngles.z)}
+      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, newValue ?? 0.0,$0.orientation.EulerAngles.z)}
     }
   }
   
@@ -1736,14 +1736,14 @@ extension Array where Iterator.Element == CellViewer
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = double3($0.orientation.EulerAngles.x, $0.orientation.EulerAngles.y, newValue ?? 0.0)}
+      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, $0.orientation.EulerAngles.y, newValue ?? 0.0)}
     }
   }
   
   public var renderBoundingBox: SKBoundingBox
   {
-    var minimum: double3 = double3(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
-    var maximum: double3 = double3(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
+    var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
+    var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
     
     for frame in self.structureViewerStructures
     {

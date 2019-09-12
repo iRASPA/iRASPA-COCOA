@@ -45,9 +45,9 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
   let keywordSet: CharacterSet
   let newLineChararterSet: CharacterSet
   
-  var a: double3 = double3(20.0,0.0,0.0)
-  var b: double3 = double3(0.0,20.0,0.0)
-  var c: double3 = double3(0.0,0.0,20.0)
+  var a: SIMD3<Double> = SIMD3<Double>(20.0,0.0,0.0)
+  var b: SIMD3<Double> = SIMD3<Double>(0.0,20.0,0.0)
+  var c: SIMD3<Double> = SIMD3<Double>(0.0,0.0,20.0)
   
   var currentCell: SKCell = SKCell(a: 20.0, b: 20.0, c: 20.0, alpha: 90.0*Double.pi/180.0, beta: 90.0*Double.pi/180.0, gamma: 90.0*Double.pi/180.0)
   var currentElements: [String] = []
@@ -116,12 +116,12 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
             let orthogonalZCoordinate: Double = Double(words[2]),
             let atomicNumber: Int = SKElement.atomData[chemicalElement.lowercased().capitalizeFirst]?["atomicNumber"] as? Int
           {
-            let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: chemicalElement, elementId: 0, uniqueForceFieldName: chemicalElement, position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+            let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: chemicalElement, elementId: 0, uniqueForceFieldName: chemicalElement, position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
               
             atom.elementIdentifier = atomicNumber
             atom.displayName = chemicalElement
             atom.uniqueForceFieldName = chemicalElement
-            atom.position = double3(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+            atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
             atom.fractional = true
               
             if words.count >= 6,
@@ -229,7 +229,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let ax = Double(words[0]), let ay = Double(words[1]), let az = Double(words[2])
     {
-      a = scaleFactor *  double3(ax,ay,az)
+      a = scaleFactor *  SIMD3<Double>(ax,ay,az)
     }
     else
     {
@@ -242,7 +242,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     {
       if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let bx = Double(words[0]), let by = Double(words[1]), let bz = Double(words[2])
       {
-        b = scaleFactor *  double3(bx,by,bz)
+        b = scaleFactor *  SIMD3<Double>(bx,by,bz)
       }
     }
     else
@@ -255,7 +255,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
       let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 3, let cx = Double(words[0]), let cy = Double(words[1]), let cz = Double(words[2])
     {
-      c = scaleFactor *  double3(cx,cy,cz)
+      c = scaleFactor *  SIMD3<Double>(cx,cy,cz)
     }
     else
     {

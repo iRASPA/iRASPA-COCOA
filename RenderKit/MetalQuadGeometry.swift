@@ -37,10 +37,10 @@ import simd
 
 public class MetalQuadGeometry
 {
-  public var vertices: [RKVertex] = [RKVertex(position: float4(x: -1.0, y: -1.0, z: 0.0, w: 1.0), normal: float4(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: float2()),
-                                 RKVertex(position: float4(x: -1.0, y:  1.0, z: 0.0, w: 1.0), normal: float4(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: float2()),
-                                 RKVertex(position: float4(x:  1.0, y: -1.0, z: 0.0, w: 1.0), normal: float4(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: float2()),
-                                 RKVertex(position: float4(x:  1.0, y:  1.0, z: 0.0, w: 1.0), normal: float4(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: float2())]
+  public var vertices: [RKVertex] = [RKVertex(position: SIMD4<Float>(x: -1.0, y: -1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
+                                 RKVertex(position: SIMD4<Float>(x: -1.0, y:  1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
+                                 RKVertex(position: SIMD4<Float>(x:  1.0, y: -1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
+                                 RKVertex(position: SIMD4<Float>(x:  1.0, y:  1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>())]
   public var indices: [UInt16] = [0, 1, 2, 3]
     
 

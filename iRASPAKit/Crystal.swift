@@ -195,14 +195,14 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     for i in 0..<atoms.count
     {
-      let CartesianPosition: double3 = atoms[i].position
-      let position: double3 = cell.convertToFractional(CartesianPosition)
+      let CartesianPosition: SIMD3<Double> = atoms[i].position
+      let position: SIMD3<Double> = cell.convertToFractional(CartesianPosition)
       atoms[i].position = position
       
       for copy in atoms[i].copies
       {
-        let CartesianPosition: double3 = copy.position
-        let position: double3 = cell.convertToFractional(CartesianPosition)
+        let CartesianPosition: SIMD3<Double> = copy.position
+        let position: SIMD3<Double> = cell.convertToFractional(CartesianPosition)
         copy.position = position
       }
     }
@@ -213,66 +213,66 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   // MARK: Measuring distance, angle, and dihedral-angles
   // ===============================================================================================================================
 
-  override public func bondVector(_ bond: SKBondNode) -> double3
+  override public func bondVector(_ bond: SKBondNode) -> SIMD3<Double>
   {
-    let atom1: double3 = bond.atom1.position
-    let atom2: double3 = bond.atom2.position
-    var ds: double3 = atom2 - atom1
-    ds -= floor(ds + double3(0.5,0.5,0.5))
+    let atom1: SIMD3<Double> = bond.atom1.position
+    let atom2: SIMD3<Double> = bond.atom2.position
+    var ds: SIMD3<Double> = atom2 - atom1
+    ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
     return self.cell.unitCell * ds
   }
   
   override public func bondLength(_ bond: SKBondNode) -> Double
   {
-    let atom1: double3 = bond.atom1.position
-    let atom2: double3 = bond.atom2.position
-    var ds: double3 = atom2 - atom1
-    ds -= floor(ds + double3(0.5,0.5,0.5))
+    let atom1: SIMD3<Double> = bond.atom1.position
+    let atom2: SIMD3<Double> = bond.atom2.position
+    var ds: SIMD3<Double> = atom2 - atom1
+    ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
     return length(self.cell.unitCell * ds)
   }
   
-  override public func distance(_ atom1: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atom2: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3)) -> Double
+  override public func distance(_ atom1: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atom2: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
   {
-    let atom1: double3 = self.cell.unitCell * (atom1.copy.position + double3(atom1.replicaPosition))
-    let atom2: double3 = self.cell.unitCell * (atom2.copy.position + double3(atom2.replicaPosition))
-    var dr: double3 = atom2 - atom1
+    let atom1: SIMD3<Double> = self.cell.unitCell * (atom1.copy.position + SIMD3<Double>(atom1.replicaPosition))
+    let atom2: SIMD3<Double> = self.cell.unitCell * (atom2.copy.position + SIMD3<Double>(atom2.replicaPosition))
+    var dr: SIMD3<Double> = atom2 - atom1
     dr = cell.applyFullCellBoundaryCondition(dr)
     return length(dr)
   }
   
-  public override func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3)) -> Double
+  public override func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
   {
-    let posA: double3 = self.cell.unitCell * (atomA.copy.position + double3(atomA.replicaPosition))
-    let posB: double3 = self.cell.unitCell * (atomB.copy.position + double3(atomB.replicaPosition))
-    let posC: double3 = self.cell.unitCell * (atomC.copy.position + double3(atomC.replicaPosition))
+    let posA: SIMD3<Double> = self.cell.unitCell * (atomA.copy.position + SIMD3<Double>(atomA.replicaPosition))
+    let posB: SIMD3<Double> = self.cell.unitCell * (atomB.copy.position + SIMD3<Double>(atomB.replicaPosition))
+    let posC: SIMD3<Double> = self.cell.unitCell * (atomC.copy.position + SIMD3<Double>(atomC.replicaPosition))
     
-    var dr1: double3 = posA - posB
+    var dr1: SIMD3<Double> = posA - posB
     dr1 = cell.applyFullCellBoundaryCondition(dr1)
     
-    var dr2: double3 = posC - posB
+    var dr2: SIMD3<Double> = posC - posB
     dr2 = cell.applyFullCellBoundaryCondition(dr2)
     
-    let vectorAB: double3 = normalize(dr1)
-    let vectorBC: double3 = normalize(dr2)
+    let vectorAB: SIMD3<Double> = normalize(dr1)
+    let vectorBC: SIMD3<Double> = normalize(dr2)
     
     return acos(dot(vectorAB, vectorBC))
   }
   
-  public override func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3)) -> Double
+  public override func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
   {
-    let posA: double3 = self.cell.unitCell * (atomA.copy.position + double3(atomA.replicaPosition))
-    let posB: double3 = self.cell.unitCell * (atomB.copy.position + double3(atomB.replicaPosition))
-    let posC: double3 = self.cell.unitCell * (atomC.copy.position + double3(atomC.replicaPosition))
-    let posD: double3 = self.cell.unitCell * (atomD.copy.position + double3(atomD.replicaPosition))
+    let posA: SIMD3<Double> = self.cell.unitCell * (atomA.copy.position + SIMD3<Double>(atomA.replicaPosition))
+    let posB: SIMD3<Double> = self.cell.unitCell * (atomB.copy.position + SIMD3<Double>(atomB.replicaPosition))
+    let posC: SIMD3<Double> = self.cell.unitCell * (atomC.copy.position + SIMD3<Double>(atomC.replicaPosition))
+    let posD: SIMD3<Double> = self.cell.unitCell * (atomD.copy.position + SIMD3<Double>(atomD.replicaPosition))
     
-    let dr1: double3 = posA - posB
-    let Dab: double3 = cell.applyFullCellBoundaryCondition(dr1)
+    let dr1: SIMD3<Double> = posA - posB
+    let Dab: SIMD3<Double> = cell.applyFullCellBoundaryCondition(dr1)
     
-    let dr2: double3 = posC - posB
-    let Dbc: double3 = cell.applyFullCellBoundaryCondition(dr2)
+    let dr2: SIMD3<Double> = posC - posB
+    let Dbc: SIMD3<Double> = cell.applyFullCellBoundaryCondition(dr2)
     
-    let dr3: double3 = posD - posC
-    let Dcd: double3 = cell.applyFullCellBoundaryCondition(dr3)
+    let dr3: SIMD3<Double> = posD - posC
+    let Dcd: SIMD3<Double> = cell.applyFullCellBoundaryCondition(dr3)
     
     let dotAB = dot(Dab,Dbc)
     let dotCD = dot(Dcd,Dbc)
@@ -284,8 +284,8 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     // Phi is defined in protein convention Phi(trans)=Pi
     let cosPhi: Double = dot(dr,ds)
     
-    let Pb: double3 = cross(Dbc, Dab)
-    let Pc: double3 = cross(Dbc, Dcd)
+    let Pb: SIMD3<Double> = cross(Dbc, Dab)
+    let Pc: SIMD3<Double> = cross(Dbc, Dcd)
     
     let sign: Double = dot(Dbc, cross(Pb, Pc))
     
@@ -298,14 +298,14 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     return Phi
   }
   
-  public override func CartesianPosition(for position: double3, replicaPosition: int3) -> double3
+  public override func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
-    let fractionalPosition: double3 = double3(position.x + Double(replicaPosition.x),position.y + Double(replicaPosition.y),position.z + Double(replicaPosition.z))
+    let fractionalPosition: SIMD3<Double> = SIMD3<Double>(position.x + Double(replicaPosition.x),position.y + Double(replicaPosition.y),position.z + Double(replicaPosition.z))
     return self.cell.convertToCartesian(fractionalPosition)
   
   }
 
-  public override func computeChangedBondLength(bond: SKBondNode, to bondLength: Double) -> (double3, double3)
+  public override func computeChangedBondLength(bond: SKBondNode, to bondLength: Double) -> (SIMD3<Double>, SIMD3<Double>)
   {
     let pos1 = bond.atom1.position
     let asymmetricAtom1 = bond.atom1.asymmetricParentAtom
@@ -314,7 +314,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     let oldBondLength: Double = self.bondLength(bond)
     
-    let bondVector: double3 = normalize(self.bondVector(bond))
+    let bondVector: SIMD3<Double> = normalize(self.bondVector(bond))
     
     let isAllFixed1: Bool = (asymmetricAtom1?.isFixed.x ?? false) && (asymmetricAtom1?.isFixed.y ?? false) &&
         (asymmetricAtom1?.isFixed.z ?? false)
@@ -325,14 +325,14 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     switch (isAllFixed1,isAllFixed2)
     {
     case (false, false):
-      let newPos1: double3 = self.cell.convertToFractional( self.cell.convertToCartesian(pos1) - 0.5 * (bondLength - oldBondLength) * bondVector)
-      let newPos2: double3 = self.cell.convertToFractional( self.cell.convertToCartesian(pos2) + 0.5 * (bondLength - oldBondLength) * bondVector)
+      let newPos1: SIMD3<Double> = self.cell.convertToFractional( self.cell.convertToCartesian(pos1) - 0.5 * (bondLength - oldBondLength) * bondVector)
+      let newPos2: SIMD3<Double> = self.cell.convertToFractional( self.cell.convertToCartesian(pos2) + 0.5 * (bondLength - oldBondLength) * bondVector)
       return (newPos1, newPos2)
     case (true, false):
-      let newPos2: double3 = self.cell.convertToFractional( self.cell.convertToCartesian(pos1) + bondLength * bondVector)
+      let newPos2: SIMD3<Double> = self.cell.convertToFractional( self.cell.convertToCartesian(pos1) + bondLength * bondVector)
       return (pos1, newPos2)
     case (false, true):
-      let newPos1: double3 = self.cell.convertToFractional( self.cell.convertToCartesian(pos2) - bondLength * bondVector)
+      let newPos1: SIMD3<Double> = self.cell.convertToFractional( self.cell.convertToCartesian(pos2) - bondLength * bondVector)
       return (newPos1, pos2)
     case (true, true):
       return (pos1,pos2)
@@ -367,7 +367,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       
       for copy in copies
       {
-        let pos: double3 = copy.position
+        let pos: SIMD3<Double> = copy.position
         copy.asymmetricIndex = asymetricIndex
         
         for k1 in minimumReplicaX...maximumReplicaX
@@ -376,13 +376,13 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
           {
             for k3 in minimumReplicaZ...maximumReplicaZ
             {
-              let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
-              let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
+              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
+              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
               
               
               
               let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled) ? 1.0 : -1.0
-              let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
+              let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
               let radius: Float = Float(copy.asymmetricParentAtom.drawRadius)
               
               let text: String
@@ -404,7 +404,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
                 text = String(copy.asymmetricParentAtom.charge)
               }
               
-              let instances = fontAtlas.buildMeshWithString(position: atomPosition, scale: float4(radius,radius,radius,1.0), text: text, alignment: self.atomTextAlignment)
+              let instances = fontAtlas.buildMeshWithString(position: atomPosition, scale: SIMD4<Float>(radius,radius,radius,1.0), text: text, alignment: self.atomTextAlignment)
               
               data += instances
             }
@@ -450,7 +450,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       
       for copy in copies
       {
-        let pos: double3 = double3.flip(v: copy.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+        let pos: SIMD3<Double> = SIMD3<Double>.flip(v: copy.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
         copy.asymmetricIndex = asymetricIndex
       
         for k1 in minimumReplicaX...maximumReplicaX
@@ -459,18 +459,18 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
           {
             for k3 in minimumReplicaZ...maximumReplicaZ
             {
-              let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
-              let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
+              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
+              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
             
               let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
-              let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
+              let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
             
               let radius: Double = copy.asymmetricParentAtom.drawRadius * copy.asymmetricParentAtom.occupancy
               let ambient: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
               let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
               let specular: NSColor = self.atomSpecularColor
               
-              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
+              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
               index = index + 1
             }
           }
@@ -512,11 +512,11 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       
       let displacement = self.cell.convertToFractional(asymetricAtom.displacement)
       
-      let images: [double3] = spaceGroup.listOfSymmetricPositions(asymetricAtom.position + displacement)
+      let images: [SIMD3<Double>] = spaceGroup.listOfSymmetricPositions(asymetricAtom.position + displacement)
       for image in images
       {
         
-        let pos: double3 = double3.flip(v: fract(image), flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+        let pos: SIMD3<Double> = SIMD3<Double>.flip(v: fract(image), flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
         
         for k1 in minimumReplicaX...maximumReplicaX
         {
@@ -524,18 +524,18 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
           {
             for k3 in minimumReplicaZ...maximumReplicaZ
             {
-              let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
-              let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
+              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
+              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
               
               let w: Double = (typeIsVisible && asymetricAtom.isVisible && asymetricAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
-              let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
+              let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
               
               let radius: Double = asymetricAtom.drawRadius * asymetricAtom.occupancy
               let ambient: NSColor = asymetricAtom.color
               let diffuse: NSColor = asymetricAtom.color 
               let specular: NSColor = self.atomSpecularColor
               
-              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
+              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
               index = index + 1
             }
           }
@@ -547,7 +547,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   
   
-  public override var atomPositions: [double4]
+  public override var atomPositions: [SIMD4<Double>]
   {
     var index: Int
     
@@ -568,7 +568,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
-    var data: [double4] = [double4](repeating: double4(), count: numberOfReplicas * atoms.count)
+    var data: [SIMD4<Double>] = [SIMD4<Double>](repeating: SIMD4<Double>(), count: numberOfReplicas * atoms.count)
     
     index = 0
     for atom in atoms
@@ -576,7 +576,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       let atomType: SKForceFieldType? = forceFieldSet?[atom.asymmetricParentAtom.uniqueForceFieldName]
       let typeIsVisible: Bool = atomType?.isVisible ?? true
       
-      let pos: double3 = double3.flip(v: atom.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+      let pos: SIMD3<Double> = SIMD3<Double>.flip(v: atom.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
       
       for k1 in minimumReplicaX...maximumReplicaX
       {
@@ -586,11 +586,11 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
           {
             let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
             
-            let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
-            let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
+            let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
+            let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
             
             let w: Double = (typeIsVisible && atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
-            let position: double4 = rotationMatrix * double4(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: w)
+            let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: w)
             
             data[index] = position
             index = index + 1
@@ -603,13 +603,13 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   
   
-  public override var crystallographicPositions: [(double3, Int)]
+  public override var crystallographicPositions: [(SIMD3<Double>, Int)]
   {
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy && $0.asymmetricParentAtom.symmetryType != .container}
     
-    var data: [(double3, Int)] = [(double3,Int)](repeating: (double3(),0), count: atoms.count)
+    var data: [(SIMD3<Double>, Int)] = [(SIMD3<Double>,Int)](repeating: (SIMD3<Double>(),0), count: atoms.count)
     
     for (index, atom) in atoms.enumerated()
     {
@@ -618,7 +618,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     return data
   }
 
-  public override var potentialParameters: [double2]
+  public override var potentialParameters: [SIMD2<Double>]
   {
     var index: Int
     
@@ -626,7 +626,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
-    var data: [double2] = [double2](repeating: double2(), count: atoms.count)
+    var data: [SIMD2<Double>] = [SIMD2<Double>](repeating: SIMD2<Double>(), count: atoms.count)
     
     index = 0
     for atom in atoms
@@ -642,7 +642,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   {
     var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms]()
     
-    let boundingBoxWidths: double3 = self.cell.boundingBox.widths
+    let boundingBoxWidths: SIMD3<Double> = self.cell.boundingBox.widths
     
     let scale: Double = 0.0025 * max(boundingBoxWidths.x,boundingBoxWidths.y,boundingBoxWidths.z)
     
@@ -652,14 +652,14 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       {
         for k3 in self.cell.minimumReplica.z...self.cell.maximumReplica.z+1
         {
-          let cartesianPosition: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3)))
-          let spherePosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: 1.0)
+          let cartesianPosition: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
+          let spherePosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: 1.0)
           
           let ambient: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
           let diffuse: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
           let specular: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
           
-          data.append(RKInPerInstanceAttributesAtoms(position: spherePosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(scale)))
+          data.append(RKInPerInstanceAttributesAtoms(position: spherePosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(scale)))
         }
       }
     }
@@ -674,7 +674,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let color1: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     let color2: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     
-    let boundingBoxWidths: double3 = self.cell.boundingBox.widths
+    let boundingBoxWidths: SIMD3<Double> = self.cell.boundingBox.widths
     let scale: Double = 0.0025 * max(boundingBoxWidths.x,boundingBoxWidths.y,boundingBoxWidths.z)
     
     for k1 in self.cell.minimumReplica.x...self.cell.maximumReplica.x+1
@@ -688,48 +688,48 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
           {
             var cylinder: RKBondVertex = RKBondVertex()
             
-            let pos1: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3)))
-            cylinder.position1=float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
-            let pos2: double3 = cell.convertToCartesian(double3(x: Double(k1+1), y: Double(k2), z: Double(k3)))
-            cylinder.position2=float4(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
+            let pos1: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
+            cylinder.position1=SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
+            let pos2: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1+1), y: Double(k2), z: Double(k3)))
+            cylinder.position2=SIMD4<Float>(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
             
-            data.append(RKInPerInstanceAttributesBonds(position1: float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
-              position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
-              color1: float4(color: color1),
-              color2: float4(color: color2),
-              scale: float4(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0)))
+            data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
+              position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
+              color1: SIMD4<Float>(color: color1),
+              color2: SIMD4<Float>(color: color2),
+              scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0)))
           }
           
           if(k2 <= self.cell.maximumReplica[1])
           {
             var cylinder: RKBondVertex = RKBondVertex()
             
-            let pos1: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3)))
-            cylinder.position1=float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
-            let pos2: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2+1), z: Double(k3)))
-            cylinder.position2=float4(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
+            let pos1: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
+            cylinder.position1=SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
+            let pos2: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2+1), z: Double(k3)))
+            cylinder.position2=SIMD4<Float>(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
             
-            data.append(RKInPerInstanceAttributesBonds(position1: float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
-              position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
-              color1: float4(color: color1),
-              color2: float4(color: color2),
-              scale: float4(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0)))
+            data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
+              position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
+              color1: SIMD4<Float>(color: color1),
+              color2: SIMD4<Float>(color: color2),
+              scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0)))
           }
           
           if(k3 <= self.cell.maximumReplica[2])
           {
             var cylinder: RKBondVertex = RKBondVertex()
             
-            let pos1: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3)))
-            cylinder.position1=float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
-            let pos2: double3 = cell.convertToCartesian(double3(x: Double(k1), y: Double(k2), z: Double(k3+1)))
-            cylinder.position2=float4(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
+            let pos1: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
+            cylinder.position1=SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
+            let pos2: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3+1)))
+            cylinder.position2=SIMD4<Float>(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
             
-            data.append(RKInPerInstanceAttributesBonds(position1: float4(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
-              position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
-              color1: float4(color: color1),
-              color2: float4(color: color2),
-              scale: float4(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0)))
+            data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
+              position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
+              color1: SIMD4<Float>(color: color1),
+              color2: SIMD4<Float>(color: color2),
+              scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0)))
           }
         }
       }
@@ -766,8 +766,8 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
           let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
           let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
           
-          let atomPos1 = double3.flip(v: atom1.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
-          let atomPos2 = double3.flip(v: atom2.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+          let atomPos1 = SIMD3<Double>.flip(v: atom1.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+          let atomPos2 = SIMD3<Double>.flip(v: atom2.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
           
           let color1: NSColor = asymmetricAtom1.color
           let color2: NSColor = asymmetricAtom2.color
@@ -783,19 +783,19 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
             {
               for k3 in minimumReplicaZ...maximumReplicaZ
               {
-                let pos1: double3 = cell.convertToCartesian(atomPos1 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom1.displacement
-                let pos2: double3 = cell.convertToCartesian(atomPos2 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom2.displacement
+                let pos1: SIMD3<Double> = cell.convertToCartesian(atomPos1 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom1.displacement
+                let pos2: SIMD3<Double> = cell.convertToCartesian(atomPos2 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom2.displacement
                 let bondLength: Double = length(pos2-pos1)
                 
                 let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength
                 let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength
                 
                 let w: Double = (typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) && (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
-                data.append(RKInPerInstanceAttributesBonds(position1: float4(xyz: pos1, w: w),
-                  position2: float4(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
-                  color1: float4(color: color1),
-                  color2: float4(color: color2),
-                  scale: float4(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2)))
+                data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(xyz: pos1, w: w),
+                  position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
+                  color1: SIMD4<Float>(color: color1),
+                  color2: SIMD4<Float>(color: color2),
+                  scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2)))
               }
             }
           }
@@ -834,8 +834,8 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
         let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
         let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
         
-        let atomPos1 = double3.flip(v: atom1.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
-        let atomPos2 = double3.flip(v: atom2.position, flip: cell.contentFlip, boundary: double3(1.0,1.0,1.0))
+        let atomPos1 = SIMD3<Double>.flip(v: atom1.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+        let atomPos2 = SIMD3<Double>.flip(v: atom2.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
         
         let color1: NSColor = asymmetricAtom1.color
         let color2: NSColor = asymmetricAtom2.color
@@ -851,17 +851,17 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
           {
             for k3 in minimumReplicaZ...maximumReplicaZ
             {
-              let frac_pos1: double3 = atomPos1 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
-              let frac_pos2: double3 = atomPos2 + double3(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
-              var dr: double3 = frac_pos2 - frac_pos1
+              let frac_pos1: SIMD3<Double> = atomPos1 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+              let frac_pos2: SIMD3<Double> = atomPos2 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+              var dr: SIMD3<Double> = frac_pos2 - frac_pos1
               
               // apply boundary condition
               dr.x -= rint(dr.x)
               dr.y -= rint(dr.y)
               dr.z -= rint(dr.z)
               
-              let pos1: double3 = cell.convertToCartesian(frac_pos1) + asymmetricAtom1.displacement
-              let pos2: double3 = cell.convertToCartesian(frac_pos2) + asymmetricAtom2.displacement
+              let pos1: SIMD3<Double> = cell.convertToCartesian(frac_pos1) + asymmetricAtom1.displacement
+              let pos2: SIMD3<Double> = cell.convertToCartesian(frac_pos2) + asymmetricAtom2.displacement
               
               dr = cell.convertToCartesian(dr)
               let bondLength: Double = length(dr)
@@ -871,16 +871,16 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
               
               let w: Double = (typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) && (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
               
-              data.append(RKInPerInstanceAttributesBonds(position1: float4(xyz: pos1, w: w),
-                position2: float4(x: pos1.x+dr.x, y: pos1.y+dr.y, z: pos1.z+dr.z, w: w),
-                color1: float4(color: color1),
-                color2: float4(color: color2),
-                scale: float4(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2)))
-              data.append(RKInPerInstanceAttributesBonds(position1: float4(xyz: pos2, w: w),
-                position2: float4(x: pos2.x-dr.x, y: pos2.y-dr.y, z: pos2.z-dr.z, w: w),
-                color1: float4(color: color2),
-                color2: float4(color: color1),
-                scale: float4(x: drawRadius2, y: 1.0, z: drawRadius1, w: drawRadius2/drawRadius1)))
+              data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(xyz: pos1, w: w),
+                position2: SIMD4<Float>(x: pos1.x+dr.x, y: pos1.y+dr.y, z: pos1.z+dr.z, w: w),
+                color1: SIMD4<Float>(color: color1),
+                color2: SIMD4<Float>(color: color2),
+                scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2)))
+              data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(xyz: pos2, w: w),
+                position2: SIMD4<Float>(x: pos2.x-dr.x, y: pos2.y-dr.y, z: pos2.z-dr.z, w: w),
+                color1: SIMD4<Float>(color: color2),
+                color2: SIMD4<Float>(color: color1),
+                scale: SIMD4<Float>(x: drawRadius2, y: 1.0, z: drawRadius1, w: drawRadius2/drawRadius1)))
             }
           }
         }
@@ -898,7 +898,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     {
       asymmetricAtom.copies = []
       
-      let images: [double3] = spaceGroup.listOfSymmetricPositions(asymmetricAtom.position)
+      let images: [SIMD3<Double>] = spaceGroup.listOfSymmetricPositions(asymmetricAtom.position)
     
       for image in images
       {
@@ -913,7 +913,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   {
     asymmetricAtom.copies = []
       
-    let images: [double3] = spaceGroup.listOfSymmetricPositions(asymmetricAtom.position)
+    let images: [SIMD3<Double>] = spaceGroup.listOfSymmetricPositions(asymmetricAtom.position)
       
     for image in images
     {
@@ -1009,32 +1009,32 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let minimumReplica = cell.minimumReplica
     let maximumReplica = cell.maximumReplica
     
-    let c0: double3 = self.cell.unitCell * (double3(x: Double(minimumReplica.x),  y: Double(minimumReplica.y),  z: Double(minimumReplica.z)))
-    let c1: double3 = self.cell.unitCell * (double3(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(minimumReplica.z)))
-    let c2: double3 = self.cell.unitCell * (double3(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(minimumReplica.z)))
-    let c3: double3 = self.cell.unitCell * (double3(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(minimumReplica.z)))
-    let c4: double3 = self.cell.unitCell * (double3(x: Double(minimumReplica.x),   y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1)))
-    let c5: double3 = self.cell.unitCell * (double3(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1)))
-    let c6: double3 = self.cell.unitCell * (double3(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
-    let c7: double3 = self.cell.unitCell * (double3(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
+    let c0: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),  y: Double(minimumReplica.y),  z: Double(minimumReplica.z)))
+    let c1: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(minimumReplica.z)))
+    let c2: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(minimumReplica.z)))
+    let c3: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(minimumReplica.z)))
+    let c4: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1)))
+    let c5: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1)))
+    let c6: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
+    let c7: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
     
     let rotationMatrix: double4x4 = double4x4(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
     
-    let r0 = rotationMatrix * double4(c0.x,c0.y,c0.z,1.0)
-    let r1 = rotationMatrix * double4(c1.x,c1.y,c1.z,1.0)
-    let r2 = rotationMatrix * double4(c2.x,c2.y,c2.z,1.0)
-    let r3 = rotationMatrix * double4(c3.x,c3.y,c3.z,1.0)
-    let r4 = rotationMatrix * double4(c4.x,c4.y,c4.z,1.0)
-    let r5 = rotationMatrix * double4(c5.x,c5.y,c5.z,1.0)
-    let r6 = rotationMatrix * double4(c6.x,c6.y,c6.z,1.0)
-    let r7 = rotationMatrix * double4(c7.x,c7.y,c7.z,1.0)
+    let r0 = rotationMatrix * SIMD4<Double>(c0.x,c0.y,c0.z,1.0)
+    let r1 = rotationMatrix * SIMD4<Double>(c1.x,c1.y,c1.z,1.0)
+    let r2 = rotationMatrix * SIMD4<Double>(c2.x,c2.y,c2.z,1.0)
+    let r3 = rotationMatrix * SIMD4<Double>(c3.x,c3.y,c3.z,1.0)
+    let r4 = rotationMatrix * SIMD4<Double>(c4.x,c4.y,c4.z,1.0)
+    let r5 = rotationMatrix * SIMD4<Double>(c5.x,c5.y,c5.z,1.0)
+    let r6 = rotationMatrix * SIMD4<Double>(c6.x,c6.y,c6.z,1.0)
+    let r7 = rotationMatrix * SIMD4<Double>(c7.x,c7.y,c7.z,1.0)
     
     
-    let minimum = double3(x: min(r0.x, r1.x, r2.x, r3.x, r4.x, r5.x, r6.x, r7.x),
+    let minimum = SIMD3<Double>(x: min(r0.x, r1.x, r2.x, r3.x, r4.x, r5.x, r6.x, r7.x),
                           y: min(r0.y, r1.y, r2.y, r3.y, r4.y, r5.y, r6.y, r7.y),
                           z: min(r0.z, r1.z, r2.z, r3.z, r4.z, r5.z, r6.z, r7.z))
 
-    let maximum = double3(x: max(r0.x, r1.x, r2.x, r3.x, r4.x, r5.x, r6.x, r7.x),
+    let maximum = SIMD3<Double>(x: max(r0.x, r1.x, r2.x, r3.x, r4.x, r5.x, r6.x, r7.x),
                           y: max(r0.y, r1.y, r2.y, r3.y, r4.y, r5.y, r6.y, r7.y),
                           z: max(r0.z, r1.z, r2.z, r3.z, r4.z, r5.z, r6.z, r7.z))
     
@@ -1049,7 +1049,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   // MARK: -
   // MARK: Crystal operations
 
-  public override func translateSelection(by shift: double3)
+  public override func translateSelection(by shift: SIMD3<Double>)
   {
     for node in self.atoms.selectedTreeNodes
     {
@@ -1058,20 +1058,20 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
   }
   
-  public override func finalizeTranslateSelection(by shift: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func finalizeTranslateSelection(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
     let crystal: Crystal =  self.copy() as! Crystal
     
     for node in self.atoms.selectedTreeNodes
     {
-      node.representedObject.displacement = double3(0,0,0)
+      node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
     
     for node in crystal.atoms.selectedTreeNodes
     {
       node.representedObject.position += self.cell.convertToFractional(shift)
-      node.representedObject.displacement = double3(0,0,0)
+      node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
     crystal.expandSymmetry()
     
@@ -1084,10 +1084,10 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     return (atoms: crystal.atoms, bonds: crystal.bonds)
   }
   
-  public override func centerOfMassOfSelection() -> double3
+  public override func centerOfMassOfSelection() -> SIMD3<Double>
   {
-    var centerOfMassCosTheta: double3 = double3(0.0, 0.0, 0.0)
-    var centerOfMassSinTheta: double3 = double3(0.0, 0.0, 0.0)
+    var centerOfMassCosTheta: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
+    var centerOfMassSinTheta: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
     var M: Double = 0.0
     
     let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
@@ -1095,9 +1095,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
       let mass: Double = PredefinedElements.sharedInstance.elementSet[elementIdentifier].mass
-      let pos: double3 = atom.position * 2.0 * Double.pi
-      let cosTheta: double3 = double3(cos(pos.x), cos(pos.y), cos(pos.z))
-      let sinTheta: double3 = double3(sin(pos.x), sin(pos.y), sin(pos.z))
+      let pos: SIMD3<Double> = atom.position * 2.0 * Double.pi
+      let cosTheta: SIMD3<Double> = SIMD3<Double>(cos(pos.x), cos(pos.y), cos(pos.z))
+      let sinTheta: SIMD3<Double> = SIMD3<Double>(sin(pos.x), sin(pos.y), sin(pos.z))
       centerOfMassCosTheta += mass * cosTheta
       centerOfMassSinTheta += mass * sinTheta
       M += mass
@@ -1105,7 +1105,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     centerOfMassCosTheta /= M
     centerOfMassSinTheta /= M
     
-    let com = double3((atan2(-centerOfMassSinTheta.x, -centerOfMassCosTheta.x) + Double.pi)/(2.0 * Double.pi),
+    let com = SIMD3<Double>((atan2(-centerOfMassSinTheta.x, -centerOfMassCosTheta.x) + Double.pi)/(2.0 * Double.pi),
                       (atan2(-centerOfMassSinTheta.y, -centerOfMassCosTheta.y) + Double.pi)/(2.0 * Double.pi),
                       (atan2(-centerOfMassSinTheta.z, -centerOfMassCosTheta.z) + Double.pi)/(2.0 * Double.pi))
     
@@ -1115,17 +1115,17 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func matrixOfInertia() -> double3x3
   {
     var inertiaMatrix: double3x3 = double3x3()
-    let com: double3 = self.selectionCOMTranslation
-    let fracCom: double3 = self.cell.convertToFractional(com)
+    let com: SIMD3<Double> = self.selectionCOMTranslation
+    let fracCom: SIMD3<Double> = self.cell.convertToFractional(com)
     
     let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     for atom in atoms
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
       let mass: Double = PredefinedElements.sharedInstance.elementSet[elementIdentifier].mass
-      var ds: double3 = atom.position - fracCom
-      ds -= floor(ds + double3(0.5,0.5,0.5))
-      let dr: double3 = self.cell.convertToCartesian(ds)
+      var ds: SIMD3<Double> = atom.position - fracCom
+      ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
+      let dr: SIMD3<Double> = self.cell.convertToCartesian(ds)
       inertiaMatrix[0][0] += mass * (dr.y * dr.y + dr.z * dr.z)
       inertiaMatrix[0][1] -= mass * dr.x * dr.y
       inertiaMatrix[0][2] -= mass * dr.x * dr.z
@@ -1140,22 +1140,22 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     return inertiaMatrix
   }
   
-  public override func translateSelectionCartesian(by translation: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
     let crystal: Crystal =  self.copy() as! Crystal
     
     for node in self.atoms.selectedTreeNodes
     {
-      node.representedObject.displacement = double3(0,0,0)
+      node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
     
     self.selectionCOMTranslation += translation
-    let fractionalTranslation: double3 = self.cell.convertToFractional(translation)
+    let fractionalTranslation: SIMD3<Double> = self.cell.convertToFractional(translation)
     
     for node in crystal.atoms.selectedTreeNodes
     {
-      let pos: double3 = node.representedObject.position + fractionalTranslation
+      let pos: SIMD3<Double> = node.representedObject.position + fractionalTranslation
       node.representedObject.position = pos
     }
     
@@ -1178,18 +1178,18 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     for node in self.atoms.selectedTreeNodes
     {
-      node.representedObject.displacement = double3(0,0,0)
+      node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
     
-    let comFrac: double3 = self.cell.convertToFractional(self.selectionCOMTranslation)
+    let comFrac: SIMD3<Double> = self.cell.convertToFractional(self.selectionCOMTranslation)
     let rotationMatrix: double3x3 = double3x3(quaternion)
     
     for node in crystal.atoms.selectedTreeNodes
     {
-      var ds: double3 = fract(node.representedObject.position) - comFrac
-      ds -= floor(ds + double3(0.5,0.5,0.5))
-      let translatedPositionCartesian: double3 = self.cell.convertToCartesian(ds)
-      let position: double3 = rotationMatrix * translatedPositionCartesian
+      var ds: SIMD3<Double> = fract(node.representedObject.position) - comFrac
+      ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
+      let translatedPositionCartesian: SIMD3<Double> = self.cell.convertToCartesian(ds)
+      let position: SIMD3<Double> = rotationMatrix * translatedPositionCartesian
       node.representedObject.position = fract(self.cell.convertToFractional(position) + comFrac)
     }
     
@@ -1204,27 +1204,27 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     return (atoms: crystal.atoms, bonds: crystal.bonds)
   }
   
-  public override func translateSelectionBodyFrame(by shift: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
     let crystal: Crystal =  self.copy() as! Crystal
     
     for node in self.atoms.selectedTreeNodes
     {
-      node.representedObject.displacement = double3(0,0,0)
+      node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
     
     recomputeSelectionBodyFixedBasis(index: 3)
     
     let basis: double3x3 = self.selectionBodyFixedBasis
-    let translation: double3 = basis.inverse * shift
-    let fractionalTranslation: double3 = self.cell.convertToFractional(translation)
+    let translation: SIMD3<Double> = basis.inverse * shift
+    let fractionalTranslation: SIMD3<Double> = self.cell.convertToFractional(translation)
     
     self.selectionCOMTranslation += translation
     
     for node in crystal.atoms.selectedTreeNodes
     {
-      let pos: double3 = node.representedObject.position + fractionalTranslation
+      let pos: SIMD3<Double> = node.representedObject.position + fractionalTranslation
       node.representedObject.position = pos
     }
     
@@ -1246,21 +1246,21 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     for node in self.atoms.selectedTreeNodes
     {
-      node.representedObject.displacement = double3(0,0,0)
+      node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
     
     recomputeSelectionBodyFixedBasis(index: index)
     
-    let comFrac: double3 = self.cell.convertToFractional(self.selectionCOMTranslation)
+    let comFrac: SIMD3<Double> = self.cell.convertToFractional(self.selectionCOMTranslation)
     let basis: double3x3 = self.selectionBodyFixedBasis
     let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
     
     for node in crystal.atoms.selectedTreeNodes
     {
-      var ds: double3 = fract(node.representedObject.position) - comFrac
-      ds -= floor(ds + double3(0.5,0.5,0.5))
-      let translatedPositionCartesian: double3 = self.cell.convertToCartesian(ds)
-      let position: double3 = rotationMatrix * translatedPositionCartesian
+      var ds: SIMD3<Double> = fract(node.representedObject.position) - comFrac
+      ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
+      let translatedPositionCartesian: SIMD3<Double> = self.cell.convertToCartesian(ds)
+      let position: SIMD3<Double> = rotationMatrix * translatedPositionCartesian
       node.representedObject.position = fract(self.cell.convertToFractional(position) + comFrac)
     }
     
@@ -1277,7 +1277,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
   {
-    let images: [double3] = self.spaceGroup.listOfSymmetricPositions(asymetricAtom.position)
+    let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(asymetricAtom.position)
     for (index, image) in images.enumerated()
     {
       asymetricAtom.copies[index].position = fract(image)
@@ -1288,10 +1288,10 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     {
       for bond in copy.bonds
       {
-        let posA: double3 = cell.convertToCartesian(bond.atom1.position)
-        let posB: double3 = cell.convertToCartesian(bond.atom2.position)
-        let separationVector: double3 = posA - posB
-        let periodicSeparationVector: double3 = cell.applyUnitCellBoundaryCondition(separationVector)
+        let posA: SIMD3<Double> = cell.convertToCartesian(bond.atom1.position)
+        let posB: SIMD3<Double> = cell.convertToCartesian(bond.atom2.position)
+        let separationVector: SIMD3<Double> = posA - posB
+        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
         
         let bondCriteria: Double = (bond.atom1.asymmetricParentAtom.bondDistanceCriteria + bond.atom2.asymmetricParentAtom.bondDistanceCriteria + 0.56)
         
@@ -1324,15 +1324,15 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   {
     for i in 0..<atomList.count
     {
-      let posA: double3 = cell.convertToCartesian(atomList[i].position)
+      let posA: SIMD3<Double> = cell.convertToCartesian(atomList[i].position)
       
       for  j in i+1..<atomList.count
       {
-        let posB: double3 = cell.convertToCartesian(atomList[j].position)
+        let posB: SIMD3<Double> = cell.convertToCartesian(atomList[j].position)
         
-        let separationVector: double3 = posA - posB
+        let separationVector: SIMD3<Double> = posA - posB
         
-        let periodicSeparationVector: double3 = cell.applyUnitCellBoundaryCondition(separationVector)
+        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
         
         
         if (length(periodicSeparationVector) < 0.1)
@@ -1446,7 +1446,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   public func primitive(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
-    if let primitive: (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: double3, type: Int)]) = SKSpacegroup.SKFindPrimitive(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, symmetryPrecision: cell.precision)
+    if let primitive: (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKSpacegroup.SKFindPrimitive(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, symmetryPrecision: cell.precision)
     {
       let primitiveCell = SKCell(a: primitive.cell.a, b: primitive.cell.b, c: primitive.cell.c, alpha: primitive.cell.alpha, beta: primitive.cell.beta, gamma: primitive.cell.gamma)
       
@@ -1499,7 +1499,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   public func imposedSymmetry(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
-    if let symmetry: (hall: Int, origin: double3, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: double3, type: Int)], asymmetricAtoms: [(fractionalPosition: double3, type: Int)]) = SKSpacegroup.SKFindSpaceGroup(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, symmetryPrecision: cell.precision)
+    if let symmetry: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKSpacegroup.SKFindSpaceGroup(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, symmetryPrecision: cell.precision)
     {
       let cellWithSymmetry = SKCell(a: symmetry.cell.a, b: symmetry.cell.b, c: symmetry.cell.c, alpha: symmetry.cell.alpha, beta: symmetry.cell.beta, gamma: symmetry.cell.gamma)
       let spaceGroupWithSymmetry = SKSpacegroup(HallNumber: symmetry.hall)
@@ -1516,7 +1516,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
         atom.symmetryType = .asymmetric
         let node = SKAtomTreeNode(representedObject: atom)
         
-        let images: [double3] = spaceGroupWithSymmetry.listOfSymmetricPositions(atom.position)
+        let images: [SIMD3<Double>] = spaceGroupWithSymmetry.listOfSymmetricPositions(atom.position)
         for image in images
         {
           let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: atom, position: fract(image))
@@ -1576,8 +1576,8 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
         {
           for atom in atomCopies
           {
-            let pos: double3 = atom.position
-            let fractionalPosition: double3 = double3(x: (pos.x + Double(k1)) / Double(dx + 1),
+            let pos: SIMD3<Double> = atom.position
+            let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: (pos.x + Double(k1)) / Double(dx + 1),
                                                       y: (pos.y + Double(k2)) / Double(dy + 1),
                                                       z: (pos.z + Double(k3)) / Double(dz + 1))
             let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(atom: atom.asymmetricParentAtom)
@@ -1640,9 +1640,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
         {
           for atom in atomCopies
           {
-            let flippedPosition: double3 = double3.flip(v: atom.position, flip: self.cell.contentFlip, boundary: double3(1.0,1.0,1.0))
-            let pos: double3 = fract(flippedPosition + self.cell.contentShift)
-            let fractionalPosition: double3 = double3(x: (pos.x + Double(k1)) / Double(dx + 1),
+            let flippedPosition: SIMD3<Double> = SIMD3<Double>.flip(v: atom.position, flip: self.cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+            let pos: SIMD3<Double> = fract(flippedPosition + self.cell.contentShift)
+            let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: (pos.x + Double(k1)) / Double(dx + 1),
                                                       y: (pos.y + Double(k2)) / Double(dy + 1),
                                                       z: (pos.z + Double(k3)) / Double(dz + 1))
             let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(atom: atom.asymmetricParentAtom)
@@ -1663,7 +1663,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
-    newCell.contentShift = double3(0,0,0)
+    newCell.contentShift = SIMD3<Double>(0,0,0)
     newCell.contentFlip = Bool3(false,false,false)
     
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
@@ -1710,7 +1710,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     var computedBonds: Set<SKBondNode> = []
     var totalCount: Int
     
-    let perpendicularWidths: double3 = structureCell.perpendicularWidths
+    let perpendicularWidths: SIMD3<Double> = structureCell.perpendicularWidths
     guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
     
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
@@ -1719,7 +1719,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     if (numberOfCells[0]>=3 && numberOfCells[1]>=3 && numberOfCells[2]>=3)
     {
       let epsilon: Double = 1e-4
-      let cutoffVector: double3 = double3(x: epsilon+perpendicularWidths.x/Double(numberOfCells[0]), y: epsilon+perpendicularWidths.y/Double(numberOfCells[1]), z: epsilon+perpendicularWidths.z/Double(numberOfCells[2]))
+      let cutoffVector: SIMD3<Double> = SIMD3<Double>(x: epsilon+perpendicularWidths.x/Double(numberOfCells[0]), y: epsilon+perpendicularWidths.y/Double(numberOfCells[1]), z: epsilon+perpendicularWidths.z/Double(numberOfCells[2]))
       
       var head: [Int] = [Int](repeating: -1, count: totalNumberOfCells)
       var list: [Int] = [Int](repeating: -1, count: atoms.count)
@@ -1729,7 +1729,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       {
         atoms[i].type = .copy
         
-        let position: double3 = perpendicularWidths * fract(atoms[i].position)
+        let position: SIMD3<Double> = perpendicularWidths * fract(atoms[i].position)
         
         let icell: Int = Int((position.x) / cutoffVector.x) +
           Int((position.y) / cutoffVector.y) * numberOfCells[0] +
@@ -1755,7 +1755,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
             var i: Int = head[icell_i]
             while(i >= 0)
             {
-              let posA: double3 = structureCell.convertToCartesian(atoms[i].position)
+              let posA: SIMD3<Double> = structureCell.convertToCartesian(atoms[i].position)
               
               // loop over neighboring cells
               for offset in offsets
@@ -1770,9 +1770,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
                 {
                   if((i < j) || (icell_i != icell_j))
                   {
-                    let posB: double3 = structureCell.convertToCartesian(atoms[j].position)
-                    let separationVector: double3 = posA - posB
-                    let periodicSeparationVector: double3 = structureCell.applyUnitCellBoundaryCondition(separationVector)
+                    let posB: SIMD3<Double> = structureCell.convertToCartesian(atoms[j].position)
+                    let separationVector: SIMD3<Double> = posA - posB
+                    let periodicSeparationVector: SIMD3<Double> = structureCell.applyUnitCellBoundaryCondition(separationVector)
                     
                     let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
                     
@@ -1826,14 +1826,14 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       {
         atoms[i].type = .copy
         
-        let posA: double3 = structureCell.convertToCartesian(atoms[i].position)
+        let posA: SIMD3<Double> = structureCell.convertToCartesian(atoms[i].position)
         
         for j in i+1..<atoms.count
         {
-          let posB: double3 = structureCell.convertToCartesian(atoms[j].position)
+          let posB: SIMD3<Double> = structureCell.convertToCartesian(atoms[j].position)
           
-          let separationVector: double3 = posA - posB
-          let periodicSeparationVector: double3 = structureCell.applyUnitCellBoundaryCondition(separationVector)
+          let separationVector: SIMD3<Double> = posA - posB
+          let periodicSeparationVector: SIMD3<Double> = structureCell.applyUnitCellBoundaryCondition(separationVector)
           
           let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
           
@@ -1921,7 +1921,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   // MARK: RKRenderAdsorptionSurfaceStructure
   // ===============================================================================================================================
   
-  public override var atomUnitCellPositions: [double3]
+  public override var atomUnitCellPositions: [SIMD3<Double>]
   {
     var index: Int
     
@@ -1929,7 +1929,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
-    var data: [double3] = [double3](repeating: double3(), count: atoms.count)
+    var data: [SIMD3<Double>] = [SIMD3<Double>](repeating: SIMD3<Double>(), count: atoms.count)
     
     index = 0
     for atom in atoms

@@ -7,8 +7,6 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>irspdoc</string>
@@ -23,6 +21,8 @@
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>nl.darkwing.iraspa.irspdoc</string>
@@ -33,8 +33,6 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>iraspa</string>
@@ -45,6 +43,8 @@
 			<string>iRASPA project</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>nl.darkwing.iraspa.iraspa</string>
@@ -83,8 +83,6 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
-			<key>LSHandlerRank</key>
-			<string>Alternate</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>pdb</string>
@@ -99,14 +97,14 @@
 			<string>Protein DataBank</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>LSTypeIsPackage</key>
 			<integer>0</integer>
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
-			<key>LSHandlerRank</key>
-			<string>Alternate</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>xyz</string>
@@ -121,14 +119,14 @@
 			<string>Coordinate Animation format</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>LSTypeIsPackage</key>
 			<integer>0</integer>
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>irspdoc</string>
@@ -146,6 +144,8 @@
 			<string>iRASPA Universal Document</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>nl.darkwing.iraspa.universal.irspdoc</string>
@@ -156,14 +156,14 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
-			<key>LSHandlerRank</key>
-			<string>Alternate</string>
 			<key>CFBundleTypeIconFile</key>
 			<string>CrystalProject</string>
 			<key>CFBundleTypeName</key>
 			<string>Text file</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>public.data</string>
@@ -191,9 +191,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.28</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>65</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>

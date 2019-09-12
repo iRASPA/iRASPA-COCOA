@@ -125,35 +125,35 @@ public struct SKSymmetryCell: CustomStringConvertible
   // Taken from: Table 2.C.1, page 141, Fundamentals of Crystallography, 2nd edition, C. Giacovazzo et al. 2002
   // Tranformation matrices M, conventionally used to generate centered from primitive lattices, and vice versa, accoording to: A' = M A
   
-  public static let primitiveToPrimitive: int3x3 = int3x3([int3( 1, 0, 0), int3( 0, 1, 0), int3( 0, 0, 1)])  // P -> P
+  public static let primitiveToPrimitive: int3x3 = int3x3([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])  // P -> P
   
-  public static let bodyCenteredToPrimitive: MKint3x3 = MKint3x3([int3(-1,1,1), int3(1,-1,1), int3(1,1,-1)], denominator: 2)  // I -> P
-  public static let primitiveToBodyCentered: int3x3 = int3x3([int3(0,1,1), int3(1,0,1), int3(1,1,0)])  // P -> I
+  public static let bodyCenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(-1,1,1), SIMD3<Int32>(1,-1,1), SIMD3<Int32>(1,1,-1)], denominator: 2)  // I -> P
+  public static let primitiveToBodyCentered: int3x3 = int3x3([SIMD3<Int32>(0,1,1), SIMD3<Int32>(1,0,1), SIMD3<Int32>(1,1,0)])  // P -> I
   
-  public static let faceCenteredToPrimitive: MKint3x3 = MKint3x3([int3(0,1,1), int3(1,0,1), int3(1,1,0)], denominator: 2)   // F -> P
-  public static let primitiveToFaceCentered: int3x3 = int3x3([int3(-1,1,1), int3(1,-1,1), int3(1,1,-1)])  // P -> F
+  public static let faceCenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(0,1,1), SIMD3<Int32>(1,0,1), SIMD3<Int32>(1,1,0)], denominator: 2)   // F -> P
+  public static let primitiveToFaceCentered: int3x3 = int3x3([SIMD3<Int32>(-1,1,1), SIMD3<Int32>(1,-1,1), SIMD3<Int32>(1,1,-1)])  // P -> F
   
-  public static let ACenteredToPrimitive: MKint3x3 = MKint3x3([int3(-2,0,0), int3(0,-1,1), int3(0,1,1)], denominator: 2)   // A -> P
-  public static let primitiveToACentered: int3x3 = int3x3([int3(-1,0,0), int3(0,-1,1), int3(0,1,1)])  // P -> A
+  public static let ACenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(-2,0,0), SIMD3<Int32>(0,-1,1), SIMD3<Int32>(0,1,1)], denominator: 2)   // A -> P
+  public static let primitiveToACentered: int3x3 = int3x3([SIMD3<Int32>(-1,0,0), SIMD3<Int32>(0,-1,1), SIMD3<Int32>(0,1,1)])  // P -> A
   
-  public static let BCenteredToPrimitive: MKint3x3 = MKint3x3([int3(-1,0,1), int3(0,-2,0), int3(1,0,1)], denominator: 2)   // B -> P
-  public static let primitiveToBCentered: int3x3 = int3x3([int3(-1,0,1), int3(0,-1,0), int3(1,0,1)])  // P -> B
+  public static let BCenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(-1,0,1), SIMD3<Int32>(0,-2,0), SIMD3<Int32>(1,0,1)], denominator: 2)   // B -> P
+  public static let primitiveToBCentered: int3x3 = int3x3([SIMD3<Int32>(-1,0,1), SIMD3<Int32>(0,-1,0), SIMD3<Int32>(1,0,1)])  // P -> B
   
-  public static let CCenteredToPrimitive: MKint3x3 = MKint3x3([int3(1,1,0), int3(1,-1,0), int3(0,0,-2)], denominator: 2)   // C -> P
-  public static let primitiveToCCentered: int3x3 = int3x3([int3(1, 1,0), int3(1,-1,0), int3(0,0,-1)])  // P -> C
+  public static let CCenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(1,1,0), SIMD3<Int32>(1,-1,0), SIMD3<Int32>(0,0,-2)], denominator: 2)   // C -> P
+  public static let primitiveToCCentered: int3x3 = int3x3([SIMD3<Int32>(1, 1,0), SIMD3<Int32>(1,-1,0), SIMD3<Int32>(0,0,-1)])  // P -> C
   
-  public static let rhombohedralToPrimitive: MKint3x3 = MKint3x3([int3(2,1,1), int3(-1, 1, 1), int3(-1,-2, 1)], denominator: 3)  // R -> P
-  public static let primitiveToRhombohedral: int3x3 = int3x3([int3( 1,-1, 0), int3( 0, 1,-1), int3( 1, 1, 1)])  // P -> R
+  public static let rhombohedralToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(2,1,1), SIMD3<Int32>(-1, 1, 1), SIMD3<Int32>(-1,-2, 1)], denominator: 3)  // R -> P
+  public static let primitiveToRhombohedral: int3x3 = int3x3([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 0, 1,-1), SIMD3<Int32>( 1, 1, 1)])  // P -> R
   
-  public static let hexagonalToPrimitive: MKint3x3 = MKint3x3([int3( 2,1, 0), int3(-1, 1, 0), int3( 0, 0, 1)], denominator: 3)  // H -> P
-  public static let primitiveToHexagonal: int3x3 = int3x3([int3( 1,-1, 0), int3( 1, 2, 0), int3( 0, 0, 1)])  // P -> H
+  public static let hexagonalToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>( 2,1, 0), SIMD3<Int32>(-1, 1, 0), SIMD3<Int32>( 0, 0, 1)], denominator: 3)  // H -> P
+  public static let primitiveToHexagonal: int3x3 = int3x3([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 1, 2, 0), SIMD3<Int32>( 0, 0, 1)])  // P -> H
   
   
-  public static let rhombohedralHexagonalToObverse: double3x3 = double3x3([double3(2.0/3.0,-1.0/3.0,-1.0/3.0),double3(1.0/3.0,1.0/3.0,-2.0/3.0),double3(1.0/3.0,1.0/3.0,1.0/3.0)])   // Rh -> Robv
-  public static let rhombohedralObverseHexagonal: int3x3 = int3x3([int3(1,0,1), int3(-1,1,1), int3(0,-1,1)])  // Robv -> Rh
+  public static let rhombohedralHexagonalToObverse: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,-1.0/3.0,-1.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,-2.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,1.0/3.0)])   // Rh -> Robv
+  public static let rhombohedralObverseHexagonal: int3x3 = int3x3([SIMD3<Int32>(1,0,1), SIMD3<Int32>(-1,1,1), SIMD3<Int32>(0,-1,1)])  // Robv -> Rh
   
-  public static let rhombohedralHexagonalToReverse: int3x3 = int3x3([int3(1,1,-2),int3(-1,0,1),int3(1,1,-1)])   // Rh -> Rrev
-  public static let rhombohedralReverseToHexagonal: int3x3 = int3x3([int3(-1,-1,1), int3(0,1,1), int3(-1,0,1)])  // Rrev -> Rh
+  public static let rhombohedralHexagonalToReverse: int3x3 = int3x3([SIMD3<Int32>(1,1,-2),SIMD3<Int32>(-1,0,1),SIMD3<Int32>(1,1,-1)])   // Rh -> Rrev
+  public static let rhombohedralReverseToHexagonal: int3x3 = int3x3([SIMD3<Int32>(-1,-1,1), SIMD3<Int32>(0,1,1), SIMD3<Int32>(-1,0,1)])  // Rrev -> Rh
   
   var epsilon: Double
   {
@@ -184,9 +184,9 @@ public struct SKSymmetryCell: CustomStringConvertible
   
   public init(unitCell: double3x3)
   {
-    let column1: double3 = unitCell[0]
-    let column2: double3 = unitCell[1]
-    let column3: double3 = unitCell[2]
+    let column1: SIMD3<Double> = unitCell[0]
+    let column2: SIMD3<Double> = unitCell[1]
+    let column3: SIMD3<Double> = unitCell[2]
     let length1: Double = length(column1)
     let length2: Double = length(column2)
     let length3: Double = length(column3)
@@ -217,9 +217,9 @@ public struct SKSymmetryCell: CustomStringConvertible
   {
     let temp: Double = (cos(alpha) - cos(gamma) * cos(beta)) / sin(gamma)
     
-    let v1: double3 = double3(x: a, y: 0.0, z: 0.0)
-    let v2: double3 = double3(x: b * cos(gamma), y: b * sin(gamma), z: 0.0)
-    let v3: double3 = double3(x: c * cos(beta), y: c * temp, z: c * sqrt(1.0 - cos(beta)*cos(beta)-temp*temp))
+    let v1: SIMD3<Double> = SIMD3<Double>(x: a, y: 0.0, z: 0.0)
+    let v2: SIMD3<Double> = SIMD3<Double>(x: b * cos(gamma), y: b * sin(gamma), z: 0.0)
+    let v3: SIMD3<Double> = SIMD3<Double>(x: c * cos(beta), y: c * temp, z: c * sqrt(1.0 - cos(beta)*cos(beta)-temp*temp))
     return double3x3([v1, v2, v3])
   }
   
@@ -237,25 +237,25 @@ public struct SKSymmetryCell: CustomStringConvertible
       let ca: Double = cos(alpha)
       let sg: Double = sin(gamma)
       let temp: Double = c * sqrt(1.0 - ca * ca - cb * cb - cg * cg + 2.0 * ca * cb * cg) / sg
-      return double3x3([double3(a,0.0,0.0),double3(b * cg,b * sg,0.0),double3(c * cb,c * (ca - cb * cg) / sg, temp)])
+      return double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(b * cg,b * sg,0.0),SIMD3<Double>(c * cb,c * (ca - cb * cg) / sg, temp)])
     case .monoclinic:
-      return double3x3([double3(a,0.0,0.0),double3(0.0,b,0.0),double3(c * cos(beta),0.0,c * sin(beta))])
+      return double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(0.0,b,0.0),SIMD3<Double>(c * cos(beta),0.0,c * sin(beta))])
     case .orthorhombic:
-      return double3x3([double3(a,0.0,0.0),double3(0.0,b,0.0),double3(0.0,0.0,c)])
+      return double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(0.0,b,0.0),SIMD3<Double>(0.0,0.0,c)])
     case .tetragonal:
-      return double3x3([double3(0.5*(a+b),0.0,0.0),double3(0.0,0.5*(a+b),0.0),double3(0.0,0.0,c)])
+      return double3x3([SIMD3<Double>(0.5*(a+b),0.0,0.0),SIMD3<Double>(0.0,0.5*(a+b),0.0),SIMD3<Double>(0.0,0.0,c)])
     case .trigonal where spaceGroup.spaceGroupSetting.qualifier == "R":
       let avg: Double = (a+b+c)/3.0
       let angle: Double = acos((cos(gamma) + cos(beta) + cos(alpha)) / 3.0)
       // Reference, https://homepage.univie.ac.at/michael.leitner/lattice/struk/rgr.html
       let ahex: Double = 2.0 * avg * sin(0.5 * angle)
       let chex: Double = (a+b+c)/3.0 * sqrt(3.0 * (1.0 + 2.0 * cos(angle)))
-      return  double3x3([double3(ahex / 2,-ahex / (2 * sqrt(3)),chex / 3),double3(0.0,ahex / sqrt(3),chex / 3),double3(-ahex / 2,-ahex / (2 * sqrt(3)),chex / 3)])
+      return  double3x3([SIMD3<Double>(ahex / 2,-ahex / (2 * sqrt(3)),chex / 3),SIMD3<Double>(0.0,ahex / sqrt(3),chex / 3),SIMD3<Double>(-ahex / 2,-ahex / (2 * sqrt(3)),chex / 3)])
     case .trigonal where spaceGroup.spaceGroupSetting.qualifier != "R", .hexagonal:
-      return double3x3([double3(0.5*(a+b),0.0,0.0),double3(-(a+b)/4.0,(a+b)/4.0*sqrt(3.0),0.0),double3(0.0,0.0,c)])
+      return double3x3([SIMD3<Double>(0.5*(a+b),0.0,0.0),SIMD3<Double>(-(a+b)/4.0,(a+b)/4.0*sqrt(3.0),0.0),SIMD3<Double>(0.0,0.0,c)])
     case .cubic:
       let edge: Double = (a + b + c)/3.0
-      return double3x3([double3(edge,0.0,0.0),double3(0.0,edge,0.0),double3(0.0,0.0,edge)])
+      return double3x3([SIMD3<Double>(edge,0.0,0.0),SIMD3<Double>(0.0,edge,0.0),SIMD3<Double>(0.0,0.0,edge)])
     default:
       return double3x3()
     }
@@ -264,7 +264,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   public static func TransformToConventionalUnitCell(unitCell: double3x3, spaceGroup: SKSpacegroup) -> double3x3
   {
     let metric: double3x3 = unitCell.transpose * unitCell
-    var lattice: double3x3 = double3x3(diagonal: double3(0,0,0))
+    var lattice: double3x3 = double3x3(diagonal: SIMD3<Double>(0,0,0))
     
     let holohedry: SKPointGroup.Holohedry = spaceGroup.spaceGroupSetting.pointGroup.holohedry
     //Swift.print("holohedry \(holohedry) \(centering)")
@@ -407,18 +407,18 @@ public struct SKSymmetryCell: CustomStringConvertible
     {
       let temp: Double = (cos(alpha) - cos(gamma) * cos(beta)) / sin(gamma)
       
-      let v1: double3 = double3(x: a, y: 0.0, z: 0.0)
-      let v2: double3 = double3(x: b * cos(gamma), y: b * sin(gamma), z: 0.0)
-      let v3: double3 = double3(x: c * cos(beta), y: c * temp, z: c * sqrt(1.0 - cos(beta)*cos(beta)-temp*temp))
+      let v1: SIMD3<Double> = SIMD3<Double>(x: a, y: 0.0, z: 0.0)
+      let v2: SIMD3<Double> = SIMD3<Double>(x: b * cos(gamma), y: b * sin(gamma), z: 0.0)
+      let v3: SIMD3<Double> = SIMD3<Double>(x: c * cos(beta), y: c * temp, z: c * sqrt(1.0 - cos(beta)*cos(beta)-temp*temp))
       return double3x3([v1, v2, v3])
     }
   }
   
   public static func angles(cell: double3x3) -> (a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double)
   {
-    let column1: double3 = cell[0]
-    let column2: double3 = cell[1]
-    let column3: double3 = cell[2]
+    let column1: SIMD3<Double> = cell[0]
+    let column2: SIMD3<Double> = cell[1]
+    let column3: SIMD3<Double> = cell[2]
     let length1: Double = length(column1)
     let length2: Double = length(column2)
     let length3: Double = length(column3)
@@ -436,9 +436,9 @@ public struct SKSymmetryCell: CustomStringConvertible
     let half_eta: Double = a*c*cos(beta)
     let half_zeta: Double = a*b*cos(gamma)
     
-    let v1: double3 = double3(a*a, half_zeta, half_eta)
-    let v2: double3 = double3(half_zeta, b*b, half_xi)
-    let v3: double3 = double3(half_eta, half_xi, c*c)
+    let v1: SIMD3<Double> = SIMD3<Double>(a*a, half_zeta, half_eta)
+    let v2: SIMD3<Double> = SIMD3<Double>(half_zeta, b*b, half_xi)
+    let v3: SIMD3<Double> = SIMD3<Double>(half_eta, half_xi, c*c)
     return double3x3([v1, v2, v3])
   }
   
@@ -485,7 +485,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   
   private static func getDelaunayShortestVectors(extendedBasis: double4x3, symmetryPrecision: Double = 1e-5) -> double3x3
   {
-    var b: [double3] = [double3](repeatElement(double3(), count: 7))
+    var b: [SIMD3<Double>] = [SIMD3<Double>](repeatElement(SIMD3<Double>(), count: 7))
     
     
     // Search in the set {b1, b2, b3, b4, b1+b2, b2+b3, b3+b1}
@@ -525,7 +525,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   /// - returns: the Delaunay cell
   public static func computeDelaunayReducedCell(unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> double3x3
   {
-    let additionalBasisVector: double3 = double3(-unitCell[0][0] - unitCell[1][0] - unitCell[2][0],
+    let additionalBasisVector: SIMD3<Double> = SIMD3<Double>(-unitCell[0][0] - unitCell[1][0] - unitCell[2][0],
                                                  -unitCell[0][1] - unitCell[1][1] - unitCell[2][1],
                                                  -unitCell[0][2] - unitCell[1][2] - unitCell[2][2])
     var extendedBasis: double4x3 = double4x3([unitCell[0],unitCell[1],unitCell[2],additionalBasisVector])
@@ -571,7 +571,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   {
     var lattice2D: double3x3 = double3x3()
     
-    let unique_vec: double3 = unitCell[uniqueAxis]
+    let unique_vec: SIMD3<Double> = unitCell[uniqueAxis]
     
     var k: Int = 0
     for i in 0..<3
@@ -589,7 +589,7 @@ public struct SKSymmetryCell: CustomStringConvertible
     
     
     // Search in the set {b1, b2, b3, b4, b1+b2, b2+b3, b3+b1}
-    var b: [double3] = [extendedBasis[0],extendedBasis[1],extendedBasis[2],extendedBasis[0]+extendedBasis[1]]
+    var b: [SIMD3<Double>] = [extendedBasis[0],extendedBasis[1],extendedBasis[2],extendedBasis[0]+extendedBasis[1]]
     
     b.sort(by: {length_squared($0) < length_squared($1)})
     
@@ -805,7 +805,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         // Swap x, y and ensures proper sign of determinant
         swap(&A,&B)
         swap(&xi,&eta)
-        changeOfBasisMatrix *= int3x3([int3(0,-1,0),int3(-1,0,0),int3(0,0,-1)])
+        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)])
       }
       
       // step 2
@@ -814,7 +814,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         // Swap y, z and ensures proper sign of determinant
         swap(&B,&C)
         swap(&eta,&zeta)
-        changeOfBasisMatrix *= int3x3([int3(-1,0,0),int3(0,0,-1),int3(0,-1,0)])
+        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])
         continue algorithmStart
       }
       
@@ -828,7 +828,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         xi = abs(xi)
         eta = abs(eta)
         zeta = abs(zeta)
-        changeOfBasisMatrix *= int3x3([int3(f[0],0,0),int3(0,f[1],0),int3(0,0,f[2])])
+        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
       }
       else // step 4:
       {
@@ -848,7 +848,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         eta = -abs(eta)
         zeta = -abs(zeta)
         
-        changeOfBasisMatrix *= int3x3([int3(f[0],0,0),int3(0,f[1],0),int3(0,0,f[2])])
+        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
       }
       
       // step 5
@@ -857,7 +857,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         C = B + C - xi * sign(xi)
         eta = eta - zeta * sign(xi)
         xi = xi -  2 * B * sign(xi)
-        changeOfBasisMatrix *= int3x3([int3(1,0,0),int3(0,1,0),int3(0,-Int32(sign(xi)),1)])
+        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,-Int32(sign(xi)),1)])
         continue algorithmStart
       }
       
@@ -867,7 +867,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         C = A + C - eta * sign(eta)
         xi = xi - zeta * sign(eta)
         eta = eta - 2*A * sign(eta)
-        changeOfBasisMatrix *= int3x3([int3(1,0,0),int3(0,1,0),int3(-Int32(sign(eta)),0,1)])
+        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-Int32(sign(eta)),0,1)])
         continue algorithmStart
       }
       
@@ -877,7 +877,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         B = A + B - zeta * sign(zeta)
         xi = xi - eta * sign(zeta)
         zeta = zeta - 2*A * sign(zeta)
-        changeOfBasisMatrix *= int3x3([int3(1,0,0),int3(-Int32(sign(zeta)),1,0),int3(0,0,1)])
+        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(-Int32(sign(zeta)),1,0),SIMD3<Int32>(0,0,1)])
         continue algorithmStart
       }
       
@@ -887,7 +887,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         C = A + B + C + xi + eta + zeta
         xi = 2*B + xi + zeta
         eta =  2*A + eta + zeta
-        changeOfBasisMatrix *= int3x3([int3(1,0,0),int3(0,1,0),int3(1,1,1)])
+        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,1,1)])
         continue algorithmStart
       }
     }
@@ -898,16 +898,16 @@ public struct SKSymmetryCell: CustomStringConvertible
     return (cell, changeOfBasisMatrix)
   }
   
-  private static func distanceSquared(a: double3, b: double3) -> Double
+  private static func distanceSquared(a: SIMD3<Double>, b: SIMD3<Double>) -> Double
   {
-    var dr: double3 = abs(a - b)
-    dr -= floor(dr + double3(0.5,0.5,0.5))
+    var dr: SIMD3<Double> = abs(a - b)
+    dr -= floor(dr + SIMD3<Double>(0.5,0.5,0.5))
     return length_squared(dr)
   }
   
   
   
-  public static func trim(atoms: [(fractionalPosition: double3, type: Int)], from: double3x3, to: double3x3, symmetryPrecision: Double = 1e-5) -> [(fractionalPosition: double3, type: Int)]
+  public static func trim(atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], from: double3x3, to: double3x3, symmetryPrecision: Double = 1e-5) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
   {
     // compute the reduction in volume
     //let ratio: Int = abs(Int(rint(from.determinant / to.determinant)))
@@ -916,10 +916,10 @@ public struct SKSymmetryCell: CustomStringConvertible
     // is then obtained as the product: C_{old->new} = C_{new}^{-1} C_{old}
     let changeOfBasis: double3x3 = to.inverse * from
     
-    let trimmedAtoms: [(fractionalPosition: double3, type: Int)] = atoms.map{(fract(changeOfBasis * $0.fractionalPosition), $0.type)}
+    let trimmedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.map{(fract(changeOfBasis * $0.fractionalPosition), $0.type)}
     var overlapTable: [Int] = [Int](repeating: -1, count: trimmedAtoms.count)
     
-    var result: [(fractionalPosition: double3, type: Int)] = []
+    var result: [(fractionalPosition: SIMD3<Double>, type: Int)] = []
     for i in 0..<trimmedAtoms.count
     {
       overlapTable[i] = i
@@ -990,25 +990,25 @@ public struct SKSymmetryCell: CustomStringConvertible
     return true
   }
   
-  public static func findPrimitiveCell(reducedAtoms: [(fractionalPosition: double3, type: Int)], atoms: [(fractionalPosition: double3, type: Int)], unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> double3x3
+  public static func findPrimitiveCell(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> double3x3
   {
-    var translationVectors: [double3] = []
+    var translationVectors: [SIMD3<Double>] = []
     
     if (atoms.count>0)
     {
-      let origin: double3 = reducedAtoms[0].fractionalPosition
+      let origin: SIMD3<Double> = reducedAtoms[0].fractionalPosition
       
       for i in 0..<reducedAtoms.count
       {
-        let vec: double3 = reducedAtoms[i].fractionalPosition - origin
+        let vec: SIMD3<Double> = reducedAtoms[i].fractionalPosition - origin
         
-        if SKSymmetryCell.isOverlapAllAtoms(translationVector: vec, rotationMatrix: int3x3([int3(1,0,0),int3(0,1,0),int3(0,0,1)]), atoms: atoms, symmetryPrecision: symmetryPrecision)
+        if SKSymmetryCell.isOverlapAllAtoms(translationVector: vec, rotationMatrix: int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)]), atoms: atoms, symmetryPrecision: symmetryPrecision)
         {
           translationVectors.append(vec)
         }
       }
       
-      translationVectors += [double3(1,0,0),double3(0,1,0),double3(0,0,1)]
+      translationVectors += [SIMD3<Double>(1,0,0),SIMD3<Double>(0,1,0),SIMD3<Double>(0,0,1)]
     }
     
     let size: Int = translationVectors.count
@@ -1028,9 +1028,9 @@ public struct SKSymmetryCell: CustomStringConvertible
       {
         for k in j+1..<size
         {
-          let tmpv1: double3 = unitCell * translationVectors[i]
-          let tmpv2: double3 = unitCell * translationVectors[j]
-          let tmpv3: double3 = unitCell * translationVectors[k]
+          let tmpv1: SIMD3<Double> = unitCell * translationVectors[i]
+          let tmpv2: SIMD3<Double> = unitCell * translationVectors[j]
+          let tmpv3: SIMD3<Double> = unitCell * translationVectors[k]
           let cell: double3x3 = double3x3([tmpv1,tmpv2,tmpv3])
           let volume: Double = abs(cell.determinant)
           
@@ -1064,7 +1064,7 @@ public struct SKSymmetryCell: CustomStringConvertible
    {
    let vec: double3 = atoms[i].fractionalPosition - origin
    
-   if SKCell.isOverlapAllAtoms(translationVector: vec, rotationMatrix: int3x3([int3(1,0,0),int3(0,1,0),int3(0,0,1)]), atoms: atoms, symmetryPrecision: symmetryPrecision)
+   if SKCell.isOverlapAllAtoms(translationVector: vec, rotationMatrix: int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)]), atoms: atoms, symmetryPrecision: symmetryPrecision)
    {
    translationVectors.append(vec)
    }
@@ -1122,16 +1122,16 @@ public struct SKSymmetryCell: CustomStringConvertible
   /// - parameter symmetryPrecision:   the precision of the search (default: 1e-5)
   ///
   /// - returns: the list of translation vectors
-  public static func primitiveTranslationVectors(reducedAtoms: [(fractionalPosition: double3, type: Int)],atoms: [(fractionalPosition: double3, type: Int)], rotationMatrix: SKRotationMatrix, symmetryPrecision: Double) -> [double3]
+  public static func primitiveTranslationVectors(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)],atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], rotationMatrix: SKRotationMatrix, symmetryPrecision: Double) -> [SIMD3<Double>]
   {
-    var translationVectors: [double3] = []
+    var translationVectors: [SIMD3<Double>] = []
     if reducedAtoms.count>0
     {
-      let origin: double3 = double3x3(int3x3: rotationMatrix) * reducedAtoms[0].fractionalPosition
+      let origin: SIMD3<Double> = double3x3(int3x3: rotationMatrix) * reducedAtoms[0].fractionalPosition
       
       for i in 0..<reducedAtoms.count
       {
-        let vec: double3 = reducedAtoms[i].fractionalPosition - origin
+        let vec: SIMD3<Double> = reducedAtoms[i].fractionalPosition - origin
         
         if SKSymmetryCell.isOverlapAllAtoms(translationVector: vec, rotationMatrix: rotationMatrix, atoms: atoms, symmetryPrecision: symmetryPrecision)
         {
@@ -1150,21 +1150,21 @@ public struct SKSymmetryCell: CustomStringConvertible
   /// - parameter symmetryPrecision:   the precision of the search (default: 1e-5)
   ///
   /// - returns: whether the translation+rotations result symmetry element in overlap for all atoms or not
-  private static func isOverlapAllAtoms(translationVector: double3, rotationMatrix: SKRotationMatrix, atoms: [(fractionalPosition: double3, type: Int)], symmetryPrecision: Double) -> Bool
+  private static func isOverlapAllAtoms(translationVector: SIMD3<Double>, rotationMatrix: SKRotationMatrix, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double) -> Bool
   {
     let precision: Double = symmetryPrecision * symmetryPrecision
     
     for i in 0..<atoms.count
     {
-      let pos_rot: double3 = double3x3(int3x3: rotationMatrix) * atoms[i].fractionalPosition + translationVector
+      let pos_rot: SIMD3<Double> = double3x3(int3x3: rotationMatrix) * atoms[i].fractionalPosition + translationVector
       
       var isFound: Bool = false
       for j in 0..<atoms.count
       {
         if atoms[i].type == atoms[j].type
         {
-          var dr: double3 = abs(pos_rot - atoms[j].fractionalPosition)
-          dr -= floor(dr + double3(0.5,0.5,0.5))
+          var dr: SIMD3<Double> = abs(pos_rot - atoms[j].fractionalPosition)
+          dr -= floor(dr + SIMD3<Double>(0.5,0.5,0.5))
           //var dr: double3 = pos_rot - fractionalPositions[j]
           //dr.x -= Double(dr.x<0.0 ? Int(dr.x-0.5) : Int(dr.x+0.5))
           //dr.y -= Double(dr.y<0.0 ? Int(dr.y-0.5) : Int(dr.y+0.5))
@@ -1186,10 +1186,10 @@ public struct SKSymmetryCell: CustomStringConvertible
     return true
   }
   
-  public static func isOverlap(a: double3, b: double3, lattice: double3x3, symmetryPrecision: Double = 1e-5) -> Bool
+  public static func isOverlap(a: SIMD3<Double>, b: SIMD3<Double>, lattice: double3x3, symmetryPrecision: Double = 1e-5) -> Bool
   {
-    var dr: double3 = abs(a - b)
-    dr -= floor(dr + double3(0.5,0.5,0.5))
+    var dr: SIMD3<Double> = abs(a - b)
+    dr -= floor(dr + SIMD3<Double>(0.5,0.5,0.5))
     if length_squared(lattice * dr) < symmetryPrecision * symmetryPrecision
     {
       return true
@@ -1201,8 +1201,8 @@ public struct SKSymmetryCell: CustomStringConvertible
   static func isIdentityMetric(metric_rotated: double3x3, metric_orig: double3x3, symmetryPrecision: Double, angleSymmetryPrecision: Double) -> Bool
   {
     let angleTolerance: Double = -1.0
-    let length_orig: double3 =  double3(sqrt(metric_orig[0,0]), sqrt(metric_orig[1,1]), sqrt(metric_orig[2,2]))
-    let length_rot: double3 =  double3(sqrt(metric_rotated[0,0]), sqrt(metric_rotated[1,1]), sqrt(metric_rotated[2,2]))
+    let length_orig: SIMD3<Double> =  SIMD3<Double>(sqrt(metric_orig[0,0]), sqrt(metric_orig[1,1]), sqrt(metric_orig[2,2]))
+    let length_rot: SIMD3<Double> =  SIMD3<Double>(sqrt(metric_rotated[0,0]), sqrt(metric_rotated[1,1]), sqrt(metric_rotated[2,2]))
     
     for i in 0..<3
     {

@@ -81,7 +81,7 @@ extension PrimitiveVisualAppearanceViewer
     set(newValue)
     {
       self.structureViewerStructures.forEach{
-        $0.primitiveOrientation.EulerAngles = double3(newValue ?? 0.0,$0.primitiveOrientation.EulerAngles.y,$0.primitiveOrientation.EulerAngles.z)
+        $0.primitiveOrientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.primitiveOrientation.EulerAngles.y,$0.primitiveOrientation.EulerAngles.z)
         $0.reComputeBoundingBox()
       }
     }
@@ -97,7 +97,7 @@ extension PrimitiveVisualAppearanceViewer
     set(newValue)
     {
       self.structureViewerStructures.forEach{
-        $0.primitiveOrientation.EulerAngles = double3($0.primitiveOrientation.EulerAngles.x, newValue ?? 0.0,$0.primitiveOrientation.EulerAngles.z)
+        $0.primitiveOrientation.EulerAngles = SIMD3<Double>($0.primitiveOrientation.EulerAngles.x, newValue ?? 0.0,$0.primitiveOrientation.EulerAngles.z)
         $0.reComputeBoundingBox()
       }
     }
@@ -113,7 +113,7 @@ extension PrimitiveVisualAppearanceViewer
     set(newValue)
     {
       self.structureViewerStructures.forEach{
-        $0.primitiveOrientation.EulerAngles = double3($0.primitiveOrientation.EulerAngles.x, $0.primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
+        $0.primitiveOrientation.EulerAngles = SIMD3<Double>($0.primitiveOrientation.EulerAngles.x, $0.primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
         $0.reComputeBoundingBox()
       }
     }
@@ -641,7 +641,7 @@ extension Array where Iterator.Element == PrimitiveVisualAppearanceViewer
     set(newValue)
     {
       self.structureViewerStructures.forEach{
-        $0.primitiveOrientation.EulerAngles = double3(newValue ?? 0.0,$0.primitiveOrientation.EulerAngles.y,$0.primitiveOrientation.EulerAngles.z)
+        $0.primitiveOrientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.primitiveOrientation.EulerAngles.y,$0.primitiveOrientation.EulerAngles.z)
         $0.reComputeBoundingBox()
       }
     }
@@ -657,7 +657,7 @@ extension Array where Iterator.Element == PrimitiveVisualAppearanceViewer
     set(newValue)
     {
       self.structureViewerStructures.forEach{
-        $0.primitiveOrientation.EulerAngles = double3($0.primitiveOrientation.EulerAngles.x, newValue ?? 0.0,$0.primitiveOrientation.EulerAngles.z)
+        $0.primitiveOrientation.EulerAngles = SIMD3<Double>($0.primitiveOrientation.EulerAngles.x, newValue ?? 0.0,$0.primitiveOrientation.EulerAngles.z)
         $0.reComputeBoundingBox()
       }
     }
@@ -673,7 +673,7 @@ extension Array where Iterator.Element == PrimitiveVisualAppearanceViewer
     set(newValue)
     {
       self.structureViewerStructures.forEach{
-        $0.primitiveOrientation.EulerAngles = double3($0.primitiveOrientation.EulerAngles.x, $0.primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
+        $0.primitiveOrientation.EulerAngles = SIMD3<Double>($0.primitiveOrientation.EulerAngles.x, $0.primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
         $0.reComputeBoundingBox()
       }
     }

@@ -41,7 +41,7 @@ public class SKmmCIFWriter
   {
   }
   
-  public func string(displayName: String, spaceGroupHallNumber: Int?, cell: SKCell, atoms: [SKAsymmetricAtom], atomsAreFractional: Bool, exportFractional: Bool, withProteinInfo: Bool, origin: double3) -> String
+  public func string(displayName: String, spaceGroupHallNumber: Int?, cell: SKCell, atoms: [SKAsymmetricAtom], atomsAreFractional: Bool, exportFractional: Bool, withProteinInfo: Bool, origin: SIMD3<Double>) -> String
   {
     var dataString: String = ""
     
@@ -95,7 +95,7 @@ public class SKmmCIFWriter
     let inverseUnitCell: double3x3 = cell.inverseUnitCell
     for atom in atoms
     {
-      let position: double3
+      let position: SIMD3<Double>
       let chemicalElement = PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol
       
       if atomsAreFractional && !exportFractional
