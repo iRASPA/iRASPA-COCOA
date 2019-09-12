@@ -390,7 +390,7 @@ class MetalView: MTKView
     case .panning:
       let location: NSPoint  = self.convert(event.locationInWindow, from: nil)
       if let panStartPoint = panStartPoint,
-         let distance: double3 = renderer.renderCameraSource?.renderCamera?.distance
+         let distance: SIMD3<Double> = renderer.renderCameraSource?.renderCamera?.distance
       {
         let panX: Double = Double(panStartPoint.x - location.x) * distance.z / 1500.0
         let panY: Double = Double(panStartPoint.y - location.y) * distance.z / 1500.0

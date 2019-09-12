@@ -33,16 +33,16 @@ import Foundation
 import simd
 
 
-extension int3
+extension SIMD3 where Scalar==Int32
 {
   public var squaredNorm: Int
   {
     return Int(self.x*self.x + self.y*self.y + self.z*self.z)
   }
   
-  public func modulo(_ b: Int) -> int3
+  public func modulo(_ b: Int) -> SIMD3<Int32>
   {
-    return int3(Int32.modulo(a: self.x, b: Int32(b)), Int32.modulo(a: self.y, b: Int32(b)), Int32.modulo(a: self.z, b: Int32(b)))
+    return SIMD3<Int32>(Int32.modulo(a: self.x, b: Int32(b)), Int32.modulo(a: self.y, b: Int32(b)), Int32.modulo(a: self.z, b: Int32(b)))
   }
   
   public var greatestCommonDivisor: Int
@@ -52,23 +52,23 @@ extension int3
   
   public var isZero: Bool
   {
-    return (self == int3(0,0,0))
+    return (self == SIMD3<Int32>(0,0,0))
   }
   
-  public static func +(left: int3, right: int3) -> int3
+  public static func +(left: SIMD3<Int32>, right: SIMD3<Int32>) -> SIMD3<Int32>
   {
-    return int3(left.x + right.x, left.y + right.y, left.z + right.z)
+    return SIMD3<Int32>(left.x + right.x, left.y + right.y, left.z + right.z)
   }
   
   // modulus on int32 defined as always positive
-  public static func %(left: int3, m: Int32) -> int3
+  public static func %(left: SIMD3<Int32>, m: Int32) -> SIMD3<Int32>
   {
-    return int3((((left.x % m)+m) % m),(((left.y % m)+m) % m),(((left.z % m)+m) % m))
+    return SIMD3<Int32>((((left.x % m)+m) % m),(((left.y % m)+m) % m),(((left.z % m)+m) % m))
   }
   
-  public static func -(left: int3, right: int3) -> int3
+  public static func -(left: SIMD3<Int32>, right: SIMD3<Int32>) -> SIMD3<Int32>
   {
-    return int3(left.x - right.x, left.y - right.y, left.z - right.z)
+    return SIMD3<Int32>(left.x - right.x, left.y - right.y, left.z - right.z)
   }
   
   /*
@@ -80,14 +80,14 @@ extension int3
     return int3(left.x / m, left.y / m, left.z / m)
   }*/
   
-  public static func *(left: int3, m: Int32) -> int3
+  public static func *(left: SIMD3<Int32>, m: Int32) -> SIMD3<Int32>
   {
-    return int3(left.x * m, left.y * m, left.z * m)
+    return SIMD3<Int32>(left.x * m, left.y * m, left.z * m)
   }
   
-  public static func *(m: Int32, right: int3) -> int3
+  public static func *(m: Int32, right: SIMD3<Int32>) -> SIMD3<Int32>
   {
-    return int3(m * right.x, m * right.y, m * right.z)
+    return SIMD3<Int32>(m * right.x, m * right.y, m * right.z)
   }
   
   /*
@@ -101,12 +101,12 @@ extension int3
 
 
 
-public func length_squared(_ v: int3) -> Int
+public func length_squared(_ v: SIMD3<Int32>) -> Int
 {
   return Int(v.x*v.x + v.y*v.y + v.z*v.z)
 }
 
-public func dot(_ v1: int3, _ v2: int3) -> Int
+public func dot(_ v1: SIMD3<Int32>, _ v2: SIMD3<Int32>) -> Int
 {
   return Int(v1.x*v2.x + v1.y*v2.y + v1.z*v2.z)
 }

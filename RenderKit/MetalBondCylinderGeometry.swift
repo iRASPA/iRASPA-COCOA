@@ -64,15 +64,15 @@ public class MetalBondCylinderGeometry
       let cosTheta: Double = cos(delta * Double(i))
       let sinTheta: Double = sin(delta * Double(i))
       
-      let normal2: float4 = float4(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      let position2: float4 = float4(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
-      vertices[index] = RKVertex(position: position2, normal: normal2, st: float2())
+      let normal2: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
+      let position2: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
+      vertices[index] = RKVertex(position: position2, normal: normal2, st:  SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       
-      let normal1: float4 = float4(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      let position1: float4 = float4(x: Float(r * cosTheta), y: 0.0, z: Float(r * sinTheta), w: 0.0)
-      vertices[index] = RKVertex(position: position1, normal: normal1, st: float2())
+      let normal1: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
+      let position1: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: 0.0, z: Float(r * sinTheta), w: 0.0)
+      vertices[index] = RKVertex(position: position1, normal: normal1, st:  SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       

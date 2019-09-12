@@ -47,43 +47,43 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   
   public var boundingBox: SKBoundingBox = SKBoundingBox()
   
-  public var contentShift: double3 = double3(x: 0.0, y: 0.0, z: 0.0)
+  public var contentShift: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
   public var contentFlip: Bool3 = Bool3(false,false,false)
   
   public var precision: Double = 1e-4
   
   public var enclosingBoundingBox: SKBoundingBox
   {
-    let c0: double3 = unitCell * double3(x: Double(minimumReplica.x),  y: Double(minimumReplica.y),  z: Double(minimumReplica.z))
-    let c1: double3 = unitCell * double3(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(minimumReplica.z))
-    let c2: double3 = unitCell * double3(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(minimumReplica.z))
-    let c3: double3 = unitCell * double3(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(minimumReplica.z))
-    let c4: double3 = unitCell * double3(x: Double(minimumReplica.x),   y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1))
-    let c5: double3 = unitCell * double3(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1))
-    let c6: double3 = unitCell * double3(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1))
-    let c7: double3 = unitCell * double3(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1))
+    let c0: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(minimumReplica.x),  y: Double(minimumReplica.y),  z: Double(minimumReplica.z))
+    let c1: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(minimumReplica.z))
+    let c2: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(minimumReplica.z))
+    let c3: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(minimumReplica.z))
+    let c4: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1))
+    let c5: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(minimumReplica.y),   z: Double(maximumReplica.z+1))
+    let c6: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1))
+    let c7: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1))
     
-    let minimum = double3(x: min(c0.x, c1.x, c2.x, c3.x, c4.x, c5.x, c6.x, c7.x),
+    let minimum = SIMD3<Double>(x: min(c0.x, c1.x, c2.x, c3.x, c4.x, c5.x, c6.x, c7.x),
                           y: min(c0.y, c1.y, c2.y, c3.y, c4.y, c5.y, c6.y, c7.y),
                           z: min(c0.z, c1.z, c2.z, c3.z, c4.z, c5.z, c6.z, c7.z))
     
-    let maximum = double3(x: max(c0.x, c1.x, c2.x, c3.x, c4.x, c5.x, c6.x, c7.x),
+    let maximum = SIMD3<Double>(x: max(c0.x, c1.x, c2.x, c3.x, c4.x, c5.x, c6.x, c7.x),
                           y: max(c0.y, c1.y, c2.y, c3.y, c4.y, c5.y, c6.y, c7.y),
                           z: max(c0.z, c1.z, c2.z, c3.z, c4.z, c5.z, c6.z, c7.z))
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)
   }
   
-  private var corners: [double3]
+  private var corners: [SIMD3<Double>]
   {
-    return [double3(x: 0.0, y: 0.0, z: 0.0),
-            double3(x: 1.0, y: 0.0, z: 0.0),
-            double3(x: 1.0, y: 1.0, z: 0.0),
-            double3(x: 0.0, y: 1.0, z: 0.0),
-            double3(x: 0.0, y: 0.0, z: 1.0),
-            double3(x: 1.0, y: 0.0, z: 1.0),
-            double3(x: 1.0, y: 1.0, z: 1.0),
-            double3(x: 0.0, y: 1.0, z: 1.0)]
+    return [SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0),
+            SIMD3<Double>(x: 1.0, y: 0.0, z: 0.0),
+            SIMD3<Double>(x: 1.0, y: 1.0, z: 0.0),
+            SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0),
+            SIMD3<Double>(x: 0.0, y: 0.0, z: 1.0),
+            SIMD3<Double>(x: 1.0, y: 0.0, z: 1.0),
+            SIMD3<Double>(x: 1.0, y: 1.0, z: 1.0),
+            SIMD3<Double>(x: 0.0, y: 1.0, z: 1.0)]
   }
   
   
@@ -119,9 +119,9 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   {
     let temp: Double = (cos(alpha) - cos(gamma) * cos(beta)) / sin(gamma)
     
-    let v1: double3 = double3(x: a, y: 0.0, z: 0.0)
-    let v2: double3 = double3(x: b * cos(gamma), y: b * sin(gamma), z: 0.0)
-    let v3: double3 = double3(x: c * cos(beta), y: c * temp, z: c * sqrt(1.0 - cos(beta)*cos(beta)-temp*temp))
+    let v1: SIMD3<Double> = SIMD3<Double>(x: a, y: 0.0, z: 0.0)
+    let v2: SIMD3<Double> = SIMD3<Double>(x: b * cos(gamma), y: b * sin(gamma), z: 0.0)
+    let v3: SIMD3<Double> = SIMD3<Double>(x: c * cos(beta), y: c * temp, z: c * sqrt(1.0 - cos(beta)*cos(beta)-temp*temp))
     unitCell = double3x3([v1, v2, v3])
     inverseUnitCell = unitCell.inverse
     fullCell = unitCell
@@ -141,12 +141,12 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   
   public init(boundingBox: SKBoundingBox)
   {
-    self.minimumReplica = int3(0,0,0)
-    self.maximumReplica = int3(0,0,0)
+    self.minimumReplica = SIMD3<Int32>(0,0,0)
+    self.maximumReplica = SIMD3<Int32>(0,0,0)
     
-    let v1: double3 = double3(boundingBox.maximum.x-boundingBox.minimum.x, 0.0, 0.0)
-    let v2: double3 = double3(0.0, boundingBox.maximum.y-boundingBox.minimum.y, 0.0)
-    let v3: double3 = double3(0.0, 0.0, boundingBox.maximum.z-boundingBox.minimum.z)
+    let v1: SIMD3<Double> = SIMD3<Double>(boundingBox.maximum.x-boundingBox.minimum.x, 0.0, 0.0)
+    let v2: SIMD3<Double> = SIMD3<Double>(0.0, boundingBox.maximum.y-boundingBox.minimum.y, 0.0)
+    let v3: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, boundingBox.maximum.z-boundingBox.minimum.z)
     
     unitCell = double3x3([v1, v2, v3])
     inverseUnitCell = unitCell.inverse
@@ -175,7 +175,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   }
   
   
-  public var minimumReplica: int3 = int3(0,0,0)
+  public var minimumReplica: SIMD3<Int32> = SIMD3<Int32>(0,0,0)
   {
     didSet
     {
@@ -204,7 +204,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
   }
   
-  public var maximumReplica: int3 = int3(0,0,0)
+  public var maximumReplica: SIMD3<Int32> = SIMD3<Int32>(0,0,0)
   {
     didSet
     {
@@ -235,7 +235,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   
   
   // assumes for-loop in order (outer to inner): (1) atoms, (2) x, (3) y, (4) z
-  public func replicaFromIndex(_ index: Int) -> int3
+  public func replicaFromIndex(_ index: Int) -> SIMD3<Int32>
   {
     let dx: Int = maximumReplicaX - minimumReplicaX + 1
     let dy: Int = maximumReplicaY - minimumReplicaY + 1
@@ -246,7 +246,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     let k2 = ( (index % n) / dz ) % dy + minimumReplicaY
     let k3 = (index % n) % dz + minimumReplicaZ
     
-    return int3(x: Int32(k1), y: Int32(k2), z: Int32(k3))
+    return SIMD3<Int32>(x: Int32(k1), y: Int32(k2), z: Int32(k3))
   }
   
   // MARK: -
@@ -267,9 +267,9 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     self.fullCell = try container.decode(double3x3.self)
     self.inverseFullCell = try container.decode(double3x3.self)
     self.boundingBox = try container.decode(SKBoundingBox.self)
-    self.contentShift = try container.decode(double3.self)
-    self.minimumReplica = try container.decode(int3.self)
-    self.maximumReplica = try container.decode(int3.self)
+    self.contentShift = try container.decode(SIMD3<Double>.self)
+    self.minimumReplica = try container.decode(SIMD3<Int32>.self)
+    self.maximumReplica = try container.decode(SIMD3<Int32>.self)
     
     if readVersionNumber >= 2 // introduced in version 2
     {
@@ -290,16 +290,16 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   
   public init(superCell: SKCell)
   {
-    let v1: double3 = Double(superCell.maximumReplica.x - superCell.minimumReplica.x + 1) * superCell.unitCell[0]
-    let v2: double3 = Double(superCell.maximumReplica.y - superCell.minimumReplica.y + 1) * superCell.unitCell[1]
-    let v3: double3 = Double(superCell.maximumReplica.z - superCell.minimumReplica.z + 1) * superCell.unitCell[2]
+    let v1: SIMD3<Double> = Double(superCell.maximumReplica.x - superCell.minimumReplica.x + 1) * superCell.unitCell[0]
+    let v2: SIMD3<Double> = Double(superCell.maximumReplica.y - superCell.minimumReplica.y + 1) * superCell.unitCell[1]
+    let v3: SIMD3<Double> = Double(superCell.maximumReplica.z - superCell.minimumReplica.z + 1) * superCell.unitCell[2]
     unitCell = double3x3([v1, v2, v3])
     inverseUnitCell = unitCell.inverse
     fullCell = unitCell
     inverseFullCell = fullCell.inverse
     
-    minimumReplica = int3(0,0,0)
-    maximumReplica = int3(0,0,0)
+    minimumReplica = SIMD3<Int32>(0,0,0)
+    maximumReplica = SIMD3<Int32>(0,0,0)
     
     //boundingBox = RKBoundingBox(unitCell: unitCell, maximumReplicas: maximumReplica, minimumReplicas: minimumReplica)
   }
@@ -331,9 +331,9 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
   }
   
-  public var translationVectors: [double3]
+  public var translationVectors: [SIMD3<Double>]
   {
-    var vectors: [double3] = []
+    var vectors: [SIMD3<Double>] = []
     
     for k3 in minimumReplicaZ...maximumReplicaZ
     {
@@ -341,7 +341,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
       {
         for k1 in minimumReplicaX...maximumReplicaX
         {
-          vectors.append(double3(x: Double(k1), y: Double(k2), z: Double(k3)))
+          vectors.append(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
         }
       }
     }
@@ -349,9 +349,9 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     return vectors
   }
   
-  public var renderTranslationVectors: [float4]
+  public var renderTranslationVectors: [SIMD4<Float>]
   {
-    var vectors: [float4] = []
+    var vectors: [SIMD4<Float>] = []
     
     for k3 in minimumReplica.z...maximumReplica.z
     {
@@ -359,7 +359,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
       {
         for k1 in minimumReplica.x...maximumReplica.x
         {
-          vectors.append(float4(x: Float(k1), y: Float(k2), z: Float(k3), w: 0.0))
+          vectors.append(SIMD4<Float>(x: Float(k1), y: Float(k2), z: Float(k3), w: 0.0))
         }
       }
     }
@@ -516,9 +516,9 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   
   public var lengths: (a: Double, b: Double, c: Double)
   {
-    let column1: double3 = unitCell[0]
-    let column2: double3 = unitCell[1]
-    let column3: double3 = unitCell[2]
+    let column1: SIMD3<Double> = unitCell[0]
+    let column2: SIMD3<Double> = unitCell[1]
+    let column3: SIMD3<Double> = unitCell[2]
     let length1: Double = length(column1)
     let length2: Double = length(column2)
     let length3: Double = length(column3)
@@ -568,8 +568,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   {
     get
     {
-      let column2: double3 = unitCell[1]
-      let column3: double3 = unitCell[2]
+      let column2: SIMD3<Double> = unitCell[1]
+      let column3: SIMD3<Double> = unitCell[2]
       let length2: Double = length(column2)
       let length3: Double = length(column3)
       
@@ -586,8 +586,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   {
     get
     {
-      let column1: double3 = unitCell[0]
-      let column3: double3 = unitCell[2]
+      let column1: SIMD3<Double> = unitCell[0]
+      let column3: SIMD3<Double> = unitCell[2]
       let length1: Double = length(column1)
       let length3: Double = length(column3)
       
@@ -604,8 +604,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   {
     get
     {
-      let column1: double3 = unitCell[0]
-      let column2: double3 = unitCell[1]
+      let column1: SIMD3<Double> = unitCell[0]
+      let column2: SIMD3<Double> = unitCell[1]
       let length1: Double = length(column1)
       let length2: Double = length(column2)
       
@@ -622,9 +622,9 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   {
     get
     {
-      let column1: double3 = unitCell[0]
-      let column2: double3 = unitCell[1]
-      let column3: double3 = unitCell[2]
+      let column1: SIMD3<Double> = unitCell[0]
+      let column2: SIMD3<Double> = unitCell[1]
+      let column3: SIMD3<Double> = unitCell[2]
       let length1: Double = length(column1)
       let length2: Double = length(column2)
       let length3: Double = length(column3)
@@ -638,9 +638,9 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     {
       let temp: Double = (cos(newValue.alpha) - cos(newValue.gamma) * cos(newValue.beta)) / sin(newValue.gamma)
       
-      let v1: double3 = double3(x: newValue.a, y: 0.0, z: 0.0)
-      let v2: double3 = double3(x: newValue.b * cos(newValue.gamma), y: newValue.b * sin(newValue.gamma), z: 0.0)
-      let v3: double3 = double3(x: newValue.c * cos(newValue.beta), y: newValue.c * temp, z: newValue.c * sqrt(1.0 - cos(newValue.beta)*cos(newValue.beta)-temp*temp))
+      let v1: SIMD3<Double> = SIMD3<Double>(x: newValue.a, y: 0.0, z: 0.0)
+      let v2: SIMD3<Double> = SIMD3<Double>(x: newValue.b * cos(newValue.gamma), y: newValue.b * sin(newValue.gamma), z: 0.0)
+      let v3: SIMD3<Double> = SIMD3<Double>(x: newValue.c * cos(newValue.beta), y: newValue.c * temp, z: newValue.c * sqrt(1.0 - cos(newValue.beta)*cos(newValue.beta)-temp*temp))
       unitCell = double3x3([v1, v2, v3])
       inverseUnitCell = unitCell.inverse
       fullCell = unitCell
@@ -668,48 +668,48 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   
   public var volume: Double
   {
-    let column1: double3 = unitCell[0]
-    let column2: double3 = unitCell[1]
-    let column3: double3 = unitCell[2]
+    let column1: SIMD3<Double> = unitCell[0]
+    let column2: SIMD3<Double> = unitCell[1]
+    let column3: SIMD3<Double> = unitCell[2]
     
-    let v2: double3 = cross(column2, column3)
+    let v2: SIMD3<Double> = cross(column2, column3)
     
     return dot(column1,v2)
   }
   
-  public var perpendicularWidths: double3
+  public var perpendicularWidths: SIMD3<Double>
   {
-    let column1: double3 = unitCell[0]
-    let column2: double3 = unitCell[1]
-    let column3: double3 = unitCell[2]
+    let column1: SIMD3<Double> = unitCell[0]
+    let column2: SIMD3<Double> = unitCell[1]
+    let column3: SIMD3<Double> = unitCell[2]
     
-    let v1: double3 = cross(column1, column2)
-    let v2: double3 = cross(column2, column3)
-    let v3: double3 = cross(column3, column1)
+    let v1: SIMD3<Double> = cross(column1, column2)
+    let v2: SIMD3<Double> = cross(column2, column3)
+    let v3: SIMD3<Double> = cross(column3, column1)
     
     let volume: Double = dot(column1,v2)
     
-    return double3(x: volume/length(v2), y: volume/length(v3), z: volume/length(v1))
+    return SIMD3<Double>(x: volume/length(v2), y: volume/length(v3), z: volume/length(v1))
   }
   
-  public var properties: (volume: Double, perpendicularWidths: double3, lengths: (a: Double, b: Double, c: Double), angles: (alpha: Double, beta: Double,gamma: Double))
+  public var properties: (volume: Double, perpendicularWidths: SIMD3<Double>, lengths: (a: Double, b: Double, c: Double), angles: (alpha: Double, beta: Double,gamma: Double))
   {
-    let column1: double3 = unitCell[0]
-    let column2: double3 = unitCell[1]
-    let column3: double3 = unitCell[2]
+    let column1: SIMD3<Double> = unitCell[0]
+    let column2: SIMD3<Double> = unitCell[1]
+    let column3: SIMD3<Double> = unitCell[2]
     let a: Double = length(column1)
     let b: Double = length(column2)
     let c: Double = length(column3)
     let lengths: (Double, Double, Double) = (a,b,c)
     
-    let v1: double3 = cross(column1, column2)
-    let v2: double3 = cross(column2, column3)
-    let v3: double3 = cross(column3, column1)
+    let v1: SIMD3<Double> = cross(column1, column2)
+    let v2: SIMD3<Double> = cross(column2, column3)
+    let v3: SIMD3<Double> = cross(column3, column1)
     
     
     let volume: Double = dot(column1,v2)
     
-    let perpendicularWidths: double3 = double3(x: volume/length(v2), y: volume/length(v3), z: volume/length(v1))
+    let perpendicularWidths: SIMD3<Double> = SIMD3<Double>(x: volume/length(v2), y: volume/length(v3), z: volume/length(v1))
     
     let angles: (Double, Double, Double) = (acos(dot(column2, column3) / (b * c)),
                                             acos(dot(column1, column3) / (a * c)),
@@ -718,10 +718,10 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     return (volume, perpendicularWidths, lengths, angles)
   }
   
-  public func applyFullCellBoundaryCondition(_ dr: double3) -> double3
+  public func applyFullCellBoundaryCondition(_ dr: SIMD3<Double>) -> SIMD3<Double>
   {
     // convert from xyz to abc
-    var s: double3 = inverseFullCell * dr
+    var s: SIMD3<Double> = inverseFullCell * dr
     
     // apply boundary condition
     s.x -= rint(s.x)
@@ -732,10 +732,10 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     return fullCell * s
   }
   
-  public func applyUnitCellBoundaryCondition(_ dr: double3) -> double3
+  public func applyUnitCellBoundaryCondition(_ dr: SIMD3<Double>) -> SIMD3<Double>
   {
     // convert from xyz to abc
-    var s: double3 = inverseUnitCell * dr
+    var s: SIMD3<Double> = inverseUnitCell * dr
     
     // apply boundary condition
     s.x -= rint(s.x)
@@ -747,19 +747,19 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   }
   
   
-  public func convertToCartesian(_ s: double3) -> double3
+  public func convertToCartesian(_ s: SIMD3<Double>) -> SIMD3<Double>
   {
     return unitCell * s
   }
   
-  public func convertToFractional(_ s: double3) -> double3
+  public func convertToFractional(_ s: SIMD3<Double>) -> SIMD3<Double>
   {
     return inverseUnitCell * s
   }
   
-  public func convertToNormalizedFractional(_ r: double3) -> double3
+  public func convertToNormalizedFractional(_ r: SIMD3<Double>) -> SIMD3<Double>
   {
-    var s: double3 = inverseUnitCell * r
+    var s: SIMD3<Double> = inverseUnitCell * r
     
     s.x -= rint(s.x)
     s.y -= rint(s.y)
@@ -795,21 +795,21 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     
   }
   
-  public func numberOfReplicas(forCutoff cutoff: Double) -> int3
+  public func numberOfReplicas(forCutoff cutoff: Double) -> SIMD3<Int32>
   {
-    let column1: double3 = unitCell[0]
-    let column2: double3 = unitCell[1]
-    let column3: double3 = unitCell[2]
+    let column1: SIMD3<Double> = unitCell[0]
+    let column2: SIMD3<Double> = unitCell[1]
+    let column3: SIMD3<Double> = unitCell[2]
     
-    let v1: double3 = cross(column1, column2)
-    let v2: double3 = cross(column2, column3)
-    let v3: double3 = cross(column3, column1)
+    let v1: SIMD3<Double> = cross(column1, column2)
+    let v2: SIMD3<Double> = cross(column2, column3)
+    let v3: SIMD3<Double> = cross(column3, column1)
     
     let volume: Double = dot(column1,v2)
     
-    let perpendicularWith: double3 = double3(x: volume/length(v2), y: volume/length(v3), z: volume/length(v1))
+    let perpendicularWith: SIMD3<Double> = SIMD3<Double>(x: volume/length(v2), y: volume/length(v3), z: volume/length(v1))
     
-    let replicas: int3 = int3(Int32(ceil(2.0 * cutoff / (perpendicularWith.x + 0.000001))),
+    let replicas: SIMD3<Int32> = SIMD3<Int32>(Int32(ceil(2.0 * cutoff / (perpendicularWith.x + 0.000001))),
                               Int32(ceil(2.0 * cutoff / (perpendicularWith.y + 0.000001))),
                               Int32(ceil(2.0 * cutoff / (perpendicularWith.z + 0.000001))))
     
@@ -859,8 +859,8 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     }
     
     unitCell = try decoder.decode(double3x3.self)
-    minimumReplica = try decoder.decode(int3.self)
-    maximumReplica = try decoder.decode(int3.self)
+    minimumReplica = try decoder.decode(SIMD3<Int32>.self)
+    maximumReplica = try decoder.decode(SIMD3<Int32>.self)
     
     unitCell = try decoder.decode(double3x3.self)
     inverseUnitCell = try decoder.decode(double3x3.self)
@@ -870,7 +870,7 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     
     boundingBox = try decoder.decode(SKBoundingBox.self)
     
-    contentShift = try decoder.decode(double3.self)
+    contentShift = try decoder.decode(SIMD3<Double>.self)
     
     precision = try decoder.decode(Double.self)
     

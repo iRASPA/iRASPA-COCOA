@@ -35,16 +35,16 @@ import simd
 
 public struct RKBondVertex: CustomStringConvertible
 {
-  public var position1: float4
-  public var position2: float4
+  public var position1: SIMD4<Float>
+  public var position2: SIMD4<Float>
   
   public init()
   {
-    self.position1 = float4(x: 0.0, y: 0.0, z: 0.0, w:1.0)
-    self.position2 = float4(x: 0.0, y: 0.0, z: 0.0, w:1.0)
+    self.position1 = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w:1.0)
+    self.position2 = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w:1.0)
   }
   
-  public init(position1: float4, position2: float4)
+  public init(position1: SIMD4<Float>, position2: SIMD4<Float>)
   {
     self.position1 = position1
     self.position2 = position2

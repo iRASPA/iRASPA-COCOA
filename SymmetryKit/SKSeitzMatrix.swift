@@ -65,7 +65,7 @@ import MathKit
 public struct SKSeitzMatrix: Equatable, Hashable
 {
   var rotation: SKRotationMatrix
-  var translation: int3  // denominator = 12
+  var translation: SIMD3<Int32>  // denominator = 12
   
   static let rotationStringX: [Int: String] = [-1:"-x", 0:"", 1: "x"]
   static let rotationStringY: [Int: String] = [-1:"-y", 0:"", 1: "y"]
@@ -88,10 +88,10 @@ public struct SKSeitzMatrix: Equatable, Hashable
   public init()
   {
     rotation = SKRotationMatrix()
-    translation = int3()
+    translation = SIMD3<Int32>()
   }
   
-  public init(rotation: SKRotationMatrix, translation: int3)
+  public init(rotation: SKRotationMatrix, translation: SIMD3<Int32>)
   {
     self.rotation = rotation
     self.rotation.cleaunUp()
@@ -99,11 +99,11 @@ public struct SKSeitzMatrix: Equatable, Hashable
 
   }
   
-  public init(rotation: SKRotationMatrix, translation: double3)
+  public init(rotation: SKRotationMatrix, translation: SIMD3<Double>)
   {
     self.rotation = rotation
     self.rotation.cleaunUp()
-    self.translation = int3(((Int32(rint(translation.x * 12.0)) % 12 + 12) % 12),
+    self.translation = SIMD3<Int32>(((Int32(rint(translation.x * 12.0)) % 12 + 12) % 12),
                             ((Int32(rint(translation.y * 12.0)) % 12 + 12) % 12),
                             ((Int32(rint(translation.z * 12.0)) % 12 + 12) % 12))
   }
@@ -123,50 +123,50 @@ public struct SKSeitzMatrix: Equatable, Hashable
     assert(Int(y)<SKSeitzMatrix.SeitzData.count)
     assert(Int(z)<SKSeitzMatrix.SeitzData.count)
     
-    let r1: int3 = int3(x: Int32(SKSeitzMatrix.SeitzData[Int(x)].r1), y: Int32(SKSeitzMatrix.SeitzData[Int(y)].r1), z: Int32(SKSeitzMatrix.SeitzData[Int(z)].r1))
-    let r2: int3 = int3(x: Int32(SKSeitzMatrix.SeitzData[Int(x)].r2), y: Int32(SKSeitzMatrix.SeitzData[Int(y)].r2), z: Int32(SKSeitzMatrix.SeitzData[Int(z)].r2))
-    let r3: int3 = int3(x: Int32(SKSeitzMatrix.SeitzData[Int(x)].r3), y: Int32(SKSeitzMatrix.SeitzData[Int(y)].r3), z: Int32(SKSeitzMatrix.SeitzData[Int(z)].r3))
+    let r1: SIMD3<Int32> = SIMD3<Int32>(x: Int32(SKSeitzMatrix.SeitzData[Int(x)].r1), y: Int32(SKSeitzMatrix.SeitzData[Int(y)].r1), z: Int32(SKSeitzMatrix.SeitzData[Int(z)].r1))
+    let r2: SIMD3<Int32> = SIMD3<Int32>(x: Int32(SKSeitzMatrix.SeitzData[Int(x)].r2), y: Int32(SKSeitzMatrix.SeitzData[Int(y)].r2), z: Int32(SKSeitzMatrix.SeitzData[Int(z)].r2))
+    let r3: SIMD3<Int32> = SIMD3<Int32>(x: Int32(SKSeitzMatrix.SeitzData[Int(x)].r3), y: Int32(SKSeitzMatrix.SeitzData[Int(y)].r3), z: Int32(SKSeitzMatrix.SeitzData[Int(z)].r3))
     self.rotation = SKRotationMatrix([r1,r2,r3])
     
-    self.translation = int3(x: Int32(SKSeitzMatrix.SeitzData[Int(x)].t), y: Int32(SKSeitzMatrix.SeitzData[Int(y)].t), z: Int32(SKSeitzMatrix.SeitzData[Int(z)].t))
+    self.translation = SIMD3<Int32>(x: Int32(SKSeitzMatrix.SeitzData[Int(x)].t), y: Int32(SKSeitzMatrix.SeitzData[Int(y)].t), z: Int32(SKSeitzMatrix.SeitzData[Int(z)].t))
   }
   
   public init(random: Int = 0)
   {
     self.rotation = SKRotationMatrix(random: random)
     //self.translation = int3(Int32(arc4random_uniform(13)), Int32(arc4random_uniform(13)), Int32(arc4random_uniform(13)))
-    self.translation = int3(0,0,0)
+    self.translation = SIMD3<Int32>(0,0,0)
   }
   
   
 
-  public var intrinsicPart: int3
+  public var intrinsicPart: SIMD3<Int32>
   {
     let order: Int = self.rotation.order()
     return self.rotation.accumulate() * self.translation / Int32(order)
   }
   
-  public var t: int3
+  public var t: SIMD3<Int32>
   {
     return self.rotation.accumulate() * self.translation 
   }
 
   
-  public var locationPart: int3
+  public var locationPart: SIMD3<Int32>
   {
     return self.intrinsicPart - self.translation
   }
   
-  public var fixedPoint: double3
+  public var fixedPoint: SIMD3<Double>
   {
     var free: [Int] = [0,0,0]
-    var t: int3x3 = int3x3([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
-    let m: int3x3 = self.rotation - int3x3([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
+    var t: int3x3 = int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
+    let m: int3x3 = self.rotation - int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
     let rowEchelonMatrix: int3x3 = m.rowEchelonFormRosetta(t: &t, freeVars: &free)
     
-    let locationPart: int3 = self.locationPart
-    let s: double3 = t * double3(Double(locationPart.x)/12.0,Double(locationPart.y)/12.0, Double(locationPart.z)/12.0)
-    let sol: double3 = rowEchelonMatrix.rowEchelonFormBackSubstitutionRosetta(t: s, freeVars: free)
+    let locationPart: SIMD3<Int32> = self.locationPart
+    let s: SIMD3<Double> = t * SIMD3<Double>(Double(locationPart.x)/12.0,Double(locationPart.y)/12.0, Double(locationPart.z)/12.0)
+    let sol: SIMD3<Double> = rowEchelonMatrix.rowEchelonFormBackSubstitutionRosetta(t: s, freeVars: free)
     return sol
   }
   
@@ -175,7 +175,7 @@ public struct SKSeitzMatrix: Equatable, Hashable
     if self.rotation.isIdentity
     {
       // identity with translation = 0
-      if self.translation == int3(0,0,0)
+      if self.translation == SIMD3<Int32>(0,0,0)
       {
         return .identity
       }
@@ -192,7 +192,7 @@ public struct SKSeitzMatrix: Equatable, Hashable
       return .inversion
     }
     
-    let t: int3 = self.t
+    let t: SIMD3<Int32> = self.t
     let order: Int = self.rotation.order()
     let YW: SKRotationMatrix = self.rotation.accumulate()
     let YWMinus: SKRotationMatrix = (-self.rotation).accumulate()
@@ -241,7 +241,7 @@ public struct SKSeitzMatrix: Equatable, Hashable
     hasher.combine(self.rotation[2,1])
     hasher.combine(self.rotation[2,2])
     
-    let normalizedTranslation: int3 = self.translation.modulo(12)
+    let normalizedTranslation: SIMD3<Int32> = self.translation.modulo(12)
     hasher.combine(normalizedTranslation.x)
     hasher.combine(normalizedTranslation.y)
     hasher.combine(normalizedTranslation.z)
@@ -266,7 +266,7 @@ public struct SKSeitzMatrix: Equatable, Hashable
   public var inverse: SKSeitzMatrix
   {
     let inverseRotation: SKRotationMatrix = self.rotation.inverse
-    let inverseTranslation: int3 = 0 &- (inverseRotation * translation)
+    let inverseTranslation: SIMD3<Int32> = 0 &- (inverseRotation * translation)
     return SKSeitzMatrix(rotation: inverseRotation, translation: inverseTranslation)
   }
 
@@ -276,7 +276,7 @@ public struct SKSeitzMatrix: Equatable, Hashable
   {
     let m: Int = encoding.count/3
     
-    var matrices: [SKSeitzMatrix] = [SKSeitzMatrix](repeating: SKSeitzMatrix(rotation: SKRotationMatrix.identity, translation: int3(0,0,0)), count: 3)
+    var matrices: [SKSeitzMatrix] = [SKSeitzMatrix](repeating: SKSeitzMatrix(rotation: SKRotationMatrix.identity, translation: SIMD3<Int32>(0,0,0)), count: 3)
     
     for i in 0..<m
     {
@@ -308,7 +308,7 @@ public struct SKSeitzMatrix: Equatable, Hashable
     return matrices
   }
   
-  public static func SeitzMatrices(encoding: [UInt8], centroSymmetric: Bool, inversionCenter: int3) -> [SKSeitzMatrix]
+  public static func SeitzMatrices(encoding: [UInt8], centroSymmetric: Bool, inversionCenter: SIMD3<Int32>) -> [SKSeitzMatrix]
   {
     let m: Int = encoding.count/3
     let size: Int = centroSymmetric ? 2 * m : m
@@ -334,7 +334,7 @@ public struct SKSeitzMatrix: Equatable, Hashable
         
         let seitz:SKSeitzMatrix = SKSeitzMatrix(encoding: (x,y,z))
         
-        let translation: int3 = seitz.translation + seitz.rotation * inversionCenter
+        let translation: SIMD3<Int32> = seitz.translation + seitz.rotation * inversionCenter
         matrices[m+i] = SKSeitzMatrix(rotation: -seitz.rotation, translation: translation)
       }
     }
@@ -344,9 +344,9 @@ public struct SKSeitzMatrix: Equatable, Hashable
 
 
  
-  public static func * (left: SKSeitzMatrix, right: double3) -> double3
+  public static func * (left: SKSeitzMatrix, right: SIMD3<Double>) -> SIMD3<Double>
   {
-    return double3(x: Double(left.rotation[0][0]) * right.x + Double(left.rotation[1][0]) * right.y + Double(left.rotation[2][0]) * right.z + Double(left.translation.x)/12.0,
+    return SIMD3<Double>(x: Double(left.rotation[0][0]) * right.x + Double(left.rotation[1][0]) * right.y + Double(left.rotation[2][0]) * right.z + Double(left.translation.x)/12.0,
                    y: Double(left.rotation[0][1]) * right.x + Double(left.rotation[1][1]) * right.y + Double(left.rotation[2][1]) * right.z + Double(left.translation.y)/12.0,
                    z: Double(left.rotation[0][2]) * right.x + Double(left.rotation[1][2]) * right.y + Double(left.rotation[2][2]) * right.z + Double(left.translation.z)/12.0)
   }
@@ -355,9 +355,9 @@ public struct SKSeitzMatrix: Equatable, Hashable
   public static func * (left: SKSeitzMatrix, right: SKSeitzMatrix) -> SKSeitzMatrix
   {
     let rotationMatrix: SKRotationMatrix = left.rotation * right.rotation
-    let a1: int3 = left.translation
-    let a2: int3 = left.rotation * right.translation
-    let translation: int3 = a1 + a2
+    let a1: SIMD3<Int32> = left.translation
+    let a2: SIMD3<Int32> = left.rotation * right.translation
+    let translation: SIMD3<Int32> = a1 + a2
     return SKSeitzMatrix(rotation: rotationMatrix, translation: translation)
   }
   
@@ -472,24 +472,24 @@ public struct SKSeitzMatrix: Equatable, Hashable
       break
     case .face:
       multiplier = 4
-      shift = double3x3([double3(0.0,1.0/2.0,1.0/2.0),double3(1.0/2.0,0.0,1.0/2.0),double3(1.0/2.0,1.0/2.0,0.0)])
+      shift = double3x3([SIMD3<Double>(0.0,1.0/2.0,1.0/2.0),SIMD3<Double>(1.0/2.0,0.0,1.0/2.0),SIMD3<Double>(1.0/2.0,1.0/2.0,0.0)])
       break
     case .r:
       multiplier = 3
-      shift = double3x3([double3(2.0/3.0,1.0/3.0,1.0/3.0),double3(1.0/3.0,2.0/3.0,2.0/3.0),double3(0.0,0.0,0.0)])
+      shift = double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(1.0/3.0,2.0/3.0,2.0/3.0),SIMD3<Double>(0.0,0.0,0.0)])
       break
     case .body:
       multiplier = 2
-      shift = double3x3([double3(1.0/2.0,1.0/2.0,1.0/2.0),double3(0.0,0.0,0.0),double3(0,0,0)])
+      shift = double3x3([SIMD3<Double>(1.0/2.0,1.0/2.0,1.0/2.0),SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0,0,0)])
     case .a_face:
       multiplier = 2
-      shift = double3x3([double3(0.0,1.0/2.0,1.0/2.0),double3(0.0,0.0,0.0),double3(0.0,0.0,0.0)])
+      shift = double3x3([SIMD3<Double>(0.0,1.0/2.0,1.0/2.0),SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.0,0.0)])
     case .b_face:
       multiplier = 2
-      shift = double3x3([double3(1.0/2.0,0.0,1.0/2.0),double3(0.0,0.0,0.0),double3(0.0,0.0,0.0)])
+      shift = double3x3([SIMD3<Double>(1.0/2.0,0.0,1.0/2.0),SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.0,0.0)])
     case .c_face:
       multiplier = 2
-      shift = double3x3([double3(1.0/2.0,1.0/2.0,0.0),double3(0.0,0.0,0.0),double3(0.0,0.0,0.0)])
+      shift = double3x3([SIMD3<Double>(1.0/2.0,1.0/2.0,0.0),SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.0,0.0)])
       break
     default:
       break
@@ -515,14 +515,14 @@ public struct SKSeitzMatrix: Equatable, Hashable
       
      
       // translation in conventional cell: S = C_{S,O}^-1 * P_O
-      let translation: double3 = transformationMatrix.inverse * double3(Double(seitzMatrix.translation.x)/12.0, Double(seitzMatrix.translation.y)/12.0, Double(seitzMatrix.translation.z)/12.0)
+      let translation: SIMD3<Double> = transformationMatrix.inverse * SIMD3<Double>(Double(seitzMatrix.translation.x)/12.0, Double(seitzMatrix.translation.y)/12.0, Double(seitzMatrix.translation.z)/12.0)
       
       
       symmetry[index] = SKSeitzMatrix(rotation: SKRotationMatrix(rotation), translation: translation)
       
       for i in 1..<multiplier
       {
-        let translationWithShift: double3 = translation + shift[i-1]
+        let translationWithShift: SIMD3<Double> = translation + shift[i-1]
         
         symmetry[index + i * size] = SKSeitzMatrix(rotation: SKRotationMatrix(rotation), translation: translationWithShift)
       }

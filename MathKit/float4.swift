@@ -32,7 +32,7 @@
 import Foundation
 import simd
 
-extension float4
+extension SIMD4 where Scalar==Float
 {
   public init(color: NSColor)
   {
@@ -67,12 +67,12 @@ extension float4
     self.init(x: Float(x), y: Float(y), z: Float(z), w: Float(w))
     
   }
-  public init(Double4: double4)
+  public init(Double4: SIMD4<Double>)
   {
     self.init(x: Float(Double4.x), y: Float(Double4.y), z: Float(Double4.z), w: Float(Double4.w))
     
   }
-  public init(xyz: double3, w: Double)
+  public init(xyz: SIMD3<Double>, w: Double)
   {
     self.init(x: Float(xyz.x), y: Float(xyz.y), z: Float(xyz.z), w: Float(w))
   }

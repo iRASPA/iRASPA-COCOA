@@ -56,9 +56,9 @@ public struct RKTransformationUniforms
   public var bloomLevel: Float = 1.0
   public var bloomPulse: Float = 1.0
   public var padFloat3: Float = Float()
-  var padVector2: float4 = float4()
-  var padVector3: float4 = float4()
-  var padvector4: float4 = float4()
+  var padVector2: SIMD4<Float> = SIMD4<Float>()
+  var padVector3: SIMD4<Float> = SIMD4<Float>()
+  var padvector4: SIMD4<Float> = SIMD4<Float>()
   
   public init()
   {

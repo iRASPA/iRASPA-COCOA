@@ -152,7 +152,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       let element: SKElement = PredefinedElements.sharedInstance.elementSet[atomicNumber]
       
       //let sortIndex: Int = forceFieldData.sortedAtomTypes[row].value.sortIndex
-      let potentialParameters: double2 = forceFieldData.atomTypeList[row].potentialParameters
+      let potentialParameters: SIMD2<Double> = forceFieldData.atomTypeList[row].potentialParameters
       
       view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "elementView"), owner: self) as? NSTableCellView
       
@@ -628,7 +628,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldSet: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
       let value: SKForceFieldType = forceFieldSet.atomTypeList[row]
-      forceFieldSet.atomTypeList[row].potentialParameters = double2(sender.doubleValue,value.potentialParameters.y)
+      forceFieldSet.atomTypeList[row].potentialParameters = SIMD2<Double>(sender.doubleValue,value.potentialParameters.y)
     
       
       project.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
@@ -652,7 +652,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldSet: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
       let value: SKForceFieldType = forceFieldSet.atomTypeList[row]
-      forceFieldSet.atomTypeList[row].potentialParameters = double2(value.potentialParameters.x, sender.doubleValue)
+      forceFieldSet.atomTypeList[row].potentialParameters = SIMD2<Double>(value.potentialParameters.x, sender.doubleValue)
       
       project.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
       

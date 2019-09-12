@@ -35,8 +35,8 @@ import simd
 
 public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
 {
-  public var minimum: double3 = double3(x: 0.0, y: 0.0, z:0.0)
-  public var maximum: double3 = double3(x: 0.0, y: 0.0, z:0.0)
+  public var minimum: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z:0.0)
+  public var maximum: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z:0.0)
   
   static var versionNumber: Int = 1
   
@@ -45,13 +45,13 @@ public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
     
   }
   
-  public init(minimum: double3, maximum: double3)
+  public init(minimum: SIMD3<Double>, maximum: SIMD3<Double>)
   {
     self.minimum = minimum
     self.maximum = maximum
   }
   
-  public init(center: double3, width: double3)
+  public init(center: SIMD3<Double>, width: SIMD3<Double>)
   {
     self.minimum = center - 0.5 * width
     self.maximum = center + 0.5 * width
@@ -65,25 +65,25 @@ public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
   {
     var container = try decoder.unkeyedContainer()
     
-    self.minimum = try container.decode(double3.self)
-    self.maximum = try container.decode(double3.self)
+    self.minimum = try container.decode(SIMD3<Double>.self)
+    self.maximum = try container.decode(SIMD3<Double>.self)
   }
   
-  public var corners: [double3]
+  public var corners: [SIMD3<Double>]
   {
-    return [double3(x: Double(minimum.x), y: Double(minimum.y), z: Double(minimum.z)),
-            double3(x: Double(maximum.x), y: Double(minimum.y), z: Double(minimum.z)),
-            double3(x: Double(maximum.x), y: Double(maximum.y), z: Double(minimum.z)),
-            double3(x: Double(minimum.x), y: Double(maximum.y), z: Double(minimum.z)),
-            double3(x: Double(minimum.x), y: Double(minimum.y), z: Double(maximum.z)),
-            double3(x: Double(maximum.x), y: Double(minimum.y), z: Double(maximum.z)),
-            double3(x: Double(maximum.x), y: Double(maximum.y), z: Double(maximum.z)),
-            double3(x: Double(minimum.x), y: Double(maximum.y), z: Double(maximum.z))]
+    return [SIMD3<Double>(x: Double(minimum.x), y: Double(minimum.y), z: Double(minimum.z)),
+            SIMD3<Double>(x: Double(maximum.x), y: Double(minimum.y), z: Double(minimum.z)),
+            SIMD3<Double>(x: Double(maximum.x), y: Double(maximum.y), z: Double(minimum.z)),
+            SIMD3<Double>(x: Double(minimum.x), y: Double(maximum.y), z: Double(minimum.z)),
+            SIMD3<Double>(x: Double(minimum.x), y: Double(minimum.y), z: Double(maximum.z)),
+            SIMD3<Double>(x: Double(maximum.x), y: Double(minimum.y), z: Double(maximum.z)),
+            SIMD3<Double>(x: Double(maximum.x), y: Double(maximum.y), z: Double(maximum.z)),
+            SIMD3<Double>(x: Double(minimum.x), y: Double(maximum.y), z: Double(maximum.z))]
   }
   
-  public var sides: [(double3,double3)]
+  public var sides: [(SIMD3<Double>,SIMD3<Double>)]
   {
-    let cornerPoints: [double3] = self.corners
+    let cornerPoints: [SIMD3<Double>] = self.corners
     return [
       // bottom ring
       (cornerPoints[0], cornerPoints[1]),
@@ -105,26 +105,26 @@ public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
     ]
   }
   
-  public var center: double3
+  public var center: SIMD3<Double>
   {
     return minimum + (maximum - minimum) * 0.5
   }
   
   public var boundingSphereRadius: Double
   {
-    let coords: [double3] =
+    let coords: [SIMD3<Double>] =
       [
-        double3(x: minimum.x, y: minimum.z, z: minimum.z),
-        double3(x: maximum.x, y: minimum.z, z: minimum.z),
-        double3(x: minimum.x, y: maximum.z, z: minimum.z),
-        double3(x: maximum.x, y: maximum.z, z: minimum.z),
-        double3(x: minimum.x, y: minimum.z, z: maximum.z),
-        double3(x: maximum.x, y: minimum.z, z: maximum.z),
-        double3(x: minimum.x, y: maximum.z, z: maximum.z),
-        double3(x: maximum.x, y: maximum.z, z: maximum.z),
+        SIMD3<Double>(x: minimum.x, y: minimum.z, z: minimum.z),
+        SIMD3<Double>(x: maximum.x, y: minimum.z, z: minimum.z),
+        SIMD3<Double>(x: minimum.x, y: maximum.z, z: minimum.z),
+        SIMD3<Double>(x: maximum.x, y: maximum.z, z: minimum.z),
+        SIMD3<Double>(x: minimum.x, y: minimum.z, z: maximum.z),
+        SIMD3<Double>(x: maximum.x, y: minimum.z, z: maximum.z),
+        SIMD3<Double>(x: minimum.x, y: maximum.z, z: maximum.z),
+        SIMD3<Double>(x: maximum.x, y: maximum.z, z: maximum.z),
         ]
     
-    let centerOfScene: double3 = minimum + (maximum - minimum) * 0.5
+    let centerOfScene: SIMD3<Double> = minimum + (maximum - minimum) * 0.5
     
     var radius: Double = 0.0
     for coord in coords
@@ -140,9 +140,9 @@ public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
   
   public func adjustForTransformation(_ transformation: double4x4) -> SKBoundingBox
   {
-    let centerOfScene: double3 = self.minimum + (self.maximum - self.minimum) * 0.5
-    var min: double3 = double3()
-    var max: double3 = double3()
+    let centerOfScene: SIMD3<Double> = self.minimum + (self.maximum - self.minimum) * 0.5
+    var min: SIMD3<Double> = SIMD3<Double>()
+    var max: SIMD3<Double> = SIMD3<Double>()
     
     if (transformation[0][0] > 0.0)
     {
@@ -246,17 +246,17 @@ public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
   }
   
   
-  public var widths: double3
+  public var widths: SIMD3<Double>
   {
-    return double3(x: maximum.x-minimum.x, y: maximum.y-minimum.y, z: maximum.z-minimum.z)
+    return SIMD3<Double>(x: maximum.x-minimum.x, y: maximum.y-minimum.y, z: maximum.z-minimum.z)
   }
   
-  public static func +(left: SKBoundingBox, right: double3) -> SKBoundingBox
+  public static func +(left: SKBoundingBox, right: SIMD3<Double>) -> SKBoundingBox
   {
      return SKBoundingBox(minimum: left.minimum + right, maximum: left.maximum + right)
   }
   
-  public static func -(left: SKBoundingBox, right: double3) -> SKBoundingBox
+  public static func -(left: SKBoundingBox, right: SIMD3<Double>) -> SKBoundingBox
   {
     return SKBoundingBox(minimum: left.minimum - right, maximum: left.maximum - right)
   }
@@ -282,8 +282,8 @@ public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
       throw BinaryDecodableError.invalidArchiveVersion
     }
     
-    self.minimum = try decoder.decode(double3.self)
-    self.maximum = try decoder.decode(double3.self)
+    self.minimum = try decoder.decode(SIMD3<Double>.self)
+    self.maximum = try decoder.decode(SIMD3<Double>.self)
   }
   
 }

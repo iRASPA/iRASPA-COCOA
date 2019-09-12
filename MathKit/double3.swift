@@ -33,41 +33,41 @@ import Foundation
 import simd
 
 
-extension double3
+extension SIMD3 where Scalar==Double
 {
   public var hashValue: Int
   {
     return Int(self.x * 256 * 256 * 256) + Int(self.y * 256 * 256) + Int(self.z * 256)
   }
   
-  public static func ==(left: double3, right: double3) -> Bool
+  public static func ==(left: SIMD3<Double>, right: SIMD3<Double>) -> Bool
   {
     return (fabs(left.x - right.x) < 1e-8) && (fabs(left.y - right.y) < 1e-8) && (fabs(left.z - right.z) < 1e-8)
   }
 }
 
 
-public extension double3
+public extension SIMD3 where Scalar==Double
 {
-  init(_ a:  int3)
+  init(_ a:  SIMD3<Int32>)
   {
     self.init(Double(a.x), Double(a.y), Double(a.z))
   }
 }
 
-public extension double3
+public extension SIMD3 where Scalar==Double
 {
-  static func flip(v: double3, flip: Bool3, boundary: double3) -> double3
+  static func flip(v: SIMD3<Double>, flip: Bool3, boundary: SIMD3<Double>) -> SIMD3<Double>
   {
-    return double3(flip.x ? boundary.x - v.x : v.x,
-                   flip.y ? boundary.y - v.y : v.y,
-                   flip.z ? boundary.z - v.z : v.z)
+    return SIMD3<Double>(flip.x ? boundary.x - v.x : v.x,
+                         flip.y ? boundary.y - v.y : v.y,
+                         flip.z ? boundary.z - v.z : v.z)
   }
 }
 
-public extension double3
+public extension SIMD3 where Scalar==Double
 {
-  static func randomVectorOnUnitSphere() -> double3
+  static func randomVectorOnUnitSphere() -> SIMD3<Double>
   {
     var ran1,ran2,ranh,ransq: Double
       
@@ -80,20 +80,20 @@ public extension double3
     while(ransq>=1.0)
       
     ranh=2.0*sqrt(1.0-ransq)
-    return double3(ran1*ranh,ran2*ranh,1.0-2.0*ransq)
+    return SIMD3<Double>(ran1*ranh,ran2*ranh,1.0-2.0*ransq)
   }
 }
 
-extension double3
+extension SIMD3 where Scalar==Double
 {
-  public func RotateAboutArbitraryLine(origin: double3, dir d: double3, theta: Double) -> double3
+  public func RotateAboutArbitraryLine(origin: SIMD3<Double>, dir d: SIMD3<Double>, theta: Double) -> SIMD3<Double>
   {
-    var vec: double3 = double3()
+    var vec: SIMD3<Double> = SIMD3<Double>()
   
     // normalize the direction vector
-    var dir: double3 = normalize(d)
+    let dir: SIMD3<Double> = normalize(d)
     
-    var p: double3 = self
+    let p: SIMD3<Double> = self
   
     vec.x=origin.x*(pow(dir.y,2)+pow(dir.z,2)) +
     dir.x*(-origin.y*dir.y-origin.z*dir.z+dir.x*p.x+dir.y*p.y+dir.z*p.z) +
@@ -115,12 +115,12 @@ extension double3
 
 }
 
-extension double3
+extension SIMD3 where Scalar==Double
 {
-  public static func *(left: simd_quatd, right: double3) -> double3
+  public static func *(left: simd_quatd, right: SIMD3<Double>) -> SIMD3<Double>
   {
     // Extract the vector part of the quaternion
-    let u: double3 = left.imag
+    let u: SIMD3<Double> = left.imag
   
     // Extract the scalar part of the quaternion
     let s: Double = left.real

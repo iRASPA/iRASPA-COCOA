@@ -34,12 +34,12 @@ import simd
 
 public struct int4x3
 {
-  var numerator: [int3]
+  var numerator: [SIMD3<Int32>]
   var denominator: Int
   
   public init()
   {
-    self.numerator = [int3(0,0,0),int3(0,0,0),int3(0,0,0),int3(0,0,0)]
+    self.numerator = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)]
     self.denominator = 1
   }
   
@@ -64,7 +64,7 @@ public struct int4x3
     }
   }
   
-  public subscript(column: Int) -> int3
+  public subscript(column: Int) -> SIMD3<Int32>
   {
     get
     {

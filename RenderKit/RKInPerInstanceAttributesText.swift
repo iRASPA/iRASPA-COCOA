@@ -35,17 +35,17 @@ import simd
 
 public struct RKInPerInstanceAttributesText
 {
-  public var position: float4 = float4()
-  public var scale: float4 = float4()
-  public var vertexCoordinatesData: float4 = float4()
-  public var textureCoordinatesData: float4 = float4()
+  public var position:  SIMD4<Float> =  SIMD4<Float>()
+  public var scale:  SIMD4<Float> =  SIMD4<Float>()
+  public var vertexCoordinatesData:  SIMD4<Float> =  SIMD4<Float>()
+  public var textureCoordinatesData:  SIMD4<Float> =  SIMD4<Float>()
   
   public init()
   {
     
   }
   
-  public init(position: float4, scale: float4, vertexData: float4, textureCoordinatesData: float4)
+  public init(position:  SIMD4<Float>, scale:  SIMD4<Float>, vertexData:  SIMD4<Float>, textureCoordinatesData:  SIMD4<Float>)
   {
     self.position = position
     self.scale = scale

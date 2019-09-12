@@ -276,7 +276,7 @@ extension double3x3: BinaryDecodable
     let cx: Double = try decoder.decode(Double.self)
     let cy: Double = try decoder.decode(Double.self)
     let cz: Double = try decoder.decode(Double.self)
-    self.init(double3(ax,ay,az), double3(bx,by,bz), double3(cx,cy,cz))
+    self.init(SIMD3<Double>(ax,ay,az), SIMD3<Double>(bx,by,bz), SIMD3<Double>(cx,cy,cz))
   }
 }
 

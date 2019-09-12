@@ -37,8 +37,7 @@ public struct Bool3
   public var x: Bool
   public var y: Bool
   public var z: Bool
-  
-  
+    
   public init(_ x: Bool, _ y: Bool, _ z: Bool)
   {
     self.x = x

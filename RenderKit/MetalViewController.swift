@@ -309,11 +309,11 @@ public class MetalViewController: NSViewController, RenderViewController
         var data: [Float] = []
         
         let cell: SKCell = structure.cell
-        let positions: [double3] = structure.atomUnitCellPositions
-        let potentialParameters: [double2] = structure.potentialParameters
-        let probeParameters: double2 = double2(10.9, 2.64)
+        let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
+        let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
+        let probeParameters: SIMD2<Double> = SIMD2<Double>(10.9, 2.64)
         
-        let numberOfReplicas: int3 = cell.numberOfReplicas(forCutoff: 12.0)
+        let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
         let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
         
         data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
@@ -342,11 +342,11 @@ public class MetalViewController: NSViewController, RenderViewController
         var data: [Float] = []
         
         let cell: SKCell = structure.cell
-        let positions: [double3] = structure.atomUnitCellPositions
-        let potentialParameters: [double2] = structure.potentialParameters
-        let probeParameters: double2 = structure.frameworkProbeParameters
+        let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
+        let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
+        let probeParameters: SIMD2<Double> = structure.frameworkProbeParameters
         
-        let numberOfReplicas: int3 = cell.numberOfReplicas(forCutoff: 12.0)
+        let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
         let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
         
         data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
@@ -362,17 +362,17 @@ public class MetalViewController: NSViewController, RenderViewController
         if numberOfTriangles > 0,
           let ptr: UnsafeMutableRawPointer = surfaceVertexBuffer?.contents()
         {
-          let float4Ptr = ptr.bindMemory(to: float4.self, capacity: Int(numberOfTriangles) * 3 * 3 )
+          let float4Ptr = ptr.bindMemory(to: SIMD4<Float>.self, capacity: Int(numberOfTriangles) * 3 * 3 )
           
           var totalArea: Double = 0.0
           for i in stride(from: 0, through: (Int(numberOfTriangles) * 3 * 3 - 1), by: 9)
           {
             let unitCell: double3x3 = cell.unitCell
-            let v1 = unitCell * double3(Double(float4Ptr[i].x),Double(float4Ptr[i].y),Double(float4Ptr[i].z))
-            let v2 = unitCell * double3(Double(float4Ptr[i+3].x),Double(float4Ptr[i+3].y),Double(float4Ptr[i+3].z))
-            let v3 = unitCell * double3(Double(float4Ptr[i+6].x),Double(float4Ptr[i+6].y),Double(float4Ptr[i+6].z))
+            let v1 = unitCell * SIMD3<Double>(Double(float4Ptr[i].x),Double(float4Ptr[i].y),Double(float4Ptr[i].z))
+            let v2 = unitCell * SIMD3<Double>(Double(float4Ptr[i+3].x),Double(float4Ptr[i+3].y),Double(float4Ptr[i+3].z))
+            let v3 = unitCell * SIMD3<Double>(Double(float4Ptr[i+6].x),Double(float4Ptr[i+6].y),Double(float4Ptr[i+6].z))
             
-            let v4: double3 = cross((v2-v1), (v3-v1))
+            let v4: SIMD3<Double> = cross((v2-v1), (v3-v1))
             let area: Double = 0.5 * simd.length(v4)
             if area.isFinite && fabs(area) < 1.0
             {

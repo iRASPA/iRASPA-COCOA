@@ -210,7 +210,7 @@ public struct SKSpacegroup
     }
 
     
-    var spacesGroupFiltered2 = SKSpacegroup.spaceGroupData.filter{"\'"+$0.HM.removeWhitespace()+"\'" == H_M.removeWhitespace()}
+    let spacesGroupFiltered2 = SKSpacegroup.spaceGroupData.filter{"\'"+$0.HM.removeWhitespace()+"\'" == H_M.removeWhitespace()}
     
     switch(spacesGroupFiltered2.count)
     {
@@ -310,16 +310,16 @@ public struct SKSpacegroup
     return []
   }
   
-  public func listOfSymmetricPositions(_ pos: double3) -> [double3]
+  public func listOfSymmetricPositions(_ pos: SIMD3<Double>) -> [SIMD3<Double>]
   {
     let seitzMatrices = self.spaceGroupSetting.fullSeitzMatrices
     let m: Int = seitzMatrices.operations.count
     
-    var positions: [double3] = [double3](repeating: double3(), count: m)
+    var positions: [SIMD3<Double>] = [SIMD3<Double>](repeating: SIMD3<Double>(), count: m)
     
     for (i, seitzMatrix) in seitzMatrices.operations.enumerated()
     {
-      positions[i] = seitzMatrix * double3(x: pos.x, y: pos.y, z: pos.z)
+      positions[i] = seitzMatrix * SIMD3<Double>(x: pos.x, y: pos.y, z: pos.z)
     }
     return positions
   }
@@ -327,28 +327,28 @@ public struct SKSpacegroup
   
    
   
-  public static func listOfTranslationVectors(_ setting: SKSpaceGroupSetting) -> [int3]
+  public static func listOfTranslationVectors(_ setting: SKSpaceGroupSetting) -> [SIMD3<Int32>]
   {
     let index = setting.Hall.index(setting.Hall.startIndex, offsetBy: 1)
    
     switch(setting.Hall[index])
     {
     case "A":
-      return [int3(0,0,0),int3(0,6,6)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6)]
     case "B":
-      return [int3(0,0,0),int3(6,0,6)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,0,6)]
     case "C":
-      return [int3(0,0,0),int3(6,6,0)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,0)]
     case "I":
-      return [int3(0,0,0),int3(6,6,6)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,6)]
     case "P":
-      return [int3(0,0,0)]
+      return [SIMD3<Int32>(0,0,0)]
     case "R":
-      return [int3(0,0,0),int3(8,4,4),int3(4,8,8)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(8,4,4),SIMD3<Int32>(4,8,8)]
     case "F":
-      return [int3(0,0,0),int3(0,6,6),int3(6,0,6),int3(6,6,0)]
+      return [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6),SIMD3<Int32>(6,0,6),SIMD3<Int32>(6,6,0)]
     default:
-      return [int3(0,0,0)]
+      return [SIMD3<Int32>(0,0,0)]
     }
   }
   
@@ -357,12 +357,12 @@ public struct SKSpacegroup
   // Table 2 from R. W. Grosse-Kunstleve, Acta Cryst. (1999). A55, 383-395
   public static let changeOfMonoclinicCentering: [SKChangeOfBasis] =
   [
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 1, 0, 0), int3( 0, 1, 0), int3( 0, 0, 1)])), //  1 : I
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3(-1, 0,-1), int3( 0, 1, 0), int3( 1, 0, 0)])), //  2 : R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 0, 0, 1), int3( 0, 1, 0), int3(-1, 0,-1)])), //  3 : R3.R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 0, 0, 1), int3( 0,-1, 0), int3( 1, 0, 0)])), //  4 : R2
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3(-1, 0,-1), int3( 0,-1, 0), int3( 0, 0, 1)])), //  5 : R2.R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 1, 0, 0), int3( 0,-1, 0), int3(-1, 0,-1)])), //  6 : R2.R3.R3
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])), //  1 : I
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)])), //  2 : R3
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>(-1, 0,-1)])), //  3 : R3.R3
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 1, 0, 0)])), //  4 : R2
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 0, 0, 1)])), //  5 : R2.R3
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>(-1, 0,-1)])), //  6 : R2.R3.R3
 
   ]
   
@@ -370,12 +370,12 @@ public struct SKSpacegroup
   // Table 2 from R. W. Grosse-Kunstleve, Acta Cryst. (1999). A55, 383-395
   public static let changeOfOrthorhombicCentering: [SKChangeOfBasis] =
   [
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 1, 0, 0), int3( 0, 1, 0), int3( 0, 0, 1)])), // 1 : I
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 0, 1, 0), int3( 0, 0, 1), int3( 1, 0, 0)])), // 2 : R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 0, 0, 1), int3( 1, 0, 0), int3( 0, 1, 0)])), // 3 : R3.R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 0, 1, 0), int3( 1, 0, 0), int3( 0, 0,-1)])), // 4 : R2
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 1, 0, 0), int3( 0, 0,-1), int3( 0, 1, 0)])), // 5 : R2.R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([int3( 0, 0,-1), int3( 0, 1, 0), int3( 1, 0, 0)]))  // 6 : R2.R3.R3
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])), // 1 : I
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0)])), // 2 : R3
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0)])), // 3 : R3.R3
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1)])), // 4 : R2
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1), SIMD3<Int32>( 0, 1, 0)])), // 5 : R2.R3
+    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)]))  // 6 : R2.R3.R3
   ]
   
   public static var HallSymbols: [String]
@@ -1015,7 +1015,7 @@ public struct SKSpacegroup
   
   public static func InversionCenterString(HallNumber: Int) -> String
   {
-    let vector: int3 = spaceGroupData[HallNumber].inversionCenter
+    let vector: SIMD3<Int32> = spaceGroupData[HallNumber].inversionCenter
     let gcdx: Int32 = Int32.greatestCommonDivisor(a: vector.x,b: 12)
     let gcdy: Int32 = Int32.greatestCommonDivisor(a: vector.y,b: 12)
     let gcdz: Int32 = Int32.greatestCommonDivisor(a: vector.z,b: 12)
@@ -1121,7 +1121,7 @@ public struct SKSpacegroup
     var latticeTranslationStrings: [String] = ["","","",""]
     for i in 0..<spaceGroupData[HallNumber].latticeTranslations.count
     {
-      let vector: int3 = spaceGroupData[HallNumber].latticeTranslations[i]
+      let vector: SIMD3<Int32> = spaceGroupData[HallNumber].latticeTranslations[i]
       let gcdx: Int32 = Int32.greatestCommonDivisor(a: vector.x,b: 12)
       let gcdy: Int32 = Int32.greatestCommonDivisor(a: vector.y,b: 12)
       let gcdz: Int32 = Int32.greatestCommonDivisor(a: vector.z,b: 12)
@@ -2032,9 +2032,9 @@ public struct SKSpacegroup
   
   
   
-  public static func isInsideAsymmetricUnitBrick(number: Int, point: double3) -> Bool
+  public static func isInsideAsymmetricUnitBrick(number: Int, point: SIMD3<Double>) -> Bool
   {
-    let p: double3 = fract(point)
+    let p: SIMD3<Double> = fract(point)
     
     switch(number)
     {

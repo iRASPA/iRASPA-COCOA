@@ -52,9 +52,9 @@ public extension double3x3
     let col1 = a[0]
     let col2 = a[1]
     let col3 = a[2]
-    self.init([double3(x: Double(col1.x), y: Double(col1.y),z: Double(col1.z)),
-               double3(x: Double(col2.x), y: Double(col2.y),z: Double(col2.z)),
-               double3(x: Double(col3.x), y: Double(col3.y),z: Double(col3.z))])
+    self.init([SIMD3<Double>(x: Double(col1.x), y: Double(col1.y),z: Double(col1.z)),
+               SIMD3<Double>(x: Double(col2.x), y: Double(col2.y),z: Double(col2.z)),
+               SIMD3<Double>(x: Double(col3.x), y: Double(col3.y),z: Double(col3.z))])
   }
   
   
@@ -69,54 +69,54 @@ public extension SKRotationMatrix
 {
   // S.R. Hall, "Space-group notation with an explicit origin", Acta. Cryst. A, 37, 517-525, 981
   
-  static let zero: SKRotationMatrix = SKRotationMatrix([int3(0,0,0),int3(0,0,0),int3(0,0,0)])
-  static let identity: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
-  static let inversionIdentity: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,-1,0),int3(0,0,-1)])
+  static let zero: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)])
+  static let identity: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
+  static let inversionIdentity: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(0,0,-1)])
   
   // rotations for principle axes
-  static let r_2_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,-1,0),int3(0,0,-1)])
+  static let r_2_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(0,0,-1)])
   static let r_2i_100: SKRotationMatrix = r_2_100
-  static let r_3_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,1),int3(0,-1,-1)])
-  static let r_3i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,-1,-1),int3(0,1,0)])
-  static let r_4_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,1),int3(0,-1,0)])
-  static let r_4i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,-1),int3(0,1,0)])
-  static let r_6_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,1,1),int3(0,-1,0)])
-  static let r_6i_100: SKRotationMatrix = SKRotationMatrix([int3(1,0,0),int3(0,0,-1),int3(0,1,1)])
+  static let r_3_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,-1)])
+  static let r_3i_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,-1,-1),SIMD3<Int32>(0,1,0)])
+  static let r_4_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0)])
+  static let r_4i_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,1,0)])
+  static let r_6_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,1),SIMD3<Int32>(0,-1,0)])
+  static let r_6i_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,1,1)])
   
-  static let r_2_010: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,1,0),int3(0,0,-1)])
+  static let r_2_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,-1)])
   static let r_2i_010: SKRotationMatrix = r_2_010
-  static let r_3_010: SKRotationMatrix = SKRotationMatrix([int3(-1,0,-1),int3(0,1,0),int3(1,0,0)])
-  static let r_3i_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,1,0),int3(-1,0,-1)])
-  static let r_4_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,1,0),int3(1,0,0)])
-  static let r_4i_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,1,0),int3(-1,0,0)])
-  static let r_6_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,1,0),int3(1,0,1)])
-  static let r_6i_010: SKRotationMatrix = SKRotationMatrix([int3(1,0,1),int3(0,1,0),int3(-1,0,0)])
+  static let r_3_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,-1),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,0,0)])
+  static let r_3i_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-1,0,-1)])
+  static let r_4_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,0,0)])
+  static let r_4i_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-1,0,0)])
+  static let r_6_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,0,1)])
+  static let r_6i_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-1,0,0)])
 
-  static let r_2_001: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,-1,0),int3(0,0,1)])
+  static let r_2_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(0,0,1)])
   static let r_2i_001: SKRotationMatrix = r_2_001
-  static let r_3_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(-1,-1,0),int3(0,0,1)])
-  static let r_3i_001: SKRotationMatrix = SKRotationMatrix([int3(-1,-1,0),int3(1,0,0),int3(0,0,1)])
-  static let r_4_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(-1,0,0),int3(0,0,1)])
-  static let r_4i_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(1,0,0),int3(0,0,1)])
-  static let r_6_001: SKRotationMatrix = SKRotationMatrix([int3(1,1,0),int3(-1,0,0),int3(0,0,1)])
-  static let r_6i_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(1,1,0),int3(0,0,1)])
+  static let r_3_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(-1,-1,0),SIMD3<Int32>(0,0,1)])
+  static let r_3i_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,-1,0),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,0,1)])
+  static let r_4_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,1)])
+  static let r_4i_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,0,1)])
+  static let r_6_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,1)])
+  static let r_6i_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,1,0),SIMD3<Int32>(0,0,1)])
   
-  static let r_3_111: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(0,0,1),int3(1,0,0)])
-  static let r_3i_111: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(1,0,0),int3(0,1,0)])
+  static let r_3_111: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])
+  static let r_3i_111: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])
   
-  static let r_2prime_100: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,0,-1),int3(0,-1,0)])   // b-c
+  static let r_2prime_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])   // b-c
   static let r_2iprime_100: SKRotationMatrix = r_2prime_100
-  static let r_2doubleprime_100: SKRotationMatrix = SKRotationMatrix([int3(-1,0,0),int3(0,0,1),int3(0,1,0)]) // b+c
+  static let r_2doubleprime_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,1,0)]) // b+c
   static let r_2idoubleprime_100: SKRotationMatrix = r_2doubleprime_100
   
-  static let r_2prime_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,-1),int3(0,-1,0),int3(-1,0,0)]) // a-c
+  static let r_2prime_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0)]) // a-c
   static let r_2iprime_010: SKRotationMatrix = r_2prime_010
-  static let r_2doubleprime_010: SKRotationMatrix = SKRotationMatrix([int3(0,0,1),int3(0,-1,0),int3(1,0,0)]) // a+c
+  static let r_2doubleprime_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // a+c
   static let r_2idoubleprime_010: SKRotationMatrix = r_2doubleprime_010
   
-  static let r_2prime_001: SKRotationMatrix = SKRotationMatrix([int3(0,-1,0),int3(-1,0,0),int3(0,0,-1)]) // a-b
+  static let r_2prime_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)]) // a-b
   static let r_2iprime_001: SKRotationMatrix = r_2prime_001
-  static let r_2doubleprime_001: SKRotationMatrix = SKRotationMatrix([int3(0,1,0),int3(1,0,0),int3(0,0,-1)]) // a+b
+  static let r_2doubleprime_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,0,-1)]) // a+b
   static let r_2idoubleprime_001: SKRotationMatrix = r_2doubleprime_001
   
   static let generators: [SKPointGroup.Holohedry : (required: [SKRotationMatrix], optional: [SKRotationMatrix]) ]  =
@@ -132,16 +132,16 @@ public extension SKRotationMatrix
   
   init(random: Int = 0)
   {
-    var c1: int3
-    var c2: int3
-    var c3: int3
+    var c1: SIMD3<Int32>
+    var c2: SIMD3<Int32>
+    var c3: SIMD3<Int32>
     var succes: Bool = false
     var rotationMatrix: SKRotationMatrix = SKRotationMatrix()
     repeat
     {
-      c1 = int3(Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1)
-      c2 = int3(Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1)
-      c3 = int3(Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1)
+      c1 = SIMD3<Int32>(Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1)
+      c2 = SIMD3<Int32>(Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1)
+      c3 = SIMD3<Int32>(Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1, Int32(arc4random_uniform(3))-1)
       rotationMatrix = SKRotationMatrix([c1,c2,c3])
       let determinant: Int = rotationMatrix.determinant
       let isProperRotation: Bool = determinant == 1
@@ -163,13 +163,13 @@ public extension SKRotationMatrix
   
   init(_ m: double3x3)
   {
-    let c1: int3 = int3(Int32(rint(m[0].x)),
+    let c1: SIMD3<Int32> = SIMD3<Int32>(Int32(rint(m[0].x)),
                         Int32(rint(m[0].y)),
                         Int32(rint(m[0].z)))
-    let c2: int3 = int3(Int32(rint(m[1].x)),
+    let c2: SIMD3<Int32> = SIMD3<Int32>(Int32(rint(m[1].x)),
                         Int32(rint(m[1].y)),
                         Int32(rint(m[1].z)))
-    let c3: int3 = int3(Int32(rint(m[2].x)),
+    let c3: SIMD3<Int32> = SIMD3<Int32>(Int32(rint(m[2].x)),
                         Int32(rint(m[2].y)),
                         Int32(rint(m[2].z)))
     self.init([c1,c2,c3])
@@ -246,7 +246,7 @@ public extension SKRotationMatrix
     
   }
   
-  func positiveSenseOfRotation(rotationAxis: int3) -> Bool
+  func positiveSenseOfRotation(rotationAxis: SIMD3<Int32>) -> Bool
   {
     let properRotationMatrix: SKRotationMatrix = self.proper
     if (rotationAxis.z == 0) && (rotationAxis.y == 0) && (rotationAxis.x*properRotationMatrix[1,2]>0) {return true}
@@ -323,9 +323,9 @@ public extension SKRotationMatrix
   /// - parameter rotationOrder: the rotation order
   ///
   /// - returns: a list of perpendicular eigenvectors
-  func orthogonalToAxisDirection(rotationOrder: Int) -> [int3]
+  func orthogonalToAxisDirection(rotationOrder: Int) -> [SIMD3<Int32>]
   {
-    var orthoAxes: [int3] = []
+    var orthoAxes: [SIMD3<Int32>] = []
    
     let properRotation: SKRotationMatrix = self.proper
     var sumRot: SKRotationMatrix = SKRotationMatrix.identity
@@ -339,7 +339,7 @@ public extension SKRotationMatrix
    
     for rotationAxes in SKRotationMatrix.allPossibleRotationAxes
     {
-      if sumRot * rotationAxes == int3(0,0,0)
+      if sumRot * rotationAxes == SIMD3<Int32>(0,0,0)
       {
         orthoAxes.append(rotationAxes)
       }
@@ -351,9 +351,9 @@ public extension SKRotationMatrix
   
   var adjoint: SKRotationMatrix
   {
-    let c1: int3 = int3(-self[1,2] * self[2,1] + self[1,1] * self[2,2],self[1,2] * self[2,0] - self[1,0] * self[2,2],-self[1,1] * self[2,0] + self[1,0] * self[2,1])
-    let c2: int3 = int3(self[0,2] * self[2,1] - self[0,1] * self[2,2], -self[0,2] * self[2,0] + self[0,0] * self[2,2], self[0,1] * self[2,0] - self[0,0] * self[2,1])
-    let c3: int3 = int3(-self[0,2] * self[1,1] + self[0,1] * self[1,2], self[0,2] * self[1,0] - self[0,0] * self[1,2], -self[0,1] * self[1,0] + self[0,0] * self[1,1])
+    let c1: SIMD3<Int32> = SIMD3<Int32>(-self[1,2] * self[2,1] + self[1,1] * self[2,2],self[1,2] * self[2,0] - self[1,0] * self[2,2],-self[1,1] * self[2,0] + self[1,0] * self[2,1])
+    let c2: SIMD3<Int32> = SIMD3<Int32>(self[0,2] * self[2,1] - self[0,1] * self[2,2], -self[0,2] * self[2,0] + self[0,0] * self[2,2], self[0,1] * self[2,0] - self[0,0] * self[2,1])
+    let c3: SIMD3<Int32> = SIMD3<Int32>(-self[0,2] * self[1,1] + self[0,1] * self[1,2], self[0,2] * self[1,0] - self[0,0] * self[1,2], -self[0,1] * self[1,0] + self[0,0] * self[1,1])
     return SKRotationMatrix([c1,c2,c3])
   }
   
@@ -368,9 +368,9 @@ public extension SKRotationMatrix
   {
     let determinant: Int = self.determinant
     
-    let c1: int3 = int3(-self[1][2] * self[2][1] + self[1][1] * self[2][2], self[0][2] * self[2][1] - self[0][1] * self[2][2], -self[0][2] * self[1][1] + self[0][1] * self[1][2])
-    let c2: int3 = int3(self[1][2] * self[2][0] - self[1][0] * self[2][2], -self[0][2] * self[2][0] + self[0][0] * self[2][2], self[0][2] * self[1][0] - self[0][0] * self[1][2])
-    let c3: int3 = int3(-self[1][1] * self[2][0] + self[1][0] * self[2][1], self[0][1] * self[2][0] - self[0][0] * self[2][1], -self[0][1] * self[1][0] + self[0][0] * self[1][1])
+    let c1: int3 = SIMD3<Int32>(-self[1][2] * self[2][1] + self[1][1] * self[2][2], self[0][2] * self[2][1] - self[0][1] * self[2][2], -self[0][2] * self[1][1] + self[0][1] * self[1][2])
+    let c2: int3 = SIMD3<Int32>(self[1][2] * self[2][0] - self[1][0] * self[2][2], -self[0][2] * self[2][0] + self[0][0] * self[2][2], self[0][2] * self[1][0] - self[0][0] * self[1][2])
+    let c3: int3 = SIMD3<Int32>(-self[1][1] * self[2][0] + self[1][0] * self[2][1], self[0][1] * self[2][0] - self[0][0] * self[2][1], -self[0][1] * self[1][0] + self[0][0] * self[1][1])
     
      switch(determinant)
     {
@@ -432,7 +432,7 @@ public extension SKRotationMatrix
     return self
   }
   
-  var rotationAxis: int3
+  var rotationAxis: SIMD3<Int32>
   {
     // rotation axis is the eigenvector with eigenvalue lambda==1
     for i in 0..<SKRotationMatrix.allPossibleRotationAxes.count
@@ -443,15 +443,15 @@ public extension SKRotationMatrix
       }
     }
     
-    return int3(0,0,0)
+    return SIMD3<Int32>(0,0,0)
   }
  
-  var rotationAxes: [int3]
+  var rotationAxes: [SIMD3<Int32>]
   {
     // No specific axis for I and -I
     //if self.isIdentity { return nil}
     
-    var result: [int3] = []
+    var result: [SIMD3<Int32>] = []
     
     
     // rotation axis is the eigenvector with eigenvalue lambda==1
@@ -476,8 +476,8 @@ public extension SKRotationMatrix
     let inverse_min_lattice: double3x3 = min_lattice.inverse
     for twoFoldSymmetryOperation in twoFoldSymmetryOperations
     {
-      let t: double3 = min_lattice * twoFoldSymmetryOperation.axisDirect
-      let tau: double3 =  twoFoldSymmetryOperation.axisReciprocal * inverse_min_lattice
+      let t: SIMD3<Double> = min_lattice * twoFoldSymmetryOperation.axisDirect
+      let tau: SIMD3<Double> =  twoFoldSymmetryOperation.axisReciprocal * inverse_min_lattice
       
       let numerator: Double = abs(dot(t,tau))
       let denominator: Double = sqrt(length_squared(t) * length_squared(tau))
@@ -490,7 +490,7 @@ public extension SKRotationMatrix
     }
     
     // add inversion center
-    pointSymmetries.insert(SKRotationMatrix([int3(-1,0,0),int3(0,-1,0),int3(0,0,-1)]))
+    pointSymmetries.insert(SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(0,0,-1)]))
     
     var i = twoFoldSymmetryOperations.startIndex
     while i != twoFoldSymmetryOperations.endIndex
@@ -522,33 +522,33 @@ public extension SKRotationMatrix
     var pointSymmetries: Set<SKRotationMatrix> = Set<SKRotationMatrix>(minimumCapacity: 192)
     let metric_orig: double3x3 = min_lattice.transpose * min_lattice
     
-    let latticeAxes: [int3] = [
-      int3( 1, 1, 1),
-      int3( 1, 1, 0),
-      int3( 1, 1,-1),
-      int3( 1, 0, 1),
-      int3( 1, 0, 0),
-      int3( 1, 0,-1),
-      int3( 1,-1, 1),
-      int3( 1,-1, 0),
-      int3( 1,-1,-1),
-      int3( 0, 1, 1),
-      int3( 0, 1, 0),
-      int3( 0, 1,-1),
-      int3( 0, 0, 1),
-      int3( 0, 0,-1),
-      int3( 0,-1, 1),
-      int3( 0,-1, 0),
-      int3( 0,-1,-1),
-      int3(-1, 1, 1),
-      int3(-1, 1, 0),
-      int3(-1, 1,-1),
-      int3(-1, 0, 1),
-      int3(-1, 0, 0),
-      int3(-1, 0,-1),
-      int3(-1,-1, 1),
-      int3(-1,-1, 0),
-      int3(-1,-1,-1),
+    let latticeAxes: [SIMD3<Int32>] = [
+      SIMD3<Int32>( 1, 1, 1),
+      SIMD3<Int32>( 1, 1, 0),
+      SIMD3<Int32>( 1, 1,-1),
+      SIMD3<Int32>( 1, 0, 1),
+      SIMD3<Int32>( 1, 0, 0),
+      SIMD3<Int32>( 1, 0,-1),
+      SIMD3<Int32>( 1,-1, 1),
+      SIMD3<Int32>( 1,-1, 0),
+      SIMD3<Int32>( 1,-1,-1),
+      SIMD3<Int32>( 0, 1, 1),
+      SIMD3<Int32>( 0, 1, 0),
+      SIMD3<Int32>( 0, 1,-1),
+      SIMD3<Int32>( 0, 0, 1),
+      SIMD3<Int32>( 0, 0,-1),
+      SIMD3<Int32>( 0,-1, 1),
+      SIMD3<Int32>( 0,-1, 0),
+      SIMD3<Int32>( 0,-1,-1),
+      SIMD3<Int32>(-1, 1, 1),
+      SIMD3<Int32>(-1, 1, 0),
+      SIMD3<Int32>(-1, 1,-1),
+      SIMD3<Int32>(-1, 0, 1),
+      SIMD3<Int32>(-1, 0, 0),
+      SIMD3<Int32>(-1, 0,-1),
+      SIMD3<Int32>(-1,-1, 1),
+      SIMD3<Int32>(-1,-1, 0),
+      SIMD3<Int32>(-1,-1,-1),
     ]
 
     // uses a stored list of all possible lattice vectors and loop over all possible permutations
@@ -583,158 +583,158 @@ public extension SKRotationMatrix
   
   // all possible rotation axes written in terms of integers
   // convention: e3 is positive, if e3=0, then e2 is positive. If e3=e2=0 then e1 is chosen as positive
-  static let allPossibleRotationAxes: [int3] =
+  static let allPossibleRotationAxes: [SIMD3<Int32>] =
   [
     /*
-    int3( 1, 0, 0),
-    int3( 0, 1, 0),
-    int3( 0, 0, 1),
-    int3( 0, 1, 1),
-    int3( 1, 0, 1),
-    int3( 1, 1, 0),
-    int3( 0, 1,-1),
-    int3(-1, 0, 1),
-    int3( 1,-1, 0),
-    int3( 1, 1, 1), /* 10 */
-    int3(-1, 1, 1),
-    int3( 1,-1, 1),
-    int3( 1, 1,-1),
-    int3( 0, 1, 2),
-    int3( 2, 0, 1),
-    int3( 1, 2, 0),
-    int3( 0, 2, 1),
-    int3( 1, 0, 2),
-    int3( 2, 1, 0),
-    int3( 0,-1, 2), /* 20 */
-    int3( 2, 0,-1),
-    int3(-1, 2, 0),
-    int3( 0,-2, 1),
-    int3( 1, 0,-2),
-    int3(-2, 1, 0),
-    int3( 2, 1, 1),
-    int3( 1, 2, 1),
-    int3( 1, 1, 2),
-    int3( 2,-1,-1),
-    int3(-1, 2,-1), /* 30 */
-    int3(-1,-1, 2),
-    int3( 2, 1,-1),
-    int3(-1, 2, 1),
-    int3( 1,-1, 2),
-    int3( 2,-1, 1), /* 35 */
-    int3( 1, 2,-1),
-    int3(-1, 1, 2),
-    int3( 3, 1, 2),
-    int3( 2, 3, 1),
-    int3( 1, 2, 3), /* 40 */
-    int3( 3, 2, 1),
-    int3( 1, 3, 2),
-    int3( 2, 1, 3),
-    int3( 3,-1, 2),
-    int3( 2, 3,-1), /* 45 */
-    int3(-1, 2, 3),
-    int3( 3,-2, 1),
-    int3( 1, 3,-2),
-    int3(-2, 1, 3),
-    int3( 3,-1,-2), /* 50 */
-    int3(-2, 3,-1),
-    int3(-1,-2, 3),
-    int3( 3,-2,-1),
-    int3(-1, 3,-2),
-    int3(-2,-1, 3), /* 55 */
-    int3( 3, 1,-2),
-    int3(-2, 3, 1),
-    int3( 1,-2, 3),
-    int3( 3, 2,-1),
-    int3(-1, 3, 2), /* 60 */
-    int3( 2,-1, 3),
-    int3( 1, 1, 3),
-    int3(-1, 1, 3),
-    int3( 1,-1, 3),
-    int3(-1,-1, 3), /* 65 */
-    int3( 1, 3, 1),
-    int3(-1, 3, 1),
-    int3( 1, 3,-1),
-    int3(-1, 3,-1),
-    int3( 3, 1, 1), /* 70 */
-    int3( 3, 1,-1),
-    int3( 3,-1, 1),
-    int3( 3,-1,-1)
+    SIMD3<Int32>( 1, 0, 0),
+    SIMD3<Int32>( 0, 1, 0),
+    SIMD3<Int32>( 0, 0, 1),
+    SIMD3<Int32>( 0, 1, 1),
+    SIMD3<Int32>( 1, 0, 1),
+    SIMD3<Int32>( 1, 1, 0),
+    SIMD3<Int32>( 0, 1,-1),
+    SIMD3<Int32>(-1, 0, 1),
+    SIMD3<Int32>( 1,-1, 0),
+    SIMD3<Int32>( 1, 1, 1), /* 10 */
+    SIMD3<Int32>(-1, 1, 1),
+    SIMD3<Int32>( 1,-1, 1),
+    SIMD3<Int32>( 1, 1,-1),
+    SIMD3<Int32>( 0, 1, 2),
+    SIMD3<Int32>( 2, 0, 1),
+    SIMD3<Int32>( 1, 2, 0),
+    SIMD3<Int32>( 0, 2, 1),
+    SIMD3<Int32>( 1, 0, 2),
+    SIMD3<Int32>( 2, 1, 0),
+    SIMD3<Int32>( 0,-1, 2), /* 20 */
+    SIMD3<Int32>( 2, 0,-1),
+    SIMD3<Int32>(-1, 2, 0),
+    SIMD3<Int32>( 0,-2, 1),
+    SIMD3<Int32>( 1, 0,-2),
+    SIMD3<Int32>(-2, 1, 0),
+    SIMD3<Int32>( 2, 1, 1),
+    SIMD3<Int32>( 1, 2, 1),
+    SIMD3<Int32>( 1, 1, 2),
+    SIMD3<Int32>( 2,-1,-1),
+    SIMD3<Int32>(-1, 2,-1), /* 30 */
+    SIMD3<Int32>(-1,-1, 2),
+    SIMD3<Int32>( 2, 1,-1),
+    SIMD3<Int32>(-1, 2, 1),
+    SIMD3<Int32>( 1,-1, 2),
+    SIMD3<Int32>( 2,-1, 1), /* 35 */
+    SIMD3<Int32>( 1, 2,-1),
+    SIMD3<Int32>(-1, 1, 2),
+    SIMD3<Int32>( 3, 1, 2),
+    SIMD3<Int32>( 2, 3, 1),
+    SIMD3<Int32>( 1, 2, 3), /* 40 */
+    SIMD3<Int32>( 3, 2, 1),
+    SIMD3<Int32>( 1, 3, 2),
+    SIMD3<Int32>( 2, 1, 3),
+    SIMD3<Int32>( 3,-1, 2),
+    SIMD3<Int32>( 2, 3,-1), /* 45 */
+    SIMD3<Int32>(-1, 2, 3),
+    SIMD3<Int32>( 3,-2, 1),
+    SIMD3<Int32>( 1, 3,-2),
+    SIMD3<Int32>(-2, 1, 3),
+    SIMD3<Int32>( 3,-1,-2), /* 50 */
+    SIMD3<Int32>(-2, 3,-1),
+    SIMD3<Int32>(-1,-2, 3),
+    SIMD3<Int32>( 3,-2,-1),
+    SIMD3<Int32>(-1, 3,-2),
+    SIMD3<Int32>(-2,-1, 3), /* 55 */
+    SIMD3<Int32>( 3, 1,-2),
+    SIMD3<Int32>(-2, 3, 1),
+    SIMD3<Int32>( 1,-2, 3),
+    SIMD3<Int32>( 3, 2,-1),
+    SIMD3<Int32>(-1, 3, 2), /* 60 */
+    SIMD3<Int32>( 2,-1, 3),
+    SIMD3<Int32>( 1, 1, 3),
+    SIMD3<Int32>(-1, 1, 3),
+    SIMD3<Int32>( 1,-1, 3),
+    SIMD3<Int32>(-1,-1, 3), /* 65 */
+    SIMD3<Int32>( 1, 3, 1),
+    SIMD3<Int32>(-1, 3, 1),
+    SIMD3<Int32>( 1, 3,-1),
+    SIMD3<Int32>(-1, 3,-1),
+    SIMD3<Int32>( 3, 1, 1), /* 70 */
+    SIMD3<Int32>( 3, 1,-1),
+    SIMD3<Int32>( 3,-1, 1),
+    SIMD3<Int32>( 3,-1,-1)
 */
     
     
-    int3( 1, 0, 0),
-    int3( 0, 1, 0),
-    int3( 0, 0, 1),
-    int3( 0, 1, 1),
-    int3( 1, 0, 1),
-    int3( 1, 1, 0),
-    int3( 0,-1, 1),
-    int3(-1, 0, 1),
-    int3(-1, 1, 0),
-    int3( 1, 1, 1), /* 10 */
-    int3(-1, 1, 1),
-    int3( 1,-1, 1),
-    int3(-1,-1, 1),
-    int3( 0, 1, 2),
-    int3( 2, 0, 1),
-    int3( 1, 2, 0),
-    int3( 0, 2, 1),
-    int3( 1, 0, 2),
-    int3( 2, 1, 0),
-    int3( 0,-1, 2), /* 20 */
-    int3(-2, 0, 1),
-    int3(-1, 2, 0),
-    int3( 0,-2, 1),
-    int3(-1, 0, 2),
-    int3(-2, 1, 0),
-    int3( 2, 1, 1),
-    int3( 1, 2, 1),
-    int3( 1, 1, 2),
-    int3(-2, 1, 1),
-    int3( 1,-2, 1), /* 30 */
-    int3(-1,-1, 2),
-    int3(-2,-1, 1),
-    int3(-1, 2, 1),
-    int3( 1,-1, 2),
-    int3( 2,-1, 1), /* 35 */
-    int3(-1,-2, 1),
-    int3(-1, 1, 2),
-    int3( 3, 1, 2),
-    int3( 2, 3, 1),
-    int3( 1, 2, 3), /* 40 */
-    int3( 3, 2, 1),
-    int3( 1, 3, 2),
-    int3( 2, 1, 3),
-    int3( 3,-1, 2),
-    int3(-2,-3, 1), /* 45 */
-    int3(-1, 2, 3),
-    int3( 3,-2, 1),
-    int3(-1,-3, 2),
-    int3(-2, 1, 3),
-    int3(-3, 1, 2), /* 50 */
-    int3( 2,-3, 1),
-    int3(-1,-2, 3),
-    int3(-3, 2, 1),
-    int3( 1,-3, 2),
-    int3(-2,-1, 3), /* 55 */
-    int3(-3,-1, 2),
-    int3(-2, 3, 1),
-    int3( 1,-2, 3),
-    int3(-3,-2, 1),
-    int3(-1, 3, 2), /* 60 */
-    int3( 2,-1, 3),
-    int3( 1, 1, 3),
-    int3(-1, 1, 3),
-    int3( 1,-1, 3),
-    int3(-1,-1, 3), /* 65 */
-    int3( 1, 3, 1),
-    int3(-1, 3, 1),
-    int3(-1,-3, 1),
-    int3( 1,-3, 1),
-    int3( 3, 1, 1), /* 70 */
-    int3(-3,-1, 1),
-    int3( 3,-1, 1),
-    int3(-3, 1, 1)
+    SIMD3<Int32>( 1, 0, 0),
+    SIMD3<Int32>( 0, 1, 0),
+    SIMD3<Int32>( 0, 0, 1),
+    SIMD3<Int32>( 0, 1, 1),
+    SIMD3<Int32>( 1, 0, 1),
+    SIMD3<Int32>( 1, 1, 0),
+    SIMD3<Int32>( 0,-1, 1),
+    SIMD3<Int32>(-1, 0, 1),
+    SIMD3<Int32>(-1, 1, 0),
+    SIMD3<Int32>( 1, 1, 1), /* 10 */
+    SIMD3<Int32>(-1, 1, 1),
+    SIMD3<Int32>( 1,-1, 1),
+    SIMD3<Int32>(-1,-1, 1),
+    SIMD3<Int32>( 0, 1, 2),
+    SIMD3<Int32>( 2, 0, 1),
+    SIMD3<Int32>( 1, 2, 0),
+    SIMD3<Int32>( 0, 2, 1),
+    SIMD3<Int32>( 1, 0, 2),
+    SIMD3<Int32>( 2, 1, 0),
+    SIMD3<Int32>( 0,-1, 2), /* 20 */
+    SIMD3<Int32>(-2, 0, 1),
+    SIMD3<Int32>(-1, 2, 0),
+    SIMD3<Int32>( 0,-2, 1),
+    SIMD3<Int32>(-1, 0, 2),
+    SIMD3<Int32>(-2, 1, 0),
+    SIMD3<Int32>( 2, 1, 1),
+    SIMD3<Int32>( 1, 2, 1),
+    SIMD3<Int32>( 1, 1, 2),
+    SIMD3<Int32>(-2, 1, 1),
+    SIMD3<Int32>( 1,-2, 1), /* 30 */
+    SIMD3<Int32>(-1,-1, 2),
+    SIMD3<Int32>(-2,-1, 1),
+    SIMD3<Int32>(-1, 2, 1),
+    SIMD3<Int32>( 1,-1, 2),
+    SIMD3<Int32>( 2,-1, 1), /* 35 */
+    SIMD3<Int32>(-1,-2, 1),
+    SIMD3<Int32>(-1, 1, 2),
+    SIMD3<Int32>( 3, 1, 2),
+    SIMD3<Int32>( 2, 3, 1),
+    SIMD3<Int32>( 1, 2, 3), /* 40 */
+    SIMD3<Int32>( 3, 2, 1),
+    SIMD3<Int32>( 1, 3, 2),
+    SIMD3<Int32>( 2, 1, 3),
+    SIMD3<Int32>( 3,-1, 2),
+    SIMD3<Int32>(-2,-3, 1), /* 45 */
+    SIMD3<Int32>(-1, 2, 3),
+    SIMD3<Int32>( 3,-2, 1),
+    SIMD3<Int32>(-1,-3, 2),
+    SIMD3<Int32>(-2, 1, 3),
+    SIMD3<Int32>(-3, 1, 2), /* 50 */
+    SIMD3<Int32>( 2,-3, 1),
+    SIMD3<Int32>(-1,-2, 3),
+    SIMD3<Int32>(-3, 2, 1),
+    SIMD3<Int32>( 1,-3, 2),
+    SIMD3<Int32>(-2,-1, 3), /* 55 */
+    SIMD3<Int32>(-3,-1, 2),
+    SIMD3<Int32>(-2, 3, 1),
+    SIMD3<Int32>( 1,-2, 3),
+    SIMD3<Int32>(-3,-2, 1),
+    SIMD3<Int32>(-1, 3, 2), /* 60 */
+    SIMD3<Int32>( 2,-1, 3),
+    SIMD3<Int32>( 1, 1, 3),
+    SIMD3<Int32>(-1, 1, 3),
+    SIMD3<Int32>( 1,-1, 3),
+    SIMD3<Int32>(-1,-1, 3), /* 65 */
+    SIMD3<Int32>( 1, 3, 1),
+    SIMD3<Int32>(-1, 3, 1),
+    SIMD3<Int32>(-1,-3, 1),
+    SIMD3<Int32>( 1,-3, 1),
+    SIMD3<Int32>( 3, 1, 1), /* 70 */
+    SIMD3<Int32>(-3,-1, 1),
+    SIMD3<Int32>( 3,-1, 1),
+    SIMD3<Int32>(-3, 1, 1)
 
   ]
   
@@ -752,89 +752,89 @@ public extension SKRotationMatrix
   // Note: any crystal lattice has a center of inversion
   // We can work with the acentric subgroup of the highest symmetry and add the center of inversion at the end of the procedure.
   
-  static let twoFoldSymmetryOperations: [(rotationMatrix: SKRotationMatrix, axisDirect: int3, axisReciprocal: int3)] =
+  static let twoFoldSymmetryOperations: [(rotationMatrix: SKRotationMatrix, axisDirect: SIMD3<Int32>, axisReciprocal: SIMD3<Int32>)] =
   [
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(-1, 0, 1), int3(-1, 1, 0)]) , axisDirect: int3(-1, 1, 1) , axisReciprocal: int3(0, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(-1, 1, -1), int3(0, 0, -1)]) , axisDirect: int3(1, -2, 1) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(-1, 1, 0), int3(0, 0, -1)]) , axisDirect: int3(-1, 2, 0) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(-1, 1, 1), int3(0, 0, -1)]) , axisDirect: int3(-1, 2, 1) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(-1, 0, -1), int3(1, -1, 0)]) , axisDirect: int3(1, -1, 1) , axisReciprocal: int3(0, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(-1, -1, 1)]) , axisDirect: int3(-1, -1, 2) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(-1, 0, 1)]) , axisDirect: int3(-1, 0, 2) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(-1, 1, 1)]) , axisDirect: int3(-1, 1, 2) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, -1, 1), int3(0, 0, -1), int3(0, -1, 0)]) , axisDirect: int3(0, -1, 1) , axisReciprocal: int3(1, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, -1, -1), int3(0, 0, 1), int3(0, 1, 0)]) , axisDirect: int3(0, 1, 1) , axisReciprocal: int3(-1, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, -1, 0), int3(0, 1, 0), int3(0, -1, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(1, -2, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, -1, 0), int3(0, 1, 0), int3(0, 0, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(-1, 2, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, -1, 0), int3(0, 1, 0), int3(0, 1, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(-1, 2, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(0, -1, 1)]) , axisDirect: int3(0, -1, 2) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, -1), int3(0, -1, -1), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(-1, -1, 2)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, -1), int3(0, -1, 0), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(-1, 0, 2)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, -1), int3(0, -1, 1), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(-1, 1, 2)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, -1), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(0, -1, 2)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 1), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(0, 1, 2)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 1), int3(0, -1, -1), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(1, -1, 2)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 1), int3(0, -1, 0), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(1, 0, 2)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 1), int3(0, -1, 1), int3(0, 0, 1)]) , axisDirect: int3(0, 0, 1) , axisReciprocal: int3(1, 1, 2)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(0, 1, 1)]) , axisDirect: int3(0, 1, 2) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, 0, -1), int3(0, -1, 0)]) , axisDirect: int3(0, -1, 1) , axisReciprocal: int3(0, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, 0, 1), int3(0, 1, 0)]) , axisDirect: int3(0, 1, 1) , axisReciprocal: int3(0, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, 1, 0), int3(0, -1, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(0, -2, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, 1, -1), int3(0, 0, -1)]) , axisDirect: int3(0, -2, 1) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, 1, 0), int3(0, 0, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, 1, 1), int3(0, 0, -1)]) , axisDirect: int3(0, 2, 1) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, 1, 0), int3(0, 1, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(0, 2, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 1, -1), int3(0, 0, -1), int3(0, -1, 0)]) , axisDirect: int3(0, -1, 1) , axisReciprocal: int3(-1, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 1, 1), int3(0, 0, 1), int3(0, 1, 0)]) , axisDirect: int3(0, 1, 1) , axisReciprocal: int3(1, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 1, 0), int3(0, 1, 0), int3(0, -1, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(-1, -2, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 1, 0), int3(0, 1, 0), int3(0, 0, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(1, 2, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 1, 0), int3(0, 1, 0), int3(0, 1, -1)]) , axisDirect: int3(0, 1, 0) , axisReciprocal: int3(1, 2, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(1, -1, 1)]) , axisDirect: int3(1, -1, 2) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(1, 0, 1)]) , axisDirect: int3(1, 0, 2) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(0, -1, 0), int3(1, 1, 1)]) , axisDirect: int3(1, 1, 2) , axisReciprocal: int3(0, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(1, 0, -1), int3(-1, -1, 0)]) , axisDirect: int3(-1, -1, 1) , axisReciprocal: int3(0, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(1, 1, -1), int3(0, 0, -1)]) , axisDirect: int3(-1, -2, 1) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(1, 1, 0), int3(0, 0, -1)]) , axisDirect: int3(1, 2, 0) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(1, 1, 1), int3(0, 0, -1)]) , axisDirect: int3(1, 2, 1) , axisReciprocal: int3(0, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(-1, 0, 0), int3(1, 0, 1), int3(1, 1, 0)]) , axisDirect: int3(1, 1, 1) , axisReciprocal: int3(0, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, -1, 0), int3(-1, 0, 0), int3(-1, 1, -1)]) , axisDirect: int3(-1, 1, 0) , axisReciprocal: int3(-1, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 0, -1), int3(-1, -1, 1), int3(-1, 0, 0)]) , axisDirect: int3(-1, 0, 1) , axisReciprocal: int3(-1, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, -1, -1), int3(-1, 0, 1), int3(0, 0, -1)]) , axisDirect: int3(-1, 1, 1) , axisReciprocal: int3(-1, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(0, -1, 0), int3(-1, 0, 0), int3(0, 0, -1)]) , axisDirect: int3(-1, 1, 0) , axisReciprocal: int3(-1, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(0, -1, 1), int3(-1, 0, -1), int3(0, 0, -1)]) , axisDirect: int3(1, -1, 1) , axisReciprocal: int3(-1, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(0, -1, 0), int3(-1, 0, 0), int3(1, -1, -1)]) , axisDirect: int3(-1, 1, 0) , axisReciprocal: int3(1, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 0, 1), int3(-1, -1, -1), int3(1, 0, 0)]) , axisDirect: int3(1, 0, 1) , axisReciprocal: int3(1, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, -1, -1), int3(0, -1, 0), int3(-1, 1, 0)]) , axisDirect: int3(-1, 1, 1) , axisReciprocal: int3(-1, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 0, -1), int3(0, -1, 0), int3(-1, 0, 0)]) , axisDirect: int3(-1, 0, 1) , axisReciprocal: int3(-1, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 1, -1), int3(0, -1, 0), int3(-1, -1, 0)]) , axisDirect: int3(-1, -1, 1) , axisReciprocal: int3(-1, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, -1, 1), int3(0, -1, 0), int3(1, -1, 0)]) , axisDirect: int3(1, -1, 1) , axisReciprocal: int3(1, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 0, 1), int3(0, -1, 0), int3(1, 0, 0)]) , axisDirect: int3(1, 0, 1) , axisReciprocal: int3(1, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 1, 1), int3(0, -1, 0), int3(1, 1, 0)]) , axisDirect: int3(1, 1, 1) , axisReciprocal: int3(1, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 0, -1), int3(1, -1, -1), int3(-1, 0, 0)]) , axisDirect: int3(-1, 0, 1) , axisReciprocal: int3(-1, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 1, 0), int3(1, 0, 0), int3(-1, -1, -1)]) , axisDirect: int3(1, 1, 0) , axisReciprocal: int3(-1, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 1, -1), int3(1, 0, -1), int3(0, 0, -1)]) , axisDirect: int3(-1, -1, 1) , axisReciprocal: int3(1, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 1, 0), int3(1, 0, 0), int3(0, 0, -1)]) , axisDirect: int3(1, 1, 0) , axisReciprocal: int3(1, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 1, 1), int3(1, 0, 1), int3(0, 0, -1)]) , axisDirect: int3(1, 1, 1) , axisReciprocal: int3(1, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 0, 1), int3(1, -1, 1), int3(1, 0, 0)]) , axisDirect: int3(1, 0, 1) , axisReciprocal: int3(1, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(0, 1, 0), int3(1, 0, 0), int3(1, 1, -1)]) , axisDirect: int3(1, 1, 0) , axisReciprocal: int3(1, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(-1, -1, 0), int3(-1, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(-2, 1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(-1, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(-2, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(-1, -1, 0), int3(1, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(2, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(0, -1, 0), int3(-1, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(-2, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(1, -1, -1), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(-2, 1, 1) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, -1, 0), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(-2, 1, 0) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, -1, 1), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(2, -1, 1) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, -1), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(-2, 0, 1) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 1), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(2, 0, 1) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 1, -1), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(-2, -1, 1) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 1, 0), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(2, 1, 0) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 1, 1), int3(0, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(2, 1, 1) , axisReciprocal: int3(1, 0, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(0, -1, 0), int3(1, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(2, 0, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(1, -1, 0), int3(-1, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(-2, -1, 1)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(1, -1, 0), int3(0, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(2, 1, 0)),
-    (rotationMatrix: SKRotationMatrix([int3(1, 0, 0), int3(1, -1, 0), int3(1, 0, -1)]) , axisDirect: int3(1, 0, 0) , axisReciprocal: int3(2, 1, 1))
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(-1, 0, 1), SIMD3<Int32>(-1, 1, 0)]) , axisDirect: SIMD3<Int32>(-1, 1, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(-1, 1, -1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, -2, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(-1, 1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-1, 2, 0) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(-1, 1, 1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-1, 2, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(-1, 0, -1), SIMD3<Int32>(1, -1, 0)]) , axisDirect: SIMD3<Int32>(1, -1, 1) , axisReciprocal: SIMD3<Int32>(0, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, -1, 1)]) , axisDirect: SIMD3<Int32>(-1, -1, 2) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, 0, 1)]) , axisDirect: SIMD3<Int32>(-1, 0, 2) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, 1, 1)]) , axisDirect: SIMD3<Int32>(-1, 1, 2) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, -1, 1), SIMD3<Int32>(0, 0, -1), SIMD3<Int32>(0, -1, 0)]) , axisDirect: SIMD3<Int32>(0, -1, 1) , axisReciprocal: SIMD3<Int32>(1, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, -1, -1), SIMD3<Int32>(0, 0, 1), SIMD3<Int32>(0, 1, 0)]) , axisDirect: SIMD3<Int32>(0, 1, 1) , axisReciprocal: SIMD3<Int32>(-1, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, -1, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, -1, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(1, -2, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, -1, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(-1, 2, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, -1, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, 1, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(-1, 2, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, -1, 1)]) , axisDirect: SIMD3<Int32>(0, -1, 2) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, -1), SIMD3<Int32>(0, -1, -1), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(-1, -1, 2)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, -1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(-1, 0, 2)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, -1), SIMD3<Int32>(0, -1, 1), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(-1, 1, 2)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, -1), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(0, -1, 2)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 1), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 2)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 1), SIMD3<Int32>(0, -1, -1), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(1, -1, 2)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 2)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 1), SIMD3<Int32>(0, -1, 1), SIMD3<Int32>(0, 0, 1)]) , axisDirect: SIMD3<Int32>(0, 0, 1) , axisReciprocal: SIMD3<Int32>(1, 1, 2)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 1, 1)]) , axisDirect: SIMD3<Int32>(0, 1, 2) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, -1), SIMD3<Int32>(0, -1, 0)]) , axisDirect: SIMD3<Int32>(0, -1, 1) , axisReciprocal: SIMD3<Int32>(0, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, 1), SIMD3<Int32>(0, 1, 0)]) , axisDirect: SIMD3<Int32>(0, 1, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, -1, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(0, -2, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 1, -1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(0, -2, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 1, 1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(0, 2, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, 1, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(0, 2, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 1, -1), SIMD3<Int32>(0, 0, -1), SIMD3<Int32>(0, -1, 0)]) , axisDirect: SIMD3<Int32>(0, -1, 1) , axisReciprocal: SIMD3<Int32>(-1, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 1, 1), SIMD3<Int32>(0, 0, 1), SIMD3<Int32>(0, 1, 0)]) , axisDirect: SIMD3<Int32>(0, 1, 1) , axisReciprocal: SIMD3<Int32>(1, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 1, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, -1, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(-1, -2, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 1, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(1, 2, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 1, 0), SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(0, 1, -1)]) , axisDirect: SIMD3<Int32>(0, 1, 0) , axisReciprocal: SIMD3<Int32>(1, 2, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(1, -1, 1)]) , axisDirect: SIMD3<Int32>(1, -1, 2) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(1, 0, 1)]) , axisDirect: SIMD3<Int32>(1, 0, 2) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(1, 1, 1)]) , axisDirect: SIMD3<Int32>(1, 1, 2) , axisReciprocal: SIMD3<Int32>(0, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(1, 0, -1), SIMD3<Int32>(-1, -1, 0)]) , axisDirect: SIMD3<Int32>(-1, -1, 1) , axisReciprocal: SIMD3<Int32>(0, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(1, 1, -1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-1, -2, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 2, 0) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(1, 1, 1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 2, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(1, 0, 1), SIMD3<Int32>(1, 1, 0)]) , axisDirect: SIMD3<Int32>(1, 1, 1) , axisReciprocal: SIMD3<Int32>(0, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(-1, 1, -1)]) , axisDirect: SIMD3<Int32>(-1, 1, 0) , axisReciprocal: SIMD3<Int32>(-1, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 0, -1), SIMD3<Int32>(-1, -1, 1), SIMD3<Int32>(-1, 0, 0)]) , axisDirect: SIMD3<Int32>(-1, 0, 1) , axisReciprocal: SIMD3<Int32>(-1, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, -1, -1), SIMD3<Int32>(-1, 0, 1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-1, 1, 1) , axisReciprocal: SIMD3<Int32>(-1, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-1, 1, 0) , axisReciprocal: SIMD3<Int32>(-1, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, -1, 1), SIMD3<Int32>(-1, 0, -1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, -1, 1) , axisReciprocal: SIMD3<Int32>(-1, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(1, -1, -1)]) , axisDirect: SIMD3<Int32>(-1, 1, 0) , axisReciprocal: SIMD3<Int32>(1, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 0, 1), SIMD3<Int32>(-1, -1, -1), SIMD3<Int32>(1, 0, 0)]) , axisDirect: SIMD3<Int32>(1, 0, 1) , axisReciprocal: SIMD3<Int32>(1, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, -1, -1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, 1, 0)]) , axisDirect: SIMD3<Int32>(-1, 1, 1) , axisReciprocal: SIMD3<Int32>(-1, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 0, -1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, 0, 0)]) , axisDirect: SIMD3<Int32>(-1, 0, 1) , axisReciprocal: SIMD3<Int32>(-1, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 1, -1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, -1, 0)]) , axisDirect: SIMD3<Int32>(-1, -1, 1) , axisReciprocal: SIMD3<Int32>(-1, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, -1, 1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(1, -1, 0)]) , axisDirect: SIMD3<Int32>(1, -1, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 0, 1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(1, 0, 0)]) , axisDirect: SIMD3<Int32>(1, 0, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 1, 1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(1, 1, 0)]) , axisDirect: SIMD3<Int32>(1, 1, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 0, -1), SIMD3<Int32>(1, -1, -1), SIMD3<Int32>(-1, 0, 0)]) , axisDirect: SIMD3<Int32>(-1, 0, 1) , axisReciprocal: SIMD3<Int32>(-1, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(-1, -1, -1)]) , axisDirect: SIMD3<Int32>(1, 1, 0) , axisReciprocal: SIMD3<Int32>(-1, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 1, -1), SIMD3<Int32>(1, 0, -1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-1, -1, 1) , axisReciprocal: SIMD3<Int32>(1, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 1, 0) , axisReciprocal: SIMD3<Int32>(1, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 1, 1), SIMD3<Int32>(1, 0, 1), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 1, 1) , axisReciprocal: SIMD3<Int32>(1, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 0, 1), SIMD3<Int32>(1, -1, 1), SIMD3<Int32>(1, 0, 0)]) , axisDirect: SIMD3<Int32>(1, 0, 1) , axisReciprocal: SIMD3<Int32>(1, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(0, 1, 0), SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(1, 1, -1)]) , axisDirect: SIMD3<Int32>(1, 1, 0) , axisReciprocal: SIMD3<Int32>(1, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(-1, -1, 0), SIMD3<Int32>(-1, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(-2, 1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(-1, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(-2, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(-1, -1, 0), SIMD3<Int32>(1, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(2, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(-1, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(-2, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, -1, -1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-2, 1, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, -1, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-2, 1, 0) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, -1, 1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(2, -1, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, -1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-2, 0, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(2, 0, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 1, -1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(-2, -1, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(2, 1, 0) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 1, 1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(2, 1, 1) , axisReciprocal: SIMD3<Int32>(1, 0, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(1, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(2, 0, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(1, -1, 0), SIMD3<Int32>(-1, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(-2, -1, 1)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(1, -1, 0), SIMD3<Int32>(0, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(2, 1, 0)),
+    (rotationMatrix: SKRotationMatrix([SIMD3<Int32>(1, 0, 0), SIMD3<Int32>(1, -1, 0), SIMD3<Int32>(1, 0, -1)]) , axisDirect: SIMD3<Int32>(1, 0, 0) , axisReciprocal: SIMD3<Int32>(2, 1, 1))
   ]
 }
 
@@ -856,20 +856,20 @@ extension SKRotationMatrix: Hashable
   /*
   public static func * (left: SKRotationMatrix, right: SKRotationMatrix) -> SKRotationMatrix
   {
-    return int3x3(columns: [int3(left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0],
+    return int3x3(columns: [SIMD3<Int32>(left[0][0] * right[0][0] + left[0][1] * right[1][0] + left[0][2] * right[2][0],
                                  left[0][0] * right[0][1] + left[0][1] * right[1][1] + left[0][2] * right[2][1],
                                  left[0][0] * right[0][2] + left[0][1] * right[1][2] + left[0][2] * right[2][2]),
-                            int3(left[1][0] * right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0],
+                            SIMD3<Int32>(left[1][0] * right[0][0] + left[1][1] * right[1][0] + left[1][2] * right[2][0],
                                  left[1][0] * right[0][1] + left[1][1] * right[1][1] + left[1][2] * right[2][1],
                                  left[1][0] * right[0][2] + left[1][1] * right[1][2] + left[1][2] * right[2][2]),
-                            int3(left[2][0] * right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0],
+                            SIMD3<Int32>(left[2][0] * right[0][0] + left[2][1] * right[1][0] + left[2][2] * right[2][0],
                                  left[2][0] * right[0][1] + left[2][1] * right[1][1] + left[2][2] * right[2][1],
                                  left[2][0] * right[0][2] + left[2][1] * right[1][2] + left[2][2] * right[2][2])])
   }*/
   /*
   public static func * (left: SKRotationMatrix, right: int3) -> int3
   {
-    return int3(x: left[0][0] * right.x + left[1][0] * right.y + left[2][0] * right.z,
+    return SIMD3<Int32>(x: left[0][0] * right.x + left[1][0] * right.y + left[2][0] * right.z,
                 y: left[0][1] * right.x + left[1][1] * right.y + left[2][1] * right.z,
                 z: left[0][2] * right.x + left[1][2] * right.y + left[2][2] * right.z)
   }
@@ -879,13 +879,13 @@ extension SKRotationMatrix: Hashable
   /*
   public static func * (left: SKRotationMatrix, right: SKRotationMatrix) -> SKRotationMatrix
   {
-    let c1: int3 = int3(left[0][0] * right[0][0] + left[1][0] * right[0][1] + left[0][2] * right[0][2],
+    let c1: int3 = SIMD3<Int32>(left[0][0] * right[0][0] + left[1][0] * right[0][1] + left[0][2] * right[0][2],
                              left[0][0] * right[1][0] + left[1][0] * right[1][1] + left[0][2] * right[1][2],
                              left[0][0] * right[2][0] + left[1][0] * right[2][1] + left[0][2] * right[2][2])
-    let c2: int3 = int3(left[0][1] * right[0][0] + left[1][1] * right[0][1] + left[1][2] * right[0][2],
+    let c2: int3 = SIMD3<Int32>(left[0][1] * right[0][0] + left[1][1] * right[0][1] + left[1][2] * right[0][2],
                              left[0][1] * right[1][0] + left[1][1] * right[1][1] + left[1][2] * right[1][2],
                              left[0][1] * right[2][0] + left[1][1] * right[2][1] + left[1][2] * right[2][2])
-    let c3: int3 = int3(left[0][2] * right[0][0] + left[1][2] * right[0][1] + left[2][2] * right[0][2],
+    let c3: int3 = SIMD3<Int32>(left[0][2] * right[0][0] + left[1][2] * right[0][1] + left[2][2] * right[0][2],
                              left[0][2] * right[1][0] + left[1][2] * right[1][1] + left[2][2] * right[1][2],
                              left[0][2] * right[2][0] + left[1][2] * right[2][1] + left[2][2] * right[2][2])
     return SKRotationMatrix(columns: [c1,c2,c3])
@@ -895,9 +895,9 @@ extension SKRotationMatrix: Hashable
   
   public static prefix func - (left: SKRotationMatrix) -> SKRotationMatrix
   {
-    return int3x3([int3(-left[0][0], -left[0][1], -left[0][2]),
-                   int3(-left[1][0], -left[1][1], -left[1][2]),
-                   int3(-left[2][0], -left[2][1], -left[2][2])])
+    return int3x3([SIMD3<Int32>(-left[0][0], -left[0][1], -left[0][2]),
+                   SIMD3<Int32>(-left[1][0], -left[1][1], -left[1][2]),
+                   SIMD3<Int32>(-left[2][0], -left[2][1], -left[2][2])])
     
   }
 
@@ -940,7 +940,7 @@ extension SKRotationMatrix: Hashable
 
 extension SKRotationMatrix
 {
-  public var eigenvector: double3
+  public var eigenvector: SIMD3<Double>
   {
     
     var t: int3x3 = int3x3(0)
@@ -954,7 +954,7 @@ extension SKRotationMatrix
     case -1:
       properRotationMatrix = -self
     default:
-      return double3()
+      return SIMD3<Double>()
     }
 
     
@@ -963,7 +963,7 @@ extension SKRotationMatrix
     matrix[1][1] -= 1
     matrix[2][2] -= 1
     let m: int3x3 = matrix.rowEchelonFormRosetta(t: &t, freeVars: &freevars)
-    let sol: double3 = m.rowEchelonFormBackSubstitutionRosetta(freeVars: freevars)
+    let sol: SIMD3<Double> = m.rowEchelonFormBackSubstitutionRosetta(freeVars: freevars)
     
     return sol
   }

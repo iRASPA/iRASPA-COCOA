@@ -69,7 +69,7 @@ public class RKFontAtlas
     self.createTextureData()
   }
   
-  public func buildMeshWithString(position: float4, scale: float4, text: String, alignment: RKTextAlignment) -> [RKInPerInstanceAttributesText]
+  public func buildMeshWithString(position: SIMD4<Float>, scale: SIMD4<Float>, text: String, alignment: RKTextAlignment) -> [RKInPerInstanceAttributesText]
   {
     let paragraph = NSMutableParagraphStyle()
     paragraph.lineBreakMode = .byWordWrapping
@@ -87,33 +87,33 @@ public class RKFontAtlas
     let lines: [CTLine] = CTFrameGetLines(frame) as! [CTLine]
     let frameGlyphCount = lines.reduce(0){$0 + CTLineGetGlyphCount($1)}
     
-    let shift: float2
+    let shift: SIMD2<Float>
     switch(alignment)
     {
     case .center:
-      shift = float2(0.0,0.0)
+      shift = SIMD2<Float>(0.0,0.0)
     case .left:
-      shift = float2(-Float(NSMidX(boundingRect)),0.0)
+      shift = SIMD2<Float>(-Float(NSMidX(boundingRect)),0.0)
     case .right:
-      shift = float2(Float(NSMidX(boundingRect)),0.0)
+      shift = SIMD2<Float>(Float(NSMidX(boundingRect)),0.0)
     case .top:
-      shift = float2(0.0,-Float(NSMidY(boundingRect)))
+      shift = SIMD2<Float>(0.0,-Float(NSMidY(boundingRect)))
     case .bottom:
-      shift = float2(0.0,Float(NSMidY(boundingRect)))
+      shift = SIMD2<Float>(0.0,Float(NSMidY(boundingRect)))
     case .topLeft:
-      shift = float2(-Float(NSMidX(boundingRect)),-Float(NSMidY(boundingRect)))
+      shift = SIMD2<Float>(-Float(NSMidX(boundingRect)),-Float(NSMidY(boundingRect)))
     case .topRight:
-      shift = float2(Float(NSMidX(boundingRect)),-Float(NSMidY(boundingRect)))
+      shift = SIMD2<Float>(Float(NSMidX(boundingRect)),-Float(NSMidY(boundingRect)))
     case .bottomLeft:
-      shift = float2(-Float(NSMidX(boundingRect)),Float(NSMidY(boundingRect)))
+      shift = SIMD2<Float>(-Float(NSMidX(boundingRect)),Float(NSMidY(boundingRect)))
     case .bottomRight:
-      shift = float2(Float(NSMidX(boundingRect)),Float(NSMidY(boundingRect)))
+      shift = SIMD2<Float>(Float(NSMidX(boundingRect)),Float(NSMidY(boundingRect)))
     }
     
     var vertices = [RKInPerInstanceAttributesText](repeating: RKInPerInstanceAttributesText(), count: frameGlyphCount)
     
     var vertex = 0
-    var positions: [float4] = []
+    var positions: [SIMD4<Float>] = []
     
     
     enumerateGlyphsInFrame(frame: frame) { (glyph: CGGlyph, glyphIndex: Int, glyphBounds: CGRect) in
@@ -133,18 +133,18 @@ public class RKFontAtlas
       let minT = Float(glyphInfo.topLeftTexCoord.y)
       let maxT = Float(glyphInfo.bottomRightTexCoord.y)
       
-      let position1: float4 = float4(x: minX , y: maxY, z: 0.0, w: 1.0)
-      let position2: float4 = float4(x: minX , y: minY, z: 0.0, w: 1.0)
-      let position3: float4 = float4(x: maxX , y: minY, z: 0.0, w: 1.0)
-      let position4: float4 = float4(x: maxX , y: maxY, z: 0.0, w: 1.0)
+      let position1: SIMD4<Float> = SIMD4<Float>(x: minX , y: maxY, z: 0.0, w: 1.0)
+      let position2: SIMD4<Float> = SIMD4<Float>(x: minX , y: minY, z: 0.0, w: 1.0)
+      let position3: SIMD4<Float> = SIMD4<Float>(x: maxX , y: minY, z: 0.0, w: 1.0)
+      let position4: SIMD4<Float> = SIMD4<Float>(x: maxX , y: maxY, z: 0.0, w: 1.0)
       
       positions.append(position1)
       positions.append(position2)
       positions.append(position3)
       positions.append(position4)
       
-      let vertexPosition: float4 = float4(x: minX, y: maxX, z: minY, w: maxY)
-      let st: float4 = float4(x: minS, y: maxS, z: minT, w: maxT)
+      let vertexPosition: SIMD4<Float> = SIMD4<Float>(x: minX, y: maxX, z: minY, w: maxY)
+      let st: SIMD4<Float> = SIMD4<Float>(x: minS, y: maxS, z: minT, w: maxT)
       
       vertices[vertex] = RKInPerInstanceAttributesText(position: position, scale: scale, vertexData: vertexPosition, textureCoordinatesData: st)
       vertex += 1
@@ -158,7 +158,7 @@ public class RKFontAtlas
       let miny = y.min(),
       let maxy = y.max()
     {
-      let center = 0.5*float2(maxx+minx,maxy+miny)
+      let center = 0.5*SIMD2<Float>(maxx+minx,maxy+miny)
       //let center = float2(Float(NSMidX(boundingRect) + lineOriginArray[0].x),
       //                    Float(NSMidY(boundingRect) + lineOriginArray[0].y))
       for i in 0..<frameGlyphCount
@@ -395,7 +395,7 @@ public class RKFontAtlas
     var distanceMap = [Float](repeating: maxDist, count: count)
   
     // nearest boundary point map - zero out nearest boundary point map
-    var boundaryPointMap = [int2](repeating: int2(0,0), count: count)
+    var boundaryPointMap = [SIMD2<Int32>](repeating: SIMD2<Int32>(0,0), count: count)
     let distUnit :Float = 1
     let distDiag :Float = sqrtf(2)
     // Immediate interior/exterior phase: mark all points along the boundary as such

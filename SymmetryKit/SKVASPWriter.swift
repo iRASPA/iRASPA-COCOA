@@ -44,7 +44,7 @@ public class SKVASPWriter
   
   
   
-  public func string(displayName: String, cell: SKCell, atoms: [(type: Int, position: double3, isFixed: Bool3)], atomsAreFractional: Bool, origin: double3) -> String
+  public func string(displayName: String, cell: SKCell, atoms: [(type: Int, position: SIMD3<Double>, isFixed: Bool3)], atomsAreFractional: Bool, origin: SIMD3<Double>) -> String
   {
     var dataString: String = ""
     
@@ -75,7 +75,7 @@ public class SKVASPWriter
     let cz: String = numberFormatter.string(from: NSNumber(value: cell.unitCell[2][2]))!
     dataString += String("\(cx) \(cy) \(cz)\n")
     
-    let groupAtomData: [Int : [(type: Int, position: double3, isFixed: Bool3)]] = Dictionary(grouping: atoms, by: {$0.type})
+    let groupAtomData: [Int : [(type: Int, position: SIMD3<Double>, isFixed: Bool3)]] = Dictionary(grouping: atoms, by: {$0.type})
     
     let orderedElementHistogram = atoms.reduce(into: OrderedDictionary<Int,Int>()) { (acc, x) in
       if let count: Int = acc[key: x.type]
@@ -99,7 +99,7 @@ public class SKVASPWriter
       {
         for atom in groupAtomData
         {
-          let position: double3 = atom.position - origin
+          let position: SIMD3<Double> = atom.position - origin
           let positionX: String = numberFormatter.string(from: NSNumber(value: position.x))!
           let positionY: String = numberFormatter.string(from: NSNumber(value: position.y))!
           let positionZ: String = numberFormatter.string(from: NSNumber(value: position.z))!

@@ -36,13 +36,13 @@ extension double4x4
 {
   public init(Double3x3: double3x3)
   {
-    self.init([double4(x: Double3x3[0,0], y: Double3x3[0,1], z: Double3x3[0,2], w: 0.0),
-               double4(x: Double3x3[1,0], y: Double3x3[1,1], z: Double3x3[1,2], w: 0.0),
-               double4(x: Double3x3[2,0], y: Double3x3[2,1], z: Double3x3[2,2], w: 0.0),
-               double4(x: 0.0, y: 0.0, z: 0.0, w: 1.0)])
+    self.init([SIMD4<Double>(x: Double3x3[0,0], y: Double3x3[0,1], z: Double3x3[0,2], w: 0.0),
+               SIMD4<Double>(x: Double3x3[1,0], y: Double3x3[1,1], z: Double3x3[1,2], w: 0.0),
+               SIMD4<Double>(x: Double3x3[2,0], y: Double3x3[2,1], z: Double3x3[2,2], w: 0.0),
+               SIMD4<Double>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)])
   }
   
-  public init(quaternion q: simd_quatd, translation t: double3)
+  public init(quaternion q: simd_quatd, translation t: SIMD3<Double>)
   {
     
     self.init()
@@ -122,7 +122,7 @@ extension double4x4
   }
   
   
-  public init(transformation m: double4x4, aroundPoint p: double3)
+  public init(transformation m: double4x4, aroundPoint p: SIMD3<Double>)
   {
     var R: double4x4 = double4x4()
     
@@ -137,7 +137,7 @@ extension double4x4
     self[3,2] += R[0,2] * p.x + R[1,2] * p.y + R[2,2] * p.z
   }
   
-  public init(transformation m: double4x4, aroundPoint p: double3, withTranslation t: double3)
+  public init(transformation m: double4x4, aroundPoint p: SIMD3<Double>, withTranslation t: SIMD3<Double>)
   {
     var R: double4x4 = double4x4()
     
@@ -159,10 +159,10 @@ extension double4x4
     let _1over_fmn: Double  = 1.0 / (far - near)
     let _1over_tmb : Double = 1.0 / (top - bottom)
     
-    m=double4x4([double4(x:2.0 * _1over_rml, y: 0.0,z: 0.0,w: 0.0),
-                 double4(x:0.0, y: 2.0 * _1over_tmb, z: 0.0, w: 0.0),
-                 double4(x:0.0, y: 0.0, z: -2.0 * _1over_fmn, w: 0.0),
-                 double4(x:-(right + left) * _1over_rml, y: -(top + bottom) * _1over_tmb, z: (-(far + near)) * _1over_fmn, w: 1.0)])
+    m=double4x4([SIMD4<Double>(x:2.0 * _1over_rml, y: 0.0,z: 0.0,w: 0.0),
+                 SIMD4<Double>(x:0.0, y: 2.0 * _1over_tmb, z: 0.0, w: 0.0),
+                 SIMD4<Double>(x:0.0, y: 0.0, z: -2.0 * _1over_fmn, w: 0.0),
+                 SIMD4<Double>(x:-(right + left) * _1over_rml, y: -(top + bottom) * _1over_tmb, z: (-(far + near)) * _1over_fmn, w: 1.0)])
     return m
   }
 }

@@ -70,11 +70,11 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   public var boundingBox: SKBoundingBox = SKBoundingBox()
   
   public var boundingBoxAspectRatio: Double = 1.0
-  public var centerOfScene: double3 = double3(0,0,0)
-  public var panning: double3 = double3(0.0,0.0,0.0)
-  public var centerOfRotation: double3 = double3(0,0,0)
-  public var eye: double3 = double3(0,0,0)
-  public var distance: double3 = double3(0.0,0.0,50.0)
+  public var centerOfScene: SIMD3<Double> = SIMD3<Double>(0,0,0)
+  public var panning: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
+  public var centerOfRotation: SIMD3<Double> = SIMD3<Double>(0,0,0)
+  public var eye: SIMD3<Double> = SIMD3<Double>(0,0,0)
+  public var distance: SIMD3<Double> = SIMD3<Double>(0.0,0.0,50.0)
   public var orthoScale: Double = 1.0
   public var angleOfView: Double = 60.0
   public var frustrumType: FrustrumType = .orthographic
@@ -95,8 +95,8 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   private var cameraBoundingBox: SKBoundingBox
   {
     // use at least 5,5,5 as the minimum-size
-    let center: double3 = boundingBox.minimum + (boundingBox.maximum - boundingBox.minimum) * 0.5
-    let width: double3 = max(double3(5.0,5.0,5.0),boundingBox.maximum - boundingBox.minimum)
+    let center: SIMD3<Double> = boundingBox.minimum + (boundingBox.maximum - boundingBox.minimum) * 0.5
+    let width: SIMD3<Double> = max(SIMD3<Double>(5.0,5.0,5.0),boundingBox.maximum - boundingBox.minimum)
     return SKBoundingBox(center: center, width: width)
   }
   
@@ -116,12 +116,12 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   
   
   // The "camera" or viewpoint is at (0., 0., 0.) in eye space. When you turn this into a vector [0 0 0 1] and multiply it by the inverse of the ModelView matrix, the resulting vector is the object-space location of the camera.
-  public var position: double3
+  public var position: SIMD3<Double>
   {
-    let cameraPosition: double4 = modelViewMatrix.inverse * double4(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+    let cameraPosition: SIMD4<Double> = modelViewMatrix.inverse * SIMD4<Double>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
     
     // return distance vector to the center of the scene
-    return double3(x: cameraPosition.x, y: cameraPosition.y, z: cameraPosition.z)
+    return SIMD3<Double>(x: cameraPosition.x, y: cameraPosition.y, z: cameraPosition.z)
   }
   
   private var referenceDirection: simd_quatd
@@ -145,31 +145,31 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   
   public init()
   {
-    var boundingBoxMinimum: double3
-    var boundingBoxMaximum: double3
+    var boundingBoxMinimum: SIMD3<Double>
+    var boundingBoxMaximum: SIMD3<Double>
     
     zNear = 1.0
     zFar = 1000.0
     
-    distance = double3(0.0, 0.0, 60.0)
+    distance = SIMD3<Double>(0.0, 0.0, 60.0)
     orthoScale = 10.0
-    centerOfScene = double3(x: 10,y: 10,z: 10)
-    centerOfRotation = double3(x: 10,y: 10,z: 10)
-    panning = double3(0.0,0.0,0.0)
+    centerOfScene = SIMD3<Double>(x: 10,y: 10,z: 10)
+    centerOfRotation = SIMD3<Double>(x: 10,y: 10,z: 10)
+    panning = SIMD3<Double>(0.0,0.0,0.0)
     eye = centerOfScene + distance + panning
     windowWidth = 1160
     windowHeight = 720
     angleOfView = 60.0 * Double.pi / 180.0
     resetPercentage = 0.85
     aspectRatio = windowWidth / windowHeight
-    boundingBoxMinimum = double3(x: 0.0, y: 0.0, z: 0.0)
-    boundingBoxMaximum = double3(x: 10.0, y: 10.0, z: 10.0)
+    boundingBoxMinimum = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
+    boundingBoxMaximum = SIMD3<Double>(x: 10.0, y: 10.0, z: 10.0)
     boundingBox = SKBoundingBox(minimum: boundingBoxMinimum, maximum: boundingBoxMaximum)
     boundingBoxAspectRatio = 1.0
     frustrumType = .orthographic;
     resetDirectionType = .plus_Z;
     
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: double3(x: 0, y: 1, z:0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0, y: 1, z:0))
   }
   
   public required init(camera: RKCamera)
@@ -239,14 +239,14 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     
     
     self.boundingBox = try container.decode(SKBoundingBox.self)
-    self.centerOfScene = try container.decode(double3.self)
-    self.centerOfRotation = try container.decode(double3.self)
+    self.centerOfScene = try container.decode(SIMD3<Double>.self)
+    self.centerOfRotation = try container.decode(SIMD3<Double>.self)
     
-    self.panning = try container.decode(double3.self)
+    self.panning = try container.decode(SIMD3<Double>.self)
     
-    self.eye = try container.decode(double3.self)
+    self.eye = try container.decode(SIMD3<Double>.self)
     
-    self.distance = try container.decode(double3.self)
+    self.distance = try container.decode(SIMD3<Double>.self)
     self.orthoScale = try container.decode(Double.self)
     
     self.frustrumType = try FrustrumType(rawValue: container.decode(Int.self))!
@@ -264,7 +264,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     
     self.bloomLevel = try container.decode(Double.self)
     
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: double3(x: 0, y: 1, z:0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0, y: 1, z:0))
     
     self.initialized = false
   }
@@ -272,7 +272,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   
   
 
-  public var EulerAngles: double3
+  public var EulerAngles: SIMD3<Double>
   {
     return (trackBallRotation * worldRotation).EulerAngles
   }
@@ -299,7 +299,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     
     //centerOfRotation = centerOfScene
     
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: double3(x: 0.0, y: 1.0, z: 0.0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
 
   }
@@ -307,7 +307,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   public func increaseDistance(_ deltaDistance: Double)
   {
     let transformedBoundingBox: SKBoundingBox = self.cameraBoundingBox.adjustForTransformation(self.modelMatrix)
-    var delta: double3 = double3()
+    var delta: SIMD3<Double> = SIMD3<Double>()
     delta.x = fabs(transformedBoundingBox.maximum.x-transformedBoundingBox.minimum.x)
     delta.y = fabs(transformedBoundingBox.maximum.y-transformedBoundingBox.minimum.y)
     delta.z = fabs(transformedBoundingBox.maximum.z-transformedBoundingBox.minimum.z)
@@ -331,7 +331,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
       
     eye = centerOfScene + distance + panning
       
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: double3(x: 0.0, y: 1.0, z: 0.0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
   
@@ -362,7 +362,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     
     let transformedBoundingBox: SKBoundingBox = self.cameraBoundingBox.adjustForTransformation(self.modelMatrix)
     
-    var delta: double3 = double3(fabs(transformedBoundingBox.maximum.x-transformedBoundingBox.minimum.x),
+    let delta: SIMD3<Double> = SIMD3<Double>(fabs(transformedBoundingBox.maximum.x-transformedBoundingBox.minimum.x),
                                  fabs(transformedBoundingBox.maximum.y-transformedBoundingBox.minimum.y),
                                  fabs(transformedBoundingBox.maximum.z-transformedBoundingBox.minimum.z))
     
@@ -400,7 +400,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     
     let transformedBoundingBox: SKBoundingBox = self.cameraBoundingBox.adjustForTransformation(self.modelMatrix)
     
-    var delta: double3 = double3(fabs(transformedBoundingBox.maximum.x-transformedBoundingBox.minimum.x),
+    let delta: SIMD3<Double> = SIMD3<Double>(fabs(transformedBoundingBox.maximum.x-transformedBoundingBox.minimum.x),
                                  fabs(transformedBoundingBox.maximum.y-transformedBoundingBox.minimum.y),
                                  fabs(transformedBoundingBox.maximum.z-transformedBoundingBox.minimum.z))
     
@@ -447,14 +447,14 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   {
     let transformedBoundingBoxOld: SKBoundingBox = self.cameraBoundingBox.adjustForTransformation(self.modelMatrix)
     
-    let deltaOld: double3 = double3(fabs(transformedBoundingBoxOld.maximum.x-transformedBoundingBoxOld.minimum.x),
+    let deltaOld: SIMD3<Double> = SIMD3<Double>(fabs(transformedBoundingBoxOld.maximum.x-transformedBoundingBoxOld.minimum.x),
                                     fabs(transformedBoundingBoxOld.maximum.y-transformedBoundingBoxOld.minimum.y),
                                     fabs(transformedBoundingBoxOld.maximum.z-transformedBoundingBoxOld.minimum.z))
     
     self.boundingBox = box
     let transformedBoundingBoxNew: SKBoundingBox = self.cameraBoundingBox.adjustForTransformation(self.modelMatrix)
     
-    let deltaNew: double3 = double3(fabs(transformedBoundingBoxNew.maximum.x-transformedBoundingBoxNew.minimum.x),
+    let deltaNew: SIMD3<Double> = SIMD3<Double>(fabs(transformedBoundingBoxNew.maximum.x-transformedBoundingBoxNew.minimum.x),
                                     fabs(transformedBoundingBoxNew.maximum.y-transformedBoundingBoxNew.minimum.y),
                                     fabs(transformedBoundingBoxNew.maximum.z-transformedBoundingBoxNew.minimum.z))
     
@@ -469,7 +469,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     centerOfScene = cameraBoundingBox.minimum + (cameraBoundingBox.maximum - cameraBoundingBox.minimum) * 0.5
     centerOfRotation = centerOfScene
     eye = centerOfScene + distance + panning
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: double3(x: 0.0, y: 1.0, z: 0.0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
@@ -489,7 +489,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   
   public func resetCameraDistance()
   {
-    var delta: double3 = double3()
+    var delta: SIMD3<Double> = SIMD3<Double>()
     
     initialized = true
     
@@ -508,22 +508,22 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     orthoScale = 0.5 * delta.x / self.resetPercentage
     distance.z = orthoScale * focalPoint  + 0.5 * delta.z
     
-    panning = double3(0.0,0.0,0.0)
+    panning = SIMD3<Double>(0.0,0.0,0.0)
     trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r:1.0)
     
     eye = centerOfScene + distance + panning
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: double3(x: 0.0, y: 1.0, z: 0.0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
   
   
   // This function computes the inverse camera transform according to its parameters
-  public static func GluLookAt(eye: double3, center: double3, up: double3) -> double4x4
+  public static func GluLookAt(eye: SIMD3<Double>, center: SIMD3<Double>, up: SIMD3<Double>) -> double4x4
   {
     var up = up
-    var forward: double3 = double3()
-    var side: double3 = double3()
+    var forward: SIMD3<Double> = SIMD3<Double>()
+    var side: SIMD3<Double> = SIMD3<Double>()
     var viewMatrix: double4x4
     var inv_length: Double
     
@@ -556,10 +556,10 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     
     
     // note that the inverse matrix is setup, i.e. the transpose
-    viewMatrix=double4x4([double4(x: side.x, y: up.x, z: -forward.x, w: 0), // 1th column
-      double4(x: side.y, y: up.y, z: -forward.y, w: 0), // 2nd column
-      double4(x: side.z, y: up.z, z: -forward.z, w: 0), // 3rd column
-      double4(x: 0, y: 0, z: 0, w: 1)])                 // 4th column
+    viewMatrix=double4x4([SIMD4<Double>(x: side.x, y: up.x, z: -forward.x, w: 0), // 1th column
+      SIMD4<Double>(x: side.y, y: up.y, z: -forward.y, w: 0), // 2nd column
+      SIMD4<Double>(x: side.z, y: up.z, z: -forward.z, w: 0), // 3rd column
+      SIMD4<Double>(x: 0, y: 0, z: 0, w: 1)])                 // 4th column
     
     
     // set translation part
@@ -586,10 +586,10 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     let _1over_fmn: Double = 1.0 / (far - near);
     let _1over_tmb: Double = 1.0 / (top - bottom)
     
-    m=double4x4([double4(x:_2n * _1over_rml, y: 0.0, z: 0.0, w: 0.0),
-      double4(x:0.0, y: _2n * _1over_tmb, z: 0.0, w: 0.0),
-      double4(x:(right + left) * _1over_rml, y: (top + bottom) * _1over_tmb, z: (-(far + near)) * _1over_fmn, w: -1.0),
-      double4(x:0.0, y: 0.0, z: -(_2n * far * _1over_fmn),w: 0.0)])
+    m=double4x4([SIMD4<Double>(x:_2n * _1over_rml, y: 0.0, z: 0.0, w: 0.0),
+      SIMD4<Double>(x:0.0, y: _2n * _1over_tmb, z: 0.0, w: 0.0),
+      SIMD4<Double>(x:(right + left) * _1over_rml, y: (top + bottom) * _1over_tmb, z: (-(far + near)) * _1over_fmn, w: -1.0),
+      SIMD4<Double>(x:0.0, y: 0.0, z: -(_2n * far * _1over_fmn),w: 0.0)])
     
     return m
   }
@@ -606,10 +606,10 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     // When the Aspect Ratio is larger than unity, gluPerspective fixes the height, lengthens/shortens the width
     // When the Aspect Ratio is less than unity, gluPerspective fixes the width, lengthens/shortens the height
   
-    m=double4x4(double4(x: focolPoint / (aspectratio > 1.0 ? aspectratio : 1.0), y: 0.0, z:0.0, w: 0.0),
-                double4(x:0.0, y: focolPoint * (aspectratio < 1.0 ? aspectratio : 1.0), z: 0.0, w: 0.0),
-                double4(x:0.0, y: 0.0, z: ((far + near)) * _1over_fmn, w: -1.0),
-                double4(x:0.0, y: 0.0, z: (2.0 * near * far * _1over_fmn), w: 0.0))
+    m=double4x4(SIMD4<Double>(x: focolPoint / (aspectratio > 1.0 ? aspectratio : 1.0), y: 0.0, z:0.0, w: 0.0),
+                SIMD4<Double>(x:0.0, y: focolPoint * (aspectratio < 1.0 ? aspectratio : 1.0), z: 0.0, w: 0.0),
+                SIMD4<Double>(x:0.0, y: 0.0, z: ((far + near)) * _1over_fmn, w: -1.0),
+                SIMD4<Double>(x:0.0, y: 0.0, z: (2.0 * near * far * _1over_fmn), w: 0.0))
   
     return m
   }
@@ -625,10 +625,10 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     let _1over_fmn: Double  = 1.0 / (far - near)
     let _1over_tmb : Double = 1.0 / (top - bottom)
     
-    m=double4x4([double4(x:2.0 * _1over_rml, y: 0.0,z: 0.0,w: 0.0),
-      double4(x:0.0, y: 2.0 * _1over_tmb, z: 0.0, w: 0.0),
-      double4(x:0.0, y: 0.0, z: -2.0 * _1over_fmn, w: 0.0),
-      double4(x:-(right + left) * _1over_rml, y: -(top + bottom) * _1over_tmb, z: (-(far + near)) * _1over_fmn, w: 1.0)])
+    m=double4x4([SIMD4<Double>(x:2.0 * _1over_rml, y: 0.0,z: 0.0,w: 0.0),
+      SIMD4<Double>(x:0.0, y: 2.0 * _1over_tmb, z: 0.0, w: 0.0),
+      SIMD4<Double>(x:0.0, y: 0.0, z: -2.0 * _1over_fmn, w: 0.0),
+      SIMD4<Double>(x:-(right + left) * _1over_rml, y: -(top + bottom) * _1over_tmb, z: (-(far + near)) * _1over_fmn, w: 1.0)])
     return m;
   }
   
@@ -642,10 +642,10 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   // Since two points determine a line, we actually need to call gluUnProject() twice: once with winZ == 0.0, then again with winZ == 1.0
   // this will give us the world points that correspond to the mouse click on the near and far planes, respectively
   // https://www.opengl.org/wiki/GluProject_and_gluUnProject_code
-  public func myGluUnProject(_ position: double3, inViewPort viewPort: NSRect) ->double3
+  public func myGluUnProject(_ position: SIMD3<Double>, inViewPort viewPort: NSRect) ->SIMD3<Double>
   {
     var finalMatrix: double4x4
-    var inVector: double4 = double4()
+    var inVector: SIMD4<Double> = SIMD4<Double>()
     
     // Map x and y from window coordinates
     inVector.x = (position.x - Double(viewPort.origin.x)) / Double(viewPort.size.width)
@@ -665,22 +665,22 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     
     // transform from clip-coordinates to object coordinates
     finalMatrix = (self.projectionMatrix * self.modelViewMatrix).inverse
-    let outVector:double4 = finalMatrix * inVector
+    let outVector:SIMD4<Double> = finalMatrix * inVector
     
     if(fabs(outVector.w ) < Double.leastNormalMagnitude)
     {
-      return double3(x: 0.0, y: 0.0, z: 0.0)
+      return SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
     }
     else
     {
-      return double3(x: outVector.x/outVector.w, y: outVector.y/outVector.w, z: outVector.z/outVector.w)
+      return SIMD3<Double>(x: outVector.x/outVector.w, y: outVector.y/outVector.w, z: outVector.z/outVector.w)
     }
   }
   
-  public func myGluUnProject(_ position: double3, modelMatrix: double4x4, inViewPort viewPort: NSRect) ->double3
+  public func myGluUnProject(_ position: SIMD3<Double>, modelMatrix: double4x4, inViewPort viewPort: NSRect) ->SIMD3<Double>
   {
     var finalMatrix: double4x4
-    var inVector: double4 = double4()
+    var inVector: SIMD4<Double> = SIMD4<Double>()
     
     // Map x and y from window coordinates
     inVector.x = (position.x - Double(viewPort.origin.x)) / Double(viewPort.size.width)
@@ -700,27 +700,27 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     
     // transform from clip-coordinates to object coordinates
     finalMatrix = (self.projectionMatrix * self.modelViewMatrix * modelMatrix).inverse
-    let outVector:double4 = finalMatrix * inVector
+    let outVector:SIMD4<Double> = finalMatrix * inVector
     
     if(fabs(outVector.w ) < Double.leastNormalMagnitude)
     {
-      return double3(x: 0.0, y: 0.0, z: 0.0)
+      return SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
     }
     else
     {
-      return double3(x: outVector.x/outVector.w, y: outVector.y/outVector.w, z: outVector.z/outVector.w)
+      return SIMD3<Double>(x: outVector.x/outVector.w, y: outVector.y/outVector.w, z: outVector.z/outVector.w)
     }
   }
   
   
-  public func myGluProject(_ position: double3, inViewPort viewPort: NSRect) ->double3
+  public func myGluProject(_ position: SIMD3<Double>, inViewPort viewPort: NSRect) ->SIMD3<Double>
   {
-    var outVector: double4 = double4()
-    var finalVector: double3 = double3()
+    var outVector: SIMD4<Double> = SIMD4<Double>()
+    var finalVector: SIMD3<Double> = SIMD3<Double>()
     
     // convert to clip-coordinates
     let mvpMatrix: double4x4 = self.projectionMatrix * self.modelViewMatrix
-    outVector = mvpMatrix * double4(x: position.x, y: position.y, z: position.z, w: 1.0)
+    outVector = mvpMatrix * SIMD4<Double>(x: position.x, y: position.y, z: position.z, w: 1.0)
     
     // perform perspective division
     let factor: Double = 1.0 / outVector.w
@@ -738,31 +738,31 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
   
   
   // http://www.3dkingdoms.com/selection.html
-  public func selectPositionsInRectangle(_ positions: [double4], inRect rect: NSRect, withOrigin origin: double3, inViewPort bounds: NSRect) -> IndexSet
+  public func selectPositionsInRectangle(_ positions: [SIMD4<Double>], inRect rect: NSRect, withOrigin origin: SIMD3<Double>, inViewPort bounds: NSRect) -> IndexSet
   {
-    let Points0: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 0.0), inViewPort: bounds)
-    let Points1: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 1.0), inViewPort: bounds)
+    let Points0: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 0.0), inViewPort: bounds)
+    let Points1: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 1.0), inViewPort: bounds)
     
-    let Points2: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x), y: Double(rect.origin.y+rect.size.height), z: 0.0), inViewPort: bounds)
-    let Points3: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x), y: Double(rect.origin.y+rect.size.height), z: 1.0), inViewPort: bounds)
+    let Points2: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y+rect.size.height), z: 0.0), inViewPort: bounds)
+    let Points3: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y+rect.size.height), z: 1.0), inViewPort: bounds)
     
-    let Points4: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y+rect.size.height), z: 0.0), inViewPort: bounds)
-    let Points5: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y+rect.size.height), z: 1.0), inViewPort: bounds)
+    let Points4: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y+rect.size.height), z: 0.0), inViewPort: bounds)
+    let Points5: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y+rect.size.height), z: 1.0), inViewPort: bounds)
     
-    let Points6: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y), z: 0.0), inViewPort: bounds)
-    let Points7: double3 = self.myGluUnProject(double3(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y), z: 1.0), inViewPort: bounds)
+    let Points6: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y), z: 0.0), inViewPort: bounds)
+    let Points7: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y), z: 1.0), inViewPort: bounds)
     
     
-    let FrustrumPlane0: double3 = normalize(cross(Points0 - Points1, Points0 - Points2))
-    let FrustrumPlane1: double3 = normalize(cross(Points2 - Points3, Points2 - Points4))
-    let FrustrumPlane2: double3 = normalize(cross(Points4 - Points5, Points4 - Points6))
-    let FrustrumPlane3: double3 = normalize(cross(Points6 - Points7, Points6 - Points0))
+    let FrustrumPlane0: SIMD3<Double> = normalize(cross(Points0 - Points1, Points0 - Points2))
+    let FrustrumPlane1: SIMD3<Double> = normalize(cross(Points2 - Points3, Points2 - Points4))
+    let FrustrumPlane2: SIMD3<Double> = normalize(cross(Points4 - Points5, Points4 - Points6))
+    let FrustrumPlane3: SIMD3<Double> = normalize(cross(Points6 - Points7, Points6 - Points0))
     
     let indexSet: NSMutableIndexSet = NSMutableIndexSet()
     let numberOfObjects: Int = positions.count
     for j in 0..<numberOfObjects
     {
-      let position: double3 = double3(positions[j].x,positions[j].y,positions[j].z) + origin
+      let position: SIMD3<Double> = SIMD3<Double>(positions[j].x,positions[j].y,positions[j].z) + origin
       if((dot(position-Points0,FrustrumPlane0)<0) &&
         (dot(position-Points2,FrustrumPlane1)<0) &&
         (dot(position-Points4,FrustrumPlane2)<0) &&
@@ -826,11 +826,11 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     self.boundingBox = try decoder.decode(SKBoundingBox.self)
     
     self.boundingBoxAspectRatio = try decoder.decode(Double.self)
-    self.centerOfScene = try decoder.decode(double3.self)
-    self.panning = try decoder.decode(double3.self)
-    self.centerOfRotation = try decoder.decode(double3.self)
-    self.eye = try decoder.decode(double3.self)
-    self.distance = try decoder.decode(double3.self)
+    self.centerOfScene = try decoder.decode(SIMD3<Double>.self)
+    self.panning = try decoder.decode(SIMD3<Double>.self)
+    self.centerOfRotation = try decoder.decode(SIMD3<Double>.self)
+    self.eye = try decoder.decode(SIMD3<Double>.self)
+    self.distance = try decoder.decode(SIMD3<Double>.self)
     self.orthoScale = try decoder.decode(Double.self)
     self.angleOfView = try decoder.decode(Double.self)
     self.frustrumType = try FrustrumType(rawValue: decoder.decode(Int.self))!
@@ -844,7 +844,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     self.bloomLevel = try decoder.decode(Double.self)
     self.bloomPulse = try decoder.decode(Double.self)
     
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: double3(x: 0, y: 1, z:0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0, y: 1, z:0))
     
     self.initialized = false
   }

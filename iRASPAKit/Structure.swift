@@ -53,8 +53,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   private static var classVersionNumber: Int = 3
   public var displayName: String = "test123"
   
-  public var origin: double3 = double3(x: 0.0, y: 0.0, z: 0.0)
-  public var scaling: double3 = double3(x: 1.0, y: 1.0, z: 1.0)
+  public var origin: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
+  public var scaling: SIMD3<Double> = SIMD3<Double>(x: 1.0, y: 1.0, z: 1.0)
   public var orientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
   public var rotationDelta: Double = 5.0
   
@@ -63,7 +63,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   public var isVisible: Bool = true
   
   public var cell: SKCell = SKCell()
-  public var atomUnitCellPositions: [double3]
+  public var atomUnitCellPositions: [SIMD3<Double>]
   {
     return []
   }
@@ -98,9 +98,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     }
   }
   
-  public var selectionCOMTranslation: double3 = double3(0.0, 0.0, 0.0)
+  public var selectionCOMTranslation: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
   public var selectionRotationIndex: Int = 0
-  public var selectionBodyFixedBasis: double3x3 = double3x3(diagonal: double3(1.0, 1.0, 1.0))
+  public var selectionBodyFixedBasis: double3x3 = double3x3(diagonal: SIMD3<Double>(1.0, 1.0, 1.0))
   
   public var structureType: StructureType = .framework
   public var structureMaterialType: String = "Unspecified"
@@ -294,7 +294,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   var atomTextStyle: RKTextStyle = RKTextStyle.flatBillboard
   var atomTextEffect: RKTextEffect = RKTextEffect.none
   var atomTextAlignment: RKTextAlignment = RKTextAlignment.center
-  var atomTextOffset: double3 = double3()
+  var atomTextOffset: SIMD3<Double> = SIMD3<Double>()
   
   // unit cell
   public var drawUnitCell: Bool = false
@@ -308,59 +308,59 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   
   // adsorption surface
   
-  public var adsorptionSurfaceProbeParameters: double2
+  public var adsorptionSurfaceProbeParameters: SIMD2<Double>
   {
     switch(adsorptionSurfaceProbeMolecule)
     {
     case .helium:
-      return double2(10.9, 2.64)
+      return SIMD2<Double>(10.9, 2.64)
     case .nitrogen:
-      return double2(36.0,3.31)
+      return SIMD2<Double>(36.0,3.31)
     case .methane:
-      return double2(158.5,3.72)
+      return SIMD2<Double>(158.5,3.72)
     case .hydrogen:
-      return double2(36.7,2.958)
+      return SIMD2<Double>(36.7,2.958)
     case .water:
-      return double2(89.633,3.097)
+      return SIMD2<Double>(89.633,3.097)
     case .co2:
       // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
-      return double2(236.1,3.72)
+      return SIMD2<Double>(236.1,3.72)
     case .xenon:
       // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return double2(226.14,3.949)
+      return SIMD2<Double>(226.14,3.949)
     case .krypton:
       // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return double2(162.58,3.6274)
+      return SIMD2<Double>(162.58,3.6274)
     case .argon:
-      return double2(119.8,3.34)
+      return SIMD2<Double>(119.8,3.34)
     }
   }
   
-  public var frameworkProbeParameters: double2
+  public var frameworkProbeParameters: SIMD2<Double>
   {
     switch(frameworkProbeMolecule)
     {
     case .helium:
-      return double2(10.9, 2.64)
+      return SIMD2<Double>(10.9, 2.64)
     case .nitrogen:
-      return double2(36.0,3.31)
+      return SIMD2<Double>(36.0,3.31)
     case .methane:
-      return double2(158.5,3.72)
+      return SIMD2<Double>(158.5,3.72)
     case .hydrogen:
-      return double2(36.7,2.958)
+      return SIMD2<Double>(36.7,2.958)
     case .water:
-      return double2(89.633,3.097)
+      return SIMD2<Double>(89.633,3.097)
     case .co2:
       // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
-      return double2(236.1,3.72)
+      return SIMD2<Double>(236.1,3.72)
     case .xenon:
       // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return double2(226.14,3.949)
+      return SIMD2<Double>(226.14,3.949)
     case .krypton:
       // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return double2(162.58,3.6274)
+      return SIMD2<Double>(162.58,3.6274)
     case .argon:
-      return double2(119.8,3.34)
+      return SIMD2<Double>(119.8,3.34)
     }
   }
   
@@ -637,19 +637,19 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     {
     case .elementOnly:
       asymmetricAtoms.forEach{atom in
-        atom.potentialParameters = forceFieldSet[PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol]?.potentialParameters ?? double2(0.0,0.0)
+        atom.potentialParameters = forceFieldSet[PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)
         let atomicNumber: Int = atom.elementIdentifier
         let elementString: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
         atom.bondDistanceCriteria = forceFieldSet[elementString]?.userDefinedRadius ?? 0.0
       }
     case .forceFieldOnly:
       asymmetricAtoms.forEach{atom in
-        atom.potentialParameters = forceFieldSet[atom.uniqueForceFieldName]?.potentialParameters ?? double2(0.0,0.0)
+        atom.potentialParameters = forceFieldSet[atom.uniqueForceFieldName]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)
         atom.bondDistanceCriteria = forceFieldSet[atom.uniqueForceFieldName]?.userDefinedRadius ?? 1.0
       }
     case .forceFieldFirst:
       asymmetricAtoms.forEach{atom in
-        atom.potentialParameters = forceFieldSet[atom.uniqueForceFieldName]?.potentialParameters ?? forceFieldSet[PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol]?.potentialParameters ?? double2(0.0,0.0)
+        atom.potentialParameters = forceFieldSet[atom.uniqueForceFieldName]?.potentialParameters ?? forceFieldSet[PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)
         let atomicNumber: Int = atom.elementIdentifier
         let elementString: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
         atom.bondDistanceCriteria = forceFieldSet[atom.uniqueForceFieldName]?.userDefinedRadius ?? forceFieldSet[elementString]?.userDefinedRadius ?? 0.0
@@ -696,11 +696,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     switch(self.atomForceFieldOrder)
     {
       case .elementOnly:
-        asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].chemicalSymbol]?.potentialParameters ?? double2(0.0,0.0)}
+        asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].chemicalSymbol]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)}
       case .forceFieldOnly:
-        asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[$0.uniqueForceFieldName]?.potentialParameters ?? double2(0.0,0.0)}
+        asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[$0.uniqueForceFieldName]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)}
       case .forceFieldFirst:
-        asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[$0.uniqueForceFieldName]?.potentialParameters ?? forceFieldSet[PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].chemicalSymbol]?.potentialParameters ?? double2(0.0,0.0)}
+        asymmetricAtoms.forEach{$0.potentialParameters = forceFieldSet[$0.uniqueForceFieldName]?.potentialParameters ?? forceFieldSet[PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].chemicalSymbol]?.potentialParameters ?? SIMD2<Double>(0.0,0.0)}
     }
   }
   
@@ -1123,8 +1123,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     self.cell = try container.decode(SKCell.self)
     
     self.periodic = try container.decode(Bool.self)
-    self.origin = try container.decode(double3.self)
-    self.scaling = try container.decode(double3.self)
+    self.origin = try container.decode(SIMD3<Double>.self)
+    self.scaling = try container.decode(SIMD3<Double>.self)
     self.orientation = try container.decode(simd_quatd.self)
     self.rotationDelta = try container.decode(Double.self)
     
@@ -1235,9 +1235,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     self.atomHDRExposure = try container.decode(Double.self)
     self.atomHDRBloomLevel = try container.decode(Double.self)
     
-    self.atomAmbientColor = try NSColor(float4: container.decode(float4.self))
-    self.atomDiffuseColor = try NSColor(float4: container.decode(float4.self))
-    self.atomSpecularColor = try NSColor(float4: container.decode(float4.self))
+    self.atomAmbientColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.atomDiffuseColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.atomSpecularColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
     
     self.atomAmbientIntensity = try container.decode(Double.self)
     self.atomDiffuseIntensity = try container.decode(Double.self)
@@ -1300,9 +1300,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     self.bondScaleFactor = try container.decode(Double.self)
     self.bondColorMode = try RKBondColorMode(rawValue: container.decode(Int.self))!
     
-    self.bondAmbientColor = try NSColor(float4: container.decode(float4.self))
-    self.bondDiffuseColor = try NSColor(float4: container.decode(float4.self))
-    self.bondSpecularColor = try NSColor(float4: container.decode(float4.self))
+    self.bondAmbientColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.bondDiffuseColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.bondSpecularColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
     self.bondAmbientIntensity = try container.decode(Double.self)
     
     self.bondDiffuseIntensity = try container.decode(Double.self)
@@ -1323,18 +1323,18 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       self.atomTextType = try RKTextType(rawValue: container.decode(Int.self))!
       self.atomTextFont = try container.decode(String.self)
       self.atomTextScaling = try container.decode(Double.self)
-      self.atomTextColor = try NSColor(float4: container.decode(float4.self))
-      self.atomTextGlowColor = try NSColor(float4: container.decode(float4.self))
+      self.atomTextColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+      self.atomTextGlowColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
       self.atomTextStyle = try RKTextStyle(rawValue: container.decode(Int.self))!
       self.atomTextEffect = try RKTextEffect(rawValue: container.decode(Int.self))!
       self.atomTextAlignment = try RKTextAlignment(rawValue: container.decode(Int.self))!
-      self.atomTextOffset = try container.decode(double3.self)
+      self.atomTextOffset = try container.decode(SIMD3<Double>.self)
     }
     
     // unit cell
     self.drawUnitCell = try container.decode(Bool.self)
     self.unitCellScaleFactor = try container.decode(Double.self)
-    self.unitCellDiffuseColor = try NSColor(float4: container.decode(float4.self))
+    self.unitCellDiffuseColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
     self.unitCellDiffuseIntensity = try container.decode(Double.self)
     
     
@@ -1348,9 +1348,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     
     self.adsorptionSurfaceFrontSideHDR = try container.decode(Bool.self)
     self.adsorptionSurfaceFrontSideHDRExposure = try container.decode(Double.self)
-    self.adsorptionSurfaceFrontSideAmbientColor = try NSColor(float4: container.decode(float4.self))
-    self.adsorptionSurfaceFrontSideDiffuseColor = try NSColor(float4: container.decode(float4.self))
-    self.adsorptionSurfaceFrontSideSpecularColor = try NSColor(float4: container.decode(float4.self))
+    self.adsorptionSurfaceFrontSideAmbientColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.adsorptionSurfaceFrontSideDiffuseColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.adsorptionSurfaceFrontSideSpecularColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
     
     self.adsorptionSurfaceFrontSideAmbientIntensity = try container.decode(Double.self)
     self.adsorptionSurfaceFrontSideDiffuseIntensity = try container.decode(Double.self)
@@ -1359,9 +1359,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     
     self.adsorptionSurfaceBackSideHDR = try container.decode(Bool.self)
     self.adsorptionSurfaceBackSideHDRExposure = try container.decode(Double.self)
-    self.adsorptionSurfaceBackSideAmbientColor = try NSColor(float4: container.decode(float4.self))
-    self.adsorptionSurfaceBackSideDiffuseColor = try NSColor(float4: container.decode(float4.self))
-    self.adsorptionSurfaceBackSideSpecularColor = try NSColor(float4: container.decode(float4.self))
+    self.adsorptionSurfaceBackSideAmbientColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.adsorptionSurfaceBackSideDiffuseColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.adsorptionSurfaceBackSideSpecularColor = try NSColor(float4: container.decode(SIMD4<Float>.self))
     
     self.adsorptionSurfaceBackSideAmbientIntensity = try container.decode(Double.self)
     self.adsorptionSurfaceBackSideDiffuseIntensity = try container.decode(Double.self)
@@ -1389,52 +1389,52 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   // MARK: Measuring distance, angle, and dihedral-angles
   // ===============================================================================================================================
   
-  public func bondVector(_ bond: SKBondNode) -> double3
+  public func bondVector(_ bond: SKBondNode) -> SIMD3<Double>
   {
-    let atom1: double3 = bond.atom1.position
-    let atom2: double3 = bond.atom2.position
-    let dr: double3 = atom2 - atom1
+    let atom1: SIMD3<Double> = bond.atom1.position
+    let atom2: SIMD3<Double> = bond.atom2.position
+    let dr: SIMD3<Double> = atom2 - atom1
     return dr
   }
   
   
   public func bondLength(_ bond: SKBondNode) -> Double
   {
-    let atom1: double3 = bond.atom1.position
-    let atom2: double3 = bond.atom2.position
-    let dr: double3 = abs(atom2 - atom1)
+    let atom1: SIMD3<Double> = bond.atom1.position
+    let atom2: SIMD3<Double> = bond.atom2.position
+    let dr: SIMD3<Double> = abs(atom2 - atom1)
     return length(dr)
   }
   
-  public func distance(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3)) -> Double
+  public func distance(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
   {
-    let posB: double3 = atomA.copy.position
-    let posA: double3 = atomB.copy.position
-    let dr: double3 = abs(posB - posA)
+    let posB: SIMD3<Double> = atomA.copy.position
+    let posA: SIMD3<Double> = atomB.copy.position
+    let dr: SIMD3<Double> = abs(posB - posA)
     return length(dr)
   }
   
-  public func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3)) -> Double
+  public func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
   {
-    let posA: double3 = atomA.copy.position
-    let posB: double3 = atomB.copy.position
-    let posC: double3 = atomC.copy.position
+    let posA: SIMD3<Double> = atomA.copy.position
+    let posB: SIMD3<Double> = atomB.copy.position
+    let posC: SIMD3<Double> = atomC.copy.position
     
-    let dr1: double3 = posA - posB
-    let dr2: double3 = posC - posB
+    let dr1: SIMD3<Double> = posA - posB
+    let dr2: SIMD3<Double> = posC - posB
     
-    let vectorAB: double3 = normalize(dr1)
-    let vectorBC: double3 = normalize(dr2)
+    let vectorAB: SIMD3<Double> = normalize(dr1)
+    let vectorBC: SIMD3<Double> = normalize(dr2)
     
     return acos(dot(vectorAB, vectorBC))
   }
   
-  public func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3)) -> Double
+  public func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
   {
-    let posA: double3 = atomA.copy.position
-    let posB: double3 = atomB.copy.position
-    let posC: double3 = atomC.copy.position
-    let posD: double3 = atomD.copy.position
+    let posA: SIMD3<Double> = atomA.copy.position
+    let posB: SIMD3<Double> = atomB.copy.position
+    let posC: SIMD3<Double> = atomC.copy.position
+    let posD: SIMD3<Double> = atomD.copy.position
     
     let Dab = posA - posB
     let Dbc = normalize(posC - posB)
@@ -1450,8 +1450,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     // Phi is defined in protein convention Phi(trans)=Pi
     let cosPhi: Double = dot(dr,ds)
     
-    let Pb: double3 = cross(Dbc, Dab)
-    let Pc: double3 = cross(Dbc, Dcd)
+    let Pb: SIMD3<Double> = cross(Dbc, Dab)
+    let Pc: SIMD3<Double> = cross(Dbc, Dcd)
     
     let sign: Double = dot(Dbc, cross(Pb, Pc))
     
@@ -1569,7 +1569,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
         {
           for atom in atomCopies
           {
-            let CartesianPosition: double3 = atom.position + cell.unitCell * double3(Double(k1),Double(k2),Double(k3))
+            let CartesianPosition: SIMD3<Double> = atom.position + cell.unitCell * SIMD3<Double>(Double(k1),Double(k2),Double(k3))
             let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(atom: atom.asymmetricParentAtom)
             newAtom.position = CartesianPosition
             
@@ -1614,10 +1614,10 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     let atoms: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     var computedBonds: Set<SKBondNode> = []
     
-    let perpendicularWidths: double3 = self.cell.boundingBox.widths + double3(x: 0.1, y: 0.1, z: 0.1)
+    let perpendicularWidths: SIMD3<Double> = self.cell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
-    let cutoffVector: double3 = double3(x: perpendicularWidths.x/Double(numberOfCells[0]), y: perpendicularWidths.y/Double(numberOfCells[1]), z: perpendicularWidths.z/Double(numberOfCells[2]))
+    let cutoffVector: SIMD3<Double> = SIMD3<Double>(x: perpendicularWidths.x/Double(numberOfCells[0]), y: perpendicularWidths.y/Double(numberOfCells[1]), z: perpendicularWidths.z/Double(numberOfCells[2]))
     
     if ((numberOfCells[0]>=3) &&  (numberOfCells[1]>=3) && (numberOfCells[2]>=3))
     {
@@ -1628,7 +1628,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       // create cell-list based on the bond-cutoff
       for i in 0..<atoms.count
       {
-        let position: double3 = atoms[i].position - self.cell.boundingBox.minimum
+        let position: SIMD3<Double> = atoms[i].position - self.cell.boundingBox.minimum
         
         let icell: Int = Int((position.x) / cutoffVector.x) +
           Int((position.y) / cutoffVector.y) * numberOfCells[0] +
@@ -1650,7 +1650,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
             var i: Int = head[icell_i]
             while(i >= 0)
             {
-              let posA: double3 = atoms[i].position
+              let posA: SIMD3<Double> = atoms[i].position
               
               // loop over neighboring cells
               for offset in offsets
@@ -1665,8 +1665,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
                 {
                   if((i < j) || (icell_i != icell_j))
                   {
-                    let posB: double3 = atoms[j].position
-                    let separationVector: double3 = posA - posB
+                    let posB: SIMD3<Double> = atoms[j].position
+                    let separationVector: SIMD3<Double> = posA - posB
                     
                     let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
                     
@@ -1688,13 +1688,13 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     {
       for i in 0..<atoms.count
       {
-        let posA: double3 = atoms[i].position
+        let posA: SIMD3<Double> = atoms[i].position
         
         for j in i+1..<atoms.count
         {
-          let posB: double3 = atoms[j].position
+          let posB: SIMD3<Double> = atoms[j].position
           
-          let separationVector: double3 = posA - posB
+          let separationVector: SIMD3<Double> = posA - posB
           
           let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
           
@@ -1726,10 +1726,10 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     //self.progress = 0.0
     
     
-    let perpendicularWidths: double3 = self.cell.boundingBox.widths + double3(x: 0.1, y: 0.1, z: 0.1)
+    let perpendicularWidths: SIMD3<Double> = self.cell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
-    let cutoffVector: double3 = double3(x: perpendicularWidths.x/Double(numberOfCells[0]), y: perpendicularWidths.y/Double(numberOfCells[1]), z: perpendicularWidths.z/Double(numberOfCells[2]))
+    let cutoffVector: SIMD3<Double> = SIMD3<Double>(x: perpendicularWidths.x/Double(numberOfCells[0]), y: perpendicularWidths.y/Double(numberOfCells[1]), z: perpendicularWidths.z/Double(numberOfCells[2]))
     
     if ((numberOfCells[0]>=3) &&  (numberOfCells[1]>=3) && (numberOfCells[2]>=3))
     {
@@ -1740,7 +1740,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       // create cell-list based on the bond-cutoff
       for i in 0..<atoms.count
       {
-        let position: double3 = atoms[i].position - self.cell.boundingBox.minimum
+        let position: SIMD3<Double> = atoms[i].position - self.cell.boundingBox.minimum
         
         let icell: Int = Int((position.x) / cutoffVector.x) +
           Int((position.y) / cutoffVector.y) * numberOfCells[0] +
@@ -1769,7 +1769,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
             var i: Int = head[icell_i]
             while(i >= 0)
             {
-              let posA: double3 = atoms[i].position
+              let posA: SIMD3<Double> = atoms[i].position
               
               // loop over neighboring cells
               for offset in offsets
@@ -1784,8 +1784,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
                 {
                   if((i < j) || (icell_i != icell_j))
                   {
-                    let posB: double3 = atoms[j].position
-                    let separationVector: double3 = posA - posB
+                    let posB: SIMD3<Double> = atoms[j].position
+                    let separationVector: SIMD3<Double> = posA - posB
                     
                     let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
                     
@@ -1826,13 +1826,13 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       
       for i in 0..<atoms.count
       {
-        let posA: double3 = atoms[i].position
+        let posA: SIMD3<Double> = atoms[i].position
         
         for j in i+1..<atoms.count
         {
-          let posB: double3 = atoms[j].position
+          let posB: SIMD3<Double> = atoms[j].position
           
-          let separationVector: double3 = posA - posB
+          let separationVector: SIMD3<Double> = posA - posB
           
           let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
           
@@ -1991,7 +1991,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     }
   }
   
-  public var renderTextOffset: double3
+  public var renderTextOffset: SIMD3<Double>
   {
     get
     {
@@ -2016,11 +2016,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       
       for atom in atoms
       {
-        let pos: double3 = atom.position
+        let pos: SIMD3<Double> = atom.position
         
         //let w: Float = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
         let w: Float = (atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
-        let atomPosition: float4 = float4(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: w)
+        let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: w)
         let radius: Float = Float(atom.asymmetricParentAtom?.drawRadius ?? 1.0)
         
         let text: String
@@ -2042,7 +2042,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
           text = String(atom.asymmetricParentAtom.charge)
         }
         
-        let instances = fontAtlas.buildMeshWithString(position: atomPosition, scale: float4(radius,radius,radius,1.0), text: text, alignment: self.atomTextAlignment)
+        let instances = fontAtlas.buildMeshWithString(position: atomPosition, scale: SIMD4<Float>(radius,radius,radius,1.0), text: text, alignment: self.atomTextAlignment)
         
         data += instances
       }
@@ -2066,18 +2066,18 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       for atom in atoms
       {
         
-        let pos: double3 = atom.position
+        let pos: SIMD3<Double> = atom.position
         
         //let w: Float = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
         let w: Float = (atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
-        let atomPosition: float4 = float4(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: w)
+        let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: w)
         
         let radius: Double = atom.asymmetricParentAtom?.drawRadius ?? 1.0
         let ambient: NSColor = atom.asymmetricParentAtom?.color ?? NSColor.white
         let diffuse: NSColor = atom.asymmetricParentAtom?.color ?? NSColor.white
         let specular: NSColor = self.atomSpecularColor
         
-        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
+        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
         index = index + 1
       }
       return data
@@ -2089,7 +2089,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     return [RKInPerInstanceAttributesAtoms()]
   }
   
-  public func CartesianPosition(for position: double3, replicaPosition: int3) -> double3
+  public func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
     return position
   }
@@ -2301,23 +2301,23 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   
   
   
-  public var atomPositions: [double4]
+  public var atomPositions: [SIMD4<Double>]
   {
     return []
   }
   
-  public var crystallographicPositions: [(double3, Int)]
+  public var crystallographicPositions: [(SIMD3<Double>, Int)]
   {
     return []
   }
   
-  public var potentialParameters: [double2]
+  public var potentialParameters: [SIMD2<Double>]
   {
     //let size: Int = self.atomPositions.count
     return []
   }
   
-  public var bondPositions: [double3]
+  public var bondPositions: [SIMD3<Double>]
   {
       return []
   }
@@ -2340,19 +2340,19 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     }
   }
   
-  public func translateSelection(by: double3)
+  public func translateSelection(by: SIMD3<Double>)
   {
   
   }
   
-  public func finalizeTranslateSelection(by: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public func finalizeTranslateSelection(by: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     return nil
   }
   
-  public func centerOfMassOfSelection() -> double3
+  public func centerOfMassOfSelection() -> SIMD3<Double>
   {
-    return double3(0.0,0.0,0.0)
+    return SIMD3<Double>(0.0,0.0,0.0)
   }
   
   public func matrixOfInertia() -> double3x3
@@ -2374,13 +2374,13 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       let intertiaMatrix: double3x3 = matrixOfInertia()
 
       var eigenvectors: double3x3 = double3x3()
-      var eigenvalues: double3 = double3()
+      var eigenvalues: SIMD3<Double> = SIMD3<Double>()
       intertiaMatrix.EigenSystemSymmetric3x3(Q: &eigenvectors, w: &eigenvalues)
       self.selectionBodyFixedBasis = eigenvectors
     }
   }
   
-  public func translateSelectionCartesian(by translation: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     return nil
   }
@@ -2390,7 +2390,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     return nil
   }
   
-  public func translateSelectionBodyFrame(by: double3) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public func translateSelectionBodyFrame(by: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     return nil
   }
@@ -2400,9 +2400,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     return nil
   }
   
-  public func computeChangedBondLength(bond: SKBondNode, to: Double) -> (double3,double3)
+  public func computeChangedBondLength(bond: SKBondNode, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
   {
-    return (double3(0.0,0.0,0.0),double3(0.0,0.0,0.0))
+    return (SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.0,0.0))
   }
   
   public var renderCanDrawAdsorptionSurface: Bool {return false}
@@ -2428,7 +2428,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       
     let spaceGroup = SKSpacegroup(HallNumber: 1)
     var superCell = SKCell(superCell: self.cell)
-    superCell.contentShift = double3(0.0,0.0,0.0)
+    superCell.contentShift = SIMD3<Double>(0.0,0.0,0.0)
       
     let superCellAtoms: SKAtomTreeController = SKAtomTreeController()
       
@@ -2440,7 +2440,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
         {
           for atom in atomCopies
           {
-            let CartesianPosition: double3 = atom.position + cell.unitCell * double3(Double(k1),Double(k2),Double(k3)) + self.cell.contentShift
+            let CartesianPosition: SIMD3<Double> = atom.position + cell.unitCell * SIMD3<Double>(Double(k1),Double(k2),Double(k3)) + self.cell.contentShift
             let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(atom: atom.asymmetricParentAtom)
             newAtom.position = CartesianPosition
               
@@ -2753,8 +2753,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     spaceGroup = SKSpacegroup(HallNumber: number)
     cell = try decoder.decode(SKCell.self)
     periodic = try decoder.decode(Bool.self)
-    origin = try decoder.decode(double3.self)
-    scaling = try decoder.decode(double3.self)
+    origin = try decoder.decode(SIMD3<Double>.self)
+    scaling = try decoder.decode(SIMD3<Double>.self)
     orientation = try decoder.decode(simd_quatd.self)
     rotationDelta = try decoder.decode(Double.self)
     
@@ -2846,7 +2846,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     self.atomTextStyle = try RKTextStyle(rawValue: decoder.decode(Int.self))!
     self.atomTextEffect = try RKTextEffect(rawValue: decoder.decode(Int.self))!
     self.atomTextAlignment = try RKTextAlignment(rawValue: decoder.decode(Int.self))!
-    self.atomTextOffset = try decoder.decode(double3.self)
+    self.atomTextOffset = try decoder.decode(SIMD3<Double>.self)
     
     
     

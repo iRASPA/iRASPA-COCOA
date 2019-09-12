@@ -34,14 +34,14 @@ import simd
 
 public struct int9x3
 {
-  var columns: [int3]
+  var columns: [SIMD3<Int32>]
   
   public init()
   {
-    self.columns = [int3(),int3(),int3(),int3(),int3(),int3(),int3(),int3(),int3()]
+    self.columns = [SIMD3<Int32>(),SIMD3<Int32>(),SIMD3<Int32>(),SIMD3<Int32>(),SIMD3<Int32>(),SIMD3<Int32>(),SIMD3<Int32>(),SIMD3<Int32>(),SIMD3<Int32>()]
   }
   
-  public init(_ columns: [int3])
+  public init(_ columns: [SIMD3<Int32>])
   {
     self.columns = columns
   }
@@ -59,7 +59,7 @@ public struct int9x3
     }
   }
   
-  public subscript(column: Int) -> int3
+  public subscript(column: Int) -> SIMD3<Int32>
   {
     get
     {
