@@ -41,7 +41,7 @@ public class SKCIFWriter
   {
   }
   
-  public func string(displayName: String, spaceGroupHallNumber: Int?, cell: SKCell, atoms: [SKAsymmetricAtom], exportFractional: Bool, origin: double3) -> String
+  public func string(displayName: String, spaceGroupHallNumber: Int?, cell: SKCell, atoms: [SKAsymmetricAtom], exportFractional: Bool, origin: SIMD3<Double>) -> String
   {
     var dataString: String = ""
     
@@ -94,7 +94,7 @@ public class SKCIFWriter
     
     for atom in atoms
     {
-      let position: double3 = atom.position - origin
+      let position: SIMD3<Double> = atom.position - origin
       
       let name = atom.displayName.padding(toLength: 8, withPad:  " ", startingAt: 0)
       let chemicalElement = PredefinedElements.sharedInstance.elementSet[atom.elementIdentifier].chemicalSymbol.padding(toLength: 3, withPad:  " ", startingAt: 0)

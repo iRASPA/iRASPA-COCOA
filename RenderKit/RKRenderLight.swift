@@ -36,7 +36,7 @@ import MathKit
 public struct RKRenderLight: Decodable
 {
   private var versionNumber: Int = 1
-  public var position: double4 = double4(x:0, y:0, z: 100.0, w: 0.0)
+  public var position: SIMD4<Double> = SIMD4<Double>(x:0, y:0, z: 100.0, w: 0.0)
   public var ambient: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var diffuse: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var specular: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -47,7 +47,7 @@ public struct RKRenderLight: Decodable
   public var constantAttenuation: Double = 1.0
   public var linearAttenuation: Double = 1.0
   public var quadraticAttenuation: Double = 1.0
-  public var spotDirection: double3 = double3(x:1.0, y:1.0, z: 1.0)
+  public var spotDirection: SIMD3<Double> = SIMD3<Double>(x:1.0, y:1.0, z: 1.0)
   public var spotCutoff: Double = 1.0
   public var spotExponent: Double = 1.0
   
@@ -88,10 +88,10 @@ public struct RKRenderLight: Decodable
       
     }
     
-    self.position = try container.decode(double4.self)
-    self.ambient = try NSColor(float4: container.decode(float4.self))
-    self.diffuse = try NSColor(float4: container.decode(float4.self))
-    self.specular = try NSColor(float4: container.decode(float4.self))
+    self.position = try container.decode(SIMD4<Double>.self)
+    self.ambient = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.diffuse = try NSColor(float4: container.decode(SIMD4<Float>.self))
+    self.specular = try NSColor(float4: container.decode(SIMD4<Float>.self))
     self.ambientIntensity = try container.decode(Double.self)
     self.diffuseIntensity = try container.decode(Double.self)
     self.specularIntensity = try container.decode(Double.self)
@@ -99,7 +99,7 @@ public struct RKRenderLight: Decodable
     self.constantAttenuation = try container.decode(Double.self)
     self.linearAttenuation = try container.decode(Double.self)
     self.quadraticAttenuation = try container.decode(Double.self)
-    self.spotDirection = try container.decode(double3.self)
+    self.spotDirection = try container.decode(SIMD3<Double>.self)
     self.spotExponent = try container.decode(Double.self)
   }
   

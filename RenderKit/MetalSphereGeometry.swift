@@ -53,7 +53,7 @@ public class MetalSphereGeometry
   {
     var index: Int
     var theta, phi, sinTheta, sinPhi, cosTheta, cosPhi: Double
-    var position, normal: float4
+    var position, normal: SIMD4<Float>
     
     slices = s
     numberOfIndices = 2 * (s + 1) * s
@@ -73,9 +73,9 @@ public class MetalSphereGeometry
         sinPhi = sin(phi)
         cosTheta = cos(theta)
         cosPhi = cos(phi)
-        normal = float4(x: cosPhi * sinTheta, y: sinPhi * sinTheta, z: cosTheta, w: 0.0)
-        position = float4(x: r * cosPhi * sinTheta, y: r * sinPhi * sinTheta, z: r * cosTheta, w: 0.0)
-        let st: float2 = float2(x: 0.5 + 0.5 * atan2(position.z, position.x)/Float.pi, y: 0.5 - asin(position.y)/Float.pi)
+        normal = SIMD4<Float>(x: cosPhi * sinTheta, y: sinPhi * sinTheta, z: cosTheta, w: 0.0)
+        position = SIMD4<Float>(x: r * cosPhi * sinTheta, y: r * sinPhi * sinTheta, z: r * cosTheta, w: 0.0)
+        let st: SIMD2<Float> = SIMD2<Float>(x: 0.5 + 0.5 * atan2(position.z, position.x)/Float.pi, y: 0.5 - asin(position.y)/Float.pi)
         vertices[index] = RKVertex(position: position, normal: normal, st: st)
         index = index + 1
       }

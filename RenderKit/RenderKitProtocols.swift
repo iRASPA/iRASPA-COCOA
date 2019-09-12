@@ -119,9 +119,9 @@ public protocol RKRenderViewSelectionDelegate: class
   func clearSelection()
   func cameraDidChange()
   
-  func shiftSelection(to: double3, origin: double3, depth: Double)
-  func finalizeShiftSelection(to: double3, origin: double3, depth: Double)
-  func rotateSelection(by: double3)
+  func shiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
+  func finalizeShiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
+  func rotateSelection(by: SIMD3<Double>)
   
   func clearMeasurement()
   func addAtomToMeasurement(_ pick: [Int32])
@@ -139,7 +139,7 @@ public protocol RKRenderStructure: class
   var isVisible: Bool {get}
   
   var orientation: simd_quatd {get}
-  var origin: double3 {get}
+  var origin: SIMD3<Double> {get}
  
   var cell: SKCell {get set}
 }
@@ -173,7 +173,7 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var atomHDRExposure: Double {get}
   var atomHDRBloomLevel: Double {get}
   var clipAtomsAtUnitCell: Bool {get}
-  var atomPositions: [double4] {get}
+  var atomPositions: [SIMD4<Double>] {get}
   var renderAtoms: [RKInPerInstanceAttributesAtoms] {get}
   
   var renderTextData: [RKInPerInstanceAttributesText] {get}
@@ -183,7 +183,7 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var renderTextStyle: RKTextStyle {get}
   var renderTextColor: NSColor {get}
   var renderTextScaling: Double {get}
-  var renderTextOffset: double3 {get}
+  var renderTextOffset: SIMD3<Double> {get}
   
   var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms] {get}
   var renderSelectionStyle: RKSelectionStyle {get}
@@ -193,14 +193,14 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var renderSelectionWorleyNoise3DFrequency: Double {get}
   var renderSelectionWorleyNoise3DJitter: Double {get}
   
-  func CartesianPosition(for position: double3, replicaPosition: int3) -> double3
+  func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
 }
 
 public protocol RKRenderBondSource: RKRenderStructure
 {
   var numberOfInternalBonds: Int {get}
   var numberOfExternalBonds: Int {get}
-  var bondPositions: [double3] {get}
+  var bondPositions: [SIMD3<Double>] {get}
   var renderInternalBonds: [RKInPerInstanceAttributesBonds] {get}
   var renderExternalBonds: [RKInPerInstanceAttributesBonds] {get}
   var renderSelectedBonds: [RKInPerInstanceAttributesBonds] {get}
@@ -242,14 +242,14 @@ public protocol RKRenderUnitCellSource: RKRenderStructure
 
 public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
 {
-  var potentialParameters: [double2] {get}
+  var potentialParameters: [SIMD2<Double>] {get}
   
   // adsorption surface
   var drawAdsorptionSurface: Bool {get set}
   var adsorptionSurfaceOpacity: Double {get set}
   var adsorptionSurfaceIsoValue: Double {get set}
   var adsorptionSurfaceSize: Int {get set}
-  var adsorptionSurfaceProbeParameters: double2 { get }
+  var adsorptionSurfaceProbeParameters: SIMD2<Double> { get }
   var adsorptionSurfaceNumberOfTriangles: Int {get set}
   
   var adsorptionSurfaceFrontSideHDR: Bool {get set}
@@ -272,10 +272,10 @@ public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
   var adsorptionSurfaceBackSideSpecularIntensity: Double {get set}
   var adsorptionSurfaceBackSideShininess: Double {get set}
   
-  var atomUnitCellPositions: [double3] {get}
+  var atomUnitCellPositions: [SIMD3<Double>] {get}
   var minimumGridEnergyValue: Float? {get set}
   
-  var frameworkProbeParameters: double2 {get}
+  var frameworkProbeParameters: SIMD2<Double> {get}
   var structureHeliumVoidFraction: Double {get set}
   var structureNitrogenSurfaceArea: Double {get set}
 }

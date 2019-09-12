@@ -58,7 +58,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
   var spaceGroup: SKSpacegroup = SKSpacegroup()
   var scaleMatrixDefined: [Bool] = [false, false, false]
   var scaleMatrix: double3x3 = double3x3(1.0)
-  var translation: double3 = double3(0.0,0.0,0.0)
+  var translation: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
   var a: Double = 20.0
   var b: Double = 20.0
   var c: Double = 20.0
@@ -541,7 +541,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
               break
             }
             
-            let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+            let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
             
             let atomSerialNumberString: String = scannedLine.substring(with: NSRange(location: 6, length: 5))
             if let integerValue: Int = Int(atomSerialNumberString)
@@ -636,7 +636,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
             {
               // with the position we have enough information to decide to add the atom
               atom.fractional = false
-              atom.position = double3(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+              atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
             }
             guard (scannedLine.length >= 60) else
             {

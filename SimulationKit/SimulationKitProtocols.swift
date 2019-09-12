@@ -38,9 +38,9 @@ public protocol SKRenderAdsorptionSurfaceStructure
 {
   var structureMass: Double {get}
   var cell: SKCell {get set}
-  var potentialParameters: [double2] {get}
+  var potentialParameters: [SIMD2<Double>] {get}
   
-  var atomUnitCellPositions: [double3] {get}
+  var atomUnitCellPositions: [SIMD3<Double>] {get}
   var minimumGridEnergyValue: Float? {get set}
   var structureHeliumVoidFraction: Double {get set}
   var structureNitrogenSurfaceArea: Double {get set}

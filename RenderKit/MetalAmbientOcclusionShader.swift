@@ -286,7 +286,7 @@ class MetalAmbientOcclusionShader
               let boundingBox: SKBoundingBox = crystalProjectData.renderBoundingBox
               let largestRadius: Double = boundingBox.boundingSphereRadius
               let centerOfScene = boundingBox.minimum + (boundingBox.maximum - boundingBox.minimum) * 0.5
-              let eye = double3(x: centerOfScene.x, y: centerOfScene.y, z: centerOfScene.z + largestRadius)
+              let eye = SIMD3<Double>(x: centerOfScene.x, y: centerOfScene.y, z: centerOfScene.z + largestRadius)
               
               let boundingBoxAspectRatio: Double = fabs(boundingBox.maximum.x - boundingBox.minimum.x) / abs(boundingBox.maximum.y - boundingBox.minimum.y)
               
@@ -320,7 +320,7 @@ class MetalAmbientOcclusionShader
                 let q: simd_quatd = smallChangeQ * directions[k]
                 
                 let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: q), aroundPoint: centerOfScene)
-                let viewMatrix: double4x4 = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: double3(x: 0, y: 1, z:0))
+                let viewMatrix: double4x4 = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0, y: 1, z:0))
                 let projectionMatrix: double4x4 = double4x4.glFrustumfOrthographic(left, right: right, bottom: bottom, top: top, near: near, far: far)
                 
                 let shadowMapFrameUniforms: RKShadowUniforms = RKShadowUniforms(projectionMatrix: projectionMatrix, viewMatrix:  viewMatrix, modelMatrix: modelMatrix)

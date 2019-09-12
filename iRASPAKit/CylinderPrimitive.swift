@@ -50,7 +50,7 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
     let color: NSColor = NSColor.yellow
     let drawRadius: Double = 5.0
     let bondDistanceCriteria: Double = 0.0
-    let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: double3(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+    let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
     self.expandSymmetry(asymmetricAtom: asymmetricAtom)
     let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
     atoms.insertNode(atomTreeNode, inItem: nil, atIndex: 0)
@@ -106,7 +106,7 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
         
         for copy in copies
         {
-          let pos: double3 = copy.position
+          let pos: SIMD3<Double> = copy.position
           copy.asymmetricIndex = asymetricIndex
           
           for k1 in minimumReplicaX...maximumReplicaX
@@ -115,18 +115,18 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
             {
               for k3 in minimumReplicaZ...maximumReplicaZ
               {
-                let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3))
-                let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
+                let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3))
+                let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
                 
                 let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
-                let atomPosition: float4 = float4(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
+                let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
                 
                 let radius: Double = 1.0
                 let ambient: NSColor = NSColor.white
                 let diffuse: NSColor = NSColor.white
                 let specular: NSColor = NSColor.white
                 
-                data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
+                data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
                 index = index + 1
               }
             }
@@ -153,18 +153,18 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
         
         for copy in copies
         {
-          let pos: double3 = copy.position
+          let pos: SIMD3<Double> = copy.position
           copy.asymmetricIndex = asymetricIndex
           
           let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
-          let atomPosition: float4 = float4(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: Float(w))
+          let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: Float(w))
           
           let radius: Double = 1.0
           let ambient: NSColor = NSColor.white
           let diffuse: NSColor = NSColor.white
           let specular: NSColor = NSColor.white
           
-          data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
+          data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
           index = index + 1
         }
       }
@@ -339,8 +339,8 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
       // only use leaf-nodes
       let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
       
-      var minimum: double3 = double3(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
-      var maximum: double3 = double3(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
+      var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
+      var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
       
       
       for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
@@ -349,7 +349,7 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
         
         for copy in copies
         {
-          let pos: double3 = copy.position
+          let pos: SIMD3<Double> = copy.position
           copy.asymmetricIndex = asymetricIndex
           
           for k1 in minimumReplicaX...maximumReplicaX
@@ -358,23 +358,23 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
             {
               for k3 in minimumReplicaZ...maximumReplicaZ
               {
-                let fractionalPosition: double3 = double3(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3))
-                let cartesianPosition: double3 = self.cell.convertToCartesian(fractionalPosition)
+                let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3))
+                let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
                 
                 for vertex in cylinderVertices
                 {
-                  let vertexPosition: double4 = double4(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
+                  let vertexPosition: SIMD4<Double> = SIMD4<Double>(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
                   
                   let transformationMatrix = double4x4(Double3x3: self.primitiveTransformationMatrix)
                   let primitiveModelMatrix = double4x4(simd_quatd: self.primitiveOrientation)
                   
-                  let pos: double4 = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + double4(cartesianPosition.x, cartesianPosition.y, cartesianPosition.z, 1.0))
+                  let pos: SIMD4<Double> = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + SIMD4<Double>(cartesianPosition.x, cartesianPosition.y, cartesianPosition.z, 1.0))
                   
-                  minimum = double3(x: min(pos.x, minimum.x),
+                  minimum = SIMD3<Double>(x: min(pos.x, minimum.x),
                                     y: min(pos.y, minimum.y),
                                     z: min(pos.z, minimum.z))
                   
-                  maximum = double3(x: max(pos.x, maximum.x),
+                  maximum = SIMD3<Double>(x: max(pos.x, maximum.x),
                                     y: max(pos.y, maximum.y),
                                     z: max(pos.z, maximum.z))
                 }
@@ -388,15 +388,15 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
     }
     else
     {
-      let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: double3(0,0,0), withTranslation: self.origin)
+      let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: SIMD3<Double>(0,0,0), withTranslation: self.origin)
       
       let cylinderVertices: [RKVertex] = MetalCylinderGeometry(r: 1.0, s: self.primitiveNumberOfSides).vertices
       
       // only use leaf-nodes
       let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
       
-      var minimum: double3 = double3(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
-      var maximum: double3 = double3(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
+      var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
+      var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
       
       
       for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
@@ -405,23 +405,23 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
         
         for copy in copies
         {
-          let pos: double3 = copy.position
+          let pos: SIMD3<Double> = copy.position
           copy.asymmetricIndex = asymetricIndex
           
           for vertex in cylinderVertices
           {
-            let vertexPosition: double4 = double4(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
+            let vertexPosition: SIMD4<Double> = SIMD4<Double>(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
             
             let transformationMatrix = double4x4(Double3x3: self.primitiveTransformationMatrix)
             let primitiveModelMatrix = double4x4(simd_quatd: self.primitiveOrientation)
             
-            let pos: double4 = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + double4(pos.x, pos.y, pos.z, 1.0))
+            let pos: SIMD4<Double> = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + SIMD4<Double>(pos.x, pos.y, pos.z, 1.0))
             
-            minimum = double3(x: min(pos.x, minimum.x),
+            minimum = SIMD3<Double>(x: min(pos.x, minimum.x),
                               y: min(pos.y, minimum.y),
                               z: min(pos.z, minimum.z))
             
-            maximum = double3(x: max(pos.x, maximum.x),
+            maximum = SIMD3<Double>(x: max(pos.x, maximum.x),
                               y: max(pos.y, maximum.y),
                               z: max(pos.z, maximum.z))
           }

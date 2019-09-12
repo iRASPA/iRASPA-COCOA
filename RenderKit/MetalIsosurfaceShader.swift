@@ -144,8 +144,8 @@ class MetalIsosurfaceShader
         {
           for structure in structures
           {
-            let renderLatticeVectors: [float4] = structure.cell.renderTranslationVectors
-            let buffer: MTLBuffer = device.makeBuffer(bytes: renderLatticeVectors, length: MemoryLayout<float4>.stride * renderLatticeVectors.count, options:.storageModeManaged)!
+            let renderLatticeVectors: [SIMD4<Float>] = structure.cell.renderTranslationVectors
+            let buffer: MTLBuffer = device.makeBuffer(bytes: renderLatticeVectors, length: MemoryLayout<SIMD4<Float>>.stride * renderLatticeVectors.count, options:.storageModeManaged)!
             sceneInstance.append(buffer)
           }
         }
@@ -189,7 +189,7 @@ class MetalIsosurfaceShader
             commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKStructureUniforms>.stride, index: 1)
             commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
             
-            commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<float4>.stride)
+            commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<SIMD4<Float>>.stride)
           }
         }
         index = index + 1
@@ -242,10 +242,10 @@ class MetalIsosurfaceShader
               commandEncoder.setFragmentBufferOffset(index*MemoryLayout<RKIsosurfaceUniforms>.stride, index: 2)
               
               commandEncoder.setCullMode(MTLCullMode.front)
-              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<float4>.stride)
+              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<SIMD4<Float>>.stride)
               
               commandEncoder.setCullMode(MTLCullMode.back)
-              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<float4>.stride)
+              commandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: instanceIsosurfaceVertexBuffer.length / MemoryLayout<SIMD4<Float>>.stride)
             }
           }
           index = index + 1
@@ -300,11 +300,11 @@ class MetalIsosurfaceShader
               let startTime: UInt64  = mach_absolute_time()
               
               let cell: SKCell = structure.cell
-              let positions: [double3] = structure.atomUnitCellPositions
-              let potentialParameters: [double2] = structure.potentialParameters
-              let probeParameters: double2 = structure.adsorptionSurfaceProbeParameters
+              let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
+              let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
+              let probeParameters: SIMD2<Double> = structure.adsorptionSurfaceProbeParameters
               
-              let numberOfReplicas: int3 = cell.numberOfReplicas(forCutoff: 12.0)
+              let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
               let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
               
               

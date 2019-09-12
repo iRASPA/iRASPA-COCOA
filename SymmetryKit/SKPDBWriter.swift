@@ -81,7 +81,7 @@ public class SKPDBWriter
   
   
   
-  public func string(displayName: String,spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom], origin: double3) -> String
+  public func string(displayName: String,spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom], origin: SIMD3<Double>) -> String
   {
     counter = 1
     var outputString: String = "COMPND    \(displayName)\n" +
@@ -98,7 +98,7 @@ public class SKPDBWriter
   
   
   
-  public func string(displayName: String, movies: [[(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom])]], origin: double3) -> String
+  public func string(displayName: String, movies: [[(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom])]], origin: SIMD3<Double>) -> String
   {
     counter = 1
     var outputString: String = "COMPND    \(displayName)\n" +
@@ -162,7 +162,7 @@ public class SKPDBWriter
     }
   }
 
-  private func string(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom], origin: double3) -> String
+  private func string(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom], origin: SIMD3<Double>) -> String
   {
     var outputString: String = ""
     

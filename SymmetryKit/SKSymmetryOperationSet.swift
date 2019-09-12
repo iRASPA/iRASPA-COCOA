@@ -43,7 +43,7 @@ public struct SKSymmetryOperationSet
     self.operations = operations
     self.centring = .primitive
     
-    let latticeTranslation: [int3] = self.centering
+    let latticeTranslation: [SIMD3<Int32>] = self.centering
     switch(latticeTranslation.count)
     {
     case 1:
@@ -119,7 +119,7 @@ public struct SKSymmetryOperationSet
         
         let seitz:SKSeitzMatrix = SKSeitzMatrix(encoding: (x,y,z))
         
-        let translation: int3 = seitz.translation + seitz.rotation * spaceGroupSetting.inversionCenter
+        let translation: SIMD3<Int32> = seitz.translation + seitz.rotation * spaceGroupSetting.inversionCenter
         
         operations.insert(SKSeitzMatrix(rotation: -seitz.rotation, translation: translation))
       }
@@ -181,7 +181,7 @@ public struct SKSymmetryOperationSet
   
   public func addingCenteringOperations(centering: SKSpacegroup.Centring) -> SKSymmetryOperationSet
   {
-    var shift: [int3] = []
+    var shift: [SIMD3<Int32>] = []
     let size: Int = operations.count
     
     var multiplier: Int = 1
@@ -189,34 +189,34 @@ public struct SKSymmetryOperationSet
     {
     case .none, .primitive:
       multiplier = 1
-      shift = [int3(0,0,0)]
+      shift = [SIMD3<Int32>(0,0,0)]
     case .face:
       multiplier = 4
-      shift = [int3(0,0,0),int3(0,6,6),int3(6,0,6),int3(6,6,0)]
+      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6),SIMD3<Int32>(6,0,6),SIMD3<Int32>(6,6,0)]
     case .r:
       multiplier = 3
-      shift = [int3(0,0,0),int3(8,4,4),int3(4,8,8)]
+      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(8,4,4),SIMD3<Int32>(4,8,8)]
     case .h:
       multiplier = 3
-      shift = [int3(0,0,0),int3(8,4,0),int3(0,8,4)]
+      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(8,4,0),SIMD3<Int32>(0,8,4)]
     case .d:
       multiplier = 3
-      shift = [int3(0,0,0),int3(4,4,4),int3(8,8,8)]
+      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(4,4,4),SIMD3<Int32>(8,8,8)]
     case .body:
       multiplier = 2
-      shift = [int3(0,0,0),int3(6,6,6)]
+      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,6)]
     case .a_face:
       multiplier = 2
-      shift = [int3(0,0,0),int3(0,6,6)]
+      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6)]
     case .b_face:
       multiplier = 2
-      shift = [int3(0,0,0),int3(6,0,6)]
+      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,0,6)]
     case .c_face:
       multiplier = 2
-      shift = [int3(0,0,0),int3(6,6,0)]
+      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,0)]
     default:
       multiplier = 1
-      shift = [int3(0,0,0)]
+      shift = [SIMD3<Int32>(0,0,0)]
     }
     var symmetry: Set<SKSeitzMatrix> = Set<SKSeitzMatrix>(minimumCapacity: multiplier * size)
     
@@ -233,9 +233,9 @@ public struct SKSymmetryOperationSet
   
 
   
-  public var centering: [int3]
+  public var centering: [SIMD3<Int32>]
   {
-    var centering: Set<int3> = []
+    var centering: Set<SIMD3<Int32>> = []
     
     // get the set of unique rotations
     let rotationMatrices: Set<SKRotationMatrix> = Set(operations.map{$0.rotation})
@@ -248,7 +248,7 @@ public struct SKSymmetryOperationSet
       {
         for j in i..<match.count
         {
-          let translation: int3 = match[i].translation -  match[j].translation
+          let translation: SIMD3<Int32> = match[i].translation -  match[j].translation
           centering.insert(translation.modulo(12))
         }
       }
@@ -259,39 +259,39 @@ public struct SKSymmetryOperationSet
   // Use site-symmetry to determine symmetrized location of an atom
   // R. W. Grosse-Kunstleve and P. D. Adams, Acta Cryst. (2002). A58, 60-65
   
-  func symmetrizedPosition(position: double3, lattice: double3x3, symmetryPrecision: Double = 1e-5) -> double3
+  func symmetrizedPosition(position: SIMD3<Double>, lattice: double3x3, symmetryPrecision: Double = 1e-5) -> SIMD3<Double>
   {
     var sumRotation: double3x3 = double3x3(0)
-    var sumTranslation: double3 = double3(0,0,0)
+    var sumTranslation: SIMD3<Double> = SIMD3<Double>(0,0,0)
     var count: Int = 0
     for operation in operations
     {
-      let pos: double3 = operation.rotation * position + double3(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
+      let pos: SIMD3<Double> = operation.rotation * position + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
       if SKSymmetryCell.isOverlap(a: pos, b: position, lattice: lattice, symmetryPrecision: symmetryPrecision)
       {
         sumRotation += double3x3(operation.rotation)
-        sumTranslation += double3(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0) -
-                          double3(rint(pos.x - position.x), rint(pos.y - position.y), rint(pos.z - position.z))
+        sumTranslation += SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0) -
+                          SIMD3<Double>(rint(pos.x - position.x), rint(pos.y - position.y), rint(pos.z - position.z))
         count += 1
       }
     }
     
     let averagedRotation: double3x3 = sumRotation / Double(count)
-    let averagedTranslation: double3 = sumTranslation / Double(count)
+    let averagedTranslation: SIMD3<Double> = sumTranslation / Double(count)
     
-    let symmetrizedPosition: double3 = averagedRotation * position + averagedTranslation
+    let symmetrizedPosition: SIMD3<Double> = averagedRotation * position + averagedTranslation
     
     return symmetrizedPosition
   }
   
-  public func setEquivalentAtoms(positions: inout [double3], atoms: [(fractionalPosition: double3, type: Int)], i: Int, numberOfIndependentAtoms: Int, independentAtomIndices: inout [Int], lattice: double3x3, symmetryPrecision: Double = 1e-5) -> Bool
+  public func setEquivalentAtoms(positions: inout [SIMD3<Double>], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], i: Int, numberOfIndependentAtoms: Int, independentAtomIndices: inout [Int], lattice: double3x3, symmetryPrecision: Double = 1e-5) -> Bool
   {
     for j in 0..<numberOfIndependentAtoms
     {
       for operation in operations
       {
         let index: Int = independentAtomIndices[j]
-        let position: double3 = operation.rotation * positions[index] + double3(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
+        let position: SIMD3<Double> = operation.rotation * positions[index] + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
         if SKSymmetryCell.isOverlap(a: position, b: atoms[i].fractionalPosition, lattice: lattice, symmetryPrecision: symmetryPrecision)
         {
           positions[i] = fract(position)
@@ -303,9 +303,9 @@ public struct SKSymmetryOperationSet
   }
   
   
-  public func asymmetricAtoms(atoms: inout [(fractionalPosition: double3, type: Int, asymmetricType: Int)],  lattice: double3x3, symmetryPrecision: Double = 1e-5) -> [(fractionalPosition: double3, type: Int)]
+  public func asymmetricAtoms(atoms: inout [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)],  lattice: double3x3, symmetryPrecision: Double = 1e-5) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
   {
-    var asymmetricAtoms: [(fractionalPosition: double3, type: Int)] = [(atoms[0].fractionalPosition, atoms[0].type)]
+    var asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = [(atoms[0].fractionalPosition, atoms[0].type)]
     atoms[0].asymmetricType = 0
     
     // loop over all atoms
@@ -318,7 +318,7 @@ public struct SKSymmetryOperationSet
         {
           for operation in operations
           {
-            let position: double3 = operation.rotation * atoms[i].fractionalPosition + double3(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
+            let position: SIMD3<Double> = operation.rotation * atoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
             if SKSymmetryCell.isOverlap(a: position, b: asymmetricAtoms[j].fractionalPosition, lattice: lattice, symmetryPrecision: symmetryPrecision)
             {
               // overlap and the atom is therefore a copy of the asymmetric atom 'j'
@@ -333,7 +333,7 @@ public struct SKSymmetryOperationSet
         {
           for operation in operations
           {
-            let position: double3 = operation.rotation * atoms[i].fractionalPosition + double3(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
+            let position: SIMD3<Double> = operation.rotation * atoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
             if !SKSymmetryCell.isOverlap(a: position, b: asymmetricAtoms[j].fractionalPosition, lattice: lattice, symmetryPrecision: symmetryPrecision)
             {
               asymmetricAtoms.append((atoms[i].fractionalPosition, atoms[i].type))

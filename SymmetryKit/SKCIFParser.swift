@@ -569,7 +569,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
       {
         if let chemicalSymbol: String = dictionary["_atom_site_type_symbol"]?.lowercased().capitalizeFirst
         {
-          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
           
           if let label: String = dictionary["_atom_site_label"]
           {
@@ -583,7 +583,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
             let x: Double = NSString(string: stringFractionalX).doubleValue
             let y: Double = NSString(string: stringFractionalY).doubleValue
             let z: Double = NSString(string: stringFractionalZ).doubleValue
-            atom.position = double3(x: x, y: y, z: z)
+            atom.position = SIMD3<Double>(x: x, y: y, z: z)
             atom.fractional = true
           }
           
@@ -594,7 +594,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
             let x: Double = NSString(string: stringCartesianX).doubleValue
             let y: Double = NSString(string: stringCartesianY).doubleValue
             let z: Double = NSString(string: stringCartesianZ).doubleValue
-            atom.position = double3(x: x, y: y, z: z)
+            atom.position = SIMD3<Double>(x: x, y: y, z: z)
             atom.fractional = false
           }
           
@@ -626,7 +626,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
         }
         else if let chemicalSymbol: String = dictionary["_atom_site.type_symbol"]?.lowercased().capitalizeFirst
         {
-          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
           
           if let label: String = dictionary["_atom_site.id"]
           {
@@ -698,7 +698,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
             let x: Double = NSString(string: stringFractionalX).doubleValue
             let y: Double = NSString(string: stringFractionalY).doubleValue
             let z: Double = NSString(string: stringFractionalZ).doubleValue
-            atom.position = double3(x: x, y: y, z: z)
+            atom.position = SIMD3<Double>(x: x, y: y, z: z)
             atom.fractional = true
           }
           
@@ -709,7 +709,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
             let x: Double = NSString(string: stringCartesianX).doubleValue
             let y: Double = NSString(string: stringCartesianY).doubleValue
             let z: Double = NSString(string: stringCartesianZ).doubleValue
-            atom.position = double3(x: x, y: y, z: z)
+            atom.position = SIMD3<Double>(x: x, y: y, z: z)
             atom.fractional = false
           }
           

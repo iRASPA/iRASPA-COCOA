@@ -35,15 +35,15 @@ import simd
 
 public struct RKTextVertex
 {
-  public var position: float4 = float4()
-  public var st: float4 = float4()
+  public var position: SIMD4<Float> = SIMD4<Float>()
+  public var st: SIMD4<Float> = SIMD4<Float>()
   
   init()
   {
     
   }
   
-  public init(position: float4, st: float4)
+  public init(position: SIMD4<Float>, st: SIMD4<Float>)
   {
     self.position = position
     self.st = st

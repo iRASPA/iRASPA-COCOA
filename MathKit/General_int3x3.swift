@@ -37,20 +37,20 @@ extension double3x3
   
   public init(_ m: MKint3x3)
   {
-    self.init([double3(Double(m[0][0])/Double(m.denominator),Double(m[0][1])/Double(m.denominator),Double(m[0][2])/Double(m.denominator)),
-               double3(Double(m[1][0])/Double(m.denominator),Double(m[1][1])/Double(m.denominator),Double(m[1][2])/Double(m.denominator)),
-               double3(Double(m[2][0])/Double(m.denominator),Double(m[2][1])/Double(m.denominator),Double(m[2][2])/Double(m.denominator))])
+    self.init([SIMD3<Double>(Double(m[0][0])/Double(m.denominator),Double(m[0][1])/Double(m.denominator),Double(m[0][2])/Double(m.denominator)),
+               SIMD3<Double>(Double(m[1][0])/Double(m.denominator),Double(m[1][1])/Double(m.denominator),Double(m[1][2])/Double(m.denominator)),
+               SIMD3<Double>(Double(m[2][0])/Double(m.denominator),Double(m[2][1])/Double(m.denominator),Double(m[2][2])/Double(m.denominator))])
   }
 }
 
 public struct MKint3x3: Equatable
 {
-  var numerator: [int3]
+  var numerator: [SIMD3<Int32>]
   public var denominator: Int = 1
   
   public init()
   {
-    self.numerator = [int3(0,0,0),int3(0,0,0),int3(0,0,0)]
+    self.numerator = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)]
     self.denominator = 1
   }
   
@@ -65,7 +65,7 @@ public struct MKint3x3: Equatable
   
   public static var identity: MKint3x3
   {
-    return MKint3x3([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
+    return MKint3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
   }
   
   /*
@@ -85,11 +85,11 @@ public struct MKint3x3: Equatable
   
   public init(scalar: Int32, denominator: Int = 1)
   {
-    self.numerator = [int3(scalar,0,0),int3(0,scalar,0),int3(0,0,scalar)]
+    self.numerator = [SIMD3<Int32>(scalar,0,0),SIMD3<Int32>(0,scalar,0),SIMD3<Int32>(0,0,scalar)]
     self.denominator = denominator
   }
   
-  public init(_ columns: [int3], denominator: Int = 1)
+  public init(_ columns: [SIMD3<Int32>], denominator: Int = 1)
   {
     self.numerator = columns
     self.denominator = denominator
@@ -97,22 +97,22 @@ public struct MKint3x3: Equatable
   
   public init(_ scalar: Int32, denominator: Int = 1)
   {
-    self.init([int3(scalar,0,0),int3(0,scalar,0),int3(0,0,scalar)])
+    self.init([SIMD3<Int32>(scalar,0,0),SIMD3<Int32>(0,scalar,0),SIMD3<Int32>(0,0,scalar)])
     self.denominator = denominator
   }
   
-  public init(rows: [int3], denominator: Int = 1)
+  public init(rows: [SIMD3<Int32>], denominator: Int = 1)
   {
-    self.numerator = [int3(rows[0].x,rows[1].x,rows[2].x), int3(rows[0].y,rows[1].y,rows[2].y), int3(rows[0].z,rows[1].z,rows[2].z)]
+    self.numerator = [SIMD3<Int32>(rows[0].x,rows[1].x,rows[2].x), SIMD3<Int32>(rows[0].y,rows[1].y,rows[2].y), SIMD3<Int32>(rows[0].z,rows[1].z,rows[2].z)]
     self.denominator = denominator
   }
   
   public var Int3x3: int3x3
   {
     let normalize: Int = self.denominator
-    return int3x3([int3(self[0][0] / Int32(normalize), self[0][1] / Int32(normalize), self[0][2] / Int32(normalize)),
-                   int3(self[1][0] / Int32(normalize), self[1][1] / Int32(normalize), self[1][2] / Int32(normalize)),
-                   int3(self[2][0] / Int32(normalize), self[2][1] / Int32(normalize), self[2][2] / Int32(normalize))])
+    return int3x3([SIMD3<Int32>(self[0][0] / Int32(normalize), self[0][1] / Int32(normalize), self[0][2] / Int32(normalize)),
+                   SIMD3<Int32>(self[1][0] / Int32(normalize), self[1][1] / Int32(normalize), self[1][2] / Int32(normalize)),
+                   SIMD3<Int32>(self[2][0] / Int32(normalize), self[2][1] / Int32(normalize), self[2][2] / Int32(normalize))])
   }
   
   public var elements: [Int]
@@ -148,7 +148,7 @@ public struct MKint3x3: Equatable
     }
   }
   
-  public subscript(column: Int) -> int3
+  public subscript(column: Int) -> SIMD3<Int32>
     {
     get
     {
@@ -188,15 +188,15 @@ public struct MKint3x3: Equatable
     {
     get
     {
-      return int3x3([int3(self[0][0],self[1][0],self[2][0]),
-                     int3(self[0][1],self[1][1],self[2][1]),
-                     int3(self[0][2],self[1][2],self[2][2])], denominator: self.denominator)
+      return int3x3([SIMD3<Int32>(self[0][0],self[1][0],self[2][0]),
+                     SIMD3<Int32>(self[0][1],self[1][1],self[2][1]),
+                     SIMD3<Int32>(self[0][2],self[1][2],self[2][2])], denominator: self.denominator)
     }
   }
   
   public var isZero: Bool
   {
-    return (self[0] == int3(0,0,0) &&  self[1] == int3(0,0,0) && self[2] == int3(0,0,0))
+    return (self[0] == SIMD3<Int32>(0,0,0) &&  self[1] == SIMD3<Int32>(0,0,0) && self[2] == SIMD3<Int32>(0,0,0))
   }
   
   public var trace: Int
@@ -277,13 +277,13 @@ public struct MKint3x3: Equatable
   
   public static func * (left: MKint3x3, right: MKint3x3) -> MKint3x3
   {
-    return MKint3x3([int3(left[0,0] * right[0,0] + left[1,0] * right[0,1] + left[2,0] * right[0,2],
+    return MKint3x3([SIMD3<Int32>(left[0,0] * right[0,0] + left[1,0] * right[0,1] + left[2,0] * right[0,2],
                         left[0,1] * right[0,0] + left[1,1] * right[0,1] + left[2,1] * right[0,2],
                         left[0,2] * right[0,0] + left[1,2] * right[0,1] + left[2,2] * right[0,2]),
-                   int3(left[0,0] * right[1,0] + left[1,0] * right[1,1] + left[2,0] * right[1,2],
+                   SIMD3<Int32>(left[0,0] * right[1,0] + left[1,0] * right[1,1] + left[2,0] * right[1,2],
                         left[0,1] * right[1,0] + left[1,1] * right[1,1] + left[2,1] * right[1,2],
                         left[0,2] * right[1,0] + left[1,2] * right[1,1] + left[2,2] * right[1,2]),
-                   int3(left[0,0] * right[2,0] + left[1,0] * right[2,1] + left[2,0] * right[2,2],
+                   SIMD3<Int32>(left[0,0] * right[2,0] + left[1,0] * right[2,1] + left[2,0] * right[2,2],
                         left[0,1] * right[2,0] + left[1,1] * right[2,1] + left[2,1] * right[2,2],
                         left[0,2] * right[2,0] + left[1,2] * right[2,1] + left[2,2] * right[2,2])], denominator: left.denominator * right.denominator)
   }
@@ -295,13 +295,13 @@ public struct MKint3x3: Equatable
   
   public static func * (left: MKint3x3, right: double3x3) -> double3x3
   {
-    let x: double3 = double3((Double(left[0,0]) * right[0,0] + Double(left[1,0]) * right[0,1] + Double(left[2,0]) * right[0,2])/Double(left.denominator),
+    let x: SIMD3<Double> = SIMD3<Double>((Double(left[0,0]) * right[0,0] + Double(left[1,0]) * right[0,1] + Double(left[2,0]) * right[0,2])/Double(left.denominator),
                              (Double(left[0,1]) * right[0,0] + Double(left[1,1]) * right[0,1] + Double(left[2,1]) * right[0,2])/Double(left.denominator),
                              (Double(left[0,2]) * right[0,0] + Double(left[1,2]) * right[0,1] + Double(left[2,2]) * right[0,2])/Double(left.denominator))
-    let y: double3 = double3((Double(left[0,0]) * right[1,0] + Double(left[1,0]) * right[1,1] + Double(left[2,0]) * right[1,2])/Double(left.denominator),
+    let y: SIMD3<Double> = SIMD3<Double>((Double(left[0,0]) * right[1,0] + Double(left[1,0]) * right[1,1] + Double(left[2,0]) * right[1,2])/Double(left.denominator),
                              (Double(left[0,1]) * right[1,0] + Double(left[1,1]) * right[1,1] + Double(left[2,1]) * right[1,2])/Double(left.denominator),
                              (Double(left[0,2]) * right[1,0] + Double(left[1,2]) * right[1,1] + Double(left[2,2]) * right[1,2])/Double(left.denominator))
-    let z: double3 = double3((Double(left[0,0]) * right[2,0] + Double(left[1,0]) * right[2,1] + Double(left[2,0]) * right[2,2])/Double(left.denominator),
+    let z: SIMD3<Double> = SIMD3<Double>((Double(left[0,0]) * right[2,0] + Double(left[1,0]) * right[2,1] + Double(left[2,0]) * right[2,2])/Double(left.denominator),
                              (Double(left[0,1]) * right[2,0] + Double(left[1,1]) * right[2,1] + Double(left[2,1]) * right[2,2])/Double(left.denominator),
                              (Double(left[0,2]) * right[2,0] + Double(left[1,2]) * right[2,1] + Double(left[2,2]) * right[2,2])/Double(left.denominator))
     return double3x3([x,y,z])
@@ -309,13 +309,13 @@ public struct MKint3x3: Equatable
   
   public static func * (left: double3x3, right: MKint3x3) -> double3x3
   {
-    let x: double3 = double3((left[0,0] * Double(right[0,0]) + left[1,0] * Double(right[0,1]) + left[2,0] * Double(right[0,2]))/Double(right.denominator),
+    let x: SIMD3<Double> = SIMD3<Double>((left[0,0] * Double(right[0,0]) + left[1,0] * Double(right[0,1]) + left[2,0] * Double(right[0,2]))/Double(right.denominator),
                              (left[0,1] * Double(right[0,0]) + left[1,1] * Double(right[0,1]) + left[2,1] * Double(right[0,2]))/Double(right.denominator),
                              (left[0,2] * Double(right[0,0]) + left[1,2] * Double(right[0,1]) + left[2,2] * Double(right[0,2]))/Double(right.denominator))
-    let y: double3 = double3((left[0,0] * Double(right[1,0]) + left[1,0] * Double(right[1,1]) + left[2,0] * Double(right[1,2]))/Double(right.denominator),
+    let y: SIMD3<Double> = SIMD3<Double>((left[0,0] * Double(right[1,0]) + left[1,0] * Double(right[1,1]) + left[2,0] * Double(right[1,2]))/Double(right.denominator),
                              (left[0,1] * Double(right[1,0]) + left[1,1] * Double(right[1,1]) + left[2,1] * Double(right[1,2]))/Double(right.denominator),
                              (left[0,2] * Double(right[1,0]) + left[1,2] * Double(right[1,1]) + left[2,2] * Double(right[1,2]))/Double(right.denominator))
-    let z: double3 = double3((left[0,0] * Double(right[2,0]) + left[1,0] * Double(right[2,1]) + left[2,0] * Double(right[2,2]))/Double(right.denominator),
+    let z: SIMD3<Double> = SIMD3<Double>((left[0,0] * Double(right[2,0]) + left[1,0] * Double(right[2,1]) + left[2,0] * Double(right[2,2]))/Double(right.denominator),
                              (left[0,1] * Double(right[2,0]) + left[1,1] * Double(right[2,1]) + left[2,1] * Double(right[2,2]))/Double(right.denominator),
                              (left[0,2] * Double(right[2,0]) + left[1,2] * Double(right[2,1]) + left[2,2] * Double(right[2,2]))/Double(right.denominator))
     return double3x3([x,y,z])
@@ -323,18 +323,18 @@ public struct MKint3x3: Equatable
   }
   
   
-  public static func * (left: MKint3x3, right: int3) -> int3
+  public static func * (left: MKint3x3, right: SIMD3<Int32>) -> SIMD3<Int32>
   {
-    return int3(x: left[0][0] * right.x + left[1][0] * right.y + left[2][0] * right.z,
+    return SIMD3<Int32>(x: left[0][0] * right.x + left[1][0] * right.y + left[2][0] * right.z,
                 y: left[0][1] * right.x + left[1][1] * right.y + left[2][1] * right.z,
                 z: left[0][2] * right.x + left[1][2] * right.y + left[2][2] * right.z)
   }
   
   
   
-  public static func * (left: MKint3x3, right: double3) -> double3
+  public static func * (left: MKint3x3, right: SIMD3<Double>) -> SIMD3<Double>
   {
-    return double3(x: (Double(left[0][0]) * right.x + Double(left[1][0]) * right.y + Double(left[2][0]) * right.z)/Double(left.denominator),
+    return SIMD3<Double>(x: (Double(left[0][0]) * right.x + Double(left[1][0]) * right.y + Double(left[2][0]) * right.z)/Double(left.denominator),
                    y: (Double(left[0][1]) * right.x + Double(left[1][1]) * right.y + Double(left[2][1]) * right.z)/Double(left.denominator),
                    z: (Double(left[0][2]) * right.x + Double(left[1][2]) * right.y + Double(left[2][2]) * right.z)/Double(left.denominator))
   }
@@ -342,23 +342,23 @@ public struct MKint3x3: Equatable
   
   static public func + (left: MKint3x3, right: MKint3x3) -> MKint3x3
   {
-    return MKint3x3([int3(x: left[0][0] + right[0][0], y: left[0][1] + right[0][1], z: left[0][2] + right[0][2]),
-                   int3(x: left[1][0] + right[1][0], y: left[1][1] + right[1][1], z: left[1][2] + right[1][2]),
-                   int3(x: left[2][0] + right[2][0], y: left[2][1] + right[2][1], z: left[2][2] + right[2][2])])
+    return MKint3x3([SIMD3<Int32>(x: left[0][0] + right[0][0], y: left[0][1] + right[0][1], z: left[0][2] + right[0][2]),
+                   SIMD3<Int32>(x: left[1][0] + right[1][0], y: left[1][1] + right[1][1], z: left[1][2] + right[1][2]),
+                   SIMD3<Int32>(x: left[2][0] + right[2][0], y: left[2][1] + right[2][1], z: left[2][2] + right[2][2])])
   }
   
   static public func - (left: MKint3x3, right: MKint3x3) -> MKint3x3
   {
-    return MKint3x3([int3(x: left[0][0] - right[0][0], y: left[0][1] - right[0][1], z: left[0][2] - right[0][2]),
-                   int3(x: left[1][0] - right[1][0], y: left[1][1] - right[1][1], z: left[1][2] - right[1][2]),
-                   int3(x: left[2][0] - right[2][0], y: left[2][1] - right[2][1], z: left[2][2] - right[2][2])])
+    return MKint3x3([SIMD3<Int32>(x: left[0][0] - right[0][0], y: left[0][1] - right[0][1], z: left[0][2] - right[0][2]),
+                   SIMD3<Int32>(x: left[1][0] - right[1][0], y: left[1][1] - right[1][1], z: left[1][2] - right[1][2]),
+                   SIMD3<Int32>(x: left[2][0] - right[2][0], y: left[2][1] - right[2][1], z: left[2][2] - right[2][2])])
   }
   
   public static prefix func - (left: MKint3x3) -> MKint3x3
   {
-    return MKint3x3([int3(-left.numerator[0][0], -left.numerator[0][1], -left.numerator[0][2]),
-                   int3(-left.numerator[1][0], -left.numerator[1][1], -left.numerator[1][2]),
-                   int3(-left.numerator[2][0], -left.numerator[2][1], -left.numerator[2][2])])
+    return MKint3x3([SIMD3<Int32>(-left.numerator[0][0], -left.numerator[0][1], -left.numerator[0][2]),
+                   SIMD3<Int32>(-left.numerator[1][0], -left.numerator[1][1], -left.numerator[1][2]),
+                   SIMD3<Int32>(-left.numerator[2][0], -left.numerator[2][1], -left.numerator[2][2])])
     
   }
 }

@@ -2913,7 +2913,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
        var structure: [CellViewer] = self.representedObject as? [CellViewer],
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.x = sender.doubleValue * Double.pi/180.0
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       
@@ -2942,7 +2942,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
        var structure: [CellViewer] = self.representedObject as? [CellViewer],
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.y = sender.doubleValue * Double.pi/180.0
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -2970,7 +2970,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
        var structure: [CellViewer] = self.representedObject as? [CellViewer],
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.z = sender.doubleValue * Double.pi/180.0
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -3182,7 +3182,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
        var structure: [CellViewer] = self.representedObject as? [CellViewer],
        let renderOrientation = structure.renderOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.x = sender.doubleValue * Double.pi/180.0
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -3231,7 +3231,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
        var structure: [CellViewer] = self.representedObject as? [CellViewer],
        let renderOrientation = structure.renderOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.z = sender.doubleValue * Double.pi/180.0
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -3278,7 +3278,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
        var structure: [CellViewer] = self.representedObject as? [CellViewer],
        let renderOrientation = structure.renderOrientation
     {
-      var angles: double3 = renderOrientation.EulerAngles
+      var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.y = sender.doubleValue * Double.pi/180.0
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox

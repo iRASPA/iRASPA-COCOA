@@ -163,7 +163,7 @@ public struct SKPointGroup
     switch(self.laue)
     {
     case .laue_1:
-      return int3x3([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
+      return int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
     case .laue_2m:
       // look for all proper rotation matrices of the wanted rotation type
       let properRotationMatrices: [SKRotationMatrix] = SeitzMatrices.map{$0.rotation.proper}.filter{$0.type.rawValue == 2}
@@ -176,7 +176,7 @@ public struct SKPointGroup
         axes[1] = properRotationmatrix.rotationAxis
         
         // possible candidates for the second axis are vectors that are orthogonal to the axes of rotation
-        var orthogonalAxes: [int3] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: 2)
+        var orthogonalAxes: [SIMD3<Int32>] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: 2)
         
         // the second axis is the shortest orthogonal axis
         axes[0] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <  length_squared($1) ? $0 : $1})
@@ -199,11 +199,11 @@ public struct SKPointGroup
       if let rotationalTypeForBasis: Int = self.rotationTypeForBasis[self.laue]
       {
         // look for all proper rotation matrices of the wanted rotation type and take their rotation axes (use a set to avoid duplicates)
-        let allAxes: Set<int3> = Set(SeitzMatrices.map{$0.rotation.proper}.filter{$0.type.rawValue == rotationalTypeForBasis}.map{$0.rotationAxis})
+        let allAxes: Set<SIMD3<Int32>> = Set(SeitzMatrices.map{$0.rotation.proper}.filter{$0.type.rawValue == rotationalTypeForBasis}.map{$0.rotationAxis})
         
         
         // outside access to 'allPossibleRotationAxes' FIX or CHECK
-        let uniqueAxis: [int3] = Array(Set(allAxes)).sorted{SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $0)! < SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $1)!}
+        let uniqueAxis: [SIMD3<Int32>] = Array(Set(allAxes)).sorted{SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $0)! < SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $1)!}
         //let uniqueAxis: [int3] = allAxes.sorted{length_squared($0) < length_squared($1)}
         
         if uniqueAxis.count >= 3
@@ -230,13 +230,13 @@ public struct SKPointGroup
           axes[2] = properRotationmatrix.rotationAxis
           
           // possible candidates for the second axis are vectors that are orthogonal to the axes of rotation
-          let orthogonalAxes: [int3] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: rotationalTypeForBasis)
+          let orthogonalAxes: [SIMD3<Int32>] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: rotationalTypeForBasis)
           
           for orthogonalAxis in orthogonalAxes
           {
             axes[0] = orthogonalAxis
 
-            let axisVector: int3 =  properRotationmatrix * orthogonalAxis
+            let axisVector: SIMD3<Int32> =  properRotationmatrix * orthogonalAxis
             
             if SKRotationMatrix.allPossibleRotationAxes.contains(axisVector)
             {
@@ -408,25 +408,25 @@ public struct SKPointGroup
         // Tranformation monoclinic A-centring to C-centring (preserving b-axis)
         // Axes a and c are swapped, to keep the same handiness b (to keep Beta obtuse) is made negative
         centering = .c_face
-        return int3x3([int3(0,0,1),int3(0,-1,0),int3(1,0,0)]) // monoclinic a to c
+        return int3x3([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // monoclinic a to c
       case .a_face where lau != .laue_2m:
         centering = .c_face
-        return int3x3([int3(0,1,0),int3(0,0,1),int3(1,0,0)])  // a to c
+        return int3x3([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])  // a to c
       case .b_face:
         centering = .c_face
-        return int3x3([int3(0,0,1),int3(1,0,0),int3(0,1,0)])    // b to c
+        return int3x3([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])    // b to c
       case .body where lau == .laue_2m:
         centering = .c_face
-        return int3x3([int3(1,0,1),int3(0, 1,0),int3(-1,0,0)]) // monoclinic i to c
+        return int3x3([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)]) // monoclinic i to c
       default:
         return int3x3.identity
       }
     case 3:
-      let m: MKint3x3 = (MKint3x3([int3(0,-1,1),int3(1,0,-1),int3(1,1,1)]) * MKint3x3(basis.inverse))
+      let m: MKint3x3 = (MKint3x3([SIMD3<Int32>(0,-1,1),SIMD3<Int32>(1,0,-1),SIMD3<Int32>(1,1,1)]) * MKint3x3(basis.inverse))
       if m.greatestCommonDivisor == 3
       {
         // reverse detected -> change to obverse
-        return int3x3([int3(1, 1, 0), int3(-1, 0, 0), int3(0, 0, 1)])
+        return int3x3([SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, 1)])
       }
       return int3x3.identity
     case 4:
@@ -465,31 +465,31 @@ public struct SKPointGroup
       case .a_face where lau == .laue_2m:
         // Tranformation monoclinic A-centring to C-centring (preserving b-axis)
         // Axes a and c are swapped, to keep the same handiness b (to keep Beta obtuse) is made negative
-        return (.c_face, double3x3([double3(0,0,1),double3(0,-1,0),double3(1,0,0)])) // monoclinic a to c
+        return (.c_face, double3x3([SIMD3<Double>(0,0,1),SIMD3<Double>(0,-1,0),SIMD3<Double>(1,0,0)])) // monoclinic a to c
       case .a_face where lau != .laue_2m:
-        return (.c_face, double3x3([double3(0,1,0),double3(0,0,1),double3(1,0,0)]))  // a to c
+        return (.c_face, double3x3([SIMD3<Double>(0,1,0),SIMD3<Double>(0,0,1),SIMD3<Double>(1,0,0)]))  // a to c
       case .b_face:
-        return (.c_face, double3x3([double3(0,0,1),double3(1,0,0),double3(0,1,0)]))    // b to c
+        return (.c_face, double3x3([SIMD3<Double>(0,0,1),SIMD3<Double>(1,0,0),SIMD3<Double>(0,1,0)]))    // b to c
       case .body where lau == .laue_2m:
-        return (.c_face, double3x3([double3(1,0,1),double3(0, 1,0),double3(-1,0,0)])) // monoclinic i to c
+        return (.c_face, double3x3([SIMD3<Double>(1,0,1),SIMD3<Double>(0, 1,0),SIMD3<Double>(-1,0,0)])) // monoclinic i to c
       default:
         return (centering, double3x3(1.0))
       }
     case 3:
       // hP (a=b) but not hR (a=b=c)
       // determinant = 1/3
-      let trans_corr_mat: double3x3 = basis * double3x3([double3(2.0/3.0,1.0/3.0,1.0/3.0),double3(-1.0/3.0,1.0/3.0,1.0/3.0),double3(-1.0/3.0,-2.0/3.0,1.0/3.0)])  // rhombo_obverse
+      let trans_corr_mat: double3x3 = basis * double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,-2.0/3.0,1.0/3.0)])  // rhombo_obverse
       if trans_corr_mat.isInteger(precision: 0.1)
       {
-        return (.r, double3x3([double3(2.0/3.0,1.0/3.0,1.0/3.0),double3(-1.0/3.0,1.0/3.0,1.0/3.0),double3(-1.0/3.0,-2.0/3.0,1.0/3.0)]))
+        return (.r, double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,-2.0/3.0,1.0/3.0)]))
       }
-      let trans_corr_mat2: double3x3 = basis * double3x3([double3(1.0/3.0,2.0/3.0,1.0/3.0),double3(-2.0/3.0,-1.0/3.0,1.0/3.0),double3( 1.0/3.0,-1.0/3.0,1.0/3.0)])  // rhombo_reverse
+      let trans_corr_mat2: double3x3 = basis * double3x3([SIMD3<Double>(1.0/3.0,2.0/3.0,1.0/3.0),SIMD3<Double>(-2.0/3.0,-1.0/3.0,1.0/3.0),SIMD3<Double>( 1.0/3.0,-1.0/3.0,1.0/3.0)])  // rhombo_reverse
       if trans_corr_mat2.isInteger(precision: 0.1)
       {
-        return (.r, double3x3([double3(1.0/3.0,2.0/3.0,1.0/3.0),double3(-2.0/3.0,-1.0/3.0,1.0/3.0),double3( 1.0/3.0,-1.0/3.0,1.0/3.0)]))
+        return (.r, double3x3([SIMD3<Double>(1.0/3.0,2.0/3.0,1.0/3.0),SIMD3<Double>(-2.0/3.0,-1.0/3.0,1.0/3.0),SIMD3<Double>( 1.0/3.0,-1.0/3.0,1.0/3.0)]))
       }
       
-      return (.r, basis * double3x3([double3(2.0/3.0,1.0/3.0,1.0/3.0),double3(-1.0/3.0,1.0/3.0,1.0/3.0),double3(-1.0/3.0,-2.0/3.0,1.0/3.0)]))
+      return (.r, basis * double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,-2.0/3.0,1.0/3.0)]))
     case 4:
       return (.face, double3x3(1.0))
     default:
@@ -498,7 +498,7 @@ public struct SKPointGroup
   }
   
 
-  public static func findPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: double3, type: Int)], symmetryPrecision: Double = 1e-5) -> SKPointGroup?
+  public static func findPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> SKPointGroup?
   {
     // FIX!!!
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findPrimitiveCell(reducedAtoms: atoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
@@ -506,7 +506,7 @@ public struct SKPointGroup
     let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
     //let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, anglePrecision: 3.0)
                                                                                      
-    let positionInPrimitiveCell: [(fractionalPosition: double3, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell)
+    let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell)
     // FIX!!!
     let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
     

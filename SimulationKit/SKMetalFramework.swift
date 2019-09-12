@@ -39,10 +39,10 @@ extension float4x4
 {
   init(Double3x3: double3x3)
   {
-    self.init([float4(x: Float(Double3x3[0][0]), y: Float(Double3x3[0][1]), z: Float(Double3x3[0][2]), w: 0.0),
-               float4(x: Float(Double3x3[1][0]), y: Float(Double3x3[1][1]), z: Float(Double3x3[1][2]), w: 0.0),
-               float4(x: Float(Double3x3[2][0]), y: Float(Double3x3[2][1]), z: Float(Double3x3[2][2]), w:0.0),
-               float4(x: 0.0, y: 0.0, z: 0.0, w: 1.0)])
+    self.init([SIMD4<Float>(x: Float(Double3x3[0][0]), y: Float(Double3x3[0][1]), z: Float(Double3x3[0][2]), w: 0.0),
+               SIMD4<Float>(x: Float(Double3x3[1][0]), y: Float(Double3x3[1][1]), z: Float(Double3x3[1][2]), w: 0.0),
+               SIMD4<Float>(x: Float(Double3x3[2][0]), y: Float(Double3x3[2][1]), z: Float(Double3x3[2][2]), w:0.0),
+               SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)])
   }
 }
 
@@ -50,20 +50,20 @@ extension float3x3
 {
   init(Double3x3: double3x3)
   {
-    self.init([float3(x: Float(Double3x3[0][0]), y: Float(Double3x3[0][1]), z: Float(Double3x3[0][2])),
-               float3(x: Float(Double3x3[1][0]), y: Float(Double3x3[1][1]), z: Float(Double3x3[1][2])),
-               float3(x: Float(Double3x3[2][0]), y: Float(Double3x3[2][1]), z: Float(Double3x3[2][2]))])
+    self.init([SIMD3<Float>(x: Float(Double3x3[0][0]), y: Float(Double3x3[0][1]), z: Float(Double3x3[0][2])),
+               SIMD3<Float>(x: Float(Double3x3[1][0]), y: Float(Double3x3[1][1]), z: Float(Double3x3[1][2])),
+               SIMD3<Float>(x: Float(Double3x3[2][0]), y: Float(Double3x3[2][1]), z: Float(Double3x3[2][2]))])
   }
 }
 
 public class SKMetalFramework
 {
-  var positions: [double3] = []
-  var potentialParameters: [double2] = []
+  var positions: [SIMD3<Double>] = []
+  var potentialParameters: [SIMD2<Double>] = []
   var unitCell: double3x3 = double3x3()
   var replicaCell: double3x3 = double3x3()
   var inverseCell: double3x3 = double3x3()
-  var numberOfReplicas: int3 = int3(1,1,1)
+  var numberOfReplicas: SIMD3<Int32> = SIMD3<Int32>(1,1,1)
   var totalNumberOfReplicas: Int = 1
   var totalNumberOfAtoms: Int = 0
   
@@ -83,7 +83,7 @@ public class SKMetalFramework
     defaultLibrary = try! self.device.makeLibrary(filepath: file)
   }
   
-  public convenience init(device: MTLDevice, commandQueue: MTLCommandQueue, positions: [double3], potentialParameters: [double2], unitCell: double3x3, numberOfReplicas: int3)
+  public convenience init(device: MTLDevice, commandQueue: MTLCommandQueue, positions: [SIMD3<Double>], potentialParameters: [SIMD2<Double>], unitCell: double3x3, numberOfReplicas: SIMD3<Int32>)
   {
     self.init(device: device, commandQueue: commandQueue)
     self.numberOfReplicas = numberOfReplicas
@@ -113,7 +113,7 @@ public class SKMetalFramework
     
   }
   
-  public func ComputeEnergyGrid(_ sizeX: Int, sizeY: Int, sizeZ: Int, probeParameter: double2) -> [Float]
+  public func ComputeEnergyGrid(_ sizeX: Int, sizeY: Int, sizeZ: Int, probeParameter: SIMD2<Double>) -> [Float]
   {
     if let pipelineState = self.pipelineState
     {
@@ -123,25 +123,25 @@ public class SKMetalFramework
       let temp: Int = sizeX*sizeY*sizeZ
       let NumberOfGridPoints: Int = temp + (threadGroupCount - (temp & (threadGroupCount-1)))
       
-      var pos: [float4] = [float4](repeating: float4(0,0,0,0), count: totalNumberOfAtoms)
-      var parameters: [float2] = [float2](repeating: float2(0,0), count: totalNumberOfAtoms)
+      var pos: [SIMD4<Float>] = [SIMD4<Float>](repeating: SIMD4<Float>(0,0,0,0), count: totalNumberOfAtoms)
+      var parameters: [SIMD2<Float>] = [SIMD2<Float>](repeating: SIMD2<Float>(0,0), count: totalNumberOfAtoms)
       
-      var gridPos: [float4] = [float4](repeating: float4(0,0,0,0), count: NumberOfGridPoints)
+      var gridPos: [SIMD4<Float>] = [SIMD4<Float>](repeating: SIMD4<Float>(0,0,0,0), count: NumberOfGridPoints)
       let output: [Float] = [Float](repeating: 0.0, count: NumberOfGridPoints)
       
-      let correction: double3 = double3(1.0/Double(numberOfReplicas.x), 1.0/Double(numberOfReplicas.y), 1.0/Double(numberOfReplicas.z))
+      let correction: SIMD3<Double> = SIMD3<Double>(1.0/Double(numberOfReplicas.x), 1.0/Double(numberOfReplicas.y), 1.0/Double(numberOfReplicas.z))
       if (totalNumberOfAtoms > 0)
       {
         for i in 0..<totalNumberOfAtoms
         {
-          let position: double3 = positions[i] * correction
-          let currentPotentialParameters: double2 = self.potentialParameters[i]
+          let position: SIMD3<Double> = positions[i] * correction
+          let currentPotentialParameters: SIMD2<Double> = self.potentialParameters[i]
           
           // fill in the Cartesian position
-          pos[i] = float4(Float(position.x), Float(position.y), Float(position.z), 0.0)
+          pos[i] = SIMD4<Float>(Float(position.x), Float(position.y), Float(position.z), 0.0)
           
           // use 4 x epsilon for a probe epsilon of unity
-          parameters[i] = float2(Float(4.0*sqrt(currentPotentialParameters.x * probeParameter.x)),
+          parameters[i] = SIMD2<Float>(Float(4.0*sqrt(currentPotentialParameters.x * probeParameter.x)),
                                  Float(0.5 * (currentPotentialParameters.y + probeParameter.y)))
         }
         
@@ -153,8 +153,8 @@ public class SKMetalFramework
             // X various the fastest (contiguous in x)
             for i in 0..<sizeX
             {
-              let position: double3 = correction * double3(Double(i)/Double(sizeX-1),Double(j)/Double(sizeY-1),Double(k)/Double(sizeZ-1))
-              gridPos[index] = float4(Float(position.x), Float(position.y), Float(position.z), Float(0.0))
+              let position: SIMD3<Double> = correction * SIMD3<Double>(Double(i)/Double(sizeX-1),Double(j)/Double(sizeY-1),Double(k)/Double(sizeZ-1))
+              gridPos[index] = SIMD4<Float>(Float(position.x), Float(position.y), Float(position.z), Float(0.0))
               index += 1
             }
           }
@@ -162,7 +162,7 @@ public class SKMetalFramework
         
       }
       
-      var replicasBufferValue: [float4] = [float4](repeating: float4(0,0,0,0), count: totalNumberOfReplicas)
+      var replicasBufferValue: [SIMD4<Float>] = [SIMD4<Float>](repeating: SIMD4<Float>(0,0,0,0), count: totalNumberOfReplicas)
       var index = 0
       for i in 0..<numberOfReplicas.x
       {
@@ -170,7 +170,7 @@ public class SKMetalFramework
         {
           for k in 0..<numberOfReplicas.z
           {
-            replicasBufferValue[index] = float4(Float(Double(i)/Double(numberOfReplicas.x)), Float(Double(j)/Double(numberOfReplicas.y)), Float(Double(k)/Double(numberOfReplicas.z)), Float(0.0))
+            replicasBufferValue[index] = SIMD4<Float>(Float(Double(i)/Double(numberOfReplicas.x)), Float(Double(j)/Double(numberOfReplicas.y)), Float(Double(k)/Double(numberOfReplicas.z)), Float(0.0))
             index += 1
           }
         }
@@ -179,12 +179,12 @@ public class SKMetalFramework
       var NumberOfReplicasBufferValue: Int32 = Int32(totalNumberOfReplicas)
       
       var cell3x3Float: float3x3 = float3x3(Double3x3: replicaCell)
-      let bufferAtomPositions: MTLBuffer = device.makeBuffer(bytes: pos, length: pos.count * MemoryLayout<float4>.stride, options: .storageModeManaged)!
-      let bufferGridPositions: MTLBuffer = device.makeBuffer(bytes: gridPos, length: gridPos.count * MemoryLayout<float4>.stride, options: .storageModeManaged)!
-      let bufferParameters: MTLBuffer = device.makeBuffer(bytes: parameters, length: parameters.count * MemoryLayout<float2>.stride, options: .storageModeManaged)!
+      let bufferAtomPositions: MTLBuffer = device.makeBuffer(bytes: pos, length: pos.count * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeManaged)!
+      let bufferGridPositions: MTLBuffer = device.makeBuffer(bytes: gridPos, length: gridPos.count * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeManaged)!
+      let bufferParameters: MTLBuffer = device.makeBuffer(bytes: parameters, length: parameters.count * MemoryLayout<SIMD2<Float>>.stride, options: .storageModeManaged)!
       let bufferCell: MTLBuffer = device.makeBuffer(bytes: &cell3x3Float, length: MemoryLayout<float3x3>.stride, options: .storageModeManaged)!
       
-      let bufferReplicas: MTLBuffer = device.makeBuffer(bytes: &replicasBufferValue, length: totalNumberOfReplicas * MemoryLayout<float4>.stride, options: .storageModeManaged)!
+      let bufferReplicas: MTLBuffer = device.makeBuffer(bytes: &replicasBufferValue, length: totalNumberOfReplicas * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeManaged)!
       let bufferNumberOfReplicas: MTLBuffer = device.makeBuffer(bytes: &NumberOfReplicasBufferValue, length: MemoryLayout<Int32>.stride, options: .storageModeManaged)!
       let bufferOutput: MTLBuffer = device.makeBuffer(bytes: output, length: output.count * MemoryLayout<Float>.stride, options: .storageModeShared)!
       
@@ -204,9 +204,9 @@ public class SKMetalFramework
           commandEncoder.setComputePipelineState(pipelineState)
         
           commandEncoder.setBytes(&numberOfAtomsPerThreadgroup, length: MemoryLayout<Int32>.stride, index: 0)
-          commandEncoder.setBuffer(bufferAtomPositions, offset: unitsOfWorkDone * MemoryLayout<float4>.stride, index: 1)
+          commandEncoder.setBuffer(bufferAtomPositions, offset: unitsOfWorkDone * MemoryLayout<SIMD4<Float>>.stride, index: 1)
           commandEncoder.setBuffer(bufferGridPositions, offset: 0, index: 2)
-          commandEncoder.setBuffer(bufferParameters, offset: unitsOfWorkDone * MemoryLayout<float2>.stride, index: 3)
+          commandEncoder.setBuffer(bufferParameters, offset: unitsOfWorkDone * MemoryLayout<SIMD2<Float>>.stride, index: 3)
           commandEncoder.setBuffer(bufferCell, offset: 0, index: 4)
           commandEncoder.setBuffer(bufferNumberOfReplicas, offset: 0, index: 5)
           commandEncoder.setBuffer(bufferReplicas, offset: 0, index: 6)
@@ -251,11 +251,11 @@ public class SKMetalFramework
       var data: [Float] = []
       
       let cell: SKCell = structure.cell
-      let positions: [double3] = structure.atomUnitCellPositions
-      let potentialParameters: [double2] = structure.potentialParameters
-      let probeParameters: double2 = double2(10.9, 2.64)
+      let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
+      let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
+      let probeParameters: SIMD2<Double> = SIMD2<Double>(10.9, 2.64)
       
-      let numberOfReplicas: int3 = cell.numberOfReplicas(forCutoff: 12.0)
+      let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
       let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
       
       data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
@@ -281,11 +281,11 @@ public class SKMetalFramework
       var data: [Float] = []
       
       let cell: SKCell = structure.cell
-      let positions: [double3] = structure.atomUnitCellPositions
-      let potentialParameters: [double2] = structure.potentialParameters
-      let probeParameters: double2 = double2(36.0,3.31)
+      let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
+      let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
+      let probeParameters: SIMD2<Double> = SIMD2<Double>(36.0,3.31)
       
-      let numberOfReplicas: int3 = cell.numberOfReplicas(forCutoff: 12.0)
+      let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
       let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
       
       data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
@@ -301,17 +301,17 @@ public class SKMetalFramework
       if numberOfTriangles > 0,
         let ptr: UnsafeMutableRawPointer = surfaceVertexBuffer?.contents()
       {
-        let float4Ptr = ptr.bindMemory(to: float4.self, capacity: Int(numberOfTriangles) * 3 * 3 )
+        let float4Ptr = ptr.bindMemory(to: SIMD4<Float>.self, capacity: Int(numberOfTriangles) * 3 * 3 )
         
         var totalArea: Double = 0.0
         for i in stride(from: 0, through: (Int(numberOfTriangles) * 3 * 3 - 1), by: 9)
         {
           let unitCell: double3x3 = cell.unitCell
-          let v1 = unitCell * double3(Double(float4Ptr[i].x),Double(float4Ptr[i].y),Double(float4Ptr[i].z))
-          let v2 = unitCell * double3(Double(float4Ptr[i+3].x),Double(float4Ptr[i+3].y),Double(float4Ptr[i+3].z))
-          let v3 = unitCell * double3(Double(float4Ptr[i+6].x),Double(float4Ptr[i+6].y),Double(float4Ptr[i+6].z))
+          let v1 = unitCell * SIMD3<Double>(Double(float4Ptr[i].x),Double(float4Ptr[i].y),Double(float4Ptr[i].z))
+          let v2 = unitCell * SIMD3<Double>(Double(float4Ptr[i+3].x),Double(float4Ptr[i+3].y),Double(float4Ptr[i+3].z))
+          let v3 = unitCell * SIMD3<Double>(Double(float4Ptr[i+6].x),Double(float4Ptr[i+6].y),Double(float4Ptr[i+6].z))
           
-          let v4: double3 = cross((v2-v1), (v3-v1))
+          let v4: SIMD3<Double> = cross((v2-v1), (v3-v1))
           let area: Double = 0.5 * simd.length(v4)
           if area.isFinite && fabs(area) < 1.0
           {

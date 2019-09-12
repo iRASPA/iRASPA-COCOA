@@ -67,67 +67,41 @@ public class MetalCappedNSidedPrismGeometry
       let cosTheta2: Double = cos(delta * Double(i+1))
       let sinTheta2: Double = sin(delta * Double(i+1))
       
-      let position1: float4 = float4(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
-      let position2: float4 = float4(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
-      let position3: float4 = float4(x: Float(r * cosTheta2), y: 1.0, z: Float(r * sinTheta2), w: 0.0)
-      let v1: float4 = position2 - position1
-      let w1: float4 = position2 - position3
-      let normal1: float3 = normalize(cross(float3(v1.x,v1.y,v1.z), float3(w1.x,w1.y,w1.z)))
+      let position1: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
+      let position2: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
+      let position3: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta2), y: 1.0, z: Float(r * sinTheta2), w: 0.0)
+      let v1: SIMD4<Float> = position2 - position1
+      let w1: SIMD4<Float> = position2 - position3
+      let normal1: SIMD3<Float> = normalize(cross(SIMD3<Float>(v1.x,v1.y,v1.z), SIMD3<Float>(w1.x,w1.y,w1.z)))
       
-      vertices[index] = RKVertex(position: position1, normal: float4(normal1.x,normal1.y,normal1.z,0.0), st: float2())
+      vertices[index] = RKVertex(position: position1, normal: SIMD4<Float>(normal1.x,normal1.y,normal1.z,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       
-      vertices[index] = RKVertex(position: position2, normal: float4(normal1.x,normal1.y,normal1.z,0.0), st: float2())
+      vertices[index] = RKVertex(position: position2, normal: SIMD4<Float>(normal1.x,normal1.y,normal1.z,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       
-      vertices[index] = RKVertex(position: position3, normal: float4(normal1.x,normal1.y,normal1.z,0.0), st: float2())
+      vertices[index] = RKVertex(position: position3, normal: SIMD4<Float>(normal1.x,normal1.y,normal1.z,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       
-      let position4: float4 = float4(x: Float(r * cosTheta2), y: 1.0, z: Float(r * sinTheta2), w: 0.0)
-      let position5: float4 = float4(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
-      let position6: float4 = float4(x: Float(r * cosTheta2), y: -1.0, z: Float(r * sinTheta2), w: 0.0)
-      let v2: float4 = position5 - position4
-      let w2: float4 = position5 - position6
-      let normal2: float3 = normalize(cross(float3(v2.x,v2.y,v2.z), float3(w2.x,w2.y,w2.z)))
+      let position4: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta2), y: 1.0, z: Float(r * sinTheta2), w: 0.0)
+      let position5: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
+      let position6: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta2), y: -1.0, z: Float(r * sinTheta2), w: 0.0)
+      let v2: SIMD4<Float> = position5 - position4
+      let w2: SIMD4<Float> = position5 - position6
+      let normal2: SIMD3<Float> = normalize(cross(SIMD3<Float>(v2.x,v2.y,v2.z), SIMD3<Float>(w2.x,w2.y,w2.z)))
       
-      vertices[index] = RKVertex(position: position4, normal: float4(normal2.x,normal2.y,normal2.z,0.0), st: float2())
+      vertices[index] = RKVertex(position: position4, normal: SIMD4<Float>(normal2.x,normal2.y,normal2.z,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       
-      vertices[index] = RKVertex(position: position5, normal: float4(normal2.x,normal2.y,normal2.z,0.0), st: float2())
+      vertices[index] = RKVertex(position: position5, normal: SIMD4<Float>(normal2.x,normal2.y,normal2.z,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       
-      vertices[index] = RKVertex(position: position6, normal: float4(normal2.x,normal2.y,normal2.z,0.0), st: float2())
-      indices[index] = UInt16(index)
-      index = index + 1
-    }
-    
-    for i in 0..<slices
-    {
-      let cosTheta: Double = cos(delta * Double(i))
-      let sinTheta: Double = sin(delta * Double(i))
-      
-      let cosTheta2: Double = cos(delta * Double(i+1))
-      let sinTheta2: Double = sin(delta * Double(i+1))
-      
-      let position1: float4 = float4(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
-      
-      let position2: float4 = float4(x: Float(r * cosTheta2), y: 1.0, z: Float(r * sinTheta2), w: 0.0)
-      let position3: float4 = float4(x: Float(0.0), y: 1.0, z: Float(0.0), w: 0.0)
-    
-      vertices[index] = RKVertex(position: position1, normal: float4(0.0,1.0,0.0,0.0), st: float2())
-      indices[index] = UInt16(index)
-      index = index + 1
-      
-      vertices[index] = RKVertex(position: position2, normal: float4(0.0,1.0,0.0,0.0), st: float2())
-      indices[index] = UInt16(index)
-      index = index + 1
-      
-      vertices[index] = RKVertex(position: position3, normal: float4(0.0,1.0,0.0,0.0), st: float2())
+      vertices[index] = RKVertex(position: position6, normal: SIMD4<Float>(normal2.x,normal2.y,normal2.z,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
     }
@@ -140,19 +114,45 @@ public class MetalCappedNSidedPrismGeometry
       let cosTheta2: Double = cos(delta * Double(i+1))
       let sinTheta2: Double = sin(delta * Double(i+1))
       
-      let position1: float4 = float4(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
-      let position2: float4 = float4(x: Float(0.0), y: -1.0, z: Float(0.0), w: 0.0)
-      let position3: float4 = float4(x: Float(r * cosTheta2), y: -1.0, z: Float(r * sinTheta2), w: 0.0)
+      let position1: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
       
-      vertices[index] = RKVertex(position: position1, normal: float4(0.0,-1.0,0.0,0.0), st: float2())
+      let position2: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta2), y: 1.0, z: Float(r * sinTheta2), w: 0.0)
+      let position3: SIMD4<Float> = SIMD4<Float>(x: Float(0.0), y: 1.0, z: Float(0.0), w: 0.0)
+    
+      vertices[index] = RKVertex(position: position1, normal: SIMD4<Float>(0.0,1.0,0.0,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       
-      vertices[index] = RKVertex(position: position2, normal: float4(0.0,-1.0,0.0,0.0), st: float2())
+      vertices[index] = RKVertex(position: position2, normal: SIMD4<Float>(0.0,1.0,0.0,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
       
-      vertices[index] = RKVertex(position: position3, normal: float4(0.0,-1.0,0.0,0.0), st: float2())
+      vertices[index] = RKVertex(position: position3, normal: SIMD4<Float>(0.0,1.0,0.0,0.0), st: SIMD2<Float>())
+      indices[index] = UInt16(index)
+      index = index + 1
+    }
+    
+    for i in 0..<slices
+    {
+      let cosTheta: Double = cos(delta * Double(i))
+      let sinTheta: Double = sin(delta * Double(i))
+      
+      let cosTheta2: Double = cos(delta * Double(i+1))
+      let sinTheta2: Double = sin(delta * Double(i+1))
+      
+      let position1: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
+      let position2: SIMD4<Float> = SIMD4<Float>(x: Float(0.0), y: -1.0, z: Float(0.0), w: 0.0)
+      let position3: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta2), y: -1.0, z: Float(r * sinTheta2), w: 0.0)
+      
+      vertices[index] = RKVertex(position: position1, normal: SIMD4<Float>(0.0,-1.0,0.0,0.0), st: SIMD2<Float>())
+      indices[index] = UInt16(index)
+      index = index + 1
+      
+      vertices[index] = RKVertex(position: position2, normal: SIMD4<Float>(0.0,-1.0,0.0,0.0), st: SIMD2<Float>())
+      indices[index] = UInt16(index)
+      index = index + 1
+      
+      vertices[index] = RKVertex(position: position3, normal: SIMD4<Float>(0.0,-1.0,0.0,0.0), st: SIMD2<Float>())
       indices[index] = UInt16(index)
       index = index + 1
     }
