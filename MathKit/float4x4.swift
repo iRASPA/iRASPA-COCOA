@@ -36,14 +36,14 @@ extension float4x4
 {
   public init(Double4x4: double4x4)
   {
-    self.init([float4(Double4: Double4x4[0]), float4(Double4: Double4x4[1]), float4(Double4: Double4x4[2]), float4(Double4: Double4x4[3])])
+    self.init([SIMD4<Float>(Double4: Double4x4[0]), SIMD4<Float>(Double4: Double4x4[1]), SIMD4<Float>(Double4: Double4x4[2]), SIMD4<Float>(Double4: Double4x4[3])])
   }
   
   public init(Double3x3: double3x3)
   {
-    self.init([float4(x: Float(Double3x3[0,0]), y: Float(Double3x3[0,1]), z: Float(Double3x3[0,2]), w: 0.0),
-               float4(x: Float(Double3x3[1,0]), y: Float(Double3x3[1,1]), z: Float(Double3x3[1,2]), w: 0.0),
-               float4(x: Float(Double3x3[2,0]), y: Float(Double3x3[2,1]), z: Float(Double3x3[2,2]), w: 0.0),
-               float4(x: 0.0, y: 0.0, z: 0.0, w: 1.0)])
+    self.init([SIMD4<Float>(x: Float(Double3x3[0,0]), y: Float(Double3x3[0,1]), z: Float(Double3x3[0,2]), w: 0.0),
+               SIMD4<Float>(x: Float(Double3x3[1,0]), y: Float(Double3x3[1,1]), z: Float(Double3x3[1,2]), w: 0.0),
+               SIMD4<Float>(x: Float(Double3x3[2,0]), y: Float(Double3x3[2,1]), z: Float(Double3x3[2,2]), w: 0.0),
+               SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)])
   }
 }

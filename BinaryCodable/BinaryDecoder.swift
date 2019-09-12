@@ -203,12 +203,12 @@ public extension BinaryDecoder
     return Character(Unicode.Scalar( UInt16(bigEndian: swapped)) ?? "X")
   }
   
-  func decode(_ type: int3.Type) throws -> int3
+  func decode(_ type: SIMD3<Int32>.Type) throws -> SIMD3<Int32>
   {
     let x: Int32 = try decode(Int32.self)
     let y: Int32 = try decode(Int32.self)
     let z: Int32 = try decode(Int32.self)
-    return int3(x,y,z)
+    return SIMD3<Int32>(x,y,z)
   }
   
   func decode(_ type: Bool3.Type) throws -> Bool3
@@ -219,53 +219,53 @@ public extension BinaryDecoder
     return Bool3(x,y,z)
   }
   
-  func decode(_ type: float2.Type) throws -> float2
+  func decode(_ type: SIMD2<Float>.Type) throws -> SIMD2<Float>
   {
     let x: Float = try decode(Float.self)
     let y: Float = try decode(Float.self)
-    return float2(x,y)
+    return SIMD2<Float>(x,y)
   }
   
-  func decode(_ type: double2.Type) throws -> double2
+  func decode(_ type: SIMD2<Double>.Type) throws -> SIMD2<Double>
   {
     let x: Double = try decode(Double.self)
     let y: Double = try decode(Double.self)
-    return double2(x,y)
+    return SIMD2<Double>(x,y)
   }
   
-  func decode(_ type: float3.Type) throws -> float3
+  func decode(_ type: SIMD3<Float>.Type) throws -> SIMD3<Float>
   {
     let x: Float = try decode(Float.self)
     let y: Float = try decode(Float.self)
     let z: Float = try decode(Float.self)
-    return float3(x,y,z)
+    return SIMD3<Float>(x,y,z)
   }
   
-  func decode(_ type: double3.Type) throws -> double3
+  func decode(_ type: SIMD3<Double>.Type) throws -> SIMD3<Double>
   {
     let x: Double = try decode(Double.self)
     let y: Double = try decode(Double.self)
     let z: Double = try decode(Double.self)
-    return double3(x,y,z)
+    return SIMD3<Double>(x,y,z)
   }
   
-  func decode(_ type: float4.Type) throws -> float4
+  func decode(_ type: SIMD4<Float>.Type) throws -> SIMD4<Float>
   {
     let x: Float = try decode(Float.self)
     let y: Float = try decode(Float.self)
     let z: Float = try decode(Float.self)
     let w: Float = try decode(Float.self)
-    return float4(x,y,z,w)
+    return SIMD4<Float>(x,y,z,w)
   }
   
   
-  func decode(_ type: double4.Type) throws -> double4
+  func decode(_ type: SIMD4<Double>.Type) throws -> SIMD4<Double>
   {
     let x: Double = try decode(Double.self)
     let y: Double = try decode(Double.self)
     let z: Double = try decode(Double.self)
     let w: Double = try decode(Double.self)
-    return double4(x,y,z,w)
+    return SIMD4<Double>(x,y,z,w)
   }
   
   

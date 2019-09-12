@@ -48,16 +48,16 @@ public struct RKStructureUniforms
   public var ambientOcclusionPatchSize: Float = 16.0;
   public var ambientOcclusionInverseTextureSize: Float = 1.0/1024.0;
   
-  public var changeHueSaturationValue: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var changeHueSaturationValue: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   
   public var atomHDR: Int32 = 0
   public var atomHDRExposure: Float = 1.5;
   public var atomHDRBloomLevel: Float = 0.5;
   public var clipAtomsAtUnitCell: Bool = false;
   
-  public var atomAmbient: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
-  public var atomDiffuse: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
-  public var atomSpecular: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var atomAmbient: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var atomDiffuse: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var atomSpecular: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var atomShininess: Float = 4.0
   
   public var bondHue: Float = 0.0
@@ -72,27 +72,27 @@ public struct RKStructureUniforms
   public var clipBondsAtUnitCell: Bool = false;
   
   
-  public var bondAmbientColor: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
-  public var bondDiffuseColor: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
-  public var bondSpecularColor: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var bondAmbientColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var bondDiffuseColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var bondSpecularColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   
   public var bondShininess: Float = 4.0
   public var bondScaling: Float = 1.0
   public var bondColorMode: Int32 = 0
   
   public var unitCellScaling: Float = 1.0
-  public var unitCellDiffuseColor: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var unitCellDiffuseColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   
-  public var clipPlaneLeft: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
-  public var clipPlaneRight: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var clipPlaneLeft: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var clipPlaneRight: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   
   //----------------------------------------  256 bytes boundary
   
-  public var clipPlaneTop: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
-  public var clipPlaneBottom: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var clipPlaneTop: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var clipPlaneBottom: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   
-  public var clipPlaneFront: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
-  public var clipPlaneBack: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var clipPlaneFront: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var clipPlaneBack: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   
   public var modelMatrix: float4x4 = float4x4(Double4x4: double4x4())
   
@@ -104,8 +104,8 @@ public struct RKStructureUniforms
   public var atomSelectionWorleyNoise3DFrequency: Float = 2.0
   public var atomSelectionWorleyNoise3DJitter: Float = 0.0
   
-  public var atomAnnotationTextDisplacement: float4 = float4()
-  public var atomAnnotationTextColor: float4 = float4(0.0,0.0,0.0,1.0)
+  public var atomAnnotationTextDisplacement: SIMD4<Float> = SIMD4<Float>()
+  public var atomAnnotationTextColor: SIMD4<Float> = SIMD4<Float>(0.0,0.0,0.0,1.0)
   public var atomAnnotationTextScaling: Float = 1.0
   public var bondAnnotationTextScaling: Float = 1.0
   public var selectionScaling: Float = 1.25
@@ -116,17 +116,17 @@ public struct RKStructureUniforms
   public var transformationMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
   public var transformationNormalMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
   
-  public var primitiveAmbientFrontSide: float4 = float4(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var primitiveDiffuseFrontSide: float4 = float4(x: 1.0, y: 1.0, z: 0.0, w:1.0)
-  public var primitiveSpecularFrontSide: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var primitiveAmbientFrontSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var primitiveDiffuseFrontSide: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 0.0, w:1.0)
+  public var primitiveSpecularFrontSide: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var primitiveFrontSideHDR: Int32 = 1
   public var primitiveFrontSideHDRExposure: Float = 1.5
   public var pad3: Float = 0.0
   public var primitiveShininessFrontSide: Float = 4.0
   
-  public var primitiveAmbientBackSide: float4 = float4(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var primitiveDiffuseBackSide: float4 = float4(x: 1.0, y: 1.0, z: 0.0, w:1.0)
-  public var primitiveSpecularBackSide: float4 = float4(x: 0.9, y: 0.9, z: 0.9, w: 1.0)
+  public var primitiveAmbientBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var primitiveDiffuseBackSide: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 0.0, w:1.0)
+  public var primitiveSpecularBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.9, y: 0.9, z: 0.9, w: 1.0)
   public var primitiveBackSideHDR: Int32 = 1
   public var primitiveBackSideHDRExposure: Float = 1.5
   public var pad6: Float = 0.0
@@ -140,7 +140,7 @@ public struct RKStructureUniforms
   public init(sceneIdentifier: Int, movieIdentifier: Int, structure: RKRenderStructure)
   {
     let boundingBox: SKBoundingBox = structure.cell.boundingBox
-    let centerOfRotation: double3 = boundingBox.center
+    let centerOfRotation: SIMD3<Double> = boundingBox.center
     
     self.sceneIdentifier = Int32(sceneIdentifier)
     self.MovieIdentifier = Int32(movieIdentifier)
@@ -150,12 +150,12 @@ public struct RKStructureUniforms
     
     if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource
     {
-      let hsv: double4 = double4(x: structure.atomHue, y: structure.atomSaturation, z: structure.atomValue, w: 0.0)
+      let hsv: SIMD4<Double> = SIMD4<Double>(x: structure.atomHue, y: structure.atomSaturation, z: structure.atomValue, w: 0.0)
       
       self.colorAtomsWithBondColor = structure.colorAtomsWithBondColor
     
       self.atomScaleFactor = GLfloat(structure.atomScaleFactor)
-      self.changeHueSaturationValue = float4(Double4: hsv)
+      self.changeHueSaturationValue = SIMD4<Float>(Double4: hsv)
     
       self.ambientOcclusion = structure.atomAmbientOcclusion ? 1: 0
       self.ambientOcclusionPatchNumber = Int32(structure.atomAmbientOcclusionPatchNumber)
@@ -163,9 +163,9 @@ public struct RKStructureUniforms
       self.ambientOcclusionInverseTextureSize = GLfloat(1.0/Double(structure.atomAmbientOcclusionTextureSize))
     
     
-      self.atomAmbient = Float(structure.atomAmbientIntensity) * float4(color:  structure.atomAmbientColor)
-      self.atomDiffuse = Float(structure.atomDiffuseIntensity) * float4(color: structure.atomDiffuseColor)
-      self.atomSpecular = Float(structure.atomSpecularIntensity) * float4(color: structure.atomSpecularColor)
+      self.atomAmbient = Float(structure.atomAmbientIntensity) * SIMD4<Float>(color:  structure.atomAmbientColor)
+      self.atomDiffuse = Float(structure.atomDiffuseIntensity) * SIMD4<Float>(color: structure.atomDiffuseColor)
+      self.atomSpecular = Float(structure.atomSpecularIntensity) * SIMD4<Float>(color: structure.atomSpecularColor)
       self.atomShininess = GLfloat(structure.atomShininess)
     
       self.atomHDR = structure.atomHDR ? 1 : 0
@@ -179,10 +179,10 @@ public struct RKStructureUniforms
       self.atomSelectionWorleyNoise3DFrequency = Float(structure.renderSelectionWorleyNoise3DFrequency)
       self.atomSelectionWorleyNoise3DJitter = Float(structure.renderSelectionWorleyNoise3DJitter)
       
-      self.atomAnnotationTextColor = float4(color: structure.renderTextColor)
+      self.atomAnnotationTextColor = SIMD4<Float>(color: structure.renderTextColor)
       self.atomAnnotationTextScaling = Float(structure.renderTextScaling)
       self.bondAnnotationTextScaling = 1.0
-      self.atomAnnotationTextDisplacement = float4(x: Float(structure.renderTextOffset.x),
+      self.atomAnnotationTextDisplacement = SIMD4<Float>(x: Float(structure.renderTextOffset.x),
                                                    y: Float(structure.renderTextOffset.y),
                                                    z: Float(structure.renderTextOffset.z),
                                                    w: 0.0)
@@ -192,7 +192,7 @@ public struct RKStructureUniforms
     if let structure: RKRenderUnitCellSource = structure as? RKRenderUnitCellSource
     {
       self.unitCellScaling =  GLfloat(structure.unitCellScaleFactor)
-      self.unitCellDiffuseColor = Float(structure.unitCellDiffuseIntensity) * float4(color:  structure.unitCellDiffuseColor)
+      self.unitCellDiffuseColor = Float(structure.unitCellDiffuseIntensity) * SIMD4<Float>(color:  structure.unitCellDiffuseColor)
     }
     
    
@@ -210,9 +210,9 @@ public struct RKStructureUniforms
       self.bondSaturation = GLfloat(structure.bondSaturation)
       self.bondValue = GLfloat(structure.bondValue)
     
-      self.bondAmbientColor = Float(structure.bondAmbientIntensity) * float4(color:  structure.bondAmbientColor)
-      self.bondDiffuseColor = Float(structure.bondDiffuseIntensity) * float4(color: structure.bondDiffuseColor)
-      self.bondSpecularColor = Float(structure.bondSpecularIntensity) * float4(color: structure.bondSpecularColor)
+      self.bondAmbientColor = Float(structure.bondAmbientIntensity) * SIMD4<Float>(color:  structure.bondAmbientColor)
+      self.bondDiffuseColor = Float(structure.bondDiffuseIntensity) * SIMD4<Float>(color: structure.bondDiffuseColor)
+      self.bondSpecularColor = Float(structure.bondSpecularIntensity) * SIMD4<Float>(color: structure.bondSpecularColor)
       self.bondShininess = GLfloat(structure.bondShininess)
     }
     
@@ -226,42 +226,42 @@ public struct RKStructureUniforms
       
       self.primitiveFrontSideHDR = structure.primitiveFrontSideHDR ? 1 : 0
       self.primitiveFrontSideHDRExposure = Float(structure.primitiveFrontSideHDRExposure)
-      self.primitiveAmbientFrontSide = Float(structure.primitiveFrontSideAmbientIntensity) * float4(color: structure.primitiveFrontSideAmbientColor, opacity: structure.primitiveOpacity)
-      self.primitiveDiffuseFrontSide = Float(structure.primitiveFrontSideDiffuseIntensity) * float4(color: structure.primitiveFrontSideDiffuseColor, opacity: structure.primitiveOpacity)
-      self.primitiveSpecularFrontSide = Float(structure.primitiveFrontSideSpecularIntensity) * float4(color: structure.primitiveFrontSideSpecularColor, opacity: structure.primitiveOpacity)
+      self.primitiveAmbientFrontSide = Float(structure.primitiveFrontSideAmbientIntensity) * SIMD4<Float>(color: structure.primitiveFrontSideAmbientColor, opacity: structure.primitiveOpacity)
+      self.primitiveDiffuseFrontSide = Float(structure.primitiveFrontSideDiffuseIntensity) * SIMD4<Float>(color: structure.primitiveFrontSideDiffuseColor, opacity: structure.primitiveOpacity)
+      self.primitiveSpecularFrontSide = Float(structure.primitiveFrontSideSpecularIntensity) * SIMD4<Float>(color: structure.primitiveFrontSideSpecularColor, opacity: structure.primitiveOpacity)
       self.primitiveShininessFrontSide = Float(structure.primitiveFrontSideShininess)
       
       self.primitiveBackSideHDR = structure.primitiveBackSideHDR ? 1 : 0
       self.primitiveBackSideHDRExposure = Float(structure.primitiveBackSideHDRExposure)
-      self.primitiveAmbientBackSide = Float(structure.primitiveBackSideAmbientIntensity) * float4(color: structure.primitiveBackSideAmbientColor, opacity: structure.primitiveOpacity)
-      self.primitiveDiffuseBackSide = Float(structure.primitiveBackSideDiffuseIntensity) * float4(color: structure.primitiveBackSideDiffuseColor, opacity: structure.primitiveOpacity)
-      self.primitiveSpecularBackSide = Float(structure.primitiveBackSideSpecularIntensity) * float4(color: structure.primitiveBackSideSpecularColor, opacity: structure.primitiveOpacity)
+      self.primitiveAmbientBackSide = Float(structure.primitiveBackSideAmbientIntensity) * SIMD4<Float>(color: structure.primitiveBackSideAmbientColor, opacity: structure.primitiveOpacity)
+      self.primitiveDiffuseBackSide = Float(structure.primitiveBackSideDiffuseIntensity) * SIMD4<Float>(color: structure.primitiveBackSideDiffuseColor, opacity: structure.primitiveOpacity)
+      self.primitiveSpecularBackSide = Float(structure.primitiveBackSideSpecularIntensity) * SIMD4<Float>(color: structure.primitiveBackSideSpecularColor, opacity: structure.primitiveOpacity)
       self.primitiveShininessBackSide = Float(structure.primitiveBackSideShininess)
     }
     
     let unitCell: double3x3 = structure.cell.unitCell
     let box: double3x3 = structure.cell.box
-    let corner: double3 = unitCell * double3(x: Double(structure.cell.minimumReplica.x), y: Double(structure.cell.minimumReplica.y), z: Double(structure.cell.minimumReplica.z))
-    let corner2: double3 = unitCell * double3(x: Double(structure.cell.maximumReplica.x)+1.0, y: Double(structure.cell.maximumReplica.y)+1.0, z: Double(structure.cell.maximumReplica.z)+1.0)
+    let corner: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(structure.cell.minimumReplica.x), y: Double(structure.cell.minimumReplica.y), z: Double(structure.cell.minimumReplica.z))
+    let corner2: SIMD3<Double> = unitCell * SIMD3<Double>(x: Double(structure.cell.maximumReplica.x)+1.0, y: Double(structure.cell.maximumReplica.y)+1.0, z: Double(structure.cell.maximumReplica.z)+1.0)
     
     
     self.boxMatrix = float4x4(Double3x3: box)
-    let shift: double3 = structure.cell.unitCell * double3(structure.cell.minimumReplica)
+    let shift: SIMD3<Double> = structure.cell.unitCell * SIMD3<Double>(structure.cell.minimumReplica)
     self.boxMatrix[3][0] = Float(shift.x)
     self.boxMatrix[3][1] = Float(shift.y)
     self.boxMatrix[3][2] = Float(shift.z)
     
     
     // clipping planes are in object space
-    let u_plane0: double3 = normalize(cross(box[0],box[1]))
-    let u_plane1: double3 = normalize(cross(box[2],box[0]))
-    let u_plane2: double3 = normalize(cross(box[1],box[2]))
-    clipPlaneBack = float4(x: u_plane0.x, y: u_plane0.y, z: u_plane0.z, w: -dot(u_plane0,corner))
-    clipPlaneBottom = float4(x: u_plane1.x, y: u_plane1.y, z: u_plane1.z, w: -dot(u_plane1,corner))
-    clipPlaneLeft = float4(x: u_plane2.x, y: u_plane2.y, z: u_plane2.z, w: -dot(u_plane2,corner))
-    clipPlaneFront = -float4(x: u_plane0.x, y: u_plane0.y, z: u_plane0.z, w: -dot(u_plane0,corner2))
-    clipPlaneTop = -float4(x: u_plane1.x, y: u_plane1.y, z: u_plane1.z, w: -dot(u_plane1,corner2))
-    clipPlaneRight = -float4(x: u_plane2.x, y: u_plane2.y, z: u_plane2.z, w: -dot(u_plane2,corner2))
+    let u_plane0: SIMD3<Double> = normalize(cross(box[0],box[1]))
+    let u_plane1: SIMD3<Double> = normalize(cross(box[2],box[0]))
+    let u_plane2: SIMD3<Double> = normalize(cross(box[1],box[2]))
+    clipPlaneBack = SIMD4<Float>(x: u_plane0.x, y: u_plane0.y, z: u_plane0.z, w: -dot(u_plane0,corner))
+    clipPlaneBottom = SIMD4<Float>(x: u_plane1.x, y: u_plane1.y, z: u_plane1.z, w: -dot(u_plane1,corner))
+    clipPlaneLeft = SIMD4<Float>(x: u_plane2.x, y: u_plane2.y, z: u_plane2.z, w: -dot(u_plane2,corner))
+    clipPlaneFront = -SIMD4<Float>(x: u_plane0.x, y: u_plane0.y, z: u_plane0.z, w: -dot(u_plane0,corner2))
+    clipPlaneTop = -SIMD4<Float>(x: u_plane1.x, y: u_plane1.y, z: u_plane1.z, w: -dot(u_plane1,corner2))
+    clipPlaneRight = -SIMD4<Float>(x: u_plane2.x, y: u_plane2.y, z: u_plane2.z, w: -dot(u_plane2,corner2))
   }
   
   public init(sceneIdentifier: Int, movieIdentifier: Int, structure: RKRenderStructure, inverseModelMatrix: double4x4)
@@ -269,7 +269,7 @@ public struct RKStructureUniforms
     self.init(sceneIdentifier: sceneIdentifier, movieIdentifier: movieIdentifier, structure: structure)
     
     let boundingBox: SKBoundingBox = structure.cell.boundingBox
-    let centerOfRotation: double3 = boundingBox.center
+    let centerOfRotation: SIMD3<Double> = boundingBox.center
     let modelMatrix: double4x4 = inverseModelMatrix * double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: centerOfRotation, withTranslation: structure.origin)
     self.modelMatrix = float4x4(Double4x4: modelMatrix)
   }

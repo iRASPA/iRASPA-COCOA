@@ -154,7 +154,7 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible
     return self.boundaryType == BoundaryType.external
   }
   
-  public var distanceVector: double3
+  public var distanceVector: SIMD3<Double>
   {
     return atom2.position - atom1.position
   }

@@ -46,9 +46,9 @@ public struct RKLightUniforms
   public init(project: RKRenderDataSource)
   {
     
-    self.lights[0].ambient = GLfloat(project.renderLights[0].ambientIntensity) * float4(color: project.renderLights[0].ambient)
-    self.lights[0].diffuse = GLfloat(project.renderLights[0].diffuseIntensity) * float4(color: project.renderLights[0].diffuse)
-    self.lights[0].specular = GLfloat(project.renderLights[0].specularIntensity) * float4(color: project.renderLights[0].specular)
+    self.lights[0].ambient = GLfloat(project.renderLights[0].ambientIntensity) * SIMD4<Float>(color: project.renderLights[0].ambient)
+    self.lights[0].diffuse = GLfloat(project.renderLights[0].diffuseIntensity) * SIMD4<Float>(color: project.renderLights[0].diffuse)
+    self.lights[0].specular = GLfloat(project.renderLights[0].specularIntensity) * SIMD4<Float>(color: project.renderLights[0].specular)
     self.lights[0].shininess = GLfloat(project.renderLights[0].shininess)
   }
 }

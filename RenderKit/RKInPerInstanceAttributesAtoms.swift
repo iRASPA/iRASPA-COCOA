@@ -35,23 +35,23 @@ import simd
 
 public struct RKInPerInstanceAttributesAtoms
 {
-  public var position: float4 = float4()
-  public var ambient: float4 = float4()
-  public var diffuse: float4 = float4()
-  public var specular: float4 = float4()
-  public var scale: float4 = float4()
+  public var position: SIMD4<Float> = SIMD4<Float>()
+  public var ambient: SIMD4<Float> = SIMD4<Float>()
+  public var diffuse: SIMD4<Float> = SIMD4<Float>()
+  public var specular: SIMD4<Float> = SIMD4<Float>()
+  public var scale: SIMD4<Float> = SIMD4<Float>()
   
   public init()
   {
     
   }
   
-  public init(position: float4, ambient: float4, diffuse: float4, specular: float4, scale: Float)
+  public init(position: SIMD4<Float>, ambient: SIMD4<Float>, diffuse: SIMD4<Float>, specular: SIMD4<Float>, scale: Float)
   {
     self.position = position
     self.ambient = ambient
     self.diffuse = diffuse
     self.specular = specular
-    self.scale = float4(repeating: scale)
+    self.scale = SIMD4<Float>(repeating: scale)
   }
 }

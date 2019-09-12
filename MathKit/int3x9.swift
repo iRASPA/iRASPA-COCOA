@@ -182,7 +182,7 @@ public struct int3x9
   public var SmithNormalForm: (int9x9, int3x9, int3x3)
   {
     var p: int9x9 = int9x9.identity
-    var q: int3x3 = int3x3([int3(1,0,0),int3(0,1,0),int3(0,0,1)])
+    var q: int3x3 = int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
     
     var m: int3x9 = self
     var mt: int9x3 = self.transpose

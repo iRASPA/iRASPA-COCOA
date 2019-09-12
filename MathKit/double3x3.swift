@@ -37,9 +37,9 @@ extension double3x3
 {
   public init(Double4x4: double4x4)
   {
-    self.init([double3(x: Double4x4[0][0], y: Double4x4[0][1], z: Double4x4[0][2]),
-               double3(x: Double4x4[1][0], y: Double4x4[1][1], z: Double4x4[1][2]),
-               double3(x: Double4x4[2][0], y: Double4x4[2][1], z: Double4x4[2][2])])
+    self.init([SIMD3<Double>(x: Double4x4[0][0], y: Double4x4[0][1], z: Double4x4[0][2]),
+               SIMD3<Double>(x: Double4x4[1][0], y: Double4x4[1][1], z: Double4x4[1][2]),
+               SIMD3<Double>(x: Double4x4[2][0], y: Double4x4[2][1], z: Double4x4[2][2])])
   }
 }
 
@@ -52,24 +52,24 @@ public extension double3x3
     let col1 = a[0]
     let col2 = a[1]
     let col3 = a[2]
-    self.init([double3(x: Double(col1.x), y: Double(col1.y),z: Double(col1.z)),
-               double3(x: Double(col2.x), y: Double(col2.y),z: Double(col2.z)),
-               double3(x: Double(col3.x), y: Double(col3.y),z: Double(col3.z))])
+    self.init([SIMD3<Double>(x: Double(col1.x), y: Double(col1.y),z: Double(col1.z)),
+               SIMD3<Double>(x: Double(col2.x), y: Double(col2.y),z: Double(col2.z)),
+               SIMD3<Double>(x: Double(col3.x), y: Double(col3.y),z: Double(col3.z))])
   }
   
   
-  static func * (left: double3x3, right: int3) -> double3
+  static func * (left: double3x3, right: SIMD3<Int32>) -> SIMD3<Double>
   {
-    return double3(x: left[0][0] * Double(right.x) + left[1][0] * Double(right.y) + left[2][0] * Double(right.z),
+    return SIMD3<Double>(x: left[0][0] * Double(right.x) + left[1][0] * Double(right.y) + left[2][0] * Double(right.z),
                    y: left[0][1] * Double(right.x) + left[1][1] * Double(right.y) + left[2][1] * Double(right.z),
                    z: left[0][2] * Double(right.x) + left[1][2] * Double(right.y) + left[2][2] * Double(right.z))
   }
   
   
   
-  static func * (left: int3, right: double3x3) -> double3
+  static func * (left: SIMD3<Int32>, right: double3x3) -> SIMD3<Double>
   {
-    return double3(x: Double(left.x) * right[0][0] + Double(left.y) * right[0][1] + Double(left.z) * right[0][2],
+    return SIMD3<Double>(x: Double(left.x) * right[0][0] + Double(left.y) * right[0][1] + Double(left.z) * right[0][2],
                    y: Double(left.x) * right[1][0] + Double(left.y) * right[1][1] + Double(left.z) * right[1][2],
                    z: Double(left.x) * right[2][0] + Double(left.y) * right[2][1] + Double(left.z) * right[2][2])
   }
@@ -95,9 +95,9 @@ extension double3x3: Hashable
   
   public init(_ m: int3x3)
   {
-    self.init([double3(Double(m[0][0])/Double(m.denominator),Double(m[0][1])/Double(m.denominator),Double(m[0][2])/Double(m.denominator)),
-               double3(Double(m[1][0])/Double(m.denominator),Double(m[1][1])/Double(m.denominator),Double(m[1][2])/Double(m.denominator)),
-               double3(Double(m[2][0])/Double(m.denominator),Double(m[2][1])/Double(m.denominator),Double(m[2][2])/Double(m.denominator))])
+    self.init([SIMD3<Double>(Double(m[0][0])/Double(m.denominator),Double(m[0][1])/Double(m.denominator),Double(m[0][2])/Double(m.denominator)),
+               SIMD3<Double>(Double(m[1][0])/Double(m.denominator),Double(m[1][1])/Double(m.denominator),Double(m[1][2])/Double(m.denominator)),
+               SIMD3<Double>(Double(m[2][0])/Double(m.denominator),Double(m[2][1])/Double(m.denominator),Double(m[2][2])/Double(m.denominator))])
   }
   
   public func isInteger(precision: Double) -> Bool
@@ -118,13 +118,13 @@ extension double3x3: Hashable
   
   public static func *(left: double3x3, right: int3x3) -> double3x3
   {
-    let term1: double3 = double3(left[0,0] * Double(right[0,0]) + left[1,0] * Double(right[0,1]) + left[2,0] * Double(right[0,2]),
+    let term1: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[0,0]) + left[1,0] * Double(right[0,1]) + left[2,0] * Double(right[0,2]),
                                  left[0,1] * Double(right[0,0]) + left[1,1] * Double(right[0,1]) + left[2,1] * Double(right[0,2]),
                                  left[0,2] * Double(right[0,0]) + left[1,2] * Double(right[0,1]) + left[2,2] * Double(right[0,2]))
-    let term2: double3 = double3(left[0,0] * Double(right[1,0]) + left[1,0] * Double(right[1,1]) + left[2,0] * Double(right[1,2]),
+    let term2: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[1,0]) + left[1,0] * Double(right[1,1]) + left[2,0] * Double(right[1,2]),
                                  left[0,1] * Double(right[1,0]) + left[1,1] * Double(right[1,1]) + left[2,1] * Double(right[1,2]),
                                  left[0,2] * Double(right[1,0]) + left[1,2] * Double(right[1,1]) + left[2,2] * Double(right[1,2]))
-    let term3: double3 = double3(left[0,0] * Double(right[2,0]) + left[1,0] * Double(right[2,1]) + left[2,0] * Double(right[2,2]),
+    let term3: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[2,0]) + left[1,0] * Double(right[2,1]) + left[2,0] * Double(right[2,2]),
                                  left[0,1] * Double(right[2,0]) + left[1,1] * Double(right[2,1]) + left[2,1] * Double(right[2,2]),
                                  left[0,2] * Double(right[2,0]) + left[1,2] * Double(right[2,1]) + left[2,2] * Double(right[2,2]))
     return double3x3([term1, term2, term3])
@@ -134,9 +134,9 @@ extension double3x3: Hashable
   
   public static func / (left: double3x3, right: Double) -> double3x3
   {
-    return double3x3([double3(left[0,0] / right, left[0,1] / right, left[0,2] / right),
-                      double3(left[1,0] / right, left[1,1] / right, left[1,2] / right),
-                      double3(left[2,0] / right, left[2,1] / right, left[2,2] / right)])
+    return double3x3([SIMD3<Double>(left[0,0] / right, left[0,1] / right, left[0,2] / right),
+                      SIMD3<Double>(left[1,0] / right, left[1,1] / right, left[1,2] / right),
+                      SIMD3<Double>(left[2,0] / right, left[2,1] / right, left[2,2] / right)])
   }
   
   public static func ==(left: double3x3, right: double3x3) -> Bool
@@ -181,7 +181,7 @@ extension double3x3: Hashable
 
 extension double3x3
 {
-  public func EigenSystemSymmetric3x3(Q: inout double3x3, w: inout double3)
+  public func EigenSystemSymmetric3x3(Q: inout double3x3, w: inout SIMD3<Double>)
   {
     
     let decompositionJobV = UnsafeMutablePointer<Int8>(mutating: ("V" as NSString).utf8String)
@@ -196,10 +196,10 @@ extension double3x3
     
     dsyev_(decompositionJobV, upload, &M, &data, &N, &eigenvalues, &work, &lwork, &error)
     
-    w = double3(eigenvalues[2],eigenvalues[1],eigenvalues[0])
-    let axis1: double3 = normalize(double3(data[0],data[1],data[2]))
-    let axis2: double3 = normalize(double3(data[3],data[4],data[5]))
-    let axis3: double3 = normalize(double3(data[6],data[7],data[8]))
+    w = SIMD3<Double>(eigenvalues[2],eigenvalues[1],eigenvalues[0])
+    let axis1: SIMD3<Double> = normalize(SIMD3<Double>(data[0],data[1],data[2]))
+    let axis2: SIMD3<Double> = normalize(SIMD3<Double>(data[3],data[4],data[5]))
+    let axis3: SIMD3<Double> = normalize(SIMD3<Double>(data[6],data[7],data[8]))
     Q = double3x3([axis3,axis2,axis1])
     if Q.determinant<0
     {
@@ -207,7 +207,7 @@ extension double3x3
     }
   }
   
-  public func EigenSystem3x3(Q: inout double3x3, w: inout double3)
+  public func EigenSystem3x3(Q: inout double3x3, w: inout SIMD3<Double>)
   {
     let n: Int = 3;
     var sd: Double = 0.0
@@ -257,7 +257,7 @@ extension double3x3
       if (so == 0.0)
       {
         let combined = zip([w[0],w[1],w[2]],[Q[0],Q[1],Q[2]]).sorted {$0.0 > $1.0}
-        w = double3(combined.map {$0.0})
+        w = SIMD3<Double>(combined.map {$0.0})
         Q = double3x3(combined.map {$0.1})
         return
       }
@@ -340,7 +340,7 @@ extension double3x3
       }
     }
     let combined = zip([w[0],w[1],w[2]],[Q[0],Q[1],Q[2]]).sorted {$0.0 > $1.0}
-    w = double3(combined.map {$0.0})
+    w = SIMD3<Double>(combined.map {$0.0})
     Q = double3x3(combined.map {$0.1})
   }
   

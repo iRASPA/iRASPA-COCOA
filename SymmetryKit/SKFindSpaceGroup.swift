@@ -51,7 +51,7 @@ import MathKit
 
 extension SKSpacegroup
 {
-  public static func findNiggli(unitCell: double3x3, atoms unIndexedAtoms: [(fractionalPosition: double3, type: String)], symmetryPrecision: Double = 1e-5) -> (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: double3, type: String)])?
+  public static func findNiggli(unitCell: double3x3, atoms unIndexedAtoms: [(fractionalPosition: SIMD3<Double>, type: String)], symmetryPrecision: Double = 1e-5) -> (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: String)])?
   {
     var histogram:[String:Int] = [:]
     
@@ -73,8 +73,8 @@ extension SKSpacegroup
     let minIndex: Int = indexForAtom[minType]!
     
     // convert: [(0.1,0.2,0.3: "Si"), (0.4,0.5,0.6: "O"),...] to [(0.1,0.2,0.3: 0), (0.4,0.5,0.6: 1),...]
-    let atoms: [(fractionalPosition: double3, type: Int)] = unIndexedAtoms.map{($0.fractionalPosition, indexForAtom[$0.type]!)}
-    let reducedAtoms: [(fractionalPosition: double3, type: Int)] = atoms.filter{$0.type == minIndex}
+    let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = unIndexedAtoms.map{($0.fractionalPosition, indexForAtom[$0.type]!)}
+    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minIndex}
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
@@ -87,7 +87,7 @@ extension SKSpacegroup
     
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
-    let positionInPrimitiveCell: [(fractionalPosition: double3, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
+    let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
     
     // When a transformation matrix with det(P ) > 1 is specified, a dialog box appears to ask you whether or not you want to search for additional sites lying in the resultant unit cell
     // If det(P) < 1, the same position may result from two or more sites
@@ -100,9 +100,9 @@ extension SKSpacegroup
   
   
   
-  public static func SKFindPrimitive(unitCell: double3x3, atoms: [(fractionalPosition: double3, type: Int)], symmetryPrecision: Double = 1e-5) -> (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: double3, type: Int)])?
+  public static func SKFindPrimitive(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])?
   {
-    if let spaceGroupData: (hall: Int, origin: double3, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: double3, type: Int)], asymmetricAtoms: [(fractionalPosition: double3, type: Int)]) = SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: symmetryPrecision)
+    if let spaceGroupData: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: symmetryPrecision)
     {
       let centring: Centring = SKSpacegroup(HallNumber: spaceGroupData.hall).spaceGroupSetting.centring
       
@@ -136,7 +136,7 @@ extension SKSpacegroup
       let primitiveUnitCell: double3x3 = spaceGroupData.cell.unitCell * transformation
       let cell: SKSymmetryCell = SKSymmetryCell(unitCell: primitiveUnitCell)
       
-      let positionInPrimitiveCell: [(fractionalPosition: double3, type: Int)] = SKSymmetryCell.trim(atoms: spaceGroupData.atoms, from: spaceGroupData.cell.unitCell, to: primitiveUnitCell)
+      let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: spaceGroupData.atoms, from: spaceGroupData.cell.unitCell, to: primitiveUnitCell)
       
       return (cell: cell, primitiveAtoms: positionInPrimitiveCell)
     }
@@ -150,7 +150,7 @@ extension SKSpacegroup
   /// - parameter symmetryPrecision:   the precision of the symmetry determination
   ///
   /// - returns: a tuple of the Hall-space group number, the origin, the lattice, and the change-of-basis.
-  public static func SKFindSpaceGroup(unitCell: double3x3, atoms: [(fractionalPosition: double3, type: Int)], symmetryPrecision: Double = 1e-5) -> (hall: Int, origin: double3, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: double3, type: Int)], asymmetricAtoms: [(fractionalPosition: double3, type: Int)])?
+  public static func SKFindSpaceGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])?
   {
     var histogram:[Int:Int] = [:]
     
@@ -162,7 +162,7 @@ extension SKSpacegroup
     // Find least occurent element
     let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    let reducedAtoms: [(fractionalPosition: double3, type: Int)] = atoms.filter{$0.type == minType}
+    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
@@ -181,8 +181,8 @@ extension SKSpacegroup
     let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
-    let positionInDelaunayCell: [(fractionalPosition: double3, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
-    let reducedPositionsInDelaunayCell: [(fractionalPosition: double3, type: Int)] = positionInDelaunayCell.filter{$0.type == minType}
+    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.filter{$0.type == minType}
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
@@ -250,7 +250,7 @@ extension SKSpacegroup
       for spaceGroupNumber in 1...230
       {
         let hall: Int = spaceGroupHallData[spaceGroupNumber]!.first!
-        if let value: (origin: double3, changeOfBasis: SKChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: hall, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
+        if let value: (origin: SIMD3<Double>, changeOfBasis: SKChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: hall, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
         {
           let changedlattice: double3x3 = lattice * value.changeOfBasis
           
@@ -259,8 +259,8 @@ extension SKSpacegroup
           let spaceGroupSymmetries: SKSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
           let transform: double3x3 = changedlattice.inverse * DelaunayUnitCell
-          var atoms: [(fractionalPosition: double3, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type, -1)}
-          let asymmetricAtoms: [(fractionalPosition: double3, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: changedlattice, symmetryPrecision: symmetryPrecision)
+          var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type, -1)}
+          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: changedlattice, symmetryPrecision: symmetryPrecision)
           
           
           let cell: SKSymmetryCell = SKSymmetryCell(unitCell: changedlattice)
@@ -282,13 +282,13 @@ extension SKSpacegroup
   /// - parameter symmetryPrecision: the precision of the search (default: 1e-5)
   ///
   /// - returns: the symmetry operations, i.e. a list of (integer rotation matrix, translation vector)
-  public static func findSpaceGroupSymmetry(reducedAtoms: [(fractionalPosition: double3, type: Int)], atoms: [(fractionalPosition: double3, type: Int)], latticeSymmetries: SKPointSymmetrySet, symmetryPrecision: Double = 1e-4) -> SKSymmetryOperationSet
+  public static func findSpaceGroupSymmetry(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], latticeSymmetries: SKPointSymmetrySet, symmetryPrecision: Double = 1e-4) -> SKSymmetryOperationSet
   {
     var spaceGroupSymmetries: Set<SKSeitzMatrix> = Set<SKSeitzMatrix>(minimumCapacity:192)
     
     for rotationMatrix in latticeSymmetries.rotations
     {
-      let translations: [double3] = SKSymmetryCell.primitiveTranslationVectors(reducedAtoms: reducedAtoms, atoms: atoms, rotationMatrix: rotationMatrix, symmetryPrecision: symmetryPrecision)
+      let translations: [SIMD3<Double>] = SKSymmetryCell.primitiveTranslationVectors(reducedAtoms: reducedAtoms, atoms: atoms, rotationMatrix: rotationMatrix, symmetryPrecision: symmetryPrecision)
       
       for translation in translations
       {
@@ -301,7 +301,7 @@ extension SKSpacegroup
   
 
   
-  public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) -> double3?
+  public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) -> SIMD3<Double>?
   {
     var translations: int3x3 = int3x3()
     
@@ -409,11 +409,11 @@ extension SKSpacegroup
       let seitzMatrix: SKSeitzMatrix? = dataBaseSpaceGroupSeitzMatrices.filter{$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}.first
       guard seitzMatrix != nil else {return nil}
       
-      let transPrimitive: int3 = changeToPrimitive * translations[i]
+      let transPrimitive: SIMD3<Int32> = changeToPrimitive * translations[i]
       
-      let dataBaseTranslation: int3  = changeToPrimitive * dataBaseSpaceGroupGenerators[i].translation
+      let dataBaseTranslation: SIMD3<Int32>  = changeToPrimitive * dataBaseSpaceGroupGenerators[i].translation
       
-      let translationDifference: int3 = (transPrimitive - dataBaseTranslation).modulo(12)
+      let translationDifference: SIMD3<Int32> = (transPrimitive - dataBaseTranslation).modulo(12)
       x[3*i,0] = Int(translationDifference.x)
       x[3*i+1,0] = Int(translationDifference.y)
       x[3*i+2,0] = Int(translationDifference.z)
@@ -440,7 +440,7 @@ extension SKSpacegroup
     let answer: IntegerMatrix = p1 * x
     
     let changeToConventional: SKChangeOfBasis = changeOfBasis.inverse
-    let shiftVector: double3 = double3(Double(answer[0,0])/Double(answer.denominator),
+    let shiftVector: SIMD3<Double> = SIMD3<Double>(Double(answer[0,0])/Double(answer.denominator),
                                        Double(answer[0,1])/Double(answer.denominator),
                                        Double(answer[0,2])/Double(answer.denominator))
     return fract(changeToConventional * shiftVector)
@@ -593,7 +593,7 @@ extension SKSpacegroup
   */
 
   
-  public static func matchSpaceGroup(HallNumber: Int, pointGroupNumber: Int,centering: SKSpacegroup.Centring, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) -> (origin: double3, changeOfBasis: SKChangeOfBasis)?
+  public static func matchSpaceGroup(HallNumber: Int, pointGroupNumber: Int,centering: SKSpacegroup.Centring, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) -> (origin: SIMD3<Double>, changeOfBasis: SKChangeOfBasis)?
   {
     // bail out early if the checked space group is not of the right point-group
     if SKSpacegroup.spaceGroupData[HallNumber].pointGroupNumber != pointGroupNumber
@@ -606,14 +606,14 @@ extension SKSpacegroup
     case .none:
       break
     case .triclinic, .tetragonal, .trigonal, .hexagonal:
-      if let originShift: double3 = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+      if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
         return (originShift, SKChangeOfBasis(rotation: int3x3.identity))
       }
     case .monoclinic:
       for i in 0..<6
       {
-        if let originShift: double3 = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfMonoclinicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfMonoclinicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
           return (originShift, SKSpacegroup.changeOfMonoclinicCentering[i])
         }
@@ -621,13 +621,13 @@ extension SKSpacegroup
     case .orthorhombic:
       for i in 0..<6
       {
-        if let originShift: double3 = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfOrthorhombicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfOrthorhombicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
           return (originShift, SKSpacegroup.changeOfOrthorhombicCentering[i])
         }
       }
     case .cubic:
-      if let originShift: double3 = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+      if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
         return (originShift, SKChangeOfBasis(rotation: int3x3.identity))
       }
@@ -635,9 +635,9 @@ extension SKSpacegroup
       // special case
       if HallNumber == 501
       {
-        if let originShift: double3 = getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKChangeOfBasis(rotation: int3x3([int3(0,0, 1),int3(0,-1,0),int3(1,0,0)])), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKChangeOfBasis(rotation: int3x3([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
-          return (originShift, changeOfBasis: SKChangeOfBasis(rotation: int3x3([int3(0,0, 1),int3(0,-1,0),int3(1,0,0)])))
+          return (originShift, changeOfBasis: SKChangeOfBasis(rotation: int3x3([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])))
         }
       }
     }
@@ -648,9 +648,9 @@ extension SKSpacegroup
 
 
   
-  public static func isInsideAsymmetricUnitCell(number: Int, point: double3, precision eps: Double = 1e-8) -> Bool
+  public static func isInsideAsymmetricUnitCell(number: Int, point: SIMD3<Double>, precision eps: Double = 1e-8) -> Bool
   {
-    let p: double3 = fract(point)
+    let p: SIMD3<Double> = fract(point)
     
     switch(number)
     {

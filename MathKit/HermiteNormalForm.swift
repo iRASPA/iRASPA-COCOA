@@ -41,7 +41,7 @@ extension IntegerMatrix
         r += 1
         
         // Do column reduction
-        var columnReduction: (Q: IntegerMatrix, C: IntegerMatrix, Apad: IntegerMatrix) = ColumnReduction(A1: Apad, col_1: rp[r - 1], col_2: rp[r], row_start: r - 1)
+        let columnReduction: (Q: IntegerMatrix, C: IntegerMatrix, Apad: IntegerMatrix) = ColumnReduction(A1: Apad, col_1: rp[r - 1], col_2: rp[r], row_start: r - 1)
         Apad = columnReduction.Apad
         
         // Update CC

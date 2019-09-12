@@ -34,13 +34,13 @@ import simd
 
 struct MKint3: Equatable
 {
-  var numerator: int3
+  var numerator: SIMD3<Int32>
   var denominator: Int = 1
   
-  init(numerator: int3, denominator: Int = 1)
+  init(numerator: SIMD3<Int32>, denominator: Int = 1)
   {
     let gcd: Int = Int.greatestCommonDivisor(a: numerator.greatestCommonDivisor, b: denominator)
-    self.numerator = int3(numerator.x / Int32(gcd), numerator.y / Int32(gcd), numerator.z / Int32(gcd))
+    self.numerator = SIMD3<Int32>(numerator.x / Int32(gcd), numerator.y / Int32(gcd), numerator.z / Int32(gcd))
     self.denominator = denominator / gcd
   }
   
@@ -61,7 +61,7 @@ struct MKint3: Equatable
   
   public var isZero: Bool
   {
-    return (self.numerator == int3(0,0,0))
+    return (self.numerator == SIMD3<Int32>(0,0,0))
   }
   
   /*
@@ -118,7 +118,7 @@ struct MKint3: Equatable
   public static func *(left: MKint3, right: MKint3) -> MKint3
   {
     let denominator: Int = left.denominator * right.denominator
-    let numerator: int3 = int3(left.numerator.x * Int32(right.denominator) * right.numerator.x * Int32(left.denominator),
+    let numerator: SIMD3<Int32> = SIMD3<Int32>(left.numerator.x * Int32(right.denominator) * right.numerator.x * Int32(left.denominator),
                                left.numerator.y * Int32(right.denominator) * right.numerator.y * Int32(left.denominator),
                                left.numerator.z * Int32(right.denominator) * right.numerator.z * Int32(left.denominator))
     return MKint3(numerator: numerator, denominator: denominator)
@@ -127,7 +127,7 @@ struct MKint3: Equatable
   public static func +(left: MKint3, right: MKint3) -> MKint3
   {
     let denominator: Int = left.denominator * right.denominator
-    let numerator: int3 = int3(left.numerator.x * Int32(right.denominator) + right.numerator.x * Int32(left.denominator),
+    let numerator: SIMD3<Int32> = SIMD3<Int32>(left.numerator.x * Int32(right.denominator) + right.numerator.x * Int32(left.denominator),
                                left.numerator.y * Int32(right.denominator) + right.numerator.y * Int32(left.denominator),
                                left.numerator.z * Int32(right.denominator) + right.numerator.z * Int32(left.denominator))
     return MKint3(numerator: numerator, denominator: denominator)
@@ -136,7 +136,7 @@ struct MKint3: Equatable
   public static func -(left: MKint3, right: MKint3) -> MKint3
   {
     let denominator: Int = left.denominator * right.denominator
-    let numerator: int3 = int3(left.numerator.x * Int32(right.denominator) - right.numerator.x * Int32(left.denominator),
+    let numerator: SIMD3<Int32> = SIMD3<Int32>(left.numerator.x * Int32(right.denominator) - right.numerator.x * Int32(left.denominator),
                                left.numerator.y * Int32(right.denominator) - right.numerator.y * Int32(left.denominator),
                                left.numerator.z * Int32(right.denominator) - right.numerator.z * Int32(left.denominator))
     return MKint3(numerator: numerator, denominator: denominator)

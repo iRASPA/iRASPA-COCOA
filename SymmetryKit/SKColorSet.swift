@@ -139,7 +139,7 @@ public struct SKColorSet: Decodable, BinaryDecodable, BinaryEncodable
       }
     }
     
-    let addedColors: Dictionary<String, NSColor> = try container.decode([String : float4].self).mapValues{NSColor(float4: $0)}
+    let addedColors: Dictionary<String, NSColor> = try container.decode([String : SIMD4<Float>].self).mapValues{NSColor(float4: $0)}
     for (key, color) in addedColors
     {
       self.colors[key] = color

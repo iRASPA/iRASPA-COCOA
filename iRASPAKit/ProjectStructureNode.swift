@@ -52,7 +52,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   }
   
   
-  public var measurementTreeNodes: [(structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: int3)] = []
+  public var measurementTreeNodes: [(structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)] = []
   
   public var renderBackgroundType = RKBackgroundType.color
   public var renderBackgroundColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -151,7 +151,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     
     
     self.renderBackgroundType = RKBackgroundType(rawValue: try container.decode(Int.self))!
-    self.renderBackgroundColor = NSColor(float4: try container.decode(float4.self))
+    self.renderBackgroundColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
     
     if let data = try container.decodeIfPresent(Data.self)
     {
@@ -163,10 +163,10 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
         }
       }
     }
-    self.backgroundLinearGradientFromColor = NSColor(float4: try container.decode(float4.self))
-    self.backgroundLinearGradientToColor = NSColor(float4: try container.decode(float4.self))
-    self.backgroundRadialGradientFromColor = NSColor(float4: try container.decode(float4.self))
-    self.backgroundRadialGradientToColor = NSColor(float4: try container.decode(float4.self))
+    self.backgroundLinearGradientFromColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
+    self.backgroundLinearGradientToColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
+    self.backgroundRadialGradientFromColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
+    self.backgroundRadialGradientToColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
     self.backgroundLinearGradientAngle = try container.decode(Double.self)
     self.backgroundRadialGradientRoundness = try container.decode(Double.self)
     
@@ -235,11 +235,11 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
       
       if(frames.isEmpty)
       {
-        return SKBoundingBox(minimum: double3(x:0, y:0, z:0), maximum: double3(x:0.0, y:0.0, z:0.0))
+        return SKBoundingBox(minimum: SIMD3<Double>(x:0, y:0, z:0), maximum: SIMD3<Double>(x:0.0, y:0.0, z:0.0))
       }
       
-      var minimum: double3 = double3(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
-      var maximum: double3 = double3(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
+      var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
+      var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
       
       for frame in frames
       {
@@ -377,14 +377,14 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
       if let structure: RKRenderAtomSource = atomInfo.structure as? RKRenderAtomSource
       {
         let position = structure.CartesianPosition(for: atomInfo.copy.position + structure.cell.contentShift, replicaPosition: atomInfo.replicaPosition)
-        let atomPosition: float4 = float4(x: Float(position.x), y: Float(position.y), z: Float(position.z), w: Float(w))
+        let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(position.x), y: Float(position.y), z: Float(position.z), w: Float(w))
       
         let radius: Double = atomInfo.copy.asymmetricParentAtom.drawRadius
         let ambient: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
         let diffuse: NSColor = NSColor(calibratedRed: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
         let specular: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
       
-        return RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(radius))
+        return RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
       }
       return nil
     })
@@ -413,19 +413,19 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   {
     var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms]()
     
-    let boundingBoxWidths: double3 = self.renderBoundingBox.widths
+    let boundingBoxWidths: SIMD3<Double> = self.renderBoundingBox.widths
     
     let scale: Double = 0.0025 * max(boundingBoxWidths.x,boundingBoxWidths.y,boundingBoxWidths.z)
     
     for corner in self.renderBoundingBox.corners
     {
-        let spherePosition: float4 = float4(x: Float(corner.x), y: Float(corner.y), z: Float(corner.z), w: 1.0)
+        let spherePosition: SIMD4<Float> = SIMD4<Float>(x: Float(corner.x), y: Float(corner.y), z: Float(corner.z), w: 1.0)
           
         let ambient: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         let diffuse: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         let specular: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
           
-        data.append(RKInPerInstanceAttributesAtoms(position: spherePosition, ambient: float4(color: ambient), diffuse: float4(color: diffuse), specular: float4(color: specular), scale: Float(scale)))
+        data.append(RKInPerInstanceAttributesAtoms(position: spherePosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(scale)))
     }
     
     return data
@@ -439,21 +439,21 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     let color2: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     
     let boundingBox: SKBoundingBox = self.renderBoundingBox
-    let boundingBoxWidths: double3 = boundingBox.widths
+    let boundingBoxWidths: SIMD3<Double> = boundingBox.widths
     let scale: Double = 0.0025 * max(boundingBoxWidths.x,boundingBoxWidths.y,boundingBoxWidths.z)
     
     for side in boundingBox.sides
     {
     
-      let position1 = float4(x: Float(side.0.x), y: Float(side.0.y), z: Float(side.0.z), w: 1.0)
-      let position2 = float4(x: Float(side.1.x), y: Float(side.1.y), z: Float(side.1.z), w: 1.0)
+      let position1 = SIMD4<Float>(x: Float(side.0.x), y: Float(side.0.y), z: Float(side.0.z), w: 1.0)
+      let position2 = SIMD4<Float>(x: Float(side.1.x), y: Float(side.1.y), z: Float(side.1.z), w: 1.0)
       
       data.append(RKInPerInstanceAttributesBonds(
         position1: position1,
         position2: position2,
-        color1: float4(color: color1),
-        color2: float4(color: color2),
-        scale: float4(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0)))
+        color1: SIMD4<Float>(color: color1),
+        color2: SIMD4<Float>(color: color2),
+        scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0)))
     }
     
     

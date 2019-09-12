@@ -40,8 +40,8 @@ public class RKTrackBall
   let kDeg2Rad: Double = 3.1415927 / 180.0
   
   var gRadiusTrackball: Double = 0
-  var gStartPtTrackball: double3 = double3()
-  var gEndPtTrackball: double3 = double3()
+  var gStartPtTrackball: SIMD3<Double> = SIMD3<Double>()
+  var gEndPtTrackball: SIMD3<Double> = SIMD3<Double>()
   
   var gXCenterTrackball: Double = 0
   var gYCenterTrackball: Double = 0
@@ -103,7 +103,7 @@ public class RKTrackBall
   
   public func rollToTrackball(x: CGFloat, y: CGFloat) -> simd_quatd
   {
-    var rot: double3 = double3()
+    var rot: SIMD3<Double> = SIMD3<Double>()
     var xxyy: Double
     var cosAng: Double
     var sinAng: Double
@@ -133,7 +133,7 @@ public class RKTrackBall
     }
     
     // Take the cross product of the two vectors. r = s X e
-    rot=double3(x: gStartPtTrackball.y * gEndPtTrackball.z - gStartPtTrackball.z * gEndPtTrackball.y,
+    rot=SIMD3<Double>(x: gStartPtTrackball.y * gEndPtTrackball.z - gStartPtTrackball.z * gEndPtTrackball.y,
                 y: gStartPtTrackball.z * gEndPtTrackball.x - gStartPtTrackball.x * gEndPtTrackball.z,
                 z: gStartPtTrackball.x * gEndPtTrackball.y - gStartPtTrackball.y * gEndPtTrackball.x)
     

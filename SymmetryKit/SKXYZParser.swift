@@ -137,7 +137,7 @@ public final class SKXYZParser: SKParser, ProgressReporting
                 let cx = Double(words[6]), let cy = Double(words[7]), let cz = Double(words[8])
               {
                 periodic = true
-                let unitCell: double3x3 = double3x3([double3(ax,ay,az), double3(bx,by,bz), double3(cx,cy,cz)])
+                let unitCell: double3x3 = double3x3([SIMD3<Double>(ax,ay,az), SIMD3<Double>(bx,by,bz), SIMD3<Double>(cx,cy,cz)])
                 cell = SKCell(unitCell: unitCell)
               
                 // update progress
@@ -157,7 +157,7 @@ public final class SKXYZParser: SKParser, ProgressReporting
                 let words: [String] = (scannedLine as String?)?.condensingWhitespace().components(separatedBy: CharacterSet.whitespaces),
                 words.count >= 4
               {
-                let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: double3(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+                let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
                 
                 
                 if let atomicNumber: Int = SKElement.atomData[words[0].capitalizeFirst]?["atomicNumber"] as? Int,
@@ -169,7 +169,7 @@ public final class SKXYZParser: SKParser, ProgressReporting
                   atom.elementIdentifier = atomicNumber
                   atom.displayName = chemicalSymbol
                   atom.uniqueForceFieldName = chemicalSymbol
-                  atom.position = double3(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
+                  atom.position = SIMD3<Double>(x: orthogonalXCoordinate, y: orthogonalYCoordinate, z: orthogonalZCoordinate)
                   atoms.append(atom)
                 }
               }

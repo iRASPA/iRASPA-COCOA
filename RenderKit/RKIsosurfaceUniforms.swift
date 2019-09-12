@@ -38,17 +38,17 @@ public struct RKIsosurfaceUniforms
   public var unitCellMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
   public var unitCellNormalMatrix: float4x4 = float4x4(Double4x4: double4x4())
   
-  public var ambientFrontSide: float4 = float4(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var diffuseFrontSide: float4 = float4(x: 0.588235, y: 0.670588, z: 0.729412, w:1.0)
-  public var specularFrontSide: float4 = float4(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var ambientFrontSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var diffuseFrontSide: SIMD4<Float> = SIMD4<Float>(x: 0.588235, y: 0.670588, z: 0.729412, w:1.0)
+  public var specularFrontSide: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var frontHDR: Int32 = 1
   public var frontHDRExposure: Float = 1.5
   public var pad3: Float = 0.0
   public var shininessFrontSide: Float = 4.0
   
-  public var ambientBackSide: float4 = float4(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var diffuseBackSide: float4 = float4(x: 0.588235, y: 0.670588, z: 0.729412, w:1.0)
-  public var specularBackSide: float4 = float4(x: 0.9, y: 0.9, z: 0.9, w: 1.0)
+  public var ambientBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var diffuseBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.588235, y: 0.670588, z: 0.729412, w:1.0)
+  public var specularBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.9, y: 0.9, z: 0.9, w: 1.0)
   public var backHDR: Int32 = 1
   public var backHDRExposure: Float = 1.5
   public var pad6: Float = 0.0
@@ -69,16 +69,16 @@ public struct RKIsosurfaceUniforms
     {
       self.frontHDR = structure.adsorptionSurfaceFrontSideHDR ? 1 : 0
       self.frontHDRExposure = Float(structure.adsorptionSurfaceFrontSideHDRExposure)
-      self.ambientBackSide = Float(structure.adsorptionSurfaceBackSideAmbientIntensity) * float4(color: structure.adsorptionSurfaceBackSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
-      self.diffuseBackSide = Float(structure.adsorptionSurfaceBackSideDiffuseIntensity) * float4(color: structure.adsorptionSurfaceBackSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
-      self.specularBackSide = Float(structure.adsorptionSurfaceBackSideSpecularIntensity) * float4(color: structure.adsorptionSurfaceBackSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.ambientBackSide = Float(structure.adsorptionSurfaceBackSideAmbientIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceBackSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.diffuseBackSide = Float(structure.adsorptionSurfaceBackSideDiffuseIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceBackSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.specularBackSide = Float(structure.adsorptionSurfaceBackSideSpecularIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceBackSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
       self.shininessBackSide = Float(structure.adsorptionSurfaceBackSideShininess)
     
       self.backHDR = structure.adsorptionSurfaceBackSideHDR ? 1 : 0
       self.backHDRExposure = Float(structure.adsorptionSurfaceBackSideHDRExposure)
-      self.ambientFrontSide = Float(structure.adsorptionSurfaceFrontSideAmbientIntensity) * float4(color: structure.adsorptionSurfaceFrontSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
-      self.diffuseFrontSide = Float(structure.adsorptionSurfaceFrontSideDiffuseIntensity) * float4(color: structure.adsorptionSurfaceFrontSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
-      self.specularFrontSide = Float(structure.adsorptionSurfaceFrontSideSpecularIntensity) * float4(color: structure.adsorptionSurfaceFrontSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.ambientFrontSide = Float(structure.adsorptionSurfaceFrontSideAmbientIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceFrontSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.diffuseFrontSide = Float(structure.adsorptionSurfaceFrontSideDiffuseIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceFrontSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
+      self.specularFrontSide = Float(structure.adsorptionSurfaceFrontSideSpecularIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceFrontSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
       self.shininessFrontSide = Float(structure.adsorptionSurfaceFrontSideShininess)
     }
   }

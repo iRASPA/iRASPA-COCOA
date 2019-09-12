@@ -641,7 +641,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let drawRadius: Double = structure.drawRadius(elementId: 6)
       let bondDistanceCriteria: Double = document.forceFieldSets[structure.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
       
-      atomGroupNode = SKAsymmetricAtom(displayName: displayName, elementId: 6, uniqueForceFieldName: displayName, position: double3(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+      atomGroupNode = SKAsymmetricAtom(displayName: displayName, elementId: 6, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
       atomGroupNode.displayName = "New group"
       atomGroupNode.symmetryType = .container
       structure.expandSymmetry(asymmetricAtom: atomGroupNode)
@@ -697,7 +697,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let color: NSColor = document.colorSets[structure.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
       let drawRadius: Double = structure.drawRadius(elementId: element)
       let bondDistanceCriteria: Double = document.forceFieldSets[structure.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
-      let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  element, uniqueForceFieldName: displayName, position: double3(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+      let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  element, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
       structure.expandSymmetry(asymmetricAtom: asymmetricAtom)
       let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
       
@@ -1912,7 +1912,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       // PDB uses Cartesian coordinates
       let exportAtoms: [SKAsymmetricAtom] = state.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> SKAsymmetricAtom? in
-        atomModel.position = structure.CartesianPosition(for: atomModel.position, replicaPosition: int3())
+        atomModel.position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
         return atomModel
       })
       
@@ -1920,11 +1920,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       switch(structure)
       {
       case let crystal as Crystal:
-        stringData = SKPDBWriter.shared.string(displayName: crystal.displayName,spaceGroupHallNumber: 1, cell: crystal.cell, atoms: exportAtoms, origin: double3(0,0,0))
+        stringData = SKPDBWriter.shared.string(displayName: crystal.displayName,spaceGroupHallNumber: 1, cell: crystal.cell, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
       case let proteinCrystal as ProteinCrystal:
-        stringData = SKPDBWriter.shared.string(displayName: proteinCrystal.displayName,spaceGroupHallNumber: 1, cell: proteinCrystal.cell, atoms: exportAtoms, origin: double3(0,0,0))
+        stringData = SKPDBWriter.shared.string(displayName: proteinCrystal.displayName,spaceGroupHallNumber: 1, cell: proteinCrystal.cell, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
       case let crystal as MolecularCrystal:
-        stringData = SKPDBWriter.shared.string(displayName: crystal.displayName,spaceGroupHallNumber: 1, cell: crystal.cell, atoms: exportAtoms, origin: double3(0,0,0))
+        stringData = SKPDBWriter.shared.string(displayName: crystal.displayName,spaceGroupHallNumber: 1, cell: crystal.cell, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
       case let protein as Protein:
         let boundingBox = protein.cell.boundingBox
         stringData = SKPDBWriter.shared.string(displayName: protein.displayName,spaceGroupHallNumber: 1, cell: SKCell(boundingBox: boundingBox), atoms: exportAtoms, origin: boundingBox.minimum)
@@ -1980,11 +1980,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       switch(structure)
       {
       case let crystal as Crystal:
-        stringData = SKmmCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, atomsAreFractional: true, exportFractional: false, withProteinInfo: false, origin: double3(0,0,0))
+        stringData = SKmmCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, atomsAreFractional: true, exportFractional: false, withProteinInfo: false, origin: SIMD3<Double>(0,0,0))
       case let proteinCrystal as ProteinCrystal:
-        stringData = SKmmCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: double3(0,0,0))
+        stringData = SKmmCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: SIMD3<Double>(0,0,0))
       case let molecularCrystal as MolecularCrystal:
-        stringData = SKmmCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: false, origin: double3(0,0,0))
+        stringData = SKmmCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: false, origin: SIMD3<Double>(0,0,0))
       case let protein as Protein:
         let boundingBox = protein.cell.boundingBox
         stringData = SKmmCIFWriter.shared.string(displayName: protein.displayName, spaceGroupHallNumber: protein.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: boundingBox.minimum)
@@ -2031,11 +2031,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       switch(structure)
       {
       case let crystal as Crystal:
-        stringData = SKCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, exportFractional: true, origin: double3(0,0,0))
+        stringData = SKCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, exportFractional: true, origin: SIMD3<Double>(0,0,0))
       case let proteinCrystal as ProteinCrystal:
-        stringData = SKCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, exportFractional: false, origin: double3(0,0,0))
+        stringData = SKCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, exportFractional: false, origin: SIMD3<Double>(0,0,0))
       case let molecularCrystal as MolecularCrystal:
-        stringData = SKCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, exportFractional: false, origin: double3(0,0,0))
+        stringData = SKCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, exportFractional: false, origin: SIMD3<Double>(0,0,0))
       case let protein as Protein:
         let boundingBox = protein.cell.boundingBox
         stringData = SKCIFWriter.shared.string(displayName: protein.displayName, spaceGroupHallNumber: protein.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, exportFractional: false, origin: boundingBox.minimum)
@@ -2076,7 +2076,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let structure = self.representedObject as? Structure
     {
       let asymmetricAtoms: [SKAsymmetricAtom] = structure.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
-      let atoms: [(Int, double3)] = asymmetricAtoms.flatMap{$0.copies}.compactMap{($0.asymmetricParentAtom.elementIdentifier,structure.CartesianPosition(for: $0.position, replicaPosition: int3()) )}
+      let atoms: [(Int, SIMD3<Double>)] = asymmetricAtoms.flatMap{$0.copies}.compactMap{($0.asymmetricParentAtom.elementIdentifier,structure.CartesianPosition(for: $0.position, replicaPosition: SIMD3<Int32>()) )}
       
       let stringData: String
       switch(structure)
@@ -2084,15 +2084,15 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       case let crystal as Crystal:
         let unitCell = crystal.cell.unitCell
         let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-        stringData = SKXYZWriter.shared.string(displayName: crystal.displayName,  commentString: commentString, atoms: atoms, origin: double3(0,0,0))
+        stringData = SKXYZWriter.shared.string(displayName: crystal.displayName,  commentString: commentString, atoms: atoms, origin: SIMD3<Double>(0,0,0))
       case let proteinCrystal as ProteinCrystal:
         let unitCell = proteinCrystal.cell.unitCell
         let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-        stringData = SKXYZWriter.shared.string(displayName: proteinCrystal.displayName,  commentString: commentString, atoms: atoms, origin: double3(0,0,0))
+        stringData = SKXYZWriter.shared.string(displayName: proteinCrystal.displayName,  commentString: commentString, atoms: atoms, origin: SIMD3<Double>(0,0,0))
       case let molecularCrystal as MolecularCrystal:
         let unitCell = molecularCrystal.cell.unitCell
         let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-        stringData = SKXYZWriter.shared.string(displayName: molecularCrystal.displayName,  commentString: commentString, atoms: atoms, origin: double3(0,0,0))
+        stringData = SKXYZWriter.shared.string(displayName: molecularCrystal.displayName,  commentString: commentString, atoms: atoms, origin: SIMD3<Double>(0,0,0))
       case let protein as Protein:
         let boundingBox = protein.cell.boundingBox
         let unitCell = SKCell(boundingBox: boundingBox).unitCell
@@ -2155,21 +2155,21 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       switch(structure)
       {
       case let crystal as Crystal:
-        let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
-        stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell , atoms: atoms, atomsAreFractional: true, origin: double3(0,0,0))
+        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
+        stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell , atoms: atoms, atomsAreFractional: true, origin: SIMD3<Double>(0,0,0))
       case let proteinCrystal as ProteinCrystal:
-        let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
-        stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: double3(0,0,0))
+        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
+        stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
       case let molecularCrystal as MolecularCrystal:
-        let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
-        stringData = SKVASPWriter.shared.string(displayName: molecularCrystal.displayName, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: double3(0,0,0))
+        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+        stringData = SKVASPWriter.shared.string(displayName: molecularCrystal.displayName, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
       case let protein as Protein:
         let boundingBox = protein.cell.boundingBox
-        let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
         stringData = SKVASPWriter.shared.string(displayName: protein.displayName, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, origin: boundingBox.minimum)
       case let molecule as Molecule:
         let boundingBox = molecule.cell.boundingBox
-        let atoms: [(Int, double3, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+        let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
         stringData = SKVASPWriter.shared.string(displayName: molecule.displayName, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, origin: boundingBox.minimum)
       default:
         stringData = ""

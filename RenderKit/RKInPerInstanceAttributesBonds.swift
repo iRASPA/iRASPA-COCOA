@@ -35,18 +35,18 @@ import simd
 
 public struct RKInPerInstanceAttributesBonds
 {
-  public var position1: float4 = float4()
-  public var position2: float4 = float4()
-  public var color1: float4 = float4()
-  public var color2: float4 = float4()
-  public var scale: float4 = float4()
+  public var position1:  SIMD4<Float> =  SIMD4<Float>()
+  public var position2:  SIMD4<Float> =  SIMD4<Float>()
+  public var color1:  SIMD4<Float> =  SIMD4<Float>()
+  public var color2:  SIMD4<Float> =  SIMD4<Float>()
+  public var scale:  SIMD4<Float> =  SIMD4<Float>()
   
   public init()
   {
     
   }
   
-  public init(position1: float4, position2: float4, color1: float4, color2: float4, scale: float4)
+  public init(position1:  SIMD4<Float>, position2:  SIMD4<Float>, color1:  SIMD4<Float>, color2:  SIMD4<Float>, scale:  SIMD4<Float>)
   {
     self.position1 = position1
     self.position2 = position2

@@ -43,12 +43,12 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
   public var editable: Bool = true
   public var atomicNumber: Int = 6
   public var sortIndex: Int
-  public var potentialParameters: double2 = double2(0.0,0.0)
+  public var potentialParameters: SIMD2<Double> = SIMD2<Double>(0.0,0.0)
   public var mass: Double = 0.0
   public var userDefinedRadius: Double = 0.0
   public var isVisible: Bool = true
   
-  public init(forceFieldStringIdentifier: String, atomicNumber: Int, sortIndex: Int, potentialParameters: double2, mass: Double, userDefinedRadius: Double)
+  public init(forceFieldStringIdentifier: String, atomicNumber: Int, sortIndex: Int, potentialParameters: SIMD2<Double>, mass: Double, userDefinedRadius: Double)
   {
     self.forceFieldStringIdentifier = forceFieldStringIdentifier
     self.atomicNumber = atomicNumber
@@ -73,7 +73,7 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
   
     self.atomicNumber  = try container.decode(Int.self)
     self.sortIndex = try container.decode(Int.self)
-    self.potentialParameters  = try container.decode(double2.self)
+    self.potentialParameters  = try container.decode(SIMD2<Double>.self)
     self.mass = try container.decode(Double.self)
     self.userDefinedRadius = try container.decode(Double.self)
     self.isVisible = true
@@ -112,7 +112,7 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
     self.sortIndex = atomicNumber
     self.forceFieldStringIdentifier  = try decoder.decode(String.self)
     
-    self.potentialParameters  = try decoder.decode(double2.self)
+    self.potentialParameters  = try decoder.decode(SIMD2<Double>.self)
     self.mass = try decoder.decode(Double.self)
     self.userDefinedRadius = try decoder.decode(Double.self)
     

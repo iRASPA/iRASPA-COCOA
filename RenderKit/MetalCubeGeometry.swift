@@ -49,40 +49,40 @@ public class MetalCubeGeometry
   public var vertices: [RKVertex] =
     [
       // face 0 (front)
-      RKVertex(position: float4(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: float4(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: float4(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: float4(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: float4(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: float2()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: SIMD2<Float>()),
       
       // face 1 (right)
-      RKVertex(position: float4(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: float4(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: float4(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: float4(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: float4(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: float2()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
       
       // face 2 (back)
-      RKVertex(position: float4(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: float4(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: float4(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: float4(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: float4(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: float2()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: SIMD2<Float>()),
       
       // face 3 (left)
-      RKVertex(position: float4(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: float4(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: float4(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: float4(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: float4(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: float2()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
       
       // face 4 (bottom)
-      RKVertex(position: float4(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: float4(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: float4(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: float4(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: float4(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: float2()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
       
       // face 5 (top)
-      RKVertex(position: float4(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: float4(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: float4(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: float4(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: float2()),
-      RKVertex(position: float4(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: float4(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: float2())
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
+      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>())
   ]
   
   

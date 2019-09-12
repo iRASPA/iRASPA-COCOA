@@ -49,11 +49,11 @@ public struct SKVASPReader
   let keywordSet: CharacterSet
   let newLineChararterSet: CharacterSet
   
-  var firstAxis: double3? = nil
-  var secondAxis: double3? = nil
-  var thirdAxis: double3? = nil
+  var firstAxis: SIMD3<Double>? = nil
+  var secondAxis: SIMD3<Double>? = nil
+  var thirdAxis: SIMD3<Double>? = nil
   
-  public var atoms: [(fractionalPosition: double3, type: Int)] = []
+  public var atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = []
   public var unitCell: double3x3?
   {
     if let firstAxis = firstAxis,
@@ -109,7 +109,7 @@ public struct SKVASPReader
                let secondNumber: Double = Double(splittedString[1]),
                let thirdNumber: Double = Double(splittedString[2])
             {
-              firstAxis = double3(firstNumber,secondNumber,thirdNumber)
+              firstAxis = SIMD3<Double>(firstNumber,secondNumber,thirdNumber)
             }
           }
         case 4:  // second axis
@@ -120,7 +120,7 @@ public struct SKVASPReader
               let secondNumber: Double = Double(splittedString[1]),
               let thirdNumber: Double = Double(splittedString[2])
             {
-              secondAxis = double3(firstNumber,secondNumber,thirdNumber)
+              secondAxis = SIMD3<Double>(firstNumber,secondNumber,thirdNumber)
             }
           }
         case 5:  // third axis
@@ -131,7 +131,7 @@ public struct SKVASPReader
               let secondNumber: Double = Double(splittedString[1]),
               let thirdNumber: Double = Double(splittedString[2])
             {
-              thirdAxis = double3(firstNumber,secondNumber,thirdNumber)
+              thirdAxis = SIMD3<Double>(firstNumber,secondNumber,thirdNumber)
             }
           }
         case 6:
@@ -146,7 +146,7 @@ public struct SKVASPReader
               let secondNumber: Double = Double(splittedString[1]),
               let thirdNumber: Double = Double(splittedString[2])
             {
-              atoms.append((double3(firstNumber,secondNumber,thirdNumber),1))
+              atoms.append((SIMD3<Double>(firstNumber,secondNumber,thirdNumber),1))
             }
           }
         }
