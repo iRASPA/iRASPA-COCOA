@@ -221,12 +221,14 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
       if result == NSApplication.ModalResponse.OK
       {
         if let importButton: NSButton = importAccessoryViewController.importSeparateProjects,
-           let onlyAsymmetricUnitButton: NSButton = importAccessoryViewController.onlyAsymmetricUnit
+           let onlyAsymmetricUnitButton: NSButton = importAccessoryViewController.onlyAsymmetricUnit,
+           let asMoleculeButton: NSButton = importAccessoryViewController.importAsMolecule
         {
           let asSeparateProjects: Bool = importButton.state == NSControl.StateValue.on ? true : false
           let onlyAsymmetricUnit: Bool = onlyAsymmetricUnitButton.state == NSControl.StateValue.on ? true : false
+          let asMolecule: Bool = asMoleculeButton.state == NSControl.StateValue.on ? true : false
         
-          self.masterTabViewController?.projectViewController?.importStructureFiles(openPanel.urls as [URL], asSeparateProjects: asSeparateProjects, onlyAsymmetricUnit: onlyAsymmetricUnit)
+          self.masterTabViewController?.projectViewController?.importStructureFiles(openPanel.urls as [URL], asSeparateProjects: asSeparateProjects, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
         }
       }
     }

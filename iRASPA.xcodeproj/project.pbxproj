@@ -194,7 +194,6 @@
 		937479531FB9ECF7008C4411 /* SKMetalMarchingCubes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937479521FB9ECF7008C4411 /* SKMetalMarchingCubes.swift */; };
 		937479581FB9ED8F008C4411 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		9374795A1FB9EF2D008C4411 /* MarchingCubes3D_128x128x128.metal in Sources */ = {isa = PBXBuildFile; fileRef = 937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */; };
-		9374795C1FB9EF93008C4411 /* MarchingCubes3D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 9374795B1FB9EF93008C4411 /* MarchingCubes3D.metal */; };
 		937807D721C5847000EC4466 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807D621C5847000EC4466 /* OrderedDictionary.swift */; };
 		937807D921C58E9500EC4466 /* SKConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807D821C58E9500EC4466 /* SKConstants.swift */; };
 		937807DB21C5945100EC4466 /* RKTrackBall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807DA21C5945100EC4466 /* RKTrackBall.swift */; };
@@ -330,6 +329,7 @@
 		939B206D1EF2CF600061DE8D /* double3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B206C1EF2CF600061DE8D /* double3.swift */; };
 		939B206F1EF2D0310061DE8D /* int3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B206E1EF2D0310061DE8D /* int3.swift */; };
 		939B20731EF2D0920061DE8D /* Int32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B20721EF2D0920061DE8D /* Int32.swift */; };
+		939C5693234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal in Sources */ = {isa = PBXBuildFile; fileRef = 939C5692234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal */; };
 		939FFA7F225362B1000A1A46 /* SKXDATCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */; };
 		93A067AF2257D7C70099A880 /* CaseInsensitiveString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */; };
 		93A0BE381F24ED15001647D7 /* Gallery.irspdoc in Resources */ = {isa = PBXBuildFile; fileRef = 93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */; };
@@ -971,7 +971,6 @@
 		9374794E1FB9EB51008C4411 /* SKBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKBoundingBox.swift; sourceTree = "<group>"; };
 		937479521FB9ECF7008C4411 /* SKMetalMarchingCubes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes.swift; sourceTree = "<group>"; };
 		937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D_128x128x128.metal; sourceTree = "<group>"; };
-		9374795B1FB9EF93008C4411 /* MarchingCubes3D.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D.metal; sourceTree = "<group>"; };
 		937807D621C5847000EC4466 /* OrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		937807D821C58E9500EC4466 /* SKConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKConstants.swift; sourceTree = "<group>"; };
 		937807DA21C5945100EC4466 /* RKTrackBall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKTrackBall.swift; sourceTree = "<group>"; };
@@ -1108,6 +1107,7 @@
 		939B206C1EF2CF600061DE8D /* double3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = double3.swift; sourceTree = "<group>"; };
 		939B206E1EF2D0310061DE8D /* int3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = int3.swift; sourceTree = "<group>"; };
 		939B20721EF2D0920061DE8D /* Int32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int32.swift; sourceTree = "<group>"; };
+		939C5692234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D_256x256x256.metal; sourceTree = "<group>"; };
 		939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXDATCARParser.swift; sourceTree = "<group>"; };
 		93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveString.swift; sourceTree = "<group>"; };
 		93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Gallery.irspdoc; sourceTree = "<group>"; };
@@ -1405,7 +1405,7 @@
 				93BDF7641FB638810006692C /* SimulationKitProtocols.swift */,
 				930DD4B01E26A8BC00B8FE9B /* ComputeEnergyGrid.metal */,
 				937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */,
-				9374795B1FB9EF93008C4411 /* MarchingCubes3D.metal */,
+				939C5692234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal */,
 				930DD4AC1E26A89D00B8FE9B /* SKMetalFramework.swift */,
 				937479521FB9ECF7008C4411 /* SKMetalMarchingCubes.swift */,
 				937807DC21C598AA00EC4466 /* SKVoidFraction.swift */,
@@ -2868,9 +2868,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9374795C1FB9EF93008C4411 /* MarchingCubes3D.metal in Sources */,
 				937807D921C58E9500EC4466 /* SKConstants.swift in Sources */,
 				930DD4B11E26A8BC00B8FE9B /* ComputeEnergyGrid.metal in Sources */,
+				939C5693234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal in Sources */,
 				9374795A1FB9EF2D008C4411 /* MarchingCubes3D_128x128x128.metal in Sources */,
 				937479531FB9ECF7008C4411 /* SKMetalMarchingCubes.swift in Sources */,
 				93BDF7651FB638810006692C /* SimulationKitProtocols.swift in Sources */,
@@ -4020,14 +4020,14 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = iRASPA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.1.29;
+				MARKETING_VERSION = 1.1.30;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4049,14 +4049,14 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = iRASPA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.1.29;
+				MARKETING_VERSION = 1.1.30;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";

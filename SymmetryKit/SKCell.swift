@@ -94,13 +94,13 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
       inverseUnitCell = unitCell.inverse
       fullCell = unitCell
       
-      let dx = maximumReplica[0] - minimumReplica[0] + 1
-      let dy = maximumReplica[1] - minimumReplica[1] + 1
-      let dz = maximumReplica[2] - minimumReplica[2] + 1
+      let dx: Double = Double(maximumReplica[0] - minimumReplica[0] + 1)
+      let dy: Double = Double(maximumReplica[1] - minimumReplica[1] + 1)
+      let dz: Double = Double(maximumReplica[2] - minimumReplica[2] + 1)
       
-      fullCell[0][0] *= Double(dx);  fullCell[1][0] *= Double(dy);  fullCell[2][0] *= Double(dz);
-      fullCell[0][1] *= Double(dx);  fullCell[1][1] *= Double(dy);  fullCell[2][1] *= Double(dz);
-      fullCell[0][2] *= Double(dx);  fullCell[1][2] *= Double(dy);  fullCell[2][2] *= Double(dz);
+      fullCell[0][0] *= dx;  fullCell[1][0] *= dy;  fullCell[2][0] *= dz;
+      fullCell[0][1] *= dx;  fullCell[1][1] *= dy;  fullCell[2][1] *= dz;
+      fullCell[0][2] *= dx;  fullCell[1][2] *= dy;  fullCell[2][2] *= dz;
       
       
       inverseFullCell = fullCell.inverse
@@ -126,13 +126,13 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     inverseUnitCell = unitCell.inverse
     fullCell = unitCell
     
-    let dx = maximumReplica.x - minimumReplica.x + 1
-    let dy = maximumReplica.y - minimumReplica.y + 1
-    let dz = maximumReplica.z - minimumReplica.z + 1
+    let dx: Double = Double(maximumReplica.x - minimumReplica.x + 1)
+    let dy: Double = Double(maximumReplica.y - minimumReplica.y + 1)
+    let dz: Double = Double(maximumReplica.z - minimumReplica.z + 1)
     
-    fullCell[0][0] *= Double(dx);  fullCell[1][0] *= Double(dy);  fullCell[2][0] *= Double(dz);
-    fullCell[0][1] *= Double(dx);  fullCell[1][1] *= Double(dy);  fullCell[2][1] *= Double(dz);
-    fullCell[0][2] *= Double(dx);  fullCell[1][2] *= Double(dy);  fullCell[2][2] *= Double(dz);
+    fullCell[0][0] *= dx;  fullCell[1][0] *= dy;  fullCell[2][0] *= dz;
+    fullCell[0][1] *= dx;  fullCell[1][1] *= dy;  fullCell[2][1] *= dz;
+    fullCell[0][2] *= dx;  fullCell[1][2] *= dy;  fullCell[2][2] *= dz;
     
     inverseFullCell = fullCell.inverse
     
@@ -179,23 +179,23 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   {
     didSet
     {
-      let dx = maximumReplica.x - minimumReplica.x + 1
+      let dx: Double = Double(maximumReplica.x - minimumReplica.x + 1)
       
-      fullCell[0][0] = unitCell[0][0] * Double(dx);
-      fullCell[0][1] = unitCell[0][1] * Double(dx);
-      fullCell[0][2] = unitCell[0][2] * Double(dx);
+      fullCell[0][0] = unitCell[0][0] * dx;
+      fullCell[0][1] = unitCell[0][1] * dx;
+      fullCell[0][2] = unitCell[0][2] * dx;
       
-      let dy = maximumReplica.y - minimumReplica.y + 1
+      let dy: Double = Double(maximumReplica.y - minimumReplica.y + 1)
       
-      fullCell[1][0] = unitCell[1][0] * Double(dy);
-      fullCell[1][1] = unitCell[1][1] * Double(dy);
-      fullCell[1][2] = unitCell[1][2] * Double(dy);
+      fullCell[1][0] = unitCell[1][0] * dy;
+      fullCell[1][1] = unitCell[1][1] * dy;
+      fullCell[1][2] = unitCell[1][2] * dy;
       
-      let dz = maximumReplica.z - minimumReplica.z + 1
+      let dz: Double = Double(maximumReplica.z - minimumReplica.z + 1)
       
-      fullCell[2][0] = unitCell[2][0] * Double(dz);
-      fullCell[2][1] = unitCell[2][1] * Double(dz);
-      fullCell[2][2] = unitCell[2][2] * Double(dz);
+      fullCell[2][0] = unitCell[2][0] * dz;
+      fullCell[2][1] = unitCell[2][1] * dz;
+      fullCell[2][2] = unitCell[2][2] * dz;
       
       
       inverseFullCell = fullCell.inverse
@@ -208,23 +208,23 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   {
     didSet
     {
-      let dx = maximumReplica.x - minimumReplica.x + 1
+      let dx: Double = Double(maximumReplica.x - minimumReplica.x + 1)
       
-      fullCell[0][0] = unitCell[0][0] * Double(dx);
-      fullCell[0][1] = unitCell[0][1] * Double(dx);
-      fullCell[0][2] = unitCell[0][2] * Double(dx);
+      fullCell[0][0] = unitCell[0][0] * dx;
+      fullCell[0][1] = unitCell[0][1] * dx;
+      fullCell[0][2] = unitCell[0][2] * dx;
       
-      let dy = maximumReplica.y - minimumReplica.y + 1
+      let dy: Double = Double(maximumReplica.y - minimumReplica.y + 1)
       
-      fullCell[1][0] = unitCell[1][0] * Double(dy);
-      fullCell[1][1] = unitCell[1][1] * Double(dy);
-      fullCell[1][2] = unitCell[1][2] * Double(dy);
+      fullCell[1][0] = unitCell[1][0] * dy;
+      fullCell[1][1] = unitCell[1][1] * dy;
+      fullCell[1][2] = unitCell[1][2] * dy;
       
-      let dz = maximumReplica.z - minimumReplica.z + 1
+      let dz: Double = Double(maximumReplica.z - minimumReplica.z + 1)
       
-      fullCell[2][0] = unitCell[2][0] * Double(dz);
-      fullCell[2][1] = unitCell[2][1] * Double(dz);
-      fullCell[2][2] = unitCell[2][2] * Double(dz);
+      fullCell[2][0] = unitCell[2][0] * dz;
+      fullCell[2][1] = unitCell[2][1] * dz;
+      fullCell[2][2] = unitCell[2][2] * dz;
       
       
       inverseFullCell = fullCell.inverse

@@ -43,4 +43,5 @@ public class ImportAccessoryViewController: NSViewController
 {
   @IBOutlet var importSeparateProjects: NSButton?
   @IBOutlet var onlyAsymmetricUnit: NSButton?
+  @IBOutlet var importAsMolecule: NSButton?
 }

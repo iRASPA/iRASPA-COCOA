@@ -40,12 +40,12 @@ public class ChargeNumberFormatter: NumberFormatter
   {
     shortFormatter = NumberFormatter()
     shortFormatter.numberStyle = NumberFormatter.Style.decimal
-    shortFormatter.paddingPosition = .beforePrefix
+    //shortFormatter.paddingPosition = .beforePrefix
     shortFormatter.minimumIntegerDigits = 1
     shortFormatter.maximumIntegerDigits = 2
     shortFormatter.minimumFractionDigits = 4
     shortFormatter.maximumFractionDigits = 4
-    shortFormatter.positivePrefix="+"
+    shortFormatter.positivePrefix=shortFormatter.plusSign
     
     longFormatter = NumberFormatter()
     longFormatter.numberStyle = NumberFormatter.Style.decimal
@@ -64,12 +64,12 @@ public class ChargeNumberFormatter: NumberFormatter
   {
     shortFormatter = NumberFormatter()
     shortFormatter.numberStyle = NumberFormatter.Style.decimal
-    shortFormatter.paddingPosition = .beforePrefix
+    //shortFormatter.paddingPosition = .beforePrefix
     shortFormatter.minimumIntegerDigits = 1
     shortFormatter.maximumIntegerDigits = 2
     shortFormatter.minimumFractionDigits = 4
     shortFormatter.maximumFractionDigits = 4
-    shortFormatter.positivePrefix="+"
+    shortFormatter.positivePrefix=shortFormatter.plusSign
     
     longFormatter = NumberFormatter()
     longFormatter.numberStyle = NumberFormatter.Style.decimal

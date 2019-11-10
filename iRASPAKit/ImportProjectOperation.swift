@@ -44,7 +44,7 @@ public class ImportProjectOperation: FKGroupOperation
   
   unowned let treeController: ProjectTreeController
   
-  public init(projectTreeNode: ProjectTreeNode, outlineView: NSOutlineView?, treeController: ProjectTreeController, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, urls: [URL], onlyAsymmetricUnit: Bool)
+  public init(projectTreeNode: ProjectTreeNode, outlineView: NSOutlineView?, treeController: ProjectTreeController, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, urls: [URL], onlyAsymmetricUnit: Bool, asMolecule: Bool)
   {
     self.outlineView = outlineView
     self.projectTreeNode = projectTreeNode
@@ -61,7 +61,7 @@ public class ImportProjectOperation: FKGroupOperation
     progress.completedUnitCount = 0
     
     
-    let readStructureOperation: ReadStructureGroupOperation = ReadStructureGroupOperation(projectTreeNode: projectTreeNode, urls: urls, windowController: windowController, colorSets: colorSets, forceFieldSets: forceFieldSets, onlyAsymmetricUnit: onlyAsymmetricUnit)
+    let readStructureOperation: ReadStructureGroupOperation = ReadStructureGroupOperation(projectTreeNode: projectTreeNode, urls: urls, windowController: windowController, colorSets: colorSets, forceFieldSets: forceFieldSets, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
     progress.addChild(readStructureOperation.progress, withPendingUnitCount: 20)
     
     self.addOperation(readStructureOperation)

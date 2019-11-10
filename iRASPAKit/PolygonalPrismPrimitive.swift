@@ -324,7 +324,7 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
     {
       let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
       
-      let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: currentBoundingBox.center, withTranslation: self.origin)
+      let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: currentBoundingBox.center, withTranslation: SIMD3<Double>(0.0,0.0,0.0))
       
       let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
       let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
@@ -388,7 +388,7 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
     }
     else
     {
-      let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: SIMD3<Double>(0,0,0), withTranslation: self.origin)
+      let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: SIMD3<Double>(0,0,0), withTranslation: SIMD3<Double>(0.0,0.0,0.0))
       
       let polygonVertices: [RKVertex] = MetalNSidedPrismGeometry(r: 1.0, s: self.primitiveNumberOfSides).vertices
       

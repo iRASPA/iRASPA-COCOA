@@ -522,12 +522,15 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     for atom in atoms
     {
       let cartesianPosition: SIMD4<Double> = SIMD4<Double>(atom.position.x,atom.position.y,atom.position.z,1.0)
-      minimum.x = min(minimum.x, cartesianPosition.x)
-      minimum.y = min(minimum.y, cartesianPosition.y)
-      minimum.z = min(minimum.z, cartesianPosition.z)
-      maximum.x = max(maximum.x, cartesianPosition.x)
-      maximum.y = max(maximum.y, cartesianPosition.y)
-      maximum.z = max(maximum.z, cartesianPosition.z)
+      
+      let radius: Double = atom.asymmetricParentAtom?.drawRadius ?? 0.0
+      
+      minimum.x = min(minimum.x, cartesianPosition.x-radius)
+      minimum.y = min(minimum.y, cartesianPosition.y-radius)
+      minimum.z = min(minimum.z, cartesianPosition.z-radius)
+      maximum.x = max(maximum.x, cartesianPosition.x+radius)
+      maximum.y = max(maximum.y, cartesianPosition.y+radius)
+      maximum.z = max(maximum.z, cartesianPosition.z+radius)
     }
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)

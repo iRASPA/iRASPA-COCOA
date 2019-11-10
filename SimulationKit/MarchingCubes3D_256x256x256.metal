@@ -32,8 +32,6 @@
 #include <metal_stdlib>
 using namespace metal;
 
-constant int size = 128;
-
 constant uint3 cubeOffsets[8] =
 {
   {0, 0, 0},
@@ -94,7 +92,7 @@ constant uint numberOfTriangles[256] = {0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3
 // The last part of the algorithm involves forming the correct facets from the positions that the isosurface intersects the edges of the grid cell.
 // Again a table (by Cory Gene Bloyd) is used which this time uses the same cubeindex but allows the vertex sequence to be looked up for as many triangular
 // facets are necessary to represent the isosurface within the grid cell.
-constant char triTable[4096] =
+constant int triTable[4096] =
 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
   0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
   0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -355,36 +353,36 @@ constant char triTable[4096] =
 
 // constexpr sampler s(address::clamp_to_edge, filter::linear);
 
-kernel void constructHPLevel(texture3d<uint,access::read> readHistoPyramid [[ texture(0) ]],
-                             texture3d<uint,access::write> writeHistoPyramid [[ texture(1) ]],
-                             uint3 gid [[ thread_position_in_grid ]])
+kernel void constructHPLevel256(texture3d<uint,access::read> readHistoPyramid [[ texture(0) ]],
+                                texture3d<uint,access::write> writeHistoPyramid [[ texture(1) ]],
+                                uint3 gid [[ thread_position_in_grid ]])
 {
   uint3 readPos = gid*2;
-  int writeValue = readHistoPyramid.read(readPos&(size-1)).x+
-  readHistoPyramid.read((readPos+cubeOffsets[1])&(size-1)).x+
-  readHistoPyramid.read((readPos+cubeOffsets[2])&(size-1)).x+
-  readHistoPyramid.read((readPos+cubeOffsets[3])&(size-1)).x+
-  readHistoPyramid.read((readPos+cubeOffsets[4])&(size-1)).x+
-  readHistoPyramid.read((readPos+cubeOffsets[5])&(size-1)).x+
-  readHistoPyramid.read((readPos+cubeOffsets[6])&(size-1)).x+
-  readHistoPyramid.read((readPos+cubeOffsets[7])&(size-1)).x;
+  int writeValue = readHistoPyramid.read(readPos&255).x+
+  readHistoPyramid.read((readPos+cubeOffsets[1])&255).x+
+  readHistoPyramid.read((readPos+cubeOffsets[2])&255).x+
+  readHistoPyramid.read((readPos+cubeOffsets[3])&255).x+
+  readHistoPyramid.read((readPos+cubeOffsets[4])&255).x+
+  readHistoPyramid.read((readPos+cubeOffsets[5])&255).x+
+  readHistoPyramid.read((readPos+cubeOffsets[6])&255).x+
+  readHistoPyramid.read((readPos+cubeOffsets[7])&255).x;
   
   writeHistoPyramid.write(writeValue, gid);
 }
 
 
-uint4 scanHPLevel(uint target, texture3d<uint,access::read> hp, uint4 current)
+uint4 scanHPLevel256(uint target, texture3d<uint,access::read> hp, uint4 current)
 {
   uint neighbors[8] =
   {
-    hp.read((current.xyz)&(size-1)).x,
-    hp.read((current.xyz+cubeOffsets[1])&(size-1)).x,
-    hp.read((current.xyz+cubeOffsets[2])&(size-1)).x,
-    hp.read((current.xyz+cubeOffsets[3])&(size-1)).x,
-    hp.read((current.xyz+cubeOffsets[4])&(size-1)).x,
-    hp.read((current.xyz+cubeOffsets[5])&(size-1)).x,
-    hp.read((current.xyz+cubeOffsets[6])&(size-1)).x,
-    hp.read((current.xyz+cubeOffsets[7])&(size-1)).x
+    hp.read((current.xyz)&255).x,
+    hp.read((current.xyz+cubeOffsets[1])&255).x,
+    hp.read((current.xyz+cubeOffsets[2])&255).x,
+    hp.read((current.xyz+cubeOffsets[3])&255).x,
+    hp.read((current.xyz+cubeOffsets[4])&255).x,
+    hp.read((current.xyz+cubeOffsets[5])&255).x,
+    hp.read((current.xyz+cubeOffsets[6])&255).x,
+    hp.read((current.xyz+cubeOffsets[7])&255).x
   };
   
   uint acc = current.w + neighbors[0];
@@ -423,18 +421,18 @@ uint4 scanHPLevel(uint target, texture3d<uint,access::read> hp, uint4 current)
   return current;
 }
 
-kernel void traverseHP(texture3d<uint,access::read> hp0 [[ texture(0) ]],
-                       texture3d<uint,access::read> hp1 [[ texture(1) ]],
-                       texture3d<uint,access::read> hp2 [[ texture(2) ]],
-                       texture3d<uint,access::read> hp3 [[ texture(3) ]],
-                       texture3d<uint,access::read> hp4 [[ texture(4) ]],
-                       texture3d<uint,access::read> hp5 [[ texture(5) ]],
-                       texture3d<uint,access::read> hp6 [[ texture(6) ]],
-                       texture3d<float,access::read> rawData [[ texture(7) ]],
-                       device float4* VBOBuffer [[ buffer(0) ]],
-                       device const float& isolevel [[ buffer(1) ]],
-                       device uint& sum [[ buffer(2) ]],
-                       uint gid [[ thread_position_in_grid ]])
+kernel void traverseHP256(texture3d<uint,access::read> hp0 [[ texture(0) ]],
+                          texture3d<uint,access::read> hp1 [[ texture(1) ]],
+                          texture3d<uint,access::read> hp2 [[ texture(2) ]],
+                          texture3d<uint,access::read> hp3 [[ texture(3) ]],
+                          texture3d<uint,access::read> hp4 [[ texture(4) ]],
+                          texture3d<uint,access::read> hp5 [[ texture(5) ]],
+                          texture3d<uint,access::read> hp6 [[ texture(6) ]],
+                          texture3d<float,access::read> rawData [[ texture(7) ]],
+                          device float4* VBOBuffer [[ buffer(0) ]],
+                          device const float& isolevel [[ buffer(1) ]],
+                          device uint& sum [[ buffer(2) ]],
+                          uint gid [[ thread_position_in_grid ]])
 
 {
   uint target = gid;
@@ -443,20 +441,20 @@ kernel void traverseHP(texture3d<uint,access::read> hp0 [[ texture(0) ]],
   
   uint4 cubePosition = {0,0,0,0}; // x,y,z,sum
   
-  cubePosition = scanHPLevel(target, hp6, cubePosition);
-  cubePosition = scanHPLevel(target, hp5, cubePosition);
-  cubePosition = scanHPLevel(target, hp4, cubePosition);
-  cubePosition = scanHPLevel(target, hp3, cubePosition);
-  cubePosition = scanHPLevel(target, hp2, cubePosition);
-  cubePosition = scanHPLevel(target, hp1, cubePosition);
-  cubePosition = scanHPLevel(target, hp0, cubePosition);
+  cubePosition = scanHPLevel256(target, hp6, cubePosition);
+  cubePosition = scanHPLevel256(target, hp5, cubePosition);
+  cubePosition = scanHPLevel256(target, hp4, cubePosition);
+  cubePosition = scanHPLevel256(target, hp3, cubePosition);
+  cubePosition = scanHPLevel256(target, hp2, cubePosition);
+  cubePosition = scanHPLevel256(target, hp1, cubePosition);
+  cubePosition = scanHPLevel256(target, hp0, cubePosition);
   
   cubePosition.x = cubePosition.x / 2;
   cubePosition.y = cubePosition.y / 2;
   cubePosition.z = cubePosition.z / 2;
   
   char vertexNr = 2;
-  const uint4 cubeData = hp0.read(cubePosition.xyz&(size-1));
+  const uint4 cubeData = hp0.read(cubePosition.xyz&255);
   
   // max 5 triangles
   for(uint i = (target-cubePosition.w)*3; i < (target-cubePosition.w+1)*3; i++)
@@ -468,30 +466,30 @@ kernel void traverseHP(texture3d<uint,access::read> hp0 [[ texture(0) ]],
     
     // compute normal
     const float3 forwardDifference0 = float3(
-                                             -rawData.read(uint3(point0.x+1, point0.y, point0.z)&(size-1)).x+
-                                             rawData.read(uint3(point0.x-1, point0.y, point0.z)&(size-1)).x,
-                                             -rawData.read(uint3(point0.x, point0.y+1, point0.z)&(size-1)).x+
-                                             rawData.read(uint3(point0.x, point0.y-1, point0.z)&(size-1)).x,
-                                             -rawData.read(uint3(point0.x, point0.y, point0.z+1)&(size-1)).x+
-                                             rawData.read(uint3(point0.x, point0.y, point0.z-1)&(size-1)).x);
+                                             -rawData.read(uint3(point0.x+1, point0.y, point0.z)&255).x+
+                                             rawData.read(uint3(point0.x-1, point0.y, point0.z)&255).x,
+                                             -rawData.read(uint3(point0.x, point0.y+1, point0.z)&255).x+
+                                             rawData.read(uint3(point0.x, point0.y-1, point0.z)&255).x,
+                                             -rawData.read(uint3(point0.x, point0.y, point0.z+1)&255).x+
+                                             rawData.read(uint3(point0.x, point0.y, point0.z-1)&255).x);
     
     const float3 forwardDifference1 = float3(
-                                             -rawData.read(uint3(point1.x+1, point1.y, point1.z)&(size-1)).x+
-                                             rawData.read(uint3(point1.x-1, point1.y, point1.z)&(size-1)).x,
-                                             -rawData.read(uint3(point1.x,   point1.y+1, point1.z)&(size-1)).x+
-                                             rawData.read(uint3(point1.x,   point1.y-1, point1.z)&(size-1)).x,
-                                             -rawData.read(uint3(point1.x,   point1.y,   point1.z+1)&(size-1)).x+
-                                             rawData.read(uint3(point1.x,   point1.y,   point1.z-1)&(size-1)).x);
+                                             -rawData.read(uint3(point1.x+1, point1.y, point1.z)&255).x+
+                                             rawData.read(uint3(point1.x-1, point1.y, point1.z)&255).x,
+                                             -rawData.read(uint3(point1.x,   point1.y+1, point1.z)&255).x+
+                                             rawData.read(uint3(point1.x,   point1.y-1, point1.z)&255).x,
+                                             -rawData.read(uint3(point1.x,   point1.y,   point1.z+1)&255).x+
+                                             rawData.read(uint3(point1.x,   point1.y,   point1.z-1)&255).x);
     
     const float value0 = rawData.read(point0).x;
     const float diff =  (isolevel-value0)/(rawData.read(point1).x - value0);
     
     const float3 Vertex = float3(point0.x, point0.y, point0.z) + (float3(point1.x, point1.y, point1.z) - float3(point0.x, point0.y, point0.z)) * diff;
-    const float4 scaledVertex = float4(Vertex.x/float(size-1),Vertex.y/float(size-1),Vertex.z/float(size-1),1.0f);
+    const float4 scaledVertex = float4(Vertex.x/255.0f,Vertex.y/255.0f,Vertex.z/255.0f,1.0f);
     
     const float3 normal = forwardDifference0 + (forwardDifference1 - forwardDifference0) * diff;
     
-    
+    // a single triangle contains: 3 times a position and a normal
     VBOBuffer[target*9 + vertexNr*3] = scaledVertex;
     VBOBuffer[target*9 + vertexNr*3 + 1] = float4(normalize(normal), 0.0);
     
@@ -500,28 +498,22 @@ kernel void traverseHP(texture3d<uint,access::read> hp0 [[ texture(0) ]],
 }
 
 
-kernel void classifyCubes(texture3d<float,access::read> rawData [[ texture(0) ]],
-                          texture3d<uint,access::write> writeHistoPyramid [[ texture(1) ]],
-                          device const float& isolevel [[ buffer(0) ]],
-                          uint3 gid [[ thread_position_in_grid ]])
+kernel void classifyCubes256(texture3d<float,access::read> rawData [[ texture(0) ]],
+                             texture3d<uint,access::write> writeHistoPyramid [[ texture(1) ]],
+                             device const float& isolevel [[ buffer(0) ]],
+                             uint3 gid [[ thread_position_in_grid ]])
 {
   const float first = rawData.read(gid).x;
   
   const uchar cubeindex = (first > isolevel) |
-  ((rawData.read((gid+cubeOffsets[1])&(size-1)).x > isolevel) << 1) |
-  ((rawData.read((gid+cubeOffsets[3])&(size-1)).x > isolevel) << 2) |
-  ((rawData.read((gid+cubeOffsets[2])&(size-1)).x > isolevel) << 3) |
-  ((rawData.read((gid+cubeOffsets[4])&(size-1)).x > isolevel) << 4) |
-  ((rawData.read((gid+cubeOffsets[5])&(size-1)).x > isolevel) << 5) |
-  ((rawData.read((gid+cubeOffsets[7])&(size-1)).x > isolevel) << 6) |
-  ((rawData.read((gid+cubeOffsets[6])&(size-1)).x > isolevel) << 7);
-  
+  ((rawData.read((gid+cubeOffsets[1])&255).x > isolevel) << 1) |
+  ((rawData.read((gid+cubeOffsets[3])&255).x > isolevel) << 2) |
+  ((rawData.read((gid+cubeOffsets[2])&255).x > isolevel) << 3) |
+  ((rawData.read((gid+cubeOffsets[4])&255).x > isolevel) << 4) |
+  ((rawData.read((gid+cubeOffsets[5])&255).x > isolevel) << 5) |
+  ((rawData.read((gid+cubeOffsets[7])&255).x > isolevel) << 6) |
+  ((rawData.read((gid+cubeOffsets[6])&255).x > isolevel) << 7);
   
   uint4 writeValue = uint4(numberOfTriangles[cubeindex], cubeindex, 0, 0);
   writeHistoPyramid.write(writeValue, gid);
 }
-
-
-
-
-

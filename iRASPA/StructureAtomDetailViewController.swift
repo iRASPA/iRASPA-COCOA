@@ -2691,18 +2691,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
        let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
     {
-      let atom = node.representedObject
-      // make sure we can convert it to a number
-      if let _: NSNumber = fullPrecisionNumberFormatter.number(from: sender.stringValue)
-      {
-        // but use the full precision from the textField
-        setAtomCharge(node, to: sender.doubleValue)
-      }
-      else
-      {
-        // reset value if the input is not correct
-        sender.doubleValue = atom.charge
-      }
+      setAtomCharge(node, to: sender.doubleValue)
     }
   }
 }
