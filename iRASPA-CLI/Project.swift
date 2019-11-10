@@ -43,7 +43,7 @@ class Project
   var colorSets: SKColorSets = SKColorSets()
   var forceFieldSets: SKForceFieldSets = SKForceFieldSets()
   
-  init?(url: URL, onlyAsymmetricUnit: Bool)
+  init?(url: URL, onlyAsymmetricUnit: Bool, asMolecule: Bool)
   {
     let displayName: String = (url.lastPathComponent as NSString).deletingPathExtension
     
@@ -57,7 +57,7 @@ class Project
       case "cif":
         parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
       case "pdb":
-        parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
+        parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
         break
       case "xyz":
         parser = SKXYZParser(displayName: displayName, string: string, windowController: nil)
@@ -78,6 +78,7 @@ class Project
       projectStructureNode.sceneList.structureViewerStructures.forEach{$0.reComputeBonds()}
       
       projectStructureNode.sceneList.structureViewerStructures.forEach{$0.recomputeDensityProperties()}
+      
     }
     catch let error
     {

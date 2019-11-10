@@ -380,7 +380,7 @@ public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboard
             return
           case _ where NSWorkspace.shared.type(type, conformsToType: String(typePDB)):
             guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-            let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true)
+            let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
             try? pdbParser.startParsing()
             let scene: Scene = Scene(parser: pdbParser.scene)
             guard let movie = scene.movies.first else {return nil}

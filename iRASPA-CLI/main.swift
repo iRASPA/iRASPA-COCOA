@@ -128,7 +128,7 @@ else
           let url: URL = URL(fileURLWithPath: file)
           let fileName: String = url.lastPathComponent
             
-          if let project: Project = Project(url: url, onlyAsymmetricUnit: false)
+          if let project: Project = Project(url: url, onlyAsymmetricUnit: false, asMolecule: false)
           {
             for option in console.options
             {

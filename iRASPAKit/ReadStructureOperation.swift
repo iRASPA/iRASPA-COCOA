@@ -41,7 +41,7 @@ class ReadStructureOperation: FKOperation
   unowned var projectTreeNode : ProjectTreeNode
   let windowController: NSWindowController?
   
-  public init(ProjectTreeNode : ProjectTreeNode, url: URL, windowController: NSWindowController?, onlyAsymmetricUnit: Bool)
+  public init(ProjectTreeNode : ProjectTreeNode, url: URL, windowController: NSWindowController?, onlyAsymmetricUnit: Bool, asMolecule: Bool)
   {
     self.windowController = windowController
     self.url = url
@@ -78,7 +78,7 @@ class ReadStructureOperation: FKOperation
     case "CIF":
       parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
     case "PDB":
-      parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
+      parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
     case "XYZ":
       parser = SKXYZParser(displayName: displayName, string: string, windowController: nil)
     case "POSCAR", "CONTCAR":

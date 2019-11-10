@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ImportAccessoryViewController">
             <connections>
+                <outlet property="importAsMolecule" destination="nrb-wX-u5i" id="112-ED-yb5"/>
                 <outlet property="importSeparateProjects" destination="wbD-DN-bij" id="J1d-5F-Dgf"/>
                 <outlet property="onlyAsymmetricUnit" destination="OBy-lO-Uh1" id="dlx-a8-ceg"/>
                 <outlet property="view" destination="0Bn-an-cp4" id="H40-nj-O6g"/>
@@ -16,21 +17,21 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <box autoresizesSubviews="NO" boxType="custom" borderType="bezel" borderWidth="2" cornerRadius="2" title="Box" titlePosition="noTitle" id="0Bn-an-cp4" customClass="ImportAccessoryNSBox" customModule="iRASPA" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="126"/>
+            <rect key="frame" x="0.0" y="0.0" width="480" height="146"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
             <view key="contentView" id="cL7-Ry-Bbi">
-                <rect key="frame" x="2" y="2" width="476" height="122"/>
+                <rect key="frame" x="2" y="2" width="476" height="142"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <box fixedFrame="YES" title="Import options" translatesAutoresizingMaskIntoConstraints="NO" id="YD9-Cz-1kH">
-                        <rect key="frame" x="17" y="10" width="305" height="92"/>
+                        <rect key="frame" x="17" y="16" width="305" height="106"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="IEl-sU-fc3">
-                            <rect key="frame" x="3" y="3" width="299" height="74"/>
+                            <rect key="frame" x="3" y="3" width="299" height="88"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wbD-DN-bij">
-                                    <rect key="frame" x="18" y="38" width="265" height="18"/>
+                                    <rect key="frame" x="18" y="52" width="265" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="Import as separate projects" bezelStyle="regularSquare" imagePosition="left" inset="2" id="haw-Jn-ePK">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -38,9 +39,17 @@
                                     </buttonCell>
                                 </button>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OBy-lO-Uh1">
-                                    <rect key="frame" x="18" y="17" width="265" height="18"/>
+                                    <rect key="frame" x="18" y="31" width="265" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="Only asymmetric-unit" bezelStyle="regularSquare" imagePosition="left" inset="2" id="sJx-zs-qHY">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nrb-wX-u5i">
+                                    <rect key="frame" x="18" y="11" width="96" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="As molecule" bezelStyle="regularSquare" imagePosition="left" inset="2" id="FdK-32-9m4">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
@@ -51,7 +60,7 @@
                 </subviews>
             </view>
             <color key="fillColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <point key="canvasLocation" x="220" y="152"/>
+            <point key="canvasLocation" x="220" y="162"/>
         </box>
     </objects>
 </document>

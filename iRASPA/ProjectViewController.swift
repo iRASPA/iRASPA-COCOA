@@ -412,7 +412,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     }
   }
   
-  func importStructureFiles(_ URLs: [URL], asSeparateProjects: Bool, onlyAsymmetricUnit: Bool)
+  func importStructureFiles(_ URLs: [URL], asSeparateProjects: Bool, onlyAsymmetricUnit: Bool, asMolecule: Bool)
   {
     guard URLs.count > 0 else {return}
     
@@ -469,7 +469,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           }
           
           // send as a single operation to the 'window-controller-queue'
-          let operation = ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: [url], onlyAsymmetricUnit: onlyAsymmetricUnit)
+          let operation = ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: [url], onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
           node.importOperation = operation
           windowController?.projectConcurrentQueue.addOperation(operation)
           
@@ -494,7 +494,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
 
         // send as a single operation to the 'window-controller-queue'
-        let operation = ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: URLs, onlyAsymmetricUnit: onlyAsymmetricUnit)
+        let operation = ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: URLs, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
         node.importOperation = operation
         windowController?.projectConcurrentQueue.addOperation(operation)
       }

@@ -55,6 +55,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
   
   var periodic: Bool = false
   var onlyAsymmetricUnit: Bool = false
+  var asMolecule: Bool = false
   var spaceGroup: SKSpacegroup = SKSpacegroup()
   var scaleMatrixDefined: [Bool] = [false, false, false]
   var scaleMatrix: double3x3 = double3x3(1.0)
@@ -159,10 +160,11 @@ public final class SKPDBParser: SKParser, ProgressReporting
     
   }
   
-  public init(displayName: String, string: String, windowController: NSWindowController?, onlyAsymmetricUnit: Bool)
+  public init(displayName: String, string: String, windowController: NSWindowController?, onlyAsymmetricUnit: Bool, asMolecule: Bool)
   {
     self.displayName = displayName
     self.onlyAsymmetricUnit = onlyAsymmetricUnit
+    self.asMolecule = asMolecule
     self.scanner = Scanner(string: string)
     self.scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
     
@@ -444,8 +446,10 @@ public final class SKPDBParser: SKParser, ProgressReporting
               c = doubleValue
             }
             // when we have read 'CRYST1 a b c' we consider this a MolecularCrystal
-            periodic = true
-            
+            if(!asMolecule)
+            {
+              periodic = true
+            }
             
             guard (length >= 41) else
             {
@@ -498,7 +502,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
               let spaceGroupString: String = scannedLine.substring(from: 55).trimmingCharacters(in: NSCharacterSet.whitespaces).lowercased().capitalizeFirst
               if (self.spaceGroup.number == 1)
               {
-                if let spaceGroup = SKSpacegroup(H_M: spaceGroupString)
+                if let spaceGroup = SKSpacegroup(H_M: spaceGroupString), !asMolecule
                 {
                   self.spaceGroup = spaceGroup
                 }
@@ -507,7 +511,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
             }
             let spaceGroupString: String = (scannedLine.substring(with: NSRange(location: 55, length: 11)).trimmingCharacters(in: NSCharacterSet.whitespaces).lowercased().capitalizeFirst)
             
-            if let spaceGroup = SKSpacegroup(H_M: spaceGroupString)
+            if let spaceGroup = SKSpacegroup(H_M: spaceGroupString), !asMolecule
             {
               self.spaceGroup = spaceGroup
             }
@@ -567,6 +571,16 @@ public final class SKPDBParser: SKParser, ProgressReporting
                 atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
                 atom.elementIdentifier = atomicNumber
               }
+              else
+              {
+                let letters = CharacterSet.letters
+                let atomNameString = String(atomName.unicodeScalars.filter { letters.contains($0)})
+                if let atomicNumber: Int = SKElement.atomData[atomNameString.capitalizeFirst]?["atomicNumber"] as? Int, atomicNumber>0
+                {
+                  atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
+                  atom.elementIdentifier = atomicNumber
+                }
+              }
             }
             
             guard (scannedLine.length >= 18) else
@@ -588,7 +602,8 @@ public final class SKPDBParser: SKParser, ProgressReporting
             {
               numberOfAminoAcidAtoms += 1
               if let name: String = residueData["Element"] as? String,
-                let atomicNumber: Int = SKElement.atomData[name.capitalizeFirst]!["atomicNumber"]! as? Int
+                let atomicNumber: Int = SKElement.atomData[name.capitalizeFirst]?["atomicNumber"] as? Int,
+                atomicNumber>0
               {
                 atom.elementIdentifier = atomicNumber
                 atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
@@ -696,7 +711,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
             
             let elementSymbol: String = scannedLine.substring(with: NSRange(location: 76, length: 2))
             let elementSymbolString: String = elementSymbol.trimmingCharacters(in: CharacterSet.whitespaces)
-            if let atomicNumber: Int = SKElement.atomData[elementSymbolString.capitalizeFirst]?["atomicNumber"] as? Int
+            if let atomicNumber: Int = SKElement.atomData[elementSymbolString.capitalizeFirst]?["atomicNumber"] as? Int, atomicNumber>0
             {
               atom.elementIdentifier = atomicNumber
               atom.uniqueForceFieldName = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
