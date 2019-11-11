@@ -260,7 +260,8 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
   // another instance is required. Note: The viewController may become the selectedViewController after a transition if necessary.
   func pageController(_ pageController: NSPageController, viewControllerForIdentifier identifier: NSPageController.ObjectIdentifier) -> NSViewController
   {
-    return self.storyboard?.instantiateController(withIdentifier: "StructureBondDetailViewController") as! NSViewController
+    let storyboard: NSStoryboard = NSStoryboard(name: "StructureBondDetail", bundle: nil)
+    return storyboard.instantiateController(withIdentifier: "StructureBondDetailViewController") as! NSViewController
   }
   
   // Prepare the viewController and view for drawing. Setup data sources and perform layout. Note: this method is called on the main thread and should

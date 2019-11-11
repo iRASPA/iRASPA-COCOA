@@ -139,6 +139,13 @@
 		93426FD31F8CB7990034F0BF /* SKForceFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93426FD21F8CB7980034F0BF /* SKForceFieldType.swift */; };
 		93426FD51F8CB9650034F0BF /* SKForceFieldSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93426FD41F8CB9650034F0BF /* SKForceFieldSet.swift */; };
 		93426FD71F8CCC030034F0BF /* SKForceFieldSets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93426FD61F8CCC030034F0BF /* SKForceFieldSets.swift */; };
+		93446EBC237968500040CD8E /* StructureCameraDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93446EBE237968500040CD8E /* StructureCameraDetail.storyboard */; };
+		93446EC1237968870040CD8E /* StructureElementDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93446EC3237968870040CD8E /* StructureElementDetail.storyboard */; };
+		93446EC6237968E90040CD8E /* StructureInfoDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93446EC8237968E90040CD8E /* StructureInfoDetail.storyboard */; };
+		93446ECB237969980040CD8E /* StructureAppearanceDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93446ECD237969980040CD8E /* StructureAppearanceDetail.storyboard */; };
+		93446ED0237969DB0040CD8E /* StructureCellDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93446ED2237969DB0040CD8E /* StructureCellDetail.storyboard */; };
+		93446ED523796A0A0040CD8E /* StructureAtomDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93446ED723796A0A0040CD8E /* StructureAtomDetail.storyboard */; };
+		93446EDA23796A380040CD8E /* StructureBondDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93446EDC23796A380040CD8E /* StructureBondDetail.storyboard */; };
 		9345F86B1F3DD17D00181224 /* EmptyPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9345F86A1F3DD17D00181224 /* EmptyPasteboardItem.swift */; };
 		9345F86D1F40B9D300181224 /* MasterTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9345F86C1F40B9D300181224 /* MasterTabViewController.swift */; };
 		93475A971FC86477006F6A19 /* StructureListOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93475A961FC86477006F6A19 /* StructureListOutlineView.swift */; };
@@ -914,6 +921,13 @@
 		93426FD21F8CB7980034F0BF /* SKForceFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKForceFieldType.swift; sourceTree = "<group>"; };
 		93426FD41F8CB9650034F0BF /* SKForceFieldSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKForceFieldSet.swift; sourceTree = "<group>"; };
 		93426FD61F8CCC030034F0BF /* SKForceFieldSets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKForceFieldSets.swift; sourceTree = "<group>"; };
+		93446EBD237968500040CD8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/StructureCameraDetail.storyboard; sourceTree = "<group>"; };
+		93446EC2237968870040CD8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/StructureElementDetail.storyboard; sourceTree = "<group>"; };
+		93446EC7237968E90040CD8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/StructureInfoDetail.storyboard; sourceTree = "<group>"; };
+		93446ECC237969980040CD8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/StructureAppearanceDetail.storyboard; sourceTree = "<group>"; };
+		93446ED1237969DB0040CD8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/StructureCellDetail.storyboard; sourceTree = "<group>"; };
+		93446ED623796A0A0040CD8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/StructureAtomDetail.storyboard; sourceTree = "<group>"; };
+		93446EDB23796A380040CD8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/StructureBondDetail.storyboard; sourceTree = "<group>"; };
 		9345F86A1F3DD17D00181224 /* EmptyPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPasteboardItem.swift; sourceTree = "<group>"; };
 		9345F86C1F40B9D300181224 /* MasterTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterTabViewController.swift; sourceTree = "<group>"; };
 		93475A961FC86477006F6A19 /* StructureListOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureListOutlineView.swift; sourceTree = "<group>"; };
@@ -1706,6 +1720,13 @@
 				934B76661EF93903004A1ABA /* StructureViewer.storyboard */,
 				935DABE11F0E236900C1C8D0 /* DirectoryViewer.storyboard */,
 				934B76691EF93914004A1ABA /* Master.storyboard */,
+				93446EBE237968500040CD8E /* StructureCameraDetail.storyboard */,
+				93446EC3237968870040CD8E /* StructureElementDetail.storyboard */,
+				93446EC8237968E90040CD8E /* StructureInfoDetail.storyboard */,
+				93446ECD237969980040CD8E /* StructureAppearanceDetail.storyboard */,
+				93446ED2237969DB0040CD8E /* StructureCellDetail.storyboard */,
+				93446ED723796A0A0040CD8E /* StructureAtomDetail.storyboard */,
+				93446EDC23796A380040CD8E /* StructureBondDetail.storyboard */,
 				9397C61F203B4F4300FE4A9C /* ImportAccessoryViewController.xib */,
 				9397C621203B4F6800FE4A9C /* ImportAccessoryViewController.swift */,
 				93FFF0B1203B6DA800DB696A /* ExportPictureAccessoryViewController.xib */,
@@ -2784,6 +2805,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93446ED523796A0A0040CD8E /* StructureAtomDetail.storyboard in Resources */,
+				93446EBC237968500040CD8E /* StructureCameraDetail.storyboard in Resources */,
 				93A0BE381F24ED15001647D7 /* Gallery.irspdoc in Resources */,
 				938657AF1F2349F60029395C /* CloudIZADatabase.data in Resources */,
 				93EF65411F21DBD10062816E /* CloudCoREMOFDDECDatabase_v1.0.data in Resources */,
@@ -2792,11 +2815,16 @@
 				935DABE91F0E544B00C1C8D0 /* VASP.storyboard in Resources */,
 				93FC88A11F5042E80009478E /* Preferences.storyboard in Resources */,
 				93B5EE561FC31D5A009922F2 /* AboutWindow.storyboard in Resources */,
+				93446ED0237969DB0040CD8E /* StructureCellDetail.storyboard in Resources */,
+				93446EC1237968870040CD8E /* StructureElementDetail.storyboard in Resources */,
 				9397C620203B4F4300FE4A9C /* ImportAccessoryViewController.xib in Resources */,
+				93446EC6237968E90040CD8E /* StructureInfoDetail.storyboard in Resources */,
 				938388121E26A4A800112FBA /* Assets.xcassets in Resources */,
 				934B76611EF938E0004A1ABA /* Main.storyboard in Resources */,
+				93446EDA23796A380040CD8E /* StructureBondDetail.storyboard in Resources */,
 				93793B4121DE0F38004CAD9C /* LICENSE in Resources */,
 				935DABDF1F0E236900C1C8D0 /* DirectoryViewer.storyboard in Resources */,
+				93446ECB237969980040CD8E /* StructureAppearanceDetail.storyboard in Resources */,
 				930663C51E7C4808004F9299 /* Credits.rtf in Resources */,
 				93B747E71F0E735000B1D8E0 /* ProjectCollectionViewItem.xib in Resources */,
 				93FFF0B2203B6DA800DB696A /* ExportPictureAccessoryViewController.xib in Resources */,
@@ -3513,6 +3541,62 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		93446EBE237968500040CD8E /* StructureCameraDetail.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93446EBD237968500040CD8E /* Base */,
+			);
+			name = StructureCameraDetail.storyboard;
+			sourceTree = "<group>";
+		};
+		93446EC3237968870040CD8E /* StructureElementDetail.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93446EC2237968870040CD8E /* Base */,
+			);
+			name = StructureElementDetail.storyboard;
+			sourceTree = "<group>";
+		};
+		93446EC8237968E90040CD8E /* StructureInfoDetail.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93446EC7237968E90040CD8E /* Base */,
+			);
+			name = StructureInfoDetail.storyboard;
+			sourceTree = "<group>";
+		};
+		93446ECD237969980040CD8E /* StructureAppearanceDetail.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93446ECC237969980040CD8E /* Base */,
+			);
+			name = StructureAppearanceDetail.storyboard;
+			sourceTree = "<group>";
+		};
+		93446ED2237969DB0040CD8E /* StructureCellDetail.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93446ED1237969DB0040CD8E /* Base */,
+			);
+			name = StructureCellDetail.storyboard;
+			sourceTree = "<group>";
+		};
+		93446ED723796A0A0040CD8E /* StructureAtomDetail.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93446ED623796A0A0040CD8E /* Base */,
+			);
+			name = StructureAtomDetail.storyboard;
+			sourceTree = "<group>";
+		};
+		93446EDC23796A380040CD8E /* StructureBondDetail.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93446EDB23796A380040CD8E /* Base */,
+			);
+			name = StructureBondDetail.storyboard;
+			sourceTree = "<group>";
+		};
 		934B76631EF938E0004A1ABA /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

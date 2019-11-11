@@ -264,7 +264,8 @@ class StructureCellDetailViewPageController: NSPageController, WindowControllerC
   // another instance is required. Note: The viewController may become the selectedViewController after a transition if necessary.
   func pageController(_ pageController: NSPageController, viewControllerForIdentifier identifier: NSPageController.ObjectIdentifier) -> NSViewController
   {
-    return self.storyboard?.instantiateController(withIdentifier: "StructureCellDetailViewController") as! NSViewController
+    let storyboard: NSStoryboard = NSStoryboard(name: "StructureCellDetail", bundle: nil)
+    return storyboard.instantiateController(withIdentifier: "StructureCellDetailViewController") as! NSViewController
   }
   
   // Prepare the viewController and view for drawing. Setup data sources and perform layout.
