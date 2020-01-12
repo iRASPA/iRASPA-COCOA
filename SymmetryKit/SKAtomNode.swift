@@ -171,6 +171,46 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     self.bondDistanceCriteria = bondDistanceCriteria
   }
   
+  // used for copy and paste
+  public init(cell: SKCell, atom: SKAsymmetricAtom, isFractional: Bool)
+  {
+    self.displayName = atom.displayName
+    if(isFractional)
+    {
+      self.position = cell.convertToCartesian(atom.position)
+    }
+    else
+    {
+      self.position = atom.position
+    }
+    self.charge = atom.charge
+    self.fractional = false
+    
+    self.uniqueForceFieldName = atom.uniqueForceFieldName
+    self.elementIdentifier = atom.elementIdentifier
+    
+    self.isFixed = atom.isFixed
+    
+    self.serialNumber = atom.serialNumber
+    self.remotenessIndicator = atom.remotenessIndicator
+    self.branchDesignator = atom.branchDesignator
+    self.alternateLocationIndicator = atom.alternateLocationIndicator
+    self.residueName = atom.residueName
+    self.chainIdentifier = atom.chainIdentifier
+    self.residueSequenceNumber = atom.residueSequenceNumber
+    self.codeForInsertionOfResidues = atom.codeForInsertionOfResidues
+    self.occupancy = atom.occupancy
+    self.temperaturefactor = atom.temperaturefactor
+    self.segmentIdentifier = atom.segmentIdentifier
+    
+    self.ligandAtom = atom.ligandAtom
+    self.backBoneAtom = atom.backBoneAtom
+    
+    self.color = atom.color
+    self.drawRadius = atom.drawRadius
+    self.bondDistanceCriteria = atom.bondDistanceCriteria
+  }
+  
   // MARK: -
   // MARK: Hashable protocol
   

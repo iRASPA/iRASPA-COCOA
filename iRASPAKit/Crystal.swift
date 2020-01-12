@@ -88,12 +88,9 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     }
   }
   
-  public override var positionType: PositionType
+  public override var isFractional: Bool
   {
-    get
-    {
-      return .fractional
-    }
+    return true
   }
   
   // MARK: -
@@ -186,8 +183,6 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       super.periodic = newValue
     }
   }
-  
- 
   
   public func transformToFractionalPosition()
   {
@@ -1679,6 +1674,41 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
   }
   
+  // MARK: -
+  // MARK: Paste atoms
+  
+  public override func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    if let crystal: Crystal =  self.copy() as? Crystal
+    {
+      var insertion: IndexPath = indexPath ?? [-1]
+      for atom in atoms
+      {
+        atom.representedObject.position = self.cell.convertToFractional(atom.representedObject.position)
+        insertion[insertion.count-1] += 1
+        expandSymmetry(asymmetricAtom: atom.representedObject)
+        crystal.atoms.insertNode(atom, atArrangedObjectIndexPath: insertion)
+      }
+      
+      crystal.setRepresentationStyle(style: self.atomRepresentationStyle)
+      
+      if let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets,
+        let forceFieldSet: SKForceFieldSet = forceFieldSets?[self.atomForceFieldIdentifier]
+      {
+        crystal.setRepresentationForceField(forceField: self.atomForceFieldIdentifier, forceFieldSet: forceFieldSet)
+      }
+    
+      self.tag(atoms: crystal.atoms)
+    
+      crystal.reComputeBoundingBox()
+    
+      crystal.reComputeBonds()
+    
+      // set space group to P1 after removal of symmetry
+      return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
+    }
+    return nil
+  }
   
   // MARK: -
   // MARK: Compute bonds
