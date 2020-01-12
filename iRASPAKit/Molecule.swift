@@ -60,12 +60,9 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
     return .molecule
   }
   
-  public override var positionType: PositionType
+  public override var isFractional: Bool
   {
-    get
-    {
-      return .cartesian
-    }
+    return false
   }
   
   
@@ -731,7 +728,40 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
     return data
   }
   
+  // MARK: -
+  // MARK: Paste atoms
   
+  public override func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    if let molecule: Molecule =  self.copy() as? Molecule
+    {
+      var insertion: IndexPath = indexPath ?? [-1]
+      for atom in atoms
+      {
+        insertion[insertion.count-1] += 1
+        expandSymmetry(asymmetricAtom: atom.representedObject)
+        molecule.atoms.insertNode(atom, atArrangedObjectIndexPath: insertion)
+      }
+      
+      molecule.setRepresentationStyle(style: self.atomRepresentationStyle)
+      
+      if let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets,
+        let forceFieldSet: SKForceFieldSet = forceFieldSets?[self.atomForceFieldIdentifier]
+      {
+        molecule.setRepresentationForceField(forceField: self.atomForceFieldIdentifier, forceFieldSet: forceFieldSet)
+      }
+    
+      self.tag(atoms: molecule.atoms)
+    
+      molecule.reComputeBoundingBox()
+    
+      molecule.reComputeBonds()
+    
+      // set space group to P1 after removal of symmetry
+      return (cell: molecule.cell, spaceGroup: molecule.spaceGroup, atoms: molecule.atoms, bonds: molecule.bonds)
+    }
+    return nil
+  }
   
   // MARK: -
   // MARK: Compute bonds

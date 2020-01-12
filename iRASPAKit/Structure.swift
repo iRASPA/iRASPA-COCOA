@@ -59,6 +59,10 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   public var rotationDelta: Double = 5.0
   
   public var periodic: Bool = false
+  public var isFractional: Bool
+  {
+    return false
+  }
   
   public var isVisible: Bool = true
   
@@ -85,18 +89,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     case solvent = 4
   }
   
-  public enum PositionType: Int
-  {
-    case fractional = 0
-    case cartesian = 1
-  }
-  public var positionType: PositionType
-  {
-    get
-    {
-      return .fractional
-    }
-  }
   
   public var selectionCOMTranslation: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
   public var selectionRotationIndex: Int = 0
@@ -1591,6 +1583,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: superCell, atomList: atomList))
     
     return (cell: superCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
+  }
+  
+  public func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    return nil
   }
   
   // MARK: -

@@ -435,17 +435,17 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         case NSUserInterfaceItemIdentifier(rawValue: "atomPositionXColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomPositionX"), owner: self) as? NSTableCellView
           view?.textField?.doubleValue=atomNode.position.x
-          view?.textField?.formatter = structure.positionType == .cartesian ? cartesianFormatter : fractionalFormatter
+          view?.textField?.formatter = structure.isFractional ? fractionalFormatter : cartesianFormatter
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
         case NSUserInterfaceItemIdentifier(rawValue: "atomPositionYColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomPositionY"), owner: self) as? NSTableCellView
           view?.textField?.doubleValue=atomNode.position.y
-          view?.textField?.formatter = structure.positionType == .cartesian ? cartesianFormatter : fractionalFormatter
+          view?.textField?.formatter = structure.isFractional ? fractionalFormatter : cartesianFormatter
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
         case NSUserInterfaceItemIdentifier(rawValue: "atomPositionZColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomPositionZ"), owner: self) as? NSTableCellView
           view?.textField?.doubleValue=atomNode.position.z
-          view?.textField?.formatter = structure.positionType == .cartesian ? cartesianFormatter : fractionalFormatter
+          view?.textField?.formatter = structure.isFractional ? fractionalFormatter : cartesianFormatter 
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
         case NSUserInterfaceItemIdentifier(rawValue: "atomChargeColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomCharge"), owner: self) as? NSTableCellView
@@ -555,16 +555,18 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   func selectedItems() -> [SKAtomTreeNode]
   {
-    let items: [SKAtomTreeNode] = [SKAtomTreeNode]()
-    if let _: IndexSet = self.atomOutlineView?.selectedRowIndexes
+    var items: [SKAtomTreeNode] = [SKAtomTreeNode]()
+    
+    if let structure: Structure = self.representedObject as? Structure,
+        let indexSet: IndexSet = self.atomOutlineView?.selectedRowIndexes
     {
-      /*
        (indexSet as NSIndexSet).enumerate{ idx, stop in
-       if let _: AnyObject = self.atomOutlineView?.item(atRow: idx)
+       if let atomtreeNode: SKAtomTreeNode = self.atomOutlineView?.item(atRow: idx) as? SKAtomTreeNode
        {
-       //items.append(NSPasteboardProjectNode(pasteboardItem: item as! AKArchiving))
+        let atom: SKAsymmetricAtom = SKAsymmetricAtom(cell: structure.cell, atom: atomtreeNode.representedObject, isFractional: structure.isFractional)
+        items.append(SKAtomTreeNode(representedObject: atom))
        }
-       }*/
+       }
     }
     
     return items
@@ -582,24 +584,34 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   @objc func paste(_ sender: AnyObject)
   {
-    if let structure: Structure = self.representedObject as? Structure
+    let selectedRow: Int = self.atomOutlineView?.selectedRow ?? 0
+    let selectedAtom: SKAtomTreeNode? = self.atomOutlineView?.item(atRow: selectedRow) as? SKAtomTreeNode
+    
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+       let structure: Structure = self.representedObject as? Structure
     {
       let pasteboard = NSPasteboard.general
-      if let objects: [Any] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil)
+      if let objects: [SKAtomTreeNode] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil) as? [SKAtomTreeNode]
       {
-        for object in objects
+        if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.insertPastedAtoms(atoms: objects, indexPath: selectedAtom?.indexPath)
         {
-          let node: SKAtomTreeNode = object as! SKAtomTreeNode
+          project.undoManager.setActionName(NSLocalizedString("Paste atoms", comment: "Paste atoms"))
           
-          self.addNode(node, inItem: nil, atIndex: 0, inStructure: structure)
+          self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atoms: state.atoms, bonds: state.bonds)
         }
-        self.reloadData()
       }
     }
   }
   
   @objc func cut(_ sender: AnyObject)
   {
+    let pasteboard = NSPasteboard.general
+    pasteboard.clearContents()
+    
+    let nodes: [SKAtomTreeNode] = self.selectedItems()
+    pasteboard.writeObjects(nodes)
+    self.deleteSelection()
   }
   
   

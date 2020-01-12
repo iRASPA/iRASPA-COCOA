@@ -80,15 +80,10 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
     }
   }
   
-  public override var positionType: PositionType
+  public override var isFractional: Bool
   {
-    get
-    {
-      return .cartesian
-    }
+    return false
   }
-  
-  
   
   // MARK: -
   // MARK: Legacy Decodable support
@@ -426,7 +421,7 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
     let unitCell = self.cell.unitCell
     let inverseCell = self.cell.inverseUnitCell
     
-    let fractionalPosition = inverseCell * asymmetricAtom.position
+    let fractionalPosition = fract(inverseCell * asymmetricAtom.position)
     let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(fractionalPosition)
     
     for image in images
@@ -1556,6 +1551,41 @@ public final class MolecularCrystal: Structure, NSCopying, RKRenderAtomSource, R
     
     // set space group to P1 after removal of symmetry
     return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
+  }
+  
+  // MARK: -
+  // MARK: Paste atoms
+  
+  public override func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    if let crystal: MolecularCrystal =  self.copy() as? MolecularCrystal
+    {
+      var insertion: IndexPath = indexPath ?? [-1]
+      for atom in atoms
+      {
+        insertion[insertion.count-1] += 1
+        expandSymmetry(asymmetricAtom: atom.representedObject)
+        crystal.atoms.insertNode(atom, atArrangedObjectIndexPath: insertion)
+      }
+      
+      crystal.setRepresentationStyle(style: self.atomRepresentationStyle)
+      
+      if let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets,
+        let forceFieldSet: SKForceFieldSet = forceFieldSets?[self.atomForceFieldIdentifier]
+      {
+        crystal.setRepresentationForceField(forceField: self.atomForceFieldIdentifier, forceFieldSet: forceFieldSet)
+      }
+    
+      self.tag(atoms: crystal.atoms)
+    
+      crystal.reComputeBoundingBox()
+    
+      crystal.reComputeBonds()
+    
+      // set space group to P1 after removal of symmetry
+      return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
+    }
+    return nil
   }
   
   // MARK: -
