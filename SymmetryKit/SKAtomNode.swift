@@ -35,7 +35,7 @@ import simd
 import MathKit
 
 
-public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStringConvertible, BinaryDecodable, BinaryEncodable
+public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStringConvertible, BinaryDecodable, BinaryEncodable, Copying
 {
   private var versionNumber: Int = 3
   private static var classVersionNumber: Int = 1
@@ -169,6 +169,45 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     self.color = color
     self.drawRadius = drawRadius
     self.bondDistanceCriteria = bondDistanceCriteria
+  }
+  
+  required public init(original: SKAsymmetricAtom)
+  {
+    self.displayName = original.displayName
+    self.position = original.position
+    self.charge = original.charge
+    self.fractional = original.fractional
+    
+    self.uniqueForceFieldName = original.uniqueForceFieldName
+    self.elementIdentifier = original.elementIdentifier
+    
+    self.isFixed = original.isFixed
+    
+    self.serialNumber = original.serialNumber
+    self.remotenessIndicator = original.remotenessIndicator
+    self.branchDesignator = original.branchDesignator
+    self.alternateLocationIndicator = original.alternateLocationIndicator
+    self.residueName = original.residueName
+    self.chainIdentifier = original.chainIdentifier
+    self.residueSequenceNumber = original.residueSequenceNumber
+    self.codeForInsertionOfResidues = original.codeForInsertionOfResidues
+    self.occupancy = original.occupancy
+    self.temperaturefactor = original.temperaturefactor
+    self.segmentIdentifier = original.segmentIdentifier
+    
+    self.ligandAtom = original.ligandAtom
+    self.backBoneAtom = original.backBoneAtom
+    
+    self.color = original.color
+    self.drawRadius = original.drawRadius
+    self.bondDistanceCriteria = original.bondDistanceCriteria
+  
+    self.copies = original.copies.clone()
+    
+    for copy in copies
+    {
+      copy.asymmetricParentAtom = self
+    }
   }
   
   // used for copy and paste
@@ -401,7 +440,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
   
 }
 
-public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable
+public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable, Copying
 {
   private static var classVersionNumber: Int = 1
   
@@ -428,6 +467,14 @@ public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable
   {
     self.position = position
     self.asymmetricParentAtom = asymmetricParentAtom
+  }
+  
+  required public init(original: SKAtomCopy)
+  {
+    self.position = original.position
+    self.tag = original.tag
+    self.type = original.type
+    self.asymmetricIndex = original.asymmetricIndex
   }
   
   // MARK: -

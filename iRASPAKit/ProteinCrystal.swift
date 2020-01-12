@@ -1569,16 +1569,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
       for atom in atoms
       {
         insertion[insertion.count-1] += 1
-        expandSymmetry(asymmetricAtom: atom.representedObject)
         crystal.atoms.insertNode(atom, atArrangedObjectIndexPath: insertion)
-      }
-      
-      crystal.setRepresentationStyle(style: self.atomRepresentationStyle)
-      
-      if let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets,
-        let forceFieldSet: SKForceFieldSet = forceFieldSets?[self.atomForceFieldIdentifier]
-      {
-        crystal.setRepresentationForceField(forceField: self.atomForceFieldIdentifier, forceFieldSet: forceFieldSet)
       }
     
       self.tag(atoms: crystal.atoms)
@@ -1592,6 +1583,90 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
     }
     return nil
   }
+  
+  public override func convertToNativePositions(newAtoms: [SKAtomTreeNode])
+  {
+    for i in 0..<newAtoms.count
+    {
+      expandSymmetry(asymmetricAtom: newAtoms[i].representedObject)
+    }
+  }
+  
+  public override func bonds(newAtoms: [SKAtomTreeNode]) -> [SKBondNode]
+  {
+    var computedBonds: Set<SKBondNode> = []
+    
+    let atoms: [SKAtomCopy] = newAtoms.compactMap{$0.representedObject}.flatMap{$0.copies}
+    
+    let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    
+    for i in 0..<atoms.count
+    {
+      let posA: SIMD3<Double> = atoms[i].position
+      
+      for j in i+1..<atoms.count
+      {
+        let posB: SIMD3<Double> = atoms[j].position
+        
+        let separationVector: SIMD3<Double> = posA - posB
+        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(posA - posB)
+        
+        let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+        
+        let bondLength: Double = length(periodicSeparationVector)
+        if (bondLength < bondCriteria)
+        {
+          // Type atom as 'Double'
+          if (bondLength < 0.1)
+          {
+            atoms[i].type = .duplicate
+          }
+          if (length(separationVector) > bondCriteria)
+          {
+            let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .external)
+            computedBonds.insert(bond)
+          }
+          else
+          {
+            let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal)
+            computedBonds.insert(bond)
+          }
+        }
+      }
+      
+      for j in 0..<atomList.count
+      {
+        let posB: SIMD3<Double> = atomList[j].position
+        
+        let separationVector: SIMD3<Double> = posA - posB
+        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(posA - posB)
+        
+        let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atomList[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+        
+        let bondLength: Double = length(periodicSeparationVector)
+        if (bondLength < bondCriteria)
+        {
+          // Type atom as 'Double'
+          if (bondLength < 0.1)
+          {
+            atoms[i].type = .duplicate
+          }
+          if (length(separationVector) > bondCriteria)
+          {
+            let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atomList[j], boundaryType: .external)
+            computedBonds.insert(bond)
+          }
+          else
+          {
+            let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atomList[j], boundaryType: .internal)
+            computedBonds.insert(bond)
+          }
+        }
+      }
+    }
+    return Array(computedBonds)
+  }
+  
   // MARK: -
   // MARK: Compute bonds
   

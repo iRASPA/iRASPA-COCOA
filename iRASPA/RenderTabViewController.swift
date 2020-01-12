@@ -37,8 +37,10 @@ import SymmetryKit
 import LogViewKit
 import MathKit
 
-class RenderTabViewController: NSTabViewController, NSMenuItemValidation, WindowControllerConsumer, ProjectConsumer, GlobalModifierFlagsConsumer, RKRenderViewSelectionDelegate
+class RenderTabViewController: NSTabViewController, NSMenuItemValidation, WindowControllerConsumer, ProjectConsumer, GlobalModifierFlagsConsumer, RKRenderViewSelectionDelegate, StructurePageController
 {
+  var structures: [Structure] = []
+  
   weak var windowController: iRASPAWindowController?
   
   weak var renderDataSource: RKRenderDataSource?
@@ -288,6 +290,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     didSet
     {
+      self.representedObject = proxyProject?.representedObject.loadedProjectStructureNode
+      
       if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
       {
         self.renderDataSource = project
@@ -322,6 +326,53 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }
     }
   }
+  
+  func masterViewControllerTabChanged(tab: Int)
+  {
+    if let project = representedObject as? ProjectStructureNode
+    {
+      switch(tab)
+      {
+      case 0:
+        self.structures = project.sceneList.scenes.flatMap{$0.structureViewerStructures}
+      case 1:
+        self.structures = project.sceneList.scenes.flatMap{$0.selectedMovies}.flatMap{$0.structureViewerStructures}
+      case 2:
+          self.structures = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0.structure} ?? []
+      default:
+        break
+      }
+    }
+    else
+    {
+      self.structures = []
+    }
+  }
+  
+  func masterViewControllerSelectionChanged(tab: Int)
+  {
+    if let project = representedObject as? ProjectStructureNode
+    {
+      switch(tab)
+      {
+      case 0:
+        break
+      case 1:
+        self.structures = project.sceneList.scenes.flatMap{$0.selectedMovies}.flatMap{$0.structureViewerStructures}
+      case 2:
+        self.structures = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0.structure} ?? []
+        
+      default:
+        break
+      }
+    }
+    else
+    {
+      self.structures = []
+    }
+  }
+
+
 
   // detect changes in the view-bounds, use these to update the 'Camera'-detail view (pictures and movies uses the aspect-ratio)
   override func viewDidLayout()
@@ -1429,6 +1480,21 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   func validateMenuItem(_ menuItem: NSMenuItem) -> Bool
   {
+    if (menuItem.action == #selector(copy(_:)))
+    {
+      return true
+    }
+    
+    if (menuItem.action == #selector(paste(_:)))
+    {
+      return true
+    }
+    
+    if (menuItem.action == #selector(cut(_:)))
+    {
+      return true
+    }
+    
     if (menuItem.action == #selector(setCameraToOrthographic))
     {
       if let _: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode,
@@ -1437,9 +1503,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         menuItem.state = (camera.frustrumType == .perspective) ? NSControl.StateValue.off : NSControl.StateValue.on
         return true
       }
-      return false
+      return true
     }
-      
+    
     if (menuItem.action == #selector(setCameraToPerspective))
     {
       if let _: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode,
@@ -3092,4 +3158,82 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }
     }
   }
+  
+  
+  // MARK: Copy / Paste / Cut / Delete
+  // ===============================================================================================================================
+  
+  
+  @objc func copy(_ sender: AnyObject)
+  {
+    let pasteboard = NSPasteboard.general
+    pasteboard.clearContents()
+    
+    if let _: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      var nodes: [SKAtomTreeNode] = []
+      for structure in structures
+      {
+        structure.atoms.selectedNodes.forEach{
+          let node = SKAtomTreeNode(original: $0)
+          if structure.isFractional
+          {
+            node.representedObject.position = structure.cell.convertToCartesian(node.representedObject.position)
+          }
+          nodes.append(node)
+          
+        }
+      }
+      
+      pasteboard.writeObjects(nodes)
+    }
+  }
+  
+  @objc func paste(_ sender: AnyObject)
+  {
+    if let _: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      
+      var insertionData: [DeleteData] = []
+      let pasteboard = NSPasteboard.general
+      
+      if let atoms: [SKAtomTreeNode] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil) as? [SKAtomTreeNode]
+      {
+        for structure in structures
+        {
+          // create new sets of objects for each structure
+          let objects: [SKAtomTreeNode] = atoms.clone()
+          let asymmetricAtoms: [SKAsymmetricAtom] = objects.map{$0.representedObject}
+          if let document: iRASPADocument = self.windowController?.currentDocument
+          {
+            structure.setRepresentationColorScheme(colorSets: document.colorSets, for: asymmetricAtoms)
+            structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets, for: asymmetricAtoms)
+          }
+          structure.setRepresentationType(type: structure.atomRepresentationType, for: asymmetricAtoms)
+        
+          structure.convertToNativePositions(newAtoms: objects)
+          let bonds: [SKBondNode] = structure.bonds(newAtoms: objects)
+                
+          let insertionIndex: Int = structure.atoms.rootNodes.count
+          let data = DeleteData.init(structure: structure, atoms: objects, selectedBonds: bonds, indexPaths: Array(0..<objects.count).map{IndexPath(index: insertionIndex + $0)})
+          insertionData.append(data)
+        }
+        self.insertSelectedAtomsIn(insertedData:insertionData)
+      }
+    }
+  }
+  
+  @objc func cut(_ sender: AnyObject)
+  {
+    let pasteboard = NSPasteboard.general
+    pasteboard.clearContents()
+    
+    if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let nodes: [SKAtomTreeNode] = project.structures.flatMap{$0.atoms.selectedNodes}
+      pasteboard.writeObjects(nodes)
+    }
+    self.deleteSelection()
+  }
 }
+
