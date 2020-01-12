@@ -394,22 +394,4 @@ public class MetalViewController: NSViewController, RenderViewController
   {
     (self.view as? MetalView)?.reloadBackgroundImage()
   }
-  
-
-  
-  // MARK: Copy / Paste / Cut / Delete
-  // ===============================================================================================================================
-  
-  
-  @objc func copy(_ sender: AnyObject)
-  {
-  }
-  
-  @objc func paste(_ sender: AnyObject)
-  {
-  }
-  
-  @objc func cut(_ sender: AnyObject)
-  {
-  }
 }

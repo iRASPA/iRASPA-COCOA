@@ -579,6 +579,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     pasteboard.clearContents()
     
     let nodes: [SKAtomTreeNode] = self.selectedItems()
+    
     pasteboard.writeObjects(nodes)
   }
   
@@ -594,6 +595,18 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let pasteboard = NSPasteboard.general
       if let objects: [SKAtomTreeNode] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil) as? [SKAtomTreeNode]
       {
+        let asymmetricAtoms: [SKAsymmetricAtom]
+          = objects.map{$0.representedObject}
+        
+        if let document: iRASPADocument = self.windowController?.currentDocument
+        {
+          structure.setRepresentationColorScheme(colorSets: document.colorSets, for: asymmetricAtoms)
+          structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets, for: asymmetricAtoms)
+        }
+        structure.setRepresentationType(type: structure.atomRepresentationType, for: asymmetricAtoms)
+        
+        structure.convertToNativePositions(newAtoms: objects)
+        
         if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.insertPastedAtoms(atoms: objects, indexPath: selectedAtom?.indexPath)
         {
           project.undoManager.setActionName(NSLocalizedString("Paste atoms", comment: "Paste atoms"))

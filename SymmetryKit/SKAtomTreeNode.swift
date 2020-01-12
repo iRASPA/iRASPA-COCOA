@@ -33,11 +33,12 @@
 import Foundation
 import BinaryCodable
 import CloudKit
+import MathKit
 import simd
 
 public let NSPasteboardTypeAtomTreeNode: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.atom")
 
-public final class SKAtomTreeNode:  NSObject, Decodable, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable
+public final class SKAtomTreeNode:  NSObject, Decodable, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, Copying
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -97,6 +98,15 @@ public final class SKAtomTreeNode:  NSObject, Decodable, NSPasteboardReading, NS
     {
       child.parentNode = self
     }
+  }
+  
+  required public init(original: SKAtomTreeNode)
+  {
+    self.displayName = original.displayName
+    self.representedObject = original.representedObject.copy()
+    self.isGroup = original.isGroup
+    self.isEditable = original.isEditable
+    self.childNodes = []
   }
   
   

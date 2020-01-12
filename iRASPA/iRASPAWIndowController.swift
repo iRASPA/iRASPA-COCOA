@@ -374,6 +374,7 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     if let structurePageController: StructurePageController = detailTabViewController?.structureDetailTabViewController
     {
       structurePageController.masterViewControllerTabChanged(tab: tab)
+      self.detailTabViewController?.renderViewController?.masterViewControllerTabChanged(tab: tab)
     }
   }
   
@@ -382,6 +383,7 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     if let structurePageController: StructurePageController = detailTabViewController?.structureDetailTabViewController
     {
       structurePageController.masterViewControllerSelectionChanged(tab: tab)
+      self.detailTabViewController?.renderViewController?.masterViewControllerSelectionChanged(tab: tab)
     }
   }
   

@@ -541,6 +541,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   public func setRepresentationColorScheme(colorSet: SKColorSet)
   {
     let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    setRepresentationColorScheme(colorSet: colorSet, for: asymmetricAtoms)
+  }
+
+  public func setRepresentationColorScheme(colorSet: SKColorSet, for asymmetricAtoms: [SKAsymmetricAtom])
+  {
     for asymmetricAtom in asymmetricAtoms
     {
       let uniqueForceFieldName: String = asymmetricAtom.uniqueForceFieldName
@@ -558,6 +563,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     }
   }
 
+  
   public func setRepresentationColorScheme(scheme: String?, colorSets: SKColorSets)
   {
     if let scheme = scheme
@@ -568,6 +574,14 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       {
         setRepresentationColorScheme(colorSet: colorSet)
       }
+    }
+  }
+  
+  public func setRepresentationColorScheme(colorSets: SKColorSets, for asymmetricAtoms: [SKAsymmetricAtom])
+  {
+    if let colorSet: SKColorSet = colorSets[self.atomColorSchemeIdentifier]
+    {
+      setRepresentationColorScheme(colorSet: colorSet, for: asymmetricAtoms)
     }
   }
   
@@ -604,6 +618,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     }
   }
   
+  
+  
   public func unknownForceFieldNames(forceField: String, forceFieldSets: SKForceFieldSets) -> [String]
   {
     if let forceFieldSet: SKForceFieldSet = forceFieldSets[forceField]
@@ -625,6 +641,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   {
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
     
+    self.setRepresentationForceField(forceField: forceField, forceFieldSet: forceFieldSet, for: asymmetricAtoms)
+  }
+  
+  public func setRepresentationForceField(forceField: String?, forceFieldSet: SKForceFieldSet, for asymmetricAtoms: [SKAsymmetricAtom])
+  {
     switch(self.atomForceFieldOrder)
     {
     case .elementOnly:
@@ -663,6 +684,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     }
   }
   
+  
   public func setRepresentationForceField(forceField: String?, forceFieldSets: SKForceFieldSets)
   {
     if let forceField = forceField
@@ -672,6 +694,19 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       if let forceFieldSet: SKForceFieldSet = forceFieldSets[self.atomForceFieldIdentifier]
       {
         setRepresentationForceField(forceField: forceField, forceFieldSet: forceFieldSet)
+      }
+    }
+  }
+  
+  public func setRepresentationForceField(forceField: String?, forceFieldSets: SKForceFieldSets, for asymmetricAtoms: [SKAsymmetricAtom])
+  {
+    if let forceField = forceField
+    {
+      self.atomForceFieldIdentifier = forceField
+      
+      if let forceFieldSet: SKForceFieldSet = forceFieldSets[self.atomForceFieldIdentifier]
+      {
+        setRepresentationForceField(forceField: forceField, forceFieldSet: forceFieldSet, for: asymmetricAtoms)
       }
     }
   }
@@ -1060,6 +1095,26 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       self.atomRepresentationType = type
       
       let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    
+      switch(type)
+      {
+        case .sticks_and_balls:
+          asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
+          atomScaleFactor = 0.7
+        case .vdw:
+          atomScaleFactor = 1.0
+          asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
+      case .unity:
+        asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
+      }
+    }
+  }
+  
+  public func setRepresentationType(type: Structure.RepresentationType?, for asymmetricAtoms: [SKAsymmetricAtom])
+  {
+    if let type = type
+    {
+      self.atomRepresentationType = type
     
       switch(type)
       {
@@ -1588,6 +1643,16 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   public func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     return nil
+  }
+  
+  public func convertToNativePositions(newAtoms: [SKAtomTreeNode])
+  {
+    
+  }
+  
+  public func bonds(newAtoms: [SKAtomTreeNode]) -> [SKBondNode]
+  {
+    return []
   }
   
   // MARK: -

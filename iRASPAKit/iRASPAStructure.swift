@@ -239,7 +239,6 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
       self.init(frame: firstFrame)
       return
     case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
-      debugPrint("READING NSPasteboard.PasteboardType(String(kUTTypeFileURL))")
       if let str = String(data: data, encoding: .utf8),
          let url = URL(string: str),
          FileManager.default.fileExists(atPath: url.path),
