@@ -1677,29 +1677,6 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   // MARK: -
   // MARK: Paste atoms
   
-  public override func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    if let crystal: Crystal =  self.copy() as? Crystal
-    {
-      var insertion: IndexPath = indexPath ?? [-1]
-      for atom in atoms
-      {
-        insertion[insertion.count-1] += 1
-        crystal.atoms.insertNode(atom, atArrangedObjectIndexPath: insertion)
-      }
-    
-      self.tag(atoms: crystal.atoms)
-    
-      crystal.reComputeBoundingBox()
-    
-      crystal.reComputeBonds()
-    
-      // set space group to P1 after removal of symmetry
-      return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
-    }
-    return nil
-  }
-  
   public override func convertToNativePositions(newAtoms: [SKAtomTreeNode])
   {
     for i in 0..<newAtoms.count
@@ -1707,6 +1684,17 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
       newAtoms[i].representedObject.position = fract(self.cell.convertToFractional(newAtoms[i].representedObject.position))
       expandSymmetry(asymmetricAtom: newAtoms[i].representedObject)
     }
+  }
+  
+  public override func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode]
+  {
+    let selectedNodes: [SKAtomTreeNode] = self.atoms.selectedNodes.clone()
+    
+    selectedNodes.forEach{
+      let pos = $0.representedObject.position
+          $0.representedObject.position = self.cell.convertToCartesian(pos)
+        }
+    return selectedNodes
   }
   
   public override func bonds(newAtoms: [SKAtomTreeNode]) -> [SKBondNode]

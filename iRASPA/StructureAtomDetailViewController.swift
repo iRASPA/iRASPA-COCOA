@@ -552,35 +552,15 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   // MARK: Copy / Paste / Cut / Delete
   // ===============================================================================================================================
   
-  
-  func selectedItems() -> [SKAtomTreeNode]
-  {
-    var items: [SKAtomTreeNode] = [SKAtomTreeNode]()
-    
-    if let structure: Structure = self.representedObject as? Structure,
-        let indexSet: IndexSet = self.atomOutlineView?.selectedRowIndexes
-    {
-       (indexSet as NSIndexSet).enumerate{ idx, stop in
-       if let atomtreeNode: SKAtomTreeNode = self.atomOutlineView?.item(atRow: idx) as? SKAtomTreeNode
-       {
-        let atom: SKAsymmetricAtom = SKAsymmetricAtom(cell: structure.cell, atom: atomtreeNode.representedObject, isFractional: structure.isFractional)
-        items.append(SKAtomTreeNode(representedObject: atom))
-       }
-       }
-    }
-    
-    return items
-  }
-  
-  
   @objc func copy(_ sender: AnyObject)
   {
     let pasteboard = NSPasteboard.general
     pasteboard.clearContents()
     
-    let nodes: [SKAtomTreeNode] = self.selectedItems()
-    
-    pasteboard.writeObjects(nodes)
+    if let structure: Structure = self.representedObject as? Structure
+    {
+      pasteboard.writeObjects(structure.readySelectedAtomsForCopyAndPaste())
+    }
   }
   
   @objc func paste(_ sender: AnyObject)
@@ -588,15 +568,34 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     let selectedRow: Int = self.atomOutlineView?.selectedRow ?? 0
     let selectedAtom: SKAtomTreeNode? = self.atomOutlineView?.item(atRow: selectedRow) as? SKAtomTreeNode
     
-    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+    
+    if let proxyProject: ProjectTreeNode = self.proxyProject,
+       let _: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let structure: Structure = self.representedObject as? Structure
     {
+      if !proxyProject.isEditable
+      {
+        LogQueue.shared.warning(destination: windowController, message: "Paste unsuccesful: project is not editable.")
+        return
+      }
+      
+      if !proxyProject.isEnabled
+      {
+        LogQueue.shared.warning(destination: windowController, message: "Paste unsuccesful: project is temporary disabled.")
+        return
+      }
+      
       let pasteboard = NSPasteboard.general
       if let objects: [SKAtomTreeNode] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil) as? [SKAtomTreeNode]
       {
         let asymmetricAtoms: [SKAsymmetricAtom]
           = objects.map{$0.representedObject}
+        
+        let indexPath: IndexPath = selectedAtom?.indexPath ?? [-1]
+        let insertionIndex = indexPath.last! + 1
+        let prefixIndexPath = indexPath.dropLast()
+        
+        let indexPaths = Array(0..<objects.count).map{prefixIndexPath + IndexPath(index: insertionIndex + $0)}
         
         if let document: iRASPADocument = self.windowController?.currentDocument
         {
@@ -607,26 +606,26 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         
         structure.convertToNativePositions(newAtoms: objects)
         
-        if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.insertPastedAtoms(atoms: objects, indexPath: selectedAtom?.indexPath)
-        {
-          project.undoManager.setActionName(NSLocalizedString("Paste atoms", comment: "Paste atoms"))
-          
-          self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atoms: state.atoms, bonds: state.bonds)
-        }
+        let bonds = structure.bonds(newAtoms: objects)
+        
+        self.insertSelectedAtomsIn(structure: structure, atoms: objects, bonds: bonds, at: indexPaths)
       }
     }
   }
   
   @objc func cut(_ sender: AnyObject)
   {
-    let pasteboard = NSPasteboard.general
-    pasteboard.clearContents()
+    if let structure: Structure = self.representedObject as? Structure
+    {
+      let pasteboard = NSPasteboard.general
+      pasteboard.clearContents()
     
-    let nodes: [SKAtomTreeNode] = self.selectedItems()
-    pasteboard.writeObjects(nodes)
-    self.deleteSelection()
+    
+      let nodes: [SKAtomTreeNode] = structure.atoms.selectedNodes
+      pasteboard.writeObjects(nodes)
+      self.deleteSelection()
+    }
   }
-  
   
   override func keyDown(with event: NSEvent)
   {
@@ -1352,24 +1351,35 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedAtomsIn(structure: structure, atoms: atoms.reversed(), bonds: bonds, at: indexPaths.reversed())})
+      
+      if !project.undoManager.isUndoing
+      {
+        project.undoManager.setActionName(NSLocalizedString("Delete atoms", comment:"Delete atoms"))
+      }
     
-    for bond in bonds
-    {
-      bond.atom1.bonds.remove(bond)
-      bond.atom2.bonds.remove(bond)
-      structure.bonds.arrangedObjects.remove(bond)
-    }
+      for bond in bonds
+      {
+        bond.atom1.bonds.remove(bond)
+        bond.atom2.bonds.remove(bond)
+        structure.bonds.arrangedObjects.remove(bond)
+      }
     
-    self.atomOutlineView?.beginUpdates()
-    for atom in atoms
-    {
-      let toItem: SKAtomTreeNode? = atom.isRootNode() ? nil: atom.parentNode
-      let index: Int = atom.indexPath.last ?? 0
-      structure.atoms.removeNode(atom)
+      let observeNotificationsStored: Bool = self.observeNotifications
+      self.observeNotifications = false
+      self.atomOutlineView?.beginUpdates()
+      for atom in atoms
+      {
+        let toItem: SKAtomTreeNode? = atom.isRootNode() ? nil: atom.parentNode
+        let index: Int = atom.indexPath.last ?? 0
+        structure.atoms.removeNode(atom)
       
       if (!self.filterContent)
       {
-        self.atomOutlineView?.removeItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: .slideLeft)
+        if let atomOutlineView = atomOutlineView,
+          atomOutlineView.numberOfRows>0
+        {
+          atomOutlineView.removeItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: .slideLeft)
+        }
       }
     }
     
@@ -1377,11 +1387,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     structure.tag(atoms: structure.atoms)
     
     if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
-      let numberOfRows: Int = self.atomOutlineView?.numberOfRows
+      let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
+      numberOfRows>0
     {
       self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
     }
     self.atomOutlineView?.endUpdates()
+      self.observeNotifications = observeNotificationsStored
     
     if (self.filterContent)
     {
@@ -1392,13 +1404,15 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
     
     if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
-      let numberOfRows: Int = self.atomOutlineView?.numberOfRows
+      let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
+      numberOfRows>0
     {
       self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
     }
-
-    self.proxyProject?.representedObject.isEdited = true
+      
     
+
+      project.isEdited = true
     self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
     self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
     self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -1417,8 +1431,15 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
+      
       project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(structure: structure, atoms: atoms.reversed(), bonds: bonds, from: indexPaths.reversed())})
       
+      if !project.undoManager.isUndoing
+      {
+        project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
+      }
+      let observeNotificationsStored: Bool = self.observeNotifications
+      self.observeNotifications = false
       self.atomOutlineView?.beginUpdates()
       for (index, atom) in atoms.enumerated()
       {
@@ -1430,20 +1451,25 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         
         if (!self.filterContent)
         {
-          self.atomOutlineView?.insertItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: .slideLeft)
-          self.atomOutlineView?.selectRowIndexes(IndexSet(integer: self.atomOutlineView!.row(forItem: atom)), byExtendingSelection: true)
+          if let atomOutlineView = atomOutlineView,
+          atomOutlineView.numberOfRows>0
+          {
+            atomOutlineView.insertItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: .slideLeft)
+            atomOutlineView.selectRowIndexes(IndexSet(integer: atomOutlineView.row(forItem: atom)), byExtendingSelection: true)
+          }
         }
       }
       
       structure.tag(atoms: structure.atoms)
       
       if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
-        let numberOfRows: Int = self.atomOutlineView?.numberOfRows
+        let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
+        numberOfRows>0
       {
         self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
       }
       self.atomOutlineView?.endUpdates()
-      
+      self.observeNotifications = observeNotificationsStored
       
       for bond in bonds
       {
@@ -1462,7 +1488,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       
       if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
-        let numberOfRows: Int = self.atomOutlineView?.numberOfRows
+        let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
+        numberOfRows>0
       {
         self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
       }

@@ -829,55 +829,55 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-    project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(structure: structure, atoms: atoms.reversed(), bonds: bonds, from: indexPaths.reversed())})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(structure: structure, atoms: atoms.reversed(), bonds: bonds, from: indexPaths.reversed())})
+      
+      if !project.undoManager.isUndoing
+      {
+        project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
+      }
+      
     
-    for (index, atom) in atoms.enumerated()
-    {
-      structure.atoms.insertNode(atom, atArrangedObjectIndexPath: indexPaths[index])
-      structure.atoms.selectedTreeNodes.insert(atom)
-    }
+      for (index, atom) in atoms.enumerated()
+      {
+        structure.atoms.insertNode(atom, atArrangedObjectIndexPath: indexPaths[index])
+        structure.atoms.selectedTreeNodes.insert(atom)
+      }
     
-    structure.tag(atoms: structure.atoms)
+      structure.tag(atoms: structure.atoms)
     
-    for bond in bonds
-    {
-      bond.atom1.bonds.insert(bond)
-      bond.atom2.bonds.insert(bond)
-      structure.bonds.arrangedObjects.insert(bond)
-    }
+      for bond in bonds
+      {
+        bond.atom1.bonds.insert(bond)
+        bond.atom2.bonds.insert(bond)
+        structure.bonds.arrangedObjects.insert(bond)
+      }
     
-    self.proxyProject?.representedObject.isEdited = true
+      project.isEdited = true
     
-    self.invalidateIsosurface(cachedIsosurfaces: [structure])
+      self.invalidateIsosurface(cachedIsosurfaces: [structure])
     self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
-    self.renderViewController.reloadData()
+      self.renderViewController.reloadData()
     
-    NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: structure)
-    NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
     
-    (self.view as? RenderTabView)?.evaluateSelectionAnimation()
-    }
-  }
-  
-  struct DeleteData
-  {
-    var structure: Structure
-    var atoms: [SKAtomTreeNode]
-    var selectedBonds: [SKBondNode]
-    var indexPaths: [IndexPath]
-    
-    func reversed() -> DeleteData
-    {
-      return DeleteData(structure: structure, atoms: atoms.reversed(), selectedBonds: selectedBonds, indexPaths: indexPaths.reversed())
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
   }
   
   
-  func deleteSelectedAtomsFor(deletedData: [DeleteData])
+  
+  
+  func deleteSelectedAtomsFor(deletedData: [AtomsChangeDataStructure])
   {
     if  let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedAtomsIn(insertedData: deletedData.map{$0.reversed()})})
+      
+      if !project.undoManager.isUndoing
+      {
+        project.undoManager.setActionName(NSLocalizedString("Delete atoms", comment:"Delete atoms"))
+      }
       
       for data in deletedData
       {
@@ -896,7 +896,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         data.structure.tag(atoms: data.structure.atoms)
         data.structure.atoms.selectedTreeNodes = []
         
-        self.proxyProject?.representedObject.isEdited = true
+        project.isEdited = true
         
         showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
         
@@ -915,11 +915,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   
-  func insertSelectedAtomsIn(insertedData: [DeleteData])
+  func insertSelectedAtomsIn(insertedData: [AtomsChangeDataStructure])
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(deletedData: insertedData.map{$0.reversed()})})
+      
+      if !project.undoManager.isUndoing
+      {
+        project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
+      }
       
       for data in insertedData
       {
@@ -963,7 +968,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        let proxyProject: ProjectTreeNode = proxyProject, proxyProject.isEnabled
     {
       
-      var deleteData: [DeleteData] = []
+      var deleteData: [AtomsChangeDataStructure] = []
       for scene: Scene in project.sceneList.scenes
       {
         for movie in scene.movies
@@ -976,7 +981,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
             let indexPaths: [IndexPath] = selectedAtoms.map{$0.indexPath}
             let selectedBonds: [SKBondNode] = structure.atoms.allSelectedNodes.compactMap{$0.representedObject}.flatMap{$0.copies}.flatMap{$0.bonds}
             
-            let data: DeleteData = DeleteData(structure: structure, atoms: selectedAtoms, selectedBonds: selectedBonds, indexPaths: indexPaths)
+            let data: AtomsChangeDataStructure = AtomsChangeDataStructure(structure: structure, atoms: selectedAtoms, selectedBonds: selectedBonds, indexPaths: indexPaths)
             
             deleteData.append(data)
           }
@@ -986,7 +991,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         project.undoManager.beginUndoGrouping()
         deleteSelectedAtomsFor(deletedData: deleteData)
-        project.undoManager.setActionName(NSLocalizedString("Delete selection", comment:"Delete selection"))
+        //project.undoManager.setActionName(NSLocalizedString("Delete selection", comment:"Delete selection"))
         project.undoManager.endUndoGrouping()
       
         (self.view as? RenderTabView)?.evaluateSelectionAnimation()
@@ -3166,35 +3171,33 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   @objc func copy(_ sender: AnyObject)
   {
-    let pasteboard = NSPasteboard.general
-    pasteboard.clearContents()
-    
-    if let _: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
-      var nodes: [SKAtomTreeNode] = []
-      for structure in structures
-      {
-        structure.atoms.selectedNodes.forEach{
-          let node = SKAtomTreeNode(original: $0)
-          if structure.isFractional
-          {
-            node.representedObject.position = structure.cell.convertToCartesian(node.representedObject.position)
-          }
-          nodes.append(node)
-          
-        }
-      }
-      
-      pasteboard.writeObjects(nodes)
+      let pasteboard = NSPasteboard.general
+      pasteboard.clearContents()
+      pasteboard.writeObjects(project.structures.flatMap{$0.readySelectedAtomsForCopyAndPaste()})
     }
   }
   
   @objc func paste(_ sender: AnyObject)
   {
-    if let _: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    if let proxyProject: ProjectTreeNode = proxyProject,
+       let _: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
     {
+      if !proxyProject.isEditable
+      {
+        LogQueue.shared.warning(destination: windowController, message: "Paste unsuccesful: project is not editable.")
+        return
+      }
       
-      var insertionData: [DeleteData] = []
+      if !proxyProject.isEnabled
+      {
+        LogQueue.shared.warning(destination: windowController, message: "Paste unsuccesful: project is temporary disabled.")
+        return
+      }
+      
+      
+      var insertionData: [AtomsChangeDataStructure] = []
       let pasteboard = NSPasteboard.general
       
       if let atoms: [SKAtomTreeNode] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil) as? [SKAtomTreeNode]
@@ -3210,12 +3213,14 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
             structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets, for: asymmetricAtoms)
           }
           structure.setRepresentationType(type: structure.atomRepresentationType, for: asymmetricAtoms)
+          
+          structure.setRepresentationStyle(style: structure.atomRepresentationStyle, for: asymmetricAtoms)
         
           structure.convertToNativePositions(newAtoms: objects)
           let bonds: [SKBondNode] = structure.bonds(newAtoms: objects)
                 
           let insertionIndex: Int = structure.atoms.rootNodes.count
-          let data = DeleteData.init(structure: structure, atoms: objects, selectedBonds: bonds, indexPaths: Array(0..<objects.count).map{IndexPath(index: insertionIndex + $0)})
+          let data = AtomsChangeDataStructure(structure: structure, atoms: objects, selectedBonds: bonds, indexPaths: Array(0..<objects.count).map{IndexPath(index: insertionIndex + $0)})
           insertionData.append(data)
         }
         self.insertSelectedAtomsIn(insertedData:insertionData)
