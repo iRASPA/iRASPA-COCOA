@@ -88,11 +88,6 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
   
   public func copy(with zone: NSZone?) -> Any
   {
-    //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
-    //let data: Data = try! propertyListEncoder.encode(self)
-    //let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-    //let molecule: Molecule = try! propertyListDecoder.decode(Molecule.self, from: data)
-    
     let binaryEncoder: BinaryEncoder = BinaryEncoder()
     binaryEncoder.encode(self)
     let data: Data = Data(binaryEncoder.data)
@@ -731,35 +726,17 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
   // MARK: -
   // MARK: Paste atoms
   
-  public override func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    if let molecule: Molecule =  self.copy() as? Molecule
-    {
-      var insertion: IndexPath = indexPath ?? [-1]
-      for atom in atoms
-      {
-        insertion[insertion.count-1] += 1
-        molecule.atoms.insertNode(atom, atArrangedObjectIndexPath: insertion)
-      }
-    
-      self.tag(atoms: molecule.atoms)
-    
-      molecule.reComputeBoundingBox()
-    
-      molecule.reComputeBonds()
-    
-      // set space group to P1 after removal of symmetry
-      return (cell: molecule.cell, spaceGroup: molecule.spaceGroup, atoms: molecule.atoms, bonds: molecule.bonds)
-    }
-    return nil
-  }
-  
   public override func convertToNativePositions(newAtoms: [SKAtomTreeNode])
   {
     for i in 0..<newAtoms.count
     {
       expandSymmetry(asymmetricAtom: newAtoms[i].representedObject)
     }
+  }
+  
+  public override func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode]
+  {
+    return  self.atoms.selectedNodes
   }
   
   public override func bonds(newAtoms: [SKAtomTreeNode]) -> [SKBondNode]

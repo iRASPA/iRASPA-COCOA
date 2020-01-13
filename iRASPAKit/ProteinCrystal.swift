@@ -1561,35 +1561,17 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   // MARK: -
   // MARK: Paste atoms
   
-  public override func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    if let crystal: ProteinCrystal =  self.copy() as? ProteinCrystal
-    {
-      var insertion: IndexPath = indexPath ?? [-1]
-      for atom in atoms
-      {
-        insertion[insertion.count-1] += 1
-        crystal.atoms.insertNode(atom, atArrangedObjectIndexPath: insertion)
-      }
-    
-      self.tag(atoms: crystal.atoms)
-    
-      crystal.reComputeBoundingBox()
-    
-      crystal.reComputeBonds()
-    
-      // set space group to P1 after removal of symmetry
-      return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atoms, bonds: crystal.bonds)
-    }
-    return nil
-  }
-  
   public override func convertToNativePositions(newAtoms: [SKAtomTreeNode])
   {
     for i in 0..<newAtoms.count
     {
       expandSymmetry(asymmetricAtom: newAtoms[i].representedObject)
     }
+  }
+  
+  public override func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode]
+  {
+    return  self.atoms.selectedNodes
   }
   
   public override func bonds(newAtoms: [SKAtomTreeNode]) -> [SKBondNode]

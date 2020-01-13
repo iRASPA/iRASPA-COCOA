@@ -133,6 +133,7 @@
 		933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */; };
 		933CFE171F14B47700BC9DCA /* iRASPAProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE161F14B47700BC9DCA /* iRASPAProject.swift */; };
 		933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */; };
+		933D6B8623CCABD600761EA0 /* AtomsChangeDataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D6B8523CCABD600761EA0 /* AtomsChangeDataStructure.swift */; };
 		933D93E51FD326CA0075AB92 /* StructureTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */; };
 		933F4F241FB1C24D00753D08 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F4F231FB1C24D00753D08 /* Errors.swift */; };
 		9340A6F12015123B00F33D1D /* NSFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9340A6F02015123B00F33D1D /* NSFont.swift */; };
@@ -914,6 +915,7 @@
 		933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedPropertiesLayer.swift; sourceTree = "<group>"; };
 		933CFE161F14B47700BC9DCA /* iRASPAProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProject.swift; sourceTree = "<group>"; };
 		933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAStructure.swift; sourceTree = "<group>"; };
+		933D6B8523CCABD600761EA0 /* AtomsChangeDataStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomsChangeDataStructure.swift; sourceTree = "<group>"; };
 		933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureTableRowView.swift; sourceTree = "<group>"; };
 		933F4F171FADF4D000753D08 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		933F4F231FB1C24D00753D08 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -1708,6 +1710,7 @@
 				93475A9A1FC98E71006F6A19 /* NSViewController.swift */,
 				932E539C205456F800A17E26 /* NSLabelSegmentedCell.swift */,
 				93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */,
+				933D6B8523CCABD600761EA0 /* AtomsChangeDataStructure.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -3181,6 +3184,7 @@
 				93B8BB181F286F1E0024EEC7 /* iRASPAComboBox.swift in Sources */,
 				93FD046D1EC1B161005226F4 /* AtomNetChargeLabel.swift in Sources */,
 				9381D8A31E5B72C700263860 /* InterpreterViewController.swift in Sources */,
+				933D6B8623CCABD600761EA0 /* AtomsChangeDataStructure.swift in Sources */,
 				93604A6E1F4EFCBB0053ADE2 /* Preferences.swift in Sources */,
 				9397C622203B4F6800FE4A9C /* ImportAccessoryViewController.swift in Sources */,
 				93B5EE511FC2CACF009922F2 /* LocalAboutWindowController.swift in Sources */,

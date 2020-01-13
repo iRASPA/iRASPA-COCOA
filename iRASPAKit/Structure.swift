@@ -752,6 +752,12 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?)
   {
+    let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    self.setRepresentationStyle(style: style, for: asymmetricAtoms)
+  }
+  
+  public func setRepresentationStyle(style: Structure.RepresentationStyle?, for asymmetricAtoms: [SKAsymmetricAtom])
+  {
     if let style = style
     {
       atomRepresentationStyle = style
@@ -893,7 +899,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
       }
     }
     
-    let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    
     for asymmetricAtom in asymmetricAtoms
     {
       let elementId: Int = asymmetricAtom.elementIdentifier
@@ -1640,14 +1646,14 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     return (cell: superCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
   }
   
-  public func insertPastedAtoms(atoms: [SKAtomTreeNode], indexPath: IndexPath?) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    return nil
-  }
-  
   public func convertToNativePositions(newAtoms: [SKAtomTreeNode])
   {
     
+  }
+  
+  public func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode]
+  {
+    return []
   }
   
   public func bonds(newAtoms: [SKAtomTreeNode]) -> [SKBondNode]
