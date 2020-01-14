@@ -785,7 +785,17 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     self.deleteSelection()
   }
   
-  
+  public override func selectAll(_ sender: Any?)
+  {
+    if  let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      for structure in project.structures
+      {
+        self.setCurrentSelection(structure: structure, selection: Set(structure.atoms.flattenedNodes()), from: structure.atoms.selectedTreeNodes)
+      }
+    }
+  }
+   
   
   func deleteSelectedAtomsFor(structure: Structure, atoms: [SKAtomTreeNode], bonds: [SKBondNode], from indexPaths: [IndexPath])
   {
@@ -1049,12 +1059,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      if project.undoManager.isUndoing
-      {
-        project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
-      }
       // save off the current selectedNode and current selection for undo/redo
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(structure: structure, selection: from, from: selection)})
+      project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
    
       showTransformationPanel(oldSelectionEmpty: structure.atoms.selectedTreeNodes.isEmpty,newSelectionEmpty: selection.isEmpty)
       
