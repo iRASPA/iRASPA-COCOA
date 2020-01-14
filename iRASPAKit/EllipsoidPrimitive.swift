@@ -59,6 +59,16 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource, P
     setRepresentationStyle(style: Structure.RepresentationStyle.objects)
   }
   
+  public required init(original structure: Structure)
+  {
+    super.init(original: structure)
+  }
+  
+  public required init(clone structure: Structure)
+  {
+    super.init(clone: structure)
+  }
+  
   public override var materialType: SKStructure.Kind
   {
     return .ellipsoidPrimitive

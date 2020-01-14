@@ -47,7 +47,7 @@ fileprivate func ==~ (left: Double, right: Double) -> Bool
 
 public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
-public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable
+public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
 {
   private var versionNumber: Int = 4
   private static var classVersionNumber: Int = 3
@@ -528,6 +528,506 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   {
     self.displayName = name
     super.init()
+  }
+  
+  public required init(original: Structure)
+  {
+    super.init()
+    
+    self.displayName = original.displayName
+    
+    self.origin = original.origin
+    self.scaling = original.scaling
+    self.orientation = original.orientation
+    self.rotationDelta = original.rotationDelta
+    self.periodic = original.periodic
+    self.isVisible = original.isVisible
+    self.cell = original.cell
+    self.minimumGridEnergyValue = original.minimumGridEnergyValue
+    self.spaceGroup = original.spaceGroup
+    
+    self.selectionCOMTranslation = original.selectionCOMTranslation
+    self.selectionRotationIndex = original.selectionRotationIndex
+    self.selectionBodyFixedBasis = original.selectionBodyFixedBasis
+    
+    self.structureType = original.structureType
+    self.structureMaterialType = original.structureMaterialType
+    self.structureMass = original.structureMass
+    self.structureDensity = original.structureDensity
+    self.structureHeliumVoidFraction = original.structureHeliumVoidFraction
+    self.structureSpecificVolume = original.structureSpecificVolume
+    self.structureAccessiblePoreVolume = original.structureAccessiblePoreVolume
+    self.structureVolumetricNitrogenSurfaceArea = original.structureVolumetricNitrogenSurfaceArea
+    self.structureGravimetricNitrogenSurfaceArea = original.structureGravimetricNitrogenSurfaceArea
+    self.structureNumberOfChannelSystems = original.structureNumberOfChannelSystems
+    self.structureNumberOfInaccessiblePockets = original.structureNumberOfInaccessiblePockets
+    self.structureDimensionalityOfPoreSystem = original.structureDimensionalityOfPoreSystem
+    self.structureLargestCavityDiameter = original.structureLargestCavityDiameter
+    self.structureRestrictingPoreLimitingDiameter = original.structureRestrictingPoreLimitingDiameter
+    self.structureLargestCavityDiameterAlongAViablePath = original.structureLargestCavityDiameterAlongAViablePath
+    
+    
+    self.authorFirstName = original.authorFirstName
+    self.authorMiddleName = original.authorMiddleName
+    self.authorLastName = original.authorLastName
+    self.authorOrchidID = original.authorOrchidID
+    self.authorResearcherID = original.authorResearcherID
+    self.authorAffiliationUniversityName = original.authorAffiliationUniversityName
+    self.authorAffiliationFacultyName = original.authorAffiliationFacultyName
+    self.authorAffiliationInstituteName = original.authorAffiliationInstituteName
+    self.authorAffiliationCityName = original.authorAffiliationCityName
+    self.authorAffiliationCountryName = original.authorAffiliationCountryName
+    
+    // primitive properties
+    self.primitiveTransformationMatrix = original.primitiveTransformationMatrix
+    self.primitiveOrientation = original.primitiveOrientation
+    self.primitiveRotationDelta = original.primitiveRotationDelta
+    
+    self.primitiveOpacity = original.primitiveOpacity
+    self.primitiveIsCapped = original.primitiveIsCapped
+    self.primitiveIsFractional = original.primitiveIsFractional
+    self.primitiveNumberOfSides = original.primitiveNumberOfSides
+    self.primitiveThickness = original.primitiveThickness
+    
+    self.primitiveFrontSideHDR = original.primitiveFrontSideHDR
+    self.primitiveFrontSideHDRExposure = original.primitiveFrontSideHDRExposure
+    self.primitiveFrontSideAmbientColor = original.primitiveFrontSideAmbientColor
+    self.primitiveFrontSideDiffuseColor = original.primitiveFrontSideDiffuseColor
+    self.primitiveFrontSideSpecularColor = original.primitiveFrontSideSpecularColor
+    self.primitiveFrontSideAmbientIntensity = original.primitiveFrontSideAmbientIntensity
+    self.primitiveFrontSideDiffuseIntensity = original.primitiveFrontSideDiffuseIntensity
+    self.primitiveFrontSideSpecularIntensity = original.primitiveFrontSideSpecularIntensity
+    self.primitiveFrontSideShininess = original.primitiveFrontSideShininess
+    
+    self.primitiveBackSideHDR = original.primitiveBackSideHDR
+    self.primitiveBackSideHDRExposure = original.primitiveBackSideHDRExposure
+    self.primitiveBackSideAmbientColor = original.primitiveBackSideAmbientColor
+    self.primitiveBackSideDiffuseColor = original.primitiveBackSideDiffuseColor
+    self.primitiveBackSideSpecularColor = original.primitiveBackSideSpecularColor
+    self.primitiveBackSideAmbientIntensity = original.primitiveBackSideAmbientIntensity
+    self.primitiveBackSideDiffuseIntensity = original.primitiveBackSideDiffuseIntensity
+    self.primitiveBackSideSpecularIntensity = original.primitiveBackSideSpecularIntensity
+    self.primitiveBackSideShininess = original.primitiveBackSideShininess
+    
+    
+    // atoms
+    self.atoms = SKAtomTreeController()
+
+    self.drawAtoms = original.drawAtoms
+    
+    self.atomRepresentationType = original.atomRepresentationType
+    self.atomRepresentationStyle = original.atomRepresentationStyle
+    self.atomForceFieldIdentifier = original.atomForceFieldIdentifier
+    self.atomForceFieldOrder = original.atomForceFieldOrder
+    self.atomColorSchemeIdentifier = original.atomColorSchemeIdentifier
+    self.atomColorOrder = original.atomColorOrder
+    
+    self.atomSelectionStyle = original.atomSelectionStyle
+    self.atomSelectionStripesDensity = original.atomSelectionStripesDensity
+    self.atomSelectionStripesFrequency = original.atomSelectionStripesFrequency
+    self.atomSelectionWorleyNoise3DFrequency = original.atomSelectionWorleyNoise3DFrequency
+    self.atomSelectionWorleyNoise3DJitter = original.atomSelectionWorleyNoise3DJitter
+    self.selectionScaling = original.selectionScaling
+    self.selectionIntensity = original.selectionIntensity
+    
+    self.atomHue = original.atomHue
+    self.atomSaturation = original.atomSaturation
+    self.atomValue = original.atomValue
+    self.atomScaleFactor = original.atomScaleFactor
+    
+    self.atomAmbientOcclusion = original.atomAmbientOcclusion
+    self.atomAmbientOcclusionPatchNumber = original.atomAmbientOcclusionPatchNumber
+    self.atomAmbientOcclusionTextureSize = original.atomAmbientOcclusionTextureSize
+    self.atomAmbientOcclusionPatchSize = original.atomAmbientOcclusionPatchSize
+    self.atomCacheAmbientOcclusionTexture = original.atomCacheAmbientOcclusionTexture
+    
+    self.atomHDR = original.atomHDR
+    self.atomHDRExposure = original.atomHDRExposure
+    self.atomHDRBloomLevel = original.atomHDRBloomLevel
+    
+    self.atomAmbientColor = original.atomAmbientColor
+    self.atomDiffuseColor = original.atomDiffuseColor
+    self.atomSpecularColor = original.atomSpecularColor
+    self.atomAmbientIntensity = original.atomAmbientIntensity
+    self.atomDiffuseIntensity = original.atomDiffuseIntensity
+    self.atomSpecularIntensity = original.atomSpecularIntensity
+    self.atomShininess = original.atomShininess
+    
+    
+    // bonds
+    self.bonds = SKBondSetController()
+    
+    self.drawBonds = original.drawBonds
+    
+    self.bondScaleFactor = original.bondScaleFactor
+    self.bondColorMode = original.bondColorMode
+    
+    self.bondAmbientColor = original.bondAmbientColor
+    self.bondDiffuseColor = original.bondDiffuseColor
+    self.bondSpecularColor = original.bondSpecularColor
+    self.bondAmbientIntensity = original.bondAmbientIntensity
+    self.bondDiffuseIntensity = original.bondDiffuseIntensity
+    self.bondSpecularIntensity = original.bondSpecularIntensity
+    self.bondShininess = original.bondShininess
+
+    self.bondHDR = original.bondHDR
+    self.bondHDRExposure = original.bondHDRExposure
+    self.bondHDRBloomLevel = original.bondHDRBloomLevel
+    
+    self.bondHue = original.bondHue
+    self.bondSaturation = original.bondSaturation
+    self.bondValue = original.bondValue
+    
+    self.bondAmbientOcclusion = original.bondAmbientOcclusion
+    
+    // text properties
+    self.atomTextType = original.atomTextType
+    self.atomTextFont = original.atomTextFont
+    self.atomTextScaling = original.atomTextScaling
+    self.atomTextColor = original.atomTextColor
+    self.atomTextGlowColor = original.atomTextGlowColor
+    self.atomTextStyle = original.atomTextStyle
+    self.atomTextEffect = original.atomTextEffect
+    self.atomTextAlignment = original.atomTextAlignment
+    self.atomTextOffset = original.atomTextOffset
+    
+    // unit cell
+    self.drawUnitCell = original.drawUnitCell
+    self.unitCellScaleFactor = original.unitCellScaleFactor
+    self.unitCellDiffuseColor = original.unitCellDiffuseColor
+    self.unitCellDiffuseIntensity = original.unitCellDiffuseIntensity
+    
+    // adsorption surface
+    self.frameworkProbeMolecule = original.frameworkProbeMolecule
+
+    self.drawAdsorptionSurface = original.drawAdsorptionSurface
+    self.adsorptionSurfaceOpacity = original.adsorptionSurfaceOpacity
+    self.adsorptionSurfaceIsoValue = original.adsorptionSurfaceIsoValue
+    
+    self.adsorptionSurfaceSize = original.adsorptionSurfaceSize
+    self.adsorptionSurfaceNumberOfTriangles = original.adsorptionSurfaceNumberOfTriangles
+    
+    self.adsorptionSurfaceProbeMolecule = original.adsorptionSurfaceProbeMolecule
+    
+    self.adsorptionSurfaceFrontSideHDR = original.adsorptionSurfaceFrontSideHDR
+    self.adsorptionSurfaceFrontSideHDRExposure = original.adsorptionSurfaceFrontSideHDRExposure
+    self.adsorptionSurfaceFrontSideAmbientColor = original.adsorptionSurfaceFrontSideAmbientColor
+    self.adsorptionSurfaceFrontSideDiffuseColor = original.adsorptionSurfaceFrontSideDiffuseColor
+    self.adsorptionSurfaceFrontSideSpecularColor = original.adsorptionSurfaceFrontSideSpecularColor
+    self.adsorptionSurfaceFrontSideDiffuseIntensity = original.adsorptionSurfaceFrontSideDiffuseIntensity
+    self.adsorptionSurfaceFrontSideAmbientIntensity = original.adsorptionSurfaceFrontSideAmbientIntensity
+    self.adsorptionSurfaceFrontSideSpecularIntensity = original.adsorptionSurfaceFrontSideSpecularIntensity
+    self.adsorptionSurfaceFrontSideShininess = original.adsorptionSurfaceFrontSideShininess
+    
+    self.adsorptionSurfaceBackSideHDR = original.adsorptionSurfaceBackSideHDR
+    self.adsorptionSurfaceBackSideHDRExposure = original.adsorptionSurfaceBackSideHDRExposure
+    self.adsorptionSurfaceBackSideAmbientColor = original.adsorptionSurfaceBackSideAmbientColor
+    self.adsorptionSurfaceBackSideDiffuseColor = original.adsorptionSurfaceBackSideDiffuseColor
+    self.adsorptionSurfaceBackSideSpecularColor = original.adsorptionSurfaceBackSideSpecularColor
+    self.adsorptionSurfaceBackSideDiffuseIntensity = original.adsorptionSurfaceBackSideDiffuseIntensity
+    self.adsorptionSurfaceBackSideAmbientIntensity = original.adsorptionSurfaceBackSideAmbientIntensity
+    self.adsorptionSurfaceBackSideSpecularIntensity = original.adsorptionSurfaceBackSideSpecularIntensity
+    self.adsorptionSurfaceBackSideShininess = original.adsorptionSurfaceBackSideShininess
+    
+
+    self.creationDate = original.creationDate
+    self.creationTemperature = original.creationTemperature
+    self.creationTemperatureScale = original.creationTemperatureScale
+    self.creationPressure = original.creationPressure
+    self.creationPressureScale = original.creationPressureScale
+    self.creationMethod = original.creationMethod
+    self.creationUnitCellRelaxationMethod = original.creationUnitCellRelaxationMethod
+    self.creationAtomicPositionsSoftwarePackage = original.creationAtomicPositionsSoftwarePackage
+    self.creationAtomicPositionsIonsRelaxationAlgorithm = original.creationAtomicPositionsIonsRelaxationAlgorithm
+    self.creationAtomicPositionsIonsRelaxationCheck = original.creationAtomicPositionsIonsRelaxationCheck
+    self.creationAtomicPositionsForcefield = original.creationAtomicPositionsForcefield
+    self.creationAtomicPositionsForcefieldDetails = original.creationAtomicPositionsForcefieldDetails
+    self.creationAtomicChargesSoftwarePackage = original.creationAtomicChargesSoftwarePackage
+    self.creationAtomicChargesAlgorithms = original.creationAtomicChargesAlgorithms
+    self.creationAtomicChargesForcefield = original.creationAtomicChargesForcefield
+    self.creationAtomicChargesForcefieldDetails = original.creationAtomicChargesForcefieldDetails
+    
+    self.chemicalFormulaMoiety = original.chemicalFormulaMoiety
+    self.chemicalFormulaSum = original.chemicalFormulaSum
+    self.chemicalNameSystematic = original.chemicalNameSystematic
+    self.cellFormulaUnitsZ = original.cellFormulaUnitsZ
+    
+    
+    self.citationArticleTitle = original.citationArticleTitle
+    self.citationJournalTitle = original.citationJournalTitle
+    self.citationAuthors = original.citationAuthors
+    self.citationJournalVolume = original.citationJournalVolume
+    self.citationJournalNumber = original.citationJournalNumber
+    self.citationJournalPageNumbers = original.citationJournalPageNumbers
+    self.citationDOI = original.citationDOI
+    self.citationPublicationDate = original.citationPublicationDate
+    self.citationDatebaseCodes = original.citationDatebaseCodes
+    
+    self.experimentalMeasurementRadiation = original.experimentalMeasurementRadiation
+    self.experimentalMeasurementWaveLength = original.experimentalMeasurementWaveLength
+    self.experimentalMeasurementThetaMin = original.experimentalMeasurementThetaMin
+    self.experimentalMeasurementThetaMax = original.experimentalMeasurementThetaMax
+    self.experimentalMeasurementIndexLimitsHmin = original.experimentalMeasurementIndexLimitsHmin
+    self.experimentalMeasurementIndexLimitsHmax = original.experimentalMeasurementIndexLimitsHmax
+    self.experimentalMeasurementIndexLimitsKmin = original.experimentalMeasurementIndexLimitsKmin
+    self.experimentalMeasurementIndexLimitsKmax = original.experimentalMeasurementIndexLimitsKmax
+    self.experimentalMeasurementIndexLimitsLmin = original.experimentalMeasurementIndexLimitsLmin
+    self.experimentalMeasurementIndexLimitsLmax = original.experimentalMeasurementIndexLimitsLmax
+    self.experimentalMeasurementNumberOfSymmetryIndependentReflections = original.experimentalMeasurementNumberOfSymmetryIndependentReflections
+    self.experimentalMeasurementSoftware = original.experimentalMeasurementSoftware
+    self.experimentalMeasurementRefinementDetails = original.experimentalMeasurementRefinementDetails
+    self.experimentalMeasurementGoodnessOfFit = original.experimentalMeasurementGoodnessOfFit
+    self.experimentalMeasurementRFactorGt = original.experimentalMeasurementRFactorGt
+    self.experimentalMeasurementRFactorAll = original.experimentalMeasurementRFactorAll
+  }
+  
+  public required init(clone: Structure)
+  {
+    self.displayName = clone.displayName
+    
+    self.origin = clone.origin
+    self.scaling = clone.scaling
+    self.orientation = clone.orientation
+    self.rotationDelta = clone.rotationDelta
+    self.periodic = clone.periodic
+    self.isVisible = clone.isVisible
+    self.cell = clone.cell
+    self.minimumGridEnergyValue = clone.minimumGridEnergyValue
+    self.spaceGroup = clone.spaceGroup
+    
+    self.selectionCOMTranslation = clone.selectionCOMTranslation
+    self.selectionRotationIndex = clone.selectionRotationIndex
+    self.selectionBodyFixedBasis = clone.selectionBodyFixedBasis
+    
+    self.structureType = clone.structureType
+    self.structureMaterialType = clone.structureMaterialType
+    self.structureMass = clone.structureMass
+    self.structureDensity = clone.structureDensity
+    self.structureHeliumVoidFraction = clone.structureHeliumVoidFraction
+    self.structureSpecificVolume = clone.structureSpecificVolume
+    self.structureAccessiblePoreVolume = clone.structureAccessiblePoreVolume
+    self.structureVolumetricNitrogenSurfaceArea = clone.structureVolumetricNitrogenSurfaceArea
+    self.structureGravimetricNitrogenSurfaceArea = clone.structureGravimetricNitrogenSurfaceArea
+    self.structureNumberOfChannelSystems = clone.structureNumberOfChannelSystems
+    self.structureNumberOfInaccessiblePockets = clone.structureNumberOfInaccessiblePockets
+    self.structureDimensionalityOfPoreSystem = clone.structureDimensionalityOfPoreSystem
+    self.structureLargestCavityDiameter = clone.structureLargestCavityDiameter
+    self.structureRestrictingPoreLimitingDiameter = clone.structureRestrictingPoreLimitingDiameter
+    self.structureLargestCavityDiameterAlongAViablePath = clone.structureLargestCavityDiameterAlongAViablePath
+    
+    
+    self.authorFirstName = clone.authorFirstName
+    self.authorMiddleName = clone.authorMiddleName
+    self.authorLastName = clone.authorLastName
+    self.authorOrchidID = clone.authorOrchidID
+    self.authorResearcherID = clone.authorResearcherID
+    self.authorAffiliationUniversityName = clone.authorAffiliationUniversityName
+    self.authorAffiliationFacultyName = clone.authorAffiliationFacultyName
+    self.authorAffiliationInstituteName = clone.authorAffiliationInstituteName
+    self.authorAffiliationCityName = clone.authorAffiliationCityName
+    self.authorAffiliationCountryName = clone.authorAffiliationCountryName
+    
+    // primitive properties
+    self.primitiveTransformationMatrix = clone.primitiveTransformationMatrix
+    self.primitiveOrientation = clone.primitiveOrientation
+    self.primitiveRotationDelta = clone.primitiveRotationDelta
+    
+    self.primitiveOpacity = clone.primitiveOpacity
+    self.primitiveIsCapped = clone.primitiveIsCapped
+    self.primitiveIsFractional = clone.primitiveIsFractional
+    self.primitiveNumberOfSides = clone.primitiveNumberOfSides
+    self.primitiveThickness = clone.primitiveThickness
+    
+    self.primitiveFrontSideHDR = clone.primitiveFrontSideHDR
+    self.primitiveFrontSideHDRExposure = clone.primitiveFrontSideHDRExposure
+    self.primitiveFrontSideAmbientColor = clone.primitiveFrontSideAmbientColor
+    self.primitiveFrontSideDiffuseColor = clone.primitiveFrontSideDiffuseColor
+    self.primitiveFrontSideSpecularColor = clone.primitiveFrontSideSpecularColor
+    self.primitiveFrontSideAmbientIntensity = clone.primitiveFrontSideAmbientIntensity
+    self.primitiveFrontSideDiffuseIntensity = clone.primitiveFrontSideDiffuseIntensity
+    self.primitiveFrontSideSpecularIntensity = clone.primitiveFrontSideSpecularIntensity
+    self.primitiveFrontSideShininess = clone.primitiveFrontSideShininess
+    
+    self.primitiveBackSideHDR = clone.primitiveBackSideHDR
+    self.primitiveBackSideHDRExposure = clone.primitiveBackSideHDRExposure
+    self.primitiveBackSideAmbientColor = clone.primitiveBackSideAmbientColor
+    self.primitiveBackSideDiffuseColor = clone.primitiveBackSideDiffuseColor
+    self.primitiveBackSideSpecularColor = clone.primitiveBackSideSpecularColor
+    self.primitiveBackSideAmbientIntensity = clone.primitiveBackSideAmbientIntensity
+    self.primitiveBackSideDiffuseIntensity = clone.primitiveBackSideDiffuseIntensity
+    self.primitiveBackSideSpecularIntensity = clone.primitiveBackSideSpecularIntensity
+    self.primitiveBackSideShininess = clone.primitiveBackSideShininess
+    
+    
+    // atoms TODO: clone
+    self.atoms = SKAtomTreeController()
+
+    self.drawAtoms = clone.drawAtoms
+    
+    self.atomRepresentationType = clone.atomRepresentationType
+    self.atomRepresentationStyle = clone.atomRepresentationStyle
+    self.atomForceFieldIdentifier = clone.atomForceFieldIdentifier
+    self.atomForceFieldOrder = clone.atomForceFieldOrder
+    self.atomColorSchemeIdentifier = clone.atomColorSchemeIdentifier
+    self.atomColorOrder = clone.atomColorOrder
+    
+    self.atomSelectionStyle = clone.atomSelectionStyle
+    self.atomSelectionStripesDensity = clone.atomSelectionStripesDensity
+    self.atomSelectionStripesFrequency = clone.atomSelectionStripesFrequency
+    self.atomSelectionWorleyNoise3DFrequency = clone.atomSelectionWorleyNoise3DFrequency
+    self.atomSelectionWorleyNoise3DJitter = clone.atomSelectionWorleyNoise3DJitter
+    self.selectionScaling = clone.selectionScaling
+    self.selectionIntensity = clone.selectionIntensity
+    
+    self.atomHue = clone.atomHue
+    self.atomSaturation = clone.atomSaturation
+    self.atomValue = clone.atomValue
+    self.atomScaleFactor = clone.atomScaleFactor
+    
+    self.atomAmbientOcclusion = clone.atomAmbientOcclusion
+    self.atomAmbientOcclusionPatchNumber = clone.atomAmbientOcclusionPatchNumber
+    self.atomAmbientOcclusionTextureSize = clone.atomAmbientOcclusionTextureSize
+    self.atomAmbientOcclusionPatchSize = clone.atomAmbientOcclusionPatchSize
+    self.atomCacheAmbientOcclusionTexture = clone.atomCacheAmbientOcclusionTexture
+    
+    self.atomHDR = clone.atomHDR
+    self.atomHDRExposure = clone.atomHDRExposure
+    self.atomHDRBloomLevel = clone.atomHDRBloomLevel
+    
+    self.atomAmbientColor = clone.atomAmbientColor
+    self.atomDiffuseColor = clone.atomDiffuseColor
+    self.atomSpecularColor = clone.atomSpecularColor
+    self.atomAmbientIntensity = clone.atomAmbientIntensity
+    self.atomDiffuseIntensity = clone.atomDiffuseIntensity
+    self.atomSpecularIntensity = clone.atomSpecularIntensity
+    self.atomShininess = clone.atomShininess
+    
+    
+    // bonds TODO: clone
+    self.bonds = SKBondSetController()
+    
+    self.drawBonds = clone.drawBonds
+    
+    self.bondScaleFactor = clone.bondScaleFactor
+    self.bondColorMode = clone.bondColorMode
+    
+    self.bondAmbientColor = clone.bondAmbientColor
+    self.bondDiffuseColor = clone.bondDiffuseColor
+    self.bondSpecularColor = clone.bondSpecularColor
+    self.bondAmbientIntensity = clone.bondAmbientIntensity
+    self.bondDiffuseIntensity = clone.bondDiffuseIntensity
+    self.bondSpecularIntensity = clone.bondSpecularIntensity
+    self.bondShininess = clone.bondShininess
+
+    self.bondHDR = clone.bondHDR
+    self.bondHDRExposure = clone.bondHDRExposure
+    self.bondHDRBloomLevel = clone.bondHDRBloomLevel
+    
+    self.bondHue = clone.bondHue
+    self.bondSaturation = clone.bondSaturation
+    self.bondValue = clone.bondValue
+    
+    self.bondAmbientOcclusion = clone.bondAmbientOcclusion
+    
+    // text properties
+    self.atomTextType = clone.atomTextType
+    self.atomTextFont = clone.atomTextFont
+    self.atomTextScaling = clone.atomTextScaling
+    self.atomTextColor = clone.atomTextColor
+    self.atomTextGlowColor = clone.atomTextGlowColor
+    self.atomTextStyle = clone.atomTextStyle
+    self.atomTextEffect = clone.atomTextEffect
+    self.atomTextAlignment = clone.atomTextAlignment
+    self.atomTextOffset = clone.atomTextOffset
+    
+    // unit cell
+    self.drawUnitCell = clone.drawUnitCell
+    self.unitCellScaleFactor = clone.unitCellScaleFactor
+    self.unitCellDiffuseColor = clone.unitCellDiffuseColor
+    self.unitCellDiffuseIntensity = clone.unitCellDiffuseIntensity
+    
+    // adsorption surface
+    self.frameworkProbeMolecule = clone.frameworkProbeMolecule
+
+    self.drawAdsorptionSurface = clone.drawAdsorptionSurface
+    self.adsorptionSurfaceOpacity = clone.adsorptionSurfaceOpacity
+    self.adsorptionSurfaceIsoValue = clone.adsorptionSurfaceIsoValue
+    
+    self.adsorptionSurfaceSize = clone.adsorptionSurfaceSize
+    self.adsorptionSurfaceNumberOfTriangles = clone.adsorptionSurfaceNumberOfTriangles
+    
+    self.adsorptionSurfaceProbeMolecule = clone.adsorptionSurfaceProbeMolecule
+    
+    self.adsorptionSurfaceFrontSideHDR = clone.adsorptionSurfaceFrontSideHDR
+    self.adsorptionSurfaceFrontSideHDRExposure = clone.adsorptionSurfaceFrontSideHDRExposure
+    self.adsorptionSurfaceFrontSideAmbientColor = clone.adsorptionSurfaceFrontSideAmbientColor
+    self.adsorptionSurfaceFrontSideDiffuseColor = clone.adsorptionSurfaceFrontSideDiffuseColor
+    self.adsorptionSurfaceFrontSideSpecularColor = clone.adsorptionSurfaceFrontSideSpecularColor
+    self.adsorptionSurfaceFrontSideDiffuseIntensity = clone.adsorptionSurfaceFrontSideDiffuseIntensity
+    self.adsorptionSurfaceFrontSideAmbientIntensity = clone.adsorptionSurfaceFrontSideAmbientIntensity
+    self.adsorptionSurfaceFrontSideSpecularIntensity = clone.adsorptionSurfaceFrontSideSpecularIntensity
+    self.adsorptionSurfaceFrontSideShininess = clone.adsorptionSurfaceFrontSideShininess
+    
+    self.adsorptionSurfaceBackSideHDR = clone.adsorptionSurfaceBackSideHDR
+    self.adsorptionSurfaceBackSideHDRExposure = clone.adsorptionSurfaceBackSideHDRExposure
+    self.adsorptionSurfaceBackSideAmbientColor = clone.adsorptionSurfaceBackSideAmbientColor
+    self.adsorptionSurfaceBackSideDiffuseColor = clone.adsorptionSurfaceBackSideDiffuseColor
+    self.adsorptionSurfaceBackSideSpecularColor = clone.adsorptionSurfaceBackSideSpecularColor
+    self.adsorptionSurfaceBackSideDiffuseIntensity = clone.adsorptionSurfaceBackSideDiffuseIntensity
+    self.adsorptionSurfaceBackSideAmbientIntensity = clone.adsorptionSurfaceBackSideAmbientIntensity
+    self.adsorptionSurfaceBackSideSpecularIntensity = clone.adsorptionSurfaceBackSideSpecularIntensity
+    self.adsorptionSurfaceBackSideShininess = clone.adsorptionSurfaceBackSideShininess
+    
+
+    self.creationDate = clone.creationDate
+    self.creationTemperature = clone.creationTemperature
+    self.creationTemperatureScale = clone.creationTemperatureScale
+    self.creationPressure = clone.creationPressure
+    self.creationPressureScale = clone.creationPressureScale
+    self.creationMethod = clone.creationMethod
+    self.creationUnitCellRelaxationMethod = clone.creationUnitCellRelaxationMethod
+    self.creationAtomicPositionsSoftwarePackage = clone.creationAtomicPositionsSoftwarePackage
+    self.creationAtomicPositionsIonsRelaxationAlgorithm = clone.creationAtomicPositionsIonsRelaxationAlgorithm
+    self.creationAtomicPositionsIonsRelaxationCheck = clone.creationAtomicPositionsIonsRelaxationCheck
+    self.creationAtomicPositionsForcefield = clone.creationAtomicPositionsForcefield
+    self.creationAtomicPositionsForcefieldDetails = clone.creationAtomicPositionsForcefieldDetails
+    self.creationAtomicChargesSoftwarePackage = clone.creationAtomicChargesSoftwarePackage
+    self.creationAtomicChargesAlgorithms = clone.creationAtomicChargesAlgorithms
+    self.creationAtomicChargesForcefield = clone.creationAtomicChargesForcefield
+    self.creationAtomicChargesForcefieldDetails = clone.creationAtomicChargesForcefieldDetails
+    
+    self.chemicalFormulaMoiety = clone.chemicalFormulaMoiety
+    self.chemicalFormulaSum = clone.chemicalFormulaSum
+    self.chemicalNameSystematic = clone.chemicalNameSystematic
+    self.cellFormulaUnitsZ = clone.cellFormulaUnitsZ
+    
+    
+    self.citationArticleTitle = clone.citationArticleTitle
+    self.citationJournalTitle = clone.citationJournalTitle
+    self.citationAuthors = clone.citationAuthors
+    self.citationJournalVolume = clone.citationJournalVolume
+    self.citationJournalNumber = clone.citationJournalNumber
+    self.citationJournalPageNumbers = clone.citationJournalPageNumbers
+    self.citationDOI = clone.citationDOI
+    self.citationPublicationDate = clone.citationPublicationDate
+    self.citationDatebaseCodes = clone.citationDatebaseCodes
+    
+    self.experimentalMeasurementRadiation = clone.experimentalMeasurementRadiation
+    self.experimentalMeasurementWaveLength = clone.experimentalMeasurementWaveLength
+    self.experimentalMeasurementThetaMin = clone.experimentalMeasurementThetaMin
+    self.experimentalMeasurementThetaMax = clone.experimentalMeasurementThetaMax
+    self.experimentalMeasurementIndexLimitsHmin = clone.experimentalMeasurementIndexLimitsHmin
+    self.experimentalMeasurementIndexLimitsHmax = clone.experimentalMeasurementIndexLimitsHmax
+    self.experimentalMeasurementIndexLimitsKmin = clone.experimentalMeasurementIndexLimitsKmin
+    self.experimentalMeasurementIndexLimitsKmax = clone.experimentalMeasurementIndexLimitsKmax
+    self.experimentalMeasurementIndexLimitsLmin = clone.experimentalMeasurementIndexLimitsLmin
+    self.experimentalMeasurementIndexLimitsLmax = clone.experimentalMeasurementIndexLimitsLmax
+    self.experimentalMeasurementNumberOfSymmetryIndependentReflections = clone.experimentalMeasurementNumberOfSymmetryIndependentReflections
+    self.experimentalMeasurementSoftware = clone.experimentalMeasurementSoftware
+    self.experimentalMeasurementRefinementDetails = clone.experimentalMeasurementRefinementDetails
+    self.experimentalMeasurementGoodnessOfFit = clone.experimentalMeasurementGoodnessOfFit
+    self.experimentalMeasurementRFactorGt = clone.experimentalMeasurementRFactorGt
+    self.experimentalMeasurementRFactorAll = clone.experimentalMeasurementRFactorAll
   }
   
   // MARK: -

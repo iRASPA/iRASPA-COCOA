@@ -290,6 +290,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
           {
             popUpbuttonRepresentationType.isEnabled = enabled
+            popUpbuttonRepresentationType.isEditable = enabled
             
             if let rawValue = representedStructure.renderMaterialType?.rawValue
             {
@@ -1703,6 +1704,25 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
     })
+  }
+  
+  
+   // MARK: Material type changes
+   // ===============================================================================================================================
+  
+  @IBAction func changeMaterialType(_ sender: NSPopUpButton)
+  {
+    /*
+    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    {
+      self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      ProjectTreeNode.representedObject.isEdited = true
+      structure.renderStructureMaterialType = sender.stringValue
+      
+      self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+    }*/
   }
   
   // MARK: Cell changes
@@ -3336,7 +3356,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   // MARK: Structure properties
   // ===============================================================================================================================
   
-  @IBAction func changeMaterialType(_ sender: NSComboBox)
+  @IBAction func changeMaterialName(_ sender: NSComboBox)
   {
     if var structure: [CellViewer] = self.representedObject as? [CellViewer],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled

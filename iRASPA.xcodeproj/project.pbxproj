@@ -416,6 +416,7 @@
 		93CE77F91EA0ECBC00D068E1 /* ObjectiveCException.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77F81EA0EA7F00D068E1 /* ObjectiveCException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CEEFBE1F42193700EAF673 /* DirectoryMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */; };
 		93D1B52E1F45ECD300D0F932 /* NSPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D1B52D1F45ECD300D0F932 /* NSPageView.swift */; };
+		93D7562223CDF32900BA7710 /* CopyingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D7562123CDF32900BA7710 /* CopyingProtocol.swift */; };
 		93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */; };
 		93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */; };
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
@@ -1193,6 +1194,7 @@
 		93CE77F81EA0EA7F00D068E1 /* ObjectiveCException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveCException.h; sourceTree = "<group>"; };
 		93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryMasterViewController.swift; sourceTree = "<group>"; };
 		93D1B52D1F45ECD300D0F932 /* NSPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPageView.swift; sourceTree = "<group>"; };
+		93D7562123CDF32900BA7710 /* CopyingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyingProtocol.swift; sourceTree = "<group>"; };
 		93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPrecisionNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionalNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2069,6 +2071,7 @@
 			children = (
 				939B205C1EF2C8370061DE8D /* simd_quatd.swift */,
 				936DE11B21DA7F470023E7C8 /* Array.swift */,
+				93D7562123CDF32900BA7710 /* CopyingProtocol.swift */,
 				939B20721EF2D0920061DE8D /* Int32.swift */,
 				939B206E1EF2D0310061DE8D /* int3.swift */,
 				939B20641EF2CEBE0061DE8D /* float4.swift */,
@@ -3281,6 +3284,7 @@
 				938388471E26A5CD00112FBA /* GeneralFraction.swift in Sources */,
 				939B20651EF2CEBE0061DE8D /* float4.swift in Sources */,
 				936DE11C21DA7F470023E7C8 /* Array.swift in Sources */,
+				93D7562223CDF32900BA7710 /* CopyingProtocol.swift in Sources */,
 				9383884E1E26A60700112FBA /* HermiteNormalForm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

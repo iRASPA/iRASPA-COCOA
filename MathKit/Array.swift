@@ -26,23 +26,4 @@ extension Array
   }
 }
 
-public protocol Copying {
-    init(original: Self)
-}
 
-public extension Copying {
-    func copy() -> Self {
-        return Self.init(original: self)
-    }
-}
-
-public extension Array where Element: Copying
-{
-    func clone() -> Array {
-        var copiedArray = Array<Element>()
-        for element in self {
-            copiedArray.append(element.copy())
-        }
-        return copiedArray
-    }
-}

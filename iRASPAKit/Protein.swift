@@ -56,6 +56,16 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     super.init(name: name)
   }
   
+  public required init(original structure: Structure)
+  {
+    super.init(original: structure)
+  }
+  
+  public required init(clone structure: Structure)
+  {
+    super.init(clone: structure)
+  }
+  
   public var colorAtomsWithBondColor: Bool
   {
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)

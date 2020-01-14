@@ -58,6 +58,16 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
     reComputeBoundingBox()
   }
   
+  public required init(original structure: Structure)
+  {
+    super.init(original: structure)
+  }
+  
+  public required init(clone structure: Structure)
+  {
+    super.init(clone: structure)
+  }
+  
   public var colorAtomsWithBondColor: Bool
   {
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)

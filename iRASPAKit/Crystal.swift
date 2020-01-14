@@ -60,6 +60,18 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     reComputeBoundingBox()
   }
   
+  public required init(original structure: Structure)
+  {
+    super.init(original: structure)
+    reComputeBoundingBox()
+    reComputeBonds()
+  }
+  
+  public required init(clone structure: Structure)
+  {
+    super.init(clone: structure)
+  }
+  
   public var colorAtomsWithBondColor: Bool
   {
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
@@ -1688,7 +1700,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   
   public override func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode]
   {
-    let selectedNodes: [SKAtomTreeNode] = self.atoms.selectedNodes.clone()
+    let selectedNodes: [SKAtomTreeNode] = self.atoms.selectedNodes.copy()
     
     selectedNodes.forEach{
       let pos = $0.representedObject.position
