@@ -80,6 +80,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     return .structure
   }
   
+  var canImportMaterialsTypes: Set<SKStructure.Kind>
+  {
+    return []
+  }
+  
   public enum StructureType: Int
   {
     case framework = 0
@@ -779,10 +784,14 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     self.experimentalMeasurementGoodnessOfFit = original.experimentalMeasurementGoodnessOfFit
     self.experimentalMeasurementRFactorGt = original.experimentalMeasurementRFactorGt
     self.experimentalMeasurementRFactorAll = original.experimentalMeasurementRFactorAll
+    
+    self.setRepresentationStyle(style: self.atomRepresentationStyle)
   }
   
   public required init(clone: Structure)
   {
+    super.init()
+    
     self.displayName = clone.displayName
     
     self.origin = clone.origin
@@ -858,10 +867,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     self.primitiveBackSideSpecularIntensity = clone.primitiveBackSideSpecularIntensity
     self.primitiveBackSideShininess = clone.primitiveBackSideShininess
     
-    
-    // atoms TODO: clone
-    self.atoms = SKAtomTreeController()
-
+    // atoms
     self.drawAtoms = clone.drawAtoms
     
     self.atomRepresentationType = clone.atomRepresentationType
@@ -902,10 +908,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     self.atomSpecularIntensity = clone.atomSpecularIntensity
     self.atomShininess = clone.atomShininess
     
-    
-    // bonds TODO: clone
-    self.bonds = SKBondSetController()
-    
+    // bonds
     self.drawBonds = clone.drawBonds
     
     self.bondScaleFactor = clone.bondScaleFactor
@@ -1028,6 +1031,54 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     self.experimentalMeasurementGoodnessOfFit = clone.experimentalMeasurementGoodnessOfFit
     self.experimentalMeasurementRFactorGt = clone.experimentalMeasurementRFactorGt
     self.experimentalMeasurementRFactorAll = clone.experimentalMeasurementRFactorAll
+    
+    
+    // clone atoms and bonds
+    clone.tag(atoms: clone.atoms)
+    let binaryEncoder: BinaryEncoder = BinaryEncoder()
+    binaryEncoder.encode(clone.atoms)
+    let atomData: Data = Data(binaryEncoder.data)
+    
+    do
+    {
+      self.atoms = try BinaryDecoder(data: [UInt8](atomData)).decode(SKAtomTreeController.self)
+      // set the 'bonds'-array of the atoms, since they are empty for a structure with symmetry
+      let atomTreeNodes: [SKAtomTreeNode] = self.atoms.flattenedLeafNodes()
+      let atomCopies: [SKAtomCopy] = atomTreeNodes.compactMap{$0.representedObject}.flatMap{$0.copies}
+      
+      //update tags
+      let tags: Set<Int> = Set(clone.atoms.selectedTreeNodes.map{$0.representedObject.tag})
+      
+      // update selection
+      self.atoms.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
+      
+      for atomCopy in atomCopies
+      {
+        atomCopy.bonds = []
+      }
+      self.bonds.arrangedObjects = []
+      
+      // recreated the bonds from the tags
+      for bond in clone.bonds.arrangedObjects
+      {
+        let newBond: SKBondNode = SKBondNode(atom1: atomCopies[bond.atom1.tag], atom2: atomCopies[bond.atom2.tag], boundaryType: bond.boundaryType)
+        self.bonds.arrangedObjects.insert(newBond)
+      }
+      
+      for bond in self.bonds.arrangedObjects
+      {
+        // make the list of bonds the atoms are involved in
+        bond.atom1.bonds.insert(bond)
+        bond.atom2.bonds.insert(bond)
+      }
+    }
+    catch
+    {
+      debugPrint("Error")
+    }
+    
+    self.setRepresentationStyle(style: self.atomRepresentationStyle)
+ 
   }
   
   // MARK: -

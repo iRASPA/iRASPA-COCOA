@@ -205,18 +205,7 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     self.rotationDelta = camera.rotationDelta
     
     self.viewMatrix = camera.viewMatrix
-
   }
-  
-  
-  // MARK: -
-  // MARK: NSCopying support
-  
-  public func copy(with zone: NSZone?) -> Any
-  {
-    return type(of: self).init(camera: self)
-  }
-  
   
   // MARK: -
   // MARK: Decodable support
