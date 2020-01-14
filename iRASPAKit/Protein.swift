@@ -39,7 +39,7 @@ import SimulationKit
 import LogViewKit
 import OperationKit
 
-public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource
+public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -99,52 +99,6 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   }
   
   // MARK: -
-  // MARK: NSCopying support
-  
-  public func copy(with zone: NSZone?) -> Any
-  {
-    //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
-    //let data: Data = try! propertyListEncoder.encode(self)
-    //let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-    //let protein: Protein = try! propertyListDecoder.decode(Protein.self, from: data)
-    
-    let binaryEncoder: BinaryEncoder = BinaryEncoder()
-    binaryEncoder.encode(self)
-    let data: Data = Data(binaryEncoder.data)
-    do
-    {
-      let protein: Protein = try BinaryDecoder(data: [UInt8](data)).decode(Protein.self)
-      
-      // set the 'bonds'-array of the atoms, since they are empty for a structure with symmetry
-      let atomTreeNodes: [SKAtomTreeNode] = protein.atoms.flattenedLeafNodes()
-      let atomCopies: [SKAtomCopy] = atomTreeNodes.compactMap{$0.representedObject}.flatMap{$0.copies}
-      
-      //update selection
-      let tags: Set<Int> = Set(self.atoms.selectedTreeNodes.map{$0.representedObject.tag})
-      protein.tag(atoms: protein.atoms)
-      protein.atoms.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
-    
-      for atomCopy in atomCopies
-      {
-        atomCopy.bonds = []
-      }
-    
-      for bond in protein.bonds.arrangedObjects
-      {
-        // make the list of bonds the atoms are involved in
-        bond.atom1.bonds.insert(bond)
-        bond.atom2.bonds.insert(bond)
-      }
-     return protein
-    }
-    catch
-    {
-      
-    }
-    return Protein()
-  }
-  
-  // MARK: -
   // MARK: Molecule operations
   
   public override func expandSymmetry()
@@ -177,7 +131,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func finalizeTranslateSelection(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let protein: Protein =  self.copy() as! Protein
+    let protein: Protein =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -249,7 +203,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let protein: Protein =  self.copy() as! Protein
+    let protein: Protein =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -279,7 +233,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let protein: Protein =  self.copy() as! Protein
+    let protein: Protein =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -310,7 +264,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let protein: Protein =  self.copy() as! Protein
+    let protein: Protein =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -344,7 +298,7 @@ public final class Protein: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let protein: Protein =  self.copy() as! Protein
+    let protein: Protein =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {

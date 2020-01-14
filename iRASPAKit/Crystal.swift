@@ -39,7 +39,7 @@ import OperationKit
 import MathKit
 import LogViewKit
 
-public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
+public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -92,6 +92,11 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     return .crystal
   }
   
+  override var canImportMaterialsTypes: Set<SKStructure.Kind>
+  {
+    return [.crystal, .molecularCrystal, .molecularCrystal, .molecule, .protein, .proteinCrystal, .proteinCrystalSolvent, .crystalSolvent, .molecularCrystalSolvent]
+  }
+  
   public override var canRemoveSymmetry: Bool
   {
     get
@@ -125,49 +130,6 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
     
     self.spaceGroup = SKSpacegroup(HallNumber: number)
   }
-  
-  // MARK: -
-  // MARK: NSCopying support
-  
-  public func copy(with zone: NSZone?) -> Any
-  {
-    let binaryEncoder: BinaryEncoder = BinaryEncoder()
-    binaryEncoder.encode(self)
-    let data: Data = Data(binaryEncoder.data)
-    do
-    {
-      let crystal = try BinaryDecoder(data: [UInt8](data)).decode(Crystal.self)
-      // set the 'bonds'-array of the atoms, since they are empty for a structure with symmetry
-      let atomTreeNodes: [SKAtomTreeNode] = crystal.atoms.flattenedLeafNodes()
-      let atomCopies: [SKAtomCopy] = atomTreeNodes.compactMap{$0.representedObject}.flatMap{$0.copies}
-      
-      //update selection
-      let tags: Set<Int> = Set(self.atoms.selectedTreeNodes.map{$0.representedObject.tag})
-      crystal.tag(atoms: crystal.atoms)
-      crystal.atoms.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
-      
-      
-      for atomCopy in atomCopies
-      {
-        atomCopy.bonds = []
-      }
-      
-      for bond in crystal.bonds.arrangedObjects
-      {
-        // make the list of bonds the atoms are involved in
-        bond.atom1.bonds.insert(bond)
-        bond.atom2.bonds.insert(bond)
-      }
-      return crystal
-    }
-    catch
-    {
-      
-    }
-    return Crystal()
-  }
-  
-  
   
   public override var hasExternalBonds: Bool
   {
@@ -1068,7 +1030,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func finalizeTranslateSelection(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.copy() as! Crystal
+    let crystal: Crystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -1150,7 +1112,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.copy() as! Crystal
+    let crystal: Crystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -1181,7 +1143,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.copy() as! Crystal
+    let crystal: Crystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -1214,7 +1176,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.copy() as! Crystal
+    let crystal: Crystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -1249,7 +1211,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.copy() as! Crystal
+    let crystal: Crystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -1355,7 +1317,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public var removedSymmetry: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.copy() as! Crystal
+    let crystal: Crystal =  self.clone()
     
     // make copy of the atom-structure, leave atoms invariant
     let atomsWithRemovedSymmetry: SKAtomTreeController = crystal.atoms
@@ -1411,7 +1373,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public var wrapAtomsToCell: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.copy() as! Crystal
+    let crystal: Crystal =  self.clone()
     
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = crystal.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
@@ -1441,7 +1403,7 @@ public final class Crystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBo
   public override func setSpaceGroup(number: Int) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
      // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.copy() as! Crystal
+    let crystal: Crystal =  self.clone()
   
     crystal.spaceGroupHallNumber = number
     

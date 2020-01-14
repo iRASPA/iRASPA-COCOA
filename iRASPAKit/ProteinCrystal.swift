@@ -38,7 +38,7 @@ import LogViewKit
 import SimulationKit
 import OperationKit
 
-public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
+public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
 {
   private var versionNumber: Int = 2
   private static var classVersionNumber: Int = 1
@@ -121,53 +121,6 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
     self.spaceGroup = SKSpacegroup(HallNumber: number)
   }
   
-  // MARK: -
-  // MARK: NSCopying support
-  
-  public func copy(with zone: NSZone?) -> Any
-  {
-    //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
-    //et data: Data = try! propertyListEncoder.encode(self)
-    //let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-    //let crystal: ProteinCrystal = try! propertyListDecoder.decode(ProteinCrystal.self, from: data)
-    
-    let binaryEncoder: BinaryEncoder = BinaryEncoder()
-    binaryEncoder.encode(self)
-    let data: Data = Data(binaryEncoder.data)
-    do
-    {
-      let crystal: ProteinCrystal = try BinaryDecoder(data: [UInt8](data)).decode(ProteinCrystal.self)
-    
-      // set the 'bonds'-array of the atoms, since they are empty for a structure with symmetry
-      let atomTreeNodes: [SKAtomTreeNode] = crystal.atoms.flattenedLeafNodes()
-      let atomCopies: [SKAtomCopy] = atomTreeNodes.compactMap{$0.representedObject}.flatMap{$0.copies}
-    
-    
-      //update selection
-      let tags: Set<Int> = Set(self.atoms.selectedTreeNodes.map{$0.representedObject.tag})
-      crystal.tag(atoms: crystal.atoms)
-      crystal.atoms.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
-    
-      for atomCopy in atomCopies
-      {
-        atomCopy.bonds = []
-      }
-    
-      for bond in crystal.bonds.arrangedObjects
-      {
-        // make the list of bonds the atoms are involved in
-        bond.atom1.bonds.insert(bond)
-        bond.atom2.bonds.insert(bond)
-      }
-      return crystal
-    }
-    catch
-    {
-      
-    }
-    return ProteinCrystal()
-  }
-  
   public override func translateSelection(by shift: SIMD3<Double>)
   {
     for node in self.atoms.selectedTreeNodes
@@ -180,7 +133,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   public override func finalizeTranslateSelection(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    let proteinCrystal: ProteinCrystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -273,7 +226,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   public override func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    let proteinCrystal: ProteinCrystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -303,7 +256,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    let proteinCrystal: ProteinCrystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -339,7 +292,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    let proteinCrystal: ProteinCrystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -373,7 +326,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    let proteinCrystal: ProteinCrystal =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -1354,7 +1307,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   public var removedSymmetry: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    let crystal: ProteinCrystal =  self.clone()
     
     // make copy of the atom-structure, leave atoms invariant
     let atomsWithRemovedSymmetry: SKAtomTreeController = crystal.atoms
@@ -1530,7 +1483,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   public var wrapAtomsToCell: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    let crystal: ProteinCrystal =  self.clone()
     
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = crystal.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
@@ -1560,7 +1513,7 @@ public final class ProteinCrystal: Structure, NSCopying, RKRenderAtomSource, RKR
   public override func setSpaceGroup(number: Int) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: ProteinCrystal =  self.copy() as! ProteinCrystal
+    let crystal: ProteinCrystal =  self.clone()
     
     crystal.spaceGroupHallNumber = number
     

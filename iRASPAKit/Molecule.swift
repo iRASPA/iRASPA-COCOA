@@ -39,7 +39,7 @@ import SimulationKit
 import OperationKit
 import BinaryCodable
 
-public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource
+public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -94,47 +94,6 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
   }
   
   // MARK: -
-  // MARK: NSCopying support
-  
-  public func copy(with zone: NSZone?) -> Any
-  {
-    let binaryEncoder: BinaryEncoder = BinaryEncoder()
-    binaryEncoder.encode(self)
-    let data: Data = Data(binaryEncoder.data)
-    do
-    {
-      let molecule: Molecule = try BinaryDecoder(data: [UInt8](data)).decode(Molecule.self)
-      
-      // set the 'bonds'-array of the atoms, since they are empty for a structure with symmetry
-      let atomTreeNodes: [SKAtomTreeNode] = molecule.atoms.flattenedLeafNodes()
-      let atomCopies: [SKAtomCopy] = atomTreeNodes.compactMap{$0.representedObject}.flatMap{$0.copies}
-    
-      //update selection
-      let tags: Set<Int> = Set(self.atoms.selectedTreeNodes.map{$0.representedObject.tag})
-      molecule.tag(atoms: molecule.atoms)
-      molecule.atoms.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
-    
-      for atomCopy in atomCopies
-      {
-        atomCopy.bonds = []
-      }
-    
-      for bond in molecule.bonds.arrangedObjects
-      {
-        // make the list of bonds the atoms are involved in
-        bond.atom1.bonds.insert(bond)
-        bond.atom2.bonds.insert(bond)
-      }
-      return molecule
-    }
-    catch
-    {
-      
-    }
-    return Molecule.init(name: "")
-  }
-  
-  // MARK: -
   // MARK: Molecule operations
   
   public override func expandSymmetry()
@@ -168,7 +127,7 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
   public override func finalizeTranslateSelection(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.copy() as! Molecule
+    let molecule: Molecule =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -241,7 +200,7 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
   public override func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.copy() as! Molecule
+    let molecule: Molecule =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -271,7 +230,7 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
   public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.copy() as! Molecule
+    let molecule: Molecule =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -302,7 +261,7 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
   public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.copy() as! Molecule
+    let molecule: Molecule =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
@@ -336,7 +295,7 @@ public final class Molecule: Structure, NSCopying, RKRenderAtomSource, RKRenderB
   public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.copy() as! Molecule
+    let molecule: Molecule =  self.clone()
     
     for node in self.atoms.selectedTreeNodes
     {
