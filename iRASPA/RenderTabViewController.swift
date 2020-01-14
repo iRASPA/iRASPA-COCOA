@@ -3212,7 +3212,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         for structure in structures
         {
           // create new sets of objects for each structure
-          let objects: [SKAtomTreeNode] = atoms.clone()
+          let objects: [SKAtomTreeNode] = atoms.copy()
           let asymmetricAtoms: [SKAsymmetricAtom] = objects.map{$0.representedObject}
           if let document: iRASPADocument = self.windowController?.currentDocument
           {

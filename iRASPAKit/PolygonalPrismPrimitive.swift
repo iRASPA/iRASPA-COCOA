@@ -56,6 +56,16 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
     setRepresentationStyle(style: Structure.RepresentationStyle.objects)
   }
   
+  public required init(original structure: Structure)
+  {
+    super.init(original: structure)
+  }
+  
+  public required init(clone structure: Structure)
+  {
+    super.init(clone: structure)
+  }
+  
   public override var materialType: SKStructure.Kind
   {
     return .polygonalPrismPrimitive

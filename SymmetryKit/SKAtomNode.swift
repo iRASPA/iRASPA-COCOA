@@ -202,7 +202,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     self.drawRadius = original.drawRadius
     self.bondDistanceCriteria = original.bondDistanceCriteria
   
-    self.copies = original.copies.clone()
+    self.copies = original.copies.copy()
     
     for copy in copies
     {

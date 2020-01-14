@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -183,6 +183,9 @@
                                                                             </items>
                                                                         </menu>
                                                                     </popUpButtonCell>
+                                                                    <connections>
+                                                                        <action selector="changeMaterialType:" target="b7G-Em-dfk" id="xye-Uc-LWJ"/>
+                                                                    </connections>
                                                                 </popUpButton>
                                                             </subviews>
                                                         </tableCellView>
@@ -1174,7 +1177,7 @@
                                                                         </objectValues>
                                                                     </comboBoxCell>
                                                                     <connections>
-                                                                        <action selector="changeMaterialType:" target="b7G-Em-dfk" id="B9L-r4-4UJ"/>
+                                                                        <action selector="changeMaterialName:" target="b7G-Em-dfk" id="waq-tt-AqO"/>
                                                                     </connections>
                                                                 </comboBox>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LdN-0R-3AM">
