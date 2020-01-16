@@ -292,6 +292,28 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
             popUpbuttonRepresentationType.isEnabled = enabled
             popUpbuttonRepresentationType.isEditable = enabled
             
+            popUpbuttonRepresentationType.autoenablesItems = false
+            if let item = popUpbuttonRepresentationType.item(at: SKStructure.Kind.unknown.rawValue)
+            {
+              item.isEnabled = false
+            }
+            if let item = popUpbuttonRepresentationType.item(at: SKStructure.Kind.structure.rawValue)
+            {
+              item.isEnabled = false
+            }
+            if let item = popUpbuttonRepresentationType.item(at: SKStructure.Kind.proteinCrystalSolvent.rawValue)
+            {
+              item.isEnabled = false
+            }
+            if let item = popUpbuttonRepresentationType.item(at: SKStructure.Kind.crystalSolvent.rawValue)
+            {
+              item.isEnabled = false
+            }
+            if let item = popUpbuttonRepresentationType.item(at: SKStructure.Kind.molecularCrystalSolvent.rawValue)
+            {
+              item.isEnabled = false
+            }
+            
             if let rawValue = representedStructure.renderMaterialType?.rawValue
             {
               popUpbuttonRepresentationType.removeItem(withTitle: "Multiple Values")
@@ -1712,17 +1734,80 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMaterialType(_ sender: NSPopUpButton)
   {
-    /*
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let cellViewers: [CellViewer] = self.representedObject as? [CellViewer],
+       let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+       let project = projectTreeNode.representedObject.loadedProjectStructureNode
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
-      ProjectTreeNode.representedObject.isEdited = true
-      structure.renderStructureMaterialType = sender.stringValue
+      projectTreeNode.representedObject.isEdited = true
       
-      self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
-    }*/
+      var to: [iRASPAStructure] = []
+      var from: [iRASPAStructure] = []
+      for cellViewer in cellViewers
+      {
+        for i in 0..<cellViewer.frames.count
+        {
+          from.append(cellViewer.frames[i])
+          switch(SKStructure.Kind(rawValue: sender.indexOfSelectedItem))
+          {
+          case .none,.unknown, .structure:
+            return
+          case .crystal:
+            to.append(iRASPAStructure(crystal: Crystal(clone: cellViewer.frames[i].structure)))
+          case .molecularCrystal:
+            to.append(iRASPAStructure(molecularCrystal: MolecularCrystal(clone: cellViewer.frames[i].structure)))
+          case .molecule:
+            to.append(iRASPAStructure(molecule: Molecule(clone: cellViewer.frames[i].structure)))
+          case .protein:
+            to.append(iRASPAStructure(protein: Protein(clone: cellViewer.frames[i].structure)))
+          case .proteinCrystal:
+            to.append(iRASPAStructure(proteinCrystal: ProteinCrystal(clone: cellViewer.frames[i].structure)))
+          case .proteinCrystalSolvent,.crystalSolvent,.molecularCrystalSolvent:
+            return
+          case .ellipsoidPrimitive:
+            to.append(iRASPAStructure(spherePrimitive: EllipsoidPrimitive(clone: cellViewer.frames[i].structure)))
+          case .cylinderPrimitive:
+            to.append(iRASPAStructure(cylinderPrimitive: CylinderPrimitive(clone: cellViewer.frames[i].structure)))
+          case .polygonalPrismPrimitive:
+            to.append(iRASPAStructure(polygonalPrismPrimitive: PolygonalPrismPrimitive(clone: cellViewer.frames[i].structure)))
+          }
+        }
+      }
+      self.replaceStructure(structures: from, to: to)
+      
+      project.isEdited = true
+      
+    }
+  }
+  
+  func replaceStructure(structures from: [iRASPAStructure], to: [iRASPAStructure])
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.replaceStructure(structures: from, to: to)})
+      
+      project.undoManager.setActionName(NSLocalizedString("Change material type", comment:"Change material type"))
+      
+      for i in 0..<from.count
+      {
+        from[i].swapRepresentedObjects(structure: to[i])
+      }
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      project.isEdited = true
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: to.map{$0.structure})
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: to.map{$0.structure})
+      
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+          self.windowController?.detailTabViewController?.reloadData()
+    }
   }
   
   // MARK: Cell changes
@@ -1740,7 +1825,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       
       
@@ -1771,7 +1856,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1799,7 +1884,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1828,7 +1913,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1857,7 +1942,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1886,7 +1971,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1914,7 +1999,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
         
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1943,7 +2028,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1971,7 +2056,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2000,7 +2085,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2029,7 +2114,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2058,7 +2143,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2098,8 +2183,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
@@ -2132,8 +2217,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.document?.updateChangeCount(.changeDone)
@@ -2164,8 +2249,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.document?.updateChangeCount(.changeDone)
@@ -2196,8 +2281,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.document?.updateChangeCount(.changeDone)
@@ -2228,8 +2313,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.document?.updateChangeCount(.changeDone)
@@ -2260,8 +2345,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         
@@ -2299,8 +2384,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
       
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2337,8 +2422,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2376,8 +2461,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2415,8 +2500,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2453,8 +2538,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2491,8 +2576,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2645,7 +2730,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         project.checkValidatyOfMeasurementPoints()
       }
         
-  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2705,7 +2790,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2765,7 +2850,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2793,7 +2878,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2819,7 +2904,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2846,7 +2931,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2905,8 +2990,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allFrames)
-      for structure in cellViewer.structureViewerStructures
+      self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allRenderFrames)
+      for structure in cellViewer.allStructures
       {
         //cellViewer.applyContentShift()
         if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.applyCellContentShift()
@@ -3390,7 +3475,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allRenderFrames)
       
       cellViewer.renderRecomputeDensityProperties()
       
@@ -3410,7 +3495,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
      
      cellViewer.renderRecomputeDensityProperties()
-    self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: cellViewer.allFrames)
+    self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: cellViewer.allRenderFrames)
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3424,7 +3509,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: cellViewer.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: cellViewer.allRenderFrames)
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3594,7 +3679,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
        let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
-      self.setSpaceGroupHallNumber(structures: cellViewer.structureViewerStructures, number: Array(repeating: sender.indexOfSelectedItem, count: cellViewer.structureViewerStructures.count))
+      self.setSpaceGroupHallNumber(structures: cellViewer.allStructures, number: Array(repeating: sender.indexOfSelectedItem, count: cellViewer.allStructures.count))
     }
   }
   
@@ -3605,7 +3690,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       let HallNumber: Int = SKSpacegroup.HallSymbolForConventionalSpaceGroupNumber(sender.indexOfSelectedItem)
-      self.setSpaceGroupHallNumber(structures: cellViewer.structureViewerStructures, number: Array(repeating: HallNumber, count: cellViewer.structureViewerStructures.count))
+      self.setSpaceGroupHallNumber(structures: cellViewer.allStructures, number: Array(repeating: HallNumber, count: cellViewer.allStructures.count))
     }
   }
   
@@ -3618,7 +3703,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       let spaceGroupNumber: Int = SKSpacegroup.SpaceGroupNumberForHallNumber(spaceGroupHallNumber)
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       let HallNumber: Int = SKSpacegroup.BaseHallSymbolForSpaceGroupNumber(spaceGroupNumber) + sender.indexOfSelectedItem
-      self.setSpaceGroupHallNumber(structures: cellViewer.structureViewerStructures, number: Array(repeating: HallNumber, count: cellViewer.structureViewerStructures.count))
+      self.setSpaceGroupHallNumber(structures: cellViewer.allStructures, number: Array(repeating: HallNumber, count: cellViewer.allStructures.count))
     }
   }
   

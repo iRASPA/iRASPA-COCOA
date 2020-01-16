@@ -71,13 +71,11 @@ public class ImportProjectOperation: FKGroupOperation
       let projectStructureNode: ProjectStructureNode = ProjectStructureNode(name: projectTreeNode.displayName, sceneList: sceneList)
       projectTreeNode.representedObject = iRASPAProject(structureProject: projectStructureNode)
       
-      // set parent reference
-      //projectStructureNode.sceneList.structureViewerStructures.forEach{$0.parentProject = projectStructureNode}
       
       // set default colorset etc.
-      projectStructureNode.sceneList.structureViewerStructures.forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
+      projectStructureNode.sceneList.allStructures.forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
       
-      let computeBondsGroupOperation: ComputeBondsGroupOperation = ComputeBondsGroupOperation(structures: projectStructureNode.sceneList.structureViewerStructures, windowController: windowController)
+      let computeBondsGroupOperation: ComputeBondsGroupOperation = ComputeBondsGroupOperation(structures: projectStructureNode.sceneList.allStructures, windowController: windowController)
       self?.progress.addChild(computeBondsGroupOperation.progress, withPendingUnitCount: 80)
       
       self?.addOperation(computeBondsGroupOperation)

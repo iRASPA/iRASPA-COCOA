@@ -261,7 +261,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       
       if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
       {
-        let selectionEmpty: Bool = !project.structures.map{$0.atoms.selectedTreeNodes.isEmpty}.contains(false)
+        let selectionEmpty: Bool = !project.allStructures.map{$0.atoms.selectedTreeNodes.isEmpty}.contains(false)
         showTransformationPanel(oldSelectionEmpty: selectionEmpty, newSelectionEmpty: selectionEmpty)
       }
     }
@@ -296,7 +296,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         self.renderDataSource = project
         
-        let selectionEmpty: Bool = !project.structures.map{$0.atoms.selectedTreeNodes.isEmpty}.contains(false)
+        let selectionEmpty: Bool = !project.allStructures.map{$0.atoms.selectedTreeNodes.isEmpty}.contains(false)
         showTransformationPanel(oldSelectionEmpty: selectionEmpty, newSelectionEmpty: selectionEmpty)
         
         // all renders need to have the current project: for exmaple: select metal, rch project, switch to openGL
@@ -334,9 +334,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       switch(tab)
       {
       case 0:
-        self.structures = project.sceneList.scenes.flatMap{$0.structureViewerStructures}
+        self.structures = project.sceneList.scenes.flatMap{$0.allStructures}
       case 1:
-        self.structures = project.sceneList.scenes.flatMap{$0.selectedMovies}.flatMap{$0.structureViewerStructures}
+        self.structures = project.sceneList.scenes.flatMap{$0.selectedMovies}.flatMap{$0.allStructures}
       case 2:
           self.structures = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0.structure} ?? []
       default:
@@ -358,7 +358,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       case 0:
         break
       case 1:
-        self.structures = project.sceneList.scenes.flatMap{$0.selectedMovies}.flatMap{$0.structureViewerStructures}
+        self.structures = project.sceneList.scenes.flatMap{$0.selectedMovies}.flatMap{$0.allStructures}
       case 2:
         self.structures = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0.structure} ?? []
         
@@ -789,7 +789,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     if  let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      for structure in project.structures
+      for structure in project.allStructures
       {
         self.setCurrentSelection(structure: structure, selection: Set(structure.atoms.flattenedNodes()), from: structure.atoms.selectedTreeNodes)
       }
@@ -983,7 +983,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         for movie in scene.movies
         {
-          for structure in movie.structureViewerStructures
+          for structure in movie.allStructures
           {
             // sort the selected nodes accoording to the index-paths
             // the deepest nodes should be deleted first!
@@ -1181,7 +1181,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         for movie in scene.movies
         {
-          for structure in movie.structureViewerStructures
+          for structure in movie.allStructures
           {
             if structure.isVisible
             {
@@ -1792,7 +1792,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                 for movie in scene.movies
                 {
                   var tempData: [(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom])] = []
-                  for structure in movie.structureViewerStructures
+                  for structure in movie.allStructures
                   {
                     let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.superCell
                     
@@ -3182,7 +3182,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     {
       let pasteboard = NSPasteboard.general
       pasteboard.clearContents()
-      pasteboard.writeObjects(project.structures.flatMap{$0.readySelectedAtomsForCopyAndPaste()})
+      pasteboard.writeObjects(project.allStructures.flatMap{$0.readySelectedAtomsForCopyAndPaste()})
     }
   }
   
@@ -3242,7 +3242,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
     if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
-      let nodes: [SKAtomTreeNode] = project.structures.flatMap{$0.atoms.selectedNodes}
+      let nodes: [SKAtomTreeNode] = project.allStructures.flatMap{$0.atoms.selectedNodes}
       pasteboard.writeObjects(nodes)
     }
     self.deleteSelection()

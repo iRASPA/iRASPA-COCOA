@@ -38,7 +38,7 @@ import simd
 
 
 // A scene contains a list of Movies: FKArrayController<Scene>
-public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, PrimitiveVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {  
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -52,6 +52,11 @@ public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualA
   
   public var filterPredicate: (Scene) -> Bool = {_ in return true}
   var sortDescriptors: [NSSortDescriptor] = []
+  
+  public var frames: [iRASPAStructure]
+  {
+    return self.scenes.flatMap{$0.movies}.flatMap{$0.frames}
+  }
   
   public init()
   {
@@ -83,7 +88,7 @@ public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualA
   
   public var allAdsorptionSurfaceStructures: [SKRenderAdsorptionSurfaceStructure]
   {
-    return self.scenes.flatMap{$0.movies.flatMap{$0.structureViewerStructures.map{$0 as SKRenderAdsorptionSurfaceStructure}}}
+    return self.scenes.flatMap{$0.movies.flatMap{$0.allStructures.map{$0 as SKRenderAdsorptionSurfaceStructure}}}
   }
 
   
@@ -320,10 +325,15 @@ public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualA
 
 extension SceneList: StructureViewer
 {
-  /// Returns all the structures in the sceneList
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.scenes.flatMap{$0.structureViewerStructures}
+    return self.scenes.flatMap{$0.allStructures}
+  }
+  
+  /// Returns all the structures in the sceneList
+  public var allIRASPAStructures: [iRASPAStructure]
+  {
+    return self.scenes.flatMap{$0.allIRASPAStructures}
   }
   
   public var selectedRenderFrames: [RKRenderStructure]
@@ -331,13 +341,18 @@ extension SceneList: StructureViewer
     return self.scenes.flatMap{$0.selectedRenderFrames}
   }
 
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
-    return self.scenes.flatMap{$0.allFrames}
+    return self.scenes.flatMap{$0.allRenderFrames}
   }
-  
-  
-  
+}
+
+extension SceneList: PrimitiveVisualAppearanceViewer
+{
+  public var allPrimitiveStructure: [Structure]
+  {
+    return self.scenes.flatMap{$0.allPrimitiveStructure}
+  }
 }
 
 

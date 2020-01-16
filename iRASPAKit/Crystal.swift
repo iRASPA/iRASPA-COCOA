@@ -63,13 +63,36 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   public required init(original structure: Structure)
   {
     super.init(original: structure)
-    reComputeBoundingBox()
-    reComputeBonds()
+    
   }
   
   public required init(clone structure: Structure)
   {
     super.init(clone: structure)
+    
+    switch(structure)
+    {
+    case is Protein, is ProteinCrystal, is Molecule, is MolecularCrystal:
+      self.atoms.flattenedLeafNodes().forEach{
+      let pos = $0.representedObject.position
+          $0.representedObject.position = self.cell.convertToFractional(pos)
+        }
+      break
+    case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
+      if !structure.primitiveIsFractional
+      {
+        self.atoms.flattenedLeafNodes().forEach{
+        let pos = $0.representedObject.position
+            $0.representedObject.position = self.cell.convertToFractional(pos)
+        }
+      }
+      break
+    default:
+      break
+    }
+    self.expandSymmetry()
+    reComputeBoundingBox()
+    reComputeBonds()
   }
   
   public var colorAtomsWithBondColor: Bool
@@ -1676,6 +1699,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     var computedBonds: Set<SKBondNode> = []
     
     let atoms: [SKAtomCopy] = newAtoms.compactMap{$0.representedObject}.flatMap{$0.copies}
+    atoms.forEach{ $0.bonds.removeAll()}
     
     let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
@@ -1783,6 +1807,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     let perpendicularWidths: SIMD3<Double> = structureCell.perpendicularWidths
     guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+    
+    atoms.forEach{ $0.bonds.removeAll()}
     
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
@@ -1973,6 +1999,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     public override func execute()
     {
       let atoms: [SKAtomCopy] = structure.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+      atoms.forEach({$0.bonds.removeAll()})
       let computedBonds = structure.computeBonds(cell: structure.cell, atomList: atoms)
       
       LogQueue.shared.info(destination: windowController, message: "start computing bonds: \(structure.displayName)")

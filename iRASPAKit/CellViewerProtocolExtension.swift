@@ -39,14 +39,14 @@ extension CellViewer
 {
   public func renderRecomputeDensityProperties()
   {
-    self.structureViewerStructures.forEach{$0.recomputeDensityProperties()}
+    self.allStructures.forEach{$0.recomputeDensityProperties()}
   }
   
   public var renderMaterialType: SKStructure.Kind?
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.materialType.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.materialType.rawValue })
       return Set(set).count == 1 ? SKStructure.Kind(rawValue: set.first!) : nil
     }
   }
@@ -55,12 +55,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.structureMaterialType })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.structureMaterialType })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureMaterialType = newValue ?? ""}
+      self.allStructures.forEach{$0.structureMaterialType = newValue ?? ""}
     }
   }
   
@@ -68,12 +68,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureMass })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureMass })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureMass = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureMass = newValue ?? 0.0}
     }
   }
   
@@ -81,12 +81,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureDensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureDensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureDensity = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureDensity = newValue ?? 0.0}
     }
   }
   
@@ -94,12 +94,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureHeliumVoidFraction })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureHeliumVoidFraction })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureHeliumVoidFraction = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureHeliumVoidFraction = newValue ?? 0.0}
     }
   }
   
@@ -107,12 +107,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureSpecificVolume })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureSpecificVolume })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureSpecificVolume = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureSpecificVolume = newValue ?? 0.0}
     }
   }
   
@@ -120,12 +120,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureAccessiblePoreVolume })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureAccessiblePoreVolume })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureAccessiblePoreVolume = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureAccessiblePoreVolume = newValue ?? 0.0}
     }
   }
   
@@ -133,12 +133,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.frameworkProbeMolecule.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.frameworkProbeMolecule.rawValue })
       return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.frameworkProbeMolecule = newValue ?? .helium}
+      self.allStructures.forEach{$0.frameworkProbeMolecule = newValue ?? .helium}
     }
   }
   
@@ -146,12 +146,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureVolumetricNitrogenSurfaceArea })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureVolumetricNitrogenSurfaceArea })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureVolumetricNitrogenSurfaceArea = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureVolumetricNitrogenSurfaceArea = newValue ?? 0.0}
     }
   }
   
@@ -159,12 +159,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureGravimetricNitrogenSurfaceArea })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureGravimetricNitrogenSurfaceArea })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureGravimetricNitrogenSurfaceArea = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureGravimetricNitrogenSurfaceArea = newValue ?? 0.0}
     }
   }
   
@@ -172,12 +172,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.structureNumberOfChannelSystems })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.structureNumberOfChannelSystems })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureNumberOfChannelSystems = newValue ?? 0}
+      self.allStructures.forEach{$0.structureNumberOfChannelSystems = newValue ?? 0}
     }
   }
   
@@ -186,12 +186,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.structureNumberOfInaccessiblePockets })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.structureNumberOfInaccessiblePockets })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureNumberOfInaccessiblePockets = newValue ?? 0}
+      self.allStructures.forEach{$0.structureNumberOfInaccessiblePockets = newValue ?? 0}
     }
   }
   
@@ -199,12 +199,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.structureDimensionalityOfPoreSystem })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.structureDimensionalityOfPoreSystem })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureDimensionalityOfPoreSystem = newValue ?? 0}
+      self.allStructures.forEach{$0.structureDimensionalityOfPoreSystem = newValue ?? 0}
     }
   }
   
@@ -212,12 +212,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureLargestCavityDiameter })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureLargestCavityDiameter })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureLargestCavityDiameter = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureLargestCavityDiameter = newValue ?? 0.0}
     }
   }
   
@@ -226,12 +226,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureRestrictingPoreLimitingDiameter })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureRestrictingPoreLimitingDiameter })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureRestrictingPoreLimitingDiameter = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureRestrictingPoreLimitingDiameter = newValue ?? 0.0}
     }
   }
   
@@ -239,12 +239,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureLargestCavityDiameterAlongAViablePath })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureLargestCavityDiameterAlongAViablePath })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureLargestCavityDiameterAlongAViablePath = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureLargestCavityDiameterAlongAViablePath = newValue ?? 0.0}
     }
   }
   
@@ -254,12 +254,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.spaceGroupHallNumber })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.spaceGroupHallNumber })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.spaceGroupHallNumber = newValue}
+      self.allStructures.forEach{$0.spaceGroupHallNumber = newValue}
     }
   }
   
@@ -268,12 +268,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellLengthA })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellLengthA })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.a = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -284,12 +284,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellLengthB })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellLengthB })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.b = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -300,12 +300,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellLengthC })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellLengthC })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.c = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -317,12 +317,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellAngleAlpha })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellAngleAlpha })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.alpha = newValue ?? 90.0*Double.pi/180.0
         $0.reComputeBoundingBox()
       }
@@ -333,12 +333,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellAngleBeta })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellAngleBeta })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.beta = newValue ?? 90.0*Double.pi/180.0
         $0.reComputeBoundingBox()
       }
@@ -349,12 +349,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellAngleGamma })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellAngleGamma })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.gamma = newValue ?? 90.0*Double.pi/180.0
         $0.reComputeBoundingBox()
       }
@@ -365,12 +365,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[0].x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[0].x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[0].x = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -381,12 +381,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[0].y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[0].y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[0].y = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -397,12 +397,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[0].z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[0].z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[0].z = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -413,12 +413,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[1].x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[1].x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[1].x = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -429,12 +429,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[1].y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[1].y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[1].y = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -445,12 +445,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[1].z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[1].z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[1].z = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -461,12 +461,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[2].x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[2].x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[2].x = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -477,12 +477,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[2].y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[2].y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[2].y = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -493,12 +493,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[2].z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[2].z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[2].z = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -507,25 +507,25 @@ extension CellViewer
   
   public var renderCellVolume: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellVolume })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellVolume })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderCellPerpendicularWidthX: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellPerpendicularWidthsX })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellPerpendicularWidthsX })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderCellPerpendicularWidthY: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellPerpendicularWidthsY })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellPerpendicularWidthsY })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderCellPerpendicularWidthZ: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellPerpendicularWidthsZ })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellPerpendicularWidthsZ })
     return Set(set).count == 1 ? set.first! : nil
   }
   
@@ -534,12 +534,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.origin.x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.origin.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.origin.x = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -550,12 +550,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.origin.y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.origin.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.origin.y = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -566,12 +566,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.origin.z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.origin.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.origin.z = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -582,12 +582,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.contentShift.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentShift.x = newValue ?? 0.0
       }
     }
@@ -597,12 +597,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.contentShift.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentShift.y = newValue ?? 0.0
       }
     }
@@ -612,12 +612,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.contentShift.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentShift.z = newValue ?? 0.0
       }
     }
@@ -627,12 +627,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.x })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.cell.contentFlip.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentFlip.x = newValue ?? false
       }
     }
@@ -642,12 +642,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.y })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.cell.contentFlip.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentFlip.y = newValue ?? false
       }
     }
@@ -657,12 +657,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.z })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.cell.contentFlip.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentFlip.z = newValue ?? false
       }
     }
@@ -672,14 +672,14 @@ extension CellViewer
   {
     get
     {
-      let origin: [simd_quatd] = self.structureViewerStructures.compactMap{$0.orientation}
+      let origin: [simd_quatd] = self.allStructures.compactMap{$0.orientation}
       let q: simd_quatd = origin.reduce(simd_quatd()){return simd_add($0, $1)}
       let averaged_vector: simd_quatd = simd_quatd(ix: q.vector.x / Double(origin.count), iy: q.vector.y / Double(origin.count), iz: q.vector.z / Double(origin.count), r: q.vector.w / Double(origin.count))
       return origin.isEmpty ? nil : averaged_vector
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation = newValue ?? simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)}
+      self.allStructures.forEach{$0.orientation = newValue ?? simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)}
     }
   }
   
@@ -687,12 +687,12 @@ extension CellViewer
   {
     get
     {
-      let origin: [Double] = self.structureViewerStructures.compactMap{$0.rotationDelta}
+      let origin: [Double] = self.allStructures.compactMap{$0.rotationDelta}
       return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.rotationDelta = newValue ?? 5.0}
+      self.allStructures.forEach{$0.rotationDelta = newValue ?? 5.0}
     }
   }
   
@@ -700,12 +700,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.periodic })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.periodic })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.periodic = newValue ?? false}
+      self.allStructures.forEach{$0.periodic = newValue ?? false}
     }
   }
   
@@ -713,12 +713,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.minimumReplica.x })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.minimumReplica.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.minimumReplica.x = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -729,12 +729,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.minimumReplica.y })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.minimumReplica.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.minimumReplica.y = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -745,12 +745,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.minimumReplica.z })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.minimumReplica.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.minimumReplica.z = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -761,12 +761,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.maximumReplica.x })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.maximumReplica.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.maximumReplica.x = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -777,12 +777,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.maximumReplica.y })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.maximumReplica.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.maximumReplica.y = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -793,12 +793,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.maximumReplica.z })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.maximumReplica.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.maximumReplica.z = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -810,12 +810,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return ($0.orientation.EulerAngles).x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return ($0.orientation.EulerAngles).x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.orientation.EulerAngles.y,$0.orientation.EulerAngles.z)}
+      self.allStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.orientation.EulerAngles.y,$0.orientation.EulerAngles.z)}
     }
   }
   
@@ -823,12 +823,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return ($0.orientation.EulerAngles).y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return ($0.orientation.EulerAngles).y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, newValue ?? 0.0,$0.orientation.EulerAngles.z)}
+      self.allStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, newValue ?? 0.0,$0.orientation.EulerAngles.z)}
     }
   }
   
@@ -836,12 +836,12 @@ extension CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return ($0.orientation.EulerAngles).z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return ($0.orientation.EulerAngles).z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, $0.orientation.EulerAngles.y, newValue ?? 0.0)}
+      self.allStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, $0.orientation.EulerAngles.y, newValue ?? 0.0)}
     }
   }
   
@@ -850,7 +850,7 @@ extension CellViewer
     var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
     var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
     
-    for frame in self.structureViewerStructures
+    for frame in self.allStructures
     {
       let transformedBoundingBox: SKBoundingBox = frame.transformedBoundingBox
       
@@ -867,28 +867,28 @@ extension CellViewer
   
   public func reComputeBoundingBox()
   {
-    self.structureViewerStructures.forEach{$0.reComputeBoundingBox()}
+    self.allStructures.forEach{$0.reComputeBoundingBox()}
   }
   
   public var renderCellPrecision: Double?
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.precision })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.precision })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.cell.precision = newValue ?? 1e-5}
+      self.allStructures.forEach{$0.cell.precision = newValue ?? 1e-5}
     }
   }
 }
 
 extension Array where Iterator.Element == CellViewer
 {
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.flatMap{$0.structureViewerStructures}
+    return self.flatMap{$0.allStructures}
   }
   
   public var selectedFrames: [RKRenderStructure]
@@ -896,21 +896,21 @@ extension Array where Iterator.Element == CellViewer
     return self.flatMap{$0.selectedRenderFrames}
   }
   
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
-    return self.flatMap{$0.allFrames}
+    return self.flatMap{$0.allRenderFrames}
   }
   
   public func renderRecomputeDensityProperties()
   {
-    self.structureViewerStructures.forEach{$0.recomputeDensityProperties()}
+    self.allStructures.forEach{$0.recomputeDensityProperties()}
   }
   
   public var renderMaterialType: SKStructure.Kind?
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.materialType.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.materialType.rawValue })
       return Set(set).count == 1 ? SKStructure.Kind(rawValue: set.first!) : nil
     }
   }
@@ -919,12 +919,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.structureMaterialType })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.structureMaterialType })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureMaterialType = newValue ?? ""}
+      self.allStructures.forEach{$0.structureMaterialType = newValue ?? ""}
     }
   }
   
@@ -932,12 +932,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureMass })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureMass })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureMass = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureMass = newValue ?? 0.0}
     }
   }
   
@@ -945,12 +945,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureDensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureDensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureDensity = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureDensity = newValue ?? 0.0}
     }
   }
   
@@ -958,12 +958,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureHeliumVoidFraction })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureHeliumVoidFraction })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureHeliumVoidFraction = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureHeliumVoidFraction = newValue ?? 0.0}
     }
   }
   
@@ -971,12 +971,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureSpecificVolume })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureSpecificVolume })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureSpecificVolume = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureSpecificVolume = newValue ?? 0.0}
     }
   }
   
@@ -984,12 +984,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureAccessiblePoreVolume })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureAccessiblePoreVolume })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureAccessiblePoreVolume = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureAccessiblePoreVolume = newValue ?? 0.0}
     }
   }
   
@@ -997,12 +997,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.frameworkProbeMolecule.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.frameworkProbeMolecule.rawValue })
       return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.frameworkProbeMolecule = newValue ?? .helium}
+      self.allStructures.forEach{$0.frameworkProbeMolecule = newValue ?? .helium}
     }
   }
   
@@ -1010,12 +1010,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureVolumetricNitrogenSurfaceArea })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureVolumetricNitrogenSurfaceArea })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureVolumetricNitrogenSurfaceArea = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureVolumetricNitrogenSurfaceArea = newValue ?? 0.0}
     }
   }
   
@@ -1023,12 +1023,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureGravimetricNitrogenSurfaceArea })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureGravimetricNitrogenSurfaceArea })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureGravimetricNitrogenSurfaceArea = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureGravimetricNitrogenSurfaceArea = newValue ?? 0.0}
     }
   }
   
@@ -1036,12 +1036,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.structureNumberOfChannelSystems })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.structureNumberOfChannelSystems })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureNumberOfChannelSystems = newValue ?? 0}
+      self.allStructures.forEach{$0.structureNumberOfChannelSystems = newValue ?? 0}
     }
   }
   
@@ -1049,12 +1049,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.structureNumberOfInaccessiblePockets })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.structureNumberOfInaccessiblePockets })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureNumberOfInaccessiblePockets = newValue ?? 0}
+      self.allStructures.forEach{$0.structureNumberOfInaccessiblePockets = newValue ?? 0}
     }
   }
   
@@ -1062,12 +1062,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.structureDimensionalityOfPoreSystem })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.structureDimensionalityOfPoreSystem })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureDimensionalityOfPoreSystem = newValue ?? 0}
+      self.allStructures.forEach{$0.structureDimensionalityOfPoreSystem = newValue ?? 0}
     }
   }
   
@@ -1075,12 +1075,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureLargestCavityDiameter})
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureLargestCavityDiameter})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureLargestCavityDiameter = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureLargestCavityDiameter = newValue ?? 0.0}
     }
   }
   
@@ -1088,12 +1088,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureRestrictingPoreLimitingDiameter })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureRestrictingPoreLimitingDiameter })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureRestrictingPoreLimitingDiameter = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureRestrictingPoreLimitingDiameter = newValue ?? 0.0}
     }
   }
   
@@ -1101,49 +1101,49 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.structureLargestCavityDiameterAlongAViablePath })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.structureLargestCavityDiameterAlongAViablePath })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.structureLargestCavityDiameterAlongAViablePath = newValue ?? 0.0}
+      self.allStructures.forEach{$0.structureLargestCavityDiameterAlongAViablePath = newValue ?? 0.0}
     }
   }
 
   
   public var renderBoundingBoxMinimumX: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.boundingBox.minimum.x })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.boundingBox.minimum.x })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderBoundingBoxMinimumY: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.boundingBox.minimum.y })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.boundingBox.minimum.y })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderBoundingBoxMinimumZ: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.boundingBox.minimum.z })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.boundingBox.minimum.z })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderBoundingBoxMaximumX: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.boundingBox.maximum.x })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.boundingBox.maximum.x })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderBoundingBoxMaximumY: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.boundingBox.maximum.y })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.boundingBox.maximum.y })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderBoundingBoxMaximumZ: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.boundingBox.maximum.z })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.boundingBox.maximum.z })
     return Set(set).count == 1 ? set.first! : nil
   }
   
@@ -1151,12 +1151,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.spaceGroupHallNumber })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.spaceGroupHallNumber })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.spaceGroupHallNumber = newValue}
+      self.allStructures.forEach{$0.spaceGroupHallNumber = newValue}
     }
   }
   
@@ -1165,12 +1165,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellLengthA })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellLengthA })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.a = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -1181,12 +1181,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellLengthB })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellLengthB })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.b = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -1197,12 +1197,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellLengthC })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellLengthC })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.c = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -1214,12 +1214,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellAngleAlpha })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellAngleAlpha })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.alpha = newValue ?? 90.0*Double.pi/180.0
         $0.reComputeBoundingBox()
       }
@@ -1230,12 +1230,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellAngleBeta })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellAngleBeta })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.beta = newValue ?? 90.0*Double.pi/180.0
         $0.reComputeBoundingBox()
       }
@@ -1246,12 +1246,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellAngleGamma })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellAngleGamma })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.gamma = newValue ?? 90.0*Double.pi/180.0
         $0.reComputeBoundingBox()
       }
@@ -1262,12 +1262,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[0].x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[0].x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[0].x = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -1278,12 +1278,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[0].y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[0].y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[0].y = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -1294,12 +1294,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[0].z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[0].z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[0].z = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -1310,12 +1310,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[1].x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[1].x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[1].x = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -1326,12 +1326,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[1].y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[1].y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[1].y = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -1342,12 +1342,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[1].z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[1].z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.cell.unitCell[1].z = newValue ?? 20.0}
+      self.allStructures.forEach{$0.cell.unitCell[1].z = newValue ?? 20.0}
     }
   }
   
@@ -1355,12 +1355,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[2].x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[2].x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[2].x = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -1371,12 +1371,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[2].y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[2].y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[2].y = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -1387,12 +1387,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCell[2].z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCell[2].z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.unitCell[2].z = newValue ?? 20.0
         $0.reComputeBoundingBox()
       }
@@ -1401,25 +1401,25 @@ extension Array where Iterator.Element == CellViewer
   
   public var renderCellVolume: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellVolume })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellVolume })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderCellPerpendicularWidthX: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellPerpendicularWidthsX })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellPerpendicularWidthsX })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderCellPerpendicularWidthY: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellPerpendicularWidthsY })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellPerpendicularWidthsY })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderCellPerpendicularWidthZ: Double?
   {
-    let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cellPerpendicularWidthsZ })
+    let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cellPerpendicularWidthsZ })
     return Set(set).count == 1 ? set.first! : nil
   }
   
@@ -1428,12 +1428,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.origin.x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.origin.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.origin.x = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -1444,12 +1444,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.origin.y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.origin.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.origin.y = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -1460,12 +1460,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.origin.z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.origin.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.origin.z = newValue ?? 0.0
         $0.reComputeBoundingBox()
       }
@@ -1476,12 +1476,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.contentShift.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentShift.x = newValue ?? 0.0
       }
     }
@@ -1491,12 +1491,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.contentShift.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentShift.y = newValue ?? 0.0
       }
     }
@@ -1506,12 +1506,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentShift.z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.contentShift.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentShift.z = newValue ?? 0.0
       }
     }
@@ -1521,12 +1521,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.x })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.cell.contentFlip.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentFlip.x = newValue ?? false
       }
     }
@@ -1536,12 +1536,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.y })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.cell.contentFlip.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentFlip.y = newValue ?? false
       }
     }
@@ -1551,12 +1551,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.cell.contentFlip.z })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.cell.contentFlip.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.contentFlip.z = newValue ?? false
       }
     }
@@ -1567,14 +1567,14 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let origin: [simd_quatd] = self.structureViewerStructures.compactMap{$0.orientation}
+      let origin: [simd_quatd] = self.allStructures.compactMap{$0.orientation}
       let q: simd_quatd = origin.reduce(simd_quatd()){return simd_add($0, $1)}
       let averaged_vector: simd_quatd = simd_quatd(ix: q.vector.x / Double(origin.count), iy: q.vector.y / Double(origin.count), iz: q.vector.z / Double(origin.count), r: q.vector.w / Double(origin.count))
       return origin.isEmpty ? nil : averaged_vector
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation = newValue ?? simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)}
+      self.allStructures.forEach{$0.orientation = newValue ?? simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)}
     }
   }
   
@@ -1582,12 +1582,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let origin: [Double] = self.structureViewerStructures.compactMap{$0.rotationDelta}
+      let origin: [Double] = self.allStructures.compactMap{$0.rotationDelta}
       return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.rotationDelta = newValue ?? 5.0}
+      self.allStructures.forEach{$0.rotationDelta = newValue ?? 5.0}
     }
   }
   
@@ -1595,12 +1595,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.periodic })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.periodic })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.periodic = newValue ?? false}
+      self.allStructures.forEach{$0.periodic = newValue ?? false}
     }
   }
   
@@ -1608,12 +1608,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.minimumReplica.x })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.minimumReplica.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.minimumReplica.x = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -1624,12 +1624,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.minimumReplica.y })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.minimumReplica.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.minimumReplica.y = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -1640,12 +1640,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.minimumReplica.z })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.minimumReplica.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.minimumReplica.z = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -1656,12 +1656,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.maximumReplica.x })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.maximumReplica.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.maximumReplica.x = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -1672,12 +1672,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.maximumReplica.y })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.maximumReplica.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.maximumReplica.y = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -1688,12 +1688,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Int32> = Set(self.structureViewerStructures.compactMap{ return $0.cell.maximumReplica.z })
+      let set: Set<Int32> = Set(self.allStructures.compactMap{ return $0.cell.maximumReplica.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.cell.maximumReplica.z = newValue ?? 0
         $0.reComputeBoundingBox()
       }
@@ -1705,12 +1705,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return ($0.orientation.EulerAngles).x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return ($0.orientation.EulerAngles).x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.orientation.EulerAngles.y,$0.orientation.EulerAngles.z)}
+      self.allStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.orientation.EulerAngles.y,$0.orientation.EulerAngles.z)}
     }
   }
   
@@ -1718,12 +1718,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return ($0.orientation.EulerAngles).y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return ($0.orientation.EulerAngles).y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, newValue ?? 0.0,$0.orientation.EulerAngles.z)}
+      self.allStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, newValue ?? 0.0,$0.orientation.EulerAngles.z)}
     }
   }
   
@@ -1731,12 +1731,12 @@ extension Array where Iterator.Element == CellViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return ($0.orientation.EulerAngles).z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return ($0.orientation.EulerAngles).z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, $0.orientation.EulerAngles.y, newValue ?? 0.0)}
+      self.allStructures.forEach{$0.orientation.EulerAngles = SIMD3<Double>($0.orientation.EulerAngles.x, $0.orientation.EulerAngles.y, newValue ?? 0.0)}
     }
   }
   
@@ -1745,7 +1745,7 @@ extension Array where Iterator.Element == CellViewer
     var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
     var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
     
-    for frame in self.structureViewerStructures
+    for frame in self.allStructures
     {
       let transformedBoundingBox: SKBoundingBox = frame.transformedBoundingBox
       
@@ -1762,19 +1762,19 @@ extension Array where Iterator.Element == CellViewer
   
   public func reComputeBoundingBox()
   {
-    self.structureViewerStructures.forEach{$0.reComputeBoundingBox()}
+    self.allStructures.forEach{$0.reComputeBoundingBox()}
   }
   
   public var renderCellPrecision: Double?
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.cell.precision })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.cell.precision })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.cell.precision = newValue ?? 1e-5}
+      self.allStructures.forEach{$0.cell.precision = newValue ?? 1e-5}
     }
   }
 }

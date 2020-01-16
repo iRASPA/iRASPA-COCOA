@@ -297,11 +297,11 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       if let currentSelectedScene = currentSelectedScene
       {
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allRenderFrames)
       }
       if let newSelectedScene = newSelectedScene
       {
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: newSelectedScene.allFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: newSelectedScene.allRenderFrames)
       }
       
       self.reloadSelection()
@@ -404,7 +404,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       if let currentSelectedScene = currentSelectedScene
       {
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allRenderFrames)
       }
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -454,7 +454,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       if let currentSelectedScene = currentSelectedScene
       {
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allRenderFrames)
       }
       
       (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
@@ -498,7 +498,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       if let currentSelectedScene = project.sceneList.selectedScene
       {
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allRenderFrames)
       }
     }
   }
@@ -1328,7 +1328,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       {
         if let index: Int = project.sceneList.scenes.firstIndex(of: scene)
         {
-          if scene.structureViewerStructures.isEmpty
+          if scene.allIRASPAStructures.isEmpty
           {
             // Put the undo for the removal on the stack. The redo is 'moveMovieNode' itself
             project.undoManager.registerUndo(withTarget: self, handler: {target in
@@ -1360,8 +1360,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       structuresOutlineView?.endUpdates()
       project.undoManager.endUndoGrouping()
         
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: toItem!.allFrames)
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: scene.allFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: toItem!.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: scene.allRenderFrames)
         
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
@@ -1877,7 +1877,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         
           if let scene: Scene = structuresOutlineView?.parent(forItem: movie) as? Scene
           {
-         self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: scene.allFrames)
+         self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: scene.allRenderFrames)
           }
           self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
           

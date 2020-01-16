@@ -120,8 +120,8 @@ class StructureInfoDetailViewPageController: NSPageController, WindowControllerC
         if let selectedScene: Scene = project.sceneList.selectedScene,
           let selectionMovie: Movie = selectedScene.selectedMovie
         {
-          self.selectedArrangedObjects = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0.structure} ?? [[]]
-          let frames: [Structure] = selectionMovie.structureViewerStructures
+          self.selectedArrangedObjects = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
+          let frames: [iRASPAStructure] = selectionMovie.allIRASPAStructures
           self.arrangedObjects = frames.isEmpty ? [[]] : frames
           
           if let selectedFrame: iRASPAStructure = selectionMovie.selectedFrame,
@@ -180,7 +180,7 @@ class StructureInfoDetailViewPageController: NSPageController, WindowControllerC
           }
         }
       case 2:
-        self.selectedArrangedObjects = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0.structure} ?? [[]]
+        self.selectedArrangedObjects = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
         if let selectedScene: Scene = project.sceneList.selectedScene,
           let selectedMovie: Movie = selectedScene.selectedMovie,
           let selectedFrame: iRASPAStructure = selectedMovie.selectedFrame,

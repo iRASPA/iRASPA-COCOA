@@ -42,12 +42,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorFirstName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorFirstName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorFirstName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorFirstName = newValue ?? ""}
     }
   }
   
@@ -55,12 +55,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorMiddleName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorMiddleName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorMiddleName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorMiddleName = newValue ?? ""}
     }
   }
   
@@ -68,12 +68,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorLastName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorLastName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorLastName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorLastName = newValue ?? ""}
     }
   }
   
@@ -81,12 +81,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorOrchidID })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorOrchidID })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorOrchidID = newValue ?? ""}
+      self.allStructures.forEach{$0.authorOrchidID = newValue ?? ""}
     }
   }
  
@@ -94,12 +94,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorResearcherID })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorResearcherID })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorResearcherID = newValue ?? ""}
+      self.allStructures.forEach{$0.authorResearcherID = newValue ?? ""}
     }
   }
   
@@ -107,12 +107,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationUniversityName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationUniversityName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationUniversityName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationUniversityName = newValue ?? ""}
     }
   }
   
@@ -120,12 +120,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationFacultyName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationFacultyName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationFacultyName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationFacultyName = newValue ?? ""}
     }
   }
   
@@ -133,12 +133,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationInstituteName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationInstituteName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationInstituteName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationInstituteName = newValue ?? ""}
     }
   }
   
@@ -146,12 +146,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationCityName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationCityName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationCityName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationCityName = newValue ?? ""}
     }
   }
   
@@ -159,12 +159,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationCountryName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationCountryName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationCountryName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationCountryName = newValue ?? ""}
     }
   }
   
@@ -172,12 +172,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<Date> = Set(self.structureViewerStructures.compactMap{ return $0.creationDate })
+      let set: Set<Date> = Set(self.allStructures.compactMap{ return $0.creationDate })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationDate = newValue ?? Date()}
+      self.allStructures.forEach{$0.creationDate = newValue ?? Date()}
     }
   }
   
@@ -185,12 +185,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationTemperature })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationTemperature })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationTemperature = newValue ?? ""}
+      self.allStructures.forEach{$0.creationTemperature = newValue ?? ""}
     }
   }
   
@@ -198,12 +198,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationTemperatureScale.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationTemperatureScale.rawValue })
       return Set(set).count == 1 ? Structure.TemperatureScale(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationTemperatureScale = newValue ?? .Kelvin}
+      self.allStructures.forEach{$0.creationTemperatureScale = newValue ?? .Kelvin}
     }
   }
   
@@ -211,12 +211,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationPressure })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationPressure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationPressure = newValue ?? ""}
+      self.allStructures.forEach{$0.creationPressure = newValue ?? ""}
     }
   }
 
@@ -224,12 +224,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationPressureScale.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationPressureScale.rawValue })
       return Set(set).count == 1 ? Structure.PressureScale(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationPressureScale = newValue ?? .Pascal}
+      self.allStructures.forEach{$0.creationPressureScale = newValue ?? .Pascal}
     }
   }
   
@@ -237,12 +237,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationMethod.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationMethod.rawValue })
       return Set(set).count == 1 ? Structure.CreationMethod(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationMethod = newValue ?? .unknown}
+      self.allStructures.forEach{$0.creationMethod = newValue ?? .unknown}
     }
   }
   
@@ -250,12 +250,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationUnitCellRelaxationMethod.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationUnitCellRelaxationMethod.rawValue })
       return Set(set).count == 1 ? Structure.UnitCellRelaxationMethod(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationUnitCellRelaxationMethod = newValue ?? .unknown}
+      self.allStructures.forEach{$0.creationUnitCellRelaxationMethod = newValue ?? .unknown}
     }
   }
   
@@ -263,12 +263,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsSoftwarePackage })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsSoftwarePackage })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsSoftwarePackage = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicPositionsSoftwarePackage = newValue ?? ""}
     }
   }
 
@@ -277,12 +277,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsIonsRelaxationAlgorithm.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsIonsRelaxationAlgorithm.rawValue })
       return Set(set).count == 1 ? Structure.IonsRelaxationAlgorithm(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsIonsRelaxationAlgorithm = newValue ?? .unknown}
+      self.allStructures.forEach{$0.creationAtomicPositionsIonsRelaxationAlgorithm = newValue ?? .unknown}
     }
   }
   
@@ -290,12 +290,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsIonsRelaxationCheck.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsIonsRelaxationCheck.rawValue })
       return Set(set).count == 1 ? Structure.IonsRelaxationCheck(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsIonsRelaxationCheck = newValue ?? .unknown }
+      self.allStructures.forEach{$0.creationAtomicPositionsIonsRelaxationCheck = newValue ?? .unknown }
     }
   }
   
@@ -303,12 +303,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsForcefield })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsForcefield })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsForcefield = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicPositionsForcefield = newValue ?? ""}
     }
   }
   
@@ -316,12 +316,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsForcefieldDetails })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsForcefieldDetails })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsForcefieldDetails = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicPositionsForcefieldDetails = newValue ?? ""}
     }
   }
   
@@ -329,12 +329,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicChargesSoftwarePackage })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicChargesSoftwarePackage })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicChargesSoftwarePackage = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicChargesSoftwarePackage = newValue ?? ""}
     }
   }
   
@@ -342,12 +342,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicChargesAlgorithms })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicChargesAlgorithms })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicChargesAlgorithms = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicChargesAlgorithms = newValue ?? ""}
     }
   }
   
@@ -355,12 +355,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicChargesForcefield })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicChargesForcefield })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicChargesForcefield = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicChargesForcefield = newValue ?? ""}
     }
   }
   
@@ -368,12 +368,12 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicChargesForcefieldDetails })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicChargesForcefieldDetails })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicChargesForcefieldDetails = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicChargesForcefieldDetails = newValue ?? ""}
     }
   }
   
@@ -383,144 +383,144 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementRadiation })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementRadiation })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementRadiation = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementRadiation = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementWaveLength: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementWaveLength })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementWaveLength })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementWaveLength = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementWaveLength = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementThetaMin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementThetaMin })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementThetaMin })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementThetaMin = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementThetaMin = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementThetaMax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementThetaMax })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementThetaMax })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementThetaMax = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementThetaMax = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsHmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsHmin })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsHmin })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsHmin = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsHmin = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsHmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsHmax })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsHmax })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsHmax = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsHmax = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsKmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsKmin })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsKmin })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsKmin = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsKmin = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsKmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsKmax })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsKmax })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsKmax = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsKmax = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsLmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsLmin })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsLmin })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsLmin = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsLmin = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsLmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsLmax })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsLmax })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsLmax = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsLmax = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementNumberOfSymmetryIndependentReflections: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementNumberOfSymmetryIndependentReflections })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementNumberOfSymmetryIndependentReflections })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementNumberOfSymmetryIndependentReflections = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementNumberOfSymmetryIndependentReflections = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementSoftware: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementSoftware })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementSoftware })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementSoftware = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementSoftware = newValue ?? ""}
     }
   }
 
@@ -528,48 +528,48 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementRefinementDetails })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementRefinementDetails })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementRefinementDetails = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementRefinementDetails = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementGoodnessOfFit: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementGoodnessOfFit })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementGoodnessOfFit })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementGoodnessOfFit = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementGoodnessOfFit = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementRFactorGt: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementRFactorGt })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementRFactorGt })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementRFactorGt = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementRFactorGt = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementRFactorAll: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementRFactorAll })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementRFactorAll })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementRFactorAll = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementRFactorAll = newValue ?? ""}
     }
   }
   
@@ -578,36 +578,36 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.chemicalFormulaMoiety })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.chemicalFormulaMoiety })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.chemicalFormulaMoiety = newValue ?? ""}
+      self.allStructures.forEach{$0.chemicalFormulaMoiety = newValue ?? ""}
     }
   }
   public var structureChemicalFormulaSum: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.chemicalFormulaSum })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.chemicalFormulaSum })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.chemicalFormulaSum = newValue ?? ""}
+      self.allStructures.forEach{$0.chemicalFormulaSum = newValue ?? ""}
     }
   }
   public var structureChemicalNameSystematic: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.chemicalNameSystematic })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.chemicalNameSystematic })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.chemicalNameSystematic = newValue ?? ""}
+      self.allStructures.forEach{$0.chemicalNameSystematic = newValue ?? ""}
     }
   }
   
@@ -617,105 +617,105 @@ extension InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationArticleTitle })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationArticleTitle })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationArticleTitle = newValue ?? ""}
+      self.allStructures.forEach{$0.citationArticleTitle = newValue ?? ""}
     }
   }
   public var structureCitationAuthors: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationAuthors })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationAuthors })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationAuthors = newValue ?? ""}
+      self.allStructures.forEach{$0.citationAuthors = newValue ?? ""}
     }
   }
   public var structureCitationJournalTitle: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationJournalTitle })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationJournalTitle })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationJournalTitle = newValue ?? ""}
+      self.allStructures.forEach{$0.citationJournalTitle = newValue ?? ""}
     }
   }
   public var structureCitationJournalVolume: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationJournalVolume })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationJournalVolume })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationJournalVolume = newValue ?? ""}
+      self.allStructures.forEach{$0.citationJournalVolume = newValue ?? ""}
     }
   }
   public var structureCitationJournalNumber: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationJournalNumber })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationJournalNumber })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationJournalNumber = newValue ?? ""}
+      self.allStructures.forEach{$0.citationJournalNumber = newValue ?? ""}
     }
   }
   public var structureCitationDOI: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationDOI })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationDOI })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationDOI = newValue ?? ""}
+      self.allStructures.forEach{$0.citationDOI = newValue ?? ""}
     }
   }
   public var structureCitationPublicationDate: Date?
   {
     get
     {
-      let set: Set<Date> = Set(self.structureViewerStructures.compactMap{ return $0.citationPublicationDate })
+      let set: Set<Date> = Set(self.allStructures.compactMap{ return $0.citationPublicationDate })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationPublicationDate = newValue ?? Date()}
+      self.allStructures.forEach{$0.citationPublicationDate = newValue ?? Date()}
     }
   }
   public var structureCitationDatebaseCodes: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationDatebaseCodes })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationDatebaseCodes })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationDatebaseCodes = newValue ?? ""}
+      self.allStructures.forEach{$0.citationDatebaseCodes = newValue ?? ""}
     }
   }
 }
 
 extension Array where Iterator.Element == InfoViewer
 {
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.flatMap{$0.structureViewerStructures}
+    return self.flatMap{$0.allStructures}
   }
   
   public var selectedFrames: [RKRenderStructure]
@@ -723,9 +723,9 @@ extension Array where Iterator.Element == InfoViewer
     return self.flatMap{$0.selectedRenderFrames}
   }
   
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
-    return self.flatMap{$0.allFrames}
+    return self.flatMap{$0.allRenderFrames}
   }
   
 
@@ -734,12 +734,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorFirstName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorFirstName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorFirstName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorFirstName = newValue ?? ""}
     }
   }
   
@@ -747,12 +747,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorMiddleName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorMiddleName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorMiddleName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorMiddleName = newValue ?? ""}
     }
   }
   
@@ -760,12 +760,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorLastName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorLastName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorLastName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorLastName = newValue ?? ""}
     }
   }
   
@@ -773,12 +773,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorOrchidID })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorOrchidID })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorOrchidID = newValue ?? ""}
+      self.allStructures.forEach{$0.authorOrchidID = newValue ?? ""}
     }
   }
   
@@ -786,12 +786,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorResearcherID })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorResearcherID })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorResearcherID = newValue ?? ""}
+      self.allStructures.forEach{$0.authorResearcherID = newValue ?? ""}
     }
   }
   
@@ -799,12 +799,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationUniversityName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationUniversityName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationUniversityName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationUniversityName = newValue ?? ""}
     }
   }
   
@@ -812,12 +812,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationFacultyName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationFacultyName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationFacultyName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationFacultyName = newValue ?? ""}
     }
   }
   
@@ -825,12 +825,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationInstituteName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationInstituteName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationInstituteName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationInstituteName = newValue ?? ""}
     }
   }
   
@@ -838,12 +838,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationCityName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationCityName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationCityName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationCityName = newValue ?? ""}
     }
   }
   
@@ -851,12 +851,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.authorAffiliationCountryName })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.authorAffiliationCountryName })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.authorAffiliationCountryName = newValue ?? ""}
+      self.allStructures.forEach{$0.authorAffiliationCountryName = newValue ?? ""}
     }
   }
   
@@ -864,12 +864,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<Date> = Set(self.structureViewerStructures.compactMap{ return $0.creationDate })
+      let set: Set<Date> = Set(self.allStructures.compactMap{ return $0.creationDate })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationDate = newValue ?? Date()}
+      self.allStructures.forEach{$0.creationDate = newValue ?? Date()}
     }
   }
   
@@ -877,12 +877,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationTemperature })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationTemperature })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationTemperature = newValue ?? ""}
+      self.allStructures.forEach{$0.creationTemperature = newValue ?? ""}
     }
   }
   
@@ -890,12 +890,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationTemperatureScale.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationTemperatureScale.rawValue })
       return Set(set).count == 1 ? Structure.TemperatureScale(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationTemperatureScale = newValue ?? .Kelvin}
+      self.allStructures.forEach{$0.creationTemperatureScale = newValue ?? .Kelvin}
     }
   }
   
@@ -903,12 +903,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationPressure })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationPressure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationPressure = newValue ?? ""}
+      self.allStructures.forEach{$0.creationPressure = newValue ?? ""}
     }
   }
   
@@ -916,12 +916,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationPressureScale.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationPressureScale.rawValue })
       return Set(set).count == 1 ? Structure.PressureScale(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationPressureScale = newValue ?? .Pascal}
+      self.allStructures.forEach{$0.creationPressureScale = newValue ?? .Pascal}
     }
   }
   
@@ -929,12 +929,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationMethod.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationMethod.rawValue })
       return Set(set).count == 1 ? Structure.CreationMethod(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationMethod = newValue ?? .unknown}
+      self.allStructures.forEach{$0.creationMethod = newValue ?? .unknown}
     }
   }
   
@@ -942,12 +942,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationUnitCellRelaxationMethod.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationUnitCellRelaxationMethod.rawValue })
       return Set(set).count == 1 ? Structure.UnitCellRelaxationMethod(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationUnitCellRelaxationMethod = newValue ?? .unknown}
+      self.allStructures.forEach{$0.creationUnitCellRelaxationMethod = newValue ?? .unknown}
     }
   }
   
@@ -955,12 +955,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsSoftwarePackage })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsSoftwarePackage })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsSoftwarePackage = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicPositionsSoftwarePackage = newValue ?? ""}
     }
   }
   
@@ -969,12 +969,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsIonsRelaxationAlgorithm.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsIonsRelaxationAlgorithm.rawValue })
       return Set(set).count == 1 ? Structure.IonsRelaxationAlgorithm(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsIonsRelaxationAlgorithm = newValue ?? .unknown}
+      self.allStructures.forEach{$0.creationAtomicPositionsIonsRelaxationAlgorithm = newValue ?? .unknown}
     }
   }
   
@@ -982,12 +982,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsIonsRelaxationCheck.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsIonsRelaxationCheck.rawValue })
       return Set(set).count == 1 ? Structure.IonsRelaxationCheck(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsIonsRelaxationCheck = newValue ?? .unknown }
+      self.allStructures.forEach{$0.creationAtomicPositionsIonsRelaxationCheck = newValue ?? .unknown }
     }
   }
   
@@ -995,12 +995,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsForcefield })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsForcefield })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsForcefield = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicPositionsForcefield = newValue ?? ""}
     }
   }
   
@@ -1008,12 +1008,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicPositionsForcefieldDetails })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicPositionsForcefieldDetails })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicPositionsForcefieldDetails = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicPositionsForcefieldDetails = newValue ?? ""}
     }
   }
   
@@ -1021,12 +1021,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicChargesSoftwarePackage })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicChargesSoftwarePackage })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicChargesSoftwarePackage = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicChargesSoftwarePackage = newValue ?? ""}
     }
   }
   
@@ -1034,12 +1034,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicChargesAlgorithms })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicChargesAlgorithms })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicChargesAlgorithms = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicChargesAlgorithms = newValue ?? ""}
     }
   }
   
@@ -1047,12 +1047,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicChargesForcefield })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicChargesForcefield })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicChargesForcefield = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicChargesForcefield = newValue ?? ""}
     }
   }
   
@@ -1060,12 +1060,12 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.creationAtomicChargesForcefieldDetails })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.creationAtomicChargesForcefieldDetails })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.creationAtomicChargesForcefieldDetails = newValue ?? ""}
+      self.allStructures.forEach{$0.creationAtomicChargesForcefieldDetails = newValue ?? ""}
     }
   }
   
@@ -1075,144 +1075,144 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementRadiation })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementRadiation })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementRadiation = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementRadiation = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementWaveLength: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementWaveLength })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementWaveLength })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementWaveLength = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementWaveLength = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementThetaMin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementThetaMin })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementThetaMin })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementThetaMin = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementThetaMin = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementThetaMax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementThetaMax })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementThetaMax })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementThetaMax = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementThetaMax = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsHmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsHmin })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsHmin })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsHmin = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsHmin = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsHmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsHmax })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsHmax })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsHmax = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsHmax = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsKmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsKmin })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsKmin })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsKmin = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsKmin = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsKmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsKmax })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsKmax })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsKmax = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsKmax = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsLmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsLmin })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsLmin })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsLmin = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsLmin = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementIndexLimitsLmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsLmax })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementIndexLimitsLmax })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementIndexLimitsLmax = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementIndexLimitsLmax = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementNumberOfSymmetryIndependentReflections: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementNumberOfSymmetryIndependentReflections })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementNumberOfSymmetryIndependentReflections })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementNumberOfSymmetryIndependentReflections = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementNumberOfSymmetryIndependentReflections = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementSoftware: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementSoftware })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementSoftware })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementSoftware = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementSoftware = newValue ?? ""}
     }
   }
   
@@ -1220,48 +1220,48 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementRefinementDetails })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementRefinementDetails })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementRefinementDetails = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementRefinementDetails = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementGoodnessOfFit: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementGoodnessOfFit })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementGoodnessOfFit })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementGoodnessOfFit = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementGoodnessOfFit = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementRFactorGt: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementRFactorGt })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementRFactorGt })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementRFactorGt = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementRFactorGt = newValue ?? ""}
     }
   }
   public var structureExperimentalMeasurementRFactorAll: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.experimentalMeasurementRFactorAll })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.experimentalMeasurementRFactorAll })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.experimentalMeasurementRFactorAll = newValue ?? ""}
+      self.allStructures.forEach{$0.experimentalMeasurementRFactorAll = newValue ?? ""}
     }
   }
   
@@ -1270,36 +1270,36 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.chemicalFormulaMoiety })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.chemicalFormulaMoiety })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.chemicalFormulaMoiety = newValue ?? ""}
+      self.allStructures.forEach{$0.chemicalFormulaMoiety = newValue ?? ""}
     }
   }
   public var structureChemicalFormulaSum: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.chemicalFormulaSum })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.chemicalFormulaSum })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.chemicalFormulaSum = newValue ?? ""}
+      self.allStructures.forEach{$0.chemicalFormulaSum = newValue ?? ""}
     }
   }
   public var structureChemicalNameSystematic: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.chemicalNameSystematic })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.chemicalNameSystematic })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.chemicalNameSystematic = newValue ?? ""}
+      self.allStructures.forEach{$0.chemicalNameSystematic = newValue ?? ""}
     }
   }
   
@@ -1309,96 +1309,96 @@ extension Array where Iterator.Element == InfoViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationArticleTitle })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationArticleTitle })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationArticleTitle = newValue ?? ""}
+      self.allStructures.forEach{$0.citationArticleTitle = newValue ?? ""}
     }
   }
   public var structureCitationAuthors: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationAuthors })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationAuthors })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationAuthors = newValue ?? ""}
+      self.allStructures.forEach{$0.citationAuthors = newValue ?? ""}
     }
   }
   public var structureCitationJournalTitle: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationJournalTitle })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationJournalTitle })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationJournalTitle = newValue ?? ""}
+      self.allStructures.forEach{$0.citationJournalTitle = newValue ?? ""}
     }
   }
   public var structureCitationJournalVolume: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationJournalVolume })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationJournalVolume })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationJournalVolume = newValue ?? ""}
+      self.allStructures.forEach{$0.citationJournalVolume = newValue ?? ""}
     }
   }
   public var structureCitationJournalNumber: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationJournalNumber })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationJournalNumber })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationJournalNumber = newValue ?? ""}
+      self.allStructures.forEach{$0.citationJournalNumber = newValue ?? ""}
     }
   }
   public var structureCitationDOI: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationDOI })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationDOI })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationDOI = newValue ?? ""}
+      self.allStructures.forEach{$0.citationDOI = newValue ?? ""}
     }
   }
   public var structureCitationPublicationDate: Date?
   {
     get
     {
-      let set: Set<Date> = Set(self.structureViewerStructures.compactMap{ return $0.citationPublicationDate })
+      let set: Set<Date> = Set(self.allStructures.compactMap{ return $0.citationPublicationDate })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationPublicationDate = newValue ?? Date()}
+      self.allStructures.forEach{$0.citationPublicationDate = newValue ?? Date()}
     }
   }
   public var structureCitationDatebaseCodes: String?
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.citationDatebaseCodes })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.citationDatebaseCodes })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.citationDatebaseCodes = newValue ?? ""}
+      self.allStructures.forEach{$0.citationDatebaseCodes = newValue ?? ""}
     }
   }
 }

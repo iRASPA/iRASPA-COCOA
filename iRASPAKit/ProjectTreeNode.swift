@@ -1177,7 +1177,7 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
               self.representedObject = iRASPAProject(structureProject: projectStructureNode)
               self.representedObject.nodeType = .leaf
               self.representedObject.lazyStatus = .loaded
-              self.representedObject.loadedProjectStructureNode?.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
+              self.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
             case .group:
               let projectGroupNode: ProjectGroup = try BinaryDecoder(data: [UInt8](data)).decode(ProjectGroup.self)
               
@@ -1205,7 +1205,7 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
           // modify self to the unwrapped state
           self.representedObject = try propertyListDecoder.decodeCompressed(iRASPAProject.self, from: data)
           self.representedObject.lazyStatus = .loaded
-          self.representedObject.loadedProjectStructureNode?.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
+          self.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
         }
         else
         {
@@ -1224,7 +1224,7 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
       break
     }
     
-    self.representedObject.loadedProjectStructureNode?.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
+    self.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
   }
   
   // used to unwrap when deleting for undo

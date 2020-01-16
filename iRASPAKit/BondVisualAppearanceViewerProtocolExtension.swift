@@ -42,19 +42,19 @@ extension BondVisualAppearanceViewer
 {
   public func recheckRepresentationStyleBond()
   {
-    self.structureViewerStructures.forEach{$0.recheckRepresentationStyle()}
+    self.allStructures.forEach{$0.recheckRepresentationStyle()}
   }
   
   public var renderDrawBonds: Bool?
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.drawBonds })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.drawBonds })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.drawBonds = newValue ?? true}
+      self.allStructures.forEach{$0.drawBonds = newValue ?? true}
     }
   }
   
@@ -62,12 +62,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondScaleFactor })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondScaleFactor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.bondScaleFactor = newValue ?? 1.0
         if($0.atomRepresentationType == .unity)
         {
@@ -82,12 +82,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.bondColorMode.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.bondColorMode.rawValue })
       return Set(set).count == 1 ? RKBondColorMode(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondColorMode = newValue ?? .split}
+      self.allStructures.forEach{$0.bondColorMode = newValue ?? .split}
     }
   }
   
@@ -95,12 +95,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.bondAmbientOcclusion })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.bondAmbientOcclusion })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondAmbientOcclusion = newValue ?? false}
+      self.allStructures.forEach{$0.bondAmbientOcclusion = newValue ?? false}
     }
   }
   
@@ -108,12 +108,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.bondHDR })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.bondHDR })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondHDR = newValue ?? false}
+      self.allStructures.forEach{$0.bondHDR = newValue ?? false}
     }
   }
   
@@ -121,12 +121,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondHDRExposure })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondHDRExposure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondHDRExposure = newValue ?? 1.5}
+      self.allStructures.forEach{$0.bondHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -134,12 +134,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondHDRBloomLevel })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondHDRBloomLevel })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondHDRBloomLevel = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondHDRBloomLevel = newValue ?? 1.0}
     }
   }
   
@@ -147,12 +147,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondHue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondHue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondHue = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondHue = newValue ?? 1.0}
     }
   }
   
@@ -160,12 +160,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondSaturation })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondSaturation })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondSaturation = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondSaturation = newValue ?? 1.0}
     }
   }
   
@@ -173,12 +173,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondValue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondValue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondValue = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondValue = newValue ?? 1.0}
     }
   }
   
@@ -186,12 +186,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.bondAmbientColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.bondAmbientColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.bondAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -199,12 +199,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.bondDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.bondDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondDiffuseColor = newValue ?? NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)}
+      self.allStructures.forEach{$0.bondDiffuseColor = newValue ?? NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)}
     }
   }
   
@@ -212,12 +212,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.bondSpecularColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.bondSpecularColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.bondSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -225,12 +225,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondAmbientIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondAmbientIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondAmbientIntensity = newValue ?? 0.2}
+      self.allStructures.forEach{$0.bondAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -238,12 +238,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -251,12 +251,12 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondSpecularIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondSpecularIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondSpecularIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -264,21 +264,21 @@ extension BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondShininess })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondShininess })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondShininess = newValue ?? 4.0}
+      self.allStructures.forEach{$0.bondShininess = newValue ?? 4.0}
     }
   }
 }
 
 extension Array where Iterator.Element == BondVisualAppearanceViewer
 {
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.flatMap{$0.structureViewerStructures}
+    return self.flatMap{$0.allStructures}
   }
   
   public var selectedFrames: [RKRenderStructure]
@@ -286,26 +286,26 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
     return self.flatMap{$0.selectedRenderFrames}
   }
   
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
-    return self.flatMap{$0.allFrames}
+    return self.flatMap{$0.allRenderFrames}
   }
   
   public func recheckRepresentationStyleBond()
   {
-    self.structureViewerStructures.forEach{$0.recheckRepresentationStyle()}
+    self.allStructures.forEach{$0.recheckRepresentationStyle()}
   }
   
   public var renderDrawBonds: Bool?
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.drawBonds })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.drawBonds })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.drawBonds = newValue ?? true}
+      self.allStructures.forEach{$0.drawBonds = newValue ?? true}
     }
   }
   
@@ -313,12 +313,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondScaleFactor })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondScaleFactor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.bondScaleFactor = newValue ?? 1.0
         if($0.atomRepresentationType == .unity)
         {
@@ -333,12 +333,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.bondColorMode.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.bondColorMode.rawValue })
       return Set(set).count == 1 ? RKBondColorMode(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondColorMode = newValue ?? .split}
+      self.allStructures.forEach{$0.bondColorMode = newValue ?? .split}
     }
   }
   
@@ -346,12 +346,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.bondAmbientOcclusion })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.bondAmbientOcclusion })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondAmbientOcclusion = newValue ?? false}
+      self.allStructures.forEach{$0.bondAmbientOcclusion = newValue ?? false}
     }
   }
   
@@ -359,12 +359,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.bondHDR })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.bondHDR })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondHDR = newValue ?? false}
+      self.allStructures.forEach{$0.bondHDR = newValue ?? false}
     }
   }
   
@@ -372,12 +372,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondHDRExposure })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondHDRExposure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondHDRExposure = newValue ?? 1.5}
+      self.allStructures.forEach{$0.bondHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -385,12 +385,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondHDRBloomLevel })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondHDRBloomLevel })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondHDRBloomLevel = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondHDRBloomLevel = newValue ?? 1.0}
     }
   }
   
@@ -398,12 +398,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondHue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondHue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondHue = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondHue = newValue ?? 1.0}
     }
   }
   
@@ -411,12 +411,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondSaturation })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondSaturation })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondSaturation = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondSaturation = newValue ?? 1.0}
     }
   }
   
@@ -424,12 +424,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondValue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondValue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondValue = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondValue = newValue ?? 1.0}
     }
   }
   
@@ -437,12 +437,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.bondAmbientColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.bondAmbientColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.bondAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -450,12 +450,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.bondDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.bondDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondDiffuseColor = newValue ?? NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)}
+      self.allStructures.forEach{$0.bondDiffuseColor = newValue ?? NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)}
     }
   }
   
@@ -463,12 +463,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.bondSpecularColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.bondSpecularColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.bondSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -476,12 +476,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondAmbientIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondAmbientIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondAmbientIntensity = newValue ?? 0.2}
+      self.allStructures.forEach{$0.bondAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -489,12 +489,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -502,12 +502,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondSpecularIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondSpecularIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondSpecularIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.bondSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -515,12 +515,12 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.bondShininess })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondShininess })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.bondShininess = newValue ?? 4.0}
+      self.allStructures.forEach{$0.bondShininess = newValue ?? 4.0}
     }
   }
 }

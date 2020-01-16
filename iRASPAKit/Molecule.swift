@@ -58,6 +58,30 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   public required init(clone structure: Structure)
   {
     super.init(clone: structure)
+    
+    switch(structure)
+    {
+    case is Crystal:
+      self.atoms.flattenedLeafNodes().forEach{
+      let pos = $0.representedObject.position
+          $0.representedObject.position = self.cell.convertToCartesian(pos)
+        }
+      break
+    case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
+      if structure.primitiveIsFractional
+      {
+        self.atoms.flattenedLeafNodes().forEach{
+        let pos = $0.representedObject.position
+            $0.representedObject.position = self.cell.convertToCartesian(pos)
+        }
+      }
+      break
+    default:
+      break
+    }
+    self.expandSymmetry()
+    reComputeBoundingBox()
+    reComputeBonds()
   }
   
   public var colorAtomsWithBondColor: Bool
@@ -713,6 +737,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     var computedBonds: Set<SKBondNode> = []
     
     let atoms: [SKAtomCopy] = newAtoms.compactMap{$0.representedObject}.flatMap{$0.copies}
+    atoms.forEach{ $0.bonds.removeAll()}
     
     let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
@@ -811,6 +836,8 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     
     var totalCount: Int
     var computedBonds: Set<SKBondNode> = []
+    
+    atoms.forEach{ $0.bonds.removeAll()}
     
     let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]

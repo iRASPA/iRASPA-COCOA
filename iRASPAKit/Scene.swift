@@ -39,7 +39,7 @@ import MathKit
 import simd
 
 // An Movie is a list of Movie's. It is a set of actors that each contain a list of frames for that actor
-public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, PrimitiveVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
+public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
 {
   // a Scene has a surface for the whole scene
   // all movies in the scene add to the scene potential energy surface
@@ -55,6 +55,11 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
   
   public var filterPredicate: (Movie) -> Bool = {_ in return true}
   var sortDescriptors: [NSSortDescriptor] = []
+  
+  public var frames: [iRASPAStructure]
+  {
+    return self.movies.flatMap{$0.frames}
+  }
   
   public override init()
   {
@@ -292,6 +297,8 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
     }
   }
   
+  
+  
   public var renderCanDrawAdsorptionSurface: Bool
   {
     return self.movies.reduce(into: false, {$0 = $0 || $1.renderCanDrawAdsorptionSurface})
@@ -435,9 +442,14 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
 
 extension Scene: StructureViewer
 {
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.movies.flatMap{$0.structureViewerStructures}
+    return self.movies.flatMap{$0.allStructures}
+  }
+  
+  public var allIRASPAStructures: [iRASPAStructure]
+  {
+    return self.movies.flatMap{$0.allIRASPAStructures}
   }
   
   public var selectedRenderFrames: [RKRenderStructure]
@@ -445,11 +457,21 @@ extension Scene: StructureViewer
     return self.movies.flatMap{$0.selectedRenderFrames}
   }
   
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
-    return self.movies.flatMap{$0.allFrames}
+    return self.movies.flatMap{$0.allRenderFrames}
   }
 }
+
+extension Scene: PrimitiveVisualAppearanceViewer
+{
+  public var allPrimitiveStructure: [Structure]
+  {
+    return self.movies.flatMap{$0.allPrimitiveStructure}
+  }
+}
+
+
 
 
 

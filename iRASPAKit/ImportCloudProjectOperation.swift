@@ -102,7 +102,7 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
         {
           projectTreeNode.representedObject = representedObject
           
-      representedObject.loadedProjectStructureNode?.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
+          representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
           
         }
         

@@ -42,86 +42,86 @@ extension AtomVisualAppearanceViewer
 {
   public func recheckRepresentationStyle()
   {
-    self.structureViewerStructures.forEach{$0.recheckRepresentationStyle()}
+    self.allStructures.forEach{$0.recheckRepresentationStyle()}
   }
   
   public func getRepresentationType() -> Structure.RepresentationType?
   {
-    let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationType()?.rawValue })
+    let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.getRepresentationType()?.rawValue })
     return Set(set).count == 1 ? Structure.RepresentationType(rawValue: set.first!) : nil
   }
   
   public func setRepresentationType(type: Structure.RepresentationType?)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationType(type: type)}
+    self.allStructures.forEach{$0.setRepresentationType(type: type)}
   }
   
   
   public func getRepresentationStyle() -> Structure.RepresentationStyle?
   {
-    let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationStyle()?.rawValue })
+    let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.getRepresentationStyle()?.rawValue })
     return Set(set).count == 1 ? Structure.RepresentationStyle(rawValue: set.first!) : nil
   }
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, colorSets: SKColorSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationStyle(style: style, colorSets: colorSets)}
+    self.allStructures.forEach{$0.setRepresentationStyle(style: style, colorSets: colorSets)}
   }
   
   public func getRepresentationColorScheme() -> String?
   {
-    let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationColorScheme() })
+    let set: Set<String> = Set(self.allStructures.compactMap{ return $0.getRepresentationColorScheme() })
     return Set(set).count == 1 ?  set.first! : nil
   }
   
   public func setRepresentationColorScheme(scheme: String?, colorSets: SKColorSets)
   {
-  self.structureViewerStructures.forEach{$0.setRepresentationColorScheme(scheme: scheme ?? "Default", colorSets: colorSets)}
+  self.allStructures.forEach{$0.setRepresentationColorScheme(scheme: scheme ?? "Default", colorSets: colorSets)}
   }
   
   public func getRepresentationColorOrder() -> SKColorSets.ColorOrder?
   {
-    let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationColorOrder()?.rawValue })
+    let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.getRepresentationColorOrder()?.rawValue })
     return Set(set).count == 1 ?  SKColorSets.ColorOrder(rawValue: set.first!) : nil
   }
   
   public func setRepresentationColorOrder(order: SKColorSets.ColorOrder?, colorSets: SKColorSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationColorOrder(order: order ?? SKColorSets.ColorOrder.elementOnly, colorSets: colorSets)}
+    self.allStructures.forEach{$0.setRepresentationColorOrder(order: order ?? SKColorSets.ColorOrder.elementOnly, colorSets: colorSets)}
   }
   
   public func getRepresentationForceField() -> String?
   {
-    let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationForceField() })
+    let set: Set<String> = Set(self.allStructures.compactMap{ return $0.getRepresentationForceField() })
       return Set(set).count == 1 ?  set.first! : nil
   }
   
   public func setRepresentationForceField(forceField: String?, forceFieldSets: SKForceFieldSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationForceField(forceField: forceField ?? "Default", forceFieldSets: forceFieldSets)}
+    self.allStructures.forEach{$0.setRepresentationForceField(forceField: forceField ?? "Default", forceFieldSets: forceFieldSets)}
   }
   
   public func getRepresentationForceFieldOrder() -> SKForceFieldSets.ForceFieldOrder?
   {
-    let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationForceFieldOrder()?.rawValue })
+    let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.getRepresentationForceFieldOrder()?.rawValue })
     return Set(set).count == 1 ?  SKForceFieldSets.ForceFieldOrder(rawValue: set.first!) : nil
   }
   
   public func setRepresentationForceFieldOrder(order: SKForceFieldSets.ForceFieldOrder?, forceFieldSets: SKForceFieldSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationForceFieldOrder(order: order, forceFieldSets: forceFieldSets)}
+    self.allStructures.forEach{$0.setRepresentationForceFieldOrder(order: order, forceFieldSets: forceFieldSets)}
   }
   
   public var renderAtomHue: Double?
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomHue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomHue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomHue = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomHue = newValue ?? 1.0}
     }
   }
   
@@ -129,12 +129,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomSaturation })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSaturation })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomSaturation = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomSaturation = newValue ?? 1.0}
     }
   }
   
@@ -142,12 +142,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomValue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomValue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomValue = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomValue = newValue ?? 1.0}
     }
   }
   
@@ -155,12 +155,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomScaleFactor })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomScaleFactor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.atomScaleFactor = newValue ?? 1.0
       }
     }
@@ -172,12 +172,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.drawAtoms })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.drawAtoms })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.drawAtoms = newValue ?? true}
+      self.allStructures.forEach{$0.drawAtoms = newValue ?? true}
     }
   }
   
@@ -185,12 +185,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.atomAmbientOcclusion })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.atomAmbientOcclusion })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomAmbientOcclusion = newValue ?? true}
+      self.allStructures.forEach{$0.atomAmbientOcclusion = newValue ?? true}
     }
   }
   
@@ -198,12 +198,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.atomHDR })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.atomHDR })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomHDR = newValue ?? true}
+      self.allStructures.forEach{$0.atomHDR = newValue ?? true}
     }
   }
   
@@ -212,12 +212,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomHDRExposure })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomHDRExposure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomHDRExposure = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomHDRExposure = newValue ?? 1.0}
     }
   }
   
@@ -225,12 +225,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomHDRBloomLevel })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomHDRBloomLevel })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomHDRBloomLevel = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomHDRBloomLevel = newValue ?? 1.0}
     }
   }
   
@@ -238,12 +238,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.selectionScaling })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.selectionScaling })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.selectionScaling = newValue ?? 1.0}
+      self.allStructures.forEach{$0.selectionScaling = newValue ?? 1.0}
     }
   }
   
@@ -251,12 +251,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.atomAmbientColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.atomAmbientColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.atomAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -264,12 +264,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.atomDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.atomDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.atomDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -277,12 +277,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.atomSpecularColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.atomSpecularColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.atomSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -291,12 +291,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomAmbientIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomAmbientIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomAmbientIntensity = newValue ?? 0.2}
+      self.allStructures.forEach{$0.atomAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -304,12 +304,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -317,12 +317,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomSpecularIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSpecularIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomSpecularIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -330,12 +330,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomShininess })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomShininess })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomShininess = newValue ?? 4.0}
+      self.allStructures.forEach{$0.atomShininess = newValue ?? 4.0}
     }
   }
   
@@ -343,12 +343,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.renderSelectionStyle.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.renderSelectionStyle.rawValue })
       return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.renderSelectionStyle = newValue ?? .glow}
+      self.allStructures.forEach{$0.renderSelectionStyle = newValue ?? .glow}
     }
   }
   
@@ -356,12 +356,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.renderAtomSelectionFrequency })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.renderAtomSelectionFrequency })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.renderAtomSelectionFrequency = newValue ?? 4.0}
+      self.allStructures.forEach{$0.renderAtomSelectionFrequency = newValue ?? 4.0}
     }
   }
   
@@ -369,12 +369,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.renderAtomSelectionDensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.renderAtomSelectionDensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.renderAtomSelectionDensity = newValue ?? 4.0}
+      self.allStructures.forEach{$0.renderAtomSelectionDensity = newValue ?? 4.0}
     }
   }
   
@@ -382,12 +382,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.renderTextType.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.renderTextType.rawValue })
       return Set(set).count == 1 ? RKTextType(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.renderTextType = newValue ?? .none}
+      self.allStructures.forEach{$0.renderTextType = newValue ?? .none}
     }
   }
   
@@ -395,12 +395,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextStyle.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.atomTextStyle.rawValue })
       return Set(set).count == 1 ? RKTextStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextStyle = newValue ?? .flatBillboard}
+      self.allStructures.forEach{$0.atomTextStyle = newValue ?? .flatBillboard}
     }
   }
   
@@ -408,12 +408,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextAlignment.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.atomTextAlignment.rawValue })
       return Set(set).count == 1 ? RKTextAlignment(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextAlignment = newValue ?? .center}
+      self.allStructures.forEach{$0.atomTextAlignment = newValue ?? .center}
     }
   }
   
@@ -421,12 +421,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextFont })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.atomTextFont })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextFont = newValue ?? "Helvetica"}
+      self.allStructures.forEach{$0.atomTextFont = newValue ?? "Helvetica"}
     }
   }
   
@@ -434,7 +434,7 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap({ (structure) -> String? in
+      let set: Set<String> = Set(self.allStructures.compactMap({ (structure) -> String? in
         if let font: NSFont = NSFont(name: structure.atomTextFont, size: 32)
         {
           return font.familyName
@@ -449,12 +449,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.atomTextColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextColor = newValue ?? NSColor.black}
+      self.allStructures.forEach{$0.atomTextColor = newValue ?? NSColor.black}
     }
   }
   
@@ -462,12 +462,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextScaling })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomTextScaling })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextScaling = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomTextScaling = newValue ?? 1.0}
     }
   }
   
@@ -475,12 +475,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextOffset.x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomTextOffset.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextOffset.x = newValue ?? 0}
+      self.allStructures.forEach{$0.atomTextOffset.x = newValue ?? 0}
     }
   }
   
@@ -488,12 +488,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextOffset.y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomTextOffset.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextOffset.y = newValue ?? 0}
+      self.allStructures.forEach{$0.atomTextOffset.y = newValue ?? 0}
     }
   }
   
@@ -501,12 +501,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextOffset.z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomTextOffset.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextOffset.z = newValue ?? 0}
+      self.allStructures.forEach{$0.atomTextOffset.z = newValue ?? 0}
     }
   }
 }
@@ -518,97 +518,97 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
     return self.flatMap{$0.selectedRenderFrames}
   }
   
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
-    return self.flatMap{$0.allFrames}
+    return self.flatMap{$0.allRenderFrames}
   }
   
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.flatMap{$0.structureViewerStructures}
+    return self.flatMap{$0.allStructures}
   }
   
   public func recheckRepresentationStyle()
   {
-    self.structureViewerStructures.forEach{$0.recheckRepresentationStyle()}
+    self.allStructures.forEach{$0.recheckRepresentationStyle()}
   }
   
   public func getRepresentationType() -> Structure.RepresentationType?
   {
-    let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationType()?.rawValue })
+    let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.getRepresentationType()?.rawValue })
     return Set(set).count == 1 ? Structure.RepresentationType(rawValue: set.first!) : nil
   }
   
   public func setRepresentationType(type: Structure.RepresentationType?)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationType(type: type)}
+    self.allStructures.forEach{$0.setRepresentationType(type: type)}
   }
   
   public func getRepresentationStyle() -> Structure.RepresentationStyle?
   {
-    let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationStyle()?.rawValue })
+    let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.getRepresentationStyle()?.rawValue })
     return Set(set).count == 1 ? Structure.RepresentationStyle(rawValue: set.first!) : nil
   }
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, colorSets: SKColorSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationStyle(style: style, colorSets: colorSets)}
+    self.allStructures.forEach{$0.setRepresentationStyle(style: style, colorSets: colorSets)}
   }
   
   public func getRepresentationColorScheme() -> String?
   {
-    let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationColorScheme() })
+    let set: Set<String> = Set(self.allStructures.compactMap{ return $0.getRepresentationColorScheme() })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public func setRepresentationColorScheme(scheme: String?, colorSets: SKColorSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationColorScheme(scheme: scheme ?? SKColorSets.ColorScheme.jmol.rawValue, colorSets: colorSets)}
+    self.allStructures.forEach{$0.setRepresentationColorScheme(scheme: scheme ?? SKColorSets.ColorScheme.jmol.rawValue, colorSets: colorSets)}
   }
   
   public func getRepresentationColorOrder() -> SKColorSets.ColorOrder?
   {
-    let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationColorOrder()?.rawValue })
+    let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.getRepresentationColorOrder()?.rawValue })
     return Set(set).count == 1 ? SKColorSets.ColorOrder(rawValue: set.first!) : nil
   }
   
   public func setRepresentationColorOrder(order: SKColorSets.ColorOrder?, colorSets: SKColorSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationColorOrder(order: order, colorSets: colorSets)}
+    self.allStructures.forEach{$0.setRepresentationColorOrder(order: order, colorSets: colorSets)}
   }
   
   public func getRepresentationForceField() -> String?
   {
-    let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationForceField() })
+    let set: Set<String> = Set(self.allStructures.compactMap{ return $0.getRepresentationForceField() })
     return Set(set).count == 1 ? set.first! : nil
   }
   
   public func setRepresentationForceField(forceField: String?, forceFieldSets: SKForceFieldSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationForceField(forceField: forceField ?? "Default", forceFieldSets: forceFieldSets)}
+    self.allStructures.forEach{$0.setRepresentationForceField(forceField: forceField ?? "Default", forceFieldSets: forceFieldSets)}
   }
   
   public func getRepresentationForceFieldOrder() -> SKForceFieldSets.ForceFieldOrder?
   {
-    let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.getRepresentationForceFieldOrder()?.rawValue })
+    let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.getRepresentationForceFieldOrder()?.rawValue })
     return Set(set).count == 1 ? SKForceFieldSets.ForceFieldOrder(rawValue: set.first!) : nil
   }
   
   public func setRepresentationForceFieldOrder(order: SKForceFieldSets.ForceFieldOrder?, forceFieldSets: SKForceFieldSets)
   {
-    self.structureViewerStructures.forEach{$0.setRepresentationForceFieldOrder(order: order, forceFieldSets: forceFieldSets)}
+    self.allStructures.forEach{$0.setRepresentationForceFieldOrder(order: order, forceFieldSets: forceFieldSets)}
   }
   
   public var renderAtomHue: Double?
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomHue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomHue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomHue = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomHue = newValue ?? 1.0}
     }
   }
   
@@ -616,12 +616,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomSaturation })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSaturation })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomSaturation = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomSaturation = newValue ?? 1.0}
     }
   }
   
@@ -629,12 +629,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomValue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomValue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomValue = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomValue = newValue ?? 1.0}
     }
   }
   
@@ -642,12 +642,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomScaleFactor })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomScaleFactor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{
+      self.allStructures.forEach{
         $0.atomScaleFactor = newValue ?? 1.0
       }
     }
@@ -658,12 +658,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.drawAtoms })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.drawAtoms })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.drawAtoms = newValue ?? true}
+      self.allStructures.forEach{$0.drawAtoms = newValue ?? true}
     }
   }
   
@@ -671,12 +671,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.atomAmbientOcclusion })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.atomAmbientOcclusion })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomAmbientOcclusion = newValue ?? true}
+      self.allStructures.forEach{$0.atomAmbientOcclusion = newValue ?? true}
     }
   }
   
@@ -684,12 +684,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.atomHDR })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.atomHDR })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomHDR = newValue ?? true}
+      self.allStructures.forEach{$0.atomHDR = newValue ?? true}
     }
   }
   
@@ -698,12 +698,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomHDRExposure })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomHDRExposure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomHDRExposure = newValue ?? 1.5}
+      self.allStructures.forEach{$0.atomHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -711,12 +711,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomHDRBloomLevel })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomHDRBloomLevel })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomHDRBloomLevel = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomHDRBloomLevel = newValue ?? 1.0}
     }
   }
   
@@ -724,12 +724,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.selectionScaling })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.selectionScaling })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.selectionScaling = newValue ?? 1.0}
+      self.allStructures.forEach{$0.selectionScaling = newValue ?? 1.0}
     }
   }
   
@@ -737,12 +737,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.atomAmbientColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.atomAmbientColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.atomAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -750,12 +750,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.atomDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.atomDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.atomDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -763,12 +763,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.atomSpecularColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.atomSpecularColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.atomSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -777,12 +777,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomAmbientIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomAmbientIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomAmbientIntensity = newValue ?? 0.2}
+      self.allStructures.forEach{$0.atomAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -790,12 +790,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -803,12 +803,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomSpecularIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSpecularIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomSpecularIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -816,12 +816,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomShininess })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomShininess })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomShininess = newValue ?? 4.0}
+      self.allStructures.forEach{$0.atomShininess = newValue ?? 4.0}
     }
   }
   
@@ -829,12 +829,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.renderSelectionStyle.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.renderSelectionStyle.rawValue })
       return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.renderSelectionStyle = newValue ?? .glow}
+      self.allStructures.forEach{$0.renderSelectionStyle = newValue ?? .glow}
     }
   }
   
@@ -842,12 +842,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.renderAtomSelectionFrequency })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.renderAtomSelectionFrequency })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.renderAtomSelectionFrequency = newValue ?? 4.0}
+      self.allStructures.forEach{$0.renderAtomSelectionFrequency = newValue ?? 4.0}
     }
   }
   
@@ -855,12 +855,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.renderAtomSelectionDensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.renderAtomSelectionDensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.renderAtomSelectionDensity = newValue ?? 4.0}
+      self.allStructures.forEach{$0.renderAtomSelectionDensity = newValue ?? 4.0}
     }
   }
   
@@ -868,12 +868,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.renderTextType.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.renderTextType.rawValue })
       return Set(set).count == 1 ? RKTextType(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.renderTextType = newValue ?? .none}
+      self.allStructures.forEach{$0.renderTextType = newValue ?? .none}
     }
   }
   
@@ -881,12 +881,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextStyle.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.atomTextStyle.rawValue })
       return Set(set).count == 1 ? RKTextStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextStyle = newValue ?? .flatBillboard}
+      self.allStructures.forEach{$0.atomTextStyle = newValue ?? .flatBillboard}
     }
   }
   
@@ -894,12 +894,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextAlignment.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.atomTextAlignment.rawValue })
       return Set(set).count == 1 ? RKTextAlignment(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextAlignment = newValue ?? .center}
+      self.allStructures.forEach{$0.atomTextAlignment = newValue ?? .center}
     }
   }
   
@@ -907,12 +907,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextFont })
+      let set: Set<String> = Set(self.allStructures.compactMap{ return $0.atomTextFont })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextFont = newValue ?? "Helvetica"}
+      self.allStructures.forEach{$0.atomTextFont = newValue ?? "Helvetica"}
     }
   }
   
@@ -920,7 +920,7 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<String> = Set(self.structureViewerStructures.compactMap({ (structure) -> String? in
+      let set: Set<String> = Set(self.allStructures.compactMap({ (structure) -> String? in
         if let font: NSFont = NSFont(name: structure.atomTextFont, size: 32)
         {
           return font.familyName
@@ -938,12 +938,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.atomTextColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextColor = newValue ?? NSColor.black}
+      self.allStructures.forEach{$0.atomTextColor = newValue ?? NSColor.black}
     }
   }
   
@@ -951,12 +951,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextScaling })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomTextScaling })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextScaling = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomTextScaling = newValue ?? 1.0}
     }
   }
   
@@ -964,12 +964,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextOffset.x })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomTextOffset.x })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextOffset.x = newValue ?? 0}
+      self.allStructures.forEach{$0.atomTextOffset.x = newValue ?? 0}
     }
   }
   
@@ -977,12 +977,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextOffset.y })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomTextOffset.y })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextOffset.y = newValue ?? 0}
+      self.allStructures.forEach{$0.atomTextOffset.y = newValue ?? 0}
     }
   }
   
@@ -990,12 +990,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.atomTextOffset.z })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomTextOffset.z })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.atomTextOffset.z = newValue ?? 0}
+      self.allStructures.forEach{$0.atomTextOffset.z = newValue ?? 0}
     }
   }
 }

@@ -44,12 +44,12 @@ extension UnitCellVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.drawUnitCell })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.drawUnitCell })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.drawUnitCell = newValue ?? false}
+      self.allStructures.forEach{$0.drawUnitCell = newValue ?? false}
     }
   }
   
@@ -57,12 +57,12 @@ extension UnitCellVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCellScaleFactor })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCellScaleFactor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.unitCellScaleFactor = newValue ?? 1.0}
+      self.allStructures.forEach{$0.unitCellScaleFactor = newValue ?? 1.0}
     }
   }
   
@@ -70,12 +70,12 @@ extension UnitCellVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.unitCellDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.unitCellDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.unitCellDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.unitCellDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -83,21 +83,21 @@ extension UnitCellVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCellDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCellDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.unitCellDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.unitCellDiffuseIntensity = newValue ?? 1.0}
     }
   }
 }
 
 extension Array where Iterator.Element == UnitCellVisualAppearanceViewer
 {
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.flatMap{$0.structureViewerStructures}
+    return self.flatMap{$0.allStructures}
   }
   
   public var selectedFrames: [RKRenderStructure]
@@ -105,21 +105,21 @@ extension Array where Iterator.Element == UnitCellVisualAppearanceViewer
     return self.flatMap{$0.selectedRenderFrames}
   }
   
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
-    return self.flatMap{$0.allFrames}
+    return self.flatMap{$0.allRenderFrames}
   }
   
   public var renderDrawUnitCell: Bool?
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.drawUnitCell })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.drawUnitCell })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.drawUnitCell = newValue ?? false}
+      self.allStructures.forEach{$0.drawUnitCell = newValue ?? false}
     }
   }
   
@@ -127,12 +127,12 @@ extension Array where Iterator.Element == UnitCellVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCellScaleFactor })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCellScaleFactor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.unitCellScaleFactor = newValue ?? 1.0}
+      self.allStructures.forEach{$0.unitCellScaleFactor = newValue ?? 1.0}
     }
   }
   
@@ -140,12 +140,12 @@ extension Array where Iterator.Element == UnitCellVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.unitCellDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.unitCellDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.unitCellDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.unitCellDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -153,12 +153,12 @@ extension Array where Iterator.Element == UnitCellVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.unitCellDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.unitCellDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.unitCellDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.unitCellDiffuseIntensity = newValue ?? 1.0}
     }
   }
 }

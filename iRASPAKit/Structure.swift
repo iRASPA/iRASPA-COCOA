@@ -47,7 +47,7 @@ fileprivate func ==~ (left: Double, right: Double) -> Bool
 
 public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
-public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
+public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
 {
   private var versionNumber: Int = 4
   private static var classVersionNumber: Int = 3
@@ -63,6 +63,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   {
     return false
   }
+  
+  // FIX: just for protocol
+  public var frames: [iRASPAStructure] = []
   
   public var isVisible: Bool = true
   
@@ -2231,6 +2234,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     let offsets: [[Int]] = [[0,0,0],[1,0,0],[1,1,0],[0,1,0],[-1,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1],[-1,1,1],[-1,0,1],[-1,-1,1],[0,-1,1],[1,-1,1]]
     
     let atoms: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    atoms.forEach{ $0.bonds.removeAll()}
     var computedBonds: Set<SKBondNode> = []
     
     let perpendicularWidths: SIMD3<Double> = self.cell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
@@ -2337,13 +2341,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
     var totalCount: Int
     
     let atoms: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    atoms.forEach{ $0.bonds.removeAll()}
     var computedBonds: Set<SKBondNode> = []
-    
-    
-    
-    
-    //self.progress = 0.0
-    
     
     let perpendicularWidths: SIMD3<Double> = self.cell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
@@ -3669,21 +3668,3 @@ public class Structure: NSObject, Decodable, RKRenderStructure, AtomVisualAppear
   
 }
 
-extension Structure: StructureViewer
-{
-  public var structureViewerStructures: [Structure]
-  {
-    return [self]
-  }
-  
-  public var selectedRenderFrames: [RKRenderStructure]
-  {
-    return [self]
-  }
-  
-  public var allFrames: [RKRenderStructure]
-  {
-    return [self]
-  }
-  
-}

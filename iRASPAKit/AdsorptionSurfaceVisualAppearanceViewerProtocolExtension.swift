@@ -46,12 +46,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Float> = Set(self.structureViewerStructures.compactMap{ return ($0 as? RKRenderAdsorptionSurfaceSource)?.minimumGridEnergyValue })
+      let set: Set<Float> = Set(self.allStructures.compactMap{ return ($0 as? RKRenderAdsorptionSurfaceSource)?.minimumGridEnergyValue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{($0 as? RKRenderAdsorptionSurfaceSource)?.minimumGridEnergyValue = newValue ?? 0.0}
+      self.allStructures.forEach{($0 as? RKRenderAdsorptionSurfaceSource)?.minimumGridEnergyValue = newValue ?? 0.0}
     }
   }
   
@@ -59,12 +59,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.drawAdsorptionSurface })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.drawAdsorptionSurface })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.drawAdsorptionSurface = newValue ?? false}
+      self.allStructures.forEach{$0.drawAdsorptionSurface = newValue ?? false}
     }
   }
   
@@ -72,12 +72,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceOpacity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceOpacity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceOpacity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceOpacity = newValue ?? 1.0}
     }
   }
   
@@ -85,12 +85,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceIsoValue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceIsoValue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceIsoValue = newValue ?? 0.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceIsoValue = newValue ?? 0.0}
     }
   }
   
@@ -100,12 +100,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceProbeMolecule.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceProbeMolecule.rawValue })
       return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
+      self.allStructures.forEach{$0.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
     }
   }
   
@@ -113,12 +113,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideHDR })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideHDR })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideHDR = newValue ?? true}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideHDR = newValue ?? true}
     }
   }
   
@@ -126,12 +126,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideHDRExposure })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideHDRExposure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -139,12 +139,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -152,12 +152,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -165,12 +165,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideSpecularIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideSpecularIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -178,12 +178,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideShininess })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideShininess })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
     }
   }
   
@@ -191,12 +191,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideAmbientColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideAmbientColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
     }
   }
   
@@ -204,12 +204,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
     }
   }
   
@@ -217,12 +217,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideHDR })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideHDR })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideHDR = newValue ?? true}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideHDR = newValue ?? true}
     }
   }
   
@@ -230,12 +230,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideHDRExposure })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideHDRExposure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -243,12 +243,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -256,12 +256,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -269,12 +269,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideSpecularIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideSpecularIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -282,12 +282,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideShininess })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideShininess })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
     }
   }
   
@@ -295,12 +295,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideSpecularColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideSpecularColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
     }
   }
   
@@ -308,12 +308,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
     }
   }
   
@@ -321,12 +321,12 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
     }
   }
   
@@ -334,21 +334,21 @@ extension AdsorptionSurfaceVisualAppearanceViewer
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideSpecularColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideSpecularColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
     }
   }
 }
 
 extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewer
 {
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.flatMap{$0.structureViewerStructures}
+    return self.flatMap{$0.allStructures}
   }
   
   public var renderCanDrawAdsorptionSurface: Bool
@@ -361,21 +361,21 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
     return self.flatMap{$0.selectedRenderFrames}
   }
   
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
-    return self.flatMap{$0.allFrames}
+    return self.flatMap{$0.allRenderFrames}
   }
   
   public var renderMinimumGridEnergyValue: Float?
   {
     get
     {
-      let set: Set<Float> = Set(self.structureViewerStructures.compactMap{ return ($0 as? RKRenderAdsorptionSurfaceSource)?.minimumGridEnergyValue })
+      let set: Set<Float> = Set(self.allStructures.compactMap{ return ($0 as? RKRenderAdsorptionSurfaceSource)?.minimumGridEnergyValue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{($0 as? RKRenderAdsorptionSurfaceSource)?.minimumGridEnergyValue = newValue ?? 0.0}
+      self.allStructures.forEach{($0 as? RKRenderAdsorptionSurfaceSource)?.minimumGridEnergyValue = newValue ?? 0.0}
     }
   }
   
@@ -383,12 +383,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.drawAdsorptionSurface })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.drawAdsorptionSurface })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.drawAdsorptionSurface = newValue ?? false}
+      self.allStructures.forEach{$0.drawAdsorptionSurface = newValue ?? false}
     }
   }
   
@@ -396,12 +396,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceOpacity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceOpacity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceOpacity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceOpacity = newValue ?? 1.0}
     }
   }
   
@@ -409,12 +409,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceIsoValue })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceIsoValue })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceIsoValue = newValue ?? 0.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceIsoValue = newValue ?? 0.0}
     }
   }
   
@@ -422,12 +422,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Int> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceProbeMolecule.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceProbeMolecule.rawValue })
       return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
+      self.allStructures.forEach{$0.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
     }
   }
   
@@ -435,12 +435,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideHDR })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideHDR })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideHDR = newValue ?? true}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideHDR = newValue ?? true}
     }
   }
   
@@ -448,12 +448,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideHDRExposure })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideHDRExposure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -461,12 +461,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -474,12 +474,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -487,12 +487,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideSpecularIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideSpecularIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -500,12 +500,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideShininess })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideShininess })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
     }
   }
   
@@ -513,12 +513,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideAmbientColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideAmbientColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
     }
   }
   
@@ -526,12 +526,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
     }
   }
   
@@ -539,12 +539,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Bool> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideHDR })
+      let set: Set<Bool> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideHDR })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideHDR = newValue ?? true}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideHDR = newValue ?? true}
     }
   }
   
@@ -552,12 +552,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideHDRExposure })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideHDRExposure })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -565,12 +565,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -578,12 +578,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideDiffuseIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideDiffuseIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -591,12 +591,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideSpecularIntensity })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideSpecularIntensity })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -604,12 +604,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<Double> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideShininess })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideShininess })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
     }
   }
   
@@ -617,12 +617,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceFrontSideSpecularColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceFrontSideSpecularColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
     }
   }
   
@@ -630,12 +630,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideAmbientColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
     }
   }
   
@@ -643,12 +643,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideDiffuseColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideDiffuseColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
     }
   }
   
@@ -656,12 +656,12 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.structureViewerStructures.compactMap{ return $0.adsorptionSurfaceBackSideSpecularColor })
+      let set: Set<NSColor> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceBackSideSpecularColor })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.structureViewerStructures.forEach{$0.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+      self.allStructures.forEach{$0.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
     }
   }
 }

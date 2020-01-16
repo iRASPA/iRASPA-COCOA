@@ -102,7 +102,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     
     NotificationCenter.default.addObserver(self, selector: #selector(StructureBondDetailViewController.reloadData), name: NSNotification.Name(rawValue: NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
     
-    if let structure = self.representedObject as? Structure
+    if let structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       NotificationCenter.default.addObserver(self, selector: #selector(StructureBondDetailViewController.reloadData), name: NSNotification.Name(rawValue: NotificationStrings.BondsShouldReloadNotification), object: structure)
     }
@@ -116,7 +116,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     self.bondTableView?.dataSource = nil
     self.bondTableView?.delegate = nil
     
-    if let structure = self.representedObject as? Structure
+    if let structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationStrings.BondsShouldReloadNotification), object: structure)
     }
@@ -125,7 +125,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   @objc func reloadData()
   {
-    if let structure: Structure =  self.representedObject as? Structure
+    if let structure: Structure =  (self.representedObject as? iRASPAStructure)?.structure
     {
       var asymmetricBonds: Dictionary<SKAsymmetricBond<SKAsymmetricAtom,SKAsymmetricAtom>, SKBondNode> = [:]
       for bond in (structure.bonds.arrangedObjects.filter{$0.atom1.type == .copy && $0.atom2.type == .copy})
@@ -164,7 +164,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   func numberOfRows(in tableView: NSTableView) -> Int
   {
-    if let _ =  self.representedObject as? Structure
+    if let _ =  (self.representedObject as? iRASPAStructure)?.structure
     {
       return bonds.count
     }
@@ -177,7 +177,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     
     if let proxyProject: ProjectTreeNode = self.proxyProject,
        let tableColumn = tableColumn,
-       let structure: Structure = self.representedObject as? Structure
+       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       let bond: SKBondNode = bonds[row]
       let bondLength = structure.bondLength(bond)
@@ -270,7 +270,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       
       proxyProject.representedObject.isEdited = true
       
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.AtomsShouldReloadNotification), object: self.representedObject)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.AtomsShouldReloadNotification), object: (self.representedObject as? iRASPAStructure)?.structure)
       self.bondTableView?.reloadData()
     }
   }
@@ -304,7 +304,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   func setBondAtomPositions(atom1: SKAsymmetricAtom, pos1: SIMD3<Double>, atom2: SKAsymmetricAtom, pos2: SIMD3<Double>)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = self.representedObject as? Structure
+       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       let oldPos1: SIMD3<Double> = atom1.position
       let oldPos2: SIMD3<Double> = atom2.position
@@ -336,7 +336,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func changedBondLengthTextField(_ sender: NSTextField)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let structure: Structure = self.representedObject as? Structure,
+       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure,
        let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0,
        let nf: NumberFormatter = sender.formatter as?  NumberFormatter,
        let number: NSNumber = nf.number(from: sender.stringValue)
@@ -367,7 +367,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func changedBondLengthSlider(_ sender: NSSlider)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let structure: Structure = self.representedObject as? Structure,
+       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure,
        let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
     {
       self.windowController?.window?.makeFirstResponder(self.bondTableView)
@@ -428,7 +428,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = self.representedObject as? Structure
+       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       proxyProject.representedObject.isEdited = true
       document.updateChangeCount(.changeDone)
@@ -451,7 +451,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   @IBAction func RecomputeBonds(_ sender: NSMenuItem)
   {
-    if let structure: Structure = self.representedObject as? Structure
+    if let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       let oldBonds: SKBondSetController = structure.bonds
       

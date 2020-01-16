@@ -125,13 +125,13 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
       switch(tab)
       {
       case 0:
-        self.arrangedObjects = [project.sceneList.selectedScene?.selectedMovie?.selectedFrame?.structure ?? [] ]
+        self.arrangedObjects = [project.sceneList.selectedScene?.selectedMovie?.selectedFrame ?? [] ]
         self.selectedIndex = 0
       case 1:
         let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
         
         // atoms and bonds tab show a list of current-frames of all the movies
-        let frames: [AnyObject] = movies.map{$0.selectedFrame?.structure ?? NSArray()}
+        let frames: [iRASPAStructure] = movies.compactMap{$0.selectedFrame}
         self.arrangedObjects = frames.isEmpty ? [[]] : frames
         
         if let selectedScene: Scene = project.sceneList.selectedScene,
@@ -146,7 +146,7 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
         if let selectedScene: Scene = project.sceneList.selectedScene,
           let selectionMovie: Movie = selectedScene.selectedMovie
         {
-          let frames: [Structure] = selectionMovie.structureViewerStructures
+          let frames: [iRASPAStructure] = selectionMovie.allIRASPAStructures
           self.arrangedObjects = frames.isEmpty ? [[]] : frames
           
           if let selectedFrame: iRASPAStructure = selectionMovie.selectedFrame,
