@@ -41,7 +41,7 @@ import simd
 
 public let NSPasteboardTypeMovie: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Movie")
 
-public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, PrimitiveVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -437,9 +437,14 @@ public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboard
 
 extension Movie: StructureViewer
 {
-  public var structureViewerStructures: [Structure]
+  public var allStructures: [Structure]
   {
-    return self.frames.compactMap{$0.structure}
+    return self.frames.flatMap{$0.allStructures}
+  }
+  
+  public var allIRASPAStructures: [iRASPAStructure]
+  {
+    return self.frames.compactMap{$0}
   }
   
   public var selectedRenderFrames: [RKRenderStructure]
@@ -447,7 +452,7 @@ extension Movie: StructureViewer
     return self.selectedFrames.map{$0.renderStructure}
   }
   
-  public var allFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderStructure]
   {
     return self.frames.map{$0.renderStructure}
   }
@@ -456,5 +461,12 @@ extension Movie: StructureViewer
 
 
 
+extension Movie: PrimitiveVisualAppearanceViewer
+{
+  public var allPrimitiveStructure: [Structure]
+  {
+    return self.frames.flatMap{$0.allPrimitiveStructure}
+  }
+}
 
 

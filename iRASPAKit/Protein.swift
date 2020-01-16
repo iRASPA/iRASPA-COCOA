@@ -64,6 +64,30 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
   public required init(clone structure: Structure)
   {
     super.init(clone: structure)
+    
+    switch(structure)
+    {
+    case is Crystal:
+      self.atoms.flattenedLeafNodes().forEach{
+      let pos = $0.representedObject.position
+          $0.representedObject.position = self.cell.convertToCartesian(pos)
+        }
+      break
+    case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
+      if structure.primitiveIsFractional
+      {
+        self.atoms.flattenedLeafNodes().forEach{
+        let pos = $0.representedObject.position
+            $0.representedObject.position = self.cell.convertToCartesian(pos)
+        }
+      }
+      break
+    default:
+      break
+    }
+    self.expandSymmetry()
+    reComputeBoundingBox()
+    reComputeBonds()
   }
   
   public var colorAtomsWithBondColor: Bool
@@ -724,6 +748,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     var computedBonds: Set<SKBondNode> = []
     
     let atoms: [SKAtomCopy] = newAtoms.compactMap{$0.representedObject}.flatMap{$0.copies}
+    atoms.forEach{ $0.bonds.removeAll()}
     
     let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
@@ -822,6 +847,8 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     var computedBonds: Set<SKBondNode> = []
     var totalCount: Int
+    
+    atoms.forEach{ $0.bonds.removeAll()}
 
     let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
@@ -981,6 +1008,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
       LogQueue.shared.verbose(destination: windowController, message: "start computing bonds: \(structure.displayName)")
       
       let atoms: [SKAtomCopy] = structure.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+      
       let computedBonds = structure.computeBonds(cell: structure.cell, atomList: atoms)
       
       structure.bonds.arrangedObjects = computedBonds

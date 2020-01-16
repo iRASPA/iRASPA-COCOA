@@ -72,12 +72,12 @@ class Project
       let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
       projectStructureNode=ProjectStructureNode(name: displayName, sceneList: sceneList)
       
-      projectStructureNode.sceneList.structureViewerStructures.forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
-      projectStructureNode.sceneList.structureViewerStructures.forEach{$0.setRepresentationForceField(forceField: "Default", forceFieldSets: forceFieldSets)}
+      projectStructureNode.sceneList.allStructures.forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
+      projectStructureNode.sceneList.allStructures.forEach{$0.setRepresentationForceField(forceField: "Default", forceFieldSets: forceFieldSets)}
       
-      projectStructureNode.sceneList.structureViewerStructures.forEach{$0.reComputeBonds()}
+      projectStructureNode.sceneList.allStructures.forEach{$0.reComputeBonds()}
       
-      projectStructureNode.sceneList.structureViewerStructures.forEach{$0.recomputeDensityProperties()}
+      projectStructureNode.sceneList.allStructures.forEach{$0.recomputeDensityProperties()}
       
     }
     catch let error

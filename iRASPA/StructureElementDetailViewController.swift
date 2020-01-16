@@ -467,7 +467,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
         forceFieldData.atomTypeList[row].atomicNumber = atomicNumber
         forceFieldData.atomTypeList[row].forceFieldStringIdentifier = uniqueForceFieldName
         
-        project.structures.forEach{$0.setRepresentationColorScheme(scheme: $0.atomColorSchemeIdentifier, colorSets: document.colorSets)}
+        project.allStructures.forEach{$0.setRepresentationColorScheme(scheme: $0.atomColorSchemeIdentifier, colorSets: document.colorSets)}
       }
       self.reloadData()
     }
@@ -485,7 +485,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       
       document.colorSets[selectedColorSetIndex][uniqueForceFieldName] = sender.color
       
-      project.structures.forEach{$0.setRepresentationColorScheme(scheme: $0.atomColorSchemeIdentifier, colorSets: document.colorSets)}
+      project.allStructures.forEach{$0.setRepresentationColorScheme(scheme: $0.atomColorSchemeIdentifier, colorSets: document.colorSets)}
       self.windowController?.detailTabViewController?.renderViewController?.reloadRenderData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -610,7 +610,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       forceFieldSet.atomTypeList[row].userDefinedRadius = sender.doubleValue
      
       
-      project.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
+      project.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
       
       self.reloadData()
       
@@ -631,9 +631,9 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       forceFieldSet.atomTypeList[row].potentialParameters = SIMD2<Double>(sender.doubleValue,value.potentialParameters.y)
     
       
-      project.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
+      project.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: project.structures)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: project.allStructures)
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -654,9 +654,9 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       let value: SKForceFieldType = forceFieldSet.atomTypeList[row]
       forceFieldSet.atomTypeList[row].potentialParameters = SIMD2<Double>(value.potentialParameters.x, sender.doubleValue)
       
-      project.structures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
+      project.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: project.structures)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: project.allStructures)
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()

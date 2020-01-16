@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource, PrimitiveVisualAppearanceViewer
+public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
 {  
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -67,6 +67,31 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource, P
   public required init(clone structure: Structure)
   {
     super.init(clone: structure)
+    
+    switch(structure)
+    {
+    case is MolecularCrystal, is ProteinCrystal, is Molecule, is Protein:
+      self.atoms.flattenedLeafNodes().forEach{
+      let pos = $0.representedObject.position
+          $0.representedObject.position = self.cell.convertToFractional(pos)
+        }
+      break
+    case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
+      if !structure.primitiveIsFractional
+      {
+        self.atoms.flattenedLeafNodes().forEach{
+        let pos = $0.representedObject.position
+            $0.representedObject.position = self.cell.convertToFractional(pos)
+        }
+      }
+      break
+    default:
+      break
+    }
+    self.expandSymmetry()
+    reComputeBoundingBox()
+    
+    setRepresentationStyle(style: Structure.RepresentationStyle.objects)
   }
   
   public override var materialType: SKStructure.Kind
@@ -448,7 +473,17 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource, P
   }
   
   // MARK: -
-  // MARK: Lgeacy Decodable support
+  // MARK: Computing bonds
+  
+  public override func reComputeBonds()
+  {
+    let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    atomList.forEach{$0.bonds.removeAll()}
+    self.bonds.arrangedObjects = []
+  }
+  
+  // MARK: -
+  // MARK: Legacy Decodable support
   
   public required init(from decoder: Decoder) throws
   {

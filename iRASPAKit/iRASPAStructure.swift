@@ -38,8 +38,10 @@ import LogViewKit
 
 public let NSPasteboardTypeFrame: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Frame")
 
-public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting
+public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, PrimitiveVisualAppearanceViewer
 {
+  
+  
   public static func == (lhs: iRASPAStructure, rhs: iRASPAStructure) -> Bool
   {
     return lhs.structure === rhs.structure
@@ -58,6 +60,55 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
   {
     self.type = .crystal
     self.structure = crystal
+  }
+  
+  public var allPrimitiveStructure: [Structure]
+  {
+    switch(self.type)
+    {
+    case .cylinderPrimitive, .ellipsoidPrimitive, .polygonalPrismPrimitive:
+      return [self.structure]
+    default:
+      return []
+    }
+    
+  }
+  
+  public var allStructures: [Structure]
+  {
+    return [self.structure]
+  }
+  
+  public var frames: [iRASPAStructure]
+  {
+    return [self]
+  }
+  
+  public var allIRASPAStructures: [iRASPAStructure]
+  {
+    return [self]
+  }
+  
+  public var selectedRenderFrames: [RKRenderStructure]
+  {
+    return [self.structure]
+  }
+  
+  public var allRenderFrames: [RKRenderStructure]
+  {
+    return [self.structure]
+  }
+  
+  
+  public func swapRepresentedObjects(structure: iRASPAStructure)
+  {
+    let temptype = self.type
+    self.type = structure.type
+    structure.type = temptype
+    
+    let temp = self.structure
+    self.structure = structure.structure
+    structure.structure = temp
   }
   
   public init(molecularCrystal: MolecularCrystal)

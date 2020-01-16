@@ -66,6 +66,30 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
   public required init(clone structure: Structure)
   {
     super.init(clone: structure)
+    
+    switch(structure)
+    {
+    case is Crystal:
+      self.atoms.flattenedLeafNodes().forEach{
+      let pos = $0.representedObject.position
+          $0.representedObject.position = self.cell.convertToCartesian(pos)
+        }
+      break
+    case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
+      if structure.primitiveIsFractional
+      {
+        self.atoms.flattenedLeafNodes().forEach{
+        let pos = $0.representedObject.position
+            $0.representedObject.position = self.cell.convertToCartesian(pos)
+        }
+      }
+      break
+    default:
+      break
+    }
+    self.expandSymmetry()
+    reComputeBoundingBox()
+    reComputeBonds()
   }
   
   public var colorAtomsWithBondColor: Bool
@@ -1543,6 +1567,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     var computedBonds: Set<SKBondNode> = []
     
     let atoms: [SKAtomCopy] = newAtoms.compactMap{$0.representedObject}.flatMap{$0.copies}
+    atoms.forEach{ $0.bonds.removeAll()}
     
     let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
@@ -1648,6 +1673,8 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     
     let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths/numberOfReplicas + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+    
+    atoms.forEach{ $0.bonds.removeAll()}
     
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
@@ -1842,6 +1869,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
       LogQueue.shared.verbose(destination: windowController, message: "start computing bonds: \(structure.displayName)")
       
       let atoms: [SKAtomCopy] = structure.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+      atoms.forEach{ $0.bonds.removeAll()}
       let computedBonds = structure.computeBonds(cell: structure.cell, atomList: atoms)
       
       structure.bonds.arrangedObjects = computedBonds

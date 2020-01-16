@@ -1691,7 +1691,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         {
           
           if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode,
-             let structure = projectStructure.structures.first
+            let structure = projectStructure.allIRASPAStructures.first
           {
             
             let VSA: NSNumber = NSNumber(value: structure.renderStructureVolumetricNitrogenSurfaceArea ?? 0.0)
@@ -1781,12 +1781,12 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
         {
-      self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: projectStructure.structures)
-      self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: projectStructure.structures)
+          self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: projectStructure.allStructures)
+      self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: projectStructure.allStructures)
           
-          projectStructure.structures.forEach({$0.recomputeDensityProperties()})
+          projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
           
-          projectStructure.structures.forEach({$0.setRepresentationStyle(style: .fancy, colorSets: document.colorSets)})
+          projectStructure.allStructures.forEach({$0.setRepresentationStyle(style: .fancy, colorSets: document.colorSets)})
         }
       }
     }
@@ -2265,7 +2265,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         // initialize camera when needed (e.g. after reading projects from file)
         if let renderCamera = projectStructureNode.renderCamera, !renderCamera.initialized
         {
-          projectStructureNode.structures.forEach{$0.reComputeBoundingBox()}
+          projectStructureNode.allStructures.forEach{$0.reComputeBoundingBox()}
           
           if let size: CGSize = self.windowController?.detailTabViewController?.renderViewController?.renderViewController.viewBounds
           {

@@ -46,9 +46,14 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public var showBoundingBox: Bool = false
   
-  public var structures: [Structure]
+  public var allIRASPAStructures: [iRASPAStructure]
   {
-    return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.map{$0.structureViewerStructures[0]}}
+    return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.flatMap{$0.allIRASPAStructures}}
+  }
+  
+  public var allStructures: [Structure]
+  {
+    return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.flatMap{$0.allStructures}}
   }
   
   

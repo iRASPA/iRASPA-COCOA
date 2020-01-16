@@ -298,8 +298,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldYawMinusX.isEnabled = false
           textFieldYawMinusY.isEnabled = false
           textFieldYawMinusZ.isEnabled = false
-          if let renderRotationDelta: Double = (self.representedObject as? [PrimitiveVisualAppearanceViewer])?.renderPrimitiveRotationDelta
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty,
+            let renderRotationDelta: Double = representedStructure.renderPrimitiveRotationDelta
           {
+            
             textFieldRotationAngle.isEditable = enabled
             textFieldYawPlusX.isEnabled = enabled
             textFieldYawPlusY.isEnabled = enabled
@@ -338,7 +341,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldEulerAngleY.stringValue = ""
           textFieldEulerAngleZ.stringValue = ""
           
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             if let renderEulerAngleX: Double = representedStructure.renderPrimitiveEulerAngleX,
               let renderEulerAngleY: Double = representedStructure.renderPrimitiveEulerAngleY,
@@ -394,7 +398,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldAtomScalingCX.stringValue = ""
           textFieldAtomScalingCY.stringValue = ""
           textFieldAtomScalingCZ.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldAtomScalingAX.isEditable = enabled
             textFieldAtomScalingAY.isEditable = enabled
@@ -405,7 +410,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             textFieldAtomScalingCX.isEditable = enabled
             textFieldAtomScalingCY.isEditable = enabled
             textFieldAtomScalingCZ.isEditable = enabled
-            if let renderPrimitiveTransformationMatrix: double3x3 = representedStructure.renderPrimitiveTransformationMatrix
+            if let renderPrimitiveTransformationMatrix: double3x3 = representedStructure.renderPrimitiveTransformationMatrix,
+              !representedStructure.allPrimitiveStructure.isEmpty
             {
               textFieldAtomScalingAX.doubleValue = renderPrimitiveTransformationMatrix[0,0]
               textFieldAtomScalingAY.doubleValue = renderPrimitiveTransformationMatrix[0,1]
@@ -436,7 +442,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldOpacity.isEditable = false
           textFieldOpacity.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldOpacity.isEditable = enabled
             if let opacity = representedStructure.renderPrimitiveOpacity
@@ -452,7 +459,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderOpacity: NSSlider = view.viewWithTag(36) as? NSSlider
         {
           sliderOpacity.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderOpacity.isEnabled = enabled
             if let opacity = representedStructure.renderPrimitiveOpacity
@@ -473,7 +481,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldNumberOfSides.isEditable = false
           textFieldNumberOfSides.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldNumberOfSides.isEditable = enabled
             if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
@@ -489,7 +498,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderNumberOfSides: NSSlider = view.viewWithTag(38) as? NSSlider
         {
           sliderNumberOfSides.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderNumberOfSides.isEnabled = enabled
             if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
@@ -510,7 +520,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let button: NSButton = view.viewWithTag(39) as? NSButton
         {
           button.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             button.isEnabled = enabled
             
@@ -529,7 +540,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let button: NSButton = view.viewWithTag(40) as? NSButton
         {
           button.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             button.isEnabled = enabled
             
@@ -551,7 +563,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let button: NSButton = view.viewWithTag(41) as? NSButton
         {
           button.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             button.isEnabled = enabled
             
@@ -573,7 +586,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldExposure.isEditable = false
           textFieldExposure.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldExposure.isEditable = enabled
             if let renderPrimitiveFrontSideHDRExposure: Double = representedStructure.renderPrimitiveFrontSideHDRExposure
@@ -591,7 +605,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           sliderExposure.isEnabled = false
           sliderExposure.minValue = 0.0
           sliderExposure.maxValue = 3.0
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderExposure.isEnabled = enabled
             if let renderPrimitiveFrontSideHDRExposure: Double = representedStructure.renderPrimitiveFrontSideHDRExposure
@@ -607,7 +622,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldFrontAmbientIntensity.isEditable = false
           textFieldFrontAmbientIntensity.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldFrontAmbientIntensity.isEditable = enabled
             if let ambientIntensity = representedStructure.renderPrimitiveFrontSideAmbientIntensity
@@ -623,7 +639,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(45) as? NSSlider
         {
           sliderFrontAmbientIntensity.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderFrontAmbientIntensity.isEnabled = enabled
             if let ambientIntensity = representedStructure.renderPrimitiveFrontSideAmbientIntensity
@@ -638,7 +655,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           ambientFrontSideColor.isEnabled = false
           ambientFrontSideColor.color = NSColor.lightGray
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             ambientFrontSideColor.isEnabled = enabled
             if let color = representedStructure.renderPrimitiveFrontSideAmbientColor
@@ -653,7 +671,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldFrontDiffuseIntensity.isEditable = false
           textFieldFrontDiffuseIntensity.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldFrontDiffuseIntensity.isEditable = enabled
             if let diffuseIntensity = representedStructure.renderPrimitiveFrontSideDiffuseIntensity
@@ -669,7 +688,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(48) as? NSSlider
         {
           sliderFrontDiffuseIntensity.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderFrontDiffuseIntensity.isEnabled = enabled
             if let diffuseIntensity = representedStructure.renderPrimitiveFrontSideDiffuseIntensity
@@ -684,7 +704,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           diffuseFrontSideColor.isEnabled = false
           diffuseFrontSideColor.color = NSColor.lightGray
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             diffuseFrontSideColor.isEnabled = enabled
             if let color = representedStructure.renderPrimitiveFrontSideDiffuseColor
@@ -699,7 +720,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldFrontSpecularIntensity.isEditable = false
           textFieldFrontSpecularIntensity.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldFrontSpecularIntensity.isEditable = enabled
             if let specularIntensity = representedStructure.renderPrimitiveFrontSideSpecularIntensity
@@ -715,7 +737,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(51) as? NSSlider
         {
           sliderFrontSpecularIntensity.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderFrontSpecularIntensity.isEnabled = enabled
             if let specularIntensity = representedStructure.renderPrimitiveFrontSideSpecularIntensity
@@ -730,7 +753,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           specularFrontSideColor.isEnabled = false
           specularFrontSideColor.color = NSColor.lightGray
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             specularFrontSideColor.isEnabled = enabled
             if let color = representedStructure.renderPrimitiveFrontSideSpecularColor
@@ -746,7 +770,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldFrontShininess.isEditable = false
           textFieldFrontShininess.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldFrontShininess.isEditable = enabled
             if let shininess = representedStructure.renderPrimitiveFrontSideShininess
@@ -762,7 +787,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderFrontShininess: NSSlider = view.viewWithTag(54) as? NSSlider
         {
           sliderFrontShininess.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderFrontShininess.isEnabled = enabled
             if let shininess = representedStructure.renderPrimitiveFrontSideShininess
@@ -778,7 +804,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let button: NSButton = view.viewWithTag(57) as? NSButton
         {
           button.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             button.isEnabled = enabled
             if let renderPrimitiveHDR: Bool = representedStructure.renderPrimitiveBackSideHDR
@@ -799,7 +826,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldExposure.isEditable = false
           textFieldExposure.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldExposure.isEditable = enabled
             if let renderPrimitiveBackSideHDRExposure: Double = representedStructure.renderPrimitiveBackSideHDRExposure
@@ -817,7 +845,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           sliderExposure.isEnabled = false
           sliderExposure.minValue = 0.0
           sliderExposure.maxValue = 3.0
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderExposure.isEnabled = enabled
             if let renderPrimitiveBackSideHDRExposure: Double = representedStructure.renderPrimitiveBackSideHDRExposure
@@ -833,7 +862,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldBackAmbientIntensity.isEditable = false
           textFieldBackAmbientIntensity.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldBackAmbientIntensity.isEditable = enabled
             if let ambientIntensity = representedStructure.renderPrimitiveBackSideAmbientIntensity
@@ -849,7 +879,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(61) as? NSSlider
         {
           sliderBackAmbientIntensity.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderBackAmbientIntensity.isEnabled = enabled
             if let ambientIntensity = representedStructure.renderPrimitiveBackSideAmbientIntensity
@@ -864,7 +895,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           ambientBackSideColor.isEnabled = false
           ambientBackSideColor.color = NSColor.lightGray
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             ambientBackSideColor.isEnabled = enabled
             if let color = representedStructure.renderPrimitiveBackSideAmbientColor
@@ -879,7 +911,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldBackDiffuseIntensity.isEditable = false
           textFieldBackDiffuseIntensity.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldBackDiffuseIntensity.isEditable = enabled
             if let diffuseIntensity = representedStructure.renderPrimitiveBackSideDiffuseIntensity
@@ -895,7 +928,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(64) as? NSSlider
         {
           sliderBackDiffuseIntensity.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderBackDiffuseIntensity.isEnabled = enabled
             if let diffuseIntensity = representedStructure.renderPrimitiveBackSideDiffuseIntensity
@@ -910,7 +944,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           diffuseBackSideColor.isEnabled = false
           diffuseBackSideColor.color = NSColor.lightGray
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             diffuseBackSideColor.isEnabled = enabled
             if let color = representedStructure.renderPrimitiveBackSideDiffuseColor
@@ -925,7 +960,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldBackSpecularIntensity.isEditable = false
           textFieldBackSpecularIntensity.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldBackSpecularIntensity.isEditable = enabled
             if let specularIntensity = representedStructure.renderPrimitiveBackSideSpecularIntensity
@@ -941,7 +977,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(67) as? NSSlider
         {
           sliderBackSpecularIntensity.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderBackSpecularIntensity.isEnabled = enabled
             if let specularIntensity = representedStructure.renderPrimitiveBackSideSpecularIntensity
@@ -956,7 +993,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           specularBackSideColor.isEnabled = false
           specularBackSideColor.color = NSColor.lightGray
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             specularBackSideColor.isEnabled = enabled
             if let color = representedStructure.renderPrimitiveBackSideSpecularColor
@@ -971,7 +1009,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldBackShininess.isEditable = false
           textFieldBackShininess.stringValue = ""
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             textFieldBackShininess.isEditable = enabled
             if let shininess = representedStructure.renderPrimitiveBackSideShininess
@@ -987,7 +1026,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let sliderBackShininess: NSSlider = view.viewWithTag(70) as? NSSlider
         {
           sliderBackShininess.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+            !representedStructure.allPrimitiveStructure.isEmpty
           {
             sliderBackShininess.isEnabled = enabled
             if let shininess = representedStructure.renderPrimitiveBackSideShininess
@@ -5571,7 +5611,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
-        project.structures.forEach{$0.reComputeBoundingBox()}
+        project.allStructures.forEach{$0.reComputeBoundingBox()}
         (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       }
       
