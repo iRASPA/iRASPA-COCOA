@@ -791,7 +791,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     {
       for structure in project.allStructures
       {
-        self.setCurrentSelection(structure: structure, selection: Set(structure.atoms.flattenedNodes()), from: structure.atoms.selectedTreeNodes)
+        if structure.isVisible
+        {
+          self.setCurrentSelection(structure: structure, selection: Set(structure.atoms.flattenedNodes().filter{$0.representedObject.isVisible}), from: structure.atoms.selectedTreeNodes)
+        }
       }
     }
   }
