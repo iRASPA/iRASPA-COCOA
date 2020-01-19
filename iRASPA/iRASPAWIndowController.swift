@@ -193,7 +193,7 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     if url.pathExtension.isEmpty &&
       (url.lastPathComponent.uppercased() == "POSCAR" ||
        url.lastPathComponent.uppercased() == "CONTCAR" ||
-        url.lastPathComponent.uppercased() == "XDATCAR")
+       url.lastPathComponent.uppercased() == "XDATCAR")
     {
       return true
     }
@@ -203,35 +203,7 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
   
   @IBAction func importProject(_ sender: NSButton)
   {
-    let importAccessoryViewController: ImportAccessoryViewController = ImportAccessoryViewController(nibName: "ImportAccessoryViewController", bundle: Bundle.main)
-    
-    let openPanel: NSOpenPanel = NSOpenPanel()
-   
-    openPanel.accessoryView = importAccessoryViewController.view
-    openPanel.isAccessoryViewDisclosed = true
-    openPanel.allowsMultipleSelection = true
-    openPanel.canChooseDirectories = false
-    
-    openPanel.delegate = self
-    openPanel.canChooseFiles = true
-    openPanel.allowedFileTypes = ["cif","pdb", "xyz", "poscar", "contcar"]
-    openPanel.allowedFileTypes = nil
-    
-    openPanel.begin { (result) -> Void in
-      if result == NSApplication.ModalResponse.OK
-      {
-        if let importButton: NSButton = importAccessoryViewController.importSeparateProjects,
-           let onlyAsymmetricUnitButton: NSButton = importAccessoryViewController.onlyAsymmetricUnit,
-           let asMoleculeButton: NSButton = importAccessoryViewController.importAsMolecule
-        {
-          let asSeparateProjects: Bool = importButton.state == NSControl.StateValue.on ? true : false
-          let onlyAsymmetricUnit: Bool = onlyAsymmetricUnitButton.state == NSControl.StateValue.on ? true : false
-          let asMolecule: Bool = asMoleculeButton.state == NSControl.StateValue.on ? true : false
-        
-          self.masterTabViewController?.projectViewController?.importStructureFiles(openPanel.urls as [URL], asSeparateProjects: asSeparateProjects, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
-        }
-      }
-    }
+    self.masterTabViewController?.importFileOpenPanel()
   }
   
   
@@ -339,7 +311,17 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
   {
     if (menuItem.action == #selector(importProject(_:)))
     {
-      return self.masterTabViewController?.masterViewController?.selectedTab == 0
+      guard let masterTabViewController = self.masterTabViewController else {return false}
+      
+      let selectedIndex = masterTabViewController.selectedTabViewItemIndex
+      let selectedTabViewItem = masterTabViewController.tabViewItems[selectedIndex]
+      
+      if let selectedViewController = selectedTabViewItem.viewController,
+         let tabViewController: NSTabViewController = selectedViewController.children.first as? NSTabViewController
+      {
+        // return true for index 0 (which is the ProjectViewController)
+        return tabViewController.selectedTabViewItemIndex == 0
+      }
     }
     
     //if (menuItem.action == #selector(exportProject(_:)))
@@ -384,7 +366,8 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     }
   }
   
-  
+  // MARK: Forward to DetailViewControllers
+  // ========================================================================================
   
   func setPageControllerFrameObject(arrangedObjects objects: [Any], selectedIndex index: Int)
   {
@@ -401,6 +384,9 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
       structurePageController.setPageControllerFrameSelection(selectedIndex: index, isActiveTab: false)
     }
   }
+  
+  // MARK: Foward to MasterViewController
+  // ========================================================================================
   
   func detailViewControllerSelectionChanged(index: Int)
   {

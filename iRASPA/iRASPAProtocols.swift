@@ -49,18 +49,6 @@ protocol GlobalModifierFlagsConsumer: class
   func globalModifierFlagsChanged(_ value: NSEvent.ModifierFlags)
 }
 
-// protocol to use the projectController generically for all projects
-protocol ProjectController: SelectionIndex
-{
-  var projectViewController: ProjectViewController? {get}
-  var selectedTab: Int {get}
-}
-
-protocol SelectionIndex: class
-{
-  func setSelectionIndex(index: Int)
-}
-
 // protocol to signal that the object can be reloaded for new or changed data
 protocol Reloadable: class
 {

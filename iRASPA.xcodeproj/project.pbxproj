@@ -1740,7 +1740,6 @@
 				93260AEB1E2A63D70066EC08 /* iRASPAWIndowController.swift */,
 				93260AE31E2A46350066EC08 /* iRASPADocument.swift */,
 				93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */,
-				93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */,
 				930DD6C61E28064300B8FE9B /* AppDelegate.swift */,
 				935F345F1E5C625D005C0EE1 /* iRASPAWindow.swift */,
 				930DD6CB1E28064300B8FE9B /* MainSplitViewController.swift */,
@@ -1786,6 +1785,7 @@
 				932BB99D1F4ADC7700FC9C4E /* StructureMasterViewController.swift */,
 				93B6CCCD1F4C1C86004E798D /* StructureMasterTabViewController.swift */,
 				930DD6E31E28071200B8FE9B /* ProjectViewController.swift */,
+				93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */,
 				930DD6E41E28071200B8FE9B /* StructureListViewController.swift */,
 				930DD6D91E28071200B8FE9B /* FrameListViewController.swift */,
 			);

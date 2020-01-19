@@ -32,10 +32,11 @@
 import Cocoa
 import iRASPAKit
 
+/// StructureMasterTabViewController controls the "Project viewer tab", "Structure viewer tab", and the "Frame viewer tab"
+///
 class StructureMasterTabViewController: NSTabViewController, WindowControllerConsumer
 {
   weak var windowController: iRASPAWindowController?
-  
   
   override func viewDidLoad()
   {

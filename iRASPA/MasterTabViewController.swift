@@ -30,8 +30,28 @@
  *************************************************************************************************************/
 
 import Cocoa
+import iRASPAKit
 
-public class MasterTabViewController: NSTabViewController, WindowControllerConsumer, Reloadable
+/// protocol to setting the index generically for all projects
+protocol SelectionIndex: class
+{
+  func setSelectionIndex(index: Int)
+}
+
+/// protocol to use the projectController generically for all viewers
+protocol ProjectController
+{
+  func initializeData()
+  func importFileOpenPanel()
+  func reloadData()
+  func switchToCurrentProject()
+  var projectView: NSView? {get}
+}
+
+/// MasterTabViewController controls the "Structure viewer" and the "Directory Viewer"
+///
+/// Note: VASP Viewer is to be added as future work
+public class MasterTabViewController: NSTabViewController, WindowControllerConsumer, Reloadable, ProjectController
 {
   weak var windowController: iRASPAWindowController?
   {
@@ -41,31 +61,56 @@ public class MasterTabViewController: NSTabViewController, WindowControllerConsu
     }
   }
   
-  override public func viewDidLoad()
-  {
-    super.viewDidLoad()
-    // propagate windowController after loaded lazily
-    //self.propagateWindowController(windowController, toChildrenOf: self)
-  }
-  
-  var masterViewController: ProjectController?
+  /// Gets the current masterViewController as a ProjectController
+  ///
+  /// Note: tab-index 0 is the "Structure viewer", tab index 1 is the "Directory viewer"
+  ///
+  /// - returns: the current viewController of the selected tab as a ProjectController.
+  var masterViewController: (ProjectController & SelectionIndex)?
   {
     let index: Int = self.selectedTabViewItemIndex
     if let currentViewController: NSViewController = self.tabViewItems[index].viewController
     {
-      return currentViewController as? ProjectController
+      return currentViewController as? (ProjectController & SelectionIndex)
     }
     return nil
   }
   
-  var projectViewController: ProjectViewController?
+  func initializeData()
   {
     let index: Int = self.selectedTabViewItemIndex
     if let currentViewController: NSViewController = self.tabViewItems[index].viewController
     {
-      return (currentViewController as? ProjectController)?.projectViewController
+      (currentViewController as? ProjectController)?.initializeData()
+    }
+  }
+  
+  func importFileOpenPanel()
+  {
+    let index: Int = self.selectedTabViewItemIndex
+    if let currentViewController: NSViewController = self.tabViewItems[index].viewController
+    {
+      (currentViewController as? ProjectController)?.importFileOpenPanel()
+    }
+  }
+  
+  var projectView: NSView?
+  {
+    let index: Int = self.selectedTabViewItemIndex
+    if let currentViewController: NSViewController = self.tabViewItems[index].viewController
+    {
+      return (currentViewController as? ProjectController)?.projectView
     }
     return nil
+  }
+  
+  func switchToCurrentProject()
+  {
+    let index: Int = self.selectedTabViewItemIndex
+    if let currentViewController: NSViewController = self.tabViewItems[index].viewController
+    {
+      (currentViewController as? ProjectController)?.switchToCurrentProject()
+    }
   }
   
   func reloadData()

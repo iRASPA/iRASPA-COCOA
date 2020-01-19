@@ -35,9 +35,9 @@ import BinaryCodable
 import iRASPAKit
 import LogViewKit
 
-extension iRASPADocument
+extension ProjectViewController
 {
-  func loadGalleryDatabase()
+  func loadGalleryDatabase(documentData: DocumentData)
   {
     DispatchQueue.global(qos: .userInitiated).async(execute: {
       if let url: URL = Bundle.main.url(forResource: "Gallery", withExtension: "irspdoc")
@@ -92,30 +92,29 @@ extension iRASPADocument
         }
         
         DispatchQueue.main.async {
-          let windowController: iRASPAWindowController? = self.windowControllers.first as? iRASPAWindowController
-          let projectOutlineView: ProjectOutlineView? = windowController?.masterTabViewController?.masterViewController?.projectViewController?.projectOutlineView
+          let projectOutlineView: ProjectOutlineView? = self.projectOutlineView
           
           for (index, child) in documentDataGallery.projectLocalRootNode.childNodes.enumerated()
           {
-            child.insert(inParent: self.documentData.galleryLocalRootNode, atIndex: index)
+            child.insert(inParent: documentData.galleryLocalRootNode, atIndex: index)
           }
           
-          self.documentData.galleryLocalRootNode.flattenedNodes().forEach{$0.isEditable = false}
+          documentData.galleryLocalRootNode.flattenedNodes().forEach{$0.isEditable = false}
           
-          self.documentData.projectData.updateFilteredNodes()
-          projectOutlineView?.reloadItem(self.documentData.galleryLocalRootNode)
+          documentData.projectData.updateFilteredNodes()
+          projectOutlineView?.reloadItem(documentData.galleryLocalRootNode)
           
-          windowController?.detailTabViewController?.directoryViewController?.reloadData()
+      self.windowController?.detailTabViewController?.directoryViewController?.reloadData()
         }
       }
       else
       {
-        LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, ")
+        LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
       }
     })
   }
   
-  func loadCoREMOFDatabase()
+  func loadCoREMOFDatabase(documentData: DocumentData)
   {
     DispatchQueue.global(qos: .userInitiated).async(execute: {
       if let url: URL = Bundle.main.url(forResource: "CloudCoREMOFDatabase_v1.0", withExtension: "data")
@@ -137,8 +136,7 @@ extension iRASPADocument
             }
            
             DispatchQueue.main.async {
-              let windowController: iRASPAWindowController? = self.windowControllers.first as? iRASPAWindowController
-               let projectOutlineView: ProjectOutlineView? = windowController?.masterTabViewController?.masterViewController?.projectViewController?.projectOutlineView
+               let projectOutlineView: ProjectOutlineView? = self.projectOutlineView
               
               // update project outlineview
               
@@ -146,35 +144,35 @@ extension iRASPADocument
               
               for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.insert(inParent: self.documentData.cloudCoREMOFRootNode, atIndex: index)
+                child.insert(inParent: documentData.cloudCoREMOFRootNode, atIndex: index)
               }
               
-              self.documentData.cloudCoREMOFRootNode.flattenedNodes().forEach{$0.isEditable = false}
-              self.documentData.projectData.updateFilteredNodes()
+              documentData.cloudCoREMOFRootNode.flattenedNodes().forEach{$0.isEditable = false}
+              documentData.projectData.updateFilteredNodes()
               projectOutlineView?.endUpdates()
               
-              windowController?.detailTabViewController?.directoryViewController?.reloadData()
+              self.windowController?.detailTabViewController?.directoryViewController?.reloadData()
             }
             
           }
           else
           {
-            LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, ")
+            LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
           }
         }
         catch
         {
-          LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, " + error.localizedDescription)
+          LogQueue.shared.error(destination: self.windowController, message: "Loading error, " + error.localizedDescription)
         }
       }
       else
       {
-        LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, ")
+        LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
       }
     })
   }
   
-  func loadCoREMOFDDECDatabase()
+  func loadCoREMOFDDECDatabase(documentData: DocumentData)
   {
     DispatchQueue.global(qos: .userInitiated).async(execute: {
       if let url: URL = Bundle.main.url(forResource: "CloudCoREMOFDDECDatabase_v1.0", withExtension: "data")
@@ -196,43 +194,42 @@ extension iRASPADocument
             }
             
             DispatchQueue.main.async {
-              let windowController: iRASPAWindowController? = self.windowControllers.first as? iRASPAWindowController
-              let projectOutlineView: ProjectOutlineView? = windowController?.masterTabViewController?.masterViewController?.projectViewController?.projectOutlineView
+              let projectOutlineView: ProjectOutlineView? = self.projectOutlineView
               
               // update project outlineview
               projectOutlineView?.beginUpdates()
               
               for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.insert(inParent: self.documentData.cloudCoREMOFDDECRootNode, atIndex: index)
+                child.insert(inParent: documentData.cloudCoREMOFDDECRootNode, atIndex: index)
               }
               
-              self.documentData.cloudCoREMOFDDECRootNode.flattenedNodes().forEach{$0.isEditable = false}
-              self.documentData.projectData.updateFilteredNodes()
+              documentData.cloudCoREMOFDDECRootNode.flattenedNodes().forEach{$0.isEditable = false}
+              documentData.projectData.updateFilteredNodes()
               projectOutlineView?.endUpdates()
               
-              windowController?.detailTabViewController?.directoryViewController?.reloadData()
+              self.windowController?.detailTabViewController?.directoryViewController?.reloadData()
             }
           }
           else
           {
-            LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, ")
+            LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
           }
         }
         catch let error
         {
-           LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, " + error.localizedDescription)
+           LogQueue.shared.error(destination: self.windowController, message: "Loading error, " + error.localizedDescription)
           
         }
       }
       else
       {
-        LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, ")
+        LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
       }
     })
   }
   
-  func loadIZADatabase()
+  func loadIZADatabase(documentData: DocumentData)
   {
     DispatchQueue.global(qos: .userInitiated).async(execute: {
       if let url: URL = Bundle.main.url(forResource: "CloudIZADatabase", withExtension: "data")
@@ -254,8 +251,7 @@ extension iRASPADocument
             }
             
             DispatchQueue.main.async {
-              let windowController: iRASPAWindowController? = self.windowControllers.first as? iRASPAWindowController
-              let projectOutlineView: ProjectOutlineView? = windowController?.masterTabViewController?.masterViewController?.projectViewController?.projectOutlineView
+              let projectOutlineView: ProjectOutlineView? = self.projectOutlineView
               
               // update project outlineview
               projectOutlineView?.beginUpdates()
@@ -263,29 +259,29 @@ extension iRASPADocument
               
               for (index, child) in cloudProjectTreeNode.childNodes.enumerated()
               {
-                child.insert(inParent: self.documentData.cloudIZARootNode, atIndex: index)
+                child.insert(inParent: documentData.cloudIZARootNode, atIndex: index)
               }
               
-              self.documentData.projectData.updateFilteredNodes()
+              documentData.projectData.updateFilteredNodes()
               projectOutlineView?.endUpdates()
               
-              windowController?.detailTabViewController?.directoryViewController?.reloadData()
+          self.windowController?.detailTabViewController?.directoryViewController?.reloadData()
             }
           }
           else
           {
-            LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, ")
+            LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
           }
         }
         catch let error
         {
           // Cloud-file not found (should NOT happen)
-          LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, " + error.localizedDescription)
+          LogQueue.shared.error(destination: self.windowController, message: "Loading error, " + error.localizedDescription)
         }
       }
       else
       {
-        LogQueue.shared.error(destination: self.windowControllers.first, message: "Loading error, ")
+        LogQueue.shared.error(destination: self.windowController, message: "Loading error, ")
       }
     })
   }

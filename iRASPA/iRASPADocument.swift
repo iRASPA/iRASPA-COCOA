@@ -62,7 +62,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
          let window: NSWindow = windowController.window
       {
         if let responderView: NSView = window.firstResponder as? NSView,
-           let projectView: NSView = windowController.masterTabViewController?.masterViewController?.projectViewController?.view
+           let projectView: NSView = windowController.masterTabViewController?.projectView
         {
           if (window.isKeyWindow)
           {
@@ -70,12 +70,10 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
             // otherwise return the undoManager for the selected projectNode
             if (responderView.isDescendant(of: projectView))
             {
-              //Swift.print("asking for document undoManager from projectView")
               return super.undoManager
             }
             else
             {
-             // Swift.print("asking for document undoManager from other view: \(String(describing: self.documentData.projectData.selectedTreeNode?.representedObject)), \(String(describing: (self.documentData.projectData.selectedTreeNode?.representedObject)?.undoManager))")
               return (self.documentData.projectData.selectedTreeNode?.representedObject)?.undoManager ?? super.undoManager
             }
           }
@@ -114,10 +112,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
       windowController.currentDocument = self
       self.addWindowController(windowController)
     
-      self.loadGalleryDatabase()
-      self.loadCoREMOFDatabase()
-      self.loadCoREMOFDDECDatabase()
-      self.loadIZADatabase()
+      windowController.masterTabViewController?.initializeData()
     }
   }
   
@@ -315,7 +310,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     
     // make sure to run this on the main thread
     DispatchQueue.main.async(execute: {
-      self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()}
+      self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
     })
   }
   
@@ -338,7 +333,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
             self.fileType = iRASPAUniversalDocumentUTI
             self.fileURL = nil    // disassociate document from file; makes document "untitled"
             self.displayName = projectTreeNode.displayName
-            (self.windowControllers.first as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()
+            (self.windowControllers.first as? iRASPAWindowController)?.masterTabViewController?.reloadData()
         }
       }
       catch let error
@@ -378,7 +373,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
-          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()}
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
         }
       }
       catch
@@ -411,7 +406,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
-          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()}
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
         }
       }
       catch
@@ -444,7 +439,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
-          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()}
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
         }
       }
       catch
@@ -477,7 +472,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
-          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()}
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
         }
       }
       catch
@@ -510,7 +505,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
           self.fileType = iRASPAUniversalDocumentUTI
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
-          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()}
+          self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
         }
       }
       catch
@@ -654,7 +649,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
       DispatchQueue.main.async(execute: {
         self.fileType = iRASPAUniversalDocumentUTI
         self.displayName = fileWrapper.filename
-        self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.masterViewController?.projectViewController?.reloadData()}
+        self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
       })
     }
   }
