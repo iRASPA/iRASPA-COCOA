@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -282,7 +282,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
 
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
   {
@@ -720,7 +720,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   // MARK: keyboard handling
-  // ===============================================================================================================================
+  // =====================================================================
   
   
  
@@ -968,7 +968,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   // MARK: selection
-  // ===============================================================================================================================
+  // =====================================================================
   
   func showTransformationPanel(oldSelectionEmpty: Bool, newSelectionEmpty: Bool)
   {
@@ -1157,7 +1157,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   // MARK: RKRenderViewSelectionDelegate protocol measurements
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   
@@ -1228,7 +1228,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   // MARK: RKRenderViewSelectionDelegate protocol
-  // ===============================================================================================================================
+  // =====================================================================
   
   // undo for large-changes: completely replace all atoms and bonds by new ones
   func setStructureState(structure: Structure, atoms: SKAtomTreeController, bonds: SKBondSetController)
@@ -1441,7 +1441,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   
   // MARK: Context Menu
-  // ===============================================================================================================================
+  // =====================================================================
   
   func menuNeedsUpdate(_ menu: NSMenu)
   {
@@ -2522,7 +2522,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
  */
   
   // MARK: Tranformation Panel
-  // ===============================================================================================================================
+  // =====================================================================
   @IBAction func deleteSelectedAtoms(_ sender: NSButton)
   {
     self.deleteSelection()
@@ -3131,7 +3131,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   
   // MARK: Copy / Paste / Cut / Delete
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   @objc func copy(_ sender: AnyObject)

@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -51,7 +51,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   }
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var proxyProject: ProjectTreeNode? = nil
   
@@ -127,7 +127,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
 
   
   // MARK: NSTableView Delegate Methods
-  // ===============================================================================================================================
+  // =====================================================================
   
   // Returns a Boolean value that indicates whether the a given item is expandable
   func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
@@ -1273,7 +1273,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   }
 
   // MARK: NSOutlineView notifications for expanding/collapsing items
-  // ===============================================================================================================================
+  // =====================================================================
   
   func outlineViewItemDidExpand(_ notification:Notification)
   {
@@ -1295,7 +1295,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   }
   
   // MARK: Update outlineView
-  // ===============================================================================================================================
+  // =====================================================================
   
   func updateOutlineView(identifiers: [[NSString : AnyObject]])
   {
@@ -1312,7 +1312,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   }
   
   // MARK: Editing routines for creator
-  // ===============================================================================================================================
+  // =====================================================================
 
   @IBAction func changedAuthorFirstName(_ sender: NSTextField)
   {
@@ -1533,7 +1533,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   
   
   // MARK: Editing routines for creation
-  // ===============================================================================================================================
+  // =====================================================================
 
   
   @IBAction func changeCreationMethod(_ sender: NSPopUpButton)
@@ -1917,7 +1917,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   }
   
   // MARK: Editing routines for ChemicalCell
-  // ===============================================================================================================================
+  // =====================================================================
   
 
   @IBAction func changeChemicalFormulaMoiety(_ sender: NSTextField)
@@ -1961,7 +1961,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   
   
   // MARK: Editing routines for PublicationCell
-  // ===============================================================================================================================
+  // =====================================================================
 
   @IBAction func changeCitationJournalTitle(_ sender: NSComboBox)
   {

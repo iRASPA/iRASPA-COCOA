@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -1994,7 +1994,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   
   // MARK: Measuring distance, angle, and dihedral-angles
-  // ===============================================================================================================================
+  // =====================================================================
   
   public func bondVector(_ bond: SKBondNode) -> SIMD3<Double>
   {

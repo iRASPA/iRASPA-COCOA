@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -82,7 +82,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   
   
   // MARK: NSViewController lifecycle
-  // ===============================================================================================================================
+  // =====================================================================
   
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
   override func viewDidLoad()
@@ -149,12 +149,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
 
   // MARK: Reloading data
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   
@@ -177,7 +177,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
   
   // MARK: keyboard handling
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   override func keyDown(with theEvent: NSEvent)
@@ -868,7 +868,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   
   
   // MARK: NSOutlineView required datasource methods
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   // Returns the number of child items encompassed by a given item
@@ -998,7 +998,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
   
   // MARK: Row-views
-  // ===============================================================================================================================
+  // =====================================================================
   
   func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView?
   {
@@ -1083,7 +1083,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   
   
   // MARK: NSOutlineView rename on double-click
-  // ===============================================================================================================================
+  // =====================================================================
   
   @objc func structureOutlineViewDoubleClick(_ sender: AnyObject)
   {
@@ -1180,7 +1180,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
 
 
   // MARK: NSOutlineView required delegate methods for drag&drop
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   // enable the outlineView to be an NSDraggingSource that supports dragging multiple items.
@@ -1615,8 +1615,11 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
   
   // MARK: Set and update detail views
-  // ===============================================================================================================================
+  // =====================================================================
   
+  /// Sets the arrangedObjects of the detail-view pagecontrollers.
+  ///
+  /// Note: used to set the movies as the arrangedObjects in detail-view pagecontrollers.
   func setDetailViewController()
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
@@ -1646,6 +1649,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     }
   }
   
+  /// Updates the selectedArrangedObjects and index of the detail-view pagecontrollers.
+  ///
+  /// Note: used to set the selection and index of the detail-view pagecontrollers.
   func updateDetailViewController()
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
@@ -1673,6 +1679,11 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     }
   }
   
+  /// Sets the selection index.
+  ///
+  /// Note: used when swiping in the detail-views
+  ///
+  /// - parameter index: The frame index.
   func setSelectionIndex(index: Int)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
@@ -1704,7 +1715,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   
 
   // MARK: Selection handling
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func reloadSelection()
@@ -1923,7 +1934,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   
 
   // MARK: Visibility check-boxes
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   @IBAction func toggleStructureVisibility(_ sender: NSButton)
@@ -1951,7 +1962,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
 
   // MARK: plus/minus buttons
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func deleteSelectedStructures(_ sender: NSButton)
   {
@@ -1963,7 +1974,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   
   
   // MARK: Menu validation
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func validateMenuItem(_ menuItem: NSMenuItem) -> Bool
@@ -2018,7 +2029,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
   
   // MARK: Import/Export
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func importStructureFiles(_ URLs: [URL], asSeparateProjects: Bool)
@@ -2027,7 +2038,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
   
   // MARK: Copy / Paste / Cut / Delete
-  // ===============================================================================================================================
+  // =====================================================================
   
   // copy all selected 'movie'-elements as 'ProjectTreeNode' so that it can also be copied to the 'ProjectTreeController'
   @objc func copy(_ sender: AnyObject)

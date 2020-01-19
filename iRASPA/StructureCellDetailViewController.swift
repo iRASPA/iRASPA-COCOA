@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -54,7 +54,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   }
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
   
@@ -174,7 +174,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   }
   
   // MARK: NSOutlineView notifications for expanding/collapsing items
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   
@@ -201,7 +201,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   
   // MARK: NSTableView Delegate Methods
-  // ===============================================================================================================================
+  // =====================================================================
   
   // Returns a Boolean value that indicates whether the a given item is expandable
   
@@ -1712,7 +1712,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   }
   
   // MARK: Update outlineView
-  // ===============================================================================================================================
+  // =====================================================================
   
   func updateOutlineView(identifiers: [[NSString : AnyObject]])
   {
@@ -1730,7 +1730,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   
    // MARK: Material type changes
-   // ===============================================================================================================================
+   // =====================================================================
   
   @IBAction func changeMaterialType(_ sender: NSPopUpButton)
   {
@@ -1811,7 +1811,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   }
   
   // MARK: Cell changes
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changedCellLengthA(_ sender: NSTextField)
   {
@@ -2160,7 +2160,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   }
   
   // MARK: Replica changes
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changedCellMinimumReplicaX(_ sender: NSTextField)
   {
@@ -2594,7 +2594,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   
   // MARK: Origin
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changedOriginX(_ sender: NSTextField)
   {
@@ -2681,7 +2681,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   }
   
   // MARK: Content shift
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changedContentShiftX(_ sender: NSTextField)
   {
@@ -3009,7 +3009,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   
   // MARK: Rotation
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changedEulerAngleX(_ sender: NSTextField)
   {
@@ -3439,7 +3439,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   
   // MARK: Structure properties
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changeMaterialName(_ sender: NSComboBox)
   {
@@ -3604,7 +3604,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   
   // MARK: Spacegroup
-  // ===============================================================================================================================
+  // =====================================================================
   
   // undo for large-changes: completely replace all atoms and bonds by new ones
   func setStructureState(structure: Structure, cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)

@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -1001,7 +1001,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
   }
   
   // MARK: Measuring distance, angle, and dihedral-angles
-  // ===============================================================================================================================
+  // =====================================================================
   
   override public func bondVector(_ bond: SKBondNode) -> SIMD3<Double>
   {
@@ -1875,7 +1875,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
   }
   
   // MARK: RKRenderAdsorptionSurfaceStructure
-  // ===============================================================================================================================
+  // =====================================================================
   
   public override var atomUnitCellPositions: [SIMD3<Double>]
   {
