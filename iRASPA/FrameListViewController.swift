@@ -35,6 +35,9 @@ import SymmetryKit
 import iRASPAKit
 import OperationKit
 
+/// FrameListViewController controls a tableView with the frames.
+///
+/// Note: representedObject is a Movie (an array of type [iRASPAStructure])
 class FrameListViewController: NSViewController, NSMenuItemValidation, WindowControllerConsumer, ProjectConsumer, NSTableViewDataSource, NSTableViewDelegate, Reloadable, SelectionIndex
 {
   @IBOutlet private weak var framesTableView: FrameListTableView?

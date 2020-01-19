@@ -44,11 +44,6 @@ class DirectoryMasterViewController: NSViewController, WindowControllerConsumer,
     }
   }
   
-  deinit
-  {
-    //Swift.print("deinit: MasterViewController")
-  }
-  
   override func viewDidLoad()
   {
     super.viewDidLoad()
@@ -60,15 +55,39 @@ class DirectoryMasterViewController: NSViewController, WindowControllerConsumer,
     self.propagateWindowController(windowController, toChildrenOf: self)
   }
   
+  func initializeData()
+  {
+    
+  }
+  
   var projectViewController: ProjectViewController?
   {
     return  self.children.first as? ProjectViewController
   }
   
-  var selectedTab: Int
+  func initializeDocumentData(documentData: DocumentData)
   {
-    return 0
   }
+  
+  func switchToCurrentProject()
+  {
+  }
+  
+  func reloadData()
+  {
+    
+  }
+  
+  func importFileOpenPanel()
+  {
+    
+  }
+  
+  var projectView: NSView?
+  {
+    return nil
+  }
+  
   
   func setSelectionIndex(index: Int)
   {

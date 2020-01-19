@@ -42,19 +42,10 @@ import LogViewKit
 import BinaryCodable
 
 
-
-// Notes:
-// reloadData(): For NSView-based outlineviews views, this method drops all the visible row views and cell views,
-// and re-acquires them all. The selection is lost.
-
-
-// ProjectViewController: representedObject is ProjectTreeController
-// StructureListViewController: representedObject is the sceneList of a project
-// FrameListViewController: representedObject is a movie of type Movie containing 'Structure'-s
-
-
-
-class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineViewDataSource, NSProjectViewDelegate, WindowControllerConsumer, Reloadable
+/// ProjectViewController controls an outlineView with the projects
+///
+/// Note: representedObject is a ProjectTreeController
+class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineViewDataSource, NSOpenSavePanelDelegate, NSProjectViewDelegate, WindowControllerConsumer, Reloadable
 {
   @IBOutlet weak var projectOutlineView: ProjectOutlineView?
   @IBOutlet private var projectContextMenu: NSMenu?
@@ -121,11 +112,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     return queue
   }()
   
-  
-  
-  deinit
+  var projectView: NSView?
   {
-    //Swift.print("deinit: ProjectViewController")
+    return self.view
   }
   
   override func awakeFromNib()
@@ -135,7 +124,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     self.projectOutlineView?.doubleAction = #selector(ProjectViewController.projectOutlineViewDoubleClick)
   }
   
-  // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
+  // ViewDidLoad: bounds are not yet set (do not do geometry-related setup here)
   override func viewDidLoad()
   {
     super.viewDidLoad()
@@ -180,9 +169,19 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     
     NotificationCenter.default.addObserver(self, selector: #selector(ProjectViewController.InsertCloudNode(_:)), name: NSNotification.Name(rawValue: NotificationStrings.iCloudAddNodeNotification), object: nil)
     
-    
-    
     NotificationCenter.default.addObserver(self, selector: #selector(ProjectViewController.handleCloudReloadData(_:)), name: NSNotification.Name(rawValue: NotificationStrings.iCloudReloadDataNotification), object: nil)
+  }
+  
+  func initializeData()
+  {
+    // load the document library-data
+    if let documentData: DocumentData = (self.windowController?.document as? iRASPADocument)?.documentData
+    {
+      self.loadGalleryDatabase(documentData: documentData)
+      self.loadCoREMOFDatabase(documentData: documentData)
+      self.loadCoREMOFDDECDatabase(documentData: documentData)
+      self.loadIZADatabase(documentData: documentData)
+    }
   }
   
  
@@ -410,6 +409,39 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         self.projectOutlineView?.endUpdates()
       }
     }
+  }
+  
+  func importFileOpenPanel()
+  {
+    let importAccessoryViewController: ImportAccessoryViewController = ImportAccessoryViewController(nibName: "ImportAccessoryViewController", bundle: Bundle.main)
+     
+     let openPanel: NSOpenPanel = NSOpenPanel()
+    
+     openPanel.accessoryView = importAccessoryViewController.view
+     openPanel.isAccessoryViewDisclosed = true
+     openPanel.allowsMultipleSelection = true
+     openPanel.canChooseDirectories = false
+     
+     openPanel.delegate = self
+     openPanel.canChooseFiles = true
+     openPanel.allowedFileTypes = ["cif","pdb", "xyz", "poscar", "contcar"]
+     openPanel.allowedFileTypes = nil
+     
+     openPanel.begin { (result) -> Void in
+       if result == NSApplication.ModalResponse.OK
+       {
+         if let importButton: NSButton = importAccessoryViewController.importSeparateProjects,
+            let onlyAsymmetricUnitButton: NSButton = importAccessoryViewController.onlyAsymmetricUnit,
+            let asMoleculeButton: NSButton = importAccessoryViewController.importAsMolecule
+         {
+           let asSeparateProjects: Bool = importButton.state == NSControl.StateValue.on ? true : false
+           let onlyAsymmetricUnit: Bool = onlyAsymmetricUnitButton.state == NSControl.StateValue.on ? true : false
+           let asMolecule: Bool = asMoleculeButton.state == NSControl.StateValue.on ? true : false
+         
+           self.importStructureFiles(openPanel.urls as [URL], asSeparateProjects: asSeparateProjects, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+         }
+       }
+     }
   }
   
   func importStructureFiles(_ URLs: [URL], asSeparateProjects: Bool, onlyAsymmetricUnit: Bool, asMolecule: Bool)

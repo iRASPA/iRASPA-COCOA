@@ -32,17 +32,14 @@
 import Cocoa
 import iRASPAKit
 
-class StructureMasterViewController: NSViewController, WindowControllerConsumer, ProjectController
+/// StructureMasterViewController controls the SegmentedControl to select
+/// the "Project Viewer", "Scene Viewer", and the "Frame Viewer'
+/// Note: The TabViewController is "self.children.first"
+class StructureMasterViewController: NSViewController, WindowControllerConsumer, ProjectController, SelectionIndex
 {
   @IBOutlet weak var segmentedControl: NSSegmentedControl?
   
   weak var windowController: iRASPAWindowController?
-  
-  
-  deinit
-  {
-    //Swift.print("deinit: MasterViewController")
-  }
   
   override func viewDidLoad()
   {
@@ -50,11 +47,9 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
     
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
-    
-    // propagate windowController after loaded lazily
-    //self.propagateWindowController(windowController, toChildrenOf: self)
   }
   
+  /*
   var projectViewController: ProjectViewController?
   {
     if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
@@ -62,35 +57,75 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
       return tabViewController.tabViewItems[0].viewController as? ProjectViewController
     }
     return nil
-  }
+  }*/
   
-  var selectedTab: Int
+  func initializeData()
   {
     if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
     {
-      return tabViewController.selectedTabViewItemIndex
+      // foward to ProjectViewController
+      (tabViewController.tabViewItems[0].viewController as? ProjectViewController)?.initializeData()
     }
-    return 0
   }
+  
+  
+  func importFileOpenPanel()
+  {
+    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
+    {
+      // foward to ProjectViewController
+      (tabViewController.tabViewItems[0].viewController as? ProjectViewController)?.importFileOpenPanel()
+    }
+  }
+  
+  func switchToCurrentProject()
+  {
+    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
+    {
+      // foward to ProjectViewController
+      (tabViewController.tabViewItems[0].viewController as? ProjectViewController)?.switchToCurrentProject()
+    }
+  }
+  
+  var projectView: NSView?
+  {
+    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
+    {
+      // foward to ProjectViewController
+      return (tabViewController.tabViewItems[0].viewController as? ProjectViewController)?.projectView
+    }
+    return nil
+  }
+  
+  func reloadData()
+  {
+    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
+    {
+      // foward to ProjectViewController
+      (tabViewController.tabViewItems[0].viewController as? ProjectViewController)?.reloadData()
+    }
+  }
+  
   
   func setSelectionIndex(index: Int)
   {
-    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController,
-       let viewController = tabViewController.tabViewItems[tabViewController.selectedTabViewItemIndex].viewController as? SelectionIndex
+    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
     {
-      viewController.setSelectionIndex(index: index)
+      let index = tabViewController.selectedTabViewItemIndex
+      if let viewController = tabViewController.tabViewItems[index].viewController as? SelectionIndex
+      {
+        viewController.setSelectionIndex(index: index)
+      }
     }
   }
   
+  /// Connects the segmentedControl to the TabViewController
   @IBAction func changeTabItem(_ sender: NSSegmentedControl)
   {
-    // Pitfall: Don't set arranged-objects of the page-controllers here, since the tab is not switch yet
-    
     if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
     {
       tabViewController.selectedTabViewItemIndex = sender.selectedSegment
     }
   }
-  
 }
 

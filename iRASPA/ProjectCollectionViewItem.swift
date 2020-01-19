@@ -101,8 +101,8 @@ class ProjectCollectionViewItem: NSCollectionViewItem
         projectController.selectedTreeNode = node
       }
       
-      windowController.masterTabViewController?.masterViewController?.projectViewController?.switchToCurrentProject()
-      windowController.masterTabViewController?.masterViewController?.projectViewController?.reloadData()
+      windowController.masterTabViewController?.switchToCurrentProject()
+      windowController.masterTabViewController?.reloadData()
       
     }
   }

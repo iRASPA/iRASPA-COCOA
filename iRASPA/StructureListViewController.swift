@@ -37,7 +37,9 @@ import SymmetryKit
 import LogViewKit
 
 
-
+/// StructureListViewController controls a tableView with scenes.
+///
+/// Note: representedObject is a SceneList
 class StructureListViewController: NSViewController, NSMenuItemValidation, NSOutlineViewDataSource, NSOutlineViewDelegate, WindowControllerConsumer, ProjectConsumer, Reloadable, SelectionIndex
 {
   @IBOutlet private weak var structuresOutlineView: StructureListOutlineView?
