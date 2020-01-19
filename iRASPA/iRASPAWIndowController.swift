@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -167,7 +167,7 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
 
   
   // MARK: Import data
-  // ===============================================================================================================================
+  // =====================================================================
   
   func panel(_ sender: Any, shouldEnable url: URL) -> Bool
   {
@@ -236,7 +236,7 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
   
   
   // MARK: Sharing
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func shareAction(_ sender : NSButton)
   {
@@ -277,7 +277,7 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
   }
 
   // MARK: Collapsing panels
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var leftSplitViewItem: NSSplitViewItem?
   {
@@ -333,7 +333,7 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
   }
   
   // MARK: Menu and validation
-  // ===============================================================================================================================
+  // =====================================================================
   
   func validateMenuItem(_ menuItem: NSMenuItem) -> Bool
   {

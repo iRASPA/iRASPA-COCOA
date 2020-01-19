@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -266,7 +266,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   }
   
   // MARK: Utility
-  // ===============================================================================================================================
+  // =====================================================================
   
   func restoreExpandedState(nodes: [ProjectTreeNode])
   {
@@ -362,7 +362,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   
   // MARK: keyboard handling
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   override func keyDown(with theEvent: NSEvent)
@@ -384,7 +384,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
  
   // MARK: Import data
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func cancelImport(sender: NSButton)
   {
@@ -508,7 +508,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   
   // MARK: NSOutlineView required datasource methods
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   // Returns the number of child items encompassed by a given item
@@ -706,7 +706,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   }
   
   // MARK: Row-views
-  // ===============================================================================================================================
+  // =====================================================================
   
   func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView?
   {
@@ -782,7 +782,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
  
   
   // MARK: NSOutlineView methods for adding and removing projects
-  // ===============================================================================================================================
+  // =====================================================================
   
   func addNode(_ treeNode: ProjectTreeNode, inItem: ProjectTreeNode?, atIndex: Int, animationOptions: NSTableView.AnimationOptions = [.slideRight])
   {
@@ -1044,7 +1044,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
  
 
   // MARK: NSOutlineView required delegate methods for drag&drop
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   
@@ -1399,7 +1399,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
 
   
   // MARK: methods for reacting to Notifications
-  // ===============================================================================================================================
+  // =====================================================================
   
   func restoreSelectedItems(_ parent: ProjectTreeNode)
   {
@@ -1453,7 +1453,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
  
   
   // MARK: Menu validation
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func validateMenuItem(_ menuItem: NSMenuItem) -> Bool
@@ -1533,7 +1533,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   
   // MARK: Context Menu
-  // ===============================================================================================================================
+  // =====================================================================
   
   func menuNeedsUpdate(_ menu: NSMenu)
   {
@@ -1795,7 +1795,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
 
   
   // MARK: Add button
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func addProjectGroup(_ sender: AnyObject)
   {
@@ -2025,7 +2025,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
  
   
   // MARK: Selection handling
-  // ===============================================================================================================================
+  // =====================================================================
   
   func setCurrentSelection(treeController: ProjectTreeController, newValue: (selected: ProjectTreeNode?, selection: Set<ProjectTreeNode>), oldValue: (selected: ProjectTreeNode?, selection: Set<ProjectTreeNode>))
   {
@@ -2211,7 +2211,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   }
   
   // MARK: Set and update detail views
-  // ===============================================================================================================================
+  // =====================================================================
   
   func setDetailViewController()
   {
@@ -2235,6 +2235,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     }
   }
   
+  // MARK: Switch to selected project
+  // =====================================================================
   
   
   // Switches to a new current project. Occurs in 3 cases:
@@ -2548,7 +2550,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
 
   
   // MARK: Search and filter
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   @IBAction func updateFilterAction(_ sender: NSSearchField)
@@ -2615,7 +2617,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   }
   
   // MARK: NSOutlineView rename on double-click
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   @objc func projectOutlineViewDoubleClick(_ sender: AnyObject)
@@ -2675,7 +2677,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   }
 
   // MARK: Copy / Paste / Cut / Delete
-  // ===============================================================================================================================
+  // =====================================================================
   
   // Copy is a server-side operation where the current state of the selection is stored in a snapshot stored locally in each ProjectTreeNode
   // The operation is performed in the background to not block the UI. However, 'paste' is disabled for the duration of this operation.

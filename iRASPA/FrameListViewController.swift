@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -86,7 +86,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   
   
   // MARK: NSViewController lifecycle
-  // ===============================================================================================================================
+  // =====================================================================
   
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
   override func viewDidLoad()
@@ -135,12 +135,12 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
   
   // MARK: Reloading data
-  // ===============================================================================================================================
+  // =====================================================================
   
   func reloadData()
   {
@@ -149,7 +149,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
   
   // MARK: adding/removing 
-  // ===============================================================================================================================
+  // =====================================================================
   
   func removeFrame(_ frame: iRASPAStructure, atIndex index: Int)
   {
@@ -235,7 +235,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
 
 
   // MARK: NSTableView required method
-  // ===============================================================================================================================
+  // =====================================================================
   
 
   func numberOfRows(in aTableView: NSTableView) -> Int
@@ -269,7 +269,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
 
   
   // MARK: Row-view
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView?
@@ -349,7 +349,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
   
   // MARK: NSOutlineView rename on double-click
-  // ===============================================================================================================================
+  // =====================================================================
   
   @objc func frameTableViewDoubleClick(_ sender: AnyObject)
   {
@@ -407,7 +407,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   
   
   // MARK: keyboard handling
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   override func keyDown(with theEvent: NSEvent)
@@ -427,7 +427,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
 
   // MARK: Editing 
-  // ===============================================================================================================================
+  // =====================================================================
   
   func insertSelectedFrames(_ frames: [iRASPAStructure], at indexSet: IndexSet,  newSelectedFrame: iRASPAStructure?, newSelection: Set<iRASPAStructure>)
   {
@@ -545,7 +545,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
   
   // MARK: Set and update detail views
-  // ===============================================================================================================================
+  // =====================================================================
   
   func setDetailViewController()
   {
@@ -602,7 +602,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
   
   // MARK: Selection handling
-  // ===============================================================================================================================
+  // =====================================================================
   
   func reloadSelection()
   {
@@ -728,7 +728,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
   
   // MARK: Import/Export
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func importStructureFiles(_ URLs: [URL], asSeparateProjects: Bool)
@@ -737,7 +737,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
 
   // MARK: Menu validation
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func validateMenuItem(_ menuItem: NSMenuItem) -> Bool
@@ -791,7 +791,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
   
   // MARK: plus/minus buttons
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func deleteSelectedFrames(_ sender: NSButton)
   {
@@ -909,7 +909,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
   
   // MARK: Drag & Drop
-  // ===============================================================================================================================
+  // =====================================================================
   
   func tableView(_ tableView: NSTableView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forRowIndexes rowIndexes: IndexSet)
   {
@@ -1069,7 +1069,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   }
 
   // MARK: Copy / Paste / Cut / Delete
-  // ===============================================================================================================================
+  // =====================================================================
   
   // copy all selected 'movie'-elements as 'ProjectTreeNode' so that it can also be copied to the 'ProjectTreeController'
   @objc func copy(_ sender: AnyObject)

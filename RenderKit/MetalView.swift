@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -318,7 +318,7 @@ class MetalView: MTKView
 
   
   // MARK: Mouse control
-  // ===============================================================================================================================
+  // =====================================================================
   
  
   override func rightMouseDown(with event: NSEvent)
@@ -629,7 +629,7 @@ class MetalView: MTKView
   
   
   // MARK: Context Menu
-  // ===============================================================================================================================
+  // =====================================================================
   
   func menuNeedsUpdate(_ menu: NSMenu)
   {

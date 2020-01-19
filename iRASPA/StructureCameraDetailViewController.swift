@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -59,7 +59,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   var movieTimer: DispatchSourceTimer? = nil
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
   {
@@ -153,7 +153,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   
   // MARK: NSTableView Delegate Methods
-  // ===============================================================================================================================
+  // =====================================================================
   
   // Returns a Boolean value that indicates whether the a given item is expandable
   func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
@@ -770,7 +770,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   }
   
   // MARK: Update outlineView
-  // ===============================================================================================================================
+  // =====================================================================
   
   func updateOutlineView(identifiers: [[NSString : AnyObject]])
   {
@@ -787,7 +787,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   }
   
   // MARK: Camera actions
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changedCameraDefaultViewPosition(_ sender: NSButtonCell)
   {
@@ -1126,7 +1126,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   }
   
   // MARK: Rotation
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changedEulerAngleX(_ sender: NSTextField)
   {
@@ -1367,7 +1367,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   }
   
   // MARK: Selection
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   @IBAction func changeBloomLevelField(_ sender: NSTextField)
@@ -1414,7 +1414,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   }
   
   // MARK: Global light
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changeAmbientTextField(_ sender: NSTextField)
   {
@@ -1567,7 +1567,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     
   
   // MARK: Background actions
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func setBackground(_ sender: NSButtonCell)
   {
@@ -1834,7 +1834,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   
   // MARK: Picture actions
-  // ===============================================================================================================================
+  // =====================================================================
   
   @objc func updateAspectRatioView()
   {
@@ -1984,7 +1984,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   }
   
   // MARK: Movie actions
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func setNumberOfFramesPerSeconds(_ sender: NSTextField)
   {

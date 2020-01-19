@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -66,7 +66,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
 
   weak var proxyProject: ProjectTreeNode?
@@ -195,7 +195,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // MARK: NSTableView Delegate Methods
-  // ===============================================================================================================================
+  // =====================================================================
   
   // Returns a Boolean value that indicates whether the a given item is expandable
   func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
@@ -2990,7 +2990,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // MARK: NSOutlineView notifications for expanding/collapsing items
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func outlineViewItemDidExpand(_ notification:Notification)
@@ -3013,7 +3013,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // MARK: Update outlineView
-  // ===============================================================================================================================
+  // =====================================================================
   
   func updateOutlineView(identifiers: [[NSString : AnyObject]])
   {
@@ -3031,7 +3031,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   
   // MARK: primitive properties
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changedPrimitiveEulerAngleX(_ sender: NSTextField)
   {
@@ -4257,7 +4257,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // MARK: Atom actions
-  // ===============================================================================================================================
+  // =====================================================================
   
   // Representation type
   @IBAction func changeRepresentation(_ sender: NSPopUpButton)
@@ -5110,7 +5110,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   
   // MARK: bond actions
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func toggleDrawBonds(_ sender: NSButton)
   {
@@ -5599,7 +5599,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   
   // MARK: unitcell actions
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   @IBAction func toggleDrawUnitCell(_ sender: NSButton)
@@ -5729,7 +5729,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   
   // MARK: adsorption surface
-  // ===============================================================================================================================
+  // =====================================================================
   
  
   
@@ -6375,7 +6375,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // MARK: annotation
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changeAtomTextAnnotationStyle(_ sender: iRASPAPopUpButton)
   {

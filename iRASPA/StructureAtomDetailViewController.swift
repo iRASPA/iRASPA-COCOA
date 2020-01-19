@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -47,7 +47,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   weak var windowController: iRASPAWindowController?
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
 
   weak var proxyProject: ProjectTreeNode?
   
@@ -244,7 +244,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   
   // MARK: NSOutlineView notifications for expanding/collapsing items
-  // ===============================================================================================================================
+  // =====================================================================
   
   /*
   func outlineViewItemDidExpand(_ notification:Notification)
@@ -270,7 +270,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   
   // MARK: NSOutlineView required datasource methods
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   // Returns the number of child items encompassed by a given item
@@ -550,7 +550,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   
   // MARK: Copy / Paste / Cut / Delete
-  // ===============================================================================================================================
+  // =====================================================================
   
   @objc func copy(_ sender: AnyObject)
   {
@@ -647,7 +647,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   
   // MARK: methods for adding and removing projects
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func addGroupAtom(_ sender: AnyObject)
   {
@@ -861,7 +861,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   
   // MARK: NSOutlineView required delegate methods for drag&drop
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   // enable the outlineView to be an NSDraggingSource that supports dragging multiple items.
@@ -1155,7 +1155,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   
   // MARK: NSOutlineView notifications for expanding/collapsing items
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   func restoreSelectedItems(_ parent: SKAtomTreeNode)
@@ -1215,7 +1215,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   }
   
   // MARK: NSOutlineView notifications for the selection
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   @objc func setSelectionFromExternalSource()
@@ -1537,7 +1537,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
 
   
   // MARK: Context Menu
-  // ===============================================================================================================================
+  // =====================================================================
   
   func menuNeedsUpdate(_ menu: NSMenu)
   {
@@ -2258,7 +2258,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   
   // MARK: Search and filter
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   @IBAction func updateFilterAction(_ sender: NSSearchField)
@@ -2314,7 +2314,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   }
   
   // MARK: Edit tableview
-  // ===============================================================================================================================
+  // =====================================================================
   
   
 

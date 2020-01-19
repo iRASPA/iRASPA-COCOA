@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -49,7 +49,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   }
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
   
@@ -246,7 +246,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   
   // MARK: Edit tableview
-  // ===============================================================================================================================
+  // =====================================================================
   
   func fixAsymmetricAtom(_ asymmetricAtom: SKAsymmetricAtom, to isFixed: Bool3)
   {
@@ -402,7 +402,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   }
   
   // MARK: Context Menu
-  // ===============================================================================================================================
+  // =====================================================================
   
   func menuNeedsUpdate(_ menu: NSMenu)
   {

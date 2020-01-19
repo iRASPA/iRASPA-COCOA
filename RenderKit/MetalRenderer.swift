@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -198,7 +198,7 @@ public class MetalRenderer
   
   
   // MARK: Reload
-  // ===============================================================================================================================
+  // =====================================================================
 
   public func reloadData(device: MTLDevice, _ size: CGSize, maximumNumberOfSamples: Int)
   {
@@ -281,7 +281,7 @@ public class MetalRenderer
   }
 
   // MARK: Build pipelines
-  // ===============================================================================================================================
+  // =====================================================================
   
   public func buildPipeLines(device: MTLDevice, _ library: MTLLibrary, maximumNumberOfSamples: Int)
   {
@@ -360,7 +360,7 @@ public class MetalRenderer
 
   
   // MARK: Build textures
-  // ===============================================================================================================================
+  // =====================================================================
   
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int)
@@ -378,7 +378,7 @@ public class MetalRenderer
   
   
   // MARK: Build vertex-buffers
-  // ===============================================================================================================================
+  // =====================================================================
   
   public func buildVertexBuffers(device: MTLDevice)
   {
@@ -444,7 +444,7 @@ public class MetalRenderer
   }
   
   // MARK: Uniforms
-  // ===============================================================================================================================
+  // =====================================================================
   
   public func buildStructureUniforms(device: MTLDevice)
   {
@@ -523,7 +523,7 @@ public class MetalRenderer
   
   
   // MARK: Rendering
-  // ===============================================================================================================================
+  // =====================================================================
 
   public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize)
   {

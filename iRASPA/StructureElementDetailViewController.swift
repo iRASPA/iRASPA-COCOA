@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2019 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl            http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  scaldia@upo.es                http://www.upo.es/raspa/sofiacalero.php
@@ -52,7 +52,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   
   
   // MARK: protocol ProjectConsumer
-  // ===============================================================================================================================
+  // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
   {
@@ -275,7 +275,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   
   
   // MARK: Menu and validation
-  // ===============================================================================================================================
+  // =====================================================================
   
   func validateMenuItem(_ menuItem: NSMenuItem) -> Bool
   {
@@ -364,7 +364,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   }
   
   // MARK: Selection
-  // ===============================================================================================================================
+  // =====================================================================
   
   func tableView(_ tableView: NSTableView, selectionIndexesForProposedSelection proposedSelectionIndexes: IndexSet) -> IndexSet
   {
@@ -381,7 +381,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   }
   
   // MARK: Actions
-  // ===============================================================================================================================
+  // =====================================================================
   
   @IBAction func changeUniqueForceFieldName(_ sender: NSTextField)
   {
