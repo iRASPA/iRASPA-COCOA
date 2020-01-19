@@ -368,22 +368,37 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     }
   }
   
-  
-  func masterViewControllerTabChanged(tab: Int)
+  func setPageControllerObjects(arrangedObjects objects: [Any], selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int)
   {
     if let structurePageController: StructurePageController = detailTabViewController?.structureDetailTabViewController
     {
-      structurePageController.masterViewControllerTabChanged(tab: tab)
-      self.detailTabViewController?.renderViewController?.masterViewControllerTabChanged(tab: tab)
+      structurePageController.setPageControllerObjects(arrangedObjects: objects, selectedArrangedObjects: selectedObjects, selectedIndex: index)
     }
   }
   
-  func masterViewControllerSelectionChanged(tab: Int)
+  func setPageControllerSelection(selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int)
   {
     if let structurePageController: StructurePageController = detailTabViewController?.structureDetailTabViewController
     {
-      structurePageController.masterViewControllerSelectionChanged(tab: tab)
-      self.detailTabViewController?.renderViewController?.masterViewControllerSelectionChanged(tab: tab)
+      structurePageController.setPageControllerSelection(selectedArrangedObjects: selectedObjects, selectedIndex: index, isActiveTab: false)
+    }
+  }
+  
+  
+  
+  func setPageControllerFrameObject(arrangedObjects objects: [Any], selectedIndex index: Int)
+  {
+    if let structurePageController: FramePageController = detailTabViewController?.structureDetailTabViewController
+    {
+      structurePageController.setPageControllerFrameObject(arrangedObjects: objects, selectedIndex: index)
+    }
+  }
+  
+  func setPageControllerFrameSelection(selectedIndex index: Int)
+  {
+    if let structurePageController: FramePageController = detailTabViewController?.structureDetailTabViewController
+    {
+      structurePageController.setPageControllerFrameSelection(selectedIndex: index, isActiveTab: false)
     }
   }
   

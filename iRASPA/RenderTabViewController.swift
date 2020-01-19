@@ -37,10 +37,8 @@ import SymmetryKit
 import LogViewKit
 import MathKit
 
-class RenderTabViewController: NSTabViewController, NSMenuItemValidation, WindowControllerConsumer, ProjectConsumer, GlobalModifierFlagsConsumer, RKRenderViewSelectionDelegate, StructurePageController
+class RenderTabViewController: NSTabViewController, NSMenuItemValidation, WindowControllerConsumer, ProjectConsumer, GlobalModifierFlagsConsumer, RKRenderViewSelectionDelegate
 {
-  var structures: [Structure] = []
-  
   weak var windowController: iRASPAWindowController?
   
   weak var renderDataSource: RKRenderDataSource?
@@ -327,50 +325,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  func masterViewControllerTabChanged(tab: Int)
-  {
-    if let project = representedObject as? ProjectStructureNode
-    {
-      switch(tab)
-      {
-      case 0:
-        self.structures = project.sceneList.scenes.flatMap{$0.allStructures}
-      case 1:
-        self.structures = project.sceneList.scenes.flatMap{$0.selectedMovies}.flatMap{$0.allStructures}
-      case 2:
-          self.structures = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0.structure} ?? []
-      default:
-        break
-      }
-    }
-    else
-    {
-      self.structures = []
-    }
-  }
-  
-  func masterViewControllerSelectionChanged(tab: Int)
-  {
-    if let project = representedObject as? ProjectStructureNode
-    {
-      switch(tab)
-      {
-      case 0:
-        break
-      case 1:
-        self.structures = project.sceneList.scenes.flatMap{$0.selectedMovies}.flatMap{$0.allStructures}
-      case 2:
-        self.structures = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0.structure} ?? []
-        
-      default:
-        break
-      }
-    }
-    else
-    {
-      self.structures = []
-    }
-  }
+ 
 
 
 
@@ -3192,7 +3147,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @objc func paste(_ sender: AnyObject)
   {
     if let proxyProject: ProjectTreeNode = proxyProject,
-       let _: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
     {
       if !proxyProject.isEditable
       {
@@ -3212,6 +3167,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       
       if let atoms: [SKAtomTreeNode] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil) as? [SKAtomTreeNode]
       {
+        // TODO: paste into structures depending on the selected master-tab
+        // For now: paste into all visible structures
+        let structures: [Structure] = project.allStructures.filter{$0.isVisible}
         for structure in structures
         {
           // create new sets of objects for each structure

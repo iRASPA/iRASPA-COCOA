@@ -33,20 +33,18 @@ import Cocoa
 
 protocol StructurePageController: class
 {
-  func masterViewControllerTabChanged(tab: Int)
-  func masterViewControllerSelectionChanged(tab: Int)
+  func setPageControllerObjects(arrangedObjects objects: [Any], selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int)
+  func setPageControllerSelection(selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int, isActiveTab: Bool)
 }
 
-protocol PageStatusController: StructurePageController
+protocol FramePageController: class
 {
-  var arrangedObjects: [Any] { get set }
-  var selectedArrangedObjects: [Any] { get set }
+  func setPageControllerFrameObject(arrangedObjects objects: [Any], selectedIndex index: Int)
+  func setPageControllerFrameSelection(selectedIndex index: Int, isActiveTab: Bool)
 }
 
 
-
-
-class StructureDetailTabViewController: NSTabViewController, WindowControllerConsumer, StructurePageController, Reloadable
+class StructureDetailTabViewController: NSTabViewController, WindowControllerConsumer, StructurePageController, FramePageController, Reloadable
 {
   weak var windowController: iRASPAWindowController?
   
@@ -71,26 +69,62 @@ class StructureDetailTabViewController: NSTabViewController, WindowControllerCon
     }
   }
   
-  func masterViewControllerTabChanged(tab: Int)
+  
+  // MARK: StructurePageController protocol
+  // ========================================================================================
+  
+  func setPageControllerObjects(arrangedObjects objects: [Any], selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int)
   {
     for child in self.children
     {
-      if let structurePageController: PageStatusController = child as? PageStatusController
+      if let structurePageController: StructurePageController = child as? StructurePageController
       {
-        structurePageController.masterViewControllerTabChanged(tab: tab)
+        structurePageController.setPageControllerObjects(arrangedObjects: objects, selectedArrangedObjects: selectedObjects, selectedIndex: index)
       }
     }
     self.reloadData()
   }
   
-  func masterViewControllerSelectionChanged(tab: Int)
+  
+  
+  func setPageControllerSelection(selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int, isActiveTab: Bool)
   {
     for child in self.children
     {
-      if let structurePageController: PageStatusController = child as? PageStatusController
+      if let structurePageController: StructurePageController = child as? StructurePageController,
+        let tabViewItem = self.tabViewItem(for: child)
       {
-        structurePageController.masterViewControllerSelectionChanged(tab: tab)
+        structurePageController.setPageControllerSelection(selectedArrangedObjects: selectedObjects, selectedIndex: index, isActiveTab: tabViewItem.tabState == NSTabViewItem.State.selectedTab)
       }
     }
   }
+  
+  // MARK: FramePageController protocol
+   // ========================================================================================
+   
+  
+  func setPageControllerFrameObject(arrangedObjects objects: [Any], selectedIndex index: Int)
+  {
+    for child in self.children
+    {
+      if let structurePageController: FramePageController = child as? FramePageController
+      {
+        structurePageController.setPageControllerFrameObject(arrangedObjects: objects, selectedIndex: index)
+      }
+    }
+    self.reloadData()
+  }
+  
+  func setPageControllerFrameSelection(selectedIndex index: Int, isActiveTab: Bool)
+  {
+    for child in self.children
+    {
+      if let structurePageController: FramePageController = child as? FramePageController,
+         let tabViewItem = self.tabViewItem(for: child)
+      {
+        structurePageController.setPageControllerFrameSelection(selectedIndex: index, isActiveTab: tabViewItem.tabState == NSTabViewItem.State.selectedTab)
+      }
+    }
+  }
+  
 }

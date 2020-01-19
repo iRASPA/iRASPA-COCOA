@@ -243,7 +243,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     
     self.reloadSelection()
     
-    windowController?.masterViewControllerTabChanged(tab: 0)
+    self.setDetailViewController()
   }
   
   
@@ -2210,6 +2210,31 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     return nil
   }
   
+  // MARK: Set and update detail views
+  // ===============================================================================================================================
+  
+  func setDetailViewController()
+  {
+    if let proxyProject: ProjectTreeNode = selectedProject,
+       let projectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+    {
+      let sceneList: [SceneList] = [projectStructureNode.sceneList]
+      let selectedArrangedObjects: [Any] = projectStructureNode.sceneList.scenes.isEmpty ? [[]] : sceneList
+      let arrangedObjects: [Any] = projectStructureNode.sceneList.scenes.isEmpty ? [[]] : sceneList
+      
+      windowController?.setPageControllerObjects(arrangedObjects: arrangedObjects,  selectedArrangedObjects: selectedArrangedObjects, selectedIndex: 0)
+      
+      let secondArrangedObjects: [Any] = [projectStructureNode.sceneList.selectedScene?.selectedMovie?.selectedFrame ?? [] ]
+      
+      windowController?.setPageControllerFrameObject(arrangedObjects: secondArrangedObjects, selectedIndex: 0)
+    }
+    else
+    {
+      windowController?.setPageControllerObjects(arrangedObjects: [[]], selectedArrangedObjects: [[]], selectedIndex: 0)
+      windowController?.setPageControllerFrameObject(arrangedObjects: [[]], selectedIndex: 0)
+    }
+  }
+  
   
   
   // Switches to a new current project. Occurs in 3 cases:
@@ -2278,6 +2303,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         projectStructureNode.setInitialSelectionIfNeeded()
           self.windowController?.masterTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
         self.windowController?.detailTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
+        
+       
         }
       
       // propagate proxyProject
@@ -2286,7 +2313,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       // update the render-view
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
-      windowController?.masterViewControllerTabChanged(tab: 0)
+      self.setDetailViewController()
     }
     else
     {
@@ -2296,7 +2323,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       // update the render-view
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
-      windowController?.masterViewControllerTabChanged(tab: 0)
+      self.setDetailViewController()
     }
   }
   
