@@ -34,7 +34,7 @@ import RenderKit
 import iRASPAKit
 import CatchObjectiveCExceptions
 
-class StructureInfoDetailViewPageController: NSPageController, WindowControllerConsumer, ProjectConsumer, NSPageControllerDelegate, PageStatusController, Reloadable
+class StructureInfoDetailViewPageController: NSPageController, WindowControllerConsumer, ProjectConsumer, NSPageControllerDelegate, StructurePageController, Reloadable
 {
   weak var windowController: iRASPAWindowController?
   
@@ -93,128 +93,43 @@ class StructureInfoDetailViewPageController: NSPageController, WindowControllerC
     }
   }
   
-  func masterViewControllerTabChanged(tab: Int)
+  func setPageControllerObjects(arrangedObjects objects: [Any], selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int)
   {
-    if let project = representedObject as? ProjectStructureNode
+    if let _ = representedObject as? ProjectStructureNode
     {
-      switch(tab)
-      {
-      case 0:
-        let sceneList: [SceneList] = [project.sceneList]
-        self.selectedArrangedObjects = project.sceneList.scenes.isEmpty ? [[]] : sceneList
-        self.arrangedObjects = project.sceneList.scenes.isEmpty ? [[]] : sceneList
-        self.selectedIndex = 0
-      case 1:
-        let selectedMovies: [Movie] = project.sceneList.scenes.flatMap{$0.selectedMovies}
-        self.selectedArrangedObjects = selectedMovies
-        let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
-        self.arrangedObjects = movies.isEmpty ? [[]] : movies
-        
-        if let selectedScene: Scene = project.sceneList.selectedScene,
-          let selectedMovie: Movie = selectedScene.selectedMovie,
-          let selectionIndex = movies.firstIndex(of: selectedMovie)
-        {
-          self.selectedIndex = selectionIndex
-        }
-      case 2:
-        if let selectedScene: Scene = project.sceneList.selectedScene,
-          let selectionMovie: Movie = selectedScene.selectedMovie
-        {
-          self.selectedArrangedObjects = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
-          let frames: [iRASPAStructure] = selectionMovie.allIRASPAStructures
-          self.arrangedObjects = frames.isEmpty ? [[]] : frames
-          
-          if let selectedFrame: iRASPAStructure = selectionMovie.selectedFrame,
-            let selectionIndex: Int = selectionMovie.frames.firstIndex(of: selectedFrame)
-          {
-            self.selectedIndex = selectionIndex
-          }
-        }
-      default:
-        break
-      }
+      self.selectedArrangedObjects = selectedObjects
+      self.arrangedObjects = objects
+      self.selectedIndex = index
     }
     else
     {
-      self.arrangedObjects = [[]]
       self.selectedArrangedObjects = [[]]
+      self.arrangedObjects = [[]]
       self.selectedIndex = 0
     }
   }
   
-  func masterViewControllerSelectionChanged(tab: Int)
+  func setPageControllerSelection(selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int, isActiveTab: Bool)
   {
-    if let project = representedObject as? ProjectStructureNode
+    self.selectedArrangedObjects = selectedObjects
+    if index != self.selectedIndex
     {
-      switch(tab)
+      if isActiveTab
       {
-      case 0:
-        break
-      case 1:
-        let selectedMovies: [Movie] = project.sceneList.scenes.flatMap{$0.selectedMovies}
-        self.selectedArrangedObjects = selectedMovies
-        
-        let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
-        
-        if let selectedMovie: Movie = project.sceneList.selectedScene?.selectedMovie,
-          let selectionIndex = movies.firstIndex(of: selectedMovie)
-        {
-          if selectionIndex != self.selectedIndex
-          {
-            if (self.parent as? NSTabViewController)?.selectedTabViewItemIndex == 2
-            {
-              self.transitionToNewIndex(selectionIndex)
-            }
-            else
-            {
-              self.selectedIndex = selectionIndex
-            }
-          }
-          else
-          {
-            // update current viewController even if index remains the same
-            if let selectedViewController = self.selectedViewController
-            {
-              self.pageController(self, prepare: selectedViewController, with: self.arrangedObjects[self.selectedIndex])
-            }
-          }
-        }
-      case 2:
-        self.selectedArrangedObjects = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
-        if let selectedScene: Scene = project.sceneList.selectedScene,
-          let selectedMovie: Movie = selectedScene.selectedMovie,
-          let selectedFrame: iRASPAStructure = selectedMovie.selectedFrame,
-          let selectionIndex: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
-        {
-          if selectionIndex != self.selectedIndex
-          {
-            if let index: Int = (self.parent as? NSTabViewController)?.selectedTabViewItemIndex
-            {
-              switch(index)
-              {
-              case 2:
-                self.transitionToNewIndex(selectionIndex)
-              default:
-                self.selectedIndex = selectionIndex
-              }
-            }
-          }
-          else
-          {
-            // update current viewController even if index remains the same
-            if let selectedViewController = self.selectedViewController
-            {
-              self.pageController(self, prepare: selectedViewController, with: self.arrangedObjects[self.selectedIndex])
-            }
-          }
-        }
-      default:
-        break
+        self.transitionToNewIndex(index)
+      }
+      else
+      {
+        self.selectedIndex = index
       }
     }
     else
     {
-      self.selectedIndex = 0
+      // update current viewController even if index remains the same
+      if let selectedViewController = self.selectedViewController
+      {
+        self.pageController(self, prepare: selectedViewController, with: self.arrangedObjects[self.selectedIndex])
+      }
     }
   }
   

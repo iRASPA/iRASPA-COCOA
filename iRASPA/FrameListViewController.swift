@@ -114,7 +114,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     // reload the data again after the view did appear to have the correct background for the NSTableRowViews
     self.reloadData()
     
-    windowController?.masterViewControllerTabChanged(tab: 2)
+    //windowController?.masterViewControllerTabChanged(tab: 2)
+    self.setDetailViewController()
   }
   
   override func viewDidAppear()
@@ -140,23 +141,6 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   
   // MARK: Reloading data
   // ===============================================================================================================================
-  
-  
-  func setSelectionIndex(index: Int)
-  {
-    if let sceneList = (self.proxyProject?.representedObject.loadedProjectStructureNode)?.sceneList,
-       let movie: Movie = sceneList.selectedScene?.selectedMovie
-    {
-      movie.selectedFrames = [movie.frames[index]]
-      movie.selectedFrame = movie.frames[index]
-      sceneList.synchronizeAllMovieFrames(to: index)
-      self.reloadSelection()
-      
-      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
-    }
-   
-    self.windowController?.detailTabViewController?.renderViewController?.redraw()
-  }
   
   func reloadData()
   {
@@ -185,7 +169,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       
       self.reloadSelection()
      
-      self.windowController?.masterViewControllerTabChanged(tab: 2)
+      //self.windowController?.masterViewControllerTabChanged(tab: 2)
+      self.setDetailViewController()
       
       (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -218,7 +203,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       }
       self.reloadSelection()
       
-      self.windowController?.masterViewControllerTabChanged(tab: 2)
+      //self.windowController?.masterViewControllerTabChanged(tab: 2)
+      self.setDetailViewController()
       
       (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -480,7 +466,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       
       self.reloadSelection()
       
-      self.windowController?.masterViewControllerTabChanged(tab: 2)
+      //self.windowController?.masterViewControllerTabChanged(tab: 2)
+      self.setDetailViewController()
       
       (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -525,7 +512,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       
       self.reloadSelection()
       
-      self.windowController?.masterViewControllerTabChanged(tab: 2)
+      //self.windowController?.masterViewControllerTabChanged(tab: 2)
+      self.setDetailViewController()
       
       (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -554,6 +542,63 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       
       self.deleteSelectedFrames(selectedFrames, from: indexSet, newSelectedFrame: newSelectedFrame, newSelection: newSelection)
     }
+  }
+  
+  // MARK: Set and update detail views
+  // ===============================================================================================================================
+  
+  func setDetailViewController()
+  {
+    if let proxyProject = self.proxyProject,
+       let project = proxyProject.representedObject.loadedProjectStructureNode,
+       let selectedScene: Scene = project.sceneList.selectedScene,
+       let selectionMovie: Movie = selectedScene.selectedMovie
+    {
+      let selectedArrangedObjects: [Any] = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
+      let frames: [iRASPAStructure] = selectionMovie.allIRASPAStructures
+      let arrangedObjects: [Any] = frames.isEmpty ? [[]] : frames
+      
+      if let selectedFrame: iRASPAStructure = selectionMovie.selectedFrame,
+         let selectionIndex: Int = selectionMovie.frames.firstIndex(of: selectedFrame)
+      {
+        self.windowController?.setPageControllerObjects(arrangedObjects: arrangedObjects, selectedArrangedObjects: selectedArrangedObjects, selectedIndex: selectionIndex)
+      
+        self.windowController?.setPageControllerFrameObject(arrangedObjects: arrangedObjects,  selectedIndex: selectionIndex)
+      }
+    }
+  }
+  
+  func updateDetailViewController()
+  {
+    if let proxyProject = self.proxyProject,
+       let project = proxyProject.representedObject.loadedProjectStructureNode,
+       let selectedScene: Scene = project.sceneList.selectedScene,
+       let selectedMovie: Movie = selectedScene.selectedMovie,
+       let selectedFrame: iRASPAStructure = selectedMovie.selectedFrame,
+       let selectionIndex: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
+    {
+      let selectedArrangedObjects: [Any] = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
+      
+      self.windowController?.setPageControllerSelection(selectedArrangedObjects: selectedArrangedObjects, selectedIndex: selectionIndex)
+      
+      self.windowController?.setPageControllerFrameSelection(selectedIndex: selectionIndex)
+    }
+  }
+  
+  func setSelectionIndex(index: Int)
+  {
+    if let sceneList = (self.proxyProject?.representedObject.loadedProjectStructureNode)?.sceneList,
+       let movie: Movie = sceneList.selectedScene?.selectedMovie
+    {
+      movie.selectedFrames = [movie.frames[index]]
+      movie.selectedFrame = movie.frames[index]
+      sceneList.synchronizeAllMovieFrames(to: index)
+      self.reloadSelection()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+    }
+   
+    self.windowController?.detailTabViewController?.renderViewController?.redraw()
   }
   
   // MARK: Selection handling
@@ -663,7 +708,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       }
 
       
-      windowController?.masterViewControllerSelectionChanged(tab: 2)
+      //windowController?.masterViewControllerSelectionChanged(tab: 2)
+      self.updateDetailViewController()
         
       if let proxyProject = self.proxyProject,
         let project = proxyProject.representedObject.loadedProjectStructureNode,
@@ -1063,7 +1109,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       }
       self.framesTableView?.endUpdates()
       
-      self.windowController?.masterViewControllerTabChanged(tab: 2)
+      //self.windowController?.masterViewControllerTabChanged(tab: 2)
+      self.setDetailViewController()
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let project = self.proxyProject?.representedObject.project as? ProjectStructureNode

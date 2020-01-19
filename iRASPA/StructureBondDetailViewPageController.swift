@@ -69,7 +69,7 @@ import CatchObjectiveCExceptions
 //          this removes the custom transition view hiearchy and replaces it with a new prepared view-controller with page2-content
 
 
-class StructureBondDetailViewPageController: NSPageController, WindowControllerConsumer, ProjectConsumer, NSPageControllerDelegate, PageStatusController, Reloadable
+class StructureBondDetailViewPageController: NSPageController, WindowControllerConsumer, ProjectConsumer, NSPageControllerDelegate, FramePageController, Reloadable
 {
   weak var windowController: iRASPAWindowController?
   
@@ -118,46 +118,12 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
     }
   }
   
-  func masterViewControllerTabChanged(tab: Int)
+  func setPageControllerFrameObject(arrangedObjects objects: [Any], selectedIndex index: Int)
   {
-    if let project = representedObject as? ProjectStructureNode
+    if let _ = representedObject as? ProjectStructureNode
     {
-      switch(tab)
-      {
-      case 0:
-        self.arrangedObjects = [project.sceneList.selectedScene?.selectedMovie?.selectedFrame ?? [] ]
-        self.selectedIndex = 0
-      case 1:
-        let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
-        
-        // atoms and bonds tab show a list of current-frames of all the movies
-        let frames: [iRASPAStructure] = movies.compactMap{$0.selectedFrame}
-        self.arrangedObjects = frames.isEmpty ? [[]] : frames
-        
-        if let selectedScene: Scene = project.sceneList.selectedScene,
-          let sceneIndex: Int = project.sceneList.scenes.firstIndex(of: selectedScene),
-          let selectedMovie: Movie = selectedScene.selectedMovie,
-          let movieIndex: Int = selectedScene.movies.firstIndex(of: selectedMovie)
-        {
-          let selectionIndex: Int = project.sceneList.rowForSectionTuple(sceneIndex, movieIndex: movieIndex)
-          self.selectedIndex = selectionIndex
-        }
-      case 2:
-        if let selectedScene: Scene = project.sceneList.selectedScene,
-          let selectionMovie: Movie = selectedScene.selectedMovie
-        {
-          let frames: [iRASPAStructure] = selectionMovie.allIRASPAStructures
-          self.arrangedObjects = frames.isEmpty ? [[]] : frames
-          
-          if let selectedFrame: iRASPAStructure = selectionMovie.selectedFrame,
-            let selectionIndex: Int = selectionMovie.frames.firstIndex(of: selectedFrame)
-          {
-            self.selectedIndex = selectionIndex
-          }
-        }
-      default:
-        fatalError()
-      }
+      self.arrangedObjects = objects
+      self.selectedIndex = index
     }
     else
     {
@@ -166,58 +132,29 @@ class StructureBondDetailViewPageController: NSPageController, WindowControllerC
     }
   }
   
-  func masterViewControllerSelectionChanged(tab: Int)
+  func setPageControllerFrameSelection(selectedIndex index: Int, isActiveTab: Bool)
   {
-    if let project = representedObject as? ProjectStructureNode
+    if index != self.selectedIndex
     {
-      switch(tab)
+      if isActiveTab
       {
-      case 1:
-        if let selectedScene: Scene = project.sceneList.selectedScene,
-          let sceneIndex: Int = project.sceneList.scenes.firstIndex(of: selectedScene),
-          let selectedMovie: Movie = selectedScene.selectedMovie,
-          let movieIndex: Int = selectedScene.movies.firstIndex(of: selectedMovie)
-        {
-          let selectionIndex: Int = project.sceneList.rowForSectionTuple(sceneIndex, movieIndex: movieIndex)
-        
-          if let index: Int = (self.parent as? NSTabViewController)?.selectedTabViewItemIndex
-          {
-            switch(index)
-            {
-            case 6:
-              self.transitionToNewIndex(selectionIndex)
-            default:
-              self.selectedIndex = selectionIndex
-            }
-          }
-        }
-      case 2:
-        if let selectedScene: Scene = project.sceneList.selectedScene,
-           let selectedMovie: Movie = selectedScene.selectedMovie,
-           let selectedFrame: iRASPAStructure = selectedMovie.selectedFrame,
-           let selectionIndex: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
-        {
-          if let index: Int = (self.parent as? NSTabViewController)?.selectedTabViewItemIndex
-          {
-            switch(index)
-            {
-            case 6:
-              self.transitionToNewIndex(selectionIndex)
-            default:
-              self.selectedIndex = selectionIndex
-            }
-          }
-        }
-      default:
-        fatalError()
+        self.transitionToNewIndex(index)
+      }
+      else
+      {
+        self.selectedIndex = index
       }
     }
     else
     {
-      self.selectedIndex = 0
+      // update current viewController even if index remains the same
+      if let selectedViewController = self.selectedViewController
+      {
+        self.pageController(self, prepare: selectedViewController, with: self.arrangedObjects[self.selectedIndex])
+      }
     }
   }
-
+  
   func transitionToNewIndex(_ index: Int)
   {
     if index >= 0 && index < self.arrangedObjects.count &&

@@ -130,7 +130,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     
     self.reloadData()
     
-    windowController?.masterViewControllerTabChanged(tab: 1)
+    self.setDetailViewController()
   }
   
   override func viewDidAppear()
@@ -230,7 +230,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       self.reloadSelection()
       
-      windowController?.masterViewControllerTabChanged(tab: 1)
+      self.setDetailViewController()
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -306,7 +306,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       self.reloadSelection()
 
-      windowController?.masterViewControllerTabChanged(tab: 1)
+      self.setDetailViewController()
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -400,7 +400,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       project.sceneList.selectedMovies = newSelection
       self.reloadSelection()
       
-      windowController?.masterViewControllerTabChanged(tab: 1)
+      self.setDetailViewController()
       
       if let currentSelectedScene = currentSelectedScene
       {
@@ -450,7 +450,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       project.sceneList.selectedMovies = newSelection
       self.reloadSelection()
       
-      windowController?.masterViewControllerTabChanged(tab: 1)
+      self.setDetailViewController()
       
       if let currentSelectedScene = currentSelectedScene
       {
@@ -1371,7 +1371,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         self.reloadData()
         
         // change to update
-        self.windowController?.masterViewControllerTabChanged(tab: 1)
+        self.setDetailViewController()
       })
       
       self.observeNotifications = observeNotificationsStored
@@ -1451,7 +1451,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         }
         self.structuresOutlineView?.endUpdates()
       }, completionHandler: {
-        self.windowController?.masterViewControllerTabChanged(tab: 1)
+        self.setDetailViewController()
         
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
@@ -1516,7 +1516,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       })
       self.structuresOutlineView?.endUpdates()
       
-      self.windowController?.masterViewControllerTabChanged(tab: 1)
+      self.setDetailViewController()
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
@@ -1613,6 +1613,95 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
     }
   }
+  
+  // MARK: Set and update detail views
+  // ===============================================================================================================================
+  
+  func setDetailViewController()
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
+      let selectedArrangedObjects: [Movie] = project.sceneList.scenes.flatMap{$0.selectedMovies}
+      let arrangedObjects: [Any] = movies.isEmpty ? [[]] : movies
+      
+      if let selectedScene: Scene = project.sceneList.selectedScene,
+         let selectedMovie: Movie = selectedScene.selectedMovie,
+         let selectionIndex = movies.firstIndex(of: selectedMovie)
+      {
+        windowController?.setPageControllerObjects(arrangedObjects: arrangedObjects,  selectedArrangedObjects:selectedArrangedObjects, selectedIndex: selectionIndex)
+      }
+    
+      if let selectedScene: Scene = project.sceneList.selectedScene,
+         let sceneIndex: Int = project.sceneList.scenes.firstIndex(of: selectedScene),
+         let selectedMovie: Movie = selectedScene.selectedMovie,
+         let movieIndex = selectedScene.movies.firstIndex(of: selectedMovie)
+      {
+        let frames: [iRASPAStructure] = movies.compactMap{$0.selectedFrame}
+        let arrangedObjects: [Any] = frames.isEmpty ? [[]] : frames
+               
+        let selectionIndex: Int = project.sceneList.rowForSectionTuple(sceneIndex, movieIndex: movieIndex)
+        windowController?.setPageControllerFrameObject(arrangedObjects: arrangedObjects, selectedIndex: selectionIndex)
+      }
+    }
+  }
+  
+  func updateDetailViewController()
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let selectedMovies: [Movie] = project.sceneList.scenes.flatMap{$0.selectedMovies}
+      let selectedArrangedObjects = selectedMovies
+      let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
+      
+      if let selectedMovie: Movie = project.sceneList.selectedScene?.selectedMovie,
+         let selectionIndex: Int = movies.firstIndex(of: selectedMovie)
+      {
+        windowController?.setPageControllerSelection(selectedArrangedObjects: selectedArrangedObjects, selectedIndex: selectionIndex)
+      }
+      
+      
+      if let selectedScene: Scene = project.sceneList.selectedScene,
+         let sceneIndex: Int = project.sceneList.scenes.firstIndex(of: selectedScene),
+         let selectedMovie: Movie = selectedScene.selectedMovie,
+         let movieIndex = selectedScene.movies.firstIndex(of: selectedMovie)
+      {
+        let selectionIndex: Int = project.sceneList.rowForSectionTuple(sceneIndex, movieIndex: movieIndex)
+       
+        windowController?.setPageControllerFrameSelection(selectedIndex: selectionIndex)
+      }
+    }
+  }
+  
+  func setSelectionIndex(index: Int)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
+      let movie: Movie = movies[index]
+      if let indexPath: IndexPath = project.sceneList.indexPath(movie)
+      {
+        // clear old selection
+        project.sceneList.selectedScene?.selectedMovie = nil
+        project.sceneList.selectedScene?.selectedMovies = []
+        
+        // set new selection
+        let selectedScene: Scene = project.sceneList.scenes[indexPath[0]]
+        let selectedMovie: Movie = selectedScene.movies[indexPath[1]]
+        
+        project.sceneList.selectedScene = selectedScene
+        
+        selectedScene.selectedMovies = [selectedMovie]
+        selectedScene.selectedMovie = selectedMovie
+        
+        self.observeNotifications = false
+        self.reloadSelection()
+        self.observeNotifications = true
+      }
+    }
+  }
+
+  
 
   // MARK: Selection handling
   // ===============================================================================================================================
@@ -1824,40 +1913,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
           }
         }
         
-        windowController?.masterViewControllerSelectionChanged(tab: 1)
+        self.updateDetailViewController()
       }
       
     }
   }
   
-  func setSelectionIndex(index: Int)
-  {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-    {
-      let movies: [Movie] = project.sceneList.scenes.flatMap{$0.movies}
-      let movie: Movie = movies[index]
-      if let indexPath: IndexPath = project.sceneList.indexPath(movie)
-      {
-        // clear old selection
-        project.sceneList.selectedScene?.selectedMovie = nil
-        project.sceneList.selectedScene?.selectedMovies = []
-        
-        // set new selection
-        let selectedScene: Scene = project.sceneList.scenes[indexPath[0]]
-        let selectedMovie: Movie = selectedScene.movies[indexPath[1]]
-        
-        project.sceneList.selectedScene = selectedScene
-        
-        selectedScene.selectedMovies = [selectedMovie]
-        selectedScene.selectedMovie = selectedMovie
-        
-        self.observeNotifications = false
-        self.reloadSelection()
-        self.observeNotifications = true
-      }
-    }
-  }
-
   
   
 
@@ -2011,7 +2072,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       self.structuresOutlineView?.endUpdates()
       
-      self.windowController?.masterViewControllerTabChanged(tab: 1)
+      self.setDetailViewController()
             
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
