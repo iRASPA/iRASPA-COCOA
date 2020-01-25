@@ -162,7 +162,27 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
 
   func windowWillReturnUndoManager(_ window: NSWindow) -> UndoManager?
   {
-    return (self.document as? iRASPADocument)?.undoManager
+    if let window: NSWindow = self.window,
+       let document: iRASPADocument = self.document as? iRASPADocument,
+       let responderView: NSView = window.firstResponder as? NSView,
+       let projectView: NSView = self.masterTabViewController?.projectView
+    {
+      if (window.isKeyWindow)
+      {
+        // if the focus is anywhere in the projectView, then use the global-undoManager,
+        // otherwise return the undoManager for the selected projectNode
+        if (responderView.isDescendant(of: projectView))
+        {
+          return document.undoManager
+        }
+        else
+        {
+          return (document.documentData.projectData.selectedTreeNode?.representedObject)?.undoManager
+        }
+      }
+    }
+
+    return nil
   }
 
   
