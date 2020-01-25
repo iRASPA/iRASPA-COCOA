@@ -50,45 +50,6 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   var colorSets: SKColorSets = SKColorSets()
   var forceFieldSets: SKForceFieldSets = SKForceFieldSets()
   
-  // the undoManager is (if the the current window is key):
-  // 1) the general undomanager if the project-viewcontroller is the first-responder
-  // 2) the undoManager of the current project otherwise
-  @objc override var undoManager: UndoManager?
-  {
-    get
-    {
-      // the responder is generally a NSView
-      if let windowController: iRASPAWindowController = self.windowControllers.first as? iRASPAWindowController,
-         let window: NSWindow = windowController.window
-      {
-        if let responderView: NSView = window.firstResponder as? NSView,
-           let projectView: NSView = windowController.masterTabViewController?.projectView
-        {
-          if (window.isKeyWindow)
-          {
-            // if the focus is anywhere in the projectView, then use the global-undoManager,
-            // otherwise return the undoManager for the selected projectNode
-            if (responderView.isDescendant(of: projectView))
-            {
-              return super.undoManager
-            }
-            else
-            {
-              return (self.documentData.projectData.selectedTreeNode?.representedObject)?.undoManager ?? super.undoManager
-            }
-          }
-        }
-      }
- 
-      //Swift.print("asking for document undoManager (last resort)")
-      return super.undoManager
-    }
-    set(newValue)
-    {
-      super.undoManager = newValue
-    }
-  }
-  
   override class var autosavesInPlace: Bool
   {
     return Preferences.shared.autosaving
