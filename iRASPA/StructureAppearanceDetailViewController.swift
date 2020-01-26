@@ -2309,6 +2309,24 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
+        if let popUpbuttonSurfaceSize: iRASPAPopUpButton = view.viewWithTag(207) as? iRASPAPopUpButton
+        {
+          popUpbuttonSurfaceSize.isEditable = false
+          if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+          {
+            popUpbuttonSurfaceSize.isEditable = enabled && adsorptionSurfaceOn
+            if let structureSize: Int = representedStructure.renderAdsorptionSurfaceSize
+            {
+              popUpbuttonSurfaceSize.removeItem(withTitle: "Multiple Values")
+              popUpbuttonSurfaceSize.selectItem(withTitle: "\(structureSize)x\(structureSize)x\(structureSize)")
+            }
+            else
+            {
+              popUpbuttonSurfaceSize.setTitle("Multiple Values")
+            }
+          }
+        }
+        
         // High dynamic range
         if let button: NSButton = view.viewWithTag(7) as? NSButton
         {
@@ -5872,6 +5890,31 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAdsorptionSurfaceSize(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    {
+      switch(sender.indexOfSelectedItem)
+      {
+      case 0:
+        representedStructure.renderAdsorptionSurfaceSize = 128
+        break
+      case 1:
+        representedStructure.renderAdsorptionSurfaceSize = 256
+        break
+      default:
+        break
+      }
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
     }

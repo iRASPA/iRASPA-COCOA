@@ -428,7 +428,8 @@ kernel void traverseHP256(texture3d<uint,access::read> hp0 [[ texture(0) ]],
                           texture3d<uint,access::read> hp4 [[ texture(4) ]],
                           texture3d<uint,access::read> hp5 [[ texture(5) ]],
                           texture3d<uint,access::read> hp6 [[ texture(6) ]],
-                          texture3d<float,access::read> rawData [[ texture(7) ]],
+                          texture3d<uint,access::read> hp7 [[ texture(7) ]],
+                          texture3d<float,access::read> rawData [[ texture(8) ]],
                           device float4* VBOBuffer [[ buffer(0) ]],
                           device const float& isolevel [[ buffer(1) ]],
                           device uint& sum [[ buffer(2) ]],
@@ -441,6 +442,7 @@ kernel void traverseHP256(texture3d<uint,access::read> hp0 [[ texture(0) ]],
   
   uint4 cubePosition = {0,0,0,0}; // x,y,z,sum
   
+  cubePosition = scanHPLevel256(target, hp7, cubePosition);
   cubePosition = scanHPLevel256(target, hp6, cubePosition);
   cubePosition = scanHPLevel256(target, hp5, cubePosition);
   cubePosition = scanHPLevel256(target, hp4, cubePosition);

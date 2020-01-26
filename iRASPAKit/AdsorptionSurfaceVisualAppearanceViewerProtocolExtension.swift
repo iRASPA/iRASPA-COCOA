@@ -94,6 +94,19 @@ extension AdsorptionSurfaceVisualAppearanceViewer
     }
   }
   
+  public var renderAdsorptionSurfaceSize: Int?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceSize })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceSize = newValue ?? 128}
+    }
+  }
+  
   
   
   public var renderAdsorptionSurfaceProbeMolecule: Structure.ProbeMolecule?
@@ -415,6 +428,19 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
     set(newValue)
     {
       self.allStructures.forEach{$0.adsorptionSurfaceIsoValue = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceSize: Int?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceSize })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceSize = newValue ?? 0}
     }
   }
   

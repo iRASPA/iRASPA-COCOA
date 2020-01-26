@@ -277,14 +277,10 @@ class MetalIsosurfaceShader
       {
         let structures: [RKRenderStructure] = self.renderStructures[i]
         
-        
         for (j, structure) in structures.enumerated()
         {
-          //let isosurface: RKIsosurface = structure.renderAdsorptionSurface
-          
           if let structure = structure as? RKRenderAdsorptionSurfaceSource, structure.drawAdsorptionSurface
           {
-            
             var data: [Float] = []
             let size: Int = structure.adsorptionSurfaceSize
             if let cachedVersion: Data = cachedAdsorptionSurfaces[size]?.object(forKey: structure) as? Data
@@ -296,19 +292,19 @@ class MetalIsosurfaceShader
             }
             else
             {
-              
               let startTime: UInt64  = mach_absolute_time()
               
               let cell: SKCell = structure.cell
               let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
               let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
               let probeParameters: SIMD2<Double> = structure.adsorptionSurfaceProbeParameters
+              let size: Int = structure.adsorptionSurfaceSize
               
               let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
               let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
               
               
-              data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
+              data = framework.ComputeEnergyGrid(size, sizeY: size, sizeZ: size, probeParameter: probeParameters)
               
               let endTime: UInt64  = mach_absolute_time()
               
@@ -325,7 +321,7 @@ class MetalIsosurfaceShader
               let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000001
               LogQueue.shared.verbose(destination: windowController, message: "Time elapsed for creation of \(structure.displayName)-Metal energy grid is \(time) milliseconds")
               
-              if let cache: NSCache = cachedAdsorptionSurfaces[structure.adsorptionSurfaceSize]
+              if let cache: NSCache = cachedAdsorptionSurfaces[size]
               {
                 let cachedData: Data = Data(buffer: UnsafeBufferPointer(start: data, count: data.count))
                 cache.setObject(cachedData as AnyObject, forKey: structure)
@@ -333,12 +329,23 @@ class MetalIsosurfaceShader
             }
             
             let startTime: UInt64  = mach_absolute_time()
-            let marchingCubes = SKMetalMarchingCubes(device: device, commandQueue: commandQueue)
-            marchingCubes.isoValue = Float(structure.adsorptionSurfaceIsoValue)
-            
-            
-            
-            marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
+            switch(size)
+            {
+            case 128:
+              let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
+              
+              marchingCubes.isoValue = Float(structure.adsorptionSurfaceIsoValue)
+              
+              marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
+            case 256:
+              let marchingCubes = SKMetalMarchingCubes256(device: device, commandQueue: commandQueue)
+              
+              marchingCubes.isoValue = Float(structure.adsorptionSurfaceIsoValue)
+              
+              marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
+            default:
+              break
+            }
             
             let endTime: UInt64  = mach_absolute_time()
             

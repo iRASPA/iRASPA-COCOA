@@ -67,7 +67,6 @@ public class SKMetalFramework
   var totalNumberOfReplicas: Int = 1
   var totalNumberOfAtoms: Int = 0
   
-  
   var pipelineState: MTLComputePipelineState? = nil
   var device: MTLDevice
   var commandQueue: MTLCommandQueue
@@ -235,7 +234,7 @@ public class SKMetalFramework
         }
       }
       
-      var outputData: [Float] = [Float](repeating: 0.0, count: 128 * 128 * 128)
+      var outputData: [Float] = [Float](repeating: 0.0, count: sizeX * sizeY * sizeZ)
       memcpy(&outputData, bufferOutput.contents(), outputData.count * MemoryLayout<Float>.stride)
       
       return outputData
@@ -290,7 +289,7 @@ public class SKMetalFramework
       
       data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
       
-      let marchingCubes = SKMetalMarchingCubes(device: device, commandQueue: commandQueue)
+      let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
       marchingCubes.isoValue = Float(-probeParameters.x)
       
       var surfaceVertexBuffer: MTLBuffer? = nil

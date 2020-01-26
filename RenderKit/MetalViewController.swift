@@ -288,6 +288,7 @@ public class MetalViewController: NSViewController, RenderViewController
   public func invalidateIsosurfaces()
   {
     (self.view as? MetalView)?.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeAllObjects()
+    (self.view as? MetalView)?.renderer.isosurfaceShader.cachedAdsorptionSurfaces[256]?.removeAllObjects()
   }
   
   public func invalidateIsosurface(_ structures: [RKRenderStructure])
@@ -295,6 +296,7 @@ public class MetalViewController: NSViewController, RenderViewController
     for  structure in structures
     {
       (self.view as? MetalView)?.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeObject(forKey: structure)
+      (self.view as? MetalView)?.renderer.isosurfaceShader.cachedAdsorptionSurfaces[256]?.removeObject(forKey: structure)
     }
   }
   
@@ -351,7 +353,7 @@ public class MetalViewController: NSViewController, RenderViewController
         
         data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
         
-        let marchingCubes = SKMetalMarchingCubes(device: device, commandQueue: commandQueue)
+        let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
         marchingCubes.isoValue = Float(-probeParameters.x)
         
         var surfaceVertexBuffer: MTLBuffer? = nil

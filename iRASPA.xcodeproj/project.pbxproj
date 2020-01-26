@@ -22,6 +22,7 @@
 		930C97671FCEC6AD00B4611E /* InfoTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */; };
 		930C97691FCEC6C200B4611E /* ElementsTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97681FCEC6C200B4611E /* ElementsTableRowView.swift */; };
 		930C976B1FCEC6D300B4611E /* CellTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C976A1FCEC6D300B4611E /* CellTableRowView.swift */; };
+		930DC94D23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DC94C23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift */; };
 		930DD49D1E26A80F00B8FE9B /* SimulationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 930DD48D1E26A80E00B8FE9B /* SimulationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		930DD4A01E26A80F00B8FE9B /* SimulationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */; };
 		930DD4A11E26A80F00B8FE9B /* SimulationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -199,7 +200,7 @@
 		937405A81E4F0FEB0077B962 /* RenderTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937405A71E4F0FEB0077B962 /* RenderTabViewController.swift */; };
 		9374794D1FB9EAFC008C4411 /* SKSymmetryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9374794C1FB9EAFC008C4411 /* SKSymmetryCell.swift */; };
 		9374794F1FB9EB51008C4411 /* SKBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9374794E1FB9EB51008C4411 /* SKBoundingBox.swift */; };
-		937479531FB9ECF7008C4411 /* SKMetalMarchingCubes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937479521FB9ECF7008C4411 /* SKMetalMarchingCubes.swift */; };
+		937479531FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */; };
 		937479581FB9ED8F008C4411 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		9374795A1FB9EF2D008C4411 /* MarchingCubes3D_128x128x128.metal in Sources */ = {isa = PBXBuildFile; fileRef = 937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */; };
 		937807D721C5847000EC4466 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807D621C5847000EC4466 /* OrderedDictionary.swift */; };
@@ -809,6 +810,7 @@
 		930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableRowView.swift; sourceTree = "<group>"; };
 		930C97681FCEC6C200B4611E /* ElementsTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementsTableRowView.swift; sourceTree = "<group>"; };
 		930C976A1FCEC6D300B4611E /* CellTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTableRowView.swift; sourceTree = "<group>"; };
+		930DC94C23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes256.swift; sourceTree = "<group>"; };
 		930DD48B1E26A80E00B8FE9B /* SimulationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SimulationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		930DD48D1E26A80E00B8FE9B /* SimulationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimulationKit.h; sourceTree = "<group>"; };
 		930DD48E1E26A80E00B8FE9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -986,7 +988,7 @@
 		937405A71E4F0FEB0077B962 /* RenderTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderTabViewController.swift; sourceTree = "<group>"; };
 		9374794C1FB9EAFC008C4411 /* SKSymmetryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSymmetryCell.swift; sourceTree = "<group>"; };
 		9374794E1FB9EB51008C4411 /* SKBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKBoundingBox.swift; sourceTree = "<group>"; };
-		937479521FB9ECF7008C4411 /* SKMetalMarchingCubes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes.swift; sourceTree = "<group>"; };
+		937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes128.swift; sourceTree = "<group>"; };
 		937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D_128x128x128.metal; sourceTree = "<group>"; };
 		937807D621C5847000EC4466 /* OrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		937807D821C58E9500EC4466 /* SKConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKConstants.swift; sourceTree = "<group>"; };
@@ -1425,7 +1427,8 @@
 				937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */,
 				939C5692234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal */,
 				930DD4AC1E26A89D00B8FE9B /* SKMetalFramework.swift */,
-				937479521FB9ECF7008C4411 /* SKMetalMarchingCubes.swift */,
+				937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */,
+				930DC94C23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift */,
 				937807DC21C598AA00EC4466 /* SKVoidFraction.swift */,
 				937807DE21C598E200EC4466 /* SKSurfaceArea.swift */,
 				930DD48E1E26A80E00B8FE9B /* Info.plist */,
@@ -2906,13 +2909,14 @@
 				930DD4B11E26A8BC00B8FE9B /* ComputeEnergyGrid.metal in Sources */,
 				939C5693234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal in Sources */,
 				9374795A1FB9EF2D008C4411 /* MarchingCubes3D_128x128x128.metal in Sources */,
-				937479531FB9ECF7008C4411 /* SKMetalMarchingCubes.swift in Sources */,
+				937479531FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift in Sources */,
 				93BDF7651FB638810006692C /* SimulationKitProtocols.swift in Sources */,
 				937807DF21C598E200EC4466 /* SKSurfaceArea.swift in Sources */,
 				93426FD31F8CB7990034F0BF /* SKForceFieldType.swift in Sources */,
 				937807DD21C598AA00EC4466 /* SKVoidFraction.swift in Sources */,
 				93426FD71F8CCC030034F0BF /* SKForceFieldSets.swift in Sources */,
 				930DD4AE1E26A89D00B8FE9B /* SKMetalFramework.swift in Sources */,
+				930DC94D23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift in Sources */,
 				93426FD51F8CB9650034F0BF /* SKForceFieldSet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
