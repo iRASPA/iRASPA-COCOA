@@ -36,13 +36,14 @@ import simd
 import OperationKit
 
 
-// protocol extension to pass the windowController recursively to all NSViewControllers
+/// Protocol extension to pass the windowController recursively to all NSViewControllers
+///
+/// Note: if called in 'WindowDidLoad', using:
+/// propagate(self, toChildrenOf: self.contentViewController!)
+/// then all view-controllers will have 'windowController' set _before_ 'viewDidLoad'
+/// except for lazily-loaded viewcontroller (e.g. contentViews)
 extension WindowControllerConsumer
 {
-  // if called in 'WindowDidLoad', using:
-  // propagate(self, toChildrenOf: self.contentViewController!)
-  // then all view-controllers will have 'windowController' set _before_ 'viewDidLoad'
-  // except for lazily-loaded viewcontroller (e.g. contentViews)
   func propagateWindowController(_ windowController: iRASPAWindowController?, toChildrenOf parent: NSViewController)
   {
     if let consumer: WindowControllerConsumer = parent as? WindowControllerConsumer
@@ -55,14 +56,7 @@ extension WindowControllerConsumer
       propagateWindowController(windowController, toChildrenOf: child)
     }
   }
-}
 
-extension WindowControllerConsumer
-{
-  // if called in 'WindowDidLoad', using:
-  // propagate(self, toChildrenOf: self.contentViewController!)
-  // then all view-controllers will have 'windowController' set _before_ 'viewDidLoad'
-  // except for lazily-loaded viewcontroller (e.g. contentViews)
   func propagateFlags(_ flags: NSEvent.ModifierFlags, toChildrenOf parent: NSViewController)
   {
     if let consumer: GlobalModifierFlagsConsumer = parent as? GlobalModifierFlagsConsumer
@@ -163,9 +157,9 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
   func windowWillReturnUndoManager(_ window: NSWindow) -> UndoManager?
   {
     if let window: NSWindow = self.window,
-       let document: iRASPADocument = self.document as? iRASPADocument,
        let responderView: NSView = window.firstResponder as? NSView,
-       let projectView: NSView = self.masterTabViewController?.projectView
+       let document: iRASPADocument = self.document as? iRASPADocument,
+       let projectView: NSView = self.masterTabViewController?.projectsView
     {
       if (window.isKeyWindow)
       {
@@ -198,7 +192,6 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     
     if let type = try? NSDocumentController.shared.typeForContents(of: url)
     {
-      
       switch(type)
       {
       case iRASPA_CIF_UTI,
@@ -221,6 +214,9 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     return false
   }
   
+  /// Import projects
+  ///
+  /// Note: placed in the windowController to be always accessible
   @IBAction func importProject(_ sender: NSButton)
   {
     self.masterTabViewController?.importFileOpenPanel()
@@ -300,15 +296,28 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     }
   }
   
+  func window(_ window: NSWindow, willResizeForVersionBrowserWithMaxPreferredSize maxPreferredFrameSize: NSSize, maxAllowedSize maxAllowedFrameSize: NSSize) -> NSSize {
+    return maxAllowedFrameSize
+  }
   
-  func windowWillEnterVersionBrowser(_ aNotification: Notification)
+  var rightSplitWasCollapsed: Bool = false
+  
+  func windowDidEnterVersionBrowser(_ aNotification: Notification)
   {
-    
+    if let rightSplitViewItem = detailTabViewController?.rightSplitViewItem
+    {
+      rightSplitWasCollapsed = rightSplitViewItem.isCollapsed
+      rightSplitViewItem.animator().isCollapsed = true
+    }
   }
   
   
   func windowDidExitVersionBrowser(_ aNotification: Notification)
   {
+    if let rightSplitViewItem = detailTabViewController?.rightSplitViewItem
+    {
+      rightSplitViewItem.animator().isCollapsed = rightSplitWasCollapsed
+    }
   }
   
   // set the render-quality to medium at the start of a window resize

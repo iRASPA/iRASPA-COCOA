@@ -45,7 +45,7 @@ protocol ProjectController
   func importFileOpenPanel()
   func reloadData()
   func switchToCurrentProject()
-  var projectView: NSView? {get}
+  var projectsView: NSView? {get}
 }
 
 /// MasterTabViewController controls the "Structure viewer" and the "Directory Viewer"
@@ -94,12 +94,12 @@ public class MasterTabViewController: NSTabViewController, WindowControllerConsu
     }
   }
   
-  var projectView: NSView?
+  var projectsView: NSView?
   {
     let index: Int = self.selectedTabViewItemIndex
     if let currentViewController: NSViewController = self.tabViewItems[index].viewController
     {
-      return (currentViewController as? ProjectController)?.projectView
+      return (currentViewController as? ProjectController)?.projectsView
     }
     return nil
   }
