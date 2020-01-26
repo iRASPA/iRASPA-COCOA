@@ -87,7 +87,7 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
     }
   }
   
-  var projectView: NSView?
+  var projectsView: NSView?
   {
     if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
     {

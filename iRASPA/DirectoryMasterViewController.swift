@@ -83,7 +83,7 @@ class DirectoryMasterViewController: NSViewController, WindowControllerConsumer,
     
   }
   
-  var projectView: NSView?
+  var projectsView: NSView?
   {
     return nil
   }
