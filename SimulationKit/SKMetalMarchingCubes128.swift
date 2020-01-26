@@ -34,7 +34,7 @@ import Metal
 import simd
 import LogViewKit
 
-public class SKMetalMarchingCubes
+public class SKMetalMarchingCubes128
 {
   // data are floats
   public var voxels: [Float] = []
@@ -71,7 +71,7 @@ public class SKMetalMarchingCubes
     self.device = device
     self.commandQueue = commandQueue
     
-    let bundle: Bundle = Bundle(for: SKMetalMarchingCubes.self)
+    let bundle: Bundle = Bundle(for: SKMetalMarchingCubes128.self)
     let file: String = bundle.path(forResource: "default", ofType: "metallib")!
     defaultLibrary = try! self.device.makeLibrary(filepath: file)
     
