@@ -336,13 +336,22 @@ class MetalIsosurfaceShader
               
               marchingCubes.isoValue = Float(structure.adsorptionSurfaceIsoValue)
               
-              marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
+              do
+              {
+                try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
+              } catch {
+                  LogQueue.shared.error(destination: windowController, message: error.localizedDescription)
+              }
             case 256:
               let marchingCubes = SKMetalMarchingCubes256(device: device, commandQueue: commandQueue)
               
               marchingCubes.isoValue = Float(structure.adsorptionSurfaceIsoValue)
-              
-              marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
+              do
+              {
+                try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
+              } catch {
+                 LogQueue.shared.error(destination: windowController, message: error.localizedDescription)
+              }
             default:
               break
             }
