@@ -36,6 +36,7 @@ import SymmetryKit
 import AVFoundation
 import CoreMedia
 import CoreVideo
+import LogViewKit
 
 public class MetalViewController: NSViewController, RenderViewController
 {
@@ -359,7 +360,12 @@ public class MetalViewController: NSViewController, RenderViewController
         var surfaceVertexBuffer: MTLBuffer? = nil
         var numberOfTriangles: Int  = 0
         
-        marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &surfaceVertexBuffer, numberOfTriangles: &numberOfTriangles)
+        do
+        {
+          try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &surfaceVertexBuffer, numberOfTriangles: &numberOfTriangles)
+        } catch {
+          LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+        }
         
         if numberOfTriangles > 0,
           let ptr: UnsafeMutableRawPointer = surfaceVertexBuffer?.contents()

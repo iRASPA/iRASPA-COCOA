@@ -295,7 +295,12 @@ public class SKMetalFramework
       var surfaceVertexBuffer: MTLBuffer? = nil
       var numberOfTriangles: Int  = 0
       
-      marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &surfaceVertexBuffer, numberOfTriangles: &numberOfTriangles)
+      do
+      {
+        try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &surfaceVertexBuffer, numberOfTriangles: &numberOfTriangles)
+      } catch {
+         LogQueue.shared.error(destination: nil, message: error.localizedDescription)
+      }
       
       if numberOfTriangles > 0,
         let ptr: UnsafeMutableRawPointer = surfaceVertexBuffer?.contents()

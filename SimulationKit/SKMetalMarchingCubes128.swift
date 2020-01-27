@@ -36,7 +36,6 @@ import LogViewKit
 
 public class SKMetalMarchingCubes128
 {
-  // data are floats
   public var voxels: [Float] = []
   
   public var recompute: Bool = true
@@ -44,27 +43,16 @@ public class SKMetalMarchingCubes128
   public var opacity: Double = 0.0
   public var isoValue: Float = 0.0
   
-  
   var device: MTLDevice
   var commandQueue: MTLCommandQueue
   var defaultLibrary: MTLLibrary
   
-  // kernels for Image3D extension
   var constructHPLevelKernel: MTLFunction? = nil
   var classifyCubesKernel: MTLFunction? = nil
   var traverseHPKernel: MTLFunction? = nil
   var constructHPLevelPipelineState: MTLComputePipelineState? = nil
   var classifyCubesPipelineState: MTLComputePipelineState? = nil
   var traverseHPPipelineState: MTLComputePipelineState? = nil
-  
-  var image0: MTLTexture? = nil
-  var image1: MTLTexture? = nil
-  var image2: MTLTexture? = nil
-  var image3: MTLTexture? = nil
-  var image4: MTLTexture? = nil
-  var image5: MTLTexture? = nil
-  var image6: MTLTexture? = nil
-  var rawDataTexture: MTLTexture? = nil
   
   public init(device: MTLDevice, commandQueue: MTLCommandQueue)
   {
@@ -135,9 +123,8 @@ public class SKMetalMarchingCubes128
     }
   }
   
-  public func prepareHistoPyramids(_ voxels: [Float], isosurfaceVertexBuffer: inout MTLBuffer?, numberOfTriangles: inout Int)
+  public func prepareHistoPyramids(_ voxels: [Float], isosurfaceVertexBuffer: inout MTLBuffer?, numberOfTriangles: inout Int) throws
   {
-    
     if let classifyCubesPipelineState = classifyCubesPipelineState,
       let constructHPLevelPipelineState = constructHPLevelPipelineState,
       let traverseHPPipelineState = traverseHPPipelineState
@@ -160,7 +147,6 @@ public class SKMetalMarchingCubes128
       textureDescriptorUInt8Image0.depth = 128;
       textureDescriptorUInt8Image0.pixelFormat = MTLPixelFormat.rgba8Uint
       textureDescriptorUInt8Image0.mipmapLevelCount = 1
-      //textureDescriptorUInt8Image0.cpuCacheMode = .DefaultCache
       textureDescriptorUInt8Image0.resourceOptions = .storageModePrivate
       textureDescriptorUInt8Image0.usage = MTLTextureUsage(rawValue: MTLTextureUsage().rawValue)
       
@@ -224,26 +210,31 @@ public class SKMetalMarchingCubes128
       textureDescriptorUIntImage6.resourceOptions = .storageModeManaged
       textureDescriptorUIntImage6.usage = MTLTextureUsage(rawValue: MTLTextureUsage().rawValue)
       
-      image0 = device.makeTexture(descriptor: textureDescriptorUInt8Image0)
-      image1 = device.makeTexture(descriptor: textureDescriptorUInt8Image1)
-      image2 = device.makeTexture(descriptor: textureDescriptorUShortImage2)
-      image3 = device.makeTexture(descriptor: textureDescriptorUShortImage3)
-      image4 = device.makeTexture(descriptor: textureDescriptorUShortImage4)
-      image5 = device.makeTexture(descriptor: textureDescriptorUIntImage5)
-      image6 = device.makeTexture(descriptor: textureDescriptorUIntImage6)
-      rawDataTexture = device.makeTexture(descriptor: textureDescriptorRawData)
+      guard let image0: MTLTexture = device.makeTexture(descriptor: textureDescriptorUInt8Image0),
+        let image1: MTLTexture = device.makeTexture(descriptor: textureDescriptorUInt8Image1),
+        let image2: MTLTexture = device.makeTexture(descriptor: textureDescriptorUShortImage2),
+        let image3: MTLTexture = device.makeTexture(descriptor: textureDescriptorUShortImage3),
+        let image4: MTLTexture = device.makeTexture(descriptor: textureDescriptorUShortImage4),
+        let image5: MTLTexture = device.makeTexture(descriptor: textureDescriptorUIntImage5),
+        let image6: MTLTexture = device.makeTexture(descriptor: textureDescriptorUIntImage6),
+        let rawDataTexture: MTLTexture = device.makeTexture(descriptor: textureDescriptorRawData) else {
+        throw SimulationKitError.couldNotCreateTexture
+      }
       
       
       let region: MTLRegion = MTLRegionMake3D(0, 0, 0, 128, 128, 128)
-      rawDataTexture?.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: voxels, bytesPerRow: MemoryLayout<Float>.stride * region.size.width, bytesPerImage: MemoryLayout<Float>.stride * region.size.width * region.size.height)
-      let isoValueBufferData: MTLBuffer = device.makeBuffer(bytes: &isoValue, length: MemoryLayout<Float>.stride, options: .storageModeManaged)!
+      rawDataTexture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: voxels, bytesPerRow: MemoryLayout<Float>.stride * region.size.width, bytesPerImage: MemoryLayout<Float>.stride * region.size.width * region.size.height)
+      guard let isoValueBufferData: MTLBuffer = device.makeBuffer(bytes: &isoValue, length: MemoryLayout<Float>.stride, options: .storageModeManaged) else {
+        throw SimulationKitError.couldNotCreateBuffer
+      }
       
+      guard let commandBuffer = commandQueue.makeCommandBuffer() else {
+        throw SimulationKitError.couldNotMakeCommandBuffer
+      }
       
-      
-      let commandBuffer = commandQueue.makeCommandBuffer()!
-      
-      // Creates the command encoder from the command buffer
-      let commandEncoder1 = commandBuffer.makeComputeCommandEncoder()!
+      guard let commandEncoder1 = commandBuffer.makeComputeCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
       commandEncoder1.setComputePipelineState(classifyCubesPipelineState)
       commandEncoder1.setTexture(rawDataTexture, index: 0)
       commandEncoder1.setTexture(image0, index: 1)
@@ -254,12 +245,11 @@ public class SKMetalMarchingCubes128
       commandEncoder1.dispatchThreadgroups(threadGroups128, threadsPerThreadgroup: threadsPerGroup128)
       commandEncoder1.endEncoding()
       
-      
       let threadExecutionWidth: Int = constructHPLevelPipelineState.threadExecutionWidth
       
-      
-      // Encodes the pipeline state command
-      let commandEncoder2 = commandBuffer.makeComputeCommandEncoder()!
+      guard let commandEncoder2 = commandBuffer.makeComputeCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
       commandEncoder2.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder2.setTexture(image0, index: 0)
       commandEncoder2.setTexture(image1, index: 1)
@@ -268,7 +258,9 @@ public class SKMetalMarchingCubes128
       commandEncoder2.dispatchThreadgroups(threadGroups64, threadsPerThreadgroup: threadsPerGroup64)
       commandEncoder2.endEncoding()
       
-      let commandEncoder3 = commandBuffer.makeComputeCommandEncoder()!
+      guard let commandEncoder3 = commandBuffer.makeComputeCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
       commandEncoder3.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder3.setTexture(image1, index: 0)
       commandEncoder3.setTexture(image2, index: 1)
@@ -277,7 +269,9 @@ public class SKMetalMarchingCubes128
       commandEncoder3.dispatchThreadgroups(threadGroups32, threadsPerThreadgroup: threadsPerGroup32)
       commandEncoder3.endEncoding()
       
-      let commandEncoder4 = commandBuffer.makeComputeCommandEncoder()!
+      guard let commandEncoder4 = commandBuffer.makeComputeCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
       commandEncoder4.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder4.setTexture(image2, index: 0)
       commandEncoder4.setTexture(image3, index: 1)
@@ -286,7 +280,9 @@ public class SKMetalMarchingCubes128
       commandEncoder4.dispatchThreadgroups(threadGroups16, threadsPerThreadgroup: threadsPerGroup16)
       commandEncoder4.endEncoding()
       
-      let commandEncoder5 = commandBuffer.makeComputeCommandEncoder()!
+      guard let commandEncoder5 = commandBuffer.makeComputeCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
       commandEncoder5.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder5.setTexture(image3, index: 0)
       commandEncoder5.setTexture(image4, index: 1)
@@ -295,7 +291,9 @@ public class SKMetalMarchingCubes128
       commandEncoder5.dispatchThreadgroups(threadGroups8, threadsPerThreadgroup: threadsPerGroup8)
       commandEncoder5.endEncoding()
       
-      let commandEncoder6 = commandBuffer.makeComputeCommandEncoder()!
+      guard let commandEncoder6 = commandBuffer.makeComputeCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
       commandEncoder6.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder6.setTexture(image4, index: 0)
       commandEncoder6.setTexture(image5, index: 1)
@@ -304,7 +302,9 @@ public class SKMetalMarchingCubes128
       commandEncoder6.dispatchThreadgroups(threadGroups4, threadsPerThreadgroup: threadsPerGroup4)
       commandEncoder6.endEncoding()
       
-      let commandEncoder7 = commandBuffer.makeComputeCommandEncoder()!
+      guard let commandEncoder7 = commandBuffer.makeComputeCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
       commandEncoder7.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder7.setTexture(image5, index: 0)
       commandEncoder7.setTexture(image6, index: 1)
@@ -313,26 +313,24 @@ public class SKMetalMarchingCubes128
       commandEncoder7.dispatchThreadgroups(threadGroups2, threadsPerThreadgroup: threadsPerGroup2)
       commandEncoder7.endEncoding()
       
-      
-      let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()!
-      blitEncoder.synchronize(texture: image6!, slice: 0, level: 0)
+      guard let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder() else {
+        throw SimulationKitError.couldNotMakeCommandEncoder
+      }
+      blitEncoder.synchronize(texture: image6, slice: 0, level: 0)
       blitEncoder.endEncoding()
       
-      // Commits the commands to the command buffer
       commandBuffer.commit()
       
-      // Waits until the commands are executed
       commandBuffer.waitUntilCompleted()
       
       if let error = commandBuffer.error
       {
-        LogQueue.shared.error(destination: nil, message: "Metal error in RKMetalMarchingCubes: " + error.localizedDescription)
-        return
+        throw NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.genericMetalError.rawValue, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription])
       }
       
       var imageBytes2x2 = [UInt32](repeating: 0, count: 2*2*2)
       let region3d2x2 = MTLRegionMake3D(0, 0, 0, 2, 2, 2)
-      image6?.getBytes(&imageBytes2x2, bytesPerRow: 2 * MemoryLayout<UInt32>.stride, bytesPerImage: MemoryLayout<UInt32>.stride * 2 * 2, from: region3d2x2, mipmapLevel: 0, slice: 0)
+      image6.getBytes(&imageBytes2x2, bytesPerRow: 2 * MemoryLayout<UInt32>.stride, bytesPerImage: MemoryLayout<UInt32>.stride * 2 * 2, from: region3d2x2, mipmapLevel: 0, slice: 0)
       
       var sum2: UInt32 = 0
       for i in 0..<8
@@ -344,27 +342,33 @@ public class SKMetalMarchingCubes128
       
       if numberOfTriangles > 0
       {
-        
         // 3 points consisting of a position, a normal, and texture coordinates
         isosurfaceVertexBuffer = device.makeBuffer(length: Int(sum2) * 3 * 3 * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeShared)
         
+        if isosurfaceVertexBuffer == nil
+        {
+          throw SimulationKitError.couldNotCreateBuffer
+        }
         
         if sum2>0
         {
-          let commandBuffer2 = commandQueue.makeCommandBuffer()!
-          // Creates the command encoder from the command buffer
-          let commandEncoder2 = commandBuffer2.makeComputeCommandEncoder()!
+          guard let commandBuffer2 = commandQueue.makeCommandBuffer() else {
+            throw SimulationKitError.couldNotMakeCommandBuffer
+          }
+          
+          guard let commandEncoder2 = commandBuffer2.makeComputeCommandEncoder() else {
+            throw SimulationKitError.couldNotMakeCommandEncoder
+          }
+          
           let threadExecutionWidth: Int = traverseHPPipelineState.threadExecutionWidth
           
-          
-          // Encodes the pipeline state command
           commandEncoder2.setComputePipelineState(traverseHPPipelineState)
           
           var dataSize: UInt32 = UInt32(sum2)
-          let sumBufferData: MTLBuffer = device.makeBuffer(bytes: &dataSize, length: MemoryLayout<UInt32>.stride, options: .storageModeManaged)!
+          guard let sumBufferData: MTLBuffer = device.makeBuffer(bytes: &dataSize, length: MemoryLayout<UInt32>.stride, options: .storageModeManaged) else {
+              throw SimulationKitError.couldNotCreateBuffer
+          }
           
-          
-          // Encodes the input texture command
           commandEncoder2.setTexture(image0, index: 0)
           commandEncoder2.setTexture(image1, index: 1)
           commandEncoder2.setTexture(image2, index: 2)
@@ -377,9 +381,7 @@ public class SKMetalMarchingCubes128
           commandEncoder2.setBuffer(isoValueBufferData, offset: 0, index: 1)
           commandEncoder2.setBuffer(sumBufferData, offset: 0, index: 2)
           
-          
           let global_work_size: Int = (Int(sum2) + threadExecutionWidth - (Int(sum2) - threadExecutionWidth*(Int(sum2) / threadExecutionWidth)))
-          
           
           let threadsPerGroupSum: MTLSize = MTLSizeMake(threadExecutionWidth, 1, 1)
           let threadGroupsSum: MTLSize = MTLSizeMake(global_work_size / threadsPerGroupSum.width, 1,1)
@@ -388,28 +390,18 @@ public class SKMetalMarchingCubes128
           
           commandEncoder2.endEncoding()
           
-          
-          // Commits the commands to the command buffer
           commandBuffer2.commit()
           
-          // Waits until the commands are executed
           commandBuffer2.waitUntilCompleted()
           
           if let error = commandBuffer2.error
           {
-            LogQueue.shared.error(destination: nil, message: "Metal error in RKMetalMarchingCubes: " + error.localizedDescription)
-            return
+            throw NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.genericMetalError.rawValue, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription])
           }
-          
-          
         }
       }
-      
-      
     }
-    
   }
-  
 }
 
 
