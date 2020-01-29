@@ -2449,6 +2449,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       
       // reload: the size and influence of the atom has changed
+      
+      structure.reComputeBonds()
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
   self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -2489,6 +2491,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       
       // reload: the size and influence of the atom has changed
+     
+      structure.reComputeBonds()
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -2551,6 +2555,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.reComputeBoundingBox()
       
+      structure.reComputeBonds()
+      
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
   self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -2611,6 +2617,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.reComputeBoundingBox()
       
+      structure.reComputeBonds()
+      
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
   self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -2669,6 +2677,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       
       structure.reComputeBoundingBox()
+      
+      structure.reComputeBonds()
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
