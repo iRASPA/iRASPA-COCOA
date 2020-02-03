@@ -1412,6 +1412,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       project.isEdited = true
       self.windowController?.currentDocument?.updateChangeCount(.changeDone)
+      
     self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
     self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
     self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -1826,6 +1827,198 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let selectedNodes:Set<SKAtomTreeNode> = structure.atoms.invertedSelection
       
       setCurrentSelection(structure: structure, selection: selectedNodes, from: structure.atoms.selectedTreeNodes)
+    }
+  }
+  
+  func removeMovieNode(_ movie: Movie, fromItem: Scene, atIndex childIndex: Int, structure: Structure, atoms: [SKAtomTreeNode], bonds: [SKBondNode], from indexPaths: [IndexPath], move: Bool)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let currentSelectedScene: Scene? = project.sceneList.selectedScene
+      
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.addMovieNode(movie, inItem: fromItem, atIndex: childIndex, structure: structure, atoms: atoms.reversed(), bonds: bonds, from: indexPaths.reversed(), move: move)})
+      
+      if(move)
+      {
+        for (index, atom) in atoms.enumerated()
+        {
+          structure.atoms.insertNode(atom, atArrangedObjectIndexPath: indexPaths[index])
+          structure.atoms.selectedTreeNodes.insert(atom)
+        }
+      
+        structure.tag(atoms: structure.atoms)
+      
+        for bond in bonds
+        {
+          bond.atom1.bonds.insert(bond)
+          bond.atom2.bonds.insert(bond)
+          structure.bonds.arrangedObjects.insert(bond)
+        }
+      }
+      
+      fromItem.movies.remove(at: childIndex)
+      
+      if let currentSelectedScene = currentSelectedScene
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allRenderFrames)
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      self.windowController?.masterTabViewController?.reloadData()
+      self.windowController?.detailTabViewController?.reloadData()
+      
+      project.isEdited = true
+      self.windowController?.currentDocument?.updateChangeCount(.changeDone)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
+        
+        self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
+      
+      self.updateNetChargeTextField()
+    }
+  }
+  
+  func addMovieNode(_ movie: Movie, inItem: Scene, atIndex childIndex: Int, structure: Structure, atoms: [SKAtomTreeNode], bonds: [SKBondNode], from indexPaths: [IndexPath], move: Bool)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let currentSelectedScene: Scene? = project.sceneList.selectedScene
+      
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.removeMovieNode(movie, fromItem: inItem, atIndex: childIndex, structure: structure, atoms: atoms.reversed(), bonds: bonds, from: indexPaths.reversed(), move: move)})
+      if(!project.undoManager.isUndoing)
+      {
+        project.undoManager.setActionName(NSLocalizedString("Add movie(s)", comment: "Add movie"))
+      }
+      
+      if(move)
+      {
+        for atom in atoms
+        {
+          structure.atoms.removeNode(atom)
+        }
+      
+        for bond in bonds
+        {
+          bond.atom1.bonds.remove(bond)
+          bond.atom2.bonds.remove(bond)
+          structure.bonds.arrangedObjects.remove(bond)
+        }
+           
+        structure.atoms.selectedTreeNodes = []
+        structure.tag(atoms: structure.atoms)
+      }
+      
+      if let newstructure = movie.frames.first?.frames.first?.structure
+      {
+        for (index, atom) in atoms.enumerated()
+        {
+          let assymetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(original: atom.representedObject.copy())
+          let treeNode: SKAtomTreeNode = SKAtomTreeNode(name: atom.displayName, representedObject: assymetricAtom)
+          newstructure.atoms.insertNode(treeNode, atArrangedObjectIndexPath: [index])
+          newstructure.expandSymmetry(asymmetricAtom: assymetricAtom)
+        }
+        newstructure.tag(atoms: newstructure.atoms)
+        
+        newstructure.setRepresentationStyle(style: structure.atomRepresentationStyle)
+        newstructure.setRepresentationType(type: structure.atomRepresentationType)
+        
+        if let document: iRASPADocument = self.windowController?.currentDocument
+        {
+          newstructure.setRepresentationForceField(forceField: newstructure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
+        }
+        
+        newstructure.reComputeBoundingBox()
+        newstructure.reComputeBonds()
+      }
+      
+      
+      
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+     
+      // make sure the movie has a selected-frame
+      // (otherwise it does not show up in the RenderView)
+      if movie.selectedFrame == nil
+      {
+        if let selectedFrame = movie.frames.first
+        {
+          movie.selectedFrame = selectedFrame
+          movie.selectedFrames.insert(selectedFrame)
+        }
+      }
+      
+      
+      // insert new node
+      inItem.movies.insert(movie, at: childIndex)
+      
+      if let currentSelectedScene = currentSelectedScene
+      {
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: currentSelectedScene.allRenderFrames)
+      }
+      
+      (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
+      self.windowController?.masterTabViewController?.reloadData()
+      self.windowController?.detailTabViewController?.reloadData()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      project.isEdited = true
+      self.windowController?.currentDocument?.updateChangeCount(.changeDone)
+      
+      self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
+        
+        self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
+      
+      self.updateNetChargeTextField()
+    }
+  }
+  
+  @IBAction func selectionCopyToMovie(_ sender: NSMenuItem)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let iRASPAStructure: iRASPAStructure = self.representedObject as? iRASPAStructure,
+       let currentSelectedScene: Scene = project.sceneList.selectedScene,
+       let currentSelectedMovie: Movie = currentSelectedScene.selectedMovie,
+       let index: Int = currentSelectedScene.movies.firstIndex(of: currentSelectedMovie)
+    {
+      let structure = iRASPAStructure.structure
+      let frame: iRASPAStructure = iRASPAStructure.copy()
+      let movie: Movie = Movie(frame: frame)
+      
+      movie.selectedFrame = frame
+      movie.selectedFrames.insert(frame)
+      
+      let selectedAtoms: [SKAtomTreeNode] = structure.atoms.selectedTreeNodes.sorted(by: { $0.indexPath > $1.indexPath })
+      let indexPaths: [IndexPath] = selectedAtoms.map{$0.indexPath}
+      let selectedBonds: [SKBondNode] = structure.atoms.allSelectedNodes.compactMap{$0.representedObject}.flatMap{$0.copies}.flatMap{$0.bonds}
+      
+      self.addMovieNode(movie, inItem: currentSelectedScene, atIndex: index+1, structure: structure, atoms: selectedAtoms, bonds: selectedBonds, from: indexPaths, move: false)
+    }
+  }
+  
+  @IBAction func selectionMoveToMovie(_ sender: NSMenuItem)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let iRASPAStructure: iRASPAStructure = self.representedObject as? iRASPAStructure,
+       let currentSelectedScene: Scene = project.sceneList.selectedScene,
+       let currentSelectedMovie: Movie = currentSelectedScene.selectedMovie,
+       let index: Int = currentSelectedScene.movies.firstIndex(of: currentSelectedMovie)
+    {
+      let structure: Structure = iRASPAStructure.structure
+      let frame: iRASPAStructure = iRASPAStructure.copy()
+      let movie: Movie = Movie(frame: frame)
+      
+      movie.selectedFrame = frame
+      movie.selectedFrames.insert(frame)
+      
+      let selectedAtoms: [SKAtomTreeNode] = structure.atoms.selectedTreeNodes.sorted(by: { $0.indexPath > $1.indexPath })
+      let indexPaths: [IndexPath] = selectedAtoms.map{$0.indexPath}
+      let selectedBonds: [SKBondNode] = structure.atoms.allSelectedNodes.compactMap{$0.representedObject}.flatMap{$0.copies}.flatMap{$0.bonds}
+      
+      self.addMovieNode(movie, inItem: currentSelectedScene, atIndex: index+1, structure: structure, atoms: selectedAtoms, bonds: selectedBonds, from: indexPaths, move: true)
     }
   }
   
