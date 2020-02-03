@@ -35,7 +35,7 @@ import iRASPAKit
 /// StructureMasterViewController controls the SegmentedControl to select
 /// the "Project Viewer", "Scene Viewer", and the "Frame Viewer'
 /// Note: The TabViewController is "self.children.first"
-class StructureMasterViewController: NSViewController, WindowControllerConsumer, ProjectController, SelectionIndex
+class StructureMasterViewController: NSViewController, WindowControllerConsumer, ProjectController, SelectionIndex, Reloadable
 {
   @IBOutlet weak var segmentedControl: NSSegmentedControl?
   
@@ -47,6 +47,18 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
     
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
+  }
+  
+  func reloadData()
+  {
+    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
+    {
+      let index = tabViewController.selectedTabViewItemIndex
+      if let viewController = tabViewController.tabViewItems[index].viewController as? Reloadable
+      {
+        viewController.reloadData()
+      }
+    }
   }
   
   /*
@@ -96,16 +108,6 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
     }
     return nil
   }
-  
-  func reloadData()
-  {
-    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
-    {
-      // foward to ProjectViewController
-      (tabViewController.tabViewItems[0].viewController as? ProjectViewController)?.reloadData()
-    }
-  }
-  
   
   func setSelectionIndex(index: Int)
   {

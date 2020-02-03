@@ -35,10 +35,11 @@ import RenderKit
 import SimulationKit
 import SymmetryKit
 import LogViewKit
+import MathKit
 
 public let NSPasteboardTypeFrame: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Frame")
 
-public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, PrimitiveVisualAppearanceViewer
+public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, PrimitiveVisualAppearanceViewer, Copying
 {
   
   
@@ -157,6 +158,34 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
   {
     self.type = frame.type
     self.structure = frame.structure
+  }
+  
+  
+  public init(original: iRASPAStructure)
+  {
+    self.type = original.type
+    
+    switch(original.structure)
+    {
+    case let structure as Crystal:
+      self.structure = structure.copy()
+    case let structure as MolecularCrystal:
+      self.structure = structure.copy()
+    case let structure as Molecule:
+      self.structure = structure.copy()
+    case let structure as Protein:
+      self.structure = structure.copy()
+    case let structure as ProteinCrystal:
+      self.structure = structure.copy()
+    case let structure as EllipsoidPrimitive:
+      self.structure = structure.copy()
+    case let structure as CylinderPrimitive:
+      self.structure = structure.copy()
+    case let structure as PolygonalPrismPrimitive:
+      self.structure = structure.copy()
+    default:
+      self.structure = original.structure.copy()
+    }
   }
   
   

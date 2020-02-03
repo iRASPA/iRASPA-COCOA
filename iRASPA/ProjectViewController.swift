@@ -2167,6 +2167,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     }
     
     NSAnimationContext.endGrouping()
+    
+    setDetailViewController()
   }
   
   

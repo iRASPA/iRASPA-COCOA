@@ -149,6 +149,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   {
     self.framesTableView?.reloadData()
     self.reloadSelection()
+    
+    setDetailViewController()
   }
   
   // MARK: adding/removing 

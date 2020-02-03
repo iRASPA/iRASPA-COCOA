@@ -176,6 +176,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       self.reloadSelection()
     }
     self.observeNotifications = true
+    
+    setDetailViewController()
   }
   
   // MARK: keyboard handling
@@ -384,7 +386,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     }
   }
 
-  func removeMovieNode(_ node: AnyObject, fromItem: AnyObject?, atIndex childIndex: Int, newSelectedScene: Scene?, newSelectedMovie: Movie?, newSelection: [Scene: Set<Movie>])
+  func removeMovieNode(_ movie: Movie, fromItem: Scene?, atIndex childIndex: Int, newSelectedScene: Scene?, newSelectedMovie: Movie?, newSelection: [Scene: Set<Movie>])
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
@@ -392,9 +394,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       let currentSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
       let currentSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
       
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.addMovieNode(node, inItem: fromItem, atIndex: childIndex, newSelectedScene: currentSelectedScene, newSelectedMovie: currentSelectedMovie, newSelection: currentSelection)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.addMovieNode(movie, inItem: fromItem, atIndex: childIndex, newSelectedScene: currentSelectedScene, newSelectedMovie: currentSelectedMovie, newSelection: currentSelection)})
       
-      (fromItem as! Scene).movies.remove(at: childIndex)
+      fromItem?.movies.remove(at: childIndex)
       self.structuresOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: fromItem, withAnimation: .slideLeft)
       
       project.sceneList.selectedScene = newSelectedScene
@@ -415,16 +417,15 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     }
   }
   
-  func addMovieNode(_ node: AnyObject, inItem: AnyObject?, atIndex childIndex: Int, newSelectedScene: Scene?, newSelectedMovie: Movie?, newSelection: [Scene: Set<Movie>])
+  func addMovieNode(_ movie: Movie, inItem: Scene?, atIndex childIndex: Int, newSelectedScene: Scene?, newSelectedMovie: Movie?, newSelection: [Scene: Set<Movie>])
   {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let movie: Movie = node as? Movie
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       let currentSelectedScene: Scene? = project.sceneList.selectedScene
       let currentSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
       let currentSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
       
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.removeMovieNode(node, fromItem: inItem, atIndex: childIndex, newSelectedScene: currentSelectedScene, newSelectedMovie: currentSelectedMovie, newSelection: currentSelection)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.removeMovieNode(movie, fromItem: inItem, atIndex: childIndex, newSelectedScene: currentSelectedScene, newSelectedMovie: currentSelectedMovie, newSelection: currentSelection)})
      
       if(!project.undoManager.isUndoing)
       {
@@ -444,7 +445,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       
       // insert new node
-      (inItem as? Scene)?.movies.insert(movie, at: childIndex)
+      inItem?.movies.insert(movie, at: childIndex)
       self.structuresOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: inItem, withAnimation: .slideRight)
 
       project.sceneList.selectedScene = newSelectedScene

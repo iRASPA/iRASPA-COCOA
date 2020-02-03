@@ -83,6 +83,7 @@ public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboard
   public convenience init(frame: iRASPAStructure)
   {
     self.init()
+    self.displayName = frame.structure.displayName
     self.frames.append(frame)
     self.selectedFrame = self.frames.first
   }
