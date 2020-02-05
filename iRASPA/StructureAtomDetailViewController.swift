@@ -621,7 +621,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       pasteboard.clearContents()
     
     
-      let nodes: [SKAtomTreeNode] = structure.atoms.selectedNodes
+      let nodes: [SKAtomTreeNode] = structure.readySelectedAtomsForCopyAndPaste()
       pasteboard.writeObjects(nodes)
       self.deleteSelection()
     }
@@ -1393,7 +1393,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
     }
     self.atomOutlineView?.endUpdates()
-      self.observeNotifications = observeNotificationsStored
+    self.observeNotifications = observeNotificationsStored
     
     if (self.filterContent)
     {
@@ -1452,7 +1452,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         if (!self.filterContent)
         {
           if let atomOutlineView = atomOutlineView,
-          atomOutlineView.numberOfRows>0
+          atomOutlineView.numberOfRows>=0
           {
             atomOutlineView.insertItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: .slideLeft)
             atomOutlineView.selectRowIndexes(IndexSet(integer: atomOutlineView.row(forItem: atom)), byExtendingSelection: true)
@@ -1511,28 +1511,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func deleteSelection()
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
-      let observeNotificationsStored: Bool = self.observeNotifications
-      
-      // avoid sending notification due to selection change
-      self.observeNotifications = false
-      
-      self.atomOutlineView?.beginUpdates()
-      project.undoManager.beginUndoGrouping()
-      
       let selectedAtoms: [SKAtomTreeNode] = structure.atoms.selectedTreeNodes.sorted(by: { $0.indexPath > $1.indexPath })
       let indexPaths: [IndexPath] = selectedAtoms.map{$0.indexPath}
       let selectedBonds: [SKBondNode] = structure.atoms.allSelectedNodes.compactMap{$0.representedObject}.flatMap{$0.copies}.flatMap{$0.bonds}
       deleteSelectedAtomsFor(structure: structure, atoms: selectedAtoms, bonds: selectedBonds, from: indexPaths)
-      
-      project.undoManager.setActionName(NSLocalizedString("Delete selection", comment:"Delete selection"))
-      
-      project.undoManager.endUndoGrouping()
-      self.atomOutlineView?.endUpdates()
-      
-      self.observeNotifications = observeNotificationsStored
     }
   }
 
