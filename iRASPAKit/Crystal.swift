@@ -1344,6 +1344,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     // make copy of the atom-structure, leave atoms invariant
     let atomsWithRemovedSymmetry: SKAtomTreeController = crystal.atoms
+    atomsWithRemovedSymmetry.selectedTreeNodes = []
     
     // remove all bonds that are between 'doubles'
     let atomBonds: SKBondSetController = SKBondSetController(arrangedObjects: Set(crystal.bonds.arrangedObjects.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy}))
@@ -1397,6 +1398,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
     let crystal: Crystal =  self.clone()
+    crystal.atoms.selectedTreeNodes = []
     
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = crystal.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
@@ -1427,7 +1429,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
      // copy the structure for undo (via the atoms, and bonds-properties)
     let crystal: Crystal =  self.clone()
-  
+    crystal.atoms.selectedTreeNodes = []
     crystal.spaceGroupHallNumber = number
     
     // set space group to P1 after removal of symmetry
@@ -1444,6 +1446,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       
       let primitiveSpaceGroup = SKSpacegroup(HallNumber: 1)
       let primitiveAtoms = SKAtomTreeController()
+      primitiveAtoms.selectedTreeNodes = []
       
       for asymmetricAtom in primitive.primitiveAtoms
       {
@@ -1483,8 +1486,9 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     {
       node.childNodes = []
     }
-    
-    return (cell: self.cell, spaceGroup: self.spaceGroup, atoms: SKAtomTreeController(nodes: atomNodes), bonds: self.bonds)
+    let atomTreeController: SKAtomTreeController = SKAtomTreeController(nodes: atomNodes)
+    atomTreeController.selectedTreeNodes = []
+    return (cell: self.cell, spaceGroup: self.spaceGroup, atoms: atomTreeController, bonds: self.bonds)
   }
 
   
@@ -1559,6 +1563,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let dz: Int = Int(maximumReplicaZ - minimumReplicaZ)
     
     let superCellAtoms: SKAtomTreeController = SKAtomTreeController()
+    superCellAtoms.selectedTreeNodes = []
     
     for k1 in 0...dx
     {
@@ -1623,6 +1628,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let dz: Int = Int(maximumReplicaZ - minimumReplicaZ)
     
     let superCellAtoms: SKAtomTreeController = SKAtomTreeController()
+    superCellAtoms.selectedTreeNodes = []
     
     for k1 in 0...dx
     {
