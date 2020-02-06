@@ -1562,7 +1562,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      self.atomOutlineView?.reloadData()
+      self.reloadData()
       
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: crystal)
       

@@ -1233,8 +1233,9 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     {
       node.childNodes = []
     }
-    
-    return (cell: self.cell, spaceGroup: self.spaceGroup, atoms: SKAtomTreeController(nodes: atomNodes), bonds: self.bonds)
+    let atomTreeController:SKAtomTreeController = SKAtomTreeController(nodes: atomNodes)
+    atomTreeController.selectedTreeNodes = []
+    return (cell: self.cell, spaceGroup: self.spaceGroup, atoms: atomTreeController, bonds: self.bonds)
   }
   
   public func primitive(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
@@ -1245,6 +1246,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
       
       let primitiveSpaceGroup = SKSpacegroup(HallNumber: 1)
       let primitiveAtoms = SKAtomTreeController()
+      primitiveAtoms.selectedTreeNodes = []
       
       let cell: double3x3 = primitiveCell.unitCell
       for asymmetricAtom in primitive.primitiveAtoms
@@ -1335,6 +1337,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     
     // make copy of the atom-structure, leave atoms invariant
     let atomsWithRemovedSymmetry: SKAtomTreeController = crystal.atoms
+    atomsWithRemovedSymmetry.selectedTreeNodes = []
     
     // remove all bonds that are between 'doubles'
     let atomBonds: SKBondSetController = SKBondSetController(arrangedObjects: Set(crystal.bonds.arrangedObjects.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy}))
@@ -1405,6 +1408,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     let dz: Int = Int(maximumReplicaZ - minimumReplicaZ)
     
     let superCellAtoms: SKAtomTreeController = SKAtomTreeController()
+    superCellAtoms.selectedTreeNodes = []
     
     for k1 in 0...dx
     {
@@ -1465,6 +1469,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     let dz: Int = Int(maximumReplicaZ - minimumReplicaZ)
     
     let superCellAtoms: SKAtomTreeController = SKAtomTreeController()
+    superCellAtoms.selectedTreeNodes = []
     
     for k1 in 0...dx
     {
@@ -1508,6 +1513,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
     let crystal: ProteinCrystal =  self.clone()
+    crystal.atoms.selectedTreeNodes = []
     
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = crystal.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
@@ -1538,7 +1544,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
   {
     // copy the structure for undo (via the atoms, and bonds-properties)
     let crystal: ProteinCrystal =  self.clone()
-    
+    crystal.atoms.selectedTreeNodes = []
     crystal.spaceGroupHallNumber = number
     
     // set space group to P1 after removal of symmetry
