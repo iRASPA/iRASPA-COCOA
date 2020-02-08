@@ -339,9 +339,22 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
           })
         }
         
-        let newSelectedScene: Scene? = nil //project.sceneList.selectedScene
-        let newSelectedMovie: Movie? = nil
-        let newSelection: [Scene: Set<Movie>] = [:]
+        let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+        let notSelectedIndices: IndexSet = IndexSet(integersIn: 0..<numberOfRows).symmetricDifference(indexes)
+        let notselectedMovies: [Movie] = notSelectedIndices.compactMap{self.structuresOutlineView?.item(atRow: $0) as? Movie}
+        
+        var newSelectedScene: Scene? = nil
+        var newSelectedMovie: Movie? = nil
+        var newSelection: [Scene: Set<Movie>] = [:]
+        if let movie: Movie = notselectedMovies.first,
+           let indexPath: IndexPath = project.sceneList.indexPath(movie),
+           let sceneIndex: Int = indexPath.first
+        {
+          let scene: Scene = project.sceneList.scenes[sceneIndex]
+          newSelectedScene = scene
+          newSelectedMovie = movie
+          newSelection = [scene: [movie]]
+        }
         
         self.deleteSelectedMovies(movies, from: indexPaths, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
       }
@@ -1637,6 +1650,10 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       {
         windowController?.setPageControllerObjects(arrangedObjects: arrangedObjects,  selectedArrangedObjects:selectedArrangedObjects, selectedIndex: selectionIndex)
       }
+      else
+      {
+        windowController?.setPageControllerObjects(arrangedObjects: [[]],  selectedArrangedObjects:[[]], selectedIndex: 0)
+      }
     
       if let selectedScene: Scene = project.sceneList.selectedScene,
          let sceneIndex: Int = project.sceneList.scenes.firstIndex(of: selectedScene),
@@ -1648,6 +1665,10 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
                
         let selectionIndex: Int = project.sceneList.rowForSectionTuple(sceneIndex, movieIndex: movieIndex)
         windowController?.setPageControllerFrameObject(arrangedObjects: arrangedObjects, selectedIndex: selectionIndex)
+      }
+      else
+      {
+        windowController?.setPageControllerFrameObject(arrangedObjects: [[]], selectedIndex: 0)
       }
     }
   }
