@@ -1500,7 +1500,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
-      
+      self.updateNetChargeTextField()
       self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
       
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
