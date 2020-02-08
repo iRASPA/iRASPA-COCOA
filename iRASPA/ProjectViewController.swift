@@ -2555,7 +2555,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     
     if let indexes: IndexSet = self.projectOutlineView?.selectedRowIndexes, (indexes.count > 0)
     {
-      if let document: iRASPADocument = windowController?.document as? iRASPADocument
+      let deletableProjects: [ProjectTreeNode] = indexes.compactMap{self.projectOutlineView?.item(atRow: $0) as? ProjectTreeNode}.filter{$0.isEditable}
+      if let document: iRASPADocument = windowController?.document as? iRASPADocument, deletableProjects.count > 0
       {
         document.undoManager?.beginUndoGrouping()
         let treeController: ProjectTreeController = document.documentData.projectData
@@ -2567,7 +2568,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         (indexes as NSIndexSet).enumerate(options: .reverse, using: { (index, stop) -> Void in
           if let node: ProjectTreeNode = self.projectOutlineView?.item(atRow: index) as? ProjectTreeNode
           {
-            if node.isDescendantOfNode(document.documentData.projectRootNode)
+            if node.isDescendantOfNode(document.documentData.projectRootNode),node.isEditable
             {
               self.removeNode(node, fromItem: node.parentNode, atIndex: node.indexPath.last ?? 0)
             }

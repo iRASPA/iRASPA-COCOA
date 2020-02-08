@@ -93,9 +93,12 @@ public final class ProjectTreeController: Decodable, BinaryDecodable, BinaryEnco
     
     
     let localGalleryNode: ProjectTreeNode = ProjectTreeNode(displayName: "Gallery", representedObject: iRASPAProject(group: ProjectGroup(name: "Gallery")))
+    localGalleryNode.isEditable = false
     self.insertNode(localGalleryNode, inItem: galleryRootNode, atIndex: 0)
     
     let localMainNode: ProjectTreeNode = ProjectTreeNode(displayName: "Local projects", representedObject: iRASPAProject(group: ProjectGroup(name: "Local projects")))
+    localMainNode.isEditable = false
+    localMainNode.isExpanded = true
     self.insertNode(localMainNode, inItem: projectRootNode, atIndex: 0)
     
     
