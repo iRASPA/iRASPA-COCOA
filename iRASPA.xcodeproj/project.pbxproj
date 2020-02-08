@@ -409,6 +409,7 @@
 		93BF30C01FB3705C00FFCCB0 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F4F171FADF4D000753D08 /* main.swift */; };
 		93BF30C21FB3706500FFCCB0 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF2D2C1FB306C300FFCCB0 /* Project.swift */; };
 		93BF30C31FB3707B00FFCCB0 /* iRASPA-CLI.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */; };
 		93CE77E01E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */; };
 		93CE77EE1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CE77F11EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
@@ -417,7 +418,6 @@
 		93CE77F91EA0ECBC00D068E1 /* ObjectiveCException.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77F81EA0EA7F00D068E1 /* ObjectiveCException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CEEFBE1F42193700EAF673 /* DirectoryMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */; };
 		93D1B52E1F45ECD300D0F932 /* NSPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D1B52D1F45ECD300D0F932 /* NSPageView.swift */; };
-		93D7562223CDF32900BA7710 /* CopyingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D7562123CDF32900BA7710 /* CopyingProtocol.swift */; };
 		93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */; };
 		93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */; };
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
@@ -1189,6 +1189,7 @@
 		93BF260D1EE71E4E00128CD4 /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
 		93BF2D2C1FB306C300FFCCB0 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iRASPA-CLI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyingProtocol.swift; sourceTree = "<group>"; };
 		93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CatchObjectiveCExceptions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatchObjectiveCExceptions.h; sourceTree = "<group>"; };
@@ -1197,7 +1198,6 @@
 		93CE77F81EA0EA7F00D068E1 /* ObjectiveCException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveCException.h; sourceTree = "<group>"; };
 		93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryMasterViewController.swift; sourceTree = "<group>"; };
 		93D1B52D1F45ECD300D0F932 /* NSPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPageView.swift; sourceTree = "<group>"; };
-		93D7562123CDF32900BA7710 /* CopyingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyingProtocol.swift; sourceTree = "<group>"; };
 		93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPrecisionNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionalNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2077,7 +2077,6 @@
 			children = (
 				939B205C1EF2C8370061DE8D /* simd_quatd.swift */,
 				936DE11B21DA7F470023E7C8 /* Array.swift */,
-				93D7562123CDF32900BA7710 /* CopyingProtocol.swift */,
 				939B20721EF2D0920061DE8D /* Int32.swift */,
 				939B206E1EF2D0310061DE8D /* int3.swift */,
 				939B20641EF2CEBE0061DE8D /* float4.swift */,
@@ -2200,6 +2199,7 @@
 				93F3A59F21874A15008E41A2 /* BinaryCodable.h */,
 				93793B5021DE1023004CAD9C /* LICENSE */,
 				93F3A5AF21874B3E008E41A2 /* FKCoding.swift */,
+				93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */,
 				933A8F29218CD4AD0073C653 /* DataCompression.swift */,
 				93F393F7224A917A00948399 /* LegacyDecodable.swift */,
 				93F3A5A921874A50008E41A2 /* BinaryDecoder.swift */,
@@ -3292,7 +3292,6 @@
 				938388471E26A5CD00112FBA /* GeneralFraction.swift in Sources */,
 				939B20651EF2CEBE0061DE8D /* float4.swift in Sources */,
 				936DE11C21DA7F470023E7C8 /* Array.swift in Sources */,
-				93D7562223CDF32900BA7710 /* CopyingProtocol.swift in Sources */,
 				9383884E1E26A60700112FBA /* HermiteNormalForm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3359,6 +3358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93F3A5AA21874A50008E41A2 /* BinaryDecoder.swift in Sources */,
+				93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */,
 				93F3A5AE21874AE3008E41A2 /* BinaryCodableExtensions.swift in Sources */,
 				93F393F8224A917A00948399 /* LegacyDecodable.swift in Sources */,
 				93F3A5B021874B3E008E41A2 /* FKCoding.swift in Sources */,
