@@ -32,6 +32,12 @@
 import Foundation
 import simd
 
+extension double4x4 {
+  public var inverseReplacement: double4x4 {
+    return self.inverse
+  }
+}
+
 extension double4x4
 {
   public init(Double3x3: double3x3)
