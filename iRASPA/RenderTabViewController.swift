@@ -3203,7 +3203,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
     if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
-      let nodes: [SKAtomTreeNode] = project.allStructures.flatMap{$0.atoms.selectedNodes}
+      let nodes: [SKAtomTreeNode] = project.allStructures.flatMap{$0.readySelectedAtomsForCopyAndPaste()}
       pasteboard.writeObjects(nodes)
     }
     self.deleteSelection()
