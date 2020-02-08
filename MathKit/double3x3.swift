@@ -33,6 +33,12 @@ import Foundation
 import simd
 import Accelerate
 
+extension double3x3 {
+  public var inverseReplacement: double3x3 {
+    return self.inverse
+  }
+}
+
 extension double3x3
 {
   public init(Double4x4: double4x4)
