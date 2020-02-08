@@ -570,6 +570,12 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       
         self.windowController?.setPageControllerFrameObject(arrangedObjects: arrangedObjects,  selectedIndex: selectionIndex)
       }
+      else
+      {
+        self.windowController?.setPageControllerObjects(arrangedObjects: [[]], selectedArrangedObjects: [[]], selectedIndex: 0)
+        
+          self.windowController?.setPageControllerFrameObject(arrangedObjects: [[]],  selectedIndex: 0)
+      }
     }
   }
   
