@@ -527,6 +527,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
+      
+      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
     
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -554,9 +556,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
-      let newSelectedScene: Scene? = project.sceneList.selectedScene
-      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
-      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      let newSelectedScene: Scene?
+      let newSelectedMovie: Movie?
+      let newSelection: [Scene: Set<Movie>]
+      if numberOfRows <= 0
+      {
+        newSelectedScene = scene
+        newSelectedMovie = movie
+        newSelection = [scene: [movie]]
+      }
+      else
+      {
+        newSelectedScene = project.sceneList.selectedScene
+        newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+        newSelection = project.sceneList.selectedMovies
+      }
       
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }
@@ -570,6 +584,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
+      
+      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -597,9 +613,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
-      let newSelectedScene: Scene? = project.sceneList.selectedScene
-      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
-      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      let newSelectedScene: Scene?
+      let newSelectedMovie: Movie?
+      let newSelection: [Scene: Set<Movie>]
+      if numberOfRows <= 0
+      {
+        newSelectedScene = scene
+        newSelectedMovie = movie
+        newSelection = [scene: [movie]]
+      }
+      else
+      {
+        newSelectedScene = project.sceneList.selectedScene
+        newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+        newSelection = project.sceneList.selectedMovies
+      }
       
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }
@@ -613,6 +641,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
+      
+      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -640,9 +670,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
-      let newSelectedScene: Scene? = project.sceneList.selectedScene
-      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
-      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      let newSelectedScene: Scene?
+      let newSelectedMovie: Movie?
+      let newSelection: [Scene: Set<Movie>]
+      if numberOfRows <= 0
+      {
+        newSelectedScene = scene
+        newSelectedMovie = movie
+        newSelection = [scene: [movie]]
+      }
+      else
+      {
+        newSelectedScene = project.sceneList.selectedScene
+        newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+        newSelection = project.sceneList.selectedMovies
+      }
       
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }
@@ -657,6 +699,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
+      
+      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -684,9 +728,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
-      let newSelectedScene: Scene? = project.sceneList.selectedScene
-      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
-      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      let newSelectedScene: Scene?
+      let newSelectedMovie: Movie?
+      let newSelection: [Scene: Set<Movie>]
+      if numberOfRows <= 0
+      {
+        newSelectedScene = scene
+        newSelectedMovie = movie
+        newSelection = [scene: [movie]]
+      }
+      else
+      {
+        newSelectedScene = project.sceneList.selectedScene
+        newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+        newSelection = project.sceneList.selectedMovies
+      }
       
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }
@@ -700,6 +756,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
+      
+      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -727,9 +785,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
-      let newSelectedScene: Scene? = project.sceneList.selectedScene
-      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
-      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      let newSelectedScene: Scene?
+      let newSelectedMovie: Movie?
+      let newSelection: [Scene: Set<Movie>]
+      if numberOfRows <= 0
+      {
+        newSelectedScene = scene
+        newSelectedMovie = movie
+        newSelection = [scene: [movie]]
+      }
+      else
+      {
+        newSelectedScene = project.sceneList.selectedScene
+        newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+        newSelection = project.sceneList.selectedMovies
+      }
       
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }
@@ -743,6 +813,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
+      
+      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New ellipsoid"
@@ -775,9 +847,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
-      let newSelectedScene: Scene? = project.sceneList.selectedScene
-      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
-      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      let newSelectedScene: Scene?
+      let newSelectedMovie: Movie?
+      let newSelection: [Scene: Set<Movie>]
+      if numberOfRows <= 0
+      {
+        newSelectedScene = scene
+        newSelectedMovie = movie
+        newSelection = [scene: [movie]]
+      }
+      else
+      {
+        newSelectedScene = project.sceneList.selectedScene
+        newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+        newSelection = project.sceneList.selectedMovies
+      }
       
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }
@@ -791,6 +875,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
+      
+      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New polygonal prism"
@@ -823,9 +909,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
-      let newSelectedScene: Scene? = project.sceneList.selectedScene
-      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
-      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      let newSelectedScene: Scene?
+      let newSelectedMovie: Movie?
+      let newSelection: [Scene: Set<Movie>]
+      if numberOfRows <= 0
+      {
+        newSelectedScene = scene
+        newSelectedMovie = movie
+        newSelection = [scene: [movie]]
+      }
+      else
+      {
+        newSelectedScene = project.sceneList.selectedScene
+        newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+        newSelection = project.sceneList.selectedMovies
+      }
       
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }
@@ -839,6 +937,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
+      
+      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New cylinder"
@@ -872,9 +972,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
-      let newSelectedScene: Scene? = project.sceneList.selectedScene
-      let newSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
-      let newSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
+      let newSelectedScene: Scene?
+      let newSelectedMovie: Movie?
+      let newSelection: [Scene: Set<Movie>]
+      if numberOfRows <= 0
+      {
+        newSelectedScene = scene
+        newSelectedMovie = movie
+        newSelection = [scene: [movie]]
+      }
+      else
+      {
+        newSelectedScene = project.sceneList.selectedScene
+        newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+        newSelection = project.sceneList.selectedMovies
+      }
       
       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
     }

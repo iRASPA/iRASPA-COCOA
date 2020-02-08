@@ -742,7 +742,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = self.representedObject as? Structure , proxyProject?.isEnabled == true
+      let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure , proxyProject?.isEnabled == true
     {
       project.undoManager.registerUndo(withTarget: self, handler: {$0.removeNode(node, fromItem: inItem, atIndex: atIndex, inStructure: structure)})
       
@@ -794,7 +794,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func removeNode(_ node: SKAtomTreeNode, fromItem: SKAtomTreeNode?, atIndex: Int, inStructure structure: Structure)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = self.representedObject as? Structure , proxyProject?.isEnabled == true
+      let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure , proxyProject?.isEnabled == true
     {
       let index: Int = node.indexPath.last ?? 0
       project.undoManager.registerUndo(withTarget: self, handler: {$0.addNode(node, inItem: fromItem, atIndex: index, inStructure: structure)})
@@ -904,7 +904,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let structure: Structure = self.representedObject as? Structure
+      let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       if (outlineView === info.draggingSource! as AnyObject)
       {
@@ -2519,7 +2519,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       DispatchQueue.main.async(execute: {
         if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn")))
         {
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: self.representedObject)
+          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: (self.representedObject as? iRASPAStructure)?.structure)
           self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: column))
         }
       })
