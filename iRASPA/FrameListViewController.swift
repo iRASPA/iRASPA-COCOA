@@ -610,6 +610,9 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     }
    
     self.windowController?.detailTabViewController?.renderViewController?.redraw()
+    
+    // set the other detail view-controllers to the same index
+    updateDetailViewController()
   }
   
   // MARK: Selection handling
