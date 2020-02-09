@@ -61,16 +61,6 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
     }
   }
   
-  /*
-  var projectViewController: ProjectViewController?
-  {
-    if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
-    {
-      return tabViewController.tabViewItems[0].viewController as? ProjectViewController
-    }
-    return nil
-  }*/
-  
   func initializeData()
   {
     if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
@@ -113,8 +103,8 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
   {
     if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
     {
-      let index = tabViewController.selectedTabViewItemIndex
-      if let viewController = tabViewController.tabViewItems[index].viewController as? SelectionIndex
+      let tabIndex = tabViewController.selectedTabViewItemIndex
+      if let viewController = tabViewController.tabViewItems[tabIndex].viewController as? SelectionIndex
       {
         viewController.setSelectionIndex(index: index)
       }

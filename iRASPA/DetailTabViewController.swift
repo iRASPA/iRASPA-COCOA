@@ -101,11 +101,6 @@ class DetailTabViewController: NSTabViewController, WindowControllerConsumer, Re
     return self.tabViewItems[0].viewController?.children[1].children[0] as? StructureDetailTabViewController
   }
   
-  deinit
-  {
-    //Swift.print("deinit: DetailTabViewController")
-  }
-  
   public enum ProjectViewType: Int
   {
     case structureVisualisation = 0
