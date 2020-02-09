@@ -186,6 +186,7 @@ public protocol AtomVisualAppearanceViewer: StructureViewer
   var renderAtomSaturation: Double? {get set}
   var renderAtomValue: Double? {get set}
   var renderAtomScaleFactor: Double? {get set}
+  var renderAtomScaleFactorCompleted: Double? {get set}
   
   
   var renderDrawAtoms: Bool? {get set}

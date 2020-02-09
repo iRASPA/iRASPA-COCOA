@@ -714,13 +714,17 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
         {
           for k3 in minimumReplicaZ...maximumReplicaZ
           {
+            let radius: Double = (atom.asymmetricParentAtom?.drawRadius ?? 0.0) * self.atomScaleFactor
+            
             let cartesianPosition: SIMD3<Double> = pos + cell.unitCell * SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3))
-            minimum.x = min(minimum.x, cartesianPosition.x)
-            minimum.y = min(minimum.y, cartesianPosition.y)
-            minimum.z = min(minimum.z, cartesianPosition.z)
-            maximum.x = max(maximum.x, cartesianPosition.x)
-            maximum.y = max(maximum.y, cartesianPosition.y)
-            maximum.z = max(maximum.z, cartesianPosition.z)
+            
+            minimum.x = min(minimum.x, cartesianPosition.x - radius)
+            minimum.y = min(minimum.y, cartesianPosition.y - radius)
+            minimum.z = min(minimum.z, cartesianPosition.z - radius)
+            
+            maximum.x = max(maximum.x, cartesianPosition.x - radius)
+            maximum.y = max(maximum.y, cartesianPosition.y - radius)
+            maximum.z = max(maximum.z, cartesianPosition.z - radius)
           }
         }
       }

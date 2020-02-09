@@ -4827,6 +4827,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
         if endingDrag
         {
+         
+          representedStructure.renderAtomScaleFactorCompleted = sender.doubleValue
           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
           
           if let renderAtomAmbientOcclusion = representedStructure.renderAtomAmbientOcclusion , renderAtomAmbientOcclusion == true
@@ -4840,6 +4842,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadBoundingBoxData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
@@ -4853,7 +4857,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
     {
-      representedStructure.renderAtomScaleFactor = sender.doubleValue
+      representedStructure.renderAtomScaleFactorCompleted = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])

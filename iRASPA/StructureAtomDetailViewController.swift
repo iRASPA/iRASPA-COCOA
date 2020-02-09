@@ -2612,8 +2612,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       atom.elementIdentifier = newElementId
       
-      // FIX: set only for this atom
-      //structure.setAtomRepresentationStyle(forceFieldSets: document.forceFieldSets)
+      structure.setRepresentationStyle(style: structure.atomRepresentationStyle, for: [atom])
+      structure.setRepresentationType(type: structure.atomRepresentationType, for: [atom])
       
       // reload item in the outlineView
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
@@ -2628,6 +2628,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       // reload: the size and influence of the atom has changed
       
       structure.reComputeBonds()
+      
+      structure.reComputeBoundingBox()
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
   self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -2670,6 +2672,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       // reload: the size and influence of the atom has changed
      
       structure.reComputeBonds()
+      
+      structure.reComputeBoundingBox()
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
