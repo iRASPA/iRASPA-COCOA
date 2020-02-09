@@ -505,14 +505,15 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     {
       let cartesianPosition: SIMD4<Double> = SIMD4<Double>(atom.position.x,atom.position.y,atom.position.z,1.0)
       
-      let radius: Double = atom.asymmetricParentAtom?.drawRadius ?? 0.0
+      let radius: Double = (atom.asymmetricParentAtom?.drawRadius ?? 0.0) * self.atomScaleFactor
       
-      minimum.x = min(minimum.x, cartesianPosition.x-radius)
-      minimum.y = min(minimum.y, cartesianPosition.y-radius)
-      minimum.z = min(minimum.z, cartesianPosition.z-radius)
-      maximum.x = max(maximum.x, cartesianPosition.x+radius)
-      maximum.y = max(maximum.y, cartesianPosition.y+radius)
-      maximum.z = max(maximum.z, cartesianPosition.z+radius)
+      minimum.x = min(minimum.x, cartesianPosition.x - radius)
+      minimum.y = min(minimum.y, cartesianPosition.y - radius)
+      minimum.z = min(minimum.z, cartesianPosition.z - radius)
+      
+      maximum.x = max(maximum.x, cartesianPosition.x + radius)
+      maximum.y = max(maximum.y, cartesianPosition.y + radius)
+      maximum.z = max(maximum.z, cartesianPosition.z + radius)
     }
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)

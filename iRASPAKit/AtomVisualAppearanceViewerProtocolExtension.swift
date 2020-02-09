@@ -53,7 +53,10 @@ extension AtomVisualAppearanceViewer
   
   public func setRepresentationType(type: Structure.RepresentationType?)
   {
-    self.allStructures.forEach{$0.setRepresentationType(type: type)}
+    self.allStructures.forEach{
+      $0.setRepresentationType(type: type)
+      $0.reComputeBoundingBox()
+    }
   }
   
   
@@ -65,7 +68,10 @@ extension AtomVisualAppearanceViewer
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, colorSets: SKColorSets)
   {
-    self.allStructures.forEach{$0.setRepresentationStyle(style: style, colorSets: colorSets)}
+    self.allStructures.forEach{
+      $0.setRepresentationStyle(style: style, colorSets: colorSets)
+      $0.reComputeBoundingBox()
+    }
   }
   
   public func getRepresentationColorScheme() -> String?
@@ -162,6 +168,22 @@ extension AtomVisualAppearanceViewer
     {
       self.allStructures.forEach{
         $0.atomScaleFactor = newValue ?? 1.0
+      }
+    }
+  }
+  
+  public var renderAtomScaleFactorCompleted: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomScaleFactor })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{
+        $0.atomScaleFactor = newValue ?? 1.0
+        $0.reComputeBoundingBox()
       }
     }
   }
@@ -541,7 +563,10 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   
   public func setRepresentationType(type: Structure.RepresentationType?)
   {
-    self.allStructures.forEach{$0.setRepresentationType(type: type)}
+    self.allStructures.forEach{
+      $0.setRepresentationType(type: type)
+      $0.reComputeBoundingBox()
+    }
   }
   
   public func getRepresentationStyle() -> Structure.RepresentationStyle?
@@ -552,7 +577,10 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, colorSets: SKColorSets)
   {
-    self.allStructures.forEach{$0.setRepresentationStyle(style: style, colorSets: colorSets)}
+    self.allStructures.forEach{
+      $0.setRepresentationStyle(style: style, colorSets: colorSets)
+      $0.reComputeBoundingBox()
+    }
   }
   
   public func getRepresentationColorScheme() -> String?
@@ -649,6 +677,22 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
     {
       self.allStructures.forEach{
         $0.atomScaleFactor = newValue ?? 1.0
+      }
+    }
+  }
+  
+  public var renderAtomScaleFactorCompleted: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomScaleFactor })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{
+        $0.atomScaleFactor = newValue ?? 1.0
+        $0.reComputeBoundingBox()
       }
     }
   }
