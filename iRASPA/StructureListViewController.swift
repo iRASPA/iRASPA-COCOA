@@ -1844,6 +1844,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         self.observeNotifications = false
         self.reloadSelection()
         self.observeNotifications = true
+        
+        // set the other detail view-controllers to the same index
+        updateDetailViewController()
       }
     }
   }
