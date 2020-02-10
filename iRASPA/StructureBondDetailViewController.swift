@@ -43,18 +43,12 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   weak var windowController: iRASPAWindowController?
   
-  deinit
-  {
-    //Swift.print("deinit: StructureBondDetailViewController")
-  }
-  
   // MARK: protocol ProjectConsumer
   // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
   
   var bonds: [SKBondNode] = []
-  
   
   override func viewDidLoad()
   {
@@ -485,7 +479,15 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       {
         if row < structure.bonds.arrangedObjects.count
         {
-          bonds[row].isVisible = toggledState
+          let asymmetricBond: SKAsymmetricBond = SKAsymmetricBond(bonds[row].atom1.asymmetricParentAtom, bonds[row].atom2.asymmetricParentAtom)
+          
+          for bond in structure.bonds.arrangedObjects
+          {
+            if SKAsymmetricBond(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom) == asymmetricBond
+            {
+              bond.isVisible = toggledState
+            }
+          }
         }
       }
       self.bondTableView?.reloadData(forRowIndexes: IndexSet(0..<bonds.count), columnIndexes: IndexSet.init(integer: 0))

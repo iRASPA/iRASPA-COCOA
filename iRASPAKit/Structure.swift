@@ -50,7 +50,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
 {
   private var versionNumber: Int = 4
-  private static var classVersionNumber: Int = 3
+  private static var classVersionNumber: Int = 4
   public var displayName: String = "test123"
   
   public var origin: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
@@ -63,9 +63,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   {
     return false
   }
-  
-  // FIX: just for protocol
-  public var frames: [iRASPAStructure] = []
   
   public var isVisible: Bool = true
   
@@ -3094,8 +3091,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     encoder.encode(self.displayName)
     encoder.encode(isVisible)
     
-    //let number = try decoder.decode(UInt32.self)
-    //let spaceGroup = SKSpacegroup(HallNumber: Int(number))
     encoder.encode(self.spaceGroupHallNumber ?? Int(1))
     encoder.encode(cell)
     encoder.encode(periodic)
@@ -3139,6 +3134,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     encoder.encode(Double(minimumGridEnergyValue ?? 0.0))
     
     encoder.encode(atoms)
+    
     encoder.encode((self.atomRepresentationStyle == RepresentationStyle.licorice || self.atomRepresentationType == RepresentationType.unity) ? true : drawAtoms)
     
     encoder.encode(atomRepresentationType.rawValue)
@@ -3187,18 +3183,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     encoder.encode(self.atomTextAlignment.rawValue)
     encoder.encode(self.atomTextOffset)
     
-    
-    
-    encoder.encode(Int(1))
-    let length: Int = self.bonds.arrangedObjects.count
-    encoder.encode(length)
-    for bond in self.bonds.arrangedObjects
-    {
-      encoder.encode(bond.atom1.tag)
-      encoder.encode(bond.atom2.tag)
-      encoder.encode(bond.boundaryType.rawValue)
-    }
-    
+    // encode bonds using tags
+    encoder.encode(self.bonds)
     
     encoder.encode(drawBonds)
     encoder.encode(bondScaleFactor)
@@ -3466,40 +3452,15 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     self.atomTextAlignment = try RKTextAlignment(rawValue: decoder.decode(Int.self))!
     self.atomTextOffset = try decoder.decode(SIMD3<Double>.self)
     
+    self.bonds = try decoder.decode(SKBondSetController.self)
     
-    
-    //bonds = try decoder.decode(SKBondSetController.self)
-    // FIX!! and move to controller
-    // bonds
-    let _: Int = try decoder.decode(Int.self)
-    let length: Int = Int(try decoder.decode(Int.self))
-    var atom1Tags: [Int] = []
-    var atom2Tags: [Int] = []
-    var bondBoundaryTypes: [Int] = []
-    for _ in 0..<length
-    {
-      let a = try decoder.decode(Int.self)
-      let b = try decoder.decode(Int.self)
-      let c = try decoder.decode(Int.self)
-      atom1Tags.append(a)
-      atom2Tags.append(b)
-      bondBoundaryTypes.append(c)
-    }
-    
+    // fill in atoms from stored atom-tags
     let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
     let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
-    
-    self.bonds.arrangedObjects = []
-    for ((atom1Tag, atom2Tag), boundaryType) in zip(zip(atom1Tags, atom2Tags), bondBoundaryTypes)
-    {
-      let bond: SKBondNode = SKBondNode(atom1: atomList[atom1Tag], atom2: atomList[atom2Tag], boundaryType: SKBondNode.BoundaryType(rawValue: boundaryType)!)
-      self.bonds.arrangedObjects.insert(bond)
-    }
-    
     for bond in bonds.arrangedObjects
     {
-      bond.atom1.bonds.insert(bond)
-      bond.atom2.bonds.insert(bond)
+      bond.atom1 = atomList[bond.atom1Tag]
+      bond.atom2 = atomList[bond.atom2Tag]
     }
     
     drawBonds = try decoder.decode(Bool.self)
@@ -3523,8 +3484,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     bondValue = try decoder.decode(Double.self)
     
     bondAmbientOcclusion = try decoder.decode(Bool.self)
-    
-    
     
     // unit cell
     self.drawUnitCell = try decoder.decode(Bool.self)
