@@ -32,7 +32,7 @@
 import Foundation
 import BinaryCodable
 
-public class SKBondSetController: NSObject, NSCoding, BinaryDecodable
+public class SKBondSetController: NSObject, NSCoding, BinaryDecodable, BinaryEncodable
 {
   var versionNumber: Int = 1
   private static var classVersionNumber: Int32 = 1
@@ -70,30 +70,6 @@ public class SKBondSetController: NSObject, NSCoding, BinaryDecodable
     coder.encode(self.arrangedObjects)
   }
   
-  public required init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let readVersionNumber: UInt32 = try decoder.decode(UInt32.self)
-    if readVersionNumber > SKBondSetController.classVersionNumber
-    {
-      //throw BinaryDecodableError.invalidArchiveVersion
-    }
-    
-    let size: Int = try Int(decoder.decode(UInt32.self))
-    for _ in 0..<size
-    {
-      let _: UInt32 = try decoder.decode(UInt32.self)
-      let _: UInt32 = try decoder.decode(UInt32.self)
-      let _: UInt32 = try decoder.decode(UInt32.self)
-    }
-  }
-  
-  /*
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-  }*/
-  
   public func data() -> Data
   {
     return NSArchiver.archivedData(withRootObject: arrangedObjects)
@@ -109,6 +85,57 @@ public class SKBondSetController: NSObject, NSCoding, BinaryDecodable
   public func insertArray(_ array: [SKBondNode])
   {
     arrangedObjects.formUnion(Set(array))
+  }
+  
+  // MARK: -
+  // MARK: Binary Encodable support
+  
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(SKBondSetController.classVersionNumber)
+    encoder.encode(self.arrangedObjects)
+  }
+  
+  // MARK: -
+  // MARK: Binary Decodable support
+  
+  public required init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let readVersionNumber: UInt32 = try decoder.decode(UInt32.self)
+    if readVersionNumber > SKBondSetController.classVersionNumber
+    {
+      throw BinaryDecodableError.invalidArchiveVersion
+    }
+    
+    if readVersionNumber == 0
+    {
+      let _: UInt32 = try decoder.decode(UInt32.self)
+      let length: Int = Int(try decoder.decode(Int.self))
+      var atom1Tags: [Int] = []
+      var atom2Tags: [Int] = []
+      var bondBoundaryTypes: [Int] = []
+      for _ in 0..<length
+      {
+        let a = try decoder.decode(Int.self)
+        let b = try decoder.decode(Int.self)
+        let c = try decoder.decode(Int.self)
+        atom1Tags.append(a)
+        atom2Tags.append(b)
+        bondBoundaryTypes.append(c)
+      }
+      
+      for ((atom1Tag, atom2Tag), boundaryType) in zip(zip(atom1Tags, atom2Tags), bondBoundaryTypes)
+      {
+        let bond: SKBondNode = SKBondNode(atom1: SKBondNode.uninitializedAtom, atom2: SKBondNode.uninitializedAtom, boundaryType: SKBondNode.BoundaryType(rawValue: boundaryType)!)
+        bond.atom1Tag = atom1Tag
+        bond.atom2Tag = atom2Tag
+        self.arrangedObjects.insert(bond)
+      }
+    }
+    else
+    {
+      self.arrangedObjects = try decoder.decode(Set< SKBondNode >.self)
+    }
   }
 }
 

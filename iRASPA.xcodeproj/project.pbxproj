@@ -410,6 +410,7 @@
 		93BF30C21FB3706500FFCCB0 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF2D2C1FB306C300FFCCB0 /* Project.swift */; };
 		93BF30C31FB3707B00FFCCB0 /* iRASPA-CLI.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */; };
+		93C5E24223F1A264002BA929 /* SKAsymmetricBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */; };
 		93CE77E01E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */; };
 		93CE77EE1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CE77F11EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
@@ -1190,6 +1191,7 @@
 		93BF2D2C1FB306C300FFCCB0 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iRASPA-CLI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyingProtocol.swift; sourceTree = "<group>"; };
+		93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricBond.swift; sourceTree = "<group>"; };
 		93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CatchObjectiveCExceptions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatchObjectiveCExceptions.h; sourceTree = "<group>"; };
@@ -1467,6 +1469,7 @@
 				93F12B5B203830B500FFABC3 /* SymmetryKitErrors.swift */,
 				93F3A59421873A0E008E41A2 /* SKAtomNode.swift */,
 				93F3A59621873A1D008E41A2 /* SKBondNode.swift */,
+				93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */,
 				93F3A58E218738C4008E41A2 /* SKBondSetController.swift */,
 				930DD4DC1E26AA5200B8FE9B /* SKCell.swift */,
 				9374794E1FB9EB51008C4411 /* SKBoundingBox.swift */,
@@ -2930,6 +2933,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				930DD4E61E26AA5200B8FE9B /* SKCell.swift in Sources */,
+				93C5E24223F1A264002BA929 /* SKAsymmetricBond.swift in Sources */,
 				930DD4E81E26AA5200B8FE9B /* SKFindSpaceGroup.swift in Sources */,
 				93FDA72F20554DDB000C4AD7 /* SKVASPWriter.swift in Sources */,
 				93F1E7FF20244A220050ECAC /* SKXYZWriter.swift in Sources */,

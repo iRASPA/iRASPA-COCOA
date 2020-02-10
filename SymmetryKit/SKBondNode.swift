@@ -31,32 +31,9 @@
 
 import Foundation
 import simd
+import BinaryCodable
 
-public struct SKAsymmetricBond<A: SKAsymmetricAtom, B: SKAsymmetricAtom>: Hashable
-{
-  let atom1: SKAsymmetricAtom
-  let atom2: SKAsymmetricAtom
-  
-  public func hash(into hasher: inout Hasher)
-  {
-    hasher.combine(atom1)
-    hasher.combine(atom2)
-  }
-  
-  public init(_ atom1: SKAsymmetricAtom, _ atom2: SKAsymmetricAtom)
-  {
-    self.atom1 = atom1
-    self.atom2 = atom2
-  }
-  
-  public static func ==<A, B> (lhs: SKAsymmetricBond<A, B>, rhs: SKAsymmetricBond<A, B>) -> Bool
-  {
-    return lhs.atom1 === rhs.atom1 && lhs.atom2 === rhs.atom2
-  }
-  
-}
-
-public final class SKBondNode: Hashable, Equatable, CustomStringConvertible
+public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, BinaryEncodable, BinaryDecodable
 {
   public enum BoundaryType: Int
   {
@@ -71,6 +48,8 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible
   public unowned var atom2: SKAtomCopy
   public var boundaryType: BoundaryType = BoundaryType.internal
   public var isVisible: Bool = true
+  
+  
   
   public init(atom1: SKAtomCopy, atom2: SKAtomCopy)
   {
@@ -171,6 +150,37 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible
   public static func ==(lhs: SKBondNode, rhs: SKBondNode) -> Bool
   {
     return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+  }
+  
+  // MARK: -
+  // MARK: Binary Encodable support
+  
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(self.atom1.tag)
+    encoder.encode(self.atom2.tag)
+    encoder.encode(self.boundaryType.rawValue)
+    encoder.encode(self.isVisible)
+  }
+   
+ 
+  
+  // MARK: -
+  // MARK: Binary Decodable support
+  
+  internal static let uninitializedAsymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "uninitialized", elementId: 0, uniqueForceFieldName: "", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0, color: NSColor.black, drawRadius: 0.0, bondDistanceCriteria: 0.0)
+  internal static let uninitializedAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: uninitializedAsymmetricAtom, position: SIMD3<Double>(0.0,0.0,0.0))
+  
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    // to be filled in later from the tag-information
+    self.atom1 = SKBondNode.uninitializedAtom
+    self.atom2 = SKBondNode.uninitializedAtom
+    
+    self.atom1Tag = try decoder.decode(Int.self)
+    self.atom2Tag = try decoder.decode(Int.self)
+    self.boundaryType = BoundaryType(rawValue: try decoder.decode(Int.self))!
+    self.isVisible = try decoder.decode(Bool.self)
   }
 }
 

@@ -280,5 +280,33 @@ extension double3x3: BinaryDecodable
   }
 }
 
+extension Set: BinaryEncodable where Element: BinaryEncodable
+{
+  public func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(UInt32(self.count))
+    for element in self
+    {
+      element.binaryEncode(to: encoder)
+    }
+  }
+}
 
-
+extension Set: BinaryDecodable where Element: BinaryDecodable
+{
+  public init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let count: UInt32 = try decoder.decode(UInt32.self)
+    //debugPrint("array count: \(count)")
+    self.init()
+    if(count != UInt32(0xFFFFFFFF))
+    {
+      self.reserveCapacity(Int(count))
+      for _ in 0 ..< Int(count)
+      {
+        let decoded = try Element.init(fromBinary: decoder)
+        self.insert(decoded)
+      }
+    }
+  }
+}
