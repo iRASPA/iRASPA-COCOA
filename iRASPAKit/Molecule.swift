@@ -702,7 +702,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
         let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength;
         let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength;
           
-        let w: Double = (typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) &&
+        let w: Double = (bond.isVisible && typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) &&
             (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
           
         data[index] = RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: pos1.x, y: pos1.y, z: pos1.z, w: w),
