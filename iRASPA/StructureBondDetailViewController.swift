@@ -306,7 +306,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
 
   func setBondAtomPositions(atom1: SKAsymmetricAtom, pos1: SIMD3<Double>, atom2: SKAsymmetricAtom, pos2: SIMD3<Double>)
   {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+    if let document: iRASPADocument = self.windowController?.currentDocument,
+       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       let oldPos1: SIMD3<Double> = atom1.position
@@ -323,6 +324,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       structure.generateCopiesForAsymmetricAtom(atom1)
       structure.generateCopiesForAsymmetricAtom(atom2)
       
+      structure.reComputeBoundingBox()
       structure.reComputeBonds()
       
       self.reloadData()
@@ -331,7 +333,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
-      self.proxyProject?.representedObject.isEdited = true
+      project.isEdited = true
+      document.updateChangeCount(.changeDone)
     }
   }
 
