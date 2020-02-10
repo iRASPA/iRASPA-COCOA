@@ -70,6 +70,7 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible
   public unowned var atom1: SKAtomCopy
   public unowned var atom2: SKAtomCopy
   public var boundaryType: BoundaryType = BoundaryType.internal
+  public var isVisible: Bool = true
   
   public init(atom1: SKAtomCopy, atom2: SKAtomCopy)
   {

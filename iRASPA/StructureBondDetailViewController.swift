@@ -183,6 +183,15 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       let bondLength = structure.bondLength(bond)
       switch(tableColumn.identifier)
       {
+      case NSUserInterfaceItemIdentifier(rawValue: "bondVisibilityColumn"):
+        view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondVisibility"), owner: self) as? NSTableCellView
+        if let checkBox: NSButton = view?.viewWithTag(10) as? NSButton
+        {
+          checkBox.state = bond.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
+          checkBox.isEnabled = proxyProject.isEnabled
+          //checkBox.state = atomNode.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
+          //checkBox.isEnabled = atomNode.isVisibleEnabled && proxyProject.isEnabled
+        }
       case NSUserInterfaceItemIdentifier(rawValue: "bondIdColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondIdRow"), owner: self) as? NSTableCellView
         view?.textField?.intValue = Int32(row)
@@ -458,6 +467,30 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       let newBonds: SKBondSetController = SKBondSetController(arrangedObjects: structure.computeBonds())
       
       self.setBondState(oldBonds: oldBonds, newBonds: newBonds)
+    }
+  }
+  
+  @IBAction func toggleBondVisiiblity(_ sender: NSButton)
+  {
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let structure = (self.representedObject as? iRASPAStructure)?.structure,
+       let row: Int = self.bondTableView?.row(for: sender)
+    {
+      let toggledState: Bool = sender.state == NSControl.StateValue.on
+      if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
+      {
+        structure.bonds.arrangedObjects.forEach{$0.isVisible = toggledState}
+      }
+      else
+      {
+        if row < structure.bonds.arrangedObjects.count
+        {
+          bonds[row].isVisible = toggledState
+        }
+      }
+      self.bondTableView?.reloadData(forRowIndexes: IndexSet(0..<bonds.count), columnIndexes: IndexSet.init(integer: 0))
+        
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
     }
   }
 }
