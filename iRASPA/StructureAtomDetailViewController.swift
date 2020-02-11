@@ -2534,7 +2534,16 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.atomOutlineView?.window?.makeFirstResponder(self.atomOutlineView)
       if let atomNode: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
       {
-        let isFixed: Bool3 = Bool3(sender.isSelected(forSegment: 0),sender.isSelected(forSegment: 1),sender.isSelected(forSegment: 2))
+        let isFixed: Bool3
+        if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
+        {
+          isFixed = Bool3(sender.isSelected(forSegment: 0),sender.isSelected(forSegment: 1),sender.isSelected(forSegment: 2))
+        }
+        else
+        {
+          let state: Bool = sender.isSelected(forSegment: sender.selectedSegment)
+          isFixed = Bool3(state, state, state)
+        }
         self.fixAsymmetricAtom(atomNode, to: isFixed)
       }
     }
