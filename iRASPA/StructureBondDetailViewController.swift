@@ -192,20 +192,23 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         view?.textField?.isEditable = false
       case NSUserInterfaceItemIdentifier(rawValue: "bondFixedAtomColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "fixedAtomsInBondRow"), owner: self) as? NSTableCellView
-        let segmentedControl: NSSegmentedControl = view!.viewWithTag(11) as! NSSegmentedControl
-        segmentedControl.setLabel(String(bond.atom1.asymmetricParentAtom.tag), forSegment: 0)
-        //segmentedControl.setEnabled(true, forSegment: 0)
-        let isAllFixed1: Bool = bond.atom1.asymmetricParentAtom.isFixed.x &&
-                                bond.atom1.asymmetricParentAtom.isFixed.y &&
-                                bond.atom1.asymmetricParentAtom.isFixed.z
-        segmentedControl.setSelected(isAllFixed1, forSegment: 0)
-        segmentedControl.setLabel(String(bond.atom2.asymmetricParentAtom.tag), forSegment: 1)
-        //segmentedControl.setEnabled(true, forSegment: 1)
-        let isAllFixed2: Bool = bond.atom2.asymmetricParentAtom.isFixed.x &&
-                                bond.atom2.asymmetricParentAtom.isFixed.y &&
-                                bond.atom2.asymmetricParentAtom.isFixed.z
-        segmentedControl.setSelected(isAllFixed2, forSegment: 1)
-        segmentedControl.isEnabled = proxyProject.isEnabled
+        if let segmentedControl: NSLabelSegmentedControl = view!.viewWithTag(11) as? NSLabelSegmentedControl
+        {
+          segmentedControl.label = NSString(string: String(bond.atom1.asymmetricParentAtom.tag))
+          segmentedControl.setSelected(bond.atom1.asymmetricParentAtom.isFixed.x, forSegment: 0)
+          segmentedControl.setSelected(bond.atom1.asymmetricParentAtom.isFixed.y, forSegment: 1)
+          segmentedControl.setSelected(bond.atom1.asymmetricParentAtom.isFixed.z, forSegment: 2)
+          segmentedControl.isEnabled = proxyProject.isEnabled
+        }
+        
+        if let segmentedControl: NSLabelSegmentedControl = view!.viewWithTag(12) as? NSLabelSegmentedControl
+        {
+          segmentedControl.label = NSString(string: String(bond.atom2.asymmetricParentAtom.tag))
+          segmentedControl.setSelected(bond.atom2.asymmetricParentAtom.isFixed.x, forSegment: 0)
+          segmentedControl.setSelected(bond.atom2.asymmetricParentAtom.isFixed.y, forSegment: 1)
+          segmentedControl.setSelected(bond.atom2.asymmetricParentAtom.isFixed.z, forSegment: 2)
+          segmentedControl.isEnabled = proxyProject.isEnabled
+        }
       case NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomRow"), owner: self) as? NSTableCellView
         let element: SKElement = PredefinedElements.sharedInstance.elementSet[bond.atom1.asymmetricParentAtom.elementIdentifier]
@@ -278,30 +281,49 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-  @IBAction func fixAtom(_ sender: NSSegmentedControl)
+  @IBAction func fixAtom1(_ sender: NSSegmentedControl)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
     {
       self.bondTableView?.window?.makeFirstResponder(bondTableView)
+      let asymmetricAtom: SKAsymmetricAtom = bonds[row].atom1.asymmetricParentAtom
       
-      if (sender.selectedSegment == 0)
+      let isFixed: Bool3
+      if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
       {
-        let asymmetricAtom: SKAsymmetricAtom = bonds[row].atom1.asymmetricParentAtom
-        
-        let isFixed: Bool = sender.isSelected(forSegment: 0)
-        self.fixAsymmetricAtom(asymmetricAtom, to: Bool3(isFixed,isFixed,isFixed))
+        isFixed = Bool3(sender.isSelected(forSegment: 0),sender.isSelected(forSegment: 1),sender.isSelected(forSegment: 2))
       }
-      if (sender.selectedSegment == 1)
+      else
       {
-        let asymmetricAtom: SKAsymmetricAtom = bonds[row].atom2.asymmetricParentAtom
-        
-        let isFixed: Bool = sender.isSelected(forSegment: 1)
-        self.fixAsymmetricAtom(asymmetricAtom, to: Bool3(isFixed,isFixed,isFixed))
+        let state: Bool = sender.isSelected(forSegment: sender.selectedSegment)
+        isFixed = Bool3(state, state, state)
       }
+      self.fixAsymmetricAtom(asymmetricAtom, to: isFixed)
     }
   }
   
+  @IBAction func fixAtom2(_ sender: NSSegmentedControl)
+  {
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
+    {
+      self.bondTableView?.window?.makeFirstResponder(bondTableView)
+      let asymmetricAtom: SKAsymmetricAtom = bonds[row].atom2.asymmetricParentAtom
+      
+      let isFixed: Bool3
+      if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
+      {
+        isFixed = Bool3(sender.isSelected(forSegment: 0),sender.isSelected(forSegment: 1),sender.isSelected(forSegment: 2))
+      }
+      else
+      {
+        let state: Bool = sender.isSelected(forSegment: sender.selectedSegment)
+        isFixed = Bool3(state, state, state)
+      }
+      self.fixAsymmetricAtom(asymmetricAtom, to: isFixed)
+    }
+  }
   
 
   func setBondAtomPositions(atom1: SKAsymmetricAtom, pos1: SIMD3<Double>, atom2: SKAsymmetricAtom, pos2: SIMD3<Double>)
