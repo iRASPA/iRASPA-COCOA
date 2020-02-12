@@ -42,8 +42,6 @@ struct PickingVertexShaderOut
   float3 frag_pos ;
   float3 frag_center [[ flat]];
   float4 sphere_radius [[ flat ]];
-  float k1 [[ flat ]];
-  float k2 [[ flat ]];
   int instanceId [[ flat ]];
 };
 
@@ -76,10 +74,6 @@ vertex PickingVertexShaderOut AtomSpherePickingVertexShader(const device InPerVe
   vert.frag_pos = pos2.xyz;
   
   vert.position = frameUniforms.projectionMatrix * pos2;
-  
-  uint patchNumber=structureUniforms.ambientOcclusionPatchNumber;
-  vert.k1=iid%patchNumber;
-  vert.k2=iid/patchNumber;
   
   return vert;
 }
@@ -136,10 +130,6 @@ vertex PickingVertexShaderOut LicoriceSpherePickingVertexShader(const device InP
   
   vert.position = frameUniforms.projectionMatrix * pos2;
   
-  uint patchNumber=structureUniforms.ambientOcclusionPatchNumber;
-  vert.k1=iid%patchNumber;
-  vert.k2=iid/patchNumber;
-  
   return vert;
 }
 
@@ -167,6 +157,152 @@ fragment PickingFragOutput LicoriceSpherePickingFragmentShader(PickingVertexShad
   output.albedo = uint4(1,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
   
   return output;
-  
 }
 
+
+
+struct PickingBondVertexShaderOut
+{
+  float4 position [[position]];
+  int instanceId [[ flat ]];
+};
+
+typedef struct
+{
+  uint4 albedo [[color(0)]];
+} PickingBondFragOutput;
+
+
+vertex PickingBondVertexShaderOut PickingInternalBondCylinderVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                constant LightUniforms& lightUniforms [[buffer(4)]],
+                                                uint vid [[vertex_id]],
+                                                uint iid [[instance_id]])
+{
+  float3 v1,v2;
+  PickingBondVertexShaderOut vert;
+  
+  float4 scale = positions[iid].scale;
+  float4 pos =  vertices[vid].position;
+  
+  float4 pos1 = positions[iid].position1;
+  float4 pos2 = positions[iid].position2;
+  
+  float3 dr = (pos2 - pos1).xyz;
+  float bondLength = length(dr);
+  
+  scale.x = structureUniforms.bondScaling;
+  scale.y = bondLength;
+  scale.z = structureUniforms.bondScaling;
+  scale.w = 1.0;
+  
+  dr = normalize(dr);
+  v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
+  v2 = normalize(cross(dr,v1));
+  
+  float4x4 orientationMatrix=float4x4(float4(v2.x,v2.y,v2.z,0),
+                                      float4(dr.x,dr.y,dr.z,0),
+                                      float4(v1.x,v1.y,v1.z,0),
+                                      float4(0,0,0,1));
+  
+  vert.instanceId = iid;
+  vert.position = frameUniforms.mvpMatrix *  structureUniforms.modelMatrix * (orientationMatrix * (scale * pos) + pos1);
+  
+  return vert;
+}
+
+
+
+fragment PickingBondFragOutput PickingInternalBondCylinderFragmentShader(PickingBondVertexShaderOut vert [[stage_in]],
+                                           constant StructureUniforms& structureUniforms [[buffer(0)]])
+{
+  PickingBondFragOutput output;
+  
+  output.albedo = uint4(2,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
+  return output;
+}
+
+
+
+struct PickingExternalBondVertexShaderOut
+{
+  float4 position [[position]];
+  int instanceId [[ flat ]];
+  
+  float clipDistance0 [[ center_perspective ]];
+  float clipDistance1 [[ center_perspective ]];
+  float clipDistance2 [[ center_perspective ]];
+  float clipDistance3 [[ center_perspective ]];
+  float clipDistance4 [[ center_perspective ]];
+  float clipDistance5 [[ center_perspective ]];
+};
+
+vertex PickingExternalBondVertexShaderOut PickingExternalBondVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
+                                                constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                constant LightUniforms& lightUniforms [[buffer(4)]],
+                                                uint vid [[vertex_id]],
+                                                uint iid [[instance_id]])
+{
+  float3 v1,v2;
+  PickingExternalBondVertexShaderOut vert;
+  
+  float4 scale = positions[iid].scale;
+  float4 pos =  vertices[vid].position;
+  
+  float4 pos1 = positions[iid].position1;
+  float4 pos2 = positions[iid].position2;
+  
+  float3 dr = (pos1 - pos2).xyz;
+  float bondLength = length(dr);
+  
+  scale.x = structureUniforms.bondScaling;
+  scale.y = bondLength;
+  scale.z = structureUniforms.bondScaling;
+  scale.w = 1.0;
+  
+  dr = normalize(dr);
+  v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
+  v2 = normalize(cross(dr,v1));
+  
+  float4x4 orientationMatrix=float4x4(float4(-v1.x,-v1.y,-v1.z,0),
+                                      float4(-dr.x,-dr.y,-dr.z,0),
+                                      float4(-v2.x,-v2.y,-v2.z,0),
+                                      float4(0,0,0,1));
+
+  float4 vertexPos =  (orientationMatrix * (scale * pos) + pos1);
+
+  vert.instanceId =  iid;
+  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * vertexPos;
+  
+  vert.clipDistance0 = dot(structureUniforms.clipPlaneLeft,vertexPos);
+  vert.clipDistance1 = dot(structureUniforms.clipPlaneRight,vertexPos);
+  vert.clipDistance2 = dot(structureUniforms.clipPlaneTop,vertexPos);
+  
+  vert.clipDistance3 = dot(structureUniforms.clipPlaneBottom,vertexPos);
+  vert.clipDistance4 = dot(structureUniforms.clipPlaneFront,vertexPos);
+  vert.clipDistance5 = dot(structureUniforms.clipPlaneBack,vertexPos);
+  
+  return vert;
+}
+
+fragment PickingBondFragOutput PickingExternalBondFragmentShader(PickingExternalBondVertexShaderOut vert [[stage_in]],
+                                                   constant StructureUniforms& structureUniforms [[buffer(0)]])
+{
+  PickingBondFragOutput output;
+  
+  // [[ clip_distance ]] appears to working only for two clipping planes
+  // work-around: brute-force 'discard_fragment'
+  if (vert.clipDistance0 < 0.0) discard_fragment();
+  if (vert.clipDistance1 < 0.0) discard_fragment();
+  if (vert.clipDistance2 < 0.0) discard_fragment();
+  if (vert.clipDistance3 < 0.0) discard_fragment();
+  if (vert.clipDistance4 < 0.0) discard_fragment();
+  if (vert.clipDistance5 < 0.0) discard_fragment();
+  
+  output.albedo = uint4(3,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
+  return output;
+}

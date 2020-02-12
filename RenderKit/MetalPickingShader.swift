@@ -38,7 +38,9 @@ class MetalPickingShader
   var renderStructures: [[RKRenderStructure]] = [[]]
   
   var renderPassDescriptor: MTLRenderPassDescriptor! = nil
-  var pipeLine: MTLRenderPipelineState! = nil
+  var atomPipeLine: MTLRenderPipelineState! = nil
+  var internalBondPipeLine: MTLRenderPipelineState! = nil
+  var externalBondPipeLine: MTLRenderPipelineState! = nil
   var texture: MTLTexture! = nil
   var depthTexture: MTLTexture! = nil
   var depthState: MTLDepthStencilState! = nil
@@ -70,21 +72,55 @@ class MetalPickingShader
     }
     samplerState = device.makeSamplerState(descriptor: pSamplerDescriptor!)
     
-    let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomSpherePickingVertexShader")!
-    pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
-    pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSpherePickingFragmentShader")!
-    pipelineDescriptor.vertexDescriptor = vertexDescriptor
+    let atomPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    atomPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
+    atomPipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomSpherePickingVertexShader")!
+    atomPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    atomPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    atomPipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSpherePickingFragmentShader")!
+    atomPipelineDescriptor.vertexDescriptor = vertexDescriptor
     
     do
     {
-      self.pipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+      self.atomPipeLine = try device.makeRenderPipelineState(descriptor: atomPipelineDescriptor)
     }
     catch
     {
-      fatalError("Error occurred when creating render pipeline state \(error)")
+      fatalError("Error occurred when creating atom-picking render pipeline state \(error)")
+    }
+    
+    let internalBondPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    internalBondPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
+    internalBondPipelineDescriptor.vertexFunction = library.makeFunction(name: "PickingInternalBondCylinderVertexShader")!
+    internalBondPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    internalBondPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    internalBondPipelineDescriptor.fragmentFunction = library.makeFunction(name: "PickingInternalBondCylinderFragmentShader")!
+    internalBondPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    
+    do
+    {
+      self.internalBondPipeLine = try device.makeRenderPipelineState(descriptor: internalBondPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating bond-picking render pipeline state \(error)")
+    }
+    
+    let externalBondPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    externalBondPipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
+    externalBondPipelineDescriptor.vertexFunction = library.makeFunction(name: "PickingExternalBondVertexShader")!
+    externalBondPipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    externalBondPipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    externalBondPipelineDescriptor.fragmentFunction = library.makeFunction(name: "PickingExternalBondFragmentShader")!
+    externalBondPipelineDescriptor.vertexDescriptor = vertexDescriptor
+    
+    do
+    {
+      self.externalBondPipeLine = try device.makeRenderPipelineState(descriptor: externalBondPipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating bond-picking render pipeline state \(error)")
     }
   }
   
@@ -173,7 +209,7 @@ class MetalPickingShader
     return nil
   }
   
-  public func renderPickingTextureWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, atomShader: MetalAtomShader, atomOrthographicImposterShader: MetalAtomOrthographicImposterShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, size: CGSize)
+  public func renderPickingTextureWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, atomShader: MetalAtomShader, atomOrthographicImposterShader: MetalAtomOrthographicImposterShader, internalBondShader: MetalInternalBondShader, externalBondShader: MetalExternalBondShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, size: CGSize)
   {
     if let _: RKRenderDataSource = renderDataSource
     {
@@ -205,7 +241,7 @@ class MetalPickingShader
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
             if (structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
             {
-              commandEncoder.setRenderPipelineState(pipeLine)
+              commandEncoder.setRenderPipelineState(atomPipeLine)
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
@@ -219,13 +255,70 @@ class MetalPickingShader
             if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
                (!structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
             {
-              commandEncoder.setRenderPipelineState(pipeLine)
+              commandEncoder.setRenderPipelineState(atomPipeLine)
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
               commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomOrthographicImposterShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomOrthographicImposterShader.indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
             }
           }
+          index = index + 1
+        }
+      }
+      
+     
+      commandEncoder.setVertexBuffer(internalBondShader.vertexBuffer, offset: 0, index: 0)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+      commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
+             let buffer: MTLBuffer = self.metalBuffer(internalBondShader.instanceBuffer, sceneIndex: i, movieIndex: j)
+          {
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+            if (structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
+            {
+              commandEncoder.setRenderPipelineState(internalBondPipeLine)
+              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: internalBondShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: internalBondShader.indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
+            }
+          }
+          
+          index = index + 1
+        }
+      }
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
+             let buffer: MTLBuffer = self.metalBuffer(externalBondShader.instanceBuffer, sceneIndex: i, movieIndex: j)
+          {
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+            if (structure.drawBonds && structure.isVisible &&  (instanceCount > 0) )
+            {
+              commandEncoder.setRenderPipelineState(externalBondPipeLine)
+              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: externalBondShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: externalBondShader.indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
+            }
+          }
+          
           index = index + 1
         }
       }

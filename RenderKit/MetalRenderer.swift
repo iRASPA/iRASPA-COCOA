@@ -622,7 +622,7 @@ public class MetalRenderer
   
   func pickingOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize)
   {
-    pickingShader.renderPickingTextureWithEncoder(commandBuffer, renderPassDescriptor: pickingShader.renderPassDescriptor, atomShader: atomShader, atomOrthographicImposterShader: atomOrthographicImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, size: size)
+    pickingShader.renderPickingTextureWithEncoder(commandBuffer, renderPassDescriptor: pickingShader.renderPassDescriptor, atomShader: atomShader, atomOrthographicImposterShader: atomOrthographicImposterShader, internalBondShader: internalBondShader, externalBondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, size: size)
   }
   
   func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize)
