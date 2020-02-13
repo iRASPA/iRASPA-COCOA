@@ -38,6 +38,8 @@ public class SKBondSetController: NSObject, NSCoding, BinaryDecodable, BinaryEnc
   private static var classVersionNumber: Int32 = 1
   public var arrangedObjects: Set< SKBondNode > = Set()
   
+  public var selectedObjects: Set< SKBondNode > = Set()
+  
   public override init()
   {
     arrangedObjects = Set([])

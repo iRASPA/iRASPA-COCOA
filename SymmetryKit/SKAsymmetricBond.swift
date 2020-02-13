@@ -34,8 +34,8 @@ import simd
 
 public struct SKAsymmetricBond<A: SKAsymmetricAtom, B: SKAsymmetricAtom>: Hashable
 {
-  let atom1: SKAsymmetricAtom
-  let atom2: SKAsymmetricAtom
+  public let atom1: SKAsymmetricAtom
+  public let atom2: SKAsymmetricAtom
   
   public func hash(into hasher: inout Hasher)
   {
