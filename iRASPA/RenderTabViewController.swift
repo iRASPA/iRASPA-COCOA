@@ -410,7 +410,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
     if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
     {
-      return (renderController as? MetalViewController)?.view
+      return renderController.view
     }
     return nil
   }

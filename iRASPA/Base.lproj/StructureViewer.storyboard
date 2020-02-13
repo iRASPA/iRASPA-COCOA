@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="6mp-1E-jNe">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="6mp-1E-jNe">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -89,15 +89,15 @@
                             <scrollView wantsLayer="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RCX-8h-u1f">
                                 <rect key="frame" x="0.0" y="26" width="450" height="135"/>
                                 <clipView key="contentView" id="uNC-Gs-Skf">
-                                    <rect key="frame" x="1" y="1" width="433" height="133"/>
+                                    <rect key="frame" x="1" y="1" width="448" height="133"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView importsGraphics="NO" horizontallyResizable="YES" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" usesRuler="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="XAM-o8-yeW" customClass="PythonScriptTextView" customModule="LogViewKit">
-                                            <rect key="frame" x="0.0" y="-1" width="433" height="133"/>
+                                            <rect key="frame" x="0.0" y="-1" width="448" height="133"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="433" height="133"/>
+                                            <size key="minSize" width="448" height="133"/>
                                             <size key="maxSize" width="10000000" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
@@ -112,7 +112,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Do0-S9-9HJ">
-                                    <rect key="frame" x="434" y="1" width="15" height="133"/>
+                                    <rect key="frame" x="433" y="1" width="16" height="133"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -126,7 +126,7 @@
                                             <rect key="frame" x="390.5" y="3" width="57" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                             <segmentedCell key="cell" controlSize="small" borderStyle="border" focusRingType="none" alignment="left" style="texturedSquare" trackingMode="selectAny" id="quL-Z4-nO3">
-                                                <font key="font" metaFont="smallSystem"/>
+                                                <font key="font" metaFont="message" size="11"/>
                                                 <segments>
                                                     <segment image="ShowHideViewOnLeft-ON"/>
                                                     <segment image="ShowHideViewOnRight-ON" tag="1"/>
@@ -171,15 +171,15 @@
                             <scrollView wantsLayer="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzn-aw-ATd">
                                 <rect key="frame" x="0.0" y="26" width="450" height="135"/>
                                 <clipView key="contentView" drawsBackground="NO" id="Egn-aB-szp">
-                                    <rect key="frame" x="1" y="1" width="433" height="133"/>
+                                    <rect key="frame" x="1" y="1" width="448" height="133"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" horizontallyResizable="YES" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" usesRuler="YES" allowsNonContiguousLayout="YES" smartInsertDelete="YES" id="nte-Gm-JGW" customClass="LogScriptTextView" customModule="LogViewKit">
-                                            <rect key="frame" x="0.0" y="0.0" width="433" height="133"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="448" height="133"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="433" height="133"/>
+                                            <size key="minSize" width="448" height="133"/>
                                             <size key="maxSize" width="10000000" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <connections>
@@ -194,7 +194,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="9DI-yG-Scc">
-                                    <rect key="frame" x="434" y="1" width="15" height="133"/>
+                                    <rect key="frame" x="433" y="1" width="16" height="133"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -208,7 +208,7 @@
                                             <rect key="frame" x="394.5" y="3" width="57" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                             <segmentedCell key="cell" controlSize="small" borderStyle="border" focusRingType="none" alignment="left" style="texturedSquare" trackingMode="selectAny" id="mQl-h9-Uop">
-                                                <font key="font" metaFont="smallSystem"/>
+                                                <font key="font" metaFont="message" size="11"/>
                                                 <segments>
                                                     <segment image="ShowHideViewOnLeft-ON"/>
                                                     <segment image="ShowHideViewOnRight-ON" selected="YES" tag="1"/>
@@ -256,7 +256,7 @@
                     <tabView key="tabView" type="noTabsNoBorder" id="SdB-hv-Mq0">
                         <rect key="frame" x="0.0" y="0.0" width="800" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <font key="font" metaFont="message"/>
+                        <font key="font" metaFont="system"/>
                         <connections>
                             <outlet property="delegate" destination="jba-0R-BH0" id="dp3-rE-Wk1"/>
                         </connections>
@@ -1201,10 +1201,10 @@
             </objects>
             <point key="canvasLocation" x="300" y="2061"/>
         </scene>
-        <!--Metal View Controller-->
+        <!--Render View Controller-->
         <scene sceneID="QQq-Fa-u2x">
             <objects>
-                <viewController id="y97-8R-XET" customClass="MetalViewController" customModule="RenderKit" sceneMemberID="viewController">
+                <viewController id="y97-8R-XET" customClass="RenderViewController" customModule="RenderKit" sceneMemberID="viewController">
                     <view key="view" id="zcF-k3-LOw" customClass="MetalView" customModule="RenderKit">
                         <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1223,7 +1223,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <segmentedControl horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="5IQ-fw-X7X">
-                                <rect key="frame" x="-2" y="151" width="480" height="24"/>
+                                <rect key="frame" x="-2" y="151" width="452" height="24"/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="separated" trackingMode="selectOne" id="KMJ-Zm-flM">
                                     <font key="font" metaFont="system"/>
                                     <segments>
@@ -1289,7 +1289,7 @@
                     <tabView key="tabView" wantsLayer="YES" misplaced="YES" type="noTabsNoBorder" id="rzD-1c-wKY">
                         <rect key="frame" x="0.0" y="0.0" width="500" height="750"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <font key="font" metaFont="message"/>
+                        <font key="font" metaFont="system"/>
                         <connections>
                             <outlet property="delegate" destination="g8v-Is-YFx" id="4ye-52-DiT"/>
                         </connections>
