@@ -62,8 +62,8 @@
 		930DD5F61E26B65C00B8FE9B /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F01E26B65C00B8FE9B /* MetalRenderer.swift */; };
 		930DD5F71E26B65C00B8FE9B /* MetalSphereGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F11E26B65C00B8FE9B /* MetalSphereGeometry.swift */; };
 		930DD5F81E26B65C00B8FE9B /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F21E26B65C00B8FE9B /* MetalView.swift */; };
-		930DD5FA1E26B67B00B8FE9B /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F91E26B67B00B8FE9B /* MetalViewController.swift */; };
-		930DD5FD1E26B6AA00B8FE9B /* RenderKit.MetalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 930DD5FB1E26B6AA00B8FE9B /* RenderKit.MetalViewController.xib */; };
+		930DD5FA1E26B67B00B8FE9B /* RenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD5F91E26B67B00B8FE9B /* RenderViewController.swift */; };
+		930DD5FD1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 930DD5FB1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib */; };
 		930DD6001E26B6D400B8FE9B /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4B71E26A92C00B8FE9B /* Metal.framework */; };
 		930DD6021E26B6DD00B8FE9B /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD6011E26B6DD00B8FE9B /* MetalKit.framework */; };
 		930DD6031E26B6ED00B8FE9B /* MathKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; };
@@ -852,8 +852,8 @@
 		930DD5F01E26B65C00B8FE9B /* MetalRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalRenderer.swift; sourceTree = "<group>"; };
 		930DD5F11E26B65C00B8FE9B /* MetalSphereGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalSphereGeometry.swift; sourceTree = "<group>"; };
 		930DD5F21E26B65C00B8FE9B /* MetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
-		930DD5F91E26B67B00B8FE9B /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalViewController.swift; sourceTree = "<group>"; };
-		930DD5FB1E26B6AA00B8FE9B /* RenderKit.MetalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RenderKit.MetalViewController.xib; sourceTree = "<group>"; };
+		930DD5F91E26B67B00B8FE9B /* RenderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderViewController.swift; sourceTree = "<group>"; };
+		930DD5FB1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RenderKit.RenderViewController.xib; sourceTree = "<group>"; };
 		930DD6011E26B6DD00B8FE9B /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		930DD60F1E26B96A00B8FE9B /* iRASPAKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iRASPAKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		930DD6111E26B96A00B8FE9B /* iRASPAKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iRASPAKit.h; sourceTree = "<group>"; };
@@ -1519,8 +1519,8 @@
 				93793B3E21D9459D004CAD9C /* RKLightUniforms.swift */,
 				934A853A200A063700737BEB /* RKFontAtlas.swift */,
 				9386FBB02019DEAA00442E5C /* RKCachedFontAtlas.swift */,
-				930DD5FB1E26B6AA00B8FE9B /* RenderKit.MetalViewController.xib */,
-				930DD5F91E26B67B00B8FE9B /* MetalViewController.swift */,
+				930DD5FB1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib */,
+				930DD5F91E26B67B00B8FE9B /* RenderViewController.swift */,
 				930DD5F21E26B65C00B8FE9B /* MetalView.swift */,
 				930DD5ED1E26B65C00B8FE9B /* MetalBoxGeometry.swift */,
 				930C1FA62201E576006AEF30 /* MetalCubeGeometry.swift */,
@@ -2788,7 +2788,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93793B4721DE0FB6004CAD9C /* LICENSE in Resources */,
-				930DD5FD1E26B6AA00B8FE9B /* RenderKit.MetalViewController.xib in Resources */,
+				930DD5FD1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2976,7 +2976,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				930DD5FA1E26B67B00B8FE9B /* MetalViewController.swift in Sources */,
+				930DD5FA1E26B67B00B8FE9B /* RenderViewController.swift in Sources */,
 				93584CDD2001206D005F01A7 /* PsrdNoise2D.metal in Sources */,
 				930DD5F41E26B65C00B8FE9B /* MetalCylinderGeometry.swift in Sources */,
 				930DD5F31E26B65C00B8FE9B /* MetalBoxGeometry.swift in Sources */,

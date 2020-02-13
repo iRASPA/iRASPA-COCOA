@@ -38,7 +38,7 @@ import CoreMedia
 import CoreVideo
 import LogViewKit
 
-public class MetalViewController: NSViewController, RenderViewController
+public class RenderViewController: NSViewController
 {
   var device: MTLDevice? = nil
   var commandQueue: MTLCommandQueue! = nil
@@ -76,7 +76,7 @@ public class MetalViewController: NSViewController, RenderViewController
   
   convenience  init()
   {
-    self.init(nibName: nil, bundle: Bundle(for: MetalViewController.self))
+    self.init(nibName: nil, bundle: Bundle(for: RenderViewController.self))
   }
   
   // called when present in a NIB-file
@@ -84,12 +84,7 @@ public class MetalViewController: NSViewController, RenderViewController
   {
     super.init(coder: aDecoder)
   }
-  
-  deinit
-  {
-    //Swift.print("deinit: MetalViewController")
-  }
-  
+
   public override func viewDidLoad()
   {
     super.viewDidLoad()
