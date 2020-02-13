@@ -823,6 +823,54 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return data
   }
   
+  public override var internalBondPositions: [SIMD4<Double>]
+  {
+    var index: Int
+    
+    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+    
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+    
+    let bonds: [SKBondNode] = self.bonds.arrangedObjects.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy && $0.boundaryType == .internal}
+    var data: [SIMD4<Double>] = [SIMD4<Double>](repeating: SIMD4<Double>(), count: numberOfReplicas * bonds.count)
+    
+    index = 0
+    for bond in bonds
+    {
+      let atom1: SKAsymmetricAtom =  bond.atom1.asymmetricParentAtom
+      let atom2: SKAsymmetricAtom =  bond.atom2.asymmetricParentAtom
+      let isVisible: Bool =  bond.isVisible && atom1.isVisible && atom1.isVisibleEnabled && atom2.isVisible && atom2.isVisibleEnabled
+      
+      let pos: SIMD3<Double> = 0.5 * (atom1.position + atom2.position)
+      
+      for k1 in minimumReplicaX...maximumReplicaX
+      {
+        for k2 in minimumReplicaY...maximumReplicaY
+        {
+          for k3 in minimumReplicaZ...maximumReplicaZ
+          {
+            let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+            
+            let cartesianPosition: SIMD3<Double> = pos + cell.unitCell * SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+            
+            let w: Double = isVisible ? 1.0 : -1.0
+            let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: w)
+            
+            data[index] = position
+            index = index + 1
+          }
+        }
+      }
+    }
+    return data
+  }
+  
   public override var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms]
   {
     var index: Int

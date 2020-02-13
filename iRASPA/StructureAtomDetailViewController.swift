@@ -1699,7 +1699,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       return false
     }
     
-    if (menuItem.action == #selector(selectionInversion))
+    if (menuItem.action == #selector(selectionAtomInversion))
     {
       if let numberOfRows = self.atomOutlineView?.numberOfRows
       {
@@ -1789,7 +1789,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
     
     
-    if (menuItem.action == #selector(selectionInversion))
+    if (menuItem.action == #selector(selectionAtomInversion))
     {
       if let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
       {
@@ -1801,7 +1801,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     return true
   }
   
-  @IBAction func selectionInversion(_ sender: NSMenuItem)
+  @IBAction func selectionAtomInversion(_ sender: NSMenuItem)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,

@@ -161,7 +161,7 @@
                                                                     <rect key="frame" x="5" y="1" width="53" height="16"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                     <segmentedCell key="cell" controlSize="mini" refusesFirstResponder="YES" borderStyle="border" alignment="left" style="rounded" trackingMode="selectAny" id="FZ5-1i-WcD" customClass="NSLabelSegmentedCell" customModule="iRASPA" customModuleProvider="target">
-                                                                        <font key="font" metaFont="miniSystem"/>
+                                                                        <font key="font" metaFont="menu" size="9"/>
                                                                         <segments>
                                                                             <segment width="15"/>
                                                                             <segment width="15">
@@ -541,7 +541,7 @@
                                     <menuItem title="Invert" id="1YF-gj-uzt">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
-                                            <action selector="selectionInversion:" target="L26-B0-eRn" id="sS3-gX-Qtf"/>
+                                            <action selector="selectionAtomInversion:" target="L26-B0-eRn" id="26k-cP-4VA"/>
                                         </connections>
                                     </menuItem>
                                     <menuItem title="Copy to new Movie" id="h1l-YI-Yex" userLabel="Copy to new Movie">

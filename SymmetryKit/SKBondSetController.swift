@@ -35,10 +35,10 @@ import BinaryCodable
 public class SKBondSetController: NSObject, NSCoding, BinaryDecodable, BinaryEncodable
 {
   var versionNumber: Int = 1
-  private static var classVersionNumber: Int32 = 1
+  private static var classVersionNumber: UInt32 = 1
   public var arrangedObjects: Set< SKBondNode > = Set()
   
-  public var selectedObjects: Set< SKBondNode > = Set()
+  public var selectedObjects: Set< SKAsymmetricBond > = Set()
   
   public override init()
   {
