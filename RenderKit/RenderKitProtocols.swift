@@ -111,24 +111,6 @@ public enum RKTextAlignment: Int
   case bottomRight = 8
 }
 
-public protocol RKRenderViewSelectionDelegate: class
-{
-  func selectInRectangle(_ rect: NSRect, inViewPort bounds: NSRect, byExtendingSelection extending: Bool)
-  func addAtomToSelection(_ pick: [Int32])
-  func toggleAtomSelection(_ pick: [Int32])
-  func clearSelection()
-  func cameraDidChange()
-  
-  func shiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
-  func finalizeShiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
-  func rotateSelection(by: SIMD3<Double>)
-  
-  func clearMeasurement()
-  func addAtomToMeasurement(_ pick: [Int32])
-}
-
-
-
 /// Inserts the node into another (parent) node at a specified index
 ///
 /// - parameter inParent: The parent where the node will be inserted into.
@@ -388,6 +370,8 @@ public protocol RenderViewController: class
   func reloadRenderMeasurePointsData()
   func reloadBoundingBoxData()
   func reloadRenderDataSelectedAtoms()
+  func reloadRenderDataSelectedInternalBonds()
+  func reloadRenderDataSelectedExternalBonds()
   func reloadBackgroundImage()
   
   func updateStructureUniforms()

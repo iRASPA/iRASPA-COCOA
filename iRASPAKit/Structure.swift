@@ -2921,6 +2921,16 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     return []
   }
   
+  public var internalBondPositions: [SIMD4<Double>]
+  {
+    return []
+  }
+  
+  public var externalBondPositions: [SIMD4<Double>]
+  {
+    return []
+  }
+  
   public var crystallographicPositions: [(SIMD3<Double>, Int)]
   {
     return []
@@ -3133,6 +3143,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     
     encoder.encode(Double(minimumGridEnergyValue ?? 0.0))
     
+    self.tag(atoms: self.atoms)
     encoder.encode(atoms)
     
     encoder.encode((self.atomRepresentationStyle == RepresentationStyle.licorice || self.atomRepresentationType == RepresentationType.unity) ? true : drawAtoms)
@@ -3403,6 +3414,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     minimumGridEnergyValue = Float(try decoder.decode(Double.self))
     
     atoms = try decoder.decode(SKAtomTreeController.self)
+    
     drawAtoms = try decoder.decode(Bool.self)
     
     atomRepresentationType = try RepresentationType(rawValue: decoder.decode(Int.self))!
@@ -3459,8 +3471,12 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
     for bond in bonds.arrangedObjects
     {
-      bond.atom1 = atomList[bond.atom1Tag]
-      bond.atom2 = atomList[bond.atom2Tag]
+      let atom1 = atomList[bond.atom1Tag]
+      let atom2 = atomList[bond.atom2Tag]
+      bond.atom1 = atom1
+      bond.atom2 = atom2
+      atom1.bonds.insert(bond)
+      atom2.bonds.insert(bond)
     }
     
     drawBonds = try decoder.decode(Bool.self)

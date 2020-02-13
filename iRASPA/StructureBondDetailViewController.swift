@@ -543,7 +543,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
-      let selectedAsymmetricBonds: Set<SKAsymmetricBond> = Set(structure.bonds.selectedObjects.compactMap{SKAsymmetricBond($0.atom1.asymmetricParentAtom, $0.atom2.asymmetricParentAtom)})
+      let selectedAsymmetricBonds: Set<SKAsymmetricBond> = structure.bonds.selectedObjects
       
       self.bondTableView?.selectRowIndexes(IndexSet(), byExtendingSelection: false)
       
@@ -575,11 +575,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       for row in indexes
       {
         let asymmetricBond: SKAsymmetricBond = bondKeys[row]
-        
-        if let bonds = bondDictionary[asymmetricBond]
-        {
-          structure.bonds.selectedObjects.formUnion(bonds)
-        }
+        structure.bonds.selectedObjects.insert(asymmetricBond)
       }
     }
   }

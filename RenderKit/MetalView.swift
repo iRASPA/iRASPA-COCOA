@@ -147,6 +147,20 @@ class MetalView: MTKView
     self.layer?.setNeedsDisplay()
   }
   
+  func reloadRenderDataSelectedInternalBonds()
+  {
+    renderer.reloadRenderDataSelectedInternalBonds(device: self.device!)
+    renderer.renderQuality = RKRenderQuality.high
+    self.layer?.setNeedsDisplay()
+  }
+  
+  func reloadRenderDataSelectedExternalBonds()
+  {
+    renderer.reloadRenderDataSelectedExternalBonds(device: self.device!)
+    renderer.renderQuality = RKRenderQuality.high
+    self.layer?.setNeedsDisplay()
+  }
+  
   public func reloadRenderMeasurePointsData()
   {
     renderer.reloadRenderMeasurePointsData(device: self.device!)

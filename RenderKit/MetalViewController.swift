@@ -150,6 +150,17 @@ public class MetalViewController: NSViewController, RenderViewController
     (self.view as? MetalView)?.reloadRenderDataSelectedAtoms()
   }
   
+  public func reloadRenderDataSelectedInternalBonds()
+  {
+    (self.view as? MetalView)?.reloadRenderDataSelectedInternalBonds()
+  }
+  
+  public func reloadRenderDataSelectedExternalBonds()
+  {
+    (self.view as? MetalView)?.reloadRenderDataSelectedExternalBonds()
+  }
+  
+  
   public func reloadRenderMeasurePointsData()
   {
     (self.view as? MetalView)?.reloadRenderMeasurePointsData()

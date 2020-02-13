@@ -273,6 +273,16 @@ public class MetalRenderer
     self.rebuildSelectionVertexBuffer(device: device)
   }
   
+  public func reloadRenderDataSelectedInternalBonds(device: MTLDevice)
+  {
+    
+  }
+  
+  public func reloadRenderDataSelectedExternalBonds(device: MTLDevice)
+  {
+    
+  }
+  
   public func reloadRenderMeasurePointsData(device: MTLDevice)
   {
     measurementShader.buildVertexBuffers(device: device)

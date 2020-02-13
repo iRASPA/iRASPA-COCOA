@@ -648,6 +648,33 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return data
   }
   
+  public override var internalBondPositions: [SIMD4<Double>]
+  {
+    var index: Int
+    
+    let bonds: [SKBondNode] = self.bonds.arrangedObjects.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy && $0.boundaryType == .internal}
+    var data: [SIMD4<Double>] = [SIMD4<Double>](repeating: SIMD4<Double>(), count: bonds.count)
+    
+    index = 0
+    
+    for bond in bonds
+    {
+      let atom1: SKAsymmetricAtom =  bond.atom1.asymmetricParentAtom
+      let atom2: SKAsymmetricAtom =  bond.atom2.asymmetricParentAtom
+      let isVisible: Bool =  bond.isVisible && atom1.isVisible && atom1.isVisibleEnabled && atom2.isVisible && atom2.isVisibleEnabled
+      
+      let pos: SIMD3<Double> = 0.5 * (bond.atom1.position + bond.atom2.position)
+        
+      let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+      let w: Double = isVisible ? 1.0 : -1.0
+      let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: w)
+        
+      data[index] = position
+      index = index + 1
+    }
+    return data
+  }
+  
   public override var crystallographicPositions: [(SIMD3<Double>, Int)]
   {
     return []

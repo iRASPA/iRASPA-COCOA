@@ -37,7 +37,7 @@ import SymmetryKit
 import LogViewKit
 import MathKit
 
-class RenderTabViewController: NSTabViewController, NSMenuItemValidation, WindowControllerConsumer, ProjectConsumer, GlobalModifierFlagsConsumer, RKRenderViewSelectionDelegate
+class RenderTabViewController: NSTabViewController, NSMenuItemValidation, WindowControllerConsumer, ProjectConsumer, GlobalModifierFlagsConsumer
 {
   weak var windowController: iRASPAWindowController?
   
@@ -50,16 +50,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
 
   
   enum Tracking {
-    case none
-    case panning
-    case addToSelection
-    case newSelection
-    case draggedAddToSelection
-    case draggedNewSelection
-    case backgroundClick
-    case measurement
-    case translateSelection
-    case other
+    case none                          // initialized value
+    case addToSelection                // command-key
+    case newSelection                  // shift-key
+    case measurement                   // option-key
+    case translateSelection            // option and command-key
+    case mouseClickWithoutKeyModifiers // mouse-click with modifiers key
+    
+    case draggedAddToSelection      // drag + command
+    case draggedNewSelection        // drag + shift
+    case draggedWithoutKeyModifiers // drag
   }
   
   var tracking: Tracking = .none
@@ -467,6 +467,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
+  func reloadRenderDataSelectedInternalBonds()
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    {
+      renderController.reloadRenderDataSelectedAtoms()
+    }
+  }
+  
   func updateLightUniforms()
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
@@ -748,186 +758,14 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         if structure.isVisible
         {
-          self.setCurrentSelection(structure: structure, selection: Set(structure.atoms.flattenedNodes().filter{$0.representedObject.isVisible}), from: structure.atoms.selectedTreeNodes)
+          self.setCurrentAtomSelection(structure: structure, selection: Set(structure.atoms.flattenedNodes().filter{$0.representedObject.isVisible}), from: structure.atoms.selectedTreeNodes)
         }
       }
     }
   }
    
   
-  func deleteSelectedAtomsFor(structure: Structure, atoms: [SKAtomTreeNode], bonds: [SKBondNode], from indexPaths: [IndexPath])
-  {
-    if  let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-    {
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedAtomsIn(structure: structure, atoms: atoms.reversed(), bonds: bonds, at: indexPaths.reversed())})
-      
-      for bond in bonds
-      {
-        bond.atom1.bonds.remove(bond)
-        bond.atom2.bonds.remove(bond)
-        structure.bonds.arrangedObjects.remove(bond)
-      }
-      
-      for atom in atoms
-      {
-        structure.atoms.removeNode(atom)
-      }
-      
-      structure.tag(atoms: structure.atoms)
-      structure.atoms.selectedTreeNodes = []
-      
-      self.proxyProject?.representedObject.isEdited = true
-      
-      self.invalidateIsosurface(cachedIsosurfaces: [structure])
-      self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
-      self.renderViewController.reloadData()
-      
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: structure)
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
-      
-      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
-      
-      clearMeasurement()
-    }
-  }
-  
-  
-  
-  func insertSelectedAtomsIn(structure: Structure, atoms: [SKAtomTreeNode], bonds: [SKBondNode], at indexPaths: [IndexPath])
-  {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-    {
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(structure: structure, atoms: atoms.reversed(), bonds: bonds, from: indexPaths.reversed())})
-      
-      if !project.undoManager.isUndoing
-      {
-        project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
-      }
-      
-    
-      for (index, atom) in atoms.enumerated()
-      {
-        structure.atoms.insertNode(atom, atArrangedObjectIndexPath: indexPaths[index])
-        structure.atoms.selectedTreeNodes.insert(atom)
-      }
-    
-      structure.tag(atoms: structure.atoms)
-    
-      for bond in bonds
-      {
-        bond.atom1.bonds.insert(bond)
-        bond.atom2.bonds.insert(bond)
-        structure.bonds.arrangedObjects.insert(bond)
-      }
-    
-      project.isEdited = true
-    
-      self.invalidateIsosurface(cachedIsosurfaces: [structure])
-    self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
-      self.renderViewController.reloadData()
-    
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: structure)
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
-    
-      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
-    }
-  }
-  
-  
-  
-  
-  func deleteSelectedAtomsFor(deletedData: [AtomsChangeDataStructure])
-  {
-    if  let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-    {
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedAtomsIn(insertedData: deletedData.map{$0.reversed()})})
-      
-      if !project.undoManager.isUndoing
-      {
-        project.undoManager.setActionName(NSLocalizedString("Delete atoms", comment:"Delete atoms"))
-      }
-      
-      for data in deletedData
-      {
-        for bond in data.selectedBonds
-        {
-          bond.atom1.bonds.remove(bond)
-          bond.atom2.bonds.remove(bond)
-          data.structure.bonds.arrangedObjects.remove(bond)
-        }
-        
-        for atom in data.atoms
-        {
-          data.structure.atoms.removeNode(atom)
-        }
-        
-        data.structure.tag(atoms: data.structure.atoms)
-        data.structure.atoms.selectedTreeNodes = []
-        
-        project.isEdited = true
-        
-        showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
-        
-        self.invalidateIsosurface(cachedIsosurfaces: [data.structure])
-        self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [data.structure])
-        
-        NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: data.structure)
-        NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: data.structure)
-      }
-      self.renderViewController.reloadData()
-      
-      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
-      
-      clearMeasurement()
-    }
-  }
-  
-  
-  func insertSelectedAtomsIn(insertedData: [AtomsChangeDataStructure])
-  {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-    {
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(deletedData: insertedData.map{$0.reversed()})})
-      
-      if !project.undoManager.isUndoing
-      {
-        project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
-      }
-      
-      for data in insertedData
-      {
-        for (index, atom) in data.atoms.enumerated()
-        {
-          data.structure.atoms.insertNode(atom, atArrangedObjectIndexPath: data.indexPaths[index])
-          data.structure.atoms.selectedTreeNodes.insert(atom)
-        }
-      
-        data.structure.tag(atoms: data.structure.atoms)
-      
-        for bond in data.selectedBonds
-        {
-          bond.atom1.bonds.insert(bond)
-          bond.atom2.bonds.insert(bond)
-          data.structure.bonds.arrangedObjects.insert(bond)
-        }
-        
-        showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
-      
-        self.proxyProject?.representedObject.isEdited = true
-      
-        self.invalidateIsosurface(cachedIsosurfaces: [data.structure])
-        self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [data.structure])
-        
-        NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: data.structure)
-        NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: data.structure)
-      }
-      self.renderViewController.reloadData()
-      
-      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
-    }
-  }
-  
-  
+ 
   
   
   func deleteSelection()
@@ -1013,12 +851,46 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
  
-  func setCurrentSelection(structure: Structure, selection: Set<SKAtomTreeNode>, from: Set<SKAtomTreeNode>)
+
+  
+  public func clearSelectionFor(structure: Structure)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      project.undoManager.setActionName(NSLocalizedString("Clear selection", comment: "Clear selection"))
+      self.setCurrentAtomSelection(structure: structure, selection: [], from: structure.atoms.selectedTreeNodes)
+      self.setCurrentInternalBondSelection(structure: structure, selection: [], from: structure.bonds.selectedObjects)
+  
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+    }
+  }
+  
+  func clearSelection()
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+    {
+      for i in 0..<crystalProjectData.renderStructures.count
+      {
+        let structure: RKRenderStructure = crystalProjectData.renderStructures[i]
+        self.setAtomSelectionFor(structure: structure as! Structure, indexSet: IndexSet(), byExtendingSelection: false)
+        self.setInternalBondSelectionFor(structure: structure as! Structure, indexSet: IndexSet(), byExtendingSelection: false)
+      }
+      self.reloadRenderDataSelectedAtoms()
+      
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+    }
+  }
+  
+  // MARK: Atom selection
+  // =====================================================================
+  
+  func setCurrentAtomSelection(structure: Structure, selection: Set<SKAtomTreeNode>, from: Set<SKAtomTreeNode>)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       // save off the current selectedNode and current selection for undo/redo
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(structure: structure, selection: from, from: selection)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentAtomSelection(structure: structure, selection: from, from: selection)})
       project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
    
       showTransformationPanel(oldSelectionEmpty: structure.atoms.selectedTreeNodes.isEmpty,newSelectionEmpty: selection.isEmpty)
@@ -1029,18 +901,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
       self.renderViewController.reloadRenderDataSelectedAtoms()
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: structure)
-    }
-  }
-  
-  
-  public func clearSelectionFor(structure: Structure)
-  {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-    {
-      project.undoManager.setActionName(NSLocalizedString("Clear selection", comment: "Clear selection"))
-      self.setCurrentSelection(structure: structure, selection: [], from: structure.atoms.selectedTreeNodes)
-  
-      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
   }
   
@@ -1055,6 +915,103 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }
       let numberOfReplicas: Int = structure.numberOfReplicas()
       let nodes: [SKAtomTreeNode] = structure.atoms.flattenedLeafNodes()
+     
+      let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
+     
+      for index in indexSet
+      {
+        // take replicas into account
+        selectedTreeNodes.insert(nodes[atoms[index / numberOfReplicas].asymmetricIndex])
+      }
+     
+      if selectedTreeNodes != structure.atoms.selectedTreeNodes
+      {
+        project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
+        self.setCurrentAtomSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
+      }
+     
+      (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+    }
+  }
+  
+  func setAtomToSelection(_ pick: [Int32])
+  {
+    if (pick[0] == 1)
+    {
+      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+      {
+        let structureIdentifier: Int = Int(pick[1])
+        let movieIdentifier: Int = Int(pick[2])
+        let pickedAtom: Int = Int(pick[3])
+         
+        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
+        let structure: RKRenderStructure = structures[movieIdentifier]
+         
+        if structure.isVisible
+        {
+          self.setAtomSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedAtom), byExtendingSelection: false)
+          self.reloadRenderDataSelectedAtoms()
+          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+        }
+      }
+    }
+  }
+   
+  func addAtomToSelection(_ pick: [Int32])
+  {
+    if (pick[0] == 1)
+    {
+      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+      {
+        let structureIdentifier: Int = Int(pick[1])
+        let movieIdentifier: Int = Int(pick[2])
+        let pickedAtom: Int = Int(pick[3])
+         
+        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
+        let structure: RKRenderStructure = structures[movieIdentifier]
+         
+        if structure.isVisible
+        {
+          self.addAtomToSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedAtom))
+          self.reloadRenderDataSelectedAtoms()
+          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+        }
+      }
+    }
+  }
+   
+  func toggleAtomSelection(_ pick: [Int32])
+  {
+    if (pick[0] == 1)
+    {
+      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+      {
+        let structureIdentifier: Int = Int(pick[1])
+        let movieIdentifier: Int = Int(pick[2])
+        let pickedAtom: Int = Int(pick[3])
+         
+        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
+        let structure: RKRenderStructure = structures[movieIdentifier]
+         
+        if structure.isVisible
+        {
+          self.toggleAtomSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedAtom))
+          self.reloadRenderDataSelectedAtoms()
+          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+        }
+      }
+    }
+  }
+   
+  
+  public func addAtomToSelectionFor(structure: Structure, indexSet: IndexSet)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      var selectedTreeNodes: Set<SKAtomTreeNode> = structure.atoms.selectedTreeNodes
+    
+      let numberOfReplicas: Int = structure.numberOfReplicas()
+      let nodes: [SKAtomTreeNode] = structure.atoms.flattenedLeafNodes()
     
       let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
     
@@ -1063,39 +1020,14 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         // take replicas into account
         selectedTreeNodes.insert(nodes[atoms[index / numberOfReplicas].asymmetricIndex])
       }
-    
-      if selectedTreeNodes != structure.atoms.selectedTreeNodes
-      {
-        project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
-        self.setCurrentSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
-      }
+      project.undoManager.setActionName(NSLocalizedString("Add atom(s) to selection", comment: "Add atom(s) to selection"))
+      self.setCurrentAtomSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
     
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
   }
   
-  public func addAtomToSelectionFor(structure: Structure, indexSet: IndexSet)
-  {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-    {
-    var selectedTreeNodes: Set<SKAtomTreeNode> = structure.atoms.selectedTreeNodes
-    
-    let numberOfReplicas: Int = structure.numberOfReplicas()
-    let nodes: [SKAtomTreeNode] = structure.atoms.flattenedLeafNodes()
-    
-      let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
-    
-    for index in indexSet
-    {
-      // take replicas into account
-      selectedTreeNodes.insert(nodes[atoms[index / numberOfReplicas].asymmetricIndex])
-    }
-    project.undoManager.setActionName(NSLocalizedString("Add atom(s) to selection", comment: "Add atom(s) to selection"))
-    self.setCurrentSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
-    
-    (self.view as? RenderTabView)?.evaluateSelectionAnimation()
-    }
-  }
+  
   
   
   public func toggleAtomSelectionFor(structure: Structure, indexSet: IndexSet)
@@ -1123,13 +1055,187 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
     
     project.undoManager.setActionName(NSLocalizedString("Toggle atom selection", comment: "Toggle atom selection"))
-    self.setCurrentSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
+    self.setCurrentAtomSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
     
     (self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
   }
   
-  @IBAction func selectionInversion(_ sender: NSMenuItem)
+  func deleteSelectedAtomsFor(structure: Structure, atoms: [SKAtomTreeNode], bonds: [SKBondNode], from indexPaths: [IndexPath])
+   {
+     if  let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+     {
+       project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedAtomsIn(structure: structure, atoms: atoms.reversed(), bonds: bonds, at: indexPaths.reversed())})
+       
+       for bond in bonds
+       {
+         bond.atom1.bonds.remove(bond)
+         bond.atom2.bonds.remove(bond)
+         structure.bonds.arrangedObjects.remove(bond)
+       }
+       
+       for atom in atoms
+       {
+         structure.atoms.removeNode(atom)
+       }
+       
+       structure.tag(atoms: structure.atoms)
+       structure.atoms.selectedTreeNodes = []
+       
+       self.proxyProject?.representedObject.isEdited = true
+       
+       self.invalidateIsosurface(cachedIsosurfaces: [structure])
+       self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+       self.renderViewController.reloadData()
+       
+       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: structure)
+       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+       
+       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+       
+       clearMeasurement()
+     }
+   }
+   
+   
+   
+   func insertSelectedAtomsIn(structure: Structure, atoms: [SKAtomTreeNode], bonds: [SKBondNode], at indexPaths: [IndexPath])
+   {
+     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+     {
+       project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(structure: structure, atoms: atoms.reversed(), bonds: bonds, from: indexPaths.reversed())})
+       
+       if !project.undoManager.isUndoing
+       {
+         project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
+       }
+       
+     
+       for (index, atom) in atoms.enumerated()
+       {
+         structure.atoms.insertNode(atom, atArrangedObjectIndexPath: indexPaths[index])
+         structure.atoms.selectedTreeNodes.insert(atom)
+       }
+     
+       structure.tag(atoms: structure.atoms)
+     
+       for bond in bonds
+       {
+         bond.atom1.bonds.insert(bond)
+         bond.atom2.bonds.insert(bond)
+         structure.bonds.arrangedObjects.insert(bond)
+       }
+     
+       project.isEdited = true
+     
+       self.invalidateIsosurface(cachedIsosurfaces: [structure])
+     self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+       self.renderViewController.reloadData()
+     
+       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: structure)
+       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+     
+       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+     }
+   }
+   
+   
+   
+   
+   func deleteSelectedAtomsFor(deletedData: [AtomsChangeDataStructure])
+   {
+     if  let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+     {
+       project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedAtomsIn(insertedData: deletedData.map{$0.reversed()})})
+       
+       if !project.undoManager.isUndoing
+       {
+         project.undoManager.setActionName(NSLocalizedString("Delete atoms", comment:"Delete atoms"))
+       }
+       
+       for data in deletedData
+       {
+         for bond in data.selectedBonds
+         {
+           bond.atom1.bonds.remove(bond)
+           bond.atom2.bonds.remove(bond)
+           data.structure.bonds.arrangedObjects.remove(bond)
+         }
+         
+         for atom in data.atoms
+         {
+           data.structure.atoms.removeNode(atom)
+         }
+         
+         data.structure.tag(atoms: data.structure.atoms)
+         data.structure.atoms.selectedTreeNodes = []
+         
+         project.isEdited = true
+         
+         showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
+         
+         self.invalidateIsosurface(cachedIsosurfaces: [data.structure])
+         self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [data.structure])
+         
+         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: data.structure)
+         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: data.structure)
+       }
+       self.renderViewController.reloadData()
+       
+       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+       
+       clearMeasurement()
+     }
+   }
+   
+   
+   func insertSelectedAtomsIn(insertedData: [AtomsChangeDataStructure])
+   {
+     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+     {
+       project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(deletedData: insertedData.map{$0.reversed()})})
+       
+       if !project.undoManager.isUndoing
+       {
+         project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
+       }
+       
+       for data in insertedData
+       {
+         for (index, atom) in data.atoms.enumerated()
+         {
+           data.structure.atoms.insertNode(atom, atArrangedObjectIndexPath: data.indexPaths[index])
+           data.structure.atoms.selectedTreeNodes.insert(atom)
+         }
+       
+         data.structure.tag(atoms: data.structure.atoms)
+       
+         for bond in data.selectedBonds
+         {
+           bond.atom1.bonds.insert(bond)
+           bond.atom2.bonds.insert(bond)
+           data.structure.bonds.arrangedObjects.insert(bond)
+         }
+         
+         showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
+       
+         self.proxyProject?.representedObject.isEdited = true
+       
+         self.invalidateIsosurface(cachedIsosurfaces: [data.structure])
+         self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [data.structure])
+         
+         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: data.structure)
+         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: data.structure)
+       }
+       self.renderViewController.reloadData()
+       
+       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
+     }
+   }
+   
+   
+  
+  @IBAction func selectionAtomInversion(_ sender: NSMenuItem)
   {
     if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode,
       let proxyProject: ProjectTreeNode = proxyProject, proxyProject.isEnabled
@@ -1144,7 +1250,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
             if structure.isVisible
             {
               let selectedTreeNodes = structure.atoms.invertedSelection
-              self.setCurrentSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
+              self.setCurrentAtomSelection(structure: structure, selection: selectedTreeNodes, from: structure.atoms.selectedTreeNodes)
             }
           }
         }
@@ -1156,10 +1262,151 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  // MARK: RKRenderViewSelectionDelegate protocol measurements
+  // MARK: Bond selection
   // =====================================================================
   
+  func setCurrentInternalBondSelection(structure: Structure, selection: Set<SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>> , from: Set<SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>>)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      // save off the current selectedNode and current selection for undo/redo
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentInternalBondSelection(structure: structure, selection: from, from: selection)})
+      project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
+           
+      structure.bonds.selectedObjects = selection
+       
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+    }
+  }
   
+  public func setInternalBondSelectionFor(structure: Structure, indexSet: IndexSet, byExtendingSelection extending: Bool)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      var selectedAsymmetricBonds: Set<SKAsymmetricBond> = structure.bonds.selectedObjects
+      if (!extending)
+      {
+        selectedAsymmetricBonds = []
+      }
+      
+      let bonds: [SKBondNode] = structure.bonds.arrangedObjects.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy && $0.boundaryType == .internal}
+      
+      let numberOfReplicas: Int = structure.numberOfReplicas()
+      for index in indexSet
+      {
+        let bond: SKBondNode = bonds[index / numberOfReplicas]
+        let asymmetricBond: SKAsymmetricBond = SKAsymmetricBond(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom)
+        selectedAsymmetricBonds.insert(asymmetricBond)
+      }
+    
+      if selectedAsymmetricBonds != structure.bonds.selectedObjects
+      {
+        project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
+        self.setCurrentInternalBondSelection(structure: structure, selection: selectedAsymmetricBonds, from: structure.bonds.selectedObjects)
+      }
+    
+      //(self.view as? RenderTabView)?.evaluateSelectionAnimation()
+    }
+  }
+  
+  
+  func setInternalBondToSelection(_ pick: [Int32])
+  {
+    if (pick[0] == 2)
+    {
+      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+      {
+        let structureIdentifier: Int = Int(pick[1])
+        let movieIdentifier: Int = Int(pick[2])
+        let pickedBond: Int = Int(pick[3])
+        
+        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
+        let structure: RKRenderStructure = structures[movieIdentifier]
+        
+        if structure.isVisible
+        {
+          self.setInternalBondSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedBond), byExtendingSelection: false)
+          self.reloadRenderDataSelectedInternalBonds()
+          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+        }
+      }
+    }
+  }
+  
+  func toggleInternalBondSelection(_ pick: [Int32])
+  {
+    if (pick[0] == 2)
+    {
+      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+      {
+        let structureIdentifier: Int = Int(pick[1])
+        let movieIdentifier: Int = Int(pick[2])
+        let pickedBond: Int = Int(pick[3])
+        
+        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
+        let structure: RKRenderStructure = structures[movieIdentifier]
+        
+        if structure.isVisible
+        {
+          self.toggleInternalBondSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedBond))
+          self.reloadRenderDataSelectedInternalBonds()
+          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+        }
+      }
+    }
+  }
+  
+  public func addInternalBondToSelectionFor(structure: Structure, indexSet: IndexSet)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let numberOfReplicas: Int = structure.numberOfReplicas()
+      var selectedInternalBonds: Set<SKAsymmetricBond> = structure.bonds.selectedObjects
+      
+      let bonds: [SKBondNode] = structure.bonds.arrangedObjects.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy && $0.boundaryType == .internal}
+      
+      for index in indexSet
+      {
+        let bond: SKBondNode = bonds[index / numberOfReplicas]
+        let asymmetricBond: SKAsymmetricBond = SKAsymmetricBond(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom)
+        selectedInternalBonds.insert(asymmetricBond)
+      }
+        
+      project.undoManager.setActionName(NSLocalizedString("Add bond(s) to selection", comment: "Add bond(s) to selection"))
+      self.setCurrentInternalBondSelection(structure: structure, selection: selectedInternalBonds, from: structure.bonds.selectedObjects)
+    }
+  }
+  
+  public func toggleInternalBondSelectionFor(structure: Structure, indexSet: IndexSet)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let numberOfReplicas: Int = structure.numberOfReplicas()
+      var selectedInternalBonds: Set<SKAsymmetricBond> = structure.bonds.selectedObjects
+      
+      let bonds: [SKBondNode] = structure.bonds.arrangedObjects.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy && $0.boundaryType == .internal}
+    
+      for index in indexSet
+      {
+        let bond: SKBondNode = bonds[index / numberOfReplicas]
+        let asymmetricBond: SKAsymmetricBond = SKAsymmetricBond(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom)
+        
+        if (structure.bonds.selectedObjects.contains(asymmetricBond))
+        {
+          selectedInternalBonds.remove(asymmetricBond)
+        }
+        else
+        {
+          selectedInternalBonds.insert(asymmetricBond)
+        }
+      }
+    
+      project.undoManager.setActionName(NSLocalizedString("Toggle bond selection", comment: "Toggle bond selection"))
+      self.setCurrentInternalBondSelection(structure: structure, selection: selectedInternalBonds, from: structure.bonds.selectedObjects)
+    
+      //(self.view as? RenderTabView)?.evaluateSelectionAnimation()
+    }
+  }
   
   func clearMeasurement()
   {
@@ -1272,103 +1519,24 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
            structure.isVisible
         {
-          let indexSet: IndexSet = camera.selectPositionsInRectangle(structure.atomPositions, inRect: rect, withOrigin: structure.origin, inViewPort: bounds)
+          let indexSetAtoms: IndexSet = camera.selectPositionsInRectangle(structure.atomPositions, inRect: rect, withOrigin: structure.origin, inViewPort: bounds)
         
-          self.setAtomSelectionFor(structure: structure as! Structure, indexSet: indexSet, byExtendingSelection: extending)
+          self.setAtomSelectionFor(structure: structure as! Structure, indexSet: indexSetAtoms, byExtendingSelection: extending)
+        }
+         
+        if let structure: Structure = structure as? Structure,
+        structure.isVisible
+        {
+          let indexSetInternalBonds: IndexSet = camera.selectPositionsInRectangle(structure.internalBondPositions, inRect: rect, withOrigin: structure.origin, inViewPort: bounds)
+          self.setInternalBondSelectionFor(structure: structure, indexSet: indexSetInternalBonds, byExtendingSelection: extending)
         }
       }
       self.reloadRenderDataSelectedAtoms()
-      
-      
+      self.reloadRenderDataSelectedInternalBonds()
     }
   }
   
-  func setAtomToSelection(_ pick: [Int32])
-  {
-    if (pick[0] == 1)
-    {
-      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
-      {
-        let structureIdentifier: Int = Int(pick[1])
-        let movieIdentifier: Int = Int(pick[2])
-        let pickedAtom: Int = Int(pick[3])
-        
-        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
-        let structure: RKRenderStructure = structures[movieIdentifier]
-        
-        if structure.isVisible
-        {
-          self.setAtomSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedAtom), byExtendingSelection: false)
-          self.reloadRenderDataSelectedAtoms()
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
-        }
-      }
-    }
-  }
-  
-  func addAtomToSelection(_ pick: [Int32])
-  {
-    if (pick[0] == 1)
-    {
-      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
-      {
-        let structureIdentifier: Int = Int(pick[1])
-        let movieIdentifier: Int = Int(pick[2])
-        let pickedAtom: Int = Int(pick[3])
-        
-        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
-        let structure: RKRenderStructure = structures[movieIdentifier]
-        
-        if structure.isVisible
-        {
-          self.addAtomToSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedAtom))
-          self.reloadRenderDataSelectedAtoms()
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
-        }
-      }
-    }
-  }
-  
-  func toggleAtomSelection(_ pick: [Int32])
-  {
-    if (pick[0] == 1)
-    {
-      if let crystalProjectData: RKRenderDataSource = self.renderDataSource
-      {
-        let structureIdentifier: Int = Int(pick[1])
-        let movieIdentifier: Int = Int(pick[2])
-        let pickedAtom: Int = Int(pick[3])
-        
-        let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
-        let structure: RKRenderStructure = structures[movieIdentifier]
-        
-        if structure.isVisible
-        {
-          self.toggleAtomSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedAtom))
-          self.reloadRenderDataSelectedAtoms()
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
-        }
-      }
-    }
-
-  }
-  
-  func clearSelection()
-  {
-    if let crystalProjectData: RKRenderDataSource = self.renderDataSource
-    {
-      for i in 0..<crystalProjectData.renderStructures.count
-      {
-        let structure: RKRenderStructure = crystalProjectData.renderStructures[i]
-        self.setAtomSelectionFor(structure: structure as! Structure, indexSet: IndexSet(), byExtendingSelection: false)
-      }
-      self.reloadRenderDataSelectedAtoms()
-      
-      
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
-    }
-  }
-  
+ 
   func cameraDidChange()
   {
     let notification: Notification = Notification(name: Notification.Name(NotificationStrings.CameraDidChangeNotification), object: windowController)
@@ -1537,7 +1705,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       return false
     }
       
-    if (menuItem.action == #selector(selectionInversion(_:)))
+    if (menuItem.action == #selector(selectionAtomInversion(_:)))
     {
       if let _: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
       {
@@ -2312,6 +2480,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     return nil
   }
   
+  // MARK: Mouse handling
+   // =====================================================================
+  
   public override func mouseDown(with event: NSEvent)
   {
     startPoint = self.view.convert(event.locationInWindow, from: nil)
@@ -2324,10 +2495,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         view.shapeLayerNewSelection.path = CGMutablePath()
         layer.addSublayer(view.shapeLayerNewSelection)
       }
-      //else if theEvent.modifierFlags.contains(.option)
-      // {
-      //tracking = .panning
-      // }
       else if event.modifierFlags.contains(NSEvent.ModifierFlags.command) &&
              !event.modifierFlags.contains(NSEvent.ModifierFlags.option)
       {
@@ -2357,7 +2524,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }
       else
       {
-        tracking = .backgroundClick
+        tracking = .mouseClickWithoutKeyModifiers
       }
     }
   }
@@ -2416,7 +2583,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           cameraDidChange()
         }
       default:
-        tracking = .other
+        tracking = .draggedWithoutKeyModifiers
         if let _ = startPoint
         {
           cameraDidChange()
@@ -2434,37 +2601,48 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     {
       switch(tracking)
       {
-      case .newSelection:
+      case .newSelection:      // shift-click
         view.shapeLayerNewSelection.removeFromSuperlayer()
         clearSelection()
       
         if let _: RKRenderDataSource = renderDataSource
         {
           let pick: [Int32] = pickPoint(point)
-          if (pick[0] > 0)
+          
+          switch(pick[0])
           {
+          case 1:
             addAtomToSelection(pick)
+          case 2:
+            setInternalBondToSelection(pick)
+          default:
+            break
           }
         }
-      case .addToSelection:
+      case .addToSelection:      // command-click
         view.shapeLayerAddSelection.removeAnimation(forKey: "linePhase")
         view.shapeLayerAddSelection.removeFromSuperlayer()
       
         if let _: RKRenderDataSource = renderDataSource
         {
           let pick: [Int32] = pickPoint(point)
-          if (pick[0] > 0)
+          switch(pick[0])
           {
+          case 1:
             toggleAtomSelection(pick)
+          case 2:
+            toggleInternalBondSelection(pick)
+          default:
+            break
           }
         }
-      case .draggedNewSelection:
+      case .draggedNewSelection:      // shift-drag
         if let startPoint = startPoint
         {
           selectInRectangle(NSMakeRect(startPoint.x,startPoint.y,point.x-startPoint.x,point.y-startPoint.y), inViewPort: layer.bounds, byExtendingSelection: false)
         }
         view.shapeLayerNewSelection.removeFromSuperlayer()
-      case .draggedAddToSelection:
+      case .draggedAddToSelection:      // command-drag
         if let startPoint = startPoint
         {
           selectInRectangle(NSMakeRect(startPoint.x,startPoint.y,point.x-startPoint.x,point.y-startPoint.y), inViewPort: layer.bounds, byExtendingSelection: true)
@@ -2472,17 +2650,17 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       
         view.shapeLayerAddSelection.removeAnimation(forKey: "linePhase")
         view.shapeLayerAddSelection.removeFromSuperlayer()
-      case .translateSelection:
+      case .translateSelection:      // option-command-drag
         if let startPoint = startPoint,
            let pickedDepth = pickedDepth
         {
           finalizeShiftSelection(to: SIMD3<Double>(Double(point.x),Double(point.y),0.0), origin: SIMD3<Double>(Double(startPoint.x),Double(startPoint.y),0.0), depth: Double(pickedDepth))
         }
-      case .measurement:
+      case .measurement:      // option-drag
         if let _: RKRenderDataSource = renderDataSource
         {
           let pick: [Int32] = pickPoint(point)
-          if (pick[0] > 0)
+          if (pick[0] == 1)
           {
             addAtomToMeasurement(pick)
           }
@@ -2492,18 +2670,20 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           }
         }
       default:
-        if (tracking == .backgroundClick)
+        if (tracking == .mouseClickWithoutKeyModifiers)
         {
           let pick: [Int32] = pickPoint(point)
           
-          if (pick[0]==0)
+          switch(pick[0])
           {
+          case 0:
             clearSelection()
-          }
-          
-          if (pick[0]>0)
-          {
+          case 1:
             setAtomToSelection(pick)
+          case 2:
+            setInternalBondToSelection(pick)
+          default:
+            break
           }
         }
       }
@@ -2513,16 +2693,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  /*
-  override func flagsChanged(with event: NSEvent)
-  {
-    debugPrint("changed!! \(event.modifierFlags)")
-    super.flagsChanged(with: event)
-  }
- */
-  
   // MARK: Tranformation Panel
   // =====================================================================
+  
   @IBAction func deleteSelectedAtoms(_ sender: NSButton)
   {
     self.deleteSelection()
