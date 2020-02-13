@@ -47,8 +47,9 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
-  
-  var bonds: [SKBondNode] = []
+    
+  var bondDictionary : [SKAsymmetricBond<SKAsymmetricAtom,SKAsymmetricAtom> : Set<SKBondNode>] = [:]
+  var bondKeys: [SKAsymmetricBond<SKAsymmetricAtom,SKAsymmetricAtom>] = []
   
   override func viewDidLoad()
   {
@@ -119,48 +120,60 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   @objc func reloadData()
   {
+    bondDictionary = [:]
+    bondKeys = []
+    
     if let structure: Structure =  (self.representedObject as? iRASPAStructure)?.structure
     {
-      var asymmetricBonds: Dictionary<SKAsymmetricBond<SKAsymmetricAtom,SKAsymmetricAtom>, SKBondNode> = [:]
+      
       for bond in (structure.bonds.arrangedObjects.filter{$0.atom1.type == .copy && $0.atom2.type == .copy})
       {
-        asymmetricBonds[SKAsymmetricBond(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom)] = bond
-      }
-            
-      bonds = Array(asymmetricBonds.values).sorted{
-        if $0.atom1.asymmetricParentAtom.elementIdentifier == $1.atom1.asymmetricParentAtom.elementIdentifier
+        let asymmetricBond: SKAsymmetricBond = SKAsymmetricBond(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom)
+        
+        if bondDictionary[asymmetricBond] == nil
         {
-          if $0.atom2.asymmetricParentAtom.elementIdentifier == $1.atom2.asymmetricParentAtom.elementIdentifier
+          bondDictionary[asymmetricBond] = [bond]
+        }
+        else
+        {
+          bondDictionary[asymmetricBond]?.insert(bond)
+        }
+      }
+      
+      bondKeys = Array(bondDictionary.keys).sorted{
+          if $0.atom1.elementIdentifier == $1.atom1.elementIdentifier
           {
-            if $0.atom1.asymmetricParentAtom.tag == $1.atom1.asymmetricParentAtom.tag
+            if $0.atom2.elementIdentifier == $1.atom2.elementIdentifier
             {
-              return $0.atom2.asymmetricParentAtom.tag < $1.atom2.asymmetricParentAtom.tag
+              if $0.atom1.tag == $1.atom1.tag
+              {
+                return $0.atom2.tag < $1.atom2.tag
+              }
+              else
+              {
+                return $0.atom1.tag < $1.atom1.tag
+              }
             }
             else
             {
-              return $0.atom1.asymmetricParentAtom.tag < $1.atom1.asymmetricParentAtom.tag
+              return $0.atom2.elementIdentifier > $1.atom2.elementIdentifier
             }
           }
           else
           {
-            return $0.atom2.asymmetricParentAtom.elementIdentifier > $1.atom2.asymmetricParentAtom.elementIdentifier
+            return $0.atom1.elementIdentifier > $1.atom1.elementIdentifier
           }
-        }
-        else
-        {
-          return $0.atom1.asymmetricParentAtom.elementIdentifier > $1.atom1.asymmetricParentAtom.elementIdentifier
-        }
       }
     }
-    
     self.bondTableView?.reloadData()
+    self.programmaticallySetSelection()
   }
   
   func numberOfRows(in tableView: NSTableView) -> Int
   {
     if let _ =  (self.representedObject as? iRASPAStructure)?.structure
     {
-      return bonds.count
+      return bondKeys.count
     }
     return 0
   }
@@ -173,7 +186,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
        let tableColumn = tableColumn,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
-      let bond: SKBondNode = bonds[row]
+      let asymmetricBond: SKAsymmetricBond = bondKeys[row]
+      guard let bond: SKBondNode = bondDictionary[asymmetricBond]?.first else {return nil}
       let bondLength = structure.bondLength(bond)
       switch(tableColumn.identifier)
       {
@@ -183,8 +197,6 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         {
           checkBox.state = bond.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
           checkBox.isEnabled = proxyProject.isEnabled
-          //checkBox.state = atomNode.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
-          //checkBox.isEnabled = atomNode.isVisibleEnabled && proxyProject.isEnabled
         }
       case NSUserInterfaceItemIdentifier(rawValue: "bondIdColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondIdRow"), owner: self) as? NSTableCellView
@@ -277,7 +289,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       proxyProject.representedObject.isEdited = true
       
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.AtomsShouldReloadNotification), object: (self.representedObject as? iRASPAStructure)?.structure)
-      self.bondTableView?.reloadData()
+      self.reloadData()
     }
   }
   
@@ -286,8 +298,9 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
     {
-      self.bondTableView?.window?.makeFirstResponder(bondTableView)
-      let asymmetricAtom: SKAsymmetricAtom = bonds[row].atom1.asymmetricParentAtom
+      self.bondTableView?.window?.makeFirstResponder(self.bondTableView)
+      
+      let asymmetricAtom: SKAsymmetricAtom = bondKeys[row].atom1
       
       let isFixed: Bool3
       if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
@@ -309,7 +322,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
        let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
     {
       self.bondTableView?.window?.makeFirstResponder(bondTableView)
-      let asymmetricAtom: SKAsymmetricAtom = bonds[row].atom2.asymmetricParentAtom
+      let asymmetricAtom: SKAsymmetricAtom = bondKeys[row].atom2
       
       let isFixed: Bool3
       if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
@@ -369,13 +382,14 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
        let nf: NumberFormatter = sender.formatter as?  NumberFormatter,
        let number: NSNumber = nf.number(from: sender.stringValue)
     {
-      let bond: SKBondNode = bonds[row]
-      let asymmetricAtom1: SKAsymmetricAtom = bond.atom1.asymmetricParentAtom
-      let asymmetricAtom2: SKAsymmetricAtom = bond.atom2.asymmetricParentAtom
+      let bond: SKAsymmetricBond = bondKeys[row]
+      let asymmetricAtom1: SKAsymmetricAtom = bond.atom1
+      let asymmetricAtom2: SKAsymmetricAtom = bond.atom2
       
       let bondLength: Double = number.doubleValue
       
-      let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
+      let newPos: (SIMD3<Double>, SIMD3<Double>) = (SIMD3<Double>(), SIMD3<Double>())
+      //let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
       setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
       
       
@@ -415,13 +429,14 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         
         if endingDrag
         {
-          let bond: SKBondNode = bonds[row]
-          let asymmetricAtom1: SKAsymmetricAtom = bond.atom1.asymmetricParentAtom
-          let asymmetricAtom2: SKAsymmetricAtom = bond.atom2.asymmetricParentAtom
+          let bond: SKAsymmetricBond = bondKeys[row]
+          let asymmetricAtom1: SKAsymmetricAtom = bond.atom1
+          let asymmetricAtom2: SKAsymmetricAtom = bond.atom2
           
           let bondLength: Double = sender.doubleValue
           
-          let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
+          let newPos: (SIMD3<Double>, SIMD3<Double>) = (SIMD3<Double>(), SIMD3<Double>())
+          //let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
           setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
 
         }
@@ -504,7 +519,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       {
         if row < structure.bonds.arrangedObjects.count
         {
-          let asymmetricBond: SKAsymmetricBond = SKAsymmetricBond(bonds[row].atom1.asymmetricParentAtom, bonds[row].atom2.asymmetricParentAtom)
+          let asymmetricBond: SKAsymmetricBond = bondKeys[row]
           
           for bond in structure.bonds.arrangedObjects
           {
@@ -515,9 +530,57 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
           }
         }
       }
-      self.bondTableView?.reloadData(forRowIndexes: IndexSet(0..<bonds.count), columnIndexes: IndexSet.init(integer: 0))
+      self.bondTableView?.reloadData(forRowIndexes: IndexSet(0..<bondKeys.count), columnIndexes: IndexSet(integer: 0))
         
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+    }
+  }
+  
+  // MARK: Selection
+  // =====================================================================
+  
+  func programmaticallySetSelection()
+  {
+    if let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
+    {
+      let selectedAsymmetricBonds: Set<SKAsymmetricBond> = Set(structure.bonds.selectedObjects.compactMap{SKAsymmetricBond($0.atom1.asymmetricParentAtom, $0.atom2.asymmetricParentAtom)})
+      
+      self.bondTableView?.selectRowIndexes(IndexSet(), byExtendingSelection: false)
+      
+      var indexSet: IndexSet = IndexSet()
+      for (row, asymmetricBond) in bondKeys.enumerated()
+      {
+        if selectedAsymmetricBonds.contains(asymmetricBond)
+        {
+          indexSet.insert(row)
+        }
+      }
+      self.bondTableView?.selectRowIndexes(indexSet, byExtendingSelection: true)
+    }
+  }
+  
+  func tableView(_ tableView: NSTableView, selectionIndexesForProposedSelection proposedSelectionIndexes: IndexSet) -> IndexSet
+  {
+    return proposedSelectionIndexes
+  }
+  
+  func tableViewSelectionDidChange(_ notification: Notification)
+  {
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let structure = (self.representedObject as? iRASPAStructure)?.structure,
+       let indexes: IndexSet = self.bondTableView?.selectedRowIndexes
+    {
+      structure.bonds.selectedObjects = []
+      
+      for row in indexes
+      {
+        let asymmetricBond: SKAsymmetricBond = bondKeys[row]
+        
+        if let bonds = bondDictionary[asymmetricBond]
+        {
+          structure.bonds.selectedObjects.formUnion(bonds)
+        }
+      }
     }
   }
 }

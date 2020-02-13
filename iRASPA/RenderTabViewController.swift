@@ -1107,7 +1107,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     var selectedTreeNodes: Set<SKAtomTreeNode> = structure.atoms.selectedTreeNodes
     
     let nodes: [SKAtomTreeNode] = structure.atoms.flattenedLeafNodes()
-      let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
+    let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
     
     for index in indexSet
     {
