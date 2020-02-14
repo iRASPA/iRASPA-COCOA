@@ -2321,27 +2321,28 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         if projectStructureNode.renderCamera == nil
         {
           projectStructureNode.renderCamera = RKCamera()
+          projectStructureNode.renderCamera?.initialized = true
+          projectStructureNode.allStructures.forEach{$0.reComputeBoundingBox()}
+          if let renderCamera = projectStructureNode.renderCamera
+          {
+            renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+            renderCamera.resetCameraDistance()
+          }
         }
         
-        // initialize camera when needed (e.g. after reading projects from file)
-        if let renderCamera = projectStructureNode.renderCamera, !renderCamera.initialized
+        // adjust the camera to a possible change of the window-size
+        if let renderCamera = projectStructureNode.renderCamera
         {
-          projectStructureNode.allStructures.forEach{$0.reComputeBoundingBox()}
-          
           if let size: CGSize = self.windowController?.detailTabViewController?.renderViewController?.renderViewController.viewBounds
           {
             renderCamera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
           }
-          renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
-          renderCamera.resetCameraDistance()
         }
         
         projectStructureNode.setInitialSelectionIfNeeded()
           self.windowController?.masterTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
         self.windowController?.detailTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
-        
-       
-        }
+      }
       
       // propagate proxyProject
       self.windowController?.propagate(proxyProject, toChildrenOf: self.windowController!.contentViewController!)
