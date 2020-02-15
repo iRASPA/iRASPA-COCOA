@@ -92,7 +92,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     reComputeBonds()
   }
   
-  public var colorAtomsWithBondColor: Bool
+  public override var colorAtomsWithBondColor: Bool
   {
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
   }

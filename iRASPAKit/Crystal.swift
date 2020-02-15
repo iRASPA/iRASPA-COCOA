@@ -95,7 +95,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     reComputeBonds()
   }
   
-  public var colorAtomsWithBondColor: Bool
+  public override var colorAtomsWithBondColor: Bool
   {
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
   }
