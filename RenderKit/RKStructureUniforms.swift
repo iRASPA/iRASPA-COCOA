@@ -173,18 +173,18 @@ public struct RKStructureUniforms
       self.atomHDRBloomLevel = GLfloat(structure.atomHDRBloomLevel)
       self.clipAtomsAtUnitCell = structure.clipAtomsAtUnitCell
       
-      self.selectionScaling = Float(max(1.001,structure.renderSelectionScaling)) // avoid artifacts
-      self.atomSelectionStripesDensity = Float(structure.renderSelectionStripesDensity)
-      self.atomSelectionStripesFrequency = Float(structure.renderSelectionStripesFrequency)
-      self.atomSelectionWorleyNoise3DFrequency = Float(structure.renderSelectionWorleyNoise3DFrequency)
-      self.atomSelectionWorleyNoise3DJitter = Float(structure.renderSelectionWorleyNoise3DJitter)
+      self.selectionScaling = Float(max(1.001,structure.atomSelectionScaling)) // avoid artifacts
+      self.atomSelectionStripesDensity = Float(structure.atomSelectionStripesDensity)
+      self.atomSelectionStripesFrequency = Float(structure.atomSelectionStripesFrequency)
+      self.atomSelectionWorleyNoise3DFrequency = Float(structure.atomSelectionWorleyNoise3DFrequency)
+      self.atomSelectionWorleyNoise3DJitter = Float(structure.atomSelectionWorleyNoise3DJitter)
       
-      self.atomAnnotationTextColor = SIMD4<Float>(color: structure.renderTextColor)
-      self.atomAnnotationTextScaling = Float(structure.renderTextScaling)
+      self.atomAnnotationTextColor = SIMD4<Float>(color: structure.atomTextColor)
+      self.atomAnnotationTextScaling = Float(structure.atomTextScaling)
       self.bondAnnotationTextScaling = 1.0
-      self.atomAnnotationTextDisplacement = SIMD4<Float>(x: Float(structure.renderTextOffset.x),
-                                                   y: Float(structure.renderTextOffset.y),
-                                                   z: Float(structure.renderTextOffset.z),
+      self.atomAnnotationTextDisplacement = SIMD4<Float>(x: Float(structure.atomTextOffset.x),
+                                                   y: Float(structure.atomTextOffset.y),
+                                                   z: Float(structure.atomTextOffset.z),
                                                    w: 0.0)
       
     }

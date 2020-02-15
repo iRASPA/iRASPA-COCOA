@@ -78,22 +78,24 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var atomPositions: [SIMD4<Double>] {get}
   var renderAtoms: [RKInPerInstanceAttributesAtoms] {get}
   
-  var renderTextData: [RKInPerInstanceAttributesText] {get}
-  var renderTextType: RKTextType {get}
-  var renderTextFont: String {get}
-  var renderTextAlignment: RKTextAlignment {get}
-  var renderTextStyle: RKTextStyle {get}
-  var renderTextColor: NSColor {get}
-  var renderTextScaling: Double {get}
-  var renderTextOffset: SIMD3<Double> {get}
+  var atomTextData: [RKInPerInstanceAttributesText] {get}
+  var atomTextType: RKTextType {get}
+  var atomTextFont: String {get}
+  var atomTextAlignment: RKTextAlignment {get}
+  var atomTextStyle: RKTextStyle {get}
+  var atomTextColor: NSColor {get}
+  var atomTextScaling: Double {get}
+  var atomTextOffset: SIMD3<Double> {get}
+  var atomTextGlowColor: NSColor {get}
+  var atomTextEffect: RKTextEffect {get}
   
   var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms] {get}
-  var renderSelectionStyle: RKSelectionStyle {get}
-  var renderSelectionScaling: Double {get}
-  var renderSelectionStripesDensity: Double {get}
-  var renderSelectionStripesFrequency: Double {get}
-  var renderSelectionWorleyNoise3DFrequency: Double {get}
-  var renderSelectionWorleyNoise3DJitter: Double {get}
+  var atomSelectionStyle: RKSelectionStyle {get}
+  var atomSelectionScaling: Double {get}
+  var atomSelectionStripesDensity: Double {get}
+  var atomSelectionStripesFrequency: Double {get}
+  var atomSelectionWorleyNoise3DFrequency: Double {get}
+  var atomSelectionWorleyNoise3DJitter: Double {get}
   
   func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
 }

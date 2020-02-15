@@ -336,7 +336,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   
   
-  public override var renderTextData: [RKInPerInstanceAttributesText]
+  public override var atomTextData: [RKInPerInstanceAttributesText]
   {
     var data: [RKInPerInstanceAttributesText] = []
     
@@ -378,7 +378,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
               let radius: Float = Float(copy.asymmetricParentAtom.drawRadius)
               
               let text: String
-              switch(renderTextType)
+              switch(atomTextType)
               {
               case .none:
                 text = ""

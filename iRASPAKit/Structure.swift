@@ -51,6 +51,10 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
 {
   private var versionNumber: Int = 4
   private static var classVersionNumber: Int = 4
+  
+  public var atoms: SKAtomTreeController = SKAtomTreeController()
+  public var bonds: SKBondSetController = SKBondSetController()
+  
     
   // MARK: protocol RKRenderStructure implementation
   // =====================================================================
@@ -104,26 +108,75 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     return []
   }
   
-  /*
-  var renderTextData: [RKInPerInstanceAttributesText] {get}
-  var renderTextType: RKTextType {get}
-  var renderTextFont: String {get}
-  var renderTextAlignment: RKTextAlignment {get}
-  var renderTextStyle: RKTextStyle {get}
-  var renderTextColor: NSColor {get}
-  var renderTextScaling: Double {get}
-  var renderTextOffset: SIMD3<Double> {get}
+  public var atomTextData: [RKInPerInstanceAttributesText]
+  {
+    var data: [RKInPerInstanceAttributesText] = []
+      
+    let fontAtlas: RKFontAtlas = RKCachedFontAtlas.shared.fontAtlas(for: self.atomTextFont)
+      
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
+      
+    for atom in atoms
+    {
+      let pos: SIMD3<Double> = atom.position
+        
+      let w: Float = (atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
+      let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: w)
+      let radius: Float = Float(atom.asymmetricParentAtom?.drawRadius ?? 1.0)
+        
+      let text: String
+      switch(atomTextType)
+      {
+      case .none:
+        text = ""
+      case .displayName:
+        text = String(atom.asymmetricParentAtom.displayName)
+      case .identifier:
+        text = String(atom.tag)
+      case .chemicalElement:
+        text = PredefinedElements.sharedInstance.elementSet[atom.asymmetricParentAtom.elementIdentifier].chemicalSymbol
+      case .forceFieldType:
+        text = atom.asymmetricParentAtom.uniqueForceFieldName
+      case .position:
+        text = String("(\(atom.position.x),\(atom.position.y),\(atom.position.z))")
+      case .charge:
+        text = String(atom.asymmetricParentAtom.charge)
+      }
+        
+      let instances = fontAtlas.buildMeshWithString(position: atomPosition, scale: SIMD4<Float>(radius,radius,radius,1.0), text: text, alignment: self.atomTextAlignment)
+        
+      data += instances
+    }
+    return data
+  }
   
-  var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms] {get}
-  var renderSelectionStyle: RKSelectionStyle {get}
-  var renderSelectionScaling: Double {get}
-  var renderSelectionStripesDensity: Double {get}
-  var renderSelectionStripesFrequency: Double {get}
-  var renderSelectionWorleyNoise3DFrequency: Double {get}
-  var renderSelectionWorleyNoise3DJitter: Double {get}
+  public var atomTextType: RKTextType = RKTextType.none
+  public var atomTextFont: String = "Helvetica"
+  public var atomTextAlignment: RKTextAlignment = RKTextAlignment.center
+  public var atomTextStyle: RKTextStyle = RKTextStyle.flatBillboard
+  public var atomTextColor: NSColor = NSColor.black
+  public var atomTextScaling: Double = 1.0
+  public var atomTextOffset: SIMD3<Double> = SIMD3<Double>()
+  public var atomTextGlowColor: NSColor = NSColor.blue
+  public var atomTextEffect: RKTextEffect = RKTextEffect.none
   
-  func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
-  */
+  public var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms]
+  {
+    return []
+  }
+  
+  public var atomSelectionStyle: RKSelectionStyle = .WorleyNoise3D
+  public var atomSelectionScaling: Double = 1.2
+  public var atomSelectionStripesDensity: Double = 0.25
+  public var atomSelectionStripesFrequency: Double = 12.0
+  public var atomSelectionWorleyNoise3DFrequency: Double = 2.0
+  public var atomSelectionWorleyNoise3DJitter: Double = 1.0
+  
+  public func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    return position
+  }
   
   // MARK: protocol RKRenderBondSource implementation
   // =====================================================================
@@ -296,7 +349,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   // MARK: protocol RKRenderObjectSource implementation
   // =====================================================================
   
-  // primitive properties
   public var primitiveTransformationMatrix: double3x3 = double3x3(1.0)
   public var primitiveOrientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
   
@@ -326,9 +378,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   public var primitiveBackSideSpecularIntensity: Double = 0.2
   public var primitiveBackSideShininess: Double = 4.0
   
-  
-  
-  
+  // MARK: other variables
+  // =====================================================================
   
   
   public var primitiveRotationDelta: Double = 5.0
@@ -399,6 +450,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   public var authorAffiliationCityName: String = ""
   public var authorAffiliationCountryName: String = Locale.current.localizedString(forRegionCode: Locale.current.regionCode ?? "NL") ?? "Netherlands"
   
+  // MARK: enums
+  // =====================================================================
+  
   public enum TemperatureScale: Int
   {
     case Kelvin = 0
@@ -452,13 +506,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     case manyNegativeEigenvalues = 5
   }
   
-  
-  
-  // atoms
-  public var atoms: SKAtomTreeController = SKAtomTreeController()
-
-  
-  
   public var atomRepresentationType: RepresentationType = .sticks_and_balls
   public var atomRepresentationStyle: RepresentationStyle = .default
   public var atomForceFieldIdentifier: String = "Default"
@@ -466,46 +513,18 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   public var atomColorSchemeIdentifier: String = SKColorSets.ColorScheme.jmol.rawValue
   public var atomColorOrder: SKColorSets.ColorOrder = .elementOnly
   
-  public var atomSelectionStyle: RKSelectionStyle = .WorleyNoise3D
-  public var atomSelectionStripesDensity: Double = 0.25
-  public var atomSelectionStripesFrequency: Double = 12.0
-  public var atomSelectionWorleyNoise3DFrequency: Double = 2.0
-  public var atomSelectionWorleyNoise3DJitter: Double = 1.0
-  public var selectionScaling: Double = 1.2
+  
   public var selectionIntensity: Double = 1.0
-  
-  
-  
   
   public var atomCacheAmbientOcclusionTexture: [CUnsignedChar] = [CUnsignedChar]()
   
- 
   
-  
-  
-  
-  // bonds
-  public var bonds: SKBondSetController = SKBondSetController()
   
   
   
   
   
   public var bondAmbientOcclusion: Bool = false
-  
-  // text properties
-  var atomTextType: RKTextType = RKTextType.none
-  var atomTextFont: String = "Helvetica"
-  var atomTextScaling: Double = 1.0
-  var atomTextColor: NSColor = NSColor.black
-  var atomTextGlowColor: NSColor = NSColor.blue
-  var atomTextStyle: RKTextStyle = RKTextStyle.flatBillboard
-  var atomTextEffect: RKTextEffect = RKTextEffect.none
-  var atomTextAlignment: RKTextAlignment = RKTextAlignment.center
-  var atomTextOffset: SIMD3<Double> = SIMD3<Double>()
-  
-  
-  
   
   
   
@@ -741,7 +760,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     self.atomSelectionStripesFrequency = original.atomSelectionStripesFrequency
     self.atomSelectionWorleyNoise3DFrequency = original.atomSelectionWorleyNoise3DFrequency
     self.atomSelectionWorleyNoise3DJitter = original.atomSelectionWorleyNoise3DJitter
-    self.selectionScaling = original.selectionScaling
+    self.atomSelectionScaling = original.atomSelectionScaling
     self.selectionIntensity = original.selectionIntensity
     
     self.atomHue = original.atomHue
@@ -991,7 +1010,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     self.atomSelectionStripesFrequency = clone.atomSelectionStripesFrequency
     self.atomSelectionWorleyNoise3DFrequency = clone.atomSelectionWorleyNoise3DFrequency
     self.atomSelectionWorleyNoise3DJitter = clone.atomSelectionWorleyNoise3DJitter
-    self.selectionScaling = clone.selectionScaling
+    self.atomSelectionScaling = clone.atomSelectionScaling
     self.selectionIntensity = clone.selectionIntensity
     
     self.atomHue = clone.atomHue
@@ -1466,7 +1485,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
         bondAmbientOcclusion = false
         
         self.atomSelectionStyle = .WorleyNoise3D
-        self.selectionScaling = 1.2
+        self.atomSelectionScaling = 1.2
         
         self.setRepresentationType(type: .sticks_and_balls)
       case .fancy:
@@ -1496,7 +1515,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
         atomColorOrder = .elementOnly
         
         self.atomSelectionStyle = .WorleyNoise3D
-        self.selectionScaling = 1.0
+        self.atomSelectionScaling = 1.0
         
         self.setRepresentationType(type: .vdw)
       case .licorice:
@@ -1538,7 +1557,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
         bondAmbientOcclusion = false
         
         self.atomSelectionStyle = .WorleyNoise3D
-        self.selectionScaling = 1.5
+        self.atomSelectionScaling = 1.5
         
         self.setRepresentationType(type: .unity)
       case .objects:
@@ -1648,7 +1667,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
        (bondSaturation ==~  1.0) &&
        (bondValue ==~  1.0)  &&
       atomSelectionStyle == .WorleyNoise3D &&
-      (selectionScaling ==~ 1.2)
+      (atomSelectionScaling ==~ 1.2)
     {
       self.atomRepresentationStyle = .default
     }
@@ -1678,7 +1697,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
        atomColorSchemeIdentifier == SKColorSets.ColorScheme.rasmol.rawValue &&
        atomColorOrder == .elementOnly &&
       atomSelectionStyle == .WorleyNoise3D &&
-      (selectionScaling ==~ 1.0)
+      (atomSelectionScaling ==~ 1.0)
     {
       self.atomRepresentationStyle = .fancy
     }
@@ -1724,7 +1743,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
       (bondSaturation ==~  1.0) &&
       (bondValue ==~  1.0) &&
       atomSelectionStyle == .WorleyNoise3D &&
-      (selectionScaling ==~ 1.5)
+      (atomSelectionScaling ==~ 1.5)
     {
       self.atomRepresentationStyle = .licorice
     }
@@ -1967,24 +1986,24 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     }
     if readVersionNumber >= 4 // introduced in version 4
     {
-      self.selectionScaling = try container.decode(Double.self)
+      self.atomSelectionScaling = try container.decode(Double.self)
     }
     
     // set value consistent with pre-defined styles
     if self.atomRepresentationStyle == .default
     {
       self.atomSelectionStyle = .WorleyNoise3D
-      self.selectionScaling = 1.2
+      self.atomSelectionScaling = 1.2
     }
     if self.atomRepresentationStyle == .fancy
     {
       self.atomSelectionStyle = .WorleyNoise3D
-      self.selectionScaling = 1.0
+      self.atomSelectionScaling = 1.0
     }
     if self.atomRepresentationStyle == .licorice
     {
       self.atomSelectionStyle = .WorleyNoise3D
-      self.selectionScaling = 1.5
+      self.atomSelectionScaling = 1.5
     }
     
     // bonds
@@ -2634,154 +2653,29 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   
   
-  public var renderTextColor: NSColor
-  {
-    get
-    {
-      return atomTextColor
-    }
-    set(newValue)
-    {
-      atomTextColor = newValue
-    }
-  }
-  
-  
-  public var renderTextType: RKTextType
-  {
-    get
-    {
-      return atomTextType
-    }
-    set(newValue)
-    {
-      self.atomTextType = newValue
-    }
-  }
-  
-  public var renderTextStyle: RKTextStyle
-  {
-    return RKTextStyle.flatBillboard
-  }
-
-  public var renderTextAlignment: RKTextAlignment
-  {
-    get
-    {
-      return atomTextAlignment
-    }
-    set(newValue)
-    {
-      atomTextAlignment = newValue
-    }
-  }
-  
-  public var renderTextFont: String
-  {
-    get
-    {
-      return atomTextFont
-    }
-    set(newValue)
-    {
-      self.atomTextFont = newValue
-    }
-  }
-  
-  public var renderTextScaling: Double
-  {
-    get
-    {
-      return atomTextScaling
-    }
-    set(newValue)
-    {
-      atomTextScaling = newValue
-    }
-  }
-  
-  public var renderTextOffset: SIMD3<Double>
-  {
-    get
-    {
-      return atomTextOffset
-    }
-    set(newValue)
-    {
-      atomTextOffset = newValue
-    }
-  }
-  
-  public var renderTextData: [RKInPerInstanceAttributesText]
-  {
-    get
-    {
-      var data: [RKInPerInstanceAttributesText] = []
-      
-      let fontAtlas: RKFontAtlas = RKCachedFontAtlas.shared.fontAtlas(for: self.atomTextFont)
-      
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
-      let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
-      
-      for atom in atoms
-      {
-        let pos: SIMD3<Double> = atom.position
-        
-        //let w: Float = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
-        let w: Float = (atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
-        let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: w)
-        let radius: Float = Float(atom.asymmetricParentAtom?.drawRadius ?? 1.0)
-        
-        let text: String
-        switch(renderTextType)
-        {
-        case .none:
-          text = ""
-        case .displayName:
-          text = String(atom.asymmetricParentAtom.displayName)
-        case .identifier:
-          text = String(atom.tag)
-        case .chemicalElement:
-          text = PredefinedElements.sharedInstance.elementSet[atom.asymmetricParentAtom.elementIdentifier].chemicalSymbol
-        case .forceFieldType:
-          text = atom.asymmetricParentAtom.uniqueForceFieldName
-        case .position:
-          text = String("(\(atom.position.x),\(atom.position.y),\(atom.position.z))")
-        case .charge:
-          text = String(atom.asymmetricParentAtom.charge)
-        }
-        
-        let instances = fontAtlas.buildMeshWithString(position: atomPosition, scale: SIMD4<Float>(radius,radius,radius,1.0), text: text, alignment: self.atomTextAlignment)
-        
-        data += instances
-      }
-      return data
-    }
-  }
   
   
   
-  public var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms]
-  {
-    return [RKInPerInstanceAttributesAtoms()]
-  }
   
-  public func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
-  {
-    return position
-  }
   
-  public var renderSelectionStyle: RKSelectionStyle
-  {
-    get
-    {
-      return self.atomSelectionStyle
-    }
-    set(newValue)
-    {
-      self.atomSelectionStyle = newValue
-    }
-  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   public var renderAtomSelectionFrequency: Double
   {
@@ -2839,65 +2733,13 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     }
   }
   
-  public var renderSelectionScaling: Double
-  {
-    get
-    {
-      return self.selectionScaling
-    }
-    set(newValue)
-    {
-      self.selectionScaling = newValue
-    }
-  }
   
-  public var renderSelectionStripesDensity: Double
-  {
-    get
-    {
-      return self.atomSelectionStripesDensity
-    }
-    set(newValue)
-    {
-      self.atomSelectionStripesDensity = newValue
-    }
-  }
   
-  public var renderSelectionStripesFrequency: Double
-  {
-    get
-    {
-      return self.atomSelectionStripesFrequency
-    }
-    set(newValue)
-    {
-      self.atomSelectionStripesFrequency = newValue
-    }
-  }
+  
+  
+  
 
-  public var renderSelectionWorleyNoise3DFrequency: Double
-  {
-    get
-    {
-      return self.atomSelectionWorleyNoise3DFrequency
-    }
-    set(newValue)
-    {
-      self.atomSelectionWorleyNoise3DFrequency = newValue
-    }
-  }
   
-  public var renderSelectionWorleyNoise3DJitter: Double
-  {
-    get
-    {
-      return self.atomSelectionWorleyNoise3DJitter
-    }
-    set(newValue)
-    {
-      self.atomSelectionWorleyNoise3DJitter = newValue
-    }
-  }
   
   public var renderSelectedBonds: [RKInPerInstanceAttributesBonds]
   {
@@ -3189,7 +3031,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     encoder.encode(atomSelectionStripesFrequency)
     encoder.encode(atomSelectionWorleyNoise3DFrequency)
     encoder.encode(atomSelectionWorleyNoise3DJitter)
-    encoder.encode(selectionScaling)
+    encoder.encode(atomSelectionScaling)
     encoder.encode(selectionIntensity)
     
     encoder.encode(atomHue)
@@ -3458,7 +3300,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     atomSelectionStripesFrequency = try decoder.decode(Double.self)
     atomSelectionWorleyNoise3DFrequency = try decoder.decode(Double.self)
     atomSelectionWorleyNoise3DJitter = try decoder.decode(Double.self)
-    selectionScaling = try decoder.decode(Double.self)
+    atomSelectionScaling = try decoder.decode(Double.self)
     selectionIntensity = try decoder.decode(Double.self)
     
     atomHue = try decoder.decode(Double.self)

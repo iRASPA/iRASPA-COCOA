@@ -212,7 +212,7 @@ public class MetalRenderer
       {
         let structures: [RKRenderStructure] = renderDataSource.renderStructuresForScene(i)
         renderStructures.append(structures)
-        self.textShader.renderTextFontString.append(structures.map{($0 as? RKRenderAtomSource)?.renderTextFont ?? ""})
+        self.textShader.renderTextFontString.append(structures.map{($0 as? RKRenderAtomSource)?.atomTextFont ?? ""})
       }
       
       setDataSources(renderDataSource: renderDataSource, renderStructures: renderStructures)
@@ -242,7 +242,7 @@ public class MetalRenderer
       {
         let structures: [RKRenderStructure] = renderDataSource.renderStructuresForScene(i)
         renderStructures.append(structures)
-        self.textShader.renderTextFontString.append(structures.map{($0 as? RKRenderAtomSource)?.renderTextFont ?? ""})
+        self.textShader.renderTextFontString.append(structures.map{($0 as? RKRenderAtomSource)?.atomTextFont ?? ""})
       }
       
       setDataSources(renderDataSource: renderDataSource, renderStructures: renderStructures)
