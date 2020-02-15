@@ -108,7 +108,7 @@ class MetalAtomSelectionGlowPictureShader
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
             
             if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
-               (structure.renderSelectionStyle == .glow && structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
+               (structure.atomSelectionStyle == .glow && structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
             {
               commandEncoder.setRenderPipelineState(pipeLineState)
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)

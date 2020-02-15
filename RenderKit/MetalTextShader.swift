@@ -104,7 +104,7 @@ class MetalTextShader
         {
           if let structure: RKRenderAtomSource = structure  as? RKRenderAtomSource
           {
-            let atomData: [RKInPerInstanceAttributesText] = structure.renderTextData
+            let atomData: [RKInPerInstanceAttributesText] = structure.atomTextData
           
             let fontAtlasSize: Int = RKCachedFontAtlas.shared.fontAtlasSize
             let fontAtlas: RKFontAtlas = RKCachedFontAtlas.shared.fontAtlas(for: self.renderTextFontString[i][j])
@@ -116,7 +116,7 @@ class MetalTextShader
             {
               fontTexture.label = "Font Atlas"
               fontTexture.replace(region: region, mipmapLevel: 0, withBytes: fontAtlas.textureData!.bytes, bytesPerRow: fontAtlasSize)
-              fontTextures[structure.renderTextFont] = fontTexture
+              fontTextures[structure.atomTextFont] = fontTexture
             }
           
           

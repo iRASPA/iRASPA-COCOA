@@ -126,7 +126,7 @@ class MetalAtomSelectionGlowOrthographicImposterShader
           {
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
               
-            if (structure.renderSelectionStyle == .glow && structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
+            if (structure.atomSelectionStyle == .glow && structure.drawAtoms && structure.isVisible &&  (instanceCount > 0) )
             {
               commandEncoder.setRenderPipelineState(pipeLine)
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)

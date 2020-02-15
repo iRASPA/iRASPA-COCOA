@@ -104,7 +104,7 @@ class MetalAtomSelectionWorleyNoise3DOrthographicImposterShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
-             (structure.renderSelectionStyle == .WorleyNoise3D)
+             (structure.atomSelectionStyle == .WorleyNoise3D)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
               
@@ -112,7 +112,7 @@ class MetalAtomSelectionWorleyNoise3DOrthographicImposterShader
             {
               let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
                 
-              if (structure.renderSelectionStyle != .glow && structure.drawAtoms && structure.isVisible &&  (numberOfAtoms > 0) )
+              if (structure.atomSelectionStyle != .glow && structure.drawAtoms && structure.isVisible &&  (numberOfAtoms > 0) )
               {
                 commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
                 commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)

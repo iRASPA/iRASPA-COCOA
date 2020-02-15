@@ -260,12 +260,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.selectionScaling })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSelectionScaling })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.allStructures.forEach{$0.selectionScaling = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomSelectionScaling = newValue ?? 1.0}
     }
   }
   
@@ -365,12 +365,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.renderSelectionStyle.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.atomSelectionStyle.rawValue })
       return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.allStructures.forEach{$0.renderSelectionStyle = newValue ?? .glow}
+      self.allStructures.forEach{$0.atomSelectionStyle = newValue ?? .glow}
     }
   }
   
@@ -404,12 +404,12 @@ extension AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.renderTextType.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.atomTextType.rawValue })
       return Set(set).count == 1 ? RKTextType(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.allStructures.forEach{$0.renderTextType = newValue ?? .none}
+      self.allStructures.forEach{$0.atomTextType = newValue ?? .none}
     }
   }
   
@@ -768,12 +768,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.selectionScaling })
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSelectionScaling })
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.allStructures.forEach{$0.selectionScaling = newValue ?? 1.0}
+      self.allStructures.forEach{$0.atomSelectionScaling = newValue ?? 1.0}
     }
   }
   
@@ -873,12 +873,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.renderSelectionStyle.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.atomSelectionStyle.rawValue })
       return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.allStructures.forEach{$0.renderSelectionStyle = newValue ?? .glow}
+      self.allStructures.forEach{$0.atomSelectionStyle = newValue ?? .glow}
     }
   }
   
@@ -912,12 +912,12 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
   {
     get
     {
-      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.renderTextType.rawValue })
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.atomTextType.rawValue })
       return Set(set).count == 1 ? RKTextType(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.allStructures.forEach{$0.renderTextType = newValue ?? .none}
+      self.allStructures.forEach{$0.atomTextType = newValue ?? .none}
     }
   }
   

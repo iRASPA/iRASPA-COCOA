@@ -105,7 +105,7 @@ class MetalAtomSelectionStripesPerspectiveImposterShader
         for (j,structure) in structures.enumerated()
         {
           if let structure:RKRenderAtomSource = structure as? RKRenderAtomSource,
-             (structure.renderSelectionStyle == .striped)
+             (structure.atomSelectionStyle == .striped)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             
@@ -113,7 +113,7 @@ class MetalAtomSelectionStripesPerspectiveImposterShader
             {
               let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
               
-              if (structure.renderSelectionStyle != .glow && structure.drawAtoms && structure.isVisible &&  (numberOfAtoms > 0) )
+              if (structure.atomSelectionStyle != .glow && structure.drawAtoms && structure.isVisible &&  (numberOfAtoms > 0) )
               {
                 commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
                 commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
