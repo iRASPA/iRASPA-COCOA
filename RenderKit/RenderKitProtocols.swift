@@ -36,85 +36,6 @@ import SimulationKit
 import SymmetryKit
 
 
-public enum RKBackgroundType: Int
-{
-  case color = 0
-  case linearGradient = 1
-  case radialGradient = 2
-  case image = 3
-}
-
-public enum RKBondColorMode: Int
-{
-  case uniform = 0
-  case split = 1
-  case smoothed_split = 2
-}
-
-public enum RKRenderQuality: Int
-{
-  case low = 0
-  case medium = 1
-  case high = 2
-  case picture = 3
-}
-
-public enum RKImageQuality: Int
-{
-  case rgb_16_bits = 0
-  case rgb_8_bits = 1
-  case cmyk_16_bits = 2
-  case cmyk_8_bits = 3
-}
-
-public enum RKSelectionStyle: Int
-{
-  case WorleyNoise3D = 0
-  case striped = 1
-  case glow = 2
-}
-
-public enum RKTextStyle: Int
-{
-  case flatBillboard = 0
-}
-
-public enum RKTextEffect: Int
-{
-  case none = 0
-  case glow = 1
-  case pulsate = 2
-  case squiggle = 3
-}
-
-public enum RKTextType: Int
-{
-  case none = 0
-  case displayName = 1
-  case identifier = 2
-  case chemicalElement = 3
-  case forceFieldType = 4
-  case position = 5
-  case charge = 6
-}
-
-public enum RKTextAlignment: Int
-{
-  case center = 0
-  case left = 1
-  case right = 2
-  case top = 3
-  case bottom = 4
-  case topLeft = 5
-  case topRight = 6
-  case bottomLeft = 7
-  case bottomRight = 8
-}
-
-/// Inserts the node into another (parent) node at a specified index
-///
-/// - parameter inParent: The parent where the node will be inserted into.
-/// - parameter atIndex: The index of insertion
 public protocol RKRenderStructure: class
 {
   var displayName: String {get}
@@ -123,7 +44,7 @@ public protocol RKRenderStructure: class
   var orientation: simd_quatd {get}
   var origin: SIMD3<Double> {get}
  
-  var cell: SKCell {get set}
+  var cell: SKCell {get}
 }
 
 public protocol RKRenderAtomSource: RKRenderStructure
@@ -131,14 +52,13 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var numberOfAtoms: Int {get}
   var drawAtoms: Bool {get}
   
-  // material properties
-  var atomAmbientColor: NSColor {get set}
-  var atomDiffuseColor: NSColor {get set}
-  var atomSpecularColor: NSColor {get set}
-  var atomAmbientIntensity: Double {get set}
-  var atomDiffuseIntensity: Double {get set}
-  var atomSpecularIntensity: Double {get set}
-  var atomShininess: Double {get set}
+  var atomAmbientColor: NSColor {get}
+  var atomDiffuseColor: NSColor {get}
+  var atomSpecularColor: NSColor {get}
+  var atomAmbientIntensity: Double {get}
+  var atomDiffuseIntensity: Double {get}
+  var atomSpecularIntensity: Double {get}
+  var atomShininess: Double {get}
   
   var atomHue: Double {get}
   var atomSaturation: Double {get}
@@ -188,13 +108,13 @@ public protocol RKRenderBondSource: RKRenderStructure
   var renderSelectedBonds: [RKInPerInstanceAttributesBonds] {get}
   var drawBonds: Bool {get}
   
-  var bondAmbientColor: NSColor {get set}
-  var bondDiffuseColor: NSColor {get set}
-  var bondSpecularColor: NSColor {get set}
-  var bondAmbientIntensity: Double {get set}
-  var bondDiffuseIntensity: Double {get set}
-  var bondSpecularIntensity: Double {get set}
-  var bondShininess: Double {get set}
+  var bondAmbientColor: NSColor {get}
+  var bondDiffuseColor: NSColor {get}
+  var bondSpecularColor: NSColor {get}
+  var bondAmbientIntensity: Double {get}
+  var bondDiffuseIntensity: Double {get}
+  var bondSpecularIntensity: Double {get}
+  var bondShininess: Double {get}
   
   var hasExternalBonds: Bool {get}
   
@@ -227,32 +147,32 @@ public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
   var potentialParameters: [SIMD2<Double>] {get}
   
   // adsorption surface
-  var drawAdsorptionSurface: Bool {get set}
-  var adsorptionSurfaceOpacity: Double {get set}
-  var adsorptionSurfaceIsoValue: Double {get set}
-  var adsorptionSurfaceSize: Int {get set}
+  var drawAdsorptionSurface: Bool {get}
+  var adsorptionSurfaceOpacity: Double {get}
+  var adsorptionSurfaceIsoValue: Double {get}
+  var adsorptionSurfaceSize: Int {get}
   var adsorptionSurfaceProbeParameters: SIMD2<Double> { get }
   var adsorptionSurfaceNumberOfTriangles: Int {get set}
   
-  var adsorptionSurfaceFrontSideHDR: Bool {get set}
-  var adsorptionSurfaceFrontSideHDRExposure: Double {get set}
-  var adsorptionSurfaceFrontSideAmbientColor: NSColor {get set}
-  var adsorptionSurfaceFrontSideDiffuseColor: NSColor {get set}
-  var adsorptionSurfaceFrontSideSpecularColor: NSColor {get set}
-  var adsorptionSurfaceFrontSideDiffuseIntensity: Double {get set}
-  var adsorptionSurfaceFrontSideAmbientIntensity: Double {get set}
-  var adsorptionSurfaceFrontSideSpecularIntensity: Double {get set}
-  var adsorptionSurfaceFrontSideShininess: Double {get set}
+  var adsorptionSurfaceFrontSideHDR: Bool {get}
+  var adsorptionSurfaceFrontSideHDRExposure: Double {get}
+  var adsorptionSurfaceFrontSideAmbientColor: NSColor {get}
+  var adsorptionSurfaceFrontSideDiffuseColor: NSColor {get}
+  var adsorptionSurfaceFrontSideSpecularColor: NSColor {get}
+  var adsorptionSurfaceFrontSideDiffuseIntensity: Double {get}
+  var adsorptionSurfaceFrontSideAmbientIntensity: Double {get}
+  var adsorptionSurfaceFrontSideSpecularIntensity: Double {get}
+  var adsorptionSurfaceFrontSideShininess: Double {get}
   
-  var adsorptionSurfaceBackSideHDR: Bool {get set}
-  var adsorptionSurfaceBackSideHDRExposure: Double {get set}
-  var adsorptionSurfaceBackSideAmbientColor: NSColor {get set}
-  var adsorptionSurfaceBackSideDiffuseColor: NSColor {get set}
-  var adsorptionSurfaceBackSideSpecularColor: NSColor {get set}
-  var adsorptionSurfaceBackSideDiffuseIntensity: Double {get set}
-  var adsorptionSurfaceBackSideAmbientIntensity: Double {get set}
-  var adsorptionSurfaceBackSideSpecularIntensity: Double {get set}
-  var adsorptionSurfaceBackSideShininess: Double {get set}
+  var adsorptionSurfaceBackSideHDR: Bool {get}
+  var adsorptionSurfaceBackSideHDRExposure: Double {get}
+  var adsorptionSurfaceBackSideAmbientColor: NSColor {get}
+  var adsorptionSurfaceBackSideDiffuseColor: NSColor {get}
+  var adsorptionSurfaceBackSideSpecularColor: NSColor {get}
+  var adsorptionSurfaceBackSideDiffuseIntensity: Double {get}
+  var adsorptionSurfaceBackSideAmbientIntensity: Double {get}
+  var adsorptionSurfaceBackSideSpecularIntensity: Double {get}
+  var adsorptionSurfaceBackSideShininess: Double {get}
   
   var atomUnitCellPositions: [SIMD3<Double>] {get}
   var minimumGridEnergyValue: Float? {get set}
@@ -324,7 +244,7 @@ public protocol RKRenderPolygonalPrimSource: RKRenderObjectSource
 
 public protocol RKRenderCameraSource: class
 {
-  var renderCamera: RKCamera? {get set}
+  var renderCamera: RKCamera? {get}
 }
 
 public protocol RKRenderDataSource: class
@@ -337,7 +257,6 @@ public protocol RKRenderDataSource: class
   
   var renderMeasurementPoints: [RKInPerInstanceAttributesAtoms] {get}
   var renderMeasurementStructure: [RKRenderStructure] {get}
-  //var measurementTreeNodes: [double4] {get}
   
   var renderBoundingBox: SKBoundingBox {get}
   

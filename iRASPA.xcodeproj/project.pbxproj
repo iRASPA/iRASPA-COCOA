@@ -124,6 +124,7 @@
 		932A495C1E544FDA00F71AE7 /* LogToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495B1E544FDA00F71AE7 /* LogToolBar.swift */; };
 		932A495E1E5450EB00F71AE7 /* InterpreterToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495D1E5450EB00F71AE7 /* InterpreterToolBar.swift */; };
 		932BB99E1F4ADC7700FC9C4E /* StructureMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932BB99D1F4ADC7700FC9C4E /* StructureMasterViewController.swift */; };
+		932BEABA23F8593E006CA16F /* RenderKitEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932BEAB923F8593E006CA16F /* RenderKitEnums.swift */; };
 		932E539D205456F800A17E26 /* NSLabelSegmentedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932E539C205456F800A17E26 /* NSLabelSegmentedCell.swift */; };
 		9330F4181F28F97800291E72 /* RenderTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9330F4171F28F97800291E72 /* RenderTabView.swift */; };
 		93338DFD1FFA8B2B004AE2CA /* BoundingBoxShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93338DFC1FFA8B2B004AE2CA /* BoundingBoxShader.metal */; };
@@ -911,6 +912,7 @@
 		932A495B1E544FDA00F71AE7 /* LogToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogToolBar.swift; sourceTree = "<group>"; };
 		932A495D1E5450EB00F71AE7 /* InterpreterToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterpreterToolBar.swift; sourceTree = "<group>"; };
 		932BB99D1F4ADC7700FC9C4E /* StructureMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureMasterViewController.swift; sourceTree = "<group>"; };
+		932BEAB923F8593E006CA16F /* RenderKitEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderKitEnums.swift; sourceTree = "<group>"; };
 		932E539C205456F800A17E26 /* NSLabelSegmentedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLabelSegmentedCell.swift; sourceTree = "<group>"; };
 		9330F4171F28F97800291E72 /* RenderTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderTabView.swift; sourceTree = "<group>"; };
 		93338DFC1FFA8B2B004AE2CA /* BoundingBoxShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BoundingBoxShader.metal; sourceTree = "<group>"; };
@@ -1501,6 +1503,7 @@
 			children = (
 				930DD5141E26B2CC00B8FE9B /* RenderKit.h */,
 				930DD5381E26B38D00B8FE9B /* RenderKitProtocols.swift */,
+				932BEAB923F8593E006CA16F /* RenderKitEnums.swift */,
 				937807DA21C5945100EC4466 /* RKTrackBall.swift */,
 				930DD5371E26B38D00B8FE9B /* RKCamera.swift */,
 				930DD5391E26B38D00B8FE9B /* RKRenderLight.swift */,
@@ -2983,6 +2986,7 @@
 				93793B0721C81529004CAD9C /* MetalAtomSelectionWorleyNoise3DPerspectiveImposterShader.swift in Sources */,
 				93793B2F21D94462004CAD9C /* RKInPerInstanceAttributesText.swift in Sources */,
 				93793AEB21C7B7EA004CAD9C /* MetalExternalBondShader.swift in Sources */,
+				932BEABA23F8593E006CA16F /* RenderKitEnums.swift in Sources */,
 				93793B3F21D9459D004CAD9C /* RKLightUniforms.swift in Sources */,
 				93584CDB2001200B005F01A7 /* Noise4D.metal in Sources */,
 				934A853B200A063700737BEB /* RKFontAtlas.swift in Sources */,

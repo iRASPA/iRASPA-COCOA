@@ -92,7 +92,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     reComputeBonds()
   }
   
-  public var colorAtomsWithBondColor: Bool
+  public override var colorAtomsWithBondColor: Bool
   {
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
   }

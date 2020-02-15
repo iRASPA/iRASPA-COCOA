@@ -202,17 +202,6 @@ public class MetalRenderer
 
   public func reloadData(device: MTLDevice, _ size: CGSize, maximumNumberOfSamples: Int)
   {
-    if let renderCameraSource = renderCameraSource, renderCameraSource.renderCamera == nil,
-       let renderDataSource = renderDataSource
-    {
-      // Camera does not exist yet, so create it. When importing CIFs, the camera is not created because the window size is not yet known.
-      // The first time you view a crystal-project, the camera is created and calibrated to view the boundingBox full-size
-      renderCameraSource.renderCamera = RKCamera()
-      renderCameraSource.renderCamera?.boundingBox = renderDataSource.renderBoundingBox
-      renderCameraSource.renderCamera?.resetCameraToDirection()
-      renderCameraSource.renderCamera?.resetCameraDistance()
-    }
-    
     // makes sure the rendering data is consistent
     var renderStructures: [[RKRenderStructure]] = [[]]
     if let renderDataSource: RKRenderDataSource = renderDataSource

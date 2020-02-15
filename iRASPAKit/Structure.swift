@@ -51,11 +51,292 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
 {
   private var versionNumber: Int = 4
   private static var classVersionNumber: Int = 4
-  public var displayName: String = "test123"
-  
+    
+  // MARK: protocol RKRenderStructure implementation
+  // =====================================================================
+  public var displayName: String = "uninitialized"
+  public var isVisible: Bool = true
+   
   public var origin: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
-  public var scaling: SIMD3<Double> = SIMD3<Double>(x: 1.0, y: 1.0, z: 1.0)
   public var orientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
+  
+  public var cell: SKCell = SKCell()
+  
+  // MARK: protocol RKRenderAtomSource implementation
+  // =====================================================================
+  
+  public var numberOfAtoms: Int
+  {
+    return self.atoms.flattenedLeafNodes().count
+  }
+  public var drawAtoms: Bool =  true
+  
+  // material properties
+  public var atomAmbientColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var atomDiffuseColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var atomSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var atomAmbientIntensity: Double = 0.2
+  public var atomDiffuseIntensity: Double = 1.0
+  public var atomSpecularIntensity: Double = 1.0
+  public var atomShininess: Double = 4.0
+  
+  public var atomHue: Double = 1.0
+  public var atomSaturation: Double = 1.0
+  public var atomValue: Double = 1.0
+  
+  public var colorAtomsWithBondColor: Bool {return true}
+  public var atomScaleFactor: Double = 1.0
+  public var atomAmbientOcclusion: Bool = true
+  public var atomAmbientOcclusionPatchNumber: Int = 256
+  public var atomAmbientOcclusionPatchSize: Int = 16
+  public var atomAmbientOcclusionTextureSize: Int = 1024
+  
+  public var atomHDR: Bool = true
+  public var atomHDRExposure: Double = 1.5
+  public var atomHDRBloomLevel: Double = 0.5
+  public var clipAtomsAtUnitCell: Bool {return false}
+  public var atomPositions: [SIMD4<Double>]
+  {
+    return []
+  }
+  public var renderAtoms: [RKInPerInstanceAttributesAtoms]
+  {
+    return []
+  }
+  
+  /*
+  var renderTextData: [RKInPerInstanceAttributesText] {get}
+  var renderTextType: RKTextType {get}
+  var renderTextFont: String {get}
+  var renderTextAlignment: RKTextAlignment {get}
+  var renderTextStyle: RKTextStyle {get}
+  var renderTextColor: NSColor {get}
+  var renderTextScaling: Double {get}
+  var renderTextOffset: SIMD3<Double> {get}
+  
+  var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms] {get}
+  var renderSelectionStyle: RKSelectionStyle {get}
+  var renderSelectionScaling: Double {get}
+  var renderSelectionStripesDensity: Double {get}
+  var renderSelectionStripesFrequency: Double {get}
+  var renderSelectionWorleyNoise3DFrequency: Double {get}
+  var renderSelectionWorleyNoise3DJitter: Double {get}
+  
+  func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  */
+  
+  // MARK: protocol RKRenderBondSource implementation
+  // =====================================================================
+  
+  public var numberOfInternalBonds: Int
+  {
+    return self.bonds.arrangedObjects.filter{$0.boundaryType == .internal}.count
+  }
+  
+  public var numberOfExternalBonds: Int
+  {
+    return self.bonds.arrangedObjects.filter{$0.boundaryType == .external}.count
+  }
+  
+  public var bondPositions: [SIMD3<Double>]
+  {
+      return []
+  }
+  
+  public var internalBondPositions: [SIMD4<Double>]
+  {
+    return []
+  }
+  
+  public var externalBondPositions: [SIMD4<Double>]
+  {
+    return []
+  }
+  
+  public var drawBonds: Bool = true
+  
+  public var bondAmbientColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var bondDiffuseColor: NSColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+  public var bondSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var bondAmbientIntensity: Double = 0.1
+  public var bondDiffuseIntensity: Double = 1.0
+  public var bondSpecularIntensity: Double = 1.0
+  public var bondShininess: Double = 4.0
+
+  public var hasExternalBonds: Bool {return false}
+  
+  public var bondScaleFactor: Double = 1.0
+  public var bondColorMode: RKBondColorMode = .split
+  
+  public var bondHDR: Bool = true
+  public var bondHDRExposure: Double = 1.5
+  public var bondHDRBloomLevel: Double = 1.0
+  public var clipBondsAtUnitCell: Bool {return false}
+  
+  public var bondHue: Double = 1.0
+  public var bondSaturation: Double = 1.0
+  public var bondValue: Double = 1.0
+  
+  // MARK: protocol RKRenderUnitCellSource implementation
+  // =====================================================================
+  
+  public var drawUnitCell: Bool = false
+  public var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms]
+  {
+    return []
+  }
+
+  public var renderUnitCellCylinders:[RKInPerInstanceAttributesBonds]
+  {
+    return []
+  }
+  
+  public var unitCellScaleFactor: Double = 1.0
+  public var unitCellDiffuseColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var unitCellDiffuseIntensity: Double = 1.0
+   
+  // MARK: protocol RKRenderAdsorptionSurfaceSource implementation
+  // =====================================================================
+  
+  public var potentialParameters: [SIMD2<Double>] {return []}
+  
+  public var drawAdsorptionSurface: Bool = false
+  public var adsorptionSurfaceOpacity: Double = 1.0
+  public var adsorptionSurfaceIsoValue: Double = 0.0
+  public var adsorptionSurfaceSize: Int = 128
+  public var adsorptionSurfaceProbeParameters: SIMD2<Double>
+  {
+    switch(adsorptionSurfaceProbeMolecule)
+    {
+    case .helium:
+      return SIMD2<Double>(10.9, 2.64)
+    case .nitrogen:
+      return SIMD2<Double>(36.0,3.31)
+    case .methane:
+      return SIMD2<Double>(158.5,3.72)
+    case .hydrogen:
+      return SIMD2<Double>(36.7,2.958)
+    case .water:
+      return SIMD2<Double>(89.633,3.097)
+    case .co2:
+      // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
+      return SIMD2<Double>(236.1,3.72)
+    case .xenon:
+      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
+      return SIMD2<Double>(226.14,3.949)
+    case .krypton:
+      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
+      return SIMD2<Double>(162.58,3.6274)
+    case .argon:
+      return SIMD2<Double>(119.8,3.34)
+    }
+  }
+  public var adsorptionSurfaceNumberOfTriangles: Int = 0
+  
+  public var adsorptionSurfaceFrontSideHDR: Bool = true
+  public var adsorptionSurfaceFrontSideHDRExposure: Double = 1.5
+  public var adsorptionSurfaceFrontSideAmbientColor: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+  public var adsorptionSurfaceFrontSideDiffuseColor: NSColor = NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)
+  public var adsorptionSurfaceFrontSideSpecularColor: NSColor = NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+  public var adsorptionSurfaceFrontSideDiffuseIntensity: Double = 1.0
+  public var adsorptionSurfaceFrontSideAmbientIntensity: Double = 0.2
+  public var adsorptionSurfaceFrontSideSpecularIntensity: Double = 1.0
+  public var adsorptionSurfaceFrontSideShininess: Double = 4.0
+  
+  public var adsorptionSurfaceBackSideHDR: Bool = true
+  public var adsorptionSurfaceBackSideHDRExposure: Double = 1.5
+  public var adsorptionSurfaceBackSideAmbientColor: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+  public var adsorptionSurfaceBackSideDiffuseColor: NSColor = NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)
+  public var adsorptionSurfaceBackSideSpecularColor: NSColor = NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+  public var adsorptionSurfaceBackSideDiffuseIntensity: Double = 1.0
+  public var adsorptionSurfaceBackSideAmbientIntensity: Double = 0.2
+  public var adsorptionSurfaceBackSideSpecularIntensity: Double = 1.0
+  public var adsorptionSurfaceBackSideShininess: Double = 4.0
+  
+  public var atomUnitCellPositions: [SIMD3<Double>] {return []}
+  public var minimumGridEnergyValue: Float? = nil
+  
+  public var frameworkProbeParameters: SIMD2<Double>
+  {
+    switch(frameworkProbeMolecule)
+    {
+    case .helium:
+      return SIMD2<Double>(10.9, 2.64)
+    case .nitrogen:
+      return SIMD2<Double>(36.0,3.31)
+    case .methane:
+      return SIMD2<Double>(158.5,3.72)
+    case .hydrogen:
+      return SIMD2<Double>(36.7,2.958)
+    case .water:
+      return SIMD2<Double>(89.633,3.097)
+    case .co2:
+      // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
+      return SIMD2<Double>(236.1,3.72)
+    case .xenon:
+      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
+      return SIMD2<Double>(226.14,3.949)
+    case .krypton:
+      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
+      return SIMD2<Double>(162.58,3.6274)
+    case .argon:
+      return SIMD2<Double>(119.8,3.34)
+    }
+  }
+  
+  public var structureNitrogenSurfaceArea: Double = 0.0
+  {
+    didSet
+    {
+      self.structureGravimetricNitrogenSurfaceArea = structureNitrogenSurfaceArea * SKConstants.AvogadroConstantPerAngstromSquared / self.structureMass
+      self.structureVolumetricNitrogenSurfaceArea = structureNitrogenSurfaceArea * 1e4 / self.cell.volume
+    }
+  }
+  
+  // MARK: protocol RKRenderObjectSource implementation
+  // =====================================================================
+  
+  // primitive properties
+  public var primitiveTransformationMatrix: double3x3 = double3x3(1.0)
+  public var primitiveOrientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
+  
+  public var primitiveOpacity: Double = 1.0
+  public var primitiveIsCapped: Bool = false
+  public var primitiveIsFractional: Bool = true
+  public var primitiveNumberOfSides: Int = 6
+  public var primitiveThickness: Double = 0.05
+  
+  public var primitiveFrontSideHDR: Bool = true
+  public var primitiveFrontSideHDRExposure: Double = 2.0
+  public var primitiveFrontSideAmbientColor: NSColor = NSColor.white
+  public var primitiveFrontSideDiffuseColor: NSColor = NSColor.yellow
+  public var primitiveFrontSideSpecularColor: NSColor = NSColor.white
+  public var primitiveFrontSideAmbientIntensity: Double = 0.1
+  public var primitiveFrontSideDiffuseIntensity: Double = 1.0
+  public var primitiveFrontSideSpecularIntensity: Double = 0.2
+  public var primitiveFrontSideShininess: Double = 4.0
+  
+  public var primitiveBackSideHDR: Bool = true
+  public var primitiveBackSideHDRExposure: Double = 2.0
+  public var primitiveBackSideAmbientColor: NSColor = NSColor.white
+  public var primitiveBackSideDiffuseColor: NSColor = NSColor(red: 0.0, green: 0.5490196, blue: 1.0, alpha: 1.0) // Aqua
+  public var primitiveBackSideSpecularColor: NSColor = NSColor.white
+  public var primitiveBackSideAmbientIntensity: Double = 0.1
+  public var primitiveBackSideDiffuseIntensity: Double = 1.0
+  public var primitiveBackSideSpecularIntensity: Double = 0.2
+  public var primitiveBackSideShininess: Double = 4.0
+  
+  
+  
+  
+  
+  
+  public var primitiveRotationDelta: Double = 5.0
+  
+  public var adsorptionSurfaceProbeMolecule: ProbeMolecule = .helium
+  
+  public var scaling: SIMD3<Double> = SIMD3<Double>(x: 1.0, y: 1.0, z: 1.0)
+  
   public var rotationDelta: Double = 5.0
   
   public var periodic: Bool = false
@@ -63,15 +344,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   {
     return false
   }
-  
-  public var isVisible: Bool = true
-  
-  public var cell: SKCell = SKCell()
-  public var atomUnitCellPositions: [SIMD3<Double>]
-  {
-    return []
-  }
-  public var minimumGridEnergyValue: Float? = nil
   
   public var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
   
@@ -180,42 +452,12 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     case manyNegativeEigenvalues = 5
   }
   
-  // primitive properties
-  public var primitiveTransformationMatrix: double3x3 = double3x3(1.0)
-  public var primitiveOrientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
-  public var primitiveRotationDelta: Double = 5.0
-  
-  public var primitiveOpacity: Double = 1.0
-  public var primitiveIsCapped: Bool = false
-  public var primitiveIsFractional: Bool = true
-  public var primitiveNumberOfSides: Int = 6
-  public var primitiveThickness: Double = 0.05
-  
-  public var primitiveFrontSideHDR: Bool = true
-  public var primitiveFrontSideHDRExposure: Double = 2.0
-  public var primitiveFrontSideAmbientColor: NSColor = NSColor.white
-  public var primitiveFrontSideDiffuseColor: NSColor = NSColor.yellow
-  public var primitiveFrontSideSpecularColor: NSColor = NSColor.white
-  public var primitiveFrontSideAmbientIntensity: Double = 0.1
-  public var primitiveFrontSideDiffuseIntensity: Double = 1.0
-  public var primitiveFrontSideSpecularIntensity: Double = 0.2
-  public var primitiveFrontSideShininess: Double = 4.0
-  
-  public var primitiveBackSideHDR: Bool = true
-  public var primitiveBackSideHDRExposure: Double = 2.0
-  public var primitiveBackSideAmbientColor: NSColor = NSColor.white
-  public var primitiveBackSideDiffuseColor: NSColor = NSColor(red: 0.0, green: 0.5490196, blue: 1.0, alpha: 1.0) // Aqua
-  public var primitiveBackSideSpecularColor: NSColor = NSColor.white
-  public var primitiveBackSideAmbientIntensity: Double = 0.1
-  public var primitiveBackSideDiffuseIntensity: Double = 1.0
-  public var primitiveBackSideSpecularIntensity: Double = 0.2
-  public var primitiveBackSideShininess: Double = 4.0
   
   
   // atoms
   public var atoms: SKAtomTreeController = SKAtomTreeController()
 
-  public var drawAtoms: Bool =  true
+  
   
   public var atomRepresentationType: RepresentationType = .sticks_and_balls
   public var atomRepresentationStyle: RepresentationStyle = .default
@@ -232,53 +474,22 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   public var selectionScaling: Double = 1.2
   public var selectionIntensity: Double = 1.0
   
-  public var atomHue: Double = 1.0
-  public var atomSaturation: Double = 1.0
-  public var atomValue: Double = 1.0
-  public var atomScaleFactor: Double = 1.0
   
-  public var atomAmbientOcclusion: Bool = true
-  public var atomAmbientOcclusionPatchNumber: Int = 256
-  public var atomAmbientOcclusionTextureSize: Int = 1024
-  public var atomAmbientOcclusionPatchSize: Int = 16
+  
+  
   public var atomCacheAmbientOcclusionTexture: [CUnsignedChar] = [CUnsignedChar]()
   
-  public var atomHDR: Bool = true
-  public var atomHDRExposure: Double = 1.5
-  public var atomHDRBloomLevel: Double = 0.5
+ 
   
-  public var atomAmbientColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var atomDiffuseColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var atomSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var atomAmbientIntensity: Double = 0.2
-  public var atomDiffuseIntensity: Double = 1.0
-  public var atomSpecularIntensity: Double = 1.0
-  public var atomShininess: Double = 4.0
+  
   
   
   // bonds
   public var bonds: SKBondSetController = SKBondSetController()
   
-  public var drawBonds: Bool = true
   
-  public var bondScaleFactor: Double = 1.0
-  public var bondColorMode: RKBondColorMode = .split
   
-  public var bondAmbientColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var bondDiffuseColor: NSColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-  public var bondSpecularColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var bondAmbientIntensity: Double = 0.1
-  public var bondDiffuseIntensity: Double = 1.0
-  public var bondSpecularIntensity: Double = 1.0
-  public var bondShininess: Double = 4.0
-
-  public var bondHDR: Bool = true
-  public var bondHDRExposure: Double = 1.5
-  public var bondHDRBloomLevel: Double = 1.0
   
-  public var bondHue: Double = 1.0
-  public var bondSaturation: Double = 1.0
-  public var bondValue: Double = 1.0
   
   public var bondAmbientOcclusion: Bool = false
   
@@ -293,73 +504,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   var atomTextAlignment: RKTextAlignment = RKTextAlignment.center
   var atomTextOffset: SIMD3<Double> = SIMD3<Double>()
   
-  // unit cell
-  public var drawUnitCell: Bool = false
-  public var unitCellScaleFactor: Double = 1.0
-  public var unitCellDiffuseColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var unitCellDiffuseIntensity: Double = 1.0
   
   
-  public var clipAtomsAtUnitCell: Bool {return false}
-  public var clipBondsAtUnitCell: Bool {return false}
   
-  // adsorption surface
   
-  public var adsorptionSurfaceProbeParameters: SIMD2<Double>
-  {
-    switch(adsorptionSurfaceProbeMolecule)
-    {
-    case .helium:
-      return SIMD2<Double>(10.9, 2.64)
-    case .nitrogen:
-      return SIMD2<Double>(36.0,3.31)
-    case .methane:
-      return SIMD2<Double>(158.5,3.72)
-    case .hydrogen:
-      return SIMD2<Double>(36.7,2.958)
-    case .water:
-      return SIMD2<Double>(89.633,3.097)
-    case .co2:
-      // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
-      return SIMD2<Double>(236.1,3.72)
-    case .xenon:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(226.14,3.949)
-    case .krypton:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(162.58,3.6274)
-    case .argon:
-      return SIMD2<Double>(119.8,3.34)
-    }
-  }
   
-  public var frameworkProbeParameters: SIMD2<Double>
-  {
-    switch(frameworkProbeMolecule)
-    {
-    case .helium:
-      return SIMD2<Double>(10.9, 2.64)
-    case .nitrogen:
-      return SIMD2<Double>(36.0,3.31)
-    case .methane:
-      return SIMD2<Double>(158.5,3.72)
-    case .hydrogen:
-      return SIMD2<Double>(36.7,2.958)
-    case .water:
-      return SIMD2<Double>(89.633,3.097)
-    case .co2:
-      // Y. Iwai, H. Higashi, H. Uchida, Y. Arai, Fluid Phase Equilibria 127 (1997) 251-261.
-      return SIMD2<Double>(236.1,3.72)
-    case .xenon:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(226.14,3.949)
-    case .krypton:
-      // Gábor Rutkai, Monika Thol, Roland Span & Jadran Vrabec (2017), Molecular Physics, 115:9-12, 1104-1121
-      return SIMD2<Double>(162.58,3.6274)
-    case .argon:
-      return SIMD2<Double>(119.8,3.34)
-    }
-  }
   
   public enum ProbeMolecule: Int
   {
@@ -376,36 +525,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public var frameworkProbeMolecule: ProbeMolecule = .nitrogen
 
-  public var drawAdsorptionSurface: Bool = false
-  public var adsorptionSurfaceOpacity: Double = 1.0
-  public var adsorptionSurfaceIsoValue: Double = 0.0
   
-  public var adsorptionSurfaceSize: Int = 128
-  public var adsorptionSurfaceNumberOfTriangles: Int = 0
-  
-  public var adsorptionSurfaceProbeMolecule: ProbeMolecule = .helium
-  
-  public var adsorptionSurfaceFrontSideHDR: Bool = true
-  public var adsorptionSurfaceFrontSideHDRExposure: Double = 1.5
-  public var adsorptionSurfaceFrontSideAmbientColor: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-  public var adsorptionSurfaceFrontSideDiffuseColor: NSColor = NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)
-  public var adsorptionSurfaceFrontSideSpecularColor: NSColor = NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
-  public var adsorptionSurfaceFrontSideDiffuseIntensity: Double = 1.0
-  public var adsorptionSurfaceFrontSideAmbientIntensity: Double = 0.2
-  public var adsorptionSurfaceFrontSideSpecularIntensity: Double = 1.0
-  public var adsorptionSurfaceFrontSideShininess: Double = 4.0
-  
-  public var adsorptionSurfaceBackSideHDR: Bool = true
-  public var adsorptionSurfaceBackSideHDRExposure: Double = 1.5
-  public var adsorptionSurfaceBackSideAmbientColor: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-  public var adsorptionSurfaceBackSideDiffuseColor: NSColor = NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)
-  public var adsorptionSurfaceBackSideSpecularColor: NSColor = NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
-  public var adsorptionSurfaceBackSideDiffuseIntensity: Double = 1.0
-  public var adsorptionSurfaceBackSideAmbientIntensity: Double = 0.2
-  public var adsorptionSurfaceBackSideSpecularIntensity: Double = 1.0
-  public var adsorptionSurfaceBackSideShininess: Double = 4.0
-  
-
   
   public var canRemoveSymmetry: Bool
   {
@@ -509,20 +629,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     }
   }
   
-  public var numberOfAtoms: Int
-  {
-    return self.atoms.flattenedLeafNodes().count
-  }
   
-  public var numberOfInternalBonds: Int
-  {
-    return self.bonds.arrangedObjects.filter{$0.boundaryType == .internal}.count
-  }
   
-  public var numberOfExternalBonds: Int
-  {
-    return self.bonds.arrangedObjects.filter{$0.boundaryType == .external}.count
-  }
+  
   
   public override init()
   {
@@ -1980,14 +2089,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     self.setRepresentationType(type: self.atomRepresentationType)
   }
   
-  public var structureNitrogenSurfaceArea: Double = 0.0
-  {
-    didSet
-    {
-      self.structureGravimetricNitrogenSurfaceArea = structureNitrogenSurfaceArea * SKConstants.AvogadroConstantPerAngstromSquared / self.structureMass
-      self.structureVolumetricNitrogenSurfaceArea = structureNitrogenSurfaceArea * 1e4 / self.cell.volume
-    }
-  }
   
   
   // MARK: Measuring distance, angle, and dihedral-angles
@@ -2530,13 +2631,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     return 1
   }
   
-  public var hasExternalBonds: Bool
-  {
-    get
-    {
-      return false
-    }
-  }
   
   
   
@@ -2665,39 +2759,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     }
   }
   
-  public var renderAtoms: [RKInPerInstanceAttributesAtoms]
-  {
-    get
-    {
-      var index: Int = 0
-      
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
-      let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
-      
-      
-      var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count: atoms.count)
-    
-      index = 0
-      for atom in atoms
-      {
-        
-        let pos: SIMD3<Double> = atom.position
-        
-        //let w: Float = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
-        let w: Float = (atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
-        let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: w)
-        
-        let radius: Double = atom.asymmetricParentAtom?.drawRadius ?? 1.0
-        let ambient: NSColor = atom.asymmetricParentAtom?.color ?? NSColor.white
-        let diffuse: NSColor = atom.asymmetricParentAtom?.color ?? NSColor.white
-        let specular: NSColor = self.atomSpecularColor
-        
-        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
-        index = index + 1
-      }
-      return data
-    }
-  }
+  
   
   public var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms]
   {
@@ -2844,20 +2906,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
 
   
-  public var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms]
-  {
-    let data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms]()
-    
-    return data
-  }
-
   
-  public var renderUnitCellCylinders:[RKInPerInstanceAttributesBonds]
-  {
-    let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
-    
-    return data
-  }
   
   public var renderInternalBonds: [RKInPerInstanceAttributesBonds]
   {
@@ -2916,36 +2965,16 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   
   
-  public var atomPositions: [SIMD4<Double>]
-  {
-    return []
-  }
   
-  public var internalBondPositions: [SIMD4<Double>]
-  {
-    return []
-  }
   
-  public var externalBondPositions: [SIMD4<Double>]
-  {
-    return []
-  }
   
   public var crystallographicPositions: [(SIMD3<Double>, Int)]
   {
     return []
   }
   
-  public var potentialParameters: [SIMD2<Double>]
-  {
-    //let size: Int = self.atomPositions.count
-    return []
-  }
   
-  public var bondPositions: [SIMD3<Double>]
-  {
-      return []
-  }
+  
   
   public func removeSymmetry()
   {
