@@ -388,8 +388,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       
       let bondLength: Double = number.doubleValue
       
-      let newPos: (SIMD3<Double>, SIMD3<Double>) = (SIMD3<Double>(), SIMD3<Double>())
-      //let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
+      let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(asymmetricBond: bond, to: bondLength)
       setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
       
       
@@ -435,8 +434,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
           
           let bondLength: Double = sender.doubleValue
           
-          let newPos: (SIMD3<Double>, SIMD3<Double>) = (SIMD3<Double>(), SIMD3<Double>())
-          //let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
+          let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(asymmetricBond: bond, to: bondLength)
           setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
 
         }

@@ -457,22 +457,19 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return self.cell.numberOfReplicas
   }
   
-  public override func computeChangedBondLength(bond: SKBondNode, to bondLength: Double) -> (SIMD3<Double>, SIMD3<Double>)
+  public override func computeChangedBondLength(asymmetricBond bond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>, to bondLength: Double) -> (SIMD3<Double>, SIMD3<Double>)
   {
     let pos1 = bond.atom1.position
-    let asymmetricAtom1 = bond.atom1.asymmetricParentAtom
+    let asymmetricAtom1 = bond.atom1
     let pos2 = bond.atom2.position
-    let asymmetricAtom2 = bond.atom2.asymmetricParentAtom
+    let asymmetricAtom2 = bond.atom2
     
-    let oldBondLength: Double = self.bondLength(bond)
+    let oldBondLength: Double = self.asymmetricBondLength(bond)
     
-    let bondVector: SIMD3<Double> = normalize(self.bondVector(bond))
+    let bondVector: SIMD3<Double> = normalize(self.asymmetricBondVector(bond))
     
-    let isAllFixed1: Bool = (asymmetricAtom1?.isFixed.x ?? false) && (asymmetricAtom1?.isFixed.y ?? false) &&
-      (asymmetricAtom1?.isFixed.z ?? false)
-    let isAllFixed2: Bool = (asymmetricAtom2?.isFixed.x ?? false) &&
-      (asymmetricAtom2?.isFixed.y ?? false) &&
-      (asymmetricAtom2?.isFixed.z ?? false)
+    let isAllFixed1: Bool = asymmetricAtom1.isFixed.x && asymmetricAtom1.isFixed.y && asymmetricAtom1.isFixed.z
+    let isAllFixed2: Bool = asymmetricAtom2.isFixed.x && asymmetricAtom2.isFixed.y && asymmetricAtom2.isFixed.z
     
     switch (isAllFixed1,isAllFixed2)
     {
@@ -1063,10 +1060,26 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return self.cell.applyUnitCellBoundaryCondition(dr)
   }
   
+  override public func asymmetricBondVector(_ asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>) -> SIMD3<Double>
+  {
+    let atom1: SIMD3<Double> = asymmetricBond.atom1.position
+    let atom2: SIMD3<Double> = asymmetricBond.atom2.position
+    let dr: SIMD3<Double> = atom2 - atom1
+    return self.cell.applyUnitCellBoundaryCondition(dr)
+  }
+  
   override public func bondLength(_ bond: SKBondNode) -> Double
   {
     let atom1: SIMD3<Double> = bond.atom1.position
     let atom2: SIMD3<Double> = bond.atom2.position
+    let dr: SIMD3<Double> = atom2 - atom1
+    return length(self.cell.applyUnitCellBoundaryCondition(dr))
+  }
+  
+  override public func asymmetricBondLength(_ asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>) -> Double
+  {
+    let atom1: SIMD3<Double> = asymmetricBond.atom1.position
+    let atom2: SIMD3<Double> = asymmetricBond.atom2.position
     let dr: SIMD3<Double> = atom2 - atom1
     return length(self.cell.applyUnitCellBoundaryCondition(dr))
   }

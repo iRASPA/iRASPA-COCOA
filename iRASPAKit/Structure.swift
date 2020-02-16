@@ -2121,6 +2121,21 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     return dr
   }
   
+  public func asymmetricBondVector(_ bond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>) -> SIMD3<Double>
+  {
+    let atom1: SIMD3<Double> = bond.atom1.position
+    let atom2: SIMD3<Double> = bond.atom2.position
+    let dr: SIMD3<Double> = atom2 - atom1
+    return dr
+  }
+  
+  public func asymmetricBondLength(_ asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>) -> Double
+  {
+    let atom1: SIMD3<Double> = asymmetricBond.atom1.position
+    let atom2: SIMD3<Double> = asymmetricBond.atom2.position
+    let dr: SIMD3<Double> = abs(atom2 - atom1)
+    return length(dr)
+  }
   
   public func bondLength(_ bond: SKBondNode) -> Double
   {
@@ -2896,7 +2911,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     return nil
   }
   
-  public func computeChangedBondLength(bond: SKBondNode, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
+  public func computeChangedBondLength(asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
   {
     return (SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.0,0.0))
   }
