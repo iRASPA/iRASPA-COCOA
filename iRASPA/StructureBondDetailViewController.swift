@@ -125,8 +125,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     
     if let structure: Structure =  (self.representedObject as? iRASPAStructure)?.structure
     {
-      
-      for bond in (structure.bonds.arrangedObjects.filter{$0.atom1.type == .copy && $0.atom2.type == .copy})
+      let bonds: [SKBondNode] = (structure.bonds.arrangedObjects.filter{$0.atom1.type == .copy && $0.atom2.type == .copy})
+      for bond in bonds
       {
         let asymmetricBond: SKAsymmetricBond = SKAsymmetricBond(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom)
         
@@ -187,8 +187,13 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       let asymmetricBond: SKAsymmetricBond = bondKeys[row]
+      
       guard let bond: SKBondNode = bondDictionary[asymmetricBond]?.first else {return nil}
       let bondLength = structure.bondLength(bond)
+      
+      let asymmetricAtom1: SKAsymmetricAtom = asymmetricBond.atom1
+      let asymmetricAtom2: SKAsymmetricAtom = asymmetricBond.atom2
+      let allFixed: Bool = asymmetricAtom1.isFixed.x && asymmetricAtom1.isFixed.y && asymmetricAtom1.isFixed.z && asymmetricAtom2.isFixed.x &&      asymmetricAtom2.isFixed.y && asymmetricAtom2.isFixed.z
       switch(tableColumn.identifier)
       {
       case NSUserInterfaceItemIdentifier(rawValue: "bondVisibilityColumn"):
@@ -206,40 +211,40 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "fixedAtomsInBondRow"), owner: self) as? NSTableCellView
         if let segmentedControl: NSLabelSegmentedControl = view!.viewWithTag(11) as? NSLabelSegmentedControl
         {
-          segmentedControl.label = NSString(string: String(bond.atom1.asymmetricParentAtom.tag))
-          segmentedControl.setSelected(bond.atom1.asymmetricParentAtom.isFixed.x, forSegment: 0)
-          segmentedControl.setSelected(bond.atom1.asymmetricParentAtom.isFixed.y, forSegment: 1)
-          segmentedControl.setSelected(bond.atom1.asymmetricParentAtom.isFixed.z, forSegment: 2)
+          segmentedControl.label = NSString(string: String(asymmetricBond.atom1.tag))
+          segmentedControl.setSelected(asymmetricBond.atom1.isFixed.x, forSegment: 0)
+          segmentedControl.setSelected(asymmetricBond.atom1.isFixed.y, forSegment: 1)
+          segmentedControl.setSelected(asymmetricBond.atom1.isFixed.z, forSegment: 2)
           segmentedControl.isEnabled = proxyProject.isEnabled
         }
         
         if let segmentedControl: NSLabelSegmentedControl = view!.viewWithTag(12) as? NSLabelSegmentedControl
         {
-          segmentedControl.label = NSString(string: String(bond.atom2.asymmetricParentAtom.tag))
-          segmentedControl.setSelected(bond.atom2.asymmetricParentAtom.isFixed.x, forSegment: 0)
-          segmentedControl.setSelected(bond.atom2.asymmetricParentAtom.isFixed.y, forSegment: 1)
-          segmentedControl.setSelected(bond.atom2.asymmetricParentAtom.isFixed.z, forSegment: 2)
+          segmentedControl.label = NSString(string: String(asymmetricBond.atom2.tag))
+          segmentedControl.setSelected(asymmetricBond.atom2.isFixed.x, forSegment: 0)
+          segmentedControl.setSelected(asymmetricBond.atom2.isFixed.y, forSegment: 1)
+          segmentedControl.setSelected(asymmetricBond.atom2.isFixed.z, forSegment: 2)
           segmentedControl.isEnabled = proxyProject.isEnabled
         }
       case NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomRow"), owner: self) as? NSTableCellView
-        let element: SKElement = PredefinedElements.sharedInstance.elementSet[bond.atom1.asymmetricParentAtom.elementIdentifier]
+        let element: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom1.elementIdentifier]
         view?.textField?.stringValue = element.chemicalSymbol
         view?.textField?.isEditable = false
       case NSUserInterfaceItemIdentifier(rawValue: "bondSecondAtomColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondSecondAtomRow"), owner: self) as? NSTableCellView
-        let element: SKElement = PredefinedElements.sharedInstance.elementSet[bond.atom2.asymmetricParentAtom.elementIdentifier]
+        let element: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom2.elementIdentifier]
         view?.textField?.stringValue = element.chemicalSymbol
         view?.textField?.isEditable = false
       case NSUserInterfaceItemIdentifier(rawValue: "bondLengthColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondLengthRow"), owner: self) as? NSTableCellView
         view?.textField?.doubleValue = bondLength
-        view?.textField?.isEditable = proxyProject.isEnabled
+        view?.textField?.isEditable = proxyProject.isEnabled && !allFixed
       case NSUserInterfaceItemIdentifier(rawValue: "bondLengthSliderColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondLengthSliderRow"), owner: self) as? NSTableCellView
         let slider: NSSlider = view!.viewWithTag(11) as! NSSlider
         slider.doubleValue = bondLength
-        slider.isEnabled = proxyProject.isEnabled
+        slider.isEnabled = proxyProject.isEnabled && !allFixed
       default:
         view = nil
       }
@@ -382,20 +387,23 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
        let nf: NumberFormatter = sender.formatter as?  NumberFormatter,
        let number: NSNumber = nf.number(from: sender.stringValue)
     {
-      let bond: SKAsymmetricBond = bondKeys[row]
-      let asymmetricAtom1: SKAsymmetricAtom = bond.atom1
-      let asymmetricAtom2: SKAsymmetricAtom = bond.atom2
-      
-      let bondLength: Double = number.doubleValue
-      
-      let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(asymmetricBond: bond, to: bondLength)
-      setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
-      
-      
-      if let view: NSTableCellView = self.bondTableView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
-         let sliderValue: NSSlider = view.viewWithTag(11) as? NSSlider
+      let asymmetricBond: SKAsymmetricBond = bondKeys[row]
+      if let bond: SKBondNode = bondDictionary[asymmetricBond]?.first
       {
-        sliderValue.doubleValue = sender.doubleValue
+        let asymmetricAtom1: SKAsymmetricAtom = bond.atom1.asymmetricParentAtom
+        let asymmetricAtom2: SKAsymmetricAtom = bond.atom2.asymmetricParentAtom
+      
+        let bondLength: Double = number.doubleValue
+      
+        let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
+        setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
+      
+      
+        if let view: NSTableCellView = self.bondTableView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
+           let sliderValue: NSSlider = view.viewWithTag(11) as? NSSlider
+        {
+          sliderValue.doubleValue = sender.doubleValue
+        }
       }
     }
     else
@@ -428,15 +436,17 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         
         if endingDrag
         {
-          let bond: SKAsymmetricBond = bondKeys[row]
-          let asymmetricAtom1: SKAsymmetricAtom = bond.atom1
-          let asymmetricAtom2: SKAsymmetricAtom = bond.atom2
+          let asymmetricBond: SKAsymmetricBond = bondKeys[row]
+          if let bond: SKBondNode = bondDictionary[asymmetricBond]?.first
+          {
+            let asymmetricAtom1: SKAsymmetricAtom = bond.atom1.asymmetricParentAtom
+            let asymmetricAtom2: SKAsymmetricAtom = bond.atom2.asymmetricParentAtom
           
-          let bondLength: Double = sender.doubleValue
+            let bondLength: Double = sender.doubleValue
           
-          let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(asymmetricBond: bond, to: bondLength)
-          setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
-
+            let newPos: (SIMD3<Double>, SIMD3<Double>) = structure.computeChangedBondLength(bond: bond, to: bondLength)
+            setBondAtomPositions(atom1: asymmetricAtom1, pos1: newPos.0, atom2: asymmetricAtom2, pos2: newPos.1)
+          }
         }
       }
     }

@@ -364,8 +364,8 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     let bondVector: SIMD3<Double> = normalize(self.asymmetricBondVector(bond))
     
-     let isAllFixed1: Bool = asymmetricAtom1.isFixed.x && asymmetricAtom1.isFixed.y && asymmetricAtom1.isFixed.z
-       let isAllFixed2: Bool = asymmetricAtom2.isFixed.x && asymmetricAtom2.isFixed.y && asymmetricAtom2.isFixed.z
+    let isAllFixed1: Bool = asymmetricAtom1.isFixed.x && asymmetricAtom1.isFixed.y && asymmetricAtom1.isFixed.z
+    let isAllFixed2: Bool = asymmetricAtom2.isFixed.x && asymmetricAtom2.isFixed.y && asymmetricAtom2.isFixed.z
     
     switch (isAllFixed1,isAllFixed2)
     {
@@ -383,6 +383,38 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
       return (pos1,pos2)
     }
   }
+  
+  public override func computeChangedBondLength(bond: SKBondNode, to bondLength: Double) -> (SIMD3<Double>, SIMD3<Double>)
+  {
+    let pos1 = bond.atom1.position
+    let asymmetricAtom1: SKAsymmetricAtom = bond.atom1.asymmetricParentAtom
+    let pos2 = bond.atom2.position
+    let asymmetricAtom2: SKAsymmetricAtom = bond.atom2.asymmetricParentAtom
+    
+    let oldBondLength: Double = self.bondLength(bond)
+    
+    let bondVector: SIMD3<Double> = normalize(self.bondVector(bond))
+    
+    let isAllFixed1: Bool = asymmetricAtom1.isFixed.x && asymmetricAtom1.isFixed.y && asymmetricAtom1.isFixed.z
+    let isAllFixed2: Bool = asymmetricAtom2.isFixed.x && asymmetricAtom2.isFixed.y && asymmetricAtom2.isFixed.z
+    
+    switch (isAllFixed1,isAllFixed2)
+    {
+    case (false, false):
+      let newPos1: SIMD3<Double> = pos1 - 0.5 * (bondLength - oldBondLength) * bondVector
+      let newPos2: SIMD3<Double> = pos2 + 0.5 * (bondLength - oldBondLength) * bondVector
+      return (newPos1, newPos2)
+    case (true, false):
+      let newPos2: SIMD3<Double> = pos1 + bondLength * bondVector
+      return (pos1, newPos2)
+    case (false, true):
+      let newPos1: SIMD3<Double> = pos2 - bondLength * bondVector
+      return (newPos1, pos2)
+    case (true, true):
+      return (pos1,pos2)
+    }
+  }
+  
   
   public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
   {
