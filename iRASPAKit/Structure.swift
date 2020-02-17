@@ -2916,6 +2916,11 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     return (SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.0,0.0))
   }
   
+  public func computeChangedBondLength(bond: SKBondNode, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
+  {
+    return (SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.0,0.0))
+  }
+  
   public var renderCanDrawAdsorptionSurface: Bool {return false}
   
   public func setSpaceGroup(number: Int) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
