@@ -38,7 +38,7 @@ import MathKit
 public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStringConvertible, BinaryDecodable, BinaryEncodable, Copying
 {
   private var versionNumber: Int = 3
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   public var displayName: String = "Default"
   public var asymmetricIndex: Int = 0
   public var position: SIMD3<Double> = SIMD3<Double>(0,0,0)
@@ -53,6 +53,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
   
   public var tag: Int = 0
   public var symmetryType: AsymmetricAtomType = .asymmetric
+  public var hybridization: Hybridization = .untyped
   
   // atom properties (bonds are visible depending on whether the atoms of the bonds are visible)
   public var isFixed: Bool3 = Bool3(false, false, false)
@@ -88,6 +89,18 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     case asymmetric = 1
   }
   
+  public enum Hybridization: Int
+  {
+    case untyped = 0
+    case sp_linear = 1
+    case sp2_trigonal = 2
+    case sp3_tetrahedral = 3
+    case square_planar = 4
+    case trigonal_bipyramidal = 5
+    case square_pyramidal = 6
+    case octahedral = 7
+  }
+  
   public init(displayName: String, elementId: Int, uniqueForceFieldName: String, position: SIMD3<Double>, charge: Double, color: NSColor, drawRadius: Double, bondDistanceCriteria: Double)
   {
     self.elementIdentifier = elementId
@@ -98,6 +111,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     self.color = color
     self.drawRadius = drawRadius
     self.bondDistanceCriteria = bondDistanceCriteria
+    self.hybridization = .untyped
   }
   
   public init(atom: SKAsymmetricAtom)
@@ -115,6 +129,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     
     self.tag = atom.tag
     self.symmetryType = .asymmetric
+    self.hybridization = atom.hybridization
     
     // atom properties (bonds are visible depending on whether the atoms of the bonds are visible)
     self.isFixed = atom.isFixed
@@ -178,6 +193,8 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     self.charge = original.charge
     self.fractional = original.fractional
     
+    self.hybridization = original.hybridization
+    
     self.uniqueForceFieldName = original.uniqueForceFieldName
     self.elementIdentifier = original.elementIdentifier
     
@@ -227,6 +244,8 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     
     self.uniqueForceFieldName = atom.uniqueForceFieldName
     self.elementIdentifier = atom.elementIdentifier
+    
+    self.hybridization = atom.hybridization
     
     self.isFixed = atom.isFixed
     
@@ -355,6 +374,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     encoder.encode(displayName)
     encoder.encode(position)
     encoder.encode(charge)
+    encoder.encode(hybridization.rawValue)
     encoder.encode(uniqueForceFieldName)
     encoder.encode(elementIdentifier)
     encoder.encode(color)
@@ -400,6 +420,10 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     displayName = try decoder.decode(String.self)
     position = try decoder.decode(SIMD3<Double>.self)
     charge = try decoder.decode(Double.self)
+    if readVersionNumber >= 2 // introduced in version 2
+    {
+      hybridization = try SKAsymmetricAtom.Hybridization(rawValue: decoder.decode(Int.self))!
+    }
     uniqueForceFieldName = try decoder.decode(String.self)
     elementIdentifier = try decoder.decode(Int.self)
     color = try decoder.decode(NSColor.self)
