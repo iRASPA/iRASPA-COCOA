@@ -41,12 +41,22 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
     case external = 1
   }
   
+  public enum BondType: Int
+  {
+    case untyped = 0
+    case single = 1
+    case double = 2
+    case partial_double = 3
+    case triple = 4
+  }
+  
   public var atom1Tag: Int = 0
   public var atom2Tag: Int = 0
   
   public unowned var atom1: SKAtomCopy
   public unowned var atom2: SKAtomCopy
   public var boundaryType: BoundaryType = BoundaryType.internal
+  public var bondType: BondType = BondType.untyped
   public var isVisible: Bool = true
   
   
@@ -160,6 +170,7 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
     encoder.encode(self.atom1.tag)
     encoder.encode(self.atom2.tag)
     encoder.encode(self.boundaryType.rawValue)
+    encoder.encode(self.bondType.rawValue)
     encoder.encode(self.isVisible)
   }
    
@@ -180,6 +191,7 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
     self.atom1Tag = try decoder.decode(Int.self)
     self.atom2Tag = try decoder.decode(Int.self)
     self.boundaryType = BoundaryType(rawValue: try decoder.decode(Int.self))!
+    self.bondType = BondType(rawValue: try decoder.decode(Int.self))!
     self.isVisible = try decoder.decode(Bool.self)
   }
 }
