@@ -286,7 +286,8 @@ class MetalIsosurfaceShader
             if let cachedVersion: Data = cachedAdsorptionSurfaces[size]?.object(forKey: structure) as? Data
             {
               data = [Float](repeating: Float(0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
-              let _ = cachedVersion.copyBytes(to: UnsafeMutableBufferPointer(start: &data, count: cachedVersion.count), from: 0..<cachedVersion.count)
+              let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count)
+              }
               
               LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal energy grid from cache")
             }
@@ -323,7 +324,7 @@ class MetalIsosurfaceShader
               
               if let cache: NSCache = cachedAdsorptionSurfaces[size]
               {
-                let cachedData: Data = Data(buffer: UnsafeBufferPointer(start: data, count: data.count))
+                let cachedData: Data = withUnsafeBytes(of: data) { Data($0) }
                 cache.setObject(cachedData as AnyObject, forKey: structure)
               }
             }

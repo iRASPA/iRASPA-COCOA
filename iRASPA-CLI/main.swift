@@ -135,14 +135,14 @@ else
               switch(option)
               {
               case surfaceAreaOption:
-                if case .bool(let boolOption) = option, boolOption.value
+                if case .bool(let value, _, _, _) = option, value
                 {
                   let surfaceAreas: (gravimetric: [Double], volumetric: [Double]) = project.surfaceAreas
                   print("\(fileName) Surface area: \(surfaceAreas.gravimetric) [m^2/g]")
                   print("\(fileName) Surface area: \(surfaceAreas.volumetric) [m^2/cm^3]")
                 }
               case voidFractionOption:
-                if case .bool(let boolOption) = option, boolOption.value
+                if case .bool(let value, _, _, _) = option, value
                 {
                   print("\(fileName) Helium void-fraction: \(project.voidFractions) [-]")
                 }
@@ -159,7 +159,7 @@ else
         
         for option in console.options
         {
-          if option == helpOption, case .bool(let boolOption) = option, boolOption.value
+          if option == helpOption, case .bool(let value, _, _, _) = option, value
           {
             console.printUsage()
           }
