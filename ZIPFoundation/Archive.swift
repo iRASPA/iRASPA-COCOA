@@ -303,22 +303,23 @@ extension Archive {
 
 extension Archive.EndOfCentralDirectoryRecord {
     var data: Data {
-        var endOfCentralDirectorySignature = self.endOfCentralDirectorySignature
-        var numberOfDisk = self.numberOfDisk
-        var numberOfDiskStart = self.numberOfDiskStart
-        var totalNumberOfEntriesOnDisk = self.totalNumberOfEntriesOnDisk
-        var totalNumberOfEntriesInCentralDirectory = self.totalNumberOfEntriesInCentralDirectory
-        var sizeOfCentralDirectory = self.sizeOfCentralDirectory
-        var offsetToStartOfCentralDirectory = self.offsetToStartOfCentralDirectory
-        var zipFileCommentLength = self.zipFileCommentLength
-        var data = Data(buffer: UnsafeBufferPointer(start: &endOfCentralDirectorySignature, count: 1))
-        data.append(UnsafeBufferPointer(start: &numberOfDisk, count: 1))
-        data.append(UnsafeBufferPointer(start: &numberOfDiskStart, count: 1))
-        data.append(UnsafeBufferPointer(start: &totalNumberOfEntriesOnDisk, count: 1))
-        data.append(UnsafeBufferPointer(start: &totalNumberOfEntriesInCentralDirectory, count: 1))
-        data.append(UnsafeBufferPointer(start: &sizeOfCentralDirectory, count: 1))
-        data.append(UnsafeBufferPointer(start: &offsetToStartOfCentralDirectory, count: 1))
-        data.append(UnsafeBufferPointer(start: &zipFileCommentLength, count: 1))
+        let endOfCentralDirectorySignature = self.endOfCentralDirectorySignature
+        let numberOfDisk = self.numberOfDisk
+        let numberOfDiskStart = self.numberOfDiskStart
+        let totalNumberOfEntriesOnDisk = self.totalNumberOfEntriesOnDisk
+        let totalNumberOfEntriesInCentralDirectory = self.totalNumberOfEntriesInCentralDirectory
+        let sizeOfCentralDirectory = self.sizeOfCentralDirectory
+        let offsetToStartOfCentralDirectory = self.offsetToStartOfCentralDirectory
+        let zipFileCommentLength = self.zipFileCommentLength
+      
+        var data: Data = withUnsafeBytes(of: endOfCentralDirectorySignature) { Data($0) }
+        data.append(withUnsafeBytes(of: numberOfDisk) { Data($0) })
+        data.append(withUnsafeBytes(of: numberOfDiskStart) { Data($0) })
+        data.append(withUnsafeBytes(of: totalNumberOfEntriesOnDisk) { Data($0) })
+        data.append(withUnsafeBytes(of: totalNumberOfEntriesInCentralDirectory) { Data($0) })
+        data.append(withUnsafeBytes(of: sizeOfCentralDirectory) { Data($0) })
+        data.append(withUnsafeBytes(of: offsetToStartOfCentralDirectory) { Data($0) })
+        data.append(withUnsafeBytes(of: zipFileCommentLength) { Data($0) })
         data.append(self.zipFileCommentData)
         return data
     }

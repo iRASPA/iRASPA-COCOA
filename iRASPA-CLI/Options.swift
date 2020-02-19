@@ -50,29 +50,29 @@ public enum OptionType: Equatable   //: CustomStringConvertible
   {
     switch (self)
     {
-    case .bool(let option):
-      self = OptionType.bool(value: true, shortOption: option.shortOption, longOption: option.longOption, description: option.description)
+    case .bool( _, let shortOption, let longOption, let description):
+      self = OptionType.bool(value: true, shortOption: shortOption, longOption: longOption, description: description)
       return true
-    case .int(let option):
+    case .int(_, let shortOption, let longOption, let description):
       if let value = values.first,
          let intValue = Int(value)
       {
-        self = OptionType.int(value: intValue, shortOption: option.shortOption, longOption: option.longOption, description: option.description)
+        self = OptionType.int(value: intValue, shortOption: shortOption, longOption: longOption, description: description)
         return true
       }
       return false
-    case .double(let option):
+    case .double(_, let shortOption, let longOption, let description):
       if let value = values.first,
         let doubleValue = Double(value)
       {
-        self = OptionType.double(value: doubleValue, shortOption: option.shortOption, longOption: option.longOption, description: option.description)
+        self = OptionType.double(value: doubleValue, shortOption: shortOption, longOption: longOption, description: description)
         return true
       }
       return false
-    case .string(let option):
+    case .string(_, let shortOption, let longOption, let description):
       if let stringValue = values.first
       {
-        self = OptionType.string(value: stringValue, shortOption: option.shortOption, longOption: option.longOption, description: option.description)
+        self = OptionType.string(value: stringValue, shortOption: shortOption, longOption: longOption, description: description)
         return true
       }
       return false
@@ -103,14 +103,14 @@ public enum OptionType: Equatable   //: CustomStringConvertible
   {
     switch (self)
     {
-    case .bool(let option):
-      return formatFlag(shortFlag: option.shortOption, longFlag: option.longOption, shortOptionPrefix: shortOptionPrefix, longOptionPrefix: longOptionPrefix)
-    case .int(let option):
-      return formatFlag(shortFlag: option.shortOption, longFlag: option.longOption, shortOptionPrefix: shortOptionPrefix, longOptionPrefix: longOptionPrefix)
-    case .double(let option):
-      return formatFlag(shortFlag: option.shortOption, longFlag: option.longOption, shortOptionPrefix: shortOptionPrefix, longOptionPrefix: longOptionPrefix)
-    case .string(let option):
-      return formatFlag(shortFlag: option.shortOption, longFlag: option.longOption, shortOptionPrefix: shortOptionPrefix, longOptionPrefix: longOptionPrefix)
+    case .bool(_, let shortOption, let longOption, _):
+      return formatFlag(shortFlag: shortOption, longFlag: longOption, shortOptionPrefix: shortOptionPrefix, longOptionPrefix: longOptionPrefix)
+    case .int(_, let shortOption, let longOption, _):
+      return formatFlag(shortFlag: shortOption, longFlag: longOption, shortOptionPrefix: shortOptionPrefix, longOptionPrefix: longOptionPrefix)
+    case .double(_, let shortOption, let longOption, _):
+      return formatFlag(shortFlag: shortOption, longFlag: longOption, shortOptionPrefix: shortOptionPrefix, longOptionPrefix: longOptionPrefix)
+    case .string(_, let shortOption, let longOption, _):
+      return formatFlag(shortFlag: shortOption, longFlag: longOption, shortOptionPrefix: shortOptionPrefix, longOptionPrefix: longOptionPrefix)
     }
   }
   
@@ -118,14 +118,14 @@ public enum OptionType: Equatable   //: CustomStringConvertible
   {
     switch (self)
     {
-    case .bool(let option):
-      return option.description
-    case .int(let option):
-      return option.description
-    case .double(let option):
-      return option.description
-    case .string(let option):
-      return option.description
+    case .bool(_, _, _, let description):
+      return description
+    case .int(_, _, _, let description):
+      return description
+    case .double(_, _, _, let description):
+      return description
+    case .string(_, _, _, let description):
+      return description
     }
   }
   
@@ -134,8 +134,8 @@ public enum OptionType: Equatable   //: CustomStringConvertible
   {
       switch (lhs, rhs)
       {
-      case (.bool(let lhsNum), .bool(let rhsNum)):
-        return lhsNum.shortOption == rhsNum.shortOption || lhsNum.longOption == rhsNum.longOption
+      case (.bool(_, let lhsNumshortOption, let lhsNumlongOption, _), .bool(_, let rhsNumshortOption, let rhsNumlongOption, _)):
+        return lhsNumshortOption == rhsNumshortOption || lhsNumlongOption == rhsNumlongOption
       default:
         return false
     }
@@ -145,8 +145,8 @@ public enum OptionType: Equatable   //: CustomStringConvertible
   {
     switch (lhs, rhs)
     {
-    case (.bool(let lhsNum), rhs):
-      return lhsNum.shortOption == rhs || lhsNum.longOption == rhs
+    case (.bool(_, let shortOption, let longOption, _), rhs):
+      return shortOption == rhs || longOption == rhs
     default:
       return false
     }
@@ -156,8 +156,8 @@ public enum OptionType: Equatable   //: CustomStringConvertible
   {
     switch (lhs, rhs)
     {
-    case (lhs, .bool(let rhsNum)):
-      return lhs == rhsNum.shortOption || lhs == rhsNum.longOption
+    case (lhs, .bool(_, let shortOption, let longOption, _)):
+      return lhs == shortOption || lhs == longOption
     default:
       return false
     }

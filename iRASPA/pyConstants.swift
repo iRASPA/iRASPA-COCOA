@@ -46,7 +46,7 @@ let myBlock2: PyCFunction = { (this, args) in
   var x: [CDouble] = [0]
   var y: [CDouble] = [0]
     
-  if (withVaList([UnsafeMutablePointer<CDouble>(mutating: x),UnsafeMutablePointer<CDouble>(mutating:y)]) {return PyArg_VaParse(args, strdup("dd"), $0)} == 0)
+  if (withVaList([x,y]) {return PyArg_VaParse(args, strdup("dd"), $0)} == 0)
   {
     return nil
   }

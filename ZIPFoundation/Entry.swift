@@ -205,28 +205,28 @@ public struct Entry: Equatable {
 
 extension Entry.LocalFileHeader {
     var data: Data {
-        var localFileHeaderSignature = self.localFileHeaderSignature
-        var versionNeededToExtract = self.versionNeededToExtract
-        var generalPurposeBitFlag = self.generalPurposeBitFlag
-        var compressionMethod = self.compressionMethod
-        var lastModFileTime = self.lastModFileTime
-        var lastModFileDate = self.lastModFileDate
-        var crc32 = self.crc32
-        var compressedSize = self.compressedSize
-        var uncompressedSize = self.uncompressedSize
-        var fileNameLength = self.fileNameLength
-        var extraFieldLength = self.extraFieldLength
-        var data = Data(buffer: UnsafeBufferPointer(start: &localFileHeaderSignature, count: 1))
-        data.append(UnsafeBufferPointer(start: &versionNeededToExtract, count: 1))
-        data.append(UnsafeBufferPointer(start: &generalPurposeBitFlag, count: 1))
-        data.append(UnsafeBufferPointer(start: &compressionMethod, count: 1))
-        data.append(UnsafeBufferPointer(start: &lastModFileTime, count: 1))
-        data.append(UnsafeBufferPointer(start: &lastModFileDate, count: 1))
-        data.append(UnsafeBufferPointer(start: &crc32, count: 1))
-        data.append(UnsafeBufferPointer(start: &compressedSize, count: 1))
-        data.append(UnsafeBufferPointer(start: &uncompressedSize, count: 1))
-        data.append(UnsafeBufferPointer(start: &fileNameLength, count: 1))
-        data.append(UnsafeBufferPointer(start: &extraFieldLength, count: 1))
+        let localFileHeaderSignature = self.localFileHeaderSignature
+        let versionNeededToExtract = self.versionNeededToExtract
+        let generalPurposeBitFlag = self.generalPurposeBitFlag
+        let compressionMethod = self.compressionMethod
+        let lastModFileTime = self.lastModFileTime
+        let lastModFileDate = self.lastModFileDate
+        let crc32 = self.crc32
+        let compressedSize = self.compressedSize
+        let uncompressedSize = self.uncompressedSize
+        let fileNameLength = self.fileNameLength
+        let extraFieldLength = self.extraFieldLength
+        var data: Data = withUnsafeBytes(of: localFileHeaderSignature) { Data($0) }
+        data.append(withUnsafeBytes(of: versionNeededToExtract) { Data($0) })
+        data.append(withUnsafeBytes(of: generalPurposeBitFlag) { Data($0) })
+        data.append(withUnsafeBytes(of: compressionMethod) { Data($0) })
+        data.append(withUnsafeBytes(of: lastModFileTime) { Data($0) })
+        data.append(withUnsafeBytes(of: lastModFileDate) { Data($0) })
+        data.append(withUnsafeBytes(of: crc32) { Data($0) })
+        data.append(withUnsafeBytes(of: compressedSize) { Data($0) })
+        data.append(withUnsafeBytes(of: uncompressedSize) { Data($0) })
+        data.append(withUnsafeBytes(of: fileNameLength) { Data($0) })
+        data.append(withUnsafeBytes(of: extraFieldLength) { Data($0) })
         data.append(self.fileNameData)
         data.append(self.extraFieldData)
         return data
@@ -259,40 +259,42 @@ extension Entry.LocalFileHeader {
 
 extension Entry.CentralDirectoryStructure {
     var data: Data {
-        var centralDirectorySignature = self.centralDirectorySignature
-        var versionMadeBy = self.versionMadeBy
-        var versionNeededToExtract = self.versionNeededToExtract
-        var generalPurposeBitFlag = self.generalPurposeBitFlag
-        var compressionMethod = self.compressionMethod
-        var lastModFileTime = self.lastModFileTime
-        var lastModFileDate = self.lastModFileDate
-        var crc32 = self.crc32
-        var compressedSize = self.compressedSize
-        var uncompressedSize = self.uncompressedSize
-        var fileNameLength = self.fileNameLength
-        var extraFieldLength = self.extraFieldLength
-        var fileCommentLength = self.fileCommentLength
-        var diskNumberStart = self.diskNumberStart
-        var internalFileAttributes = self.internalFileAttributes
-        var externalFileAttributes = self.externalFileAttributes
-        var relativeOffsetOfLocalHeader = self.relativeOffsetOfLocalHeader
-        var data = Data(buffer: UnsafeBufferPointer(start: &centralDirectorySignature, count: 1))
-        data.append(UnsafeBufferPointer(start: &versionMadeBy, count: 1))
-        data.append(UnsafeBufferPointer(start: &versionNeededToExtract, count: 1))
-        data.append(UnsafeBufferPointer(start: &generalPurposeBitFlag, count: 1))
-        data.append(UnsafeBufferPointer(start: &compressionMethod, count: 1))
-        data.append(UnsafeBufferPointer(start: &lastModFileTime, count: 1))
-        data.append(UnsafeBufferPointer(start: &lastModFileDate, count: 1))
-        data.append(UnsafeBufferPointer(start: &crc32, count: 1))
-        data.append(UnsafeBufferPointer(start: &compressedSize, count: 1))
-        data.append(UnsafeBufferPointer(start: &uncompressedSize, count: 1))
-        data.append(UnsafeBufferPointer(start: &fileNameLength, count: 1))
-        data.append(UnsafeBufferPointer(start: &extraFieldLength, count: 1))
-        data.append(UnsafeBufferPointer(start: &fileCommentLength, count: 1))
-        data.append(UnsafeBufferPointer(start: &diskNumberStart, count: 1))
-        data.append(UnsafeBufferPointer(start: &internalFileAttributes, count: 1))
-        data.append(UnsafeBufferPointer(start: &externalFileAttributes, count: 1))
-        data.append(UnsafeBufferPointer(start: &relativeOffsetOfLocalHeader, count: 1))
+        let centralDirectorySignature = self.centralDirectorySignature
+        let versionMadeBy = self.versionMadeBy
+        let versionNeededToExtract = self.versionNeededToExtract
+        let generalPurposeBitFlag = self.generalPurposeBitFlag
+        let compressionMethod = self.compressionMethod
+        let lastModFileTime = self.lastModFileTime
+        let lastModFileDate = self.lastModFileDate
+        let crc32 = self.crc32
+        let compressedSize = self.compressedSize
+        let uncompressedSize = self.uncompressedSize
+        let fileNameLength = self.fileNameLength
+        let extraFieldLength = self.extraFieldLength
+        let fileCommentLength = self.fileCommentLength
+        let diskNumberStart = self.diskNumberStart
+        let internalFileAttributes = self.internalFileAttributes
+        let externalFileAttributes = self.externalFileAttributes
+        let relativeOffsetOfLocalHeader = self.relativeOffsetOfLocalHeader
+      
+        var data = withUnsafeBytes(of: centralDirectorySignature) { Data($0) }
+        data.append(withUnsafeBytes(of: versionMadeBy) { Data($0) })
+        data.append(withUnsafeBytes(of: versionNeededToExtract) { Data($0) })
+        data.append(withUnsafeBytes(of: generalPurposeBitFlag) { Data($0) })
+        data.append(withUnsafeBytes(of: compressionMethod) { Data($0) })
+        data.append(withUnsafeBytes(of: lastModFileTime) { Data($0) })
+        data.append(withUnsafeBytes(of: lastModFileDate) { Data($0) })
+        data.append(withUnsafeBytes(of: crc32) { Data($0) })
+        data.append(withUnsafeBytes(of: compressedSize) { Data($0) })
+        data.append(withUnsafeBytes(of: uncompressedSize) { Data($0) })
+        data.append(withUnsafeBytes(of: fileNameLength) { Data($0) })
+        data.append(withUnsafeBytes(of: extraFieldLength) { Data($0) })
+        data.append(withUnsafeBytes(of: fileCommentLength) { Data($0) })
+        data.append(withUnsafeBytes(of: diskNumberStart) { Data($0) })
+        data.append(withUnsafeBytes(of: internalFileAttributes) { Data($0) })
+        data.append(withUnsafeBytes(of: externalFileAttributes) { Data($0) })
+        data.append(withUnsafeBytes(of: relativeOffsetOfLocalHeader) { Data($0) })
+      
         data.append(self.fileNameData)
         data.append(self.extraFieldData)
         data.append(self.fileCommentData)
