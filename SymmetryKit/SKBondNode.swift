@@ -43,11 +43,10 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
   
   public enum BondType: Int
   {
-    case untyped = 0
-    case single = 1
-    case double = 2
-    case partial_double = 3
-    case triple = 4
+    case single = 0
+    case double = 1
+    case partial_double = 2
+    case triple = 3
   }
   
   public var atom1Tag: Int = 0
@@ -56,7 +55,7 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
   public unowned var atom1: SKAtomCopy
   public unowned var atom2: SKAtomCopy
   public var boundaryType: BoundaryType = BoundaryType.internal
-  public var bondType: BondType = BondType.untyped
+  public var bondType: BondType = BondType.single
   public var isVisible: Bool = true
   
   

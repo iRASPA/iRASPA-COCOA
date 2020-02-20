@@ -226,6 +226,10 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
           segmentedControl.setSelected(asymmetricBond.atom2.isFixed.z, forSegment: 2)
           segmentedControl.isEnabled = proxyProject.isEnabled
         }
+      case  NSUserInterfaceItemIdentifier(rawValue: "bondTypeColumn"):
+        view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondTypeRow"), owner: self) as? NSTableCellView
+        let popUp: NSPopUpButton = view!.viewWithTag(13) as! NSPopUpButton
+        popUp.selectItem(at: bond.bondType.rawValue)
       case NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomRow"), owner: self) as? NSTableCellView
         let element: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom1.elementIdentifier]
@@ -340,6 +344,24 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         isFixed = Bool3(state, state, state)
       }
       self.fixAsymmetricAtom(asymmetricAtom, to: isFixed)
+    }
+  }
+  
+  
+  @IBAction func changedBondType(_ sender: NSPopUpButton)
+  {
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
+    {
+      self.windowController?.window?.makeFirstResponder(self.bondTableView)
+      
+      if let bonds = bondDictionary[bondKeys[row]]
+      {
+        for bond in bonds
+        {
+          bond.bondType = SKBondNode.BondType(rawValue: sender.indexOfSelectedItem)!
+        }
+      }
     }
   }
   
