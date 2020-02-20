@@ -21,7 +21,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" headerView="MyW-Ld-zOT" viewBased="YES" id="rGx-eU-fPk">
-                                            <rect key="frame" x="0.0" y="0.0" width="501" height="737"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="498" height="737"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -30,7 +30,7 @@
                                             <tableColumns>
                                                 <tableColumn identifier="bondVisibilityColumn" width="24" minWidth="24" maxWidth="1000" id="7uB-Nb-mkk">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="vis">
-                                                        <font key="font" metaFont="controlContent" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -62,7 +62,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondIdColumn" width="51" minWidth="40" maxWidth="1000" id="dMm-6E-Gds">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="id">
-                                                        <font key="font" metaFont="controlContent" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -95,7 +95,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondFixedAtomColumn" width="114.5" minWidth="40" maxWidth="1000" id="JlI-7Q-4ku" userLabel="fixed">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="atom ids.">
-                                                        <font key="font" metaFont="controlContent" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -107,14 +107,14 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="fixedAtomsInBondRow" id="fwK-Td-asn">
-                                                            <rect key="frame" x="82" y="1" width="114" height="18"/>
+                                                            <rect key="frame" x="82" y="1" width="115" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <segmentedControl wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="x4s-Mu-gd3" customClass="NSLabelSegmentedControl" customModule="iRASPA" customModuleProvider="target">
                                                                     <rect key="frame" x="2" y="1" width="56" height="16"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <segmentedCell key="cell" controlSize="mini" refusesFirstResponder="YES" borderStyle="border" alignment="left" style="rounded" trackingMode="selectAny" id="GO3-aA-9tO" customClass="NSLabelSegmentedCell" customModule="iRASPA" customModuleProvider="target">
-                                                                        <font key="font" metaFont="menu" size="9"/>
+                                                                        <font key="font" metaFont="label" size="9"/>
                                                                         <segments>
                                                                             <segment width="16"/>
                                                                             <segment width="16">
@@ -133,7 +133,7 @@
                                                                     <rect key="frame" x="54" y="1" width="56" height="16"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <segmentedCell key="cell" controlSize="mini" refusesFirstResponder="YES" borderStyle="border" alignment="left" style="rounded" trackingMode="selectAny" id="3mC-CK-hBV" customClass="NSLabelSegmentedCell" customModule="iRASPA" customModuleProvider="target">
-                                                                        <font key="font" metaFont="menu" size="9"/>
+                                                                        <font key="font" metaFont="label" size="9"/>
                                                                         <segments>
                                                                             <segment width="16"/>
                                                                             <segment width="16">
@@ -152,9 +152,9 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="bondFirstAtomColumn" width="42" minWidth="40" maxWidth="1000" id="H3C-4S-esH">
+                                                <tableColumn identifier="bondTypeColumn" width="50.5" minWidth="40" maxWidth="1000" id="H3C-4S-esH">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="type">
-                                                        <font key="font" metaFont="controlContent" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -165,14 +165,56 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="bondFirstAtomRow" id="3CH-CW-EV9">
-                                                            <rect key="frame" x="200" y="1" width="34" height="18"/>
+                                                        <tableCellView identifier="bondTypeRow" id="3CH-CW-EV9">
+                                                            <rect key="frame" x="199.5" y="1" width="50" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Trg-r6-nVm">
-                                                                    <rect key="frame" x="0.0" y="1" width="34" height="17"/>
+                                                                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="iPF-HR-Ue1">
+                                                                    <rect key="frame" x="2" y="1" width="47" height="16"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                    <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="mini" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" arrowPosition="noArrow" selectedItem="USo-hq-MaC" id="ieX-IY-ROg">
+                                                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                        <font key="font" metaFont="label" size="9"/>
+                                                                        <menu key="menu" id="gvM-LK-Ax2">
+                                                                            <items>
+                                                                                <menuItem state="on" image="SingleBond" id="USo-hq-MaC">
+                                                                                    <attributedString key="attributedTitle"/>
+                                                                                </menuItem>
+                                                                                <menuItem image="DoubleBond" id="hWp-Qe-mSr"/>
+                                                                                <menuItem image="PartialDoubleBond" id="bJy-7T-PF2"/>
+                                                                                <menuItem image="TripleBond" id="qKz-Mj-wKy"/>
+                                                                            </items>
+                                                                        </menu>
+                                                                    </popUpButtonCell>
+                                                                    <connections>
+                                                                        <action selector="changedBondType:" target="1Qs-2A-QWY" id="O79-pr-zB4"/>
+                                                                    </connections>
+                                                                </popUpButton>
+                                                            </subviews>
+                                                        </tableCellView>
+                                                    </prototypeCellViews>
+                                                </tableColumn>
+                                                <tableColumn identifier="bondFirstAtomColumn" width="42" minWidth="40" maxWidth="1000" id="cgZ-aN-w1n">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="el(A)">
+                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" title="Text Cell" id="Jka-TF-hn8">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                    <prototypeCellViews>
+                                                        <tableCellView identifier="bondFirstAtomRow" id="qkv-9z-5Bg">
+                                                            <rect key="frame" x="253" y="1" width="42" height="18"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R62-ZJ-qvu">
+                                                                    <rect key="frame" x="0.0" y="1" width="42" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" id="Omn-pF-JzA">
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" id="M1Z-bv-x8F">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -180,14 +222,14 @@
                                                                 </textField>
                                                             </subviews>
                                                             <connections>
-                                                                <outlet property="textField" destination="Trg-r6-nVm" id="p7R-eb-JIv"/>
+                                                                <outlet property="textField" destination="R62-ZJ-qvu" id="03M-Fq-Ia9"/>
                                                             </connections>
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
                                                 <tableColumn identifier="bondSecondAtomColumn" width="40" minWidth="40" maxWidth="1000" id="MEg-vK-jym">
-                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="type">
-                                                        <font key="font" metaFont="controlContent" size="11"/>
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="el(B)">
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -199,11 +241,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="bondSecondAtomRow" id="28n-fR-Rjt">
-                                                            <rect key="frame" x="245" y="1" width="32" height="18"/>
+                                                            <rect key="frame" x="298" y="1" width="40" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zIy-De-KW7">
-                                                                    <rect key="frame" x="0.0" y="1" width="32" height="17"/>
+                                                                    <rect key="frame" x="0.0" y="1" width="40" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" id="rzd-Zo-HsA">
                                                                         <font key="font" metaFont="system"/>
@@ -218,9 +260,9 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="bondLengthColumn" width="93" minWidth="10" maxWidth="3.4028234663852886e+38" id="DvX-tf-DBg">
+                                                <tableColumn identifier="bondLengthColumn" width="68.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="DvX-tf-DBg">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="length">
-                                                        <font key="font" metaFont="controlContent" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </tableHeaderCell>
@@ -232,11 +274,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="bondLengthRow" id="GwC-2I-3Mx">
-                                                            <rect key="frame" x="288" y="1" width="85" height="18"/>
+                                                            <rect key="frame" x="341" y="1" width="69" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="lxR-9j-Ztg">
-                                                                    <rect key="frame" x="0.0" y="1" width="85" height="17"/>
+                                                                    <rect key="frame" x="0.0" y="1" width="69" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" id="WUM-Xr-wzU">
                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="xli-Pf-gBu"/>
@@ -255,9 +297,9 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="bondLengthSliderColumn" width="115" minWidth="10" maxWidth="3.4028234663852886e+38" id="LCM-bS-nXk">
+                                                <tableColumn identifier="bondLengthSliderColumn" width="83.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="LCM-bS-nXk">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                        <font key="font" metaFont="controlContent" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </tableHeaderCell>
@@ -269,11 +311,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="bondLengthSliderRow" id="g7h-p2-h9O">
-                                                            <rect key="frame" x="384" y="1" width="107" height="18"/>
+                                                            <rect key="frame" x="412.5" y="1" width="83" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <slider verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="ko1-tl-a6u">
-                                                                    <rect key="frame" x="0.0" y="-1" width="107" height="19"/>
+                                                                    <rect key="frame" x="0.0" y="-1" width="82" height="19"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="3" doubleValue="3" tickMarkPosition="above" sliderType="linear" id="iw4-ar-ufT"/>
                                                                     <connections>
@@ -293,7 +335,7 @@
                                         </tableView>
                                     </subviews>
                                 </clipView>
-                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Uhu-w2-pQt">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Uhu-w2-pQt">
                                     <rect key="frame" x="1" y="744" width="498" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -302,7 +344,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" id="MyW-Ld-zOT">
-                                    <rect key="frame" x="0.0" y="0.0" width="501" height="23"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="498" height="23"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
@@ -341,4 +383,10 @@
             <point key="canvasLocation" x="5968" y="2537.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="DoubleBond" width="40" height="21"/>
+        <image name="PartialDoubleBond" width="40" height="21"/>
+        <image name="SingleBond" width="40" height="21"/>
+        <image name="TripleBond" width="40" height="21"/>
+    </resources>
 </document>
