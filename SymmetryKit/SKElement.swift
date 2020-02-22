@@ -791,5 +791,44 @@ public struct SKElement
       "VAL+HG22" : [ "Element" : "H", "Type": "H", "Bonded Atoms" : []],
       "VAL+HG23" : [ "Element" : "H", "Type": "H", "Bonded Atoms" : []]
   ]
+  
+  /// NOTE: 10.1021/ci049915d
+  internal static let referenceBondLengthData: Dictionary<BondPair,Double> =
+  [
+    BondPair(A: "C",B: "C") : 1.54,
+    BondPair(A: "C",B: "O") : 1.43,   BondPair(A: "O",B: "C") : 1.43,
+    BondPair(A: "C",B: "P") : 1.85,   BondPair(A: "P",B: "C") : 1.85,
+    BondPair(A: "C",B: "Se") : 1.97,  BondPair(A: "Se",B: "C") : 1.97,
+    BondPair(A: "N",B: "O") : 1.43,   BondPair(A: "O",B: "N") : 1.43,
+    BondPair(A: "N",B: "P") : 1.68,   BondPair(A: "P",B: "N") : 1.68,
+    BondPair(A: "N",B: "Se") : 1.85,  BondPair(A: "Se",B: "N") : 1.85,
+    BondPair(A: "O",B: "Si") : 1.63,  BondPair(A: "Si",B: "O") : 1.63,
+    BondPair(A: "O",B: "S") : 1.57,   BondPair(A: "S",B: "O") : 1.57,
+    BondPair(A: "Si",B: "Si") : 2.36,
+    BondPair(A: "Si",B: "S") : 2.15,  BondPair(A: "S",B: "Si") : 2.15,
+    BondPair(A: "P",B: "P") : 2.26,
+    BondPair(A: "P",B: "Se") : 2.27,  BondPair(A: "Se",B: "P") : 2.27,
+    BondPair(A: "S",B: "Se") : 2.19,  BondPair(A: "Se",B: "S") : 2.19,
+    
+    BondPair(A: "C",B: "N") : 1.47,   BondPair(A: "N",B: "C") : 1.47,
+    BondPair(A: "C",B: "Si") : 1.86,  BondPair(A: "Si",B: "C") : 1.86,
+    BondPair(A: "C",B: "S") : 1.75,   BondPair(A: "S",B: "C") : 1.75,
+    BondPair(A: "N",B: "N") : 1.45,
+    BondPair(A: "N",B: "Si") : 1.75,  BondPair(A: "Si",B: "N") : 1.75,
+    BondPair(A: "N",B: "S") : 1.76,   BondPair(A: "S",B: "N") : 1.76,
+    BondPair(A: "O",B: "O") : 1.47,
+    BondPair(A: "O",B: "P") : 1.57,   BondPair(A: "P",B: "O") : 1.57,
+    BondPair(A: "O",B: "Se") : 1.97,  BondPair(A: "Se",B: "O") : 1.97,
+    BondPair(A: "Si",B: "P") : 2.26,  BondPair(A: "P",B: "Si") : 2.26,
+    BondPair(A: "Si",B: "Se") : 2.42, BondPair(A: "Se",B: "Si") : 2.42,
+    BondPair(A: "P",B: "S") : 2.07,   BondPair(A: "S",B: "P") : 2.07,
+    BondPair(A: "S",B: "S") : 2.05,
+    BondPair(A: "Se",B: "Se") : 2.43
+  ]
+}
+
+internal struct BondPair: Hashable{
+  var A : String
+  var B : String
 }
 
