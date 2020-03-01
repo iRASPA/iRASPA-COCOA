@@ -71,7 +71,7 @@ extension BondVisualAppearanceViewer
         $0.bondScaleFactor = newValue ?? 1.0
         if($0.atomRepresentationType == .unity)
         {
-          let asymmetricAtoms: [SKAsymmetricAtom] = $0.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+          let asymmetricAtoms: [SKAsymmetricAtom] = $0.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
           asymmetricAtoms.forEach{$0.drawRadius = newValue ?? 1.0}
         }
       }
@@ -322,7 +322,7 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
         $0.bondScaleFactor = newValue ?? 1.0
         if($0.atomRepresentationType == .unity)
         {
-          let asymmetricAtoms: [SKAsymmetricAtom] = $0.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+          let asymmetricAtoms: [SKAsymmetricAtom] = $0.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
           asymmetricAtoms.forEach{$0.drawRadius = newValue ?? 1.0}
         }
       }

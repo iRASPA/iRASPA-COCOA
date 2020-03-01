@@ -275,7 +275,7 @@
                                         <menuItem title="Invert selection" id="VNS-yB-1c3">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="selectionAtomInversion:" target="Ady-hI-5gd" id="rOU-ST-Sz8"/>
+                                                <action selector="selectionInversion:" target="Ady-hI-5gd" id="rOU-ST-Sz8"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="uyl-h8-XO2"/>

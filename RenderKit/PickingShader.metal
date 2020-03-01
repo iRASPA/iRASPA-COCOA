@@ -61,7 +61,7 @@ vertex PickingVertexShaderOut AtomSpherePickingVertexShader(const device InPerVe
 {
   PickingVertexShaderOut vert;
   
-  vert.instanceId = iid;
+  vert.instanceId = positions[iid].tag;
   float4 scale = structureUniforms.atomScaleFactor * positions[iid].scale;
   
   vert.eye_position = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
@@ -114,7 +114,7 @@ vertex PickingVertexShaderOut LicoriceSpherePickingVertexShader(const device InP
 {
   PickingVertexShaderOut vert;
   
-  vert.instanceId = iid;
+  vert.instanceId = positions[iid].tag;
   
   float scaleFactor = structureUniforms.selectionScaling * 0.15*structureUniforms.bondScaling;
   float4 scale = float4(scaleFactor,scaleFactor,scaleFactor,1.0);
@@ -207,7 +207,7 @@ vertex PickingBondVertexShaderOut PickingInternalBondCylinderVertexShader(const 
                                       float4(v1.x,v1.y,v1.z,0),
                                       float4(0,0,0,1));
   
-  vert.instanceId = iid;
+  vert.instanceId = positions[iid].tag;
   vert.position = frameUniforms.mvpMatrix *  structureUniforms.modelMatrix * (orientationMatrix * (scale * pos) + pos1);
   
   return vert;
@@ -275,7 +275,7 @@ vertex PickingExternalBondVertexShaderOut PickingExternalBondVertexShader(const 
 
   float4 vertexPos =  (orientationMatrix * (scale * pos) + pos1);
 
-  vert.instanceId =  iid;
+  vert.instanceId =  positions[iid].tag;
   vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * vertexPos;
   
   vert.clipDistance0 = dot(structureUniforms.clipPlaneLeft,vertexPos);

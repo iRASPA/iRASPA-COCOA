@@ -40,18 +40,20 @@ public struct RKInPerInstanceAttributesBonds
   public var color1:  SIMD4<Float> =  SIMD4<Float>()
   public var color2:  SIMD4<Float> =  SIMD4<Float>()
   public var scale:  SIMD4<Float> =  SIMD4<Float>()
+  public var tag: UInt32 = UInt32()
   
   public init()
   {
     
   }
   
-  public init(position1:  SIMD4<Float>, position2:  SIMD4<Float>, color1:  SIMD4<Float>, color2:  SIMD4<Float>, scale:  SIMD4<Float>)
+  public init(position1:  SIMD4<Float>, position2:  SIMD4<Float>, color1:  SIMD4<Float>, color2:  SIMD4<Float>, scale:  SIMD4<Float>, tag: UInt32)
   {
     self.position1 = position1
     self.position2 = position2
     self.color1 = color1
     self.color2 = color2
     self.scale = scale
+    self.tag = tag
   }
 }

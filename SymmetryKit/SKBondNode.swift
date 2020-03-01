@@ -41,26 +41,15 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
     case external = 1
   }
   
-  public enum BondType: Int
-  {
-    case single = 0
-    case double = 1
-    case partial_double = 2
-    case triple = 3
-  }
-  
   public var atom1Tag: Int = 0
   public var atom2Tag: Int = 0
   
   public unowned var atom1: SKAtomCopy
   public unowned var atom2: SKAtomCopy
   public var boundaryType: BoundaryType = BoundaryType.internal
-  public var bondType: BondType = BondType.single
-  public var isVisible: Bool = true
   
-  
-  
-  public init(atom1: SKAtomCopy, atom2: SKAtomCopy)
+  /// NOTE: the bond-orde is defined that the tag of atom1 is lower than the tag of atom2
+  public init(atom1: SKAtomCopy, atom2: SKAtomCopy, boundaryType type: BoundaryType)
   {
     if atom1.asymmetricParentAtom.elementIdentifier < atom2.asymmetricParentAtom.elementIdentifier
     {
@@ -72,56 +61,15 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
       self.atom1 = atom2
       self.atom2 = atom1
     }
-    self.boundaryType = BoundaryType.internal
-    
-    self.atom1.bonds.insert(self)
-    self.atom2.bonds.insert(self)
-  }
-  
-  public init(atom1: SKAtomCopy, atom2: SKAtomCopy, boundaryType type: BoundaryType)
-  {
-    if atom1.asymmetricParentAtom.elementIdentifier > atom2.asymmetricParentAtom.elementIdentifier
-    {
-      self.atom1 = atom1
-      self.atom2 = atom2
-    }
-    else
-    {
-      self.atom1 = atom2
-      self.atom2 = atom1
-    }
-    self.boundaryType = type
-    
-    self.atom1.bonds.insert(self)
-    self.atom2.bonds.insert(self)
-  }
-  
-  private init(atom1t: SKAtomCopy, atom2t: SKAtomCopy, boundaryType type: BoundaryType)
-  {
-    if atom1t.asymmetricParentAtom.elementIdentifier > atom2t.asymmetricParentAtom.elementIdentifier
-    {
-      self.atom1 = atom1t
-      self.atom2 = atom2t
-    }
-    else
-    {
-      self.atom1 = atom2t
-      self.atom2 = atom1t
-    }
     self.boundaryType = type
   }
-  
-  deinit
-  {
-  }
-  
   
   // MARK: -
   // MARK: Hashable protocol
   
   public func hash(into hasher: inout Hasher)
   {
-    ObjectIdentifier(self).hash(into: &hasher)
+    (ObjectIdentifier(atom1).hashValue^ObjectIdentifier(atom2).hashValue).hash(into: &hasher)
   }
   
   // MARK: -
@@ -158,7 +106,7 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
   
   public static func ==(lhs: SKBondNode, rhs: SKBondNode) -> Bool
   {
-    return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    return (lhs.atom1 === rhs.atom1 && lhs.atom2 === rhs.atom2) || (lhs.atom1 === rhs.atom2 && lhs.atom2 === rhs.atom1)
   }
   
   // MARK: -
@@ -169,8 +117,6 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
     encoder.encode(self.atom1.tag)
     encoder.encode(self.atom2.tag)
     encoder.encode(self.boundaryType.rawValue)
-    encoder.encode(self.bondType.rawValue)
-    encoder.encode(self.isVisible)
   }
    
  
@@ -189,9 +135,8 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
     
     self.atom1Tag = try decoder.decode(Int.self)
     self.atom2Tag = try decoder.decode(Int.self)
-    self.boundaryType = BoundaryType(rawValue: try decoder.decode(Int.self))!
-    self.bondType = BondType(rawValue: try decoder.decode(Int.self))!
-    self.isVisible = try decoder.decode(Bool.self)
+    guard let boundaryType = BoundaryType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.boundaryType = boundaryType
   }
 }
 

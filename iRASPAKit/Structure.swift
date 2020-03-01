@@ -52,8 +52,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   private var versionNumber: Int = 4
   private static var classVersionNumber: Int = 4
   
-  public var atoms: SKAtomTreeController = SKAtomTreeController()
-  public var bonds: SKBondSetController = SKBondSetController()
+  public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
+  public var bondController: SKBondSetController = SKBondSetController()
   
     
   // MARK: protocol RKRenderStructure implementation
@@ -71,7 +71,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public var numberOfAtoms: Int
   {
-    return self.atoms.flattenedLeafNodes().count
+    return self.atomTreeController.flattenedLeafNodes().count
   }
   public var drawAtoms: Bool =  true
   
@@ -99,7 +99,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   public var atomHDRExposure: Double = 1.5
   public var atomHDRBloomLevel: Double = 0.5
   public var clipAtomsAtUnitCell: Bool {return false}
-  public var atomPositions: [SIMD4<Double>]
+  public var atomPositions: [(SIMD4<Double>, Int, Bool)]
   {
     return []
   }
@@ -114,7 +114,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
       
     let fontAtlas: RKFontAtlas = RKCachedFontAtlas.shared.fontAtlas(for: self.atomTextFont)
       
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
       
     for atom in atoms
@@ -183,19 +183,20 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public var numberOfInternalBonds: Int
   {
-    return self.bonds.arrangedObjects.filter{$0.boundaryType == .internal}.count
+    return self.bondController.arrangedObjects.flatMap{$0.copies}.filter{$0.boundaryType == .internal}.count
   }
   
   public var numberOfExternalBonds: Int
   {
-    return self.bonds.arrangedObjects.filter{$0.boundaryType == .external}.count
+    return self.bondController.arrangedObjects.flatMap{$0.copies}.filter{$0.boundaryType == .external}.count
   }
   
-  public var bondPositions: [SIMD3<Double>]
+  public var bondPositions: [(SIMD4<Double>,Int, Bool)]
   {
       return []
   }
   
+  /*
   public var internalBondPositions: [SIMD4<Double>]
   {
     return []
@@ -204,7 +205,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   public var externalBondPositions: [SIMD4<Double>]
   {
     return []
-  }
+  }*/
   
   public var drawBonds: Bool = true
   
@@ -623,7 +624,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   public var experimentalMeasurementRFactorAll: String = ""                              // _refine_ls_R_factor_all
   
 
-  
+  /*
   public func tag(atoms: SKAtomTreeController)
   {
     // probably can be done a lot faster by using the tree-structure and recursion
@@ -648,9 +649,10 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     }
   }
   
-  
-  
-  
+  public func tag()
+  {
+    self.tag(atoms: self.atomTreeController)
+  }*/
   
   public override init()
   {
@@ -744,7 +746,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     
     
     // atoms
-    self.atoms = SKAtomTreeController()
+    self.atomTreeController = SKAtomTreeController()
 
     self.drawAtoms = original.drawAtoms
     
@@ -788,7 +790,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     
     
     // bonds
-    self.bonds = SKBondSetController()
+    self.bondController = SKBondSetController()
     
     self.drawBonds = original.drawBonds
     
@@ -1162,43 +1164,22 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     
     
     // clone atoms and bonds
-    clone.tag(atoms: clone.atoms)
-    let binaryEncoder: BinaryEncoder = BinaryEncoder()
-    binaryEncoder.encode(clone.atoms)
-    let atomData: Data = Data(binaryEncoder.data)
+    clone.atomTreeController.tag()
+    
+    let binaryAtomEncoder: BinaryEncoder = BinaryEncoder()
+    binaryAtomEncoder.encode(clone.atomTreeController)
+    let atomData: Data = Data(binaryAtomEncoder.data)
+    
+    let binaryBondEncoder: BinaryEncoder = BinaryEncoder()
+    binaryBondEncoder.encode(clone.bondController)
+    let bondData: Data = Data(binaryBondEncoder.data)
     
     do
     {
-      self.atoms = try BinaryDecoder(data: [UInt8](atomData)).decode(SKAtomTreeController.self)
-      // set the 'bonds'-array of the atoms, since they are empty for a structure with symmetry
-      let atomTreeNodes: [SKAtomTreeNode] = self.atoms.flattenedLeafNodes()
-      let atomCopies: [SKAtomCopy] = atomTreeNodes.compactMap{$0.representedObject}.flatMap{$0.copies}
+      self.atomTreeController = try BinaryDecoder(data: [UInt8](atomData)).decode(SKAtomTreeController.self)
+      self.bondController = try BinaryDecoder(data: [UInt8](bondData)).decode(SKBondSetController.self)
       
-      //update tags
-      let tags: Set<Int> = Set(clone.atoms.selectedTreeNodes.map{$0.representedObject.tag})
-      
-      // update selection
-      self.atoms.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
-      
-      for atomCopy in atomCopies
-      {
-        atomCopy.bonds = []
-      }
-      self.bonds.arrangedObjects = []
-      
-      // recreated the bonds from the tags
-      for bond in clone.bonds.arrangedObjects
-      {
-        let newBond: SKBondNode = SKBondNode(atom1: atomCopies[bond.atom1.tag], atom2: atomCopies[bond.atom2.tag], boundaryType: bond.boundaryType)
-        self.bonds.arrangedObjects.insert(newBond)
-      }
-      
-      for bond in self.bonds.arrangedObjects
-      {
-        // make the list of bonds the atoms are involved in
-        bond.atom1.bonds.insert(bond)
-        bond.atom2.bonds.insert(bond)
-      }
+      self.bondController.restoreBonds(atomTreeController: self.atomTreeController)
     }
     catch
     {
@@ -1219,7 +1200,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public func setRepresentationColorScheme(colorSet: SKColorSet)
   {
-    let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     setRepresentationColorScheme(colorSet: colorSet, for: asymmetricAtoms)
   }
 
@@ -1275,7 +1256,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     {
       self.atomColorOrder = order
       
-      let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+      let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       for asymmetricAtom in asymmetricAtoms
       {
         if let colorSet: SKColorSet = colorSets[self.atomColorSchemeIdentifier]
@@ -1303,7 +1284,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   {
     if let forceFieldSet: SKForceFieldSet = forceFieldSets[forceField]
     {
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     
       return asymmetricAtoms.map{$0.uniqueForceFieldName}.filter{
       forceFieldSet[$0] != nil}
@@ -1318,7 +1299,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public func setRepresentationForceField(forceField: String?, forceFieldSet: SKForceFieldSet)
   {
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     
     self.setRepresentationForceField(forceField: forceField, forceFieldSet: forceFieldSet, for: asymmetricAtoms)
   }
@@ -1397,7 +1378,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public func setRepresentationForceFieldOrder(order: SKForceFieldSets.ForceFieldOrder?, forceFieldSet: SKForceFieldSet)
   {
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
         
     switch(self.atomForceFieldOrder)
     {
@@ -1431,7 +1412,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?)
   {
-    let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     self.setRepresentationStyle(style: style, for: asymmetricAtoms)
   }
   
@@ -1779,7 +1760,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     {
       self.atomRepresentationType = type
       
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     
       switch(type)
       {
@@ -1946,8 +1927,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     self.citationDatebaseCodes = try container.decode(String.self)
     
     // atoms
-    self.atoms = try container.decode(SKAtomTreeController.self)
-    self.tag(atoms: self.atoms)
+    self.atomTreeController = try container.decode(SKAtomTreeController.self)
+    self.atomTreeController.tag()
     
     self.drawAtoms = try container.decode(Bool.self)
     self.atomRepresentationType = try RepresentationType(rawValue: container.decode(Int.self)) ?? RepresentationType.sticks_and_balls
@@ -2006,28 +1987,30 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
       self.atomSelectionScaling = 1.5
     }
     
-    // bonds
     let atom1Tags: [Int] = try container.decode([Int].self)
     let atom2Tags: [Int] = try container.decode([Int].self)
     let bondBoundaryTypes: [Int] = try container.decode([Int].self)
     
-    let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
     
-    self.bonds.arrangedObjects = []
+    self.bondController.arrangedObjects = []
+    
+    var bonds: [SKBondNode] = []
     for ((atom1Tag, atom2Tag), boundaryType) in zip(zip(atom1Tags, atom2Tags), bondBoundaryTypes)
     {
       let bond: SKBondNode = SKBondNode(atom1: atomList[atom1Tag], atom2: atomList[atom2Tag], boundaryType: SKBondNode.BoundaryType(rawValue: boundaryType)!)
-      self.bonds.arrangedObjects.insert(bond)
+      bonds.append(bond)
     }
-    
-    for bond in bonds.arrangedObjects
+    /*
+    for bond in bonds
     {
       bond.atom1.bonds.insert(bond)
       bond.atom2.bonds.insert(bond)
-    }
+    }*/
     
-    // coder.encode(self.bonds)
+    self.bondController.bonds = bonds
+    
     self.drawBonds = try container.decode(Bool.self)
     self.bondScaleFactor = try container.decode(Double.self)
     self.bondColorMode = try RKBondColorMode(rawValue: container.decode(Int.self))!
@@ -2292,7 +2275,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
     
     
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atomCopies: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
     let spaceGroup = SKSpacegroup(HallNumber: 1)
@@ -2323,7 +2306,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
       }
     }
     
-    self.tag(atoms: superCellAtoms)
+    superCellAtoms.tag()
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
@@ -2350,12 +2333,12 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   // MARK: -
   // MARK: Compute bonds
   
-  public func computeBonds(cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> Set<SKBondNode>
+  public func computeBonds(cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> [SKBondNode]
   {
     return []
   }
   
-  public func computeBonds(cell: SKCell, atomList: [SKAtomCopy], cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> Set<SKBondNode>
+  public func computeBonds(cell: SKCell, atomList: [SKAtomCopy], cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> [SKBondNode]
   {
     return []
   }
@@ -2365,9 +2348,9 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     let cutoff: Double = 3.0
     let offsets: [[Int]] = [[0,0,0],[1,0,0],[1,1,0],[0,1,0],[-1,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1],[-1,1,1],[-1,0,1],[-1,-1,1],[0,-1,1],[1,-1,1]]
     
-    let atoms: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    atoms.forEach{ $0.bonds.removeAll()}
-    var computedBonds: Set<SKBondNode> = []
+    let atoms: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    //atoms.forEach{ $0.bonds.removeAll()}
+    var computedBonds: [SKBondNode] = []
     
     let perpendicularWidths: SIMD3<Double> = self.cell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
@@ -2423,11 +2406,16 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
                     let posB: SIMD3<Double> = atoms[j].position
                     let separationVector: SIMD3<Double> = posA - posB
                     
-                    let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+                    let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
                     
-                    if (length(separationVector) < bondCriteria)
+                    let bondLength: Double = length(separationVector)
+                    if (bondLength < 0.8)
                     {
-                      computedBonds.insert(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
+                      // discard as being a bond
+                    }
+                    else if (bondLength < bondCriteria)
+                    {
+                      computedBonds.append(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
                     }
                   }
                   j=list[j]
@@ -2451,18 +2439,24 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
           
           let separationVector: SIMD3<Double> = posA - posB
           
-          let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+          let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
           
-          if (length(separationVector) < bondCriteria )
+          
+          let bondLength: Double = length(separationVector)
+          if (bondLength < 0.8)
           {
-            computedBonds.insert(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
+            // discard as being a bond
+          }
+          else if (bondLength < bondCriteria )
+          {
+            computedBonds.append(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
           }
         }
         
       }
     }
     
-    bonds.arrangedObjects = computedBonds
+    self.bondController.bonds = computedBonds
   }
   
   
@@ -2472,8 +2466,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     let offsets: [[Int]] = [[0,0,0],[1,0,0],[1,1,0],[0,1,0],[-1,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1],[-1,1,1],[-1,0,1],[-1,-1,1],[0,-1,1],[1,-1,1]]
     var totalCount: Int
     
-    let atoms: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    atoms.forEach{ $0.bonds.removeAll()}
+    let atoms: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    //atoms.forEach{ $0.bonds.removeAll()}
     var computedBonds: Set<SKBondNode> = []
     
     let perpendicularWidths: SIMD3<Double> = self.cell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
@@ -2537,9 +2531,14 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
                     let posB: SIMD3<Double> = atoms[j].position
                     let separationVector: SIMD3<Double> = posA - posB
                     
-                    let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+                    let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
                     
-                    if (length(separationVector) < bondCriteria)
+                    let bondLength: Double = length(separationVector)
+                    if (bondLength < 0.8)
+                    {
+                      // discard as being a bond
+                    }
+                    else if (bondLength < bondCriteria)
                     {
                       computedBonds.insert(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
                     }
@@ -2584,8 +2583,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
           
           let separationVector: SIMD3<Double> = posA - posB
           
-          let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
-          
           bondProgress.completedUnitCount = bondProgress.completedUnitCount + 1
           
           if (bondProgress.completedUnitCount % 100 == 0)
@@ -2599,7 +2596,14 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
             return
           }
           
-          if (length(separationVector) < bondCriteria )
+          let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
+          
+          let bondLength: Double = length(separationVector)
+          if (bondLength < 0.8)
+          {
+            // discard as being a bond
+          }
+          else if (bondLength < bondCriteria )
           {
             computedBonds.insert(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
           }
@@ -2609,7 +2613,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     }
     
     
-    bonds.arrangedObjects = computedBonds
+    //bonds.arrangedObjects = computedBonds
   }
 
   
@@ -2618,7 +2622,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public var hasSelectedObjects: Bool
   {
-    return self.atoms.selectedTreeNodes.count > 0 || self.atoms.selectedTreeNode != nil
+    return self.atomTreeController.selectedTreeNodes.count > 0 || self.atomTreeController.selectedTreeNode != nil
   }
 
   public func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
@@ -2786,7 +2790,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   public func recomputeDensityProperties()
   {
     // only use leaf-nodes
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
     self.structureMass = 0.0
@@ -2803,7 +2807,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public func expandSymmetry()
   {
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     
     for asymmetricAtom in asymmetricAtoms
     {
@@ -2939,7 +2943,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
       
       
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atomCopies: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
       
     let spaceGroup = SKSpacegroup(HallNumber: 1)
@@ -2971,7 +2975,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
       }
     }
       
-    self.tag(atoms: superCellAtoms)
+    superCellAtoms.tag()
       
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
       
@@ -3034,8 +3038,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     
     encoder.encode(Double(minimumGridEnergyValue ?? 0.0))
     
-    self.tag(atoms: self.atoms)
-    encoder.encode(atoms)
+    self.atomTreeController.tag()
+    encoder.encode(atomTreeController)
     
     encoder.encode((self.atomRepresentationStyle == RepresentationStyle.licorice || self.atomRepresentationType == RepresentationType.unity) ? true : drawAtoms)
     
@@ -3086,7 +3090,7 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     encoder.encode(self.atomTextOffset)
     
     // encode bonds using tags
-    encoder.encode(self.bonds)
+    encoder.encode(self.bondController)
     
     encoder.encode(drawBonds)
     encoder.encode(bondScaleFactor)
@@ -3252,145 +3256,145 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
       throw BinaryDecodableError.invalidArchiveVersion
     }
     
-    displayName = try decoder.decode(String.self)
-    isVisible = try decoder.decode(Bool.self)
+    self.displayName = try decoder.decode(String.self)
+    self.isVisible = try decoder.decode(Bool.self)
     
     let number = try decoder.decode(Int.self)
-    spaceGroup = SKSpacegroup(HallNumber: number)
-    cell = try decoder.decode(SKCell.self)
-    periodic = try decoder.decode(Bool.self)
-    origin = try decoder.decode(SIMD3<Double>.self)
-    scaling = try decoder.decode(SIMD3<Double>.self)
-    orientation = try decoder.decode(simd_quatd.self)
-    rotationDelta = try decoder.decode(Double.self)
+    self.spaceGroup = SKSpacegroup(HallNumber: number)
+    self.cell = try decoder.decode(SKCell.self)
+    self.periodic = try decoder.decode(Bool.self)
+    self.origin = try decoder.decode(SIMD3<Double>.self)
+    self.scaling = try decoder.decode(SIMD3<Double>.self)
+    self.orientation = try decoder.decode(simd_quatd.self)
+    self.rotationDelta = try decoder.decode(Double.self)
     
     if readVersionNumber >= 2 // introduced in version 2
     {
-      primitiveTransformationMatrix = try decoder.decode(double3x3.self)
-      primitiveOrientation = try decoder.decode(simd_quatd.self)
-      primitiveRotationDelta = try decoder.decode(Double.self)
-      
-      primitiveOpacity = try decoder.decode(Double.self)
-      primitiveIsCapped = try decoder.decode(Bool.self)
-      primitiveIsFractional = try decoder.decode(Bool.self)
-      primitiveNumberOfSides = try decoder.decode(Int.self)
-      primitiveThickness = try decoder.decode(Double.self)
-      
-      primitiveFrontSideHDR = try decoder.decode(Bool.self)
-      primitiveFrontSideHDRExposure = try decoder.decode(Double.self)
-      primitiveFrontSideAmbientColor = try decoder.decode(NSColor.self)
-      primitiveFrontSideDiffuseColor = try decoder.decode(NSColor.self)
-      primitiveFrontSideSpecularColor = try decoder.decode(NSColor.self)
-      primitiveFrontSideDiffuseIntensity = try decoder.decode(Double.self)
-      primitiveFrontSideAmbientIntensity = try decoder.decode(Double.self)
-      primitiveFrontSideSpecularIntensity = try decoder.decode(Double.self)
-      primitiveFrontSideShininess = try decoder.decode(Double.self)
-      
-      primitiveBackSideHDR = try decoder.decode(Bool.self)
-      primitiveBackSideHDRExposure = try decoder.decode(Double.self)
-      primitiveBackSideAmbientColor = try decoder.decode(NSColor.self)
-      primitiveBackSideDiffuseColor = try decoder.decode(NSColor.self)
-      primitiveBackSideSpecularColor = try decoder.decode(NSColor.self)
-      primitiveBackSideDiffuseIntensity = try decoder.decode(Double.self)
-      primitiveBackSideAmbientIntensity = try decoder.decode(Double.self)
-      primitiveBackSideSpecularIntensity = try decoder.decode(Double.self)
-      primitiveBackSideShininess = try decoder.decode(Double.self)
+      self.primitiveTransformationMatrix = try decoder.decode(double3x3.self)
+      self.primitiveOrientation = try decoder.decode(simd_quatd.self)
+      self.primitiveRotationDelta = try decoder.decode(Double.self)
+
+      self.primitiveOpacity = try decoder.decode(Double.self)
+      self.primitiveIsCapped = try decoder.decode(Bool.self)
+      self.primitiveIsFractional = try decoder.decode(Bool.self)
+      self.primitiveNumberOfSides = try decoder.decode(Int.self)
+      self.primitiveThickness = try decoder.decode(Double.self)
+
+      self.primitiveFrontSideHDR = try decoder.decode(Bool.self)
+      self.primitiveFrontSideHDRExposure = try decoder.decode(Double.self)
+      self.primitiveFrontSideAmbientColor = try decoder.decode(NSColor.self)
+      self.primitiveFrontSideDiffuseColor = try decoder.decode(NSColor.self)
+      self.primitiveFrontSideSpecularColor = try decoder.decode(NSColor.self)
+      self.primitiveFrontSideDiffuseIntensity = try decoder.decode(Double.self)
+      self.primitiveFrontSideAmbientIntensity = try decoder.decode(Double.self)
+      self.primitiveFrontSideSpecularIntensity = try decoder.decode(Double.self)
+      self.primitiveFrontSideShininess = try decoder.decode(Double.self)
+
+      self.primitiveBackSideHDR = try decoder.decode(Bool.self)
+      self.primitiveBackSideHDRExposure = try decoder.decode(Double.self)
+      self.primitiveBackSideAmbientColor = try decoder.decode(NSColor.self)
+      self.primitiveBackSideDiffuseColor = try decoder.decode(NSColor.self)
+      self.primitiveBackSideSpecularColor = try decoder.decode(NSColor.self)
+      self.primitiveBackSideDiffuseIntensity = try decoder.decode(Double.self)
+      self.primitiveBackSideAmbientIntensity = try decoder.decode(Double.self)
+      self.primitiveBackSideSpecularIntensity = try decoder.decode(Double.self)
+      self.primitiveBackSideShininess = try decoder.decode(Double.self)
     }
     
     if readVersionNumber >= 3 // introduced in version 3
     {
-      frameworkProbeMolecule = try Structure.ProbeMolecule(rawValue: decoder.decode(Int.self))!
+      guard let frameworkProbeMolecule = Structure.ProbeMolecule(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+      self.frameworkProbeMolecule = frameworkProbeMolecule
     }
     
-    minimumGridEnergyValue = Float(try decoder.decode(Double.self))
+    self.minimumGridEnergyValue = Float(try decoder.decode(Double.self))
     
-    atoms = try decoder.decode(SKAtomTreeController.self)
+    self.atomTreeController = try decoder.decode(SKAtomTreeController.self)
     
-    drawAtoms = try decoder.decode(Bool.self)
+    self.drawAtoms = try decoder.decode(Bool.self)
     
-    atomRepresentationType = try RepresentationType(rawValue: decoder.decode(Int.self))!
-    atomRepresentationStyle = try RepresentationStyle(rawValue: decoder.decode(Int.self)) ??  RepresentationStyle.custom
-    atomForceFieldIdentifier = try decoder.decode(String.self)
-    atomForceFieldOrder = try SKForceFieldSets.ForceFieldOrder(rawValue: decoder.decode(Int.self))!
-    atomColorSchemeIdentifier = try decoder.decode(String.self)
-    atomColorOrder = try SKColorSets.ColorOrder(rawValue: decoder.decode(Int.self))!
+    guard let atomRepresentationType = RepresentationType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomRepresentationType = atomRepresentationType
+    guard let atomRepresentationStyle = RepresentationStyle(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomRepresentationStyle = atomRepresentationStyle
+    self.atomForceFieldIdentifier = try decoder.decode(String.self)
+    guard let atomForceFieldOrder = SKForceFieldSets.ForceFieldOrder(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomForceFieldOrder = atomForceFieldOrder
+    self.atomColorSchemeIdentifier = try decoder.decode(String.self)
+    guard let atomColorOrder = SKColorSets.ColorOrder(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomColorOrder = atomColorOrder
     
-    atomSelectionStyle = try RKSelectionStyle(rawValue: decoder.decode(Int.self))!
-    atomSelectionStripesDensity = try decoder.decode(Double.self)
-    atomSelectionStripesFrequency = try decoder.decode(Double.self)
-    atomSelectionWorleyNoise3DFrequency = try decoder.decode(Double.self)
-    atomSelectionWorleyNoise3DJitter = try decoder.decode(Double.self)
-    atomSelectionScaling = try decoder.decode(Double.self)
-    selectionIntensity = try decoder.decode(Double.self)
+    guard let atomSelectionStyle = RKSelectionStyle(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomSelectionStyle = atomSelectionStyle
+    self.atomSelectionStripesDensity = try decoder.decode(Double.self)
+    self.atomSelectionStripesFrequency = try decoder.decode(Double.self)
+    self.atomSelectionWorleyNoise3DFrequency = try decoder.decode(Double.self)
+    self.atomSelectionWorleyNoise3DJitter = try decoder.decode(Double.self)
+    self.atomSelectionScaling = try decoder.decode(Double.self)
+    self.selectionIntensity = try decoder.decode(Double.self)
     
-    atomHue = try decoder.decode(Double.self)
-    atomSaturation = try decoder.decode(Double.self)
-    atomValue = try decoder.decode(Double.self)
-    atomScaleFactor = try decoder.decode(Double.self)
+    self.atomHue = try decoder.decode(Double.self)
+    self.atomSaturation = try decoder.decode(Double.self)
+    self.atomValue = try decoder.decode(Double.self)
+    self.atomScaleFactor = try decoder.decode(Double.self)
     
-    atomAmbientOcclusion = try decoder.decode(Bool.self)
-    atomAmbientOcclusionPatchNumber = try decoder.decode(Int.self)
-    atomAmbientOcclusionTextureSize = try decoder.decode(Int.self)
-    atomAmbientOcclusionPatchSize = try decoder.decode(Int.self)
+    self.atomAmbientOcclusion = try decoder.decode(Bool.self)
+    self.atomAmbientOcclusionPatchNumber = try decoder.decode(Int.self)
+    self.atomAmbientOcclusionTextureSize = try decoder.decode(Int.self)
+    self.atomAmbientOcclusionPatchSize = try decoder.decode(Int.self)
     
-    atomHDR = try decoder.decode(Bool.self)
-    atomHDRExposure = try decoder.decode(Double.self)
-    atomHDRBloomLevel = try decoder.decode(Double.self)
+    self.atomHDR = try decoder.decode(Bool.self)
+    self.atomHDRExposure = try decoder.decode(Double.self)
+    self.atomHDRBloomLevel = try decoder.decode(Double.self)
     
-    atomAmbientColor = try decoder.decode(NSColor.self)
-    atomDiffuseColor = try decoder.decode(NSColor.self)
-    atomSpecularColor = try decoder.decode(NSColor.self)
-    atomAmbientIntensity = try decoder.decode(Double.self)
-    atomDiffuseIntensity = try decoder.decode(Double.self)
-    atomSpecularIntensity = try decoder.decode(Double.self)
-    atomShininess = try decoder.decode(Double.self)
+    self.atomAmbientColor = try decoder.decode(NSColor.self)
+    self.atomDiffuseColor = try decoder.decode(NSColor.self)
+    self.atomSpecularColor = try decoder.decode(NSColor.self)
+    self.atomAmbientIntensity = try decoder.decode(Double.self)
+    self.atomDiffuseIntensity = try decoder.decode(Double.self)
+    self.atomSpecularIntensity = try decoder.decode(Double.self)
+    self.atomShininess = try decoder.decode(Double.self)
     
-    self.atomTextType = try RKTextType(rawValue: decoder.decode(Int.self))!
+    guard let atomTextType = RKTextType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomTextType = atomTextType
     self.atomTextFont = try decoder.decode(String.self)
     self.atomTextScaling = try decoder.decode(Double.self)
     self.atomTextColor = try decoder.decode(NSColor.self)
     self.atomTextGlowColor = try decoder.decode(NSColor.self)
-    self.atomTextStyle = try RKTextStyle(rawValue: decoder.decode(Int.self))!
-    self.atomTextEffect = try RKTextEffect(rawValue: decoder.decode(Int.self))!
-    self.atomTextAlignment = try RKTextAlignment(rawValue: decoder.decode(Int.self))!
+    guard let atomTextStyle = RKTextStyle(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomTextStyle = atomTextStyle
+    guard let atomTextEffect = RKTextEffect(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomTextEffect = atomTextEffect
+    guard let atomTextAlignment = RKTextAlignment(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.atomTextAlignment = atomTextAlignment
     self.atomTextOffset = try decoder.decode(SIMD3<Double>.self)
     
-    self.bonds = try decoder.decode(SKBondSetController.self)
+    self.bondController = try decoder.decode(SKBondSetController.self)
     
-    // fill in atoms from stored atom-tags
-    let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
-    let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
-    for bond in bonds.arrangedObjects
-    {
-      let atom1 = atomList[bond.atom1Tag]
-      let atom2 = atomList[bond.atom2Tag]
-      bond.atom1 = atom1
-      bond.atom2 = atom2
-      atom1.bonds.insert(bond)
-      atom2.bonds.insert(bond)
-    }
+    self.bondController.restoreBonds(atomTreeController: self.atomTreeController)
     
-    drawBonds = try decoder.decode(Bool.self)
-    bondScaleFactor = try decoder.decode(Double.self)
-    bondColorMode = try RKBondColorMode(rawValue: decoder.decode(Int.self))!
+    self.drawBonds = try decoder.decode(Bool.self)
+    self.bondScaleFactor = try decoder.decode(Double.self)
+    guard let bondColorMode = RKBondColorMode(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.bondColorMode = bondColorMode
     
-    bondAmbientColor = try decoder.decode(NSColor.self)
-    bondDiffuseColor = try decoder.decode(NSColor.self)
-    bondSpecularColor = try decoder.decode(NSColor.self)
-    bondAmbientIntensity = try decoder.decode(Double.self)
-    bondDiffuseIntensity = try decoder.decode(Double.self)
-    bondSpecularIntensity = try decoder.decode(Double.self)
-    bondShininess = try decoder.decode(Double.self)
+    self.bondAmbientColor = try decoder.decode(NSColor.self)
+    self.bondDiffuseColor = try decoder.decode(NSColor.self)
+    self.bondSpecularColor = try decoder.decode(NSColor.self)
+    self.bondAmbientIntensity = try decoder.decode(Double.self)
+    self.bondDiffuseIntensity = try decoder.decode(Double.self)
+    self.bondSpecularIntensity = try decoder.decode(Double.self)
+    self.bondShininess = try decoder.decode(Double.self)
     
-    bondHDR = try decoder.decode(Bool.self)
-    bondHDRExposure = try decoder.decode(Double.self)
-    bondHDRBloomLevel = try decoder.decode(Double.self)
+    self.bondHDR = try decoder.decode(Bool.self)
+    self.bondHDRExposure = try decoder.decode(Double.self)
+    self.bondHDRBloomLevel = try decoder.decode(Double.self)
     
-    bondHue = try decoder.decode(Double.self)
-    bondSaturation = try decoder.decode(Double.self)
-    bondValue = try decoder.decode(Double.self)
+    self.bondHue = try decoder.decode(Double.self)
+    self.bondSaturation = try decoder.decode(Double.self)
+    self.bondValue = try decoder.decode(Double.self)
     
-    bondAmbientOcclusion = try decoder.decode(Bool.self)
+    self.bondAmbientOcclusion = try decoder.decode(Bool.self)
     
     // unit cell
     self.drawUnitCell = try decoder.decode(Bool.self)
@@ -3407,9 +3411,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     self.adsorptionSurfaceSize = try decoder.decode(Int.self)
     let _: Int = try decoder.decode(Int.self)  // numberOfTriangles
     
-    self.adsorptionSurfaceProbeMolecule = try Structure.ProbeMolecule(rawValue: decoder.decode(Int.self))!
-    
-    
+    guard let probeMolecule = Structure.ProbeMolecule(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.adsorptionSurfaceProbeMolecule = probeMolecule
     
     self.adsorptionSurfaceFrontSideHDR = try decoder.decode(Bool.self)
     self.adsorptionSurfaceFrontSideHDRExposure = try decoder.decode(Double.self)
@@ -3434,7 +3437,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
    
     
     // Structure properties
-    self.structureType = StructureType(rawValue: try decoder.decode(Int.self))!
+    guard let structureType = StructureType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.structureType = structureType
     self.structureMaterialType = try decoder.decode(String.self)
     self.structureMass = try decoder.decode(Double.self)
     self.structureDensity = try decoder.decode(Double.self)
@@ -3468,16 +3472,21 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     components.year = Int(try decoder.decode(UInt32.self))
     self.creationDate = calendar.date(from: components) ?? Date()
     self.creationTemperature = try decoder.decode(String.self)
-    self.creationTemperatureScale = try TemperatureScale(rawValue: decoder.decode(Int.self))!
+    guard let creationTemperatureScale = TemperatureScale(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.creationTemperatureScale = creationTemperatureScale
     self.creationPressure = try decoder.decode(String.self)
-    self.creationPressureScale = try PressureScale(rawValue: decoder.decode(Int.self))!
-    self.creationMethod = try CreationMethod(rawValue: decoder.decode(Int.self))!
+    guard let creationPressureScale = PressureScale(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.creationPressureScale = creationPressureScale
+    guard let creationMethod = CreationMethod(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.creationMethod = creationMethod
     
-    
-    self.creationUnitCellRelaxationMethod = try UnitCellRelaxationMethod(rawValue: decoder.decode(Int.self))!
+    guard let creationUnitCellRelaxationMethod = UnitCellRelaxationMethod(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.creationUnitCellRelaxationMethod = creationUnitCellRelaxationMethod
     self.creationAtomicPositionsSoftwarePackage = try decoder.decode(String.self)
-    self.creationAtomicPositionsIonsRelaxationAlgorithm = try IonsRelaxationAlgorithm(rawValue: decoder.decode(Int.self))!
-    self.creationAtomicPositionsIonsRelaxationCheck = try IonsRelaxationCheck(rawValue: decoder.decode(Int.self))!
+    guard let creationAtomicPositionsIonsRelaxationAlgorithm = IonsRelaxationAlgorithm(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.creationAtomicPositionsIonsRelaxationAlgorithm = creationAtomicPositionsIonsRelaxationAlgorithm
+    guard let creationAtomicPositionsIonsRelaxationCheck = IonsRelaxationCheck(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.creationAtomicPositionsIonsRelaxationCheck = creationAtomicPositionsIonsRelaxationCheck
     self.creationAtomicPositionsForcefield = try decoder.decode(String.self)
     self.creationAtomicPositionsForcefieldDetails = try decoder.decode(String.self)
     
@@ -3485,8 +3494,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     self.creationAtomicChargesAlgorithms = try decoder.decode(String.self)
     self.creationAtomicChargesForcefield = try decoder.decode(String.self)
     self.creationAtomicChargesForcefieldDetails = try decoder.decode(String.self)
-    
-   
     
     // Experimental
     self.experimentalMeasurementRadiation = try decoder.decode(String.self)

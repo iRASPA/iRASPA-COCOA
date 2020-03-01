@@ -53,7 +53,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
     let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
     self.expandSymmetry(asymmetricAtom: asymmetricAtom)
     let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
-    atoms.insertNode(atomTreeNode, inItem: nil, atIndex: 0)
+    atomTreeController.insertNode(atomTreeNode, inItem: nil, atIndex: 0)
     reComputeBoundingBox()
     
     setRepresentationStyle(style: Structure.RepresentationStyle.objects)
@@ -71,7 +71,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
     switch(structure)
     {
     case is MolecularCrystal, is ProteinCrystal, is Molecule, is Protein:
-      self.atoms.flattenedLeafNodes().forEach{
+      self.atomTreeController.flattenedLeafNodes().forEach{
       let pos = $0.representedObject.position
           $0.representedObject.position = self.cell.convertToFractional(pos)
         }
@@ -79,7 +79,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
     case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
       if !structure.primitiveIsFractional
       {
-        self.atoms.flattenedLeafNodes().forEach{
+        self.atomTreeController.flattenedLeafNodes().forEach{
         let pos = $0.representedObject.position
             $0.representedObject.position = self.cell.convertToFractional(pos)
         }
@@ -128,7 +128,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
       let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
     
       // only use leaf-nodes
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
       var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count: numberOfReplicas * atoms.count)
@@ -161,7 +161,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
                 let diffuse: NSColor = NSColor.white
                 let specular: NSColor = NSColor.white
                 
-                data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
+                data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
                 index = index + 1
               }
             }
@@ -175,7 +175,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
       var index: Int
       
       // only use leaf-nodes
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
       
       var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count:  atoms.count)
@@ -199,7 +199,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
           let diffuse: NSColor = NSColor.white
           let specular: NSColor = NSColor.white
           
-          data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
+          data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
           index = index + 1
         }
       }
@@ -372,7 +372,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
       let sphereVertices: [RKVertex] = MetalSphereGeometry().vertices
       
       // only use leaf-nodes
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       
       var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
       var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
@@ -428,7 +428,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
       let sphereVertices: [RKVertex] = MetalSphereGeometry().vertices
       
       // only use leaf-nodes
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       
       var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
       var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
@@ -477,9 +477,7 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
   
   public override func reComputeBonds()
   {
-    let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    atomList.forEach{$0.bonds.removeAll()}
-    self.bonds.arrangedObjects = []
+    self.bondController.arrangedObjects = []
   }
   
   // MARK: -

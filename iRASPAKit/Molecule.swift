@@ -62,7 +62,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     switch(structure)
     {
     case is Crystal:
-      self.atoms.flattenedLeafNodes().forEach{
+      self.atomTreeController.flattenedLeafNodes().forEach{
       let pos = $0.representedObject.position
           $0.representedObject.position = self.cell.convertToCartesian(pos)
         }
@@ -70,7 +70,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
       if structure.primitiveIsFractional
       {
-        self.atoms.flattenedLeafNodes().forEach{
+        self.atomTreeController.flattenedLeafNodes().forEach{
         let pos = $0.representedObject.position
             $0.representedObject.position = self.cell.convertToCartesian(pos)
         }
@@ -122,7 +122,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   
   public override func expandSymmetry()
   {
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     
     for asymmetricAtom in asymmetricAtoms
     {
@@ -141,7 +141,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   
   public override func translateSelection(by shift: SIMD3<Double>)
   {
-    for node in self.atoms.selectedTreeNodes
+    for node in self.atomTreeController.selectedTreeNodes
     {
       node.representedObject.displacement = shift
     }
@@ -153,12 +153,12 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     // copy the structure for undo (via the atoms, and bonds-properties)
     let molecule: Molecule =  self.clone()
     
-    for node in self.atoms.selectedTreeNodes
+    for node in self.atomTreeController.selectedTreeNodes
     {
       node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
     
-    for node in molecule.atoms.selectedTreeNodes
+    for node in molecule.atomTreeController.selectedTreeNodes
     {
       node.representedObject.position += shift
       node.representedObject.displacement = SIMD3<Double>(0,0,0)
@@ -168,11 +168,11 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     
     molecule.reComputeBoundingBox()
     
-    molecule.tag(atoms: molecule.atoms)
+    molecule.atomTreeController.tag()
     
     molecule.reComputeBonds()
     
-    return (atoms: molecule.atoms, bonds: molecule.bonds)
+    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
   }
   
   public override func centerOfMassOfSelection() -> SIMD3<Double>
@@ -180,7 +180,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     var com: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
     var M: Double = 0.0
     
-    let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
+    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     guard !atoms.isEmpty else {return com}
     
     for atom in atoms
@@ -200,7 +200,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     var inertiaMatrix: double3x3 = double3x3()
     let com: SIMD3<Double> = self.selectionCOMTranslation
     
-    let atoms: [SKAtomCopy] = self.atoms.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
+    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     for atom in atoms
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
@@ -226,14 +226,14 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     // copy the structure for undo (via the atoms, and bonds-properties)
     let molecule: Molecule =  self.clone()
     
-    for node in self.atoms.selectedTreeNodes
+    for node in self.atomTreeController.selectedTreeNodes
     {
       node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
     
     self.selectionCOMTranslation += translation
     
-    for node in molecule.atoms.selectedTreeNodes
+    for node in molecule.atomTreeController.selectedTreeNodes
     {
       let pos: SIMD3<Double> = node.representedObject.position + translation
       node.representedObject.position = pos
@@ -243,11 +243,11 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     
     molecule.reComputeBoundingBox()
     
-    molecule.tag(atoms: molecule.atoms)
+    molecule.atomTreeController.tag()
     
     molecule.reComputeBonds()
     
-    return (atoms: molecule.atoms, bonds: molecule.bonds)
+    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
   }
   
   
@@ -256,7 +256,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     // copy the structure for undo (via the atoms, and bonds-properties)
     let molecule: Molecule =  self.clone()
     
-    for node in self.atoms.selectedTreeNodes
+    for node in self.atomTreeController.selectedTreeNodes
     {
       node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
@@ -264,7 +264,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     let com: SIMD3<Double> = centerOfMassOfSelection()
     let rotationMatrix: double3x3 = double3x3(quaternion)
     
-    for node in molecule.atoms.selectedTreeNodes
+    for node in molecule.atomTreeController.selectedTreeNodes
     {
       let pos = node.representedObject.position - com
       let position: SIMD3<Double> = rotationMatrix * pos + com
@@ -275,11 +275,11 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     
     molecule.reComputeBoundingBox()
     
-    molecule.tag(atoms: molecule.atoms)
+    molecule.atomTreeController.tag()
     
     molecule.reComputeBonds()
     
-    return (atoms: molecule.atoms, bonds: molecule.bonds)
+    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
   }
   
   public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
@@ -287,7 +287,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     // copy the structure for undo (via the atoms, and bonds-properties)
     let molecule: Molecule =  self.clone()
     
-    for node in self.atoms.selectedTreeNodes
+    for node in self.atomTreeController.selectedTreeNodes
     {
       node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
@@ -299,7 +299,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
 
     self.selectionCOMTranslation += translation
     
-    for node in molecule.atoms.selectedTreeNodes
+    for node in molecule.atomTreeController.selectedTreeNodes
     {
       let pos: SIMD3<Double> = node.representedObject.position + translation
       node.representedObject.position = pos
@@ -309,11 +309,11 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     
     molecule.reComputeBoundingBox()
     
-    molecule.tag(atoms: molecule.atoms)
+    molecule.atomTreeController.tag()
     
     molecule.reComputeBonds()
     
-    return (atoms: molecule.atoms, bonds: molecule.bonds)
+    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
   }
   
   public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
@@ -321,7 +321,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     // copy the structure for undo (via the atoms, and bonds-properties)
     let molecule: Molecule =  self.clone()
     
-    for node in self.atoms.selectedTreeNodes
+    for node in self.atomTreeController.selectedTreeNodes
     {
       node.representedObject.displacement = SIMD3<Double>(0,0,0)
     }
@@ -332,7 +332,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     let basis: double3x3 = self.selectionBodyFixedBasis
     let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
     
-    for node in molecule.atoms.selectedTreeNodes
+    for node in molecule.atomTreeController.selectedTreeNodes
     {
       let pos: SIMD3<Double> = node.representedObject.position - com
       let position: SIMD3<Double> = rotationMatrix * pos + com
@@ -343,11 +343,11 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     
     molecule.reComputeBoundingBox()
     
-    molecule.tag(atoms: molecule.atoms)
+    molecule.atomTreeController.tag()
     
     molecule.reComputeBonds()
     
-    return (atoms: molecule.atoms, bonds: molecule.bonds)
+    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
   }
   
   
@@ -422,6 +422,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
       asymetricAtom.copies[i].type = .copy
     }
     
+    /*
     for copy in asymetricAtom.copies
     {
       for bond in copy.bonds
@@ -430,21 +431,15 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
         let posB: SIMD3<Double> = bond.atom2.position
         let separationVector: SIMD3<Double> = posA - posB
         
-        let bondCriteria: Double = (bond.atom1.asymmetricParentAtom.bondDistanceCriteria + bond.atom2.asymmetricParentAtom.bondDistanceCriteria + 0.56)
-        
         let bondLength: Double = length(separationVector)
-        if (bondLength < bondCriteria)
+        if (bondLength < 0.1)
         {
-          // Type atom as 'Double'
-          if (bondLength < 0.1)
-          {
-            bond.atom1.type = .duplicate
-            bond.boundaryType = .internal
-          }
+          bond.atom1.type = .duplicate
+          bond.boundaryType = .internal
         }
       }
     }
-    
+    */
   }
   
   // MARK: -
@@ -522,7 +517,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
     
     // only use leaf-nodes
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
     if atoms.isEmpty
@@ -567,7 +562,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     // only use leaf-nodes
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
     var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count: atoms.count)
@@ -595,7 +590,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
         let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
         let specular: NSColor = self.atomSpecularColor
         
-        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
+        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
         index = index + 1
        }
     }
@@ -609,14 +604,14 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.allSelectedNodes.compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.allSelectedNodes.compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
     var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count: atoms.count)
     
     index = 0
     
-    for asymetricAtom in asymmetricAtoms
+    for (asymetricIndex,asymetricAtom) in asymmetricAtoms.enumerated()
     {
       let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
       let typeIsVisible: Bool = atomType?.isVisible ?? true
@@ -635,23 +630,23 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
         let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
         let specular: NSColor = self.atomSpecularColor
         
-        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius))
+        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
         index = index + 1
       }
     }
     return data
   }
   
-  public override var atomPositions: [SIMD4<Double>]
+  public override var atomPositions: [(SIMD4<Double>, Int, Bool)]
   {
     var index: Int
     
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
-    let atomNodes: [SKAtomTreeNode] = self.atoms.flattenedLeafNodes()
+    let atomNodes: [SKAtomTreeNode] = self.atomTreeController.flattenedLeafNodes()
     let numberOfAtoms: Int = atomNodes.compactMap{$0.representedObject}.count
-    var data: [SIMD4<Double>] = [SIMD4<Double>](repeating: SIMD4<Double>(), count: numberOfAtoms)
+    var data: [(SIMD4<Double>, Int, Bool)] = [(SIMD4<Double>, Int, Bool)](repeating: (SIMD4<Double>(), Int(), true), count: numberOfAtoms)
     
     index = 0
     for atomNode in atomNodes
@@ -667,35 +662,40 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
       let w: Double = (typeIsVisible && atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
       let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: w)
         
-      data[index] = position
+      data[index] = (position, atom.tag, atom.isVisible)
       index = index + 1
     }
     return data
   }
   
-  public override var internalBondPositions: [SIMD4<Double>]
+  public override var bondPositions: [(SIMD4<Double>,Int, Bool)]
   {
     var index: Int
     
-    let bonds: [SKBondNode] = self.bonds.arrangedObjects.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy && $0.boundaryType == .internal}
-    var data: [SIMD4<Double>] = [SIMD4<Double>](repeating: SIMD4<Double>(), count: bonds.count)
+    let assymetricBonds: [SKBondNode] = self.bondController.arrangedObjects.flatMap{$0.copies}
+    
+    let bonds: [SKBondNode] = assymetricBonds.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy && $0.boundaryType == .internal}
+    var data: [(SIMD4<Double>, Int, Bool)] = [(SIMD4<Double>, Int, Bool)](repeating: (SIMD4<Double>(), Int(), true), count: bonds.count)
     
     index = 0
     
-    for bond in bonds
+    for (asymmetricIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
     {
-      let atom1: SKAsymmetricAtom =  bond.atom1.asymmetricParentAtom
-      let atom2: SKAsymmetricAtom =  bond.atom2.asymmetricParentAtom
-      let isVisible: Bool =  bond.isVisible && atom1.isVisible && atom1.isVisibleEnabled && atom2.isVisible && atom2.isVisibleEnabled
+      let asymmetricAtom1: SKAsymmetricAtom =  asymmetricBond.atom1
+      let asymmetricAtom2: SKAsymmetricAtom =  asymmetricBond.atom2
+      let isVisible: Bool =  asymmetricBond.isVisible && asymmetricAtom1.isVisible && asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisible && asymmetricAtom2.isVisibleEnabled
       
-      let pos: SIMD3<Double> = 0.5 * (bond.atom1.position + bond.atom2.position)
+      for bond in asymmetricBond.copies
+      {
+        let pos: SIMD3<Double> = 0.5 * (bond.atom1.position + bond.atom2.position)
         
-      let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-      let w: Double = isVisible ? 1.0 : -1.0
-      let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: w)
+        let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+        let w: Double = isVisible ? 1.0 : -1.0
+        let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: w)
         
-      data[index] = position
-      index = index + 1
+        data[index] = (position, asymmetricIndex, isVisible)
+        index = index + 1
+      }
     }
     return data
   }
@@ -710,7 +710,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     var index: Int
     
     // only use leaf-nodes
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
     var data: [SIMD2<Double>] = [SIMD2<Double>](repeating: SIMD2<Double>(), count: atoms.count)
@@ -728,46 +728,49 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   public override var renderInternalBonds: [RKInPerInstanceAttributesBonds]
   {
     var index: Int = 0
-    var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds](repeating: RKInPerInstanceAttributesBonds(), count: bonds.arrangedObjects.count * numberOfReplicas())
+    var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds](repeating: RKInPerInstanceAttributesBonds(), count: bondController.arrangedObjects.count * numberOfReplicas())
       
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     index = 0
-    for bond in bonds.arrangedObjects
+    for (asymmetricIndex, asymmetricBond) in bondController.arrangedObjects.enumerated()
     {
-      if bond.boundaryType == .internal
+      for bond in asymmetricBond.copies
       {
-        let atom1: SKAtomCopy = bond.atom1
-        let atom2: SKAtomCopy = bond.atom2
-        let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
-        let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
+        if bond.boundaryType == .internal
+        {
+          let atom1: SKAtomCopy = bond.atom1
+          let atom2: SKAtomCopy = bond.atom2
+          let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
+          let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
         
-        let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
-        let typeIsVisible1: Bool = atomType1?.isVisible ?? true
-        let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
-        let typeIsVisible2: Bool = atomType2?.isVisible ?? true
+          let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
+          let typeIsVisible1: Bool = atomType1?.isVisible ?? true
+          let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
+          let typeIsVisible2: Bool = atomType2?.isVisible ?? true
         
-        let pos1: SIMD3<Double> = atom1.position + self.cell.contentShift
-        let pos2: SIMD3<Double> = atom2.position + self.cell.contentShift
-        let bondLength: Double = length(pos2-pos1)
+          let pos1: SIMD3<Double> = atom1.position + self.cell.contentShift
+          let pos2: SIMD3<Double> = atom2.position + self.cell.contentShift
+          let bondLength: Double = length(pos2-pos1)
           
-        let color1: NSColor = asymmetricAtom1.color
-        let color2: NSColor = asymmetricAtom2.color
+          let color1: NSColor = asymmetricAtom1.color
+          let color2: NSColor = asymmetricAtom2.color
           
-        let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength;
-        let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength;
+          let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength;
+          let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength;
           
-        let w: Double = (bond.isVisible && typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) &&
+          let w: Double = (asymmetricBond.isVisible && typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) &&
             (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
           
-        data[index] = RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: pos1.x, y: pos1.y, z: pos1.z, w: w),
+          data[index] = RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: pos1.x, y: pos1.y, z: pos1.z, w: w),
                                                        position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
                                                        color1: SIMD4<Float>(color: color1),
                                                        color2: SIMD4<Float>(color: color2),
-                                                       scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2))
-        index = index + 1
-          
+                                                       scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2),
+                                                       tag: UInt32(asymmetricIndex))
+          index = index + 1
+        }
       }
     }
     return data
@@ -786,17 +789,17 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   
   public override func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode]
   {
-    return  self.atoms.selectedNodes
+    return  self.atomTreeController.selectedNodes
   }
   
   public override func bonds(newAtoms: [SKAtomTreeNode]) -> [SKBondNode]
   {
-    var computedBonds: Set<SKBondNode> = []
+    var computedBonds: [SKBondNode] = []
     
     let atoms: [SKAtomCopy] = newAtoms.compactMap{$0.representedObject}.flatMap{$0.copies}
-    atoms.forEach{ $0.bonds.removeAll()}
+    //atoms.forEach{ $0.bonds.removeAll()}
     
-    let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    let atomList: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
     for i in 0..<atoms.count
     {
@@ -809,7 +812,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
         let separationVector: SIMD3<Double> = posA - posB
         let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(posA - posB)
         
-        let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+        let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
         
         let bondLength: Double = length(periodicSeparationVector)
         if (bondLength < bondCriteria)
@@ -819,15 +822,19 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
           {
             atoms[i].type = .duplicate
           }
-          if (length(separationVector) > bondCriteria)
+          else if (bondLength < 0.8)
+          {
+            // discard as being a bond
+          }
+          else if (length(separationVector) > bondCriteria)
           {
             let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .external)
-            computedBonds.insert(bond)
+            computedBonds.append(bond)
           }
           else
           {
             let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal)
-            computedBonds.insert(bond)
+            computedBonds.append(bond)
           }
         }
       }
@@ -839,7 +846,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
         let separationVector: SIMD3<Double> = posA - posB
         let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(posA - posB)
         
-        let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atomList[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+        let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atomList[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
         
         let bondLength: Double = length(periodicSeparationVector)
         if (bondLength < bondCriteria)
@@ -849,20 +856,24 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
           {
             atoms[i].type = .duplicate
           }
-          if (length(separationVector) > bondCriteria)
+          else if (bondLength < 0.8)
+          {
+            // discard as being a bond
+          }
+          else if (length(separationVector) > bondCriteria)
           {
             let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atomList[j], boundaryType: .external)
-            computedBonds.insert(bond)
+            computedBonds.append(bond)
           }
           else
           {
             let bond: SKBondNode = SKBondNode(atom1: atoms[i], atom2: atomList[j], boundaryType: .internal)
-            computedBonds.insert(bond)
+            computedBonds.append(bond)
           }
         }
       }
     }
-    return Array(computedBonds)
+    return computedBonds
   }
   
   // MARK: -
@@ -870,31 +881,31 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   
   public override func reComputeBonds()
   {
-    let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    self.bonds.arrangedObjects = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: {return false}, updateHandler: {})
+    let atomList: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    self.bondController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: {return false}, updateHandler: {})
   }
   
   public override func reComputeBonds(_ node: ProjectTreeNode, cancelHandler: (()-> Bool), updateHandler: (() -> ()))
   {
-    let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    self.bonds.arrangedObjects = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: cancelHandler, updateHandler: updateHandler)
+    let atomList: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    self.bondController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: cancelHandler, updateHandler: updateHandler)
   }
   
-  public override func computeBonds(cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> Set<SKBondNode>
+  public override func computeBonds(cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> [SKBondNode]
   {
-    let atomList: [SKAtomCopy] = self.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    let atomList: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     return self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: cancelHandler, updateHandler: updateHandler)
   }
   
-  public override func computeBonds(cell structureCell: SKCell, atomList atoms: [SKAtomCopy], cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> Set<SKBondNode>
+  public override func computeBonds(cell structureCell: SKCell, atomList atoms: [SKAtomCopy], cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> [SKBondNode]
   {
     let cutoff: Double = 3.0
     let offsets: [[Int]] = [[0,0,0],[1,0,0],[1,1,0],[0,1,0],[-1,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1],[-1,1,1],[-1,0,1],[-1,-1,1],[0,-1,1],[1,-1,1]]
     
     var totalCount: Int
-    var computedBonds: Set<SKBondNode> = []
+    var computedBonds: [SKBondNode] = []
     
-    atoms.forEach{ $0.bonds.removeAll()}
+    //atoms.forEach{ $0.bonds.removeAll()}
     
     let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
@@ -955,11 +966,16 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
                     let posB: SIMD3<Double> = atoms[j].position
                     let separationVector: SIMD3<Double> = posA - posB
                     
-                    let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+                    let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
                     
-                    if (length(separationVector) < bondCriteria)
+                    let bondLength = length(separationVector)
+                    if (bondLength < 0.8)
                     {
-                      computedBonds.insert(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
+                      // discard as being a bond
+                    }
+                    else if (bondLength < bondCriteria)
+                    {
+                      computedBonds.append(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
                     }
                   }
                   j=list[j]
@@ -978,7 +994,6 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
             {
               return []
             }
-            
           }
         }
       }
@@ -999,11 +1014,16 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
           
           let separationVector: SIMD3<Double> = posA - posB
           
-          let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.56)
+          let bondCriteria: Double = (atoms[i].asymmetricParentAtom.bondDistanceCriteria + atoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
           
-          if (length(separationVector) < bondCriteria )
+          let bondLength: Double = length(separationVector)
+          if (bondLength < 0.8)
           {
-            computedBonds.insert(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
+            // discard as being a bond
+          }
+          else if (bondLength < bondCriteria )
+          {
+            computedBonds.append(SKBondNode(atom1: atoms[i], atom2: atoms[j], boundaryType: .internal))
           }
         }
         
@@ -1052,10 +1072,10 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     {
       LogQueue.shared.verbose(destination: windowController, message: "start computing bonds: \(structure.displayName)")
       
-      let atoms: [SKAtomCopy] = structure.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+      let atoms: [SKAtomCopy] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
       let computedBonds = structure.computeBonds(cell: structure.cell, atomList: atoms)
       
-      structure.bonds.arrangedObjects = computedBonds
+      //structure.bonds.arrangedObjects = computedBonds
       structure.recomputeDensityProperties()
       
       let numberOfComputedBonds: Int =  computedBonds.filter{$0.atom1.type == .copy && $0.atom2.type == .copy}.count

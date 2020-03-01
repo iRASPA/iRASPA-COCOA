@@ -292,6 +292,30 @@ public class SKAtomTreeController: Decodable, BinaryDecodable, BinaryEncodable
     
   }
   
+  public func tag()
+  {
+    // probably can be done a lot faster by using the tree-structure and recursion
+    let asymmetricAtomNodes: [SKAtomTreeNode] = self.flattenedNodes()
+    for asymmetricAtomNode in asymmetricAtomNodes
+    {
+      let isVisibleEnabled = asymmetricAtomNode.areAllAncestorsVisible
+      asymmetricAtomNode.representedObject.isVisibleEnabled = isVisibleEnabled
+    }
+    
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.flattenedLeafNodes().compactMap{$0.representedObject}
+    
+    for i in 0..<asymmetricAtoms.count
+    {
+      asymmetricAtoms[i].tag = i
+    }
+    
+    let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
+    for i in 0..<atomList.count
+    {
+      atomList[i].tag = i
+    }
+  }
+  
   // MARK: Selection
   // =====================================================================
   
@@ -403,7 +427,7 @@ public class SKAtomTreeController: Decodable, BinaryDecodable, BinaryEncodable
   
   public var invertedSelection: Set<SKAtomTreeNode>
   {
-    return Set(self.flattenedNodes()).subtracting(self.selectedTreeNodes)
+    return Set(self.flattenedLeafNodes()).subtracting(self.selectedTreeNodes)
   }
   
   public var allSelectedNodes: [SKAtomTreeNode]!
