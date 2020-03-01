@@ -238,7 +238,7 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
           atomTreeNodes.append(node)
         }
         
-        iRASPAstructure.structure.atoms.rootNodes = atomTreeNodes
+        iRASPAstructure.structure.atomTreeController.rootNodes = atomTreeNodes
         iRASPAstructure.structure.expandSymmetry()
         
         if let drawUnitCell: Bool = frame.drawUnitCell
@@ -277,7 +277,7 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
         }
         
         // tag all the atoms with identifers from 0,..,N-1
-        iRASPAstructure.structure.tag(atoms: iRASPAstructure.structure.atoms)
+        iRASPAstructure.structure.atomTreeController.tag()
         
         // compute the bounding-box of the atoms
         iRASPAstructure.structure.reComputeBoundingBox()

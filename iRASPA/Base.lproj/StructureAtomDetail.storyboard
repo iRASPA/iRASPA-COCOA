@@ -541,7 +541,7 @@
                                     <menuItem title="Invert" id="1YF-gj-uzt">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
-                                            <action selector="selectionAtomInversion:" target="L26-B0-eRn" id="26k-cP-4VA"/>
+                                            <action selector="selectionInversion:" target="L26-B0-eRn" id="26k-cP-4VA"/>
                                         </connections>
                                     </menuItem>
                                     <menuItem title="Copy to new Movie" id="h1l-YI-Yex" userLabel="Copy to new Movie">

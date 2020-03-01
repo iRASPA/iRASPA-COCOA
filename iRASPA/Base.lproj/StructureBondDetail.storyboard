@@ -53,7 +53,7 @@
                                                                         <font key="font" metaFont="system"/>
                                                                     </buttonCell>
                                                                     <connections>
-                                                                        <action selector="toggleBondVisiiblity:" target="1Qs-2A-QWY" id="bcy-JI-CBx"/>
+                                                                        <action selector="toggleBondVisiblity:" target="1Qs-2A-QWY" id="lLy-UF-gAp"/>
                                                                     </connections>
                                                                 </button>
                                                             </subviews>
@@ -166,7 +166,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="bondTypeRow" id="3CH-CW-EV9">
-                                                            <rect key="frame" x="199.5" y="1" width="50" height="18"/>
+                                                            <rect key="frame" x="200" y="1" width="50" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="iPF-HR-Ue1">
@@ -311,7 +311,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="bondLengthSliderRow" id="g7h-p2-h9O">
-                                                            <rect key="frame" x="412.5" y="1" width="83" height="18"/>
+                                                            <rect key="frame" x="413" y="1" width="83" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <slider verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="ko1-tl-a6u">

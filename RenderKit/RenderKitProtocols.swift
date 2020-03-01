@@ -75,7 +75,6 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var atomHDRExposure: Double {get}
   var atomHDRBloomLevel: Double {get}
   var clipAtomsAtUnitCell: Bool {get}
-  var atomPositions: [SIMD4<Double>] {get}
   var renderAtoms: [RKInPerInstanceAttributesAtoms] {get}
   
   var atomTextData: [RKInPerInstanceAttributesText] {get}
@@ -104,7 +103,6 @@ public protocol RKRenderBondSource: RKRenderStructure
 {
   var numberOfInternalBonds: Int {get}
   var numberOfExternalBonds: Int {get}
-  var bondPositions: [SIMD3<Double>] {get}
   var renderInternalBonds: [RKInPerInstanceAttributesBonds] {get}
   var renderExternalBonds: [RKInPerInstanceAttributesBonds] {get}
   var renderSelectedBonds: [RKInPerInstanceAttributesBonds] {get}

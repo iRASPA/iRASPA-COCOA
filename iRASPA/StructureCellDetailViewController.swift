@@ -2951,14 +2951,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     {
       let oldCell: SKCell = structure.cell
       let oldSpaceGroup: SKSpacegroup = structure.spaceGroup
-      let oldAtoms: SKAtomTreeController = structure.atoms
-      let oldBonds: SKBondSetController = structure.bonds
+      let oldAtoms: SKAtomTreeController = structure.atomTreeController
+      let oldBonds: SKBondSetController = structure.bondController
       project.undoManager.registerUndo(withTarget: self, handler: {$0.applyCellContentShift(structure: structure, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
       
       structure.cell = cell
       structure.spaceGroup = spaceGroup
-      structure.atoms = atoms
-      structure.bonds = bonds
+      structure.atomTreeController = atoms
+      structure.bondController = bonds
       
       structure.reComputeBoundingBox()
       
@@ -3614,14 +3614,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     {
       let oldCell: SKCell = structure.cell
       let oldSpaceGroup: SKSpacegroup = structure.spaceGroup
-      let oldAtoms: SKAtomTreeController = structure.atoms
-      let oldBonds: SKBondSetController = structure.bonds
+      let oldAtoms: SKAtomTreeController = structure.atomTreeController
+      let oldBonds: SKBondSetController = structure.bondController
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setStructureState(structure: structure, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
       
       structure.cell = cell
       structure.spaceGroup = spaceGroup
-      structure.atoms = atoms
-      structure.bonds = bonds
+      structure.atomTreeController = atoms
+      structure.bondController = bonds
       
       structure.reComputeBoundingBox()
       

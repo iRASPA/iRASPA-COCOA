@@ -168,9 +168,9 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
   public init(unitCell: double3x3)
   {
     self.unitCell = unitCell
-    self.inverseUnitCell = unitCell.inverse
+    self.inverseUnitCell = unitCell.inverseReplacement
     self.fullCell = unitCell
-    self.inverseFullCell = unitCell.inverse
+    self.inverseFullCell = unitCell.inverseReplacement
     self.boundingBox = self.enclosingBoundingBox
   }
   

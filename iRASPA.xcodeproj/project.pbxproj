@@ -71,7 +71,6 @@
 		930DD6211E26B96A00B8FE9B /* iRASPAKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 930DD6111E26B96A00B8FE9B /* iRASPAKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		930DD6241E26B96A00B8FE9B /* iRASPAKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD60F1E26B96A00B8FE9B /* iRASPAKit.framework */; };
 		930DD6251E26B96A00B8FE9B /* iRASPAKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD60F1E26B96A00B8FE9B /* iRASPAKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		930DD6361E26B9F500B8FE9B /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6301E26B9F500B8FE9B /* Array.swift */; };
 		930DD63B1E26B9F500B8FE9B /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6351E26B9F500B8FE9B /* Timer.swift */; };
 		930DD6461E26BA5D00B8FE9B /* Crystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD63F1E26BA5D00B8FE9B /* Crystal.swift */; };
 		930DD6471E26BA5D00B8FE9B /* MolecularCrystal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6401E26BA5D00B8FE9B /* MolecularCrystal.swift */; };
@@ -135,7 +134,7 @@
 		933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */; };
 		933CFE171F14B47700BC9DCA /* iRASPAProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE161F14B47700BC9DCA /* iRASPAProject.swift */; };
 		933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */; };
-		933D6B8623CCABD600761EA0 /* AtomsChangeDataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D6B8523CCABD600761EA0 /* AtomsChangeDataStructure.swift */; };
+		933D6B8623CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D6B8523CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift */; };
 		933D93E51FD326CA0075AB92 /* StructureTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */; };
 		933F4F241FB1C24D00753D08 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F4F231FB1C24D00753D08 /* Errors.swift */; };
 		9340A6F12015123B00F33D1D /* NSFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9340A6F02015123B00F33D1D /* NSFont.swift */; };
@@ -204,6 +203,7 @@
 		937479531FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */; };
 		937479581FB9ED8F008C4411 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		9374795A1FB9EF2D008C4411 /* MarchingCubes3D_128x128x128.metal in Sources */ = {isa = PBXBuildFile; fileRef = 937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */; };
+		9377C4B82403C8FA0015FF35 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377C4B72403C8FA0015FF35 /* Errors.swift */; };
 		937807D721C5847000EC4466 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807D621C5847000EC4466 /* OrderedDictionary.swift */; };
 		937807D921C58E9500EC4466 /* SKConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807D821C58E9500EC4466 /* SKConstants.swift */; };
 		937807DB21C5945100EC4466 /* RKTrackBall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807DA21C5945100EC4466 /* RKTrackBall.swift */; };
@@ -859,7 +859,6 @@
 		930DD60F1E26B96A00B8FE9B /* iRASPAKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iRASPAKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		930DD6111E26B96A00B8FE9B /* iRASPAKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iRASPAKit.h; sourceTree = "<group>"; };
 		930DD6121E26B96A00B8FE9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		930DD6301E26B9F500B8FE9B /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		930DD6351E26B9F500B8FE9B /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		930DD63F1E26BA5D00B8FE9B /* Crystal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Crystal.swift; sourceTree = "<group>"; };
 		930DD6401E26BA5D00B8FE9B /* MolecularCrystal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MolecularCrystal.swift; sourceTree = "<group>"; };
@@ -922,7 +921,7 @@
 		933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedPropertiesLayer.swift; sourceTree = "<group>"; };
 		933CFE161F14B47700BC9DCA /* iRASPAProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProject.swift; sourceTree = "<group>"; };
 		933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAStructure.swift; sourceTree = "<group>"; };
-		933D6B8523CCABD600761EA0 /* AtomsChangeDataStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomsChangeDataStructure.swift; sourceTree = "<group>"; };
+		933D6B8523CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomAndBondsChangeDataStructure.swift; sourceTree = "<group>"; };
 		933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureTableRowView.swift; sourceTree = "<group>"; };
 		933F4F171FADF4D000753D08 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		933F4F231FB1C24D00753D08 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -994,6 +993,7 @@
 		9374794E1FB9EB51008C4411 /* SKBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKBoundingBox.swift; sourceTree = "<group>"; };
 		937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes128.swift; sourceTree = "<group>"; };
 		937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D_128x128x128.metal; sourceTree = "<group>"; };
+		9377C4B72403C8FA0015FF35 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		937807D621C5847000EC4466 /* OrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		937807D821C58E9500EC4466 /* SKConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKConstants.swift; sourceTree = "<group>"; };
 		937807DA21C5945100EC4466 /* RKTrackBall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKTrackBall.swift; sourceTree = "<group>"; };
@@ -1724,7 +1724,7 @@
 				93475A9A1FC98E71006F6A19 /* NSViewController.swift */,
 				932E539C205456F800A17E26 /* NSLabelSegmentedCell.swift */,
 				93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */,
-				933D6B8523CCABD600761EA0 /* AtomsChangeDataStructure.swift */,
+				933D6B8523CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -2064,7 +2064,6 @@
 			isa = PBXGroup;
 			children = (
 				938B44FB1EB8F7B4006B7704 /* Reachability.swift */,
-				930DD6301E26B9F500B8FE9B /* Array.swift */,
 				93F9362E1EB8FEF10094C509 /* String.swift */,
 				93F936301EB8FFC30094C509 /* NSSquareButton.swift */,
 				93F936321EB900080094C509 /* NSAlphaColorWell.swift */,
@@ -2212,6 +2211,7 @@
 				93F3A5AB21874AAB008E41A2 /* BinaryEncoder.swift */,
 				93F3A5AD21874AE3008E41A2 /* BinaryCodableExtensions.swift */,
 				93F3A5A021874A15008E41A2 /* Info.plist */,
+				9377C4B72403C8FA0015FF35 /* Errors.swift */,
 			);
 			path = BinaryCodable;
 			sourceTree = "<group>";
@@ -3081,7 +3081,6 @@
 				930DD64B1E26BA5D00B8FE9B /* Structure.swift in Sources */,
 				93EACCC022061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				930DD6641E26BAFC00B8FE9B /* Scene.swift in Sources */,
-				930DD6361E26B9F500B8FE9B /* Array.swift in Sources */,
 				932A1C941F967D62000A0037 /* AngleNumberFormatter.swift in Sources */,
 				93F9363F1EBCDC500094C509 /* ProjectRASPANode.swift in Sources */,
 				937337731EB3238900E0655F /* DocumentData.swift in Sources */,
@@ -3203,7 +3202,7 @@
 				93B8BB181F286F1E0024EEC7 /* iRASPAComboBox.swift in Sources */,
 				93FD046D1EC1B161005226F4 /* AtomNetChargeLabel.swift in Sources */,
 				9381D8A31E5B72C700263860 /* InterpreterViewController.swift in Sources */,
-				933D6B8623CCABD600761EA0 /* AtomsChangeDataStructure.swift in Sources */,
+				933D6B8623CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift in Sources */,
 				93604A6E1F4EFCBB0053ADE2 /* Preferences.swift in Sources */,
 				9397C622203B4F6800FE4A9C /* ImportAccessoryViewController.swift in Sources */,
 				93B5EE511FC2CACF009922F2 /* LocalAboutWindowController.swift in Sources */,
@@ -3369,6 +3368,7 @@
 				93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */,
 				93F3A5AE21874AE3008E41A2 /* BinaryCodableExtensions.swift in Sources */,
 				93F393F8224A917A00948399 /* LegacyDecodable.swift in Sources */,
+				9377C4B82403C8FA0015FF35 /* Errors.swift in Sources */,
 				93F3A5B021874B3E008E41A2 /* FKCoding.swift in Sources */,
 				93F3A5AC21874AAB008E41A2 /* BinaryEncoder.swift in Sources */,
 				933A8F2A218CD4AD0073C653 /* DataCompression.swift in Sources */,

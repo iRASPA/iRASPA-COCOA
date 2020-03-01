@@ -129,7 +129,6 @@ public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboard
     }
     set(newValue)
     {
-      // FIX 11-07-2017
       self.frames.forEach{$0.structure.isVisible = newValue}
     }
   }

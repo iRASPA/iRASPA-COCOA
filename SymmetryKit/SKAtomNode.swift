@@ -471,7 +471,7 @@ public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable, Copy
   public var position: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
   
   // list of bonds the atom is involved in
-  public var bonds: Set<SKBondNode> = []
+  //public var bonds: Set<SKBondNode> = []
   
   public var tag: Int = 0
   public var type: AtomCopyType = .copy

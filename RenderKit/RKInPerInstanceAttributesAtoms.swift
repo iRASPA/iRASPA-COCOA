@@ -40,18 +40,20 @@ public struct RKInPerInstanceAttributesAtoms
   public var diffuse: SIMD4<Float> = SIMD4<Float>()
   public var specular: SIMD4<Float> = SIMD4<Float>()
   public var scale: SIMD4<Float> = SIMD4<Float>()
+  public var tag: UInt32 = UInt32()
   
   public init()
   {
     
   }
   
-  public init(position: SIMD4<Float>, ambient: SIMD4<Float>, diffuse: SIMD4<Float>, specular: SIMD4<Float>, scale: Float)
+  public init(position: SIMD4<Float>, ambient: SIMD4<Float>, diffuse: SIMD4<Float>, specular: SIMD4<Float>, scale: Float, tag: UInt32)
   {
     self.position = position
     self.ambient = ambient
     self.diffuse = diffuse
     self.specular = specular
     self.scale = SIMD4<Float>(repeating: scale)
+    self.tag = tag
   }
 }

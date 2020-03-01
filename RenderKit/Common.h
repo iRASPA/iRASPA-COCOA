@@ -57,6 +57,7 @@ typedef struct
   float4 diffuse;
   float4 specular;
   float4 scale;
+  uint tag;
 } InPerInstanceAttributes;
 
 
@@ -75,6 +76,7 @@ typedef struct
   float4 color1;
   float4 color2;
   float4 scale;
+  uint tag;
 } InPerInstanceAttributesBonds;
 
 
