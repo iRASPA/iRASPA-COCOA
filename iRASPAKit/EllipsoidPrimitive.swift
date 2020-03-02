@@ -467,11 +467,6 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
     }
   }
   
-  public override var transformedBoundingBox: SKBoundingBox
-  {
-    return self.boundingBox
-  }
-  
   // MARK: -
   // MARK: Computing bonds
   

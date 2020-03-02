@@ -104,6 +104,8 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
           
           representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
           
+          representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBoundingBox()}
+          
         }
         
         self.outlineView?.makeItemVisible(item: projectTreeNode)
