@@ -67,6 +67,8 @@ class MetalView: MTKView
   //var defaultLibrary: MTLLibrary! = nil
   var renderer: MetalRenderer = MetalRenderer()
   
+  var edrSupport: CGFloat = 1.0
+  
   weak var renderDataSource: RKRenderDataSource?
   {
     didSet

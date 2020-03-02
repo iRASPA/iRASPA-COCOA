@@ -107,6 +107,17 @@ public class RenderViewController: NSViewController
   public override func viewWillAppear()
   {
     super.viewWillAppear()
+    
+    let screen: NSScreen? = self.view.window?.screen
+    if #available(OSX 10.15, *)
+    {
+      (self.view as? MetalView)?.edrSupport = screen?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0
+    }
+    else
+    {
+      // Fallback on earlier versions
+      (self.view as? MetalView)?.edrSupport = 1.0
+    }
   }
   
   public override func viewDidAppear()
