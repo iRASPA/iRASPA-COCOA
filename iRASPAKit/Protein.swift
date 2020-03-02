@@ -545,16 +545,6 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return SKBoundingBox(minimum: minimum, maximum: maximum)
   }
   
-  public override var transformedBoundingBox: SKBoundingBox
-  {
-    let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
-    
-    let transformation = double4x4.init(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
-    let transformedBoundingBox: SKBoundingBox = currentBoundingBox.adjustForTransformation(transformation)
-    
-    return transformedBoundingBox
-  }
-  
   public override var renderAtoms: [RKInPerInstanceAttributesAtoms]
   {
     var index: Int

@@ -468,11 +468,6 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
     }
   }
   
-  public override var transformedBoundingBox: SKBoundingBox
-  {
-    return self.boundingBox
-  }
-  
   // MARK: -
   // MARK: Computing bonds
   

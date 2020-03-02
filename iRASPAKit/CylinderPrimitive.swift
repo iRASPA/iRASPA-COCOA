@@ -468,11 +468,6 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource
     }
   }
   
-  public override var transformedBoundingBox: SKBoundingBox
-  {
-    return self.boundingBox
-  }
-  
   // MARK: -
   // MARK: Computing bonds
   

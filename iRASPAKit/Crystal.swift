@@ -1099,7 +1099,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public override var boundingBox: SKBoundingBox
   {
-    let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
     let minimumReplica = cell.minimumReplica
     let maximumReplica = cell.maximumReplica
     
@@ -1112,32 +1111,15 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let c6: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(maximumReplica.x+1), y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
     let c7: SIMD3<Double> = self.cell.unitCell * (SIMD3<Double>(x: Double(minimumReplica.x),   y: Double(maximumReplica.y+1), z: Double(maximumReplica.z+1)))
     
-    let rotationMatrix: double4x4 = double4x4(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
-    
-    let r0 = rotationMatrix * SIMD4<Double>(c0.x,c0.y,c0.z,1.0)
-    let r1 = rotationMatrix * SIMD4<Double>(c1.x,c1.y,c1.z,1.0)
-    let r2 = rotationMatrix * SIMD4<Double>(c2.x,c2.y,c2.z,1.0)
-    let r3 = rotationMatrix * SIMD4<Double>(c3.x,c3.y,c3.z,1.0)
-    let r4 = rotationMatrix * SIMD4<Double>(c4.x,c4.y,c4.z,1.0)
-    let r5 = rotationMatrix * SIMD4<Double>(c5.x,c5.y,c5.z,1.0)
-    let r6 = rotationMatrix * SIMD4<Double>(c6.x,c6.y,c6.z,1.0)
-    let r7 = rotationMatrix * SIMD4<Double>(c7.x,c7.y,c7.z,1.0)
-    
-    
-    let minimum = SIMD3<Double>(x: min(r0.x, r1.x, r2.x, r3.x, r4.x, r5.x, r6.x, r7.x),
-                          y: min(r0.y, r1.y, r2.y, r3.y, r4.y, r5.y, r6.y, r7.y),
-                          z: min(r0.z, r1.z, r2.z, r3.z, r4.z, r5.z, r6.z, r7.z))
+    let minimum = SIMD3<Double>(x: min(c0.x, c1.x, c2.x, c3.x, c4.x, c5.x, c6.x, c7.x),
+                                y: min(c0.y, c1.y, c2.y, c3.y, c4.y, c5.y, c6.y, c7.y),
+                                z: min(c0.z, c1.z, c2.z, c3.z, c4.z, c5.z, c6.z, c7.z))
 
-    let maximum = SIMD3<Double>(x: max(r0.x, r1.x, r2.x, r3.x, r4.x, r5.x, r6.x, r7.x),
-                          y: max(r0.y, r1.y, r2.y, r3.y, r4.y, r5.y, r6.y, r7.y),
-                          z: max(r0.z, r1.z, r2.z, r3.z, r4.z, r5.z, r6.z, r7.z))
+    let maximum = SIMD3<Double>(x: max(c0.x, c1.x, c2.x, c3.x, c4.x, c5.x, c6.x, c7.x),
+                                y: max(c0.y, c1.y, c2.y, c3.y, c4.y, c5.y, c6.y, c7.y),
+                                z: max(c0.z, c1.z, c2.z, c3.z, c4.z, c5.z, c6.z, c7.z))
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)
-  }
-  
-  public override var transformedBoundingBox: SKBoundingBox
-  {
-    return self.boundingBox
   }
   
   // MARK: -
@@ -1149,7 +1131,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     {
       node.representedObject.displacement = shift
     }
-    
   }
   
   public override func finalizeTranslateSelection(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?

@@ -2653,7 +2653,12 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   
   public var transformedBoundingBox: SKBoundingBox
   {
-    return SKBoundingBox()
+    let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
+    
+    let transformation = double4x4.init(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
+    let transformedBoundingBox: SKBoundingBox = currentBoundingBox.adjustForTransformation(transformation)
+    
+    return transformedBoundingBox
   }
   
   public func reComputeBoundingBox()
