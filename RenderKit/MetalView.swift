@@ -90,6 +90,49 @@ class MetalView: MTKView
     super.resizeSubviews(withOldSize: oldSize)
   }
   
+  // the MetalView is initialized from the XIB file
+  required init(coder: NSCoder)
+  {
+    super.init(coder: coder)
+
+    self.isPaused = true
+    self.enableSetNeedsDisplay = true
+    self.autoResizeDrawable = true
+    self.autoresizesSubviews = true
+    
+    self.colorPixelFormat = MTLPixelFormat.bgra8Unorm
+    self.depthStencilPixelFormat = MTLPixelFormat.invalid
+
+    self.framebufferOnly = true
+    self.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1)
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(screenParametersDidChange), name: NSApplication.didChangeScreenParametersNotification, object: NSApplication.shared)
+  }
+  
+  deinit
+  {
+    NotificationCenter.default.removeObserver(self, name: NSApplication.didChangeScreenParametersNotification, object: NSApplication.shared)
+     // clean up and avoid crashing the app due to waiting semaphores
+     for _ in 0...3
+     {
+       self._inflightSemaphore.signal()
+     }
+     
+   }
+  
+  @objc func screenParametersDidChange(notification: NSNotification)
+  {
+    let screen: NSScreen? = self.window?.screen
+    if #available(OSX 10.15, *)
+    {
+      self.edrSupport = screen?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0
+    }
+    else
+    {
+      // Fallback on earlier versions
+      self.edrSupport = 1.0
+    }
+  }
 
   func reloadData()
   {
@@ -206,22 +249,6 @@ class MetalView: MTKView
     self.renderer.buildStructureUniforms(device: self.device!)
   }
 
-  // the MetalView is initialized from the XIB file
-  required init(coder: NSCoder)
-  {
-    super.init(coder: coder)
-
-    self.isPaused = true
-    self.enableSetNeedsDisplay = true
-    self.autoResizeDrawable = true
-    self.autoresizesSubviews = true
-    
-    self.colorPixelFormat = MTLPixelFormat.bgra8Unorm
-    self.depthStencilPixelFormat = MTLPixelFormat.invalid
-
-    self.framebufferOnly = true
-    self.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1)
-  }
   
   func setup(device: MTLDevice, defaultLibrary: MTLLibrary, commandQueue: MTLCommandQueue)
   {
@@ -253,19 +280,6 @@ class MetalView: MTKView
     
     self.renderer.backgroundShader.buildPermanentTextures(device: device)
   }
-  
-  
-  deinit
-  {
-    // clean up and avoid crashing the app due to waiting semaphores
-    for _ in 0...3
-    {
-      self._inflightSemaphore.signal()
-    }
-    
-  }
-  
-  
   
   override func draw(_ dirtyRect: NSRect)
   {
