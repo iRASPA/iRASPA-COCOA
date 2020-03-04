@@ -1162,7 +1162,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     self.experimentalMeasurementRFactorGt = clone.experimentalMeasurementRFactorGt
     self.experimentalMeasurementRFactorAll = clone.experimentalMeasurementRFactorAll
     
-    
     // clone atoms and bonds
     clone.atomTreeController.tag()
     
@@ -1185,6 +1184,12 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     {
       debugPrint("Error")
     }
+    
+    //restore selection
+    let tags: Set<Int> = Set(clone.atomTreeController.selectedTreeNodes.map{$0.representedObject.tag})
+    let atomTreeNodes: [SKAtomTreeNode] = self.atomTreeController.flattenedLeafNodes()
+    self.atomTreeController.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
+    self.bondController.selectedObjects = clone.bondController.selectedObjects
     
     self.setRepresentationStyle(style: self.atomRepresentationStyle)
  
@@ -2758,13 +2763,6 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
   }
   
   
-  
-  
-  
-  
-
-  
-  
   public var renderSelectedBonds: [RKInPerInstanceAttributesBonds]
   {
     return [RKInPerInstanceAttributesBonds]()
@@ -2829,25 +2827,15 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     asymmetricAtom.copies = [newAtom]
   }
   
-  
-  
-  
-  
-  
   public var crystallographicPositions: [(SIMD3<Double>, Int)]
   {
     return []
   }
   
-  
-  
-  
   public func removeSymmetry()
   {
     
   }
-  
-  
   
   public var spaceGroupHallNumber: Int?
   {

@@ -1914,14 +1914,6 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           structure.atomTreeController.removeNode(atom)
         }
       
-        /*
-        for bond in bonds
-        {
-          bond.atom1.bonds.remove(bond)
-          bond.atom2.bonds.remove(bond)
-          structure.bonds.arrangedObjects.remove(bond)
-        }
-         */
         structure.atomTreeController.selectedTreeNodes = []
 
         structure.atomTreeController.tag()
