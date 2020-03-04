@@ -1749,14 +1749,13 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     
     var computedBonds: [SKBondNode] = []
     
-    let numberOfReplicas: SIMD3<Double> = SIMD3<Double>(Double(structureCell.maximumReplicaX - structureCell.minimumReplicaX + 1),
-                                            Double(structureCell.maximumReplicaY - structureCell.minimumReplicaY + 1),
-                                            Double(structureCell.maximumReplicaZ - structureCell.minimumReplicaZ + 1))
     
-    let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths/numberOfReplicas + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
+    // structureCell.boundingBox.widths has a shell around it, subtract (N-1) times the cell perpendicularWidths
+    let numberOfReplicas: SIMD3<Double> = SIMD3<Double>(Double(structureCell.maximumReplicaX - structureCell.minimumReplicaX ),
+                                                        Double(structureCell.maximumReplicaY - structureCell.minimumReplicaY ),
+                                                        Double(structureCell.maximumReplicaZ - structureCell.minimumReplicaZ ))
+    let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths - numberOfReplicas * structureCell.perpendicularWidths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
-    
-    //atoms.forEach{ $0.bonds.removeAll()}
     
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]

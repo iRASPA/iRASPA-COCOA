@@ -1606,11 +1606,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     superCellAtoms.tag()
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-
-    //superCellAtoms.flattenedLeafNodes().flatMap{$0.representedObject}.forEach{atom in
-    //  let elementId: Int = atom.elementIdentifier
-    //  atom.bondDistanceCriteria = PredefinedElements.sharedInstance.elementSet[elementId].covalentRadius
-    //}
     
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
     
