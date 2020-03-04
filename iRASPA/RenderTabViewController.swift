@@ -1002,7 +1002,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           self.reloadRenderDataSelectedAtoms()
           NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
         case 2:
-          self.toggleInternalBondSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedObject))
+          self.toggleBondSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedObject))
           self.reloadRenderDataSelectedInternalBonds()
           NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
         default:
@@ -1059,7 +1059,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
 
-  public func toggleInternalBondSelectionFor(structure: Structure, indexSet: IndexSet)
+  public func toggleBondSelectionFor(structure: Structure, indexSet: IndexSet)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
@@ -1194,10 +1194,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  
-  
-  
-  
   func clearMeasurement()
   {
     if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
@@ -1271,7 +1267,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   func setStructureState(structure: Structure, atoms: SKAtomTreeController, bonds: SKBondSetController)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
-      let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       let oldAtoms: SKAtomTreeController = structure.atomTreeController
       let oldBonds: SKBondSetController = structure.bondController
@@ -2469,8 +2465,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsCartesianPlusX(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {

@@ -1123,7 +1123,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   }
   
   // MARK: -
-  // MARK: Crystal operations
+  // MARK: Translation operations
 
   public override func translateSelection(by shift: SIMD3<Double>)
   {
@@ -1158,6 +1158,9 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     return (atoms: crystal.atomTreeController, bonds: crystal.bondController)
   }
+  
+  // MARK: -
+  // MARK: Crystal operations
   
   public override func centerOfMassOfSelection() -> SIMD3<Double>
   {
