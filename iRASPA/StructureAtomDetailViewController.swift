@@ -1575,7 +1575,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       crystal.cell = cell
       crystal.spaceGroup = spaceGroup
       crystal.atomTreeController = atomTreeController
-      crystal.bondController.bonds = bondController.bonds
+      crystal.bondController = bondController
       
       crystal.reComputeBoundingBox()
     
