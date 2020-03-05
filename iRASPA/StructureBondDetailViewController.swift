@@ -663,25 +663,21 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      if project.undoManager.isUndoing
-      {
-        project.undoManager.setActionName(NSLocalizedString("Change bond selection", comment: "Change bond selection"))
-      }
+      project.undoManager.setActionName(NSLocalizedString("Change bond selection", comment: "Change bond selection"))
+      
       // save off the current selectedNode and current selection for undo/redo
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(structure: structure, atomSelection: previousAtomSelection, previousAtomSelection: atomSelection, bondSelection: previousBondSelection, previousBondSelection: bondSelection)})
     
       structure.atomTreeController.selectedTreeNodes = atomSelection
       structure.bondController.selectedObjects = bondSelection
     
-      // reload the selection in the renderere
-      self.windowController?.detailTabViewController?.renderViewController?.reloadRenderDataSelectedAtoms()
-      
-      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: structure.atomTreeController.selectedTreeNodes.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
+      // reload the selection in the renderer
+      self.windowController?.detailTabViewController?.renderViewController?.reloadRenderDataSelectedInternalBonds()
     
-      // reload the selection in the atom-outlineview
-      self.programmaticallySetSelection()
-      
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      if (project.undoManager.isUndoing || project.undoManager.isRedoing)
+      {
+        self.reloadData()
+      }
     }
   }
   
@@ -694,10 +690,6 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     {
       if (self.observeNotifications && !project.undoManager.isUndoing && !project.undoManager.isRedoing)
       {
-        structure.bondController.selectedObjects = selectedBonds
-      
-        // set selection for undo/redo
-        project.undoManager.setActionName(NSLocalizedString("Change selection", comment:"Change selection"))
         setCurrentSelection(structure: structure, atomSelection: structure.atomTreeController.selectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondController.selectedObjects)
       }
     }
