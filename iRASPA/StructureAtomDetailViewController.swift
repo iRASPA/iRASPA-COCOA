@@ -220,14 +220,6 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       self.atomOutlineView?.selectRowIndexes(updatedSelectedIndex as IndexSet, byExtendingSelection: false)
       
-      
-      //self.atomOutlineView.needsDisplay = true
-      //self.atomOutlineView.enumerateAvailableRowViews({ (rowView,row) in
-      //  rowView.needsDisplay = true
-      //})
-      
-      
-
       self.observeNotifications = true
     }
     else
@@ -1860,14 +1852,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
         structure.atomTreeController.tag()
       
-        /*
-        for bond in bonds
-        {
-          bond.atom1.bonds.insert(bond)
-          bond.atom2.bonds.insert(bond)
-          structure.bonds.arrangedObjects.insert(bond)
-        }
- */
+        structure.bondController.arrangedObjects.insertItems(bonds, atIndexes: indexSet)
+        structure.bondController.selectedObjects.formUnion(indexSet)
       }
       
       fromItem.movies.remove(at: childIndex)
@@ -1917,6 +1903,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         structure.atomTreeController.selectedTreeNodes = []
 
         structure.atomTreeController.tag()
+        
+        structure.bondController.arrangedObjects.remove(at: indexSet)
+        structure.bondController.selectedObjects = []
       }
       
       if let newstructure = movie.frames.first?.frames.first?.structure
