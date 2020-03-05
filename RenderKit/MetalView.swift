@@ -64,8 +64,8 @@ class MetalView: MTKView
   var tracking: Tracking = .none
   
   var commandQueue: MTLCommandQueue! = nil
-  //var defaultLibrary: MTLLibrary! = nil
   var renderer: MetalRenderer = MetalRenderer()
+  var computeDevice: MTLDevice? = nil
   
   var edrSupport: CGFloat = 1.0
   
@@ -255,6 +255,9 @@ class MetalView: MTKView
     self.device = device
     self.commandQueue = commandQueue
     
+    let devices: [MTLDevice] = MTLCopyAllDevices().filter{!$0.isEqual(device) && !$0.isLowPower}
+    self.computeDevice = devices.first ?? device
+
     // detect the maximum MSAA
     for i in [32,16,8,4,2,1]
     {
