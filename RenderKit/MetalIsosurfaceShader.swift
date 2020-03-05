@@ -324,7 +324,7 @@ class MetalIsosurfaceShader
               
               if let cache: NSCache = cachedAdsorptionSurfaces[size]
               {
-                let cachedData: Data = withUnsafeBytes(of: data) { Data($0) }
+                let cachedData: Data = data.withUnsafeMutableBufferPointer{Data(buffer: $0)}
                 cache.setObject(cachedData as AnyObject, forKey: structure)
               }
             }
