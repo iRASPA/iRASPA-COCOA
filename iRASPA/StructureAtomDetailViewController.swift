@@ -1282,10 +1282,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: structure.atomTreeController.selectedTreeNodes.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
     
-      // reload the selection in the atom-outlineview
-      self.programmaticallySetSelection()
+      if (project.undoManager.isUndoing || project.undoManager.isRedoing)
+      {
+        // reload the selection in the atom-outlineview
+        self.programmaticallySetSelection()
       
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+        NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      }
     }
   }
 
@@ -1336,8 +1339,6 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           }
         }
         
-        // set selection for undo/redo
-        project.undoManager.setActionName(NSLocalizedString("Change selection", comment:"Change selection"))
         setCurrentSelection(structure: structure, atomSelection: selectedAtomTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondController.selectedObjects)
         
         // draw implicitely seleceted nodes as 'light blue'
