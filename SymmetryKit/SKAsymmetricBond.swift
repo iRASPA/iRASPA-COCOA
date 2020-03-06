@@ -58,7 +58,7 @@ public struct SKAsymmetricBond<A: SKAsymmetricAtom, B: SKAsymmetricAtom>: Hashab
   
   public init(_ atom1: SKAsymmetricAtom, _ atom2: SKAsymmetricAtom)
   {
-    if (atom1.elementIdentifier < atom2.elementIdentifier)
+    if (atom1.elementIdentifier > atom2.elementIdentifier)
     {
       self.atom1 = atom1
       self.atom2 = atom2

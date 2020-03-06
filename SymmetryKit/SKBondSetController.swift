@@ -77,7 +77,7 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
       let asymmetricBonds: Set<SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>> = Set(newBonds.map{SKAsymmetricBond($0.atom1.asymmetricParentAtom, $0.atom2.asymmetricParentAtom)})
       
       self.arrangedObjects = asymmetricBonds.sorted{
-          if $0.atom1.elementIdentifier == $1.atom1.elementIdentifier
+          if $0.atom1.elementIdentifier == $1.atom1.elementIdentifier 
           {
             if $0.atom2.elementIdentifier == $1.atom2.elementIdentifier
             {
