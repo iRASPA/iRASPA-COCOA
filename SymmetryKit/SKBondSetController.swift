@@ -185,6 +185,14 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
     }
   }
   
+  public func completationHandlerForLegacyBinaryDecoders(handler: ()->())
+  {
+    if readVersionNumber == 0
+    {
+      handler()
+    }
+  }
+  
   public func restoreBonds(atomTreeController: SKAtomTreeController)
   {
     if readVersionNumber == 0

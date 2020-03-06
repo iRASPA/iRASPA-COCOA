@@ -3530,6 +3530,8 @@ public class Structure: NSObject, Decodable, RKRenderStructure, SKRenderAdsorpti
     super.init()
     
     self.setRepresentationStyle(style: self.atomRepresentationStyle)
+    
+    self.bondController.completationHandlerForLegacyBinaryDecoders(handler: {self.reComputeBonds()})
   }
   
 }
