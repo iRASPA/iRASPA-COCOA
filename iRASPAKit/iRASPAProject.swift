@@ -433,11 +433,12 @@ public final class iRASPAProject: NSObject, Decodable, BinaryDecodable, BinaryEn
       throw iRASPAError.invalidArchiveVersion
     }
     
-    let readProjectType: ProjectType = ProjectType(rawValue: try decoder.decode(Int64.self))!
+    guard let readProjectType: ProjectType = ProjectType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
     fileNameUUID = try decoder.decode(String.self)
-    nodeType = NodeType(rawValue: try decoder.decode(Int64.self))!
-    let readStorageType: StorageType = StorageType(rawValue: try decoder.decode(Int64.self))!
-    let readLazyStatus = iRASPAProject.LazyStatus(rawValue: try decoder.decode(Int64.self))!
+    guard let nodeType = NodeType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.nodeType = nodeType
+    guard let readStorageType: StorageType = StorageType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
+    guard let readLazyStatus = iRASPAProject.LazyStatus(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
     
     self.storageType = readStorageType
     self.projectType = readProjectType

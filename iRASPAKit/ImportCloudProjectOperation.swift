@@ -35,6 +35,7 @@ import LogViewKit
 import OperationKit
 import SimulationKit
 import SymmetryKit
+import BinaryCodable
 
 extension NSOutlineView
 {
@@ -142,17 +143,29 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
           {
             do
             {
-              let data: Data = try Data.init(contentsOf: asset.fileURL!)
+              let data: Data = try Data(contentsOf: asset.fileURL!)
+              let decoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+              let project: iRASPAProject = try decoder.decode(iRASPAProject.self, decodeRepresentedObject: true)
               
-              let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-              let project: iRASPAProject = try propertyListDecoder.decodeCompressed(iRASPAProject.self, from: data)
               self.representedObject = project
               self.representedObject?.lazyStatus = .loaded
               self.representedObject?.nodeType = .leaf              
             }
             catch
             {
-              LogQueue.shared.error(destination: nil, message: "(\(projectTreeNode.displayName)) " + error.localizedDescription)
+              do
+              {
+                let data: Data = try Data(contentsOf: asset.fileURL!)
+                let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
+                let project: iRASPAProject = try propertyListDecoder.decodeCompressed(iRASPAProject.self, from: data)
+                self.representedObject = project
+                self.representedObject?.lazyStatus = .loaded
+                self.representedObject?.nodeType = .leaf
+              }
+              catch
+              {
+                LogQueue.shared.error(destination: nil, message: "(\(projectTreeNode.displayName)) " + error.localizedDescription)
+              }
             }
           }
           
@@ -164,14 +177,16 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
   
   func handleCloudKitFetchError(error: CKError)
   {
-    //let ckErrorCode: CKError.Code = CKError.Code(rawValue: error.code)!
+    let projectTreeNodeDisplayName: String = self.projectTreeNode?.displayName ?? "(Unknown)"
+
     switch (error.code)
     {
       
     case .zoneBusy, .requestRateLimited, .serviceUnavailable, .networkFailure, .networkUnavailable, .resultsTruncated:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud busy, retrying....")
       if self.retryAttempts < self.maximumRetryAttempts
       {
-        var retrySecondsDouble: Double = 3
+        var retrySecondsDouble: Double = 5
         if let retrySecondsString = error.userInfo[CKErrorRetryAfterKey] as? String
         {
           retrySecondsDouble = Double(retrySecondsString)!
@@ -181,19 +196,31 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
           fetchOperation.addDependency(delayOperation)
           self.addOperations([delayOperation,fetchOperation])
         }
-        
       }
-      break
-      //retryFetch(error, retryAfter: parseRetryTime(error), completionHandler: completionHandler)
-      
-    case .badDatabase, .internalError, .badContainer, .missingEntitlement,
-         .constraintViolation, .incompatibleVersion, .assetFileNotFound,
-         .assetFileModified, .invalidArguments,
-         .permissionFailure, .serverRejectedRequest:
-      // Developer issue
-      //completionHandler(error)
-      break
+    case .badDatabase:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud bad database, " + error.localizedDescription)
+    case .internalError:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud internal error, " + error.localizedDescription)
+    case .badContainer:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud bad container, " + error.localizedDescription)
+    case .missingEntitlement:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud missing entitlement, " + error.localizedDescription)
+    case .constraintViolation:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud constraint violation, " + error.localizedDescription)
+    case .incompatibleVersion:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud incompatible version, " + error.localizedDescription)
+    case .assetFileNotFound:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud assetfile not found, " + error.localizedDescription)
+    case .assetFileModified:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "assetfile modified, " + error.localizedDescription)
+    case .invalidArguments:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "invalid arguments, " + error.localizedDescription)
+    case .permissionFailure:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "permission failure, " + error.localizedDescription)
+    case .serverRejectedRequest:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "server rejected request, " + error.localizedDescription)
     case .unknownItem:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud unknown item, " + error.localizedDescription)
       // Developer issue
       // - Never delete CloudKit Record Types.
       // - This issue will arise if you created some records of this type
@@ -205,32 +232,37 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
       //   name. This works because field information is not saved on deleted
       //   record IDs. Unfortunately you might accidentally overwrite an existing
       //   record type which will lead to further errors.
-      //completionHandler(error)
-      break
-    case .quotaExceeded, .operationCancelled:
-      // User issue. Provide alert.
-      //completionHandler(error)
-      break
-    case .limitExceeded, .partialFailure, .serverRecordChanged,
-         .batchRequestFailed:
-      // Not possible in a fetch operation (I think).
-      //completionHandler(error)
-      break
+    case .quotaExceeded:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud quota-exceeded, " + error.localizedDescription)
+    case .operationCancelled:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud operation cancelled, " + error.localizedDescription)
+    case .limitExceeded:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud limit-exceeded, " + error.localizedDescription)
+    case .partialFailure:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud partial errors")
+      if let partialError: [CKRecord.ID : CKError] = error.userInfo[CKPartialErrorsByItemIDKey] as? [CKRecord.ID : CKError]
+      {
+        for recordID in recordIDs
+        {
+          if let error: CKError = partialError[recordID]
+          {
+            LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + error.localizedDescription)
+          }
+        }
+      }
+    case .serverRecordChanged:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud server record changed, " + error.localizedDescription)
+    case .batchRequestFailed:
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud batch-request failed, " + error.localizedDescription)
     case .notAuthenticated:
-      // Handled as condition of sync operation.
-      //completionHandler(error)
-      break
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud not authenticated, " + error.localizedDescription)
     case .zoneNotFound, .userDeletedZone:
-      // Handled in PrepareZoneOperation.
-      //completionHandler(error)
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud zone not found, " + error.localizedDescription)
       break
     case .changeTokenExpired:
-      // TODO: Determine correct handling
-      // CK Docs: The previousServerChangeToken value is too old and the client must re-sync from scratch
-      //completionHandler(error)
-      break
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud changetoken expired, " + error.localizedDescription)
     default:
-      break
+      LogQueue.shared.error(destination: nil, message: "(\(projectTreeNodeDisplayName)) " + "iCloud other error, " + error.localizedDescription)
     }
   }
   
@@ -257,8 +289,6 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
     {
       super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
     }
-    
   }
-
 }
 
