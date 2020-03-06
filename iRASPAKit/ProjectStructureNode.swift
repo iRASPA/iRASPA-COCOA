@@ -527,8 +527,9 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
       throw BinaryDecodableError.invalidArchiveVersion
     }
     
-    showBoundingBox = try decoder.decode(Bool.self)
-    renderBackgroundType = RKBackgroundType(rawValue: try decoder.decode(Int.self))!
+    self.showBoundingBox = try decoder.decode(Bool.self)
+    guard let renderBackgroundType = RKBackgroundType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.renderBackgroundType = renderBackgroundType
     
     // read picture from PNG-data
     let dataLength: UInt32 = try decoder.decode(UInt32.self)
@@ -544,7 +545,6 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
       {
         if let image = CGImage(pngDataProviderSource: dataProvider, decode: nil, shouldInterpolate: true, intent: .defaultIntent)
         {
-          debugPrint("picture read")
           self.renderBackgroundImage = image
           self.renderBackgroundCachedImage = image
         }
@@ -563,10 +563,14 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     self.renderImagePhysicalSizeInInches = try decoder.decode(Double.self)
     self.renderImageNumberOfPixels = try decoder.decode(Int.self)
     self.renderAspectRatio = try decoder.decode(Double.self)
-    self.imageDPI = try DPI(rawValue: decoder.decode(Int.self))!
-    self.imageUnits = try Units(rawValue: decoder.decode(Int.self))!
-    self.imageDimensions = try Dimensions(rawValue: decoder.decode(Int.self))!
-    self.renderImageQuality = try RKImageQuality(rawValue: decoder.decode(Int.self))!
+    guard let imageDPI = try DPI(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.imageDPI = imageDPI
+    guard let imageUnits = try Units(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.imageUnits = imageUnits
+    guard let imageDimensions = try Dimensions(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.imageDimensions = imageDimensions
+    guard let renderImageQuality = try RKImageQuality(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.renderImageQuality = renderImageQuality
     
     self.numberOfFramesPerSecond = try decoder.decode(Int.self)
     
