@@ -143,7 +143,7 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
           {
             do
             {
-              let data: Data = try Data(contentsOf: asset.fileURL!)
+              guard let data: Data = try Data(contentsOf: asset.fileURL!).decompress(withAlgorithm: .lzma) else {throw BinaryCodableError.invalidArchiveData}
               let decoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
               let project: iRASPAProject = try decoder.decode(iRASPAProject.self, decodeRepresentedObject: true)
               
@@ -168,7 +168,6 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
               }
             }
           }
-          
         }
       }
     }

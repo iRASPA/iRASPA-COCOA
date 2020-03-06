@@ -1772,7 +1772,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           
           let binaryEncoder: BinaryEncoder = BinaryEncoder()
           binaryEncoder.encode(node.representedObject)
-          let data = Data(binaryEncoder.data)
+          let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma)!
           //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
           //let data: Data = try! propertyListEncoder.encodeCompressed(node.representedObject, compressionAlgorithm: COMPRESSION_LZMA)
           
