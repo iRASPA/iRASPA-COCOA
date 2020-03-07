@@ -137,68 +137,6 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     super.init(name: name)
   }
   
-  
- 
-  // MARK: -
-  // MARK: legacy decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let readVersionNumber: Int = try container.decode(Int.self)
-    if readVersionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    self.sceneList = try container.decode(SceneList.self)
-    
-    
-    self.renderBackgroundType = RKBackgroundType(rawValue: try container.decode(Int.self))!
-    self.renderBackgroundColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
-    
-    if let data = try container.decodeIfPresent(Data.self)
-    {
-      if let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)
-      {
-        if let image = CGImage(pngDataProviderSource: dataProvider, decode: nil, shouldInterpolate: true, intent: .defaultIntent)
-        {
-          self.renderBackgroundImage = image
-        }
-      }
-    }
-    self.backgroundLinearGradientFromColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
-    self.backgroundLinearGradientToColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
-    self.backgroundRadialGradientFromColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
-    self.backgroundRadialGradientToColor = NSColor(float4: try container.decode(SIMD4<Float>.self))
-    self.backgroundLinearGradientAngle = try container.decode(Double.self)
-    self.backgroundRadialGradientRoundness = try container.decode(Double.self)
-    
-    self.renderImagePhysicalSizeInInches = try container.decode(Double.self)
-    self.renderImageNumberOfPixels = try container.decode(Int.self)
-    
-    self.imageDPI = try DPI(rawValue: container.decode(Int.self))!
-    self.imageUnits = try Units(rawValue: container.decode(Int.self))!
-    self.imageDimensions = try Dimensions(rawValue: container.decode(Int.self))!
-    self.renderImageQuality = try RKImageQuality(rawValue: container.decode(Int.self))!
-    
-    if readVersionNumber >= 2 // introduced in version 2
-    {
-      self.showBoundingBox = try container.decode(Bool.self)
-    }
-    
-    let superDecoder = try container.superDecoder()
-    try super.init(from: superDecoder)
-    
-    self.renderBackgroundCachedImage = self.drawGradientCGImage()
-  }
-  
-  deinit
-  {
-    //debugPrint("DELETING ProjectStructureNode")
-  }
-  
   public func setInitialSelectionIfNeeded()
   {
     if sceneList.selectedScene == nil,

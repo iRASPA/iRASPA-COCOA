@@ -36,7 +36,7 @@ import MathKit
 import SymmetryKit
 
 
-public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
+public class RKCamera: BinaryDecodable, BinaryEncodable
 {
   
   private var versionNumber: Int = 1
@@ -207,60 +207,6 @@ public class RKCamera: Decodable, BinaryDecodable, BinaryEncodable
     self.viewMatrix = camera.viewMatrix
   }
   
-  // MARK: -
-  // MARK: Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      //throw iRASPAError.invalidArchiveVersion
-    }
-    
-    self.zNear = try container.decode(Double.self)
-    self.zFar = try container.decode(Double.self)
-    self.windowWidth = try container.decode(Double.self)
-    self.windowHeight = try container.decode(Double.self)
-    self.aspectRatio = try container.decode(Double.self)
-    
-    
-    self.boundingBox = try container.decode(SKBoundingBox.self)
-    self.centerOfScene = try container.decode(SIMD3<Double>.self)
-    self.centerOfRotation = try container.decode(SIMD3<Double>.self)
-    
-    self.panning = try container.decode(SIMD3<Double>.self)
-    
-    self.eye = try container.decode(SIMD3<Double>.self)
-    
-    self.distance = try container.decode(SIMD3<Double>.self)
-    self.orthoScale = try container.decode(Double.self)
-    
-    self.frustrumType = try FrustrumType(rawValue: container.decode(Int.self))!
-    self.resetDirectionType = try  ResetDirectionType(rawValue: container.decode(Int.self))!
-    
-    self.angleOfView = try container.decode(Double.self)
-    self.resetPercentage = try container.decode(Double.self)
-    self.initialized = try container.decode(Bool.self)
-    
-    self.worldRotation = try container.decode(simd_quatd.self)
-    
-    self.trackBallRotation = try container.decode(simd_quatd.self)
-    
-    self.rotationDelta = try container.decode(Double.self)
-    
-    self.bloomLevel = try container.decode(Double.self)
-    
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0, y: 1, z:0))
-    
-    self.initialized = false
-  }
-  
-  
-  
-
   public var EulerAngles: SIMD3<Double>
   {
     return (trackBallRotation * worldRotation).EulerAngles

@@ -36,7 +36,7 @@ public let iRASPAProjectPasteboardType: NSPasteboard.PasteboardType = NSPasteboa
 
 
 
-public final class iRASPAProject: NSObject, Decodable, BinaryDecodable, BinaryEncodable, BinaryEncodableRepresentedObject, BinaryDecodableRepresentedObject
+public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, BinaryEncodableRepresentedObject, BinaryDecodableRepresentedObject
 {
   public enum ProjectType: Int64
   {
@@ -239,79 +239,6 @@ public final class iRASPAProject: NSObject, Decodable, BinaryDecodable, BinaryEn
     return projectType.rawValue
   }
   
-  
-  // legacy
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    let type: Int64 =  try container.decode(Int64.self)
-    
-    switch(type)
-    {
-    case 0:
-      fatalError()
-    case 1:
-      self.projectType = .structure
-      let projectStatus: ProjectStatus = try container.decode(ProjectStatus.self)
-      self.project = ProjectStructureNode.init(name: "", sceneList: SceneList())
-      self.storageType = projectStatus.storageType
-      self.lazyStatus = .lazy
-      self.fileWrapper = projectStatus.fileWrapper
-      self.nodeType = projectStatus.nodeType
-      self.fileNameUUID = projectStatus.fileName
-    case 2:
-      self.projectType = .group
-      self.project = try container.decode(ProjectGroup.self)
-      self.storageType = .local
-      self.lazyStatus = .loaded
-      self.fileWrapper = nil
-      self.nodeType = .group
-      self.fileNameUUID = UUID().uuidString
-    case 3:
-      self.projectType = .structure
-      self.project = try container.decode(ProjectStructureNode.self)
-      self.storageType = .local
-      self.lazyStatus = .loaded
-      self.fileWrapper = nil
-      self.nodeType = .leaf
-      self.fileNameUUID = UUID().uuidString
-    case 4:
-      self.projectType = .VASP
-      self.project = try container.decode(ProjectVASPNode.self)
-      self.storageType = .local
-      self.lazyStatus = .loaded
-      self.fileWrapper = nil
-      self.nodeType = .leaf
-      self.fileNameUUID = UUID().uuidString
-    case 5:
-      self.projectType = .RASPA
-      self.project = try container.decode(ProjectRASPANode.self)
-      self.storageType = .local
-      self.lazyStatus = .loaded
-      self.fileWrapper = nil
-      self.nodeType = .leaf
-      self.fileNameUUID = UUID().uuidString
-    case 6:
-      self.projectType = .GULP
-      self.project = try container.decode(ProjectGULPNode.self)
-      self.storageType = .local
-      self.lazyStatus = .loaded
-      self.fileWrapper = nil
-      self.nodeType = .leaf
-      self.fileNameUUID = UUID().uuidString
-    case 7:
-      self.projectType = .CP2K
-      self.project = try container.decode(ProjectCP2KNode.self)
-      self.storageType = .local
-      self.lazyStatus = .loaded
-      self.fileWrapper = nil
-      self.nodeType = .leaf
-      self.fileNameUUID = UUID().uuidString
-    default:
-      throw iRASPAProjectError.corruptedData
-    }
-  }
-  
   // save the lazy-part (the project)
   // used for saving the document and all projects as separate files that can can be lazily loaded
   public func projectData() -> Data
@@ -434,7 +361,7 @@ public final class iRASPAProject: NSObject, Decodable, BinaryDecodable, BinaryEn
     }
     
     guard let readProjectType: ProjectType = ProjectType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
-    fileNameUUID = try decoder.decode(String.self)
+    self.fileNameUUID = try decoder.decode(String.self)
     guard let nodeType = NodeType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.nodeType = nodeType
     guard let readStorageType: StorageType = StorageType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
@@ -471,62 +398,6 @@ public final class iRASPAProject: NSObject, Decodable, BinaryDecodable, BinaryEn
         case .CP2K:
           self.project = try decoder.decode(ProjectCP2KNode.self)
         }
-      }
-    }
-  }
-}
-
-public struct ProjectStatus: Decodable
-{
-  private var versionNumber: Int64 = 2
-  public let fileWrapper: FileWrapper?
-  public let fileName: String
-  public let nodeType: iRASPAProject.NodeType
-  public let storageType: iRASPAProject.StorageType
-  public let lazyStatus: iRASPAProject.LazyStatus
-  public let projectType: Int64
-  
-  public init(fileWrapper: FileWrapper?, fileName: String, nodeType: iRASPAProject.NodeType, storageType: iRASPAProject.StorageType, lazyStatus: iRASPAProject.LazyStatus, projectType: Int64)
-  {
-    self.fileWrapper = fileWrapper
-    self.fileName = fileName
-    self.nodeType = nodeType
-    self.storageType = storageType
-    self.lazyStatus = lazyStatus
-    self.projectType = projectType
-  }
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    self.fileWrapper = nil
-    let readVersionNumber: Int64 = try container.decode(Int64.self)
-    if readVersionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    
-    self.fileName = try container.decode(String.self)
-    self.nodeType = iRASPAProject.NodeType(rawValue: try container.decode(Int64.self))!
-    self.storageType = iRASPAProject.StorageType(rawValue: try container.decode(Int64.self))!
-    self.lazyStatus = iRASPAProject.LazyStatus(rawValue: try container.decode(Int64.self))!
-    
-    
-    if readVersionNumber >= 2 // introduced in version 2
-    {
-      self.projectType = try container.decode(Int64.self)
-    }
-    else
-    {
-      if self.nodeType == .group
-      {
-        self.projectType = iRASPAProject.ProjectType.group.rawValue
-      }
-      else
-      {
-        self.projectType = iRASPAProject.ProjectType.structure.rawValue
       }
     }
   }

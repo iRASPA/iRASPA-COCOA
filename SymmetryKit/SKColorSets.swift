@@ -33,7 +33,7 @@ import Foundation
 import BinaryCodable
 import simd
 
-public final class SKColorSets: Decodable, BinaryDecodable, BinaryEncodable
+public final class SKColorSets: BinaryDecodable, BinaryEncodable
 {
  
   
@@ -125,22 +125,6 @@ public final class SKColorSets: Decodable, BinaryDecodable, BinaryEncodable
   {
     return self.colorSets.count
   }
-  
-  // MARK: -
-  // MARK: Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      
-    }
-    self.colorSets = try container.decode([SKColorSet].self)
-  }
- 
   
   // MARK: -
   // MARK: Binary Encodable support

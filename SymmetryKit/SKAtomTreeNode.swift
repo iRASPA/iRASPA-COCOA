@@ -38,7 +38,7 @@ import simd
 
 public let NSPasteboardTypeAtomTreeNode: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.atom")
 
-public final class SKAtomTreeNode:  NSObject, Decodable, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, Copying
+public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, Copying
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -108,43 +108,6 @@ public final class SKAtomTreeNode:  NSObject, Decodable, NSPasteboardReading, NS
     self.isEditable = original.isEditable
     self.childNodes = []
   }
-  
-  
-  // MARK: -
-  // MARK: Decodable support
-  
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > SKAtomTreeNode.classVersionNumber
-    {
-      throw BinaryDecodableError.invalidArchiveVersion
-    }
-    
-    self.displayName = try container.decode(String.self)
-    let _: String = try container.decode(String.self)
-    
-    self.isGroup = try container.decode(Bool.self)
-    self.isEditable = try container.decode(Bool.self)
-    
-    self.representedObject = try container.decode(SKAsymmetricAtom.self)
-    self.childNodes = try container.decode([SKAtomTreeNode].self)
-    
-    super.init()
-    
-    // let the children now point to 'self' as the parent
-    for child in childNodes
-    {
-      child.parentNode = self
-    }
-  }
-  
-  
-  
-  
   
   // MARK: -
   // MARK: NSPasteboardWriting support

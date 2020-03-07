@@ -39,7 +39,7 @@ import MathKit
 
 public let NSPasteboardTypeFrame: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Frame")
 
-public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, PrimitiveVisualAppearanceViewer, Copying
+public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, PrimitiveVisualAppearanceViewer, Copying
 {
   
   
@@ -224,43 +224,6 @@ public final class iRASPAStructure: NSObject, Decodable, BinaryDecodable, Binary
   {
     encoder.encode(type.rawValue)
     encoder.encode(structure)
-  }
-  
-  // MARK: -
-  // MARK: Legacy Decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    guard let type: SKStructure.Kind = SKStructure.Kind(rawValue: try container.decode(Int.self)) else
-    {
-      throw BinaryDecodableError.invalidArchiveVersion
-    }
-    
-    self.type = type
-    switch(type)
-    {
-    case .structure:
-      self.structure = try container.decode(Structure.self)
-    case .crystal:
-      self.structure = try container.decode(Crystal.self)
-    case .molecularCrystal:
-      self.structure = try container.decode(MolecularCrystal.self)
-    case .molecule:
-      self.structure = try container.decode(Molecule.self)
-    case .protein:
-      self.structure = try container.decode(Protein.self)
-    case .proteinCrystal:
-      self.structure = try container.decode(ProteinCrystal.self)
-    case .ellipsoidPrimitive:
-      self.structure = try container.decode(EllipsoidPrimitive.self)
-    case .cylinderPrimitive:
-      self.structure = try container.decode(CylinderPrimitive.self)
-    case .polygonalPrismPrimitive:
-      self.structure = try container.decode(PolygonalPrismPrimitive.self)
-    default:
-      fatalError()
-    }
   }
   
   public var renderStructure: RKRenderStructure

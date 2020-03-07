@@ -99,9 +99,12 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
         
         self.projectTreeNode?.recordID = nil
         //self.projectTreeNode?.status = .ready
+        
         if let representedObject = self.representedObject
         {
+          let fileName = projectTreeNode.representedObject.fileNameUUID
           projectTreeNode.representedObject = representedObject
+          projectTreeNode.representedObject.fileNameUUID = fileName
           
           representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
           
@@ -128,6 +131,17 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
     }
     
     operation.fetchRecordsCompletionBlock = {(dict: [CKRecord.ID : CKRecord]?, error: Error?) -> Void in
+      /*
+      if let projectTreeNode = self.projectTreeNode
+      {
+        let project: iRASPAProject = iRASPAProject.init(structureProject: ProjectStructureNode.init(name: "VFI", sceneList: SceneList.init(name: "VFI", scenes: [Scene.init(movies: [Movie.init(frame: iRASPAStructure.init(crystal: Crystal.init(name: "VFI")))])])))
+        
+         self.representedObject = project
+         self.representedObject?.lazyStatus = .loaded
+         self.representedObject?.nodeType = .leaf
+        self.projectTreeNode?.isEditable = true
+        return
+      }*/
       
       if let error = error as? CKError
       {
@@ -149,23 +163,11 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
               
               self.representedObject = project
               self.representedObject?.lazyStatus = .loaded
-              self.representedObject?.nodeType = .leaf              
+              self.representedObject?.nodeType = .leaf
             }
-            catch
+            catch let error
             {
-              do
-              {
-                let data: Data = try Data(contentsOf: asset.fileURL!)
-                let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-                let project: iRASPAProject = try propertyListDecoder.decodeCompressed(iRASPAProject.self, from: data)
-                self.representedObject = project
-                self.representedObject?.lazyStatus = .loaded
-                self.representedObject?.nodeType = .leaf
-              }
-              catch
-              {
-                LogQueue.shared.error(destination: nil, message: "(\(projectTreeNode.displayName)) " + error.localizedDescription)
-              }
+              LogQueue.shared.error(destination: nil, message: "(\(projectTreeNode.displayName)) " + error.localizedDescription)
             }
           }
         }

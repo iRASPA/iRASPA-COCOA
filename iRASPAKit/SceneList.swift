@@ -38,7 +38,7 @@ import simd
 
 
 // A scene contains a list of Movies: FKArrayController<Scene>
-public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {  
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -90,28 +90,6 @@ public final class SceneList: Decodable, AtomVisualAppearanceViewer, BondVisualA
   {
     return self.scenes.flatMap{$0.movies.flatMap{$0.allStructures.map{$0 as SKRenderAdsorptionSurfaceStructure}}}
   }
-
-  
-  // MARK: -
-  // MARK: Decodable support
-  
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    let _ = try container.decode(Int.self) // numberOfFramesPerSecond
-    
-    self.displayName = try container.decode(String.self)
-    self.scenes  = try container.decode([Scene].self)
-  }
-  
   
   public var selectedFrames: [Movie : Set<iRASPAStructure>]
   {

@@ -133,27 +133,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return true
   }
   
-  // MARK: -
-  // MARK: Legacy Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let readVersionNumber: Int = try container.decode(Int.self)
-    if readVersionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    let number = try container.decode(Int.self)
-    
-    let superDecoder = try container.superDecoder()
-    try super.init(from: superDecoder)
-    
-    self.spaceGroup = SKSpacegroup(HallNumber: number)
-  }
-  
   public override var hasExternalBonds: Bool
   {
     get

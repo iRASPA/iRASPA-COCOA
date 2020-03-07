@@ -32,7 +32,7 @@
 import Foundation
 import BinaryCodable
 
-public final class SKForceFieldSets: Decodable, BinaryDecodable, BinaryEncodable
+public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -104,25 +104,6 @@ public final class SKForceFieldSets: Decodable, BinaryDecodable, BinaryEncodable
   {
     return self.forceFieldSets.count
   }
-  
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      
-    }
-    
-    self.forceFieldSets  = [SKForceFieldSet()]
-    self.forceFieldSets  += try container.decode([SKForceFieldSet].self)
-  }
- 
   
   // MARK: -
   // MARK: Binary Encodable support

@@ -39,7 +39,7 @@ import MathKit
 import simd
 
 // An Movie is a list of Movie's. It is a set of actors that each contain a list of frames for that actor
-public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
+public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
 {
   // a Scene has a surface for the whole scene
   // all movies in the scene add to the scene potential energy surface
@@ -282,12 +282,13 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
         // compute the bounding-box of the atoms
         iRASPAstructure.structure.reComputeBoundingBox()
         
-        iRASPAstructure.structure.setRepresentationForceField(forceField: "Default", forceFieldSet: defaultForceField)
-        iRASPAstructure.structure.setRepresentationColorScheme(colorSet: defaultColorSet)
-        
         // set creator etc
+        //setToCoreMOFStyle(structure: iRASPAstructure.structure)
         iRASPAstructure.structure.structureMaterialType = "MOF"
         iRASPAstructure.structure.setRepresentationStyle(style: .default)
+        
+        iRASPAstructure.structure.setRepresentationForceField(forceField: "Default", forceFieldSet: defaultForceField)
+        iRASPAstructure.structure.setRepresentationColorScheme(colorSet: defaultColorSet)
         
         iRASPAstructure.structure.reComputeBonds()
         
@@ -297,7 +298,167 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
     }
   }
   
+  private func setToCoreMOFStyle(structure: Structure)
+  {
+    debugPrint("YEAAH")
+    structure.atomRepresentationStyle = .fancy
+    
+    structure.structureMaterialType = "MOF"
+    structure.setRepresentationStyle(style: .fancy)
+    
+    let calender = NSCalendar.current
+    var dateComponents: DateComponents = DateComponents()
+    dateComponents.year = 2014
+    dateComponents.month = 10
+    dateComponents.day = 4
+    let date: Date = calender.date(from: dateComponents)!
+
+    structure.authorFirstName = "Yongchul"
+    structure.authorMiddleName = " "
+    structure.authorLastName = "Chung"
+    structure.authorOrchidID = ""
+    structure.authorResearcherID = ""
+    structure.authorAffiliationUniversityName = "Northwestern University"
+    structure.authorAffiliationFacultyName = ""
+    structure.authorAffiliationInstituteName = "Department of Chemical and Biological Engineering"
+    structure.authorAffiliationCityName = "Evanston"
+    structure.authorAffiliationCountryName = Locale.current.localizedString(forRegionCode: "US") ?? "Netherlands"
+    structure.creationDate = date
+    structure.creationTemperature = ""
+    structure.creationTemperatureScale = .Kelvin
+    structure.creationPressure = ""
+    structure.creationPressureScale = .Pascal
+    structure.creationMethod = .simulation
+    structure.creationUnitCellRelaxationMethod = .allFixed
+    structure.creationAtomicPositionsSoftwarePackage = "Materials Studio"
+    structure.creationAtomicPositionsIonsRelaxationAlgorithm = .none
+    structure.creationAtomicPositionsIonsRelaxationCheck = .none
+    structure.creationAtomicPositionsForcefield = ""
+    structure.creationAtomicPositionsForcefieldDetails = ""
+    structure.creationAtomicChargesSoftwarePackage = ""
+    structure.creationAtomicChargesAlgorithms = ""
+    structure.creationAtomicChargesForcefield = ""
+    structure.creationAtomicChargesForcefieldDetails = ""
+    structure.citationArticleTitle = "Computation-Ready, Experimental Metal-Organic Frameworks: A Tool to Enable High-Throughput Computation of Nanoporous Crystals"
+    structure.citationJournalTitle = "Chemistry of Materials"
+    structure.citationAuthors = "Y.G. Chung, J. Camp, M. Haranczyk, B.J. Sikora, W. Bury, V. Krungleviciute, T. Yildirim, O.K. Farha, D.S.   and R.Q. Snurr"
+    structure.citationJournalVolume = "26"
+    structure.citationJournalNumber = "21"
+    structure.citationJournalPageNumbers = "6185-6192"
+    structure.citationDOI = "10.1021/cm502594j"
+    structure.citationPublicationDate = date
+    structure.citationDatebaseCodes = ""
+  }
   
+  private func setToDDECStyle(structure: Structure)
+  {
+    structure.atomRepresentationStyle = .fancy
+    structure.structureMaterialType = "MOF"
+    structure.setRepresentationStyle(style: .fancy)
+    
+    let calender = NSCalendar.current
+    var dateComponents: DateComponents = DateComponents()
+    dateComponents.year = 2016
+    dateComponents.month = 1
+    dateComponents.day = 7
+    let date: Date = calender.date(from: dateComponents)!
+
+    structure.authorFirstName = "Dalar"
+    structure.authorMiddleName = " "
+    structure.authorLastName = "Nazarian"
+    structure.authorOrchidID = ""
+    structure.authorResearcherID = ""
+    structure.authorAffiliationUniversityName = "Georgia Institute of Technology"
+    structure.authorAffiliationFacultyName = ""
+    structure.authorAffiliationInstituteName = "School of Chemical & Biomolecular Engineering"
+    structure.authorAffiliationCityName = "Atlanta"
+    structure.authorAffiliationCountryName = Locale.current.localizedString(forRegionCode: "US") ?? "Netherlands"
+    structure.creationDate = date
+    structure.creationTemperature = ""
+    structure.creationTemperatureScale = .Kelvin
+    structure.creationPressure = ""
+    structure.creationPressureScale = .Pascal
+    structure.creationMethod = .simulation
+    structure.creationUnitCellRelaxationMethod = .allFixed
+    structure.creationAtomicPositionsSoftwarePackage = "Materials Studio"
+    structure.creationAtomicPositionsIonsRelaxationAlgorithm = .none
+    structure.creationAtomicPositionsIonsRelaxationCheck = .none
+    structure.creationAtomicPositionsForcefield = ""
+    structure.creationAtomicPositionsForcefieldDetails = ""
+    structure.creationAtomicChargesSoftwarePackage = "VASP 5.3.5"
+    structure.creationAtomicChargesAlgorithms = "DDEC"
+    structure.creationAtomicChargesForcefield = ""
+    structure.creationAtomicChargesForcefieldDetails = ""
+    structure.citationArticleTitle = "A Comprehensive Set of High-Quality Point Charges for Simulations of Metal-Organic Frameworks"
+    structure.citationJournalTitle = "Chemistry of Materials"
+    structure.citationAuthors = "D. Nazarian, J. Camp, and D.S. Sholl"
+    structure.citationJournalVolume = "28"
+    structure.citationJournalNumber = "3"
+    structure.citationJournalPageNumbers = "785-793"
+    structure.citationDOI = "10.1021/acs.chemmater.5b03836"
+    structure.citationPublicationDate = date
+    structure.citationDatebaseCodes = ""
+  }
+  
+  private func setToIZAStyle(structure: Structure)
+  {
+    structure.atomRepresentationStyle = .default
+    structure.structureMaterialType = "Zeolite"
+    structure.setRepresentationStyle(style: .default)
+    
+    structure.drawAdsorptionSurface = true
+    structure.adsorptionSurfaceFrontSideDiffuseColor = NSColor.init(colorCode: 0xFFFF66)
+    structure.adsorptionSurfaceBackSideDiffuseColor = NSColor.init(colorCode: 0x80FF00)
+    
+    let calender = NSCalendar.current
+    var dateComponents: DateComponents = DateComponents()
+    dateComponents.year = 2017
+    dateComponents.month = 3
+    dateComponents.day = 17
+    let date: Date = calender.date(from: dateComponents)!
+
+    var dateComponents2: DateComponents = DateComponents()
+    dateComponents2.year = 2007
+    dateComponents2.month = 2
+    dateComponents2.day = 1
+    let date2: Date = calender.date(from: dateComponents2)!
+
+    structure.authorFirstName = "Christian"
+    structure.authorMiddleName = " "
+    structure.authorLastName = "Baerlocher"
+    structure.authorOrchidID = ""
+    structure.authorResearcherID = ""
+    structure.authorAffiliationUniversityName = "ETH Zürich"
+    structure.authorAffiliationFacultyName = ""
+    structure.authorAffiliationInstituteName = "Laboratorium f. Kristallographie"
+    structure.authorAffiliationCityName = "Zürich"
+    structure.authorAffiliationCountryName = Locale.current.localizedString(forRegionCode: "CH") ?? "Netherlands"
+    structure.creationDate = date
+    structure.creationTemperature = ""
+    structure.creationTemperatureScale = .Kelvin
+    structure.creationPressure = ""
+    structure.creationPressureScale = .Pascal
+    structure.creationMethod = .simulation
+    structure.creationUnitCellRelaxationMethod = .unknown
+    structure.creationAtomicPositionsSoftwarePackage = "DLS76"
+    structure.creationAtomicPositionsIonsRelaxationAlgorithm = .none
+    structure.creationAtomicPositionsIonsRelaxationCheck = .none
+    structure.creationAtomicPositionsForcefield = ""
+    structure.creationAtomicPositionsForcefieldDetails = ""
+    structure.creationAtomicChargesSoftwarePackage = ""
+    structure.creationAtomicChargesAlgorithms = ""
+    structure.creationAtomicChargesForcefield = ""
+    structure.creationAtomicChargesForcefieldDetails = ""
+    structure.citationArticleTitle = "Atlas of Zeolite Framework Types"
+    structure.citationJournalTitle = "Elsevier"
+    structure.citationAuthors = "Christian Baerlocher, Lynne B. McCusker and David H. Olson "
+    structure.citationJournalVolume = ""
+    structure.citationJournalNumber = ""
+    structure.citationJournalPageNumbers = ""
+    structure.citationDOI = "978-0-444-53064-6"
+    structure.citationPublicationDate = date2
+    structure.citationDatebaseCodes = ""
+  }
   
   public var renderCanDrawAdsorptionSurface: Bool
   {
@@ -307,46 +468,6 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
   public override var description: String
   {
     return "Scene (\(super.description)), arranged movie-objects: \(self.movies)"
-  }
-  
-  /*
-  var currentFrame: Int?
-  {
-    get
-    {
-      return nil
-    }
-    set(newValue)
-    {
-      for movie: Movie in self.movies
-      {
-        movie.currentFrame = newValue
-      }
-    }
-  }*/
-  
-  
-  deinit
-  {
-    //Swift.print("Deallocing FKArrayController \(T.self)")
-  }
-  
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    self.displayName = try container.decode(String.self)
-    self.movies  = try container.decode([Movie].self)
   }
   
   // MARK: -
@@ -369,15 +490,9 @@ public final class Scene: NSObject, Decodable,  AtomVisualAppearanceViewer, Bond
   
   public func pasteboardPropertyList(forType type: NSPasteboard.PasteboardType) -> Any?
   {
-    //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
-    //let data: Data = try! propertyListEncoder.encode(self)
-    //return data
-    
     let binaryEncoder: BinaryEncoder = BinaryEncoder()
     binaryEncoder.encode(self)
     return Data(binaryEncoder.data)
-    
-    //return NSArchiver.archivedData(withRootObject: self.movies)
   }
   
   

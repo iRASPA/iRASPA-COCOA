@@ -33,7 +33,7 @@ import Foundation
 import BinaryCodable
 import simd
 
-public struct SKColorSet: Decodable, BinaryDecodable, BinaryEncodable
+public struct SKColorSet: BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -104,45 +104,6 @@ public struct SKColorSet: Decodable, BinaryDecodable, BinaryEncodable
     for (key,value) in colors.enumerated()
     {
       debugPrint("key: \(key) value: \(value)")
-    }
-  }
-  
-  // MARK: -
-  // MARK: Decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      
-    }
-    
-    self.displayName = try container.decode(String.self)
-    self.editable = try container.decode(Bool.self)
-    let standardColor: String = try container.decode(String.self)
-    
-    if let colorScheme: SKColorSets.ColorScheme = SKColorSets.ColorScheme(rawValue: standardColor)
-    {
-      switch(colorScheme)
-      {
-      case .jmol:
-        self.colors = SKColorSet.jMol.mapValues{NSColor(colorCode: $0)}
-      case .rasmol_modern:
-        self.colors = SKColorSet.rasmolModern.mapValues{NSColor(colorCode: $0)}
-      case .rasmol:
-        self.colors = SKColorSet.rasmol.mapValues{NSColor(colorCode: $0)}
-      case .vesta:
-        self.colors = SKColorSet.vesta.mapValues{NSColor(colorCode: $0)}
-      }
-    }
-    
-    let addedColors: Dictionary<String, NSColor> = try container.decode([String : SIMD4<Float>].self).mapValues{NSColor(float4: $0)}
-    for (key, color) in addedColors
-    {
-      self.colors[key] = color
     }
   }
   

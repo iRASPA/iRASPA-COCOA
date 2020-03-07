@@ -106,23 +106,6 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
   }
   
   // MARK: -
-  // MARK: Legacy Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let readVersionNumber: Int = try container.decode(Int.self)
-    if readVersionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    let superDecoder = try container.superDecoder()
-    try super.init(from: superDecoder)
-  }
-  
-  // MARK: -
   // MARK: Molecule operations
   
   public override func expandSymmetry()

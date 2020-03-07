@@ -477,23 +477,6 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
   }
   
   // MARK: -
-  // MARK: Legacy Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let readVersionNumber: Int = try container.decode(Int.self)
-    if readVersionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    let superDecoder = try container.superDecoder()
-    try super.init(from: superDecoder)
-  }
-  
-  // MARK: -
   // MARK: Binary Encodable support
   
   public override func binaryEncode(to encoder: BinaryEncoder)

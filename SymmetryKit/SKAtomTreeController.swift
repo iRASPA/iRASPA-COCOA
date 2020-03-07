@@ -33,7 +33,7 @@ import Foundation
 import BinaryCodable
 import simd
 
-public class SKAtomTreeController: Decodable, BinaryDecodable, BinaryEncodable
+public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -98,23 +98,6 @@ public class SKAtomTreeController: Decodable, BinaryDecodable, BinaryEncodable
       node.append(inParent: self.hiddenRootNode)
     }
   }
-  
-  // MARK: -
-  // MARK: Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw BinaryDecodableError.invalidArchiveVersion
-    }
-    
-    self.hiddenRootNode = try container.decode(SKAtomTreeNode.self)
-  }
-  
   
   public func parentItem(_ node: SKAtomTreeNode) -> SKAtomTreeNode?
   {

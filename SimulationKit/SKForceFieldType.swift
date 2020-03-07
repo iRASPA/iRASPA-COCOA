@@ -35,7 +35,7 @@ import MathKit
 import simd
 
 // Note that this is 'value'-type
-public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
+public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 2
@@ -56,27 +56,6 @@ public struct SKForceFieldType: Decodable, BinaryDecodable, BinaryEncodable
     self.potentialParameters = potentialParameters
     self.mass = mass
     self.userDefinedRadius = userDefinedRadius
-  }
-  
-  // MARK: -
-  // MARK: Decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      
-    }
-  
-    self.atomicNumber  = try container.decode(Int.self)
-    self.sortIndex = try container.decode(Int.self)
-    self.potentialParameters  = try container.decode(SIMD2<Double>.self)
-    self.mass = try container.decode(Double.self)
-    self.userDefinedRadius = try container.decode(Double.self)
-    self.isVisible = true
   }
   
   // MARK: -

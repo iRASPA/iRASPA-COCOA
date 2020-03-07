@@ -33,7 +33,7 @@ import Foundation
 import BinaryCodable
 import CloudKit
 
-public final class ProjectTreeController: Decodable, BinaryDecodable, BinaryEncodable
+public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -151,29 +151,6 @@ public final class ProjectTreeController: Decodable, BinaryDecodable, BinaryEnco
       node.append(inParent: self.hiddenRootNode)
     }
   }
-  
-  deinit
-  {
-    //Swift.print("Deallocing ProjectTreeController \(T.self)")
-  }
-  
-  
-  // MARK: -
-  // MARK: Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    self.hiddenRootNode = try container.decode(ProjectTreeNode.self)
-  }
-  
   
   public func parentItem(_ node: ProjectTreeNode) -> ProjectTreeNode?
   {
