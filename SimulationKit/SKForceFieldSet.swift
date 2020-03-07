@@ -34,7 +34,7 @@ import simd
 import SymmetryKit
 import BinaryCodable
 
-public class SKForceFieldSet: Decodable, BinaryDecodable, BinaryEncodable
+public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -84,26 +84,6 @@ public class SKForceFieldSet: Decodable, BinaryDecodable, BinaryEncodable
   {
     return SKForceFieldSet.defaultForceField.contains(where: {$0.forceFieldStringIdentifier == uniqueForceFieldName})
   }
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      
-    }
-    
-    self.displayName  = try container.decode(String.self)
-    self.referenceCount = try container.decode(Int.self)
-    let atomTypes: [String : SKForceFieldType]  = try container.decode([String : SKForceFieldType].self)
-    self.atomTypeList =  atomTypes.map{$0.value}
-  }
-  
   
   public init()
   {

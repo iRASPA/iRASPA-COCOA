@@ -41,28 +41,9 @@ public final class ProjectGULPNode: ProjectNode
     super.init(name: name)
   }
   
-  // MARK: -
-  // MARK: Legacy decodable support
-  
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
     try super.init(fromBinary: decoder)
   }
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    let superDecoder = try container.superDecoder()
-    try super.init(from: superDecoder)
-  }
-  
-
 }
 

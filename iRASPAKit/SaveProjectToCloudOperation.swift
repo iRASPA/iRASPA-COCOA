@@ -65,8 +65,7 @@ public class SaveProjectToCloudOperation: FKGroupOperation
         record["type"] = proxyProject.representedObject.projectType.rawValue as CKRecordValue
           
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(proxyProject.representedObject.fileNameUUID)
-        //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
-        //let data: Data = try! propertyListEncoder.encodeCompressed(proxyProject.representedObject, compressionAlgorithm: COMPRESSION_LZMA)
+        
         let data: Data = proxyProject.representedObject.projectData()
           
         do

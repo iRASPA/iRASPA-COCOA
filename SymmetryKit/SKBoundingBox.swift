@@ -33,7 +33,7 @@ import Foundation
 import BinaryCodable
 import simd
 
-public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
+public struct SKBoundingBox: BinaryDecodable, BinaryEncodable
 {
   public var minimum: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z:0.0)
   public var maximum: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z:0.0)
@@ -55,18 +55,6 @@ public struct SKBoundingBox: Decodable, BinaryDecodable, BinaryEncodable
   {
     self.minimum = center - 0.5 * width
     self.maximum = center + 0.5 * width
-  }
-  
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    self.minimum = try container.decode(SIMD3<Double>.self)
-    self.maximum = try container.decode(SIMD3<Double>.self)
   }
   
   public var corners: [SIMD3<Double>]

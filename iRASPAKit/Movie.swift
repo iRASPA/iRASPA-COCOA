@@ -41,7 +41,7 @@ import simd
 
 public let NSPasteboardTypeMovie: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Movie")
 
-public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -137,30 +137,6 @@ public final class Movie: NSObject, Decodable, NSPasteboardWriting, NSPasteboard
   public override init()
   {
     frames = []
-  }
-  
-  deinit
-  {
-    //Swift.print("Deallocing FKArrayController \(T.self)")
-  }
-  
- 
-  
-  // MARK: -
-  // MARK: Legacy Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let readversionNumber: Int = try container.decode(Int.self)
-    if readversionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    self.displayName = try container.decode(String.self)
-    self.frames = try container.decode([iRASPAStructure].self)
   }
   
   

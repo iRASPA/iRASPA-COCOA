@@ -32,7 +32,7 @@
 import Foundation
 import BinaryCodable
 
-public class ProjectNode: Decodable, CustomStringConvertible, BinaryDecodable, BinaryEncodable
+public class ProjectNode: CustomStringConvertible, BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -55,23 +55,6 @@ public class ProjectNode: Decodable, CustomStringConvertible, BinaryDecodable, B
   public init(name: String)
   {
     self.displayName = name
-  }
-  
-  // MARK: -
-  // MARK: Legacy Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    self.displayName  = try container.decode(String.self)
-    self.fileName = try container.decode(String.self)
   }
   
   // MARK: -

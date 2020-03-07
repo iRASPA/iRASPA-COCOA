@@ -47,20 +47,4 @@ public final class ProjectVASPNode: ProjectNode
   {
     try super.init(fromBinary: decoder)
   }
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    let superDecoder = try container.superDecoder()
-    try super.init(from: superDecoder)
-  }
-  
- 
 }

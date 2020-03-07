@@ -34,7 +34,7 @@ import BinaryCodable
 import simd
 import MathKit
 
-public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
+public struct SKCell: BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 3
   private static var classVersionNumber: Int = 2
@@ -248,45 +248,6 @@ public struct SKCell: Decodable, BinaryDecodable, BinaryEncodable
     
     return SIMD3<Int32>(x: Int32(k1), y: Int32(k2), z: Int32(k3))
   }
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  public  init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let readVersionNumber: Int = try container.decode(Int.self)
-    if readVersionNumber > self.versionNumber
-    {
-      throw SKError.invalidArchiveVersion
-    }
-    
-    self.unitCell = try container.decode(double3x3.self)
-    self.inverseUnitCell = try container.decode(double3x3.self)
-    self.fullCell = try container.decode(double3x3.self)
-    self.inverseFullCell = try container.decode(double3x3.self)
-    self.boundingBox = try container.decode(SKBoundingBox.self)
-    self.contentShift = try container.decode(SIMD3<Double>.self)
-    self.minimumReplica = try container.decode(SIMD3<Int32>.self)
-    self.maximumReplica = try container.decode(SIMD3<Int32>.self)
-    
-    if readVersionNumber >= 2 // introduced in version 2
-    {
-      self.zValue = try container.decode(Int.self)
-    }
-    
-    if readVersionNumber >= 3 // introduced in version 3
-    {
-      self.precision = try container.decode(Double.self)
-    }
-  }
-  
-  
-  
-  
-  
-  
   
   public init(superCell: SKCell)
   {

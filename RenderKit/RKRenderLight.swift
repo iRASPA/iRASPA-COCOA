@@ -33,7 +33,7 @@ import Cocoa
 import simd
 import MathKit
 
-public struct RKRenderLight: Decodable
+public struct RKRenderLight
 {
   private var versionNumber: Int = 1
   public var position: SIMD4<Double> = SIMD4<Double>(x:0, y:0, z: 100.0, w: 0.0)
@@ -73,34 +73,4 @@ public struct RKRenderLight: Decodable
     self.spotCutoff = light.spotCutoff
     self.spotExponent = light.spotExponent
   }
-  
-  
-  // MARK: -
-  // MARK: legacy decodable support
-  
-  public  init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      
-    }
-    
-    self.position = try container.decode(SIMD4<Double>.self)
-    self.ambient = try NSColor(float4: container.decode(SIMD4<Float>.self))
-    self.diffuse = try NSColor(float4: container.decode(SIMD4<Float>.self))
-    self.specular = try NSColor(float4: container.decode(SIMD4<Float>.self))
-    self.ambientIntensity = try container.decode(Double.self)
-    self.diffuseIntensity = try container.decode(Double.self)
-    self.specularIntensity = try container.decode(Double.self)
-    self.shininess = try container.decode(Double.self)
-    self.constantAttenuation = try container.decode(Double.self)
-    self.linearAttenuation = try container.decode(Double.self)
-    self.quadraticAttenuation = try container.decode(Double.self)
-    self.spotDirection = try container.decode(SIMD3<Double>.self)
-    self.spotExponent = try container.decode(Double.self)
-  }
-  
 }

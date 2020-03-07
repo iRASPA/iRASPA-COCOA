@@ -446,7 +446,6 @@
 		93F1E7FB20244A060050ECAC /* SKCIFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F1E7FA20244A060050ECAC /* SKCIFWriter.swift */; };
 		93F1E7FD20244A120050ECAC /* SKPDBWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F1E7FC20244A120050ECAC /* SKPDBWriter.swift */; };
 		93F1E7FF20244A220050ECAC /* SKXYZWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F1E7FE20244A220050ECAC /* SKXYZWriter.swift */; };
-		93F393F8224A917A00948399 /* LegacyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F393F7224A917A00948399 /* LegacyDecodable.swift */; };
 		93F3A58F218738C4008E41A2 /* SKBondSetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F3A58E218738C4008E41A2 /* SKBondSetController.swift */; };
 		93F3A5912187399E008E41A2 /* SKAtomTreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F3A5902187399E008E41A2 /* SKAtomTreeController.swift */; };
 		93F3A593218739D9008E41A2 /* SKAtomTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F3A592218739D9008E41A2 /* SKAtomTreeNode.swift */; };
@@ -458,7 +457,6 @@
 		93F3A5AA21874A50008E41A2 /* BinaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F3A5A921874A50008E41A2 /* BinaryDecoder.swift */; };
 		93F3A5AC21874AAB008E41A2 /* BinaryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F3A5AB21874AAB008E41A2 /* BinaryEncoder.swift */; };
 		93F3A5AE21874AE3008E41A2 /* BinaryCodableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F3A5AD21874AE3008E41A2 /* BinaryCodableExtensions.swift */; };
-		93F3A5B021874B3E008E41A2 /* FKCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F3A5AF21874B3E008E41A2 /* FKCoding.swift */; };
 		93F3A5B121874CA5008E41A2 /* MathKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; };
 		93F3A5B221874D0B008E41A2 /* BinaryCodable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F3A59D21874A15008E41A2 /* BinaryCodable.framework */; };
 		93F3A5B321874D17008E41A2 /* BinaryCodable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F3A59D21874A15008E41A2 /* BinaryCodable.framework */; };
@@ -1229,7 +1227,6 @@
 		93F1E7FA20244A060050ECAC /* SKCIFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFWriter.swift; sourceTree = "<group>"; };
 		93F1E7FC20244A120050ECAC /* SKPDBWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPDBWriter.swift; sourceTree = "<group>"; };
 		93F1E7FE20244A220050ECAC /* SKXYZWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXYZWriter.swift; sourceTree = "<group>"; };
-		93F393F7224A917A00948399 /* LegacyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyDecodable.swift; sourceTree = "<group>"; };
 		93F3A58E218738C4008E41A2 /* SKBondSetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKBondSetController.swift; sourceTree = "<group>"; };
 		93F3A5902187399E008E41A2 /* SKAtomTreeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAtomTreeController.swift; sourceTree = "<group>"; };
 		93F3A592218739D9008E41A2 /* SKAtomTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAtomTreeNode.swift; sourceTree = "<group>"; };
@@ -1241,7 +1238,6 @@
 		93F3A5A921874A50008E41A2 /* BinaryDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryDecoder.swift; sourceTree = "<group>"; };
 		93F3A5AB21874AAB008E41A2 /* BinaryEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryEncoder.swift; sourceTree = "<group>"; };
 		93F3A5AD21874AE3008E41A2 /* BinaryCodableExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryCodableExtensions.swift; sourceTree = "<group>"; };
-		93F3A5AF21874B3E008E41A2 /* FKCoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FKCoding.swift; sourceTree = "<group>"; };
 		93F3CD2E1E6DD80D00046552 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		93F3CD301E6DD81900046552 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		93F3CD321E6DE22D00046552 /* PrintingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintingView.swift; sourceTree = "<group>"; };
@@ -2203,10 +2199,8 @@
 			children = (
 				93F3A59F21874A15008E41A2 /* BinaryCodable.h */,
 				93793B5021DE1023004CAD9C /* LICENSE */,
-				93F3A5AF21874B3E008E41A2 /* FKCoding.swift */,
 				93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */,
 				933A8F29218CD4AD0073C653 /* DataCompression.swift */,
-				93F393F7224A917A00948399 /* LegacyDecodable.swift */,
 				93F3A5A921874A50008E41A2 /* BinaryDecoder.swift */,
 				93F3A5AB21874AAB008E41A2 /* BinaryEncoder.swift */,
 				93F3A5AD21874AE3008E41A2 /* BinaryCodableExtensions.swift */,
@@ -3367,9 +3361,7 @@
 				93F3A5AA21874A50008E41A2 /* BinaryDecoder.swift in Sources */,
 				93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */,
 				93F3A5AE21874AE3008E41A2 /* BinaryCodableExtensions.swift in Sources */,
-				93F393F8224A917A00948399 /* LegacyDecodable.swift in Sources */,
 				9377C4B82403C8FA0015FF35 /* Errors.swift in Sources */,
-				93F3A5B021874B3E008E41A2 /* FKCoding.swift in Sources */,
 				93F3A5AC21874AAB008E41A2 /* BinaryEncoder.swift in Sources */,
 				933A8F2A218CD4AD0073C653 /* DataCompression.swift in Sources */,
 			);

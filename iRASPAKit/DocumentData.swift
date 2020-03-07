@@ -34,7 +34,7 @@ import BinaryCodable
 import CloudKit
 import SimulationKit
 
-public struct DocumentData: Decodable, BinaryDecodable, BinaryEncodable
+public struct DocumentData: BinaryDecodable, BinaryEncodable
 {
   private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
@@ -316,31 +316,6 @@ public struct DocumentData: Decodable, BinaryDecodable, BinaryEncodable
     self.projectData.insertNode(cloudNodeIZAZ, inItem: cloudNodeIZA, atIndex: 25)
  */
   }
-  
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    self.init()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    let projectTreeNode: ProjectTreeNode = try container.decode(ProjectTreeNode.self)
-    self.projectLocalRootNode.childNodes = projectTreeNode.childNodes
-    for child in self.projectLocalRootNode.childNodes
-    {
-      child.parentNode = self.projectLocalRootNode
-    }
-  }
-
 
   // MARK: -
   // MARK: Binary Encodable support

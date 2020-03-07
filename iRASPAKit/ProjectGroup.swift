@@ -48,24 +48,7 @@ public final class ProjectGroup: ProjectNode
     super.init(name: displayName)
     self.fileName = recordID.recordName
   }
-  
-  // MARK: -
-  // MARK: Legacy decodable support
 
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber: Int = try container.decode(Int.self)
-    if versionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    let superDecoder = try container.superDecoder()
-    try super.init(from: superDecoder)
-  }
-  
   // MARK: -
   // MARK: Binary Encodable support
   

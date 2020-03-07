@@ -35,7 +35,7 @@ import simd
 import MathKit
 
 
-public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStringConvertible, BinaryDecodable, BinaryEncodable, Copying
+public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertible, BinaryDecodable, BinaryEncodable, Copying
 {
   private var versionNumber: Int = 3
   private static var classVersionNumber: Int = 2
@@ -285,80 +285,6 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
     return self.displayName
   }
   
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let readVersionNumber: Int = try container.decode(Int.self)
-    if readVersionNumber > self.versionNumber
-    {
-      throw BinaryDecodableError.invalidArchiveVersion
-    }
-    
-    self.displayName = try container.decode(String.self)
-    self.symmetryType = try AsymmetricAtomType(rawValue: container.decode(Int.self))!
-    
-    self.uniqueForceFieldName = try container.decode(String.self)
-    self.elementIdentifier = try container.decode(Int.self)
-    self.color = NSColor(float4: try container.decode(SIMD4<Float>.self))
-    self.drawRadius = try container.decode(Double.self)
-    self.bondDistanceCriteria = try container.decode(Double.self)
-    self.potentialParameters = try container.decode(SIMD2<Double>.self)
-    
-    self.position = try container.decode(SIMD3<Double>.self)
-    self.charge = try container.decode(Double.self)
-    
-    self.copies = try container.decode([SKAtomCopy].self)
-    
-    if readVersionNumber >= 3 // introduced in version 3
-    {
-      self.isFixed = try container.decode(Bool3.self)
-    }
-    else
-    {
-      let isAllFixed = try container.decode(Bool.self)
-      self.isFixed = Bool3(isAllFixed,isAllFixed,isAllFixed)
-    }
-    self.isVisible = try container.decode(Bool.self)
-    self.isVisibleEnabled = try container.decode(Bool.self)
-    
-    self.serialNumber = try container.decode(Int.self)
-    
-    self.alternateLocationIndicator = try Character(container.decode(String.self))
-    
-    self.residueName = try container.decode(String.self)
-    
-    self.chainIdentifier = try Character(container.decode(String.self))
-    
-    
-    self.residueSequenceNumber = try container.decode(Int.self)
-    self.codeForInsertionOfResidues = try Character(container.decode(String.self))
-    
-    self.occupancy = try container.decode(Double.self)
-    self.temperaturefactor = try container.decode(Double.self)
-    
-    self.segmentIdentifier = try container.decode(String.self)
-    
-    self.ligandAtom = try container.decode(Bool.self)
-    self.backBoneAtom = try container.decode(Bool.self)
-    
-    if readVersionNumber >= 2 // introduced in version 2
-    {
-      self.remotenessIndicator = try Character(container.decode(String.self))
-      self.branchDesignator = try Character(container.decode(String.self))
-      self.asymetricID = try container.decode(Int.self)
-    }
-    
-    for copy in copies
-    {
-      copy.asymmetricParentAtom = self
-    }
-  }
-  
   // MARK: -
   // MARK: Equatable protocol
   
@@ -464,7 +390,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, Decodable, CustomStrin
   
 }
 
-public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable, Copying
+public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying
 {
   private static var classVersionNumber: Int = 1
   
@@ -500,18 +426,6 @@ public final class SKAtomCopy: Decodable, BinaryDecodable, BinaryEncodable, Copy
     self.type = original.type
     self.asymmetricIndex = original.asymmetricIndex
   }
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  public init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    self.position = try container.decode(SIMD3<Double>.self)
-    self.type = try AtomCopyType(rawValue: container.decode(Int.self))!
-  }
-  
   
   public static func == (lhs: SKAtomCopy, rhs: SKAtomCopy) -> Bool
   {

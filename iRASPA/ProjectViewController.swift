@@ -488,7 +488,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           // create a holder that can be already be inserted into the 'projectViewController'
           // there is no project attached yet, set it as lazy&loading
           let displayName = url.deletingPathExtension().lastPathComponent
-          let iraspaproject: iRASPAProject = iRASPAProject.init(projectType: .structure, fileName: UUID().uuidString, nodeType: .leaf, storageType: .local, lazyStatus: .loading)
+          let iraspaproject: iRASPAProject = iRASPAProject(projectType: .structure, fileName: UUID().uuidString, nodeType: .leaf, storageType: .local, lazyStatus: .loading)
           iraspaproject.displayName = displayName
           let node: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iraspaproject)
           
@@ -944,29 +944,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       
       let fromItem: Any? = node.parentNode
-      /* FIX 25-11-2018
-      if node.representedObject == .none && node.representedObject.isLazy
-      {
-        if let files: Dictionary = document.documentFileWrapper?.fileWrappers,
-          let projectFileWrapper: FileWrapper = files["nl.darkwing.iRASPA_Project_" + node.representedObject.fileNameUUID],
-          let data: Data = projectFileWrapper.regularFileContents
-        {
-          do
-          {
-            let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-            let readNode: ProjectTreeNode = try propertyListDecoder.decodeCompressed(ProjectTreeNode.self, from: data)
-            node.representedObject = readNode.representedObject
-            
-            //node.representedObject = try FKUnarchiver.unarchiveRootObject(with: data) as? ProjectNode
-            //node.status = .ready
-            node.representedObject.isEdited = true
-          }
-          catch
-          {
-            
-          }
-        }
-      }*/
+      
       Cloud.shared.projectData.removeNode(node)
       
       
@@ -1705,11 +1683,118 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     }
   }
   
+  
   @IBAction func ProjectContextMenuStoreSelectionInCloud(_ sender: NSMenuItem)
+  {
+      if let document: iRASPADocument = windowController?.document as? iRASPADocument
+      {
+        let selectedObjects = document.documentData.projectData.selectedTreeNodes
+        
+        for node in selectedObjects
+        {
+          let downloadsDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
+          let url = downloadsDirectory.appendingPathComponent(node.displayName + ".cif")
+          debugPrint("display \(node.displayName) url \(url)")
+          //importStructureFiles([url], asSeparateProjects: true, onlyAsymmetricUnit: false, asMolecule: false)
+          
+          let displayName: String = (url.lastPathComponent as NSString).deletingPathExtension
+            
+            let string: String
+            do
+            {
+              string = try String(contentsOf: url, encoding: String.Encoding.utf8)
+              debugPrint("string \(string)")
+            }
+            catch
+            {
+              do
+              {
+                string = try String(contentsOf: url, encoding: String.Encoding.ascii)
+              }
+              catch let error
+              {
+                LogQueue.shared.warning(destination: windowController, message: "\(error.localizedDescription)")
+                return
+              }
+            }
+            
+            //let  parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: false)
+            
+          
+            let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: string, windowController: nil)
+            do
+            {
+              try cifParser.startParsing()
+              let scene: Scene = Scene(parser: cifParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              
+              let uuid = node.representedObject.fileNameUUID
+              node.representedObject = iRASPAProject(structureProject:   ProjectStructureNode.init(name: displayName, sceneList: sceneList))
+              node.representedObject.fileNameUUID = uuid
+              
+              node.representedObject.storageType = .local
+              node.representedObject.nodeType = .leaf
+              node.representedObject.lazyStatus = .loaded
+              
+                
+              //let loadingStatus: iRASPAProject = iRASPAProject(projectType: .structure, fileName: node.representedObject.fileNameUUID, nodeType: node.representedObject.nodeType, storageType: node.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loaded)
+              
+              
+              //node.representedObject = loadingStatus
+          }
+          catch
+          {
+            
+          }
+          
+          
+          
+          
+          
+            if let projectStructureNode: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
+            {
+            // if no camera present yet (e.g. after cif-import), create one
+               
+              
+            
+              
+              node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBoundingBox()}
+              
+              projectStructureNode.renderCamera = RKCamera()
+                projectStructureNode.renderCamera?.initialized = true
+                projectStructureNode.allStructures.forEach{$0.reComputeBoundingBox()}
+                if let renderCamera = projectStructureNode.renderCamera
+                {
+                  renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+                  renderCamera.resetCameraDistance()
+                }
+              
+              
+              // adjust the camera to a possible change of the window-size
+              if let renderCamera = projectStructureNode.renderCamera
+              {
+                if let size: CGSize = self.windowController?.detailTabViewController?.renderViewController?.renderViewController.viewBounds
+                {
+                  renderCamera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
+                }
+              }
+              
+              
+              node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBonds()}
+              
+           
+          }
+        }
+      }
+    self.reloadData()
+  }
+  
+  @IBAction func ProjectContextMenuStoreSelectionInCloudSave(_ sender: NSMenuItem)
   {
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
     {
       let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
       
       let saveOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [], recordIDsToDelete: [])
       saveOperation.recordsToSave = []
@@ -1717,13 +1802,13 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       saveOperation.isAtomic = false
       saveOperation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
       
+      
+      
+      
       for node in selectedObjects
       {
-        if let parentId = node.parentNode?.representedObject.fileNameUUID
-        {
-          
           if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode,
-            let structure = projectStructure.allIRASPAStructures.first
+             let structure = projectStructure.allIRASPAStructures.first
           {
             
             let VSA: NSNumber = NSNumber(value: structure.renderStructureVolumetricNitrogenSurfaceArea ?? 0.0)
@@ -1759,11 +1844,12 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           }
           //let parentRecordID = CKRecordID(recordName: parentId)
   
-          let recordID: CKRecord.ID = CKRecord.ID(recordName: node.representedObject.fileNameUUID)
-          let record: CKRecord = CKRecord(recordType: "ProjectNode", recordID: recordID)
-          record["displayName"] = node.representedObject.displayName as CKRecordValue
-          record["parent"] = CKRecord.Reference(recordID: CKRecord.ID(recordName: parentId), action: CKRecord.Reference.Action.none)
-          record["type"] = node.representedObject.projectType.rawValue as CKRecordValue
+        let recordID: CKRecord.ID = CKRecord.ID(recordName: node.representedObject.fileNameUUID)
+        let record: CKRecord = CKRecord(recordType: "ProjectNode", recordID: recordID)
+         
+          //record["displayName"] = node.representedObject.displayName as CKRecordValue
+          //record["parent"] = CKRecord.Reference(recordID: CKRecord.ID(recordName: parentId), action: CKRecord.Reference.Action.none)
+          //record["type"] = node.representedObject.projectType.rawValue as CKRecordValue
           
           let representedObjectInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: node.representedObjectInfo)
           record["representedObjectInfo"] = representedObjectInfoData as CKRecordValue
@@ -1771,37 +1857,211 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(node.representedObject.fileNameUUID)
           
           let binaryEncoder: BinaryEncoder = BinaryEncoder()
-          binaryEncoder.encode(node.representedObject)
+          binaryEncoder.encode(node.representedObject, encodeRepresentedObject: true)
           let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma)!
-          //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
-          //let data: Data = try! propertyListEncoder.encodeCompressed(node.representedObject, compressionAlgorithm: COMPRESSION_LZMA)
           
           do
           {
             try data.write(to: url, options: .atomicWrite)
             record["representedObject"] = CKAsset(fileURL: url)
           }
-          catch
+          catch let error
           {
-            
+            debugPrint("Error icloud save \(error.localizedDescription)")
           }
           
+          saveOperation.savePolicy = CKModifyRecordsOperation.RecordSavePolicy.changedKeys
+          
           saveOperation.recordsToSave?.append(record)
-        }
       }
       
       Cloud.shared.cloudQueue.addOperations([saveOperation], waitUntilFinished: true)
+      debugPrint("done!")
+    }
+  }
+  
+  /*
+  @IBAction func ProjectContextMenuStoreSelectionInCloud2(_ sender: NSMenuItem)
+  {
+    debugPrint("ProjectContextMenuStoreSelectionInCloud")
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        debugPrint("node \(node.representedObject.fileNameUUID)")
+        let loadingStatus: iRASPAProject = iRASPAProject(projectType: .structure, fileName: node.representedObject.fileNameUUID, nodeType: node.representedObject.nodeType, storageType: node.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loaded)
+          
+        node.representedObject = loadingStatus
+        
+        let operation: ImportProjectFromCloudOperation = ImportProjectFromCloudOperation(projectTreeNode: node, outlineView:  nil, forceFieldSets: document.forceFieldSets, reloadCompletionBlock: {
+          
+          if let projectStructureNode: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
+          {
+          // if no camera present yet (e.g. after cif-import), create one
+             
+          
+            
+            node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBoundingBox()}
+            
+            projectStructureNode.renderCamera = RKCamera()
+              projectStructureNode.renderCamera?.initialized = true
+              projectStructureNode.allStructures.forEach{$0.reComputeBoundingBox()}
+              if let renderCamera = projectStructureNode.renderCamera
+              {
+                renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+                renderCamera.resetCameraDistance()
+              }
+            
+            
+            // adjust the camera to a possible change of the window-size
+            if let renderCamera = projectStructureNode.renderCamera
+            {
+              if let size: CGSize = self.windowController?.detailTabViewController?.renderViewController?.renderViewController.viewBounds
+              {
+                renderCamera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
+              }
+            }
+            
+            
+            node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBonds()}
+            
+          }
+          
+          let saveOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [], recordIDsToDelete: [])
+          saveOperation.recordsToSave = []
+          saveOperation.recordIDsToDelete = nil
+          saveOperation.isAtomic = false
+          saveOperation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
+          
+          let recordID: CKRecord.ID = CKRecord.ID(recordName: node.representedObject.fileNameUUID)
+          let record: CKRecord = CKRecord(recordType: "ProjectNode", recordID: recordID)
+           
+            //record["displayName"] = node.representedObject.displayName as CKRecordValue
+            //record["parent"] = CKRecord.Reference(recordID: CKRecord.ID(recordName: parentId), action: CKRecord.Reference.Action.none)
+            //record["type"] = node.representedObject.projectType.rawValue as CKRecordValue
+            
+            //let representedObjectInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: node.representedObjectInfo)
+            //record["representedObjectInfo"] = representedObjectInfoData as CKRecordValue
+            
+            let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(node.representedObject.fileNameUUID)
+            
+            let binaryEncoder: BinaryEncoder = BinaryEncoder()
+            binaryEncoder.encode(node.representedObject, encodeRepresentedObject: true)
+            let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma)!
+            
+            do
+            {
+              try data.write(to: url, options: .atomicWrite)
+              record["representedObject"] = CKAsset(fileURL: url)
+            }
+            catch let error
+            {
+              debugPrint("Error icloud save \(error.localizedDescription)")
+            }
+            saveOperation.savePolicy = CKModifyRecordsOperation.RecordSavePolicy.changedKeys
+            
+            saveOperation.recordsToSave?.append(record)
+          
+            Cloud.shared.cloudQueue.addOperations([saveOperation], waitUntilFinished: false)
+        })
+        
+        Cloud.shared.cloudQueue.addOperations([operation], waitUntilFinished: true)
+        
+        
+        
+        node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
+      }
+      
+     
+      return
+      
+      let saveOperation: CKModifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [], recordIDsToDelete: [])
+      saveOperation.recordsToSave = []
+      saveOperation.recordIDsToDelete = nil
+      saveOperation.isAtomic = false
+      saveOperation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
+      
+      
       
       
       for node in selectedObjects
       {
-        let status = iRASPAProject(projectType: .structure, fileName: UUID().uuidString, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy)
-          //iRASPAProject.ProjectStatus.init(fileWrapper: nil, fileName: node.representedObject.fileName, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy, projectType: iRASPAProject.structure)
-         node.representedObject = status
+          debugPrint("id \(node.representedObject.fileNameUUID)")
+          if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode,
+             let structure = projectStructure.allIRASPAStructures.first
+          {
+            
+            let VSA: NSNumber = NSNumber(value: structure.renderStructureVolumetricNitrogenSurfaceArea ?? 0.0)
+            let GSA: NSNumber = NSNumber(value: structure.renderStructureGravimetricNitrogenSurfaceArea ?? 0.0)
+            let helium: NSNumber = NSNumber(value: structure.renderStructureHeliumVoidFraction ?? 0.0)
+            let di: NSNumber = NSNumber(value: structure.renderStructureLargestCavityDiameter ?? 0.0)
+            let df: NSNumber = NSNumber(value: structure.renderStructureRestrictingPoreLimitingDiameter ?? 0.0)
+            let dif: NSNumber = NSNumber(value: structure.renderStructureLargestCavityDiameterAlongAViablePath ?? 0.0)
+            let density: NSNumber = NSNumber(value: structure.renderStructureDensity ?? 0.0)
+            let mass: NSNumber = NSNumber(value: structure.renderStructureMass ?? 0.0)
+            let specificV: NSNumber = NSNumber(value: structure.renderStructureSpecificVolume ?? 0.0)
+            let AccesibleV: NSNumber = NSNumber(value: structure.renderStructureAccessiblePoreVolume ?? 0.0)
+            let Nchannels: NSNumber = NSNumber(value: structure.renderStructureNumberOfChannelSystems ?? 0)
+            let Npockets: NSNumber = NSNumber(value: structure.renderStructureNumberOfInaccessiblePockets ?? 0)
+            let dim: NSNumber = NSNumber(value: structure.renderStructureDimensionalityOfPoreSystem ?? 0)
+            let type: NSString =  NSString(string: structure.renderStructureMaterialType ?? "Unspecified")
+            node.representedObjectInfo =
+              [ "vsa": VSA,
+                "gsa": GSA,
+                "voidfraction" : helium,
+                "di" : di,
+                "df" : df,
+                "dif" : dif,
+                "density" : density,
+                "mass" : mass,
+                "specific_v" : specificV,
+                "accesible_v" : AccesibleV,
+                "n_channels" : Nchannels,
+                "n_pockets" : Npockets,
+                "dim" : dim,
+                "type" : type
+            ]
+          }
+          //let parentRecordID = CKRecordID(recordName: parentId)
+  
+        let recordID: CKRecord.ID = CKRecord.ID(recordName: node.representedObject.fileNameUUID)
+        let record: CKRecord = CKRecord(recordType: "ProjectNode", recordID: recordID)
+         
+          //record["displayName"] = node.representedObject.displayName as CKRecordValue
+          //record["parent"] = CKRecord.Reference(recordID: CKRecord.ID(recordName: parentId), action: CKRecord.Reference.Action.none)
+          //record["type"] = node.representedObject.projectType.rawValue as CKRecordValue
+          
+          let representedObjectInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: node.representedObjectInfo)
+          record["representedObjectInfo"] = representedObjectInfoData as CKRecordValue
+          
+          let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(node.representedObject.fileNameUUID)
+          
+        
+          let binaryEncoder: BinaryEncoder = BinaryEncoder()
+          binaryEncoder.encode(node.representedObject, encodeRepresentedObject: true)
+          let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma)!
+          
+          do
+          {
+            try data.write(to: url, options: .atomicWrite)
+            record["representedObject"] = CKAsset(fileURL: url)
+          }
+          catch let error
+          {
+            debugPrint("Error icloud save \(error.localizedDescription)")
+          }
+          
+          //saveOperation.savePolicy = CKModifyRecordsOperation.RecordSavePolicy.changedKeys
+          
+          //saveOperation.recordsToSave?.append(record)
       }
       
+      //Cloud.shared.cloudQueue.addOperations([saveOperation], waitUntilFinished: true)
+      debugPrint("done!")
     }
-  }
+  }*/
   
   @IBAction func ProjectContextMenuComputePropertiesSelection(_ sender: NSMenuItem)
   {
@@ -1813,6 +2073,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
         {
+           projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
+          
           self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: projectStructure.allStructures)
       self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: projectStructure.allStructures)
           
@@ -2302,6 +2564,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         LogQueue.shared.error(destination: self.windowController, message: "(\(proxyProject.displayName))" + error.localizedDescription)
       }
+      
+      
         
       if let _: ProjectGroup = proxyProject.representedObject.project as? ProjectGroup
       {

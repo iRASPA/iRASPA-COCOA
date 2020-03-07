@@ -50,7 +50,7 @@ let typeProject: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFi
 
 public let NSPasteboardTypeProjectTreeNode: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.iraspa")
 
-public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, BinaryEncodableRecursive, BinaryDecodableRecursive
+public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, BinaryEncodableRecursive, BinaryDecodableRecursive
 {
   
   
@@ -216,179 +216,6 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
     case saveLeafNodeToCloud = 5                     // save the project into the cloud and turn into a 'lazy'-cloud project
     case placeholder = 6
   }
-  
-  /*
-  public func encode(to encoder: Encoder) throws
-  {
-    var container = encoder.unkeyedContainer()
-    
-    try container.encode(self.versionNumber)
-    
-    let encodingStrategy: EncodingStrategy = encoder.userInfo[CodingUserInfoKey(rawValue: "encodingStrategy")!] as? EncodingStrategy ?? EncodingStrategy.saveRepresentedObject
-    
-    try container.encode(encodingStrategy.rawValue)
-    try container.encode(self.displayName)
-    
-    switch(encodingStrategy)
-    {
-    case .saveRepresentedObject:
-      try container.encode(self.representedObject)
-    case .unwrapLocalRepresentedObject, .unwrapLocalRepresentedObjectAndChildren:
-      self.unwrapLazyLocalPresentedObjectIfNeeded()
-      try container.encode(self.representedObject)
-    case .saveDocument:
-      //legacy
-      break
-    case .saveSnapshot:
-      try container.encode(self.snapshot ?? Data())
-    
-    case .saveLeafNodeToCloud:
-      if self.representedObject.isProjectStructureNode
-      {
-        /* FIX 25-11-2018
-        let status = iRASPAProject.ProjectStatus.init(fileWrapper: nil, fileName: self.representedObject.fileName, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy, projectType: iRASPAProject.structure)
-        let project = iRASPAProject.projectProjectLazy(status)
-        try container.encode(project)
-      */
-      }
-    case .placeholder:
-      try container.encode(self.representedObject)
-    }
-    
-    try container.encode(self.isEditable)
-    try container.encode(self.isVisuallyCustomizable)
-    try container.encode(self.lockedChildren)
-    
-    // encode the heterogenous dictionary as 'Data'
-    let representedObjectInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: representedObjectInfo)
-    try container.encode(representedObjectInfoData)
-    
-    // save camera, but reinitialize after decoding
-    let camera: RKCamera = (self.representedObject.project as? ProjectStructureNode)?.renderCamera ?? RKCamera()
-    camera.initialized = false
-    try container.encode(camera)
-    
-    if encodingStrategy == .saveDocument || encodingStrategy == .unwrapLocalRepresentedObjectAndChildren || encodingStrategy == .saveSnapshot || encodingStrategy == .placeholder
-    {
-      try container.encode(self.childNodes.filter{!($0.representedObject.isLoading)})
-    }
-    else
-    {
-      try container.encode([ProjectTreeNode]())
-    }
-  }*/
-  
-  // MARK: -
-  // MARK: Legacy decodable support
-  
-  
-  public  convenience init(from decoder: Decoder) throws
-  {
-    let readRepresentedObject: iRASPAProject
-    
-    var container = try decoder.unkeyedContainer()
-    
-    let versionNumber = try container.decode(Int.self)
-    
-    let _: EncodingStrategy = EncodingStrategy(rawValue: try container.decode(Int.self))! // encodingStategy
-    let displayName = try container.decode(String.self)
-    
-    /*
-    if encodingStategy == .saveSnapshot
-    {
-      let data: Data = try container.decode(Data.self)
-      let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-      readRepresentedObject = try propertyListDecoder.decodeCompressed(iRASPAProject.self, from: data)
-      readSnapshot = data
-    }
-    else
-    {*/
-      readRepresentedObject = try container.decode(iRASPAProject.self)
-      //readSnapshot = nil
-    //}
-    
-    self.init(displayName: displayName, representedObject: readRepresentedObject)
-    self.versionNumber = versionNumber
-    //self.snapshot = readSnapshot
-    
-    self.isEditable = try container.decode(Bool.self)
-    self.isVisuallyCustomizable = try container.decode(Bool.self)
-    self.lockedChildren = try container.decode(Bool.self)
-    
-    // restore dictionary from 'Data'
-    let representedObjectInfoData: Data = try container.decode(Data.self)
-    self.representedObjectInfo = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(representedObjectInfoData) as? [String: AnyObject] ?? [:]
-    
-    if let value: NSNumber = representedObjectInfo["vsa"] as? NSNumber
-    {
-      representedObject.volumetricSurfaceArea = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["gsa"] as? NSNumber
-    {
-      representedObject.gravimetricSurfaceArea = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["voidfraction"] as? NSNumber
-    {
-      representedObject.heliumVoidFraction = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["di"] as? NSNumber
-    {
-      representedObject.largestOverallCavityDiameter = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["df"] as? NSNumber
-    {
-      representedObject.restrictingPoreDiameter = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["dif"] as? NSNumber
-    {
-      representedObject.largestDiameterAlongViablePath = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["density"] as? NSNumber
-    {
-      representedObject.density = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["mass"] as? NSNumber
-    {
-      representedObject.mass = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["specific_v"] as? NSNumber
-    {
-      representedObject.specificVolume = value.doubleValue
-    }
-    if let value: NSNumber = representedObjectInfo["accesible_v"] as? NSNumber
-    {
-      representedObject.accessiblePoreVolume = value.doubleValue
-    }
-    
-    if let value: NSNumber = representedObjectInfo["n_channels"] as? NSNumber
-    {
-      representedObject.numberOfChannelSystems = value.intValue
-    }
-    if let value: NSNumber = representedObjectInfo["n_pockets"] as? NSNumber
-    {
-      representedObject.numberOfInaccesiblePockets = value.intValue
-    }
-    if let value: NSNumber = representedObjectInfo["dim"] as? NSNumber
-    {
-      representedObject.dimensionalityPoreSystem = value.intValue
-    }
-    
-    if let value: String = representedObjectInfo["type"] as? String
-    {
-      representedObject.materialType = value
-    }
-    
-    let _: RKCamera = try container.decode(RKCamera.self) // camera
-    
-    self.childNodes = try container.decode([ProjectTreeNode].self)
-    for child in childNodes
-    {
-      child.parentNode = self
-    }
-    
-    filteredAndSortedNodes = childNodes.filter{$0.matchesFilter}
-  }
-  
   
   // MARK: -
   // MARK: NSPasteboardWriting support
@@ -691,13 +518,6 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
   {
     do
     {
-      //try self.unwrapProject(outlineView: nil, queue: nil, colorSets: ColorSets(), forceFieldSets: ForceFieldSets(), reloadCompletionBlock: {})
-      //let propertyListEncoder: PropertyListEncoder = PropertyListEncoder()
-      //propertyListEncoder.userInfo[CodingUserInfoKey(rawValue: "encodeProjectChildren")!] = true
-      //let data: Data = try propertyListEncoder.encodeCompressed(self, compressionAlgorithm: COMPRESSION_LZFSE)
-      //let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-      //let copy: ProjectTreeNode = try propertyListDecoder.decodeCompressed(ProjectTreeNode.self, from: data)
-      
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
       binaryEncoder.encode(self, encodeRepresentedObject: true, encodeChildren: true)
       let data = Data(binaryEncoder.data)
@@ -1197,16 +1017,6 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
             LogQueue.shared.error(destination: nil, message: error.localizedDescription)
           }
         }
-        else if let fileWrapper = self.representedObject.fileWrapper?.fileWrappers?["nl.darkwing.iRASPA_Project_" + self.representedObject.fileNameUUID],
-           let data: Data = fileWrapper.regularFileContents
-        {
-          let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-        
-          // modify self to the unwrapped state
-          self.representedObject = try propertyListDecoder.decodeCompressed(iRASPAProject.self, from: data)
-          self.representedObject.lazyStatus = .loaded
-          self.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
-        }
         else
         {
           throw ProjectTreeError.corruptedData
@@ -1254,27 +1064,6 @@ public final class ProjectTreeNode:  NSObject, Decodable, NSPasteboardReading, N
       catch
       {
         LogQueue.shared.error(destination: nil, message: "Unable to unwrap \(self.representedObject.project.displayName)")
-      }
-    }
-    else
-    {
-      if self.representedObject.lazyStatus == .lazy,
-        self.representedObject.storageType == iRASPAProject.StorageType.local,
-        let fileWrapper = self.representedObject.fileWrapper?.fileWrappers?["nl.darkwing.iRASPA_Project_" + self.representedObject.fileNameUUID],
-        let data: Data = fileWrapper.regularFileContents
-      {
-        let propertyListDecoder: PropertyListDecoder = PropertyListDecoder()
-        
-        // modify self to the unwrapped state
-        do
-        {
-          self.representedObject = try propertyListDecoder.decodeCompressed(iRASPAProject.self, from: data)
-          self.representedObject.lazyStatus = .loaded
-        }
-        catch
-        {
-          LogQueue.shared.error(destination: nil, message: "Unable to unwrap \(self.representedObject.project.displayName)")
-        }
       }
     }
   }

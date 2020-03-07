@@ -119,32 +119,6 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return false
   }
   
-  
-  // MARK: -
-  // MARK: Legacy Decodable support
-  
-  public required init(from decoder: Decoder) throws
-  {
-    var container = try decoder.unkeyedContainer()
-    
-    let readVersionNumber: Int = try container.decode(Int.self)
-    if readVersionNumber > self.versionNumber
-    {
-      throw iRASPAError.invalidArchiveVersion
-    }
-    
-    var number: Int = 1
-    if readVersionNumber >= 2 // introduced in version 2
-    {
-       number = try container.decode(Int.self)
-      
-    }
-    
-    let superDecoder = try container.superDecoder()
-    try super.init(from: superDecoder)
-    self.spaceGroup = SKSpacegroup(HallNumber: number)
-  }
-  
   public override func translateSelection(by shift: SIMD3<Double>)
   {
     for node in self.atomTreeController.selectedTreeNodes
