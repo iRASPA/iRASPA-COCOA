@@ -299,14 +299,17 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
       throw iRASPAError.invalidArchiveVersion
     }
     
-    let readProjectType: ProjectType = ProjectType(rawValue: try decoder.decode(Int64.self))!
-    fileNameUUID = try decoder.decode(String.self)
-    nodeType = NodeType(rawValue: try decoder.decode(Int64.self))!
-    let readStorageType: StorageType = StorageType(rawValue: try decoder.decode(Int64.self))!
-    lazyStatus = iRASPAProject.LazyStatus(rawValue: try decoder.decode(Int64.self))!
-    
-    self.storageType = readStorageType
+    guard let readProjectType: ProjectType = ProjectType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.projectType = readProjectType
+    self.fileNameUUID = try decoder.decode(String.self)
+    guard let nodeType = NodeType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.nodeType = nodeType
+    guard let readStorageType: StorageType = StorageType(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.storageType = readStorageType
+    
+    guard let lazyStatus = iRASPAProject.LazyStatus(rawValue: try decoder.decode(Int64.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.lazyStatus = lazyStatus
+    
     self.project = ProjectNode(name: "")
     
     if(readStorageType == .publicCloud && readProjectType == .structure)

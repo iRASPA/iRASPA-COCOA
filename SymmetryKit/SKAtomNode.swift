@@ -348,7 +348,8 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
     charge = try decoder.decode(Double.self)
     if readVersionNumber >= 2 // introduced in version 2
     {
-      hybridization = try SKAsymmetricAtom.Hybridization(rawValue: decoder.decode(Int.self))!
+      guard let hybridization = try SKAsymmetricAtom.Hybridization(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+      self.hybridization = hybridization
     }
     uniqueForceFieldName = try decoder.decode(String.self)
     elementIdentifier = try decoder.decode(Int.self)
@@ -387,7 +388,6 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
       copy.asymmetricParentAtom = self
     }
   }
-  
 }
 
 public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying
@@ -455,7 +455,8 @@ public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying
       throw BinaryDecodableError.invalidArchiveVersion
     }
     self.position = try decoder.decode(SIMD3<Double>.self)
-    self.type = try AtomCopyType(rawValue: decoder.decode(Int.self))!
+    guard let type = try AtomCopyType(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.type = type
     self.tag = try decoder.decode(Int.self)
     self.asymmetricIndex = try decoder.decode(Int.self)
   }

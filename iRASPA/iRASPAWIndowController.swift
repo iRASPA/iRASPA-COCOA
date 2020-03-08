@@ -374,8 +374,10 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
     
       sender.state = NSControl.StateValue.on
     
-      let aspectRatio = RenderTabViewController.WindowAspectRatio(rawValue: sender.tag)!
-      self.detailTabViewController?.renderViewController?.setfixedAspectRatio(ratio: aspectRatio)
+      if let aspectRatio = RenderTabViewController.WindowAspectRatio(rawValue: sender.tag)
+      {
+        self.detailTabViewController?.renderViewController?.setfixedAspectRatio(ratio: aspectRatio)
+      }
     }
   }
   

@@ -38,7 +38,10 @@ public struct BinaryCodableError
   public enum code: Int
   {
     case invalidArchiveData
+    case unsupportedFileType
   }
   
   public static let invalidArchiveData: NSError = NSError.init(domain: BinaryCodableError.domain, code: BinaryCodableError.code.invalidArchiveData.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid archive data", comment: "Invalid archive data")])
+  
+  public static let unsupportedFileType: NSError = NSError.init(domain: BinaryCodableError.domain, code: BinaryCodableError.code.unsupportedFileType.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unsuported file type", comment: "Unsuported file type")])
 }

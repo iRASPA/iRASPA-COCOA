@@ -33,6 +33,7 @@ import Foundation
 import SymmetryKit
 import OperationKit
 import LogViewKit
+import BinaryCodable
 
 class ReadStructureOperation: FKOperation
 {
@@ -41,7 +42,7 @@ class ReadStructureOperation: FKOperation
   unowned var projectTreeNode : ProjectTreeNode
   let windowController: NSWindowController?
   
-  public init(ProjectTreeNode : ProjectTreeNode, url: URL, windowController: NSWindowController?, onlyAsymmetricUnit: Bool, asMolecule: Bool)
+  public init(ProjectTreeNode : ProjectTreeNode, url: URL, windowController: NSWindowController?, onlyAsymmetricUnit: Bool, asMolecule: Bool) throws
   {
     self.windowController = windowController
     self.url = url
@@ -93,7 +94,7 @@ class ReadStructureOperation: FKOperation
         parser = SKXDATCARParser(displayName: displayName, string: string, windowController: nil)
       }
     default:
-      fatalError("Unknown structure")
+      throw BinaryCodableError.unsupportedFileType
     }
   }
   
