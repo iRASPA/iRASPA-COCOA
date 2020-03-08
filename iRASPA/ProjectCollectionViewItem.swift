@@ -93,6 +93,7 @@ class ProjectCollectionViewItem: NSCollectionViewItem
       let projectController: ProjectTreeController = document.documentData.projectData
     
       // set window to 'Structure visualization'-mode
+      windowController.masterTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
       windowController.detailTabViewController?.selectedTabViewItemIndex = DetailTabViewController.ProjectViewType.structureVisualisation.rawValue
       
       if projectController.contains(node)
