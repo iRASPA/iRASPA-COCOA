@@ -183,36 +183,6 @@ class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowCo
   // MARK: Import data
   // =====================================================================
   
-  func panel(_ sender: Any, shouldEnable url: URL) -> Bool
-  {
-    if url.hasDirectoryPath
-    {
-      return true
-    }
-    
-    if let type = try? NSDocumentController.shared.typeForContents(of: url)
-    {
-      switch(type)
-      {
-      case iRASPA_CIF_UTI,
-           iRASPA_PDB_UTI,
-           iRASPA_XYZ_UTI:
-        return true
-      default:
-        break
-      }
-    }
-    
-    if url.pathExtension.isEmpty &&
-      (url.lastPathComponent.uppercased() == "POSCAR" ||
-       url.lastPathComponent.uppercased() == "CONTCAR" ||
-       url.lastPathComponent.uppercased() == "XDATCAR")
-    {
-      return true
-    }
-    
-    return false
-  }
   
   /// Import projects
   ///
