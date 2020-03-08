@@ -173,7 +173,8 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
       
       for ((atom1Tag, atom2Tag), boundaryType) in zip(zip(atom1Tags, atom2Tags), bondBoundaryTypes)
       {
-        let bond: SKBondNode = SKBondNode(atom1: SKBondNode.uninitializedAtom, atom2: SKBondNode.uninitializedAtom, boundaryType: SKBondNode.BoundaryType(rawValue: boundaryType)!)
+        guard let bondType = SKBondNode.BoundaryType(rawValue: boundaryType) else {throw BinaryCodableError.invalidArchiveData}
+        let bond: SKBondNode = SKBondNode(atom1: SKBondNode.uninitializedAtom, atom2: SKBondNode.uninitializedAtom, boundaryType: bondType)
         bond.atom1Tag = atom1Tag
         bond.atom2Tag = atom2Tag
         readBonds.append(bond)

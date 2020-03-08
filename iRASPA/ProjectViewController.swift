@@ -501,11 +501,18 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           }
           
           // send as a single operation to the 'window-controller-queue'
-          let operation = ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: [url], onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
-          node.importOperation = operation
-          windowController?.projectConcurrentQueue.addOperation(operation)
+          do
+          {
+            let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: [url], onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+            node.importOperation = operation
+            windowController?.projectConcurrentQueue.addOperation(operation)
           
-          index = index + 1
+            index = index + 1
+          }
+          catch let error
+          {
+            LogQueue.shared.warning(destination: windowController, message: "\(error.localizedDescription)")
+          }
         }
         self.projectOutlineView?.endUpdates()
       }
@@ -526,9 +533,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
 
         // send as a single operation to the 'window-controller-queue'
-        let operation = ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: URLs, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
-        node.importOperation = operation
-        windowController?.projectConcurrentQueue.addOperation(operation)
+        do
+        {
+          let operation = try ImportProjectOperation(projectTreeNode: node, outlineView: self.projectOutlineView, treeController: projectData, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, urls: URLs, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+          node.importOperation = operation
+          windowController?.projectConcurrentQueue.addOperation(operation)
+        }
+        catch let error
+        {
+          LogQueue.shared.warning(destination: windowController, message: "\(error.localizedDescription)")
+        }
       }
     
       if (filterContent)

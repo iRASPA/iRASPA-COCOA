@@ -82,7 +82,8 @@ public struct SKAsymmetricBond<A: SKAsymmetricAtom, B: SKAsymmetricAtom>: Hashab
     self.tag1 = try decoder.decode(Int.self)
     self.tag2 = try decoder.decode(Int.self)
     self.copies = try decoder.decode([SKBondNode].self)
-    self.bondType = BondType(rawValue: try decoder.decode(Int.self))!
+    guard let bondType = BondType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.bondType = bondType
     self.isVisible = try decoder.decode(Bool.self)
   }
   

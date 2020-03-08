@@ -33,6 +33,7 @@ import Foundation
 import OperationKit
 import SimulationKit
 import SymmetryKit
+import LogViewKit
 
 class ReadStructureGroupOperation: FKGroupOperation
 {
@@ -41,7 +42,7 @@ class ReadStructureGroupOperation: FKGroupOperation
   unowned var colorSets: SKColorSets
   unowned var forceFieldSets: SKForceFieldSets
   
-  public init(projectTreeNode : ProjectTreeNode, urls: [URL], windowController: NSWindowController?, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, onlyAsymmetricUnit: Bool, asMolecule: Bool)
+  public init(projectTreeNode : ProjectTreeNode, urls: [URL], windowController: NSWindowController?, colorSets: SKColorSets, forceFieldSets: SKForceFieldSets, onlyAsymmetricUnit: Bool, asMolecule: Bool) throws
   {
     self.projectTreeNode = projectTreeNode
     self.colorSets = colorSets
@@ -54,7 +55,7 @@ class ReadStructureGroupOperation: FKGroupOperation
     
     for url in urls
     {
-      let operation: ReadStructureOperation = ReadStructureOperation(ProjectTreeNode: projectTreeNode, url: url, windowController: windowController, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+      let operation: ReadStructureOperation = try ReadStructureOperation(ProjectTreeNode: projectTreeNode, url: url, windowController: windowController, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
       progress.addChild(operation.progress, withPendingUnitCount: 1)
       self.addOperation(operation)
     }

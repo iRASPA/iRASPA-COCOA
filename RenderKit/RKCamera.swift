@@ -768,8 +768,10 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     self.distance = try decoder.decode(SIMD3<Double>.self)
     self.orthoScale = try decoder.decode(Double.self)
     self.angleOfView = try decoder.decode(Double.self)
-    self.frustrumType = try FrustrumType(rawValue: decoder.decode(Int.self))!
-    self.resetDirectionType = try ResetDirectionType(rawValue: decoder.decode(Int.self))!
+    guard let frustrumType = try FrustrumType(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.frustrumType = frustrumType
+    guard let resetDirectionType = try ResetDirectionType(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    self.resetDirectionType = resetDirectionType
     
     self.resetPercentage = try decoder.decode(Double.self)
     
