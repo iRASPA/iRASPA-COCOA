@@ -284,7 +284,7 @@ extension SKSpacegroup
   /// - returns: the symmetry operations, i.e. a list of (integer rotation matrix, translation vector)
   public static func findSpaceGroupSymmetry(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], latticeSymmetries: SKPointSymmetrySet, symmetryPrecision: Double = 1e-4) -> SKSymmetryOperationSet
   {
-    var spaceGroupSymmetries: Set<SKSeitzMatrix> = Set<SKSeitzMatrix>(minimumCapacity:192)
+    var spaceGroupSymmetries: [SKSeitzMatrix] = []
     
     for rotationMatrix in latticeSymmetries.rotations
     {
@@ -292,7 +292,7 @@ extension SKSpacegroup
       
       for translation in translations
       {
-        spaceGroupSymmetries.insert(SKSeitzMatrix(rotation: rotationMatrix, translation: translation))
+        spaceGroupSymmetries.append(SKSeitzMatrix(rotation: rotationMatrix, translation: translation))
       }
     }
     return SKSymmetryOperationSet(operations: spaceGroupSymmetries)

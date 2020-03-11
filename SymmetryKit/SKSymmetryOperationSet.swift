@@ -35,10 +35,10 @@ import MathKit
 
 public struct SKSymmetryOperationSet
 {
-  public var operations: Set<SKSeitzMatrix>
+  public var operations: [SKSeitzMatrix]
   public var centring: SKSpacegroup.Centring
   
-  public init(operations: Set<SKSeitzMatrix>)
+  public init(operations: [SKSeitzMatrix])
   {
     self.operations = operations
     self.centring = .primitive
@@ -79,7 +79,7 @@ public struct SKSymmetryOperationSet
     centring = .primitive
     let size: Int = encoding.count/3
     
-    operations = Set<SKSeitzMatrix>(minimumCapacity: 192)
+    operations = []
     
     for i in 0..<size
     {
@@ -87,7 +87,7 @@ public struct SKSymmetryOperationSet
       let y: UInt8 = encoding[3 * i + 1]
       let z: UInt8 = encoding[3 * i + 2]
       
-      operations.insert( SKSeitzMatrix(encoding: (x,y,z)) )
+      operations.append( SKSeitzMatrix(encoding: (x,y,z)) )
     }
   }
   
@@ -96,7 +96,7 @@ public struct SKSymmetryOperationSet
     centring = .primitive
     let size: Int = spaceGroupSetting.encodedSeitz.count/3
     
-    operations = Set<SKSeitzMatrix>(minimumCapacity: 192)
+    operations = []
     
     for i in 0..<size
     {
@@ -106,7 +106,7 @@ public struct SKSymmetryOperationSet
       
       let seitz:SKSeitzMatrix = SKSeitzMatrix(encoding: (x,y,z))
       
-      operations.insert(seitz)
+      operations.append(seitz)
     }
     
     if centroSymmetric
@@ -121,7 +121,7 @@ public struct SKSymmetryOperationSet
         
         let translation: SIMD3<Int32> = seitz.translation + seitz.rotation * spaceGroupSetting.inversionCenter
         
-        operations.insert(SKSeitzMatrix(rotation: -seitz.rotation, translation: translation))
+        operations.append(SKSeitzMatrix(rotation: -seitz.rotation, translation: translation))
       }
     }
   }
@@ -157,7 +157,7 @@ public struct SKSymmetryOperationSet
     }
  
     
-    self.operations = Set(expandedGroup)
+    self.operations = Array(Set(expandedGroup))
     self.centring = .primitive
   }
 
@@ -171,10 +171,10 @@ public struct SKSymmetryOperationSet
   
   public func changedBasis(to changeOfBasis: SKChangeOfBasis) -> SKSymmetryOperationSet
   {
-    var newSet: Set<SKSeitzMatrix> = Set<SKSeitzMatrix>(minimumCapacity: self.operations.count)
+    var newSet: [SKSeitzMatrix] = []
     for seitzMatrix in self.operations
     {
-      newSet.insert(changeOfBasis * seitzMatrix)
+      newSet.append(changeOfBasis * seitzMatrix)
     }
     return SKSymmetryOperationSet(operations: newSet)
   }
@@ -182,7 +182,6 @@ public struct SKSymmetryOperationSet
   public func addingCenteringOperations(centering: SKSpacegroup.Centring) -> SKSymmetryOperationSet
   {
     var shift: [SIMD3<Int32>] = []
-    let size: Int = operations.count
     
     var multiplier: Int = 1
     switch(centering)
@@ -218,13 +217,13 @@ public struct SKSymmetryOperationSet
       multiplier = 1
       shift = [SIMD3<Int32>(0,0,0)]
     }
-    var symmetry: Set<SKSeitzMatrix> = Set<SKSeitzMatrix>(minimumCapacity: multiplier * size)
+    var symmetry: [SKSeitzMatrix] = []
     
     for seitzMatrix in operations
     {
       for i in 0..<multiplier
       {
-        symmetry.insert(SKSeitzMatrix(rotation: seitzMatrix.rotation, translation: seitzMatrix.translation + shift[i]))
+        symmetry.append(SKSeitzMatrix(rotation: seitzMatrix.rotation, translation: seitzMatrix.translation + shift[i]))
       }
     }
     
