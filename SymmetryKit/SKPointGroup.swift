@@ -158,7 +158,7 @@ public struct SKPointGroup
   /// - parameter SeitzMatrices: the symmetry elements
   ///
   /// - returns: an orthogonal axes system
-  public func constructAxes(usingSeitzMatrices SeitzMatrices: Set<SKSeitzMatrix>) -> int3x3?
+  public func constructAxes(usingSeitzMatrices SeitzMatrices: [SKSeitzMatrix]) -> int3x3?
   {
     switch(self.laue)
     {

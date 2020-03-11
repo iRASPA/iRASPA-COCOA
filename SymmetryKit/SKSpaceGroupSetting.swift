@@ -135,7 +135,7 @@ public struct SKSpaceGroupSetting
       }
     }
     
-    return SKSymmetryOperationSet(operations: Set(matrices))
+    return SKSymmetryOperationSet(operations: matrices)
   }
 
   public var SeitzMatricesWithoutTranslation: [SKSeitzMatrix]
