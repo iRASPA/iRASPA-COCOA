@@ -30,7 +30,7 @@
                                             <tableColumns>
                                                 <tableColumn identifier="bondVisibilityColumn" width="24" minWidth="24" maxWidth="1000" id="7uB-Nb-mkk">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="vis">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -62,7 +62,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondIdColumn" width="51" minWidth="40" maxWidth="1000" id="dMm-6E-Gds">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="id">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -95,7 +95,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondFixedAtomColumn" width="114.5" minWidth="40" maxWidth="1000" id="JlI-7Q-4ku" userLabel="fixed">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="atom ids.">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -154,7 +154,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondTypeColumn" width="50.5" minWidth="40" maxWidth="1000" id="H3C-4S-esH">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="type">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -196,7 +196,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondFirstAtomColumn" width="42" minWidth="40" maxWidth="1000" id="cgZ-aN-w1n">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="el(A)">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -229,7 +229,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondSecondAtomColumn" width="40" minWidth="40" maxWidth="1000" id="MEg-vK-jym">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="el(B)">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -262,7 +262,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondLengthColumn" width="68.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="DvX-tf-DBg">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="length">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </tableHeaderCell>
@@ -299,7 +299,7 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondLengthSliderColumn" width="83.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="LCM-bS-nXk">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </tableHeaderCell>
@@ -315,7 +315,7 @@
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <slider verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="ko1-tl-a6u">
-                                                                    <rect key="frame" x="0.0" y="-1" width="82" height="19"/>
+                                                                    <rect key="frame" x="0.0" y="-1" width="72" height="19"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="3" doubleValue="3" tickMarkPosition="above" sliderType="linear" id="iw4-ar-ufT"/>
                                                                     <connections>
