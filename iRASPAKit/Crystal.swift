@@ -1305,8 +1305,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public override func translatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by shift: SIMD3<Double>) -> [SIMD3<Double>]
   {
-    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
-    let basis: double3x3 = recomputeSelectionBodyFixedBasis(atoms: copies)
+    let basis: double3x3 = self.selectionBodyFixedBasis
     let translation: SIMD3<Double> = basis.inverse * shift
     let fractionalTranslation: SIMD3<Double> = self.cell.convertToFractional(translation)
     
@@ -1336,7 +1335,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
     let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
     let comFrac: SIMD3<Double> = self.cell.convertToFractional(com)
-    let basis: double3x3 = recomputeSelectionBodyFixedBasis(atoms: copies)
+    let basis: double3x3 = self.selectionBodyFixedBasis
     let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
     
     return atoms.map({
