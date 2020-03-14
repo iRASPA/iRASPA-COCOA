@@ -119,6 +119,9 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return false
   }
   
+  // MARK: -
+  // MARK: Drag selection operations
+  
   public override func translateSelection(by shift: SIMD3<Double>)
   {
     for node in self.atomTreeController.selectedTreeNodes
@@ -154,14 +157,16 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return (atoms: proteinCrystal.atomTreeController, bonds: proteinCrystal.bondController)
   }
   
-  public override func centerOfMassOfSelection() -> SIMD3<Double>
+  // MARK: -
+  // MARK: Translation and rotation operations
+  
+  public override func centerOfMassOfSelection(atoms: [SKAtomCopy]) -> SIMD3<Double>
   {
     var centerOfMassCosTheta: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
     var centerOfMassSinTheta: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
     var centerOfMass: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
     var M: Double = 0.0
     
-    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     for atom in atoms
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
@@ -192,13 +197,12 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return periodicCOM
   }
   
-  public override func matrixOfInertia() -> double3x3
+  public override func matrixOfInertia(atoms: [SKAtomCopy]) -> double3x3
   {
     var inertiaMatrix: double3x3 = double3x3()
     let com: SIMD3<Double> = self.selectionCOMTranslation
     let fracCom: SIMD3<Double> = self.cell.convertToFractional(com)
     
-    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     for atom in atoms
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
@@ -221,145 +225,153 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return inertiaMatrix
   }
   
-  public override func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func bonds(subset: [SKAsymmetricAtom]) -> [SKBondNode]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
+    var computedBonds: [SKBondNode] = []
+     
+    let subsetAtoms: [SKAtomCopy] = subset.flatMap{$0.copies}
+     
+    let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject})
+       
+    let subSetAsymmetricAtoms: Set<SKAsymmetricAtom> = Set(asymmetricAtoms).subtracting(subset)
+    let atomList: [SKAtomCopy] = subSetAsymmetricAtoms.flatMap{$0.copies}
+     
+    for i in 0..<subsetAtoms.count
     {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
+      subsetAtoms[i].type = .copy
+       
+      let posA: SIMD3<Double> = subsetAtoms[i].position
+       
+      for j in i+1..<subsetAtoms.count
+      {
+        let posB: SIMD3<Double> = subsetAtoms[j].position
+         
+        let separationVector: SIMD3<Double> = posA - posB
+        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
+         
+        let bondCriteria: Double = (subsetAtoms[i].asymmetricParentAtom.bondDistanceCriteria + subsetAtoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
+         
+        let bondLength: Double = length(periodicSeparationVector)
+        if (bondLength < bondCriteria)
+        {
+          // Type atom as 'Double'
+          if (bondLength < 0.1)
+          {
+            subsetAtoms[i].type = .duplicate
+          }
+          else if (bondLength < 0.8)
+          {
+            // discard as being a bond
+          }
+          else if (length(separationVector) > bondCriteria )
+          {
+            let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: subsetAtoms[j], boundaryType: .external)
+            computedBonds.append(bond)
+          }
+          else
+          {
+            let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: subsetAtoms[j], boundaryType: .internal)
+            computedBonds.append(bond)
+          }
+        }
+      }
+       
+      for j in 0..<atomList.count
+      {
+        let posB: SIMD3<Double> = atomList[j].position
+         
+        let separationVector: SIMD3<Double> = posA - posB
+        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
+         
+        let bondCriteria: Double = (subsetAtoms[i].asymmetricParentAtom.bondDistanceCriteria + atomList[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
+         
+        let bondLength: Double = length(periodicSeparationVector)
+        if (bondLength < bondCriteria)
+        {
+          // Type atom as 'Double'
+          if (bondLength < 0.1)
+          {
+            subsetAtoms[i].type = .duplicate
+          }
+          else if (bondLength < 0.8)
+          {
+            // discard as being a bond
+          }
+          else if (length(separationVector) > bondCriteria )
+          {
+            let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: atomList[j], boundaryType: .external)
+            computedBonds.append(bond)
+          }
+          else
+          {
+            let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: atomList[j], boundaryType: .internal)
+            computedBonds.append(bond)
+          }
+        }
+      }
     }
-    
-    self.selectionCOMTranslation += translation
-    
-    for node in proteinCrystal.atomTreeController.selectedTreeNodes
-    {
-      let pos: SIMD3<Double> = node.representedObject.position + translation
-      node.representedObject.position = pos
-    }
-    
-    proteinCrystal.expandSymmetry()
-    
-    proteinCrystal.reComputeBoundingBox()
-    
-    proteinCrystal.atomTreeController.tag()
-    
-    proteinCrystal.reComputeBonds()
-    
-    return (atoms: proteinCrystal.atomTreeController, bonds: proteinCrystal.bondController)
+     
+    return computedBonds.filter{$0.atom1.type == .copy && $0.atom2.type == .copy}
   }
   
+  // MARK: -
+  // MARK: Translation operations
   
-  public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func translatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>) -> [SIMD3<Double>]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.clone()
+    return atoms.map{$0.position + translation}
+  }
+  
+  public override func translatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by shift: SIMD3<Double>) -> [SIMD3<Double>]
+  {
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let basis: double3x3 = recomputeSelectionBodyFixedBasis(atoms: copies)
+    let translation: SIMD3<Double> = basis.inverse * shift
     
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    let com: SIMD3<Double> = self.selectionCOMTranslation
+    return atoms.map{$0.position + translation}
+  }
+  
+  // MARK: -
+  // MARK: Rotation operations
+  
+  
+  public override func rotatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by quaternion: simd_quatd) -> [SIMD3<Double>]
+  {
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
     let comFrac: SIMD3<Double> = self.cell.convertToFractional(com)
     let rotationMatrix: double3x3 = double3x3(quaternion)
     
-    
-    for node in proteinCrystal.atomTreeController.selectedTreeNodes
-    {
-      let fracPos: SIMD3<Double> = self.cell.convertToFractional(node.representedObject.position)
+    return atoms.map({
+      let fracPos: SIMD3<Double> = self.cell.convertToFractional($0.position)
       var ds: SIMD3<Double> = fracPos - comFrac
       ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
       let translatedPositionCartesian: SIMD3<Double> = self.cell.convertToCartesian(ds)
       let position: SIMD3<Double> = rotationMatrix * translatedPositionCartesian
-      node.representedObject.position = position + com
-    }
-    
-    proteinCrystal.expandSymmetry()
-    
-    proteinCrystal.reComputeBoundingBox()
-    
-    proteinCrystal.atomTreeController.tag()
-    
-    proteinCrystal.reComputeBonds()
-    
-    return (atoms: proteinCrystal.atomTreeController, bonds: proteinCrystal.bondController)
+      return position + com
+    })
   }
   
-  public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func rotatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by quaternion: simd_quatd) -> [SIMD3<Double>]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    recomputeSelectionBodyFixedBasis(index: 3)
-    
-    let basis: double3x3 = self.selectionBodyFixedBasis
-    let translation: SIMD3<Double> = basis.inverse * shift
-    
-    self.selectionCOMTranslation += translation
-    
-    for node in proteinCrystal.atomTreeController.selectedTreeNodes
-    {
-      let pos: SIMD3<Double> = node.representedObject.position + translation
-      node.representedObject.position = pos
-    }
-    
-    proteinCrystal.expandSymmetry()
-    
-    proteinCrystal.reComputeBoundingBox()
-    
-    proteinCrystal.atomTreeController.tag()
-    
-    proteinCrystal.reComputeBonds()
-    
-    return (atoms: proteinCrystal.atomTreeController, bonds: proteinCrystal.bondController)
-  }
-  
-  public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    recomputeSelectionBodyFixedBasis(index: index)
-    
-    let com: SIMD3<Double> = self.selectionCOMTranslation
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
     let comFrac: SIMD3<Double> = self.cell.convertToFractional(com)
-    let basis: double3x3 = self.selectionBodyFixedBasis
+    let basis: double3x3 = recomputeSelectionBodyFixedBasis(atoms: copies)
     let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
     
-    for node in proteinCrystal.atomTreeController.selectedTreeNodes
-    {
-      let posFrac: SIMD3<Double> = self.cell.convertToFractional(node.representedObject.position)
+    return atoms.map({
+      let posFrac: SIMD3<Double> = self.cell.convertToFractional($0.position)
       var ds: SIMD3<Double> = posFrac - comFrac
       ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
       let translatedPositionCartesian: SIMD3<Double> = self.cell.convertToCartesian(ds)
       let position: SIMD3<Double> = rotationMatrix * translatedPositionCartesian
-      node.representedObject.position = position + com
-    }
-    
-    proteinCrystal.expandSymmetry()
-    
-    proteinCrystal.reComputeBoundingBox()
-    
-    proteinCrystal.atomTreeController.tag()
-    
-    proteinCrystal.reComputeBonds()
-    
-    return (atoms: proteinCrystal.atomTreeController, bonds: proteinCrystal.bondController)
+      return position + com
+    })
   }
   
-  
+  // MARK: -
+  // MARK: Symmetry
   
   public override func expandSymmetry()
   {
@@ -386,22 +398,71 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
   
   public override func expandSymmetry(asymmetricAtom: SKAsymmetricAtom)
   {
-    asymmetricAtom.copies = []
-    
     let unitCell = self.cell.unitCell
     let inverseUnitCell = self.cell.inverseUnitCell
     
     let fractionalPosition = inverseUnitCell * asymmetricAtom.position
     let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(fractionalPosition)
     
-    for image in images
+    for (i, image) in images.enumerated()
     {
-      let CartesianPosition = unitCell * image
-      let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: CartesianPosition)
-      newAtom.type = .copy
-      asymmetricAtom.copies.append(newAtom)
+      asymmetricAtom.copies[i].type = .copy
+      asymmetricAtom.copies[i].position = unitCell * image
     }
   }
+  
+  public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
+   {
+     let unitCell = self.cell.unitCell
+     let inverseUnitCell = self.cell.inverseUnitCell
+     
+     let fractionalPosition = inverseUnitCell * asymetricAtom.position
+     let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(fractionalPosition)
+     for (index, image) in images.enumerated()
+     {
+       asymetricAtom.copies[index].asymmetricParentAtom = asymetricAtom
+       asymetricAtom.copies[index].position = unitCell * image
+       asymetricAtom.copies[index].type = .copy
+     }
+     
+     /*
+     for copy in asymetricAtom.copies
+     {
+       for bond in copy.bonds
+       {
+         let posA: SIMD3<Double> = bond.atom1.position
+         let posB: SIMD3<Double> = bond.atom2.position
+         let separationVector: SIMD3<Double> = posA - posB
+         let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
+         
+         let bondCriteria: Double = (bond.atom1.asymmetricParentAtom.bondDistanceCriteria + bond.atom2.asymmetricParentAtom.bondDistanceCriteria + 0.4)
+         
+         let bondLength: Double = length(periodicSeparationVector)
+         if (bondLength < bondCriteria)
+         {
+           // Type atom as 'Double'
+           if (bondLength < 0.1)
+           {
+             bond.atom1.type = .duplicate
+           }
+           else if (bondLength < 0.8)
+           {
+             // discard as being a bond
+           }
+           else if (length(separationVector) > bondCriteria)
+           {
+             bond.boundaryType = .external
+           }
+           else
+           {
+             bond.boundaryType = .internal
+           }
+         }
+       }
+     }*/
+   }
+   
+   
   
   public override var spaceGroupHallNumber: Int?
   {
@@ -497,58 +558,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
   
   
   
-  public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
-  {
-    let unitCell = self.cell.unitCell
-    let inverseUnitCell = self.cell.inverseUnitCell
-    
-    let fractionalPosition = inverseUnitCell * asymetricAtom.position
-    let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(fractionalPosition)
-    for (index, image) in images.enumerated()
-    {
-      asymetricAtom.copies[index].asymmetricParentAtom = asymetricAtom
-      asymetricAtom.copies[index].position = unitCell * image
-      asymetricAtom.copies[index].type = .copy
-    }
-    
-    /*
-    for copy in asymetricAtom.copies
-    {
-      for bond in copy.bonds
-      {
-        let posA: SIMD3<Double> = bond.atom1.position
-        let posB: SIMD3<Double> = bond.atom2.position
-        let separationVector: SIMD3<Double> = posA - posB
-        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
-        
-        let bondCriteria: Double = (bond.atom1.asymmetricParentAtom.bondDistanceCriteria + bond.atom2.asymmetricParentAtom.bondDistanceCriteria + 0.4)
-        
-        let bondLength: Double = length(periodicSeparationVector)
-        if (bondLength < bondCriteria)
-        {
-          // Type atom as 'Double'
-          if (bondLength < 0.1)
-          {
-            bond.atom1.type = .duplicate
-          }
-          else if (bondLength < 0.8)
-          {
-            // discard as being a bond
-          }
-          else if (length(separationVector) > bondCriteria)
-          {
-            bond.boundaryType = .external
-          }
-          else
-          {
-            bond.boundaryType = .internal
-          }
-        }
-      }
-    }*/
-  }
-  
-  
+ 
   
   // MARK: -
   // MARK: cell property-wrapper

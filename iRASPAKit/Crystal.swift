@@ -962,6 +962,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return data
   }
 
+  // MARK: -
+  // MARK: Symmetry
   
   public override func expandSymmetry()
   {
@@ -984,17 +986,25 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public override func expandSymmetry(asymmetricAtom: SKAsymmetricAtom)
   {
-    asymmetricAtom.copies = []
-      
     let images: [SIMD3<Double>] = spaceGroup.listOfSymmetricPositions(asymmetricAtom.position)
       
-    for image in images
+    for (i, image) in images.enumerated()
     {
-      let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: fract(image))
-      newAtom.type = .copy
-      asymmetricAtom.copies.append(newAtom)
+      asymmetricAtom.copies[i].type = .copy
+      asymmetricAtom.copies[i].position = fract(image)
     }
   }
+  
+  public override func generateCopiesForAsymmetricAtom(_ asymetricAtomA: SKAsymmetricAtom)
+  {
+    let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(asymetricAtomA.position)
+    for (index, image) in images.enumerated()
+    {
+      asymetricAtomA.copies[index].position = fract(image)
+      asymetricAtomA.copies[index].type = .copy
+    }
+  }
+  
   
   public override var spaceGroupHallNumber: Int?
   {
@@ -1100,10 +1110,10 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)
   }
-  
-  // MARK: -
-  // MARK: Translation operations
 
+  // MARK: -
+  // MARK: Drag selection operations
+  
   public override func translateSelection(by shift: SIMD3<Double>)
   {
     for node in self.atomTreeController.selectedTreeNodes
@@ -1139,15 +1149,14 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   }
   
   // MARK: -
-  // MARK: Crystal operations
+  // MARK: Translation and rotation operations
   
-  public override func centerOfMassOfSelection() -> SIMD3<Double>
+  public override func centerOfMassOfSelection(atoms: [SKAtomCopy]) -> SIMD3<Double>
   {
     var centerOfMassCosTheta: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
     var centerOfMassSinTheta: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
     var M: Double = 0.0
     
-    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     for atom in atoms
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
@@ -1169,13 +1178,12 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return  self.cell.convertToCartesian(com)
   }
   
-  public override func matrixOfInertia() -> double3x3
+  public override func matrixOfInertia(atoms: [SKAtomCopy]) -> double3x3
   {
     var inertiaMatrix: double3x3 = double3x3()
-    let com: SIMD3<Double> = self.selectionCOMTranslation
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: atoms)
     let fracCom: SIMD3<Double> = self.cell.convertToFractional(com)
     
-    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     for atom in atoms
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
@@ -1197,150 +1205,152 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return inertiaMatrix
   }
   
-  public override func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func bonds(subset: [SKAsymmetricAtom]) -> [SKBondNode]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    self.selectionCOMTranslation += translation
+     var computedBonds: [SKBondNode] = []
+     
+     let subsetAtoms: [SKAtomCopy] = subset.flatMap{$0.copies}
+     
+     let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject})
+       
+     let subSetAsymmetricAtoms: Set<SKAsymmetricAtom> = Set(asymmetricAtoms).subtracting(subset)
+     let atomList: [SKAtomCopy] = subSetAsymmetricAtoms.flatMap{$0.copies}
+     
+     for i in 0..<subsetAtoms.count
+     {
+       subsetAtoms[i].type = .copy
+       
+       let posA: SIMD3<Double> = cell.convertToCartesian(subsetAtoms[i].position)
+       
+       for j in i+1..<subsetAtoms.count
+       {
+         let posB: SIMD3<Double> = cell.convertToCartesian(subsetAtoms[j].position)
+         
+         let separationVector: SIMD3<Double> = posA - posB
+         let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
+         
+         let bondCriteria: Double = (subsetAtoms[i].asymmetricParentAtom.bondDistanceCriteria + subsetAtoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
+         
+         let bondLength: Double = length(periodicSeparationVector)
+         if (bondLength < bondCriteria)
+         {
+           // Type atom as 'Double'
+           if (bondLength < 0.1)
+           {
+             subsetAtoms[i].type = .duplicate
+           }
+           else if (bondLength < 0.8)
+           {
+             // discard as being a bond
+           }
+           else if (length(separationVector) > bondCriteria )
+           {
+             let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: subsetAtoms[j], boundaryType: .external)
+             computedBonds.append(bond)
+           }
+           else
+           {
+             let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: subsetAtoms[j], boundaryType: .internal)
+             computedBonds.append(bond)
+           }
+         }
+       }
+       
+       for j in 0..<atomList.count
+       {
+         let posB: SIMD3<Double> = cell.convertToCartesian(atomList[j].position)
+         
+         let separationVector: SIMD3<Double> = posA - posB
+         let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
+         
+         let bondCriteria: Double = (subsetAtoms[i].asymmetricParentAtom.bondDistanceCriteria + atomList[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
+         
+         let bondLength: Double = length(periodicSeparationVector)
+         if (bondLength < bondCriteria)
+         {
+           // Type atom as 'Double'
+           if (bondLength < 0.1)
+           {
+             subsetAtoms[i].type = .duplicate
+           }
+           else if (bondLength < 0.8)
+           {
+             // discard as being a bond
+           }
+           else if (length(separationVector) > bondCriteria )
+           {
+             let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: atomList[j], boundaryType: .external)
+             computedBonds.append(bond)
+           }
+           else
+           {
+             let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: atomList[j], boundaryType: .internal)
+             computedBonds.append(bond)
+           }
+         }
+       }
+     }
+     
+     return computedBonds.filter{$0.atom1.type == .copy && $0.atom2.type == .copy}
+   }
+  
+  // MARK: -
+  // MARK: Translation operations
+  
+  public override func translatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>) -> [SIMD3<Double>]
+  {
     let fractionalTranslation: SIMD3<Double> = self.cell.convertToFractional(translation)
-    
-    for node in crystal.atomTreeController.selectedTreeNodes
-    {
-      let pos: SIMD3<Double> = node.representedObject.position + fractionalTranslation
-      node.representedObject.position = pos
-    }
-    
-    crystal.expandSymmetry()
-    
-    crystal.reComputeBoundingBox()
-    
-    crystal.atomTreeController.tag()
-    
-    crystal.reComputeBonds()
-    
-    return (atoms: crystal.atomTreeController, bonds: crystal.bondController)
+    return atoms.map{$0.position + fractionalTranslation}
   }
   
-  
-  public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func translatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by shift: SIMD3<Double>) -> [SIMD3<Double>]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    let comFrac: SIMD3<Double> = self.cell.convertToFractional(self.selectionCOMTranslation)
-    let rotationMatrix: double3x3 = double3x3(quaternion)
-    
-    for node in crystal.atomTreeController.selectedTreeNodes
-    {
-      var ds: SIMD3<Double> = fract(node.representedObject.position) - comFrac
-      ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
-      let translatedPositionCartesian: SIMD3<Double> = self.cell.convertToCartesian(ds)
-      let position: SIMD3<Double> = rotationMatrix * translatedPositionCartesian
-      node.representedObject.position = fract(self.cell.convertToFractional(position) + comFrac)
-    }
-    
-    crystal.expandSymmetry()
-    
-    crystal.reComputeBoundingBox()
-    
-    crystal.atomTreeController.tag()
-    
-    crystal.reComputeBonds()
-    
-    return (atoms: crystal.atomTreeController, bonds: crystal.bondController)
-  }
-  
-  public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    recomputeSelectionBodyFixedBasis(index: 3)
-    
-    let basis: double3x3 = self.selectionBodyFixedBasis
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let basis: double3x3 = recomputeSelectionBodyFixedBasis(atoms: copies)
     let translation: SIMD3<Double> = basis.inverse * shift
     let fractionalTranslation: SIMD3<Double> = self.cell.convertToFractional(translation)
     
-    self.selectionCOMTranslation += translation
-    
-    for node in crystal.atomTreeController.selectedTreeNodes
-    {
-      let pos: SIMD3<Double> = node.representedObject.position + fractionalTranslation
-      node.representedObject.position = pos
-    }
-    
-    crystal.expandSymmetry()
-    
-    crystal.reComputeBoundingBox()
-    
-    crystal.atomTreeController.tag()
-    
-    crystal.reComputeBonds()
-    
-    return (atoms: crystal.atomTreeController, bonds: crystal.bondController)
+    return atoms.map{$0.position + fractionalTranslation}
   }
   
-  public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  // MARK: -
+  // MARK: Rotation operations
+  
+  public override func rotatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by quaternion: simd_quatd) -> [SIMD3<Double>]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let crystal: Crystal =  self.clone()
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
+    let comFrac: SIMD3<Double> = self.cell.convertToFractional(com)
+    let rotationMatrix: double3x3 = double3x3(quaternion)
     
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    recomputeSelectionBodyFixedBasis(index: index)
-    
-    let comFrac: SIMD3<Double> = self.cell.convertToFractional(self.selectionCOMTranslation)
-    let basis: double3x3 = self.selectionBodyFixedBasis
-    let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
-    
-    for node in crystal.atomTreeController.selectedTreeNodes
-    {
-      var ds: SIMD3<Double> = fract(node.representedObject.position) - comFrac
+    return atoms.map({
+      var ds: SIMD3<Double> = fract($0.position) - comFrac
       ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
       let translatedPositionCartesian: SIMD3<Double> = self.cell.convertToCartesian(ds)
       let position: SIMD3<Double> = rotationMatrix * translatedPositionCartesian
-      node.representedObject.position = fract(self.cell.convertToFractional(position) + comFrac)
-    }
-    
-    crystal.expandSymmetry()
-    
-    crystal.reComputeBoundingBox()
-    
-    crystal.atomTreeController.tag()
-    
-    crystal.reComputeBonds()
-    
-    return (atoms: crystal.atomTreeController, bonds: crystal.bondController)
+      return fract(self.cell.convertToFractional(position) + comFrac)})
   }
   
-  public override func generateCopiesForAsymmetricAtom(_ asymetricAtomA: SKAsymmetricAtom)
+  public override func rotatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by quaternion: simd_quatd) -> [SIMD3<Double>]
   {
-    let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(asymetricAtomA.position)
-    for (index, image) in images.enumerated()
-    {
-      asymetricAtomA.copies[index].position = fract(image)
-      asymetricAtomA.copies[index].type = .copy
-    }
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
+    let comFrac: SIMD3<Double> = self.cell.convertToFractional(com)
+    let basis: double3x3 = recomputeSelectionBodyFixedBasis(atoms: copies)
+    let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
+    
+    return atoms.map({
+      var ds: SIMD3<Double> = fract($0.position) - comFrac
+      ds -= floor(ds + SIMD3<Double>(0.5,0.5,0.5))
+      let translatedPositionCartesian: SIMD3<Double> = self.cell.convertToCartesian(ds)
+      let position: SIMD3<Double> = rotationMatrix * translatedPositionCartesian
+      return  fract(self.cell.convertToFractional(position) + comFrac)
+    })
   }
+  
+  
+  // MARK: -
+  // MARK: Crystal operations
   
   
   // place all copies as subnodes of asymmetric node
@@ -1771,6 +1781,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   // MARK: -
   // MARK: Compute bonds
+  
+ 
   
   public override func reComputeBonds()
   {

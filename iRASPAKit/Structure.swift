@@ -49,8 +49,8 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
 {
-  private var versionNumber: Int = 4
-  private static var classVersionNumber: Int = 4
+  private var versionNumber: Int = 5
+  private static var classVersionNumber: Int = 5
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   public var bondController: SKBondSetController = SKBondSetController()
@@ -2576,6 +2576,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     return nil
   }
   
+  /*
   public func centerOfMassOfSelection() -> SIMD3<Double>
   {
     return SIMD3<Double>(0.0,0.0,0.0)
@@ -2584,6 +2585,27 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public func matrixOfInertia() -> double3x3
   {
     return double3x3()
+  }*/
+  
+  public func centerOfMassOfSelection(atoms: [SKAtomCopy]) -> SIMD3<Double>
+  {
+    return SIMD3<Double>(0.0,0.0,0.0)
+  }
+  
+  public func matrixOfInertia(atoms: [SKAtomCopy]) -> double3x3
+  {
+    return double3x3()
+  }
+  
+  
+  public func recomputeSelectionBodyFixedBasis(atoms: [SKAtomCopy]) -> double3x3
+  {
+    let intertiaMatrix: double3x3 = matrixOfInertia(atoms: atoms)
+
+    var eigenvectors: double3x3 = double3x3()
+    var eigenvalues: SIMD3<Double> = SIMD3<Double>()
+    intertiaMatrix.EigenSystemSymmetric3x3(Q: &eigenvectors, w: &eigenvalues)
+    return eigenvectors
   }
   
   // -1: always update
@@ -2593,11 +2615,12 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   // update when index changes, so when a new direction of rotation has been chosen
   public func recomputeSelectionBodyFixedBasis(index: Int)
   {
+    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     if index < 0 || self.selectionRotationIndex != index
     {
       self.selectionRotationIndex = index
-      self.selectionCOMTranslation = centerOfMassOfSelection()
-      let intertiaMatrix: double3x3 = matrixOfInertia()
+      self.selectionCOMTranslation = centerOfMassOfSelection(atoms: atoms)
+      let intertiaMatrix: double3x3 = matrixOfInertia(atoms: atoms)
 
       var eigenvectors: double3x3 = double3x3()
       var eigenvalues: SIMD3<Double> = SIMD3<Double>()
@@ -2606,24 +2629,29 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     }
   }
   
-  public func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public func bonds(subset: [SKAsymmetricAtom]) -> [SKBondNode]
   {
-    return nil
+    return []
   }
   
-  public func rotateSelectionCartesian(using: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public func translatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>) -> [SIMD3<Double>]
   {
-    return nil
+    return []
   }
   
-  public func translateSelectionBodyFrame(by: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public func translatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>) -> [SIMD3<Double>]
   {
-    return nil
+    return []
   }
   
-  public func rotateSelectionBodyFrame(using: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public func rotatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by rotation: simd_quatd) -> [SIMD3<Double>]
   {
-    return nil
+    return []
+  }
+  
+  public func rotatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by rotation: simd_quatd) -> [SIMD3<Double>]
+  {
+    return []
   }
   
   public func computeChangedBondLength(asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
@@ -3249,7 +3277,11 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     self.setRepresentationStyle(style: self.atomRepresentationStyle)
     
-    self.bondController.completationHandlerForLegacyBinaryDecoders(handler: {self.reComputeBonds()})
+    if readVersionNumber <= 4
+    {
+      self.expandSymmetry()
+      self.reComputeBonds()
+    }
   }
   
 }
