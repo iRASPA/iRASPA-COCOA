@@ -206,10 +206,10 @@ extension double3x3
     let axis1: SIMD3<Double> = normalize(SIMD3<Double>(data[0],data[1],data[2]))
     let axis2: SIMD3<Double> = normalize(SIMD3<Double>(data[3],data[4],data[5]))
     let axis3: SIMD3<Double> = normalize(SIMD3<Double>(data[6],data[7],data[8]))
-    Q = double3x3([axis3,axis2,axis1])
+    Q = double3x3([axis1,axis2,axis3])
     if Q.determinant<0
     {
-      Q = double3x3([-axis3,-axis2,-axis1])
+      Q = double3x3([axis1,axis3,axis2])
     }
   }
   

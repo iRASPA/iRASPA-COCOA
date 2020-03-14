@@ -896,6 +896,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       structure.atomTreeController.selectedTreeNodes = atomSelection
       structure.bondController.selectedObjects = bondSelection
       
+      // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
       structure.recomputeSelectionBodyFixedBasis(index: -1)
     
       self.renderViewController.reloadRenderDataSelectedAtoms()

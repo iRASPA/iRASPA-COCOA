@@ -1250,6 +1250,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       structure.atomTreeController.flattenedNodes().forEach({$0.selected = false})
       structure.atomTreeController.allSelectedNodes.forEach({$0.selected = true})
       
+      // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
+      structure.recomputeSelectionBodyFixedBasis(index: -1)
+      
       self.atomOutlineView?.enumerateAvailableRowViews({ (rowView,row) in
         if let item: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
         {
@@ -1281,6 +1284,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.windowController?.detailTabViewController?.renderViewController?.reloadRenderDataSelectedAtoms()
       
       self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: structure.atomTreeController.selectedTreeNodes.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
+      
+      // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
+      structure.recomputeSelectionBodyFixedBasis(index: -1)
     
       if (project.undoManager.isUndoing || project.undoManager.isRedoing)
       {
