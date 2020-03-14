@@ -2571,22 +2571,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   }
   
-  public func finalizeTranslateSelection(by: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    return nil
-  }
-  
-  /*
-  public func centerOfMassOfSelection() -> SIMD3<Double>
-  {
-    return SIMD3<Double>(0.0,0.0,0.0)
-  }
-  
-  public func matrixOfInertia() -> double3x3
-  {
-    return double3x3()
-  }*/
-  
   public func centerOfMassOfSelection(atoms: [SKAtomCopy]) -> SIMD3<Double>
   {
     return SIMD3<Double>(0.0,0.0,0.0)

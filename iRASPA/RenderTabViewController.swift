@@ -1324,56 +1324,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle)
   }
   
-  func shiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
-  {
-    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-    {
-      for i in 0..<crystalProjectData.renderStructures.count
-      {
-        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
-        {
-          let modelMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: structure.cell.boundingBox.center)
-
-          let shift: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: to.x, y: to.y, z: depth), modelMatrix: modelMatrix,  inViewPort: self.view.bounds) - camera.myGluUnProject(SIMD3<Double>(x: origin.x, y: origin.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds)
-          
-          structure.translateSelection(by: shift)
-        }
-        
-      }
-      self.reloadRenderDataSelectedAtoms()
-    }
-  }
-  
-  func finalizeShiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
-  {
-    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-       let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-    {
-      for i in 0..<crystalProjectData.renderStructures.count
-      {
-        if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
-        {
-          let modelMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: structure.cell.boundingBox.center)
-          
-          let shift: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: to.x, y: to.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds) - camera.myGluUnProject(SIMD3<Double>(x: origin.x, y: origin.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds)
-          
-          
-          project.undoManager.setActionName(NSLocalizedString("Displace selection", comment: "Displace selection"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.finalizeTranslateSelection(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
-        }
-        
-      }
-    }
-  }
-  
   func modifyAtomsFor(structure: Structure)
   {
     if  let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
@@ -2461,7 +2411,56 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     self.deleteSelection()
   }
   
+  // MARK: Drag selection operations
+  // =====================================================================
+  
+  
+  func shiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
+   {
+     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+        let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+     {
+       for i in 0..<crystalProjectData.renderStructures.count
+       {
+         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+         {
+           let modelMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: structure.cell.boundingBox.center)
+
+           let shift: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: to.x, y: to.y, z: depth), modelMatrix: modelMatrix,  inViewPort: self.view.bounds) - camera.myGluUnProject(SIMD3<Double>(x: origin.x, y: origin.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds)
+           
+           structure.translateSelection(by: shift)
+         }
+         
+       }
+       self.reloadRenderDataSelectedAtoms()
+     }
+   }
+   
+   func finalizeShiftSelection(to: SIMD3<Double>, origin: SIMD3<Double>, depth: Double)
+   {
+     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+        let camera = proxyProject.representedObject.loadedProjectStructureNode?.renderCamera
+     {
+       for i in 0..<crystalProjectData.renderStructures.count
+       {
+         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure
+         {
+           let modelMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: structure.cell.boundingBox.center)
+           
+           let shift: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: to.x, y: to.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds) - camera.myGluUnProject(SIMD3<Double>(x: origin.x, y: origin.y, z: depth), modelMatrix: modelMatrix, inViewPort: self.view.bounds)
+           
+           let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+           self.setTranslatedPositions(structure: structure, atoms: asymmetricAtoms, by: shift)
+         }
+       }
+     }
+   }
+   
+  
   // MARK: translation Cartesian
+  // =====================================================================
   
   func updatePositions(structure: Structure, atoms: [SKAsymmetricAtom], newpositions: [SIMD3<Double>], oldpositions: [SIMD3<Double>], newbonds: [SKBondNode], oldbonds: [SKBondNode])
   {
@@ -2635,6 +2634,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   // MARK: translation molecular frame
+  // =====================================================================
   
   func setTranslatedBodyFramePositions(structure: Structure, atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>)
   {
@@ -2774,6 +2774,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   // MARK: rotation Cartesian
+  // =====================================================================
   
   func setRotatedPositions(structure: Structure, atoms: [SKAsymmetricAtom], by rotation: simd_quatd)
   {
@@ -2916,6 +2917,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   // MARK: rotation molecular frame
+  // =====================================================================
   
   func setRotatedBodyFramePositions(structure: Structure, atoms: [SKAsymmetricAtom], by rotation: simd_quatd)
   {
