@@ -160,32 +160,6 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     
   }
   
-  public override func finalizeTranslateSelection(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    for node in molecule.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.position += shift
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    molecule.expandSymmetry()
-    
-    molecule.reComputeBoundingBox()
-    
-    molecule.atomTreeController.tag()
-    
-    molecule.reComputeBonds()
-    
-    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
-  }
   
   // MARK: -
   // MARK: Translation and rotation operations

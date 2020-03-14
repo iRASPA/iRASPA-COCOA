@@ -131,32 +131,6 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     
   }
   
-  public override func finalizeTranslateSelection(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let proteinCrystal: ProteinCrystal =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    for node in proteinCrystal.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.position += shift
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    proteinCrystal.expandSymmetry()
-    
-    proteinCrystal.reComputeBoundingBox()
-    
-    proteinCrystal.atomTreeController.tag()
-    
-    proteinCrystal.reComputeBonds()
-    
-    return (atoms: proteinCrystal.atomTreeController, bonds: proteinCrystal.bondController)
-  }
-  
   // MARK: -
   // MARK: Translation and rotation operations
   
