@@ -2470,6 +2470,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       project.undoManager.registerUndo(withTarget: self, handler: {
         $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, oldbonds: newbonds)
       })
+      project.undoManager.setActionName(NSLocalizedString("Change positions", comment: "Change positions"))
       
       for i in 0..<atoms.count
       {
