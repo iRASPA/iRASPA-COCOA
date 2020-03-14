@@ -2462,11 +2462,64 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   // MARK: translation Cartesian
   
+  func updatePositions(structure: Structure, atoms: [SKAsymmetricAtom], newpositions: [SIMD3<Double>], oldpositions: [SIMD3<Double>], newbonds: [SKBondNode], oldbonds: [SKBondNode])
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      project.undoManager.registerUndo(withTarget: self, handler: {
+        $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, oldbonds: newbonds)
+      })
+      
+      for i in 0..<atoms.count
+      {
+        atoms[i].position = newpositions[i]
+        atoms[i].displacement =  SIMD3<Double>(0.0,0.0,0.0)
+        structure.expandSymmetry(asymmetricAtom: atoms[i])
+      }
+      
+      structure.bondController.replaceBonds(atoms: atoms, bonds: newbonds)
+      
+      structure.reComputeBoundingBox()
+      
+      self.invalidateIsosurface(cachedIsosurfaces: [structure])
+      self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [])
+      
+      self.reloadData()
+      self.redraw()
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.AtomsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.SpaceGroupShouldReloadNotification), object: self.windowController)
+    }
+  }
+  
+  func setTranslatedPositions(structure: Structure, atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>)
+  {
+    let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
+    
+    let newpositions: [SIMD3<Double>] =  structure.translatedPositionsSelectionCartesian(atoms: atoms, by: translation)
+    
+    // side-effect: Set already the positions to compute the new bonds. These positions will be overwritten anyway in 'updatePositions'.
+    for i in 0..<atoms.count
+    {
+      atoms[i].position = newpositions[i]
+      atoms[i].displacement =  SIMD3<Double>(0.0,0.0,0.0)
+      structure.expandSymmetry(asymmetricAtom: atoms[i])
+    }
+    
+    let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
+    
+    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, oldbonds: oldbonds)
+  }
+  
+  
+  
   @IBAction func translateSelectedAtomsCartesianPlusX(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2475,12 +2528,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.1, 0.0, 0.0)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection +x", comment: "Displace selection +x"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionCartesian(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedPositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
       }
     }
@@ -2489,8 +2538,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsCartesianMinusX(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2499,12 +2547,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(-0.1, 0.0, 0.0)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection -x", comment: "Displace selection -x"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionCartesian(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedPositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
       }
     }
@@ -2513,8 +2557,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsCartesianPlusY(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2523,12 +2566,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.1, 0.0)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection +y", comment: "Displace selection +y"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionCartesian(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedPositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
         
       }
@@ -2538,8 +2577,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsCartesianMinusY(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2548,12 +2586,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.0, -0.1, 0.0)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection -y", comment: "Displace selection -y"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionCartesian(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedPositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
       }
     }
@@ -2562,8 +2596,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsCartesianPlusZ(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2572,12 +2605,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.1)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection +z", comment: "Displace selection +z"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionCartesian(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedPositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
         
       }
@@ -2587,8 +2616,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsCartesianMinusZ(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2597,12 +2625,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, -0.1)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection -z", comment: "Displace selection -z"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionCartesian(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedPositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
       }
     }
@@ -2610,11 +2634,30 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   // MARK: translation molecular frame
   
+  func setTranslatedBodyFramePositions(structure: Structure, atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>)
+  {
+    let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
+    
+    let newpositions: [SIMD3<Double>] =  structure.translatedBodyFramePositionsSelectionCartesian(atoms: atoms, by: translation)
+    
+    // side-effect: Set already the positions to compute the new bonds. These positions will be overwritten anyway in 'updatePositions'.
+    for i in 0..<atoms.count
+    {
+      atoms[i].position = newpositions[i]
+      atoms[i].displacement =  SIMD3<Double>(0.0,0.0,0.0)
+      structure.expandSymmetry(asymmetricAtom: atoms[i])
+    }
+    
+    let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
+    
+    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, oldbonds: oldbonds)
+  }
+  
   @IBAction func translateSelectedAtomsBodyFramePlusX(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2623,12 +2666,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.1, 0.0, 0.0)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection +1", comment: "Displace selection +1"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionBodyFrame(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
         
       }
@@ -2638,8 +2677,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsBodyFrameMinusX(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2648,12 +2686,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(-0.1, 0.0, 0.0)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection -1", comment: "Displace selection -1"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionBodyFrame(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
       }
     }
@@ -2662,8 +2696,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsBodyFramePlusY(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2672,12 +2705,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.1, 0.0)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection +2", comment: "Displace selection +2"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionBodyFrame(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
         
       }
@@ -2687,8 +2716,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsBodyFrameMinusY(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2697,12 +2725,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.0, -0.1, 0.0)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection -2", comment: "Displace selection -2"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionBodyFrame(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
       }
     }
@@ -2711,8 +2735,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsBodyFramePlusZ(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2721,12 +2744,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.1)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection +3", comment: "Displace selection +3"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionBodyFrame(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
         
       }
@@ -2736,8 +2755,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   @IBAction func translateSelectedAtomsBodyFrameMinusZ(_ sender: NSButton)
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
@@ -2746,12 +2764,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           let shift: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, -0.1)
           
-          project.undoManager.setActionName(NSLocalizedString("Displace selection -3", comment: "Displace selection -3"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.translateSelectionBodyFrame(by: shift)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setTranslatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: shift)
         }
       }
     }
@@ -2759,26 +2773,41 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   // MARK: rotation Cartesian
   
+  func setRotatedPositions(structure: Structure, atoms: [SKAsymmetricAtom], by rotation: simd_quatd)
+  {
+    let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
+    
+    let newpositions: [SIMD3<Double>] =  structure.rotatedPositionsSelectionCartesian(atoms: atoms, by: rotation)
+    
+    // side-effect: Set already the positions to compute the new bonds. These positions will be overwritten anyway in 'updatePositions'.
+    for i in 0..<atoms.count
+    {
+      atoms[i].position = newpositions[i]
+      atoms[i].displacement =  SIMD3<Double>(0.0,0.0,0.0)
+      structure.expandSymmetry(asymmetricAtom: atoms[i])
+    }
+    
+    let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
+    
+    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, oldbonds: oldbonds)
+  }
+  
   @IBAction func rotateSelectedAtomsCartesianPlusX(_ sender: NSButton)
   {
     let theta: Double = 2.5 * Double.pi/180.0
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection +x", comment: "Rotate selection +x"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionCartesian(using: quaternion)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+           let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+           setRotatedPositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2790,20 +2819,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
    
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection -x", comment: "Rotate selection -x"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionCartesian(using: quaternion)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedPositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2815,20 +2839,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection +y", comment: "Rotate selection +y"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionCartesian(using: quaternion)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedPositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2840,20 +2859,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection -y", comment: "Rotate selection -y"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionCartesian(using: quaternion)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedPositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2865,20 +2879,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,0.0,1.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection +z", comment: "Rotate selection +z"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionCartesian(using: quaternion)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedPositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2890,20 +2899,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,0.0,1.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection -z", comment: "Rotate selection -z"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionCartesian(using: quaternion)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedPositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2911,25 +2915,41 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   // MARK: rotation molecular frame
   
+  func setRotatedBodyFramePositions(structure: Structure, atoms: [SKAsymmetricAtom], by rotation: simd_quatd)
+  {
+    let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
+    
+    let newpositions: [SIMD3<Double>] =  structure.rotatedBodyFramePositionsSelectionCartesian(atoms: atoms, by: rotation)
+    
+    // side-effect: Set already the positions to compute the new bonds. These positions will be overwritten anyway in 'updatePositions'.
+    for i in 0..<atoms.count
+    {
+      atoms[i].position = newpositions[i]
+      atoms[i].displacement =  SIMD3<Double>(0.0,0.0,0.0)
+      structure.expandSymmetry(asymmetricAtom: atoms[i])
+    }
+    
+    let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
+    
+    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, oldbonds: oldbonds)
+  }
+  
   @IBAction func rotateSelectedAtomsBodyFramePlusX(_ sender: NSButton)
   {
     let theta: Double = 2.5 * Double.pi/180.0
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection +1", comment: "Rotate selection +1"))
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionBodyFrame(using: quaternion, index: 0)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2942,20 +2962,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
 
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection -1", comment: "Rotate selection -1"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionBodyFrame(using: quaternion, index: 0)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2967,20 +2982,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection +2", comment: "Rotate selection +2"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionBodyFrame(using: quaternion, index: 1)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -2992,20 +3002,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection -2", comment: "Rotate selection -2"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionBodyFrame(using: quaternion, index: 1)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -3017,20 +3022,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,0.0,1.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection +3", comment: "Rotate selection +3"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionBodyFrame(using: quaternion, index: 2)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }
@@ -3042,20 +3042,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let quaternion: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,0.0,1.0))
     
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
-      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
+      let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled
     {
       for i in 0..<crystalProjectData.renderStructures.count
       {
         if let structure: Structure = crystalProjectData.renderStructures[i] as? Structure,
           !structure.atomTreeController.selectedTreeNodes.isEmpty
         {
-          project.undoManager.setActionName(NSLocalizedString("Rotate selection -3", comment: "Rotate selection -3"))
-          
-          if let state: (atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.rotateSelectionBodyFrame(using: quaternion, index: 2)
-          {
-            self.setStructureState(structure: structure, atoms: state.atoms, bonds: state.bonds)
-          }
+          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
+          setRotatedBodyFramePositions(structure: structure, atoms: asymmetricAtoms, by: quaternion)
         }
       }
     }

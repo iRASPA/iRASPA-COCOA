@@ -100,7 +100,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   }
   
   // MARK: -
-  // MARK: Molecule operations
+  // MARK: Symmetry
   
   public override func expandSymmetry()
   {
@@ -116,10 +116,40 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   
   public override func expandSymmetry(asymmetricAtom: SKAsymmetricAtom)
   {
-    let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: asymmetricAtom.position)
-    newAtom.type = .copy
-    asymmetricAtom.copies = [newAtom]
+    asymmetricAtom.copies[0].type = .copy
+    asymmetricAtom.copies[0].position = asymmetricAtom.position
   }
+  
+  public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
+  {
+    for i in 0..<asymetricAtom.copies.count
+    {
+      asymetricAtom.copies[i].position = asymetricAtom.position
+      asymetricAtom.copies[i].type = .copy
+    }
+    
+    /*
+    for copy in asymetricAtom.copies
+    {
+      for bond in copy.bonds
+      {
+        let posA: SIMD3<Double> = bond.atom1.position
+        let posB: SIMD3<Double> = bond.atom2.position
+        let separationVector: SIMD3<Double> = posA - posB
+        
+        let bondLength: Double = length(separationVector)
+        if (bondLength < 0.1)
+        {
+          bond.atom1.type = .duplicate
+          bond.boundaryType = .internal
+        }
+      }
+    }
+    */
+  }
+  
+  // MARK: -
+  // MARK: Drag selection operations
   
   public override func translateSelection(by shift: SIMD3<Double>)
   {
@@ -157,12 +187,14 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
   }
   
-  public override func centerOfMassOfSelection() -> SIMD3<Double>
+  // MARK: -
+  // MARK: Translation and rotation operations
+  
+  public override func centerOfMassOfSelection(atoms: [SKAtomCopy]) -> SIMD3<Double>
   {
     var com: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
     var M: Double = 0.0
     
-    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     guard !atoms.isEmpty else {return com}
     
     for atom in atoms
@@ -177,12 +209,11 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     return com
   }
   
-  public override func matrixOfInertia() -> double3x3
+  public override func matrixOfInertia(atoms: [SKAtomCopy]) -> double3x3
   {
     var inertiaMatrix: double3x3 = double3x3()
     let com: SIMD3<Double> = self.selectionCOMTranslation
     
-    let atoms: [SKAtomCopy] = self.atomTreeController.selectedTreeNodes.flatMap{$0.representedObject.copies}.filter{$0.type == .copy}
     for atom in atoms
     {
       let elementIdentifier: Int = atom.asymmetricParentAtom.elementIdentifier
@@ -203,133 +234,126 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     return inertiaMatrix
   }
   
-  public override func translateSelectionCartesian(by translation: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func bonds(subset: [SKAsymmetricAtom]) -> [SKBondNode]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
+    var computedBonds: [SKBondNode] = []
+     
+    let subsetAtoms: [SKAtomCopy] = subset.flatMap{$0.copies}
+     
+    let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject})
+       
+    let subSetAsymmetricAtoms: Set<SKAsymmetricAtom> = Set(asymmetricAtoms).subtracting(subset)
+    let atomList: [SKAtomCopy] = subSetAsymmetricAtoms.flatMap{$0.copies}
+     
+    for i in 0..<subsetAtoms.count
     {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
+      subsetAtoms[i].type = .copy
+       
+      let posA: SIMD3<Double> = subsetAtoms[i].position
+       
+      for j in i+1..<subsetAtoms.count
+      {
+        let posB: SIMD3<Double> = subsetAtoms[j].position
+         
+        let separationVector: SIMD3<Double> = posA - posB
+         
+        let bondCriteria: Double = (subsetAtoms[i].asymmetricParentAtom.bondDistanceCriteria + subsetAtoms[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
+         
+        let bondLength: Double = length(separationVector)
+        if (bondLength < bondCriteria)
+        {
+          // Type atom as 'Double'
+          if (bondLength < 0.1)
+          {
+            subsetAtoms[i].type = .duplicate
+          }
+          else if (bondLength < 0.8)
+          {
+            // discard as being a bond
+          }
+          else
+          {
+            let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: subsetAtoms[j], boundaryType: .internal)
+            computedBonds.append(bond)
+          }
+        }
+      }
+       
+      for j in 0..<atomList.count
+      {
+        let posB: SIMD3<Double> = atomList[j].position
+         
+        let separationVector: SIMD3<Double> = posA - posB
+         
+        let bondCriteria: Double = (subsetAtoms[i].asymmetricParentAtom.bondDistanceCriteria + atomList[j].asymmetricParentAtom.bondDistanceCriteria + 0.4)
+         
+        let bondLength: Double = length(separationVector)
+        if (bondLength < bondCriteria)
+        {
+          // Type atom as 'Double'
+          if (bondLength < 0.1)
+          {
+            subsetAtoms[i].type = .duplicate
+          }
+          else if (bondLength < 0.8)
+          {
+            // discard as being a bond
+          }
+          else
+          {
+            let bond: SKBondNode = SKBondNode(atom1: subsetAtoms[i], atom2: atomList[j], boundaryType: .internal)
+            computedBonds.append(bond)
+          }
+        }
+      }
     }
-    
-    self.selectionCOMTranslation += translation
-    
-    for node in molecule.atomTreeController.selectedTreeNodes
-    {
-      let pos: SIMD3<Double> = node.representedObject.position + translation
-      node.representedObject.position = pos
-    }
-    
-    molecule.expandSymmetry()
-    
-    molecule.reComputeBoundingBox()
-    
-    molecule.atomTreeController.tag()
-    
-    molecule.reComputeBonds()
-    
-    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
+     
+    return computedBonds.filter{$0.atom1.type == .copy && $0.atom2.type == .copy}
   }
   
+  // MARK: -
+  // MARK: Translation operations
   
-  public override func rotateSelectionCartesian(using quaternion: simd_quatd) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func translatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>) -> [SIMD3<Double>]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.clone()
+    return atoms.map{$0.position + translation}
+  }
+  
+  public override func translatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by shift: SIMD3<Double>) -> [SIMD3<Double>]
+  {
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let basis: double3x3 = recomputeSelectionBodyFixedBasis(atoms: copies)
+    let translation: SIMD3<Double> = basis.inverse * shift
     
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    let com: SIMD3<Double> = centerOfMassOfSelection()
+    return atoms.map{$0.position + translation}
+  }
+  
+  // MARK: -
+  // MARK: Rotation operations
+  
+  public override func rotatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by quaternion: simd_quatd) -> [SIMD3<Double>]
+  {
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
     let rotationMatrix: double3x3 = double3x3(quaternion)
     
-    for node in molecule.atomTreeController.selectedTreeNodes
-    {
-      let pos = node.representedObject.position - com
-      let position: SIMD3<Double> = rotationMatrix * pos + com
-      node.representedObject.position = position
-    }
-    
-    molecule.expandSymmetry()
-    
-    molecule.reComputeBoundingBox()
-    
-    molecule.atomTreeController.tag()
-    
-    molecule.reComputeBonds()
-    
-    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
+    return atoms.map({
+      let pos = $0.position - com
+      return rotationMatrix * pos + com
+    })
   }
   
-  public override func translateSelectionBodyFrame(by shift: SIMD3<Double>) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  public override func rotatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by quaternion: simd_quatd) -> [SIMD3<Double>]
   {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    recomputeSelectionBodyFixedBasis(index: 3)
-    
-    let basis: double3x3 = self.selectionBodyFixedBasis
-    let translation: SIMD3<Double> = basis.inverse * shift
-
-    self.selectionCOMTranslation += translation
-    
-    for node in molecule.atomTreeController.selectedTreeNodes
-    {
-      let pos: SIMD3<Double> = node.representedObject.position + translation
-      node.representedObject.position = pos
-    }
-    
-    molecule.expandSymmetry()
-    
-    molecule.reComputeBoundingBox()
-    
-    molecule.atomTreeController.tag()
-    
-    molecule.reComputeBonds()
-    
-    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
-  }
-  
-  public override func rotateSelectionBodyFrame(using quaternion: simd_quatd, index: Int) -> (atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  {
-    // copy the structure for undo (via the atoms, and bonds-properties)
-    let molecule: Molecule =  self.clone()
-    
-    for node in self.atomTreeController.selectedTreeNodes
-    {
-      node.representedObject.displacement = SIMD3<Double>(0,0,0)
-    }
-    
-    recomputeSelectionBodyFixedBasis(index: index)
-    
-    let com: SIMD3<Double> = self.selectionCOMTranslation
-    let basis: double3x3 = self.selectionBodyFixedBasis
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
+    let basis: double3x3 = recomputeSelectionBodyFixedBasis(atoms: copies)
     let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
     
-    for node in molecule.atomTreeController.selectedTreeNodes
-    {
-      let pos: SIMD3<Double> = node.representedObject.position - com
-      let position: SIMD3<Double> = rotationMatrix * pos + com
-      node.representedObject.position = position
-    }
-    
-    molecule.expandSymmetry()
-    
-    molecule.reComputeBoundingBox()
-    
-    molecule.atomTreeController.tag()
-    
-    molecule.reComputeBonds()
-    
-    return (atoms: molecule.atomTreeController, bonds: molecule.bondController)
+    return atoms.map({
+      let pos: SIMD3<Double> = $0.position - com
+      return rotationMatrix * pos + com
+    })
   }
   
   
@@ -393,35 +417,6 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     case (true, true):
       return (pos1,pos2)
     }
-  }
-  
-  
-  public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
-  {
-    for i in 0..<asymetricAtom.copies.count
-    {
-      asymetricAtom.copies[i].position = asymetricAtom.position
-      asymetricAtom.copies[i].type = .copy
-    }
-    
-    /*
-    for copy in asymetricAtom.copies
-    {
-      for bond in copy.bonds
-      {
-        let posA: SIMD3<Double> = bond.atom1.position
-        let posB: SIMD3<Double> = bond.atom2.position
-        let separationVector: SIMD3<Double> = posA - posB
-        
-        let bondLength: Double = length(separationVector)
-        if (bondLength < 0.1)
-        {
-          bond.atom1.type = .duplicate
-          bond.boundaryType = .internal
-        }
-      }
-    }
-    */
   }
   
   // MARK: -

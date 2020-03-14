@@ -129,6 +129,13 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
     return IndexSet(integersIn: 0..<self.arrangedObjects.count).subtracting(self.selectedObjects)
   }
   
+  public func replaceBonds(atoms: [SKAsymmetricAtom], bonds newbonds: [SKBondNode])
+  {
+    let filteredBonds: [SKBondNode] = self.arrangedObjects.filter{!(atoms.contains($0.atom1) || atoms.contains($0.atom2))}.flatMap{$0.copies}
+    
+    self.bonds = filteredBonds + newbonds
+  }
+  
   // MARK: -
   // MARK: Binary Encodable support
   
@@ -183,14 +190,6 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
     else
     {
       self.arrangedObjects = try decoder.decode([ SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> ].self)
-    }
-  }
-  
-  public func completationHandlerForLegacyBinaryDecoders(handler: ()->())
-  {
-    if readVersionNumber == 0
-    {
-      handler()
     }
   }
   
