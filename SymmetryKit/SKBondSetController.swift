@@ -185,6 +185,14 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
       }
     }
     
+    for newAsymmetricBond in newAsymmetricBonds
+    {
+      if let index = indexInArrangedObjects[newAsymmetricBond]
+      {
+        indexSet.insert(index)
+      }
+    }
+    
     return indexSet
   }
   
