@@ -116,37 +116,19 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   
   public override func expandSymmetry(asymmetricAtom: SKAsymmetricAtom)
   {
-    asymmetricAtom.copies[0].type = .copy
-    asymmetricAtom.copies[0].position = asymmetricAtom.position
+    if asymmetricAtom.copies.isEmpty
+    {
+      let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: asymmetricAtom.position)
+      newAtom.type = .copy
+      asymmetricAtom.copies = [newAtom]
+    }
+    else
+    {
+      asymmetricAtom.copies[0].type = .copy
+      asymmetricAtom.copies[0].position = asymmetricAtom.position
+    }
   }
   
-  public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
-  {
-    for i in 0..<asymetricAtom.copies.count
-    {
-      asymetricAtom.copies[i].position = asymetricAtom.position
-      asymetricAtom.copies[i].type = .copy
-    }
-    
-    /*
-    for copy in asymetricAtom.copies
-    {
-      for bond in copy.bonds
-      {
-        let posA: SIMD3<Double> = bond.atom1.position
-        let posB: SIMD3<Double> = bond.atom2.position
-        let separationVector: SIMD3<Double> = posA - posB
-        
-        let bondLength: Double = length(separationVector)
-        if (bondLength < 0.1)
-        {
-          bond.atom1.type = .duplicate
-          bond.boundaryType = .internal
-        }
-      }
-    }
-    */
-  }
   
   // MARK: -
   // MARK: Drag selection operations

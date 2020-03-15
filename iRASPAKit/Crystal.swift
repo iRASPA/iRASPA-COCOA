@@ -988,23 +988,24 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     let images: [SIMD3<Double>] = spaceGroup.listOfSymmetricPositions(asymmetricAtom.position)
       
-    for (i, image) in images.enumerated()
+    if asymmetricAtom.copies.isEmpty
     {
-      asymmetricAtom.copies[i].type = .copy
-      asymmetricAtom.copies[i].position = fract(image)
+      for image in images
+      {
+        let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: fract(image))
+        newAtom.type = .copy
+        asymmetricAtom.copies.append(newAtom)
+      }
+    }
+    else
+    {
+      for (i, image) in images.enumerated()
+      {
+        asymmetricAtom.copies[i].type = .copy
+        asymmetricAtom.copies[i].position = fract(image)
+      }
     }
   }
-  
-  public override func generateCopiesForAsymmetricAtom(_ asymetricAtomA: SKAsymmetricAtom)
-  {
-    let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(asymetricAtomA.position)
-    for (index, image) in images.enumerated()
-    {
-      asymetricAtomA.copies[index].position = fract(image)
-      asymetricAtomA.copies[index].type = .copy
-    }
-  }
-  
   
   public override var spaceGroupHallNumber: Int?
   {

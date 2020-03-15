@@ -110,7 +110,7 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
       // partition the bonds
       for bond in newBonds
       {
-        let asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> = SKAsymmetricBond.init(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom)
+        let asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> = SKAsymmetricBond(bond.atom1.asymmetricParentAtom, bond.atom2.asymmetricParentAtom)
         if let index: Int = indexInArrangedObjects[asymmetricBond]
         {
           self.arrangedObjects[index].copies.append(bond)
@@ -129,11 +129,82 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
     return IndexSet(integersIn: 0..<self.arrangedObjects.count).subtracting(self.selectedObjects)
   }
   
+  /// Computes the new selection for a change in bonds
+  ///
+  /// - parameter atoms: the asymmetric atoms that change.
+  /// - parameter bonds: the new bonds for these asymmetric atoms.
+  /// - returns: the selection for the new bonds
+  public func selectedAsymmetricBonds(atoms: [SKAsymmetricAtom], bonds newbonds: [SKBondNode]) -> IndexSet
+  {
+    // all bonds that do not contain atoms
+    let filteredBonds: Set<SKAsymmetricBond> = Set(self.arrangedObjects.filter{!(atoms.contains($0.atom1) || atoms.contains($0.atom2))})
+    
+    let newAsymmetricBonds: Set<SKAsymmetricBond> = Set(newbonds.map{SKAsymmetricBond($0.atom1.asymmetricParentAtom, $0.atom2.asymmetricParentAtom)})
+    
+    let totalBonds: Set<SKAsymmetricBond> = filteredBonds.union(newAsymmetricBonds)
+    
+    let asymmetricBonds: [SKAsymmetricBond] = totalBonds.sorted{
+        if $0.atom1.elementIdentifier == $1.atom1.elementIdentifier
+        {
+          if $0.atom2.elementIdentifier == $1.atom2.elementIdentifier
+          {
+            if $0.atom1.tag == $1.atom1.tag
+            {
+              return $0.atom2.tag < $1.atom2.tag
+            }
+            else
+            {
+              return $0.atom1.tag < $1.atom1.tag
+            }
+          }
+          else
+          {
+            return $0.atom2.elementIdentifier > $1.atom2.elementIdentifier
+          }
+        }
+        else
+        {
+          return $0.atom1.elementIdentifier > $1.atom1.elementIdentifier
+        }
+    }
+    
+    var indexInArrangedObjects: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>: Int] = [:]
+    for (index, asymmetricBond) in asymmetricBonds.enumerated()
+    {
+      indexInArrangedObjects[asymmetricBond] = index
+    }
+    
+    let selectedObjects = self.arrangedObjects[self.selectedObjects]
+    
+    var indexSet: IndexSet = []
+    for object in selectedObjects
+    {
+      if let index = indexInArrangedObjects[object]
+      {
+        indexSet.insert(index)
+      }
+    }
+    
+    return indexSet
+  }
+  
   public func replaceBonds(atoms: [SKAsymmetricAtom], bonds newbonds: [SKBondNode])
   {
+    //let selectedBonds: Set<SKAsymmetricBond> = Set(self.arrangedObjects[self.selectedObjects])
+    
     let filteredBonds: [SKBondNode] = self.arrangedObjects.filter{!(atoms.contains($0.atom1) || atoms.contains($0.atom2))}.flatMap{$0.copies}
     
     self.bonds = filteredBonds + newbonds
+    
+    /*
+    selectedObjects = []
+    for (index, bond) in self.arrangedObjects.enumerated()
+    {
+      if selectedBonds.contains(bond)
+      {
+        selectedObjects.insert(index)
+      }
+    }*/
   }
   
   // MARK: -

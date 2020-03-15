@@ -725,7 +725,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         project.undoManager.setActionName(NSLocalizedString("Adding new atom", comment: "Adding new atom"))
       }
       
-      addNode(atomTreeNode, inItem: nil, atIndex: 0, inStructure: structure)
+      self.addNode(atomTreeNode, inItem: nil, atIndex: 0, inStructure: structure)
       
       self.observeNotifications = true
     }
@@ -744,8 +744,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if (!filterContent)
       {
-        self.atomOutlineView?.insertItems(at: IndexSet(integer: atIndex), inParent: inItem, withAnimation: .slideRight)
-        self.atomOutlineView?.selectRowIndexes(IndexSet(integer: self.atomOutlineView!.row(forItem: node)), byExtendingSelection: true)
+        if let outlineView = self.atomOutlineView,
+               outlineView.numberOfRows > 0
+        {
+          outlineView.insertItems(at: IndexSet(integer: atIndex), inParent: inItem, withAnimation: .slideRight)
+          outlineView.selectRowIndexes(IndexSet(integer: self.atomOutlineView!.row(forItem: node)), byExtendingSelection: true)
+        }
       }
       
       structure.atomTreeController.tag()
@@ -799,7 +803,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if (!filterContent)
       {
-        self.atomOutlineView?.removeItems(at: IndexSet(integer: atIndex), inParent: fromItem, withAnimation: .slideLeft)
+        if let outlineView = self.atomOutlineView,
+          outlineView.numberOfRows > 0
+        {
+          outlineView.removeItems(at: IndexSet(integer: atIndex), inParent: fromItem, withAnimation: .slideLeft)
+        }
       }
       
       structure.atomTreeController.tag()
@@ -1017,7 +1025,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
         if (!filterContent)
         {
-          self.atomOutlineView?.removeItems(at: IndexSet(integer: nodeIndexPath.last ?? 0), inParent: fromItem, withAnimation: [])
+          if let outlineView = self.atomOutlineView,
+            outlineView.numberOfRows>0
+          {
+            outlineView.removeItems(at: IndexSet(integer: nodeIndexPath.last ?? 0), inParent: fromItem, withAnimation: [])
+          }
         }
       
         // insert new node
@@ -1025,7 +1037,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
         if (!filterContent)
         {
-          self.atomOutlineView?.insertItems(at: IndexSet(integer: move.childIndex), inParent: move.toItem, withAnimation: .effectGap)
+          if let outlineView = self.atomOutlineView,
+            outlineView.numberOfRows>0
+          {
+            outlineView.insertItems(at: IndexSet(integer: move.childIndex), inParent: move.toItem, withAnimation: .effectGap)
+          }
           
            // keep the selection outlineView automatically in sync without having to call 'programmaticallySetSelection()'
           if structure.atomTreeController.selectedTreeNodes.contains(move.node)
@@ -1065,6 +1081,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
   self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadRenderData()
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
     }
   }
   
@@ -2755,7 +2773,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       atom.position.x = newValue
       
-      structure.generateCopiesForAsymmetricAtom(atom)
+      structure.expandSymmetry(asymmetricAtom: atom)
       
       // reload item in the outlineView
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
@@ -2817,7 +2835,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       atom.position.y = newValue
       
-      structure.generateCopiesForAsymmetricAtom(atom)
+      structure.expandSymmetry(asymmetricAtom: atom)
       
       // reload item in the outlineView
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
@@ -2878,7 +2896,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       atom.position.z = newValue
      
-      structure.generateCopiesForAsymmetricAtom(atom)
+      structure.expandSymmetry(asymmetricAtom: atom)
       
       // reload item in the outlineView
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0

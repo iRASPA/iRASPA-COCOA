@@ -377,65 +377,26 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     let fractionalPosition = inverseUnitCell * asymmetricAtom.position
     let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(fractionalPosition)
     
-    for (i, image) in images.enumerated()
+    if asymmetricAtom.copies.isEmpty
     {
-      asymmetricAtom.copies[i].type = .copy
-      asymmetricAtom.copies[i].position = unitCell * image
+      for image in images
+      {
+        let CartesianPosition = unitCell * image
+        let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: CartesianPosition)
+        newAtom.type = .copy
+        asymmetricAtom.copies.append(newAtom)
+      }
+    }
+    else
+    {
+      for (i, image) in images.enumerated()
+      {
+        asymmetricAtom.copies[i].type = .copy
+        asymmetricAtom.copies[i].position = unitCell * image
+      }
     }
   }
   
-  public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
-   {
-     let unitCell = self.cell.unitCell
-     let inverseUnitCell = self.cell.inverseUnitCell
-     
-     let fractionalPosition = inverseUnitCell * asymetricAtom.position
-     let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(fractionalPosition)
-     for (index, image) in images.enumerated()
-     {
-       asymetricAtom.copies[index].asymmetricParentAtom = asymetricAtom
-       asymetricAtom.copies[index].position = unitCell * image
-       asymetricAtom.copies[index].type = .copy
-     }
-     
-     /*
-     for copy in asymetricAtom.copies
-     {
-       for bond in copy.bonds
-       {
-         let posA: SIMD3<Double> = bond.atom1.position
-         let posB: SIMD3<Double> = bond.atom2.position
-         let separationVector: SIMD3<Double> = posA - posB
-         let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
-         
-         let bondCriteria: Double = (bond.atom1.asymmetricParentAtom.bondDistanceCriteria + bond.atom2.asymmetricParentAtom.bondDistanceCriteria + 0.4)
-         
-         let bondLength: Double = length(periodicSeparationVector)
-         if (bondLength < bondCriteria)
-         {
-           // Type atom as 'Double'
-           if (bondLength < 0.1)
-           {
-             bond.atom1.type = .duplicate
-           }
-           else if (bondLength < 0.8)
-           {
-             // discard as being a bond
-           }
-           else if (length(separationVector) > bondCriteria)
-           {
-             bond.boundaryType = .external
-           }
-           else
-           {
-             bond.boundaryType = .internal
-           }
-         }
-       }
-     }*/
-   }
-   
-   
   
   public override var spaceGroupHallNumber: Int?
   {

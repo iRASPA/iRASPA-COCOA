@@ -316,38 +316,55 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-
-  func setBondAtomPositions(atom1: SKAsymmetricAtom, pos1: SIMD3<Double>, atom2: SKAsymmetricAtom, pos2: SIMD3<Double>)
+  func updatePositions(structure: Structure, atoms: [SKAsymmetricAtom], newpositions: [SIMD3<Double>], oldpositions: [SIMD3<Double>], newbonds: [SKBondNode], oldbonds: [SKBondNode])
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
-       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
+      let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      let oldPos1: SIMD3<Double> = atom1.position
-      let oldPos2: SIMD3<Double> = atom2.position
-      if project.undoManager.isUndoing
+      project.undoManager.registerUndo(withTarget: self, handler: {
+        $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, oldbonds: newbonds)
+      })
+      project.undoManager.setActionName(NSLocalizedString("Change bondlength", comment: "Change bondlength"))
+      
+      for i in 0..<atoms.count
       {
-        project.undoManager.setActionName(NSLocalizedString("Change bond-length", comment: "Change bond-length"))
+        atoms[i].position = newpositions[i]
+        atoms[i].displacement =  SIMD3<Double>(0.0,0.0,0.0)
+        structure.expandSymmetry(asymmetricAtom: atoms[i])
       }
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.setBondAtomPositions(atom1: atom1, pos1: oldPos1, atom2: atom2, pos2: oldPos2)})
       
-      atom1.position = pos1
-      atom2.position = pos2
-      
-      structure.generateCopiesForAsymmetricAtom(atom1)
-      structure.generateCopiesForAsymmetricAtom(atom2)
+      structure.bondController.replaceBonds(atoms: atoms, bonds: newbonds)
       
       structure.reComputeBoundingBox()
-      structure.reComputeBonds()
       
       self.reloadData()
-      
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       project.isEdited = true
       document.updateChangeCount(.changeDone)
+    }
+  }
+
+  func setBondAtomPositions(atom1: SKAsymmetricAtom, pos1: SIMD3<Double>, atom2: SKAsymmetricAtom, pos2: SIMD3<Double>)
+  {
+    if let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
+    {
+      let oldPos1: SIMD3<Double> = atom1.position
+      let oldPos2: SIMD3<Double> = atom2.position
+      
+      let oldbonds: [SKBondNode] = structure.bonds(subset: [atom1,atom2])
+    
+      atom1.position = pos1
+      atom2.position = pos2
+      
+      structure.expandSymmetry(asymmetricAtom: atom1)
+      structure.expandSymmetry(asymmetricAtom: atom2)
+            
+      let newbonds: [SKBondNode] = structure.bonds(subset: [atom1,atom2])
+      
+      self.updatePositions(structure: structure, atoms: [atom1,atom2], newpositions: [pos1,pos2], oldpositions: [oldPos1, oldPos2], newbonds: newbonds, oldbonds: oldbonds)
     }
   }
 
@@ -689,7 +706,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
        let structure = (self.representedObject as? iRASPAStructure)?.structure,
        let selectedBonds: IndexSet = self.bondTableView?.selectedRowIndexes
     {
-      if (self.observeNotifications && !project.undoManager.isUndoing && !project.undoManager.isRedoing)
+      if (self.observeNotifications && !(project.undoManager.isUndoing || project.undoManager.isRedoing))
       {
         setCurrentSelection(structure: structure, atomSelection: structure.atomTreeController.selectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondController.selectedObjects)
       }

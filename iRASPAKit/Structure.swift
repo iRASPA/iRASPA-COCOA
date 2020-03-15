@@ -2348,16 +2348,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     return self.atomTreeController.selectedTreeNodes.count > 0 || self.atomTreeController.selectedTreeNode != nil
   }
 
-  public func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
-  {
-    for i in 0..<asymetricAtom.copies.count
-    {
-      asymetricAtom.copies[i].position = asymetricAtom.position
-    }
-  }
-  
-  
-  
   public var renderBoundingBox: SKBoundingBox
   {
     return self.transformedBoundingBox

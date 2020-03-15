@@ -63,10 +63,23 @@ public struct SKAsymmetricBond<A: SKAsymmetricAtom, B: SKAsymmetricAtom>: Hashab
       self.atom1 = atom1
       self.atom2 = atom2
     }
+    else if (atom1.elementIdentifier < atom2.elementIdentifier)
+    {
+      self.atom1 = atom2
+      self.atom2 = atom1
+    }
     else
     {
-      self.atom2 = atom1
-      self.atom1 = atom2
+      if (atom1.tag < atom2.tag)
+      {
+        self.atom1 = atom1
+        self.atom2 = atom2
+      }
+      else
+      {
+        self.atom1 = atom2
+        self.atom2 = atom1
+      }
     }
   }
   
