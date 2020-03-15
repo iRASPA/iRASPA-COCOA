@@ -2462,12 +2462,12 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   // MARK: translation Cartesian
   // =====================================================================
   
-  func updatePositions(structure: Structure, atoms: [SKAsymmetricAtom], newpositions: [SIMD3<Double>], oldpositions: [SIMD3<Double>], newbonds: [SKBondNode], oldbonds: [SKBondNode])
+  func updatePositions(structure: Structure, atoms: [SKAsymmetricAtom], newpositions: [SIMD3<Double>], oldpositions: [SIMD3<Double>], newbonds: [SKBondNode], newBondSelection: IndexSet, oldbonds: [SKBondNode], oldBondSelection: IndexSet)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       project.undoManager.registerUndo(withTarget: self, handler: {
-        $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, oldbonds: newbonds)
+        $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, newBondSelection: oldBondSelection, oldbonds: newbonds, oldBondSelection: newBondSelection)
       })
       project.undoManager.setActionName(NSLocalizedString("Change positions", comment: "Change positions"))
       
@@ -2478,7 +2478,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         structure.expandSymmetry(asymmetricAtom: atoms[i])
       }
       
+      structure.atomTreeController.tag()
+      
       structure.bondController.replaceBonds(atoms: atoms, bonds: newbonds)
+      structure.bondController.selectedObjects = newBondSelection
       
       structure.reComputeBoundingBox()
       
@@ -2498,6 +2501,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   func setTranslatedPositions(structure: Structure, atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>)
   {
     let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldBondSelection: IndexSet = structure.bondController.selectedObjects
     let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
     
     let newpositions: [SIMD3<Double>] =  structure.translatedPositionsSelectionCartesian(atoms: atoms, by: translation)
@@ -2512,7 +2516,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
     let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
     
-    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, oldbonds: oldbonds)
+    let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
+        
+    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, newBondSelection: newBondSelection, oldbonds: oldbonds, oldBondSelection: oldBondSelection)
   }
   
   
@@ -2639,6 +2645,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   func setTranslatedBodyFramePositions(structure: Structure, atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>)
   {
     let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldBondSelection: IndexSet = structure.bondController.selectedObjects
     let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
     
     let newpositions: [SIMD3<Double>] =  structure.translatedBodyFramePositionsSelectionCartesian(atoms: atoms, by: translation)
@@ -2653,7 +2660,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
     let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
     
-    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, oldbonds: oldbonds)
+    let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
+    
+    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, newBondSelection: newBondSelection, oldbonds: oldbonds, oldBondSelection: oldBondSelection)
   }
   
   @IBAction func translateSelectedAtomsBodyFramePlusX(_ sender: NSButton)
@@ -2779,6 +2788,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   func setRotatedPositions(structure: Structure, atoms: [SKAsymmetricAtom], by rotation: simd_quatd)
   {
     let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldBondSelection: IndexSet = structure.bondController.selectedObjects
     let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
     
     let newpositions: [SIMD3<Double>] =  structure.rotatedPositionsSelectionCartesian(atoms: atoms, by: rotation)
@@ -2792,8 +2802,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
     
     let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
+    let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
     
-    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, oldbonds: oldbonds)
+    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, newBondSelection: newBondSelection, oldbonds: oldbonds, oldBondSelection: oldBondSelection)
   }
   
   @IBAction func rotateSelectedAtomsCartesianPlusX(_ sender: NSButton)
@@ -2922,6 +2933,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   func setRotatedBodyFramePositions(structure: Structure, atoms: [SKAsymmetricAtom], by rotation: simd_quatd)
   {
     let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldBondSelection: IndexSet = structure.bondController.selectedObjects
     let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
     
     let newpositions: [SIMD3<Double>] =  structure.rotatedBodyFramePositionsSelectionCartesian(atoms: atoms, by: rotation)
@@ -2935,8 +2947,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
     
     let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
+    let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
     
-    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, oldbonds: oldbonds)
+    self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, newBondSelection: newBondSelection,  oldbonds: oldbonds, oldBondSelection: oldBondSelection)
   }
   
   @IBAction func rotateSelectedAtomsBodyFramePlusX(_ sender: NSButton)

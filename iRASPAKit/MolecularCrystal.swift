@@ -378,60 +378,25 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     let fractionalPosition = fract(inverseCell * asymmetricAtom.position)
     let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(fractionalPosition)
     
-    for (i, image) in images.enumerated()
+    if asymmetricAtom.copies.isEmpty
     {
-      asymmetricAtom.copies[i].type = .copy
-      asymmetricAtom.copies[i].position = unitCell * fract(image)
-    }
-  }
-  
-  public override func generateCopiesForAsymmetricAtom(_ asymetricAtom: SKAsymmetricAtom)
-  {
-    let unitCell = self.cell.unitCell
-    let inverseCell = self.cell.inverseUnitCell
-    
-    let fractionalPosition = inverseCell * asymetricAtom.position
-    let images: [SIMD3<Double>] = self.spaceGroup.listOfSymmetricPositions(fractionalPosition)
-    for (index, image) in images.enumerated()
-    {
-      asymetricAtom.copies[index].position = unitCell * image
-      asymetricAtom.copies[index].type = .copy
-    }
-    
-    /*
-    for copy in asymetricAtom.copies
-    {
-      for bond in copy.bonds
+      for image in images
       {
-        let posA: SIMD3<Double> = bond.atom1.position
-        let posB: SIMD3<Double> = bond.atom2.position
-        let separationVector: SIMD3<Double> = posA - posB
-        let periodicSeparationVector: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(separationVector)
-        
-        let bondCriteria: Double = (bond.atom1.asymmetricParentAtom.bondDistanceCriteria + bond.atom2.asymmetricParentAtom.bondDistanceCriteria + 0.4)
-        
-        let bondLength: Double = length(periodicSeparationVector)
-        if (bondLength < bondCriteria)
-        {
-          // Type atom as 'Double'
-          if (bondLength < 0.1)
-          {
-            bond.atom1.type = .duplicate
-          }
-          else if (length(separationVector) > bondCriteria)
-          {
-            bond.boundaryType = .external
-          }
-          else
-          {
-            bond.boundaryType = .internal
-          }
-        }
+        let CartesianPosition = unitCell * fract(image)
+        let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: CartesianPosition)
+        newAtom.type = .copy
+        asymmetricAtom.copies.append(newAtom)
       }
-    }*/
+    }
+    else
+    {
+      for (i, image) in images.enumerated()
+      {
+        asymmetricAtom.copies[i].type = .copy
+        asymmetricAtom.copies[i].position = unitCell * fract(image)
+      }
+    }
   }
-  
-  
   
   public override var spaceGroupHallNumber: Int?
   {

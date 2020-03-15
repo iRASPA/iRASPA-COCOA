@@ -56,10 +56,23 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
       self.atom1 = atom1
       self.atom2 = atom2
     }
-    else
+    else if atom1.asymmetricParentAtom.elementIdentifier > atom2.asymmetricParentAtom.elementIdentifier
     {
       self.atom1 = atom2
       self.atom2 = atom1
+    }
+    else
+    {
+      if atom1.tag < atom2.tag
+      {
+        self.atom1 = atom1
+        self.atom2 = atom2
+      }
+      else
+      {
+        self.atom1 = atom2
+        self.atom2 = atom1
+      }
     }
     self.boundaryType = type
   }
