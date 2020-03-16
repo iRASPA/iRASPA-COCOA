@@ -316,13 +316,13 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-  func updatePositions(structure: Structure, atoms: [SKAsymmetricAtom], newpositions: [SIMD3<Double>], oldpositions: [SIMD3<Double>], newbonds: [SKBondNode], oldbonds: [SKBondNode])
+  func updatePositions(structure: Structure, atoms: [SKAsymmetricAtom], newpositions: [SIMD3<Double>], oldpositions: [SIMD3<Double>], newbonds: [SKBondNode], newBondSelection: IndexSet, oldbonds: [SKBondNode], oldBondSelection: IndexSet)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       project.undoManager.registerUndo(withTarget: self, handler: {
-        $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, oldbonds: newbonds)
+        $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, newBondSelection: oldBondSelection, oldbonds: newbonds, oldBondSelection: newBondSelection)
       })
       project.undoManager.setActionName(NSLocalizedString("Change bondlength", comment: "Change bondlength"))
       
@@ -332,8 +332,10 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         atoms[i].displacement =  SIMD3<Double>(0.0,0.0,0.0)
         structure.expandSymmetry(asymmetricAtom: atoms[i])
       }
+      structure.atomTreeController.tag()
       
       structure.bondController.replaceBonds(atoms: atoms, bonds: newbonds)
+      structure.bondController.selectedObjects = newBondSelection
       
       structure.reComputeBoundingBox()
       
@@ -351,10 +353,13 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
+      let selectedAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
       let oldPos1: SIMD3<Double> = atom1.position
       let oldPos2: SIMD3<Double> = atom2.position
       
+      let oldBondSelection: IndexSet = structure.bondController.selectedObjects
       let oldbonds: [SKBondNode] = structure.bonds(subset: [atom1,atom2])
+      
     
       atom1.position = pos1
       atom2.position = pos2
@@ -362,9 +367,12 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       structure.expandSymmetry(asymmetricAtom: atom1)
       structure.expandSymmetry(asymmetricAtom: atom2)
             
+      
       let newbonds: [SKBondNode] = structure.bonds(subset: [atom1,atom2])
       
-      self.updatePositions(structure: structure, atoms: [atom1,atom2], newpositions: [pos1,pos2], oldpositions: [oldPos1, oldPos2], newbonds: newbonds, oldbonds: oldbonds)
+      let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: [atom1,atom2], bonds: newbonds)
+      
+      self.updatePositions(structure: structure, atoms: [atom1,atom2], newpositions: [pos1,pos2], oldpositions: [oldPos1, oldPos2], newbonds: newbonds, newBondSelection: newBondSelection, oldbonds: oldbonds, oldBondSelection: oldBondSelection)
     }
   }
 

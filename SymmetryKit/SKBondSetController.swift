@@ -185,11 +185,16 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
       }
     }
     
+    
     for newAsymmetricBond in newAsymmetricBonds
     {
-      if let index = indexInArrangedObjects[newAsymmetricBond]
+      // check that the bond is new
+      if !self.arrangedObjects.contains(newAsymmetricBond)
       {
-        indexSet.insert(index)
+        if let index = indexInArrangedObjects[newAsymmetricBond]
+        {
+          indexSet.insert(index)
+        }
       }
     }
     
