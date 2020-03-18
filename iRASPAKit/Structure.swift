@@ -1772,10 +1772,14 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         case .sticks_and_balls:
           asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
           atomScaleFactor = 0.7
+          bondScaleFactor = 0.15
         case .vdw:
           atomScaleFactor = 1.0
+          bondScaleFactor = 0.15
           asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
       case .unity:
+        atomScaleFactor = 1.0
+        bondScaleFactor = 0.25
         asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
       }
     }
@@ -1792,16 +1796,23 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         case .sticks_and_balls:
           asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
           atomScaleFactor = 0.7
+          bondScaleFactor = 0.15
         case .vdw:
           atomScaleFactor = 1.0
+          bondScaleFactor = 0.15
           asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
       case .unity:
+        atomScaleFactor = 1.0
+        bondScaleFactor = 0.25
         asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
       }
     }
   }
   
-  
+  public var isUnity: Bool
+  {
+    return self.atomRepresentationType == .unity
+  }
   
   public func drawRadius(elementId: Int) -> Double
   {
@@ -2476,13 +2487,13 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     return [RKInPerInstanceAttributesBonds]()
   }
   
-  public func renderInternalBonds(type: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>.SKBondType) -> [RKInPerInstanceAttributesBonds]
+  public var renderInternalBonds: [RKInPerInstanceAttributesBonds]
   {
     let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     return data
   }
   
-  public func renderExternalBonds(type: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>.SKBondType) -> [RKInPerInstanceAttributesBonds]
+  public var renderExternalBonds: [RKInPerInstanceAttributesBonds]
   {
     let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     return data
