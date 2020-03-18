@@ -2476,26 +2476,16 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     return [RKInPerInstanceAttributesBonds]()
   }
   
-
-  
-  
-  
-  public var renderInternalBonds: [RKInPerInstanceAttributesBonds]
+  public func renderInternalBonds(type: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>.SKBondType) -> [RKInPerInstanceAttributesBonds]
   {
-    get
-    {
-      let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
-      return data
-    }
+    let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
+    return data
   }
   
-  public var renderExternalBonds: [RKInPerInstanceAttributesBonds]
+  public func renderExternalBonds(type: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>.SKBondType) -> [RKInPerInstanceAttributesBonds]
   {
-    get
-    {
-      let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
-      return data
-    }
+    let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
+    return data
   }
   
   public func recomputeDensityProperties()

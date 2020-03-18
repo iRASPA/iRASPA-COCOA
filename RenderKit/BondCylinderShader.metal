@@ -380,18 +380,13 @@ vertex StencilExternalBondVertexShaderOut StencilExternalBondCylinderVertexShade
   scale.w = 1.0;
   
   dr = normalize(dr);
-  if ((dr.z !=0 ) && (-dr.x != dr.y ))
-    v1=normalize(float3(-dr.y-dr.z,dr.x,dr.x));
-  else
-    v1=normalize(float3(dr.z,dr.z,-dr.x-dr.y));
-  
-  v2=normalize(cross(dr,v1));
-  
+  v1 = normalize(abs(dr.x) > abs(dr.z) ? float3(-dr.y, dr.x, 0.0) : float3(0.0, -dr.z, dr.y));
+  v2 = normalize(cross(dr,v1));
+   
   float4x4 orientationMatrix=float4x4(float4(-v1.x,-v1.y,-v1.z,0),
                                       float4(-dr.x,-dr.y,-dr.z,0),
                                       float4(-v2.x,-v2.y,-v2.z,0),
                                       float4(0,0,0,1));
-  
   
   float4 vertexPos =  (orientationMatrix * (scale * pos) + pos1);
   

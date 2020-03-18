@@ -312,7 +312,9 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     {
       self.windowController?.window?.makeFirstResponder(self.bondTableView)
       
-      structure.bondController.arrangedObjects[row].bondType = SKAsymmetricBond .BondType(rawValue: sender.indexOfSelectedItem)!
+      structure.bondController.arrangedObjects[row].bondType = SKAsymmetricBond .SKBondType(rawValue: sender.indexOfSelectedItem)!
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
     }
   }
   
@@ -353,7 +355,6 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
-      let selectedAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.map{$0.representedObject}
       let oldPos1: SIMD3<Double> = atom1.position
       let oldPos2: SIMD3<Double> = atom2.position
       

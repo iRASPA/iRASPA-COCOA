@@ -303,6 +303,6 @@ fragment PickingBondFragOutput PickingExternalBondFragmentShader(PickingExternal
   if (vert.clipDistance4 < 0.0) discard_fragment();
   if (vert.clipDistance5 < 0.0) discard_fragment();
   
-  output.albedo = uint4(3,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
+  output.albedo = uint4(2,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
   return output;
 }

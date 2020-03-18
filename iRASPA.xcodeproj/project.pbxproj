@@ -187,6 +187,9 @@
 		935F34621E5E11B6005C0EE1 /* LogAndInterpreterSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935F34611E5E11B5005C0EE1 /* LogAndInterpreterSegmentedControl.swift */; };
 		93604A6A1F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93604A691F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift */; };
 		93604A6E1F4EFCBB0053ADE2 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93604A6D1F4EFCBB0053ADE2 /* Preferences.swift */; };
+		936411D82421452E00BAFE9C /* MetalDoubleCylinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */; };
+		936411DA2421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */; };
+		936411DC2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */; };
 		9367BF9C1E2BDD5100B948E9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 9367BF9B1E2BDD5100B948E9 /* main.c */; };
 		9367BFA31E2BDD6C00B948E9 /* GeneratePreviewForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 9367BFA11E2BDD6C00B948E9 /* GeneratePreviewForURL.m */; };
 		9367BFA41E2BDD6C00B948E9 /* GenerateThumbnailForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 9367BFA21E2BDD6C00B948E9 /* GenerateThumbnailForURL.m */; };
@@ -975,6 +978,9 @@
 		935F34611E5E11B5005C0EE1 /* LogAndInterpreterSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAndInterpreterSegmentedControl.swift; sourceTree = "<group>"; };
 		93604A691F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPreferenceViewController.swift; sourceTree = "<group>"; };
 		93604A6D1F4EFCBB0053ADE2 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalDoubleCylinder.swift; sourceTree = "<group>"; };
+		936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedDoubleBondCylinderGeometry.swift; sourceTree = "<group>"; };
+		936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedTripleBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		9367BF951E2BDD5000B948E9 /* iRASPAQuickLookPlugin.qlgenerator */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iRASPAQuickLookPlugin.qlgenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		9367BF9B1E2BDD5100B948E9 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		9367BF9D1E2BDD5100B948E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1524,8 +1530,11 @@
 				930DD5ED1E26B65C00B8FE9B /* MetalBoxGeometry.swift */,
 				930C1FA62201E576006AEF30 /* MetalCubeGeometry.swift */,
 				930DD5EE1E26B65C00B8FE9B /* MetalCylinderGeometry.swift */,
+				936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */,
 				9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */,
 				93E92DF421F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift */,
+				936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */,
+				936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */,
 				93EACCB92204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift */,
 				93EACCBB2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift */,
 				93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */,
@@ -2980,6 +2989,7 @@
 				93793B0721C81529004CAD9C /* MetalAtomSelectionWorleyNoise3DPerspectiveImposterShader.swift in Sources */,
 				93793B2F21D94462004CAD9C /* RKInPerInstanceAttributesText.swift in Sources */,
 				93793AEB21C7B7EA004CAD9C /* MetalExternalBondShader.swift in Sources */,
+				936411DA2421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift in Sources */,
 				932BEABA23F8593E006CA16F /* RenderKitEnums.swift in Sources */,
 				93793B3F21D9459D004CAD9C /* RKLightUniforms.swift in Sources */,
 				93584CDB2001200B005F01A7 /* Noise4D.metal in Sources */,
@@ -3056,6 +3066,7 @@
 				93793AFD21C80559004CAD9C /* MetalBackgroundShader.swift in Sources */,
 				93793B1921C8F0ED004CAD9C /* MetalAtomSelectionShader.swift in Sources */,
 				93793B0D21C81586004CAD9C /* MetalAtomSelectionStripesPerspectiveImposterShader.swift in Sources */,
+				936411D82421452E00BAFE9C /* MetalDoubleCylinder.swift in Sources */,
 				93793AE921C7B770004CAD9C /* MetalInternalBondShader.swift in Sources */,
 				93E92DF521F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift in Sources */,
 				93584CD520011F75005F01A7 /* ClassicNoise4D.metal in Sources */,
@@ -3065,6 +3076,7 @@
 				930DD5EB1E26B62E00B8FE9B /* QuadShader.metal in Sources */,
 				93793B0B21C8156B004CAD9C /* MetalAtomSelectionStripesOrthographicImposterShader.swift in Sources */,
 				93274E7D2205A0F5004031BA /* MetalPolygonalPrismShader.swift in Sources */,
+				936411DC2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4120,14 +4132,14 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 72;
+				CURRENT_PROJECT_VERSION = 73;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = iRASPA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.1.35;
+				MARKETING_VERSION = 1.1.36;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4149,14 +4161,14 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 72;
+				CURRENT_PROJECT_VERSION = 73;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = iRASPA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.1.35;
+				MARKETING_VERSION = 1.1.36;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
