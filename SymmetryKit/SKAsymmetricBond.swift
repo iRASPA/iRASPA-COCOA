@@ -41,9 +41,9 @@ public struct SKAsymmetricBond<A: SKAsymmetricAtom, B: SKAsymmetricAtom>: Hashab
   public var tag2: Int = 0
   public var copies: [SKBondNode] = []
   public var isVisible: Bool = true
-  public var bondType: BondType = BondType.single
+  public var bondType: SKBondType = SKBondType.single
   
-  public enum BondType: Int
+  public enum SKBondType: Int
   {
     case single = 0
     case double = 1
@@ -95,7 +95,7 @@ public struct SKAsymmetricBond<A: SKAsymmetricAtom, B: SKAsymmetricAtom>: Hashab
     self.tag1 = try decoder.decode(Int.self)
     self.tag2 = try decoder.decode(Int.self)
     self.copies = try decoder.decode([SKBondNode].self)
-    guard let bondType = BondType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+    guard let bondType = SKBondType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.bondType = bondType
     self.isVisible = try decoder.decode(Bool.self)
   }
