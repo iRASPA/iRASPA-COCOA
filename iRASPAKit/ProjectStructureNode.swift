@@ -396,7 +396,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
         position2: position2,
         color1: SIMD4<Float>(color: color1),
         color2: SIMD4<Float>(color: color2),
-        scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0), tag: 0))
+        scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0), tag: 0, type: 0))
     }
     
     

@@ -103,8 +103,8 @@ public protocol RKRenderBondSource: RKRenderStructure
 {
   var numberOfInternalBonds: Int {get}
   var numberOfExternalBonds: Int {get}
-  func renderInternalBonds(type: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>.SKBondType) -> [RKInPerInstanceAttributesBonds]
-  func renderExternalBonds(type: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>.SKBondType) -> [RKInPerInstanceAttributesBonds]
+  var renderInternalBonds: [RKInPerInstanceAttributesBonds] {get}
+  var renderExternalBonds: [RKInPerInstanceAttributesBonds] {get}
   var renderSelectedBonds: [RKInPerInstanceAttributesBonds] {get}
   var drawBonds: Bool {get}
   
@@ -116,6 +116,7 @@ public protocol RKRenderBondSource: RKRenderStructure
   var bondSpecularIntensity: Double {get}
   var bondShininess: Double {get}
   
+  var isUnity: Bool {get}
   var hasExternalBonds: Bool {get}
   
   var bondScaleFactor: Double {get}
