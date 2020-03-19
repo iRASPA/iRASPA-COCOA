@@ -77,6 +77,7 @@ typedef struct
   float4 color2;
   float4 scale;
   uint tag;
+  uint type;
 } InPerInstanceAttributesBonds;
 
 
