@@ -46,6 +46,9 @@ class MetalInternalBondShader
   var indexBufferDoubleBonds: MTLBuffer! = nil
   var vertexBufferDoubleBonds: MTLBuffer! = nil
   var instanceBufferDoubleBonds: [[MTLBuffer?]] = []
+  var indexBufferPartialDoubleBonds: MTLBuffer! = nil
+  var vertexBufferPartialDoubleBonds: MTLBuffer! = nil
+  var instanceBufferPartialDoubleBonds: [[MTLBuffer?]] = []
   var indexBufferTripleBonds: MTLBuffer! = nil
   var vertexBufferTripleBonds: MTLBuffer! = nil
   var instanceBufferTripleBonds: [[MTLBuffer?]] = []
@@ -93,13 +96,17 @@ class MetalInternalBondShader
   
   public func buildVertexBuffers(device: MTLDevice)
   {
-    let cylinderSingleBond: MetalCappedBondCylinderGeometry = MetalCappedBondCylinderGeometry()
+    let cylinderSingleBond: MetalCappedSingleBondCylinderGeometry = MetalCappedSingleBondCylinderGeometry()
     vertexBufferSingleBonds = device.makeBuffer(bytes: cylinderSingleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderSingleBond.vertices.count, options:.storageModeManaged)
     indexBufferSingleBonds = device.makeBuffer(bytes: cylinderSingleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderSingleBond.indices.count, options:.storageModeManaged)
     
     let cylinderDoubleBond: MetalCappedDoubleBondCylinderGeometry = MetalCappedDoubleBondCylinderGeometry()
     vertexBufferDoubleBonds = device.makeBuffer(bytes: cylinderDoubleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderDoubleBond.vertices.count, options:.storageModeManaged)
     indexBufferDoubleBonds = device.makeBuffer(bytes: cylinderDoubleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderDoubleBond.indices.count, options:.storageModeManaged)
+    
+    let cylinderPartialDoubleBond: MetalCappedSingleBondCylinderGeometry = MetalCappedSingleBondCylinderGeometry()
+    vertexBufferPartialDoubleBonds = device.makeBuffer(bytes: cylinderPartialDoubleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderPartialDoubleBond.vertices.count, options:.storageModeManaged)
+    indexBufferPartialDoubleBonds = device.makeBuffer(bytes: cylinderPartialDoubleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderPartialDoubleBond.indices.count, options:.storageModeManaged)
     
     let cylinderTripleBond: MetalCappedTripleBondCylinderGeometry = MetalCappedTripleBondCylinderGeometry()
     vertexBufferTripleBonds = device.makeBuffer(bytes: cylinderTripleBond.vertices, length:MemoryLayout<RKVertex>.stride * cylinderTripleBond.vertices.count, options:.storageModeManaged)
@@ -111,6 +118,7 @@ class MetalInternalBondShader
       instanceBufferAllBonds = []
       instanceBufferSingleBonds = []
       instanceBufferDoubleBonds = []
+      instanceBufferPartialDoubleBonds = []
       instanceBufferTripleBonds = []
       for i in 0..<self.renderStructures.count
       {
@@ -118,12 +126,14 @@ class MetalInternalBondShader
         var sceneInstanceAllBonds: [MTLBuffer?] = [MTLBuffer?]()
         var sceneInstanceSingleBonds: [MTLBuffer?] = [MTLBuffer?]()
         var sceneInstanceDoubleBonds: [MTLBuffer?] = [MTLBuffer?]()
+        var sceneInstancePartialDoubleBonds: [MTLBuffer?] = [MTLBuffer?]()
         var sceneInstanceTripleBonds: [MTLBuffer?] = [MTLBuffer?]()
         
         if structures.isEmpty
         {
           sceneInstanceSingleBonds.append(nil)
           sceneInstanceDoubleBonds.append(nil)
+          sceneInstancePartialDoubleBonds.append(nil)
           sceneInstanceTripleBonds.append(nil)
         }
         else
@@ -133,25 +143,28 @@ class MetalInternalBondShader
             let allBonds: [RKInPerInstanceAttributesBonds] = (structure as? RKRenderBondSource)?.renderInternalBonds ?? []
             let singleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.single.rawValue)}
             let doubleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.double.rawValue)}
+            let partialDoubleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.partial_double.rawValue)}
             let tripleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.triple.rawValue)}
             
             let bufferAllBonds: MTLBuffer? = allBonds.isEmpty ? nil : device.makeBuffer(bytes: allBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * allBonds.count, options:.storageModeManaged)
             let bufferSingleBonds: MTLBuffer? = singleBonds.isEmpty ? nil : device.makeBuffer(bytes: singleBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * singleBonds.count, options:.storageModeManaged)
             let bufferDoubleBonds: MTLBuffer? = doubleBonds.isEmpty ? nil : device.makeBuffer(bytes: doubleBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * doubleBonds.count, options:.storageModeManaged)
+            let bufferPartialDoubleBonds: MTLBuffer? = partialDoubleBonds.isEmpty ? nil : device.makeBuffer(bytes: partialDoubleBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * partialDoubleBonds.count, options:.storageModeManaged)
             let bufferTripleBonds: MTLBuffer? = tripleBonds.isEmpty ? nil : device.makeBuffer(bytes: tripleBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * tripleBonds.count, options:.storageModeManaged)
             
             sceneInstanceAllBonds.append(bufferAllBonds)
             sceneInstanceSingleBonds.append(bufferSingleBonds)
             sceneInstanceDoubleBonds.append(bufferDoubleBonds)
+            sceneInstancePartialDoubleBonds.append(bufferPartialDoubleBonds)
             sceneInstanceTripleBonds.append(bufferTripleBonds)
           }
         }
         instanceBufferAllBonds.append(sceneInstanceAllBonds)
         instanceBufferSingleBonds.append(sceneInstanceSingleBonds)
         instanceBufferDoubleBonds.append(sceneInstanceDoubleBonds)
+        instanceBufferPartialDoubleBonds.append(sceneInstancePartialDoubleBonds)
         instanceBufferTripleBonds.append(sceneInstanceTripleBonds)
       }
-      
     }
   }
   
@@ -239,6 +252,32 @@ class MetalInternalBondShader
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
             
               commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferDoubleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferDoubleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+      index = 0
+      commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          
+          if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
+             let buffer: MTLBuffer = self.metalBuffer(instanceBufferPartialDoubleBonds, sceneIndex: i, movieIndex: j)
+          {
+            let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
+            if (!structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
+            {
+              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+            
+              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferPartialDoubleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferPartialDoubleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
             }
           }
           index = index + 1

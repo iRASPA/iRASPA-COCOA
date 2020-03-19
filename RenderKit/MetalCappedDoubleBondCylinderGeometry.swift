@@ -53,7 +53,7 @@ public class MetalCappedDoubleBondCylinderGeometry
     numberOfVertexes = 2*(4 * slices + 2)
     numberOfIndices = 2*(12 * slices)
     
-    let bondCylinder: MetalCappedBondCylinderGeometry = MetalCappedBondCylinderGeometry(r: 0.8, s: 21)
+    let bondCylinder: MetalCappedSingleBondCylinderGeometry = MetalCappedSingleBondCylinderGeometry(r: 0.8, s: 21)
     
     vertices = bondCylinder.vertices.map({RKVertex(position: $0.position + SIMD4<Float>(-1.0,0.0,0.0,0.0), normal: $0.normal, st: $0.st)}) +
                bondCylinder.vertices.map({RKVertex(position: $0.position + SIMD4<Float>(1.0,0.0,0.0,0.0), normal: $0.normal, st: $0.st)})

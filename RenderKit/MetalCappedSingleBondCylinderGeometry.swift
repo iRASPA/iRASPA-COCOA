@@ -33,7 +33,7 @@ import Foundation
 import Metal
 import simd
 
-public class MetalCappedBondCylinderGeometry
+public class MetalCappedSingleBondCylinderGeometry
 {
   var slices: Int
   public var numberOfIndices: Int

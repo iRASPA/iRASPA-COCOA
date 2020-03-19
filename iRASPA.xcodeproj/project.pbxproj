@@ -431,7 +431,7 @@
 		93E7594B21DBC056009B9C5C /* iRASPADocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */; };
 		93E92DEF21F5BC6300A0DBE6 /* MetalSphereShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalSphereShader.swift */; };
 		93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */; };
-		93E92DF521F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF421F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift */; };
+		93E92DF521F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */; };
 		93EA0C361E69EA810051E911 /* AtomGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA0C351E69EA810051E911 /* AtomGroupView.swift */; };
 		93EAABA81ED9787D00FE61D8 /* SKCIFParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABA71ED9787D00FE61D8 /* SKCIFParser.swift */; };
 		93EAABAA1ED978E200FE61D8 /* SKParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABA91ED978E200FE61D8 /* SKParser.swift */; };
@@ -1215,7 +1215,7 @@
 		93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPADocumentController.swift; sourceTree = "<group>"; };
 		93E92DEE21F5BC6300A0DBE6 /* MetalSphereShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalSphereShader.swift; sourceTree = "<group>"; };
 		93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBondCylinderGeometry.swift; sourceTree = "<group>"; };
-		93E92DF421F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedBondCylinderGeometry.swift; sourceTree = "<group>"; };
+		93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedSingleBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		93EA0C351E69EA810051E911 /* AtomGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomGroupView.swift; sourceTree = "<group>"; };
 		93EAABA71ED9787D00FE61D8 /* SKCIFParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFParser.swift; sourceTree = "<group>"; };
 		93EAABA91ED978E200FE61D8 /* SKParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKParser.swift; sourceTree = "<group>"; };
@@ -1532,7 +1532,7 @@
 				930DD5EE1E26B65C00B8FE9B /* MetalCylinderGeometry.swift */,
 				936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */,
 				9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */,
-				93E92DF421F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift */,
+				93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */,
 				936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */,
 				936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */,
 				93EACCB92204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift */,
@@ -3068,7 +3068,7 @@
 				93793B0D21C81586004CAD9C /* MetalAtomSelectionStripesPerspectiveImposterShader.swift in Sources */,
 				936411D82421452E00BAFE9C /* MetalDoubleCylinder.swift in Sources */,
 				93793AE921C7B770004CAD9C /* MetalInternalBondShader.swift in Sources */,
-				93E92DF521F635A800A0DBE6 /* MetalCappedBondCylinderGeometry.swift in Sources */,
+				93E92DF521F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift in Sources */,
 				93584CD520011F75005F01A7 /* ClassicNoise4D.metal in Sources */,
 				93793B3121D94494004CAD9C /* RKInPerInstanceAttributesAtoms.swift in Sources */,
 				93793B3321D944B2004CAD9C /* RKInPerInstanceAttributesBonds.swift in Sources */,
