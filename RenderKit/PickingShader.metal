@@ -105,61 +105,6 @@ fragment PickingFragOutput AtomSpherePickingFragmentShader(PickingVertexShaderOu
 
 }
 
-vertex PickingVertexShaderOut LicoriceSpherePickingVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                                            const device InPerInstanceAttributes *positions [[buffer(1)]],
-                                                            constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                                            constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                                            uint vid [[vertex_id]],
-                                                            uint iid [[instance_id]])
-{
-  PickingVertexShaderOut vert;
-  
-  vert.instanceId = positions[iid].tag;
-  
-  float scaleFactor = structureUniforms.selectionScaling * 0.15*structureUniforms.bondScaling;
-  float4 scale = float4(scaleFactor,scaleFactor,scaleFactor,1.0);
-  
-  vert.eye_position = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
-  
-  vert.texcoords = vertices[vid].position.xy;
-  vert.sphere_radius = scale;
-  float4 pos2 = frameUniforms.viewMatrix * structureUniforms.modelMatrix * positions[iid].position;
-  pos2.xy += scale.xy * float2(vertices[vid].position.x,vertices[vid].position.y);
-  
-  vert.frag_pos = pos2.xyz;
-  
-  vert.position = frameUniforms.projectionMatrix * pos2;
-  
-  return vert;
-}
-
-
-
-fragment PickingFragOutput LicoriceSpherePickingFragmentShader(PickingVertexShaderOut vert [[stage_in]],
-                                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
-                                                           constant StructureUniforms& structureUniforms [[buffer(1)]])
-{
-  PickingFragOutput output;
-  
-  float x = vert.texcoords.x;
-  float y = vert.texcoords.y;
-  float zz = 1.0 - x*x - y*y;
-  
-  if (zz <= 0.0)
-    discard_fragment();
-  
-  float z = sqrt(zz);
-  float4 pos = vert.eye_position;
-  pos.z += vert.sphere_radius.z*z;
-  pos = frameUniforms.projectionMatrix * pos;
-  output.depth = (pos.z / pos.w);
-  
-  output.albedo = uint4(1,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
-  
-  return output;
-}
-
-
 
 struct PickingBondVertexShaderOut
 {
