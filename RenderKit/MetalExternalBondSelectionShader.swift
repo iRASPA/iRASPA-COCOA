@@ -31,24 +31,34 @@
 
 
 import Foundation
-import simd
 
-// Note: must be aligned at vector-length (16-bytes boundaries, 4 Floats of 4 bytes)
-// current number of bytes: 512 bytes
-public struct RKLightUniforms
+class MetalExternalBondSelectionShader
 {
-  public var lights: [RKLight] = [RKLight(),RKLight(),RKLight(),RKLight()]
+  var renderDataSource: RKRenderDataSource? = nil
+  var renderStructures: [[RKRenderStructure]] = [[]]
   
-  public init()
+  var instanceBuffer: [[MTLBuffer?]] = [[]]
+  
+  public func buildVertexBuffers(device: MTLDevice)
   {
+    if let _: RKRenderDataSource = renderDataSource
+    {
+      instanceBuffer = []
+      
+      for i in 0..<self.renderStructures.count
+      {
+        var sceneInstance: [MTLBuffer?] = [MTLBuffer?]()
+        let structures: [RKRenderStructure] = renderStructures[i]
+        
+        for structure in structures
+        {
+          let bondPositions: [RKInPerInstanceAttributesBonds] = (structure as? RKRenderBondSource)?.renderSelectedExternalBonds ?? []
+          let buffer: MTLBuffer? = bondPositions.isEmpty ? nil : device.makeBuffer(bytes: bondPositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * bondPositions.count, options:.storageModeManaged)
+          sceneInstance.append(buffer)
+        }
+        instanceBuffer.append(sceneInstance)
+      }
+    }
   }
   
-  public init(project: RKRenderDataSource)
-  {
-    
-    self.lights[0].ambient = Float(project.renderLights[0].ambientIntensity) * SIMD4<Float>(color: project.renderLights[0].ambient)
-    self.lights[0].diffuse = Float(project.renderLights[0].diffuseIntensity) * SIMD4<Float>(color: project.renderLights[0].diffuse)
-    self.lights[0].specular = Float(project.renderLights[0].specularIntensity) * SIMD4<Float>(color: project.renderLights[0].specular)
-    self.lights[0].shininess = Float(project.renderLights[0].shininess)
-  }
 }

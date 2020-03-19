@@ -964,6 +964,161 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     }
     return data
   }
+  
+  public override var renderSelectedInternalBonds: [RKInPerInstanceAttributesBonds]
+  {
+    var data: [RKInPerInstanceAttributesBonds] = []
+     
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+      
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+      
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+      
+    let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects[self.bondController.selectedObjects]
+    for (asymmetricBondIndex, asymmetricBond) in selectedAsymmetricBonds.enumerated()
+    {
+      for bond in asymmetricBond.copies
+      {
+        if bond.boundaryType == .internal
+        {
+          let atom1: SKAtomCopy = bond.atom1
+          let atom2: SKAtomCopy = bond.atom2
+          let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
+          let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
+          
+          let atomPos1 = SIMD3<Double>.flip(v: atom1.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+          let atomPos2 = SIMD3<Double>.flip(v: atom2.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+          
+          let color1: NSColor = asymmetricAtom1.color
+          let color2: NSColor = asymmetricAtom2.color
+          
+          let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
+          let typeIsVisible1: Bool = atomType1?.isVisible ?? true
+          let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
+          let typeIsVisible2: Bool = atomType2?.isVisible ?? true
+          
+          for k1 in minimumReplicaX...maximumReplicaX
+          {
+            for k2 in minimumReplicaY...maximumReplicaY
+            {
+              for k3 in minimumReplicaZ...maximumReplicaZ
+              {
+                let pos1: SIMD3<Double> = cell.convertToCartesian(atomPos1 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom1.displacement
+                let pos2: SIMD3<Double> = cell.convertToCartesian(atomPos2 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom2.displacement
+                let bondLength: Double = length(pos2-pos1)
+                
+                let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength
+                let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength
+                
+                let w: Double = (asymmetricBond.isVisible && typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) && (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
+                data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(xyz: pos1, w: w),
+                      position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
+                      color1: SIMD4<Float>(color: color1),
+                      color2: SIMD4<Float>(color: color2),
+                      scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2),
+                      tag: UInt32(asymmetricBondIndex),
+                      type: UInt32(asymmetricBond.bondType.rawValue)))
+              }
+            }
+          }
+        }
+      }
+    }
+    return data
+  }
+  
+  public override var renderSelectedExternalBonds: [RKInPerInstanceAttributesBonds]
+  {
+    var data: [RKInPerInstanceAttributesBonds] = []
+    
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+    
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+    
+    let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects[self.bondController.selectedObjects]
+    for (asymmetricBondIndex, asymmetricBond) in selectedAsymmetricBonds.enumerated()
+    {
+      for bond in asymmetricBond.copies
+      {
+        if bond.boundaryType == .external
+        {
+          let atom1: SKAtomCopy = bond.atom1
+          let atom2: SKAtomCopy = bond.atom2
+          let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
+          let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
+        
+          let atomPos1 = SIMD3<Double>.flip(v: atom1.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+          let atomPos2 = SIMD3<Double>.flip(v: atom2.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+        
+          let color1: NSColor = asymmetricAtom1.color
+          let color2: NSColor = asymmetricAtom2.color
+        
+          let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
+          let typeIsVisible1: Bool = atomType1?.isVisible ?? true
+          let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
+          let typeIsVisible2: Bool = atomType2?.isVisible ?? true
+        
+          for k1 in minimumReplicaX...maximumReplicaX
+          {
+            for k2 in minimumReplicaY...maximumReplicaY
+            {
+              for k3 in minimumReplicaZ...maximumReplicaZ
+              {
+                let frac_pos1: SIMD3<Double> = atomPos1 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) +  self.cell.contentShift
+                let frac_pos2: SIMD3<Double> = atomPos2 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+                var dr: SIMD3<Double> = frac_pos2 - frac_pos1
+              
+                // apply boundary condition
+                dr.x -= rint(dr.x)
+                dr.y -= rint(dr.y)
+                dr.z -= rint(dr.z)
+              
+                let pos1: SIMD3<Double> = cell.convertToCartesian(frac_pos1) + asymmetricAtom1.displacement
+                let pos2: SIMD3<Double> = cell.convertToCartesian(frac_pos2) + asymmetricAtom2.displacement
+              
+                dr = cell.convertToCartesian(dr)
+                let bondLength: Double = length(dr)
+              
+                let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength;
+                let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength;
+              
+                let w: Double = (asymmetricBond.isVisible && typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) && (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
+              
+                data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(xyz: pos1, w: w),
+                      position2: SIMD4<Float>(x: pos1.x+dr.x, y: pos1.y+dr.y, z: pos1.z+dr.z, w: w),
+                      color1: SIMD4<Float>(color: color1),
+                      color2: SIMD4<Float>(color: color2),
+                      scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2),
+                      tag: UInt32(asymmetricBondIndex),
+                      type: UInt32(asymmetricBond.bondType.rawValue)))
+                data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(xyz: pos2, w: w),
+                      position2: SIMD4<Float>(x: pos2.x-dr.x, y: pos2.y-dr.y, z: pos2.z-dr.z, w: w),
+                      color1: SIMD4<Float>(color: color2),
+                      color2: SIMD4<Float>(color: color1),
+                      scale: SIMD4<Float>(x: drawRadius2, y: 1.0, z: drawRadius1, w: drawRadius2/drawRadius1),
+                      tag: UInt32(asymmetricBondIndex),
+                      type: UInt32(asymmetricBond.bondType.rawValue)))
+              }
+            }
+          }
+        }
+      }
+    }
+    return data
+  }
 
   // MARK: -
   // MARK: Symmetry

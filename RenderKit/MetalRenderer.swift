@@ -86,6 +86,10 @@ public class MetalRenderer
   var atomSelectionGlowOrthographicImposterShader: MetalAtomSelectionGlowOrthographicImposterShader = MetalAtomSelectionGlowOrthographicImposterShader()
   var atomSelectionGlowPerspectiveImposterShader: MetalAtomSelectionGlowPerspectiveImposterShader = MetalAtomSelectionGlowPerspectiveImposterShader()
   
+  var internalBondSelectionShader: MetalInternalBondSelectionShader = MetalInternalBondSelectionShader()
+  var externalBondSelectionShader: MetalExternalBondSelectionShader = MetalExternalBondSelectionShader()
+  var internalBondSelectionWorleyShader: MetalInternalBondSelectionWorleyNoise3DShader = MetalInternalBondSelectionWorleyNoise3DShader()
+  
   var blurHorizontalShader: MetalBlurHorizontalShader =  MetalBlurHorizontalShader()
   var blurVerticalShader: MetalBlurVerticalShader =  MetalBlurVerticalShader()
   
@@ -185,6 +189,13 @@ public class MetalRenderer
     atomSelectionGlowPictureShader.renderDataSource = renderDataSource
     atomSelectionGlowPictureShader.renderStructures = renderStructures
     
+    internalBondSelectionShader.renderDataSource = renderDataSource
+    internalBondSelectionShader.renderStructures = renderStructures
+    internalBondSelectionWorleyShader.renderDataSource = renderDataSource
+    internalBondSelectionWorleyShader.renderStructures = renderStructures
+    
+    externalBondSelectionShader.renderDataSource = renderDataSource
+    externalBondSelectionShader.renderStructures = renderStructures
     
     metalSphereShader.renderDataSource  = renderDataSource
     metalSphereShader.renderStructures = renderStructures
@@ -339,6 +350,8 @@ public class MetalRenderer
     atomSelectionStripedOrthographicImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomSelectionStripedPerspectiveImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
+    internalBondSelectionWorleyShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
     blurHorizontalShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     blurVerticalShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -420,6 +433,11 @@ public class MetalRenderer
     atomSelectionGlowOrthographicImposterShader.buildVertexBuffers(device: device)
     atomSelectionGlowPerspectiveImposterShader.buildVertexBuffers(device: device)
     
+    internalBondSelectionShader.buildVertexBuffers(device: device)
+    externalBondSelectionShader.buildVertexBuffers(device: device)
+    
+    internalBondSelectionWorleyShader.buildVertexBuffers(device: device)
+    
     blurHorizontalShader.buildVertexBuffers(device: device)
     blurVerticalShader.buildVertexBuffers(device: device)
   
@@ -440,6 +458,8 @@ public class MetalRenderer
   public func rebuildSelectionVertexBuffer(device: MTLDevice)
   {
     atomSelectionShader.buildVertexBuffers(device: device)
+    internalBondSelectionShader.buildVertexBuffers(device: device)
+    externalBondSelectionShader.buildVertexBuffers(device: device)
   }
   
   // MARK: Uniforms
@@ -575,6 +595,9 @@ public class MetalRenderer
     
     if let camera: RKCamera = renderCameraSource?.renderCamera
     {
+      // draw bonds before atoms
+      self.internalBondSelectionWorleyShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: internalBondSelectionShader, bondShader: internalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
       switch(renderQuality)
       {
       case .high, .picture:
@@ -591,6 +614,8 @@ public class MetalRenderer
           self.atomSelectionStripedPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomPerspectiveImposterShader: atomPerspectiveImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
         }
       }
+      
+     
     }
     
     

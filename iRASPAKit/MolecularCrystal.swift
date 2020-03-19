@@ -994,6 +994,71 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     return []
   }
   
+  public override var renderSelectedInternalBonds: [RKInPerInstanceAttributesBonds]
+  {
+    var data: [RKInPerInstanceAttributesBonds] = []
+    
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+    
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+    
+    let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects[self.bondController.selectedObjects]
+    for (asymmetricIndex, asymmetricBond) in selectedAsymmetricBonds.enumerated()
+    {
+      for bond in asymmetricBond.copies
+      {
+        if bond.boundaryType == .internal
+        {
+          let atom1: SKAtomCopy = bond.atom1
+          let atom2: SKAtomCopy = bond.atom2
+          let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
+          let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
+        
+          let color1: NSColor = bond.atom1.asymmetricParentAtom.color
+          let color2: NSColor = bond.atom2.asymmetricParentAtom.color
+        
+          let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
+          let typeIsVisible1: Bool = atomType1?.isVisible ?? true
+          let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
+          let typeIsVisible2: Bool = atomType2?.isVisible ?? true
+        
+          for k1 in minimumReplicaX...maximumReplicaX
+          {
+            for k2 in minimumReplicaY...maximumReplicaY
+            {
+              for k3 in minimumReplicaZ...maximumReplicaZ
+              {
+                let pos1: SIMD3<Double> = atom1.position + cell.unitCell * SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+                let pos2: SIMD3<Double> = atom2.position + cell.unitCell * SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+                let bondLength: Double = length(pos2-pos1)
+              
+                let drawRadius1: Double = asymmetricAtom1.drawRadius / bondLength
+                let drawRadius2: Double = asymmetricAtom2.drawRadius / bondLength
+              
+                let w: Double = (asymmetricBond.isVisible && typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) &&                     (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled)) ? 1.0 : -1.0
+                data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(xyz: pos1, w: w),
+                                                         position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: w),
+                                                         color1: SIMD4<Float>(color: color1),
+                                                         color2: SIMD4<Float>(color: color2),
+                                                         scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2),
+                                                         tag: UInt32(asymmetricIndex),
+                                                         type: UInt32(asymmetricBond.bondType.rawValue)))
+              }
+            }
+          }
+        }
+      }
+    }
+    return data
+  }
+  
   // MARK: Measuring distance, angle, and dihedral-angles
   // =====================================================================
   

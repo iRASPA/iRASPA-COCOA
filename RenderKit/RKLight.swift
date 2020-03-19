@@ -64,10 +64,10 @@ public struct RKLight
   
   public init(project: RKRenderDataSource, light: Int)
   {
-    self.ambient = GLfloat(project.renderLights[light].ambientIntensity) * SIMD4<Float>(color: project.renderLights[light].ambient)
-    self.diffuse = GLfloat(project.renderLights[light].diffuseIntensity) * SIMD4<Float>(color: project.renderLights[light].diffuse)
-    self.specular = GLfloat(project.renderLights[light].specularIntensity) * SIMD4<Float>(color: project.renderLights[light].specular)
-    self.shininess = GLfloat(project.renderLights[light].shininess)
+    self.ambient = Float(project.renderLights[light].ambientIntensity) * SIMD4<Float>(color: project.renderLights[light].ambient)
+    self.diffuse = Float(project.renderLights[light].diffuseIntensity) * SIMD4<Float>(color: project.renderLights[light].diffuse)
+    self.specular = Float(project.renderLights[light].specularIntensity) * SIMD4<Float>(color: project.renderLights[light].specular)
+    self.shininess = Float(project.renderLights[light].shininess)
   }
 }
 

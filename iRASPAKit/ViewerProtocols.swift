@@ -195,7 +195,6 @@ public protocol AtomVisualAppearanceViewer: StructureViewer
   
   var renderAtomHDR: Bool? {get set}
   var renderAtomHDRExposure: Double? {get set}
-  var renderAtomHDRBloomLevel: Double? {get set}
   
   var renderAtomAmbientColor: NSColor? {get set}
   var renderAtomDiffuseColor: NSColor? {get set}
@@ -204,6 +203,12 @@ public protocol AtomVisualAppearanceViewer: StructureViewer
   var renderAtomDiffuseIntensity: Double? {get set}
   var renderAtomSpecularIntensity: Double? {get set}
   var renderAtomShininess: Double? {get set}
+  
+  var renderAtomSelectionStyle: RKSelectionStyle? {get set}
+  var renderAtomSelectionFrequency: Double? {get set}
+  var renderAtomSelectionDensity: Double? {get set}
+  var renderAtomSelectionIntensity: Double? {get set}
+  var renderAtomSelectionScaling: Double? {get set}
 }
   
 public protocol PrimitiveVisualAppearanceViewer
@@ -258,6 +263,8 @@ public protocol PrimitiveVisualAppearanceViewer
 
 public protocol BondVisualAppearanceViewer: StructureViewer
 {
+  func recheckRepresentationStyleBond()
+  
   var renderDrawBonds: Bool? {get set}
   var renderBondScaleFactor: Double? {get set}
   var renderBondColorMode: RKBondColorMode? {get set}
@@ -266,7 +273,6 @@ public protocol BondVisualAppearanceViewer: StructureViewer
   
   var renderBondHDR: Bool? {get set}
   var renderBondHDRExposure: Double? {get set}
-  var renderBondHDRBloomLevel: Double? {get set}
   
   var renderBondHue: Double? {get set}
   var renderBondSaturation: Double? {get set}
@@ -279,6 +285,12 @@ public protocol BondVisualAppearanceViewer: StructureViewer
   var renderBondDiffuseIntensity: Double? {get set}
   var renderBondSpecularIntensity: Double? {get set}
   var renderBondShininess: Double? {get set}
+  
+  var renderBondSelectionStyle: RKSelectionStyle? {get set}
+  var renderBondSelectionFrequency: Double? {get set}
+  var renderBondSelectionDensity: Double? {get set}
+  var renderBondSelectionIntensity: Double? {get set}
+  var renderBondSelectionScaling: Double? {get set}
 }
 
 public protocol UnitCellVisualAppearanceViewer: StructureViewer
