@@ -243,32 +243,6 @@ extension AtomVisualAppearanceViewer
     }
   }
   
-  public var renderAtomHDRBloomLevel: Double?
-  {
-    get
-    {
-      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomHDRBloomLevel })
-      return Set(set).count == 1 ? set.first! : nil
-    }
-    set(newValue)
-    {
-      self.allStructures.forEach{$0.atomHDRBloomLevel = newValue ?? 1.0}
-    }
-  }
-  
-  public var renderSelectionScaling: Double?
-  {
-    get
-    {
-      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSelectionScaling })
-      return Set(set).count == 1 ? set.first! : nil
-    }
-    set(newValue)
-    {
-      self.allStructures.forEach{$0.atomSelectionScaling = newValue ?? 1.0}
-    }
-  }
-  
   public var renderAtomAmbientColor: NSColor?
   {
     get
@@ -361,7 +335,7 @@ extension AtomVisualAppearanceViewer
     }
   }
   
-  public var renderSelectionStyle: RKSelectionStyle?
+  public var renderAtomSelectionStyle: RKSelectionStyle?
   {
     get
     {
@@ -374,7 +348,7 @@ extension AtomVisualAppearanceViewer
     }
   }
   
-  public var renderSelectionFrequency: Double?
+  public var renderAtomSelectionFrequency: Double?
   {
     get
     {
@@ -387,7 +361,7 @@ extension AtomVisualAppearanceViewer
     }
   }
   
-  public var renderSelectionDensity: Double?
+  public var renderAtomSelectionDensity: Double?
   {
     get
     {
@@ -397,6 +371,32 @@ extension AtomVisualAppearanceViewer
     set(newValue)
     {
       self.allStructures.forEach{$0.renderAtomSelectionDensity = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderAtomSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSelectionIntensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.atomSelectionIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSelectionScaling })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.atomSelectionScaling = newValue ?? 1.0}
     }
   }
   
@@ -751,32 +751,6 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
     }
   }
   
-  public var renderAtomHDRBloomLevel: Double?
-  {
-    get
-    {
-      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomHDRBloomLevel })
-      return Set(set).count == 1 ? set.first! : nil
-    }
-    set(newValue)
-    {
-      self.allStructures.forEach{$0.atomHDRBloomLevel = newValue ?? 1.0}
-    }
-  }
-  
-  public var renderSelectionScaling: Double?
-  {
-    get
-    {
-      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSelectionScaling })
-      return Set(set).count == 1 ? set.first! : nil
-    }
-    set(newValue)
-    {
-      self.allStructures.forEach{$0.atomSelectionScaling = newValue ?? 1.0}
-    }
-  }
-  
   public var renderAtomAmbientColor: NSColor?
   {
     get
@@ -869,7 +843,7 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
     }
   }
   
-  public var renderSelectionStyle: RKSelectionStyle?
+  public var renderAtomSelectionStyle: RKSelectionStyle?
   {
     get
     {
@@ -882,7 +856,7 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
     }
   }
   
-  public var renderSelectionFrequency: Double?
+  public var renderAtomSelectionFrequency: Double?
   {
     get
     {
@@ -895,7 +869,7 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
     }
   }
   
-  public var renderSelectionDensity: Double?
+  public var renderAtomSelectionDensity: Double?
   {
     get
     {
@@ -907,6 +881,33 @@ extension Array where Iterator.Element == AtomVisualAppearanceViewer
       self.allStructures.forEach{$0.renderAtomSelectionDensity = newValue ?? 4.0}
     }
   }
+  
+  public var renderAtomSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSelectionIntensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.atomSelectionIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.atomSelectionScaling })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.atomSelectionScaling = newValue ?? 1.0}
+    }
+  }
+  
   
   public var renderTextType: RKTextType?
   {

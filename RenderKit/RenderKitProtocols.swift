@@ -73,7 +73,6 @@ public protocol RKRenderAtomSource: RKRenderStructure
   
   var atomHDR: Bool {get}
   var atomHDRExposure: Double {get}
-  var atomHDRBloomLevel: Double {get}
   var clipAtomsAtUnitCell: Bool {get}
   var renderAtoms: [RKInPerInstanceAttributesAtoms] {get}
   
@@ -90,11 +89,12 @@ public protocol RKRenderAtomSource: RKRenderStructure
   
   var renderSelectedAtoms: [RKInPerInstanceAttributesAtoms] {get}
   var atomSelectionStyle: RKSelectionStyle {get}
-  var atomSelectionScaling: Double {get}
   var atomSelectionStripesDensity: Double {get}
   var atomSelectionStripesFrequency: Double {get}
   var atomSelectionWorleyNoise3DFrequency: Double {get}
   var atomSelectionWorleyNoise3DJitter: Double {get}
+  var atomSelectionIntensity: Double {get}
+  var atomSelectionScaling: Double {get}
   
   func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
 }
@@ -104,8 +104,9 @@ public protocol RKRenderBondSource: RKRenderStructure
   var numberOfInternalBonds: Int {get}
   var numberOfExternalBonds: Int {get}
   var renderInternalBonds: [RKInPerInstanceAttributesBonds] {get}
+  var renderSelectedInternalBonds: [RKInPerInstanceAttributesBonds] {get}
   var renderExternalBonds: [RKInPerInstanceAttributesBonds] {get}
-  var renderSelectedBonds: [RKInPerInstanceAttributesBonds] {get}
+  var renderSelectedExternalBonds: [RKInPerInstanceAttributesBonds] {get}
   var drawBonds: Bool {get}
   
   var bondAmbientColor: NSColor {get}
@@ -124,12 +125,20 @@ public protocol RKRenderBondSource: RKRenderStructure
   
   var bondHDR: Bool {get}
   var bondHDRExposure: Double {get}
-  var bondHDRBloomLevel: Double {get}
+  
   var clipBondsAtUnitCell: Bool {get}
   
   var bondHue: Double {get}
   var bondSaturation: Double {get}
   var bondValue: Double {get}
+  
+  var bondSelectionStyle: RKSelectionStyle {get}
+  var bondSelectionStripesDensity: Double {get}
+  var bondSelectionStripesFrequency: Double {get}
+  var bondSelectionWorleyNoise3DFrequency: Double {get}
+  var bondSelectionWorleyNoise3DJitter: Double {get}
+  var bondSelectionIntensity: Double {get}
+  var bondSelectionScaling: Double {get}
 }
 
 public protocol RKRenderUnitCellSource: RKRenderStructure

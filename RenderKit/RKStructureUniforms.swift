@@ -52,7 +52,7 @@ public struct RKStructureUniforms
   
   public var atomHDR: Int32 = 0
   public var atomHDRExposure: Float = 1.5;
-  public var atomHDRBloomLevel: Float = 0.5;
+  public var atomSelectionIntensity: Float = 0.5;
   public var clipAtomsAtUnitCell: Bool = false;
   
   public var atomAmbient: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
@@ -68,9 +68,8 @@ public struct RKStructureUniforms
   
   public var bondHDR: Int32 = 0
   public var bondHDRExposure: Float = 1.5;
-  public var bondHDRBloomLevel: Float = 1.0;
+  public var bondSelectionIntensity: Float = 0.5;
   public var clipBondsAtUnitCell: Bool = false;
-  
   
   public var bondAmbientColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var bondDiffuseColor: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
@@ -107,8 +106,8 @@ public struct RKStructureUniforms
   public var atomAnnotationTextDisplacement: SIMD4<Float> = SIMD4<Float>()
   public var atomAnnotationTextColor: SIMD4<Float> = SIMD4<Float>(0.0,0.0,0.0,1.0)
   public var atomAnnotationTextScaling: Float = 1.0
-  public var bondAnnotationTextScaling: Float = 1.0
-  public var selectionScaling: Float = 1.25
+  public var atomSelectionScaling: Float = 1.0
+  public var bondSelectionScaling: Float = 1.25
   public var colorAtomsWithBondColor: Bool = false
   
   //----------------------------------------  512 bytes boundary
@@ -132,6 +131,21 @@ public struct RKStructureUniforms
   public var pad6: Float = 0.0
   public var primitiveShininessBackSide: Float = 4.0
   
+  //----------------------------------------  768 bytes boundary
+  
+  public var bondSelectionStripesDensity: Float = 0.25
+  public var bondSelectionStripesFrequency: Float = 12.0
+  public var bondSelectionWorleyNoise3DFrequency: Float = 2.0
+  public var bondSelectionWorleyNoise3DJitter: Float = 0.0
+  
+  public var pad7: SIMD4<Float> = SIMD4<Float>()
+  public var pad8: SIMD4<Float> = SIMD4<Float>()
+  public var pad9: SIMD4<Float> = SIMD4<Float>()
+  
+  public var pad10: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  public var pad11: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  public var pad12: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  
   public init()
   {
     
@@ -154,34 +168,33 @@ public struct RKStructureUniforms
       
       self.colorAtomsWithBondColor = structure.colorAtomsWithBondColor
     
-      self.atomScaleFactor = GLfloat(structure.atomScaleFactor)
+      self.atomScaleFactor = Float(structure.atomScaleFactor)
       self.changeHueSaturationValue = SIMD4<Float>(Double4: hsv)
     
       self.ambientOcclusion = structure.atomAmbientOcclusion ? 1: 0
       self.ambientOcclusionPatchNumber = Int32(structure.atomAmbientOcclusionPatchNumber)
-      self.ambientOcclusionPatchSize = GLfloat(structure.atomAmbientOcclusionPatchSize)
-      self.ambientOcclusionInverseTextureSize = GLfloat(1.0/Double(structure.atomAmbientOcclusionTextureSize))
-    
+      self.ambientOcclusionPatchSize = Float(structure.atomAmbientOcclusionPatchSize)
+      self.ambientOcclusionInverseTextureSize = Float(1.0/Double(structure.atomAmbientOcclusionTextureSize))
     
       self.atomAmbient = Float(structure.atomAmbientIntensity) * SIMD4<Float>(color:  structure.atomAmbientColor)
       self.atomDiffuse = Float(structure.atomDiffuseIntensity) * SIMD4<Float>(color: structure.atomDiffuseColor)
       self.atomSpecular = Float(structure.atomSpecularIntensity) * SIMD4<Float>(color: structure.atomSpecularColor)
-      self.atomShininess = GLfloat(structure.atomShininess)
+      self.atomShininess = Float(structure.atomShininess)
     
       self.atomHDR = structure.atomHDR ? 1 : 0
-      self.atomHDRExposure = GLfloat(structure.atomHDRExposure)
-      self.atomHDRBloomLevel = GLfloat(structure.atomHDRBloomLevel)
+      self.atomHDRExposure = Float(structure.atomHDRExposure)
+      
       self.clipAtomsAtUnitCell = structure.clipAtomsAtUnitCell
       
-      self.selectionScaling = Float(max(1.001,structure.atomSelectionScaling)) // avoid artifacts
       self.atomSelectionStripesDensity = Float(structure.atomSelectionStripesDensity)
       self.atomSelectionStripesFrequency = Float(structure.atomSelectionStripesFrequency)
       self.atomSelectionWorleyNoise3DFrequency = Float(structure.atomSelectionWorleyNoise3DFrequency)
       self.atomSelectionWorleyNoise3DJitter = Float(structure.atomSelectionWorleyNoise3DJitter)
+      self.atomSelectionScaling = Float(max(1.001,structure.atomSelectionScaling)) // avoid artifacts
+      self.atomSelectionIntensity = Float(structure.atomSelectionIntensity)
       
       self.atomAnnotationTextColor = SIMD4<Float>(color: structure.atomTextColor)
       self.atomAnnotationTextScaling = Float(structure.atomTextScaling)
-      self.bondAnnotationTextScaling = 1.0
       self.atomAnnotationTextDisplacement = SIMD4<Float>(x: Float(structure.atomTextOffset.x),
                                                    y: Float(structure.atomTextOffset.y),
                                                    z: Float(structure.atomTextOffset.z),
@@ -191,29 +204,37 @@ public struct RKStructureUniforms
     
     if let structure: RKRenderUnitCellSource = structure as? RKRenderUnitCellSource
     {
-      self.unitCellScaling =  GLfloat(structure.unitCellScaleFactor)
+      self.unitCellScaling =  Float(structure.unitCellScaleFactor)
       self.unitCellDiffuseColor = Float(structure.unitCellDiffuseIntensity) * SIMD4<Float>(color:  structure.unitCellDiffuseColor)
     }
     
    
     if let structure: RKRenderBondSource = structure as? RKRenderBondSource
     {
-      self.bondScaling = GLfloat(structure.bondScaleFactor)
+      self.bondScaling = Float(structure.bondScaleFactor)
       self.bondColorMode = Int32(structure.bondColorMode.rawValue)
     
       self.bondHDR = structure.bondHDR ? 1 : 0
-      self.bondHDRExposure = GLfloat(structure.bondHDRExposure)
-      self.bondHDRBloomLevel = GLfloat(structure.bondHDRBloomLevel)
+      self.bondHDRExposure = Float(structure.bondHDRExposure)
+      
       self.clipBondsAtUnitCell = structure.clipBondsAtUnitCell
     
-      self.bondHue = GLfloat(structure.bondHue)
-      self.bondSaturation = GLfloat(structure.bondSaturation)
-      self.bondValue = GLfloat(structure.bondValue)
+      self.bondHue = Float(structure.bondHue)
+      self.bondSaturation = Float(structure.bondSaturation)
+      self.bondValue = Float(structure.bondValue)
     
       self.bondAmbientColor = Float(structure.bondAmbientIntensity) * SIMD4<Float>(color:  structure.bondAmbientColor)
       self.bondDiffuseColor = Float(structure.bondDiffuseIntensity) * SIMD4<Float>(color: structure.bondDiffuseColor)
       self.bondSpecularColor = Float(structure.bondSpecularIntensity) * SIMD4<Float>(color: structure.bondSpecularColor)
-      self.bondShininess = GLfloat(structure.bondShininess)
+      self.bondShininess = Float(structure.bondShininess)
+      
+      
+      self.bondSelectionStripesDensity = Float(structure.bondSelectionStripesDensity)
+      self.bondSelectionStripesFrequency = Float(structure.bondSelectionStripesFrequency)
+      self.bondSelectionWorleyNoise3DFrequency = Float(structure.bondSelectionWorleyNoise3DFrequency)
+      self.bondSelectionWorleyNoise3DJitter = Float(structure.bondSelectionWorleyNoise3DJitter)
+      self.bondSelectionIntensity = Float(structure.bondSelectionIntensity)
+      self.bondSelectionScaling = Float(max(1.001,structure.bondSelectionScaling)) // avoid artifacts
     }
     
     if let structure: RKRenderObjectSource = structure as? RKRenderObjectSource

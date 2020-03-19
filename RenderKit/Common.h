@@ -175,7 +175,7 @@ typedef struct
   
   bool atomHDR;
   float atomHDRExposure;
-  float atomHDRBloomLevel;
+  float atomSelectionIntensity;
   bool clipAtomsAtUnitCell;
   
   float4 atomAmbientColor;
@@ -191,7 +191,7 @@ typedef struct
   
   bool bondHDR;
   float bondHDRExposure;
-  float bondHDRBloomLevel;
+  float bondSelectionIntensity;
   bool clipBondsAtUnitCell;
   
   float4 bondAmbientColor;
@@ -230,9 +230,11 @@ typedef struct
   float4 atomAnnotationTextDisplacement;
   float4 atomAnnotationTextColor;
   float atomAnnotationTextScaling;
-  float bondAnnotationTextScaling;
-  float selectionScaling;
+  float atomSelectionScaling;
+  float bondSelectionScaling;
   bool colorAtomsWithBondColor;
+  
+  //----------------------------------------  512 bytes boundary
   
   float4x4 transformationMatrix;
   float4x4 transformationNormalMatrix;
@@ -252,6 +254,21 @@ typedef struct
   float primitiveBackSideHDRExposure;
   float pad6;
   float primitiveShininessBackSide;
+  
+  //----------------------------------------  768 bytes boundary
+  
+  float bondSelectionStripesDensity;
+  float bondSelectionStripesFrequency;
+  float bondSelectionWorleyNoise3DFrequency;
+  float bondSelectionWorleyNoise3DJitter;
+  
+  float4 pad7;
+  float4 pad8;
+  float4 pad9;
+  
+  float4x4 pad10;
+  float4x4 pad11;
+  float4x4 pad12;
 } StructureUniforms;
 
 typedef struct

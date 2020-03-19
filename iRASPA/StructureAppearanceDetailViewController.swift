@@ -137,7 +137,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       "AtomsVisualAppearanceGroup" : 17.0,
       "AtomsVisualAppearanceCell" : 675.0,
       "BondsVisualAppearanceGroup" : 17.0,
-      "BondsVisualAppearanceCell" : 447.0,
+      "BondsVisualAppearanceCell" : 550.0,
       "UnitCellVisualAppearanceGroup" : 17.0,
       "UnitCellVisualAppearanceCell" : 126.0,
       "AdsorptionVisualAppearanceGroup": 17.0,
@@ -1206,7 +1206,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             textFieldSelectionFrequency.isEditable = enabled
             textFieldSelectionDensity.isEditable = enabled
             
-            if let selectionStyle: RKSelectionStyle = representedStructure.renderSelectionStyle
+            if let selectionStyle: RKSelectionStyle = representedStructure.renderAtomSelectionStyle
             {
               popUpbuttonSelectionStyle.removeItem(withTitle: "Multiple Values")
               popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
@@ -1224,7 +1224,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
               textFieldSelectionDensity.stringValue = "Mult. Val."
             }
             
-            if let renderSelectionFrequency: Double = representedStructure.renderSelectionFrequency
+            if let renderSelectionFrequency: Double = representedStructure.renderAtomSelectionFrequency
             {
               textFieldSelectionFrequency.doubleValue = renderSelectionFrequency
             }
@@ -1233,7 +1233,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
               textFieldSelectionFrequency.stringValue = "Mult. Val."
             }
             
-            if let renderSelectionDensity: Double = representedStructure.renderSelectionDensity
+            if let renderSelectionDensity: Double = representedStructure.renderAtomSelectionDensity
             {
               textFieldSelectionDensity.doubleValue = renderSelectionDensity
             }
@@ -1452,34 +1452,35 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
-        if let textFieldAtomBloomLevel: NSTextField = view.viewWithTag(34) as? NSTextField
+        if let textFieldAtomSelectionIntensityLevel: NSTextField = view.viewWithTag(34) as? NSTextField
         {
-          textFieldAtomBloomLevel.isEditable = false
-          textFieldAtomBloomLevel.stringValue = ""
+          textFieldAtomSelectionIntensityLevel.isEditable = false
+          textFieldAtomSelectionIntensityLevel.stringValue = ""
           if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
           {
-            textFieldAtomBloomLevel.isEditable = enabled
-            if let renderAtomBloomLevel: Double = representedStructure.renderAtomHDRBloomLevel
+            textFieldAtomSelectionIntensityLevel.isEditable = enabled
+            if let renderAtomSelectionIntensityLevel: Double = representedStructure.renderAtomSelectionIntensity
             {
-              textFieldAtomBloomLevel.doubleValue = renderAtomBloomLevel
+              textFieldAtomSelectionIntensityLevel.doubleValue = renderAtomSelectionIntensityLevel
             }
             else
             {
-              textFieldAtomBloomLevel.stringValue = "Multiple Values"
+              textFieldAtomSelectionIntensityLevel.stringValue = "Multiple Values"
             }
           }
         }
-        if let sliderAtomBloomLevel: NSSlider = view.viewWithTag(35) as? NSSlider
+        
+        if let sliderAtomSelectionIntensityLevel: NSSlider = view.viewWithTag(35) as? NSSlider
         {
-          sliderAtomBloomLevel.isEnabled = false
-          sliderAtomBloomLevel.minValue = 0.0
-          sliderAtomBloomLevel.maxValue = 2.0
+          sliderAtomSelectionIntensityLevel.isEnabled = false
+          sliderAtomSelectionIntensityLevel.minValue = 0.0
+          sliderAtomSelectionIntensityLevel.maxValue = 2.0
           if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
           {
-            sliderAtomBloomLevel.isEnabled = enabled
-            if let renderAtomBloomLevel: Double = representedStructure.renderAtomHDRBloomLevel
+            sliderAtomSelectionIntensityLevel.isEnabled = enabled
+            if let renderAtomSelectionIntensityLevel: Double = representedStructure.renderAtomSelectionIntensity
             {
-              sliderAtomBloomLevel.doubleValue = renderAtomBloomLevel
+              sliderAtomSelectionIntensityLevel.doubleValue = renderAtomSelectionIntensityLevel
             }
           }
         }
@@ -1492,9 +1493,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
           {
             textFieldSelectionScaling.isEditable = enabled
-            if let renderAtomBloomLevel: Double = representedStructure.renderSelectionScaling
+            if let renderAtomSelectionIntensityLevel: Double = representedStructure.renderAtomSelectionScaling
             {
-              textFieldSelectionScaling.doubleValue = renderAtomBloomLevel
+              textFieldSelectionScaling.doubleValue = renderAtomSelectionIntensityLevel
             }
             else
             {
@@ -1510,7 +1511,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
           {
             sliderSelectionScaling.isEnabled = enabled
-            if let renderSelectionScaling: Double = representedStructure.renderSelectionScaling
+            if let renderSelectionScaling: Double = representedStructure.renderAtomSelectionScaling
             {
               sliderSelectionScaling.doubleValue = renderSelectionScaling
             }
@@ -1783,6 +1784,126 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
           }
         }
+        
+        // Selection-style
+        if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(1117) as? iRASPAPopUpButton,
+           let textFieldSelectionFrequency: NSTextField = view.viewWithTag(1118) as? NSTextField,
+           let textFieldSelectionDensity: NSTextField = view.viewWithTag(1110) as? NSTextField
+        {
+          popUpbuttonSelectionStyle.isEditable = false
+          textFieldSelectionFrequency.isEditable = false
+          textFieldSelectionFrequency.stringValue = ""
+          textFieldSelectionDensity.isEditable = false
+          textFieldSelectionDensity.stringValue = ""
+          if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+          {
+            popUpbuttonSelectionStyle.isEditable = enabled
+            textFieldSelectionFrequency.isEditable = enabled
+            textFieldSelectionDensity.isEditable = enabled
+            
+            if let selectionStyle: RKSelectionStyle = representedStructure.renderBondSelectionStyle
+            {
+              popUpbuttonSelectionStyle.removeItem(withTitle: "Multiple Values")
+              popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
+              
+              if selectionStyle == .glow
+              {
+                textFieldSelectionFrequency.isEditable = false
+                textFieldSelectionDensity.isEditable = false
+              }
+            }
+            else
+            {
+              popUpbuttonSelectionStyle.setTitle("Multiple Values")
+              textFieldSelectionFrequency.stringValue = "Mult. Val."
+              textFieldSelectionDensity.stringValue = "Mult. Val."
+            }
+            
+            if let renderSelectionFrequency: Double = representedStructure.renderBondSelectionFrequency
+            {
+              textFieldSelectionFrequency.doubleValue = renderSelectionFrequency
+            }
+            else
+            {
+              textFieldSelectionFrequency.stringValue = "Mult. Val."
+            }
+            
+            if let renderSelectionDensity: Double = representedStructure.renderBondSelectionDensity
+            {
+              textFieldSelectionDensity.doubleValue = renderSelectionDensity
+            }
+            else
+            {
+              textFieldSelectionDensity.stringValue = "Mult. Val."
+            }
+          }
+        }
+        
+        if let textFieldBondSelectionIntensityLevel: NSTextField = view.viewWithTag(1134) as? NSTextField
+          {
+            textFieldBondSelectionIntensityLevel.isEditable = false
+            textFieldBondSelectionIntensityLevel.stringValue = ""
+            if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+            {
+              textFieldBondSelectionIntensityLevel.isEditable = enabled
+              if let renderBondSelectionIntensityLevel: Double = representedStructure.renderBondSelectionIntensity
+              {
+                textFieldBondSelectionIntensityLevel.doubleValue = renderBondSelectionIntensityLevel
+              }
+              else
+              {
+                textFieldBondSelectionIntensityLevel.stringValue = "Multiple Values"
+              }
+            }
+          }
+          
+          if let sliderBondSelectionIntensityLevel: NSSlider = view.viewWithTag(1135) as? NSSlider
+          {
+            sliderBondSelectionIntensityLevel.isEnabled = false
+            sliderBondSelectionIntensityLevel.minValue = 0.0
+            sliderBondSelectionIntensityLevel.maxValue = 2.0
+            if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+            {
+              sliderBondSelectionIntensityLevel.isEnabled = enabled
+              if let renderBondSelectionIntensityLevel: Double = representedStructure.renderBondSelectionIntensity
+              {
+                sliderBondSelectionIntensityLevel.doubleValue = renderBondSelectionIntensityLevel
+              }
+            }
+          }
+          
+        
+          if let textFieldBondSelectionScaling: NSTextField = view.viewWithTag(1181) as? NSTextField
+          {
+            textFieldBondSelectionScaling.isEditable = false
+            textFieldBondSelectionScaling.stringValue = ""
+            if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+            {
+              textFieldBondSelectionScaling.isEditable = enabled
+              if let renderBondSelectionScaling: Double = representedStructure.renderBondSelectionScaling
+              {
+                textFieldBondSelectionScaling.doubleValue = renderBondSelectionScaling
+              }
+              else
+              {
+                textFieldBondSelectionScaling.stringValue = "Multiple Values"
+              }
+            }
+          }
+          if let sliderBondSelectionScaling: NSSlider = view.viewWithTag(1182) as? NSSlider
+          {
+            sliderBondSelectionScaling.isEnabled = false
+            sliderBondSelectionScaling.minValue = 1.0
+            sliderBondSelectionScaling.maxValue = 2.0
+            if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+            {
+              sliderBondSelectionScaling.isEnabled = enabled
+              if let renderBondSelectionScaling: Double = representedStructure.renderBondSelectionScaling
+              {
+                sliderBondSelectionScaling.doubleValue = renderBondSelectionScaling
+              }
+            }
+          }
         
         // Use High Dynamic Range yes/no
         if let checkDrawHDRButton: NSButton = view.viewWithTag(10) as? NSButton
@@ -4423,13 +4544,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   // Selection style
-  @IBAction func changeSelectionStyle(_ sender: NSPopUpButton)
+  @IBAction func changeAtomSelectionStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
        var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
        let selectionStyle = RKSelectionStyle(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderSelectionStyle = selectionStyle
+      representedStructure.renderAtomSelectionStyle = selectionStyle
       
       self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
       
@@ -4443,12 +4564,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeSelectionFrequencyTextField(_ sender: NSTextField)
+  @IBAction func changeAtomSelectionFrequencyTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
     {
-      representedStructure.renderSelectionFrequency = sender.doubleValue
+      representedStructure.renderAtomSelectionFrequency = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
@@ -4461,12 +4582,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeSelectionDensityTextField(_ sender: NSTextField)
+  @IBAction func changeAtomSelectionDensityTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
     {
-      representedStructure.renderSelectionDensity = sender.doubleValue
+      representedStructure.renderAtomSelectionDensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
@@ -4479,12 +4600,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeAtomBloomLevelField(_ sender: NSTextField)
+  @IBAction func changeAtomSelectionIntensityLevelField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
     {
-      representedStructure.renderAtomHDRBloomLevel = sender.doubleValue
+      representedStructure.renderAtomSelectionIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
@@ -4497,12 +4618,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeAtomBloomLevel(_ sender: NSSlider)
+  @IBAction func changeAtomSelectionIntensityLevel(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
     {
-      representedStructure.renderAtomHDRBloomLevel = sender.doubleValue
+      representedStructure.renderAtomSelectionIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
@@ -4532,12 +4653,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  @IBAction func changeSelectionScalingTextField(_ sender: NSTextField)
+  @IBAction func changeAtomSelectionScalingTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
     {
-      representedStructure.renderSelectionScaling = sender.doubleValue
+      representedStructure.renderAtomSelectionScaling = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
@@ -4550,12 +4671,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  @IBAction func changeSelectionScalingSlider(_ sender: NSSlider)
+  @IBAction func changeAtomSelectionScalingSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
     {
-      representedStructure.renderSelectionScaling = sender.doubleValue
+      representedStructure.renderAtomSelectionScaling = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
@@ -5226,6 +5347,169 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       self.proxyProject?.representedObject.isEdited = true
     }
   }
+  
+  // Selection style
+  @IBAction func changeBondSelectionStyle(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer],
+       let selectionStyle = RKSelectionStyle(rawValue: sender.indexOfSelectedItem)
+    {
+      representedStructure.renderBondSelectionStyle = selectionStyle
+      
+      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBondSelectionFrequencyTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    {
+      representedStructure.renderBondSelectionFrequency = sender.doubleValue
+      
+      representedStructure.recheckRepresentationStyleBond()
+      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBondSelectionDensityTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    {
+      representedStructure.renderBondSelectionDensity = sender.doubleValue
+      
+      representedStructure.recheckRepresentationStyleBond()
+      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBondSelectionIntensityField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    {
+      representedStructure.renderBondSelectionIntensity = sender.doubleValue
+      
+      representedStructure.recheckRepresentationStyleBond()
+      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell, self.bondsVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBondSelectionIntensity(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    {
+      representedStructure.renderBondSelectionIntensity = sender.doubleValue
+      
+      representedStructure.recheckRepresentationStyleBond()
+      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell, self.bondsVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changeBondSelectionScalingTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    {
+      representedStructure.renderBondSelectionScaling = sender.doubleValue
+      
+      representedStructure.recheckRepresentationStyleBond()
+      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell, self.bondsVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBondSelectionScalingSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    {
+      representedStructure.renderBondSelectionScaling = sender.doubleValue
+      
+      representedStructure.recheckRepresentationStyleBond()
+      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell, self.bondsVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
   
   
   // High dynamic range

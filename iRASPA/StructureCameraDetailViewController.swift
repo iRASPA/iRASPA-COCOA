@@ -495,24 +495,24 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         }
       case "CameraSelectionCell":
         // Overall bloom level
-        if let textFieldAtomBloomLevel: NSTextField = view.viewWithTag(2) as? NSTextField
+        if let textFieldAtomSelectionIntensityLevel: NSTextField = view.viewWithTag(2) as? NSTextField
         {
-          textFieldAtomBloomLevel.isEditable = false
+          textFieldAtomSelectionIntensityLevel.isEditable = false
           if let camera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
           {
-            textFieldAtomBloomLevel.isEditable = true
-            textFieldAtomBloomLevel.doubleValue = camera.bloomLevel
+            textFieldAtomSelectionIntensityLevel.isEditable = true
+            textFieldAtomSelectionIntensityLevel.doubleValue = camera.bloomLevel
           }
         }
-        if let sliderAtomBloomLevel: NSSlider = view.viewWithTag(3) as? NSSlider
+        if let sliderAtomSelectionIntensityLevel: NSSlider = view.viewWithTag(3) as? NSSlider
         {
-          sliderAtomBloomLevel.isEnabled = false
-          sliderAtomBloomLevel.minValue = 0.0
-          sliderAtomBloomLevel.maxValue = 2.0
+          sliderAtomSelectionIntensityLevel.isEnabled = false
+          sliderAtomSelectionIntensityLevel.minValue = 0.0
+          sliderAtomSelectionIntensityLevel.maxValue = 2.0
           if let camera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
           {
-            sliderAtomBloomLevel.isEnabled = true
-            sliderAtomBloomLevel.doubleValue = camera.bloomLevel
+            sliderAtomSelectionIntensityLevel.isEnabled = true
+            sliderAtomSelectionIntensityLevel.doubleValue = camera.bloomLevel
           }
         }
       case "CameraLightsCell":

@@ -169,7 +169,7 @@
 		93584CC21FFFB9AF005F01A7 /* AcknowledgedLicenses.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93584CC11FFFB9AE005F01A7 /* AcknowledgedLicenses.pdf */; };
 		93584CC61FFFC485005F01A7 /* Common.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CC51FFFC485005F01A7 /* Common.metal */; };
 		93584CC81FFFC4C7005F01A7 /* CellularNoise.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CC71FFFC4C7005F01A7 /* CellularNoise.metal */; };
-		93584CCB1FFFC916005F01A7 /* SelectionShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CCA1FFFC916005F01A7 /* SelectionShaders.metal */; };
+		93584CCB1FFFC916005F01A7 /* AtomSelectionShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CCA1FFFC916005F01A7 /* AtomSelectionShaders.metal */; };
 		93584CCD20011E5E005F01A7 /* Noise3D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CCC20011E5E005F01A7 /* Noise3D.metal */; };
 		93584CD120011F3A005F01A7 /* ClassicNoise3D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CD020011F3A005F01A7 /* ClassicNoise3D.metal */; };
 		93584CD320011F64005F01A7 /* ClassicNoise2D.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CD220011F64005F01A7 /* ClassicNoise2D.metal */; };
@@ -433,6 +433,10 @@
 		93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */; };
 		93E92DF521F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */; };
 		93EA0C361E69EA810051E911 /* AtomGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA0C351E69EA810051E911 /* AtomGroupView.swift */; };
+		93EA79E924236CC60027D14B /* BondSelectionShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93EA79E824236CC60027D14B /* BondSelectionShaders.metal */; };
+		93EA79EB242372180027D14B /* MetalInternalBondSelectionWorleyNoise3DShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA79EA242372180027D14B /* MetalInternalBondSelectionWorleyNoise3DShader.swift */; };
+		93EA79ED242375100027D14B /* MetalInternalBondSelectionShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA79EC242375100027D14B /* MetalInternalBondSelectionShader.swift */; };
+		93EA79EF2423751F0027D14B /* MetalExternalBondSelectionShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA79EE2423751F0027D14B /* MetalExternalBondSelectionShader.swift */; };
 		93EAABA81ED9787D00FE61D8 /* SKCIFParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABA71ED9787D00FE61D8 /* SKCIFParser.swift */; };
 		93EAABAA1ED978E200FE61D8 /* SKParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABA91ED978E200FE61D8 /* SKParser.swift */; };
 		93EAABAD1ED9847700FE61D8 /* SKElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EAABAC1ED9847700FE61D8 /* SKElement.swift */; };
@@ -959,7 +963,7 @@
 		93584CC51FFFC485005F01A7 /* Common.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Common.metal; sourceTree = "<group>"; };
 		93584CC71FFFC4C7005F01A7 /* CellularNoise.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CellularNoise.metal; sourceTree = "<group>"; };
 		93584CC91FFFC56D005F01A7 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		93584CCA1FFFC916005F01A7 /* SelectionShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = SelectionShaders.metal; sourceTree = "<group>"; };
+		93584CCA1FFFC916005F01A7 /* AtomSelectionShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = AtomSelectionShaders.metal; sourceTree = "<group>"; };
 		93584CCC20011E5E005F01A7 /* Noise3D.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Noise3D.metal; sourceTree = "<group>"; };
 		93584CD020011F3A005F01A7 /* ClassicNoise3D.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ClassicNoise3D.metal; sourceTree = "<group>"; };
 		93584CD220011F64005F01A7 /* ClassicNoise2D.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ClassicNoise2D.metal; sourceTree = "<group>"; };
@@ -1217,6 +1221,10 @@
 		93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedSingleBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		93EA0C351E69EA810051E911 /* AtomGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomGroupView.swift; sourceTree = "<group>"; };
+		93EA79E824236CC60027D14B /* BondSelectionShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = BondSelectionShaders.metal; sourceTree = "<group>"; };
+		93EA79EA242372180027D14B /* MetalInternalBondSelectionWorleyNoise3DShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalInternalBondSelectionWorleyNoise3DShader.swift; sourceTree = "<group>"; };
+		93EA79EC242375100027D14B /* MetalInternalBondSelectionShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalInternalBondSelectionShader.swift; sourceTree = "<group>"; };
+		93EA79EE2423751F0027D14B /* MetalExternalBondSelectionShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalExternalBondSelectionShader.swift; sourceTree = "<group>"; };
 		93EAABA71ED9787D00FE61D8 /* SKCIFParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCIFParser.swift; sourceTree = "<group>"; };
 		93EAABA91ED978E200FE61D8 /* SKParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKParser.swift; sourceTree = "<group>"; };
 		93EAABAC1ED9847700FE61D8 /* SKElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKElement.swift; sourceTree = "<group>"; };
@@ -1572,6 +1580,9 @@
 				93793B0821C8154B004CAD9C /* MetalAtomSelectionStripesShader.swift */,
 				93793B0A21C8156B004CAD9C /* MetalAtomSelectionStripesOrthographicImposterShader.swift */,
 				93793B0C21C81586004CAD9C /* MetalAtomSelectionStripesPerspectiveImposterShader.swift */,
+				93EA79EC242375100027D14B /* MetalInternalBondSelectionShader.swift */,
+				93EA79EE2423751F0027D14B /* MetalExternalBondSelectionShader.swift */,
+				93EA79EA242372180027D14B /* MetalInternalBondSelectionWorleyNoise3DShader.swift */,
 				93793AFE21C80B45004CAD9C /* MetalAmbientOcclusionShader.swift */,
 				93793B1C21C94C3F004CAD9C /* MetalQuadShader.swift */,
 				93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */,
@@ -1603,7 +1614,8 @@
 				930DD5DC1E26B62E00B8FE9B /* AtomSphereShader.metal */,
 				930DD7581E280A3C00B8FE9B /* BondCylinderShader.metal */,
 				939208812002190B009F0E16 /* AtomMeasurementShader.metal */,
-				93584CCA1FFFC916005F01A7 /* SelectionShaders.metal */,
+				93584CCA1FFFC916005F01A7 /* AtomSelectionShaders.metal */,
+				93EA79E824236CC60027D14B /* BondSelectionShaders.metal */,
 				930DD5E01E26B62E00B8FE9B /* IsosurfaceShader.metal */,
 				930DD5E11E26B62E00B8FE9B /* PickingShader.metal */,
 				930DD5E21E26B62E00B8FE9B /* QuadShader.metal */,
@@ -3015,6 +3027,7 @@
 				930C1FA72201E576006AEF30 /* MetalCubeGeometry.swift in Sources */,
 				93793B0921C8154B004CAD9C /* MetalAtomSelectionStripesShader.swift in Sources */,
 				93793AE321C7998C004CAD9C /* MetalAtomShader.swift in Sources */,
+				93EA79ED242375100027D14B /* MetalInternalBondSelectionShader.swift in Sources */,
 				93793AE521C799B7004CAD9C /* MetalAtomOrthographicImposterShader.swift in Sources */,
 				93793AF721C7D0A2004CAD9C /* MetalMeasurementShader.swift in Sources */,
 				93793B2321CA85C2004CAD9C /* MetalBlurHorizontalPictureShader.swift in Sources */,
@@ -3034,10 +3047,11 @@
 				930DD5441E26B38D00B8FE9B /* RKMovieCreator.swift in Sources */,
 				93E92DEF21F5BC6300A0DBE6 /* MetalSphereShader.swift in Sources */,
 				93793B3B21D94551004CAD9C /* RKIsosurfaceUniforms.swift in Sources */,
-				93584CCB1FFFC916005F01A7 /* SelectionShaders.metal in Sources */,
+				93584CCB1FFFC916005F01A7 /* AtomSelectionShaders.metal in Sources */,
 				93584CD720011FC6005F01A7 /* Noise2D.metal in Sources */,
 				93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */,
 				930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */,
+				93EA79EB242372180027D14B /* MetalInternalBondSelectionWorleyNoise3DShader.swift in Sources */,
 				93793AED21C7C04C004CAD9C /* MetalUnitCellCylinderShader.swift in Sources */,
 				93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */,
 				93793B0521C8150E004CAD9C /* MetalAtomSelectionWorleyNoise3DOrthographicImposterShader.swift in Sources */,
@@ -3045,6 +3059,7 @@
 				93793B1D21C94C3F004CAD9C /* MetalQuadShader.swift in Sources */,
 				93793AFB21C7EAFD004CAD9C /* MetalPickingShader.swift in Sources */,
 				939208822002190B009F0E16 /* AtomMeasurementShader.metal in Sources */,
+				93EA79EF2423751F0027D14B /* MetalExternalBondSelectionShader.swift in Sources */,
 				93793B0F21C815BF004CAD9C /* MetalBlurHorizontalShader.swift in Sources */,
 				93793B2121CA8570004CAD9C /* MetalAtomSelectionGlowPictureShader.swift in Sources */,
 				930DD5F61E26B65C00B8FE9B /* MetalRenderer.swift in Sources */,
@@ -3060,6 +3075,7 @@
 				93793AF521C7D04A004CAD9C /* MetalIsosurfaceShader.swift in Sources */,
 				930DD5F51E26B65C00B8FE9B /* MetalQuadGeometry.swift in Sources */,
 				93793B1321C83406004CAD9C /* MetalMeasurementPerspectiveImposterShader.swift in Sources */,
+				93EA79E924236CC60027D14B /* BondSelectionShaders.metal in Sources */,
 				93584CC81FFFC4C7005F01A7 /* CellularNoise.metal in Sources */,
 				93793AEF21C7C060004CAD9C /* MetalUnitCellSphereShader.swift in Sources */,
 				93793AF121C7CB0D004CAD9C /* MetalBoundingBoxSphereShader.swift in Sources */,

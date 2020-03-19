@@ -97,8 +97,10 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   public var atomHDR: Bool = true
   public var atomHDRExposure: Double = 1.5
-  public var atomHDRBloomLevel: Double = 0.5
   public var clipAtomsAtUnitCell: Bool {return false}
+  
+  
+  
   public var atomPositions: [(SIMD4<Double>, Int, Bool)]
   {
     return []
@@ -172,6 +174,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var atomSelectionStripesFrequency: Double = 12.0
   public var atomSelectionWorleyNoise3DFrequency: Double = 2.0
   public var atomSelectionWorleyNoise3DJitter: Double = 1.0
+  public var atomSelectionIntensity: Double = 0.5
   
   public func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
@@ -196,17 +199,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       return []
   }
   
-  /*
-  public var internalBondPositions: [SIMD4<Double>]
-  {
-    return []
-  }
-  
-  public var externalBondPositions: [SIMD4<Double>]
-  {
-    return []
-  }*/
-  
   public var drawBonds: Bool = true
   
   public var bondAmbientColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -224,12 +216,20 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   public var bondHDR: Bool = true
   public var bondHDRExposure: Double = 1.5
-  public var bondHDRBloomLevel: Double = 1.0
+  
   public var clipBondsAtUnitCell: Bool {return false}
   
   public var bondHue: Double = 1.0
   public var bondSaturation: Double = 1.0
   public var bondValue: Double = 1.0
+  
+  public var bondSelectionStyle: RKSelectionStyle = .WorleyNoise3D
+  public var bondSelectionScaling: Double = 1.2
+  public var bondSelectionStripesDensity: Double = 0.25
+  public var bondSelectionStripesFrequency: Double = 12.0
+  public var bondSelectionWorleyNoise3DFrequency: Double = 2.0
+  public var bondSelectionWorleyNoise3DJitter: Double = 1.0
+  public var bondSelectionIntensity: Double = 0.5
   
   // MARK: protocol RKRenderUnitCellSource implementation
   // =====================================================================
@@ -514,22 +514,10 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var atomColorSchemeIdentifier: String = SKColorSets.ColorScheme.jmol.rawValue
   public var atomColorOrder: SKColorSets.ColorOrder = .elementOnly
   
-  
-  public var selectionIntensity: Double = 1.0
-  
   public var atomCacheAmbientOcclusionTexture: [CUnsignedChar] = [CUnsignedChar]()
-  
-  
-  
-  
-  
-  
-  
+    
   public var bondAmbientOcclusion: Bool = false
-  
-  
-  
-  
+    
   public enum ProbeMolecule: Int
   {
     case helium = 0
@@ -763,7 +751,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.atomSelectionWorleyNoise3DFrequency = original.atomSelectionWorleyNoise3DFrequency
     self.atomSelectionWorleyNoise3DJitter = original.atomSelectionWorleyNoise3DJitter
     self.atomSelectionScaling = original.atomSelectionScaling
-    self.selectionIntensity = original.selectionIntensity
+    self.atomSelectionIntensity = original.atomSelectionIntensity
     
     self.atomHue = original.atomHue
     self.atomSaturation = original.atomSaturation
@@ -778,7 +766,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     self.atomHDR = original.atomHDR
     self.atomHDRExposure = original.atomHDRExposure
-    self.atomHDRBloomLevel = original.atomHDRBloomLevel
+    self.atomSelectionIntensity = original.atomSelectionIntensity
     
     self.atomAmbientColor = original.atomAmbientColor
     self.atomDiffuseColor = original.atomDiffuseColor
@@ -807,7 +795,14 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
 
     self.bondHDR = original.bondHDR
     self.bondHDRExposure = original.bondHDRExposure
-    self.bondHDRBloomLevel = original.bondHDRBloomLevel
+    
+    self.bondSelectionStyle = original.bondSelectionStyle
+    self.bondSelectionStripesDensity = original.bondSelectionStripesDensity
+    self.bondSelectionStripesFrequency = original.bondSelectionStripesFrequency
+    self.bondSelectionWorleyNoise3DFrequency = original.bondSelectionWorleyNoise3DFrequency
+    self.bondSelectionWorleyNoise3DJitter = original.bondSelectionWorleyNoise3DJitter
+    self.bondSelectionScaling = original.bondSelectionScaling
+    self.bondSelectionIntensity = original.bondSelectionIntensity
     
     self.bondHue = original.bondHue
     self.bondSaturation = original.bondSaturation
@@ -1013,7 +1008,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.atomSelectionWorleyNoise3DFrequency = clone.atomSelectionWorleyNoise3DFrequency
     self.atomSelectionWorleyNoise3DJitter = clone.atomSelectionWorleyNoise3DJitter
     self.atomSelectionScaling = clone.atomSelectionScaling
-    self.selectionIntensity = clone.selectionIntensity
+    self.atomSelectionIntensity = clone.atomSelectionIntensity
     
     self.atomHue = clone.atomHue
     self.atomSaturation = clone.atomSaturation
@@ -1028,7 +1023,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     self.atomHDR = clone.atomHDR
     self.atomHDRExposure = clone.atomHDRExposure
-    self.atomHDRBloomLevel = clone.atomHDRBloomLevel
+    self.atomSelectionIntensity = clone.atomSelectionIntensity
     
     self.atomAmbientColor = clone.atomAmbientColor
     self.atomDiffuseColor = clone.atomDiffuseColor
@@ -1054,7 +1049,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
 
     self.bondHDR = clone.bondHDR
     self.bondHDRExposure = clone.bondHDRExposure
-    self.bondHDRBloomLevel = clone.bondHDRBloomLevel
+    self.bondSelectionIntensity = clone.bondSelectionIntensity
     
     self.bondHue = clone.bondHue
     self.bondSaturation = clone.bondSaturation
@@ -1464,14 +1459,19 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         bondShininess = 4.0
         bondHDR = true
         bondHDRExposure = 1.5
-        bondHDRBloomLevel = 1.0
+        
         bondHue = 1.0
         bondSaturation = 1.0
         bondValue = 1.0
         bondAmbientOcclusion = false
         
         self.atomSelectionStyle = .WorleyNoise3D
-        self.atomSelectionScaling = 1.2
+        self.atomSelectionScaling = 1.1
+        self.atomSelectionIntensity = 0.7
+        
+        self.bondSelectionStyle = .WorleyNoise3D
+        self.bondSelectionScaling = 1.1
+        self.bondSelectionIntensity = 0.7
         
         self.setRepresentationType(type: .sticks_and_balls)
       case .fancy:
@@ -1502,6 +1502,11 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         
         self.atomSelectionStyle = .WorleyNoise3D
         self.atomSelectionScaling = 1.0
+        self.atomSelectionIntensity = 0.8
+        
+        self.bondSelectionStyle = .WorleyNoise3D
+        self.bondSelectionScaling = 1.0
+        self.bondSelectionIntensity = 0.8
         
         self.setRepresentationType(type: .vdw)
       case .licorice:
@@ -1516,7 +1521,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         atomShininess = 4.0
         drawAtoms = true
         atomHDR = true
-        atomHDRBloomLevel = 1.0
+        atomSelectionIntensity = 1.0
         atomHDRExposure = 1.5
         atomScaleFactor = 1.0
         atomForceFieldIdentifier = "Default"
@@ -1536,14 +1541,19 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         bondShininess = 4.0
         bondHDR = true
         bondHDRExposure = 1.5
-        bondHDRBloomLevel = 1.0
+        bondSelectionIntensity = 0.5
         bondHue = 1.0
         bondSaturation = 1.0
         bondValue = 1.0
         bondAmbientOcclusion = false
         
         self.atomSelectionStyle = .WorleyNoise3D
-        self.atomSelectionScaling = 1.5
+        self.atomSelectionScaling = 1.1
+        self.atomSelectionIntensity = 0.8
+               
+        self.bondSelectionStyle = .WorleyNoise3D
+        self.bondSelectionScaling = 1.1
+        self.bondSelectionIntensity = 0.8
         
         self.setRepresentationType(type: .unity)
       case .objects:
@@ -1653,7 +1663,11 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
        (bondSaturation ==~  1.0) &&
        (bondValue ==~  1.0)  &&
       atomSelectionStyle == .WorleyNoise3D &&
-      (atomSelectionScaling ==~ 1.2)
+      (atomSelectionScaling ==~ 1.1)  &&
+      (atomSelectionIntensity ==~ 0.7)  &&
+      bondSelectionStyle == .WorleyNoise3D &&
+      (bondSelectionScaling ==~ 1.1) &&
+      (bondSelectionIntensity ==~ 0.7)
     {
       self.atomRepresentationStyle = .default
     }
@@ -1683,7 +1697,11 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
        atomColorSchemeIdentifier == SKColorSets.ColorScheme.rasmol.rawValue &&
        atomColorOrder == .elementOnly &&
       atomSelectionStyle == .WorleyNoise3D &&
-      (atomSelectionScaling ==~ 1.0)
+      (atomSelectionScaling ==~ 1.0)  &&
+      (atomSelectionIntensity ==~ 0.8)  &&
+      bondSelectionStyle == .WorleyNoise3D &&
+      (bondSelectionScaling ==~ 1.0) &&
+      (bondSelectionIntensity ==~ 0.8)
     {
       self.atomRepresentationStyle = .fancy
     }
@@ -1729,7 +1747,11 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       (bondSaturation ==~  1.0) &&
       (bondValue ==~  1.0) &&
       atomSelectionStyle == .WorleyNoise3D &&
-      (atomSelectionScaling ==~ 1.5)
+      (atomSelectionScaling ==~ 1.1)  &&
+      (atomSelectionIntensity ==~ 0.8)  &&
+      bondSelectionStyle == .WorleyNoise3D &&
+      (bondSelectionScaling ==~ 1.1) &&
+      (bondSelectionIntensity ==~ 0.8)
     {
       self.atomRepresentationStyle = .licorice
     }
@@ -2398,33 +2420,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     return 1
   }
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   public var renderAtomSelectionFrequency: Double
   {
     get
@@ -2481,10 +2476,60 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     }
   }
   
-  
-  public var renderSelectedBonds: [RKInPerInstanceAttributesBonds]
+  public var renderBondSelectionFrequency: Double
   {
-    return [RKInPerInstanceAttributesBonds]()
+    get
+    {
+      switch(self.bondSelectionStyle)
+      {
+      case .glow:
+        return 0.0
+      case .striped:
+        return self.bondSelectionStripesFrequency
+      case .WorleyNoise3D:
+        return self.bondSelectionWorleyNoise3DFrequency
+      }
+    }
+    set(newValue)
+    {
+      switch(self.bondSelectionStyle)
+      {
+      case .glow:
+        break
+      case .striped:
+        self.bondSelectionStripesFrequency = newValue
+      case .WorleyNoise3D:
+        self.bondSelectionWorleyNoise3DFrequency = newValue
+      }
+    }
+  }
+  
+  public var renderBondSelectionDensity: Double
+  {
+    get
+    {
+      switch(self.bondSelectionStyle)
+      {
+        case .glow:
+          return 0.0
+        case .striped:
+          return self.bondSelectionStripesDensity
+        case .WorleyNoise3D:
+          return self.bondSelectionWorleyNoise3DJitter
+      }
+    }
+    set(newValue)
+    {
+      switch(self.bondSelectionStyle)
+      {
+      case .glow:
+        break
+      case .striped:
+        self.bondSelectionStripesDensity = newValue
+      case .WorleyNoise3D:
+        self.bondSelectionWorleyNoise3DJitter = newValue
+      }
+    }
   }
   
   public var renderInternalBonds: [RKInPerInstanceAttributesBonds]
@@ -2493,10 +2538,20 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     return data
   }
   
+  public var renderSelectedInternalBonds: [RKInPerInstanceAttributesBonds]
+  {
+    return []
+  }
+  
   public var renderExternalBonds: [RKInPerInstanceAttributesBonds]
   {
     let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     return data
+  }
+  
+  public var renderSelectedExternalBonds: [RKInPerInstanceAttributesBonds]
+  {
+    return []
   }
   
   public func recomputeDensityProperties()
@@ -2770,7 +2825,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     encoder.encode(atomSelectionWorleyNoise3DFrequency)
     encoder.encode(atomSelectionWorleyNoise3DJitter)
     encoder.encode(atomSelectionScaling)
-    encoder.encode(selectionIntensity)
+    encoder.encode(atomSelectionIntensity)
     
     encoder.encode(atomHue)
     encoder.encode(atomSaturation)
@@ -2783,7 +2838,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     encoder.encode(atomAmbientOcclusionPatchSize)
     encoder.encode(atomHDR)
     encoder.encode(atomHDRExposure)
-    encoder.encode(atomHDRBloomLevel)
+    encoder.encode(1.0)
     
     encoder.encode(atomAmbientColor)
     encoder.encode(atomDiffuseColor)
@@ -2820,7 +2875,14 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     encoder.encode(bondHDR)
     encoder.encode(bondHDRExposure)
-    encoder.encode(bondHDRBloomLevel)
+  
+    encoder.encode(bondSelectionStyle.rawValue)
+    encoder.encode(bondSelectionStripesDensity)
+    encoder.encode(bondSelectionStripesFrequency)
+    encoder.encode(bondSelectionWorleyNoise3DFrequency)
+    encoder.encode(bondSelectionWorleyNoise3DJitter)
+    encoder.encode(bondSelectionScaling)
+    encoder.encode(bondSelectionIntensity)
     
     encoder.encode(bondHue)
     encoder.encode(bondSaturation)
@@ -3045,7 +3107,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.atomSelectionWorleyNoise3DFrequency = try decoder.decode(Double.self)
     self.atomSelectionWorleyNoise3DJitter = try decoder.decode(Double.self)
     self.atomSelectionScaling = try decoder.decode(Double.self)
-    self.selectionIntensity = try decoder.decode(Double.self)
+    self.atomSelectionIntensity = try decoder.decode(Double.self)
     
     self.atomHue = try decoder.decode(Double.self)
     self.atomSaturation = try decoder.decode(Double.self)
@@ -3059,7 +3121,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     self.atomHDR = try decoder.decode(Bool.self)
     self.atomHDRExposure = try decoder.decode(Double.self)
-    self.atomHDRBloomLevel = try decoder.decode(Double.self)
+    let _ = try decoder.decode(Double.self)
     
     self.atomAmbientColor = try decoder.decode(NSColor.self)
     self.atomDiffuseColor = try decoder.decode(NSColor.self)
@@ -3102,7 +3164,18 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     self.bondHDR = try decoder.decode(Bool.self)
     self.bondHDRExposure = try decoder.decode(Double.self)
-    self.bondHDRBloomLevel = try decoder.decode(Double.self)
+    
+    if readVersionNumber >= 5 // introduced in version 5
+    {
+      guard let bondSelectionStyle = RKSelectionStyle(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+      self.bondSelectionStyle = bondSelectionStyle
+      self.bondSelectionStripesDensity = try decoder.decode(Double.self)
+      self.bondSelectionStripesFrequency = try decoder.decode(Double.self)
+      self.bondSelectionWorleyNoise3DFrequency = try decoder.decode(Double.self)
+      self.bondSelectionWorleyNoise3DJitter = try decoder.decode(Double.self)
+      self.bondSelectionScaling = try decoder.decode(Double.self)
+    }
+    self.bondSelectionIntensity = try decoder.decode(Double.self)
     
     self.bondHue = try decoder.decode(Double.self)
     self.bondSaturation = try decoder.decode(Double.self)

@@ -130,18 +130,7 @@ extension BondVisualAppearanceViewer
     }
   }
   
-  public var renderBondHDRBloomLevel: Double?
-  {
-    get
-    {
-      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondHDRBloomLevel })
-      return Set(set).count == 1 ? set.first! : nil
-    }
-    set(newValue)
-    {
-      self.allStructures.forEach{$0.bondHDRBloomLevel = newValue ?? 1.0}
-    }
-  }
+  
   
   public var renderBondHue: Double?
   {
@@ -270,6 +259,71 @@ extension BondVisualAppearanceViewer
     set(newValue)
     {
       self.allStructures.forEach{$0.bondShininess = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderBondSelectionStyle: RKSelectionStyle?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.bondSelectionStyle.rawValue })
+      return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.bondSelectionStyle = newValue ?? .glow}
+    }
+  }
+  
+  public var renderBondSelectionFrequency: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.renderBondSelectionFrequency })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.renderBondSelectionFrequency = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderBondSelectionDensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.renderBondSelectionDensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.renderBondSelectionDensity = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderBondSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondSelectionIntensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.bondSelectionIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderBondSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondSelectionScaling })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.bondSelectionScaling = newValue ?? 1.0}
     }
   }
 }
@@ -381,19 +435,6 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
     }
   }
   
-  public var renderBondHDRBloomLevel: Double?
-  {
-    get
-    {
-      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondHDRBloomLevel })
-      return Set(set).count == 1 ? set.first! : nil
-    }
-    set(newValue)
-    {
-      self.allStructures.forEach{$0.bondHDRBloomLevel = newValue ?? 1.0}
-    }
-  }
-  
   public var renderBondHue: Double?
   {
     get
@@ -523,4 +564,70 @@ extension Array where Iterator.Element == BondVisualAppearanceViewer
       self.allStructures.forEach{$0.bondShininess = newValue ?? 4.0}
     }
   }
+  
+  public var renderBondSelectionStyle: RKSelectionStyle?
+  {
+     get
+     {
+       let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.bondSelectionStyle.rawValue })
+       return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
+     }
+     set(newValue)
+     {
+       self.allStructures.forEach{$0.bondSelectionStyle = newValue ?? .glow}
+     }
+   }
+   
+   public var renderBondSelectionFrequency: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.renderBondSelectionFrequency })
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.allStructures.forEach{$0.renderBondSelectionFrequency = newValue ?? 4.0}
+     }
+   }
+   
+   public var renderBondSelectionDensity: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.renderBondSelectionDensity })
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.allStructures.forEach{$0.renderBondSelectionDensity = newValue ?? 4.0}
+     }
+   }
+  
+  public var renderBondSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondSelectionIntensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.bondSelectionIntensity = newValue ?? 1.0}
+    }
+  }
+   
+   public var renderBondSelectionScaling: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.bondSelectionScaling })
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.allStructures.forEach{$0.bondSelectionScaling = newValue ?? 1.0}
+     }
+   }
+   
 }

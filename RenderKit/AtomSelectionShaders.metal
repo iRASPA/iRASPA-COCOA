@@ -57,7 +57,7 @@ vertex GlowVertexShaderOut AtomGlowSphereVertexShader(const device InPerVertex *
 {
   GlowVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
@@ -72,7 +72,7 @@ fragment float4 AtomGlowSphereFragmentShader(GlowVertexShaderOut vert [[stage_in
                                              constant FrameUniforms& frameUniforms [[buffer(1)]],
                                              constant LightUniforms& lightUniforms [[buffer(2)]])
 {
-  return float4(structureUniforms.atomHDRBloomLevel * (vert.ambient.xyz + vert.diffuse.xyz), 1.0);
+  return float4(structureUniforms.atomSelectionIntensity * (vert.ambient.xyz + vert.diffuse.xyz), 1.0);
 }
 
 
@@ -88,7 +88,7 @@ vertex GlowVertexShaderOut AtomGlowSphereImposterOrthographicVertexShader(const 
 {
   GlowVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
@@ -130,7 +130,7 @@ fragment FragOutput AtomGlowSphereImposterOrthographicFragmentShader(GlowVertexS
   pos.z += vert.sphere_radius.z*z;
   pos = frameUniforms.projectionMatrix * pos;
   output.depth = (pos.z / pos.w);
-  output.albedo = float4(structureUniforms.atomHDRBloomLevel * (vert.diffuse.xyz+vert.ambient.xyz),1.0);
+  output.albedo = float4(structureUniforms.atomSelectionIntensity * (vert.diffuse.xyz+vert.ambient.xyz),1.0);
   
   return output;
   
@@ -146,7 +146,7 @@ vertex GlowVertexShaderOut AtomGlowSphereImposterPerspectiveVertexShader(const d
 {
   GlowVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -184,7 +184,7 @@ fragment FragOutput AtomGlowSphereImposterPerspectiveFragmentShader(GlowVertexSh
   
   float4 screen_pos = frameUniforms.projectionMatrix * float4(hit, 1.0);
   output.depth = screen_pos.z / screen_pos.w;
-  output.albedo = float4(structureUniforms.atomHDRBloomLevel *  (vert.diffuse.xyz+vert.ambient.xyz),1.0);
+  output.albedo = float4(structureUniforms.atomSelectionIntensity *  (vert.diffuse.xyz+vert.ambient.xyz),1.0);
   
   return output;
   
@@ -310,7 +310,7 @@ vertex AtomSphereVertexShaderOut AtomSelectionWorleyNoise3DSphereVertexShader(co
 {
   AtomSphereVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
@@ -370,7 +370,7 @@ fragment float4 AtomSelectionWorleyNoise3DSphereFragmentShader(AtomSphereVertexS
   hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
   hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
   hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
-  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomHDRBloomLevel;
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
 }
 
@@ -387,7 +387,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionWorleyNoise3DOrthographicV
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -477,7 +477,7 @@ fragment FragOutput AtomSelectionWorleyNoise3DOrthographicFragmentShader(AtomSph
   hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
   hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
   hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
-  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomHDRBloomLevel;
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   output.albedo = float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
   
   return output;
@@ -495,7 +495,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionWorleyNoise3DPerspectiveVe
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -588,7 +588,7 @@ fragment FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentShader(AtomSphe
   hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
   hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
   hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
-  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomHDRBloomLevel;
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   output.albedo = float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
   
   return output;
@@ -606,7 +606,7 @@ vertex AtomSphereVertexShaderOut AtomSelectionStripedSphereVertexShader(const de
 {
   AtomSphereVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   float4 pos =  scale * vertices[vid].position + positions[iid].position;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
@@ -658,7 +658,7 @@ fragment float4 AtomSelectionStripedSphereFragmentShader(AtomSphereVertexShaderO
   hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
   hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
   hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
-  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomHDRBloomLevel;
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
 }
 
@@ -675,7 +675,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionStripedSphereOrthographicV
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -758,7 +758,7 @@ fragment FragOutput AtomSelectionStripedSphereOrthographicFragmentShader(AtomSph
   hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
   hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
   hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
-  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomHDRBloomLevel;
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   output.albedo = float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
   
   return output;
@@ -776,7 +776,7 @@ vertex AtomSphereImposterVertexShaderOut AtomSelectionStripedSpherePerspectiveVe
 {
   AtomSphereImposterVertexShaderOut vert;
   
-  float4 scale = structureUniforms.selectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
+  float4 scale = structureUniforms.atomSelectionScaling * structureUniforms.atomScaleFactor * positions[iid].scale;
   vert.ambient = lightUniforms.lights[0].ambient * structureUniforms.atomAmbientColor * positions[iid].ambient;
   vert.diffuse = lightUniforms.lights[0].diffuse * structureUniforms.atomDiffuseColor * positions[iid].diffuse;
   vert.specular = lightUniforms.lights[0].specular * structureUniforms.atomSpecularColor * positions[iid].specular;
@@ -859,8 +859,8 @@ fragment FragOutput AtomSelectionStripedSpherePerspectiveFragmentShader(AtomSphe
   hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
   hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
   hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
-  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomHDRBloomLevel;
-  output.albedo = float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
+  float intensity = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
+  output.albedo = float4(hsv2rgb(hsv) * intensity, intensity);
   
   return output;
 }
