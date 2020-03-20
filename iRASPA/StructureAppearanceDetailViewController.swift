@@ -4552,7 +4552,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAtomSelectionStyle = selectionStyle
       
-      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell])
+      self.updateOutlineView(identifiers: [self.atomsVisualAppearanceCell, self.bondsVisualAppearanceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()

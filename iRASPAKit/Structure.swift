@@ -1465,13 +1465,17 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         bondValue = 1.0
         bondAmbientOcclusion = false
         
-        self.atomSelectionStyle = .WorleyNoise3D
-        self.atomSelectionScaling = 1.1
+        self.atomSelectionStyle = .striped
+        self.atomSelectionScaling = 1.0
         self.atomSelectionIntensity = 0.7
+        self.atomSelectionStripesDensity = 0.25
+        self.atomSelectionStripesFrequency = 12.0
         
-        self.bondSelectionStyle = .WorleyNoise3D
-        self.bondSelectionScaling = 1.1
+        self.bondSelectionStyle = .striped
+        self.bondSelectionScaling = 1.0
         self.bondSelectionIntensity = 0.7
+        self.bondSelectionStripesDensity = 0.25
+        self.bondSelectionStripesFrequency = 12.0
         
         self.setRepresentationType(type: .sticks_and_balls)
       case .fancy:
@@ -1500,13 +1504,17 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         atomColorSchemeIdentifier = SKColorSets.ColorScheme.rasmol.rawValue
         atomColorOrder = .elementOnly
         
-        self.atomSelectionStyle = .WorleyNoise3D
+        self.atomSelectionStyle = .striped
         self.atomSelectionScaling = 1.0
-        self.atomSelectionIntensity = 0.8
+        self.atomSelectionIntensity = 0.4
+        self.atomSelectionStripesDensity = 0.25
+        self.atomSelectionStripesFrequency = 12.0
         
-        self.bondSelectionStyle = .WorleyNoise3D
+        self.bondSelectionStyle = .striped
         self.bondSelectionScaling = 1.0
-        self.bondSelectionIntensity = 0.8
+        self.bondSelectionIntensity = 0.4
+        self.bondSelectionStripesDensity = 0.25
+        self.bondSelectionStripesFrequency = 12.0
         
         self.setRepresentationType(type: .vdw)
       case .licorice:
@@ -1547,13 +1555,17 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         bondValue = 1.0
         bondAmbientOcclusion = false
         
-        self.atomSelectionStyle = .WorleyNoise3D
-        self.atomSelectionScaling = 1.1
+        self.atomSelectionStyle = .striped
+        self.atomSelectionScaling = 1.0
         self.atomSelectionIntensity = 0.8
+        self.atomSelectionStripesDensity = 0.25
+        self.atomSelectionStripesFrequency = 12.0
                
-        self.bondSelectionStyle = .WorleyNoise3D
-        self.bondSelectionScaling = 1.1
+        self.bondSelectionStyle = .striped
+        self.bondSelectionScaling = 1.0
         self.bondSelectionIntensity = 0.8
+        self.bondSelectionStripesDensity = 0.25
+        self.bondSelectionStripesFrequency = 12.0
         
         self.setRepresentationType(type: .unity)
       case .objects:
@@ -1613,159 +1625,171 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   public func recheckRepresentationStyle()
   {
-    if drawAtoms == true &&
-       (atomHue ==~ 1.0) &&
-       (atomSaturation ==~ 1.0) &&
-       (atomValue ==~ 1.0) &&
-       ((atomAmbientColor.redComponent - 1.0) < 1e-3) &&
-       ((atomAmbientColor.greenComponent - 1.0) < 1e-3) &&
-       ((atomAmbientColor.blueComponent - 1.0) < 1e-3) &&
-       ((atomAmbientColor.alphaComponent - 1.0) < 1e-3) &&
-       ((atomSpecularColor.redComponent - 1.0) < 1e-3) &&
-       ((atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
-       ((atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
-       ((atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
-       atomHDR == true &&
-       (atomHDRExposure ==~ 1.5) &&
-       atomAmbientOcclusion == false &&
-       (atomAmbientIntensity ==~ 0.2) &&
-       (atomDiffuseIntensity ==~ 1.0) &&
-       (atomSpecularIntensity ==~ 1.0) &&
-       (atomShininess ==~ 6.0) &&
-       (atomScaleFactor ==~ 0.7) &&
-       atomRepresentationType == .sticks_and_balls &&
-       atomForceFieldIdentifier == "Default" &&
-       atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
-       atomColorOrder == .elementOnly &&
-       drawBonds == true &&
-       bondColorMode == .uniform &&
-       (bondScaleFactor ==~ 0.15) &&
-       bondAmbientOcclusion == false &&
-       bondHDR == true &&
-       (bondHDRExposure ==~ 1.5) &&
-      ((bondAmbientColor.redComponent - 1.0) < 1e-3) &&
-      ((bondAmbientColor.greenComponent - 1.0) < 1e-3) &&
-      ((bondAmbientColor.blueComponent - 1.0) < 1e-3) &&
-      ((bondAmbientColor.alphaComponent - 1.0) < 1e-3) &&
-      ((bondDiffuseColor.redComponent - 0.8) < 1e-3) &&
-      ((bondDiffuseColor.greenComponent - 0.8) < 1e-3) &&
-      ((bondDiffuseColor.blueComponent - 0.8) < 1e-3) &&
-      ((bondDiffuseColor.alphaComponent - 1.0) < 1e-3) &&
-      ((bondSpecularColor.redComponent - 1.0) < 1e-3) &&
-      ((bondSpecularColor.greenComponent - 1.0) < 1e-3) &&
-      ((bondSpecularColor.blueComponent - 1.0) < 1e-3) &&
-      ((bondSpecularColor.alphaComponent - 1.0) < 1e-3) &&
-       (bondAmbientIntensity ==~  0.35) &&
-       (bondDiffuseIntensity ==~  1.0) &&
-       (bondSpecularIntensity ==~  1.0) &&
-       (bondShininess ==~  4.0) &&
-       (bondHue ==~  1.0) &&
-       (bondSaturation ==~  1.0) &&
-       (bondValue ==~  1.0)  &&
-      atomSelectionStyle == .WorleyNoise3D &&
-      (atomSelectionScaling ==~ 1.1)  &&
-      (atomSelectionIntensity ==~ 0.7)  &&
-      bondSelectionStyle == .WorleyNoise3D &&
-      (bondSelectionScaling ==~ 1.1) &&
-      (bondSelectionIntensity ==~ 0.7)
+    if self.drawAtoms == true &&
+       (self.atomHue ==~ 1.0) &&
+       (self.atomSaturation ==~ 1.0) &&
+       (self.atomValue ==~ 1.0) &&
+       ((self.atomAmbientColor.redComponent - 1.0) < 1e-3) &&
+       ((self.atomAmbientColor.greenComponent - 1.0) < 1e-3) &&
+       ((self.atomAmbientColor.blueComponent - 1.0) < 1e-3) &&
+       ((self.atomAmbientColor.alphaComponent - 1.0) < 1e-3) &&
+       ((self.atomSpecularColor.redComponent - 1.0) < 1e-3) &&
+       ((self.atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
+       ((self.atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
+       ((self.atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
+       self.atomHDR == true &&
+       (self.atomHDRExposure ==~ 1.5) &&
+       self.atomAmbientOcclusion == false &&
+       (self.atomAmbientIntensity ==~ 0.2) &&
+       (self.atomDiffuseIntensity ==~ 1.0) &&
+       (self.atomSpecularIntensity ==~ 1.0) &&
+       (self.atomShininess ==~ 6.0) &&
+       (self.atomScaleFactor ==~ 0.7) &&
+       self.atomRepresentationType == .sticks_and_balls &&
+       self.atomForceFieldIdentifier == "Default" &&
+       self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
+       self.atomColorOrder == .elementOnly &&
+       self.drawBonds == true &&
+       self.bondColorMode == .uniform &&
+       (self.bondScaleFactor ==~ 0.15) &&
+       self.bondAmbientOcclusion == false &&
+       self.bondHDR == true &&
+       (self.bondHDRExposure ==~ 1.5) &&
+      ((self.bondAmbientColor.redComponent - 1.0) < 1e-3) &&
+      ((self.bondAmbientColor.greenComponent - 1.0) < 1e-3) &&
+      ((self.bondAmbientColor.blueComponent - 1.0) < 1e-3) &&
+      ((self.bondAmbientColor.alphaComponent - 1.0) < 1e-3) &&
+      ((self.bondDiffuseColor.redComponent - 0.8) < 1e-3) &&
+      ((self.bondDiffuseColor.greenComponent - 0.8) < 1e-3) &&
+      ((self.bondDiffuseColor.blueComponent - 0.8) < 1e-3) &&
+      ((self.bondDiffuseColor.alphaComponent - 1.0) < 1e-3) &&
+      ((self.bondSpecularColor.redComponent - 1.0) < 1e-3) &&
+      ((self.bondSpecularColor.greenComponent - 1.0) < 1e-3) &&
+      ((self.bondSpecularColor.blueComponent - 1.0) < 1e-3) &&
+      ((self.bondSpecularColor.alphaComponent - 1.0) < 1e-3) &&
+       (self.bondAmbientIntensity ==~  0.35) &&
+       (self.bondDiffuseIntensity ==~  1.0) &&
+       (self.bondSpecularIntensity ==~  1.0) &&
+       (self.bondShininess ==~  4.0) &&
+       (self.bondHue ==~  1.0) &&
+       (self.bondSaturation ==~  1.0) &&
+       (self.bondValue ==~  1.0)  &&
+      self.atomSelectionStyle == .striped &&
+      (self.atomSelectionScaling ==~ 1.0)  &&
+      (self.atomSelectionIntensity ==~ 0.7)  &&
+      (self.atomSelectionStripesDensity ==~ 0.25) &&
+      (self.atomSelectionStripesFrequency ==~ 12.0) &&
+      self.bondSelectionStyle == .striped &&
+      (self.bondSelectionScaling ==~ 1.0) &&
+      (self.bondSelectionIntensity ==~ 0.7) &&
+      (self.bondSelectionStripesDensity ==~ 0.25) &&
+      (self.bondSelectionStripesFrequency ==~ 12.0)
     {
       self.atomRepresentationStyle = .default
     }
-    else if (atomHue ==~ 1.0) &&
-       (atomSaturation ==~ 0.5) &&
-       (atomValue ==~ 1.0) &&
-       ((atomAmbientColor.redComponent - 1.0) < 1e-3) &&
-       ((atomAmbientColor.greenComponent - 1.0) < 1e-3) &&
-       ((atomAmbientColor.blueComponent - 1.0) < 1e-3) &&
-       ((atomAmbientColor.alphaComponent - 1.0) < 1e-3) &&
-       ((atomSpecularColor.redComponent - 1.0) < 1e-3) &&
-       ((atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
-       ((atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
-       ((atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
-       drawAtoms == true &&
-       drawBonds == false &&
-       atomHDR == false &&
-       atomAmbientOcclusion == true &&
-       bondAmbientOcclusion == false &&
-       (atomAmbientIntensity ==~ 1.0) &&
-       (atomDiffuseIntensity ==~ 0.0) &&
-       (atomSpecularIntensity ==~ 0.2) &&
-       (atomShininess ==~ 4.0) &&
-       (atomScaleFactor ==~ 1.0) &&
-       atomRepresentationType == .vdw &&
-       atomForceFieldIdentifier == "Default" &&
-       atomColorSchemeIdentifier == SKColorSets.ColorScheme.rasmol.rawValue &&
-       atomColorOrder == .elementOnly &&
-      atomSelectionStyle == .WorleyNoise3D &&
-      (atomSelectionScaling ==~ 1.0)  &&
-      (atomSelectionIntensity ==~ 0.8)  &&
-      bondSelectionStyle == .WorleyNoise3D &&
-      (bondSelectionScaling ==~ 1.0) &&
-      (bondSelectionIntensity ==~ 0.8)
+    else if (self.atomHue ==~ 1.0) &&
+       (self.atomSaturation ==~ 0.5) &&
+       (self.atomValue ==~ 1.0) &&
+       ((self.atomAmbientColor.redComponent - 1.0) < 1e-3) &&
+       ((self.atomAmbientColor.greenComponent - 1.0) < 1e-3) &&
+       ((self.atomAmbientColor.blueComponent - 1.0) < 1e-3) &&
+       ((self.atomAmbientColor.alphaComponent - 1.0) < 1e-3) &&
+       ((self.atomSpecularColor.redComponent - 1.0) < 1e-3) &&
+       ((self.atomSpecularColor.greenComponent - 1.0) < 1e-3) &&
+       ((self.atomSpecularColor.blueComponent - 1.0) < 1e-3) &&
+       ((self.atomSpecularColor.alphaComponent - 1.0) < 1e-3) &&
+       self.drawAtoms == true &&
+       self.drawBonds == false &&
+       self.atomHDR == false &&
+       self.atomAmbientOcclusion == true &&
+       self.bondAmbientOcclusion == false &&
+       (self.atomAmbientIntensity ==~ 1.0) &&
+       (self.atomDiffuseIntensity ==~ 0.0) &&
+       (self.atomSpecularIntensity ==~ 0.2) &&
+       (self.atomShininess ==~ 4.0) &&
+       (self.atomScaleFactor ==~ 1.0) &&
+       self.atomRepresentationType == .vdw &&
+       self.atomForceFieldIdentifier == "Default" &&
+       self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.rasmol.rawValue &&
+       self.atomColorOrder == .elementOnly &&
+      self.atomSelectionStyle == .striped &&
+      (self.atomSelectionScaling ==~ 1.0)  &&
+      (self.atomSelectionIntensity ==~ 0.4)  &&
+      (self.atomSelectionStripesDensity ==~ 0.25) &&
+      (self.atomSelectionStripesFrequency ==~ 12.0) &&
+      self.bondSelectionStyle == .striped &&
+      (self.bondSelectionScaling ==~ 1.0) &&
+      (self.bondSelectionIntensity ==~ 0.4) &&
+      (self.bondSelectionStripesDensity ==~ 0.25) &&
+      (self.bondSelectionStripesFrequency ==~ 12.0)
     {
       self.atomRepresentationStyle = .fancy
     }
-    else if drawAtoms == true &&
-      (atomHue ==~ 1.0) &&
-      (atomSaturation ==~ 1.0) &&
-      (atomValue ==~ 1.0) &&
-      atomRepresentationType == .unity &&
-      atomForceFieldIdentifier == "Default" &&
-      atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
-      atomColorOrder == .elementOnly &&
-      (atomScaleFactor ==~ 1.0) &&
-      atomHDR == true &&
-      (atomHDRExposure ==~ 1.5) &&
-      atomAmbientOcclusion == false &&
-      (atomAmbientIntensity ==~ 0.1) &&
-      (atomDiffuseIntensity ==~ 1.0) &&
-      (atomSpecularIntensity ==~ 1.0) &&
-      (atomShininess ==~ 4.0) &&
-      drawBonds == true &&
-      bondColorMode == .split &&
-      (bondScaleFactor ==~ 0.25) &&
-      bondAmbientOcclusion == false &&
-      bondHDR == true &&
-      (bondHDRExposure ==~ 1.5) &&
-      ((bondAmbientColor.redComponent - 1.0) < 1e-3) &&
-      ((bondAmbientColor.greenComponent - 1.0) < 1e-3) &&
-      ((bondAmbientColor.blueComponent - 1.0) < 1e-3) &&
-      ((bondAmbientColor.alphaComponent - 1.0) < 1e-3) &&
-      ((bondDiffuseColor.redComponent - 0.8) < 1e-3) &&
-      ((bondDiffuseColor.greenComponent - 0.8) < 1e-3) &&
-      ((bondDiffuseColor.blueComponent - 0.8) < 1e-3) &&
-      ((bondDiffuseColor.alphaComponent - 1.0) < 1e-3) &&
-      ((bondSpecularColor.redComponent - 1.0) < 1e-3) &&
-      ((bondSpecularColor.greenComponent - 1.0) < 1e-3) &&
-      ((bondSpecularColor.blueComponent - 1.0) < 1e-3) &&
-      ((bondSpecularColor.alphaComponent - 1.0) < 1e-3) &&
-      (bondAmbientIntensity ==~  0.1) &&
-      (bondDiffuseIntensity ==~  1.0) &&
-      (bondSpecularIntensity ==~  1.0) &&
-      (bondShininess ==~  4.0) &&
-      (bondHue ==~  1.0) &&
-      (bondSaturation ==~  1.0) &&
-      (bondValue ==~  1.0) &&
-      atomSelectionStyle == .WorleyNoise3D &&
-      (atomSelectionScaling ==~ 1.1)  &&
-      (atomSelectionIntensity ==~ 0.8)  &&
-      bondSelectionStyle == .WorleyNoise3D &&
-      (bondSelectionScaling ==~ 1.1) &&
-      (bondSelectionIntensity ==~ 0.8)
+    else if self.drawAtoms == true &&
+      (self.atomHue ==~ 1.0) &&
+      (self.atomSaturation ==~ 1.0) &&
+      (self.atomValue ==~ 1.0) &&
+      self.atomRepresentationType == .unity &&
+      self.atomForceFieldIdentifier == "Default" &&
+      self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
+      self.atomColorOrder == .elementOnly &&
+      (self.atomScaleFactor ==~ 1.0) &&
+      self.atomHDR == true &&
+      (self.atomHDRExposure ==~ 1.5) &&
+      self.atomAmbientOcclusion == false &&
+      (self.atomAmbientIntensity ==~ 0.1) &&
+      (self.atomDiffuseIntensity ==~ 1.0) &&
+      (self.atomSpecularIntensity ==~ 1.0) &&
+      (self.atomShininess ==~ 4.0) &&
+      self.drawBonds == true &&
+      self.bondColorMode == .split &&
+      (self.bondScaleFactor ==~ 0.25) &&
+      self.bondAmbientOcclusion == false &&
+      self.bondHDR == true &&
+      (self.bondHDRExposure ==~ 1.5) &&
+      ((self.bondAmbientColor.redComponent - 1.0) < 1e-3) &&
+      ((self.bondAmbientColor.greenComponent - 1.0) < 1e-3) &&
+      ((self.bondAmbientColor.blueComponent - 1.0) < 1e-3) &&
+      ((self.bondAmbientColor.alphaComponent - 1.0) < 1e-3) &&
+      ((self.bondDiffuseColor.redComponent - 0.8) < 1e-3) &&
+      ((self.bondDiffuseColor.greenComponent - 0.8) < 1e-3) &&
+      ((self.bondDiffuseColor.blueComponent - 0.8) < 1e-3) &&
+      ((self.bondDiffuseColor.alphaComponent - 1.0) < 1e-3) &&
+      ((self.bondSpecularColor.redComponent - 1.0) < 1e-3) &&
+      ((self.bondSpecularColor.greenComponent - 1.0) < 1e-3) &&
+      ((self.bondSpecularColor.blueComponent - 1.0) < 1e-3) &&
+      ((self.bondSpecularColor.alphaComponent - 1.0) < 1e-3) &&
+      (self.bondAmbientIntensity ==~  0.1) &&
+      (self.bondDiffuseIntensity ==~  1.0) &&
+      (self.bondSpecularIntensity ==~  1.0) &&
+      (self.bondShininess ==~  4.0) &&
+      (self.bondHue ==~  1.0) &&
+      (self.bondSaturation ==~  1.0) &&
+      (self.bondValue ==~  1.0) &&
+      self.atomSelectionStyle == .striped &&
+      (self.atomSelectionScaling ==~ 1.0)  &&
+      (self.atomSelectionIntensity ==~ 0.8)  &&
+      (self.atomSelectionStripesDensity ==~ 0.25) &&
+      (self.atomSelectionStripesFrequency ==~ 12.0) &&
+      self.bondSelectionStyle == .striped &&
+      (self.bondSelectionScaling ==~ 1.0) &&
+      (self.bondSelectionIntensity ==~ 0.8) &&
+      (self.atomSelectionStripesDensity ==~ 0.25) &&
+      (self.atomSelectionStripesFrequency ==~ 12.0)
     {
       self.atomRepresentationStyle = .licorice
     }
-    else if drawAtoms == true &&
-      atomRepresentationType == .unity &&
-      atomForceFieldIdentifier == "Default" &&
-      atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
-      atomColorOrder == .elementOnly &&
-      (atomScaleFactor ==~ 1.0) &&
-      atomAmbientOcclusion == false &&
-      (atomAmbientIntensity ==~ 0.1) &&
-      (atomDiffuseIntensity ==~ 0.6) &&
-      (atomSpecularIntensity ==~ 0.1) &&
-      (atomShininess ==~ 4.0)
+    else if self.drawAtoms == true &&
+      self.atomRepresentationType == .unity &&
+      self.atomForceFieldIdentifier == "Default" &&
+      self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
+      self.atomColorOrder == .elementOnly &&
+      (self.atomScaleFactor ==~ 1.0) &&
+      self.atomAmbientOcclusion == false &&
+      (self.atomAmbientIntensity ==~ 0.1) &&
+      (self.atomDiffuseIntensity ==~ 0.6) &&
+      (self.atomSpecularIntensity ==~ 0.1) &&
+      (self.atomShininess ==~ 4.0)
     {
       self.atomRepresentationStyle = .objects
     }
@@ -1791,17 +1815,17 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
       switch(type)
       {
-        case .sticks_and_balls:
-          asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
-          atomScaleFactor = 0.7
-          bondScaleFactor = 0.15
-        case .vdw:
-          atomScaleFactor = 1.0
-          bondScaleFactor = 0.15
-          asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
+      case .sticks_and_balls:
+        asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
+        self.atomScaleFactor = 0.7
+        self.bondScaleFactor = 0.15
+      case .vdw:
+        self.atomScaleFactor = 1.0
+        self.bondScaleFactor = 0.15
+        asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
       case .unity:
-        atomScaleFactor = 1.0
-        bondScaleFactor = 0.25
+        self.atomScaleFactor = 1.0
+        self.bondScaleFactor = 0.25
         asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
       }
     }
@@ -1815,17 +1839,17 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
       switch(type)
       {
-        case .sticks_and_balls:
-          asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
-          atomScaleFactor = 0.7
-          bondScaleFactor = 0.15
-        case .vdw:
-          atomScaleFactor = 1.0
-          bondScaleFactor = 0.15
-          asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
+      case .sticks_and_balls:
+        asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].covalentRadius}
+        self.atomScaleFactor = 0.7
+        self.bondScaleFactor = 0.15
+      case .vdw:
+        self.atomScaleFactor = 1.0
+        self.bondScaleFactor = 0.15
+        asymmetricAtoms.forEach{$0.drawRadius = PredefinedElements.sharedInstance.elementSet[$0.elementIdentifier].VDWRadius}
       case .unity:
-        atomScaleFactor = 1.0
-        bondScaleFactor = 0.25
+        self.atomScaleFactor = 1.0
+        self.bondScaleFactor = 0.25
         asymmetricAtoms.forEach{$0.drawRadius = bondScaleFactor}
       }
     }
