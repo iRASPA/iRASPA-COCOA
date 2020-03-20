@@ -80,7 +80,7 @@ vertex InternalBondSelectionVertexShaderOut InternalBondSelectionWorleyNoise3DCy
   scale.z = structureUniforms.bondScaling;
   scale.w = 1.0;
   
-  vert.Model_N = float3(1.0,1.0/structureUniforms.bondScaling,1.0) * vertices[vid].position.xyz;
+  vert.Model_N = vertices[vid].position.xyz;
   
   float4 pos;
   float4 scaleFactor = float4(1.01 * structureUniforms.bondSelectionScaling,1.0,1.01 * structureUniforms.bondSelectionScaling,1.0);
@@ -186,7 +186,7 @@ fragment float4 InternalBondSelectionWorleyNoise3DCylinderFragmentShader(Interna
   
   float frequency = structureUniforms.bondSelectionWorleyNoise3DFrequency;
   float jitter = structureUniforms.bondSelectionWorleyNoise3DJitter;
-  float2 F = cellular3D(frequency*float3(t1.x,t1.y,t1.z), jitter);
+  float2 F = cellular3D(frequency*float3(t1.x,2.0*t1.y,t1.z), jitter);
   float n = F.y-F.x;
   
   float4 color = n * (ambient + diffuse + specular);
