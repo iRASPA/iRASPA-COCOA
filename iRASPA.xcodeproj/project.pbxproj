@@ -122,6 +122,8 @@
 		932A49561E537EF400F71AE7 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A49551E537EF400F71AE7 /* LogViewController.swift */; };
 		932A495C1E544FDA00F71AE7 /* LogToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495B1E544FDA00F71AE7 /* LogToolBar.swift */; };
 		932A495E1E5450EB00F71AE7 /* InterpreterToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495D1E5450EB00F71AE7 /* InterpreterToolBar.swift */; };
+		932B989B2424BBDD00033AA7 /* MetalInternalBondSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932B989A2424BBDD00033AA7 /* MetalInternalBondSelectionStripedShader.swift */; };
+		932B989D2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932B989C2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift */; };
 		932BB99E1F4ADC7700FC9C4E /* StructureMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932BB99D1F4ADC7700FC9C4E /* StructureMasterViewController.swift */; };
 		932BEABA23F8593E006CA16F /* RenderKitEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932BEAB923F8593E006CA16F /* RenderKitEnums.swift */; };
 		932E539D205456F800A17E26 /* NSLabelSegmentedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932E539C205456F800A17E26 /* NSLabelSegmentedCell.swift */; };
@@ -915,6 +917,8 @@
 		932A49551E537EF400F71AE7 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		932A495B1E544FDA00F71AE7 /* LogToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogToolBar.swift; sourceTree = "<group>"; };
 		932A495D1E5450EB00F71AE7 /* InterpreterToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterpreterToolBar.swift; sourceTree = "<group>"; };
+		932B989A2424BBDD00033AA7 /* MetalInternalBondSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalInternalBondSelectionStripedShader.swift; sourceTree = "<group>"; };
+		932B989C2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalInternalBondSelectionGlowShader.swift; sourceTree = "<group>"; };
 		932BB99D1F4ADC7700FC9C4E /* StructureMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureMasterViewController.swift; sourceTree = "<group>"; };
 		932BEAB923F8593E006CA16F /* RenderKitEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderKitEnums.swift; sourceTree = "<group>"; };
 		932E539C205456F800A17E26 /* NSLabelSegmentedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLabelSegmentedCell.swift; sourceTree = "<group>"; };
@@ -1583,6 +1587,8 @@
 				93EA79EC242375100027D14B /* MetalInternalBondSelectionShader.swift */,
 				93EA79EE2423751F0027D14B /* MetalExternalBondSelectionShader.swift */,
 				93EA79EA242372180027D14B /* MetalInternalBondSelectionWorleyNoise3DShader.swift */,
+				932B989C2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift */,
+				932B989A2424BBDD00033AA7 /* MetalInternalBondSelectionStripedShader.swift */,
 				93793AFE21C80B45004CAD9C /* MetalAmbientOcclusionShader.swift */,
 				93793B1C21C94C3F004CAD9C /* MetalQuadShader.swift */,
 				93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */,
@@ -3029,6 +3035,7 @@
 				93793AE321C7998C004CAD9C /* MetalAtomShader.swift in Sources */,
 				93EA79ED242375100027D14B /* MetalInternalBondSelectionShader.swift in Sources */,
 				93793AE521C799B7004CAD9C /* MetalAtomOrthographicImposterShader.swift in Sources */,
+				932B989B2424BBDD00033AA7 /* MetalInternalBondSelectionStripedShader.swift in Sources */,
 				93793AF721C7D0A2004CAD9C /* MetalMeasurementShader.swift in Sources */,
 				93793B2321CA85C2004CAD9C /* MetalBlurHorizontalPictureShader.swift in Sources */,
 				93793AE721C799D1004CAD9C /* MetalAtomPerspectiveImposterShader.swift in Sources */,
@@ -3064,6 +3071,7 @@
 				93793B2121CA8570004CAD9C /* MetalAtomSelectionGlowPictureShader.swift in Sources */,
 				930DD5F61E26B65C00B8FE9B /* MetalRenderer.swift in Sources */,
 				93793B3721D944FF004CAD9C /* RKStructureUniforms.swift in Sources */,
+				932B989D2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift in Sources */,
 				9386FBB12019DEAA00442E5C /* RKCachedFontAtlas.swift in Sources */,
 				930DD5431E26B38D00B8FE9B /* RKRenderLight.swift in Sources */,
 				93584CD120011F3A005F01A7 /* ClassicNoise3D.metal in Sources */,
