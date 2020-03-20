@@ -106,7 +106,5 @@ class MetalInternalBondSelectionShader
         instanceBufferTripleBonds.append(sceneInstanceTripleBonds)
       }
     }
-
   }
-  
 }

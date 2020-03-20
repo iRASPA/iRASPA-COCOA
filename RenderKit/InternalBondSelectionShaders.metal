@@ -48,7 +48,7 @@ struct InternalBondSelectionVertexShaderOut
 };
 
 
-vertex InternalBondSelectionVertexShaderOut InternalBondSelectionWorleyNoise3DCylinderVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+vertex InternalBondSelectionVertexShaderOut internalBondSelectionWorleyNoise3DCylinderVertexShader(const device InPerVertex *vertices [[buffer(0)]],
                                                 const device InPerInstanceAttributesBonds *positions [[buffer(1)]],
                                                 constant FrameUniforms& frameUniforms [[buffer(2)]],
                                                 constant StructureUniforms& structureUniforms [[buffer(3)]],
@@ -151,7 +151,7 @@ vertex InternalBondSelectionVertexShaderOut InternalBondSelectionWorleyNoise3DCy
 
 
 
-fragment float4 InternalBondSelectionWorleyNoise3DCylinderFragmentShader(InternalBondSelectionVertexShaderOut vert [[stage_in]],
+fragment float4 internalBondSelectionWorleyNoise3DCylinderFragmentShader(InternalBondSelectionVertexShaderOut vert [[stage_in]],
                                            constant FrameUniforms& frameUniforms [[buffer(0)]],
                                            constant StructureUniforms& structureUniforms [[buffer(1)]],
                                            constant LightUniforms& lightUniforms [[buffer(2)]])

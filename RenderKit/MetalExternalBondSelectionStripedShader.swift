@@ -32,7 +32,7 @@
 
 import Foundation
 
-class MetalInternalBondSelectionWorleyNoise3DShader
+class MetalExternalBondSelectionStripedShader
 {
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderStructure]] = [[]]
@@ -57,7 +57,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "internalBondSelectionWorleyNoise3DCylinderVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "externalBondSelectionStripedCylinderVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -68,7 +68,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "internalBondSelectionWorleyNoise3DCylinderFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "externalBondSelectionStripedCylinderFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -99,7 +99,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
     indexBufferTripleBonds = device.makeBuffer(bytes: cylinderTripleBond.indices, length:MemoryLayout<UInt16>.stride * cylinderTripleBond.indices.count, options:.storageModeManaged)
   }
   
-  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, instanceRenderer: MetalInternalBondSelectionShader, bondShader: MetalInternalBondShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
+  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, instanceRenderer: MetalExternalBondSelectionShader, bondShader: MetalExternalBondShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
   {
     // draw internal bonds
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderBondSource}.reduce(false, {$0 || $1.drawBonds}))
@@ -127,7 +127,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
             let buffer: MTLBuffer = self.metalBuffer(instanceRenderer.instanceBufferAllBonds, sceneIndex: i, movieIndex: j)
           {
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (structure.bondSelectionStyle == .WorleyNoise3D && structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
+            if (structure.bondSelectionStyle == .striped && structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
@@ -152,7 +152,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
             let buffer: MTLBuffer = self.metalBuffer(instanceRenderer.instanceBufferSingleBonds, sceneIndex: i, movieIndex: j)
           {
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (structure.bondSelectionStyle == .WorleyNoise3D && !structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
+            if (structure.bondSelectionStyle == .striped && !structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
@@ -177,7 +177,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
             let buffer: MTLBuffer = self.metalBuffer(instanceRenderer.instanceBufferDoubleBonds, sceneIndex: i, movieIndex: j)
           {
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (structure.bondSelectionStyle == .WorleyNoise3D && !structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
+            if (structure.bondSelectionStyle == .striped && !structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
@@ -202,7 +202,7 @@ class MetalInternalBondSelectionWorleyNoise3DShader
             let buffer: MTLBuffer = self.metalBuffer(instanceRenderer.instanceBufferTripleBonds, sceneIndex: i, movieIndex: j)
           {
             let instanceCount: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesBonds>.stride
-            if (structure.bondSelectionStyle == .WorleyNoise3D && !structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
+            if (structure.bondSelectionStyle == .striped && !structure.isUnity && structure.drawBonds && structure.isVisible && instanceCount > 0)
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
@@ -215,8 +215,6 @@ class MetalInternalBondSelectionWorleyNoise3DShader
         }
       }
     }
-
-    
   }
 
   
