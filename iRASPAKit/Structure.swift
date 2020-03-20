@@ -2426,7 +2426,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       switch(self.atomSelectionStyle)
       {
-      case .glow:
+      case .none, .glow:
         return 0.0
       case .striped:
         return self.atomSelectionStripesFrequency
@@ -2438,7 +2438,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       switch(self.atomSelectionStyle)
       {
-      case .glow:
+      case .none, .glow:
         break
       case .striped:
         self.atomSelectionStripesFrequency = newValue
@@ -2454,7 +2454,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       switch(self.atomSelectionStyle)
       {
-        case .glow:
+      case .none, .glow:
           return 0.0
         case .striped:
           return self.atomSelectionStripesDensity
@@ -2466,7 +2466,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       switch(self.atomSelectionStyle)
       {
-      case .glow:
+      case .none, .glow:
         break
       case .striped:
         self.atomSelectionStripesDensity = newValue
@@ -2482,7 +2482,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       switch(self.bondSelectionStyle)
       {
-      case .glow:
+      case .none, .glow:
         return 0.0
       case .striped:
         return self.bondSelectionStripesFrequency
@@ -2494,7 +2494,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       switch(self.bondSelectionStyle)
       {
-      case .glow:
+      case .none, .glow:
         break
       case .striped:
         self.bondSelectionStripesFrequency = newValue
@@ -2510,7 +2510,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       switch(self.bondSelectionStyle)
       {
-        case .glow:
+      case .none, .glow:
           return 0.0
         case .striped:
           return self.bondSelectionStripesDensity
@@ -2522,7 +2522,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       switch(self.bondSelectionStyle)
       {
-      case .glow:
+      case .none, .glow:
         break
       case .striped:
         self.bondSelectionStripesDensity = newValue

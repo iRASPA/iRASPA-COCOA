@@ -69,9 +69,10 @@ public enum RKImageQuality: Int
 
 public enum RKSelectionStyle: Int
 {
-  case WorleyNoise3D = 0
-  case striped = 1
-  case glow = 2
+  case none = 0
+  case WorleyNoise3D = 1
+  case striped = 2
+  case glow = 3
 }
 
 public enum RKTextStyle: Int
