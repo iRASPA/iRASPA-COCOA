@@ -91,6 +91,9 @@ public class MetalRenderer
   var internalBondSelectionWorleyShader: MetalInternalBondSelectionWorleyNoise3DShader = MetalInternalBondSelectionWorleyNoise3DShader()
   var internalBondSelectionGlowShader: MetalInternalBondSelectionGlowShader = MetalInternalBondSelectionGlowShader()
   var internalBondSelectionStripedShader: MetalInternalBondSelectionStripedShader = MetalInternalBondSelectionStripedShader()
+  var externalBondSelectionWorleyShader: MetalExternalBondSelectionWorleyNoise3DShader = MetalExternalBondSelectionWorleyNoise3DShader()
+  var externalBondSelectionGlowShader: MetalExternalBondSelectionGlowShader = MetalExternalBondSelectionGlowShader()
+  var externalBondSelectionStripedShader: MetalExternalBondSelectionStripedShader = MetalExternalBondSelectionStripedShader()
   
   var blurHorizontalShader: MetalBlurHorizontalShader =  MetalBlurHorizontalShader()
   var blurVerticalShader: MetalBlurVerticalShader =  MetalBlurVerticalShader()
@@ -202,6 +205,12 @@ public class MetalRenderer
     
     externalBondSelectionShader.renderDataSource = renderDataSource
     externalBondSelectionShader.renderStructures = renderStructures
+    externalBondSelectionWorleyShader.renderDataSource = renderDataSource
+    externalBondSelectionWorleyShader.renderStructures = renderStructures
+    externalBondSelectionGlowShader.renderDataSource = renderDataSource
+    externalBondSelectionGlowShader.renderStructures = renderStructures
+    externalBondSelectionStripedShader.renderDataSource = renderDataSource
+    externalBondSelectionStripedShader.renderStructures = renderStructures
     
     metalSphereShader.renderDataSource  = renderDataSource
     metalSphereShader.renderStructures = renderStructures
@@ -360,6 +369,10 @@ public class MetalRenderer
     internalBondSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     internalBondSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
+    externalBondSelectionWorleyShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    externalBondSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    externalBondSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
     blurHorizontalShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     blurVerticalShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -447,6 +460,10 @@ public class MetalRenderer
     internalBondSelectionWorleyShader.buildVertexBuffers(device: device)
     internalBondSelectionGlowShader.buildVertexBuffers(device: device)
     internalBondSelectionStripedShader.buildVertexBuffers(device: device)
+    
+    externalBondSelectionWorleyShader.buildVertexBuffers(device: device)
+    externalBondSelectionGlowShader.buildVertexBuffers(device: device)
+    externalBondSelectionStripedShader.buildVertexBuffers(device: device)
     
     blurHorizontalShader.buildVertexBuffers(device: device)
     blurVerticalShader.buildVertexBuffers(device: device)
@@ -609,6 +626,9 @@ public class MetalRenderer
       self.internalBondSelectionWorleyShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: internalBondSelectionShader, bondShader: internalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       self.internalBondSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: internalBondSelectionShader, bondShader: internalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
+      self.externalBondSelectionWorleyShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: externalBondSelectionShader, bondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.externalBondSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: externalBondSelectionShader, bondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
       switch(renderQuality)
       {
       case .high, .picture:
@@ -681,10 +701,10 @@ public class MetalRenderer
         case RKCamera.FrustrumType.perspective:
           atomSelectionGlowPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
         }
-        
       }
       
       internalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceRenderer: internalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      externalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceRenderer: externalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
       commandEncoder.endEncoding()
     }

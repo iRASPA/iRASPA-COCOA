@@ -31,34 +31,80 @@
 
 
 import Foundation
+import SymmetryKit
 
 class MetalExternalBondSelectionShader
 {
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderStructure]] = [[]]
   
-  var instanceBuffer: [[MTLBuffer?]] = [[]]
+  var instanceBufferAllBonds: [[MTLBuffer?]] = [[]]
+  var instanceBufferSingleBonds: [[MTLBuffer?]] = [[]]
+  var instanceBufferDoubleBonds: [[MTLBuffer?]] = [[]]
+  var instanceBufferPartialDoubleBonds: [[MTLBuffer?]] = [[]]
+  var instanceBufferTripleBonds: [[MTLBuffer?]] = [[]]
   
   public func buildVertexBuffers(device: MTLDevice)
   {
     if let _: RKRenderDataSource = renderDataSource
     {
-      instanceBuffer = []
-      
+      instanceBufferAllBonds = []
+      instanceBufferSingleBonds = []
+      instanceBufferDoubleBonds = []
+      instanceBufferPartialDoubleBonds = []
+      instanceBufferTripleBonds = []
       for i in 0..<self.renderStructures.count
       {
-        var sceneInstance: [MTLBuffer?] = [MTLBuffer?]()
         let structures: [RKRenderStructure] = renderStructures[i]
+        var sceneInstanceAllBonds: [MTLBuffer?] = [MTLBuffer?]()
+        var sceneInstanceSingleBonds: [MTLBuffer?] = [MTLBuffer?]()
+        var sceneInstanceDoubleBonds: [MTLBuffer?] = [MTLBuffer?]()
+        var sceneInstancePartialDoubleBonds: [MTLBuffer?] = [MTLBuffer?]()
+        var sceneInstanceTripleBonds: [MTLBuffer?] = [MTLBuffer?]()
         
-        for structure in structures
+        if structures.isEmpty
         {
-          let bondPositions: [RKInPerInstanceAttributesBonds] = (structure as? RKRenderBondSource)?.renderSelectedExternalBonds ?? []
-          let buffer: MTLBuffer? = bondPositions.isEmpty ? nil : device.makeBuffer(bytes: bondPositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * bondPositions.count, options:.storageModeManaged)
-          sceneInstance.append(buffer)
+          sceneInstanceSingleBonds.append(nil)
+          sceneInstanceDoubleBonds.append(nil)
+          sceneInstancePartialDoubleBonds.append(nil)
+          sceneInstanceTripleBonds.append(nil)
         }
-        instanceBuffer.append(sceneInstance)
+        else
+        {
+          for structure in structures
+          {
+            var allBonds: [RKInPerInstanceAttributesBonds] = (structure as? RKRenderBondSource)?.renderSelectedExternalBonds ?? []
+            
+            let singleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.single.rawValue)}
+            let doubleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.double.rawValue)}
+            let partialDoubleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.partial_double.rawValue)}
+            let tripleBonds: [RKInPerInstanceAttributesBonds] = allBonds.filter{$0.type == UInt32(SKAsymmetricBond.SKBondType.triple.rawValue)}
+            
+            // licorice: all bonds are drawn in single-bonds style
+            for i in 0..<allBonds.count
+            {
+              allBonds[i].type = UInt32(SKAsymmetricBond.SKBondType.single.rawValue)
+            }
+            
+            let bufferAllBonds: MTLBuffer? = allBonds.isEmpty ? nil : device.makeBuffer(bytes: allBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * allBonds.count, options:.storageModeManaged)
+            let bufferSingleBonds: MTLBuffer? = singleBonds.isEmpty ? nil : device.makeBuffer(bytes: singleBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * singleBonds.count, options:.storageModeManaged)
+            let bufferDoubleBonds: MTLBuffer? = doubleBonds.isEmpty ? nil : device.makeBuffer(bytes: doubleBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * doubleBonds.count, options:.storageModeManaged)
+            let bufferPartialDoubleBonds: MTLBuffer? = partialDoubleBonds.isEmpty ? nil : device.makeBuffer(bytes: partialDoubleBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * partialDoubleBonds.count, options:.storageModeManaged)
+            let bufferTripleBonds: MTLBuffer? = tripleBonds.isEmpty ? nil : device.makeBuffer(bytes: tripleBonds, length: MemoryLayout<RKInPerInstanceAttributesBonds>.stride * tripleBonds.count, options:.storageModeManaged)
+            
+            sceneInstanceAllBonds.append(bufferAllBonds)
+            sceneInstanceSingleBonds.append(bufferSingleBonds)
+            sceneInstanceDoubleBonds.append(bufferDoubleBonds)
+            sceneInstancePartialDoubleBonds.append(bufferPartialDoubleBonds)
+            sceneInstanceTripleBonds.append(bufferTripleBonds)
+          }
+        }
+        instanceBufferAllBonds.append(sceneInstanceAllBonds)
+        instanceBufferSingleBonds.append(sceneInstanceSingleBonds)
+        instanceBufferDoubleBonds.append(sceneInstanceDoubleBonds)
+        instanceBufferPartialDoubleBonds.append(sceneInstancePartialDoubleBonds)
+        instanceBufferTripleBonds.append(sceneInstanceTripleBonds)
       }
     }
   }
-  
 }
