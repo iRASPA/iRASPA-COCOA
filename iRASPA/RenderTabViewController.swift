@@ -994,20 +994,31 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
       let structure: RKRenderStructure = structures[movieIdentifier]
          
-      if structure.isVisible
+      if let structure = structure as? Structure
       {
-        switch(objectType)
+        if structure.isVisible
         {
-        case 1:
-          self.toggleAtomSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedObject))
-          self.reloadRenderDataSelectedAtoms()
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
-        case 2:
-          self.toggleBondSelectionFor(structure: structure as! Structure, indexSet: IndexSet(integer: pickedObject))
-          self.reloadRenderDataSelectedInternalBonds()
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
-        default:
-          break
+          switch(objectType)
+          {
+          case 1:
+            self.toggleAtomSelectionFor(structure: structure, indexSet: IndexSet(integer: pickedObject))
+            self.reloadRenderDataSelectedAtoms()
+            NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+          case 2:
+            let asymmetricBond: SKAsymmetricBond = structure.bondController.arrangedObjects[pickedObject]
+            let selectedAtoms: Set<SKAsymmetricAtom> = Set(structure.atomTreeController.selectedTreeNodes.map{$0.representedObject})
+            if structure.bondController.selectedObjects.contains(pickedObject) &&
+              (selectedAtoms.contains(asymmetricBond.atom1) || selectedAtoms.contains(asymmetricBond.atom2))
+            {
+              // deselecting a selected bond while one of these atoms is selected is forbidden
+              return
+            }
+            self.toggleBondSelectionFor(structure: structure , indexSet: IndexSet(integer: pickedObject))
+            self.reloadRenderDataSelectedInternalBonds()
+            NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
+          default:
+            break
+          }
         }
       }
     }
