@@ -181,6 +181,14 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondTypeRow"), owner: self) as? NSTableCellView
         let popUp: NSPopUpButton = view!.viewWithTag(13) as! NSPopUpButton
         popUp.selectItem(at: asymmetricBond.bondType.rawValue)
+        let element1: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom1.elementIdentifier]
+        let element2: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom2.elementIdentifier]
+        let maxCoordination: Int = min(element1.maximumUFFCoordination, element2.maximumUFFCoordination)
+        popUp.autoenablesItems = false
+        popUp.itemArray[0].isEnabled = true   // single
+        popUp.itemArray[1].isEnabled = maxCoordination >= 2 ? true : false   // double
+        popUp.itemArray[2].isEnabled = maxCoordination >= 2 ? true : false   // partial double
+        popUp.itemArray[3].isEnabled = maxCoordination >= 3 ? true : false   // triple
         popUp.isEnabled = proxyProject.isEnabled
       case NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomRow"), owner: self) as? NSTableCellView
