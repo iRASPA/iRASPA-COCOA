@@ -116,7 +116,7 @@ public class MetalRenderer
   weak var renderDataSource: RKRenderDataSource?
   weak var renderCameraSource: RKRenderCameraSource?
   
-  var renderQuality: RKRenderQuality = .medium
+  var renderQuality: RKRenderQuality = .high
   
   public init()
   {
@@ -580,13 +580,14 @@ public class MetalRenderer
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
-    if let camera: RKCamera = renderCameraSource?.renderCamera
+    
+    switch(renderQuality)
     {
-      switch(renderQuality)
+    case .high, .picture:
+      self.atomShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    case .medium, .low:
+      if let camera: RKCamera = renderCameraSource?.renderCamera
       {
-      case .high, .picture:
-        self.atomShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-      case .medium, .low:
         switch(camera.frustrumType)
         {
         case RKCamera.FrustrumType.orthographic:
@@ -596,7 +597,6 @@ public class MetalRenderer
         }
       }
     }
-    
    
     self.metalSphereShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
    
@@ -681,22 +681,22 @@ public class MetalRenderer
   {
     renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size)
     
-    
-    if let camera: RKCamera = renderCameraSource?.renderCamera
+    if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)
     {
-      let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)!
-      
       switch(renderQuality)
       {
       case .high, .picture:
         atomSelectionGlowShader.renderWithEncoder(commandEncoder, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       case .medium, .low:
+        if let camera: RKCamera = renderCameraSource?.renderCamera
+        {
         switch(camera.frustrumType)
         {
         case RKCamera.FrustrumType.orthographic:
           atomSelectionGlowOrthographicImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
         case RKCamera.FrustrumType.perspective:
           atomSelectionGlowPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+          }
         }
       }
       
