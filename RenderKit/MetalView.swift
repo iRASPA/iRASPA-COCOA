@@ -291,7 +291,17 @@ class MetalView: MTKView
     {
       _ = _inflightSemaphore.wait(timeout: DispatchTime.distantFuture)
     
-      var uniforms: RKTransformationUniforms = renderer.transformUniforms()
+      let maximumEDRvalue: CGFloat
+      if #available(OSX 10.15, *)
+      {
+        maximumEDRvalue = self.window?.screen?.maximumExtendedDynamicRangeColorComponentValue ?? 1.0
+      }
+      else
+      {
+        // Fallback on earlier versions
+        maximumEDRvalue = 1.0
+      }
+      var uniforms: RKTransformationUniforms = renderer.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
       memcpy(frameUniformBuffers[constantDataBufferIndex].contents(),&uniforms, MemoryLayout<RKTransformationUniforms>.stride)
       frameUniformBuffers[constantDataBufferIndex].didModifyRange(0..<MemoryLayout<RKTransformationUniforms>.stride)
 

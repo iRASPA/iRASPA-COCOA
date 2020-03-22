@@ -144,7 +144,8 @@ typedef struct
   int numberOfMultiSamplePoints;
   float bloomLevel;
   float bloomPulse;
-  float padFloat3;
+  float maximumEDRvalue;
+  
   float4 padVector2;
   float4 padVector3;
   float4 padVector4;
