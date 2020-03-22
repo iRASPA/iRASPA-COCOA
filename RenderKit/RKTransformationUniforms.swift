@@ -55,7 +55,7 @@ public struct RKTransformationUniforms
   public var numberOfMultiSamplePoints: Int32 = 8;
   public var bloomLevel: Float = 1.0
   public var bloomPulse: Float = 1.0
-  public var padFloat3: Float = Float()
+  public var maximumEDRvalue: Float = 1.0
   var padVector2: SIMD4<Float> = SIMD4<Float>()
   var padVector3: SIMD4<Float> = SIMD4<Float>()
   var padvector4: SIMD4<Float> = SIMD4<Float>()
@@ -65,7 +65,7 @@ public struct RKTransformationUniforms
     
   }
   
-  public init(projectionMatrix: double4x4, viewMatrix: double4x4, bloomLevel: Double, bloomPulse: Double)
+  public init(projectionMatrix: double4x4, viewMatrix: double4x4, bloomLevel: Double, bloomPulse: Double, maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat)
   {
     let OpenGLToMetalMatrix:double4x4 = double4x4([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.5, 0.0], [0.0, 0.0, 0.5, 1.0]])
     let mvpMatrix: double4x4 = OpenGLToMetalMatrix * projectionMatrix * viewMatrix
@@ -81,6 +81,7 @@ public struct RKTransformationUniforms
     self.normalMatrix = float4x4(Double4x4: double4x4(Double3x3: normalMatrix))
     self.bloomLevel = Float(bloomLevel)
     self.bloomPulse = Float(bloomPulse)
+    self.maximumEDRvalue = Float(maximumEDRvalue)
   }
 }
 

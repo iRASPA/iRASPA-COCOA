@@ -477,9 +477,6 @@ public class MetalRenderer
     metalSphereShader.buildVertexBuffers(device: device)
     metalCylinderShader.buildVertexBuffers(device: device)
     metalPolygonalPrismShader.buildVertexBuffers(device: device)
-    
-    var uniforms: RKTransformationUniforms = transformUniforms()
-    self.frameUniformBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)
   }
   
   public func rebuildSelectionVertexBuffer(device: MTLDevice)
@@ -552,18 +549,18 @@ public class MetalRenderer
     }
   }
 
-  public func transformUniforms() -> RKTransformationUniforms
+  public func transformUniforms(maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat) -> RKTransformationUniforms
   {
     if let camera: RKCamera = renderCameraSource?.renderCamera
     {
       let projectionMatrix = camera.projectionMatrix
       let viewMatrix = camera.modelViewMatrix
       
-      return RKTransformationUniforms(projectionMatrix: projectionMatrix, viewMatrix: viewMatrix, bloomLevel: camera.bloomLevel, bloomPulse: camera.bloomPulse)
+      return RKTransformationUniforms(projectionMatrix: projectionMatrix, viewMatrix: viewMatrix, bloomLevel: camera.bloomLevel, bloomPulse: camera.bloomPulse, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
     }
     else
     {
-      return RKTransformationUniforms(projectionMatrix: double4x4(), viewMatrix: double4x4(), bloomLevel: 1.0, bloomPulse: 1.0)
+      return RKTransformationUniforms(projectionMatrix: double4x4(), viewMatrix: double4x4(), bloomLevel: 1.0, bloomPulse: 1.0, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
     }
   }
   
@@ -723,7 +720,7 @@ public class MetalRenderer
   {
     if let _: RKRenderDataSource = renderDataSource
     {
-      var uniforms: RKTransformationUniforms = self.transformUniforms()
+      var uniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0)
       let frameUniformBuffer: MTLBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
       
       let sceneTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
