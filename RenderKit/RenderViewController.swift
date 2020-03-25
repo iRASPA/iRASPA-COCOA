@@ -42,7 +42,8 @@ public class RenderViewController: NSViewController, MTKViewDelegate
 {
   var device: MTLDevice? = nil
   var computeDevice: MTLDevice? = nil
-  var commandQueue: MTLCommandQueue? = nil
+  var renderCommandQueue: MTLCommandQueue? = nil
+  var computeCommandQueue: MTLCommandQueue? = nil
   var defaultLibrary: MTLLibrary? = nil
   var maximumNumberOfSamples: Int = 4
   var renderer: MetalRenderer = MetalRenderer()
@@ -103,17 +104,17 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     
     if let newDevice = MTLCreateSystemDefaultDevice(),
        let file: String = bundle.path(forResource: "default", ofType: "metallib"),
-       let library: MTLLibrary = try? newDevice.makeLibrary(filepath: file),
-       let newCommandQueue = newDevice.makeCommandQueue()
+       let library: MTLLibrary = try? newDevice.makeLibrary(filepath: file)
     {
       self.device = newDevice
-      self.commandQueue = newCommandQueue
+      self.renderCommandQueue = newDevice.makeCommandQueue()
       self.defaultLibrary = library
       
       (self.view as? MTKView)?.device = newDevice
     
       let devices: [MTLDevice] = MTLCopyAllDevices().filter{!$0.isEqual(device) && !$0.isLowPower}
       self.computeDevice = devices.first ?? device
+      self.computeCommandQueue = self.computeDevice?.makeCommandQueue()
 
       // detect the maximum MSAA
       for i in [32,16,8,4,2,1]
@@ -124,19 +125,26 @@ public class RenderViewController: NSViewController, MTKViewDelegate
           break
         }
       }
-      
-      self.renderer.buildPipeLines(device: newDevice, library, maximumNumberOfSamples: maximumNumberOfSamples)
-      
-      let buffer1: MTLBuffer = newDevice.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
-      let buffer2: MTLBuffer = newDevice.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
-      let buffer3: MTLBuffer = newDevice.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
-      
+    }
+    
+    if let device = self.device,
+       let buffer1: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged),
+       let buffer2: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged),
+       let buffer3: MTLBuffer = device.makeBuffer(length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)
+    {
       self.frameUniformBuffers =  [buffer1,buffer2,buffer3]
+    }
+  
+    if let device = self.device,
+       let library = self.defaultLibrary
+    {
+      self.renderer.buildPipeLines(device: device, library, maximumNumberOfSamples: maximumNumberOfSamples)
       
-      self.renderer.buildTextures(device: newDevice, size: CGSize(width: 400, height: 400), maximumNumberOfSamples: maximumNumberOfSamples)
-      self.renderer.buildVertexBuffers(device: newDevice)
+      self.renderer.buildTextures(device: device, size: CGSize(width: 400, height: 400), maximumNumberOfSamples: maximumNumberOfSamples)
       
-      self.renderer.backgroundShader.buildPermanentTextures(device: newDevice)
+      self.renderer.buildVertexBuffers(device: device)
+      
+      self.renderer.backgroundShader.buildPermanentTextures(device: device)
     }
   }
   
@@ -180,7 +188,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   {
     if let device = self.device,
        let view: MetalView = self.view as? MetalView,
-       let commandQueue: MTLCommandQueue = self.commandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       renderer.reloadData(device: device, view.drawableSize, maximumNumberOfSamples: maximumNumberOfSamples)
     
@@ -203,7 +211,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   {
     if let device = self.device,
        let view: MetalView = self.view as? MetalView,
-       let commandQueue: MTLCommandQueue = self.commandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       view.renderCameraSource?.renderCamera?.trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
     
@@ -347,7 +355,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   public func updateAmbientOcclusion()
   {
     if let device = self.device,
-       let commandQueue: MTLCommandQueue = self.commandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
     }
@@ -356,7 +364,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   public func updateAdsorptionSurface(completionHandler: @escaping ()->())
   {
     if let device = self.device,
-       let commandQueue: MTLCommandQueue = self.commandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: completionHandler)
     }
@@ -475,7 +483,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   public func drawSceneToTexture(size: NSSize, imageQuality: RKImageQuality) -> Data
   {
     if let device = self.device,
-       let commandQueue: MTLCommandQueue = self.commandQueue,
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue,
        let view: MetalView = self.view as? MetalView
     {
       self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
@@ -492,7 +500,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   public func computeVoidFractions(structures: [RKRenderStructure])
   {
     guard let device = device else {return }
-    guard let commandQueue: MTLCommandQueue = self.commandQueue else {return}
+    guard let commandQueue: MTLCommandQueue = self.renderCommandQueue else {return}
     
     for structure in structures
     {
@@ -525,7 +533,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   public func computeNitrogenSurfaceArea(structures: [RKRenderStructure])
   {
     guard let device = device else {return }
-    guard let commandQueue = commandQueue else {return }
+    guard let commandQueue = renderCommandQueue else {return }
     
     for structure in structures
     {
@@ -594,7 +602,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   public func pickPoint(_ point: NSPoint) ->  [Int32]
   {
     if let device = self.device,
-       let commandQueue: MTLCommandQueue = self.commandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       let convertedPoint: NSPoint = self.view.convertToBacking(NSPoint(x: point.x, y: self.view.frame.size.height - point.y))
       return self.renderer.pickingShader.pickTextureAtPoint(device: device, commandQueue, point: convertedPoint)
@@ -605,7 +613,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   public func pickDepth(_ point: NSPoint) ->  Float?
   {
     if let device = self.device,
-       let commandQueue: MTLCommandQueue = self.commandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       let convertedPoint: NSPoint = self.view.convertToBacking(NSPoint(x: point.x, y: self.view.frame.size.height - point.y))
       return self.renderer.pickingShader.pickDepthTextureAtPoint(device: device, commandQueue, point: convertedPoint)
@@ -622,7 +630,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     if let view: MetalView = self.view as? MetalView,
        let _ = view.window,
        let _ = self.device,
-       let commandQueue: MTLCommandQueue = self.commandQueue
+       let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       let size: CGSize = view.drawableSize
       
