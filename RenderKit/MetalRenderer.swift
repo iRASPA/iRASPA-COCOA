@@ -114,9 +114,7 @@ public class MetalRenderer
   var lightUniformBuffers: MTLBuffer! = nil
   
   weak var renderDataSource: RKRenderDataSource?
-  weak var renderCameraSource: RKRenderCameraSource?
   
-  var renderQuality: RKRenderQuality = .high
   
   public init()
   {
@@ -549,9 +547,9 @@ public class MetalRenderer
     }
   }
 
-  public func transformUniforms(maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat) -> RKTransformationUniforms
+  public func transformUniforms(maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat, camera: RKCamera?) -> RKTransformationUniforms
   {
-    if let camera: RKCamera = renderCameraSource?.renderCamera
+    if let camera: RKCamera = camera
     {
       let projectionMatrix = camera.projectionMatrix
       let viewMatrix = camera.modelViewMatrix
@@ -568,7 +566,7 @@ public class MetalRenderer
   // MARK: Rendering
   // =====================================================================
 
-  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize)
+  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     commandEncoder.label = "Scene command encoder"
@@ -586,7 +584,7 @@ public class MetalRenderer
     case .high, .picture:
       self.atomShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     case .medium, .low:
-      if let camera: RKCamera = renderCameraSource?.renderCamera
+      if let camera: RKCamera = camera
       {
         switch(camera.frustrumType)
         {
@@ -617,7 +615,7 @@ public class MetalRenderer
     self.boundingBoxSphereShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, lightUniformBuffers: lightUniformBuffers, size: size)
     
     
-    if let camera: RKCamera = renderCameraSource?.renderCamera
+    if let camera: RKCamera = camera
     {
       // draw bonds before atoms
       self.internalBondSelectionWorleyShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: internalBondSelectionShader, bondShader: internalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
@@ -642,12 +640,10 @@ public class MetalRenderer
           self.atomSelectionStripedPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, atomPerspectiveImposterShader: atomPerspectiveImposterShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
         }
       }
-      
-     
     }
     
     
-    if let camera: RKCamera = renderCameraSource?.renderCamera
+    if let camera: RKCamera = camera
     {
       switch(camera.frustrumType)
       {
@@ -677,9 +673,9 @@ public class MetalRenderer
     pickingShader.renderPickingTextureWithEncoder(commandBuffer, renderPassDescriptor: pickingShader.renderPassDescriptor, atomShader: atomShader, atomOrthographicImposterShader: atomOrthographicImposterShader, internalBondShader: internalBondShader, externalBondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, size: size)
   }
   
-  func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize)
+  func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
   {
-    renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size)
+    renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
     
     if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)
     {
@@ -688,7 +684,7 @@ public class MetalRenderer
       case .high, .picture:
         atomSelectionGlowShader.renderWithEncoder(commandEncoder, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       case .medium, .low:
-        if let camera: RKCamera = renderCameraSource?.renderCamera
+        if let camera: RKCamera = camera
         {
         switch(camera.frustrumType)
         {
@@ -716,11 +712,11 @@ public class MetalRenderer
     quadShader.renderWithEncoder(commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffer, sceneResolveTexture: backgroundShader.sceneResolveTexture, blurVerticalTexture: blurVerticalShader.blurVerticalTexture, size: size)
   }
   
-  public func drawSceneToTexture(device: MTLDevice, size: NSSize, imageQuality: RKImageQuality, maximumNumberOfSamples: Int) -> Data
+  public func drawSceneToTexture(device: MTLDevice, size: NSSize, imageQuality: RKImageQuality, maximumNumberOfSamples: Int, camera: RKCamera?, renderQuality: RKRenderQuality) -> Data
   {
     if let _: RKRenderDataSource = renderDataSource
     {
-      var uniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0)
+      var uniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0, camera: camera)
       let frameUniformBuffer: MTLBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
       
       let sceneTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
@@ -849,7 +845,7 @@ public class MetalRenderer
       if let commandQueue: MTLCommandQueue = device.makeCommandQueue(),
          let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
       {
-        renderSceneWithEncoder(commandBuffer, renderPassDescriptor: sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size)
+        renderSceneWithEncoder(commandBuffer, renderPassDescriptor: sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
       
         atomSelectionGlowPictureShader.renderWithEncoder(commandBuffer, renderPassDescriptor: atomSelectionGlowAtomsRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
