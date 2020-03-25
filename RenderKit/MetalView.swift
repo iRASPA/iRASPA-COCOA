@@ -347,4 +347,17 @@ class MetalView: MTKView
     
     self.layer?.setNeedsDisplay()
   }
+  
+  override var isOpaque: Bool { return true }
+
+  override var acceptsFirstResponder: Bool { return true }
+  override func becomeFirstResponder() -> Bool
+  {
+    return true
+  }
+  
+  override func resignFirstResponder() -> Bool
+  {
+    return true
+  }
 }
