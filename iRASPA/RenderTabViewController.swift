@@ -120,12 +120,13 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     {
       fatalError("iRASPA requires METAL")
     }
-    
-   
   }
   
-
   var cameraBoundingBoxMenuItem: NSMenuItem? = nil
+  
+  
+  // MARK: View lifecyle
+  // =====================================================================
   
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
   override func viewDidLoad()
@@ -218,15 +219,15 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     aspectRationConstraint_3_1.isActive = false
   }
   
-  func globalModifierFlagsChanged(_ flags: NSEvent.ModifierFlags)
+  // detect changes in the view-bounds, use these to update the 'Camera'-detail view (pictures and movies uses the aspect-ratio)
+  override func viewDidLayout()
   {
-    if flags.contains(.option)
+    super.viewDidLayout()
+    
+    if let isKeyWindow = windowController?.window?.isKeyWindow, isKeyWindow
     {
-      transformationPanel?.selectTabViewItem(at: 1)
-    }
-    else
-    {
-      transformationPanel?.selectTabViewItem(at: 0)
+      currentAspectRatioValue = Double(self.view.bounds.size.width/self.view.bounds.size.height)
+      NotificationCenter.default.post(name: NSView.boundsDidChangeNotification, object: self)
     }
   }
   
@@ -327,21 +328,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
  
-
-
-
-  // detect changes in the view-bounds, use these to update the 'Camera'-detail view (pictures and movies uses the aspect-ratio)
-  override func viewDidLayout()
-  {
-    super.viewDidLayout()
-    
-    if let isKeyWindow = windowController?.window?.isKeyWindow, isKeyWindow
-    {
-      currentAspectRatioValue = Double(self.view.bounds.size.width/self.view.bounds.size.height)
-      NotificationCenter.default.post(name: NSView.boundsDidChangeNotification, object: self)
-    }
-  }
   
+  // MARK: Aspect ratio
+  // =====================================================================
   
   var aspectRatioValue: Double
   {
@@ -405,6 +394,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
 
+  // MARK: Printing
+  // =====================================================================
+  
   var printView: NSView?
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
@@ -417,6 +409,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   
+  // MARK: Reloading
+  // =====================================================================
     
   func redraw()
   {
@@ -570,17 +564,19 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  
-  
-  func setRenderQualityToHigh()
+  func updateAmbientOcclusion()
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
     let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
     if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController
     {
-      renderViewController.renderQuality = RKRenderQuality.high
+      renderViewController.updateAmbientOcclusion()
     }
   }
+    
+
+  // MARK: Render quality
+  // =====================================================================
   
   func setRenderQualityToMedium()
   {
@@ -592,142 +588,94 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  func updateAmbientOcclusion()
+  func setRenderQualityToHigh()
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
     let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
     if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController
     {
-      renderViewController.updateAmbientOcclusion()
+      renderViewController.renderQuality = RKRenderQuality.high
     }
   }
   
-  var picture: Data?
-  {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
-       let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
-    {
-      let size: NSSize = NSMakeSize(2048.0,CGFloat(rint(2048.0/aspectRatioValue)))
-      let imageData: Data = renderViewController.makePicture(size: size, imageQuality: project.renderImageQuality)
-      return imageData
-    }
-    return nil
-  }
   
+  // MARK: Copy / Paste / Cut / Delete
+  // =====================================================================
   
-  func makePicture()
+  @objc func copy(_ sender: AnyObject)
   {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
-       let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
-      let size: NSSize = NSMakeSize(CGFloat(project.renderImageNumberOfPixels),CGFloat(rint(Double(project.renderImageNumberOfPixels)/aspectRatioValue)))
-      let imageData: Data = renderViewController.makePicture(size: size, imageQuality: project.renderImageQuality)
-    
-      let savePanel: NSSavePanel = NSSavePanel()
-      savePanel.nameFieldStringValue = "picture.tiff"
-      savePanel.canSelectHiddenExtension = true
-      savePanel.allowedFileTypes = ["tiff"]
-      
-      let exportPictureAccessoryViewController: ExportPictureAccessoryViewController = ExportPictureAccessoryViewController(nibName: "ExportPictureAccessoryViewController", bundle: Bundle.main)
-      
-      savePanel.accessoryView = exportPictureAccessoryViewController.view
-    
-      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-        if result == NSApplication.ModalResponse.OK
-        {
-          let selectedFile: URL = savePanel.url!
-          try? imageData.write(to: selectedFile, options: [.atomic])
-        }
-      })
+      let pasteboard = NSPasteboard.general
+      pasteboard.clearContents()
+      pasteboard.writeObjects(project.allStructures.flatMap{$0.readySelectedAtomsForCopyAndPaste()})
     }
   }
   
-  func makeMovie()
+  @objc func paste(_ sender: AnyObject)
   {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
-       let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
+    if let proxyProject: ProjectTreeNode = proxyProject,
+       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
     {
-      let savePanel: NSSavePanel = NSSavePanel()
-      savePanel.nameFieldStringValue = "movie.mp4"
-      savePanel.canSelectHiddenExtension = true
-      savePanel.allowedFileTypes = ["mp4"]
-      
-      /*
-      let publicationString: NSMutableAttributedString = NSMutableAttributedString(string: "For use in scientific publications, please cite:\n")
-      let fontMask: NSFontTraitMask = NSFontTraitMask.boldFontMask
-      let stringRange: NSRange = NSMakeRange(0, publicationString.length - 1)
-      publicationString.applyFontTraits(fontMask, range: stringRange)
-      publicationString.append(NSAttributedString(string: "D. Dubbeldam, S. Calero, and T.J.H. Vlugt,\n \"iRASPA: GPU-Accelerated Visualization Software for Materials Scientists\",\nMol. Simulat., DOI: 10.1080/08927022.2018.1426855, 2018. "))
-      
-      let foundRange: NSRange = publicationString.mutableString.range(of: "10.1080/08927022.2018.1426855")
-      
-      if foundRange.location != NSNotFound
+      if !proxyProject.isEditable
       {
-        publicationString.addAttribute(NSAttributedStringKey.link, value: "http://dx.doi.org/10.1080/08927022.2018.1426855", range: foundRange)
+        LogQueue.shared.warning(destination: windowController, message: "Paste unsuccesful: project is not editable.")
+        return
       }
       
-      let accessoryView: NSView = NSView(frame: NSMakeRect(0.0, 0.0, 600, 70.0))
-      let textView: NSTextView = NSTextView(frame: NSMakeRect(0.0, 0.0, 600, 70.0))
-      textView.drawsBackground = true
-      textView.isEditable = false
-      textView.textStorage?.setAttributedString(publicationString)
-      accessoryView.addSubview(textView)
-      savePanel.accessoryView = textView
-      */
+      if !proxyProject.isEnabled
+      {
+        LogQueue.shared.warning(destination: windowController, message: "Paste unsuccesful: project is temporary disabled.")
+        return
+      }
       
-      let exportPictureAccessoryViewController: ExportPictureAccessoryViewController = ExportPictureAccessoryViewController(nibName: "ExportPictureAccessoryViewController", bundle: Bundle.main)
       
-      savePanel.accessoryView = exportPictureAccessoryViewController.view
-    
-      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-        if result == NSApplication.ModalResponse.OK
+      var insertionData: [AtomAndBondsChangeDataStructure] = []
+      let pasteboard = NSPasteboard.general
+      
+      if let atoms: [SKAtomTreeNode] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil) as? [SKAtomTreeNode]
+      {
+        // TODO: paste into structures depending on the selected master-tab
+        // For now: paste into all visible structures
+        let structures: [Structure] = project.allStructures.filter{$0.isVisible}
+        for structure in structures
         {
-          if let selectedFile: URL = savePanel.url,
-             let maximumNumberOfFrames = project.sceneList.maximumNumberOfFrames
+          // create new sets of objects for each structure
+          let objects: [SKAtomTreeNode] = atoms.copy()
+          let asymmetricAtoms: [SKAsymmetricAtom] = objects.map{$0.representedObject}
+          if let document: iRASPADocument = self.windowController?.currentDocument
           {
-            let ratio: Double = self.aspectRatioValue
-            let sizeX: Int = Int(project.renderImageNumberOfPixels)
-            let sizeY: Int = Int(0.5 + Double(project.renderImageNumberOfPixels)/ratio)
-          
-            let movie: RKMovieCreator = RKMovieCreator(url: selectedFile, width: sizeX, height: sizeY, framesPerSecond: project.numberOfFramesPerSecond , provider: renderViewController)
-          
-            
-            let savedSelection = project.sceneList.selection
-            
-            movie.beginEncoding()
-            project.sceneList.setAllMovieFramesToBeginning()
-            self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
-            for _ in 0..<maximumNumberOfFrames
-            {
-              // only recompute ambient occlusion when there is more than 1 frame in the movie to avoid flickering
-              // when there are two movie in a scene we need to recompute all anyway
-              self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
-              renderViewController.reloadData(ambientOcclusionQuality: .picture)
-              movie.addFrameToVideo()
-              project.sceneList.advanceAllMovieFrames()
-            }
-          
-            movie.endEncoding()
-            
-            project.sceneList.selection = savedSelection
-            
-            if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), !renderStructures.isEmpty
-            {
-              self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
-            }
-          
-            self.reloadData()
-            self.redraw()
+            structure.setRepresentationColorScheme(colorSets: document.colorSets, for: asymmetricAtoms)
+            structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets, for: asymmetricAtoms)
           }
+          structure.setRepresentationType(type: structure.atomRepresentationType, for: asymmetricAtoms)
+          
+          structure.setRepresentationStyle(style: structure.atomRepresentationStyle, for: asymmetricAtoms)
+        
+          structure.convertToNativePositions(newAtoms: objects)
+          //let bonds: [SKBondNode] = structure.bonds(newAtoms: objects)
+          let bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>] = []
+                
+          let insertionIndex: Int = structure.atomTreeController.rootNodes.count
+          let data = AtomAndBondsChangeDataStructure(structure: structure, atoms: objects, indexPaths: Array(0..<objects.count).map{IndexPath(index: insertionIndex + $0)}, selectedBonds: bonds, indexSet: IndexSet())
+          insertionData.append(data)
         }
-      })
+        self.insertSelectedObjectsIn(insertedData:insertionData)
+      }
     }
+  }
+  
+  @objc func cut(_ sender: AnyObject)
+  {
+    let pasteboard = NSPasteboard.general
+    pasteboard.clearContents()
+    
+    if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let nodes: [SKAtomTreeNode] = project.allStructures.flatMap{$0.readySelectedAtomsForCopyAndPaste()}
+      pasteboard.writeObjects(nodes)
+    }
+    self.deleteSelection()
   }
   
   // MARK: keyboard handling
@@ -806,8 +754,20 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  // MARK: selection
+  // MARK: Transformation panel
   // =====================================================================
+  
+  func globalModifierFlagsChanged(_ flags: NSEvent.ModifierFlags)
+  {
+    if flags.contains(.option)
+    {
+      transformationPanel?.selectTabViewItem(at: 1)
+    }
+    else
+    {
+      transformationPanel?.selectTabViewItem(at: 0)
+    }
+  }
   
   func showTransformationPanel(oldSelectionEmpty: Bool, newSelectionEmpty: Bool)
   {
@@ -852,8 +812,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
  
-
   
+  // MARK: Atom and bond selection
+  // =====================================================================
+    
   public func clearSelectionFor(structure: Structure)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
@@ -881,8 +843,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  // MARK: Atom and bond selection
-  // =====================================================================
   
   func setCurrentSelection(structure: Structure, atomSelection: Set<SKAtomTreeNode>, previousAtomSelection: Set<SKAtomTreeNode>, bondSelection: IndexSet, previousBondSelection: IndexSet)
   {
@@ -1612,552 +1572,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     self.renderViewController.redraw()
   }
   
-  @IBAction func exportToPDB(_ sender: NSMenuItem)
-  {
-    if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
-    {
-      let savePanel: NSSavePanel = NSSavePanel()
-      savePanel.nameFieldStringValue = "\(project.displayName)-pdbs"
-      savePanel.canSelectHiddenExtension = true
-      
-      let attributedString: NSAttributedString = NSAttributedString(string: "Note: Precision was lost when converting to PDB-format.")
-      let accessoryView: NSView = NSView(frame: NSMakeRect(0.0, 0.0, 400, 20.0))
-      let textView: NSTextView = NSTextView(frame: NSMakeRect(0.0, 2.0, 400, 16.0))
-      textView.drawsBackground = false
-      textView.isEditable = false
-      textView.textStorage?.setAttributedString(attributedString)
-      accessoryView.addSubview(textView)
-      savePanel.accessoryView = textView
-      
-      
-      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-        if result == NSApplication.ModalResponse.OK
-        {
-          if let url = savePanel.url
-          {
-            do
-            {
-              let fileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-              var usedFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
-              let scenes: [Scene] = project.sceneList.scenes
-              for (i,scene) in scenes.enumerated()
-              {
-                var proposedFileName: String = scene.displayName
-                if let nameCollision = usedFileNames[proposedFileName.lowercased()]
-                {
-                  let nameCollisionFileWrapper = nameCollision.fileWrapper
-                  fileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                  nameCollisionFileWrapper.preferredFilename = proposedFileName + "-\(nameCollision.sceneId)"
-                  fileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                  proposedFileName += "-\(i)"
-                }
-                
-                let subDirectoryFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                subDirectoryFileWrapper.preferredFilename = proposedFileName
-                fileWrapper.addFileWrapper(subDirectoryFileWrapper)
-                usedFileNames[proposedFileName.lowercased()] = (i, subDirectoryFileWrapper)
-                
-                var atomData: [[(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom])]] = []
-                for movie in scene.movies
-                {
-                  var tempData: [(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom])] = []
-                  for structure in movie.allStructures
-                  {
-                    let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.superCell
-                    
-                    let exportAtoms: [SKAsymmetricAtom] = state.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> SKAsymmetricAtom? in
-                      let atom = atomModel
-                      atom.position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
-                      return atom
-                    })
-                    let exportCell: SKCell? = structure.periodic ? structure.cell : nil
-                    
-                    tempData.append((spaceGroupHallNumber: 1, cell: exportCell, atoms: exportAtoms))
-                  }
-                  atomData.append(tempData)
-                }
-                
-                let string = SKPDBWriter.shared.string(displayName: scene.displayName, movies: atomData, origin: SIMD3<Double>(0,0,0))
-                
-                if let data = string.data(using: .ascii)
-                {
-                  let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
-                  wrapper.preferredFilename = scene.displayName + ".pdb"
-                  subDirectoryFileWrapper.addFileWrapper(wrapper)
-                }
-              }
-      
-              try fileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
-            }
-            catch
-            {
-              
-            }
-          }
-        }
-      })
-    }
-  }
+  // MARK: Tooltip
+  // =====================================================================
   
-  @IBAction func exportToMMCIF(_ sender: NSMenuItem)
-  {
-    if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
-    {
-      let savePanel: NSSavePanel = NSSavePanel()
-      savePanel.nameFieldStringValue = "\(project.displayName)-mmcifs"
-      savePanel.canSelectHiddenExtension = true
-      
-      
-      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-        if result == NSApplication.ModalResponse.OK
-        {
-          if let url = savePanel.url
-          {
-            do
-            {
-              let mainFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-              let scenes: [Scene] = project.sceneList.scenes
-              
-              var usedSceneFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
-              for (i,scene) in scenes.enumerated()
-              {
-                var proposedSceneFileName: String = scene.displayName
-                if let nameCollision = usedSceneFileNames[proposedSceneFileName.lowercased()]
-                {
-                  let nameCollisionFileWrapper = nameCollision.fileWrapper
-                  mainFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                  nameCollisionFileWrapper.preferredFilename = proposedSceneFileName + "-\(nameCollision.sceneId)"
-                  mainFileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                  proposedSceneFileName += "-\(i)"
-                }
-                
-                let sceneFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                sceneFileWrapper.preferredFilename = proposedSceneFileName
-                mainFileWrapper.addFileWrapper(sceneFileWrapper)
-                usedSceneFileNames[proposedSceneFileName.lowercased()] = (i, sceneFileWrapper)
-                
-                var usedMovieFileNames: [String: (movieId: Int, fileWrapper: FileWrapper)] = [:]
-                for (j,movie) in scene.movies.enumerated()
-                {
-                  var proposedMovieFileName: String = movie.displayName
-                  if let nameCollision = usedMovieFileNames[proposedMovieFileName.lowercased()]
-                  {
-                    let nameCollisionFileWrapper = nameCollision.fileWrapper
-                    sceneFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                    nameCollisionFileWrapper.preferredFilename = proposedMovieFileName + "-\(nameCollision.movieId)"
-                    sceneFileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                    proposedMovieFileName += "-\(j)"
-                  }
-                  
-                  let movieFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                  movieFileWrapper.preferredFilename = proposedMovieFileName
-                  sceneFileWrapper.addFileWrapper(movieFileWrapper)
-                  usedMovieFileNames[proposedMovieFileName.lowercased()] = (j, movieFileWrapper)
-                  
-                  for (k,iRASPAstructure) in movie.frames.enumerated()
-                  {
-                    let structure = iRASPAstructure.structure
-                    let atoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-                    
-                    let stringData: String
-                    switch(structure)
-                    {
-                    case let crystal as Crystal:
-                      stringData = SKmmCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, atomsAreFractional: true, exportFractional: false, withProteinInfo: false, origin: SIMD3<Double>(0,0,0))
-                    case let proteinCrystal as ProteinCrystal:
-                      stringData = SKmmCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: SIMD3<Double>(0,0,0))
-                    case let molecularCrystal as MolecularCrystal:
-                      stringData = SKmmCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: false, origin: SIMD3<Double>(0,0,0))
-                    case let protein as Protein:
-                      let boundingBox = protein.cell.boundingBox
-                      stringData = SKmmCIFWriter.shared.string(displayName: protein.displayName, spaceGroupHallNumber: protein.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: boundingBox.minimum)
-                    case let molecule as Molecule:
-                      let boundingBox = molecule.cell.boundingBox
-                      stringData = SKmmCIFWriter.shared.string(displayName: molecule.displayName, spaceGroupHallNumber: molecule.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: false, origin: boundingBox.minimum)
-                    default:
-                      stringData = ""
-                      break
-                    }
-                      
-                    if let data = stringData.data(using: .ascii)
-                    {
-                      let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
-                      wrapper.preferredFilename = "frame" + "-\(k)" + ".cif"
-                      movieFileWrapper.addFileWrapper(wrapper)
-                    }
-                  }
-                }
-              }
-              
-              try mainFileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
-            }
-            catch
-            {
-              
-            }
-          }
-        }
-      })
-    }
-  }
-  
-  @IBAction func exportToCIF(_ sender: NSMenuItem)
-  {
-    if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
-    {
-      let savePanel: NSSavePanel = NSSavePanel()
-      savePanel.nameFieldStringValue = "\(project.displayName)-cifs"
-      savePanel.canSelectHiddenExtension = true
-      
-      
-      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-        if result == NSApplication.ModalResponse.OK
-        {
-          if let url = savePanel.url
-          {
-            do
-            {
-              let mainFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-              let scenes: [Scene] = project.sceneList.scenes
-              
-              var usedSceneFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
-              for (i,scene) in scenes.enumerated()
-              {
-                var proposedSceneFileName: String = scene.displayName
-                if let nameCollision = usedSceneFileNames[proposedSceneFileName.lowercased()]
-                {
-                  let nameCollisionFileWrapper = nameCollision.fileWrapper
-                  mainFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                  nameCollisionFileWrapper.preferredFilename = proposedSceneFileName + "-\(nameCollision.sceneId)"
-                  mainFileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                  proposedSceneFileName += "-\(i)"
-                }
-                
-                let sceneFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                sceneFileWrapper.preferredFilename = proposedSceneFileName
-                mainFileWrapper.addFileWrapper(sceneFileWrapper)
-                usedSceneFileNames[proposedSceneFileName.lowercased()] = (i, sceneFileWrapper)
-                
-                var usedMovieFileNames: [String: (movieId: Int, fileWrapper: FileWrapper)] = [:]
-                for (j,movie) in scene.movies.enumerated()
-                {
-                  var proposedMovieFileName: String = movie.displayName
-                  if let nameCollision = usedMovieFileNames[proposedMovieFileName.lowercased()]
-                  {
-                    let nameCollisionFileWrapper = nameCollision.fileWrapper
-                    sceneFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                    nameCollisionFileWrapper.preferredFilename = proposedMovieFileName + "-\(nameCollision.movieId)"
-                    sceneFileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                    proposedMovieFileName += "-\(j)"
-                  }
-                  
-                  let movieFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                  movieFileWrapper.preferredFilename = proposedMovieFileName
-                  sceneFileWrapper.addFileWrapper(movieFileWrapper)
-                  usedMovieFileNames[proposedMovieFileName.lowercased()] = (j, movieFileWrapper)
-                  
-                  for (k,iRASPAstructure) in movie.frames.enumerated()
-                  {
-                    let structure = iRASPAstructure.structure
-                    
-                    let atoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-                    
-                    let stringData: String
-                    switch(structure)
-                    {
-                    case let crystal as Crystal:
-                      stringData = SKCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, exportFractional: true, origin: SIMD3<Double>(0,0,0))
-                    case let proteinCrystal as ProteinCrystal:
-                      stringData = SKCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, exportFractional: false, origin: SIMD3<Double>(0,0,0))
-                    case let molecularCrystal as MolecularCrystal:
-                      stringData = SKCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, exportFractional: false, origin: SIMD3<Double>(0,0,0))
-                    case let protein as Protein:
-                      let boundingBox = protein.cell.boundingBox
-                      stringData = SKCIFWriter.shared.string(displayName: protein.displayName, spaceGroupHallNumber: protein.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, exportFractional: false, origin: boundingBox.minimum)
-                    case let molecule as Molecule:
-                      let boundingBox = molecule.cell.boundingBox
-                      stringData = SKCIFWriter.shared.string(displayName: molecule.displayName, spaceGroupHallNumber: molecule.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, exportFractional: false, origin: boundingBox.minimum)
-                    default:
-                      stringData = ""
-                      break
-                    }
-                    
-                    if let data = stringData.data(using: .ascii)
-                    {
-                      let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
-                      wrapper.preferredFilename = "frame" + "-\(k)" + ".cif"
-                      movieFileWrapper.addFileWrapper(wrapper)
-                    }
-                  }
-                }
-              }
-              
-              try mainFileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
-            }
-            catch
-            {
-              
-            }
-          }
-        }
-      })
-    }
-  }
-  
-  
-  
-  @IBAction func exportToXYZ(_ sender: NSMenuItem)
-  {
-    if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
-    {
-      let savePanel: NSSavePanel = NSSavePanel()
-      savePanel.nameFieldStringValue = "\(project.displayName)-xyzs"
-      savePanel.canSelectHiddenExtension = true
-      
-      let attributedString: NSAttributedString = NSAttributedString(string: "Note: Any information on the unit-cell is lost.")
-      let accessoryView: NSView = NSView(frame: NSMakeRect(0.0, 0.0, 400, 20.0))
-      let textView: NSTextView = NSTextView(frame: NSMakeRect(0.0, 2.0, 400, 16.0))
-      textView.drawsBackground = false
-      textView.isEditable = false
-      textView.textStorage?.setAttributedString(attributedString)
-      accessoryView.addSubview(textView)
-      savePanel.accessoryView = textView
-      
-      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-        if result == NSApplication.ModalResponse.OK
-        {
-          if let url = savePanel.url
-          {
-            do
-            {
-              let mainFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-              let scenes: [Scene] = project.sceneList.scenes
-              
-              var usedSceneFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
-              for (i,scene) in scenes.enumerated()
-              {
-                var proposedSceneFileName: String = scene.displayName
-                if let nameCollision = usedSceneFileNames[proposedSceneFileName.lowercased()]
-                {
-                  let nameCollisionFileWrapper = nameCollision.fileWrapper
-                  mainFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                  nameCollisionFileWrapper.preferredFilename = proposedSceneFileName + "-\(nameCollision.sceneId)"
-                  mainFileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                  proposedSceneFileName += "-\(i)"
-                }
-                
-                let sceneFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                sceneFileWrapper.preferredFilename = proposedSceneFileName
-                mainFileWrapper.addFileWrapper(sceneFileWrapper)
-                usedSceneFileNames[proposedSceneFileName.lowercased()] = (i, sceneFileWrapper)
-                
-                var usedMovieFileNames: [String: (movieId: Int, fileWrapper: FileWrapper)] = [:]
-                for (j,movie) in scene.movies.enumerated()
-                {
-                  var proposedMovieFileName: String = movie.displayName
-                  if let nameCollision = usedMovieFileNames[proposedMovieFileName.lowercased()]
-                  {
-                    let nameCollisionFileWrapper = nameCollision.fileWrapper
-                    sceneFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                    nameCollisionFileWrapper.preferredFilename = proposedMovieFileName + "-\(nameCollision.movieId)"
-                    sceneFileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                    proposedMovieFileName += "-\(j)"
-                  }
-                  
-                  let movieFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                  movieFileWrapper.preferredFilename = proposedMovieFileName
-                  sceneFileWrapper.addFileWrapper(movieFileWrapper)
-                  usedMovieFileNames[proposedMovieFileName.lowercased()] = (j, movieFileWrapper)
-                  
-                  var movieStringData: String = ""
-                  for (k,iRASPAstructure) in movie.frames.enumerated()
-                  {
-                    let structure = iRASPAstructure.structure
-                    
-                    let exportAtoms: [(elementIdentifier: Int, position: SIMD3<Double>)] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> (elementIdentifier: Int, position: SIMD3<Double>)? in
-                      let position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
-                      return (atomModel.elementIdentifier, position)
-                    })
-                    
-                    let stringData: String
-                    switch(structure)
-                    {
-                    case let crystal as Crystal:
-                      let unitCell = crystal.cell.unitCell
-                      let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-                      stringData = SKXYZWriter.shared.string(displayName: crystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
-                    case let proteinCrystal as ProteinCrystal:
-                      let unitCell = proteinCrystal.cell.unitCell
-                      let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-                      stringData = SKXYZWriter.shared.string(displayName: proteinCrystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
-                    case let molecularCrystal as MolecularCrystal:
-                      let unitCell = molecularCrystal.cell.unitCell
-                      let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-                      stringData = SKXYZWriter.shared.string(displayName: molecularCrystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
-                    case let protein as Protein:
-                      let boundingBox = protein.cell.boundingBox
-                      let unitCell = SKCell(boundingBox: boundingBox).unitCell
-                      let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-                      stringData = SKXYZWriter.shared.string(displayName: protein.displayName, commentString: commentString, atoms: exportAtoms, origin: boundingBox.minimum)
-                    case let molecule as Molecule:
-                      let boundingBox = molecule.cell.boundingBox
-                      let unitCell = SKCell(boundingBox: boundingBox).unitCell
-                      let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
-                      stringData = SKXYZWriter.shared.string(displayName: molecule.displayName, commentString: commentString, atoms: exportAtoms, origin: boundingBox.minimum)
-                    default:
-                      stringData = ""
-                      break
-                    }
-                    
-                    
-                    
-                    movieStringData += stringData
-                    
-                    if let data = stringData.data(using: .ascii)
-                    {
-                      let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
-                      wrapper.preferredFilename = "frame" + "-\(k)" + ".xyz"
-                      movieFileWrapper.addFileWrapper(wrapper)
-                    }
-                  }
-                  if let data = movieStringData.data(using: .ascii)
-                  {
-                    let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
-                    wrapper.preferredFilename = movie.displayName + "-all" + ".xyz"
-                    movieFileWrapper.addFileWrapper(wrapper)
-                  }
-                }
-              }
-              
-              try mainFileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
-            }
-            catch
-            {
-              
-            }
-          }
-        }
-      })
-    }
-  }
-  
-  @IBAction func exportToVASP(_ sender: NSMenuItem)
-  {
-    if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
-    {
-      let savePanel: NSSavePanel = NSSavePanel()
-      savePanel.nameFieldStringValue = "\(project.displayName)-poscars"
-      savePanel.canSelectHiddenExtension = true
-      
-      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
-        if result == NSApplication.ModalResponse.OK
-        {
-          if let url = savePanel.url
-          {
-            do
-            {
-              let mainFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-              let scenes: [Scene] = project.sceneList.scenes
-              
-              var usedSceneFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
-              for (i,scene) in scenes.enumerated()
-              {
-                var proposedSceneFileName: String = scene.displayName
-                if let nameCollision = usedSceneFileNames[proposedSceneFileName.lowercased()]
-                {
-                  let nameCollisionFileWrapper = nameCollision.fileWrapper
-                  mainFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                  nameCollisionFileWrapper.preferredFilename = proposedSceneFileName + "-\(nameCollision.sceneId)"
-                  mainFileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                  proposedSceneFileName += "-\(i)"
-                }
-                
-                let sceneFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                sceneFileWrapper.preferredFilename = proposedSceneFileName
-                mainFileWrapper.addFileWrapper(sceneFileWrapper)
-                usedSceneFileNames[proposedSceneFileName.lowercased()] = (i, sceneFileWrapper)
-                
-                var usedMovieFileNames: [String: (movieId: Int, fileWrapper: FileWrapper)] = [:]
-                for (j,movie) in scene.movies.enumerated()
-                {
-                  var proposedMovieFileName: String = movie.displayName
-                  if let nameCollision = usedMovieFileNames[proposedMovieFileName.lowercased()]
-                  {
-                    let nameCollisionFileWrapper = nameCollision.fileWrapper
-                    sceneFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
-                    nameCollisionFileWrapper.preferredFilename = proposedMovieFileName + "-\(nameCollision.movieId)"
-                    sceneFileWrapper.addFileWrapper(nameCollisionFileWrapper)
-                    proposedMovieFileName += "-\(j)"
-                  }
-                  
-                  let movieFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
-                  movieFileWrapper.preferredFilename = proposedMovieFileName
-                  sceneFileWrapper.addFileWrapper(movieFileWrapper)
-                  usedMovieFileNames[proposedMovieFileName.lowercased()] = (j, movieFileWrapper)
-                  
-                  var movieStringData: String = ""
-                  for (k,iRASPAstructure) in movie.frames.enumerated()
-                  {
-                    let structure = iRASPAstructure.structure
-                    
-                    let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-                    let atomCopies: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
-                    
-                    let stringData: String
-                    switch(structure)
-                    {
-                    case let crystal as Crystal:
-                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
-                      stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell , atoms: atoms, atomsAreFractional: true, origin: SIMD3<Double>(0,0,0))
-                    case let proteinCrystal as ProteinCrystal:
-                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
-                      stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
-                    case let crystal as MolecularCrystal:
-                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
-                      stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
-                    case let protein as Protein:
-                      let boundingBox = protein.cell.boundingBox
-                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
-                      stringData = SKVASPWriter.shared.string(displayName: protein.displayName, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, origin: boundingBox.minimum)
-                    case let molecule as Molecule:
-                      let boundingBox = molecule.cell.boundingBox
-                      let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
-                      stringData = SKVASPWriter.shared.string(displayName: molecule.displayName, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, origin: boundingBox.minimum)
-                    default:
-                      stringData = ""
-                      break
-                    }
-                    
-                    movieStringData += stringData
-                    
-                    if let data = stringData.data(using: .ascii)
-                    {
-                      let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
-                      wrapper.preferredFilename = "frame" + "-\(k)" + ".poscar"
-                      movieFileWrapper.addFileWrapper(wrapper)
-                    }
-                  }
-                  if let data = movieStringData.data(using: .ascii)
-                  {
-                    let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
-                    wrapper.preferredFilename = movie.displayName + "-all" + ".poscar"
-                    movieFileWrapper.addFileWrapper(wrapper)
-                  }
-                }
-              }
-              
-              try mainFileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
-            }
-            catch
-            {
-              
-            }
-          }
-        }
-      })
-    }
-  }
- 
   @objc func view(_ view: NSView, stringForToolTip tag: NSView.ToolTipTag, point: NSPoint, userData data: UnsafeMutableRawPointer?) -> String
   {
     
@@ -2190,30 +1607,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     return ""
   }
 
-  func pickPoint(_ point: NSPoint) ->  [Int32]
-  {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
-    {
-      return renderController.pickPoint(point)
-    }
-    return [0,0,0,0]
-  }
-  
-  func pickDepth(_ point: NSPoint) ->  Float?
-  {
-    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
-    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
-    {
-      return renderController.pickDepth(point)
-    }
-    return nil
-  }
-  
+ 
   // MARK: Mouse handling
-   // =====================================================================
+  // =====================================================================
   
   public override func mouseDown(with event: NSEvent)
   {
@@ -2324,6 +1720,28 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
+  func pickPoint(_ point: NSPoint) ->  [Int32]
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    {
+      return renderController.pickPoint(point)
+    }
+    return [0,0,0,0]
+  }
+   
+  func pickDepth(_ point: NSPoint) ->  Float?
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    {
+      return renderController.pickDepth(point)
+    }
+    return nil
+  }
+  
   override func mouseUp(with theEvent: NSEvent)
   {
     let point: NSPoint = view.convert(theEvent.locationInWindow, from: nil)
@@ -2403,9 +1821,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       tracking = .none
     }
   }
-  
-  // MARK: Tranformation Panel
-  // =====================================================================
   
   @IBAction func deleteSelectedAtoms(_ sender: NSButton)
   {
@@ -3074,85 +2489,686 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
-  
-  // MARK: Copy / Paste / Cut / Delete
+  // MARK: Export picture or movie
   // =====================================================================
   
-  
-  @objc func copy(_ sender: AnyObject)
+  var picture: Data?
   {
-    if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
+       let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
-      let pasteboard = NSPasteboard.general
-      pasteboard.clearContents()
-      pasteboard.writeObjects(project.allStructures.flatMap{$0.readySelectedAtomsForCopyAndPaste()})
+      let size: NSSize = NSMakeSize(2048.0,CGFloat(rint(2048.0/aspectRatioValue)))
+      let imageData: Data = renderViewController.makePicture(size: size, imageQuality: project.renderImageQuality)
+      return imageData
     }
+    return nil
   }
   
-  @objc func paste(_ sender: AnyObject)
-  {
-    if let proxyProject: ProjectTreeNode = proxyProject,
-       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode
-    {
-      if !proxyProject.isEditable
-      {
-        LogQueue.shared.warning(destination: windowController, message: "Paste unsuccesful: project is not editable.")
-        return
-      }
-      
-      if !proxyProject.isEnabled
-      {
-        LogQueue.shared.warning(destination: windowController, message: "Paste unsuccesful: project is temporary disabled.")
-        return
-      }
-      
-      
-      var insertionData: [AtomAndBondsChangeDataStructure] = []
-      let pasteboard = NSPasteboard.general
-      
-      if let atoms: [SKAtomTreeNode] = pasteboard.readObjects(forClasses: [SKAtomTreeNode.self], options: nil) as? [SKAtomTreeNode]
-      {
-        // TODO: paste into structures depending on the selected master-tab
-        // For now: paste into all visible structures
-        let structures: [Structure] = project.allStructures.filter{$0.isVisible}
-        for structure in structures
-        {
-          // create new sets of objects for each structure
-          let objects: [SKAtomTreeNode] = atoms.copy()
-          let asymmetricAtoms: [SKAsymmetricAtom] = objects.map{$0.representedObject}
-          if let document: iRASPADocument = self.windowController?.currentDocument
-          {
-            structure.setRepresentationColorScheme(colorSets: document.colorSets, for: asymmetricAtoms)
-            structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets, for: asymmetricAtoms)
-          }
-          structure.setRepresentationType(type: structure.atomRepresentationType, for: asymmetricAtoms)
-          
-          structure.setRepresentationStyle(style: structure.atomRepresentationStyle, for: asymmetricAtoms)
-        
-          structure.convertToNativePositions(newAtoms: objects)
-          //let bonds: [SKBondNode] = structure.bonds(newAtoms: objects)
-          let bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>] = []
-                
-          let insertionIndex: Int = structure.atomTreeController.rootNodes.count
-          let data = AtomAndBondsChangeDataStructure(structure: structure, atoms: objects, indexPaths: Array(0..<objects.count).map{IndexPath(index: insertionIndex + $0)}, selectedBonds: bonds, indexSet: IndexSet())
-          insertionData.append(data)
-        }
-        self.insertSelectedObjectsIn(insertedData:insertionData)
-      }
-    }
-  }
   
-  @objc func cut(_ sender: AnyObject)
+  func makePicture()
   {
-    let pasteboard = NSPasteboard.general
-    pasteboard.clearContents()
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
+       let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      let size: NSSize = NSMakeSize(CGFloat(project.renderImageNumberOfPixels),CGFloat(rint(Double(project.renderImageNumberOfPixels)/aspectRatioValue)))
+      let imageData: Data = renderViewController.makePicture(size: size, imageQuality: project.renderImageQuality)
     
-    if let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
-    {
-      let nodes: [SKAtomTreeNode] = project.allStructures.flatMap{$0.readySelectedAtomsForCopyAndPaste()}
-      pasteboard.writeObjects(nodes)
+      let savePanel: NSSavePanel = NSSavePanel()
+      savePanel.nameFieldStringValue = "picture.tiff"
+      savePanel.canSelectHiddenExtension = true
+      savePanel.allowedFileTypes = ["tiff"]
+      
+      let exportPictureAccessoryViewController: ExportPictureAccessoryViewController = ExportPictureAccessoryViewController(nibName: "ExportPictureAccessoryViewController", bundle: Bundle.main)
+      
+      savePanel.accessoryView = exportPictureAccessoryViewController.view
+    
+      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
+        if result == NSApplication.ModalResponse.OK
+        {
+          let selectedFile: URL = savePanel.url!
+          try? imageData.write(to: selectedFile, options: [.atomic])
+        }
+      })
     }
-    self.deleteSelection()
   }
+  
+  func makeMovie()
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
+       let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
+    {
+      let savePanel: NSSavePanel = NSSavePanel()
+      savePanel.nameFieldStringValue = "movie.mp4"
+      savePanel.canSelectHiddenExtension = true
+      savePanel.allowedFileTypes = ["mp4"]
+      
+      /*
+      let publicationString: NSMutableAttributedString = NSMutableAttributedString(string: "For use in scientific publications, please cite:\n")
+      let fontMask: NSFontTraitMask = NSFontTraitMask.boldFontMask
+      let stringRange: NSRange = NSMakeRange(0, publicationString.length - 1)
+      publicationString.applyFontTraits(fontMask, range: stringRange)
+      publicationString.append(NSAttributedString(string: "D. Dubbeldam, S. Calero, and T.J.H. Vlugt,\n \"iRASPA: GPU-Accelerated Visualization Software for Materials Scientists\",\nMol. Simulat., DOI: 10.1080/08927022.2018.1426855, 2018. "))
+      
+      let foundRange: NSRange = publicationString.mutableString.range(of: "10.1080/08927022.2018.1426855")
+      
+      if foundRange.location != NSNotFound
+      {
+        publicationString.addAttribute(NSAttributedStringKey.link, value: "http://dx.doi.org/10.1080/08927022.2018.1426855", range: foundRange)
+      }
+      
+      let accessoryView: NSView = NSView(frame: NSMakeRect(0.0, 0.0, 600, 70.0))
+      let textView: NSTextView = NSTextView(frame: NSMakeRect(0.0, 0.0, 600, 70.0))
+      textView.drawsBackground = true
+      textView.isEditable = false
+      textView.textStorage?.setAttributedString(publicationString)
+      accessoryView.addSubview(textView)
+      savePanel.accessoryView = textView
+      */
+      
+      let exportPictureAccessoryViewController: ExportPictureAccessoryViewController = ExportPictureAccessoryViewController(nibName: "ExportPictureAccessoryViewController", bundle: Bundle.main)
+      
+      savePanel.accessoryView = exportPictureAccessoryViewController.view
+    
+      savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
+        if result == NSApplication.ModalResponse.OK
+        {
+          if let selectedFile: URL = savePanel.url,
+             let maximumNumberOfFrames = project.sceneList.maximumNumberOfFrames
+          {
+            let ratio: Double = self.aspectRatioValue
+            let sizeX: Int = Int(project.renderImageNumberOfPixels)
+            let sizeY: Int = Int(0.5 + Double(project.renderImageNumberOfPixels)/ratio)
+          
+            let movie: RKMovieCreator = RKMovieCreator(url: selectedFile, width: sizeX, height: sizeY, framesPerSecond: project.numberOfFramesPerSecond , provider: renderViewController)
+          
+            
+            let savedSelection = project.sceneList.selection
+            
+            movie.beginEncoding()
+            project.sceneList.setAllMovieFramesToBeginning()
+            self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
+            for _ in 0..<maximumNumberOfFrames
+            {
+              // only recompute ambient occlusion when there is more than 1 frame in the movie to avoid flickering
+              // when there are two movie in a scene we need to recompute all anyway
+              self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
+              renderViewController.reloadData(ambientOcclusionQuality: .picture)
+              movie.addFrameToVideo()
+              project.sceneList.advanceAllMovieFrames()
+            }
+          
+            movie.endEncoding()
+            
+            project.sceneList.selection = savedSelection
+            
+            if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), !renderStructures.isEmpty
+            {
+              self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
+            }
+          
+            self.reloadData()
+            self.redraw()
+          }
+        }
+      })
+    }
+  }
+  
+  // MARK: Export to structure formats
+  // =====================================================================
+  
+  @IBAction func exportToPDB(_ sender: NSMenuItem)
+   {
+     if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
+     {
+       let savePanel: NSSavePanel = NSSavePanel()
+       savePanel.nameFieldStringValue = "\(project.displayName)-pdbs"
+       savePanel.canSelectHiddenExtension = true
+       
+       let attributedString: NSAttributedString = NSAttributedString(string: "Note: Precision was lost when converting to PDB-format.")
+       let accessoryView: NSView = NSView(frame: NSMakeRect(0.0, 0.0, 400, 20.0))
+       let textView: NSTextView = NSTextView(frame: NSMakeRect(0.0, 2.0, 400, 16.0))
+       textView.drawsBackground = false
+       textView.isEditable = false
+       textView.textStorage?.setAttributedString(attributedString)
+       accessoryView.addSubview(textView)
+       savePanel.accessoryView = textView
+       
+       
+       savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
+         if result == NSApplication.ModalResponse.OK
+         {
+           if let url = savePanel.url
+           {
+             do
+             {
+               let fileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+               var usedFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
+               let scenes: [Scene] = project.sceneList.scenes
+               for (i,scene) in scenes.enumerated()
+               {
+                 var proposedFileName: String = scene.displayName
+                 if let nameCollision = usedFileNames[proposedFileName.lowercased()]
+                 {
+                   let nameCollisionFileWrapper = nameCollision.fileWrapper
+                   fileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                   nameCollisionFileWrapper.preferredFilename = proposedFileName + "-\(nameCollision.sceneId)"
+                   fileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                   proposedFileName += "-\(i)"
+                 }
+                 
+                 let subDirectoryFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                 subDirectoryFileWrapper.preferredFilename = proposedFileName
+                 fileWrapper.addFileWrapper(subDirectoryFileWrapper)
+                 usedFileNames[proposedFileName.lowercased()] = (i, subDirectoryFileWrapper)
+                 
+                 var atomData: [[(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom])]] = []
+                 for movie in scene.movies
+                 {
+                   var tempData: [(spaceGroupHallNumber: Int?, cell: SKCell?, atoms: [SKAsymmetricAtom])] = []
+                   for structure in movie.allStructures
+                   {
+                     let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.superCell
+                     
+                     let exportAtoms: [SKAsymmetricAtom] = state.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> SKAsymmetricAtom? in
+                       let atom = atomModel
+                       atom.position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
+                       return atom
+                     })
+                     let exportCell: SKCell? = structure.periodic ? structure.cell : nil
+                     
+                     tempData.append((spaceGroupHallNumber: 1, cell: exportCell, atoms: exportAtoms))
+                   }
+                   atomData.append(tempData)
+                 }
+                 
+                 let string = SKPDBWriter.shared.string(displayName: scene.displayName, movies: atomData, origin: SIMD3<Double>(0,0,0))
+                 
+                 if let data = string.data(using: .ascii)
+                 {
+                   let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
+                   wrapper.preferredFilename = scene.displayName + ".pdb"
+                   subDirectoryFileWrapper.addFileWrapper(wrapper)
+                 }
+               }
+       
+               try fileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
+             }
+             catch
+             {
+               
+             }
+           }
+         }
+       })
+     }
+   }
+   
+   @IBAction func exportToMMCIF(_ sender: NSMenuItem)
+   {
+     if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
+     {
+       let savePanel: NSSavePanel = NSSavePanel()
+       savePanel.nameFieldStringValue = "\(project.displayName)-mmcifs"
+       savePanel.canSelectHiddenExtension = true
+       
+       
+       savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
+         if result == NSApplication.ModalResponse.OK
+         {
+           if let url = savePanel.url
+           {
+             do
+             {
+               let mainFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+               let scenes: [Scene] = project.sceneList.scenes
+               
+               var usedSceneFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
+               for (i,scene) in scenes.enumerated()
+               {
+                 var proposedSceneFileName: String = scene.displayName
+                 if let nameCollision = usedSceneFileNames[proposedSceneFileName.lowercased()]
+                 {
+                   let nameCollisionFileWrapper = nameCollision.fileWrapper
+                   mainFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                   nameCollisionFileWrapper.preferredFilename = proposedSceneFileName + "-\(nameCollision.sceneId)"
+                   mainFileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                   proposedSceneFileName += "-\(i)"
+                 }
+                 
+                 let sceneFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                 sceneFileWrapper.preferredFilename = proposedSceneFileName
+                 mainFileWrapper.addFileWrapper(sceneFileWrapper)
+                 usedSceneFileNames[proposedSceneFileName.lowercased()] = (i, sceneFileWrapper)
+                 
+                 var usedMovieFileNames: [String: (movieId: Int, fileWrapper: FileWrapper)] = [:]
+                 for (j,movie) in scene.movies.enumerated()
+                 {
+                   var proposedMovieFileName: String = movie.displayName
+                   if let nameCollision = usedMovieFileNames[proposedMovieFileName.lowercased()]
+                   {
+                     let nameCollisionFileWrapper = nameCollision.fileWrapper
+                     sceneFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                     nameCollisionFileWrapper.preferredFilename = proposedMovieFileName + "-\(nameCollision.movieId)"
+                     sceneFileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                     proposedMovieFileName += "-\(j)"
+                   }
+                   
+                   let movieFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                   movieFileWrapper.preferredFilename = proposedMovieFileName
+                   sceneFileWrapper.addFileWrapper(movieFileWrapper)
+                   usedMovieFileNames[proposedMovieFileName.lowercased()] = (j, movieFileWrapper)
+                   
+                   for (k,iRASPAstructure) in movie.frames.enumerated()
+                   {
+                     let structure = iRASPAstructure.structure
+                     let atoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+                     
+                     let stringData: String
+                     switch(structure)
+                     {
+                     case let crystal as Crystal:
+                       stringData = SKmmCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, atomsAreFractional: true, exportFractional: false, withProteinInfo: false, origin: SIMD3<Double>(0,0,0))
+                     case let proteinCrystal as ProteinCrystal:
+                       stringData = SKmmCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: SIMD3<Double>(0,0,0))
+                     case let molecularCrystal as MolecularCrystal:
+                       stringData = SKmmCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: false, origin: SIMD3<Double>(0,0,0))
+                     case let protein as Protein:
+                       let boundingBox = protein.cell.boundingBox
+                       stringData = SKmmCIFWriter.shared.string(displayName: protein.displayName, spaceGroupHallNumber: protein.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: true, origin: boundingBox.minimum)
+                     case let molecule as Molecule:
+                       let boundingBox = molecule.cell.boundingBox
+                       stringData = SKmmCIFWriter.shared.string(displayName: molecule.displayName, spaceGroupHallNumber: molecule.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, exportFractional: false, withProteinInfo: false, origin: boundingBox.minimum)
+                     default:
+                       stringData = ""
+                       break
+                     }
+                       
+                     if let data = stringData.data(using: .ascii)
+                     {
+                       let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
+                       wrapper.preferredFilename = "frame" + "-\(k)" + ".cif"
+                       movieFileWrapper.addFileWrapper(wrapper)
+                     }
+                   }
+                 }
+               }
+               
+               try mainFileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
+             }
+             catch
+             {
+               
+             }
+           }
+         }
+       })
+     }
+   }
+   
+   @IBAction func exportToCIF(_ sender: NSMenuItem)
+   {
+     if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
+     {
+       let savePanel: NSSavePanel = NSSavePanel()
+       savePanel.nameFieldStringValue = "\(project.displayName)-cifs"
+       savePanel.canSelectHiddenExtension = true
+       
+       
+       savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
+         if result == NSApplication.ModalResponse.OK
+         {
+           if let url = savePanel.url
+           {
+             do
+             {
+               let mainFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+               let scenes: [Scene] = project.sceneList.scenes
+               
+               var usedSceneFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
+               for (i,scene) in scenes.enumerated()
+               {
+                 var proposedSceneFileName: String = scene.displayName
+                 if let nameCollision = usedSceneFileNames[proposedSceneFileName.lowercased()]
+                 {
+                   let nameCollisionFileWrapper = nameCollision.fileWrapper
+                   mainFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                   nameCollisionFileWrapper.preferredFilename = proposedSceneFileName + "-\(nameCollision.sceneId)"
+                   mainFileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                   proposedSceneFileName += "-\(i)"
+                 }
+                 
+                 let sceneFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                 sceneFileWrapper.preferredFilename = proposedSceneFileName
+                 mainFileWrapper.addFileWrapper(sceneFileWrapper)
+                 usedSceneFileNames[proposedSceneFileName.lowercased()] = (i, sceneFileWrapper)
+                 
+                 var usedMovieFileNames: [String: (movieId: Int, fileWrapper: FileWrapper)] = [:]
+                 for (j,movie) in scene.movies.enumerated()
+                 {
+                   var proposedMovieFileName: String = movie.displayName
+                   if let nameCollision = usedMovieFileNames[proposedMovieFileName.lowercased()]
+                   {
+                     let nameCollisionFileWrapper = nameCollision.fileWrapper
+                     sceneFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                     nameCollisionFileWrapper.preferredFilename = proposedMovieFileName + "-\(nameCollision.movieId)"
+                     sceneFileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                     proposedMovieFileName += "-\(j)"
+                   }
+                   
+                   let movieFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                   movieFileWrapper.preferredFilename = proposedMovieFileName
+                   sceneFileWrapper.addFileWrapper(movieFileWrapper)
+                   usedMovieFileNames[proposedMovieFileName.lowercased()] = (j, movieFileWrapper)
+                   
+                   for (k,iRASPAstructure) in movie.frames.enumerated()
+                   {
+                     let structure = iRASPAstructure.structure
+                     
+                     let atoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+                     
+                     let stringData: String
+                     switch(structure)
+                     {
+                     case let crystal as Crystal:
+                       stringData = SKCIFWriter.shared.string(displayName: crystal.displayName, spaceGroupHallNumber: crystal.spaceGroupHallNumber, cell: crystal.cell, atoms: atoms, exportFractional: true, origin: SIMD3<Double>(0,0,0))
+                     case let proteinCrystal as ProteinCrystal:
+                       stringData = SKCIFWriter.shared.string(displayName: proteinCrystal.displayName, spaceGroupHallNumber: proteinCrystal.spaceGroupHallNumber, cell: proteinCrystal.cell, atoms: atoms, exportFractional: false, origin: SIMD3<Double>(0,0,0))
+                     case let molecularCrystal as MolecularCrystal:
+                       stringData = SKCIFWriter.shared.string(displayName: molecularCrystal.displayName, spaceGroupHallNumber: molecularCrystal.spaceGroupHallNumber, cell: molecularCrystal.cell, atoms: atoms, exportFractional: false, origin: SIMD3<Double>(0,0,0))
+                     case let protein as Protein:
+                       let boundingBox = protein.cell.boundingBox
+                       stringData = SKCIFWriter.shared.string(displayName: protein.displayName, spaceGroupHallNumber: protein.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, exportFractional: false, origin: boundingBox.minimum)
+                     case let molecule as Molecule:
+                       let boundingBox = molecule.cell.boundingBox
+                       stringData = SKCIFWriter.shared.string(displayName: molecule.displayName, spaceGroupHallNumber: molecule.spaceGroupHallNumber, cell: SKCell(boundingBox: boundingBox), atoms: atoms, exportFractional: false, origin: boundingBox.minimum)
+                     default:
+                       stringData = ""
+                       break
+                     }
+                     
+                     if let data = stringData.data(using: .ascii)
+                     {
+                       let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
+                       wrapper.preferredFilename = "frame" + "-\(k)" + ".cif"
+                       movieFileWrapper.addFileWrapper(wrapper)
+                     }
+                   }
+                 }
+               }
+               
+               try mainFileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
+             }
+             catch
+             {
+               
+             }
+           }
+         }
+       })
+     }
+   }
+   
+   
+   
+   @IBAction func exportToXYZ(_ sender: NSMenuItem)
+   {
+     if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
+     {
+       let savePanel: NSSavePanel = NSSavePanel()
+       savePanel.nameFieldStringValue = "\(project.displayName)-xyzs"
+       savePanel.canSelectHiddenExtension = true
+       
+       let attributedString: NSAttributedString = NSAttributedString(string: "Note: Any information on the unit-cell is lost.")
+       let accessoryView: NSView = NSView(frame: NSMakeRect(0.0, 0.0, 400, 20.0))
+       let textView: NSTextView = NSTextView(frame: NSMakeRect(0.0, 2.0, 400, 16.0))
+       textView.drawsBackground = false
+       textView.isEditable = false
+       textView.textStorage?.setAttributedString(attributedString)
+       accessoryView.addSubview(textView)
+       savePanel.accessoryView = textView
+       
+       savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
+         if result == NSApplication.ModalResponse.OK
+         {
+           if let url = savePanel.url
+           {
+             do
+             {
+               let mainFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+               let scenes: [Scene] = project.sceneList.scenes
+               
+               var usedSceneFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
+               for (i,scene) in scenes.enumerated()
+               {
+                 var proposedSceneFileName: String = scene.displayName
+                 if let nameCollision = usedSceneFileNames[proposedSceneFileName.lowercased()]
+                 {
+                   let nameCollisionFileWrapper = nameCollision.fileWrapper
+                   mainFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                   nameCollisionFileWrapper.preferredFilename = proposedSceneFileName + "-\(nameCollision.sceneId)"
+                   mainFileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                   proposedSceneFileName += "-\(i)"
+                 }
+                 
+                 let sceneFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                 sceneFileWrapper.preferredFilename = proposedSceneFileName
+                 mainFileWrapper.addFileWrapper(sceneFileWrapper)
+                 usedSceneFileNames[proposedSceneFileName.lowercased()] = (i, sceneFileWrapper)
+                 
+                 var usedMovieFileNames: [String: (movieId: Int, fileWrapper: FileWrapper)] = [:]
+                 for (j,movie) in scene.movies.enumerated()
+                 {
+                   var proposedMovieFileName: String = movie.displayName
+                   if let nameCollision = usedMovieFileNames[proposedMovieFileName.lowercased()]
+                   {
+                     let nameCollisionFileWrapper = nameCollision.fileWrapper
+                     sceneFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                     nameCollisionFileWrapper.preferredFilename = proposedMovieFileName + "-\(nameCollision.movieId)"
+                     sceneFileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                     proposedMovieFileName += "-\(j)"
+                   }
+                   
+                   let movieFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                   movieFileWrapper.preferredFilename = proposedMovieFileName
+                   sceneFileWrapper.addFileWrapper(movieFileWrapper)
+                   usedMovieFileNames[proposedMovieFileName.lowercased()] = (j, movieFileWrapper)
+                   
+                   var movieStringData: String = ""
+                   for (k,iRASPAstructure) in movie.frames.enumerated()
+                   {
+                     let structure = iRASPAstructure.structure
+                     
+                     let exportAtoms: [(elementIdentifier: Int, position: SIMD3<Double>)] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> (elementIdentifier: Int, position: SIMD3<Double>)? in
+                       let position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
+                       return (atomModel.elementIdentifier, position)
+                     })
+                     
+                     let stringData: String
+                     switch(structure)
+                     {
+                     case let crystal as Crystal:
+                       let unitCell = crystal.cell.unitCell
+                       let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
+                       stringData = SKXYZWriter.shared.string(displayName: crystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
+                     case let proteinCrystal as ProteinCrystal:
+                       let unitCell = proteinCrystal.cell.unitCell
+                       let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
+                       stringData = SKXYZWriter.shared.string(displayName: proteinCrystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
+                     case let molecularCrystal as MolecularCrystal:
+                       let unitCell = molecularCrystal.cell.unitCell
+                       let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
+                       stringData = SKXYZWriter.shared.string(displayName: molecularCrystal.displayName, commentString: commentString, atoms: exportAtoms, origin: SIMD3<Double>(0,0,0))
+                     case let protein as Protein:
+                       let boundingBox = protein.cell.boundingBox
+                       let unitCell = SKCell(boundingBox: boundingBox).unitCell
+                       let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
+                       stringData = SKXYZWriter.shared.string(displayName: protein.displayName, commentString: commentString, atoms: exportAtoms, origin: boundingBox.minimum)
+                     case let molecule as Molecule:
+                       let boundingBox = molecule.cell.boundingBox
+                       let unitCell = SKCell(boundingBox: boundingBox).unitCell
+                       let commentString = "Lattice=\"\(unitCell[0][0]) \(unitCell[0][1]) \(unitCell[0][2]) \(unitCell[1][0]) \(unitCell[1][1]) \(unitCell[1][2]) \(unitCell[2][0]) \(unitCell[2][1]) \(unitCell[2][2])\" "
+                       stringData = SKXYZWriter.shared.string(displayName: molecule.displayName, commentString: commentString, atoms: exportAtoms, origin: boundingBox.minimum)
+                     default:
+                       stringData = ""
+                       break
+                     }
+                     
+                     
+                     
+                     movieStringData += stringData
+                     
+                     if let data = stringData.data(using: .ascii)
+                     {
+                       let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
+                       wrapper.preferredFilename = "frame" + "-\(k)" + ".xyz"
+                       movieFileWrapper.addFileWrapper(wrapper)
+                     }
+                   }
+                   if let data = movieStringData.data(using: .ascii)
+                   {
+                     let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
+                     wrapper.preferredFilename = movie.displayName + "-all" + ".xyz"
+                     movieFileWrapper.addFileWrapper(wrapper)
+                   }
+                 }
+               }
+               
+               try mainFileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
+             }
+             catch
+             {
+               
+             }
+           }
+         }
+       })
+     }
+   }
+   
+   @IBAction func exportToVASP(_ sender: NSMenuItem)
+   {
+     if let project: ProjectStructureNode = self.renderDataSource as? ProjectStructureNode
+     {
+       let savePanel: NSSavePanel = NSSavePanel()
+       savePanel.nameFieldStringValue = "\(project.displayName)-poscars"
+       savePanel.canSelectHiddenExtension = true
+       
+       savePanel.beginSheetModal(for: self.view.window!, completionHandler: { (result) -> Void in
+         if result == NSApplication.ModalResponse.OK
+         {
+           if let url = savePanel.url
+           {
+             do
+             {
+               let mainFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+               let scenes: [Scene] = project.sceneList.scenes
+               
+               var usedSceneFileNames: [String: (sceneId: Int, fileWrapper: FileWrapper)] = [:]
+               for (i,scene) in scenes.enumerated()
+               {
+                 var proposedSceneFileName: String = scene.displayName
+                 if let nameCollision = usedSceneFileNames[proposedSceneFileName.lowercased()]
+                 {
+                   let nameCollisionFileWrapper = nameCollision.fileWrapper
+                   mainFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                   nameCollisionFileWrapper.preferredFilename = proposedSceneFileName + "-\(nameCollision.sceneId)"
+                   mainFileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                   proposedSceneFileName += "-\(i)"
+                 }
+                 
+                 let sceneFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                 sceneFileWrapper.preferredFilename = proposedSceneFileName
+                 mainFileWrapper.addFileWrapper(sceneFileWrapper)
+                 usedSceneFileNames[proposedSceneFileName.lowercased()] = (i, sceneFileWrapper)
+                 
+                 var usedMovieFileNames: [String: (movieId: Int, fileWrapper: FileWrapper)] = [:]
+                 for (j,movie) in scene.movies.enumerated()
+                 {
+                   var proposedMovieFileName: String = movie.displayName
+                   if let nameCollision = usedMovieFileNames[proposedMovieFileName.lowercased()]
+                   {
+                     let nameCollisionFileWrapper = nameCollision.fileWrapper
+                     sceneFileWrapper.removeFileWrapper(nameCollisionFileWrapper)
+                     nameCollisionFileWrapper.preferredFilename = proposedMovieFileName + "-\(nameCollision.movieId)"
+                     sceneFileWrapper.addFileWrapper(nameCollisionFileWrapper)
+                     proposedMovieFileName += "-\(j)"
+                   }
+                   
+                   let movieFileWrapper: FileWrapper = FileWrapper(directoryWithFileWrappers: [:])
+                   movieFileWrapper.preferredFilename = proposedMovieFileName
+                   sceneFileWrapper.addFileWrapper(movieFileWrapper)
+                   usedMovieFileNames[proposedMovieFileName.lowercased()] = (j, movieFileWrapper)
+                   
+                   var movieStringData: String = ""
+                   for (k,iRASPAstructure) in movie.frames.enumerated()
+                   {
+                     let structure = iRASPAstructure.structure
+                     
+                     let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+                     let atomCopies: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
+                     
+                     let stringData: String
+                     switch(structure)
+                     {
+                     case let crystal as Crystal:
+                       let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
+                       stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell , atoms: atoms, atomsAreFractional: true, origin: SIMD3<Double>(0,0,0))
+                     case let proteinCrystal as ProteinCrystal:
+                       let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, fract($0.position), $0.asymmetricParentAtom.isFixed)}
+                       stringData = SKVASPWriter.shared.string(displayName: proteinCrystal.displayName, cell: proteinCrystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
+                     case let crystal as MolecularCrystal:
+                       let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+                       stringData = SKVASPWriter.shared.string(displayName: crystal.displayName, cell: crystal.cell, atoms: atoms, atomsAreFractional: false, origin: SIMD3<Double>(0,0,0))
+                     case let protein as Protein:
+                       let boundingBox = protein.cell.boundingBox
+                       let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+                       stringData = SKVASPWriter.shared.string(displayName: protein.displayName, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, origin: boundingBox.minimum)
+                     case let molecule as Molecule:
+                       let boundingBox = molecule.cell.boundingBox
+                       let atoms: [(Int, SIMD3<Double>, Bool3)] = atomCopies.compactMap{($0.asymmetricParentAtom.elementIdentifier, $0.position, $0.asymmetricParentAtom.isFixed)}
+                       stringData = SKVASPWriter.shared.string(displayName: molecule.displayName, cell: SKCell(boundingBox: boundingBox), atoms: atoms, atomsAreFractional: false, origin: boundingBox.minimum)
+                     default:
+                       stringData = ""
+                       break
+                     }
+                     
+                     movieStringData += stringData
+                     
+                     if let data = stringData.data(using: .ascii)
+                     {
+                       let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
+                       wrapper.preferredFilename = "frame" + "-\(k)" + ".poscar"
+                       movieFileWrapper.addFileWrapper(wrapper)
+                     }
+                   }
+                   if let data = movieStringData.data(using: .ascii)
+                   {
+                     let wrapper: FileWrapper = FileWrapper(regularFileWithContents: data)
+                     wrapper.preferredFilename = movie.displayName + "-all" + ".poscar"
+                     movieFileWrapper.addFileWrapper(wrapper)
+                   }
+                 }
+               }
+               
+               try mainFileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
+             }
+             catch
+             {
+               
+             }
+           }
+         }
+       })
+     }
+   }
+  
+  
 }
 
