@@ -217,7 +217,7 @@
 		937807D921C58E9500EC4466 /* SKConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807D821C58E9500EC4466 /* SKConstants.swift */; };
 		937807DB21C5945100EC4466 /* RKTrackBall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807DA21C5945100EC4466 /* RKTrackBall.swift */; };
 		937807DD21C598AA00EC4466 /* SKVoidFraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807DC21C598AA00EC4466 /* SKVoidFraction.swift */; };
-		937807DF21C598E200EC4466 /* SKSurfaceArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807DE21C598E200EC4466 /* SKSurfaceArea.swift */; };
+		937807DF21C598E200EC4466 /* SKNitrogenSurfaceArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807DE21C598E200EC4466 /* SKNitrogenSurfaceArea.swift */; };
 		93784A931E61B5CE00A7FF23 /* StructureDetailTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A921E61B5CE00A7FF23 /* StructureDetailTabViewController.swift */; };
 		93784A951E61B6EB00A7FF23 /* StructureCameraDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A941E61B6EB00A7FF23 /* StructureCameraDetailViewController.swift */; };
 		93784A971E61B81500A7FF23 /* StructureElementDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93784A961E61B81500A7FF23 /* StructureElementDetailViewController.swift */; };
@@ -1018,7 +1018,7 @@
 		937807D821C58E9500EC4466 /* SKConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKConstants.swift; sourceTree = "<group>"; };
 		937807DA21C5945100EC4466 /* RKTrackBall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKTrackBall.swift; sourceTree = "<group>"; };
 		937807DC21C598AA00EC4466 /* SKVoidFraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVoidFraction.swift; sourceTree = "<group>"; };
-		937807DE21C598E200EC4466 /* SKSurfaceArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSurfaceArea.swift; sourceTree = "<group>"; };
+		937807DE21C598E200EC4466 /* SKNitrogenSurfaceArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNitrogenSurfaceArea.swift; sourceTree = "<group>"; };
 		93784A921E61B5CE00A7FF23 /* StructureDetailTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureDetailTabViewController.swift; sourceTree = "<group>"; };
 		93784A941E61B6EB00A7FF23 /* StructureCameraDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureCameraDetailViewController.swift; sourceTree = "<group>"; };
 		93784A961E61B81500A7FF23 /* StructureElementDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureElementDetailViewController.swift; sourceTree = "<group>"; };
@@ -1459,7 +1459,7 @@
 				937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */,
 				930DC94C23DDCF7800E0D43A /* SKMetalMarchingCubes256.swift */,
 				937807DC21C598AA00EC4466 /* SKVoidFraction.swift */,
-				937807DE21C598E200EC4466 /* SKSurfaceArea.swift */,
+				937807DE21C598E200EC4466 /* SKNitrogenSurfaceArea.swift */,
 				930DD48E1E26A80E00B8FE9B /* Info.plist */,
 				93426FD61F8CCC030034F0BF /* SKForceFieldSets.swift */,
 				93426FD41F8CB9650034F0BF /* SKForceFieldSet.swift */,
@@ -2954,7 +2954,7 @@
 				937479531FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift in Sources */,
 				93BDF7651FB638810006692C /* SimulationKitProtocols.swift in Sources */,
 				93DA9EE523DEFE4600FB4E51 /* SimulationKitErrors.swift in Sources */,
-				937807DF21C598E200EC4466 /* SKSurfaceArea.swift in Sources */,
+				937807DF21C598E200EC4466 /* SKNitrogenSurfaceArea.swift in Sources */,
 				93426FD31F8CB7990034F0BF /* SKForceFieldType.swift in Sources */,
 				937807DD21C598AA00EC4466 /* SKVoidFraction.swift in Sources */,
 				93426FD71F8CCC030034F0BF /* SKForceFieldSets.swift in Sources */,

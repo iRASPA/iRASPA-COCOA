@@ -34,6 +34,7 @@ import simd
 import iRASPAKit
 import RenderKit
 import SymmetryKit
+import SimulationKit
 import LogViewKit
 import MathKit
 
@@ -2156,17 +2157,6 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       })
     }
   }
-  
-  public func computeHeliumVoidFraction(structures: [RKRenderStructure])
-  {
-    self.renderViewController.computeVoidFractions(structures: structures)
-  }
-  
-  public func computeNitrogenSurfaceArea(structures: [RKRenderStructure])
-  {
-    self.renderViewController.computeNitrogenSurfaceArea(structures: structures)
-  }
-  
  
   @objc func view(_ view: NSView, stringForToolTip tag: NSView.ToolTipTag, point: NSPoint, userData data: UnsafeMutableRawPointer?) -> String
   {

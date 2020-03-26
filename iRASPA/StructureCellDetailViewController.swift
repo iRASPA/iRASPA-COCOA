@@ -36,6 +36,7 @@ import MathKit
 import iRASPAKit
 import SymmetryKit
 import SimulationKit
+import LogViewKit
 
 // CellViewer
 
@@ -2990,7 +2991,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allRenderFrames)
+      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+      
+      for (i, result) in results.enumerated()
+      {
+        cellViewer.allStructures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
+        cellViewer.allStructures[i].structureHeliumVoidFraction = result.voidFraction
+      }
+      
       for structure in cellViewer.allStructures
       {
         //cellViewer.applyContentShift()
@@ -3475,7 +3483,13 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: cellViewer.allRenderFrames)
+      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+        
+      for (i, result) in results.enumerated()
+      {
+        cellViewer.allStructures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
+        cellViewer.allStructures[i].structureHeliumVoidFraction = result.voidFraction
+      }
       
       cellViewer.renderRecomputeDensityProperties()
       
@@ -3493,9 +3507,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     {
       cellViewer.renderFrameworkProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)!
       
-     
-     cellViewer.renderRecomputeDensityProperties()
-    self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: cellViewer.allRenderFrames)
+      cellViewer.renderRecomputeDensityProperties()
+      
+      do
+      {
+        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+        for (i, result) in results.enumerated()
+        {
+          cellViewer.allStructures[i].structureNitrogenSurfaceArea = result
+        }
+      }
+      catch let error
+      {
+        LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+        return
+      }
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3509,7 +3535,19 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: cellViewer.allRenderFrames)
+     do
+      {
+        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+        for (i, result) in results.enumerated()
+        {
+          cellViewer.allStructures[i].structureNitrogenSurfaceArea = result
+        }
+      }
+      catch let error
+      {
+        LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+        return
+      }
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
