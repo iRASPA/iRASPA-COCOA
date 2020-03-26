@@ -95,7 +95,7 @@ class Project
   
   public var surfaceAreas: ([Double], [Double])
   {
-    return SKSurfaceArea.compute(structures: projectStructureNode.sceneList.allAdsorptionSurfaceStructures)
+    return SKNitrogenSurfaceArea.compute(structures: projectStructureNode.sceneList.allAdsorptionSurfaceStructures)
   }
   
   var makePicture: Data

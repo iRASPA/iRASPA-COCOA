@@ -68,6 +68,9 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     }
   }
   
+  // MARK: -
+  // MARK: Initialization
+  
   override public init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?)
   {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -92,6 +95,9 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       self._inflightSemaphore.signal()
     }
   }
+  
+  // MARK: -
+  // MARK: View lifecyle
   
   public override func viewDidLoad()
   {
@@ -162,6 +168,9 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       }
     }
   }
+  
+  // MARK: -
+  // MARK: properties
 
   public var viewBounds: CGSize
   {
@@ -465,19 +474,24 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   
   public func makeCVPicture(_ pixelBuffer: CVPixelBuffer, width: Int, height: Int)
   {
-    var coreVideoTextureCache: CVMetalTextureCache? = nil
-    CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, self.device!, nil, &coreVideoTextureCache)
+    if let device = self.device
+    {
+      var coreVideoTextureCache: CVMetalTextureCache? = nil
+      CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &coreVideoTextureCache)
     
-    var renderTexture: CVMetalTexture? = nil
-    CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, coreVideoTextureCache!, pixelBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &renderTexture)
+      var renderTexture: CVMetalTexture? = nil
+      CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, coreVideoTextureCache!, pixelBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &renderTexture)
     
-    let size: NSSize = NSMakeSize(CGFloat(width), CGFloat(height))
-    let data: Data = self.drawSceneToTexture(size: size, imageQuality: RKImageQuality.rgb_8_bits)
+      let size: NSSize = NSMakeSize(CGFloat(width), CGFloat(height))
+      let data: Data = self.drawSceneToTexture(size: size, imageQuality: RKImageQuality.rgb_8_bits)
     
-    CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
-    let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)!.assumingMemoryBound(to: UInt8.self)
-    data.copyBytes(to: destPixels, count: data.count)
-    CVPixelBufferUnlockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
+      CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
+      if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)
+      {
+        data.copyBytes(to: destPixels, count: data.count)
+      }
+      CVPixelBufferUnlockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
+    }
   }
   
   public func drawSceneToTexture(size: NSSize, imageQuality: RKImageQuality) -> Data
@@ -488,113 +502,10 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
     
-      return self.renderer.drawSceneToTexture(device: self.device!, size: size, imageQuality: imageQuality, maximumNumberOfSamples: maximumNumberOfSamples, camera: view.renderCameraSource?.renderCamera, renderQuality: view.renderQuality)
+      return self.renderer.drawSceneToTexture(device: device, size: size, imageQuality: imageQuality, maximumNumberOfSamples: maximumNumberOfSamples, camera: view.renderCameraSource?.renderCamera, renderQuality: view.renderQuality)
     }
     return Data()
   }
-  
-
-  // MARK: -
-  // MARK: Computing void fractions and surface areas
-  
-  public func computeVoidFractions(structures: [RKRenderStructure])
-  {
-    guard let device = device else {return }
-    guard let commandQueue: MTLCommandQueue = self.renderCommandQueue else {return}
-    
-    for structure in structures
-    {
-      if let structure = structure as? RKRenderAdsorptionSurfaceSource
-      {
-        var data: [Float] = []
-        
-        let cell: SKCell = structure.cell
-        let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
-        let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
-        let probeParameters: SIMD2<Double> = SIMD2<Double>(10.9, 2.64)
-        
-        let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
-        let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
-        
-        data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
-        
-        structure.minimumGridEnergyValue = data.min()
-        
-        var numberOfLowEnergyValues: Double = 0.0
-        for value in data
-        {
-          numberOfLowEnergyValues += exp(-(1.0/298.0) * Double(value))  // K_B  chosen as 1.0 (energy units are Kelvin)
-        }
-        structure.structureHeliumVoidFraction = Double(numberOfLowEnergyValues)/Double(128*128*128)
-      }
-    }
-  }
-  
-  public func computeNitrogenSurfaceArea(structures: [RKRenderStructure])
-  {
-    guard let device = device else {return }
-    guard let commandQueue = renderCommandQueue else {return }
-    
-    for structure in structures
-    {
-      if let structure = structure as? RKRenderAdsorptionSurfaceSource
-      {
-        var data: [Float] = []
-        
-        let cell: SKCell = structure.cell
-        let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
-        let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
-        let probeParameters: SIMD2<Double> = structure.frameworkProbeParameters
-        
-        let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
-        let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
-        
-        data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
-        
-        let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
-        marchingCubes.isoValue = Float(-probeParameters.x)
-        
-        var surfaceVertexBuffer: MTLBuffer? = nil
-        var numberOfTriangles: Int  = 0
-        
-        do
-        {
-          try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &surfaceVertexBuffer, numberOfTriangles: &numberOfTriangles)
-        } catch {
-          LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
-        }
-        
-        if numberOfTriangles > 0,
-          let ptr: UnsafeMutableRawPointer = surfaceVertexBuffer?.contents()
-        {
-          let float4Ptr = ptr.bindMemory(to: SIMD4<Float>.self, capacity: Int(numberOfTriangles) * 3 * 3 )
-          
-          var totalArea: Double = 0.0
-          for i in stride(from: 0, through: (Int(numberOfTriangles) * 3 * 3 - 1), by: 9)
-          {
-            let unitCell: double3x3 = cell.unitCell
-            let v1 = unitCell * SIMD3<Double>(Double(float4Ptr[i].x),Double(float4Ptr[i].y),Double(float4Ptr[i].z))
-            let v2 = unitCell * SIMD3<Double>(Double(float4Ptr[i+3].x),Double(float4Ptr[i+3].y),Double(float4Ptr[i+3].z))
-            let v3 = unitCell * SIMD3<Double>(Double(float4Ptr[i+6].x),Double(float4Ptr[i+6].y),Double(float4Ptr[i+6].z))
-            
-            let v4: SIMD3<Double> = cross((v2-v1), (v3-v1))
-            let area: Double = 0.5 * simd.length(v4)
-            if area.isFinite && fabs(area) < 1.0
-            {
-              totalArea += area
-            }
-            
-            structure.structureNitrogenSurfaceArea = totalArea
-          }
-        }
-        else
-        {
-          structure.structureNitrogenSurfaceArea = 0.0
-        }
-      }
-    }
-  }
-  
   
   // MARK: -
   // MARK: Picking

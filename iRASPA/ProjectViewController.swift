@@ -38,6 +38,7 @@ import simd
 import OperationKit
 import Compression
 import SymmetryKit
+import SimulationKit
 import LogViewKit
 import BinaryCodable
 
@@ -2119,10 +2120,28 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
         {
-           projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
+          projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
           
-          self.windowController?.detailTabViewController?.renderViewController?.computeHeliumVoidFraction(structures: projectStructure.allStructures)
-      self.windowController?.detailTabViewController?.renderViewController?.computeNitrogenSurfaceArea(structures: projectStructure.allStructures)
+          let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+            
+          for (i, result) in results.enumerated()
+          {
+            projectStructure.allStructures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
+            projectStructure.allStructures[i].structureHeliumVoidFraction = result.voidFraction
+          }
+          
+          do
+          {
+            let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+            for (i, result) in results.enumerated()
+            {
+              projectStructure.allStructures[i].structureNitrogenSurfaceArea = result
+            }
+          }
+          catch let error
+          {
+            LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+          }
           
           projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
           
