@@ -1176,9 +1176,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       if let newValue = newValue
       {
         self.spaceGroup = SKSpacegroup(HallNumber: newValue)
-        let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-        
-        asymmetricAtoms.forEach({ self.expandSymmetry(asymmetricAtom: $0)})
+        self.expandSymmetry()
         
         self.atomTreeController.tag()
         self.reComputeBonds()

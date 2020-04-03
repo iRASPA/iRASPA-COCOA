@@ -528,6 +528,10 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   @IBAction func TypeBonds(_ sender: NSMenuItem)
   {
+    if let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
+    {
+      structure.typeBonds()
+    }
   }
   
   @IBAction func toggleBondVisiblity(_ sender: NSButton)

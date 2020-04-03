@@ -48,6 +48,8 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
   public unowned var atom2: SKAtomCopy
   public var boundaryType: BoundaryType = BoundaryType.internal
   
+  public var bondOrder: Int = 0
+  
   /// NOTE: the bond-orde is defined that the tag of atom1 is lower than the tag of atom2
   public init(atom1: SKAtomCopy, atom2: SKAtomCopy, boundaryType type: BoundaryType)
   {
@@ -112,6 +114,19 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
   public func displayName() -> String
   {
     return "bond"
+  }
+  
+  public func otherAtom(_ atom: SKAtomCopy) -> SKAtomCopy
+  {
+    if atom1 === atom
+    {
+      return atom2
+    }
+    else if atom2 === atom
+    {
+      return atom1
+    }
+    fatalError()
   }
   
   // MARK: -

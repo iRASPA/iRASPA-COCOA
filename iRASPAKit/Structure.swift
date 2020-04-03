@@ -1916,6 +1916,21 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     return length(dr)
   }
   
+  public func bendAngle(_ atomA: SKAtomCopy, _ atomB: SKAtomCopy, _ atomC:SKAtomCopy) -> Double
+   {
+     let posA: SIMD3<Double> = atomA.position
+     let posB: SIMD3<Double> = atomB.position
+     let posC: SIMD3<Double> = atomC.position
+     
+     let dr1: SIMD3<Double> = posA - posB
+     let dr2: SIMD3<Double> = posC - posB
+     
+     let vectorAB: SIMD3<Double> = normalize(dr1)
+     let vectorBC: SIMD3<Double> = normalize(dr2)
+     
+     return acos(dot(vectorAB, vectorBC))
+   }
+  
   public func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
   {
     let posA: SIMD3<Double> = atomA.copy.position
@@ -2776,6 +2791,227 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       
     return (cell: superCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
   }
+  
+  public func removeOverConnections(_ bonds: [SKBondNode]) -> [SKBondNode]
+  {
+    let groupByFirstAtom = Dictionary(grouping: bonds, by: { $0.atom1 })
+    let groupBySecondAtom = Dictionary(grouping: bonds, by: { $0.atom2 })
+    var groupByAtom = groupByFirstAtom.merging(groupBySecondAtom, uniquingKeysWith: +)
+        
+    for atom in groupByAtom
+    {
+      let atomI: SKAtomCopy = atom.key
+      
+      // check for atom type C, N, P, or S
+      if Set<Int>([6, 7, 15, 16]).contains(atomI.asymmetricParentAtom.elementIdentifier)
+      {
+        let connectivity: Int = atom.value.count
+        let maximumConnectivity: Int = PredefinedElements.sharedInstance.elementSet[atom.key.asymmetricParentAtom.elementIdentifier].maximumUFFCoordination
+      
+        if connectivity > maximumConnectivity
+        {
+          let sorted: [SKBondNode] = atom.value.sorted(by: {self.bondLength($0) < self.bondLength($1)})
+          for bond in sorted[maximumConnectivity..<sorted.count]
+          {
+            groupByAtom[bond.atom1]?.removeObject(bond)
+            groupByAtom[bond.atom2]?.removeObject(bond)
+          }
+        }
+      }
+    }
+        
+    return Array(Set(groupByAtom.flatMap{$0.value}))
+  }
+  
+  public func typeBonds()
+  {
+    let allBonds: [SKBondNode] = removeOverConnections(self.bondController.bonds)
+    
+    allBonds.forEach { $0.bondOrder = 0 }
+    
+    let groupByFirstAtom = Dictionary(grouping: allBonds, by: { $0.atom1 })
+    let groupBySecondAtom = Dictionary(grouping: allBonds, by: { $0.atom2 })
+    let groupByAtom = groupByFirstAtom.merging(groupBySecondAtom, uniquingKeysWith: +)
+    groupByAtom.forEach{$0.key.valence = 0}
+    
+    self.typeBondsHardRules(groupByAtom)
+  }
+
+  
+  public func typeBondsHardRules(_ groupByAtom: Dictionary<SKAtomCopy,[SKBondNode]>)
+  {
+    for atom in groupByAtom
+    {
+      debugPrint("atom: \(atom.key.asymmetricParentAtom.displayName)")
+      for bond in atom.value
+      {
+        debugPrint("bond: \(bond.atom1.asymmetricParentAtom.displayName) - \(bond.atom2.asymmetricParentAtom.displayName)")
+      }
+    }
+    
+    // loop over atoms when the connectivity is 1
+    for atom in groupByAtom
+    {
+      if atom.value.count == 1
+      {
+        // rule: If the atom is hydrogen or halogen (F, Cl, Br, I, At, Ts), Oij is set to 1
+        if Set<Int>([1,9,17,35,53,85,117]).contains(atom.key.asymmetricParentAtom.elementIdentifier)
+        {
+          atom.value.first?.bondOrder = 1
+        }
+        
+        // If the atom is sulfur and it connects to phosphorus, Oij is set to 2.
+        if Set<Int>([16]).contains(atom.key.asymmetricParentAtom.elementIdentifier),
+           Set<Int>([15]).contains(atom.value[0].atom2.asymmetricParentAtom.elementIdentifier)
+        {
+          atom.value[0].bondOrder = 2
+        }
+        
+        // If the atom is nitrogen and it connects to sulfur, Oij is set to 2.
+        if Set<Int>([7]).contains(atom.key.asymmetricParentAtom.elementIdentifier),
+           Set<Int>([16]).contains(atom.value[0].atom2.asymmetricParentAtom.elementIdentifier)
+        {
+          atom.value.first?.bondOrder = 2
+        }
+      }
+    }
+    
+    // loop over atoms when the connectivity is 2
+    for atom in groupByAtom
+    {
+      let atomI: SKAtomCopy = atom.key
+      if atom.value.count == 2
+      {
+        if atom.key.asymmetricParentAtom.elementIdentifier == 6
+        {
+          atom.key.valence = 1
+        }
+        
+        if atom.key.asymmetricParentAtom.elementIdentifier == 16
+        {
+          atom.key.valence = 2
+        }
+        
+        // loop over all bonds that start with this atom-type
+        for (j, firstBond) in atom.value.enumerated()
+        {
+          for (k, secondBond) in atom.value.enumerated()
+          {
+            if (j<k)
+            {
+              let atomJ = firstBond.otherAtom(atomI)
+              let atomK = secondBond.otherAtom(atomI)
+              let Cj: Int = max(groupByAtom[atomJ]?.count ?? 0, groupByAtom[atomK]?.count ?? 0)
+              
+              if Cj != 1
+              {
+                let angle = (180.0/Double.pi) * self.bendAngle(atomJ, atomI, atomK)
+                if (Cj == 2) && (angle > 175.0) && (angle < 185.0)
+                {
+                  firstBond.bondOrder = 3
+                  secondBond.bondOrder = 1
+                }
+                else if Set<Int>([6,7]).contains(atomK.asymmetricParentAtom.elementIdentifier) // atom is C or N
+                {
+                  firstBond.bondOrder = 1
+                  secondBond.bondOrder = 2
+                }
+                else
+                {
+                  firstBond.bondOrder = 2
+                  secondBond.bondOrder = 2
+                }
+              }
+            }
+          }
+        }
+        
+      }
+    }
+    
+    // loop over atoms when the connectivity is 3
+    for atom in groupByAtom
+    {
+      let atomI: SKAtomCopy = atom.key
+      if atom.value.count == 3
+      {
+        if Set<Int>([7,15]).contains(atomI.asymmetricParentAtom.elementIdentifier)
+        {
+          if atom.value[0].otherAtom(atomI).asymmetricParentAtom.elementIdentifier == 8,
+             let atomIconnectivity = groupByAtom[atom.value[0].otherAtom(atomI)]?.count , atomIconnectivity == 1
+          {
+            // fix to acid model
+           
+          }
+          else if atom.value[1].otherAtom(atomI).asymmetricParentAtom.elementIdentifier == 8,
+                  let atomKconnectivity = groupByAtom[atom.value[1].otherAtom(atomI)]?.count , atomKconnectivity == 1
+          {
+            // fix to acid model
+           
+          }
+          else if atom.value[2].otherAtom(atomI).asymmetricParentAtom.elementIdentifier == 8,
+                  let atomLconnectivity = groupByAtom[atom.value[2].otherAtom(atomI)]?.count , atomLconnectivity == 1
+          {
+            // fix to acid model
+           
+          }
+          else
+          {
+            // Otherwise, set all bond orders to 1
+            for bond in atom.value
+            {
+              bond.bondOrder = 1
+            }
+          }
+          
+        }
+        
+        // if the atom is S, Cl, Br, or I
+        if Set<Int>([16,17,35,53]).contains(atomI.asymmetricParentAtom.elementIdentifier)
+        {
+          for bond in atom.value
+          {
+            if bond.otherAtom(atomI).asymmetricParentAtom.elementIdentifier == 8,
+               let atomJconnectivity = groupByAtom[atom.value[0].otherAtom(atomI)]?.count , atomJconnectivity == 1
+            {
+              // fix to acid model
+            }
+          }
+        }
+        
+        // if the atom is C
+        if Set<Int>([6]).contains(atomI.asymmetricParentAtom.elementIdentifier)
+        {
+        }
+        
+      }
+      
+      // loop over atoms when the connectivity is 4
+      for atom in groupByAtom
+      {
+        let atomI: SKAtomCopy = atom.key
+        if atom.value.count == 4
+        {
+          // if the atom is C or N
+          if Set<Int>([6, 7]).contains(atomI.asymmetricParentAtom.elementIdentifier)
+          {
+            // maximum connections is 4, and when they are connected with 4 atoms, all the bonds should be single
+            for bond in atom.value
+            {
+              bond.bondOrder = 1
+            }
+          }  // if atom is P, S, Cl, Br, I
+          else if Set<Int>([15,16,17,35,53]).contains(atomI.asymmetricParentAtom.elementIdentifier)
+          {
+            // fix to acid model
+          }
+        }
+      }
+      
+      
+    }
+  }
+    
   
   // MARK: -
   // MARK: Binary Encodable support

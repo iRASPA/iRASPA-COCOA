@@ -1625,16 +1625,38 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           SchoenfliesTextField.stringValue = ""
           symmorphicityTextField.stringValue = ""
           numberOfElementsTextField.stringValue = ""
-          if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+          
+          
+          HallSpaceGroupPopUpButton.removeAllItems()
+          HallSpaceGroupPopUpButton.addItems(withTitles: SKSpacegroup.HallSymbols)
+          
+          spaceGroupNumberPopUpButton.removeAllItems()
+          spaceGroupNumberPopUpButton.addItems(withTitles: SKSpacegroup.numbers)
+          
+          HallSpaceGroupPopUpButton.selectItem(at: 1)
+          spaceGroupNumberPopUpButton.selectItem(at: 1)
+          
+          let qualifiers: [String] = SKSpacegroup.spacegroupQualifiers(number: 1)
+          spaceGroupQualifierPopUpButton.addItems(withTitles: qualifiers)
+          let ext: Int = SKSpacegroup.SpaceGroupQualifierForHallNumber(1)
+          spaceGroupQualifierPopUpButton.selectItem(at: ext)
+          
+          SpaceGroupHolohedry.stringValue = SKSpacegroup.HolohedryString(HallNumber: 1)
+          centringTextField.stringValue = SKSpacegroup.CentringString(HallNumber: 1)
+          centrosymmetricTextField.stringValue = SKSpacegroup.CentrosymmetricString(HallNumber: 1)
+          enantiomorphicTextField.stringValue = SKSpacegroup.EnantionmorphicString(HallNumber: 1)
+          LaueGroupTextField.stringValue = SKSpacegroup.LaueGroupString(HallNumber: 1)
+          pointGroupTextField.stringValue = SKSpacegroup.PointGroupString(HallNumber: 1)
+          SchoenfliesTextField.stringValue = SKSpacegroup.SchoenfliesString(HallNumber: 1)
+          symmorphicityTextField.stringValue = SKSpacegroup.SymmorphicityString(HallNumber: 1)
+          numberOfElementsTextField.stringValue = SKSpacegroup.NumberOfElementsString(HallNumber: 1)
+          
+          if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+            !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
           {
             HallSpaceGroupPopUpButton.isEditable = enabled
-            HallSpaceGroupPopUpButton.removeAllItems()
-            HallSpaceGroupPopUpButton.addItems(withTitles: SKSpacegroup.HallSymbols)
-            
             spaceGroupNumberPopUpButton.isEditable = enabled
-            spaceGroupNumberPopUpButton.removeAllItems()
-            spaceGroupNumberPopUpButton.addItems(withTitles: SKSpacegroup.numbers)
-
+            
             if let spaceGroupHallNumber: Int = representedStructure.spaceGroupHallNumber
             {
               spaceGroupQualifierPopUpButton.isEditable = enabled

@@ -390,7 +390,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
   }
 }
 
-public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying
+public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying, Hashable
 {
   private static var classVersionNumber: Int = 1
   
@@ -405,7 +405,12 @@ public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying
   public weak var asymmetricParentAtom: SKAsymmetricAtom!
   public var asymmetricIndex: Int = 0 // index for the renderer
   
-  //public var spaceGroupRule: Int = 0
+  public var valence: Int = 0
+  
+  public func hash(into hasher: inout Hasher)
+  {
+    ObjectIdentifier(self).hash(into: &hasher)
+  }
   
   public enum AtomCopyType: Int
   {
