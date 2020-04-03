@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -30,7 +30,6 @@
                                             <tableColumns>
                                                 <tableColumn identifier="bondVisibilityColumn" width="24" minWidth="24" maxWidth="1000" id="7uB-Nb-mkk">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="vis">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -62,7 +61,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondIdColumn" width="51" minWidth="40" maxWidth="1000" id="dMm-6E-Gds">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="id">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -95,7 +93,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondFixedAtomColumn" width="114.5" minWidth="40" maxWidth="1000" id="JlI-7Q-4ku" userLabel="fixed">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="atom ids.">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -154,7 +151,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondTypeColumn" width="50.5" minWidth="40" maxWidth="1000" id="H3C-4S-esH">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="type">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -196,7 +192,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondFirstAtomColumn" width="42" minWidth="40" maxWidth="1000" id="cgZ-aN-w1n">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="el(A)">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -229,7 +224,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondSecondAtomColumn" width="40" minWidth="40" maxWidth="1000" id="MEg-vK-jym">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="el(B)">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -262,7 +256,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondLengthColumn" width="68.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="DvX-tf-DBg">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="length">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </tableHeaderCell>
@@ -299,7 +292,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="bondLengthSliderColumn" width="83.5" minWidth="10" maxWidth="3.4028234663852886e+38" id="LCM-bS-nXk">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </tableHeaderCell>
@@ -375,6 +367,12 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="RecomputeBonds:" target="1Qs-2A-QWY" id="4lx-eo-34Q"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Type bonds" hidden="YES" enabled="NO" id="9rV-cN-bzl">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="TypeBonds:" target="1Qs-2A-QWY" id="uus-Qv-Jw1"/>
                             </connections>
                         </menuItem>
                     </items>
