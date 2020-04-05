@@ -78,13 +78,12 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
     free(captureStdoutName)
     free(captureStderr)
     free(moduleName)
-    
-    PyThreadState_Swap(tstate)
-    Py_EndInterpreter(tstate)
-    PyThreadState_Swap(nil)
-    //Py_Finalize()
-    
-    //Swift.print("deinit: InterpreterViewController")
+    if(tstate != nil)
+    {
+      PyThreadState_Swap(tstate)
+      Py_EndInterpreter(tstate)
+      PyThreadState_Swap(nil)
+    }
   }
   
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
@@ -114,61 +113,61 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
   {
     self.logMethods = [PyMethodDef(ml_name: captureStdoutName, ml_meth: log_CaptureStdout, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef(ml_name: captureStderr, ml_meth: log_CaptureStderr, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef()]
     
-    let pythonHomeString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/lib")!
-    let pythonProgramString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/bin")!
+    if let pythonHomeString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/lib"),
+       let pythonProgramString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/bin"),
+       let installDirectory: String = Bundle.main.path(forResource: "Python-3.7", ofType: nil)
+    {
+      let pythonPathString: String = installDirectory + "/lib/python3.7:" + installDirectory + "/lib/python3.7/site-packages:" +
+                    installDirectory + "/lib/python3.7/multiprocessing:" + installDirectory + "/lib/python3.7/encodings:" +
+                    installDirectory + "/lib/python3.7/lib-dynload:" + installDirectory + "/lib/python3.7/curses"
     
-    let pythonPathString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/lib")! + ":" +
-       Bundle.main.path(forResource: "site-packages", ofType: nil, inDirectory: "Python-3.7/lib/python3.7")! + ":" +
-       Bundle.main.path(forResource: "multiprocessing", ofType: nil, inDirectory: "Python-3.7/lib/python3.7")! + ":" +
-       Bundle.main.path(forResource: "encodings", ofType: nil, inDirectory: "Python-3.7/lib/python3.7")! + ":" +
-       Bundle.main.path(forResource: "lib-dynload", ofType: nil, inDirectory: "Python-3.7/lib/python3.7")!
+      pythonPathString.withWideChars { wname in
+          Py_SetPath(wname)
+      }
     
-    pythonPathString.withWideChars { wname in
-        Py_SetPath(wname)
-    }
+      pythonHomeString.withWideChars { wname in
+          Py_SetPythonHome(wname)
+      }
     
-    pythonHomeString.withWideChars { wname in
-        Py_SetPythonHome(wname)
-    }
+      pythonProgramString.withWideChars { wname in
+          Py_SetProgramName(wname)
+      }
     
-    pythonProgramString.withWideChars { wname in
-        Py_SetProgramName(wname)
-    }
-    
-    self.logMethods.withUnsafeMutableBufferPointer{ (bp) in
-      let rbp = UnsafeMutableRawBufferPointer(bp)
-      if let pointer: UnsafeMutablePointer<PyMethodDef> = rbp.baseAddress?.bindMemory(to: PyMethodDef.self, capacity: rbp.count)
-      {
-        InterpreterViewController.logModule = PyModuleDef(m_base: PyModuleDef_Base(), m_name: moduleName, m_doc: nil, m_size: -1, m_methods: pointer, m_slots: nil, m_traverse: nil, m_clear: nil, m_free: nil)
-        
-        PyImport_AppendInittab(moduleName, PyInit_log)
-        
-        initPythonModuleiRASPA()
-        
-        initPythonModuleConstants()
-        
-        Py_InitializeEx(0)
-        
-        tstate = Py_NewInterpreter()
-        
-        let string: String =
-          "import log\n" +
-          "import sys\n" +
-          "import math\n" +
-          "import constants\n" +
-          "# coding: utf-8\n" +
-          "class StdoutCatcher:\n" +
-          "\tdef write(self, str):\n" +
-          "\t\tlog.CaptureStdout(str)\n" +
-          "class StderrCatcher:\n" +
-          "\tdef write(self, str):\n" +
-          "\t\tlog.CaptureStderr(str)\n" +
-          "sys.stdout = StdoutCatcher()\n" +
-          "sys.stderr = StderrCatcher()\n"
-        
-        PyRun_SimpleStringFlags(string,nil)
-        
-        setupPythonModuleConstants()
+      self.logMethods.withUnsafeMutableBufferPointer{ (bp) in
+        let rbp = UnsafeMutableRawBufferPointer(bp)
+        if let pointer: UnsafeMutablePointer<PyMethodDef> = rbp.baseAddress?.bindMemory(to: PyMethodDef.self, capacity: rbp.count)
+        {
+          InterpreterViewController.logModule = PyModuleDef(m_base: PyModuleDef_Base(), m_name: moduleName, m_doc: nil, m_size: -1, m_methods: pointer, m_slots: nil, m_traverse: nil, m_clear: nil, m_free: nil)
+     
+          PyImport_AppendInittab(moduleName, PyInit_log)
+     
+          initPythonModuleiRASPA()
+     
+          initPythonModuleConstants()
+     
+          Py_InitializeEx(0)
+     
+          tstate = Py_NewInterpreter()
+     
+          let string: String =
+            "import log\n" +
+            "import sys\n" +
+            "import math\n" +
+            "import constants\n" +
+            "# coding: utf-8\n" +
+            "class StdoutCatcher:\n" +
+            "\tdef write(self, str):\n" +
+            "\t\tlog.CaptureStdout(str)\n" +
+            "class StderrCatcher:\n" +
+            "\tdef write(self, str):\n" +
+            "\t\tlog.CaptureStderr(str)\n" +
+            "sys.stdout = StdoutCatcher()\n" +
+            "sys.stderr = StderrCatcher()\n"
+     
+          PyRun_SimpleStringFlags(string,nil)
+     
+          setupPythonModuleConstants()
+        }
       }
     }
   }
@@ -219,7 +218,8 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
   
   func runPythonCmd()
   {
-    if let pythonScriptView = pythonScriptView
+    if let pythonScriptView = pythonScriptView,
+       let _ = tstate
     {
       let cmd: String = pythonScriptView.lastCommandLine
       
