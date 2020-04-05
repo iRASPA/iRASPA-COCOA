@@ -30,17 +30,19 @@
  *************************************************************************************************************/
 
 import Cocoa
-import Python
+import PythonKit
 
 
-var logMethods: [PyMethodDef] = []
+var constantMethods: [PyMethodDef] = []
+var constantModule: PyModuleDef = PyModuleDef()
 
+var PyInit_Constants : @convention(c) () ->  UnsafeMutablePointer<PyObject>? = {
+  return PyModule_Create2(&constantModule, 1013)
+}
 
 let myBlock: PyCFunction = { (this, args) in
   return Py_VaBuildValue(strdup("s"), getVaList([strdup("Python: hello from real swift!")]))
 }
-
-
 
 let myBlock2: PyCFunction = { (this, args) in
   var x: [CDouble] = [0]
@@ -60,14 +62,29 @@ let myFunctionName2 = strdup("myFunction2")
 
 func initPythonModuleConstants()
 {
-  var m: UnsafeMutablePointer<PyObject>
-  var d: UnsafeMutablePointer<PyObject>
-  
-  logMethods = [PyMethodDef(ml_name: myFunctionName, ml_meth: myBlock, ml_flags: Int32(METH_VARARGS), ml_doc: nil),
+  constantMethods = [PyMethodDef(ml_name: myFunctionName, ml_meth: myBlock, ml_flags: Int32(METH_VARARGS), ml_doc: nil),
                 PyMethodDef(ml_name: myFunctionName2, ml_meth: myBlock2, ml_flags: Int32(METH_VARARGS), ml_doc: nil),
                 PyMethodDef()]
   
-  m=Py_InitModule4_64(constantsName, &logMethods, nil, nil, 1013)
+  constantMethods.withUnsafeMutableBufferPointer{ (bp) in
+  let rbp = UnsafeMutableRawBufferPointer(bp)
+  if let pointer: UnsafeMutablePointer<PyMethodDef> = rbp.baseAddress?.bindMemory(to: PyMethodDef.self, capacity: rbp.count)
+  {
+    constantModule = PyModuleDef(m_base: PyModuleDef_Base(), m_name: constantsName, m_doc: nil, m_size: -1, m_methods: pointer, m_slots: nil, m_traverse: nil, m_clear: nil, m_free: nil)
+    }
+    PyImport_AppendInittab(constantsName, PyInit_Constants)
+  }
+}
+
+
+func setupPythonModuleConstants()
+{
+  var m: UnsafeMutablePointer<PyObject>?
+  var d: UnsafeMutablePointer<PyObject>?
+   
+  let name = PyUnicode_FromString(constantsName)
+  m = PyImport_GetModule(name)
+  
   d = PyModule_GetDict(m)
   
   // Avogadro constant
@@ -75,6 +92,6 @@ func initPythonModuleConstants()
   let tmp: UnsafeMutablePointer<PyObject> = Py_VaBuildValue("d",getVaList([R]))
   PyDict_SetItemString(d,"R", tmp)
   Py_DecRef(tmp)
-
 }
+
 
