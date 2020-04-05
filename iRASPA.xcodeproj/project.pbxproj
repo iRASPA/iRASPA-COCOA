@@ -881,15 +881,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		933FFFAB243A2D00004E337F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9367BF791E2BDAE800B948E9 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2981,7 +2972,6 @@
 				9383883B1E26A4FC00112FBA /* Embed Frameworks */,
 				9367BF791E2BDAE800B948E9 /* Copy Files */,
 				93BF30B21FB3642400FFCCB0 /* CopyFiles */,
-				933FFFAB243A2D00004E337F /* CopyFiles */,
 			);
 			buildRules = (
 			);
