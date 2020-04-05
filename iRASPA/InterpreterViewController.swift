@@ -30,10 +30,22 @@
  *************************************************************************************************************/
 
 import Cocoa
-import Python
+
+
 import RenderKit
 import iRASPAKit
 import LogViewKit
+import PythonKit
+
+extension String {
+    /// Calls the given closure with a pointer to the contents of the string,
+    /// represented as a null-terminated wchar_t array.
+    func withWideChars<Result>(_ body: (UnsafePointer<wchar_t>) -> Result) -> Result {
+        let u32 = self.unicodeScalars.map { wchar_t(bitPattern: $0.value) } + [0]
+        return u32.withUnsafeBufferPointer { body($0.baseAddress!) }
+    }
+}
+
 
 
 class InterpreterViewController: NSViewController, WindowControllerConsumer, NSTextViewDelegate
@@ -52,8 +64,9 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
   var globalDict: UnsafeMutablePointer<PyObject>? = nil
   
   var logMethods: [PyMethodDef] = []
+  static var logModule: PyModuleDef = PyModuleDef()
+  var logMod: UnsafeMutablePointer<PyObject>!
   
-  let programName = strdup("/usr/bin/python")
   let captureStdoutName = strdup("CaptureStdout")
   let captureStderr = strdup("CaptureStderr")
   let moduleName = strdup("log")
@@ -61,7 +74,7 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
   deinit
   {
     pythonScriptView = nil
-    free(programName)
+    //free(programName)
     free(captureStdoutName)
     free(captureStderr)
     free(moduleName)
@@ -91,48 +104,74 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
     self.pythonScriptView?.pythonOut(string: "Python console ready\n")
   }
   
-  func setupPython()
-  {
-    self.logMethods = [PyMethodDef(ml_name: captureStdoutName, ml_meth: log_CaptureStdout, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef(ml_name: captureStderr, ml_meth: log_CaptureStderr, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef()]
-    
-    
-    Py_SetProgramName(programName)
-    
-    
-    // Initialize the Python interpreter.
-    Py_Initialize()
-    
-    // have a new interpreter per document
-    tstate = Py_NewInterpreter()
-    
-    Py_InitModule4_64(moduleName, &logMethods, nil, nil, 1013)
-    
-    initPythonModuleiRASPA()
-    
-    initPythonModuleConstants()
-    
-    let string: String = "import log\n" +
-      "import sys\n" +
-      "import math\n" +
-      "import constants\n" +
-      "# coding: utf-8\n" +
-      "class StdoutCatcher:\n" +
-      "\tdef write(self, str):\n" +
-      "\t\tlog.CaptureStdout(str)\n" +
-      "class StderrCatcher:\n" +
-      "\tdef write(self, str):\n" +
-      "\t\tlog.CaptureStderr(str)\n" +
-      "sys.stdout = StdoutCatcher()\n" +
-      "sys.stderr = StderrCatcher()\n"
-    
-    PyRun_SimpleStringFlags(string,nil)
-    
+  var PyInit_log : @convention(c) () ->  UnsafeMutablePointer<PyObject>? = {
+    return PyModule_Create2(&InterpreterViewController.logModule, 1013)
   }
   
   
   
-  
-  
+  func setupPython()
+  {
+    self.logMethods = [PyMethodDef(ml_name: captureStdoutName, ml_meth: log_CaptureStdout, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef(ml_name: captureStderr, ml_meth: log_CaptureStderr, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef()]
+    
+    let pythonHomeString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/lib")!
+    let pythonProgramString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/bin")!
+    
+    let pythonPathString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/lib")! + ":" +
+       Bundle.main.path(forResource: "site-packages", ofType: nil, inDirectory: "Python-3.7/lib/python3.7")! + ":" +
+       Bundle.main.path(forResource: "multiprocessing", ofType: nil, inDirectory: "Python-3.7/lib/python3.7")! + ":" +
+       Bundle.main.path(forResource: "encodings", ofType: nil, inDirectory: "Python-3.7/lib/python3.7")! + ":" +
+       Bundle.main.path(forResource: "lib-dynload", ofType: nil, inDirectory: "Python-3.7/lib/python3.7")!
+    
+    pythonPathString.withWideChars { wname in
+        Py_SetPath(wname)
+    }
+    
+    pythonHomeString.withWideChars { wname in
+        Py_SetPythonHome(wname)
+    }
+    
+    pythonProgramString.withWideChars { wname in
+        Py_SetProgramName(wname)
+    }
+    
+    self.logMethods.withUnsafeMutableBufferPointer{ (bp) in
+      let rbp = UnsafeMutableRawBufferPointer(bp)
+      if let pointer: UnsafeMutablePointer<PyMethodDef> = rbp.baseAddress?.bindMemory(to: PyMethodDef.self, capacity: rbp.count)
+      {
+        InterpreterViewController.logModule = PyModuleDef(m_base: PyModuleDef_Base(), m_name: moduleName, m_doc: nil, m_size: -1, m_methods: pointer, m_slots: nil, m_traverse: nil, m_clear: nil, m_free: nil)
+        
+        PyImport_AppendInittab(moduleName, PyInit_log)
+        
+        initPythonModuleiRASPA()
+        
+        initPythonModuleConstants()
+        
+        Py_InitializeEx(0)
+        
+        tstate = Py_NewInterpreter()
+        
+        let string: String =
+          "import log\n" +
+          "import sys\n" +
+          "import math\n" +
+          "import constants\n" +
+          "# coding: utf-8\n" +
+          "class StdoutCatcher:\n" +
+          "\tdef write(self, str):\n" +
+          "\t\tlog.CaptureStdout(str)\n" +
+          "class StderrCatcher:\n" +
+          "\tdef write(self, str):\n" +
+          "\t\tlog.CaptureStderr(str)\n" +
+          "sys.stdout = StdoutCatcher()\n" +
+          "sys.stderr = StderrCatcher()\n"
+        
+        PyRun_SimpleStringFlags(string,nil)
+        
+        setupPythonModuleConstants()
+      }
+    }
+  }
   
   var log_CaptureStdout: PyCFunction =
   {
@@ -259,6 +298,4 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
     }
     return false
   }
-  
-  
 }

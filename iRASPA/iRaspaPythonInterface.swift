@@ -31,15 +31,11 @@
 
 import Cocoa
 import simd
-import Python
-import Python.stringobject
-import Python.structmember
-import Python.object
+import PythonKit
 
-import Python.objimpl
-import Python.unicodeobject
 
 var pythonMethodsiRASPA: [PyMethodDef] = []
+var logModule: PyModuleDef = PyModuleDef()
 
 let libraryPyCFunction: PyCFunction = { (this, args) in
   return Py_VaBuildValue(strdup("s"), getVaList([strdup("Python: library")]))
@@ -53,16 +49,26 @@ let moduleName: UnsafeMutablePointer<Int8>! = strdup("iRASPA")
 let libraryName: UnsafeMutablePointer<Int8>! = strdup("library")
 let projectsName: UnsafeMutablePointer<Int8>! = strdup("projects")
 
+var PyInit_PythonModuleiRASPA : @convention(c) () ->  UnsafeMutablePointer<PyObject>? = {
+  return PyModule_Create2(&logModule, 1013)
+}
+
+
+
 func initPythonModuleiRASPA()
 {
-  //var d: UnsafeMutablePointer<PyObject>
-  
   pythonMethodsiRASPA = [PyMethodDef(ml_name: libraryName, ml_meth: libraryPyCFunction, ml_flags: Int32(METH_VARARGS), ml_doc: nil),
                 PyMethodDef(ml_name: projectsName, ml_meth: projectsPyCFunction, ml_flags: Int32(METH_VARARGS), ml_doc: nil),
                 PyMethodDef()]
   
   
-  let _: UnsafeMutablePointer<PyObject>! = Py_InitModule4_64(moduleName, &pythonMethodsiRASPA, nil, nil, 1013)
+  pythonMethodsiRASPA.withUnsafeMutableBufferPointer{ (bp) in
+  let rbp = UnsafeMutableRawBufferPointer(bp)
+  if let pointer: UnsafeMutablePointer<PyMethodDef> = rbp.baseAddress?.bindMemory(to: PyMethodDef.self, capacity: rbp.count)
+  {
+    logModule = PyModuleDef(m_base: PyModuleDef_Base(), m_name: moduleName, m_doc: nil, m_size: -1, m_methods: pointer, m_slots: nil, m_traverse: nil, m_clear: nil, m_free: nil)
+    }
+    PyImport_AppendInittab(moduleName, PyInit_PythonModuleiRASPA)
+  }
 }
-
 
