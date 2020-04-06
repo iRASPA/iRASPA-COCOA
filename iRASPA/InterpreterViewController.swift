@@ -40,9 +40,9 @@ import PythonKit
 extension String {
     /// Calls the given closure with a pointer to the contents of the string,
     /// represented as a null-terminated wchar_t array.
-    func withWideChars<Result>(_ body: (UnsafePointer<wchar_t>) -> Result) -> Result {
-        let u32 = self.unicodeScalars.map { wchar_t(bitPattern: $0.value) } + [0]
-        return u32.withUnsafeBufferPointer { body($0.baseAddress!) }
+    func withWideChars<Result>(_ body: (UnsafeMutablePointer<wchar_t>) -> Result) -> Result {
+        var u32 = self.unicodeScalars.map { wchar_t(bitPattern: $0.value) } + [0]
+        return u32.withUnsafeMutableBufferPointer { body($0.baseAddress!) }
     }
 }
 
@@ -113,20 +113,16 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
   {
     self.logMethods = [PyMethodDef(ml_name: captureStdoutName, ml_meth: log_CaptureStdout, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef(ml_name: captureStderr, ml_meth: log_CaptureStderr, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef()]
     
-    if let pythonHomeString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/lib"),
-       let pythonProgramString: String = Bundle.main.path(forResource: "python3.7", ofType: nil, inDirectory: "Python-3.7/bin"),
-       let installDirectory: String = Bundle.main.path(forResource: "Python-3.7", ofType: nil)
-    {
-      let pythonPathString: String = installDirectory + "/lib/python3.7:" + installDirectory + "/lib/python3.7/site-packages:" +
-                    installDirectory + "/lib/python3.7/multiprocessing:" + installDirectory + "/lib/python3.7/encodings:" +
-                    installDirectory + "/lib/python3.7/lib-dynload:" + installDirectory + "/lib/python3.7/curses"
     
+    
+    if let pythonHomeString: String = Bundle.main.path(forResource: "python3.7", ofType: nil)
+    {
+      let pythonProgramString = "iRASPA python interpreter"
+      let pythonPathString: String = pythonHomeString + ":" + pythonHomeString + "/lib-dynload:" +
+                    pythonHomeString + "/site-packages"
+          
       pythonPathString.withWideChars { wname in
           Py_SetPath(wname)
-      }
-    
-      pythonHomeString.withWideChars { wname in
-          Py_SetPythonHome(wname)
       }
     
       pythonProgramString.withWideChars { wname in
