@@ -288,8 +288,9 @@ vertex InternalBondSelectionVertexShaderOut internalBondSelectionGlowVertexShade
 
 
 fragment float4 internalBondSelectionGlowFragmentShader(InternalBondSelectionVertexShaderOut vert [[stage_in]],
-                                           constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                           constant LightUniforms& lightUniforms [[buffer(1)]])
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
 {
   // Normalize the incoming N and L vectors
   float3 N = normalize(vert.N);
@@ -330,7 +331,8 @@ fragment float4 internalBondSelectionGlowFragmentShader(InternalBondSelectionVer
   hsv.x = hsv.x * structureUniforms.bondHue;
   hsv.y = hsv.y * structureUniforms.bondSaturation;
   hsv.z = hsv.z * structureUniforms.bondValue;
-  return float4(hsv2rgb(hsv),1.0);
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
+  return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
 }
 
 

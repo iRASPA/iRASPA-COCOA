@@ -324,8 +324,9 @@ vertex ExternalBondSelectionVertexShaderOut externalBondSelectionGlowVertexShade
 
 
 fragment float4 externalBondSelectionGlowFragmentShader(ExternalBondSelectionVertexShaderOut vert [[stage_in]],
-                                           constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                           constant LightUniforms& lightUniforms [[buffer(1)]])
+                                           constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                           constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                           constant LightUniforms& lightUniforms [[buffer(2)]])
 {
   // [[ clip_distance ]] appears to working only for two clipping planes
   // work-around: brute-force 'discard_fragment'
@@ -375,7 +376,8 @@ fragment float4 externalBondSelectionGlowFragmentShader(ExternalBondSelectionVer
   hsv.x = hsv.x * structureUniforms.bondHue;
   hsv.y = hsv.y * structureUniforms.bondSaturation;
   hsv.z = hsv.z * structureUniforms.bondValue;
-  return float4(hsv2rgb(hsv),1.0);
+  float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
+  return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
 }
 
 
