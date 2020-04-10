@@ -127,8 +127,9 @@ class MetalInternalBondSelectionGlowShader
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-      commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 1)
+      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
+      commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
       commandEncoder.setFragmentSamplerState(samplerState, index: 0)
       
       var index: Int = 0
@@ -147,7 +148,7 @@ class MetalInternalBondSelectionGlowShader
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
               
               commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferSingleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferSingleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
             }
@@ -172,7 +173,7 @@ class MetalInternalBondSelectionGlowShader
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
               
               commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferSingleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferSingleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
             }
@@ -197,7 +198,7 @@ class MetalInternalBondSelectionGlowShader
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
               
               commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferDoubleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferDoubleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
             }
@@ -222,7 +223,7 @@ class MetalInternalBondSelectionGlowShader
             {
               commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
               
               commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBufferTripleBonds.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBufferTripleBonds, indexBufferOffset: 0, instanceCount: instanceCount)
             }
