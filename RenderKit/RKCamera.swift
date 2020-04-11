@@ -673,7 +673,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
   
   
   // http://www.3dkingdoms.com/selection.html
-  public func selectPositionsInRectangle(_ objects: [(positions: SIMD4<Double>, tag: Int, isVisible: Bool)], inRect rect: NSRect, withOrigin origin: SIMD3<Double>, inViewPort bounds: NSRect) -> IndexSet
+  public func selectPositionsInRectangle(_ positions: [SIMD3<Double>], inRect rect: NSRect, withOrigin origin: SIMD3<Double>, inViewPort bounds: NSRect) -> IndexSet
   {
     let Points0: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 0.0), inViewPort: bounds)
     let Points1: SIMD3<Double> = self.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 1.0), inViewPort: bounds)
@@ -694,22 +694,20 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     let FrustrumPlane3: SIMD3<Double> = normalize(cross(Points6 - Points7, Points6 - Points0))
     
     let indexSet: NSMutableIndexSet = NSMutableIndexSet()
-    for j in 0..<objects.count
+    let numberOfObjects: Int = positions.count
+    for j in 0..<numberOfObjects
     {
-      let position: SIMD3<Double> = SIMD3<Double>(objects[j].positions.x, objects[j].positions.y, objects[j].positions.z) + origin
+      let position: SIMD3<Double> = positions[j] + origin
       if((dot(position-Points0,FrustrumPlane0)<0) &&
         (dot(position-Points2,FrustrumPlane1)<0) &&
         (dot(position-Points4,FrustrumPlane2)<0) &&
-        (dot(position-Points6,FrustrumPlane3)<0)) &&
-        objects[j].isVisible
+        (dot(position-Points6,FrustrumPlane3)<0))
       {
-        indexSet.add(objects[j].tag)
+        indexSet.add(j)
       }
     }
-    
     return IndexSet(indexSet)
   }
-  
   
   public func binaryEncode(to encoder: BinaryEncoder)
   {

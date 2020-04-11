@@ -1396,6 +1396,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.bondController.arrangedObjects.remove(at: indexSet)
       structure.bondController.selectedObjects = []
+      structure.bondController.tag()
       
       let observeNotificationsStored: Bool = self.observeNotifications
       self.observeNotifications = false
@@ -1508,6 +1509,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.bondController.arrangedObjects.insertItems(bonds, atIndexes: indexSet)
       structure.bondController.selectedObjects.formUnion(indexSet)
+      structure.bondController.tag()
       
       if (self.filterContent)
       {
@@ -1879,6 +1881,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
         structure.bondController.arrangedObjects.insertItems(bonds, atIndexes: indexSet)
         structure.bondController.selectedObjects.formUnion(indexSet)
+        structure.bondController.tag()
       }
       
       fromItem.movies.remove(at: childIndex)
@@ -1931,6 +1934,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         
         structure.bondController.arrangedObjects.remove(at: indexSet)
         structure.bondController.selectedObjects = []
+        structure.bondController.tag()
       }
       
       if let newstructure = movie.frames.first?.frames.first?.structure
@@ -1954,6 +1958,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         
         newstructure.reComputeBoundingBox()
         newstructure.reComputeBonds()
+        newstructure.bondController.tag()
       }
       
       

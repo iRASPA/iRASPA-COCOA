@@ -562,114 +562,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return data
   }
   
-  
-  
-  public override var atomPositions: [(SIMD4<Double>, Int, Bool)]
-  {
-    var index: Int
-    
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
-    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
-    
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
-    
-    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
-    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
-    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
-    
-    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
-    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
-    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
-    
-    // only use leaf-nodes
-    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-    let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
-    
-    var data: [(SIMD4<Double>, Int, Bool)] = [(SIMD4<Double>, Int, Bool)](repeating: (SIMD4<Double>(), Int(), true), count: numberOfReplicas * atoms.count)
-    
-    index = 0
-    for atom in atoms
-    {
-      let atomType: SKForceFieldType? = forceFieldSet?[atom.asymmetricParentAtom.uniqueForceFieldName]
-      let typeIsVisible: Bool = atomType?.isVisible ?? true
-      
-      let pos: SIMD3<Double> = SIMD3<Double>.flip(v: atom.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
-      
-      for k1 in minimumReplicaX...maximumReplicaX
-      {
-        for k2 in minimumReplicaY...maximumReplicaY
-        {
-          for k3 in minimumReplicaZ...maximumReplicaZ
-          {
-            let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-            
-            let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
-            let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
-            
-            let w: Double = (typeIsVisible && atom.asymmetricParentAtom.isVisible && atom.asymmetricParentAtom.isVisibleEnabled)  ? 1.0 : -1.0
-            let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: w)
-            
-            data[index] = (position, atom.asymmetricParentAtom.tag, atom.asymmetricParentAtom.isVisible)
-            index = index + 1
-          }
-        }
-      }
-    }
-    return data
-  }
-  
-  public override var bondPositions: [(SIMD4<Double>, Int, Bool)]
-  {
-    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
-    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
-    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
-       
-    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
-    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
-    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
-       
-    var data: [(SIMD4<Double>, Int, Bool)] = []
-       
-    for (asymmetricIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
-    {
-      let asymmetricAtom1: SKAsymmetricAtom =  asymmetricBond.atom1
-      let asymmetricAtom2: SKAsymmetricAtom =  asymmetricBond.atom2
-      let isVisible: Bool =  asymmetricBond.isVisible && asymmetricAtom1.isVisible && asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisible && asymmetricAtom2.isVisibleEnabled
-      
-      for bond in asymmetricBond.copies
-      {
-        for k1 in minimumReplicaX...maximumReplicaX
-        {
-          for k2 in minimumReplicaY...maximumReplicaY
-          {
-            for k3 in minimumReplicaZ...maximumReplicaZ
-            {
-              let pos1: SIMD3<Double> = cell.convertToCartesian(bond.atom1.position + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom1.displacement
-              let pos2: SIMD3<Double> = cell.convertToCartesian(bond.atom2.position + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom2.displacement
-              let bondPosition:  SIMD3<Double> = cell.convertToFractional( 0.5 * (pos1 + pos2) )
-            
-              let pos: SIMD3<Double> = SIMD3<Double>.flip(v: bondPosition, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
-            
-              let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-               
-              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
-              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
-               
-              let w: Double = isVisible ? 1.0 : -1.0
-              let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: w)
-               
-              let item = (position, asymmetricIndex, isVisible)
-              data.append(item)
-            }
-          }
-        }
-      }
-    }
-    return data
-  }
-  
- 
-  
   public override var crystallographicPositions: [(SIMD3<Double>, Int)]
   {
     // only use leaf-nodes
@@ -1119,6 +1011,118 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     }
     return data
   }
+  
+  // MARK: -
+  // MARK: Filtering
+
+  public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
+  {
+    
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+      
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+    
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+    
+    // only use leaf-nodes
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    
+    var data: IndexSet = IndexSet()
+    
+    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    {
+      let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
+      let typeIsVisible: Bool = atomType?.isVisible ?? true
+      
+      let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
+      
+      for copy in copies
+      {
+        let pos: SIMD3<Double> = SIMD3<Double>.flip(v: copy.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+      
+        for k1 in minimumReplicaX...maximumReplicaX
+        {
+          for k2 in minimumReplicaY...maximumReplicaY
+          {
+            for k3 in minimumReplicaZ...maximumReplicaZ
+            {
+              let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+            
+              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
+              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+            
+              let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: 1.0)
+              let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + origin
+            
+              if filter(absoluteCartesianPosition) && (typeIsVisible && asymetricAtom.isVisible && asymetricAtom.isVisibleEnabled)
+              {
+                data.insert(asymetricIndex)
+              }
+            }
+          }
+        }
+      }
+    }
+    return data
+  }
+  
+  public override func filterCartesianBondPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
+  {
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+       
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+       
+    var data: IndexSet = IndexSet()
+       
+    for (asymmetricIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
+    {
+      let asymmetricAtom1: SKAsymmetricAtom =  asymmetricBond.atom1
+      let asymmetricAtom2: SKAsymmetricAtom =  asymmetricBond.atom2
+      let isVisible: Bool =  asymmetricBond.isVisible && asymmetricAtom1.isVisible && asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisible && asymmetricAtom2.isVisibleEnabled
+      
+      for bond in asymmetricBond.copies
+      {
+        for k1 in minimumReplicaX...maximumReplicaX
+        {
+          for k2 in minimumReplicaY...maximumReplicaY
+          {
+            for k3 in minimumReplicaZ...maximumReplicaZ
+            {
+              let pos1: SIMD3<Double> = cell.convertToCartesian(bond.atom1.position + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom1.displacement
+              let pos2: SIMD3<Double> = cell.convertToCartesian(bond.atom2.position + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom2.displacement
+              let bondPosition:  SIMD3<Double> = cell.convertToFractional( 0.5 * (pos1 + pos2) )
+            
+              let pos: SIMD3<Double> = SIMD3<Double>.flip(v: bondPosition, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+            
+              let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+               
+              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
+              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+               
+              let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: 1.0)
+              let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + origin
+               
+              if filter(absoluteCartesianPosition) && isVisible
+              {
+                data.insert(asymmetricIndex)
+              }
+            }
+          }
+        }
+      }
+    }
+    return data
+  }
+  
 
   // MARK: -
   // MARK: Symmetry
@@ -1178,9 +1182,10 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
         self.spaceGroup = SKSpacegroup(HallNumber: newValue)
         self.expandSymmetry()
         
-        self.atomTreeController.tag()
         self.reComputeBonds()
         
+        self.atomTreeController.tag()
+        self.bondController.tag()
       }
     }
   }
@@ -1518,8 +1523,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       atom.symmetryType = .container
     }
     
-    // tag atoms for selection in rendering
-    atomsWithRemovedSymmetry.tag()    
+    atomsWithRemovedSymmetry.tag()
+    atomBonds.tag()
     
     // set space group to P1 after removal of symmetry
     return (cell: self.cell, spaceGroup: SKSpacegroup(HallNumber: 1), atoms: atomsWithRemovedSymmetry, bonds: atomBonds)
@@ -1545,12 +1550,12 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       }
     }
     
-    // tag atoms for selection in rendering
-    crystal.atomTreeController.tag()
-    
     crystal.reComputeBoundingBox()
     
     crystal.reComputeBonds()
+    
+    crystal.atomTreeController.tag()
+    crystal.bondController.tag()
     
     // set space group to P1 after removal of symmetry
     return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atomTreeController, bonds: crystal.bondController)
@@ -1597,12 +1602,13 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
         primitiveAtoms.appendNode(node, atArrangedObjectIndexPath: [])
       }
 
-      primitiveAtoms.tag()
-      
       let atomList: [SKAtomCopy] = primitiveAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
       
       let bonds: [SKBondNode] = self.computeBonds(cell: primitiveCell, atomList: atomList)
       let primitiveBonds: SKBondSetController = SKBondSetController(arrangedObjects: bonds)
+      
+      primitiveAtoms.tag()
+      primitiveBonds.tag()
       
       return (cell: primitiveCell, spaceGroup: primitiveSpaceGroup, atoms: primitiveAtoms, bonds: primitiveBonds)
     }
@@ -1654,8 +1660,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
         atomsWithSymmetry.appendNode(node, atArrangedObjectIndexPath: [])
       }
       
-      atomsWithSymmetry.tag()
-      
       let atomList: [SKAtomCopy] = atomsWithSymmetry.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
       
       atomsWithSymmetry.flattenedLeafNodes().compactMap{$0.representedObject}.forEach{atom in
@@ -1664,6 +1668,9 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       }
       
       let bondsWithSymmetry: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cellWithSymmetry, atomList: atomList))
+      
+      atomsWithSymmetry.tag()
+      bondsWithSymmetry.tag()
       
       return (cell: cellWithSymmetry, spaceGroup: spaceGroupWithSymmetry, atoms: atomsWithSymmetry, bonds: bondsWithSymmetry)
     }
@@ -1722,11 +1729,12 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       }
     }
     
-    superCellAtoms.tag()
-    
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
+    
+    superCellAtoms.tag()
+    bonds.tag()
     
     return (cell: cell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
   }
@@ -1783,14 +1791,15 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       }
     }
     
-    superCellAtoms.tag()
-    
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
     newCell.contentShift = SIMD3<Double>(0,0,0)
     newCell.contentFlip = Bool3(false,false,false)
     
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
+    
+    superCellAtoms.tag()
+    bonds.tag()
     
     return (cell: newCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
     

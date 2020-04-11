@@ -201,6 +201,17 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
     return indexSet
   }
   
+  public func tag()
+  {
+    for (i, asymmetricBond) in arrangedObjects.enumerated()
+    {
+      for bond in asymmetricBond.copies
+      {
+        bond.asymmetricIndex = i
+      }
+    }
+  }
+  
   public func replaceBonds(atoms: [SKAsymmetricAtom], bonds newbonds: [SKBondNode])
   {
     //let selectedBonds: Set<SKAsymmetricBond> = Set(self.arrangedObjects[self.selectedObjects])

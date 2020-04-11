@@ -99,12 +99,16 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var atomHDRExposure: Double = 1.5
   public var clipAtomsAtUnitCell: Bool {return false}
   
-  
-  
-  public var atomPositions: [(SIMD4<Double>, Int, Bool)]
+  public func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
     return []
   }
+  
+  public func filterCartesianBondPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
+  {
+    return []
+  }
+
   public var renderAtoms: [RKInPerInstanceAttributesAtoms]
   {
     return []
@@ -192,11 +196,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var numberOfExternalBonds: Int
   {
     return self.bondController.arrangedObjects.flatMap{$0.copies}.filter{$0.boundaryType == .external}.count
-  }
-  
-  public var bondPositions: [(SIMD4<Double>,Int, Bool)]
-  {
-      return []
   }
   
   public var drawBonds: Bool = true
@@ -610,37 +609,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var experimentalMeasurementGoodnessOfFit: String = ""                           // _refine_ls_goodness_of_fit_ref
   public var experimentalMeasurementRFactorGt: String = ""                               // _refine_ls_R_factor_gt
   public var experimentalMeasurementRFactorAll: String = ""                              // _refine_ls_R_factor_all
-  
-
-  /*
-  public func tag(atoms: SKAtomTreeController)
-  {
-    // probably can be done a lot faster by using the tree-structure and recursion
-    let asymmetricAtomNodes: [SKAtomTreeNode] = atoms.flattenedNodes()
-    for asymmetricAtomNode in asymmetricAtomNodes
-    {
-      let isVisibleEnabled = asymmetricAtomNode.areAllAncestorsVisible
-      asymmetricAtomNode.representedObject.isVisibleEnabled = isVisibleEnabled
-    }
-    
-    let asymmetricAtoms: [SKAsymmetricAtom] = atoms.flattenedLeafNodes().compactMap{$0.representedObject}
-    
-    for i in 0..<asymmetricAtoms.count
-    {
-      asymmetricAtoms[i].tag = i
-    }
-    
-    let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
-    for i in 0..<atomList.count
-    {
-      atomList[i].tag = i
-    }
-  }
-  
-  public func tag()
-  {
-    self.tag(atoms: self.atomTreeController)
-  }*/
   
   public override init()
   {
@@ -1179,6 +1147,9 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     {
       debugPrint("Error")
     }
+    
+    // clone atoms and bonds
+    clone.bondController.tag()
     
     //restore selection
     let tags: Set<Int> = Set(clone.atomTreeController.selectedTreeNodes.map{$0.representedObject.tag})
@@ -2101,11 +2072,12 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       }
     }
     
-    superCellAtoms.tag()
-    
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
     
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: superCell, atomList: atomList))
+    
+    superCellAtoms.tag()
+    bonds.tag()
     
     return (cell: superCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
   }
@@ -2783,12 +2755,13 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       }
     }
       
-    superCellAtoms.tag()
-      
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
       
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: superCell, atomList: atomList))
       
+    superCellAtoms.tag()
+    bonds.tag()
+    
     return (cell: superCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
   }
   
@@ -3119,6 +3092,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     encoder.encode(self.atomTextOffset)
     
     // encode bonds using tags
+    self.bondController.tag()
     encoder.encode(self.bondController)
     
     encoder.encode(drawBonds)
@@ -3346,6 +3320,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.minimumGridEnergyValue = Float(try decoder.decode(Double.self))
     
     self.atomTreeController = try decoder.decode(SKAtomTreeController.self)
+    self.atomTreeController.tag()
     
     self.drawAtoms = try decoder.decode(Bool.self)
     
@@ -3408,6 +3383,8 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.bondController = try decoder.decode(SKBondSetController.self)
     
     self.bondController.restoreBonds(atomTreeController: self.atomTreeController)
+    
+    self.bondController.tag()
     
     self.drawBonds = try decoder.decode(Bool.self)
     self.bondScaleFactor = try decoder.decode(Double.self)

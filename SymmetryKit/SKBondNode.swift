@@ -48,6 +48,7 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
   public unowned var atom2: SKAtomCopy
   public var boundaryType: BoundaryType = BoundaryType.internal
   
+  public var asymmetricIndex: Int = 0
   public var bondOrder: Int = 0
   
   /// NOTE: the bond-orde is defined that the tag of atom1 is lower than the tag of atom2

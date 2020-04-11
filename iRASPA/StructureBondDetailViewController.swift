@@ -346,6 +346,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.bondController.replaceBonds(atoms: atoms, bonds: newbonds)
       structure.bondController.selectedObjects = newBondSelection
+      structure.bondController.tag()
       
       structure.reComputeBoundingBox()
       
