@@ -37,10 +37,7 @@ import simd
 
 public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
 {  
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
-  
-  
   
   public override init(name: String)
   {

@@ -413,14 +413,10 @@ extension BinaryDecoder
   }
 }
 
-/*
-private extension FixedWidthInteger
+extension BinaryDecoder
 {
-  static func from(binaryDecoder: BinaryDecoder) throws -> Self
+  public func windBack(_ byteCount: Int)
   {
-    var v = Self.init()
-    try binaryDecoder.read(into: &v)
-    return self.init(bigEndian: v)
+    cursor -= byteCount
   }
 }
-*/

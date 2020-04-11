@@ -52,11 +52,6 @@ public let NSPasteboardTypeProjectTreeNode: NSPasteboard.PasteboardType = NSPast
 
 public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, BinaryEncodableRecursive, BinaryDecodableRecursive
 {
-  
-  
-  
-  
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   
   @objc dynamic public var displayName: String = "Empty"

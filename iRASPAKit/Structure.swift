@@ -49,7 +49,6 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
 {
-  private var versionNumber: Int = 5
   private static var classVersionNumber: Int = 5
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()

@@ -35,7 +35,6 @@ import CloudKit
 
 public final class ProjectGroup: ProjectNode
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   
   public override init(name: String)

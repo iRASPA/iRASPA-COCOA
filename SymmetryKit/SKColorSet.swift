@@ -35,7 +35,6 @@ import simd
 
 public struct SKColorSet: BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   public var displayName: String
   public var editable: Bool = false

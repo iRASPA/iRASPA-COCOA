@@ -36,8 +36,8 @@ import BinaryCodable
 
 public class SKForceFieldSet: BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
+
   public var displayName: String = "Default"
   public var referenceCount: Int = 0  // Legacy
   public var editable = true

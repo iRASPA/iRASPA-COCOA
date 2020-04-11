@@ -34,8 +34,7 @@ import BinaryCodable
 
 public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
 {
-  var versionNumber: Int = 1
-  private static var classVersionNumber: UInt32 = 1
+  private static var classVersionNumber: Int = 2
   
   public var arrangedObjects: [ SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> ] = []
   
@@ -214,21 +213,9 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
   
   public func replaceBonds(atoms: [SKAsymmetricAtom], bonds newbonds: [SKBondNode])
   {
-    //let selectedBonds: Set<SKAsymmetricBond> = Set(self.arrangedObjects[self.selectedObjects])
-    
     let filteredBonds: [SKBondNode] = self.arrangedObjects.filter{!(atoms.contains($0.atom1) || atoms.contains($0.atom2))}.flatMap{$0.copies}
     
     self.bonds = filteredBonds + newbonds
-    
-    /*
-    selectedObjects = []
-    for (index, bond) in self.arrangedObjects.enumerated()
-    {
-      if selectedBonds.contains(bond)
-      {
-        selectedObjects.insert(index)
-      }
-    }*/
   }
   
   // MARK: -
@@ -258,28 +245,36 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
     
     if readVersionNumber == 0
     {
-      let _: UInt32 = try decoder.decode(UInt32.self)
-      let length: Int = Int(try decoder.decode(Int.self))
-      var atom1Tags: [Int] = []
-      var atom2Tags: [Int] = []
-      var bondBoundaryTypes: [Int] = []
-      for _ in 0..<length
+      let readVersionNumber2: UInt32 = try decoder.decode(UInt32.self)
+      if (readVersionNumber2 > 1)
       {
-        let a = try decoder.decode(Int.self)
-        let b = try decoder.decode(Int.self)
-        let c = try decoder.decode(Int.self)
-        atom1Tags.append(a)
-        atom2Tags.append(b)
-        bondBoundaryTypes.append(c)
+        readVersionNumber = 1
+        self.arrangedObjects = try decoder.decode([ SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom> ].self)
       }
-      
-      for ((atom1Tag, atom2Tag), boundaryType) in zip(zip(atom1Tags, atom2Tags), bondBoundaryTypes)
+      else
       {
-        guard let bondType = SKBondNode.BoundaryType(rawValue: boundaryType) else {throw BinaryCodableError.invalidArchiveData}
-        let bond: SKBondNode = SKBondNode(atom1: SKBondNode.uninitializedAtom, atom2: SKBondNode.uninitializedAtom, boundaryType: bondType)
-        bond.atom1Tag = atom1Tag
-        bond.atom2Tag = atom2Tag
-        readBonds.append(bond)
+        let length: Int = Int(try decoder.decode(Int.self))
+        var atom1Tags: [Int] = []
+        var atom2Tags: [Int] = []
+        var bondBoundaryTypes: [Int] = []
+        for _ in 0..<length
+        {
+          let a = try decoder.decode(Int.self)
+          let b = try decoder.decode(Int.self)
+          let c = try decoder.decode(Int.self)
+          atom1Tags.append(a)
+          atom2Tags.append(b)
+          bondBoundaryTypes.append(c)
+        }
+      
+        for ((atom1Tag, atom2Tag), boundaryType) in zip(zip(atom1Tags, atom2Tags), bondBoundaryTypes)
+        {
+          guard let bondType = SKBondNode.BoundaryType(rawValue: boundaryType) else {throw BinaryCodableError.invalidArchiveData}
+          let bond: SKBondNode = SKBondNode(atom1: SKBondNode.uninitializedAtom, atom2: SKBondNode.uninitializedAtom, boundaryType: bondType)
+          bond.atom1Tag = atom1Tag
+          bond.atom2Tag = atom2Tag
+          readBonds.append(bond)
+        }
       }
     }
     else

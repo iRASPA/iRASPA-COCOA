@@ -35,8 +35,8 @@ import simd
 
 public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
+
   private var hiddenRootNode: SKAtomTreeNode
   
   // there is a general selection, and a specific single selected tree-node

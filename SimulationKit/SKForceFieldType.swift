@@ -37,8 +37,8 @@ import simd
 // Note that this is 'value'-type
 public struct SKForceFieldType: BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 2
+
   public var forceFieldStringIdentifier: String = ""
   public var editable: Bool = true
   public var atomicNumber: Int = 6

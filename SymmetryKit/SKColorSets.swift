@@ -35,10 +35,8 @@ import simd
 
 public final class SKColorSets: BinaryDecodable, BinaryEncodable
 {
- 
-  
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
+ 
   public let numberOfPredefinedSets: Int = 4
   private var colorSets: [SKColorSet] = []
   
