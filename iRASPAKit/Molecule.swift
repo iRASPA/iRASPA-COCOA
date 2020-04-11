@@ -558,68 +558,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     return data
   }
   
-  public override var atomPositions: [(SIMD4<Double>, Int, Bool)]
-  {
-    var index: Int
-    
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
-    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
-    
-    let atomNodes: [SKAtomTreeNode] = self.atomTreeController.flattenedLeafNodes()
-    let numberOfAtoms: Int = atomNodes.compactMap{$0.representedObject}.count
-    var data: [(SIMD4<Double>, Int, Bool)] = [(SIMD4<Double>, Int, Bool)](repeating: (SIMD4<Double>(), Int(), true), count: numberOfAtoms)
-    
-    index = 0
-    for atomNode in atomNodes
-    {
-      let atom = atomNode.representedObject
-      
-      let atomType: SKForceFieldType? = forceFieldSet?[atom.uniqueForceFieldName]
-      let typeIsVisible: Bool = atomType?.isVisible ?? true
-      
-      let pos: SIMD3<Double> = atom.position + self.cell.contentShift
-        
-      let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-      let w: Double = (typeIsVisible && atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
-      let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: w)
-        
-      data[index] = (position, atom.tag, atom.isVisible)
-      index = index + 1
-    }
-    return data
-  }
   
-  public override var bondPositions: [(SIMD4<Double>,Int, Bool)]
-  {
-    var index: Int
-    
-    let assymetricBonds: [SKBondNode] = self.bondController.arrangedObjects.flatMap{$0.copies}
-    
-    let bonds: [SKBondNode] = assymetricBonds.filter{$0.atom1.type == .copy &&  $0.atom2.type == .copy && $0.boundaryType == .internal}
-    var data: [(SIMD4<Double>, Int, Bool)] = [(SIMD4<Double>, Int, Bool)](repeating: (SIMD4<Double>(), Int(), true), count: bonds.count)
-    
-    index = 0
-    
-    for (asymmetricIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
-    {
-      let asymmetricAtom1: SKAsymmetricAtom =  asymmetricBond.atom1
-      let asymmetricAtom2: SKAsymmetricAtom =  asymmetricBond.atom2
-      let isVisible: Bool =  asymmetricBond.isVisible && asymmetricAtom1.isVisible && asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisible && asymmetricAtom2.isVisibleEnabled
-      
-      for bond in asymmetricBond.copies
-      {
-        let pos: SIMD3<Double> = 0.5 * (bond.atom1.position + bond.atom2.position)
-        
-        let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-        let w: Double = isVisible ? 1.0 : -1.0
-        let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: w)
-        
-        data[index] = (position, asymmetricIndex, isVisible)
-        index = index + 1
-      }
-    }
-    return data
-  }
   
   public override var crystallographicPositions: [(SIMD3<Double>, Int)]
   {
@@ -745,6 +684,69 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     return data
   }
   
+  // MARK: -
+  // MARK: Filtering
+   
+  public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
+  {
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+    
+    // only use leaf-nodes
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    
+    var data: IndexSet = IndexSet()
+    
+    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    {
+      let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
+      let typeIsVisible: Bool = atomType?.isVisible ?? true
+      
+      let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
+      
+      for copy in copies
+      {
+        let pos: SIMD3<Double> = copy.position + self.cell.contentShift
+        
+        let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+        let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: 1.0)
+        let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + origin
+        
+        if filter(absoluteCartesianPosition) && (typeIsVisible && asymetricAtom.isVisible && asymetricAtom.isVisibleEnabled)
+        {
+          data.insert(asymetricIndex)
+        }
+      }
+    }
+    return data
+  }
+  
+  public override func filterCartesianBondPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
+  {
+    var data: IndexSet = IndexSet()
+    
+    for (asymmetricIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
+    {
+      let asymmetricAtom1: SKAsymmetricAtom =  asymmetricBond.atom1
+      let asymmetricAtom2: SKAsymmetricAtom =  asymmetricBond.atom2
+      let isVisible: Bool =  asymmetricBond.isVisible && asymmetricAtom1.isVisible && asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisible && asymmetricAtom2.isVisibleEnabled
+      
+      for bond in asymmetricBond.copies
+      {
+        let pos: SIMD3<Double> = 0.5 * (bond.atom1.position + bond.atom2.position)
+        
+        let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+        let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: 1.0)
+        let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + origin
+        
+        if filter(absoluteCartesianPosition) && isVisible
+        {
+          data.insert(asymmetricIndex)
+        }
+      }
+    }
+    return data
+  }
   
   // MARK: -
   // MARK: Paste atoms

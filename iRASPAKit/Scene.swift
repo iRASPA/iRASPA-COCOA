@@ -276,9 +276,6 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           iRASPAstructure.structure.structureLargestCavityDiameterAlongAViablePath = Dif
         }
         
-        // tag all the atoms with identifers from 0,..,N-1
-        iRASPAstructure.structure.atomTreeController.tag()
-        
         // compute the bounding-box of the atoms
         iRASPAstructure.structure.reComputeBoundingBox()
         
@@ -291,6 +288,9 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
         iRASPAstructure.structure.setRepresentationColorScheme(colorSet: defaultColorSet)
         
         iRASPAstructure.structure.reComputeBonds()
+        
+        iRASPAstructure.structure.atomTreeController.tag()
+        iRASPAstructure.structure.bondController.tag()
         
         movie.frames.append(iRASPAstructure)
       }

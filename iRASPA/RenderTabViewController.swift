@@ -1073,6 +1073,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       for data in deletedData
       {
         data.structure.bondController.arrangedObjects.remove(at: data.indexSet)
+        data.structure.bondController.tag()
         data.structure.bondController.selectedObjects = []
          
         for atom in data.atoms
@@ -1119,11 +1120,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           data.structure.atomTreeController.insertNode(atom, atArrangedObjectIndexPath: data.indexPaths[index])
           data.structure.atomTreeController.selectedTreeNodes.insert(atom)
         }
-       
         data.structure.atomTreeController.tag()
         
         data.structure.bondController.arrangedObjects.insertItems(data.selectedBonds, atIndexes: data.indexSet)
         data.structure.bondController.selectedObjects.formUnion(data.indexSet)
+        data.structure.bondController.tag()
          
         showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
        
@@ -1272,15 +1273,35 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
        let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
+      let Points0: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 0.0), inViewPort: bounds)
+      let Points1: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y), z: 1.0), inViewPort: bounds)
+      
+      let Points2: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y+rect.size.height), z: 0.0), inViewPort: bounds)
+      let Points3: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x), y: Double(rect.origin.y+rect.size.height), z: 1.0), inViewPort: bounds)
+      
+      let Points4: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y+rect.size.height), z: 0.0), inViewPort: bounds)
+      let Points5: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y+rect.size.height), z: 1.0), inViewPort: bounds)
+      
+      let Points6: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y), z: 0.0), inViewPort: bounds)
+      let Points7: SIMD3<Double> = camera.myGluUnProject(SIMD3<Double>(x: Double(rect.origin.x+rect.size.width), y: Double(rect.origin.y), z: 1.0), inViewPort: bounds)
+      
+      let FrustrumPlane0: SIMD3<Double> = normalize(cross(Points0 - Points1, Points0 - Points2))
+      let FrustrumPlane1: SIMD3<Double> = normalize(cross(Points2 - Points3, Points2 - Points4))
+      let FrustrumPlane2: SIMD3<Double> = normalize(cross(Points4 - Points5, Points4 - Points6))
+      let FrustrumPlane3: SIMD3<Double> = normalize(cross(Points6 - Points7, Points6 - Points0))
+      
+      let closure: (SIMD3<Double>) -> Bool = { (position) -> Bool in
+        return ((dot(position-Points0,FrustrumPlane0)<0.0) && (dot(position-Points2,FrustrumPlane1)<0.0) &&
+          (dot(position-Points4,FrustrumPlane2)<0.0) && (dot(position-Points6,FrustrumPlane3)<0.0))}
+      
       for i in 0..<crystalProjectData.renderStructures.count
       {
         let structure: RKRenderStructure = crystalProjectData.renderStructures[i]
-        if let structure: Structure = structure as? Structure,
-           structure.isVisible
+        if let structure: Structure = structure as? Structure, structure.isVisible
         {
-          let indexSetAtoms: IndexSet = camera.selectPositionsInRectangle(structure.atomPositions, inRect: rect, withOrigin: structure.origin, inViewPort: bounds)
-          let indexSetInternalBonds: IndexSet = camera.selectPositionsInRectangle(structure.bondPositions, inRect: rect, withOrigin: structure.origin, inViewPort: bounds)
-          
+          let indexSetAtoms: IndexSet = structure.filterCartesianAtomPositions(closure)
+          let indexSetInternalBonds: IndexSet = structure.filterCartesianBondPositions(closure)
+                    
           self.setSelectionFor(structure: structure, atomIndexSet: indexSetAtoms, bondIndexSet: indexSetInternalBonds, byExtendingSelection: extending)
         }
       }
@@ -1288,6 +1309,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       self.reloadRenderDataSelectedInternalBonds()
     }
   }
+
   
  
   func cameraDidChange()
@@ -1893,11 +1915,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         atoms[i].displacement =  SIMD3<Double>(0.0,0.0,0.0)
         structure.expandSymmetry(asymmetricAtom: atoms[i])
       }
-      
       structure.atomTreeController.tag()
       
       structure.bondController.replaceBonds(atoms: atoms, bonds: newbonds)
       structure.bondController.selectedObjects = newBondSelection
+      structure.bondController.tag()
       
       structure.reComputeBoundingBox()
       
