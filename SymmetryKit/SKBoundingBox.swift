@@ -38,7 +38,7 @@ public struct SKBoundingBox: BinaryDecodable, BinaryEncodable
   public var minimum: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z:0.0)
   public var maximum: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z:0.0)
   
-  static var versionNumber: Int = 1
+  static var classVersionNumber: Int = 1
   
   public init()
   {
@@ -254,7 +254,7 @@ public struct SKBoundingBox: BinaryDecodable, BinaryEncodable
   
   public func binaryEncode(to encoder: BinaryEncoder)
   {
-    encoder.encode(SKBoundingBox.versionNumber)
+    encoder.encode(SKBoundingBox.classVersionNumber)
     encoder.encode(self.minimum)
     encoder.encode(self.maximum)
   }
@@ -265,7 +265,7 @@ public struct SKBoundingBox: BinaryDecodable, BinaryEncodable
   public init(fromBinary decoder: BinaryDecoder) throws
   {
     let versionNumber: Int = try decoder.decode(Int.self)
-    if versionNumber > SKBoundingBox.versionNumber
+    if versionNumber > SKBoundingBox.classVersionNumber
     {
       throw BinaryDecodableError.invalidArchiveVersion
     }
@@ -273,6 +273,5 @@ public struct SKBoundingBox: BinaryDecodable, BinaryEncodable
     self.minimum = try decoder.decode(SIMD3<Double>.self)
     self.maximum = try decoder.decode(SIMD3<Double>.self)
   }
-  
 }
 

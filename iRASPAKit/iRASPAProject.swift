@@ -77,7 +77,6 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
     case error = 3
   }
   
-  let versionNumber: Int64 = 1
   static let classVersionNumber: Int64 = 1
   public var projectType: ProjectType
   public var fileNameUUID: String

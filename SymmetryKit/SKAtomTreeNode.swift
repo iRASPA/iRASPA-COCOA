@@ -40,8 +40,8 @@ public let NSPasteboardTypeAtomTreeNode: NSPasteboard.PasteboardType = NSPastebo
 
 public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, Copying
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
+
   public var displayName: String = "Empty"
   
   /// The parent of a AtomTreeNode

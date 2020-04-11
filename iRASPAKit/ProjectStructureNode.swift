@@ -38,7 +38,6 @@ import SymmetryKit
 
 public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource
 {
-  private var versionNumber: Int = 2
   private static var classVersionNumber: Int = 2
   
   public var sceneList: SceneList = SceneList()

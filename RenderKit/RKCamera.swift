@@ -38,8 +38,6 @@ import SymmetryKit
 
 public class RKCamera: BinaryDecodable, BinaryEncodable
 {
-  
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   
   public enum ResetDirectionType: Int

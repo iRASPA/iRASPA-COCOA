@@ -35,7 +35,8 @@ import MathKit
 
 public struct RKRenderLight
 {
-  private var versionNumber: Int = 1
+  private static var classVersionNumber: Int = 1
+  
   public var position: SIMD4<Double> = SIMD4<Double>(x:0, y:0, z: 100.0, w: 0.0)
   public var ambient: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var diffuse: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)

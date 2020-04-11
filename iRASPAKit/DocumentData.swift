@@ -36,7 +36,6 @@ import SimulationKit
 
 public struct DocumentData: BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   public var projectData: ProjectTreeController
   
@@ -333,7 +332,7 @@ public struct DocumentData: BinaryDecodable, BinaryEncodable
   public init(fromBinary decoder: BinaryDecoder) throws
   {
     let versionNumber: Int = try decoder.decode(Int.self)
-    if versionNumber > self.versionNumber
+    if versionNumber > DocumentData.classVersionNumber
     {
       throw iRASPAError.invalidArchiveVersion
     }

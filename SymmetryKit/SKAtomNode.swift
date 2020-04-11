@@ -37,8 +37,8 @@ import MathKit
 
 public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertible, BinaryDecodable, BinaryEncodable, Copying
 {
-  private var versionNumber: Int = 3
   private static var classVersionNumber: Int = 2
+
   public var displayName: String = "Default"
   public var asymmetricIndex: Int = 0
   public var position: SIMD3<Double> = SIMD3<Double>(0,0,0)

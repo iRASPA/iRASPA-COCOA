@@ -34,8 +34,8 @@ import BinaryCodable
 
 public final class SKForceFieldSets: BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
+  
   private let numberOfPredefinedSets: Int = 1
   private var forceFieldSets: [SKForceFieldSet] = []
   

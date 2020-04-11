@@ -43,7 +43,6 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
 {
   // a Scene has a surface for the whole scene
   // all movies in the scene add to the scene potential energy surface
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   public var displayName : String = ""
   public var movies: [Movie] = []

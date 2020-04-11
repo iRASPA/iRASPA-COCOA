@@ -43,7 +43,6 @@ public let NSPasteboardTypeMovie: NSPasteboard.PasteboardType = NSPasteboard.Pas
 
 public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   public var displayName : String = ""
   

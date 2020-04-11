@@ -34,7 +34,6 @@ import BinaryCodable
 
 public class ProjectNode: CustomStringConvertible, BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 1
   private static var classVersionNumber: Int = 1
   public var displayName: String = "Default"
   

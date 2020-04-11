@@ -36,7 +36,6 @@ import MathKit
 
 public struct SKCell: BinaryDecodable, BinaryEncodable
 {
-  private var versionNumber: Int = 3
   private static var classVersionNumber: Int = 2
   
   public var zValue: Int = 1
