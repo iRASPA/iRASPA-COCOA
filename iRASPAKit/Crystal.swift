@@ -799,6 +799,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     var data: IndexSet = IndexSet()
     
+    let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
     for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
     {
       let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
@@ -816,8 +817,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
           {
             for k3 in minimumReplicaZ...maximumReplicaZ
             {
-              let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-            
               let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
               let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
             
@@ -838,47 +837,77 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public override func filterCartesianBondPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
+        
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
     let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
-       
+    
     let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
     let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
     let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
-       
+    
     var data: IndexSet = IndexSet()
-       
-    for (asymmetricIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
+    
+    let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+    let asymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects
+    for (asymmetricBondIndex, asymmetricBond) in asymmetricBonds.enumerated()
     {
-      let asymmetricAtom1: SKAsymmetricAtom =  asymmetricBond.atom1
-      let asymmetricAtom2: SKAsymmetricAtom =  asymmetricBond.atom2
-      let isVisible: Bool =  asymmetricBond.isVisible && asymmetricAtom1.isVisible && asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisible && asymmetricAtom2.isVisibleEnabled
-      
       for bond in asymmetricBond.copies
       {
-        for k1 in minimumReplicaX...maximumReplicaX
+        let atom1: SKAtomCopy = bond.atom1
+        let atom2: SKAtomCopy = bond.atom2
+        let asymmetricAtom1: SKAsymmetricAtom = atom1.asymmetricParentAtom
+        let asymmetricAtom2: SKAsymmetricAtom = atom2.asymmetricParentAtom
+        
+        let atomPos1 = SIMD3<Double>.flip(v: atom1.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+        let atomPos2 = SIMD3<Double>.flip(v: atom2.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+        
+        let atomType1: SKForceFieldType? = forceFieldSet?[asymmetricAtom1.uniqueForceFieldName]
+        let typeIsVisible1: Bool = atomType1?.isVisible ?? true
+        let atomType2: SKForceFieldType? = forceFieldSet?[asymmetricAtom2.uniqueForceFieldName]
+        let typeIsVisible2: Bool = atomType2?.isVisible ?? true
+        
+        let visible: Bool = (asymmetricBond.isVisible && typeIsVisible1 && typeIsVisible2 && (asymmetricAtom1.isVisible && asymmetricAtom2.isVisible) && (asymmetricAtom1.isVisibleEnabled && asymmetricAtom2.isVisibleEnabled))
+          
+        if visible
         {
-          for k2 in minimumReplicaY...maximumReplicaY
+          for k1 in minimumReplicaX...maximumReplicaX
           {
-            for k3 in minimumReplicaZ...maximumReplicaZ
+            for k2 in minimumReplicaY...maximumReplicaY
             {
-              let pos1: SIMD3<Double> = cell.convertToCartesian(bond.atom1.position + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom1.displacement
-              let pos2: SIMD3<Double> = cell.convertToCartesian(bond.atom2.position + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift) + asymmetricAtom2.displacement
-              let bondPosition:  SIMD3<Double> = cell.convertToFractional( 0.5 * (pos1 + pos2) )
-            
-              let pos: SIMD3<Double> = SIMD3<Double>.flip(v: bondPosition, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
-            
-              let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-               
-              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3)) + self.cell.contentShift
-              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
-               
-              let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: 1.0)
-              let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + origin
-               
-              if filter(absoluteCartesianPosition) && isVisible
+              for k3 in minimumReplicaZ...maximumReplicaZ
               {
-                data.insert(asymmetricIndex)
+                let frac_pos1: SIMD3<Double> = atomPos1 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+                let frac_pos2: SIMD3<Double> = atomPos2 + SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)) + self.cell.contentShift
+                var dr: SIMD3<Double> = frac_pos2 - frac_pos1
+              
+                // apply boundary condition
+                dr.x -= rint(dr.x)
+                dr.y -= rint(dr.y)
+                dr.z -= rint(dr.z)
+              
+                let pos1: SIMD3<Double> = cell.convertToCartesian(frac_pos1) + asymmetricAtom1.displacement
+                let pos2: SIMD3<Double> = cell.convertToCartesian(frac_pos2) + asymmetricAtom2.displacement
+                dr = cell.convertToCartesian(dr)
+                    
+                let cartesianPosition1 = pos1 + 0.5 * dr
+                let position1: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition1.x, y: cartesianPosition1.y, z: cartesianPosition1.z, w: 1.0)
+                let absoluteCartesianPosition1: SIMD3<Double> = SIMD3<Double>(position1.x,position1.y,position1.z) + origin
+                if (filter(absoluteCartesianPosition1))
+                {
+                  data.insert(asymmetricBondIndex)
+                }
+                
+                let cartesianPosition2 = pos2 - 0.5 * dr
+                let position2: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition2.x, y: cartesianPosition2.y, z: cartesianPosition2.z, w: 1.0)
+                let absoluteCartesianPosition2: SIMD3<Double> = SIMD3<Double>(position2.x,position2.y,position2.z) + origin
+                if (filter(absoluteCartesianPosition2))
+                {
+                  data.insert(asymmetricBondIndex)
+                }
+                
               }
             }
           }
