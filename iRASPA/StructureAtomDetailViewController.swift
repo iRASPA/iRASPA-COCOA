@@ -1306,13 +1306,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
       structure.recomputeSelectionBodyFixedBasis(index: -1)
     
-      if (project.undoManager.isUndoing || project.undoManager.isRedoing)
-      {
-        // reload the selection in the atom-outlineview
-        self.programmaticallySetSelection()
       
-        NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
-      }
+      // reload the selection in the atom-outlineview
+      self.programmaticallySetSelection()
+      
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
     }
   }
 
@@ -1857,7 +1855,21 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     {
       project.undoManager.setActionName(NSLocalizedString("Invert selection", comment:"Invert selection"))
       
-      setCurrentSelection(structure: structure, atomSelection: structure.atomTreeController.invertedSelection, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: structure.bondController.invertedSelection, previousBondSelection: structure.bondController.selectedObjects)
+      let invertedSelectedTreeNodes: Set<SKAtomTreeNode> = structure.atomTreeController.invertedSelection
+      let invertedSelectedAsymmetricAtoms: Set<SKAsymmetricAtom> = Set(invertedSelectedTreeNodes.map{$0.representedObject})
+      var invertedSelectedBonds = structure.bondController.invertedSelection
+  
+      // add also all the bonds that are connected to a selected atom
+      for (index, bond) in structure.bondController.arrangedObjects.enumerated()
+      {
+        if(invertedSelectedAsymmetricAtoms.contains(bond.atom1) ||
+           invertedSelectedAsymmetricAtoms.contains(bond.atom2))
+        {
+          invertedSelectedBonds.insert(index)
+        }
+      }
+      
+      setCurrentSelection(structure: structure, atomSelection: invertedSelectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: invertedSelectedBonds, previousBondSelection: structure.bondController.selectedObjects)
     }
   }
   
