@@ -47,9 +47,13 @@ public class SKStructure
     case crystalSolvent = 8
     case molecularCrystalSolvent = 9
     
-    case ellipsoidPrimitive = 10
-    case cylinderPrimitive = 11
-    case polygonalPrismPrimitive = 12
+    case crystalEllipsoidPrimitive = 10
+    case crystalCylinderPrimitive = 11
+    case crystalPolygonalPrismPrimitive = 12
+    
+    case ellipsoidPrimitive = 13
+    case cylinderPrimitive = 14
+    case polygonalPrismPrimitive = 15
   }
   
   public var kind: Kind = .crystal

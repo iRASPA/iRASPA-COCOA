@@ -135,6 +135,24 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
     self.type = .protein
     self.structure = protein
   }
+  
+  public init(crystalSpherePrimitive: CrystalEllipsoidPrimitive)
+  {
+    self.type = .crystalEllipsoidPrimitive
+    self.structure = crystalSpherePrimitive
+  }
+   
+  public init(crystalPolygonalPrismPrimitive: CrystalPolygonalPrismPrimitive)
+  {
+    self.type = .crystalPolygonalPrismPrimitive
+    self.structure = crystalPolygonalPrismPrimitive
+  }
+   
+  public init(crystalCylinderPrimitive: CrystalCylinderPrimitive)
+  {
+    self.type = .crystalCylinderPrimitive
+    self.structure = crystalCylinderPrimitive
+  }
 
   public init(spherePrimitive: EllipsoidPrimitive)
   {
@@ -177,6 +195,12 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
       self.structure = structure.copy()
     case let structure as ProteinCrystal:
       self.structure = structure.copy()
+    case let structure as CrystalEllipsoidPrimitive:
+      self.structure = structure.copy()
+    case let structure as CrystalCylinderPrimitive:
+      self.structure = structure.copy()
+    case let structure as CrystalPolygonalPrismPrimitive:
+      self.structure = structure.copy()
     case let structure as EllipsoidPrimitive:
       self.structure = structure.copy()
     case let structure as CylinderPrimitive:
@@ -209,6 +233,12 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
       self.structure = try decoder.decode(Protein.self)
     case .proteinCrystal:
       self.structure = try decoder.decode(ProteinCrystal.self)
+    case .crystalEllipsoidPrimitive:
+      self.structure = try decoder.decode(CrystalEllipsoidPrimitive.self)
+    case .crystalCylinderPrimitive:
+      self.structure = try decoder.decode(CrystalCylinderPrimitive.self)
+    case .crystalPolygonalPrismPrimitive:
+      self.structure = try decoder.decode(CrystalPolygonalPrismPrimitive.self)
     case .ellipsoidPrimitive:
       self.structure = try decoder.decode(EllipsoidPrimitive.self)
     case .cylinderPrimitive:

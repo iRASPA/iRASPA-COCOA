@@ -171,35 +171,32 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public var renderBoundingBox: SKBoundingBox
   {
-    get
+    let frames: [Structure] = self.sceneList.scenes.flatMap{$0.movies}.filter{$0.isVisible}.compactMap{($0.selectedFrame ?? $0.frames.first)?.structure}
+      
+    if(frames.isEmpty)
     {
-      let frames: [Structure] = self.sceneList.scenes.flatMap{$0.movies}.filter{$0.isVisible}.compactMap{($0.selectedFrame ?? $0.frames.first)?.structure}
-      
-      if(frames.isEmpty)
-      {
-        return SKBoundingBox(minimum: SIMD3<Double>(x:0, y:0, z:0), maximum: SIMD3<Double>(x:0.0, y:0.0, z:0.0))
-      }
-      
-      var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
-      var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
-      
-      for frame in frames
-      {
-        // for rendering the bounding-box is in the global coordinate space (adding the frame origin)
-        let currentBoundingBox: SKBoundingBox = frame.transformedBoundingBox + frame.origin
-        
-        let transformedBoundingBox: SKBoundingBox = currentBoundingBox
-
-        minimum.x = min(minimum.x, transformedBoundingBox.minimum.x)
-        minimum.y = min(minimum.y, transformedBoundingBox.minimum.y)
-        minimum.z = min(minimum.z, transformedBoundingBox.minimum.z)
-        maximum.x = max(maximum.x, transformedBoundingBox.maximum.x)
-        maximum.y = max(maximum.y, transformedBoundingBox.maximum.y)
-        maximum.z = max(maximum.z, transformedBoundingBox.maximum.z)
-      }
-      
-      return SKBoundingBox(minimum: minimum, maximum: maximum)
+      return SKBoundingBox(minimum: SIMD3<Double>(x:0, y:0, z:0), maximum: SIMD3<Double>(x:0.0, y:0.0, z:0.0))
     }
+      
+    var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
+    var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
+      
+    for frame in frames
+    {
+      // for rendering the bounding-box is in the global coordinate space (adding the frame origin)
+      let currentBoundingBox: SKBoundingBox = frame.transformedBoundingBox + frame.origin
+        
+      let transformedBoundingBox: SKBoundingBox = currentBoundingBox
+
+      minimum.x = min(minimum.x, transformedBoundingBox.minimum.x)
+      minimum.y = min(minimum.y, transformedBoundingBox.minimum.y)
+      minimum.z = min(minimum.z, transformedBoundingBox.minimum.z)
+      maximum.x = max(maximum.x, transformedBoundingBox.maximum.x)
+      maximum.y = max(maximum.y, transformedBoundingBox.maximum.y)
+      maximum.z = max(maximum.z, transformedBoundingBox.maximum.z)
+    }
+      
+    return SKBoundingBox(minimum: minimum, maximum: maximum)
   }
   
     

@@ -48,7 +48,10 @@ public struct RKStructureUniforms
   public var ambientOcclusionPatchSize: Float = 16.0;
   public var ambientOcclusionInverseTextureSize: Float = 1.0/1024.0;
   
-  public var changeHueSaturationValue: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
+  public var atomHue: Float = 1.0
+  public var atomSaturation: Float = 1.0
+  public var atomValue: Float = 1.0
+  public var pad111: Float = 1.0
   
   public var atomHDR: Int32 = 0
   public var atomHDRExposure: Float = 1.5;
@@ -136,7 +139,7 @@ public struct RKStructureUniforms
   public var bondSelectionStripesDensity: Float = 0.25
   public var bondSelectionStripesFrequency: Float = 12.0
   public var bondSelectionWorleyNoise3DFrequency: Float = 2.0
-  public var bondSelectionWorleyNoise3DJitter: Float = 0.0
+  public var bondSelectionWorleyNoise3DJitter: Float = 1.0
   
   public var pad7: SIMD4<Float> = SIMD4<Float>()
   public var pad8: SIMD4<Float> = SIMD4<Float>()
@@ -164,12 +167,12 @@ public struct RKStructureUniforms
     
     if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource
     {
-      let hsv: SIMD4<Double> = SIMD4<Double>(x: structure.atomHue, y: structure.atomSaturation, z: structure.atomValue, w: 0.0)
-      
       self.colorAtomsWithBondColor = structure.colorAtomsWithBondColor
     
       self.atomScaleFactor = Float(structure.atomScaleFactor)
-      self.changeHueSaturationValue = SIMD4<Float>(Double4: hsv)
+      self.atomHue = Float(structure.atomHue)
+      self.atomSaturation = Float(structure.atomSaturation)
+      self.atomValue = Float(structure.atomValue)
     
       self.ambientOcclusion = structure.atomAmbientOcclusion ? 1: 0
       self.ambientOcclusionPatchNumber = Int32(structure.atomAmbientOcclusionPatchNumber)

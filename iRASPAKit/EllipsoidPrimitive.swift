@@ -110,98 +110,38 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
   
   public var renderSphereObjects: [RKInPerInstanceAttributesAtoms]
   {
-    if primitiveIsFractional
+    var index: Int
+    
+    // only use leaf-nodes
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    
+    var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count:  atoms.count)
+    
+    index = 0
+    
+    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
     {
-      var index: Int
-    
-      let numberOfReplicas: Int = self.cell.numberOfReplicas
-    
-      let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
-      let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
-      let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
-    
-      let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
-      let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
-      let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
-    
-      // only use leaf-nodes
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-      let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
-    
-      var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count: numberOfReplicas * atoms.count)
-    
-      index = 0
-    
-      for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+      let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
+      
+      for copy in copies
       {
-        let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
-      
-        for copy in copies
-        {
-          let pos: SIMD3<Double> = copy.position
-          copy.asymmetricIndex = asymetricIndex
-          
-          for k1 in minimumReplicaX...maximumReplicaX
-          {
-            for k2 in minimumReplicaY...maximumReplicaY
-            {
-              for k3 in minimumReplicaZ...maximumReplicaZ
-              {
-                let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3))
-                let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
-                
-                let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
-                let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
-                
-                let radius: Double = 1.0
-                let ambient: NSColor = NSColor.white
-                let diffuse: NSColor = NSColor.white
-                let specular: NSColor = NSColor.white
-                
-                data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
-                index = index + 1
-              }
-            }
-          }
-        }
-      }
-      return data
-    }
-    else
-    {
-      var index: Int
-      
-      // only use leaf-nodes
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-      let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
-      
-      var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count:  atoms.count)
-      
-      index = 0
-      
-      for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
-      {
-        let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
+        let pos: SIMD3<Double> = copy.position
+        copy.asymmetricIndex = asymetricIndex
         
-        for copy in copies
-        {
-          let pos: SIMD3<Double> = copy.position
-          copy.asymmetricIndex = asymetricIndex
-          
-          let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
-          let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: Float(w))
-          
-          let radius: Double = 1.0
-          let ambient: NSColor = NSColor.white
-          let diffuse: NSColor = NSColor.white
-          let specular: NSColor = NSColor.white
-          
-          data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
-          index = index + 1
-        }
+        let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
+        let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: Float(w))
+        
+        let radius: Double = 1.0
+        let ambient: NSColor = NSColor.white
+        let diffuse: NSColor = NSColor.white
+        let specular: NSColor = NSColor.white
+        
+        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+        index = index + 1
       }
-      return data
     }
+    return data
   }
   
   // MARK: -
@@ -209,259 +149,113 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
   
   public override var unitCell: double3x3
   {
-    if primitiveIsFractional
-    {
-      return self.cell.unitCell
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.unitCell
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.unitCell
   }
   
   public override var cellLengthA: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.a
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.a
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.a
   }
   
   public override var cellLengthB: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.b
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.b
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.b
   }
   
   public override var cellLengthC: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.c
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.c
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.c
   }
   
   public override var cellAngleAlpha: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.alpha
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.alpha
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.alpha
   }
   
   public override var cellAngleBeta: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.beta
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.beta
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.beta
   }
   
   public override var cellAngleGamma: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.gamma
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.gamma
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.gamma
   }
   
   public override var cellVolume: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.volume
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.volume
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.volume
   }
   
   public override var cellPerpendicularWidthsX: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.perpendicularWidths.x
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.perpendicularWidths.x
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.perpendicularWidths.x
   }
   
   public override var cellPerpendicularWidthsY: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.perpendicularWidths.y
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.perpendicularWidths.y
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.perpendicularWidths.y
   }
   
   public override var cellPerpendicularWidthsZ: Double
   {
-    if primitiveIsFractional
-    {
-      return self.cell.perpendicularWidths.z
-    }
-    else
-    {
-      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-      return boundaryBoxCell.perpendicularWidths.z
-    }
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+    return boundaryBoxCell.perpendicularWidths.z
   }
   
   public override var boundingBox: SKBoundingBox
   {
-    if primitiveIsFractional
+    let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: SIMD3<Double>(0,0,0), withTranslation: SIMD3<Double>(0,0,0))
+    
+    let sphereVertices: [RKVertex] = MetalSphereGeometry().vertices
+    
+    // only use leaf-nodes
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    
+    var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
+    var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
+    
+    
+    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
     {
-      let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
+      let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
-      let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: currentBoundingBox.center, withTranslation: SIMD3<Double>(0.0,0.0,0.0))
-      
-      let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
-      let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
-      let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
-      
-      let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
-      let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
-      let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
-      
-      let sphereVertices: [RKVertex] = MetalSphereGeometry().vertices
-      
-      // only use leaf-nodes
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-      
-      var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
-      var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
-      
-      
-      for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+      for copy in copies
       {
-        let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
+        let pos: SIMD3<Double> = copy.position
+        copy.asymmetricIndex = asymetricIndex
         
-        for copy in copies
+        for vertex in sphereVertices
         {
-          let pos: SIMD3<Double> = copy.position
-          copy.asymmetricIndex = asymetricIndex
+          let vertexPosition: SIMD4<Double> = SIMD4<Double>(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
           
-          for k1 in minimumReplicaX...maximumReplicaX
-          {
-            for k2 in minimumReplicaY...maximumReplicaY
-            {
-              for k3 in minimumReplicaZ...maximumReplicaZ
-              {
-                let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3))
-                let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
-                
-                for vertex in sphereVertices
-                {
-                  let vertexPosition: SIMD4<Double> = SIMD4<Double>(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
-                  
-                  let transformationMatrix = double4x4(Double3x3: self.primitiveTransformationMatrix)
-                  let primitiveModelMatrix = double4x4(simd_quatd: self.primitiveOrientation)
-                  
-                  let pos: SIMD4<Double> = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + SIMD4<Double>(cartesianPosition.x, cartesianPosition.y, cartesianPosition.z, 1.0))
-                  
-                  minimum = SIMD3<Double>(x: min(pos.x, minimum.x),
-                                    y: min(pos.y, minimum.y),
-                                    z: min(pos.z, minimum.z))
-                  
-                  maximum = SIMD3<Double>(x: max(pos.x, maximum.x),
-                                    y: max(pos.y, maximum.y),
-                                    z: max(pos.z, maximum.z))
-                }
-              }
-            }
-          }
+          let transformationMatrix = double4x4(Double3x3: self.primitiveTransformationMatrix)
+          let primitiveModelMatrix = double4x4(simd_quatd: self.primitiveOrientation)
+          
+          let pos: SIMD4<Double> = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + SIMD4<Double>(pos.x, pos.y, pos.z, 1.0))
+          
+          minimum = SIMD3<Double>(x: min(pos.x, minimum.x),
+                                  y: min(pos.y, minimum.y),
+                                  z: min(pos.z, minimum.z))
+          
+          maximum = SIMD3<Double>(x: max(pos.x, maximum.x),
+                                  y: max(pos.y, maximum.y),
+                                  z: max(pos.z, maximum.z))
         }
       }
-      
-      return SKBoundingBox(minimum: minimum, maximum: maximum)
     }
-    else
-    {
-      let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: SIMD3<Double>(0,0,0), withTranslation: SIMD3<Double>(0,0,0))
-      
-      let sphereVertices: [RKVertex] = MetalSphereGeometry().vertices
-      
-      // only use leaf-nodes
-      let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-      
-      var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
-      var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
-      
-      
-      for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
-      {
-        let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
-        
-        for copy in copies
-        {
-          let pos: SIMD3<Double> = copy.position
-          copy.asymmetricIndex = asymetricIndex
-          
-          for vertex in sphereVertices
-          {
-            let vertexPosition: SIMD4<Double> = SIMD4<Double>(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
-            
-            let transformationMatrix = double4x4(Double3x3: self.primitiveTransformationMatrix)
-            let primitiveModelMatrix = double4x4(simd_quatd: self.primitiveOrientation)
-            
-            let pos: SIMD4<Double> = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + SIMD4<Double>(pos.x, pos.y, pos.z, 1.0))
-            
-            minimum = SIMD3<Double>(x: min(pos.x, minimum.x),
-                              y: min(pos.y, minimum.y),
-                              z: min(pos.z, minimum.z))
-            
-            maximum = SIMD3<Double>(x: max(pos.x, maximum.x),
-                              y: max(pos.y, maximum.y),
-                              z: max(pos.z, maximum.z))
-          }
-        }
-      }
-      
-      return SKBoundingBox(minimum: minimum, maximum: maximum)
-    }
+    
+    return SKBoundingBox(minimum: minimum, maximum: maximum)
   }
   
   // MARK: -

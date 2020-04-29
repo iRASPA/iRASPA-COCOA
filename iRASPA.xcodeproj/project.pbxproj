@@ -459,6 +459,12 @@
 		93993A40243B18070089A1A1 /* listobject.h in Headers */ = {isa = PBXBuildFile; fileRef = 939939DB243B18070089A1A1 /* listobject.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		93993A41243B18070089A1A1 /* compile.h in Headers */ = {isa = PBXBuildFile; fileRef = 939939DC243B18070089A1A1 /* compile.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		93993A42243B18070089A1A1 /* pyport.h in Headers */ = {isa = PBXBuildFile; fileRef = 939939DD243B18070089A1A1 /* pyport.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		9399E62D2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E62C2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift */; };
+		9399E62F2459C6E900036EBF /* CrystalCylinderPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E62E2459C6E900036EBF /* CrystalCylinderPrimitive.swift */; };
+		9399E6312459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E6302459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift */; };
+		9399E6332459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E6322459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift */; };
+		9399E6352459DADC00036EBF /* MetalCrystalEllipsoidShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E6342459DADB00036EBF /* MetalCrystalEllipsoidShader.swift */; };
+		9399E6372459DB5000036EBF /* MetalCrystalCylinderShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E6362459DB5000036EBF /* MetalCrystalCylinderShader.swift */; };
 		939B205D1EF2C8370061DE8D /* simd_quatd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B205C1EF2C8370061DE8D /* simd_quatd.swift */; };
 		939B205F1EF2CE670061DE8D /* double4x4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B205E1EF2CE670061DE8D /* double4x4.swift */; };
 		939B20611EF2CE750061DE8D /* double3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B20601EF2CE750061DE8D /* double3x3.swift */; };
@@ -556,7 +562,7 @@
 		93DA9EE523DEFE4600FB4E51 /* SimulationKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */; };
 		93DE92D1207E2BB00084D303 /* NSPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */; };
 		93E7594B21DBC056009B9C5C /* iRASPADocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */; };
-		93E92DEF21F5BC6300A0DBE6 /* MetalSphereShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalSphereShader.swift */; };
+		93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */; };
 		93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */; };
 		93E92DF521F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */; };
 		93EA0C361E69EA810051E911 /* AtomGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA0C351E69EA810051E911 /* AtomGroupView.swift */; };
@@ -1384,6 +1390,12 @@
 		939939DB243B18070089A1A1 /* listobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listobject.h; sourceTree = "<group>"; };
 		939939DC243B18070089A1A1 /* compile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compile.h; sourceTree = "<group>"; };
 		939939DD243B18070089A1A1 /* pyport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pyport.h; sourceTree = "<group>"; };
+		9399E62C2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrystalEllipsoidPrimitive.swift; sourceTree = "<group>"; };
+		9399E62E2459C6E900036EBF /* CrystalCylinderPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrystalCylinderPrimitive.swift; sourceTree = "<group>"; };
+		9399E6302459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrystalPolygonalPrismPrimitive.swift; sourceTree = "<group>"; };
+		9399E6322459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalPolygonalPrismShader.swift; sourceTree = "<group>"; };
+		9399E6342459DADB00036EBF /* MetalCrystalEllipsoidShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalEllipsoidShader.swift; sourceTree = "<group>"; };
+		9399E6362459DB5000036EBF /* MetalCrystalCylinderShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalCylinderShader.swift; sourceTree = "<group>"; };
 		939B205C1EF2C8370061DE8D /* simd_quatd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simd_quatd.swift; sourceTree = "<group>"; };
 		939B205E1EF2CE670061DE8D /* double4x4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = double4x4.swift; sourceTree = "<group>"; };
 		939B20601EF2CE750061DE8D /* double3x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = double3x3.swift; sourceTree = "<group>"; };
@@ -1473,7 +1485,7 @@
 		93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPasteboardItem.swift; sourceTree = "<group>"; };
 		93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPADocumentController.swift; sourceTree = "<group>"; };
-		93E92DEE21F5BC6300A0DBE6 /* MetalSphereShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalSphereShader.swift; sourceTree = "<group>"; };
+		93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidShader.swift; sourceTree = "<group>"; };
 		93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedSingleBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		93EA0C351E69EA810051E911 /* AtomGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomGroupView.swift; sourceTree = "<group>"; };
@@ -1874,8 +1886,11 @@
 				93793AFE21C80B45004CAD9C /* MetalAmbientOcclusionShader.swift */,
 				93793B1C21C94C3F004CAD9C /* MetalQuadShader.swift */,
 				93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */,
-				93E92DEE21F5BC6300A0DBE6 /* MetalSphereShader.swift */,
+				9399E6322459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift */,
+				93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */,
+				9399E6342459DADB00036EBF /* MetalCrystalEllipsoidShader.swift */,
 				93EACCBD2206022B00AB8026 /* MetalCylinderShader.swift */,
+				9399E6362459DB5000036EBF /* MetalCrystalCylinderShader.swift */,
 				930DD5481E26B3B200B8FE9B /* shaders */,
 				930DD5151E26B2CC00B8FE9B /* Info.plist */,
 				93793B4621DE0FB6004CAD9C /* LICENSE */,
@@ -1986,8 +2001,11 @@
 				930DD6421E26BA5D00B8FE9B /* Protein.swift */,
 				930DD6441E26BA5D00B8FE9B /* Structure.swift */,
 				93274E822205AA13004031BA /* EllipsoidPrimitive.swift */,
+				9399E62C2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift */,
 				93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */,
+				9399E62E2459C6E900036EBF /* CrystalCylinderPrimitive.swift */,
 				93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */,
+				9399E6302459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift */,
 			);
 			name = Structures;
 			sourceTree = "<group>";
@@ -3601,11 +3619,13 @@
 				93793AF321C7CB76004CAD9C /* MetalBoundingBoxCylinderShader.swift in Sources */,
 				930DD5F81E26B65C00B8FE9B /* MetalView.swift in Sources */,
 				930DD5411E26B38D00B8FE9B /* RKCamera.swift in Sources */,
+				9399E6372459DB5000036EBF /* MetalCrystalCylinderShader.swift in Sources */,
 				9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */,
 				93EACCBC2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift in Sources */,
 				93793B1F21CA4F7D004CAD9C /* BackgroundShader.metal in Sources */,
+				9399E6332459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift in Sources */,
 				930DD5441E26B38D00B8FE9B /* RKMovieCreator.swift in Sources */,
-				93E92DEF21F5BC6300A0DBE6 /* MetalSphereShader.swift in Sources */,
+				93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */,
 				93793B3B21D94551004CAD9C /* RKIsosurfaceUniforms.swift in Sources */,
 				93584CCB1FFFC916005F01A7 /* AtomSelectionShaders.metal in Sources */,
 				932B989F2425335300033AA7 /* MetalExternalBondSelectionWorleyNoise3DShader.swift in Sources */,
@@ -3633,6 +3653,7 @@
 				93793B2521CA85DB004CAD9C /* MetalBlurVerticalPictureShader.swift in Sources */,
 				930DD5EA1E26B62E00B8FE9B /* PickingShader.metal in Sources */,
 				937807DB21C5945100EC4466 /* RKTrackBall.swift in Sources */,
+				9399E6352459DADC00036EBF /* MetalCrystalEllipsoidShader.swift in Sources */,
 				930DD5F71E26B65C00B8FE9B /* MetalSphereGeometry.swift in Sources */,
 				93793B1121C833ED004CAD9C /* MetalMeasurementOrthographicImposterShader.swift in Sources */,
 				93793AF521C7D04A004CAD9C /* MetalIsosurfaceShader.swift in Sources */,
@@ -3675,6 +3696,7 @@
 				930DD6651E26BAFC00B8FE9B /* SceneList.swift in Sources */,
 				938B44EF1EB7B66C006B7704 /* ImportChildNodesFromCloudOperation.swift in Sources */,
 				938F96BF2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift in Sources */,
+				9399E62D2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift in Sources */,
 				93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */,
 				93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */,
 				938B44E71EB7AE74006B7704 /* ImportNodesFromCloud.swift in Sources */,
@@ -3708,6 +3730,7 @@
 				938B44E91EB7AFC1006B7704 /* CloudAccountAvailableOperation.swift in Sources */,
 				930DD6481E26BA5D00B8FE9B /* Molecule.swift in Sources */,
 				9373377B1EB5D60800E0655F /* ProjectProgressIndicator.swift in Sources */,
+				9399E62F2459C6E900036EBF /* CrystalCylinderPrimitive.swift in Sources */,
 				93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */,
 				930DD6581E26BAAD00B8FE9B /* ProjectGroup.swift in Sources */,
 				93F936371EB900A10094C509 /* MyNSClipView.swift in Sources */,
@@ -3723,6 +3746,7 @@
 				93B8F2E51EB1DE630052BDF8 /* Notifications.swift in Sources */,
 				937861F01EEC6FC400E0C5DD /* ProjectTreeController.swift in Sources */,
 				930DD65E1E26BAD400B8FE9B /* ProjectStructureNode.swift in Sources */,
+				9399E6312459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift in Sources */,
 				938B44FC1EB8F7B4006B7704 /* Reachability.swift in Sources */,
 				93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */,
 				933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */,
@@ -4797,7 +4821,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 77;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4809,7 +4833,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.1.37;
+				MARKETING_VERSION = 1.1.38;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4833,7 +4857,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 77;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -4845,7 +4869,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.1.37;
+				MARKETING_VERSION = 1.1.38;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";

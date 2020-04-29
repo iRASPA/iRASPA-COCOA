@@ -705,9 +705,9 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
     let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
     
-    let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects[self.bondController.selectedObjects]
-    for (asymmetricBondIndex, asymmetricBond) in selectedAsymmetricBonds.enumerated()
+    for asymmetricBondIndex in self.bondController.selectedObjects
     {
+      let asymmetricBond = self.bondController.arrangedObjects[asymmetricBondIndex]
       for bond in asymmetricBond.copies
       {
         if bond.boundaryType == .external

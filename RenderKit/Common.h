@@ -57,7 +57,7 @@ typedef struct
   float4 diffuse;
   float4 specular;
   float4 scale;
-  uint tag;
+  int tag;
 } InPerInstanceAttributes;
 
 
@@ -76,8 +76,8 @@ typedef struct
   float4 color1;
   float4 color2;
   float4 scale;
-  uint tag;
-  uint type;
+  int tag;
+  int type;
 } InPerInstanceAttributesBonds;
 
 
@@ -172,7 +172,10 @@ typedef struct
   float ambientOcclusionPatchSize;
   float ambientOcclusionInverseTextureSize;
   
-  float4 changeHueSaturationValue;
+  float atomHue;
+  float atomSaturation;
+  float atomValue;
+  float pad111;
   
   bool atomHDR;
   float atomHDRExposure;

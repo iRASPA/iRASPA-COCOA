@@ -64,8 +64,8 @@ public class MetalCappedCylinderGeometry
       let cosTheta: Double = cos(delta * Double(i))
       let sinTheta: Double = sin(delta * Double(i))
       
-      let normal2: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
       let position2: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
+      let normal2: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
       vertices[index] = RKVertex(position: position2, normal: normal2, st: SIMD2<Float>())
       index = index + 1
       

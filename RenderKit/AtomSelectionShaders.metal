@@ -367,9 +367,9 @@ fragment float4 AtomSelectionWorleyNoise3DSphereFragmentShader(AtomSphereVertexS
   }
   
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.atomHue;
+  hsv.y = hsv.y * structureUniforms.atomSaturation;
+  hsv.z = hsv.z * structureUniforms.atomValue;
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
 }
@@ -471,12 +471,10 @@ fragment FragOutput AtomSelectionWorleyNoise3DOrthographicFragmentShader(AtomSph
     color= vLdrColor;
   }
   
-  
-  
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.atomHue;
+  hsv.y = hsv.y * structureUniforms.atomSaturation;
+  hsv.z = hsv.z * structureUniforms.atomValue;
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   output.albedo = float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
   
@@ -585,9 +583,9 @@ fragment FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentShader(AtomSphe
   
   
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.atomHue;
+  hsv.y = hsv.y * structureUniforms.atomSaturation;
+  hsv.z = hsv.z * structureUniforms.atomValue;
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   output.albedo = float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
   
@@ -655,9 +653,9 @@ fragment float4 AtomSelectionStripedSphereFragmentShader(AtomSphereVertexShaderO
   }
   
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.atomHue;
+  hsv.y = hsv.y * structureUniforms.atomSaturation;
+  hsv.z = hsv.z * structureUniforms.atomValue;
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
 }
@@ -752,12 +750,10 @@ fragment FragOutput AtomSelectionStripedSphereOrthographicFragmentShader(AtomSph
     color= vLdrColor;
   }
   
-  
-  
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.atomHue;
+  hsv.y = hsv.y * structureUniforms.atomSaturation;
+  hsv.z = hsv.z * structureUniforms.atomValue;
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   output.albedo = float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
   
@@ -854,11 +850,10 @@ fragment FragOutput AtomSelectionStripedSpherePerspectiveFragmentShader(AtomSphe
     color= vLdrColor;
   }
   
-  
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.atomHue;
+  hsv.y = hsv.y * structureUniforms.atomSaturation;
+  hsv.z = hsv.z * structureUniforms.atomValue;
   float intensity = frameUniforms.bloomLevel * structureUniforms.atomSelectionIntensity;
   output.albedo = float4(hsv2rgb(hsv) * intensity, intensity);
   
