@@ -104,9 +104,9 @@ fragment float4 UnitCellSphereFragmentShader(UnitCellVertexShaderOut vert [[stag
                        
   
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.atomHue;
+  hsv.y = hsv.y * structureUniforms.atomSaturation;
+  hsv.z = hsv.z * structureUniforms.atomValue;
   return float4(hsv2rgb(hsv),1.0);
 }
 
@@ -185,9 +185,9 @@ fragment float4 UnitCellCylinderFragmentShader(UnitCellVertexShaderOut vert [[st
   float4 color= float4(ao * (structureUniforms.unitCellColor.xyz * diffuse.xyz), 1.0);
   
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.atomHue;
+  hsv.y = hsv.y * structureUniforms.atomSaturation;
+  hsv.z = hsv.z * structureUniforms.atomValue;
   return float4(hsv2rgb(hsv),1.0);
 }
 

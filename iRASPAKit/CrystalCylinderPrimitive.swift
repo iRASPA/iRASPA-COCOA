@@ -35,13 +35,14 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSource
+public final class CrystalCylinderPrimitive: Structure, RKRenderCrystalCylinderObjectsSource
 {
   private static var classVersionNumber: Int = 1
   
   public override init(name: String)
   {
     super.init(name: name)
+    
     let displayName: String = "center"
     let color: NSColor = NSColor.yellow
     let drawRadius: Double = 5.0
@@ -93,7 +94,7 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
   
   public override var materialType: SKStructure.Kind
   {
-    return .polygonalPrismPrimitive
+    return .crystalCylinderPrimitive
   }
   
   public override var periodic: Bool
@@ -108,16 +109,25 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
     }
   }
   
-  
-  public var renderPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms]
+  public var renderCrystalCylinderObjects: [RKInPerInstanceAttributesAtoms]
   {
     var index: Int
+    
+    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+    
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
     
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
     
-    var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count:  atoms.count)
+    var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count: numberOfReplicas * atoms.count)
     
     index = 0
     
@@ -130,97 +140,106 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
         let pos: SIMD3<Double> = copy.position
         copy.asymmetricIndex = asymetricIndex
         
-        let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
-        let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: Float(w))
-        
-        let radius: Double = 1.0
-        let ambient: NSColor = NSColor.white
-        let diffuse: NSColor = NSColor.white
-        let specular: NSColor = NSColor.white
-        
-        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
-        index = index + 1
+        for k1 in minimumReplicaX...maximumReplicaX
+        {
+          for k2 in minimumReplicaY...maximumReplicaY
+          {
+            for k3 in minimumReplicaZ...maximumReplicaZ
+            {
+              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3))
+              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+              
+              let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
+              let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
+              
+              let radius: Double = 1.0
+              let ambient: NSColor = NSColor.white
+              let diffuse: NSColor = NSColor.white
+              let specular: NSColor = NSColor.white
+              
+              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+              index = index + 1
+            }
+          }
+        }
       }
     }
     return data
   }
-  
-  
   
   // MARK: -
   // MARK: cell property-wrapper
   
   public override var unitCell: double3x3
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.unitCell
+    return self.cell.unitCell
   }
   
   public override var cellLengthA: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.a
+    return self.cell.a
   }
   
   public override var cellLengthB: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.b
+    return self.cell.b
   }
   
   public override var cellLengthC: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.c
+    return self.cell.c
   }
   
   public override var cellAngleAlpha: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.alpha
+    return self.cell.alpha
   }
   
   public override var cellAngleBeta: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.beta
+    return self.cell.beta
   }
   
   public override var cellAngleGamma: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.gamma
+    return self.cell.gamma
   }
   
   public override var cellVolume: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.volume
+    return self.cell.volume
   }
   
   public override var cellPerpendicularWidthsX: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.perpendicularWidths.x
+    return self.cell.perpendicularWidths.x
   }
   
   public override var cellPerpendicularWidthsY: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.perpendicularWidths.y
+    return self.cell.perpendicularWidths.y
   }
   
   public override var cellPerpendicularWidthsZ: Double
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.perpendicularWidths.z
+    return self.cell.perpendicularWidths.z
   }
   
   public override var boundingBox: SKBoundingBox
   {
-    let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: SIMD3<Double>(0,0,0), withTranslation: SIMD3<Double>(0.0,0.0,0.0))
+    let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
     
-    let polygonVertices: [RKVertex] = MetalNSidedPrismGeometry(r: 1.0, s: self.primitiveNumberOfSides).vertices
+    let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: currentBoundingBox.center, withTranslation: SIMD3<Double>(0.0,0.0,0.0))
+    
+    let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
+    let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
+    let minimumReplicaZ: Int = Int(self.cell.minimumReplica.z)
+    
+    let maximumReplicaX: Int = Int(self.cell.maximumReplica.x)
+    let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
+    let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
+    
+    let cylinderVertices: [RKVertex] = MetalCylinderGeometry(r: 1.0, s: self.primitiveNumberOfSides).vertices
     
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
@@ -238,22 +257,34 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
         let pos: SIMD3<Double> = copy.position
         copy.asymmetricIndex = asymetricIndex
         
-        for vertex in polygonVertices
+        for k1 in minimumReplicaX...maximumReplicaX
         {
-          let vertexPosition: SIMD4<Double> = SIMD4<Double>(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
-          
-          let transformationMatrix = double4x4(Double3x3: self.primitiveTransformationMatrix)
-          let primitiveModelMatrix = double4x4(simd_quatd: self.primitiveOrientation)
-          
-          let pos: SIMD4<Double> = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + SIMD4<Double>(pos.x, pos.y, pos.z, 1.0))
-          
-          minimum = SIMD3<Double>(x: min(pos.x, minimum.x),
-                                  y: min(pos.y, minimum.y),
-                                  z: min(pos.z, minimum.z))
-          
-          maximum = SIMD3<Double>(x: max(pos.x, maximum.x),
-                                  y: max(pos.y, maximum.y),
-                                  z: max(pos.z, maximum.z))
+          for k2 in minimumReplicaY...maximumReplicaY
+          {
+            for k3 in minimumReplicaZ...maximumReplicaZ
+            {
+              let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(k1), y: pos.y + Double(k2), z: pos.z + Double(k3))
+              let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+              
+              for vertex in cylinderVertices
+              {
+                let vertexPosition: SIMD4<Double> = SIMD4<Double>(Double(vertex.position.x), Double(vertex.position.y), Double(vertex.position.z), Double(vertex.position.w))
+                
+                let transformationMatrix = double4x4(Double3x3: self.primitiveTransformationMatrix)
+                let primitiveModelMatrix = double4x4(simd_quatd: self.primitiveOrientation)
+                
+                let pos: SIMD4<Double> = modelMatrix * (primitiveModelMatrix * transformationMatrix * vertexPosition + SIMD4<Double>(cartesianPosition.x, cartesianPosition.y, cartesianPosition.z, 1.0))
+                
+                minimum = SIMD3<Double>(x: min(pos.x, minimum.x),
+                                        y: min(pos.y, minimum.y),
+                                        z: min(pos.z, minimum.z))
+                
+                maximum = SIMD3<Double>(x: max(pos.x, maximum.x),
+                                        y: max(pos.y, maximum.y),
+                                        z: max(pos.z, maximum.z))
+              }
+            }
+          }
         }
       }
     }
@@ -274,7 +305,7 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
   
   public override func binaryEncode(to encoder: BinaryEncoder)
   {
-    encoder.encode(PolygonalPrismPrimitive.classVersionNumber)
+    encoder.encode(CrystalCylinderPrimitive.classVersionNumber)
     
     super.binaryEncode(to: encoder)
   }
@@ -282,7 +313,7 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
     let readVersionNumber: Int = try decoder.decode(Int.self)
-    if readVersionNumber > PolygonalPrismPrimitive.classVersionNumber
+    if readVersionNumber > CrystalCylinderPrimitive.classVersionNumber
     {
       throw BinaryDecodableError.invalidArchiveVersion
     }
@@ -290,5 +321,4 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrimSour
     try super.init(fromBinary: decoder)
   }
 }
-
 

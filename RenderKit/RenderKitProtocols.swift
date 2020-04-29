@@ -192,8 +192,12 @@ public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
   var structureNitrogenSurfaceArea: Double {get set}
 }
 
-public protocol RKRenderObjectSource: RKRenderStructure
+public protocol RKRenderObjectSource //: RKRenderStructure
 {
+  var numberOfAtoms: Int {get}
+  var drawAtoms: Bool {get}
+  var isVisible: Bool {get}
+  
   var primitiveTransformationMatrix: double3x3 {get}
   var primitiveOrientation: simd_quatd {get}
   
@@ -224,30 +228,36 @@ public protocol RKRenderObjectSource: RKRenderStructure
   var primitiveBackSideShininess: Double {get}
 }
 
-
 public protocol RKRenderSphereObjectsSource: RKRenderObjectSource
 {
-  var numberOfAtoms: Int {get}
-  var drawAtoms: Bool {get}
-  
   var renderSphereObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
 public protocol RKRenderCylinderObjectsSource: RKRenderObjectSource
 {
-  var numberOfAtoms: Int {get}
-  var drawAtoms: Bool {get}
-  
   var renderCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
 
 public protocol RKRenderPolygonalPrimSource: RKRenderObjectSource
 {
-  var numberOfAtoms: Int {get}
-  var drawAtoms: Bool {get}
-  
   var renderPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
+
+public protocol RKRenderCrystalSphereObjectsSource: RKRenderObjectSource
+{
+  var renderCrystalSphereObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
+
+public protocol RKRenderCrystalCylinderObjectsSource: RKRenderObjectSource
+{
+  var renderCrystalCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
+
+
+public protocol RKRenderCrystalPolygonalPrimSource: RKRenderObjectSource
+{
+  var renderCrystalPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
 

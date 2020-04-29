@@ -32,7 +32,7 @@
 
 import Foundation
 
-class MetalSphereShader
+class MetalCrystalPolygonalPrismShader
 {
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderStructure]] = [[]]
@@ -40,9 +40,9 @@ class MetalSphereShader
   var opaquePipeLine: MTLRenderPipelineState! = nil
   var transparentPipeLine: MTLRenderPipelineState! = nil
   
-  var indexBuffer: MTLBuffer! = nil
-  var vertexBuffer: MTLBuffer! = nil
-  var instanceBuffer: [[MTLBuffer?]] = [[]]
+  var indexBuffers: [[MTLBuffer?]] = []
+  var vertexBuffers: [[MTLBuffer?]] = []
+  var instanceBuffers: [[MTLBuffer?]] = []
   var samplerState: MTLSamplerState! = nil
   var depthState: MTLDepthStencilState! = nil
   var transparentDepthState: MTLDepthStencilState! = nil
@@ -59,7 +59,7 @@ class MetalSphereShader
     transparentDepthStateDescriptor.isDepthWriteEnabled = false
     transparentDepthState = device.makeDepthStencilState(descriptor: transparentDepthStateDescriptor)
     
-    let pSamplerDescriptor:MTLSamplerDescriptor? = MTLSamplerDescriptor();
+    let pSamplerDescriptor:MTLSamplerDescriptor? = MTLSamplerDescriptor()
     
     if let sampler = pSamplerDescriptor
     {
@@ -86,14 +86,13 @@ class MetalSphereShader
     opaquePipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     opaquePipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismFragmentShader")!
     opaquePipelineDescriptor.vertexDescriptor = vertexDescriptor
-    
     do
     {
       self.opaquePipeLine = try device.makeRenderPipelineState(descriptor: opaquePipelineDescriptor)
     }
     catch
     {
-      fatalError("Error occurred when creating render pipeline state \(error) \(device)")
+      fatalError("Error occurred when creating render pipeline state \(error)")
     }
     
     let transparentPipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -123,48 +122,84 @@ class MetalSphereShader
   
   public func buildVertexBuffers(device: MTLDevice)
   {
-    let sphere: MetalSphereGeometry = MetalSphereGeometry()
-    
-    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:.storageModeManaged)
-    
-    
     if let _: RKRenderDataSource = renderDataSource
     {
-      instanceBuffer = []
+      instanceBuffers = []
+      indexBuffers = []
+      vertexBuffers = []
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderStructure] = renderStructures[i]
-        var sceneInstance: [MTLBuffer?] = [MTLBuffer?]()
+        var sceneInstanceBuffers: [MTLBuffer?] = [MTLBuffer?]()
+        var sceneIndexBuffers: [MTLBuffer?] = [MTLBuffer?]()
+        var sceneVertexBuffers: [MTLBuffer?] = [MTLBuffer?]()
         
         if structures.isEmpty
         {
-          sceneInstance.append(nil)
+          sceneInstanceBuffers.append(nil)
+          sceneIndexBuffers.append(nil)
+          sceneVertexBuffers.append(nil)
         }
         else
         {
           for structure in structures
           {
-            let atoms: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderSphereObjectsSource)?.renderSphereObjects ?? []
-            let buffer: MTLBuffer? = atoms.isEmpty ? nil : device.makeBuffer(bytes: atoms, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atoms.count, options:.storageModeManaged)
-            sceneInstance.append(buffer)
+            if let structure: RKRenderCrystalPolygonalPrimSource = structure as? RKRenderCrystalPolygonalPrimSource
+            {
+              let numberOfSides: Int = structure.primitiveNumberOfSides
+              if(structure.primitiveIsCapped)
+              {
+                let cylinder: MetalCappedNSidedPrismGeometry = MetalCappedNSidedPrismGeometry(r: 1.0, s: numberOfSides)
+                
+                let vertexBuffer = device.makeBuffer(bytes: cylinder.vertices, length:MemoryLayout<RKVertex>.stride * cylinder.vertices.count, options:.storageModeManaged)
+                
+                let indexBuffer = device.makeBuffer(bytes: cylinder.indices, length:MemoryLayout<UInt16>.stride * cylinder.indices.count, options:.storageModeManaged)
+                
+                sceneVertexBuffers.append(vertexBuffer)
+                sceneIndexBuffers.append(indexBuffer)
+              }
+              else
+              {
+                let cylinder: MetalNSidedPrismGeometry = MetalNSidedPrismGeometry(r: 1.0, s: numberOfSides)
+                
+                let vertexBuffer = device.makeBuffer(bytes: cylinder.vertices, length:MemoryLayout<RKVertex>.stride * cylinder.vertices.count, options:.storageModeManaged)
+                
+                let indexBuffer = device.makeBuffer(bytes: cylinder.indices, length:MemoryLayout<UInt16>.stride * cylinder.indices.count, options:.storageModeManaged)
+                
+                sceneVertexBuffers.append(vertexBuffer)
+                sceneIndexBuffers.append(indexBuffer)
+              }
+              
+              let objects: [RKInPerInstanceAttributesAtoms] = structure.renderCrystalPolygonalPrismObjects
+              
+              let instanceBuffer: MTLBuffer? = objects.isEmpty ? nil : device.makeBuffer(bytes: objects, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * objects.count, options:.storageModeManaged)
+              
+              
+              sceneInstanceBuffers.append(instanceBuffer)
+            }
+            else
+            {
+              sceneVertexBuffers.append(nil)
+              sceneIndexBuffers.append(nil)
+              sceneInstanceBuffers.append(nil)
+            }
           }
         }
-        instanceBuffer.append(sceneInstance)
+        instanceBuffers.append(sceneInstanceBuffers)
+        vertexBuffers.append(sceneVertexBuffers)
+        indexBuffers.append(sceneIndexBuffers)
       }
     }
   }
   
-  
   public func renderOpaqueWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderSphereObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalPolygonalPrimSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
-      commandEncoder.setCullMode(MTLCullMode.back)
+      commandEncoder.setCullMode(MTLCullMode.none)
       
       commandEncoder.setDepthStencilState(depthState)
       commandEncoder.setRenderPipelineState(opaquePipeLine)
-      commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
@@ -180,18 +215,21 @@ class MetalSphereShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderSphereObjectsSource = structure as? RKRenderSphereObjectsSource,
-            let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
+          if let structure: RKRenderCrystalPolygonalPrimSource = structure as? RKRenderCrystalPolygonalPrimSource,
+            let instanceBuffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j),
+            let vertexBuffer: MTLBuffer = self.metalBuffer(vertexBuffers, sceneIndex: i, movieIndex: j),
+            let indexBuffer: MTLBuffer = self.metalBuffer(indexBuffers, sceneIndex: i, movieIndex: j)
           {
-            let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
-            
+            let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+                        
             if (structure.drawAtoms && structure.isVisible && structure.primitiveOpacity>0.99999 && (numberOfAtoms > 0) )
             {
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
               commandEncoder.setFragmentTexture(ambientOcclusionTextures[i][j], index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
             }
           }
           index = index + 1
@@ -202,11 +240,10 @@ class MetalSphereShader
   
   public func renderTransparentWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderSphereObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalPolygonalPrimSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setDepthStencilState(transparentDepthState)
       commandEncoder.setRenderPipelineState(transparentPipeLine)
-      commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
@@ -222,23 +259,26 @@ class MetalSphereShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderSphereObjectsSource = structure as? RKRenderSphereObjectsSource,
-            let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
+          if let structure: RKRenderCrystalPolygonalPrimSource = structure as? RKRenderCrystalPolygonalPrimSource,
+            let instanceBuffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j),
+            let vertexBuffer: MTLBuffer = self.metalBuffer(vertexBuffers, sceneIndex: i, movieIndex: j),
+            let indexBuffer: MTLBuffer = self.metalBuffer(indexBuffers, sceneIndex: i, movieIndex: j)
           {
-            let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+            let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
             
             if (structure.drawAtoms && structure.isVisible && structure.primitiveOpacity<=0.99999 && (numberOfAtoms > 0) )
             {
-              commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
               commandEncoder.setFragmentTexture(ambientOcclusionTextures[i][j], index: 0)
               
               commandEncoder.setCullMode(MTLCullMode.front)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               
               commandEncoder.setCullMode(MTLCullMode.back)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
             }
           }
           index = index + 1
@@ -246,6 +286,7 @@ class MetalSphereShader
       }
     }
   }
+  
   
   func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?
   {
@@ -259,5 +300,3 @@ class MetalSphereShader
     return nil
   }
 }
-
-

@@ -350,6 +350,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   public var primitiveTransformationMatrix: double3x3 = double3x3(1.0)
   public var primitiveOrientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
+  public var primitiveRotationDelta: Double = 5.0
   
   public var primitiveOpacity: Double = 1.0
   public var primitiveIsCapped: Bool = false
@@ -381,7 +382,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   // =====================================================================
   
   
-  public var primitiveRotationDelta: Double = 5.0
   
   public var adsorptionSurfaceProbeMolecule: ProbeMolecule = .helium
   
@@ -1397,43 +1397,40 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       case .custom:
         break
       case .default:
-        drawAtoms = true
-        atomScaleFactor = 0.7
-        atomHue = 1.0
-        atomSaturation = 1.0
-        atomValue = 1.0
-        atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        atomHDR = true
-        atomHDRExposure = 1.5
-        atomAmbientOcclusion = false
-        bondAmbientOcclusion = false
-        atomAmbientIntensity = 0.2
-        atomDiffuseIntensity = 1.0
-        atomSpecularIntensity = 1.0
-        atomShininess = 6.0
+        self.drawAtoms = true
+        self.atomAmbientOcclusion = false
+        self.atomScaleFactor = 0.7
+        self.atomHue = 1.0
+        self.atomSaturation = 1.0
+        self.atomValue = 1.0
+        self.atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.atomHDR = true
+        self.atomHDRExposure = 1.5
+        self.atomAmbientIntensity = 0.2
+        self.atomDiffuseIntensity = 1.0
+        self.atomSpecularIntensity = 1.0
+        self.atomShininess = 6.0
+        self.atomForceFieldIdentifier = "Default"
+        self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
+        self.atomColorOrder = .elementOnly
         
-        atomForceFieldIdentifier = "Default"
-        atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
-        atomColorOrder = .elementOnly
-        
-        drawBonds = true
-        bondColorMode = .uniform
-        bondScaleFactor = 0.15
-        bondAmbientColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        bondDiffuseColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-        bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        bondAmbientIntensity = 0.35
-        bondDiffuseIntensity = 1.0
-        bondSpecularIntensity = 1.0
-        bondShininess = 4.0
-        bondHDR = true
-        bondHDRExposure = 1.5
-        
-        bondHue = 1.0
-        bondSaturation = 1.0
-        bondValue = 1.0
-        bondAmbientOcclusion = false
+        self.drawBonds = true
+        self.bondAmbientOcclusion = false
+        self.bondColorMode = .uniform
+        self.bondScaleFactor = 0.15
+        self.bondAmbientColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.bondDiffuseColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        self.bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.bondAmbientIntensity = 0.35
+        self.bondDiffuseIntensity = 1.0
+        self.bondSpecularIntensity = 1.0
+        self.bondShininess = 4.0
+        self.bondHDR = true
+        self.bondHDRExposure = 1.5
+        self.bondHue = 1.0
+        self.bondSaturation = 1.0
+        self.bondValue = 1.0
         
         self.atomSelectionStyle = .striped
         self.atomSelectionScaling = 1.0
@@ -1449,30 +1446,26 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         
         self.setRepresentationType(type: .sticks_and_balls)
       case .fancy:
-        atomHue = 1.0
-        atomScaleFactor = 1.0
-        atomSaturation = 0.5
-        atomValue = 1.0
+        self.drawAtoms = true
+        self.atomAmbientOcclusion = true
+        self.atomHue = 1.0
+        self.atomScaleFactor = 1.0
+        self.atomSaturation = 0.5
+        self.atomValue = 1.0
+        self.atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.atomHDR = false
+        self.atomAmbientIntensity = 1.0
+        self.atomDiffuseIntensity = 0.0
+        self.atomSpecularIntensity = 0.2
+        self.atomShininess = 4.0
+        self.atomScaleFactor = 1.0
+        self.atomForceFieldIdentifier = "Default"
+        self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.rasmol.rawValue
+        self.atomColorOrder = .elementOnly
         
-        atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        drawAtoms = true
-        drawBonds = false
-        atomHDR = false
-        
-        atomAmbientOcclusion = true
-        bondAmbientOcclusion = false
-        
-        atomAmbientIntensity = 1.0
-        atomDiffuseIntensity = 0.0
-        atomSpecularIntensity = 0.2
-        atomShininess = 4.0
-        
-        atomScaleFactor = 1.0
-        
-        atomForceFieldIdentifier = "Default"
-        atomColorSchemeIdentifier = SKColorSets.ColorScheme.rasmol.rawValue
-        atomColorOrder = .elementOnly
+        self.drawBonds = false
+        self.bondAmbientOcclusion = false
         
         self.atomSelectionStyle = .striped
         self.atomSelectionScaling = 1.0
@@ -1488,42 +1481,41 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         
         self.setRepresentationType(type: .vdw)
       case .licorice:
-        atomHue = 1.0
-        atomSaturation = 1.0
-        atomValue = 1.0
-        atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        atomAmbientIntensity = 0.1
-        atomDiffuseIntensity = 1.0
-        atomSpecularIntensity = 1.0
-        atomShininess = 4.0
-        drawAtoms = true
-        atomHDR = true
-        atomSelectionIntensity = 1.0
-        atomHDRExposure = 1.5
-        atomScaleFactor = 1.0
-        atomForceFieldIdentifier = "Default"
-        atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
-        atomColorOrder = .elementOnly
-        atomAmbientOcclusion = false
+        self.drawAtoms = true
+        self.atomAmbientOcclusion = false
+        self.atomHue = 1.0
+        self.atomSaturation = 1.0
+        self.atomValue = 1.0
+        self.atomAmbientColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.atomSpecularColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.atomAmbientIntensity = 0.1
+        self.atomDiffuseIntensity = 1.0
+        self.atomSpecularIntensity = 1.0
+        self.atomShininess = 4.0
+        self.atomHDR = true
+        self.atomHDRExposure = 1.5
+        self.atomScaleFactor = 1.0
+        self.atomForceFieldIdentifier = "Default"
+        self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
+        self.atomColorOrder = .elementOnly
         
-        drawBonds = true
-        bondColorMode = .split
-        bondScaleFactor = 0.25
-        bondAmbientColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        bondDiffuseColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
-        bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        bondAmbientIntensity = 0.1
-        bondDiffuseIntensity = 1.0
-        bondSpecularIntensity = 1.0
-        bondShininess = 4.0
-        bondHDR = true
-        bondHDRExposure = 1.5
-        bondSelectionIntensity = 0.5
-        bondHue = 1.0
-        bondSaturation = 1.0
-        bondValue = 1.0
-        bondAmbientOcclusion = false
+        self.drawBonds = true
+        self.bondAmbientOcclusion = false
+        self.bondColorMode = .split
+        self.bondScaleFactor = 0.25
+        self.bondAmbientColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.bondDiffuseColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)
+        self.bondSpecularColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.bondAmbientIntensity = 0.1
+        self.bondDiffuseIntensity = 1.0
+        self.bondSpecularIntensity = 1.0
+        self.bondShininess = 4.0
+        self.bondHDR = true
+        self.bondHDRExposure = 1.5
+        self.bondSelectionIntensity = 0.5
+        self.bondHue = 1.0
+        self.bondSaturation = 1.0
+        self.bondValue = 1.0
         
         self.atomSelectionStyle = .striped
         self.atomSelectionScaling = 1.0

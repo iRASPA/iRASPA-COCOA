@@ -104,7 +104,10 @@ public class MetalRenderer
   var blurHorizontalPictureShader: MetalBlurHorizontalPictureShader =  MetalBlurHorizontalPictureShader()
   var blurVerticalPictureShader: MetalBlurVerticalPictureShader =  MetalBlurVerticalPictureShader()
   
-  var metalSphereShader: MetalSphereShader =  MetalSphereShader()
+  var metalCrystalSphereShader: MetalCrystalEllipsoidShader =  MetalCrystalEllipsoidShader()
+  var metalCrystalCylinderShader: MetalCrystalCylinderShader =  MetalCrystalCylinderShader()
+  var metalCrystalPolygonalPrismShader: MetalCrystalPolygonalPrismShader = MetalCrystalPolygonalPrismShader()
+  var metalEllipsoidShader: MetalEllipsoidShader =  MetalEllipsoidShader()
   var metalCylinderShader: MetalCylinderShader =  MetalCylinderShader()
   var metalPolygonalPrismShader: MetalPolygonalPrismShader = MetalPolygonalPrismShader()
   
@@ -210,12 +213,17 @@ public class MetalRenderer
     externalBondSelectionStripedShader.renderDataSource = renderDataSource
     externalBondSelectionStripedShader.renderStructures = renderStructures
     
-    metalSphereShader.renderDataSource  = renderDataSource
-    metalSphereShader.renderStructures = renderStructures
+    metalCrystalSphereShader.renderDataSource  = renderDataSource
+    metalCrystalSphereShader.renderStructures = renderStructures
+    metalCrystalCylinderShader.renderDataSource  = renderDataSource
+    metalCrystalCylinderShader.renderStructures = renderStructures
+    metalCrystalPolygonalPrismShader.renderDataSource  = renderDataSource
+    metalCrystalPolygonalPrismShader.renderStructures = renderStructures
     
+    metalEllipsoidShader.renderDataSource  = renderDataSource
+    metalEllipsoidShader.renderStructures = renderStructures
     metalCylinderShader.renderDataSource  = renderDataSource
     metalCylinderShader.renderStructures = renderStructures
-   
     metalPolygonalPrismShader.renderDataSource  = renderDataSource
     metalPolygonalPrismShader.renderStructures = renderStructures
   }
@@ -382,10 +390,11 @@ public class MetalRenderer
     blurVerticalPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     
-    metalSphereShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
-    
+    metalCrystalSphereShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    metalCrystalCylinderShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    metalCrystalPolygonalPrismShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    metalEllipsoidShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     metalCylinderShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
-   
     metalPolygonalPrismShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
   }
 
@@ -472,7 +481,10 @@ public class MetalRenderer
     blurHorizontalPictureShader.buildVertexBuffers(device: device)
     blurVerticalPictureShader.buildVertexBuffers(device: device)
     
-    metalSphereShader.buildVertexBuffers(device: device)
+    metalCrystalSphereShader.buildVertexBuffers(device: device)
+    metalCrystalCylinderShader.buildVertexBuffers(device: device)
+    metalCrystalPolygonalPrismShader.buildVertexBuffers(device: device)
+    metalEllipsoidShader.buildVertexBuffers(device: device)
     metalCylinderShader.buildVertexBuffers(device: device)
     metalPolygonalPrismShader.buildVertexBuffers(device: device)
   }
@@ -596,10 +608,11 @@ public class MetalRenderer
       }
     }
    
-    self.metalSphereShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-   
-     self.metalCylinderShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    
+    self.metalCrystalSphereShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalCrystalCylinderShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalCrystalPolygonalPrismShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalEllipsoidShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalCylinderShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalPolygonalPrismShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     
   
@@ -657,11 +670,13 @@ public class MetalRenderer
     self.textShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
   
-    self.metalSphereShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-    
+    self.metalCrystalSphereShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalCrystalCylinderShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalCrystalPolygonalPrismShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalCylinderShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
-  
     self.metalPolygonalPrismShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+      
     
     self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     

@@ -201,9 +201,9 @@ fragment float4 internalBondSelectionWorleyNoise3DCylinderFragmentShader(Interna
   }
   
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.bondHue;
+  hsv.y = hsv.y * structureUniforms.bondSaturation;
+  hsv.z = hsv.z * structureUniforms.bondValue;
   float intensity = frameUniforms.bloomLevel *  structureUniforms.bondSelectionIntensity;
   return float4(hsv2rgb(hsv) * intensity, intensity);
 }
@@ -457,16 +457,16 @@ fragment float4 internalBondSelectionStripedCylinderFragmentShader(InternalBondS
   if (fract(st.x*frequency) >= uDensity && fract(st.y*frequency) >= uDensity)
     discard_fragment();
   
-  if (structureUniforms.atomHDR)
+  if (structureUniforms.bondHDR)
   {
-    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.atomHDRExposure);
+    float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.bondHDRExposure);
     color= vLdrColor;
   }
   
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.changeHueSaturationValue.x;
-  hsv.y = hsv.y * structureUniforms.changeHueSaturationValue.y;
-  hsv.z = hsv.z * structureUniforms.changeHueSaturationValue.z;
+  hsv.x = hsv.x * structureUniforms.bondHue;
+  hsv.y = hsv.y * structureUniforms.bondSaturation;
+  hsv.z = hsv.z * structureUniforms.bondValue;
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
   return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
 }
