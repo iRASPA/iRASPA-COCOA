@@ -251,3 +251,34 @@ fragment PickingBondFragOutput PickingExternalBondFragmentShader(PickingExternal
   output.albedo = uint4(2,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
   return output;
 }
+
+
+vertex PickingVertexShaderOut PickingPolygonalPrismVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+                                                             const device InPerInstanceAttributes *positions [[buffer(1)]],
+                                                             constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                             constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                             constant LightUniforms& lightUniforms [[buffer(4)]],
+                                                             uint vid [[vertex_id]],
+                                                             uint iid [[instance_id]])
+{
+  PickingVertexShaderOut vert;
+  
+  vert.instanceId = positions[iid].tag;
+  float4 pos = structureUniforms.transformationMatrix * vertices[vid].position + positions[iid].position;
+  vert.position = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * pos;
+  
+  return vert;
+}
+
+
+
+
+fragment PickingBondFragOutput PickingPolygonalPrismFragmentShader(PickingVertexShaderOut vert [[stage_in]],
+                                              constant StructureUniforms& structureUniforms [[buffer(0)]])
+                                              
+{
+  PickingBondFragOutput output;
+  
+  output.albedo = uint4(1,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
+  return output;
+}

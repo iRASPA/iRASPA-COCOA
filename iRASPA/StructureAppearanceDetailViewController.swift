@@ -537,27 +537,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
           }
         }
-        if let button: NSButton = view.viewWithTag(40) as? NSButton
-        {
-          button.isEnabled = false
-          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
-            !representedStructure.allPrimitiveStructure.isEmpty
-          {
-            button.isEnabled = enabled
-            
-            if let renderPrimitiveIsFractional: Bool = representedStructure.renderPrimitiveIsFractional
-            {
-              button.allowsMixedState = false
-              button.state = renderPrimitiveIsFractional ? NSControl.StateValue.on : NSControl.StateValue.off
-            }
-            else
-            {
-              button.allowsMixedState = true
-              button.state = NSControl.StateValue.mixed
-            }
-          }
-        }
-        
         
         // High dynamic range
         if let button: NSButton = view.viewWithTag(41) as? NSButton

@@ -381,8 +381,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   // MARK: other variables
   // =====================================================================
   
-  
-  
   public var adsorptionSurfaceProbeMolecule: ProbeMolecule = .helium
   
   public var scaling: SIMD3<Double> = SIMD3<Double>(x: 1.0, y: 1.0, z: 1.0)

@@ -144,7 +144,7 @@ class MetalCrystalPolygonalPrismShader
         {
           for structure in structures
           {
-            if let structure: RKRenderCrystalPolygonalPrimSource = structure as? RKRenderCrystalPolygonalPrimSource
+            if let structure: RKRenderCrystalPolygonalPrismObjectsSource = structure as? RKRenderCrystalPolygonalPrismObjectsSource
             {
               let numberOfSides: Int = structure.primitiveNumberOfSides
               if(structure.primitiveIsCapped)
@@ -194,7 +194,7 @@ class MetalCrystalPolygonalPrismShader
   
   public func renderOpaqueWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalPolygonalPrimSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalPolygonalPrismObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setCullMode(MTLCullMode.none)
       
@@ -215,7 +215,7 @@ class MetalCrystalPolygonalPrismShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderCrystalPolygonalPrimSource = structure as? RKRenderCrystalPolygonalPrimSource,
+          if let structure: RKRenderCrystalPolygonalPrismObjectsSource = structure as? RKRenderCrystalPolygonalPrismObjectsSource,
             let instanceBuffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j),
             let vertexBuffer: MTLBuffer = self.metalBuffer(vertexBuffers, sceneIndex: i, movieIndex: j),
             let indexBuffer: MTLBuffer = self.metalBuffer(indexBuffers, sceneIndex: i, movieIndex: j)
@@ -240,7 +240,7 @@ class MetalCrystalPolygonalPrismShader
   
   public func renderTransparentWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalPolygonalPrimSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalPolygonalPrismObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setDepthStencilState(transparentDepthState)
       commandEncoder.setRenderPipelineState(transparentPipeLine)
@@ -259,7 +259,7 @@ class MetalCrystalPolygonalPrismShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderCrystalPolygonalPrimSource = structure as? RKRenderCrystalPolygonalPrimSource,
+          if let structure: RKRenderCrystalPolygonalPrismObjectsSource = structure as? RKRenderCrystalPolygonalPrismObjectsSource,
             let instanceBuffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j),
             let vertexBuffer: MTLBuffer = self.metalBuffer(vertexBuffers, sceneIndex: i, movieIndex: j),
             let indexBuffer: MTLBuffer = self.metalBuffer(indexBuffers, sceneIndex: i, movieIndex: j)

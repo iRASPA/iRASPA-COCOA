@@ -472,6 +472,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
+  func reloadRenderDataSelectedPrimitives()
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    {
+      renderController.reloadRenderDataSelectedPrimitives()
+    }
+  }
+  
   func updateLightUniforms()
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
@@ -922,24 +932,29 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       let pickedObject: Int = Int(pick[3])
          
       let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
-      let structure: RKRenderStructure = structures[movieIdentifier]
-         
-      if structure.isVisible
+      let selectedStructure: RKRenderStructure = structures[movieIdentifier]
+      
+      for structure in structures
       {
-        switch(objectType)
+        if structure === selectedStructure && structure.isVisible && objectType > 0
         {
-        case 1:
-          self.setSelectionFor(structure: structure as! Structure, atomIndexSet: IndexSet(integer: pickedObject), bondIndexSet: [], byExtendingSelection: false)
-          self.reloadRenderDataSelectedAtoms()
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
-        case 2:
-          self.setSelectionFor(structure: structure as! Structure, atomIndexSet: IndexSet(), bondIndexSet: IndexSet(integer: pickedObject), byExtendingSelection: false)
-          self.reloadRenderDataSelectedInternalBonds()
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
-        default:
-          break
+          switch(objectType)
+          {
+          case 1:
+            self.setSelectionFor(structure: structure as! Structure, atomIndexSet: IndexSet(integer: pickedObject), bondIndexSet: [], byExtendingSelection: false)
+          case 2:
+            self.setSelectionFor(structure: structure as! Structure, atomIndexSet: IndexSet(), bondIndexSet: IndexSet(integer: pickedObject), byExtendingSelection: false)
+          default:
+            break
+          }
+        }
+        else
+        {
+          self.setSelectionFor(structure: structure as! Structure, atomIndexSet: IndexSet(), bondIndexSet: [], byExtendingSelection: false)
         }
       }
+      self.reloadRenderDataSelectedAtoms()
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
     }
   }
    
@@ -1828,14 +1843,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         if (tracking == .mouseClickWithoutKeyModifiers)
         {
           let pick: [Int32] = pickPoint(point)
-          
-          switch(pick[0])
-          {
-          case 0:
-            clearSelection()
-          default:
-            setObjectToSelection(pick)
-          }
+          setObjectToSelection(pick)
         }
       }
     

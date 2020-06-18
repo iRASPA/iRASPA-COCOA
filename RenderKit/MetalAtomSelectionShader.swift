@@ -40,7 +40,7 @@ class MetalAtomSelectionShader
   
   var instanceBuffer: [[MTLBuffer?]] = [[]]
   
-  public func buildVertexBuffers(device: MTLDevice)
+  public func buildInstanceBuffers(device: MTLDevice)
   {
     if let _: RKRenderDataSource = renderDataSource
     {

@@ -95,6 +95,28 @@ public class MetalRenderer
   var externalBondSelectionGlowShader: MetalExternalBondSelectionGlowShader = MetalExternalBondSelectionGlowShader()
   var externalBondSelectionStripedShader: MetalExternalBondSelectionStripedShader = MetalExternalBondSelectionStripedShader()
   
+  var ellipsoidPrimitiveSelectionStripedShader: MetalEllipsoidPrimitiveSelectionStripedShader = MetalEllipsoidPrimitiveSelectionStripedShader()
+  var crystalEllipsoidPrimitiveSelectionStripedShader: MetalCrystalEllipsoidPrimitiveSelectionStripedShader = MetalCrystalEllipsoidPrimitiveSelectionStripedShader()
+  var cylinderPrimitiveSelectionStripedShader: MetalCylinderPrimitiveSelectionStripedShader = MetalCylinderPrimitiveSelectionStripedShader()
+  var crystalCylinderPrimitiveSelectionStripedShader: MetalCrystalCylinderPrimitiveSelectionStripedShader = MetalCrystalCylinderPrimitiveSelectionStripedShader()
+  var polygonalPrismPrimitiveSelectionStripedShader: MetalPolygonalPrismPrimitiveSelectionStripedShader = MetalPolygonalPrismPrimitiveSelectionStripedShader()
+  var crystalPolygonalPrismPrimitiveSelectionStripedShader: MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader = MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader()
+  
+  var ellipsoidPrimitiveSelectionWorleyNoise3DShader: MetalEllipsoidPrimitiveSelectionWorleyNoise3DShader = MetalEllipsoidPrimitiveSelectionWorleyNoise3DShader()
+  var crystalEllipsoidPrimitiveSelectionWorleyNoise3DShader: MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader = MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader()
+  var cylinderPrimitiveSelectionWorleyNoise3DShader: MetalCylinderPrimitiveSelectionWorleyNoise3DShader = MetalCylinderPrimitiveSelectionWorleyNoise3DShader()
+  var crystalCylinderPrimitiveSelectionWorleyNoise3DShader: MetalCrystalCylinderPrimitiveSelectionWorleyNoise3DShader = MetalCrystalCylinderPrimitiveSelectionWorleyNoise3DShader()
+  var polygonalPrismPrimitiveSelectionWorleyNoise3DShader: MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader = MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader()
+  var crystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader: MetalCrystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader = MetalCrystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader()
+  
+  var ellipsoidPrimitiveSelectionGlowShader: MetalEllipsoidPrimitiveSelectionGlowShader = MetalEllipsoidPrimitiveSelectionGlowShader()
+  var crystalEllipsoidPrimitiveSelectionGlowShader: MetalCrystalEllipsoidPrimitiveSelectionGlowShader = MetalCrystalEllipsoidPrimitiveSelectionGlowShader()
+  var cylinderPrimitiveSelectionGlowShader: MetalCylinderPrimitiveSelectionGlowShader = MetalCylinderPrimitiveSelectionGlowShader()
+  var crystalCylinderPrimitiveSelectionGlowShader: MetalCrystalCylinderPrimitiveSelectionGlowShader = MetalCrystalCylinderPrimitiveSelectionGlowShader()
+  var polygonalPrismPrimitiveSelectionGlowShader: MetalPolygonalPrismPrimitiveSelectionGlowShader = MetalPolygonalPrismPrimitiveSelectionGlowShader()
+  var crystalPolygonalPrismPrimitiveSelectionGlowShader: MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader = MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader()
+  
+  
   var blurHorizontalShader: MetalBlurHorizontalShader =  MetalBlurHorizontalShader()
   var blurVerticalShader: MetalBlurVerticalShader =  MetalBlurVerticalShader()
   
@@ -104,7 +126,7 @@ public class MetalRenderer
   var blurHorizontalPictureShader: MetalBlurHorizontalPictureShader =  MetalBlurHorizontalPictureShader()
   var blurVerticalPictureShader: MetalBlurVerticalPictureShader =  MetalBlurVerticalPictureShader()
   
-  var metalCrystalSphereShader: MetalCrystalEllipsoidShader =  MetalCrystalEllipsoidShader()
+  var metalCrystalEllipsoidShader: MetalCrystalEllipsoidShader =  MetalCrystalEllipsoidShader()
   var metalCrystalCylinderShader: MetalCrystalCylinderShader =  MetalCrystalCylinderShader()
   var metalCrystalPolygonalPrismShader: MetalCrystalPolygonalPrismShader = MetalCrystalPolygonalPrismShader()
   var metalEllipsoidShader: MetalEllipsoidShader =  MetalEllipsoidShader()
@@ -213,8 +235,8 @@ public class MetalRenderer
     externalBondSelectionStripedShader.renderDataSource = renderDataSource
     externalBondSelectionStripedShader.renderStructures = renderStructures
     
-    metalCrystalSphereShader.renderDataSource  = renderDataSource
-    metalCrystalSphereShader.renderStructures = renderStructures
+    metalCrystalEllipsoidShader.renderDataSource  = renderDataSource
+    metalCrystalEllipsoidShader.renderStructures = renderStructures
     metalCrystalCylinderShader.renderDataSource  = renderDataSource
     metalCrystalCylinderShader.renderStructures = renderStructures
     metalCrystalPolygonalPrismShader.renderDataSource  = renderDataSource
@@ -226,6 +248,45 @@ public class MetalRenderer
     metalCylinderShader.renderStructures = renderStructures
     metalPolygonalPrismShader.renderDataSource  = renderDataSource
     metalPolygonalPrismShader.renderStructures = renderStructures
+    
+    ellipsoidPrimitiveSelectionStripedShader.renderDataSource = renderDataSource
+    ellipsoidPrimitiveSelectionStripedShader.renderStructures = renderStructures
+    crystalEllipsoidPrimitiveSelectionStripedShader.renderDataSource = renderDataSource
+    crystalEllipsoidPrimitiveSelectionStripedShader.renderStructures = renderStructures
+    cylinderPrimitiveSelectionStripedShader.renderDataSource = renderDataSource
+    cylinderPrimitiveSelectionStripedShader.renderStructures = renderStructures
+    crystalCylinderPrimitiveSelectionStripedShader.renderDataSource = renderDataSource
+    crystalCylinderPrimitiveSelectionStripedShader.renderStructures = renderStructures
+    polygonalPrismPrimitiveSelectionStripedShader.renderDataSource = renderDataSource
+    polygonalPrismPrimitiveSelectionStripedShader.renderStructures = renderStructures
+    crystalPolygonalPrismPrimitiveSelectionStripedShader.renderDataSource = renderDataSource
+    crystalPolygonalPrismPrimitiveSelectionStripedShader.renderStructures = renderStructures
+    
+    ellipsoidPrimitiveSelectionWorleyNoise3DShader.renderDataSource = renderDataSource
+    ellipsoidPrimitiveSelectionWorleyNoise3DShader.renderStructures = renderStructures
+    crystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.renderDataSource = renderDataSource
+    crystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.renderStructures = renderStructures
+    cylinderPrimitiveSelectionWorleyNoise3DShader.renderDataSource = renderDataSource
+    cylinderPrimitiveSelectionWorleyNoise3DShader.renderStructures = renderStructures
+    crystalCylinderPrimitiveSelectionWorleyNoise3DShader.renderDataSource = renderDataSource
+    crystalCylinderPrimitiveSelectionWorleyNoise3DShader.renderStructures = renderStructures
+    polygonalPrismPrimitiveSelectionWorleyNoise3DShader.renderDataSource = renderDataSource
+    polygonalPrismPrimitiveSelectionWorleyNoise3DShader.renderStructures = renderStructures
+    crystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.renderDataSource = renderDataSource
+    crystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.renderStructures = renderStructures
+    
+    ellipsoidPrimitiveSelectionGlowShader.renderDataSource = renderDataSource
+    ellipsoidPrimitiveSelectionGlowShader.renderStructures = renderStructures
+    crystalEllipsoidPrimitiveSelectionGlowShader.renderDataSource = renderDataSource
+    crystalEllipsoidPrimitiveSelectionGlowShader.renderStructures = renderStructures
+    cylinderPrimitiveSelectionGlowShader.renderDataSource = renderDataSource
+    cylinderPrimitiveSelectionGlowShader.renderStructures = renderStructures
+    crystalCylinderPrimitiveSelectionGlowShader.renderDataSource = renderDataSource
+    crystalCylinderPrimitiveSelectionGlowShader.renderStructures = renderStructures
+    polygonalPrismPrimitiveSelectionGlowShader.renderDataSource = renderDataSource
+    polygonalPrismPrimitiveSelectionGlowShader.renderStructures = renderStructures
+    crystalPolygonalPrismPrimitiveSelectionGlowShader.renderDataSource = renderDataSource
+    crystalPolygonalPrismPrimitiveSelectionGlowShader.renderStructures = renderStructures
   }
   
   
@@ -257,6 +318,8 @@ public class MetalRenderer
     ambientOcclusionShader.buildAmbientOcclusionTextures(device: device)
     
     buildVertexBuffers(device: device)
+    
+    rebuildSelectionInstanceBuffers(device: device)
     
     buildStructureUniforms(device: device)
   }
@@ -291,7 +354,7 @@ public class MetalRenderer
 
   public func reloadRenderDataSelectedAtoms(device: MTLDevice)
   {
-    self.rebuildSelectionVertexBuffer(device: device)
+    self.rebuildSelectionInstanceBuffers(device: device)
   }
   
   public func reloadRenderDataSelectedInternalBonds(device: MTLDevice)
@@ -300,6 +363,11 @@ public class MetalRenderer
   }
   
   public func reloadRenderDataSelectedExternalBonds(device: MTLDevice)
+  {
+    
+  }
+  
+  public func reloadRenderDataSelectedPrimitives(device: MTLDevice)
   {
     
   }
@@ -379,6 +447,8 @@ public class MetalRenderer
     externalBondSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     externalBondSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
+    
+    
     blurHorizontalShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     blurVerticalShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -390,12 +460,33 @@ public class MetalRenderer
     blurVerticalPictureShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     
-    metalCrystalSphereShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    metalCrystalEllipsoidShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     metalCrystalCylinderShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     metalCrystalPolygonalPrismShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     metalEllipsoidShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     metalCylinderShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     metalPolygonalPrismShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
+    ellipsoidPrimitiveSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalEllipsoidPrimitiveSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    cylinderPrimitiveSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalCylinderPrimitiveSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    polygonalPrismPrimitiveSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalPolygonalPrismPrimitiveSelectionStripedShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
+    ellipsoidPrimitiveSelectionWorleyNoise3DShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    cylinderPrimitiveSelectionWorleyNoise3DShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalCylinderPrimitiveSelectionWorleyNoise3DShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    polygonalPrismPrimitiveSelectionWorleyNoise3DShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
+    ellipsoidPrimitiveSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalEllipsoidPrimitiveSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    cylinderPrimitiveSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalCylinderPrimitiveSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    polygonalPrismPrimitiveSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    crystalPolygonalPrismPrimitiveSelectionGlowShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
   }
 
   
@@ -447,7 +538,7 @@ public class MetalRenderer
     measurementOrthographicImposterShader.buildVertexBuffers(device: device)
     measurementPerspectiveImposterShader.buildVertexBuffers(device: device)
     
-    atomSelectionShader.buildVertexBuffers(device: device)
+    atomSelectionShader.buildInstanceBuffers(device: device)
     
     atomSelectionWorleyShader.buildVertexBuffers(device: device)
     atomSelectionWorleyOrthographicImposterShader.buildVertexBuffers(device: device)
@@ -461,8 +552,8 @@ public class MetalRenderer
     atomSelectionGlowOrthographicImposterShader.buildVertexBuffers(device: device)
     atomSelectionGlowPerspectiveImposterShader.buildVertexBuffers(device: device)
     
-    internalBondSelectionShader.buildVertexBuffers(device: device)
-    externalBondSelectionShader.buildVertexBuffers(device: device)
+    internalBondSelectionShader.buildInstanceBuffers(device: device)
+    externalBondSelectionShader.buildInstanceBuffers(device: device)
     
     internalBondSelectionWorleyShader.buildVertexBuffers(device: device)
     internalBondSelectionGlowShader.buildVertexBuffers(device: device)
@@ -481,19 +572,50 @@ public class MetalRenderer
     blurHorizontalPictureShader.buildVertexBuffers(device: device)
     blurVerticalPictureShader.buildVertexBuffers(device: device)
     
-    metalCrystalSphereShader.buildVertexBuffers(device: device)
+    metalCrystalEllipsoidShader.buildVertexBuffers(device: device)
     metalCrystalCylinderShader.buildVertexBuffers(device: device)
     metalCrystalPolygonalPrismShader.buildVertexBuffers(device: device)
     metalEllipsoidShader.buildVertexBuffers(device: device)
     metalCylinderShader.buildVertexBuffers(device: device)
     metalPolygonalPrismShader.buildVertexBuffers(device: device)
+    
+    // FIX
+    ellipsoidPrimitiveSelectionStripedShader.buildVertexBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionStripedShader.buildVertexBuffers(device: device)
+    
+    ellipsoidPrimitiveSelectionWorleyNoise3DShader.buildVertexBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.buildVertexBuffers(device: device)
+    
+    ellipsoidPrimitiveSelectionGlowShader.buildVertexBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionGlowShader.buildVertexBuffers(device: device)
   }
   
-  public func rebuildSelectionVertexBuffer(device: MTLDevice)
+  public func rebuildSelectionInstanceBuffers(device: MTLDevice)
   {
-    atomSelectionShader.buildVertexBuffers(device: device)
-    internalBondSelectionShader.buildVertexBuffers(device: device)
-    externalBondSelectionShader.buildVertexBuffers(device: device)
+    atomSelectionShader.buildInstanceBuffers(device: device)
+    internalBondSelectionShader.buildInstanceBuffers(device: device)
+    externalBondSelectionShader.buildInstanceBuffers(device: device)
+    
+    ellipsoidPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    cylinderPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    crystalCylinderPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    polygonalPrismPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    crystalPolygonalPrismPrimitiveSelectionStripedShader.buildInstanceBuffers(device: device)
+    
+    ellipsoidPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    cylinderPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    crystalCylinderPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    polygonalPrismPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    crystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.buildInstanceBuffers(device: device)
+    
+    ellipsoidPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    crystalEllipsoidPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    cylinderPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    crystalCylinderPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    polygonalPrismPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
+    crystalPolygonalPrismPrimitiveSelectionGlowShader.buildInstanceBuffers(device: device)
   }
   
   // MARK: Uniforms
@@ -608,7 +730,7 @@ public class MetalRenderer
       }
     }
    
-    self.metalCrystalSphereShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalCrystalEllipsoidShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalCrystalCylinderShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalCrystalPolygonalPrismShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalEllipsoidShader.renderOpaqueWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
@@ -636,6 +758,21 @@ public class MetalRenderer
       
       self.externalBondSelectionWorleyShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: externalBondSelectionShader, bondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       self.externalBondSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, instanceRenderer: externalBondSelectionShader, bondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      
+      self.ellipsoidPrimitiveSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.crystalEllipsoidPrimitiveSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.cylinderPrimitiveSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCylinderShader: metalCylinderShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.crystalCylinderPrimitiveSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCrystalCylinderShader: metalCrystalCylinderShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.polygonalPrismPrimitiveSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalPolygonalPrismShader: metalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.crystalPolygonalPrismPrimitiveSelectionStripedShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCrystalPolygonalPrismShader: metalCrystalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      self.ellipsoidPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.crystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.cylinderPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCylinderShader: metalCylinderShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.crystalCylinderPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCrystalCylinderShader: metalCrystalCylinderShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.polygonalPrismPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalPolygonalPrismShader: metalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      self.crystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCrystalPolygonalPrismShader: metalCrystalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
       switch(renderQuality)
       {
@@ -670,7 +807,7 @@ public class MetalRenderer
     self.textShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
   
-    self.metalCrystalSphereShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.metalCrystalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalCrystalCylinderShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalCrystalPolygonalPrismShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
@@ -685,7 +822,20 @@ public class MetalRenderer
   
   func pickingOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize)
   {
-    pickingShader.renderPickingTextureWithEncoder(commandBuffer, renderPassDescriptor: pickingShader.renderPassDescriptor, atomShader: atomShader, atomOrthographicImposterShader: atomOrthographicImposterShader, internalBondShader: internalBondShader, externalBondShader: externalBondShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, size: size)
+    pickingShader.renderPickingTextureWithEncoder(commandBuffer,
+                                                  renderPassDescriptor: pickingShader.renderPassDescriptor,
+                                                  atomShader: atomShader,
+                                                  atomOrthographicImposterShader: atomOrthographicImposterShader,
+                                                  internalBondShader: internalBondShader,
+                                                  externalBondShader: externalBondShader,
+                                                  crystalEllipsoidPrimitiveShader: metalCrystalEllipsoidShader,
+                                                  ellipsoidPrimitiveShader: metalEllipsoidShader,
+                                                  crystalCylinderPrimitiveShader: metalCrystalCylinderShader,
+                                                  cylinderPrimitiveShader: metalCylinderShader,
+                                                  crystalPolygonalPrismPrimitiveShader: metalCrystalPolygonalPrismShader,
+                                                  polygonalPrismPrimitiveShader: metalPolygonalPrismShader,
+                                                  frameUniformBuffer: frameUniformBuffer,
+                                                  structureUniformBuffers: structureUniformBuffers, size: size)
   }
   
   func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
@@ -713,6 +863,16 @@ public class MetalRenderer
       
       internalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceRenderer: internalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       externalBondSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, instanceRenderer: externalBondSelectionShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      
+      ellipsoidPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      crystalEllipsoidPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      cylinderPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalCylinderShader: metalCylinderShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      crystalCylinderPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalCrystalCylinderShader: metalCrystalCylinderShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+      polygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalPolygonalPrismShader: metalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      crystalPolygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalCrystalPolygonalPrismShader: metalCrystalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       
       commandEncoder.endEncoding()
     }

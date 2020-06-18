@@ -71,20 +71,14 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     switch(structure)
     {
-    case is Protein, is ProteinCrystal, is Molecule, is MolecularCrystal:
+    case is Protein, is ProteinCrystal, is Molecule, is MolecularCrystal,
+         is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
       self.atomTreeController.flattenedLeafNodes().forEach{
       let pos = $0.representedObject.position
           $0.representedObject.position = self.cell.convertToFractional(pos)
         }
-      break
-    case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
-      if !structure.primitiveIsFractional
-      {
-        self.atomTreeController.flattenedLeafNodes().forEach{
-        let pos = $0.representedObject.position
-            $0.representedObject.position = self.cell.convertToFractional(pos)
-        }
-      }
+    case is Crystal, is CrystalEllipsoidPrimitive, is CrystalCylinderPrimitive, is CrystalPolygonalPrismPrimitive:
+      // nothing to do
       break
     default:
       break

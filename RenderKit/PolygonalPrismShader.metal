@@ -44,7 +44,6 @@ vertex AtomSphereVertexShaderOut PolygonalPrismVertexShader(const device InPerVe
   AtomSphereVertexShaderOut vert;
   
   float4 pos = structureUniforms.transformationMatrix * vertices[vid].position + positions[iid].position;
-  
   vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * structureUniforms.transformationNormalMatrix *   vertices[vid].normal).xyz;
   
   float4 P =  frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;

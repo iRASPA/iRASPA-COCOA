@@ -198,6 +198,14 @@ public protocol RKRenderObjectSource //: RKRenderStructure
   var drawAtoms: Bool {get}
   var isVisible: Bool {get}
   
+  var atomSelectionStyle: RKSelectionStyle {get}
+  var atomSelectionStripesDensity: Double {get}
+  var atomSelectionStripesFrequency: Double {get}
+  var atomSelectionWorleyNoise3DFrequency: Double {get}
+  var atomSelectionWorleyNoise3DJitter: Double {get}
+  var atomSelectionIntensity: Double {get}
+  var atomSelectionScaling: Double {get}
+  
   var primitiveTransformationMatrix: double3x3 {get}
   var primitiveOrientation: simd_quatd {get}
   
@@ -228,38 +236,43 @@ public protocol RKRenderObjectSource //: RKRenderStructure
   var primitiveBackSideShininess: Double {get}
 }
 
-public protocol RKRenderSphereObjectsSource: RKRenderObjectSource
+public protocol RKRenderCrystalEllipsoidObjectsSource: RKRenderObjectSource
 {
-  var renderSphereObjects: [RKInPerInstanceAttributesAtoms] {get}
+  var renderCrystalEllipsoidObjects: [RKInPerInstanceAttributesAtoms] {get}
+  var renderSelectedCrystalEllipsoidObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
+
+public protocol RKRenderEllipsoidObjectsSource: RKRenderObjectSource
+{
+  var renderEllipsoidObjects: [RKInPerInstanceAttributesAtoms] {get}
+  var renderSelectedEllipsoidObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
+
+
+
+public protocol RKRenderCrystalCylinderObjectsSource: RKRenderObjectSource
+{
+  var renderCrystalCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
+  var renderSelectedCrystalCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
 public protocol RKRenderCylinderObjectsSource: RKRenderObjectSource
 {
   var renderCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
+  var renderSelectedCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
-
-public protocol RKRenderPolygonalPrimSource: RKRenderObjectSource
-{
-  var renderPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
-}
-
-public protocol RKRenderCrystalSphereObjectsSource: RKRenderObjectSource
-{
-  var renderCrystalSphereObjects: [RKInPerInstanceAttributesAtoms] {get}
-}
-
-public protocol RKRenderCrystalCylinderObjectsSource: RKRenderObjectSource
-{
-  var renderCrystalCylinderObjects: [RKInPerInstanceAttributesAtoms] {get}
-}
-
-
-public protocol RKRenderCrystalPolygonalPrimSource: RKRenderObjectSource
+public protocol RKRenderCrystalPolygonalPrismObjectsSource: RKRenderObjectSource
 {
   var renderCrystalPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
+  var renderSelectedCrystalPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
+public protocol RKRenderPolygonalPrismObjectsSource: RKRenderObjectSource
+{
+  var renderPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
+  var renderSelectedPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
+}
 
 
 public protocol RKRenderCameraSource: class

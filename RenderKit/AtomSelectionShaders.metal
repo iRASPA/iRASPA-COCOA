@@ -595,12 +595,12 @@ fragment FragOutput AtomSelectionWorleyNoise3DPerspectiveFragmentShader(AtomSphe
 // Mark: Stripes 3D full
 
 vertex AtomSphereVertexShaderOut AtomSelectionStripedSphereVertexShader(const device InPerVertex *vertices [[buffer(0)]],
-                                                                              const device InPerInstanceAttributes *positions [[buffer(1)]],
-                                                                              constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                                                              constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                                                              constant LightUniforms& lightUniforms [[buffer(4)]],
-                                                                              uint vid [[vertex_id]],
-                                                                              uint iid [[instance_id]])
+                                                                        const device InPerInstanceAttributes *positions [[buffer(1)]],
+                                                                        constant FrameUniforms& frameUniforms [[buffer(2)]],
+                                                                        constant StructureUniforms& structureUniforms [[buffer(3)]],
+                                                                        constant LightUniforms& lightUniforms [[buffer(4)]],
+                                                                        uint vid [[vertex_id]],
+                                                                        uint iid [[instance_id]])
 {
   AtomSphereVertexShaderOut vert;
   

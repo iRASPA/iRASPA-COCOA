@@ -32,13 +32,13 @@
 
 import Foundation
 
-class MetalAtomSelectionStripesPerspectiveImposterShader
+class MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader
 {
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderStructure]] = [[]]
   
-  var indexBuffer: MTLBuffer! = nil
-  var vertexBuffer: MTLBuffer! = nil
+  var instanceBuffer: [[MTLBuffer?]] = [[]]
+ 
   var pipeLine: MTLRenderPipelineState! = nil
   var transparentDepthState: MTLDepthStencilState! = nil
   
@@ -51,7 +51,7 @@ class MetalAtomSelectionStripesPerspectiveImposterShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "AtomSelectionStripedSpherePerspectiveVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PolygonalPrismSelectionWorleyNoise3DVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -62,7 +62,7 @@ class MetalAtomSelectionStripesPerspectiveImposterShader
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "AtomSelectionStripedSpherePerspectiveFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismSelectionWorleyNoise3DFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -72,29 +72,42 @@ class MetalAtomSelectionStripesPerspectiveImposterShader
     {
       fatalError("Error occurred when creating render pipeline state \(error) \(device)")
     }
+  }
+  
+  public func buildInstanceBuffers(device: MTLDevice)
+  {
+    if let _: RKRenderDataSource = renderDataSource
+    {
+      instanceBuffer = []
+      
+      for i in 0..<self.renderStructures.count
+      {
+        var sceneInstance: [MTLBuffer?] = [MTLBuffer?]()
+        let structures: [RKRenderStructure] = renderStructures[i]
+        
+        for structure in structures
+        {
+          let atomPositions: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderPolygonalPrismObjectsSource)?.renderSelectedPolygonalPrismObjects ?? []
+          let buffer: MTLBuffer? = atomPositions.isEmpty ? nil : device.makeBuffer(bytes: atomPositions, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atomPositions.count, options:.storageModeManaged)
+          sceneInstance.append(buffer)
+        }
+        instanceBuffer.append(sceneInstance)
+      }
+    }
+  }
+  
+  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, metalPolygonalPrismShader: MetalPolygonalPrismShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
+  {
     
-  }
-  
-  public func buildVertexBuffers(device: MTLDevice)
-  {
-    let quad: MetalQuadGeometry = MetalQuadGeometry()
-    vertexBuffer = device.makeBuffer(bytes: quad.vertices, length:MemoryLayout<RKVertex>.stride * quad.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: quad.indices, length:MemoryLayout<UInt16>.stride * quad.indices.count, options:.storageModeManaged)
-  }
-  
-  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, instanceBuffer: [[MTLBuffer?]], atomPerspectiveImposterShader: MetalAtomPerspectiveImposterShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers:MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
-  {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderAtomSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderPolygonalPrismObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setDepthStencilState(self.transparentDepthState)
-      
       commandEncoder.setCullMode(MTLCullMode.back)
-      commandEncoder.setVertexBuffer(atomPerspectiveImposterShader.vertexBuffer, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
-      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 1)
       commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
       
       var index = 0
@@ -104,22 +117,25 @@ class MetalAtomSelectionStripesPerspectiveImposterShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure:RKRenderAtomSource = structure as? RKRenderAtomSource,
-             (structure.atomSelectionStyle == .striped)
+          if let structure: RKRenderPolygonalPrismObjectsSource = structure as? RKRenderPolygonalPrismObjectsSource,
+             (structure.atomSelectionStyle == .WorleyNoise3D)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             
-            if let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
+            if let instanceBuffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
+               let indexBuffer = metalBuffer(metalPolygonalPrismShader.indexBuffers, sceneIndex: i, movieIndex: j),
+               let vertexBuffer = metalBuffer(metalPolygonalPrismShader.vertexBuffers, sceneIndex: i, movieIndex: j)
             {
-              let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+              let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
               
-              if (structure.atomSelectionStyle != .glow && structure.drawAtoms && structure.isVisible &&  (numberOfAtoms > 0) )
+              if (structure.drawAtoms && structure.isVisible &&  (numberOfAtoms > 0) )
               {
-                commandEncoder.setVertexBuffer(buffer, offset: 0, index: 1)
+                commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+                commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
                 commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-                commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
-                
-                commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomPerspectiveImposterShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomPerspectiveImposterShader.indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+                commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+                                
+                commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               }
             }
           }
@@ -128,6 +144,7 @@ class MetalAtomSelectionStripesPerspectiveImposterShader
       }
     }
   }
+  
   
   func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?
   {
@@ -141,3 +158,4 @@ class MetalAtomSelectionStripesPerspectiveImposterShader
     return nil
   }
 }
+

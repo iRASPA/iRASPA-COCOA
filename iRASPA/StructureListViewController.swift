@@ -805,7 +805,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     }
   }
   
-  @IBAction func addEllipsoidPrimitive(_ sender: NSMenuItem)
+  @IBAction func addCrystalEllipsoidPrimitive(_ sender: NSMenuItem)
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
@@ -817,8 +817,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
-      scene.displayName = "New ellipsoid"
-      let spherePrimitive: EllipsoidPrimitive = EllipsoidPrimitive(name: "Ellipsoid")
+      scene.displayName = "New crystal ellipsoid"
+      let ellipsoidPrimitive: CrystalEllipsoidPrimitive = CrystalEllipsoidPrimitive(name: "Ellipsoid")
+      ellipsoidPrimitive.cell = SKCell()
       
       if index < 0
       {
@@ -836,14 +837,14 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
           index = childIndex + 1
           if let previousCell = movie.frames.first?.structure.cell
           {
-            spherePrimitive.cell = previousCell
+            ellipsoidPrimitive.cell = previousCell
           }
         }
       }
       
       
-      let frame: iRASPAStructure = iRASPAStructure(spherePrimitive: spherePrimitive)
-      let movie: Movie = Movie(name: "New Ellipsoid", structure: frame)
+      let frame: iRASPAStructure = iRASPAStructure(crystalEllipsoidPrimitive: ellipsoidPrimitive)
+      let movie: Movie = Movie(name: "New crystal ellipsoid", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
@@ -867,7 +868,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     }
   }
   
-  @IBAction func addPolygonalPrismPrimitive(_ sender: NSMenuItem)
+  @IBAction func addCrystalPolygonalPrismPrimitive(_ sender: NSMenuItem)
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
@@ -879,9 +880,10 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
-      scene.displayName = "New polygonal prism"
-      let polygonalPrimitive: PolygonalPrismPrimitive = PolygonalPrismPrimitive(name: "Polygonal prism")
+      scene.displayName = "New crystal polygonal prism"
+      let polygonalPrimitive: CrystalPolygonalPrismPrimitive = CrystalPolygonalPrismPrimitive(name: "Polygonal prism")
       polygonalPrimitive.primitiveNumberOfSides = 4
+      polygonalPrimitive.cell = SKCell()
       
       if index < 0
       {
@@ -904,8 +906,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         }
       }
       
-      let frame: iRASPAStructure = iRASPAStructure(polygonalPrismPrimitive: polygonalPrimitive)
-      let movie: Movie = Movie(name: "New polygonal prism", structure: frame)
+      let frame: iRASPAStructure = iRASPAStructure(crystalPolygonalPrismPrimitive: polygonalPrimitive)
+      let movie: Movie = Movie(name: "New crystal polygonal prism", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
@@ -929,7 +931,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     }
   }
 
-  @IBAction func addCylinderPrimitive(_ sender: NSMenuItem)
+  @IBAction func addCrystalCylinderPrimitive(_ sender: NSMenuItem)
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
@@ -941,9 +943,10 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
-      scene.displayName = "New cylinder"
-      let cylinderPrimitive: CylinderPrimitive = CylinderPrimitive(name: "Cylinder")
+      scene.displayName = "New crystal cylinder"
+      let cylinderPrimitive: CrystalCylinderPrimitive = CrystalCylinderPrimitive(name: "Cylinder")
       cylinderPrimitive.primitiveNumberOfSides = 41
+      cylinderPrimitive.cell = SKCell()
       
       if index < 0
       {
@@ -967,8 +970,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       
       
-      let frame: iRASPAStructure = iRASPAStructure(cylinderPrimitive: cylinderPrimitive)
-      let movie: Movie = Movie(name: "New cylinder", structure: frame)
+      let frame: iRASPAStructure = iRASPAStructure(crystalCylinderPrimitive: cylinderPrimitive)
+      let movie: Movie = Movie(name: "New crystal cylinder", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
       
@@ -993,6 +996,193 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
   
   
+  @IBAction func addEllipsoidPrimitive(_ sender: NSMenuItem)
+   {
+     if let proxyProject = self.proxyProject, proxyProject.isEditable,
+       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+       let selectedRow=self.structuresOutlineView?.selectedRow
+     {
+       var index: Int = selectedRow
+       var toItem: Scene? = nil
+       
+       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+       
+       let scene: Scene = Scene()
+       scene.displayName = "New ellipsoid"
+       let ellipsoidPrimitive: EllipsoidPrimitive = EllipsoidPrimitive(name: "Ellipsoid")
+       
+       if index < 0
+       {
+         index=0
+         self.addSceneNode(scene, atIndex: 0)
+         toItem=scene
+       }
+       else
+       {
+         if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
+           let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
+           let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+         {
+           toItem = scene
+           index = childIndex + 1
+           if let previousCell = movie.frames.first?.structure.cell
+           {
+             ellipsoidPrimitive.cell = previousCell
+           }
+         }
+       }
+       
+       
+       let frame: iRASPAStructure = iRASPAStructure(ellipsoidPrimitive: ellipsoidPrimitive)
+       let movie: Movie = Movie(name: "New Ellipsoid", structure: frame)
+       movie.selectedFrame = frame
+       movie.selectedFrames.insert(frame)
+       
+       let newSelectedScene: Scene?
+       let newSelectedMovie: Movie?
+       let newSelection: [Scene: Set<Movie>]
+       if numberOfRows <= 0
+       {
+         newSelectedScene = scene
+         newSelectedMovie = movie
+         newSelection = [scene: [movie]]
+       }
+       else
+       {
+         newSelectedScene = project.sceneList.selectedScene
+         newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+         newSelection = project.sceneList.selectedMovies
+       }
+       
+       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
+     }
+   }
+   
+   @IBAction func addPolygonalPrismPrimitive(_ sender: NSMenuItem)
+   {
+     if let proxyProject = self.proxyProject, proxyProject.isEditable,
+       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+       let selectedRow=self.structuresOutlineView?.selectedRow
+     {
+       var index: Int = selectedRow
+       var toItem: Scene? = nil
+       
+       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+       
+       let scene: Scene = Scene()
+       scene.displayName = "New polygonal prism"
+       let polygonalPrimitive: PolygonalPrismPrimitive = PolygonalPrismPrimitive(name: "Polygonal prism")
+       polygonalPrimitive.primitiveNumberOfSides = 4
+       
+       if index < 0
+       {
+         index=0
+         self.addSceneNode(scene, atIndex: 0)
+         toItem=scene
+       }
+       else
+       {
+         if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
+           let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
+           let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+         {
+           toItem = scene
+           index = childIndex + 1
+           if let previousCell = movie.frames.first?.structure.cell
+           {
+             polygonalPrimitive.cell = previousCell
+           }
+         }
+       }
+       
+       let frame: iRASPAStructure = iRASPAStructure(polygonalPrismPrimitive: polygonalPrimitive)
+       let movie: Movie = Movie(name: "New polygonal prism", structure: frame)
+       movie.selectedFrame = frame
+       movie.selectedFrames.insert(frame)
+       
+       let newSelectedScene: Scene?
+       let newSelectedMovie: Movie?
+       let newSelection: [Scene: Set<Movie>]
+       if numberOfRows <= 0
+       {
+         newSelectedScene = scene
+         newSelectedMovie = movie
+         newSelection = [scene: [movie]]
+       }
+       else
+       {
+         newSelectedScene = project.sceneList.selectedScene
+         newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+         newSelection = project.sceneList.selectedMovies
+       }
+       
+       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
+     }
+   }
+
+   @IBAction func addCylinderPrimitive(_ sender: NSMenuItem)
+   {
+     if let proxyProject = self.proxyProject, proxyProject.isEditable,
+       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+       let selectedRow=self.structuresOutlineView?.selectedRow
+     {
+       var index: Int = selectedRow
+       var toItem: Scene? = nil
+       
+       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+       
+       let scene: Scene = Scene()
+       scene.displayName = "New cylinder"
+       let cylinderPrimitive: CylinderPrimitive = CylinderPrimitive(name: "Cylinder")
+       cylinderPrimitive.primitiveNumberOfSides = 41
+       
+       if index < 0
+       {
+         index=0
+         self.addSceneNode(scene, atIndex: 0)
+         toItem=scene
+       }
+       else
+       {
+         if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
+           let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
+           let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+         {
+           toItem = scene
+           index = childIndex + 1
+           if let previousCell = movie.frames.first?.structure.cell
+           {
+             cylinderPrimitive.cell = previousCell
+           }
+         }
+       }
+       
+       
+       let frame: iRASPAStructure = iRASPAStructure(cylinderPrimitive: cylinderPrimitive)
+       let movie: Movie = Movie(name: "New cylinder", structure: frame)
+       movie.selectedFrame = frame
+       movie.selectedFrames.insert(frame)
+       
+       let newSelectedScene: Scene?
+       let newSelectedMovie: Movie?
+       let newSelection: [Scene: Set<Movie>]
+       if numberOfRows <= 0
+       {
+         newSelectedScene = scene
+         newSelectedMovie = movie
+         newSelection = [scene: [movie]]
+       }
+       else
+       {
+         newSelectedScene = project.sceneList.selectedScene
+         newSelectedMovie = project.sceneList.selectedScene?.selectedMovie
+         newSelection = project.sceneList.selectedMovies
+       }
+       
+       self.addMovieNode(movie, inItem: toItem, atIndex: index, newSelectedScene: newSelectedScene, newSelectedMovie: newSelectedMovie, newSelection: newSelection)
+     }
+   }
+   
   
   
   // MARK: NSOutlineView required datasource methods

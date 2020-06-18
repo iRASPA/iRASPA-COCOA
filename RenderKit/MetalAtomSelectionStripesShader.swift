@@ -121,8 +121,8 @@ class MetalAtomSelectionStripesShader
                 commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomShader.indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               }
             }
-            index = index + 1
           }
+          index = index + 1
         }
       }
     }
