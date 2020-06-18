@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -29,7 +29,6 @@
                                             <tableColumns>
                                                 <tableColumn width="495" minWidth="40" maxWidth="1000" id="1zy-iw-RyI">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                                        <font key="font" metaFont="controlContent" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -177,9 +176,12 @@
                                                                                 <menuItem title="Protein crystal solvent" id="ZNQ-TG-HdE"/>
                                                                                 <menuItem title="Crystal solvent" id="swk-Q8-afT"/>
                                                                                 <menuItem title="Molecular crystal" id="GCR-0z-KdY"/>
-                                                                                <menuItem title="Ellipsoid" id="1ov-vh-bRX"/>
-                                                                                <menuItem title="Cylinder" id="XeZ-Hb-tao"/>
-                                                                                <menuItem title="Polygonal prism" id="h3A-5g-irg"/>
+                                                                                <menuItem title="Crystal ellipsoid" id="1ov-vh-bRX" userLabel="Crystal ellipsoid"/>
+                                                                                <menuItem title="Crystal cylinder" id="XeZ-Hb-tao" userLabel="Crystal cylinder"/>
+                                                                                <menuItem title="Crystal polygonal prism" id="h3A-5g-irg" userLabel="Crystal polygonal prism"/>
+                                                                                <menuItem title="Ellipsoid" id="ezl-cN-6ra" userLabel="Ellipsoid"/>
+                                                                                <menuItem title="Cylinder" id="b6A-6m-fKp" userLabel="Cylinder"/>
+                                                                                <menuItem title="Polygonal prism" id="kAw-YZ-ELT"/>
                                                                             </items>
                                                                         </menu>
                                                                     </popUpButtonCell>

@@ -1789,13 +1789,13 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           case .proteinCrystalSolvent,.crystalSolvent,.molecularCrystalSolvent:
             return
           case .crystalEllipsoidPrimitive:
-            to.append(iRASPAStructure(crystalSpherePrimitive: CrystalEllipsoidPrimitive(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAStructure(crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive(clone: cellViewer.frames[i].structure)))
           case .crystalCylinderPrimitive:
             to.append(iRASPAStructure(crystalCylinderPrimitive: CrystalCylinderPrimitive(clone: cellViewer.frames[i].structure)))
           case .crystalPolygonalPrismPrimitive:
             to.append(iRASPAStructure(crystalPolygonalPrismPrimitive: CrystalPolygonalPrismPrimitive(clone: cellViewer.frames[i].structure)))
           case .ellipsoidPrimitive:
-            to.append(iRASPAStructure(spherePrimitive: EllipsoidPrimitive(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAStructure(ellipsoidPrimitive: EllipsoidPrimitive(clone: cellViewer.frames[i].structure)))
           case .cylinderPrimitive:
             to.append(iRASPAStructure(cylinderPrimitive: CylinderPrimitive(clone: cellViewer.frames[i].structure)))
           case .polygonalPrismPrimitive:

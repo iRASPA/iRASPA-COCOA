@@ -67,7 +67,8 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
   {
     switch(self.type)
     {
-    case .cylinderPrimitive, .ellipsoidPrimitive, .polygonalPrismPrimitive:
+    case .crystalCylinderPrimitive, .crystalEllipsoidPrimitive, .crystalPolygonalPrismPrimitive,
+         .cylinderPrimitive, .ellipsoidPrimitive, .polygonalPrismPrimitive:
       return [self.structure]
     default:
       return []
@@ -136,10 +137,10 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
     self.structure = protein
   }
   
-  public init(crystalSpherePrimitive: CrystalEllipsoidPrimitive)
+  public init(crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive)
   {
     self.type = .crystalEllipsoidPrimitive
-    self.structure = crystalSpherePrimitive
+    self.structure = crystalEllipsoidPrimitive
   }
    
   public init(crystalPolygonalPrismPrimitive: CrystalPolygonalPrismPrimitive)
@@ -154,10 +155,10 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
     self.structure = crystalCylinderPrimitive
   }
 
-  public init(spherePrimitive: EllipsoidPrimitive)
+  public init(ellipsoidPrimitive: EllipsoidPrimitive)
   {
     self.type = .ellipsoidPrimitive
-    self.structure = spherePrimitive
+    self.structure = ellipsoidPrimitive
   }
   
   public init(polygonalPrismPrimitive: PolygonalPrismPrimitive)
@@ -246,7 +247,7 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
     case .polygonalPrismPrimitive:
       self.structure = try decoder.decode(PolygonalPrismPrimitive.self)
     default:
-      fatalError()
+      throw BinaryDecodableError.invalidArchiveVersion
     }
   }
   

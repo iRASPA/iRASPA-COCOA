@@ -40,9 +40,9 @@ class MetalCrystalEllipsoidShader
   var opaquePipeLine: MTLRenderPipelineState! = nil
   var transparentPipeLine: MTLRenderPipelineState! = nil
   
-  var indexBuffer: MTLBuffer! = nil
-  var vertexBuffer: MTLBuffer! = nil
-  var instanceBuffer: [[MTLBuffer?]] = [[]]
+  var indexBuffers: MTLBuffer! = nil
+  var vertexBuffers: MTLBuffer! = nil
+  var instanceBuffers: [[MTLBuffer?]] = [[]]
   var samplerState: MTLSamplerState! = nil
   var depthState: MTLDepthStencilState! = nil
   var transparentDepthState: MTLDepthStencilState! = nil
@@ -125,13 +125,13 @@ class MetalCrystalEllipsoidShader
   {
     let sphere: MetalSphereGeometry = MetalSphereGeometry()
     
-    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:.storageModeManaged)
+    vertexBuffers = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKVertex>.stride * sphere.vertices.count, options:.storageModeManaged)
+    indexBuffers = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:.storageModeManaged)
     
     
     if let _: RKRenderDataSource = renderDataSource
     {
-      instanceBuffer = []
+      instanceBuffers = []
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderStructure] = renderStructures[i]
@@ -145,12 +145,12 @@ class MetalCrystalEllipsoidShader
         {
           for structure in structures
           {
-            let atoms: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderCrystalSphereObjectsSource)?.renderCrystalSphereObjects ?? []
+            let atoms: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderCrystalEllipsoidObjectsSource)?.renderCrystalEllipsoidObjects ?? []
             let buffer: MTLBuffer? = atoms.isEmpty ? nil : device.makeBuffer(bytes: atoms, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atoms.count, options:.storageModeManaged)
             sceneInstance.append(buffer)
           }
         }
-        instanceBuffer.append(sceneInstance)
+        instanceBuffers.append(sceneInstance)
       }
     }
   }
@@ -158,13 +158,13 @@ class MetalCrystalEllipsoidShader
   
   public func renderOpaqueWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalSphereObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalEllipsoidObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setCullMode(MTLCullMode.back)
       
       commandEncoder.setDepthStencilState(depthState)
       commandEncoder.setRenderPipelineState(opaquePipeLine)
-      commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+      commandEncoder.setVertexBuffer(vertexBuffers, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
@@ -180,8 +180,8 @@ class MetalCrystalEllipsoidShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderCrystalSphereObjectsSource = structure as? RKRenderCrystalSphereObjectsSource,
-            let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
+          if let structure: RKRenderCrystalEllipsoidObjectsSource = structure as? RKRenderCrystalEllipsoidObjectsSource,
+            let buffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j)
           {
             let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
             
@@ -191,7 +191,7 @@ class MetalCrystalEllipsoidShader
               commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
               commandEncoder.setFragmentTexture(ambientOcclusionTextures[i][j], index: 0)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffers.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffers, indexBufferOffset: 0, instanceCount: numberOfAtoms)
             }
           }
           index = index + 1
@@ -202,11 +202,11 @@ class MetalCrystalEllipsoidShader
   
   public func renderTransparentWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalSphereObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalEllipsoidObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setDepthStencilState(transparentDepthState)
       commandEncoder.setRenderPipelineState(transparentPipeLine)
-      commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+      commandEncoder.setVertexBuffer(vertexBuffers, offset: 0, index: 0)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
@@ -222,8 +222,8 @@ class MetalCrystalEllipsoidShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderCrystalSphereObjectsSource = structure as? RKRenderCrystalSphereObjectsSource,
-            let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
+          if let structure: RKRenderCrystalEllipsoidObjectsSource = structure as? RKRenderCrystalEllipsoidObjectsSource,
+            let buffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j)
           {
             let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
             
@@ -235,10 +235,10 @@ class MetalCrystalEllipsoidShader
               commandEncoder.setFragmentTexture(ambientOcclusionTextures[i][j], index: 0)
               
               commandEncoder.setCullMode(MTLCullMode.front)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffers.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffers, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               
               commandEncoder.setCullMode(MTLCullMode.back)
-              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffers.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffers, indexBufferOffset: 0, instanceCount: numberOfAtoms)
             }
           }
           index = index + 1

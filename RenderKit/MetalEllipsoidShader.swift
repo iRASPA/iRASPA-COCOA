@@ -42,7 +42,7 @@ class MetalEllipsoidShader
   
   var indexBuffer: MTLBuffer! = nil
   var vertexBuffer: MTLBuffer! = nil
-  var instanceBuffer: [[MTLBuffer?]] = [[]]
+  var instanceBuffers: [[MTLBuffer?]] = [[]]
   var samplerState: MTLSamplerState! = nil
   var depthState: MTLDepthStencilState! = nil
   var transparentDepthState: MTLDepthStencilState! = nil
@@ -131,7 +131,7 @@ class MetalEllipsoidShader
     
     if let _: RKRenderDataSource = renderDataSource
     {
-      instanceBuffer = []
+      instanceBuffers = []
       for i in 0..<self.renderStructures.count
       {
         let structures: [RKRenderStructure] = renderStructures[i]
@@ -145,12 +145,12 @@ class MetalEllipsoidShader
         {
           for structure in structures
           {
-            let atoms: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderSphereObjectsSource)?.renderSphereObjects ?? []
+            let atoms: [RKInPerInstanceAttributesAtoms] = (structure as? RKRenderEllipsoidObjectsSource)?.renderEllipsoidObjects ?? []
             let buffer: MTLBuffer? = atoms.isEmpty ? nil : device.makeBuffer(bytes: atoms, length: MemoryLayout<RKInPerInstanceAttributesAtoms>.stride * atoms.count, options:.storageModeManaged)
             sceneInstance.append(buffer)
           }
         }
-        instanceBuffer.append(sceneInstance)
+        instanceBuffers.append(sceneInstance)
       }
     }
   }
@@ -158,7 +158,7 @@ class MetalEllipsoidShader
   
   public func renderOpaqueWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderSphereObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderEllipsoidObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setCullMode(MTLCullMode.back)
       
@@ -180,8 +180,8 @@ class MetalEllipsoidShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderSphereObjectsSource = structure as? RKRenderSphereObjectsSource,
-            let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
+          if let structure: RKRenderEllipsoidObjectsSource = structure as? RKRenderEllipsoidObjectsSource,
+            let buffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j)
           {
             let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
             
@@ -202,7 +202,7 @@ class MetalEllipsoidShader
   
   public func renderTransparentWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
   {
-    if (self.renderStructures.joined().compactMap{$0 as? RKRenderSphereObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
+    if (self.renderStructures.joined().compactMap{$0 as? RKRenderEllipsoidObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setDepthStencilState(transparentDepthState)
       commandEncoder.setRenderPipelineState(transparentPipeLine)
@@ -222,8 +222,8 @@ class MetalEllipsoidShader
         
         for (j,structure) in structures.enumerated()
         {
-          if let structure: RKRenderSphereObjectsSource = structure as? RKRenderSphereObjectsSource,
-            let buffer: MTLBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j)
+          if let structure: RKRenderEllipsoidObjectsSource = structure as? RKRenderEllipsoidObjectsSource,
+            let buffer: MTLBuffer = self.metalBuffer(instanceBuffers, sceneIndex: i, movieIndex: j)
           {
             let numberOfAtoms: Int = buffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
             

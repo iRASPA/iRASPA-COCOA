@@ -122,8 +122,8 @@ class MetalAtomSelectionWorleyNoise3DPerspectiveImposterShader
                 commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomPerspectiveImposterShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomPerspectiveImposterShader.indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               }
             }
-            index = index + 1
           }
+          index = index + 1
         }
       }
     }

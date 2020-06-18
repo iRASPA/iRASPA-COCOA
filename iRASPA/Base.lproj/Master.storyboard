@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,7 +18,7 @@
                     <tabView key="tabView" wantsLayer="YES" misplaced="YES" drawsBackground="NO" type="noTabsNoBorder" id="weW-ik-xKh">
                         <rect key="frame" x="0.0" y="0.0" width="200" height="670"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <font key="font" metaFont="message"/>
+                        <font key="font" metaFont="system"/>
                         <connections>
                             <outlet property="delegate" destination="KvZ-KE-4pT" id="IrJ-VF-qXO"/>
                         </connections>
@@ -99,7 +99,7 @@
                     <tabView key="tabView" wantsLayer="YES" misplaced="YES" drawsBackground="NO" type="noTabsNoBorder" id="nuE-Vp-ENu">
                         <rect key="frame" x="0.0" y="0.0" width="200" height="750"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <font key="font" metaFont="message"/>
+                        <font key="font" metaFont="system"/>
                         <connections>
                             <outlet property="delegate" destination="ztY-SR-2jk" id="SCa-e3-5k7"/>
                         </connections>
@@ -131,14 +131,13 @@
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="14" outlineTableColumn="lfA-wW-ocG" id="T2V-bB-UGd" customClass="ProjectOutlineView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="202" height="725"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="1"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn identifier="displayNameColumn" width="199" minWidth="16" maxWidth="1000" id="lfA-wW-ocG">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                        <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -183,7 +182,7 @@
                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="ilR-8g-XZw"/>
                                                                         </imageView>
                                                                         <textField horizontalHuggingPriority="230" verticalHuggingPriority="740" horizontalCompressionResistancePriority="230" verticalCompressionResistancePriority="740" allowsExpansionToolTips="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fZN-8S-hn2">
-                                                                            <rect key="frame" x="20" y="1" width="127" height="17"/>
+                                                                            <rect key="frame" x="20" y="1" width="127" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Table View Cell" id="CoU-4K-Mzh">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -434,14 +433,13 @@
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="1" outlineTableColumn="6fm-Fw-390" id="jrW-9A-NTX" customClass="StructureListOutlineView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="225" height="914"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="1"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn identifier="structureNameColumn" width="222" minWidth="16" maxWidth="1000" id="6fm-Fw-390">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                        <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -491,7 +489,7 @@
                                                                             </connections>
                                                                         </button>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dwO-WE-w5q">
-                                                                            <rect key="frame" x="24" y="0.0" width="138" height="17"/>
+                                                                            <rect key="frame" x="24" y="0.0" width="138" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Table View Cell" id="dBi-km-AAD">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -675,22 +673,40 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" title="Add Objects" id="d98-LF-qMp">
                                 <items>
-                                    <menuItem title="Ellipsoid" id="RaT-FZ-Ofn">
+                                    <menuItem title="Crystal ellipsoid" id="RaT-FZ-Ofn">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
-                                            <action selector="addEllipsoidPrimitive:" target="Ihf-P0-mYS" id="SFT-PW-h1T"/>
+                                            <action selector="addCrystalEllipsoidPrimitive:" target="Ihf-P0-mYS" id="iJH-Tk-7fg"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="Cylinder" id="5vG-bx-ocx">
+                                    <menuItem title="Crystal Cylinder" id="5vG-bx-ocx">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
-                                            <action selector="addCylinderPrimitive:" target="Ihf-P0-mYS" id="oKq-lt-NOu"/>
+                                            <action selector="addCrystalCylinderPrimitive:" target="Ihf-P0-mYS" id="Jcr-kW-u0M"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="Polygonal prism" id="RXK-7F-kYl">
+                                    <menuItem title="Crystal polygonal prism" id="RXK-7F-kYl">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
-                                            <action selector="addPolygonalPrismPrimitive:" target="Ihf-P0-mYS" id="sbV-YO-Ok3"/>
+                                            <action selector="addCrystalPolygonalPrismPrimitive:" target="Ihf-P0-mYS" id="fNA-c9-D4n"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Ellipsoid" id="TAX-Oq-9O2">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="addEllipsoidPrimitive:" target="Ihf-P0-mYS" id="kFQ-6l-Icd"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Cylinder" id="Rj0-p0-TFM">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="addCylinderPrimitive:" target="Ihf-P0-mYS" id="9da-ob-KN4"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="Polygonal prism" id="eMF-nr-fbD">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="addPolygonalPrismPrimitive:" target="Ihf-P0-mYS" id="Bgc-kE-P33"/>
                                         </connections>
                                     </menuItem>
                                 </items>
@@ -720,14 +736,13 @@
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" id="54T-du-cDq" customClass="FrameListTableView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="225" height="700"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn identifier="frameNameColumn" width="222" minWidth="80" maxWidth="1000" id="MdA-rs-zuJ">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="name">
-                                                        <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -936,6 +951,9 @@
             <point key="canvasLocation" x="-1095" y="1836"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Cjg-ZG-1fF"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="FrameListController" width="15" height="15"/>
         <image name="MovieListController" width="15" height="15"/>
@@ -945,7 +963,4 @@
         <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
         <image name="ProjectListController" width="15" height="15"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="Cjg-ZG-1fF"/>
-    </inferredMetricsTieBreakers>
 </document>

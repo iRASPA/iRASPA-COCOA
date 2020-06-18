@@ -295,6 +295,17 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     }
   }
   
+  public func reloadRenderDataSelectedPrimitives()
+  {
+    if let device = self.device,
+       let view: MetalView = self.view as? MetalView
+    {
+      renderer.reloadRenderDataSelectedPrimitives(device: device)
+      view.renderQuality = RKRenderQuality.high
+      view.layer?.setNeedsDisplay()
+    }
+  }
+  
   public func reloadRenderMeasurePointsData()
   {
     if let device = self.device,

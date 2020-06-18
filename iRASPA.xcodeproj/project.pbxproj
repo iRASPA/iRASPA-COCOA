@@ -107,6 +107,25 @@
 		930DD7251E2808B700B8FE9B /* AtomTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD71A1E2808B700B8FE9B /* AtomTableRowView.swift */; };
 		930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 930DD7581E280A3C00B8FE9B /* BondCylinderShader.metal */; };
 		930F71EF224CE4D7006C1201 /* RealMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F71EE224CE4D7006C1201 /* RealMatrix.swift */; };
+		931000602483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310005F2483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift */; };
+		931000642483E91E009CD836 /* PolygonalPrismSelectionShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 931000632483E91E009CD836 /* PolygonalPrismSelectionShader.metal */; };
+		9310006624840B8B009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310006524840B8B009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift */; };
+		9310006824841BD5009CD836 /* MetalCylinderPrimitiveSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310006724841BD5009CD836 /* MetalCylinderPrimitiveSelectionStripedShader.swift */; };
+		9310006A24841BED009CD836 /* MetalCrystalCylinderPrimitiveSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310006924841BED009CD836 /* MetalCrystalCylinderPrimitiveSelectionStripedShader.swift */; };
+		9310006C2484294B009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310006B2484294B009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader.swift */; };
+		9310006E24842979009CD836 /* MetalPolygonalPrismPrimitiveSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310006D24842979009CD836 /* MetalPolygonalPrismPrimitiveSelectionStripedShader.swift */; };
+		931000702484EA14009CD836 /* MetalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310006F2484EA14009CD836 /* MetalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift */; };
+		931000722484EABB009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000712484EABB009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift */; };
+		931000742484EACB009CD836 /* MetalCylinderPrimitiveSelectionWorleyNoise3DShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000732484EACB009CD836 /* MetalCylinderPrimitiveSelectionWorleyNoise3DShader.swift */; };
+		931000762484EAE1009CD836 /* MetalCrystalCylinderPrimitiveSelectionWorleyNoise3DShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000752484EAE1009CD836 /* MetalCrystalCylinderPrimitiveSelectionWorleyNoise3DShader.swift */; };
+		931000782484EAEE009CD836 /* MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000772484EAEE009CD836 /* MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift */; };
+		9310007A2484EAFD009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000792484EAFD009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift */; };
+		9310007C24850635009CD836 /* MetalEllipsoidPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310007B24850635009CD836 /* MetalEllipsoidPrimitiveSelectionGlowShader.swift */; };
+		9310007E2485065F009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310007D2485065F009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionGlowShader.swift */; };
+		9310008024850670009CD836 /* MetalCylinderPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310007F24850670009CD836 /* MetalCylinderPrimitiveSelectionGlowShader.swift */; };
+		931000822485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000812485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift */; };
+		931000842485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000832485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift */; };
+		9310008624850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310008524850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift */; };
 		9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */; };
 		9314E33F1E34A78E00680364 /* ViewerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33E1E34A78E00680364 /* ViewerProtocols.swift */; };
 		93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159FDD1F54235200D8700E /* SKXYZParser.swift */; };
@@ -1041,6 +1060,25 @@
 		930DD7581E280A3C00B8FE9B /* BondCylinderShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = BondCylinderShader.metal; sourceTree = "<group>"; };
 		930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = iRASPAHelp.help; sourceTree = "<group>"; };
 		930F71EE224CE4D7006C1201 /* RealMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealMatrix.swift; sourceTree = "<group>"; };
+		9310005F2483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidPrimitiveSelectionStripedShader.swift; sourceTree = "<group>"; };
+		931000632483E91E009CD836 /* PolygonalPrismSelectionShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PolygonalPrismSelectionShader.metal; sourceTree = "<group>"; };
+		9310006524840B8B009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift; sourceTree = "<group>"; };
+		9310006724841BD5009CD836 /* MetalCylinderPrimitiveSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCylinderPrimitiveSelectionStripedShader.swift; sourceTree = "<group>"; };
+		9310006924841BED009CD836 /* MetalCrystalCylinderPrimitiveSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalCylinderPrimitiveSelectionStripedShader.swift; sourceTree = "<group>"; };
+		9310006B2484294B009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader.swift; sourceTree = "<group>"; };
+		9310006D24842979009CD836 /* MetalPolygonalPrismPrimitiveSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPolygonalPrismPrimitiveSelectionStripedShader.swift; sourceTree = "<group>"; };
+		9310006F2484EA14009CD836 /* MetalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift; sourceTree = "<group>"; };
+		931000712484EABB009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift; sourceTree = "<group>"; };
+		931000732484EACB009CD836 /* MetalCylinderPrimitiveSelectionWorleyNoise3DShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCylinderPrimitiveSelectionWorleyNoise3DShader.swift; sourceTree = "<group>"; };
+		931000752484EAE1009CD836 /* MetalCrystalCylinderPrimitiveSelectionWorleyNoise3DShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalCylinderPrimitiveSelectionWorleyNoise3DShader.swift; sourceTree = "<group>"; };
+		931000772484EAEE009CD836 /* MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift; sourceTree = "<group>"; };
+		931000792484EAFD009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift; sourceTree = "<group>"; };
+		9310007B24850635009CD836 /* MetalEllipsoidPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
+		9310007D2485065F009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalEllipsoidPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
+		9310007F24850670009CD836 /* MetalCylinderPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCylinderPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
+		931000812485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalCylinderPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
+		931000832485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPolygonalPrismPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
+		9310008524850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
 		9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		9314E33E1E34A78E00680364 /* ViewerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewerProtocols.swift; sourceTree = "<group>"; };
 		93159FDD1F54235200D8700E /* SKXYZParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXYZParser.swift; sourceTree = "<group>"; };
@@ -1829,6 +1867,7 @@
 				9386FBB02019DEAA00442E5C /* RKCachedFontAtlas.swift */,
 				930DD5FB1E26B6AA00B8FE9B /* RenderKit.RenderViewController.xib */,
 				930DD5F91E26B67B00B8FE9B /* RenderViewController.swift */,
+				930DD5F01E26B65C00B8FE9B /* MetalRenderer.swift */,
 				930DD5F21E26B65C00B8FE9B /* MetalView.swift */,
 				930DD5ED1E26B65C00B8FE9B /* MetalBoxGeometry.swift */,
 				930C1FA62201E576006AEF30 /* MetalCubeGeometry.swift */,
@@ -1843,7 +1882,6 @@
 				93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */,
 				930DD5EF1E26B65C00B8FE9B /* MetalQuadGeometry.swift */,
 				930DD5F11E26B65C00B8FE9B /* MetalSphereGeometry.swift */,
-				930DD5F01E26B65C00B8FE9B /* MetalRenderer.swift */,
 				93793AFC21C80559004CAD9C /* MetalBackgroundShader.swift */,
 				93793AE221C7998C004CAD9C /* MetalAtomShader.swift */,
 				93793AE421C799B7004CAD9C /* MetalAtomOrthographicImposterShader.swift */,
@@ -1883,6 +1921,24 @@
 				932B989E2425335300033AA7 /* MetalExternalBondSelectionWorleyNoise3DShader.swift */,
 				932B98A02425336900033AA7 /* MetalExternalBondSelectionGlowShader.swift */,
 				932B98A22425338300033AA7 /* MetalExternalBondSelectionStripedShader.swift */,
+				9310005F2483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift */,
+				9310006524840B8B009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift */,
+				9310006724841BD5009CD836 /* MetalCylinderPrimitiveSelectionStripedShader.swift */,
+				9310006924841BED009CD836 /* MetalCrystalCylinderPrimitiveSelectionStripedShader.swift */,
+				9310006D24842979009CD836 /* MetalPolygonalPrismPrimitiveSelectionStripedShader.swift */,
+				9310006B2484294B009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader.swift */,
+				9310006F2484EA14009CD836 /* MetalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift */,
+				931000712484EABB009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift */,
+				931000732484EACB009CD836 /* MetalCylinderPrimitiveSelectionWorleyNoise3DShader.swift */,
+				931000752484EAE1009CD836 /* MetalCrystalCylinderPrimitiveSelectionWorleyNoise3DShader.swift */,
+				931000772484EAEE009CD836 /* MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift */,
+				931000792484EAFD009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift */,
+				9310007B24850635009CD836 /* MetalEllipsoidPrimitiveSelectionGlowShader.swift */,
+				9310007D2485065F009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionGlowShader.swift */,
+				9310007F24850670009CD836 /* MetalCylinderPrimitiveSelectionGlowShader.swift */,
+				931000812485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift */,
+				931000832485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift */,
+				9310008524850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift */,
 				93793AFE21C80B45004CAD9C /* MetalAmbientOcclusionShader.swift */,
 				93793B1C21C94C3F004CAD9C /* MetalQuadShader.swift */,
 				93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */,
@@ -1907,6 +1963,7 @@
 				93584CCC20011E5E005F01A7 /* Noise3D.metal */,
 				93584CD620011FC6005F01A7 /* Noise2D.metal */,
 				93274E802205A813004031BA /* PolygonalPrismShader.metal */,
+				931000632483E91E009CD836 /* PolygonalPrismSelectionShader.metal */,
 				93584CD820011FEC005F01A7 /* Noise3DGrad.metal */,
 				93584CDA2001200B005F01A7 /* Noise4D.metal */,
 				93584CDC2001206D005F01A7 /* PsrdNoise2D.metal */,
@@ -3574,16 +3631,21 @@
 				930DD5F41E26B65C00B8FE9B /* MetalCylinderGeometry.swift in Sources */,
 				930DD5F31E26B65C00B8FE9B /* MetalBoxGeometry.swift in Sources */,
 				93793B0721C81529004CAD9C /* MetalAtomSelectionWorleyNoise3DPerspectiveImposterShader.swift in Sources */,
+				931000642483E91E009CD836 /* PolygonalPrismSelectionShader.metal in Sources */,
 				93793B2F21D94462004CAD9C /* RKInPerInstanceAttributesText.swift in Sources */,
 				93793AEB21C7B7EA004CAD9C /* MetalExternalBondShader.swift in Sources */,
 				936411DA2421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift in Sources */,
 				932BEABA23F8593E006CA16F /* RenderKitEnums.swift in Sources */,
 				93793B3F21D9459D004CAD9C /* RKLightUniforms.swift in Sources */,
 				93584CDB2001200B005F01A7 /* Noise4D.metal in Sources */,
+				9310007A2484EAFD009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift in Sources */,
+				9310006624840B8B009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift in Sources */,
 				934A853B200A063700737BEB /* RKFontAtlas.swift in Sources */,
 				93793AFF21C80B45004CAD9C /* MetalAmbientOcclusionShader.swift in Sources */,
 				93274E812205A813004031BA /* PolygonalPrismShader.metal in Sources */,
 				93793B1721C8EB1E004CAD9C /* MetalAtomSelectionGlowPerspectiveImposterShader.swift in Sources */,
+				9310007C24850635009CD836 /* MetalEllipsoidPrimitiveSelectionGlowShader.swift in Sources */,
+				931000782484EAEE009CD836 /* MetalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.swift in Sources */,
 				93EACCBE2206022B00AB8026 /* MetalCylinderShader.swift in Sources */,
 				930DD5E41E26B62E00B8FE9B /* AmbientOcclusionShader.metal in Sources */,
 				930DD5E91E26B62E00B8FE9B /* IsosurfaceShader.metal in Sources */,
@@ -3598,11 +3660,13 @@
 				93793AF921C7D0B1004CAD9C /* MetalTextShader.swift in Sources */,
 				93793B1521C8EB05004CAD9C /* MetalAtomSelectionGlowOrthographicImposterShader.swift in Sources */,
 				934A853F200A56E600737BEB /* TextShader.metal in Sources */,
+				9310008624850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */,
 				932B98A12425336900033AA7 /* MetalExternalBondSelectionGlowShader.swift in Sources */,
 				93793B3D21D9457A004CAD9C /* RKLight.swift in Sources */,
 				93EACCBA2204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift in Sources */,
 				930C1FA72201E576006AEF30 /* MetalCubeGeometry.swift in Sources */,
 				93793B0921C8154B004CAD9C /* MetalAtomSelectionStripesShader.swift in Sources */,
+				9310006A24841BED009CD836 /* MetalCrystalCylinderPrimitiveSelectionStripedShader.swift in Sources */,
 				93793AE321C7998C004CAD9C /* MetalAtomShader.swift in Sources */,
 				93EA79ED242375100027D14B /* MetalInternalBondSelectionShader.swift in Sources */,
 				93793AE521C799B7004CAD9C /* MetalAtomOrthographicImposterShader.swift in Sources */,
@@ -3612,18 +3676,24 @@
 				93793AE721C799D1004CAD9C /* MetalAtomPerspectiveImposterShader.swift in Sources */,
 				93793B1B21C94644004CAD9C /* MetalBlurVerticalShader.swift in Sources */,
 				93793B0321C814EE004CAD9C /* MetalAtomSelectionWorleyNoise3DShader.swift in Sources */,
+				931000722484EABB009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift in Sources */,
 				93584CD320011F64005F01A7 /* ClassicNoise2D.metal in Sources */,
 				93793B0121C814CB004CAD9C /* MetalAtomSelectionGlowShader.swift in Sources */,
 				930DD5E51E26B62E00B8FE9B /* AtomSphereShader.metal in Sources */,
 				930DD5421E26B38D00B8FE9B /* RenderKitProtocols.swift in Sources */,
 				93793AF321C7CB76004CAD9C /* MetalBoundingBoxCylinderShader.swift in Sources */,
 				930DD5F81E26B65C00B8FE9B /* MetalView.swift in Sources */,
+				9310007E2485065F009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionGlowShader.swift in Sources */,
 				930DD5411E26B38D00B8FE9B /* RKCamera.swift in Sources */,
 				9399E6372459DB5000036EBF /* MetalCrystalCylinderShader.swift in Sources */,
 				9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */,
+				931000842485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */,
 				93EACCBC2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift in Sources */,
+				9310006C2484294B009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader.swift in Sources */,
+				931000762484EAE1009CD836 /* MetalCrystalCylinderPrimitiveSelectionWorleyNoise3DShader.swift in Sources */,
 				93793B1F21CA4F7D004CAD9C /* BackgroundShader.metal in Sources */,
 				9399E6332459DA3700036EBF /* MetalCrystalPolygonalPrismShader.swift in Sources */,
+				9310006E24842979009CD836 /* MetalPolygonalPrismPrimitiveSelectionStripedShader.swift in Sources */,
 				930DD5441E26B38D00B8FE9B /* RKMovieCreator.swift in Sources */,
 				93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */,
 				93793B3B21D94551004CAD9C /* RKIsosurfaceUniforms.swift in Sources */,
@@ -3632,6 +3702,7 @@
 				93584CD720011FC6005F01A7 /* Noise2D.metal in Sources */,
 				93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */,
 				930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */,
+				931000742484EACB009CD836 /* MetalCylinderPrimitiveSelectionWorleyNoise3DShader.swift in Sources */,
 				93EA79EB242372180027D14B /* MetalInternalBondSelectionWorleyNoise3DShader.swift in Sources */,
 				93793AED21C7C04C004CAD9C /* MetalUnitCellCylinderShader.swift in Sources */,
 				93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */,
@@ -3641,10 +3712,12 @@
 				93793B1D21C94C3F004CAD9C /* MetalQuadShader.swift in Sources */,
 				93793AFB21C7EAFD004CAD9C /* MetalPickingShader.swift in Sources */,
 				939208822002190B009F0E16 /* AtomMeasurementShader.metal in Sources */,
+				931000702484EA14009CD836 /* MetalEllipsoidPrimitiveSelectionWorleyNoise3DShader.swift in Sources */,
 				93EA79EF2423751F0027D14B /* MetalExternalBondSelectionShader.swift in Sources */,
 				93793B0F21C815BF004CAD9C /* MetalBlurHorizontalShader.swift in Sources */,
 				93793B2121CA8570004CAD9C /* MetalAtomSelectionGlowPictureShader.swift in Sources */,
 				930DD5F61E26B65C00B8FE9B /* MetalRenderer.swift in Sources */,
+				931000602483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift in Sources */,
 				93793B3721D944FF004CAD9C /* RKStructureUniforms.swift in Sources */,
 				932B989D2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift in Sources */,
 				9386FBB12019DEAA00442E5C /* RKCachedFontAtlas.swift in Sources */,
@@ -3657,6 +3730,8 @@
 				930DD5F71E26B65C00B8FE9B /* MetalSphereGeometry.swift in Sources */,
 				93793B1121C833ED004CAD9C /* MetalMeasurementOrthographicImposterShader.swift in Sources */,
 				93793AF521C7D04A004CAD9C /* MetalIsosurfaceShader.swift in Sources */,
+				9310006824841BD5009CD836 /* MetalCylinderPrimitiveSelectionStripedShader.swift in Sources */,
+				931000822485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift in Sources */,
 				930DD5F51E26B65C00B8FE9B /* MetalQuadGeometry.swift in Sources */,
 				93793B1321C83406004CAD9C /* MetalMeasurementPerspectiveImposterShader.swift in Sources */,
 				93EA79E924236CC60027D14B /* InternalBondSelectionShaders.metal in Sources */,
@@ -3672,6 +3747,7 @@
 				93584CD520011F75005F01A7 /* ClassicNoise4D.metal in Sources */,
 				93793B3121D94494004CAD9C /* RKInPerInstanceAttributesAtoms.swift in Sources */,
 				93793B3321D944B2004CAD9C /* RKInPerInstanceAttributesBonds.swift in Sources */,
+				9310008024850670009CD836 /* MetalCylinderPrimitiveSelectionGlowShader.swift in Sources */,
 				93793B2D21D94421004CAD9C /* RKBondVertex.swift in Sources */,
 				930DD5EB1E26B62E00B8FE9B /* QuadShader.metal in Sources */,
 				93793B0B21C8156B004CAD9C /* MetalAtomSelectionStripesOrthographicImposterShader.swift in Sources */,

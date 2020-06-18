@@ -242,6 +242,13 @@ public struct RKStructureUniforms
     
     if let structure: RKRenderObjectSource = structure as? RKRenderObjectSource
     {
+      self.atomSelectionStripesDensity = Float(structure.atomSelectionStripesDensity)
+      self.atomSelectionStripesFrequency = Float(structure.atomSelectionStripesFrequency)
+      self.atomSelectionWorleyNoise3DFrequency = Float(structure.atomSelectionWorleyNoise3DFrequency)
+      self.atomSelectionWorleyNoise3DJitter = Float(structure.atomSelectionWorleyNoise3DJitter)
+      self.atomSelectionScaling = Float(max(1.001,structure.atomSelectionScaling)) // avoid artifacts
+      self.atomSelectionIntensity = Float(structure.atomSelectionIntensity)
+      
       let primitiveModelMatrix = float4x4(Double4x4: double4x4(simd_quatd: structure.primitiveOrientation))
       let primitiveNormalMatrix = float4x4(Double3x3: double3x3(simd_quatd: structure.primitiveOrientation).inverse.transpose)
       

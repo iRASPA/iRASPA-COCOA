@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
+public final class EllipsoidPrimitive: Structure, RKRenderEllipsoidObjectsSource
 {  
   private static var classVersionNumber: Int = 1
   
@@ -67,20 +67,14 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
     
     switch(structure)
     {
-    case is MolecularCrystal, is ProteinCrystal, is Molecule, is Protein:
+    case is Crystal, is CrystalEllipsoidPrimitive, is CrystalCylinderPrimitive, is CrystalPolygonalPrismPrimitive:
       self.atomTreeController.flattenedLeafNodes().forEach{
       let pos = $0.representedObject.position
-          $0.representedObject.position = self.cell.convertToFractional(pos)
+          $0.representedObject.position = self.cell.convertToCartesian(pos)
         }
-      break
-    case is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
-      if !structure.primitiveIsFractional
-      {
-        self.atomTreeController.flattenedLeafNodes().forEach{
-        let pos = $0.representedObject.position
-            $0.representedObject.position = self.cell.convertToFractional(pos)
-        }
-      }
+    case is MolecularCrystal, is ProteinCrystal, is Molecule, is Protein,
+         is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
+      // nothing to do
       break
     default:
       break
@@ -108,7 +102,10 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
     }
   }
   
-  public var renderSphereObjects: [RKInPerInstanceAttributesAtoms]
+  // MARK: Rendering
+  // =====================================================================
+   
+  public var renderEllipsoidObjects: [RKInPerInstanceAttributesAtoms]
   {
     var index: Int
     
@@ -139,6 +136,78 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
         
         data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
         index = index + 1
+      }
+    }
+    return data
+  }
+  
+  // MARK: Rendering selection
+  // =====================================================================
+  
+  public var renderSelectedEllipsoidObjects: [RKInPerInstanceAttributesAtoms]
+  {
+    var index: Int
+    
+    // only use leaf-nodes
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.allSelectedNodes.compactMap{$0.representedObject}
+    let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
+    
+    var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms](repeating: RKInPerInstanceAttributesAtoms(), count:  atoms.count)
+    
+    index = 0
+    
+    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    {
+      let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
+      
+      for copy in copies
+      {
+        let pos: SIMD3<Double> = copy.position
+        copy.asymmetricIndex = asymetricIndex
+        
+        let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
+        let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: Float(w))
+        
+        let radius: Double = 1.0
+        let ambient: NSColor = NSColor.white
+        let diffuse: NSColor = NSColor.white
+        let specular: NSColor = NSColor.white
+        
+        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+        index = index + 1
+      }
+    }
+    return data
+  }
+  
+  // MARK: -
+  // MARK: Filtering
+   
+  public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
+  {
+    // only use leaf-nodes
+    let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    
+    var data: IndexSet = IndexSet()
+    
+    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    {
+      let typeIsVisible: Bool = asymetricAtom.isVisible
+      
+      let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
+      
+      for copy in copies
+      {
+        let pos: SIMD3<Double> = copy.position + self.cell.contentShift
+        
+        let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+        let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: pos.x, y: pos.y, z: pos.z, w: 1.0)
+        let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + origin
+        
+        if filter(absoluteCartesianPosition) && (typeIsVisible && asymetricAtom.isVisible && asymetricAtom.isVisibleEnabled)
+        {
+          data.insert(asymetricIndex)
+        }
       }
     }
     return data
@@ -256,6 +325,97 @@ public final class EllipsoidPrimitive: Structure, RKRenderSphereObjectsSource
     }
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)
+  }
+  
+  // MARK: -
+  // MARK: Translation and rotation operations
+   
+  public override func centerOfMassOfSelection(atoms: [SKAtomCopy]) -> SIMD3<Double>
+  {
+    var com: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
+    var M: Double = 0.0
+     
+    guard !atoms.isEmpty else {return com}
+     
+    for atom in atoms
+    {
+      let mass: Double = 1.0
+      com += mass * atom.position
+      M += mass
+    }
+    com /= M
+     
+    return com
+  }
+   
+  public override func matrixOfInertia(atoms: [SKAtomCopy]) -> double3x3
+  {
+    var inertiaMatrix: double3x3 = double3x3()
+    let com: SIMD3<Double> = self.selectionCOMTranslation
+     
+    for atom in atoms
+    {
+      let mass: Double = 1.0
+      let dr: SIMD3<Double> = atom.position - com
+       
+      inertiaMatrix[0][0] += mass * (dr.y * dr.y + dr.z * dr.z)
+      inertiaMatrix[0][1] -= mass * dr.x * dr.y
+      inertiaMatrix[0][2] -= mass * dr.x * dr.z
+      inertiaMatrix[1][0] -= mass * dr.y * dr.x
+      inertiaMatrix[1][1] += mass * (dr.x * dr.x + dr.z * dr.z)
+      inertiaMatrix[1][2] -= mass * dr.y * dr.z
+      inertiaMatrix[2][0] -= mass * dr.z * dr.x
+      inertiaMatrix[2][1] -= mass * dr.z * dr.y
+      inertiaMatrix[2][2] += mass * (dr.x * dr.x + dr.y * dr.y)
+    }
+     
+    return inertiaMatrix
+  }
+   
+  
+   
+  // MARK: -
+  // MARK: Translation operations
+   
+  public override func translatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>) -> [SIMD3<Double>]
+  {
+    return atoms.map{$0.position + translation}
+  }
+   
+  public override func translatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by shift: SIMD3<Double>) -> [SIMD3<Double>]
+  {
+    let basis: double3x3 = self.selectionBodyFixedBasis
+    let translation: SIMD3<Double> = basis.inverse * shift
+     
+    return atoms.map{$0.position + translation}
+  }
+   
+  // MARK: -
+  // MARK: Rotation operations
+   
+  public override func rotatedPositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by quaternion: simd_quatd) -> [SIMD3<Double>]
+  {
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
+    let rotationMatrix: double3x3 = double3x3(quaternion)
+     
+    return atoms.map({
+      let pos = $0.position - com
+      return rotationMatrix * pos + com
+    })
+  }
+   
+  public override func rotatedBodyFramePositionsSelectionCartesian(atoms: [SKAsymmetricAtom], by quaternion: simd_quatd) -> [SIMD3<Double>]
+  {
+    let copies: [SKAtomCopy] = atoms.flatMap{$0.copies}.filter{$0.type == .copy}
+    let com: SIMD3<Double> = self.centerOfMassOfSelection(atoms: copies)
+    let basis: double3x3 = self.selectionBodyFixedBasis
+    let rotationMatrix = basis * double3x3(quaternion) * basis.inverse
+     
+    return atoms.map({
+      let pos: SIMD3<Double> = $0.position - com
+      return rotationMatrix * pos + com
+    })
   }
   
   // MARK: -

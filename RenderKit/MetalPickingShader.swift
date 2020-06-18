@@ -38,13 +38,16 @@ class MetalPickingShader
   var renderStructures: [[RKRenderStructure]] = [[]]
   
   var renderPassDescriptor: MTLRenderPassDescriptor! = nil
-  var atomPipeLine: MTLRenderPipelineState! = nil
-  var internalBondPipeLine: MTLRenderPipelineState! = nil
-  var externalBondPipeLine: MTLRenderPipelineState! = nil
   var texture: MTLTexture! = nil
   var depthTexture: MTLTexture! = nil
   var depthState: MTLDepthStencilState! = nil
   var samplerState: MTLSamplerState! = nil
+  
+  var atomPipeLine: MTLRenderPipelineState! = nil
+  var internalBondPipeLine: MTLRenderPipelineState! = nil
+  var externalBondPipeLine: MTLRenderPipelineState! = nil
+  var polygonalPrismPrimitivePipeLine: MTLRenderPipelineState! = nil
+ 
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
@@ -121,6 +124,23 @@ class MetalPickingShader
     catch
     {
       fatalError("Error occurred when creating bond-picking render pipeline state \(error)")
+    }
+    
+    let polygonalPrismPrimitivePipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+    polygonalPrismPrimitivePipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba32Uint
+    polygonalPrismPrimitivePipelineDescriptor.vertexFunction = library.makeFunction(name: "PickingPolygonalPrismVertexShader")!
+    polygonalPrismPrimitivePipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float
+    polygonalPrismPrimitivePipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.invalid
+    polygonalPrismPrimitivePipelineDescriptor.fragmentFunction = library.makeFunction(name: "PickingPolygonalPrismFragmentShader")!
+    polygonalPrismPrimitivePipelineDescriptor.vertexDescriptor = vertexDescriptor
+    
+    do
+    {
+      self.polygonalPrismPrimitivePipeLine = try device.makeRenderPipelineState(descriptor: polygonalPrismPrimitivePipelineDescriptor)
+    }
+    catch
+    {
+      fatalError("Error occurred when creating polygonal-prism-primitive render pipeline state \(error)")
     }
   }
   
@@ -209,7 +229,21 @@ class MetalPickingShader
     return nil
   }
   
-  public func renderPickingTextureWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, atomShader: MetalAtomShader, atomOrthographicImposterShader: MetalAtomOrthographicImposterShader, internalBondShader: MetalInternalBondShader, externalBondShader: MetalExternalBondShader, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, size: CGSize)
+  public func renderPickingTextureWithEncoder(_ commandBuffer: MTLCommandBuffer,
+                                              renderPassDescriptor: MTLRenderPassDescriptor,
+                                              atomShader: MetalAtomShader,
+                                              atomOrthographicImposterShader: MetalAtomOrthographicImposterShader,
+                                              internalBondShader: MetalInternalBondShader,
+                                              externalBondShader: MetalExternalBondShader,
+                                              crystalEllipsoidPrimitiveShader: MetalCrystalEllipsoidShader,
+                                              ellipsoidPrimitiveShader: MetalEllipsoidShader,
+                                              crystalCylinderPrimitiveShader: MetalCrystalCylinderShader,
+                                              cylinderPrimitiveShader: MetalCylinderShader,
+                                              crystalPolygonalPrismPrimitiveShader: MetalCrystalPolygonalPrismShader,
+                                              polygonalPrismPrimitiveShader: MetalPolygonalPrismShader,
+                                              frameUniformBuffer: MTLBuffer,
+                                              structureUniformBuffers: MTLBuffer?,
+                                              size: CGSize)
   {
     if let _: RKRenderDataSource = renderDataSource
     {
@@ -420,6 +454,217 @@ class MetalPickingShader
             }
           }
           
+          index = index + 1
+        }
+      }
+      
+      
+      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setDepthStencilState(depthState)
+      commandEncoder.setRenderPipelineState(polygonalPrismPrimitivePipeLine)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+      commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderCrystalEllipsoidObjectsSource = structure as? RKRenderCrystalEllipsoidObjectsSource,
+            let instanceBuffer: MTLBuffer = self.metalBuffer(crystalEllipsoidPrimitiveShader.instanceBuffers, sceneIndex: i, movieIndex: j),
+            let vertexBuffer: MTLBuffer = crystalEllipsoidPrimitiveShader.vertexBuffers,
+            let indexBuffer: MTLBuffer = crystalEllipsoidPrimitiveShader.indexBuffers
+          {
+            let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+                        
+            if (structure.drawAtoms && structure.isVisible && numberOfAtoms > 0)
+            {
+              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setDepthStencilState(depthState)
+      commandEncoder.setRenderPipelineState(polygonalPrismPrimitivePipeLine)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+      commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderEllipsoidObjectsSource = structure as? RKRenderEllipsoidObjectsSource,
+            let instanceBuffer: MTLBuffer = self.metalBuffer(ellipsoidPrimitiveShader.instanceBuffers, sceneIndex: i, movieIndex: j),
+            let vertexBuffer: MTLBuffer = ellipsoidPrimitiveShader.vertexBuffer,
+            let indexBuffer: MTLBuffer = ellipsoidPrimitiveShader.indexBuffer
+          {
+            let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+                        
+            if (structure.drawAtoms && structure.isVisible && numberOfAtoms > 0)
+            {
+              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setDepthStencilState(depthState)
+      commandEncoder.setRenderPipelineState(polygonalPrismPrimitivePipeLine)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+      commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderCrystalCylinderObjectsSource = structure as? RKRenderCrystalCylinderObjectsSource,
+            let instanceBuffer: MTLBuffer = self.metalBuffer(crystalCylinderPrimitiveShader.instanceBuffers, sceneIndex: i, movieIndex: j),
+            let vertexBuffer: MTLBuffer = self.metalBuffer(crystalCylinderPrimitiveShader.vertexBuffers, sceneIndex: i, movieIndex: j),
+            let indexBuffer: MTLBuffer = self.metalBuffer(crystalCylinderPrimitiveShader.indexBuffers, sceneIndex: i, movieIndex: j)
+          {
+            let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+                        
+            if (structure.drawAtoms && structure.isVisible && numberOfAtoms > 0)
+            {
+              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setDepthStencilState(depthState)
+      commandEncoder.setRenderPipelineState(polygonalPrismPrimitivePipeLine)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+      commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderCylinderObjectsSource = structure as? RKRenderCylinderObjectsSource,
+            let instanceBuffer: MTLBuffer = self.metalBuffer(cylinderPrimitiveShader.instanceBuffers, sceneIndex: i, movieIndex: j),
+            let vertexBuffer: MTLBuffer = self.metalBuffer(cylinderPrimitiveShader.vertexBuffers, sceneIndex: i, movieIndex: j),
+            let indexBuffer: MTLBuffer = self.metalBuffer(cylinderPrimitiveShader.indexBuffers, sceneIndex: i, movieIndex: j)
+          {
+            let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+                        
+            if (structure.drawAtoms && structure.isVisible && numberOfAtoms > 0)
+            {
+              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setDepthStencilState(depthState)
+      commandEncoder.setRenderPipelineState(polygonalPrismPrimitivePipeLine)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+      commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderCrystalPolygonalPrismObjectsSource = structure as? RKRenderCrystalPolygonalPrismObjectsSource,
+            let instanceBuffer: MTLBuffer = self.metalBuffer(crystalPolygonalPrismPrimitiveShader.instanceBuffers, sceneIndex: i, movieIndex: j),
+            let vertexBuffer: MTLBuffer = self.metalBuffer(crystalPolygonalPrismPrimitiveShader.vertexBuffers, sceneIndex: i, movieIndex: j),
+            let indexBuffer: MTLBuffer = self.metalBuffer(crystalPolygonalPrismPrimitiveShader.indexBuffers, sceneIndex: i, movieIndex: j)
+          {
+            let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+                        
+            if (structure.drawAtoms && structure.isVisible && numberOfAtoms > 0)
+            {
+              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setDepthStencilState(depthState)
+      commandEncoder.setRenderPipelineState(polygonalPrismPrimitivePipeLine)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
+      commandEncoder.setFragmentSamplerState(samplerState, index: 0)
+      
+      index = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let structure: RKRenderPolygonalPrismObjectsSource = structure as? RKRenderPolygonalPrismObjectsSource,
+            let instanceBuffer: MTLBuffer = self.metalBuffer(polygonalPrismPrimitiveShader.instanceBuffers, sceneIndex: i, movieIndex: j),
+            let vertexBuffer: MTLBuffer = self.metalBuffer(polygonalPrismPrimitiveShader.vertexBuffers, sceneIndex: i, movieIndex: j),
+            let indexBuffer: MTLBuffer = self.metalBuffer(polygonalPrismPrimitiveShader.indexBuffers, sceneIndex: i, movieIndex: j)
+          {
+            let numberOfAtoms: Int = instanceBuffer.length/MemoryLayout<RKInPerInstanceAttributesAtoms>.stride
+                        
+            if (structure.drawAtoms && structure.isVisible && numberOfAtoms > 0)
+            {
+              commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+              commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
+              commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
+              commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
+              commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+            }
+          }
           index = index + 1
         }
       }
