@@ -334,12 +334,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldEulerAngleX.isEditable = false
           textFieldEulerAngleY.isEditable = false
           textFieldEulerAngleZ.isEditable = false
-          sliderEulerAngleX.stringValue = ""
-          sliderEulerAngleZ.stringValue = ""
-          sliderEulerAngleY.stringValue = ""
-          textFieldEulerAngleX.stringValue = ""
-          textFieldEulerAngleY.stringValue = ""
-          textFieldEulerAngleZ.stringValue = ""
+          sliderEulerAngleX.stringValue = "0.0"
+          sliderEulerAngleZ.stringValue = "0.0"
+          sliderEulerAngleY.stringValue = "0.0"
+          textFieldEulerAngleX.stringValue = "0.0"
+          textFieldEulerAngleY.stringValue = "0.0"
+          textFieldEulerAngleZ.stringValue = "0.0"
           
           if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
             !representedStructure.allPrimitiveStructure.isEmpty
@@ -389,15 +389,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldAtomScalingCX.isEditable = false
           textFieldAtomScalingCY.isEditable = false
           textFieldAtomScalingCZ.isEditable = false
-          textFieldAtomScalingAX.stringValue = ""
-          textFieldAtomScalingAY.stringValue = ""
-          textFieldAtomScalingAZ.stringValue = ""
-          textFieldAtomScalingBX.stringValue = ""
-          textFieldAtomScalingBY.stringValue = ""
-          textFieldAtomScalingBZ.stringValue = ""
-          textFieldAtomScalingCX.stringValue = ""
-          textFieldAtomScalingCY.stringValue = ""
-          textFieldAtomScalingCZ.stringValue = ""
+          textFieldAtomScalingAX.stringValue = "1"
+          textFieldAtomScalingAY.stringValue = "0"
+          textFieldAtomScalingAZ.stringValue = "0"
+          textFieldAtomScalingBX.stringValue = "0"
+          textFieldAtomScalingBY.stringValue = "1"
+          textFieldAtomScalingBZ.stringValue = "0"
+          textFieldAtomScalingCX.stringValue = "0"
+          textFieldAtomScalingCY.stringValue = "0"
+          textFieldAtomScalingCZ.stringValue = "1"
           if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
             !representedStructure.allPrimitiveStructure.isEmpty
           {
@@ -441,7 +441,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let textFieldOpacity: NSTextField = view.viewWithTag(35) as? NSTextField
         {
           textFieldOpacity.isEditable = false
-          textFieldOpacity.stringValue = ""
+          textFieldOpacity.stringValue = "1.0"
           if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
             !representedStructure.allPrimitiveStructure.isEmpty
           {
@@ -480,7 +480,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let textFieldNumberOfSides: NSTextField = view.viewWithTag(37) as? NSTextField
         {
           textFieldNumberOfSides.isEditable = false
-          textFieldNumberOfSides.stringValue = ""
+          textFieldNumberOfSides.stringValue = "41"
           if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
             !representedStructure.allPrimitiveStructure.isEmpty
           {
