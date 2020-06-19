@@ -934,25 +934,21 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
       let selectedStructure: RKRenderStructure = structures[movieIdentifier]
       
-      for structure in structures
+      for structure in crystalProjectData.renderStructures
       {
-        if structure === selectedStructure && structure.isVisible && objectType > 0
-        {
-          switch(objectType)
-          {
-          case 1:
-            self.setSelectionFor(structure: structure as! Structure, atomIndexSet: IndexSet(integer: pickedObject), bondIndexSet: [], byExtendingSelection: false)
-          case 2:
-            self.setSelectionFor(structure: structure as! Structure, atomIndexSet: IndexSet(), bondIndexSet: IndexSet(integer: pickedObject), byExtendingSelection: false)
-          default:
-            break
-          }
-        }
-        else
-        {
-          self.setSelectionFor(structure: structure as! Structure, atomIndexSet: IndexSet(), bondIndexSet: [], byExtendingSelection: false)
-        }
+        self.setSelectionFor(structure: structure as! Structure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
       }
+      
+      switch(objectType)
+      {
+      case 1:
+        self.setSelectionFor(structure: selectedStructure as! Structure, atomIndexSet: IndexSet(integer: pickedObject), bondIndexSet: [],  byExtendingSelection: false)
+      case 2:
+        self.setSelectionFor(structure: selectedStructure as! Structure, atomIndexSet: [], bondIndexSet: IndexSet(integer: pickedObject), byExtendingSelection: false)
+      default:
+        break
+      }
+      
       self.reloadRenderDataSelectedAtoms()
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
     }
@@ -1036,6 +1032,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
               selectedBonds.insert(index)
             }
           }
+        }
+      }
+      
+      // correctBondSelectionDueToAtomSelection
+      let selectedAtoms: Set<SKAsymmetricAtom> = Set(selectedTreeNodes.map{$0.representedObject})
+      for (index, bond) in structure.bondController.arrangedObjects.enumerated()
+      {
+        if(selectedAtoms.contains(bond.atom1) || selectedAtoms.contains(bond.atom2))
+        {
+          selectedBonds.insert(index)
         }
       }
     

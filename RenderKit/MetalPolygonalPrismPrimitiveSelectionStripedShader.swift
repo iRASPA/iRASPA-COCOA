@@ -102,7 +102,7 @@ class MetalPolygonalPrismPrimitiveSelectionStripedShader
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderPolygonalPrismObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setDepthStencilState(self.transparentDepthState)
-      commandEncoder.setCullMode(MTLCullMode.back)
+      commandEncoder.setCullMode(MTLCullMode.none)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
