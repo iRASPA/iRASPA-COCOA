@@ -248,7 +248,7 @@ typedef struct
   float4 primitiveSpecularFrontSide;
   bool primitiveFrontSideHDR;
   float primitiveFrontSideHDRExposure;
-  float pad3;
+  float primitiveOpacity;
   float primitiveShininessFrontSide;
   
   float4 primitiveAmbientBackSide;

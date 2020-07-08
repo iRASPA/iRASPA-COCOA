@@ -119,7 +119,7 @@ fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[st
   hsv.x = hsv.x * structureUniforms.atomHue;
   hsv.y = hsv.y * structureUniforms.atomSaturation;
   hsv.z = hsv.z * structureUniforms.atomValue;
-  return float4(hsv2rgb(hsv) * structureUniforms.primitiveDiffuseFrontSide.w,structureUniforms.primitiveDiffuseFrontSide.w);
+  return float4(hsv2rgb(hsv) * structureUniforms.primitiveOpacity,structureUniforms.primitiveOpacity);
 }
 
 

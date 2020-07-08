@@ -508,7 +508,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var atomForceFieldIdentifier: String = "Default"
   public var atomForceFieldOrder: SKForceFieldSets.ForceFieldOrder = .elementOnly
   public var atomColorSchemeIdentifier: String = SKColorSets.ColorScheme.jmol.rawValue
-  public var atomColorOrder: SKColorSets.ColorOrder = .elementOnly
+  public var atomColorSchemeOrder: SKColorSets.ColorOrder = .elementOnly
   
   public var atomCacheAmbientOcclusionTexture: [CUnsignedChar] = [CUnsignedChar]()
     
@@ -708,7 +708,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.atomForceFieldIdentifier = original.atomForceFieldIdentifier
     self.atomForceFieldOrder = original.atomForceFieldOrder
     self.atomColorSchemeIdentifier = original.atomColorSchemeIdentifier
-    self.atomColorOrder = original.atomColorOrder
+    self.atomColorSchemeOrder = original.atomColorSchemeOrder
     
     self.atomSelectionStyle = original.atomSelectionStyle
     self.atomSelectionStripesDensity = original.atomSelectionStripesDensity
@@ -965,7 +965,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.atomForceFieldIdentifier = clone.atomForceFieldIdentifier
     self.atomForceFieldOrder = clone.atomForceFieldOrder
     self.atomColorSchemeIdentifier = clone.atomColorSchemeIdentifier
-    self.atomColorOrder = clone.atomColorOrder
+    self.atomColorSchemeOrder = clone.atomColorSchemeOrder
     
     self.atomSelectionStyle = clone.atomSelectionStyle
     self.atomSelectionStripesDensity = clone.atomSelectionStripesDensity
@@ -1179,7 +1179,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       let uniqueForceFieldName: String = asymmetricAtom.uniqueForceFieldName
       let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[asymmetricAtom.elementIdentifier].chemicalSymbol
         
-      switch(self.atomColorOrder)
+      switch(self.atomColorSchemeOrder)
       {
       case .elementOnly:
         asymmetricAtom.color = colorSet[chemicalElement] ?? NSColor.black
@@ -1215,14 +1215,14 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   public func getRepresentationColorOrder() -> SKColorSets.ColorOrder?
   {
-      return self.atomColorOrder
+      return self.atomColorSchemeOrder
   }
   
   public func setRepresentationColorOrder(order: SKColorSets.ColorOrder?, colorSets: SKColorSets)
   {
     if let order = order
     {
-      self.atomColorOrder = order
+      self.atomColorSchemeOrder = order
       
       let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       for asymmetricAtom in asymmetricAtoms
@@ -1232,7 +1232,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
           let uniqueForceFieldName: String = asymmetricAtom.uniqueForceFieldName
           let chemicalElement: String = PredefinedElements.sharedInstance.elementSet[asymmetricAtom.elementIdentifier].chemicalSymbol
         
-          switch(self.atomColorOrder)
+          switch(self.atomColorSchemeOrder)
           {
           case .elementOnly:
             asymmetricAtom.color = colorSet[chemicalElement] ?? NSColor.black
@@ -1411,7 +1411,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         self.atomShininess = 6.0
         self.atomForceFieldIdentifier = "Default"
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
-        self.atomColorOrder = .elementOnly
+        self.atomColorSchemeOrder = .elementOnly
         
         self.drawBonds = true
         self.bondAmbientOcclusion = false
@@ -1460,7 +1460,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         self.atomScaleFactor = 1.0
         self.atomForceFieldIdentifier = "Default"
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.rasmol.rawValue
-        self.atomColorOrder = .elementOnly
+        self.atomColorSchemeOrder = .elementOnly
         
         self.drawBonds = false
         self.bondAmbientOcclusion = false
@@ -1495,7 +1495,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         self.atomScaleFactor = 1.0
         self.atomForceFieldIdentifier = "Default"
         self.atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
-        self.atomColorOrder = .elementOnly
+        self.atomColorSchemeOrder = .elementOnly
         
         self.drawBonds = true
         self.bondAmbientOcclusion = false
@@ -1539,7 +1539,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
         atomScaleFactor = 1.0
         atomForceFieldIdentifier = "Default"
         atomColorSchemeIdentifier = SKColorSets.ColorScheme.jmol.rawValue
-        atomColorOrder = .elementOnly
+        atomColorSchemeOrder = .elementOnly
         atomAmbientOcclusion = false
         
         self.setRepresentationType(type: .unity)
@@ -1608,7 +1608,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
        self.atomRepresentationType == .sticks_and_balls &&
        self.atomForceFieldIdentifier == "Default" &&
        self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
-       self.atomColorOrder == .elementOnly &&
+       self.atomColorSchemeOrder == .elementOnly &&
        self.drawBonds == true &&
        self.bondColorMode == .uniform &&
        (self.bondScaleFactor ==~ 0.15) &&
@@ -1671,7 +1671,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
        self.atomRepresentationType == .vdw &&
        self.atomForceFieldIdentifier == "Default" &&
        self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.rasmol.rawValue &&
-       self.atomColorOrder == .elementOnly &&
+       self.atomColorSchemeOrder == .elementOnly &&
       self.atomSelectionStyle == .striped &&
       (self.atomSelectionScaling ==~ 1.0)  &&
       (self.atomSelectionIntensity ==~ 0.4)  &&
@@ -1692,7 +1692,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       self.atomRepresentationType == .unity &&
       self.atomForceFieldIdentifier == "Default" &&
       self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
-      self.atomColorOrder == .elementOnly &&
+      self.atomColorSchemeOrder == .elementOnly &&
       (self.atomScaleFactor ==~ 1.0) &&
       self.atomHDR == true &&
       (self.atomHDRExposure ==~ 1.5) &&
@@ -1743,7 +1743,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       self.atomRepresentationType == .unity &&
       self.atomForceFieldIdentifier == "Default" &&
       self.atomColorSchemeIdentifier == SKColorSets.ColorScheme.jmol.rawValue &&
-      self.atomColorOrder == .elementOnly &&
+      self.atomColorSchemeOrder == .elementOnly &&
       (self.atomScaleFactor ==~ 1.0) &&
       self.atomAmbientOcclusion == false &&
       (self.atomAmbientIntensity ==~ 0.1) &&
@@ -3039,7 +3039,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     encoder.encode(atomForceFieldIdentifier)
     encoder.encode(atomForceFieldOrder.rawValue)
     encoder.encode(atomColorSchemeIdentifier)
-    encoder.encode(atomColorOrder.rawValue)
+    encoder.encode(atomColorSchemeOrder.rawValue)
     
     encoder.encode(atomSelectionStyle.rawValue)
     encoder.encode(atomSelectionStripesDensity)
@@ -3322,7 +3322,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.atomForceFieldOrder = atomForceFieldOrder
     self.atomColorSchemeIdentifier = try decoder.decode(String.self)
     guard let atomColorOrder = SKColorSets.ColorOrder(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
-    self.atomColorOrder = atomColorOrder
+    self.atomColorSchemeOrder = atomColorOrder
     
     guard let atomSelectionStyle = RKSelectionStyle(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.atomSelectionStyle = atomSelectionStyle
