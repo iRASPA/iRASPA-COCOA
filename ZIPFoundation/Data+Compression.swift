@@ -161,13 +161,13 @@ extension Data {
                                      progress: (advance: (position: position, readSize: readSize),
                                                 configuration: (operation: operation, flags: flags)),
                                      provider: provider)
-            try self.flush(stream: &stream, checksum: &checksum, buffer: (pointer: bufferPtr, size: bufferSize),
+            try self.flush(stream: &stream, checksum: &checksum, buffer: (size: bufferSize, pointer: bufferPtr),
                            operation: operation, consumer: consumer)
             if position >= size { flags = Int32(COMPRESSION_STREAM_FINALIZE.rawValue) }
             status = compression_stream_process(&stream, flags)
             switch status {
             case COMPRESSION_STATUS_OK:
-                try self.flush(stream: &stream, checksum: &checksum, buffer: (pointer: bufferPtr, size: bufferSize),
+                try self.flush(stream: &stream, checksum: &checksum, buffer: (size: bufferSize, pointer: bufferPtr),
                                operation: operation, consumer: consumer)
             case COMPRESSION_STATUS_END:
                 if stream.dst_ptr > bufferPtr {

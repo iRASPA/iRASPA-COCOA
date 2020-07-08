@@ -123,7 +123,7 @@ public struct RKStructureUniforms
   public var primitiveSpecularFrontSide: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var primitiveFrontSideHDR: Int32 = 1
   public var primitiveFrontSideHDRExposure: Float = 1.5
-  public var pad3: Float = 0.0
+  public var primitiveOpacity: Float = 0.0
   public var primitiveShininessFrontSide: Float = 4.0
   
   public var primitiveAmbientBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
@@ -254,6 +254,8 @@ public struct RKStructureUniforms
       
       self.transformationMatrix = primitiveModelMatrix * float4x4(Double3x3: structure.primitiveTransformationMatrix)
       self.transformationNormalMatrix = primitiveNormalMatrix * float4x4(Double3x3: structure.primitiveTransformationMatrix.inverse.transpose)
+      
+      self.primitiveOpacity = Float(structure.primitiveOpacity)
       
       self.primitiveFrontSideHDR = structure.primitiveFrontSideHDR ? 1 : 0
       self.primitiveFrontSideHDRExposure = Float(structure.primitiveFrontSideHDRExposure)

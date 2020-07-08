@@ -1835,7 +1835,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-          self.windowController?.detailTabViewController?.reloadData()
+      self.windowController?.detailTabViewController?.reloadData()
     }
   }
   
