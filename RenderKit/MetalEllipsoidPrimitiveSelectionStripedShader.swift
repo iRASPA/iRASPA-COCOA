@@ -52,7 +52,7 @@ class MetalEllipsoidPrimitiveSelectionStripedShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PolygonalPrismSelectionStripedVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitivePolygonalPrismSelectionStripedVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -63,7 +63,7 @@ class MetalEllipsoidPrimitiveSelectionStripedShader
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismSelectionStripedFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitivePolygonalPrismSelectionStripedFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -142,7 +142,11 @@ class MetalEllipsoidPrimitiveSelectionStripedShader
                 commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
                 commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
                                 
+                commandEncoder.setCullMode(MTLCullMode.front)
                 commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+                
+                commandEncoder.setCullMode(MTLCullMode.back)
+                               commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               }
             }
           }

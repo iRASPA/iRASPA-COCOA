@@ -51,7 +51,7 @@ class MetalCylinderPrimitiveSelectionStripedShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PolygonalPrismSelectionStripedVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitiveCylinderSelectionStripedVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -62,7 +62,7 @@ class MetalCylinderPrimitiveSelectionStripedShader
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismSelectionStripedFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitiveCylinderSelectionStripedFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -102,7 +102,7 @@ class MetalCylinderPrimitiveSelectionStripedShader
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderCylinderObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setDepthStencilState(self.transparentDepthState)
-      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setCullMode(MTLCullMode.back)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
@@ -118,7 +118,7 @@ class MetalCylinderPrimitiveSelectionStripedShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderCylinderObjectsSource = structure as? RKRenderCylinderObjectsSource,
-             (structure.atomSelectionStyle == .striped)
+             (structure.primitiveSelectionStyle == .striped)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             
@@ -134,7 +134,11 @@ class MetalCylinderPrimitiveSelectionStripedShader
                 commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
                 commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
                 commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-                                
+                               
+                commandEncoder.setCullMode(MTLCullMode.front)
+                commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+                
+                commandEncoder.setCullMode(MTLCullMode.back)
                 commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               }
             }

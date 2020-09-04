@@ -141,10 +141,21 @@ public struct RKStructureUniforms
   public var bondSelectionWorleyNoise3DFrequency: Float = 2.0
   public var bondSelectionWorleyNoise3DJitter: Float = 1.0
   
-  public var pad7: SIMD4<Float> = SIMD4<Float>()
-  public var pad8: SIMD4<Float> = SIMD4<Float>()
-  public var pad9: SIMD4<Float> = SIMD4<Float>()
-  
+  public var primitiveSelectionStripesDensity: Float = 0.25;
+  public var primitiveSelectionStripesFrequency: Float = 12.0;
+  public var primitiveSelectionWorleyNoise3DFrequency: Float = 2.0;
+  public var primitiveSelectionWorleyNoise3DJitter: Float = 1.0;
+
+  public var primitiveSelectionScaling: Float = 1.01;
+  public var primitiveSelectionIntensity: Float = 0.8;
+  public var pad7: Float = 0.0;
+  public var pad8: Float = 0.0;
+
+  public var primitiveHue: Float = 1.0;
+  public var primitiveSaturation: Float = 1.0;
+  public var primitiveValue: Float = 1.0;
+  public var pad9: Float = 0.0;
+
   public var pad10: float4x4 = float4x4(Double4x4: double4x4(1.0))
   public var pad11: float4x4 = float4x4(Double4x4: double4x4(1.0))
   public var pad12: float4x4 = float4x4(Double4x4: double4x4(1.0))
@@ -256,6 +267,18 @@ public struct RKStructureUniforms
       self.transformationNormalMatrix = primitiveNormalMatrix * float4x4(Double3x3: structure.primitiveTransformationMatrix.inverse.transpose)
       
       self.primitiveOpacity = Float(structure.primitiveOpacity)
+      
+      
+      self.primitiveHue = Float(structure.primitiveHue)
+      self.primitiveSaturation = Float(structure.primitiveSaturation)
+      self.primitiveValue = Float(structure.primitiveValue)
+      
+      self.primitiveSelectionScaling = Float(max(1.001,structure.primitiveSelectionScaling))
+      self.primitiveSelectionStripesDensity = Float(structure.primitiveSelectionStripesDensity)
+      self.primitiveSelectionStripesFrequency = Float(structure.primitiveSelectionStripesFrequency)
+      self.primitiveSelectionWorleyNoise3DFrequency = Float(structure.primitiveSelectionWorleyNoise3DFrequency)
+      self.primitiveSelectionWorleyNoise3DJitter = Float(structure.primitiveSelectionWorleyNoise3DJitter)
+      self.primitiveSelectionIntensity = Float(structure.primitiveSelectionIntensity)
       
       self.primitiveFrontSideHDR = structure.primitiveFrontSideHDR ? 1 : 0
       self.primitiveFrontSideHDRExposure = Float(structure.primitiveFrontSideHDRExposure)

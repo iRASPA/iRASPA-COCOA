@@ -43,7 +43,7 @@ public struct RKIsosurfaceUniforms
   public var specularFrontSide: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var frontHDR: Int32 = 1
   public var frontHDRExposure: Float = 1.5
-  public var pad3: Float = 0.0
+  public var pad1: Float = 0.0
   public var shininessFrontSide: Float = 4.0
   
   public var ambientBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
@@ -51,8 +51,20 @@ public struct RKIsosurfaceUniforms
   public var specularBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.9, y: 0.9, z: 0.9, w: 1.0)
   public var backHDR: Int32 = 1
   public var backHDRExposure: Float = 1.5
-  public var pad6: Float = 0.0
+  public var pad2: Float = 0.0
   public var shininessBackSide: Float = 4.0
+  
+  public var hue: Float = 1.0
+  public var saturation: Float = 1.0
+  public var value: Float = 1.0
+  public var pad3: Float = 0.0
+  public var pad4: SIMD4<Float> = SIMD4<Float>()
+  public var pad5: SIMD4<Float> = SIMD4<Float>()
+  public var pad6: SIMD4<Float> = SIMD4<Float>()
+  public var pad7: float4x4 = float4x4(Double4x4: double4x4())
+  
+  public var pad8: float4x4 = float4x4(Double4x4: double4x4())
+  public var pad9: float4x4 = float4x4(Double4x4: double4x4())
   
   public init()
   {
@@ -67,6 +79,10 @@ public struct RKIsosurfaceUniforms
     
     if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource
     {
+      self.hue = Float(structure.adsorptionSurfaceHue);
+      self.saturation = Float(structure.adsorptionSurfaceSaturation);
+      self.value = Float(structure.adsorptionSurfaceValue);
+      
       self.frontHDR = structure.adsorptionSurfaceFrontSideHDR ? 1 : 0
       self.frontHDRExposure = Float(structure.adsorptionSurfaceFrontSideHDRExposure)
       self.ambientBackSide = Float(structure.adsorptionSurfaceBackSideAmbientIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceBackSideAmbientColor, opacity: structure.adsorptionSurfaceOpacity)

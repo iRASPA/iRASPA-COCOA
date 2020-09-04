@@ -82,6 +82,7 @@ extension ProjectViewController
               
               // store the untouched/unwrapped data in the project
               node.representedObject.data = readData
+              node.isDropEnabled = false
             }
             catch let error
             {

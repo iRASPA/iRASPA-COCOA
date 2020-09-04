@@ -64,8 +64,6 @@ vertex AtomSphereVertexShaderOut PolygonalPrismVertexShader(const device InPerVe
 }
 
 
-
-
 fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[stage_in]],
                                               constant StructureUniforms& structureUniforms [[buffer(0)]],
                                               constant FrameUniforms& frameUniforms [[buffer(1)]],
@@ -84,9 +82,24 @@ fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[st
   float4 specular;
   float4 color;
   
-  if (!frontfacing)
+  float3 R = reflect(-L, N);
+  
+  if(frontfacing)
   {
-    float3 R = reflect(-L, -N);
+    ambient = structureUniforms.primitiveAmbientFrontSide;
+    diffuse = max(dot(N, L), 0.0) * structureUniforms.primitiveDiffuseFrontSide;
+    specular = pow(max(dot(R, V), 0.0), structureUniforms.primitiveShininessFrontSide) * structureUniforms.primitiveSpecularFrontSide;
+      
+    color= float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
+    if (structureUniforms.primitiveFrontSideHDR)
+    {
+      float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.primitiveFrontSideHDRExposure);
+      vLdrColor.a = 1.0;
+      color = vLdrColor;
+    }
+  }
+  else
+  {
     ambient = structureUniforms.primitiveAmbientBackSide;
     diffuse = max(dot(-N, L), 0.0) * structureUniforms.primitiveDiffuseBackSide;
     specular = pow(max(dot(R, V), 0.0), structureUniforms.primitiveShininessBackSide) * structureUniforms.primitiveSpecularBackSide;
@@ -99,27 +112,13 @@ fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[st
       color = vLdrColor;
     }
   }
-  else
-  {
-    float3 R = reflect(-L, N);
-    ambient = structureUniforms.primitiveAmbientFrontSide;
-    diffuse = max(dot(N, L), 0.0) * structureUniforms.primitiveDiffuseFrontSide;
-    specular = pow(max(dot(R, V), 0.0), structureUniforms.primitiveShininessFrontSide) * structureUniforms.primitiveSpecularFrontSide;
-    
-    color= float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
-    if (structureUniforms.primitiveFrontSideHDR)
-    {
-      float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.primitiveFrontSideHDRExposure);
-      vLdrColor.a = 1.0;
-      color = vLdrColor;
-    }
-  }
+
   
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.atomHue;
-  hsv.y = hsv.y * structureUniforms.atomSaturation;
-  hsv.z = hsv.z * structureUniforms.atomValue;
-  return float4(hsv2rgb(hsv) * structureUniforms.primitiveOpacity,structureUniforms.primitiveOpacity);
+  hsv.x = hsv.x * structureUniforms.primitiveHue;
+  hsv.y = hsv.y * structureUniforms.primitiveSaturation;
+  hsv.z = hsv.z * structureUniforms.primitiveValue;
+  return structureUniforms.primitiveOpacity * float4(hsv2rgb(hsv), 1.0);
 }
 
 

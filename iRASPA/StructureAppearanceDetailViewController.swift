@@ -133,7 +133,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     self.heights =
     [
       "PrimitiveVisualAppearanceGroup" : 17.0,
-      "PrimitiveVisualAppearanceCell" : 725.0,
+      "PrimitiveVisualAppearanceCell" : 1000.0,
       "AtomsVisualAppearanceGroup" : 17.0,
       "AtomsVisualAppearanceCell" : 675.0,
       "BondsVisualAppearanceGroup" : 17.0,
@@ -141,7 +141,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       "UnitCellVisualAppearanceGroup" : 17.0,
       "UnitCellVisualAppearanceCell" : 126.0,
       "AdsorptionVisualAppearanceGroup": 17.0,
-      "AdsorptionVisualAppearanceCell" : 568.0,
+      "AdsorptionVisualAppearanceCell" : 650.0,
       "AnnotationVisualAppearanceGroup" : 17.0,
       "AnnotationVisualAppearanceCell" : 204.0
     ]
@@ -537,6 +537,216 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
           }
         }
+        
+        
+        // Selection-style
+        if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(2208) as? iRASPAPopUpButton,
+           let textFieldSelectionFrequency: NSTextField = view.viewWithTag(2209) as? NSTextField,
+           let textFieldSelectionDensity: NSTextField = view.viewWithTag(2210) as? NSTextField
+        {
+          popUpbuttonSelectionStyle.isEditable = false
+          textFieldSelectionFrequency.isEditable = false
+          textFieldSelectionFrequency.stringValue = ""
+          textFieldSelectionDensity.isEditable = false
+          textFieldSelectionDensity.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            popUpbuttonSelectionStyle.isEditable = enabled
+            textFieldSelectionFrequency.isEditable = enabled
+            textFieldSelectionDensity.isEditable = enabled
+            
+            if let selectionStyle: RKSelectionStyle = representedStructure.renderPrimitiveSelectionStyle
+            {
+              popUpbuttonSelectionStyle.removeItem(withTitle: "Multiple Values")
+              popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
+              
+              if selectionStyle == .glow
+              {
+                textFieldSelectionFrequency.isEditable = false
+                textFieldSelectionDensity.isEditable = false
+              }
+            }
+            else
+            {
+              popUpbuttonSelectionStyle.setTitle("Multiple Values")
+              textFieldSelectionFrequency.stringValue = "Mult. Val."
+              textFieldSelectionDensity.stringValue = "Mult. Val."
+            }
+            
+            if let renderSelectionFrequency: Double = representedStructure.renderPrimitiveSelectionFrequency
+            {
+              textFieldSelectionFrequency.doubleValue = renderSelectionFrequency
+            }
+            else
+            {
+              textFieldSelectionFrequency.stringValue = "Mult. Val."
+            }
+            
+            if let renderSelectionDensity: Double = representedStructure.renderPrimitiveSelectionDensity
+            {
+              textFieldSelectionDensity.doubleValue = renderSelectionDensity
+            }
+            else
+            {
+              textFieldSelectionDensity.stringValue = "Mult. Val."
+            }
+          }
+        }
+        
+        if let textFieldBondSelectionIntensityLevel: NSTextField = view.viewWithTag(2234) as? NSTextField
+        {
+          textFieldBondSelectionIntensityLevel.isEditable = false
+          textFieldBondSelectionIntensityLevel.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldBondSelectionIntensityLevel.isEditable = enabled
+            if let renderSelectionIntensityLevel: Double = representedStructure.renderPrimitiveSelectionIntensity
+            {
+              textFieldBondSelectionIntensityLevel.doubleValue = renderSelectionIntensityLevel
+            }
+            else
+            {
+              textFieldBondSelectionIntensityLevel.stringValue = "Multiple Values"
+            }
+          }
+        }
+          
+        if let sliderSelectionIntensityLevel: NSSlider = view.viewWithTag(2235) as? NSSlider
+        {
+          sliderSelectionIntensityLevel.isEnabled = false
+          sliderSelectionIntensityLevel.minValue = 0.0
+          sliderSelectionIntensityLevel.maxValue = 2.0
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderSelectionIntensityLevel.isEnabled = enabled
+            if let renderSelectionIntensityLevel: Double = representedStructure.renderPrimitiveSelectionIntensity
+            {
+              sliderSelectionIntensityLevel.doubleValue = renderSelectionIntensityLevel
+            }
+          }
+        }
+          
+        
+        if let textFieldSelectionScaling: NSTextField = view.viewWithTag(2281) as? NSTextField
+        {
+          textFieldSelectionScaling.isEditable = false
+          textFieldSelectionScaling.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldSelectionScaling.isEditable = enabled
+            if let renderSelectionScaling: Double = representedStructure.renderPrimitiveSelectionScaling
+            {
+              textFieldSelectionScaling.doubleValue = renderSelectionScaling
+            }
+            else
+            {
+              textFieldSelectionScaling.stringValue = "Multiple Values"
+            }
+          }
+        }
+        if let sliderSelectionScaling: NSSlider = view.viewWithTag(2282) as? NSSlider
+        {
+          sliderSelectionScaling.isEnabled = false
+          sliderSelectionScaling.minValue = 1.0
+          sliderSelectionScaling.maxValue = 2.0
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderSelectionScaling.isEnabled = enabled
+            if let renderSelectionScaling: Double = representedStructure.renderPrimitiveSelectionScaling
+            {
+              sliderSelectionScaling.doubleValue = renderSelectionScaling
+            }
+          }
+        }
+        
+        
+        // Hue
+        if let textFieldHue: NSTextField = view.viewWithTag(2213) as? NSTextField
+        {
+          textFieldHue.isEditable = false
+          textFieldHue.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldHue.isEditable = enabled
+            if let renderBondHue: Double = representedStructure.renderPrimitiveHue
+            {
+              textFieldHue.doubleValue = renderBondHue
+            }
+          }
+        }
+        if let sliderHue: NSSlider = view.viewWithTag(2214) as? NSSlider
+        {
+          sliderHue.isEnabled = false
+          sliderHue.minValue = 0.0
+          sliderHue.maxValue = 1.5
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderHue.isEnabled = enabled
+            if let renderBondHue: Double = representedStructure.renderPrimitiveHue
+            {
+              sliderHue.doubleValue = renderBondHue
+            }
+          }
+        }
+        
+        // Saturation
+        if let textFieldSaturation: NSTextField = view.viewWithTag(2215) as? NSTextField
+        {
+          textFieldSaturation.isEditable = false
+          textFieldSaturation.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldSaturation.isEditable = enabled
+            if let renderBondSaturation: Double = representedStructure.renderPrimitiveSaturation
+            {
+              textFieldSaturation.doubleValue = renderBondSaturation
+            }
+          }
+        }
+        if let sliderSaturation: NSSlider = view.viewWithTag(2216) as? NSSlider
+        {
+          sliderSaturation.isEnabled = false
+          sliderSaturation.minValue = 0.0
+          sliderSaturation.maxValue = 1.5
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderSaturation.isEnabled = enabled
+            if let renderBondSaturation: Double = representedStructure.renderPrimitiveSaturation
+            {
+              sliderSaturation.doubleValue = renderBondSaturation
+            }
+          }
+        }
+        
+        // Value
+        if let textFieldValue: NSTextField = view.viewWithTag(2217) as? NSTextField
+        {
+          textFieldValue.isEditable = false
+          textFieldValue.stringValue = ""
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            textFieldValue.isEditable = enabled
+            if let renderBondValue: Double = representedStructure.renderPrimitiveValue
+            {
+              textFieldValue.doubleValue = renderBondValue
+            }
+          }
+        }
+        if let sliderValue: NSSlider = view.viewWithTag(2218) as? NSSlider
+        {
+          sliderValue.isEnabled = false
+          sliderValue.minValue = 0.0
+          sliderValue.maxValue = 1.5
+          if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+          {
+            sliderValue.isEnabled = enabled
+            if let renderBondValue: Double = representedStructure.renderPrimitiveValue
+            {
+              sliderValue.doubleValue = renderBondValue
+            }
+          }
+        }
+        
         
         // High dynamic range
         if let button: NSButton = view.viewWithTag(41) as? NSButton
@@ -2427,6 +2637,94 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
+        // Hue
+        if let textFieldHue: NSTextField = view.viewWithTag(4413) as? NSTextField
+        {
+          textFieldHue.isEditable = false
+          textFieldHue.stringValue = ""
+          if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+          {
+            textFieldHue.isEditable = enabled
+            if let renderAdsorptionSurfaceHue: Double = representedStructure.renderAdsorptionSurfaceHue
+            {
+              textFieldHue.doubleValue = renderAdsorptionSurfaceHue
+            }
+          }
+        }
+        if let sliderHue: NSSlider = view.viewWithTag(4414) as? NSSlider
+        {
+          sliderHue.isEnabled = false
+          sliderHue.minValue = 0.0
+          sliderHue.maxValue = 1.5
+          if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+          {
+            sliderHue.isEnabled = enabled
+            if let renderAdsorptionSurfaceHue: Double = representedStructure.renderAdsorptionSurfaceHue
+            {
+              sliderHue.doubleValue = renderAdsorptionSurfaceHue
+            }
+          }
+        }
+        
+        // Saturation
+        if let textFieldSaturation: NSTextField = view.viewWithTag(4415) as? NSTextField
+        {
+          textFieldSaturation.isEditable = false
+          textFieldSaturation.stringValue = ""
+          if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+          {
+            textFieldSaturation.isEditable = enabled
+            if let renderAdsorptionSurfaceSaturation: Double = representedStructure.renderAdsorptionSurfaceSaturation
+            {
+              textFieldSaturation.doubleValue = renderAdsorptionSurfaceSaturation
+            }
+          }
+        }
+        if let sliderSaturation: NSSlider = view.viewWithTag(4416) as? NSSlider
+        {
+          sliderSaturation.isEnabled = false
+          sliderSaturation.minValue = 0.0
+          sliderSaturation.maxValue = 1.5
+          if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+          {
+            sliderSaturation.isEnabled = enabled
+            if let renderAdsorptionSurfaceSaturation: Double = representedStructure.renderAdsorptionSurfaceSaturation
+            {
+              sliderSaturation.doubleValue = renderAdsorptionSurfaceSaturation
+            }
+          }
+        }
+        
+        // Value
+        if let textFieldValue: NSTextField = view.viewWithTag(4417) as? NSTextField
+        {
+          textFieldValue.isEditable = false
+          textFieldValue.stringValue = ""
+          if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+          {
+            textFieldValue.isEditable = enabled
+            if let renderAdsorptionSurfaceValue: Double = representedStructure.renderAdsorptionSurfaceValue
+            {
+              textFieldValue.doubleValue = renderAdsorptionSurfaceValue
+            }
+          }
+        }
+        if let sliderValue: NSSlider = view.viewWithTag(4418) as? NSSlider
+        {
+          sliderValue.isEnabled = false
+          sliderValue.minValue = 0.0
+          sliderValue.maxValue = 1.5
+          if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+          {
+            sliderValue.isEnabled = enabled
+            if let renderAdsorptionSurfaceValue: Double = representedStructure.renderAdsorptionSurfaceValue
+            {
+              sliderValue.doubleValue = renderAdsorptionSurfaceValue
+            }
+          }
+        }
+        
+        
         // High dynamic range
         if let button: NSButton = view.viewWithTag(7) as? NSButton
         {
@@ -3894,6 +4192,323 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       self.proxyProject?.representedObject.isEdited = true
     }
   }
+  
+  // Selection style
+  @IBAction func changePrimitiveSelectionStyle(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+       let selectionStyle = RKSelectionStyle(rawValue: sender.indexOfSelectedItem)
+    {
+      representedStructure.renderPrimitiveSelectionStyle = selectionStyle
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveSelectionFrequencyTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveSelectionFrequency = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveSelectionDensityTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveSelectionDensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveSelectionIntensityField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveSelectionIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveSelectionIntensity(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveSelectionIntensity = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changePrimitiveSelectionScalingTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveSelectionScaling = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changePrimitiveSelectionScalingSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+    {
+      representedStructure.renderPrimitiveSelectionScaling = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  // Hue textfield
+   @IBAction func changePrimitiveHueTextField(_ sender: NSTextField)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+     {
+       representedStructure.renderPrimitiveHue = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Hue slider
+   @IBAction func changePrimitiveHueSlider(_ sender: NSSlider)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+     {
+       representedStructure.renderPrimitiveHue = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+       
+       if let event: NSEvent = NSApplication.shared.currentEvent
+       {
+         let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+         let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+         
+         if startingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+         }
+         if endingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+         }
+       }
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Saturation textfield
+   @IBAction func changePrimitiveSaturationTextField(_ sender: NSTextField)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+     {
+       representedStructure.renderPrimitiveSaturation = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Saturation slider
+   @IBAction func changePrimitiveSaturationSlider(_ sender: NSSlider)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+     {
+       representedStructure.renderPrimitiveSaturation = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+       
+       if let event: NSEvent = NSApplication.shared.currentEvent
+       {
+         let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+         let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+         
+         if startingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+         }
+         if endingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+         }
+       }
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Value textfield
+   @IBAction func changePrimitiveValueTextField(_ sender: NSTextField)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+     {
+       representedStructure.renderPrimitiveValue = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Value slider
+   @IBAction func changePrimitiveValueSlider(_ sender: NSSlider)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+     {
+       representedStructure.renderPrimitiveValue = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.primitiveVisualAppearanceCell])
+       
+       if let event: NSEvent = NSApplication.shared.currentEvent
+       {
+         let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+         let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+         
+         if startingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+         }
+         if endingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+         }
+       }
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   
+   
+  
   
   @IBAction func changePrimitiveFrontSideHDRExporeTextField(_ sender: NSTextField)
   {
@@ -6186,6 +6801,163 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       self.proxyProject?.representedObject.isEdited = true
     }
   }
+  
+  // Hue textfield
+   @IBAction func changeAdsorptionSurfaceHueTextField(_ sender: NSTextField)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     {
+       representedStructure.renderAdsorptionSurfaceHue = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Hue slider
+   @IBAction func changeAdsorptionSurfaceHueSlider(_ sender: NSSlider)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     {
+       representedStructure.renderAdsorptionSurfaceHue = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+       
+       if let event: NSEvent = NSApplication.shared.currentEvent
+       {
+         let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+         let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+         
+         if startingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+         }
+         if endingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+         }
+       }
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Saturation textfield
+   @IBAction func changeAdsorptionSurfaceSaturationTextField(_ sender: NSTextField)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     {
+       representedStructure.renderAdsorptionSurfaceSaturation = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Saturation slider
+   @IBAction func changeAdsorptionSurfaceSaturationSlider(_ sender: NSSlider)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     {
+       representedStructure.renderAdsorptionSurfaceSaturation = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+       
+       if let event: NSEvent = NSApplication.shared.currentEvent
+       {
+         let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+         let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+         
+         if startingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+         }
+         if endingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+         }
+       }
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Value textfield
+   @IBAction func changeAdsorptionSurfaceValueTextField(_ sender: NSTextField)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     {
+       representedStructure.renderAdsorptionSurfaceValue = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
+   // Value slider
+   @IBAction func changeAdsorptionSurfaceValueSlider(_ sender: NSSlider)
+   {
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     {
+       representedStructure.renderAdsorptionSurfaceValue = sender.doubleValue
+       
+       self.updateOutlineView(identifiers: [self.adsorptionVisualAppearanceCell])
+       
+       if let event: NSEvent = NSApplication.shared.currentEvent
+       {
+         let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+         let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+         
+         if startingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+         }
+         if endingDrag
+         {
+           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+         }
+       }
+       
+       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.redraw()
+       
+       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+       self.windowController?.document?.updateChangeCount(.changeDone)
+       self.proxyProject?.representedObject.isEdited = true
+     }
+   }
+   
   
   // High dynamic range
   @IBAction func toggleAdsorptionSurfaceFrontSideHDR(_ sender: NSButton)

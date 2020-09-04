@@ -1656,6 +1656,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       let project: ProjectGroup = ProjectGroup(name: "New Group project")
       project.isEdited = true
       let node: ProjectTreeNode = ProjectTreeNode(representedObject: iRASPAProject(group: project))
+      node.isDropEnabled = true
       node.matchesFilter = true
       
       NSAnimationContext.beginGrouping()
@@ -1714,6 +1715,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       let node: ProjectTreeNode = ProjectTreeNode(displayName: project.displayName, representedObject: iRASPAProject(structureProject: project))
       //node.status = .ready
+      node.isDropEnabled = false
       node.matchesFilter = true
       
       NSAnimationContext.beginGrouping()
@@ -2197,6 +2199,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       project.isEdited = true
       let iraspaproject: iRASPAProject = iRASPAProject(group: project)
       let node: ProjectTreeNode = ProjectTreeNode(representedObject: iraspaproject)
+      node.isDropEnabled = true
       node.matchesFilter = true
       
       NSAnimationContext.beginGrouping()
@@ -2252,6 +2255,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       project.isEdited = true
       
       let node: ProjectTreeNode = ProjectTreeNode(displayName: project.displayName, representedObject: iRASPAProject(structureProject: project))
+      node.isDropEnabled = false
       node.matchesFilter = true
       
       NSAnimationContext.beginGrouping()
@@ -2364,6 +2368,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       let project: ProjectRASPANode = ProjectRASPANode(name: "RASPA project")
       project.isEdited = true
       let node: ProjectTreeNode = ProjectTreeNode(displayName: "RASPA project", representedObject: iRASPAProject(RASPA: project))
+      node.isDropEnabled = false
       node.matchesFilter = true
       
       NSAnimationContext.beginGrouping()

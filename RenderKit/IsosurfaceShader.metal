@@ -122,15 +122,10 @@ fragment float4 IsosurfaceFragmentShader(IsosurfaceVertexShaderOut vert [[stage_
     }
   }
   
-  
-  
-  
-  
   float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.atomHue;
-  hsv.y = hsv.y * structureUniforms.atomSaturation;
-  hsv.z = hsv.z * structureUniforms.atomValue;
-  //return float4(hsv2rgb(hsv),1.0);
+  hsv.x = hsv.x * isosurfaceUniforms.hue;
+  hsv.y = hsv.y * isosurfaceUniforms.saturation;
+  hsv.z = hsv.z * isosurfaceUniforms.value;
   return float4(hsv2rgb(hsv) * isosurfaceUniforms.diffuseFrontSide.w,isosurfaceUniforms.diffuseFrontSide.w);
 
   

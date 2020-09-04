@@ -345,6 +345,111 @@ extension PrimitiveVisualAppearanceViewer
     }
   }
   
+  public var renderPrimitiveSelectionStyle: RKSelectionStyle?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveSelectionStyle.rawValue })
+      return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.primitiveSelectionStyle = newValue ?? .glow}
+    }
+  }
+  
+  public var renderPrimitiveSelectionFrequency: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.renderPrimitiveSelectionFrequency })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.renderPrimitiveSelectionFrequency = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderPrimitiveSelectionDensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.renderPrimitiveSelectionDensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.renderPrimitiveSelectionDensity = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderPrimitiveSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveSelectionIntensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.primitiveSelectionIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderPrimitiveSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveSelectionScaling })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.primitiveSelectionScaling = newValue ?? 1.0}
+    }
+  }
+  
+  
+  public var renderPrimitiveHue: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveHue })
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.allPrimitiveStructure.forEach{$0.primitiveHue = newValue ?? 1.0}
+     }
+   }
+   
+   public var renderPrimitiveSaturation: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveSaturation })
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.allPrimitiveStructure.forEach{$0.primitiveSaturation = newValue ?? 1.0}
+     }
+   }
+   
+   public var renderPrimitiveValue: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveValue })
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.allPrimitiveStructure.forEach{$0.primitiveValue = newValue ?? 1.0}
+     }
+   }
+  
   public var renderPrimitiveFrontSideHDR: Bool?
   {
     get
@@ -894,6 +999,110 @@ extension Array where Iterator.Element == PrimitiveVisualAppearanceViewer
       self.allPrimitiveStructure.forEach{$0.primitiveThickness = newValue ?? 0.05}
     }
   }
+  
+  public var renderPrimitiveSelectionStyle: RKSelectionStyle?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveSelectionStyle.rawValue })
+      return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.primitiveSelectionStyle = newValue ?? .glow}
+    }
+  }
+  
+  public var renderPrimitiveSelectionFrequency: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.renderPrimitiveSelectionFrequency })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.renderPrimitiveSelectionFrequency = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderPrimitiveSelectionDensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.renderPrimitiveSelectionDensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.renderPrimitiveSelectionDensity = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderPrimitiveSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveSelectionIntensity })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.primitiveSelectionIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderPrimitiveSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveSelectionScaling })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allPrimitiveStructure.forEach{$0.primitiveSelectionScaling = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderPrimitiveHue: Double?
+    {
+      get
+      {
+        let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveHue })
+        return Set(set).count == 1 ? set.first! : nil
+      }
+      set(newValue)
+      {
+        self.allPrimitiveStructure.forEach{$0.primitiveHue = newValue ?? 1.0}
+      }
+    }
+    
+    public var renderPrimitiveSaturation: Double?
+    {
+      get
+      {
+        let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveSaturation })
+        return Set(set).count == 1 ? set.first! : nil
+      }
+      set(newValue)
+      {
+        self.allPrimitiveStructure.forEach{$0.primitiveSaturation = newValue ?? 1.0}
+      }
+    }
+    
+    public var renderPrimitiveValue: Double?
+    {
+      get
+      {
+        let set: Set<Double> = Set(self.allPrimitiveStructure.compactMap{ return $0.primitiveValue })
+        return Set(set).count == 1 ? set.first! : nil
+      }
+      set(newValue)
+      {
+        self.allPrimitiveStructure.forEach{$0.primitiveValue = newValue ?? 1.0}
+      }
+    }
   
   public var renderPrimitiveFrontSideHDR: Bool?
   {

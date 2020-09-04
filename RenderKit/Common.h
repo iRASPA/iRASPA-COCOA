@@ -107,6 +107,14 @@ struct AtomSphereVertexShaderOut
   float clippingDistance5;
 };
 
+struct PrimitiveVertexShaderOut
+{
+  float4 position [[position]];
+  float3 N;
+  float3 Model_N;
+  float3 L;
+  float3 V;
+};
 
 struct AtomSphereImposterVertexShaderOut
 {
@@ -266,9 +274,20 @@ typedef struct
   float bondSelectionWorleyNoise3DFrequency;
   float bondSelectionWorleyNoise3DJitter;
   
-  float4 pad7;
-  float4 pad8;
-  float4 pad9;
+  float primitiveSelectionStripesDensity = 0.25;
+  float primitiveSelectionStripesFrequency = 12.0;
+  float primitiveSelectionWorleyNoise3DFrequency = 2.0;
+  float primitiveSelectionWorleyNoise3DJitter = 1.0;
+
+  float primitiveSelectionScaling = 1.01;
+  float primitiveSelectionIntensity = 0.8;
+  float pad7;
+  float pad8;
+
+  float primitiveHue = 1.0;
+  float primitiveSaturation = 1.0;
+  float primitiveValue = 1.0;
+  float pad9;
   
   float4x4 pad10;
   float4x4 pad11;
@@ -285,7 +304,7 @@ typedef struct
   float4 specularFrontSide;
   bool  frontHDR;
   float frontHDRExposure;
-  float pad3;
+  float pad1;
   float shininessFrontSide;
   
   float4 ambientBackSide;
@@ -293,8 +312,21 @@ typedef struct
   float4 specularBackSide;
   bool  backHDR;
   float backHDRExposure;
-  float pad6;
+  float pad2;
   float shininessBackSide;
+  
+  float hue;
+  float saturation;
+  float value;
+  float pad3;
+  float4 pad4;
+  float4 pad5;
+  float4 pad6;
+  float4x4 pad7;
+  
+  float4x4 pad8;
+  float4x4 pad9;
+  
 } IsosurfaceUniforms;
 
 typedef struct

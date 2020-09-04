@@ -2099,7 +2099,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   }
   
   
-  
+  /*
   // save and restore the selected project and the selection for undo/redo
   // idea: selection as dictionary <Int, MovieSet>
   func setCurrentMovieAndSelection(newSelectedMovie: Movie?, newSelection: [Scene : Set< Movie >], oldselectedMovie: Movie?, oldSelection: [Scene : Set< Movie >])
@@ -2125,8 +2125,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       self.reloadSelection()
     }
-  }
+  }*/
   
+  /*
   func setCurrentMovieAndSelection(newSelectedScene: Scene?, newSelectedMovie: Movie?, newSelection: [Scene : Set< Movie >], oldselectedScene: Scene?, oldselectedMovie: Movie?, oldSelection: [Scene : Set< Movie >])
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
@@ -2148,7 +2149,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       self.reloadSelection()
     }
-  }
+  }*/
   
   // only set selectedMovies, not selectedMovie (that is handled in 'outlineViewSelectionDidChange')
   func outlineView(_ outlineView: NSOutlineView, selectionIndexesForProposedSelection proposedSelectionIndexes: IndexSet) -> IndexSet
