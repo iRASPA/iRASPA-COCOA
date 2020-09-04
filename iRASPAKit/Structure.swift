@@ -49,7 +49,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
 {
-  private static var classVersionNumber: Int = 5
+  private static var classVersionNumber: Int = 6
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   public var bondController: SKBondSetController = SKBondSetController()
@@ -285,6 +285,10 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   }
   public var adsorptionSurfaceNumberOfTriangles: Int = 0
   
+  public var adsorptionSurfaceHue = 1.0;
+  public var adsorptionSurfaceSaturation = 1.0;
+  public var adsorptionSurfaceValue = 1.0;
+  
   public var adsorptionSurfaceFrontSideHDR: Bool = true
   public var adsorptionSurfaceFrontSideHDRExposure: Double = 1.5
   public var adsorptionSurfaceFrontSideAmbientColor: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
@@ -357,6 +361,18 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var primitiveIsFractional: Bool = true
   public var primitiveNumberOfSides: Int = 6
   public var primitiveThickness: Double = 0.05
+  
+  public var primitiveHue: Double = 1.0
+  public var primitiveSaturation: Double = 1.0
+  public var primitiveValue: Double = 1.0
+  
+  public var primitiveSelectionStyle: RKSelectionStyle = .striped
+  public var primitiveSelectionScaling: Double = 1.0
+  public var primitiveSelectionStripesDensity: Double = 0.25
+  public var primitiveSelectionStripesFrequency: Double = 12.0
+  public var primitiveSelectionWorleyNoise3DFrequency: Double = 2.0
+  public var primitiveSelectionWorleyNoise3DJitter: Double = 1.0
+  public var primitiveSelectionIntensity: Double = 1.0
   
   public var primitiveFrontSideHDR: Bool = true
   public var primitiveFrontSideHDRExposure: Double = 2.0
@@ -677,6 +693,18 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.primitiveNumberOfSides = original.primitiveNumberOfSides
     self.primitiveThickness = original.primitiveThickness
     
+    self.primitiveHue = original.primitiveHue
+    self.primitiveSaturation = original.primitiveSaturation
+    self.primitiveValue = original.primitiveValue
+    
+    self.primitiveSelectionStyle = original.primitiveSelectionStyle
+    self.primitiveSelectionScaling = original.primitiveSelectionScaling
+    self.primitiveSelectionStripesDensity = original.primitiveSelectionStripesDensity
+    self.primitiveSelectionStripesFrequency = original.primitiveSelectionStripesFrequency
+    self.primitiveSelectionWorleyNoise3DFrequency = original.primitiveSelectionWorleyNoise3DFrequency
+    self.primitiveSelectionWorleyNoise3DJitter = original.primitiveSelectionWorleyNoise3DJitter
+    self.primitiveSelectionIntensity = original.primitiveSelectionIntensity
+    
     self.primitiveFrontSideHDR = original.primitiveFrontSideHDR
     self.primitiveFrontSideHDRExposure = original.primitiveFrontSideHDRExposure
     self.primitiveFrontSideAmbientColor = original.primitiveFrontSideAmbientColor
@@ -936,6 +964,19 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.primitiveIsFractional = clone.primitiveIsFractional
     self.primitiveNumberOfSides = clone.primitiveNumberOfSides
     self.primitiveThickness = clone.primitiveThickness
+    
+    self.primitiveHue = clone.primitiveHue
+    self.primitiveSaturation = clone.primitiveSaturation
+    self.primitiveValue = clone.primitiveValue
+    
+    self.primitiveSelectionStyle = clone.primitiveSelectionStyle
+    self.primitiveSelectionScaling = clone.primitiveSelectionScaling
+    self.primitiveSelectionStripesDensity = clone.primitiveSelectionStripesDensity
+    self.primitiveSelectionStripesFrequency = clone.primitiveSelectionStripesFrequency
+    self.primitiveSelectionWorleyNoise3DFrequency = clone.primitiveSelectionWorleyNoise3DFrequency
+    self.primitiveSelectionWorleyNoise3DJitter = clone.primitiveSelectionWorleyNoise3DJitter
+    self.primitiveSelectionIntensity = clone.primitiveSelectionIntensity
+    
     
     self.primitiveFrontSideHDR = clone.primitiveFrontSideHDR
     self.primitiveFrontSideHDRExposure = clone.primitiveFrontSideHDRExposure
@@ -2532,6 +2573,63 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     }
   }
   
+  public var renderPrimitiveSelectionFrequency: Double
+  {
+    get
+    {
+      switch(self.primitiveSelectionStyle)
+      {
+      case .none, .glow:
+        return 0.0
+      case .striped:
+        return self.primitiveSelectionStripesFrequency
+      case .WorleyNoise3D:
+        return self.primitiveSelectionWorleyNoise3DFrequency
+      }
+    }
+    set(newValue)
+    {
+      switch(self.primitiveSelectionStyle)
+      {
+      case .none, .glow:
+        break
+      case .striped:
+        self.primitiveSelectionStripesFrequency = newValue
+      case .WorleyNoise3D:
+        self.primitiveSelectionWorleyNoise3DFrequency = newValue
+      }
+    }
+  }
+  
+  public var renderPrimitiveSelectionDensity: Double
+  {
+    get
+    {
+      switch(self.primitiveSelectionStyle)
+      {
+      case .none, .glow:
+          return 0.0
+        case .striped:
+          return self.primitiveSelectionStripesDensity
+        case .WorleyNoise3D:
+          return self.primitiveSelectionWorleyNoise3DJitter
+      }
+    }
+    set(newValue)
+    {
+      switch(self.primitiveSelectionStyle)
+      {
+      case .none, .glow:
+        break
+      case .striped:
+        self.primitiveSelectionStripesDensity = newValue
+      case .WorleyNoise3D:
+        self.primitiveSelectionWorleyNoise3DJitter = newValue
+      }
+    }
+  }
+  
+  
   public var renderInternalBonds: [RKInPerInstanceAttributesBonds]
   {
     let data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
@@ -3005,6 +3103,18 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     encoder.encode(primitiveNumberOfSides)
     encoder.encode(primitiveThickness)
     
+    encoder.encode(primitiveHue)
+    encoder.encode(primitiveSaturation)
+    encoder.encode(primitiveValue)
+    
+    encoder.encode(primitiveSelectionStyle.rawValue)
+    encoder.encode(primitiveSelectionStripesDensity)
+    encoder.encode(primitiveSelectionStripesFrequency)
+    encoder.encode(primitiveSelectionWorleyNoise3DFrequency)
+    encoder.encode(primitiveSelectionWorleyNoise3DJitter)
+    encoder.encode(primitiveSelectionScaling)
+    encoder.encode(primitiveSelectionIntensity)
+    
     encoder.encode(primitiveFrontSideHDR)
     encoder.encode(primitiveFrontSideHDRExposure)
     encoder.encode(primitiveFrontSideAmbientColor)
@@ -3129,6 +3239,10 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     encoder.encode(Int(0))
     
     encoder.encode(self.adsorptionSurfaceProbeMolecule.rawValue)
+    
+    encoder.encode(self.adsorptionSurfaceHue)
+    encoder.encode(self.adsorptionSurfaceSaturation)
+    encoder.encode(self.adsorptionSurfaceValue)
     
     encoder.encode(self.adsorptionSurfaceFrontSideHDR)
     encoder.encode(self.adsorptionSurfaceFrontSideHDRExposure)
@@ -3278,7 +3392,23 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
       self.primitiveIsFractional = try decoder.decode(Bool.self)
       self.primitiveNumberOfSides = try decoder.decode(Int.self)
       self.primitiveThickness = try decoder.decode(Double.self)
-
+      
+      if readVersionNumber >= 6 // introduced in version 6
+      {
+        self.primitiveHue = try decoder.decode(Double.self)
+        self.primitiveSaturation = try decoder.decode(Double.self)
+        self.primitiveValue = try decoder.decode(Double.self)
+      
+        guard let primitiveSelectionStyle = RKSelectionStyle(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+        self.primitiveSelectionStyle = primitiveSelectionStyle
+        self.primitiveSelectionStripesDensity = try decoder.decode(Double.self)
+        self.primitiveSelectionStripesFrequency = try decoder.decode(Double.self)
+        self.primitiveSelectionWorleyNoise3DFrequency = try decoder.decode(Double.self)
+        self.primitiveSelectionWorleyNoise3DJitter = try decoder.decode(Double.self)
+        self.primitiveSelectionScaling = try decoder.decode(Double.self)
+        self.primitiveSelectionIntensity = try decoder.decode(Double.self)
+      }
+      
       self.primitiveFrontSideHDR = try decoder.decode(Bool.self)
       self.primitiveFrontSideHDRExposure = try decoder.decode(Double.self)
       self.primitiveFrontSideAmbientColor = try decoder.decode(NSColor.self)
@@ -3426,6 +3556,13 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     guard let probeMolecule = Structure.ProbeMolecule(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.adsorptionSurfaceProbeMolecule = probeMolecule
+    
+    if readVersionNumber >= 6 // introduced in version 6
+    {
+      self.adsorptionSurfaceHue = try decoder.decode(Double.self)
+      self.adsorptionSurfaceSaturation = try decoder.decode(Double.self)
+      self.adsorptionSurfaceValue = try decoder.decode(Double.self)
+    }
     
     self.adsorptionSurfaceFrontSideHDR = try decoder.decode(Bool.self)
     self.adsorptionSurfaceFrontSideHDRExposure = try decoder.decode(Double.self)

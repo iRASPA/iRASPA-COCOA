@@ -52,7 +52,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PolygonalPrismSelectionWorleyNoise3DVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionWorleyNoise3DVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -63,7 +63,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismSelectionWorleyNoise3DFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionWorleyNoise3DFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -128,7 +128,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderCrystalEllipsoidObjectsSource = structure as? RKRenderCrystalEllipsoidObjectsSource,
-             (structure.atomSelectionStyle == .WorleyNoise3D)
+             (structure.primitiveSelectionStyle == .WorleyNoise3D)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             
@@ -141,7 +141,8 @@ class MetalCrystalEllipsoidPrimitiveSelectionWorleyNoise3DShader
                 commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
                 commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
                 commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-                                
+                         
+                // draw only the front-faces for the Worley-noise-3D style (looks better)
                 commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               }
             }

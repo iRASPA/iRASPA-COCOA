@@ -52,7 +52,7 @@ class MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PolygonalPrismSelectionStripedVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitivePolygonalPrismSelectionStripedVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -63,7 +63,7 @@ class MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismSelectionStripedFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitivePolygonalPrismSelectionStripedFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -103,7 +103,7 @@ class MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader
     if (self.renderStructures.joined().compactMap{$0 as? RKRenderCrystalPolygonalPrismObjectsSource}.reduce(false, {$0 || $1.drawAtoms}))
     {
       commandEncoder.setDepthStencilState(self.transparentDepthState)
-      commandEncoder.setCullMode(MTLCullMode.none)
+      commandEncoder.setCullMode(MTLCullMode.back)
       commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
       commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
       commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
@@ -119,7 +119,7 @@ class MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderCrystalPolygonalPrismObjectsSource = structure as? RKRenderCrystalPolygonalPrismObjectsSource,
-             (structure.atomSelectionStyle == .striped)
+             (structure.primitiveSelectionStyle == .striped)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             
@@ -136,6 +136,10 @@ class MetalCrystalPolygonalPrismPrimitiveSelectionStripedShader
                 commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
                 commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
                                 
+                commandEncoder.setCullMode(MTLCullMode.front)
+                commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+                
+                commandEncoder.setCullMode(MTLCullMode.back)
                 commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               }
             }

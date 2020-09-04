@@ -51,11 +51,11 @@ class MetalCrystalCylinderPrimitiveSelectionGlowShader
        
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PolygonalPrismSelectionGlowVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitiveCylinderSelectionGlowVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismSelectionGlowFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitiveCylinderSelectionGlowFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -111,7 +111,7 @@ class MetalCrystalCylinderPrimitiveSelectionGlowShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderCrystalCylinderObjectsSource = structure as? RKRenderCrystalCylinderObjectsSource,
-             (structure.atomSelectionStyle == .glow)
+             (structure.primitiveSelectionStyle == .glow)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             

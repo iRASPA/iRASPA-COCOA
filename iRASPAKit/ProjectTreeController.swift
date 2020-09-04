@@ -97,10 +97,10 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     
     let localMainNode: ProjectTreeNode = ProjectTreeNode(displayName: "Local projects", representedObject: iRASPAProject(group: ProjectGroup(name: "Local projects")))
     localMainNode.isEditable = false
+    localMainNode.isDropEnabled = true
     localMainNode.isExpanded = true
     self.insertNode(localMainNode, inItem: projectRootNode, atIndex: 0)
-    
-    
+        
     // updated 18-10-2017
     let cloudMainNode: ProjectTreeNode = ProjectTreeNode(displayName: "iCloud public", recordID: CKRecord.ID(recordName: "30089089-3163-633B-62B2-390C63E92789"), representedObject: iRASPAProject(group: ProjectGroup(name: "iCloud public")))
     self.insertNode(cloudMainNode, inItem: cloudRootNode, atIndex: 0)

@@ -52,7 +52,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionStripedShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PolygonalPrismSelectionStripedVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionStripedVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
@@ -63,7 +63,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionStripedShader
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactor.one;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor =  MTLBlendFactor.oneMinusSourceAlpha;
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismSelectionStripedFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionStripedFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -128,7 +128,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionStripedShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderCrystalEllipsoidObjectsSource = structure as? RKRenderCrystalEllipsoidObjectsSource,
-             (structure.atomSelectionStyle == .striped)
+             (structure.primitiveSelectionStyle == .striped)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             
@@ -141,7 +141,11 @@ class MetalCrystalEllipsoidPrimitiveSelectionStripedShader
                 commandEncoder.setVertexBuffer(instanceBuffer, offset: 0, index: 1)
                 commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
                 commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-                                
+                      
+                commandEncoder.setCullMode(MTLCullMode.front)
+                commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
+                
+                commandEncoder.setCullMode(MTLCullMode.back)
                 commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0, instanceCount: numberOfAtoms)
               }
             }

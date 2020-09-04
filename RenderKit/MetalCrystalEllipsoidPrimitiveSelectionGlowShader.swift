@@ -52,11 +52,11 @@ class MetalCrystalEllipsoidPrimitiveSelectionGlowShader
     
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.bgra8Unorm
-    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PolygonalPrismSelectionGlowVertexShader")!
+    pipelineDescriptor.vertexFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionGlowVertexShader")!
     pipelineDescriptor.sampleCount = maximumNumberOfSamples
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
     pipelineDescriptor.stencilAttachmentPixelFormat = MTLPixelFormat.depth32Float_stencil8
-    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PolygonalPrismSelectionGlowFragmentShader")!
+    pipelineDescriptor.fragmentFunction = library.makeFunction(name: "PrimitiveEllipsoidSelectionGlowFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     do
     {
@@ -121,7 +121,7 @@ class MetalCrystalEllipsoidPrimitiveSelectionGlowShader
         for (j,structure) in structures.enumerated()
         {
           if let structure: RKRenderCrystalEllipsoidObjectsSource = structure as? RKRenderCrystalEllipsoidObjectsSource,
-             (structure.atomSelectionStyle == .glow)
+             (structure.primitiveSelectionStyle == .glow)
           {
             commandEncoder.setRenderPipelineState(pipeLine)
             

@@ -122,6 +122,46 @@ extension AdsorptionSurfaceVisualAppearanceViewer
     }
   }
   
+  public var renderAdsorptionSurfaceHue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceHue })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceHue = newValue ?? 1.0}
+    }
+  }
+    
+  public var renderAdsorptionSurfaceSaturation: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceSaturation })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceSaturation = newValue ?? 1.0}
+    }
+  }
+    
+  public var renderAdsorptionSurfaceValue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceValue })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceValue = newValue ?? 1.0}
+    }
+  }
+   
+  
   public var renderAdsorptionSurfaceFrontSideHDR: Bool?
   {
     get
@@ -456,6 +496,46 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
       self.allStructures.forEach{$0.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
     }
   }
+  
+  public var renderAdsorptionSurfaceHue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceHue })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceHue = newValue ?? 1.0}
+    }
+  }
+    
+  public var renderAdsorptionSurfaceSaturation: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceSaturation })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceSaturation = newValue ?? 1.0}
+    }
+  }
+    
+  public var renderAdsorptionSurfaceValue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceValue })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceValue = newValue ?? 1.0}
+    }
+  }
+   
   
   public var renderAdsorptionSurfaceBackSideHDR: Bool?
   {

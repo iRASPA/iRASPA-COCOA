@@ -164,6 +164,10 @@ public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
   var adsorptionSurfaceProbeParameters: SIMD2<Double> { get }
   var adsorptionSurfaceNumberOfTriangles: Int {get set}
   
+  var adsorptionSurfaceHue: Double {get}
+  var adsorptionSurfaceSaturation: Double {get}
+  var adsorptionSurfaceValue: Double {get}
+  
   var adsorptionSurfaceFrontSideHDR: Bool {get}
   var adsorptionSurfaceFrontSideHDRExposure: Double {get}
   var adsorptionSurfaceFrontSideAmbientColor: NSColor {get}
@@ -214,6 +218,18 @@ public protocol RKRenderObjectSource //: RKRenderStructure
   var primitiveIsFractional: Bool {get}
   var primitiveNumberOfSides: Int {get}
   var primitiveThickness: Double {get}
+  
+  var primitiveHue: Double {get}
+  var primitiveSaturation: Double {get}
+  var primitiveValue: Double {get}
+  
+  var primitiveSelectionStyle: RKSelectionStyle {get}
+  var primitiveSelectionScaling: Double {get}
+  var primitiveSelectionStripesDensity: Double {get}
+  var primitiveSelectionStripesFrequency: Double {get}
+  var primitiveSelectionWorleyNoise3DFrequency: Double {get}
+  var primitiveSelectionWorleyNoise3DJitter: Double {get}
+  var primitiveSelectionIntensity: Double {get}
   
   var primitiveFrontSideHDR: Bool {get}
   var primitiveFrontSideHDRExposure: Double {get}
