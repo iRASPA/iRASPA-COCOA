@@ -49,7 +49,7 @@ public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
 public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
 {
-  private static var classVersionNumber: Int = 6
+  private static var classVersionNumber: Int = 7
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   public var bondController: SKBondSetController = SKBondSetController()
@@ -3182,6 +3182,11 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     encoder.encode(self.atomTextType.rawValue)
     encoder.encode(self.atomTextFont)
+    let font: NSFont = NSFont(name: self.atomTextFont, size: 32) ?? NSFont()
+    let fontFamilyName: String = font.familyName ?? "Helvetica"
+    let fontMemberName: String = NSFontManager.shared.memberName(of: font) ?? "Regular"
+    encoder.encode(fontFamilyName)
+    encoder.encode(fontMemberName)
     encoder.encode(self.atomTextScaling)
     encoder.encode(self.atomTextColor)
     encoder.encode(self.atomTextGlowColor)
@@ -3488,6 +3493,12 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     guard let atomTextType = RKTextType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.atomTextType = atomTextType
     self.atomTextFont = try decoder.decode(String.self)
+    if readVersionNumber >= 7 // introduced in version 7
+    {
+      let fontFamilyName: String = try decoder.decode(String.self)
+      let fontMemberName: String = try decoder.decode(String.self)
+      self.atomTextFont = NSFontManager.shared.font(familyName: fontFamilyName, memberName: fontMemberName) ?? "Helvetica"
+    }
     self.atomTextScaling = try decoder.decode(Double.self)
     self.atomTextColor = try decoder.decode(NSColor.self)
     self.atomTextGlowColor = try decoder.decode(NSColor.self)
