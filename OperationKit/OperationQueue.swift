@@ -103,9 +103,9 @@ public class FKOperationQueue: OperationQueue
         
         exclusivityController.addOperation(op, categories: concurrencyCategories)
         
-        let observer = FKBlockObserver {[weak exclusivityController]  (operation: Operation, error: [NSError]) -> () in
+        let observer = FKBlockObserver(finishHandler:  {[weak exclusivityController]  (operation: Operation, error: [NSError]) -> () in
           exclusivityController?.removeOperation(operation, categories: concurrencyCategories)
-        }
+        })
         op.addObserver(observer)
       }
       

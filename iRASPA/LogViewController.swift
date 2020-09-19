@@ -30,7 +30,7 @@
  *************************************************************************************************************/
 
 import Cocoa
-import Python
+import PythonKit
 import RenderKit
 import iRASPAKit
 import LogViewKit
