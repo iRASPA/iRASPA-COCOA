@@ -50,6 +50,7 @@ class MetalView: MTKView
   {
     case none
     case panning
+    case trucking
     case addToSelection
     case newSelection
     case draggedAddToSelection
@@ -115,6 +116,11 @@ class MetalView: MTKView
       tracking = .panning
     }
     else
+    if event.modifierFlags.contains(.command)
+    {
+      tracking = .trucking
+    }
+    else
     {
       // else pass on for context-menu
       super.rightMouseDown(with: event)
@@ -177,6 +183,19 @@ class MetalView: MTKView
         let panY: Double = Double(panStartPoint.y - location.y) * distance.z / 1500.0
          
         self.renderCameraSource?.renderCamera?.pan(x: panX, y: panY)
+      }
+      panStartPoint = location
+       
+      self.layer?.setNeedsDisplay()
+    case .trucking:
+      let location: NSPoint  = self.convert(event.locationInWindow, from: nil)
+      if let panStartPoint = panStartPoint,
+         let distance: SIMD3<Double> = self.renderCameraSource?.renderCamera?.distance
+      {
+        let panX: Double = Double(panStartPoint.x - location.x) * distance.z / 1500.0
+        let panY: Double = Double(panStartPoint.y - location.y) * distance.z / 1500.0
+         
+        self.renderCameraSource?.renderCamera?.truck(x: panX, y: panY)
       }
       panStartPoint = location
        

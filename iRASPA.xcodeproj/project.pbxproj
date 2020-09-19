@@ -144,8 +144,6 @@
 		931C2F56243B8C5200BECABE /* libpanelw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4E243B8C3E00BECABE /* libpanelw.a */; };
 		931C2F58243B8C6D00BECABE /* libreadline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F57243B8C6D00BECABE /* libreadline.a */; };
 		931C2F59243B8C7000BECABE /* libreadline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F57243B8C6D00BECABE /* libreadline.a */; };
-		931C2F5B243B8C8E00BECABE /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F5A243B8C8E00BECABE /* libgdbm.a */; };
-		931C2F5C243B8C9300BECABE /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F5A243B8C8E00BECABE /* libgdbm.a */; };
 		931C2F5D243B8CA200BECABE /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9396A982243B18D7005B3F68 /* libzlib.a */; };
 		931C2F62243B907A00BECABE /* python3.7 in Resources */ = {isa = PBXBuildFile; fileRef = 931C2F61243B907900BECABE /* python3.7 */; };
 		931C2F63243B90AD00BECABE /* python3.7 in Resources */ = {isa = PBXBuildFile; fileRef = 931C2F61243B907900BECABE /* python3.7 */; };
@@ -580,6 +578,8 @@
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
 		93DA9EE523DEFE4600FB4E51 /* SimulationKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */; };
 		93DE92D1207E2BB00084D303 /* NSPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */; };
+		93DEB48B2516A5CC00635449 /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93DEB48A2516A5CC00635449 /* libgdbm.a */; };
+		93DEB48C2516A5D700635449 /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93DEB48A2516A5CC00635449 /* libgdbm.a */; };
 		93E7594B21DBC056009B9C5C /* iRASPADocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */; };
 		93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */; };
 		93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */; };
@@ -1090,7 +1090,6 @@
 		931C2F4D243B8C3E00BECABE /* libformw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libformw.a; sourceTree = "<group>"; };
 		931C2F4E243B8C3E00BECABE /* libpanelw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpanelw.a; sourceTree = "<group>"; };
 		931C2F57243B8C6D00BECABE /* libreadline.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libreadline.a; sourceTree = "<group>"; };
-		931C2F5A243B8C8E00BECABE /* libgdbm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgdbm.a; sourceTree = "<group>"; };
 		931C2F61243B907900BECABE /* python3.7 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = python3.7; sourceTree = "<group>"; };
 		932137D31F2B533800DAEBDF /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		93260AE31E2A46350066EC08 /* iRASPADocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPADocument.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -1521,6 +1520,7 @@
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationKitErrors.swift; sourceTree = "<group>"; };
 		93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPasteboardItem.swift; sourceTree = "<group>"; };
+		93DEB48A2516A5CC00635449 /* libgdbm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgdbm.a; sourceTree = "<group>"; };
 		93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPADocumentController.swift; sourceTree = "<group>"; };
 		93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidShader.swift; sourceTree = "<group>"; };
@@ -1652,7 +1652,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				931C2F50243B8C3E00BECABE /* libmenuw.a in Frameworks */,
-				931C2F5B243B8C8E00BECABE /* libgdbm.a in Frameworks */,
+				93DEB48B2516A5CC00635449 /* libgdbm.a in Frameworks */,
 				931C2F51243B8C3E00BECABE /* libformw.a in Frameworks */,
 				931C2F58243B8C6D00BECABE /* libreadline.a in Frameworks */,
 				931C2F4F243B8C3E00BECABE /* libncursesw.a in Frameworks */,
@@ -1701,7 +1701,7 @@
 				931C2F56243B8C5200BECABE /* libpanelw.a in Frameworks */,
 				931C2F54243B8C4B00BECABE /* libmenuw.a in Frameworks */,
 				931C2F53243B8C4800BECABE /* libformw.a in Frameworks */,
-				931C2F5C243B8C9300BECABE /* libgdbm.a in Frameworks */,
+				93DEB48C2516A5D700635449 /* libgdbm.a in Frameworks */,
 				931C2F4A243B8C2D00BECABE /* libtermcap.a in Frameworks */,
 				931C2F5D243B8CA200BECABE /* libzlib.a in Frameworks */,
 			);
@@ -2251,7 +2251,7 @@
 				933FFFA2243A1E9F004E337F /* PythonKit.modulemap */,
 				931C2F45243B8C1600BECABE /* libpython3.7m.a */,
 				931C2F57243B8C6D00BECABE /* libreadline.a */,
-				931C2F5A243B8C8E00BECABE /* libgdbm.a */,
+				93DEB48A2516A5CC00635449 /* libgdbm.a */,
 				931C2F48243B8C2900BECABE /* libtermcap.a */,
 				931C2F4D243B8C3E00BECABE /* libformw.a */,
 				931C2F4C243B8C3E00BECABE /* libmenuw.a */,
@@ -4627,7 +4627,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/PythonKit",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
@@ -4664,7 +4664,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/PythonKit",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -4899,7 +4899,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4911,7 +4911,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.1.41;
+				MARKETING_VERSION = 1.1.42;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4935,7 +4935,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -4947,7 +4947,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MARKETING_VERSION = 1.1.41;
+				MARKETING_VERSION = 1.1.42;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";

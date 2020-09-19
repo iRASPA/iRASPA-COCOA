@@ -70,6 +70,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
   public var boundingBoxAspectRatio: Double = 1.0
   public var centerOfScene: SIMD3<Double> = SIMD3<Double>(0,0,0)
   public var panning: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
+  public var trucking: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
   public var centerOfRotation: SIMD3<Double> = SIMD3<Double>(0,0,0)
   public var eye: SIMD3<Double> = SIMD3<Double>(0,0,0)
   public var distance: SIMD3<Double> = SIMD3<Double>(0.0,0.0,50.0)
@@ -154,6 +155,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     centerOfScene = SIMD3<Double>(x: 10,y: 10,z: 10)
     centerOfRotation = SIMD3<Double>(x: 10,y: 10,z: 10)
     panning = SIMD3<Double>(0.0,0.0,0.0)
+    trucking = SIMD3<Double>(0.0,0.0,0.0)
     eye = centerOfScene + distance + panning
     windowWidth = 1160
     windowHeight = 720
@@ -186,6 +188,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     self.centerOfScene = camera.centerOfScene
     self.centerOfRotation = camera.centerOfRotation
     self.panning = camera.panning
+    self.trucking = camera.trucking
     self.eye = camera.eye
     self.distance = camera.distance
     self.orthoScale = camera.orthoScale
@@ -229,10 +232,19 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     panning.x += panx
     panning.y += pany
     eye = centerOfScene + distance + panning
-    
-    //centerOfRotation = centerOfScene
-    
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
+        
+    viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
+    updateCameraForWindowResize(width: windowWidth,height: windowHeight)
+
+  }
+  
+  public func truck(x panx: Double, y pany: Double)
+  {
+    trucking.x += panx
+    trucking.y += pany
+    eye = centerOfScene + distance + panning
+        
+    viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
 
   }
@@ -264,7 +276,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
       
     eye = centerOfScene + distance + panning
       
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
   
@@ -402,7 +414,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     centerOfScene = cameraBoundingBox.minimum + (cameraBoundingBox.maximum - cameraBoundingBox.minimum) * 0.5
     centerOfRotation = centerOfScene
     eye = centerOfScene + distance + panning
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
@@ -411,6 +423,9 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
   public func resetCameraToDirection()
   {
     initialized = true
+    
+    trucking = SIMD3<Double>(0.0,0.0,0.0)
+    panning = SIMD3<Double>(0.0,0.0,0.0)
     
     centerOfScene = cameraBoundingBox.minimum + (cameraBoundingBox.maximum - cameraBoundingBox.minimum) * 0.5
     centerOfRotation = centerOfScene
@@ -441,11 +456,10 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     orthoScale = 0.5 * delta.x / self.resetPercentage
     distance.z = orthoScale * focalPoint  + 0.5 * delta.z
     
-    panning = SIMD3<Double>(0.0,0.0,0.0)
     trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r:1.0)
     
     eye = centerOfScene + distance + panning
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
@@ -777,7 +791,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     self.bloomLevel = try decoder.decode(Double.self)
     self.bloomPulse = try decoder.decode(Double.self)
     
-    viewMatrix = RKCamera.GluLookAt(eye: eye, center: centerOfScene, up: SIMD3<Double>(x: 0, y: 1, z:0))
+    viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0, y: 1, z:0))
     
     self.initialized = false
   }
