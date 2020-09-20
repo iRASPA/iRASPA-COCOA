@@ -58,33 +58,8 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
   
   weak var windowController: iRASPAWindowController?
   
-  static weak var interpreterViewController: InterpreterViewController?
-  
   var tstate: UnsafeMutablePointer<PyThreadState>? = nil
-  var globalDict: UnsafeMutablePointer<PyObject>? = nil
-  
-  var logMethods: [PyMethodDef] = []
-  static var logModule: PyModuleDef = PyModuleDef()
-  var logMod: UnsafeMutablePointer<PyObject>!
-  
-  let captureStdoutName = strdup("CaptureStdout")
-  let captureStderr = strdup("CaptureStderr")
-  let moduleName = strdup("log")
-  
-  deinit
-  {
-    pythonScriptView = nil
-    //free(programName)
-    free(captureStdoutName)
-    free(captureStderr)
-    free(moduleName)
-    if(tstate != nil)
-    {
-      PyThreadState_Swap(tstate)
-      Py_EndInterpreter(tstate)
-      PyThreadState_Swap(nil)
-    }
-  }
+  var mainModule: PythonObject? = nil
   
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
   override func viewDidLoad()
@@ -93,9 +68,7 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
     
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
-    
-    InterpreterViewController.interpreterViewController=self
-    
+        
     setupPython()
     
     pythonScriptView?.setUpLineNumberView()
@@ -103,18 +76,20 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
     self.pythonScriptView?.pythonOut(string: "Python console ready\n")
   }
   
-  var PyInit_log : @convention(c) () ->  UnsafeMutablePointer<PyObject>? = {
-    return PyModule_Create2(&InterpreterViewController.logModule, 1013)
+  deinit
+  {
+    mainModule = nil
+    pythonScriptView = nil
+    if(tstate != nil)
+    {
+      PyThreadState_Swap(tstate)
+      Py_EndInterpreter(tstate)
+      PyThreadState_Swap(nil)
+    }
   }
-  
-  
   
   func setupPython()
   {
-    self.logMethods = [PyMethodDef(ml_name: captureStdoutName, ml_meth: log_CaptureStdout, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef(ml_name: captureStderr, ml_meth: log_CaptureStderr, ml_flags: Int32(METH_VARARGS), ml_doc: nil), PyMethodDef()]
-    
-    
-    
     if let pythonHomeString: String = Bundle.main.path(forResource: "python3.7", ofType: nil)
     {
       let pythonProgramString = "iRASPA python interpreter"
@@ -128,107 +103,34 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
       pythonProgramString.withWideChars { wname in
           Py_SetProgramName(wname)
       }
+      
+      Py_InitializeEx(0)
+ 
+      tstate = Py_NewInterpreter()
+      PyThreadState_Swap(tstate)
     
-      self.logMethods.withUnsafeMutableBufferPointer{ (bp) in
-        let rbp = UnsafeMutableRawBufferPointer(bp)
-        if let pointer: UnsafeMutablePointer<PyMethodDef> = rbp.baseAddress?.bindMemory(to: PyMethodDef.self, capacity: rbp.count)
-        {
-          InterpreterViewController.logModule = PyModuleDef(m_base: PyModuleDef_Base(), m_name: moduleName, m_doc: nil, m_size: -1, m_methods: pointer, m_slots: nil, m_traverse: nil, m_clear: nil, m_free: nil)
-     
-          PyImport_AppendInittab(moduleName, PyInit_log)
-     
-          initPythonModuleiRASPA()
-     
-          initPythonModuleConstants()
-     
-          Py_InitializeEx(0)
-     
-          tstate = Py_NewInterpreter()
-     
-          let string: String =
-            "import log\n" +
-            "import sys\n" +
-            "import math\n" +
-            "import constants\n" +
-            "# coding: utf-8\n" +
-            "class StdoutCatcher:\n" +
-            "\tdef write(self, str):\n" +
-            "\t\tlog.CaptureStdout(str)\n" +
-            "class StderrCatcher:\n" +
-            "\tdef write(self, str):\n" +
-            "\t\tlog.CaptureStderr(str)\n" +
-            "sys.stdout = StdoutCatcher()\n" +
-            "sys.stderr = StderrCatcher()\n"
-     
-          PyRun_SimpleStringFlags(string,nil)
-     
-          setupPythonModuleConstants()
-        }
-      }
+      mainModule = Python.import("catch_out")
     }
-  }
-  
-  var log_CaptureStdout: PyCFunction =
-  {
-    (this: UnsafeMutablePointer<PyObject>?, args: UnsafeMutablePointer<PyObject>?) in
-    
-    let buffer = UnsafeMutablePointer<UnsafeMutablePointer<CChar>>.allocate(capacity: 1)
-    
-    if (withVaList([buffer]) {return PyArg_VaParse(args, "s", $0)} == 0)
-    {
-      return nil
-    }
-    
-    let string: String = String(cString: buffer.pointee, encoding: String.Encoding.ascii)!
-    buffer.deallocate()
-    
-    InterpreterViewController.interpreterViewController?.pythonScriptView?.pythonOut(string: string as NSString)
-    
-    var Py_None = _Py_NoneStruct
-    Py_IncRef(&Py_None)
-    return withUnsafePointer(to: &Py_None){UnsafeMutablePointer<PyObject>(mutating: $0)}
-  }
-  
-  
-  
-  let log_CaptureStderr: PyCFunction =
-  {
-    (this: UnsafeMutablePointer<PyObject>?, args: UnsafeMutablePointer<PyObject>?) in
-    
-    let buffer = UnsafeMutablePointer<UnsafeMutablePointer<CChar>>.allocate(capacity: 1)
-    
-    if (withVaList([buffer]) {return PyArg_VaParse(args, strdup("s"), $0)} == 0)
-    {
-      return nil
-    }
-    
-    let string: String = String(cString: buffer.pointee, encoding: String.Encoding.ascii)!
-    buffer.deallocate()
-    
-    InterpreterViewController.interpreterViewController?.pythonScriptView?.pythonOut(string: string as NSString)
-    
-    var Py_None = _Py_NoneStruct
-    Py_IncRef(&Py_None)
-    return withUnsafePointer(to: &Py_None){UnsafeMutablePointer<PyObject>(mutating: $0)}
   }
   
   func runPythonCmd()
   {
-    if let pythonScriptView = pythonScriptView,
-       let _ = tstate
+    if let pythonScriptView = pythonScriptView
     {
       let cmd: String = pythonScriptView.lastCommandLine
       
       self.pythonScriptView?.pythonOut(string: "\n")
       
-      pythonScriptView.needsDisplay = true
-      
-      // switch to the current embedded interpreter
       PyThreadState_Swap(tstate)
-      
-      InterpreterViewController.interpreterViewController=self
-      
       PyRun_SimpleStringFlags(cmd,nil)
+      
+      if let pythonOutputString = mainModule?.catchOut.print(),
+         let outputString: String = String(pythonOutputString)
+      {
+        self.pythonScriptView?.pythonOut(string: NSString(string: outputString))
+      }
+      
+      pythonScriptView.needsDisplay = true
     }
   }
   
