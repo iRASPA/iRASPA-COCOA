@@ -70,5 +70,7 @@ func initPythonModuleiRASPA()
     }
     PyImport_AppendInittab(moduleName, PyInit_PythonModuleiRASPA)
   }
+  
+  unsafeBitCast(Py_IncRef, to: UnsafeMutableRawPointer.self)
 }
 

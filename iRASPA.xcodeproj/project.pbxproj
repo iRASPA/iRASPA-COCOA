@@ -158,6 +158,7 @@
 		932A49561E537EF400F71AE7 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A49551E537EF400F71AE7 /* LogViewController.swift */; };
 		932A495C1E544FDA00F71AE7 /* LogToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495B1E544FDA00F71AE7 /* LogToolBar.swift */; };
 		932A495E1E5450EB00F71AE7 /* InterpreterToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A495D1E5450EB00F71AE7 /* InterpreterToolBar.swift */; };
+		932AFD2525175D19009260FC /* Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932AFD2425175D18009260FC /* Python.swift */; };
 		932B989B2424BBDD00033AA7 /* MetalInternalBondSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932B989A2424BBDD00033AA7 /* MetalInternalBondSelectionStripedShader.swift */; };
 		932B989D2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932B989C2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift */; };
 		932B989F2425335300033AA7 /* MetalExternalBondSelectionWorleyNoise3DShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932B989E2425335300033AA7 /* MetalExternalBondSelectionWorleyNoise3DShader.swift */; };
@@ -1102,6 +1103,7 @@
 		932A49551E537EF400F71AE7 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		932A495B1E544FDA00F71AE7 /* LogToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogToolBar.swift; sourceTree = "<group>"; };
 		932A495D1E5450EB00F71AE7 /* InterpreterToolBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterpreterToolBar.swift; sourceTree = "<group>"; };
+		932AFD2425175D18009260FC /* Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Python.swift; sourceTree = "<group>"; };
 		932B989A2424BBDD00033AA7 /* MetalInternalBondSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalInternalBondSelectionStripedShader.swift; sourceTree = "<group>"; };
 		932B989C2424C9CE00033AA7 /* MetalInternalBondSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalInternalBondSelectionGlowShader.swift; sourceTree = "<group>"; };
 		932B989E2425335300033AA7 /* MetalExternalBondSelectionWorleyNoise3DShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalExternalBondSelectionWorleyNoise3DShader.swift; sourceTree = "<group>"; };
@@ -2168,6 +2170,7 @@
 			children = (
 				930DD6BF1E2805F600B8FE9B /* iRaspaPythonInterface.swift */,
 				930DD6C01E2805F600B8FE9B /* pyConstants.swift */,
+				932AFD2425175D18009260FC /* Python.swift */,
 			);
 			name = Python;
 			sourceTree = "<group>";
@@ -3951,6 +3954,7 @@
 				930DD7251E2808B700B8FE9B /* AtomTableRowView.swift in Sources */,
 				9345F86D1F40B9D300181224 /* MasterTabViewController.swift in Sources */,
 				935DABE41F0E43EA00C1C8D0 /* DirectoryViewController.swift in Sources */,
+				932AFD2525175D19009260FC /* Python.swift in Sources */,
 				93F9363D1EB912760094C509 /* ProjectTableRowView.swift in Sources */,
 				93784A931E61B5CE00A7FF23 /* StructureDetailTabViewController.swift in Sources */,
 				93CEEFBE1F42193700EAF673 /* DirectoryMasterViewController.swift in Sources */,
