@@ -78,7 +78,7 @@ class LocalAboutViewController: NSViewController
       let foundRangeCalero: NSRange = mutableAttributedString.mutableString.range(of: "Sofia Calero")
       if foundRangeCalero.location != NSNotFound
       {
-        mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://www.upo.es/raspa/", range: foundRangeCalero)
+        mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://www.tue.nl/en/research/researchers/sofia-calero/", range: foundRangeCalero)
       }
       
       let foundRangeVlugt: NSRange = mutableAttributedString.mutableString.range(of: "Thijs J.H. Vlugt")
