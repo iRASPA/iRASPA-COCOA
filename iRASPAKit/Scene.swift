@@ -280,6 +280,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
         
         // set creator etc
         //setToCoreMOFStyle(structure: iRASPAstructure.structure)
+        //setToDDECStyle(structure: iRASPAstructure.structure)
         iRASPAstructure.structure.structureMaterialType = "MOF"
         iRASPAstructure.structure.setRepresentationStyle(style: .default)
         
@@ -297,9 +298,8 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
     }
   }
   
-  private func setToCoreMOFStyle(structure: Structure)
+  public func setToCoreMOFStyle(structure: Structure)
   {
-    debugPrint("YEAAH")
     structure.atomRepresentationStyle = .fancy
     
     structure.structureMaterialType = "MOF"
@@ -349,7 +349,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
     structure.citationDatebaseCodes = ""
   }
   
-  private func setToDDECStyle(structure: Structure)
+  public func setToDDECStyle(structure: Structure)
   {
     structure.atomRepresentationStyle = .fancy
     structure.structureMaterialType = "MOF"
