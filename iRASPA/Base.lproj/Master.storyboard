@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -400,13 +400,43 @@
                         <menuItem title="Save selected to cloud" hidden="YES" id="w2Z-Qn-qLb">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="ProjectContextMenuStoreSelectionInCloud:" target="a4f-9K-v20" id="NDq-3z-47T"/>
+                                <action selector="ProjectContextMenuStoreSelectionInCloudSave:" target="a4f-9K-v20" id="yP3-Xu-ET0"/>
                             </connections>
                         </menuItem>
                         <menuItem title="Compute properties for selection" hidden="YES" id="xhK-MY-aiR">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="ProjectContextMenuComputePropertiesSelection:" target="a4f-9K-v20" id="Rob-ef-abX"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Make Selection Editable" hidden="YES" id="Erw-7T-7zg">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="ProjectContextMenuMakeSelectionEditable:" target="a4f-9K-v20" id="Q8X-Mi-Ofk"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Make Selection Uneditable" hidden="YES" id="IC0-ai-VWS">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="ProjectContextMenuMakeSelectionUnEditable:" target="a4f-9K-v20" id="8re-Lh-FB2"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Set to CoreMOF" hidden="YES" id="LeI-lP-zjX">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="ProjectContextMenuSetToCoreMOF:" target="a4f-9K-v20" id="RfJ-zO-mhY"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Set to CoreMOF DDEC" hidden="YES" id="vkV-ez-EHk">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="ProjectContextMenuSetToCoreMOFDDEC:" target="a4f-9K-v20" id="IXC-PU-LKT"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Set cloud to loaded" hidden="YES" id="GVN-kW-izw">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="ProjectContextMenuSetCloudToLoaded:" target="a4f-9K-v20" id="eDi-Cz-cdO"/>
                             </connections>
                         </menuItem>
                     </items>

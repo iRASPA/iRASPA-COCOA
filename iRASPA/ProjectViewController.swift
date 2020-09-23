@@ -2112,6 +2112,93 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     }
   }*/
   
+  @IBAction func ProjectContextMenuMakeSelectionEditable(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        node.isEditable = true
+      }
+    }
+  }
+  
+  @IBAction func ProjectContextMenuSetCloudToLoaded(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        debugPrint("node.displayName: \(node.displayName)  \(node.representedObject.fileNameUUID)")
+        let fileName = node.representedObject.fileNameUUID
+        
+        let projectStructureNode = ProjectStructureNode(name: node.displayName, sceneList: SceneList(scenes: []))
+        let project = iRASPAProject(structureProject: projectStructureNode)
+        projectStructureNode.fileName = node.representedObject.fileNameUUID
+        node.representedObject = project
+        node.representedObject.fileNameUUID = fileName        
+        node.representedObject.lazyStatus = .loaded
+        node.representedObject.nodeType = .leaf
+        
+      }
+    }
+  }
+  
+  @IBAction func ProjectContextMenuSetToCoreMOF(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        if let projectStructureNode: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
+        {
+          if let scene: Scene = projectStructureNode.sceneList.scenes.first
+          {
+            projectStructureNode.allStructures.forEach{scene.setToCoreMOFStyle(structure: $0)}
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func ProjectContextMenuSetToCoreMOFDDEC(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        if let projectStructureNode: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
+        {
+          if let scene: Scene = projectStructureNode.sceneList.scenes.first
+          {
+            projectStructureNode.allStructures.forEach{scene.setToDDECStyle(structure: $0)}
+          }
+        }
+      }
+    }
+  }
+  
+  @IBAction func ProjectContextMenuMakeSelectionUnEditable(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        node.isEditable = false
+      }
+    }
+  }
+  
   @IBAction func ProjectContextMenuComputePropertiesSelection(_ sender: NSMenuItem)
   {
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
