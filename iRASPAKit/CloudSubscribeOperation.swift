@@ -75,6 +75,7 @@ public class CloudSubscribeOperation: FKGroupOperation
     }
     else
     {
+      /*
       projectSubscription = CKSubscription(recordType: "ProjectNode", predicate: predicate, subscriptionID: subscriptionID, options: [.firesOnRecordCreation, .firesOnRecordDeletion, .firesOnRecordUpdate])
       
       // silent push notification
@@ -100,6 +101,7 @@ public class CloudSubscribeOperation: FKGroupOperation
       }
       
       self.addOperation(operation)
+      */
     }
   }
   

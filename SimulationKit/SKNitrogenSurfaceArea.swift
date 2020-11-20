@@ -22,7 +22,7 @@ public class SKNitrogenSurfaceArea
     return ([],[])
   }
   
-  public static func compute(structures: [(cell: SKCell, positions: [SIMD3<Double>], potentialParameters: [SIMD2<Double>])], probeParameters: SIMD2<Double>) throws -> [Double] 
+  public static func compute(structures: [(cell: SKCell, positions: [SIMD3<Double>], potentialParameters: [SIMD2<Double>], probeParameters: SIMD2<Double>)]) throws -> [Double]
   {
     var results: [Double] = []
     if let device = MTLCreateSystemDefaultDevice(),
@@ -35,10 +35,10 @@ public class SKNitrogenSurfaceArea
         let numberOfReplicas: SIMD3<Int32> = structure.cell.numberOfReplicas(forCutoff: 12.0)
         let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: structure.positions, potentialParameters: structure.potentialParameters, unitCell: structure.cell.unitCell, numberOfReplicas: numberOfReplicas)
         
-        data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
+        data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: structure.probeParameters)
         
         let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
-        marchingCubes.isoValue = Float(-probeParameters.x)
+        marchingCubes.isoValue = Float(0.0)   // modified from: -probeParameters.x (which cause artifacts)
         
         var surfaceVertexBuffer: MTLBuffer? = nil
         var numberOfTriangles: Int  = 0

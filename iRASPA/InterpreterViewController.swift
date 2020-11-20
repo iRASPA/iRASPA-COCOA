@@ -90,11 +90,11 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
   
   func setupPython()
   {
-    if let pythonHomeString: String = Bundle.main.path(forResource: "python3.7", ofType: nil)
+    if let bundle: Bundle = Bundle.init(identifier: "nl.darkwing.iRASPA.PythonKit"),
+       let pythonHomeString: String = bundle.path(forResource: "python3.9", ofType: nil)
     {
       let pythonProgramString = "iRASPA python interpreter"
-      let pythonPathString: String = pythonHomeString + ":" + pythonHomeString + "/lib-dynload:" +
-                    pythonHomeString + "/site-packages"
+      let pythonPathString: String = pythonHomeString + ":" + pythonHomeString + "/site-packages"
           
       pythonPathString.withWideChars { wname in
           Py_SetPath(wname)

@@ -126,27 +126,12 @@
 		931000822485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000812485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift */; };
 		931000842485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000832485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift */; };
 		9310008624850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310008524850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift */; };
+		9311CDEB2566EA630080AFA4 /* python3.9 in Resources */ = {isa = PBXBuildFile; fileRef = 9311CDDB2566EA620080AFA4 /* python3.9 */; };
+		9311CE042566EAC80080AFA4 /* PythonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933FFECE243A1E23004E337F /* PythonKit.framework */; };
 		9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */; };
 		9314E33F1E34A78E00680364 /* ViewerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33E1E34A78E00680364 /* ViewerProtocols.swift */; };
 		93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159FDD1F54235200D8700E /* SKXYZParser.swift */; };
 		9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */; };
-		931C2F46243B8C1600BECABE /* libpython3.7m.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F45243B8C1600BECABE /* libpython3.7m.a */; };
-		931C2F47243B8C1D00BECABE /* libpython3.7m.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F45243B8C1600BECABE /* libpython3.7m.a */; };
-		931C2F49243B8C2900BECABE /* libtermcap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F48243B8C2900BECABE /* libtermcap.a */; };
-		931C2F4A243B8C2D00BECABE /* libtermcap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F48243B8C2900BECABE /* libtermcap.a */; };
-		931C2F4F243B8C3E00BECABE /* libncursesw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4B243B8C3E00BECABE /* libncursesw.a */; };
-		931C2F50243B8C3E00BECABE /* libmenuw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4C243B8C3E00BECABE /* libmenuw.a */; };
-		931C2F51243B8C3E00BECABE /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4D243B8C3E00BECABE /* libformw.a */; };
-		931C2F52243B8C3E00BECABE /* libpanelw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4E243B8C3E00BECABE /* libpanelw.a */; };
-		931C2F53243B8C4800BECABE /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4D243B8C3E00BECABE /* libformw.a */; };
-		931C2F54243B8C4B00BECABE /* libmenuw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4C243B8C3E00BECABE /* libmenuw.a */; };
-		931C2F55243B8C4E00BECABE /* libncursesw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4B243B8C3E00BECABE /* libncursesw.a */; };
-		931C2F56243B8C5200BECABE /* libpanelw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F4E243B8C3E00BECABE /* libpanelw.a */; };
-		931C2F58243B8C6D00BECABE /* libreadline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F57243B8C6D00BECABE /* libreadline.a */; };
-		931C2F59243B8C7000BECABE /* libreadline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 931C2F57243B8C6D00BECABE /* libreadline.a */; };
-		931C2F5D243B8CA200BECABE /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9396A982243B18D7005B3F68 /* libzlib.a */; };
-		931C2F62243B907A00BECABE /* python3.7 in Resources */ = {isa = PBXBuildFile; fileRef = 931C2F61243B907900BECABE /* python3.7 */; };
-		931C2F63243B90AD00BECABE /* python3.7 in Resources */ = {isa = PBXBuildFile; fileRef = 931C2F61243B907900BECABE /* python3.7 */; };
 		932137D41F2B533800DAEBDF /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932137D31F2B533800DAEBDF /* Errors.swift */; };
 		93260AE41E2A46350066EC08 /* iRASPADocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AE31E2A46350066EC08 /* iRASPADocument.swift */; };
 		93260AEC1E2A63D70066EC08 /* iRASPAWIndowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AEB1E2A63D70066EC08 /* iRASPAWIndowController.swift */; };
@@ -234,10 +219,6 @@
 		936411D82421452E00BAFE9C /* MetalDoubleCylinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */; };
 		936411DA2421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */; };
 		936411DC2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */; };
-		9367BF9C1E2BDD5100B948E9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 9367BF9B1E2BDD5100B948E9 /* main.c */; };
-		9367BFA31E2BDD6C00B948E9 /* GeneratePreviewForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 9367BFA11E2BDD6C00B948E9 /* GeneratePreviewForURL.m */; };
-		9367BFA41E2BDD6C00B948E9 /* GenerateThumbnailForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 9367BFA21E2BDD6C00B948E9 /* GenerateThumbnailForURL.m */; };
-		9367BFA51E2BDDA600B948E9 /* iRASPAQuickLookPlugin.qlgenerator in Copy Files */ = {isa = PBXBuildFile; fileRef = 9367BF951E2BDD5000B948E9 /* iRASPAQuickLookPlugin.qlgenerator */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		93682C3C1F2729A00041F436 /* iRASPALoadDatabases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */; };
 		936DE11C21DA7F470023E7C8 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936DE11B21DA7F470023E7C8 /* Array.swift */; };
 		936E236D1F17C998007F6230 /* DeleteAllRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E236C1F17C998007F6230 /* DeleteAllRecordsOperation.swift */; };
@@ -332,7 +313,6 @@
 		93793B5321DE1045004CAD9C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 93793B5221DE1045004CAD9C /* LICENSE */; };
 		93793B5521DE118C004CAD9C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 93793B5421DE118C004CAD9C /* LICENSE */; };
 		93793B5721DE11C3004CAD9C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 93793B5621DE11C3004CAD9C /* LICENSE */; };
-		93793B5921DE11D6004CAD9C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 93793B5821DE11D5004CAD9C /* LICENSE */; };
 		937956971E9E7D1400802529 /* StructureInfoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937956961E9E7D1400802529 /* StructureInfoDetailViewController.swift */; };
 		9380DA2C1EAA2E8C00823BD8 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		9381D8A11E5B6EC100263860 /* BottomToolbarPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9381D8A01E5B6EC100263860 /* BottomToolbarPanel.swift */; };
@@ -497,6 +477,13 @@
 		939FFA7F225362B1000A1A46 /* SKXDATCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */; };
 		93A067AF2257D7C70099A880 /* CaseInsensitiveString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */; };
 		93A0BE381F24ED15001647D7 /* Gallery.irspdoc in Resources */ = {isa = PBXBuildFile; fileRef = 93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */; };
+		93A0C3B42567ACF8002BC083 /* PythonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933FFECE243A1E23004E337F /* PythonKit.framework */; };
+		93A0C3B52567ACF8002BC083 /* PythonKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 933FFECE243A1E23004E337F /* PythonKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		93A0C4262567B20D002BC083 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F3CD301E6DD81900046552 /* Quartz.framework */; };
+		93A0C4292567B20D002BC083 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A0C4282567B20D002BC083 /* PreviewViewController.swift */; };
+		93A0C42C2567B20D002BC083 /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93A0C42A2567B20D002BC083 /* PreviewViewController.xib */; };
+		93A0C4312567B20D002BC083 /* iRASPAQuickLookExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 93A0C4252567B20D002BC083 /* iRASPAQuickLookExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		93A0C48A2567F7C5002BC083 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93A0C4892567F7C5002BC083 /* Assets.xcassets */; };
 		93A31C991EB4CC300010101B /* ReadStructureOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C981EB4CC300010101B /* ReadStructureOperation.swift */; };
 		93A31C9B1EB4CD030010101B /* ReadStructureGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9A1EB4CD030010101B /* ReadStructureGroupOperation.swift */; };
 		93A31C9F1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9E1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift */; };
@@ -566,6 +553,20 @@
 		93BF30C31FB3707B00FFCCB0 /* iRASPA-CLI.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */; };
 		93C5E24223F1A264002BA929 /* SKAsymmetricBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */; };
+		93CDAA9A25680A51004D900E /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8425680A10004D900E /* libbz2.a */; };
+		93CDAA9B25680A51004D900E /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8B25680A12004D900E /* libffi.a */; };
+		93CDAA9C25680A51004D900E /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8625680A11004D900E /* libformw.a */; };
+		93CDAA9D25680A51004D900E /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8925680A11004D900E /* libgdbm.a */; };
+		93CDAA9E25680A51004D900E /* libhistory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8025680A0F004D900E /* libhistory.a */; };
+		93CDAA9F25680A51004D900E /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8225680A0F004D900E /* libiconv.a */; };
+		93CDAAA025680A51004D900E /* libintl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA7E25680A0F004D900E /* libintl.a */; };
+		93CDAAA125680A51004D900E /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8725680A11004D900E /* liblzma.a */; };
+		93CDAAA225680A51004D900E /* libmenuw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA7F25680A0F004D900E /* libmenuw.a */; };
+		93CDAAA325680A51004D900E /* libncursesw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8A25680A11004D900E /* libncursesw.a */; };
+		93CDAAA425680A51004D900E /* libpanelw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8825680A11004D900E /* libpanelw.a */; };
+		93CDAAA525680A51004D900E /* libpython3.9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8525680A11004D900E /* libpython3.9.a */; };
+		93CDAAA625680A51004D900E /* libreadline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8325680A10004D900E /* libreadline.a */; };
+		93CDAAA725680A51004D900E /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8125680A0F004D900E /* libz.a */; };
 		93CE77E01E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */; };
 		93CE77EE1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CE77F11EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
@@ -579,8 +580,6 @@
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
 		93DA9EE523DEFE4600FB4E51 /* SimulationKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */; };
 		93DE92D1207E2BB00084D303 /* NSPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */; };
-		93DEB48B2516A5CC00635449 /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93DEB48A2516A5CC00635449 /* libgdbm.a */; };
-		93DEB48C2516A5D700635449 /* libgdbm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93DEB48A2516A5CC00635449 /* libgdbm.a */; };
 		93E7594B21DBC056009B9C5C /* iRASPADocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */; };
 		93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */; };
 		93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */; };
@@ -740,6 +739,13 @@
 			remoteGlobalIDString = 930DD60E1E26B96A00B8FE9B;
 			remoteInfo = iRASPAKit;
 		};
+		9311CE062566EAC80080AFA4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 933FFECD243A1E23004E337F;
+			remoteInfo = PythonKit;
+		};
 		933FFFA3243A1ECA004E337F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 938388001E26A4A800112FBA /* Project object */;
@@ -781,6 +787,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 938388201E26A4FB00112FBA;
 			remoteInfo = MathKit;
+		};
+		93A0C3B62567ACF8002BC083 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 933FFECD243A1E23004E337F;
+			remoteInfo = PythonKit;
+		};
+		93A0C42F2567B20D002BC083 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 93A0C4242567B20D002BC083;
+			remoteInfo = iRASPAQuickLookExtension;
 		};
 		93B020771EE9553B00297170 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -925,17 +945,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9367BF791E2BDAE800B948E9 /* Copy Files */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Contents/Library/QuickLook;
-			dstSubfolderSpec = 1;
-			files = (
-				9367BFA51E2BDDA600B948E9 /* iRASPAQuickLookPlugin.qlgenerator in Copy Files */,
-			);
-			name = "Copy Files";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9383883B1E26A4FC00112FBA /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -951,10 +960,22 @@
 				930DD5281E26B2CC00B8FE9B /* RenderKit.framework in Embed Frameworks */,
 				93F697BC2181D9C1003273A8 /* ZIPFoundation.framework in Embed Frameworks */,
 				930DD4A11E26A80F00B8FE9B /* SimulationKit.framework in Embed Frameworks */,
+				93A0C3B52567ACF8002BC083 /* PythonKit.framework in Embed Frameworks */,
 				930DD4D51E26AA0200B8FE9B /* SymmetryKit.framework in Embed Frameworks */,
 				930DD6251E26B96A00B8FE9B /* iRASPAKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93A0C4042567B07B002BC083 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				93A0C4312567B20D002BC083 /* iRASPAQuickLookExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		93BF30B21FB3642400FFCCB0 /* CopyFiles */ = {
@@ -1080,18 +1101,27 @@
 		931000812485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalCylinderPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
 		931000832485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPolygonalPrismPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
 		9310008524850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift; sourceTree = "<group>"; };
+		9311CDDB2566EA620080AFA4 /* python3.9 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = python3.9; sourceTree = "<group>"; };
+		9311CE0B2566F62C0080AFA4 /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
+		9311CE0D2566F6C70080AFA4 /* libdl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libdl.tbd; path = usr/lib/libdl.tbd; sourceTree = SDKROOT; };
+		9311CE1D256707140080AFA4 /* libffi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libffi.a; path = PythonKit/libffi.a; sourceTree = "<group>"; };
+		9311CE1E256707140080AFA4 /* libpanelw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpanelw.a; path = PythonKit/libpanelw.a; sourceTree = "<group>"; };
+		9311CE1F256707140080AFA4 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = PythonKit/libiconv.a; sourceTree = "<group>"; };
+		9311CE20256707140080AFA4 /* libhistory.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhistory.a; path = PythonKit/libhistory.a; sourceTree = "<group>"; };
+		9311CE21256707140080AFA4 /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = PythonKit/liblzma.a; sourceTree = "<group>"; };
+		9311CE22256707140080AFA4 /* libmenuw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmenuw.a; path = PythonKit/libmenuw.a; sourceTree = "<group>"; };
+		9311CE23256707140080AFA4 /* libgdbm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgdbm.a; path = PythonKit/libgdbm.a; sourceTree = "<group>"; };
+		9311CE24256707140080AFA4 /* libncursesw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libncursesw.a; path = PythonKit/libncursesw.a; sourceTree = "<group>"; };
+		9311CE25256707140080AFA4 /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbz2.a; path = PythonKit/libbz2.a; sourceTree = "<group>"; };
+		9311CE26256707140080AFA4 /* libintl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libintl.a; path = PythonKit/libintl.a; sourceTree = "<group>"; };
+		9311CE27256707140080AFA4 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = PythonKit/libz.a; sourceTree = "<group>"; };
+		9311CE28256707140080AFA4 /* libreadline.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libreadline.a; path = PythonKit/libreadline.a; sourceTree = "<group>"; };
+		9311CE29256707140080AFA4 /* libformw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libformw.a; path = PythonKit/libformw.a; sourceTree = "<group>"; };
+		9311CE2A256707140080AFA4 /* libpython3.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpython3.9.a; path = PythonKit/libpython3.9.a; sourceTree = "<group>"; };
 		9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		9314E33E1E34A78E00680364 /* ViewerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewerProtocols.swift; sourceTree = "<group>"; };
 		93159FDD1F54235200D8700E /* SKXYZParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXYZParser.swift; sourceTree = "<group>"; };
 		9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedCylinderGeometry.swift; sourceTree = "<group>"; };
-		931C2F45243B8C1600BECABE /* libpython3.7m.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpython3.7m.a; sourceTree = "<group>"; };
-		931C2F48243B8C2900BECABE /* libtermcap.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libtermcap.a; sourceTree = "<group>"; };
-		931C2F4B243B8C3E00BECABE /* libncursesw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libncursesw.a; sourceTree = "<group>"; };
-		931C2F4C243B8C3E00BECABE /* libmenuw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmenuw.a; sourceTree = "<group>"; };
-		931C2F4D243B8C3E00BECABE /* libformw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libformw.a; sourceTree = "<group>"; };
-		931C2F4E243B8C3E00BECABE /* libpanelw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpanelw.a; sourceTree = "<group>"; };
-		931C2F57243B8C6D00BECABE /* libreadline.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libreadline.a; sourceTree = "<group>"; };
-		931C2F61243B907900BECABE /* python3.7 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = python3.7; sourceTree = "<group>"; };
 		932137D31F2B533800DAEBDF /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		93260AE31E2A46350066EC08 /* iRASPADocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPADocument.swift; sourceTree = "<group>"; tabWidth = 2; };
 		93260AEB1E2A63D70066EC08 /* iRASPAWIndowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPAWIndowController.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -1184,11 +1214,6 @@
 		936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalDoubleCylinder.swift; sourceTree = "<group>"; };
 		936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedDoubleBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedTripleBondCylinderGeometry.swift; sourceTree = "<group>"; };
-		9367BF951E2BDD5000B948E9 /* iRASPAQuickLookPlugin.qlgenerator */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iRASPAQuickLookPlugin.qlgenerator; sourceTree = BUILT_PRODUCTS_DIR; };
-		9367BF9B1E2BDD5100B948E9 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		9367BF9D1E2BDD5100B948E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9367BFA11E2BDD6C00B948E9 /* GeneratePreviewForURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratePreviewForURL.m; sourceTree = "<group>"; };
-		9367BFA21E2BDD6C00B948E9 /* GenerateThumbnailForURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateThumbnailForURL.m; sourceTree = "<group>"; };
 		93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPALoadDatabases.swift; sourceTree = "<group>"; };
 		936DE11B21DA7F470023E7C8 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		936E236C1F17C998007F6230 /* DeleteAllRecordsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAllRecordsOperation.swift; sourceTree = "<group>"; };
@@ -1282,7 +1307,6 @@
 		93793B5221DE1045004CAD9C /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		93793B5421DE118C004CAD9C /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		93793B5621DE11C3004CAD9C /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		93793B5821DE11D5004CAD9C /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = iRASPAQuicklookPlugin/LICENSE; sourceTree = SOURCE_ROOT; };
 		937956961E9E7D1400802529 /* StructureInfoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureInfoDetailViewController.swift; sourceTree = "<group>"; };
 		9381D8A01E5B6EC100263860 /* BottomToolbarPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomToolbarPanel.swift; sourceTree = "<group>"; };
 		9381D8A21E5B72C700263860 /* InterpreterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterpreterViewController.swift; sourceTree = "<group>"; };
@@ -1324,7 +1348,6 @@
 		939155731E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAndInterpreterSplitViewController.swift; sourceTree = "<group>"; };
 		93915C401FCD99B7006188F0 /* iRASPAProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProtocols.swift; sourceTree = "<group>"; };
 		939208812002190B009F0E16 /* AtomMeasurementShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = AtomMeasurementShader.metal; sourceTree = "<group>"; };
-		9396A982243B18D7005B3F68 /* libzlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzlib.a; sourceTree = "<group>"; };
 		9397C61F203B4F4300FE4A9C /* ImportAccessoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportAccessoryViewController.xib; sourceTree = "<group>"; };
 		9397C621203B4F6800FE4A9C /* ImportAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccessoryViewController.swift; sourceTree = "<group>"; };
 		93986CE21E9F6FE10045C07C /* StructureInfoDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureInfoDetailViewPageController.swift; sourceTree = "<group>"; };
@@ -1449,6 +1472,12 @@
 		939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXDATCARParser.swift; sourceTree = "<group>"; };
 		93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveString.swift; sourceTree = "<group>"; };
 		93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Gallery.irspdoc; sourceTree = "<group>"; };
+		93A0C4252567B20D002BC083 /* iRASPAQuickLookExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = iRASPAQuickLookExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		93A0C4282567B20D002BC083 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		93A0C42B2567B20D002BC083 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PreviewViewController.xib; sourceTree = "<group>"; };
+		93A0C42D2567B20D002BC083 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93A0C42E2567B20D002BC083 /* iRASPAQuickLookExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iRASPAQuickLookExtension.entitlements; sourceTree = "<group>"; };
+		93A0C4892567F7C5002BC083 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		93A31C981EB4CC300010101B /* ReadStructureOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadStructureOperation.swift; sourceTree = "<group>"; };
 		93A31C9A1EB4CD030010101B /* ReadStructureGroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadStructureGroupOperation.swift; sourceTree = "<group>"; };
 		93A31C9E1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComputeBondsGroupOperation.swift; sourceTree = "<group>"; };
@@ -1509,6 +1538,20 @@
 		93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iRASPA-CLI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyingProtocol.swift; sourceTree = "<group>"; };
 		93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricBond.swift; sourceTree = "<group>"; };
+		93CDAA7E25680A0F004D900E /* libintl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libintl.a; sourceTree = "<group>"; };
+		93CDAA7F25680A0F004D900E /* libmenuw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmenuw.a; sourceTree = "<group>"; };
+		93CDAA8025680A0F004D900E /* libhistory.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libhistory.a; sourceTree = "<group>"; };
+		93CDAA8125680A0F004D900E /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libz.a; sourceTree = "<group>"; };
+		93CDAA8225680A0F004D900E /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiconv.a; sourceTree = "<group>"; };
+		93CDAA8325680A10004D900E /* libreadline.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libreadline.a; sourceTree = "<group>"; };
+		93CDAA8425680A10004D900E /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbz2.a; sourceTree = "<group>"; };
+		93CDAA8525680A11004D900E /* libpython3.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpython3.9.a; sourceTree = "<group>"; };
+		93CDAA8625680A11004D900E /* libformw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libformw.a; sourceTree = "<group>"; };
+		93CDAA8725680A11004D900E /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblzma.a; sourceTree = "<group>"; };
+		93CDAA8825680A11004D900E /* libpanelw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpanelw.a; sourceTree = "<group>"; };
+		93CDAA8925680A11004D900E /* libgdbm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgdbm.a; sourceTree = "<group>"; };
+		93CDAA8A25680A11004D900E /* libncursesw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libncursesw.a; sourceTree = "<group>"; };
+		93CDAA8B25680A12004D900E /* libffi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libffi.a; sourceTree = "<group>"; };
 		93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CatchObjectiveCExceptions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatchObjectiveCExceptions.h; sourceTree = "<group>"; };
@@ -1522,7 +1565,6 @@
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationKitErrors.swift; sourceTree = "<group>"; };
 		93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPasteboardItem.swift; sourceTree = "<group>"; };
-		93DEB48A2516A5CC00635449 /* libgdbm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgdbm.a; sourceTree = "<group>"; };
 		93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPADocumentController.swift; sourceTree = "<group>"; };
 		93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidShader.swift; sourceTree = "<group>"; };
@@ -1653,25 +1695,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				931C2F50243B8C3E00BECABE /* libmenuw.a in Frameworks */,
-				93DEB48B2516A5CC00635449 /* libgdbm.a in Frameworks */,
-				931C2F51243B8C3E00BECABE /* libformw.a in Frameworks */,
-				931C2F58243B8C6D00BECABE /* libreadline.a in Frameworks */,
-				931C2F4F243B8C3E00BECABE /* libncursesw.a in Frameworks */,
-				931C2F49243B8C2900BECABE /* libtermcap.a in Frameworks */,
-				931C2F52243B8C3E00BECABE /* libpanelw.a in Frameworks */,
-				931C2F46243B8C1600BECABE /* libpython3.7m.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		934983B51F4EAC5F007BE9C7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9367BF911E2BDD5000B948E9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1692,20 +1719,27 @@
 				93B5EE671FC33588009922F2 /* LogViewKit.framework in Frameworks */,
 				930DD5271E26B2CC00B8FE9B /* RenderKit.framework in Frameworks */,
 				930DD4A01E26A80F00B8FE9B /* SimulationKit.framework in Frameworks */,
+				93A0C3B42567ACF8002BC083 /* PythonKit.framework in Frameworks */,
 				930DD4D41E26AA0200B8FE9B /* SymmetryKit.framework in Frameworks */,
 				93CE77F11EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Frameworks */,
 				934983C01F4EAC5F007BE9C7 /* PowerSourceKit.framework in Frameworks */,
 				930DD6241E26B96A00B8FE9B /* iRASPAKit.framework in Frameworks */,
 				93F697BB2181D9C1003273A8 /* ZIPFoundation.framework in Frameworks */,
-				931C2F47243B8C1D00BECABE /* libpython3.7m.a in Frameworks */,
-				931C2F59243B8C7000BECABE /* libreadline.a in Frameworks */,
-				931C2F55243B8C4E00BECABE /* libncursesw.a in Frameworks */,
-				931C2F56243B8C5200BECABE /* libpanelw.a in Frameworks */,
-				931C2F54243B8C4B00BECABE /* libmenuw.a in Frameworks */,
-				931C2F53243B8C4800BECABE /* libformw.a in Frameworks */,
-				93DEB48C2516A5D700635449 /* libgdbm.a in Frameworks */,
-				931C2F4A243B8C2D00BECABE /* libtermcap.a in Frameworks */,
-				931C2F5D243B8CA200BECABE /* libzlib.a in Frameworks */,
+				9311CE042566EAC80080AFA4 /* PythonKit.framework in Frameworks */,
+				93CDAAA525680A51004D900E /* libpython3.9.a in Frameworks */,
+				93CDAA9B25680A51004D900E /* libffi.a in Frameworks */,
+				93CDAA9C25680A51004D900E /* libformw.a in Frameworks */,
+				93CDAA9D25680A51004D900E /* libgdbm.a in Frameworks */,
+				93CDAA9E25680A51004D900E /* libhistory.a in Frameworks */,
+				93CDAAA225680A51004D900E /* libmenuw.a in Frameworks */,
+				93CDAAA325680A51004D900E /* libncursesw.a in Frameworks */,
+				93CDAAA425680A51004D900E /* libpanelw.a in Frameworks */,
+				93CDAAA625680A51004D900E /* libreadline.a in Frameworks */,
+				93CDAAA025680A51004D900E /* libintl.a in Frameworks */,
+				93CDAA9F25680A51004D900E /* libiconv.a in Frameworks */,
+				93CDAA9A25680A51004D900E /* libbz2.a in Frameworks */,
+				93CDAAA125680A51004D900E /* liblzma.a in Frameworks */,
+				93CDAAA725680A51004D900E /* libz.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1714,6 +1748,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				9300AEA91F21020B0052DA45 /* CatchObjectiveCExceptions.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93A0C4222567B20D002BC083 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93A0C4262567B20D002BC083 /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1795,6 +1837,22 @@
 		930DD4B41E26A92200B8FE9B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9311CE25256707140080AFA4 /* libbz2.a */,
+				9311CE1D256707140080AFA4 /* libffi.a */,
+				9311CE29256707140080AFA4 /* libformw.a */,
+				9311CE23256707140080AFA4 /* libgdbm.a */,
+				9311CE20256707140080AFA4 /* libhistory.a */,
+				9311CE1F256707140080AFA4 /* libiconv.a */,
+				9311CE26256707140080AFA4 /* libintl.a */,
+				9311CE21256707140080AFA4 /* liblzma.a */,
+				9311CE22256707140080AFA4 /* libmenuw.a */,
+				9311CE24256707140080AFA4 /* libncursesw.a */,
+				9311CE1E256707140080AFA4 /* libpanelw.a */,
+				9311CE2A256707140080AFA4 /* libpython3.9.a */,
+				9311CE28256707140080AFA4 /* libreadline.a */,
+				9311CE27256707140080AFA4 /* libz.a */,
+				9311CE0D2566F6C70080AFA4 /* libdl.tbd */,
+				9311CE0B2566F62C0080AFA4 /* libc.tbd */,
 				93FA2902243A727A009547DE /* libpython3.7m.dylib */,
 				93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */,
 				93F3CD301E6DD81900046552 /* Quartz.framework */,
@@ -2251,16 +2309,22 @@
 		933FFECF243A1E23004E337F /* PythonKit */ = {
 			isa = PBXGroup;
 			children = (
+				93CDAA8425680A10004D900E /* libbz2.a */,
+				93CDAA8B25680A12004D900E /* libffi.a */,
+				93CDAA8625680A11004D900E /* libformw.a */,
+				93CDAA8925680A11004D900E /* libgdbm.a */,
+				93CDAA8025680A0F004D900E /* libhistory.a */,
+				93CDAA8225680A0F004D900E /* libiconv.a */,
+				93CDAA7E25680A0F004D900E /* libintl.a */,
+				93CDAA8725680A11004D900E /* liblzma.a */,
+				93CDAA7F25680A0F004D900E /* libmenuw.a */,
+				93CDAA8A25680A11004D900E /* libncursesw.a */,
+				93CDAA8825680A11004D900E /* libpanelw.a */,
+				93CDAA8525680A11004D900E /* libpython3.9.a */,
+				93CDAA8325680A10004D900E /* libreadline.a */,
+				93CDAA8125680A0F004D900E /* libz.a */,
+				9311CDDB2566EA620080AFA4 /* python3.9 */,
 				933FFFA2243A1E9F004E337F /* PythonKit.modulemap */,
-				931C2F45243B8C1600BECABE /* libpython3.7m.a */,
-				931C2F57243B8C6D00BECABE /* libreadline.a */,
-				93DEB48A2516A5CC00635449 /* libgdbm.a */,
-				931C2F48243B8C2900BECABE /* libtermcap.a */,
-				931C2F4D243B8C3E00BECABE /* libformw.a */,
-				931C2F4C243B8C3E00BECABE /* libmenuw.a */,
-				931C2F4B243B8C3E00BECABE /* libncursesw.a */,
-				931C2F4E243B8C3E00BECABE /* libpanelw.a */,
-				9396A982243B18D7005B3F68 /* libzlib.a */,
 				939939BB243B17FE0089A1A1 /* abstract.h */,
 				939939D5243B18050089A1A1 /* accu.h */,
 				939939C2243B18000089A1A1 /* asdl.h */,
@@ -2408,18 +2472,6 @@
 			name = Preferences;
 			sourceTree = "<group>";
 		};
-		9367BF961E2BDD5100B948E9 /* iRASPAQuickLookPlugin */ = {
-			isa = PBXGroup;
-			children = (
-				9367BFA11E2BDD6C00B948E9 /* GeneratePreviewForURL.m */,
-				9367BFA21E2BDD6C00B948E9 /* GenerateThumbnailForURL.m */,
-				9367BF9B1E2BDD5100B948E9 /* main.c */,
-				9367BF9D1E2BDD5100B948E9 /* Info.plist */,
-				93793B5821DE11D5004CAD9C /* LICENSE */,
-			);
-			path = iRASPAQuickLookPlugin;
-			sourceTree = "<group>";
-		};
 		938387FF1E26A4A800112FBA = {
 			isa = PBXGroup;
 			children = (
@@ -2433,12 +2485,11 @@
 				93BF25F01EE71DC200128CD4 /* OperationKit */,
 				934983BA1F4EAC5F007BE9C7 /* PowerSourceKit */,
 				93CE77EB1EA0EA3900D068E1 /* CatchObjectiveCExceptions */,
-				9367BF961E2BDD5100B948E9 /* iRASPAQuickLookPlugin */,
 				93B5EE611FC33588009922F2 /* LogViewKit */,
 				93F697B52181D9C1003273A8 /* ZIPFoundation */,
 				93F3A59E21874A15008E41A2 /* BinaryCodable */,
-				931C2F61243B907900BECABE /* python3.7 */,
 				933FFECF243A1E23004E337F /* PythonKit */,
+				93A0C4272567B20D002BC083 /* iRASPAQuickLookExtension */,
 				938388091E26A4A800112FBA /* Products */,
 				930DD4B41E26A92200B8FE9B /* Frameworks */,
 			);
@@ -2455,7 +2506,6 @@
 				930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */,
 				930DD5121E26B2CC00B8FE9B /* RenderKit.framework */,
 				930DD60F1E26B96A00B8FE9B /* iRASPAKit.framework */,
-				9367BF951E2BDD5000B948E9 /* iRASPAQuickLookPlugin.qlgenerator */,
 				93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */,
 				93BF25EF1EE71DC200128CD4 /* OperationKit.framework */,
 				934983B91F4EAC5F007BE9C7 /* PowerSourceKit.framework */,
@@ -2464,6 +2514,7 @@
 				93F697B42181D9C1003273A8 /* ZIPFoundation.framework */,
 				93F3A59D21874A15008E41A2 /* BinaryCodable.framework */,
 				933FFECE243A1E23004E337F /* PythonKit.framework */,
+				93A0C4252567B20D002BC083 /* iRASPAQuickLookExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2602,6 +2653,18 @@
 				9340A6F02015123B00F33D1D /* NSFont.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		93A0C4272567B20D002BC083 /* iRASPAQuickLookExtension */ = {
+			isa = PBXGroup;
+			children = (
+				93A0C4282567B20D002BC083 /* PreviewViewController.swift */,
+				93A0C42A2567B20D002BC083 /* PreviewViewController.xib */,
+				93A0C42D2567B20D002BC083 /* Info.plist */,
+				93A0C42E2567B20D002BC083 /* iRASPAQuickLookExtension.entitlements */,
+				93A0C4892567F7C5002BC083 /* Assets.xcassets */,
+			);
+			path = iRASPAQuickLookExtension;
 			sourceTree = "<group>";
 		};
 		93B5EE4F1FC2CAA4009922F2 /* AboutWindow */ = {
@@ -2891,13 +2954,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9367BF921E2BDD5000B948E9 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9383881E1E26A4FB00112FBA /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -3076,24 +3132,6 @@
 			productReference = 934983B91F4EAC5F007BE9C7 /* PowerSourceKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		9367BF941E2BDD5000B948E9 /* iRASPAQuickLookPlugin */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9367BF9E1E2BDD5100B948E9 /* Build configuration list for PBXNativeTarget "iRASPAQuickLookPlugin" */;
-			buildPhases = (
-				9367BF901E2BDD5000B948E9 /* Sources */,
-				9367BF911E2BDD5000B948E9 /* Frameworks */,
-				9367BF921E2BDD5000B948E9 /* Headers */,
-				9367BF931E2BDD5000B948E9 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = iRASPAQuickLookPlugin;
-			productName = iRASPAQuickLookPlugin;
-			productReference = 9367BF951E2BDD5000B948E9 /* iRASPAQuickLookPlugin.qlgenerator */;
-			productType = "com.apple.product-type.bundle";
-		};
 		938388071E26A4A800112FBA /* iRASPA */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 938388191E26A4A800112FBA /* Build configuration list for PBXNativeTarget "iRASPA" */;
@@ -3102,8 +3140,8 @@
 				938388051E26A4A800112FBA /* Frameworks */,
 				938388061E26A4A800112FBA /* Resources */,
 				9383883B1E26A4FC00112FBA /* Embed Frameworks */,
-				9367BF791E2BDAE800B948E9 /* Copy Files */,
 				93BF30B21FB3642400FFCCB0 /* CopyFiles */,
+				93A0C4042567B07B002BC083 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -3120,6 +3158,9 @@
 				93B5EE661FC33588009922F2 /* PBXTargetDependency */,
 				93F697BA2181D9C1003273A8 /* PBXTargetDependency */,
 				93F3A5A321874A15008E41A2 /* PBXTargetDependency */,
+				9311CE072566EAC80080AFA4 /* PBXTargetDependency */,
+				93A0C3B72567ACF8002BC083 /* PBXTargetDependency */,
+				93A0C4302567B20D002BC083 /* PBXTargetDependency */,
 			);
 			name = iRASPA;
 			productName = iRASPA;
@@ -3144,6 +3185,23 @@
 			productName = MathKit;
 			productReference = 938388211E26A4FB00112FBA /* MathKit.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		93A0C4242567B20D002BC083 /* iRASPAQuickLookExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93A0C4322567B20D002BC083 /* Build configuration list for PBXNativeTarget "iRASPAQuickLookExtension" */;
+			buildPhases = (
+				93A0C4212567B20D002BC083 /* Sources */,
+				93A0C4222567B20D002BC083 /* Frameworks */,
+				93A0C4232567B20D002BC083 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iRASPAQuickLookExtension;
+			productName = iRASPAQuickLookExtension;
+			productReference = 93A0C4252567B20D002BC083 /* iRASPAQuickLookExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		93B5EE5F1FC33588009922F2 /* LogViewKit */ = {
 			isa = PBXNativeTarget;
@@ -3263,7 +3321,7 @@
 		938388001E26A4A800112FBA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0910;
+				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "David Dubbeldam";
 				TargetAttributes = {
@@ -3301,12 +3359,6 @@
 						DevelopmentTeam = 24U2ZRZ6SC;
 						ProvisioningStyle = Automatic;
 					};
-					9367BF941E2BDD5000B948E9 = {
-						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 24U2ZRZ6SC;
-						LastSwiftMigration = 0900;
-						ProvisioningStyle = Automatic;
-					};
 					938388071E26A4A800112FBA = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 24U2ZRZ6SC;
@@ -3337,6 +3389,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 24U2ZRZ6SC;
 						LastSwiftMigration = 1020;
+						ProvisioningStyle = Automatic;
+					};
+					93A0C4242567B20D002BC083 = {
+						CreatedOnToolsVersion = 12.2;
+						DevelopmentTeam = 24U2ZRZ6SC;
 						ProvisioningStyle = Automatic;
 					};
 					93B5EE5F1FC33588009922F2 = {
@@ -3399,12 +3456,12 @@
 				938388201E26A4FB00112FBA /* MathKit */,
 				93BF25EE1EE71DC200128CD4 /* OperationKit */,
 				93CE77E91EA0EA3900D068E1 /* CatchObjectiveCExceptions */,
-				9367BF941E2BDD5000B948E9 /* iRASPAQuickLookPlugin */,
 				934983B81F4EAC5F007BE9C7 /* PowerSourceKit */,
 				93B5EE5F1FC33588009922F2 /* LogViewKit */,
 				93F697B32181D9C1003273A8 /* ZIPFoundation */,
 				93F3A59C21874A15008E41A2 /* BinaryCodable */,
 				933FFECD243A1E23004E337F /* PythonKit */,
+				93A0C4242567B20D002BC083 /* iRASPAQuickLookExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -3448,7 +3505,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93993A2B243B18070089A1A1 /* internal in Resources */,
-				931C2F62243B907A00BECABE /* python3.7 in Resources */,
+				9311CDEB2566EA630080AFA4 /* python3.9 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3460,19 +3517,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9367BF931E2BDD5000B948E9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				93793B5921DE11D6004CAD9C /* LICENSE in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		938388061E26A4A800112FBA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				931C2F63243B90AD00BECABE /* python3.7 in Resources */,
 				93446ED523796A0A0040CD8E /* StructureAtomDetail.storyboard in Resources */,
 				93446EBC237968500040CD8E /* StructureCameraDetail.storyboard in Resources */,
 				93A0BE381F24ED15001647D7 /* Gallery.irspdoc in Resources */,
@@ -3507,6 +3555,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				93793B4D21DE0FF1004CAD9C /* LICENSE in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93A0C4232567B20D002BC083 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93A0C48A2567F7C5002BC083 /* Assets.xcassets in Resources */,
+				93A0C42C2567B20D002BC083 /* PreviewViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3849,16 +3906,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9367BF901E2BDD5000B948E9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9367BF9C1E2BDD5100B948E9 /* main.c in Sources */,
-				9367BFA31E2BDD6C00B948E9 /* GeneratePreviewForURL.m in Sources */,
-				9367BFA41E2BDD6C00B948E9 /* GenerateThumbnailForURL.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		938388041E26A4A800112FBA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3999,6 +4046,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		93A0C4212567B20D002BC083 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93A0C4292567B20D002BC083 /* PreviewViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		93B5EE5B1FC33588009922F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4131,6 +4186,11 @@
 			target = 930DD60E1E26B96A00B8FE9B /* iRASPAKit */;
 			targetProxy = 930DD6221E26B96A00B8FE9B /* PBXContainerItemProxy */;
 		};
+		9311CE072566EAC80080AFA4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 933FFECD243A1E23004E337F /* PythonKit */;
+			targetProxy = 9311CE062566EAC80080AFA4 /* PBXContainerItemProxy */;
+		};
 		933FFFA4243A1ECA004E337F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 933FFECD243A1E23004E337F /* PythonKit */;
@@ -4160,6 +4220,16 @@
 			isa = PBXTargetDependency;
 			target = 938388201E26A4FB00112FBA /* MathKit */;
 			targetProxy = 938388341E26A4FC00112FBA /* PBXContainerItemProxy */;
+		};
+		93A0C3B72567ACF8002BC083 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 933FFECD243A1E23004E337F /* PythonKit */;
+			targetProxy = 93A0C3B62567ACF8002BC083 /* PBXContainerItemProxy */;
+		};
+		93A0C4302567B20D002BC083 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 93A0C4242567B20D002BC083 /* iRASPAQuickLookExtension */;
+			targetProxy = 93A0C42F2567B20D002BC083 /* PBXContainerItemProxy */;
 		};
 		93B020781EE9553B00297170 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4358,6 +4428,14 @@
 				935DABE81F0E544B00C1C8D0 /* Base */,
 			);
 			name = VASP.storyboard;
+			sourceTree = "<group>";
+		};
+		93A0C42A2567B20D002BC083 /* PreviewViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93A0C42B2567B20D002BC083 /* Base */,
+			);
+			name = PreviewViewController.xib;
 			sourceTree = "<group>";
 		};
 		93B5EE581FC31D5A009922F2 /* AboutWindow.storyboard */ = {
@@ -4737,36 +4815,6 @@
 			};
 			name = Release;
 		};
-		9367BF9F1E2BDD5100B948E9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
-				INFOPLIST_FILE = iRASPAQuickLookPlugin/Info.plist;
-				INSTALL_PATH = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAQuickLookPlugin;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = qlgenerator;
-			};
-			name = Debug;
-		};
-		9367BFA01E2BDD5100B948E9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
-				INFOPLIST_FILE = iRASPAQuickLookPlugin/Info.plist;
-				INSTALL_PATH = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAQuickLookPlugin;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = qlgenerator;
-			};
-			name = Release;
-		};
 		938388171E26A4A800112FBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4883,6 +4931,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				MTL_OPTIMIZATION_LEVEL = s;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -4903,7 +4952,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 92;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4939,7 +4988,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 92;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -5013,6 +5062,57 @@
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		93A0C4332567B20D002BC083 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 92;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1.43;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		93A0C4342567B20D002BC083 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 92;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1.43;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -5430,15 +5530,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9367BF9E1E2BDD5100B948E9 /* Build configuration list for PBXNativeTarget "iRASPAQuickLookPlugin" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9367BF9F1E2BDD5100B948E9 /* Debug */,
-				9367BFA01E2BDD5100B948E9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		938388031E26A4A800112FBA /* Build configuration list for PBXProject "iRASPA" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -5462,6 +5553,15 @@
 			buildConfigurations = (
 				938388391E26A4FC00112FBA /* Debug */,
 				9383883A1E26A4FC00112FBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		93A0C4322567B20D002BC083 /* Build configuration list for PBXNativeTarget "iRASPAQuickLookExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93A0C4332567B20D002BC083 /* Debug */,
+				93A0C4342567B20D002BC083 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
