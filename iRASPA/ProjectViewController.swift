@@ -2221,7 +2221,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           
           do
           {
-            let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+            let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: SIMD2<Double>(36.0,3.31))})
             for (i, result) in results.enumerated()
             {
               projectStructure.allStructures[i].structureNitrogenSurfaceArea = result

@@ -290,7 +290,7 @@ public class SKMetalFramework
       data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: probeParameters)
       
       let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
-      marchingCubes.isoValue = Float(-probeParameters.x)
+      marchingCubes.isoValue = Float(0.0)   // modified from: -probeParameters.x (which cause artifacts)
       
       var surfaceVertexBuffer: MTLBuffer? = nil
       var numberOfTriangles: Int  = 0

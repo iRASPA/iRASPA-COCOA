@@ -3539,7 +3539,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       do
       {
-        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
         for (i, result) in results.enumerated()
         {
           cellViewer.allStructures[i].structureNitrogenSurfaceArea = result
@@ -3565,7 +3565,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     {
      do
       {
-        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
         for (i, result) in results.enumerated()
         {
           cellViewer.allStructures[i].structureNitrogenSurfaceArea = result
