@@ -11,10 +11,10 @@ import Quartz
 
 class PreviewViewController: NSViewController, QLPreviewingController
 {
-  
   @IBOutlet var appIcon: NSButton?
   @IBOutlet var fileName: NSTextField?
   @IBOutlet var fileSize: NSTextField?
+  @IBOutlet var stackView: NSStackView?
     
   override var nibName: NSNib.Name?
   {
@@ -24,8 +24,9 @@ class PreviewViewController: NSViewController, QLPreviewingController
   override func loadView()
   {
     super.loadView()
+    stackView?.orientation = .horizontal
+    preferredContentSize = NSSize(width: 480, height: 168)
   }
-
    
   func preparePreviewOfSearchableItem(identifier: String, queryString: String?, completionHandler handler: @escaping (Error?) -> Void)
   {
@@ -38,7 +39,6 @@ class PreviewViewController: NSViewController, QLPreviewingController
     
   func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void)
   {
-    preferredContentSize = NSSize(width: 480, height: 168)
     appIcon?.image = NSImage(named: "MOF")
     fileName?.stringValue = url.lastPathComponent
     

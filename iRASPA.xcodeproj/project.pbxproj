@@ -127,7 +127,6 @@
 		931000842485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000832485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift */; };
 		9310008624850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310008524850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift */; };
 		9311CDEB2566EA630080AFA4 /* python3.9 in Resources */ = {isa = PBXBuildFile; fileRef = 9311CDDB2566EA620080AFA4 /* python3.9 */; };
-		9311CE042566EAC80080AFA4 /* PythonKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933FFECE243A1E23004E337F /* PythonKit.framework */; };
 		9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */; };
 		9314E33F1E34A78E00680364 /* ViewerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33E1E34A78E00680364 /* ViewerProtocols.swift */; };
 		93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159FDD1F54235200D8700E /* SKXYZParser.swift */; };
@@ -353,6 +352,11 @@
 		939155741E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939155731E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift */; };
 		93915C411FCD99B7006188F0 /* iRASPAProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93915C401FCD99B7006188F0 /* iRASPAProtocols.swift */; };
 		939208822002190B009F0E16 /* AtomMeasurementShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 939208812002190B009F0E16 /* AtomMeasurementShader.metal */; };
+		9393439825694AA9001D7D2E /* QuickLookThumbnailing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393439725694AA9001D7D2E /* QuickLookThumbnailing.framework */; };
+		9393439925694AA9001D7D2E /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F3CD301E6DD81900046552 /* Quartz.framework */; };
+		9393439C25694AA9001D7D2E /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9393439B25694AA9001D7D2E /* ThumbnailProvider.swift */; };
+		939343A125694AA9001D7D2E /* iRASPAThumbnailExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9393439625694AA9001D7D2E /* iRASPAThumbnailExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		939343D325694C5A001D7D2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 939343D225694C5A001D7D2E /* Assets.xcassets */; };
 		9397C620203B4F4300FE4A9C /* ImportAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9397C61F203B4F4300FE4A9C /* ImportAccessoryViewController.xib */; };
 		9397C622203B4F6800FE4A9C /* ImportAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9397C621203B4F6800FE4A9C /* ImportAccessoryViewController.swift */; };
 		93986CE31E9F6FE10045C07C /* StructureInfoDetailViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93986CE21E9F6FE10045C07C /* StructureInfoDetailViewPageController.swift */; };
@@ -788,6 +792,13 @@
 			remoteGlobalIDString = 938388201E26A4FB00112FBA;
 			remoteInfo = MathKit;
 		};
+		9393439F25694AA9001D7D2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9393439525694AA9001D7D2E;
+			remoteInfo = iRASPAThumbnailExtension;
+		};
 		93A0C3B62567ACF8002BC083 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 938388001E26A4A800112FBA /* Project object */;
@@ -974,6 +985,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				93A0C4312567B20D002BC083 /* iRASPAQuickLookExtension.appex in Embed App Extensions */,
+				939343A125694AA9001D7D2E /* iRASPAThumbnailExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1348,6 +1360,12 @@
 		939155731E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAndInterpreterSplitViewController.swift; sourceTree = "<group>"; };
 		93915C401FCD99B7006188F0 /* iRASPAProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProtocols.swift; sourceTree = "<group>"; };
 		939208812002190B009F0E16 /* AtomMeasurementShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = AtomMeasurementShader.metal; sourceTree = "<group>"; };
+		9393439625694AA9001D7D2E /* iRASPAThumbnailExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = iRASPAThumbnailExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9393439725694AA9001D7D2E /* QuickLookThumbnailing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLookThumbnailing.framework; path = System/Library/Frameworks/QuickLookThumbnailing.framework; sourceTree = SDKROOT; };
+		9393439B25694AA9001D7D2E /* ThumbnailProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailProvider.swift; sourceTree = "<group>"; };
+		9393439D25694AA9001D7D2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9393439E25694AA9001D7D2E /* iRASPAThumbnailExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iRASPAThumbnailExtension.entitlements; sourceTree = "<group>"; };
+		939343D225694C5A001D7D2E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9397C61F203B4F4300FE4A9C /* ImportAccessoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportAccessoryViewController.xib; sourceTree = "<group>"; };
 		9397C621203B4F6800FE4A9C /* ImportAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccessoryViewController.swift; sourceTree = "<group>"; };
 		93986CE21E9F6FE10045C07C /* StructureInfoDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureInfoDetailViewPageController.swift; sourceTree = "<group>"; };
@@ -1725,7 +1743,6 @@
 				934983C01F4EAC5F007BE9C7 /* PowerSourceKit.framework in Frameworks */,
 				930DD6241E26B96A00B8FE9B /* iRASPAKit.framework in Frameworks */,
 				93F697BB2181D9C1003273A8 /* ZIPFoundation.framework in Frameworks */,
-				9311CE042566EAC80080AFA4 /* PythonKit.framework in Frameworks */,
 				93CDAAA525680A51004D900E /* libpython3.9.a in Frameworks */,
 				93CDAA9B25680A51004D900E /* libffi.a in Frameworks */,
 				93CDAA9C25680A51004D900E /* libformw.a in Frameworks */,
@@ -1748,6 +1765,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				9300AEA91F21020B0052DA45 /* CatchObjectiveCExceptions.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9393439325694AA9001D7D2E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9393439825694AA9001D7D2E /* QuickLookThumbnailing.framework in Frameworks */,
+				9393439925694AA9001D7D2E /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1861,6 +1887,7 @@
 				930DD6011E26B6DD00B8FE9B /* MetalKit.framework */,
 				930DD4B71E26A92C00B8FE9B /* Metal.framework */,
 				930DD4B51E26A92200B8FE9B /* OpenCL.framework */,
+				9393439725694AA9001D7D2E /* QuickLookThumbnailing.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2490,6 +2517,7 @@
 				93F3A59E21874A15008E41A2 /* BinaryCodable */,
 				933FFECF243A1E23004E337F /* PythonKit */,
 				93A0C4272567B20D002BC083 /* iRASPAQuickLookExtension */,
+				9393439A25694AA9001D7D2E /* iRASPAThumbnailExtension */,
 				938388091E26A4A800112FBA /* Products */,
 				930DD4B41E26A92200B8FE9B /* Frameworks */,
 			);
@@ -2515,6 +2543,7 @@
 				93F3A59D21874A15008E41A2 /* BinaryCodable.framework */,
 				933FFECE243A1E23004E337F /* PythonKit.framework */,
 				93A0C4252567B20D002BC083 /* iRASPAQuickLookExtension.appex */,
+				9393439625694AA9001D7D2E /* iRASPAThumbnailExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2634,6 +2663,17 @@
 				93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		9393439A25694AA9001D7D2E /* iRASPAThumbnailExtension */ = {
+			isa = PBXGroup;
+			children = (
+				9393439B25694AA9001D7D2E /* ThumbnailProvider.swift */,
+				9393439D25694AA9001D7D2E /* Info.plist */,
+				9393439E25694AA9001D7D2E /* iRASPAThumbnailExtension.entitlements */,
+				939343D225694C5A001D7D2E /* Assets.xcassets */,
+			);
+			path = iRASPAThumbnailExtension;
 			sourceTree = "<group>";
 		};
 		939B205B1EF2C81A0061DE8D /* Extensions */ = {
@@ -3161,6 +3201,7 @@
 				9311CE072566EAC80080AFA4 /* PBXTargetDependency */,
 				93A0C3B72567ACF8002BC083 /* PBXTargetDependency */,
 				93A0C4302567B20D002BC083 /* PBXTargetDependency */,
+				939343A025694AA9001D7D2E /* PBXTargetDependency */,
 			);
 			name = iRASPA;
 			productName = iRASPA;
@@ -3185,6 +3226,23 @@
 			productName = MathKit;
 			productReference = 938388211E26A4FB00112FBA /* MathKit.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		9393439525694AA9001D7D2E /* iRASPAThumbnailExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 939343A425694AA9001D7D2E /* Build configuration list for PBXNativeTarget "iRASPAThumbnailExtension" */;
+			buildPhases = (
+				9393439225694AA9001D7D2E /* Sources */,
+				9393439325694AA9001D7D2E /* Frameworks */,
+				9393439425694AA9001D7D2E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iRASPAThumbnailExtension;
+			productName = iRASPAThumbnailExtension;
+			productReference = 9393439625694AA9001D7D2E /* iRASPAThumbnailExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		93A0C4242567B20D002BC083 /* iRASPAQuickLookExtension */ = {
 			isa = PBXNativeTarget;
@@ -3322,7 +3380,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "David Dubbeldam";
 				TargetAttributes = {
 					930DD48A1E26A80E00B8FE9B = {
@@ -3389,6 +3447,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 24U2ZRZ6SC;
 						LastSwiftMigration = 1020;
+						ProvisioningStyle = Automatic;
+					};
+					9393439525694AA9001D7D2E = {
+						CreatedOnToolsVersion = 12.2;
+						DevelopmentTeam = 24U2ZRZ6SC;
 						ProvisioningStyle = Automatic;
 					};
 					93A0C4242567B20D002BC083 = {
@@ -3462,6 +3525,7 @@
 				93F3A59C21874A15008E41A2 /* BinaryCodable */,
 				933FFECD243A1E23004E337F /* PythonKit */,
 				93A0C4242567B20D002BC083 /* iRASPAQuickLookExtension */,
+				9393439525694AA9001D7D2E /* iRASPAThumbnailExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -3555,6 +3619,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				93793B4D21DE0FF1004CAD9C /* LICENSE in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9393439425694AA9001D7D2E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				939343D325694C5A001D7D2E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4046,6 +4118,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9393439225694AA9001D7D2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9393439C25694AA9001D7D2E /* ThumbnailProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		93A0C4212567B20D002BC083 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4220,6 +4300,11 @@
 			isa = PBXTargetDependency;
 			target = 938388201E26A4FB00112FBA /* MathKit */;
 			targetProxy = 938388341E26A4FC00112FBA /* PBXContainerItemProxy */;
+		};
+		939343A025694AA9001D7D2E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9393439525694AA9001D7D2E /* iRASPAThumbnailExtension */;
+			targetProxy = 9393439F25694AA9001D7D2E /* PBXContainerItemProxy */;
 		};
 		93A0C3B72567ACF8002BC083 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5065,6 +5150,57 @@
 			};
 			name = Release;
 		};
+		939343A225694AA9001D7D2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 92;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1.43;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		939343A325694AA9001D7D2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 92;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.1.43;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		93A0C4332567B20D002BC083 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5553,6 +5689,15 @@
 			buildConfigurations = (
 				938388391E26A4FC00112FBA /* Debug */,
 				9383883A1E26A4FC00112FBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		939343A425694AA9001D7D2E /* Build configuration list for PBXNativeTarget "iRASPAThumbnailExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				939343A225694AA9001D7D2E /* Debug */,
+				939343A325694AA9001D7D2E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
