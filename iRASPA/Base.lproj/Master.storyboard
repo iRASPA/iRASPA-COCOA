@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -120,23 +120,23 @@
             <objects>
                 <viewController id="a4f-9K-v20" customClass="ProjectViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
                     <stackView key="view" wantsLayer="YES" distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="P5F-ih-NBr">
-                        <rect key="frame" x="0.0" y="0.0" width="204" height="751"/>
+                        <rect key="frame" x="0.0" y="0.0" width="224" height="751"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zwr-X2-UFu">
-                                <rect key="frame" x="0.0" y="24" width="204" height="727"/>
+                                <rect key="frame" x="0.0" y="24" width="224" height="727"/>
                                 <clipView key="contentView" drawsBackground="NO" id="zxA-9i-sjG" customClass="MyNSClipView" customModule="iRASPAKit">
-                                    <rect key="frame" x="1" y="1" width="202" height="725"/>
+                                    <rect key="frame" x="1" y="1" width="222" height="725"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="14" outlineTableColumn="lfA-wW-ocG" id="T2V-bB-UGd" customClass="ProjectOutlineView" customModule="iRASPA" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="202" height="725"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="222" height="725"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="1"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="displayNameColumn" width="199" minWidth="16" maxWidth="1000" id="lfA-wW-ocG">
+                                                <tableColumn identifier="displayNameColumn" width="190" minWidth="16" maxWidth="1000" id="lfA-wW-ocG">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -149,7 +149,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="HeaderCell" id="gkz-6X-S0l">
-                                                            <rect key="frame" x="1" y="0.0" width="199" height="18"/>
+                                                            <rect key="frame" x="11" y="0.0" width="199" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AOc-sJ-fHp">
@@ -167,14 +167,14 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="projectView" id="SDW-O4-HJJ" customClass="ProjectTableCellView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="19" width="199" height="18"/>
+                                                            <rect key="frame" x="11" y="19" width="199" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="4" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="43j-3j-TAC">
                                                                     <rect key="frame" x="0.0" y="0.0" width="199" height="18"/>
                                                                     <subviews>
-                                                                        <imageView horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Hsh-v3-Uxv">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                                                        <imageView wantsLayer="YES" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Hsh-v3-Uxv">
+                                                                            <rect key="frame" x="0.0" y="-3" width="18" height="24"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="18" id="RCo-7i-Ffm"/>
                                                                                 <constraint firstAttribute="width" constant="18" id="rQt-lv-Q8W"/>
@@ -182,7 +182,7 @@
                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="ilR-8g-XZw"/>
                                                                         </imageView>
                                                                         <textField horizontalHuggingPriority="230" verticalHuggingPriority="740" horizontalCompressionResistancePriority="230" verticalCompressionResistancePriority="740" allowsExpansionToolTips="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fZN-8S-hn2">
-                                                                            <rect key="frame" x="20" y="1" width="127" height="16"/>
+                                                                            <rect key="frame" x="20" y="1" width="130" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Table View Cell" id="CoU-4K-Mzh">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -193,13 +193,13 @@
                                                                             </connections>
                                                                         </textField>
                                                                         <progressIndicator wantsLayer="YES" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="sf0-hf-7ZT" customClass="ProjectProgressIndicator" customModule="iRASPAKit">
-                                                                            <rect key="frame" x="149" y="-1" width="32" height="20"/>
+                                                                            <rect key="frame" x="152" y="-1" width="32" height="20"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="32" id="NUD-8A-o8x"/>
                                                                             </constraints>
                                                                         </progressIndicator>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PtM-DX-Zu8">
-                                                                            <rect key="frame" x="185" y="2" width="14" height="14"/>
+                                                                            <rect key="frame" x="188" y="4" width="11" height="10.5"/>
                                                                             <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" controlSize="mini" transparent="YES" imageScaling="proportionallyDown" inset="2" id="7Vv-q1-s3g">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                                 <font key="font" metaFont="miniSystem"/>
@@ -240,7 +240,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="projectViewRoot" id="LaT-eJ-6ZX">
-                                                            <rect key="frame" x="1" y="38" width="199" height="22"/>
+                                                            <rect key="frame" x="11" y="38" width="199" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o25-LY-6gU">
@@ -258,7 +258,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <customView identifier="projectTableRowView" wantsLayer="YES" id="Zg3-Hn-TuC" customClass="ProjectTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="61" width="199" height="18"/>
+                                                            <rect key="frame" x="11" y="61" width="199" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>
@@ -292,7 +292,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="204" height="24"/>
                                             <subviews>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="MeV-cP-uiH" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="3.5" y="1" width="21" height="21"/>
+                                                    <rect key="frame" x="3" y="0.0" width="22" height="23"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="k3Q-Ei-zWu">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -303,7 +303,7 @@
                                                     </connections>
                                                 </button>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="QIh-cc-DBn" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="25.5" y="1" width="21" height="21"/>
+                                                    <rect key="frame" x="25" y="0.0" width="22" height="23"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xp3-V2-izm">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -409,34 +409,28 @@
                                 <action selector="ProjectContextMenuComputePropertiesSelection:" target="a4f-9K-v20" id="Rob-ef-abX"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Make Selection Editable" hidden="YES" id="Erw-7T-7zg">
+                        <menuItem title="Load from Cloud/make editable" hidden="YES" id="buF-AA-E4m">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="ProjectContextMenuMakeSelectionEditable:" target="a4f-9K-v20" id="Q8X-Mi-Ofk"/>
+                                <action selector="ProjectContextMenuLoadSelectionFromCloud:" target="a4f-9K-v20" id="jbw-lk-Nps"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Make Selection Uneditable" hidden="YES" id="IC0-ai-VWS">
+                        <menuItem title="Save CoREMOF Database" hidden="YES" id="guV-7k-U3c">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="ProjectContextMenuMakeSelectionUnEditable:" target="a4f-9K-v20" id="8re-Lh-FB2"/>
+                                <action selector="ProjectContextMenuSaveCoREMOF:" target="a4f-9K-v20" id="2AH-dI-Bhg"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Set to CoreMOF" hidden="YES" id="LeI-lP-zjX">
+                        <menuItem title="Save CoRE MOF DDEC Database" hidden="YES" id="O3V-w8-TnC">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="ProjectContextMenuSetToCoreMOF:" target="a4f-9K-v20" id="RfJ-zO-mhY"/>
+                                <action selector="ProjectContextMenuSaveCoreMOFDDEC:" target="a4f-9K-v20" id="jP6-r3-BQh"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Set to CoreMOF DDEC" hidden="YES" id="vkV-ez-EHk">
+                        <menuItem title="Save IZA Database" hidden="YES" id="4Wl-iP-Pbc">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="ProjectContextMenuSetToCoreMOFDDEC:" target="a4f-9K-v20" id="IXC-PU-LKT"/>
-                            </connections>
-                        </menuItem>
-                        <menuItem title="Set cloud to loaded" hidden="YES" id="GVN-kW-izw">
-                            <modifierMask key="keyEquivalentModifierMask"/>
-                            <connections>
-                                <action selector="ProjectContextMenuSetCloudToLoaded:" target="a4f-9K-v20" id="eDi-Cz-cdO"/>
+                                <action selector="ProjectContextMenuSaveIZA:" target="a4f-9K-v20" id="dq0-Ht-ELO"/>
                             </connections>
                         </menuItem>
                     </items>
@@ -452,23 +446,23 @@
             <objects>
                 <viewController id="Ihf-P0-mYS" customClass="StructureListViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
                     <stackView key="view" wantsLayer="YES" distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="I1v-f7-7wb">
-                        <rect key="frame" x="0.0" y="0.0" width="227" height="940"/>
+                        <rect key="frame" x="0.0" y="0.0" width="247" height="940"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Msn-OY-sHM">
-                                <rect key="frame" x="0.0" y="24" width="227" height="916"/>
+                                <rect key="frame" x="0.0" y="24" width="247" height="916"/>
                                 <clipView key="contentView" drawsBackground="NO" id="Mw5-5M-NRP" customClass="MyNSClipView" customModule="iRASPAKit">
-                                    <rect key="frame" x="1" y="1" width="225" height="914"/>
+                                    <rect key="frame" x="1" y="1" width="245" height="914"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="1" outlineTableColumn="6fm-Fw-390" id="jrW-9A-NTX" customClass="StructureListOutlineView" customModule="iRASPA" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="225" height="914"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="245" height="914"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="1"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="structureNameColumn" width="222" minWidth="16" maxWidth="1000" id="6fm-Fw-390">
+                                                <tableColumn identifier="structureNameColumn" width="213" minWidth="16" maxWidth="1000" id="6fm-Fw-390">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -481,7 +475,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="structureViewGroup" id="HlN-oD-pOw">
-                                                            <rect key="frame" x="1" y="0.0" width="222" height="22"/>
+                                                            <rect key="frame" x="11" y="0.0" width="222" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qza-8A-mBh">
@@ -502,14 +496,14 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="structureViewRoot" horizontalCompressionResistancePriority="749" id="WLg-5s-XNp" customClass="StructureTableCellView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="23" width="222" height="18"/>
+                                                            <rect key="frame" x="11" y="23" width="222" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="horizontal" alignment="bottom" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MzX-EK-jab">
                                                                     <rect key="frame" x="0.0" y="0.0" width="222" height="18"/>
                                                                     <subviews>
                                                                         <button tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="oNh-zT-kR7">
-                                                                            <rect key="frame" x="-2" y="-2" width="22" height="18"/>
+                                                                            <rect key="frame" x="-2" y="-2" width="25" height="18"/>
                                                                             <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tol-rb-BLx">
                                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                                 <font key="font" metaFont="system"/>
@@ -519,7 +513,7 @@
                                                                             </connections>
                                                                         </button>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dwO-WE-w5q">
-                                                                            <rect key="frame" x="24" y="0.0" width="138" height="16"/>
+                                                                            <rect key="frame" x="27" y="0.0" width="138" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Table View Cell" id="dBi-km-AAD">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -530,13 +524,13 @@
                                                                             </connections>
                                                                         </textField>
                                                                         <progressIndicator wantsLayer="YES" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="HZY-BM-10c" customClass="ProjectProgressIndicator" customModule="iRASPAKit">
-                                                                            <rect key="frame" x="168" y="-1" width="32" height="20"/>
+                                                                            <rect key="frame" x="171" y="-1" width="32" height="20"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="32" id="0li-w2-br0"/>
                                                                             </constraints>
                                                                         </progressIndicator>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="677-XU-cCq">
-                                                                            <rect key="frame" x="208" y="0.0" width="14" height="14"/>
+                                                                            <rect key="frame" x="211" y="-2" width="11" height="10.5"/>
                                                                             <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" controlSize="mini" transparent="YES" imageScaling="proportionallyDown" inset="2" id="Td4-01-48k">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                                 <font key="font" metaFont="miniSystem"/>
@@ -570,7 +564,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <customView identifier="structureTableRowView" wantsLayer="YES" id="a4j-v0-LRI" customClass="StructureTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="42" width="222" height="18"/>
+                                                            <rect key="frame" x="11" y="42" width="222" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>
@@ -603,7 +597,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="227" height="24"/>
                                             <subviews>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="wng-ld-3JG" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="3.5" y="1" width="21" height="21"/>
+                                                    <rect key="frame" x="3" y="0.0" width="22" height="23"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="77u-Y8-lkM">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -614,7 +608,7 @@
                                                     </connections>
                                                 </button>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="ktY-wN-rEV" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="25.5" y="1" width="21" height="21"/>
+                                                    <rect key="frame" x="25" y="0.0" width="22" height="23"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="P6G-dI-vZ3">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -771,7 +765,7 @@
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="frameNameColumn" width="222" minWidth="80" maxWidth="1000" id="MdA-rs-zuJ">
+                                                <tableColumn identifier="frameNameColumn" width="193" minWidth="80" maxWidth="1000" id="MdA-rs-zuJ">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="name">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -784,11 +778,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="frameName" id="OCP-3q-Sus">
-                                                            <rect key="frame" x="1" y="1" width="222" height="18"/>
+                                                            <rect key="frame" x="11" y="1" width="202" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yVi-90-ONu">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="227" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="207" height="18"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Table View Cell" id="kfc-hZ-Upn">
                                                                         <font key="font" metaFont="system"/>
@@ -805,7 +799,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <customView identifier="frameTableRowView" wantsLayer="YES" id="qOt-Ok-HOM" customClass="FrameTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="21" width="222" height="18"/>
+                                                            <rect key="frame" x="11" y="21" width="202" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>
@@ -838,7 +832,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="227" height="24"/>
                                             <subviews>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="JRm-up-7jg" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="3.5" y="1" width="21" height="21"/>
+                                                    <rect key="frame" x="3" y="0.0" width="22" height="23"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZLO-Jd-9TH">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -849,7 +843,7 @@
                                                     </connections>
                                                 </button>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="3Ii-5k-ESu" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="25.5" y="1" width="21" height="21"/>
+                                                    <rect key="frame" x="25" y="0.0" width="22" height="23"/>
                                                     <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bBr-wf-gGv">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -951,7 +945,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <segmentedControl verticalHuggingPriority="260" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="y71-tX-saT">
-                                <rect key="frame" x="0.0" y="678" width="33" height="23"/>
+                                <rect key="frame" x="0.0" y="678" width="31" height="23"/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="smallSquare" trackingMode="selectOne" id="5km-ay-bRW">
                                     <font key="font" metaFont="system"/>
                                     <segments>
@@ -987,10 +981,10 @@
     <resources>
         <image name="FrameListController" width="15" height="15"/>
         <image name="MovieListController" width="15" height="15"/>
-        <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSAddTemplate" width="11" height="11"/>
-        <image name="NSRemoveTemplate" width="11" height="11"/>
-        <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSAddTemplate" width="14" height="13"/>
+        <image name="NSRemoveTemplate" width="14" height="4"/>
+        <image name="NSStopProgressFreestandingTemplate" width="15" height="15"/>
         <image name="ProjectListController" width="15" height="15"/>
     </resources>
 </document>

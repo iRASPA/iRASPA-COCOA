@@ -1020,6 +1020,20 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       else if self.representedObject.storageType == iRASPAProject.StorageType.publicCloud
       {
         let loadingStatus: iRASPAProject = iRASPAProject(projectType: .structure, fileName: self.representedObject.fileNameUUID, nodeType: self.representedObject.nodeType, storageType: self.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loading)
+        loadingStatus.volumetricSurfaceArea = self.representedObject.volumetricSurfaceArea
+        loadingStatus.gravimetricSurfaceArea = self.representedObject.gravimetricSurfaceArea
+        loadingStatus.heliumVoidFraction = self.representedObject.heliumVoidFraction
+        loadingStatus.largestOverallCavityDiameter = self.representedObject.largestOverallCavityDiameter
+        loadingStatus.restrictingPoreDiameter = self.representedObject.restrictingPoreDiameter
+        loadingStatus.largestDiameterAlongViablePath = self.representedObject.largestDiameterAlongViablePath
+        loadingStatus.density = self.representedObject.density
+        loadingStatus.mass = self.representedObject.mass
+        loadingStatus.specificVolume = self.representedObject.specificVolume
+        loadingStatus.accessiblePoreVolume = self.representedObject.accessiblePoreVolume
+        loadingStatus.numberOfChannelSystems = self.representedObject.numberOfChannelSystems
+        loadingStatus.numberOfInaccesiblePockets = self.representedObject.numberOfInaccesiblePockets
+        loadingStatus.dimensionalityPoreSystem = self.representedObject.dimensionalityPoreSystem
+        loadingStatus.materialType = self.representedObject.materialType
           
         self.representedObject = loadingStatus
         let operation: ImportProjectFromCloudOperation = ImportProjectFromCloudOperation(projectTreeNode: self, outlineView:  outlineView, forceFieldSets: forceFieldSets, reloadCompletionBlock: reloadCompletionBlock)

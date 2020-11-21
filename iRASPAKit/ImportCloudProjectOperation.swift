@@ -160,10 +160,25 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
               guard let data: Data = try Data(contentsOf: asset.fileURL!).decompress(withAlgorithm: .lzma) else {throw BinaryCodableError.invalidArchiveData}
               let decoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
               let project: iRASPAProject = try decoder.decode(iRASPAProject.self, decodeRepresentedObject: true)
+              project.volumetricSurfaceArea = projectTreeNode.representedObject.volumetricSurfaceArea
+              project.gravimetricSurfaceArea = projectTreeNode.representedObject.gravimetricSurfaceArea
+              project.heliumVoidFraction = projectTreeNode.representedObject.heliumVoidFraction
+              project.largestOverallCavityDiameter = projectTreeNode.representedObject.largestOverallCavityDiameter
+              project.restrictingPoreDiameter = projectTreeNode.representedObject.restrictingPoreDiameter
+              project.largestDiameterAlongViablePath = projectTreeNode.representedObject.largestDiameterAlongViablePath
+              project.density = projectTreeNode.representedObject.density
+              project.mass = projectTreeNode.representedObject.mass
+              project.specificVolume = projectTreeNode.representedObject.specificVolume
+              project.accessiblePoreVolume = projectTreeNode.representedObject.accessiblePoreVolume
+              project.numberOfChannelSystems = projectTreeNode.representedObject.numberOfChannelSystems
+              project.numberOfInaccesiblePockets = projectTreeNode.representedObject.numberOfInaccesiblePockets
+              project.dimensionalityPoreSystem = projectTreeNode.representedObject.dimensionalityPoreSystem
+              project.materialType = projectTreeNode.representedObject.materialType
               
               self.representedObject = project
               self.representedObject?.lazyStatus = .loaded
               self.representedObject?.nodeType = .leaf
+              
             }
             catch let error
             {
