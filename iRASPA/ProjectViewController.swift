@@ -2122,6 +2122,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         node.isEditable = true
       }
+      
+      self.windowController?.detailTabViewController?.reloadData()
     }
   }
   
@@ -2196,6 +2198,34 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         node.isEditable = false
       }
+      self.windowController?.detailTabViewController?.reloadData()
+    }
+  }
+  
+  @IBAction func ProjectContextMenuLoadSelectionFromCloud(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        node.isEditable = true
+        
+        do
+        {
+          try node.unwrapProject(outlineView: projectOutlineView, queue: self.projectQueue, colorSets: document.colorSets, forceFieldSets: document.forceFieldSets, reloadCompletionBlock: {
+                  self.switchToCurrentProject()
+            })
+            
+          node.representedObject.loadedProjectStructureNode?.undoManager = node.representedObject.undoManager
+        }
+        catch let error
+        {
+          LogQueue.shared.error(destination: self.windowController, message: "(\(node.displayName))" + error.localizedDescription)
+        }
+      }
+      self.windowController?.detailTabViewController?.reloadData()
     }
   }
   
@@ -2238,7 +2268,34 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
       }
     }
+    self.windowController?.detailTabViewController?.reloadData()
+  }
   
+  @IBAction func ProjectContextMenuSaveCoREMOF(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      saveCoREMOFDatabase(documentData: document.documentData)
+      
+    }
+  }
+  
+  @IBAction func ProjectContextMenuSaveCoreMOFDDEC(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      saveCoREMOFDDECDatabase(documentData: document.documentData)
+      
+    }
+  }
+  
+  @IBAction func ProjectContextMenuSaveIZA(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      saveIZADatabase(documentData: document.documentData)
+      
+    }
   }
 
   
