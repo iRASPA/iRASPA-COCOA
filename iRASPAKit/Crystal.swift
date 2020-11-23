@@ -95,7 +95,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public override var clipAtomsAtUnitCell: Bool
   {
-    return atomRepresentationType == .unity
+    return false;
+    //return atomRepresentationType == .unity
   }
   
   public override var clipBondsAtUnitCell: Bool
