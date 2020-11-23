@@ -403,10 +403,10 @@
                                 <action selector="ProjectContextMenuStoreSelectionInCloudSave:" target="a4f-9K-v20" id="yP3-Xu-ET0"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Compute properties for selection" hidden="YES" id="xhK-MY-aiR">
+                        <menuItem title="Compute properties for selection" id="2Jt-NB-sPl">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
-                                <action selector="ProjectContextMenuComputePropertiesSelection:" target="a4f-9K-v20" id="Rob-ef-abX"/>
+                                <action selector="ProjectContextMenuComputePropertiesSelection:" target="a4f-9K-v20" id="8Kv-Yf-oiL"/>
                             </connections>
                         </menuItem>
                         <menuItem title="Load from Cloud/make editable" hidden="YES" id="buF-AA-E4m">

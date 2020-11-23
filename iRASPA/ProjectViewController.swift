@@ -661,15 +661,25 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool
   {
-    if let _: ProjectTreeNode = item as? ProjectTreeNode
-    {
-      return true
-    }
-    
     if let _: Dictionary<NSString, NSString> = item as? Dictionary<NSString, NSString>
     {
       return false
     }
+    
+    if let projectNode : ProjectTreeNode = item as? ProjectTreeNode
+    {
+      if let document: iRASPADocument = windowController?.document as? iRASPADocument
+      {
+        let projectTreeController: ProjectTreeController = document.documentData.projectData
+        if projectTreeController.isRootNode(projectNode)
+        {
+          return false
+        }
+      }
+      return true
+    }
+    
+   
     return true
   }
  
@@ -2237,34 +2247,45 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       for node in selectedObjects
       {
-        if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
+        if node.isEditable
         {
-          projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
+          node.unwrapLazyLocalPresentedObjectIfNeeded()
+          if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
+          {
+            projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
           
-          let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+            let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
             
-          for (i, result) in results.enumerated()
-          {
-            projectStructure.allStructures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
-            projectStructure.allStructures[i].structureHeliumVoidFraction = result.voidFraction
-          }
-          
-          do
-          {
-            let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: SIMD2<Double>(36.0,3.31))})
             for (i, result) in results.enumerated()
             {
-              projectStructure.allStructures[i].structureNitrogenSurfaceArea = result
+              projectStructure.allStructures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
+              projectStructure.allStructures[i].structureHeliumVoidFraction = result.voidFraction
             }
+          
+            do
+            {
+              let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: SIMD2<Double>(36.0,3.31))})
+              for (i, result) in results.enumerated()
+              {
+                projectStructure.allStructures[i].structureNitrogenSurfaceArea = result
+              }
+              LogQueue.shared.info(destination: self.view.window?.windowController, message: "Computed surface area for " + projectStructure.displayName)
+            }
+            catch let error
+            {
+              LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+            }
+          
+            projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
+          
+            projectStructure.allStructures.forEach({$0.setRepresentationStyle(style: .fancy, colorSets: document.colorSets)})
+      
+            projectStructure.isEdited = true
           }
-          catch let error
+          else
           {
-            LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
+            LogQueue.shared.info(destination: self.view.window?.windowController, message: "Project " + node.displayName + " not loaded")
           }
-          
-          projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
-          
-          projectStructure.allStructures.forEach({$0.setRepresentationStyle(style: .fancy, colorSets: document.colorSets)})
         }
       }
     }
