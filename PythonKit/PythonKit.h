@@ -16,4 +16,5 @@ FOUNDATION_EXPORT const unsigned char PythonKitVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <PythonKit/PublicHeader.h>
 
+#import <PythonKit/Python.h>
 

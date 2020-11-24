@@ -31,7 +31,6 @@
 
 import Cocoa
 
-
 import RenderKit
 import iRASPAKit
 import LogViewKit
@@ -111,6 +110,13 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
     
       mainModule = Python.import("catch_out")
     }
+    /*
+    let o: PyObjectPointer! = nil
+    Py_IncRef(o)
+    
+    let x: PythonObject = 42  // x is an integer represented as a Python value.
+    print(x + 4)         // Does a Python addition, then prints 46.
+ */
   }
   
   func runPythonCmd()
