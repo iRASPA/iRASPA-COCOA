@@ -7,15 +7,15 @@ extern "C" {
 #endif
 
 
-PyAPI_DATA(PyTypeObject) PyBool_Type;
+PyAPI_DATA(PyTypeObject) PyBool_Type NS_REFINED_FOR_SWIFT;
 
-#define PyBool_Check(x) (Py_TYPE(x) == &PyBool_Type)
+#define PyBool_Check(x) Py_IS_TYPE(x, &PyBool_Type)
 
 /* Py_False and Py_True are the only two bools in existence.
 Don't forget to apply Py_INCREF() when returning either!!! */
 
 /* Don't use these directly */
-PyAPI_DATA(struct _longobject) _Py_FalseStruct, _Py_TrueStruct;
+PyAPI_DATA(struct _longobject) _Py_FalseStruct NS_REFINED_FOR_SWIFT, _Py_TrueStruct  NS_REFINED_FOR_SWIFT;
 
 /* Use these macros */
 #define Py_False ((PyObject *) &_Py_FalseStruct)
