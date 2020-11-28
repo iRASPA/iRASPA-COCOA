@@ -128,7 +128,7 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
       self.pythonScriptView?.pythonOut(string: "\n")
       
       PyThreadState_Swap(tstate)
-      PyRun_SimpleStringFlags(cmd,nil)
+      PyRun_SimpleString(cmd)
       
       if let pythonOutputString = mainModule?.catchOut.print(),
          let outputString: String = String(pythonOutputString)

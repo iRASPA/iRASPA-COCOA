@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 #ifndef Py_LIMITED_API
-PyAPI_FUNC(int) PyRun_SimpleStringFlags(const char *, PyCompilerFlags *);
+PyAPI_FUNC(int) PyRun_SimpleStringFlags(const char *, PyCompilerFlags *) NS_REFINED_FOR_SWIFT;
 PyAPI_FUNC(int) PyRun_AnyFileExFlags(
     FILE *fp,
     const char *filename,       /* decoded from the filesystem encoding */
