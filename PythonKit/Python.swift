@@ -651,7 +651,7 @@ public struct PythonInterface {
         builtins = PythonObject(PyEval_GetBuiltins())
               
         // Runtime Fixes:
-        PyRun_SimpleStringFlags("""
+        PyRun_SimpleString("""
             import sys
             import os
             import math
@@ -664,7 +664,7 @@ public struct PythonInterface {
             # main process executable path instead.
             if sys.version_info.major == 3 and sys.platform == "darwin":
                 sys.executable = os.path.join(sys.exec_prefix, "bin", "python3")
-            """, nil)
+            """)
     }
     
     public func attemptImport(_ name: String) throws -> PythonObject {

@@ -38,6 +38,7 @@ import Foundation
 
 public typealias PyObjectPointer = UnsafeMutableRawPointer
 public typealias PyCCharPointer = UnsafePointer<Int8>
+public typealias PyCompilerFlagsPointer =  UnsafeMutablePointer<PyCompilerFlags>
 public typealias PyBinaryOperation =
     @convention(c) (PyObjectPointer?, PyObjectPointer?) -> PyObjectPointer?
 public typealias PyUnaryOperation =
@@ -217,8 +218,12 @@ public let PyImport_AddModule: @convention(c) (PyCCharPointer) -> PyObjectPointe
   return unsafeBitCast(__PyImport_AddModule(p), to: PyObjectPointer?.self)
 }
 
-let PyRun_SimpleString: @convention(c) (PyCCharPointer) -> Void  = { p in
-   __PyRun_SimpleString(p)
+public let PyRun_SimpleString: @convention(c) (PyCCharPointer) -> Void  = { p in
+  __PyRun_SimpleStringFlags(p, nil)
+}
+
+public let PyRun_SimpleStringFlags: @convention(c) (PyCCharPointer, PyCompilerFlagsPointer) -> Int32  = { (p1, p2) in
+  __PyRun_SimpleStringFlags(p1, unsafeBitCast(p2, to: UnsafeMutablePointer<PyCompilerFlags>?.self))
 }
 
 public let Py_LT: Int32 = 0
