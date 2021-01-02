@@ -358,11 +358,12 @@ class MetalView: MTKView
     
     self.renderCameraSource?.renderCamera?.increaseDistance(wheelDelta)
     
-    if (phase == NSEvent.Phase.ended || phase == NSEvent.Phase.cancelled)
-    {
-      self.renderQuality = RKRenderQuality.high
-      self.stopTimer()
-    }
+    // Bug: quits while the mouse events are still coming through
+    //if (phase == NSEvent.Phase.ended || phase == NSEvent.Phase.cancelled)
+    //{
+    //  self.renderQuality = RKRenderQuality.high
+    //  self.stopTimer()
+    //}
     
     self.layer?.setNeedsDisplay()
   }

@@ -19,7 +19,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>HPDBookAccessPath</key>
-	<string>iraspa.html</string>
+	<string>index.html</string>
 	<key>HPDBookIconPath</key>
         <string>../SharedGlobalArt/AppIconDefault_iRASPAHelp.png</string> 
 	<key>HPDBookIndexPath</key>
@@ -29,7 +29,7 @@
 	<key>HPDBookKBURL</key>
 	<string></string>
 	<key>HPDBookRemoteURL</key>
-	<string>http://www.iraspa.org/iRASPA/iraspa.html</string>
+	<string>https://help.iraspa.org/index.html</string>
 	<key>HPDBookTitle</key>
 	<string>iRASPA Help</string>
 	<key>HPDBookType</key>
