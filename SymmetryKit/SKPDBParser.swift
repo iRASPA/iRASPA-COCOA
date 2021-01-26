@@ -90,7 +90,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
   
   private func addFrameToStructure()
   {
-    if (atoms.count > 0)
+    if (atoms.count >= 0)
     {
       if (currentMovie >= scene.count)
       {
