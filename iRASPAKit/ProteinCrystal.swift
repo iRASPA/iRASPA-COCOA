@@ -1759,7 +1759,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
       // create cell-list based on the bond-cutoff
       for i in 0..<atoms.count
       {
-        let position: SIMD3<Double> = atoms[i].position - structureCell.boundingBox.minimum
+        let position: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(atoms[i].position - structureCell.boundingBox.minimum)
         
         let icell: Int = Int((position.x) / cutoffVector.x) +
           Int((position.y) / cutoffVector.y) * numberOfCells[0] +
