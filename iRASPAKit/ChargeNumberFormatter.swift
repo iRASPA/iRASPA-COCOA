@@ -43,8 +43,8 @@ public class ChargeNumberFormatter: NumberFormatter
     //shortFormatter.paddingPosition = .beforePrefix
     shortFormatter.minimumIntegerDigits = 1
     shortFormatter.maximumIntegerDigits = 2
-    shortFormatter.minimumFractionDigits = 4
-    shortFormatter.maximumFractionDigits = 4
+    shortFormatter.minimumFractionDigits = 3
+    shortFormatter.maximumFractionDigits = 3
     shortFormatter.positivePrefix=shortFormatter.plusSign
     
     longFormatter = NumberFormatter()
@@ -67,8 +67,8 @@ public class ChargeNumberFormatter: NumberFormatter
     //shortFormatter.paddingPosition = .beforePrefix
     shortFormatter.minimumIntegerDigits = 1
     shortFormatter.maximumIntegerDigits = 2
-    shortFormatter.minimumFractionDigits = 4
-    shortFormatter.maximumFractionDigits = 4
+    shortFormatter.minimumFractionDigits = 3
+    shortFormatter.maximumFractionDigits = 3
     shortFormatter.positivePrefix=shortFormatter.plusSign
     
     longFormatter = NumberFormatter()

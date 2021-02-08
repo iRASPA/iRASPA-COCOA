@@ -100,7 +100,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         {
           switch(identifier)
           {
-          case "atomNameColumn", "atomElementColumn", "atomPositionXColumn", "atomPositionYColumn", "atomPositionZColumn", "atomChargeColumn":
+          case "atomNameColumn", "atomElementColumn", "atomUniqueForceFieldIdentifierColumn", "atomPositionXColumn", "atomPositionYColumn", "atomPositionZColumn", "atomChargeColumn":
             self.atomOutlineView?.editColumn(clickedColumn, row: clickedRow, with: nil, select: false)
           default:
             break
@@ -386,37 +386,28 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         case NSUserInterfaceItemIdentifier(rawValue: "atomElementColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomElement"), owner: self) as? NSTableCellView
          
+          view?.textField?.stringValue = PredefinedElements.sharedInstance.elementSet[node.representedObject.elementIdentifier].chemicalSymbol
+          view?.textField?.textColor = NSColor.controlTextColor
+          view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.regular)
           
-          switch(structure.atomForceFieldOrder)
+          view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
+          if let _ = (self.representedObject as? iRASPAStructure)?.structure as? RKRenderObjectSource
           {
-          case .elementOnly:
-             view?.textField?.stringValue = PredefinedElements.sharedInstance.elementSet[node.representedObject.elementIdentifier].chemicalSymbol
+            view?.textField?.isEditable = false
+          }
+        case NSUserInterfaceItemIdentifier(rawValue: "atomUniqueForceFieldIdentifierColumn"):
+          view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomUniqueForceFieldIdentifier"), owner: self) as? NSTableCellView
+          
+          view?.textField?.stringValue = node.representedObject.uniqueForceFieldName
+          if let _ : SKForceFieldType = document.forceFieldSets[structure.atomForceFieldIdentifier]?[node.representedObject.uniqueForceFieldName]
+          {
             view?.textField?.textColor = NSColor.controlTextColor
             view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.regular)
-          case .forceFieldFirst:
-             view?.textField?.stringValue = node.representedObject.uniqueForceFieldName
-            if let _ : SKForceFieldType = document.forceFieldSets[structure.atomForceFieldIdentifier]?[node.representedObject.uniqueForceFieldName]
-            {
-              view?.textField?.textColor = NSColor.controlTextColor
-              view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.regular)
-            }
-            else
-            {
-              view?.textField?.textColor = NSColor.orange
-              view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.bold)
-            }
-          case .forceFieldOnly:
-             view?.textField?.stringValue = node.representedObject.uniqueForceFieldName
-            if let _ : SKForceFieldType = document.forceFieldSets[structure.atomForceFieldIdentifier]?[node.representedObject.uniqueForceFieldName]
-            {
-              view?.textField?.textColor = NSColor.controlTextColor
-              view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.regular)
-            }
-            else
-            {
-              view?.textField?.textColor = NSColor.red
-              view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.bold)
-            }
+          }
+          else
+          {
+            view?.textField?.textColor = NSColor.red
+            view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.bold)
           }
           
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
@@ -2667,7 +2658,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   func setAtomElement(_ atomTreeNode: SKAtomTreeNode, to newElementId: Int)
   {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+    if let document: iRASPADocument = self.windowController?.currentDocument,
+       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       let atom = atomTreeNode.representedObject
@@ -2682,6 +2674,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.setRepresentationStyle(style: structure.atomRepresentationStyle, for: [atom])
       structure.setRepresentationType(type: structure.atomRepresentationType, for: [atom])
+      structure.setRepresentationColorScheme(scheme: structure.atomColorSchemeIdentifier, colorSets: document.colorSets)
       
       // reload item in the outlineView
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
@@ -2706,7 +2699,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-  func setForceFieldType(_ atomTreeNode: SKAtomTreeNode, to newUniqueForceFieldName: String, element newElement: Int)
+  func setForceFieldType(_ atomTreeNode: SKAtomTreeNode, to newUniqueForceFieldName: String)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
@@ -2714,15 +2707,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     {
       let atom = atomTreeNode.representedObject
       let oldId: String = atom.uniqueForceFieldName
-      let oldElement: Int = atom.elementIdentifier
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.setForceFieldType(atomTreeNode, to: oldId, element: oldElement)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.setForceFieldType(atomTreeNode, to: oldId)})
       if project.undoManager.isUndoing
       {
         project.undoManager.setActionName(NSLocalizedString("Change atom force field type", comment: "Change atom force field type"))
       }
       
       atom.uniqueForceFieldName  = newUniqueForceFieldName
-      atom.elementIdentifier = newElement
       
       structure.setRepresentationColorScheme(scheme: structure.atomColorSchemeIdentifier, colorSets: document.colorSets)
       structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
@@ -2731,7 +2722,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
       {
         // work around bug that causes 'reloadItem' to not do anything
-        if let column: Int = self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomElementColumn"))
+        if let column: Int = self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomUniqueForceFieldIdentifierColumn"))
         {
           self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: column))
         }
@@ -2752,26 +2743,41 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   @IBAction func changedElement(_ sender: NSTextField)
   {
-    if let document: iRASPADocument = self.windowController?.currentDocument,
-       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
-    {
-      let uniqueForceFieldName: String = sender.stringValue
+    let elementName: String = sender.stringValue
     
-      if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-         let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
-         let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
+       let atomTreeNode: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
+    {
+      if let atomicNumber: Int = SKElement.atomData[elementName.capitalizeFirst]?["atomicNumber"] as? Int
       {
-        let atom = node.representedObject
-        if let forceFieldType: SKForceFieldType = document.forceFieldSets[structure.atomForceFieldIdentifier]?[uniqueForceFieldName]
-        {
-          setForceFieldType(node, to: uniqueForceFieldName, element: forceFieldType.atomicNumber)
-        }
-        else
-        {
-           sender.stringValue = atom.uniqueForceFieldName
-           LogQueue.shared.error(destination: self.windowController, message: "Force Field type \(uniqueForceFieldName) unknown. Select correct Force Field and/or add type.")
-        }
+        setAtomElement(atomTreeNode, to: atomicNumber)
       }
+      else
+      {
+        // reload item in the outlineView
+        if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
+        {
+          // work around bug that causes 'reloadItem' to not do anything
+          if let column: Int = self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomElementColumn"))
+          {
+            self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: column))
+          }
+        }
+        LogQueue.shared.error(destination: self.windowController, message: "Element \(elementName) unknown. Select correct element type.")
+      }
+    }
+  }
+  
+  @IBAction func changedUniqueForceFieldIdentifier(_ sender: NSTextField)
+  {
+    let uniqueForceFieldName: String = sender.stringValue
+    
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
+       let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
+    {
+      setForceFieldType(node, to: uniqueForceFieldName)
     }
   }
   
