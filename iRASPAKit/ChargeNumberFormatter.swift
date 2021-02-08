@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2021 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
@@ -43,8 +43,8 @@ public class ChargeNumberFormatter: NumberFormatter
     //shortFormatter.paddingPosition = .beforePrefix
     shortFormatter.minimumIntegerDigits = 1
     shortFormatter.maximumIntegerDigits = 2
-    shortFormatter.minimumFractionDigits = 4
-    shortFormatter.maximumFractionDigits = 4
+    shortFormatter.minimumFractionDigits = 3
+    shortFormatter.maximumFractionDigits = 3
     shortFormatter.positivePrefix=shortFormatter.plusSign
     
     longFormatter = NumberFormatter()
@@ -67,8 +67,8 @@ public class ChargeNumberFormatter: NumberFormatter
     //shortFormatter.paddingPosition = .beforePrefix
     shortFormatter.minimumIntegerDigits = 1
     shortFormatter.maximumIntegerDigits = 2
-    shortFormatter.minimumFractionDigits = 4
-    shortFormatter.maximumFractionDigits = 4
+    shortFormatter.minimumFractionDigits = 3
+    shortFormatter.maximumFractionDigits = 3
     shortFormatter.positivePrefix=shortFormatter.plusSign
     
     longFormatter = NumberFormatter()

@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2021 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
@@ -167,9 +167,9 @@ public struct SKCell: BinaryDecodable, BinaryEncodable
   public init(unitCell: double3x3)
   {
     self.unitCell = unitCell
-    self.inverseUnitCell = unitCell.inverseReplacement
+    self.inverseUnitCell = unitCell.inverse
     self.fullCell = unitCell
-    self.inverseFullCell = unitCell.inverseReplacement
+    self.inverseFullCell = unitCell.inverse
     self.boundingBox = self.enclosingBoundingBox
   }
   
