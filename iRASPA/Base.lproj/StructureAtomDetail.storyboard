@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,11 +17,11 @@
                             <scrollView identifier="Atom outlineview scroll view" autohidesScrollers="YES" horizontalLineScroll="23" horizontalPageScroll="10" verticalLineScroll="23" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6jb-Mp-YAr">
                                 <rect key="frame" x="0.0" y="24" width="500" height="702"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Awh-Dn-59p">
-                                    <rect key="frame" x="1" y="0.0" width="498" height="701"/>
+                                    <rect key="frame" x="1" y="1" width="498" height="700"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowHeight="20" rowSizeStyle="automatic" headerView="H06-e7-Obi" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="16" outlineTableColumn="q9i-Dl-NBg" id="hkS-Ml-qjA" customClass="AtomOutlineView" customModule="iRASPA" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="498" height="678"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="509" height="677"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="2" height="3"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -30,7 +30,6 @@
                                             <tableColumns>
                                                 <tableColumn identifier="atomVisibilityColumn" width="24" minWidth="24" maxWidth="1000" id="qlW-El-T2P">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="vis">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -42,7 +41,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomVisibility" id="24F-cv-X9u">
-                                                            <rect key="frame" x="1" y="1" width="24" height="20"/>
+                                                            <rect key="frame" x="1" y="1" width="29" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <button fixedFrame="YES" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="tGV-2f-SJL">
@@ -60,9 +59,8 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="atomNameColumn" width="80" minWidth="80" maxWidth="1000" id="q9i-Dl-NBg">
+                                                <tableColumn identifier="atomNameColumn" width="65" minWidth="65" maxWidth="1000" id="q9i-Dl-NBg">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="name">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -74,7 +72,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomName" id="eLz-N8-IiK">
-                                                            <rect key="frame" x="27" y="1" width="80" height="20"/>
+                                                            <rect key="frame" x="32" y="1" width="65" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B6E-K2-X93">
@@ -95,11 +93,11 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <customView identifier="atomTableRowView" wantsLayer="YES" id="XA2-3D-Qaq" customClass="AtomTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="27" y="24" width="80" height="20"/>
+                                                            <rect key="frame" x="32" y="24" width="65" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
                                                         <stackView identifier="atomGroupRow" distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="YMy-em-wxx" customClass="AtomGroupStackView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="27" y="47" width="80" height="22"/>
+                                                            <rect key="frame" x="32" y="47" width="65" height="22"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <button placeholderIntrinsicWidth="18" placeholderIntrinsicHeight="18" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="EZB-iG-X4I">
@@ -113,7 +111,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <textField verticalHuggingPriority="750" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="22" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="LRV-b6-5p4">
-                                                                    <rect key="frame" x="32" y="0.0" width="50" height="22"/>
+                                                                    <rect key="frame" x="32" y="0.0" width="35" height="22"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" id="udC-uX-S0d">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -142,7 +140,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="atomFixedColumn" width="65" minWidth="24" maxWidth="1000" id="F1r-se-Ouz">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="atom id.">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -154,7 +151,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomFixed" id="5F7-Wf-UPb">
-                                                            <rect key="frame" x="109" y="1" width="65" height="20"/>
+                                                            <rect key="frame" x="99" y="1" width="65" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <segmentedControl wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="tCB-9J-xjB" customClass="NSLabelSegmentedControl" customModule="iRASPA" customModuleProvider="target">
@@ -180,9 +177,8 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="atomElementColumn" width="40" minWidth="40" maxWidth="1000" id="lXq-Pd-2bm">
-                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="type">
-                                                        <font key="font" metaFont="message" size="11"/>
+                                                <tableColumn identifier="atomElementColumn" width="20" minWidth="20" maxWidth="1000" id="lXq-Pd-2bm" userLabel="el">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="el">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -194,7 +190,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomElement" id="Scn-xl-JLs">
-                                                            <rect key="frame" x="176" y="1" width="40" height="20"/>
+                                                            <rect key="frame" x="166" y="1" width="20" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vcW-OX-Dux">
@@ -216,9 +212,43 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
+                                                <tableColumn identifier="atomUniqueForceFieldIdentifierColumn" width="40" minWidth="40" maxWidth="1000" id="WW8-fd-CJY">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="ff id.">
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" alignment="left" title="Text Cell" id="fGY-CM-8AN">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                    <prototypeCellViews>
+                                                        <tableCellView identifier="atomUniqueForceFieldIdentifier" id="pkL-TX-0kT">
+                                                            <rect key="frame" x="188" y="1" width="40" height="20"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8gd-Om-Ycw">
+                                                                    <rect key="frame" x="0.0" y="3" width="100" height="17"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" id="Z4W-jB-hiY">
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <action selector="changedUniqueForceFieldIdentifier:" target="L26-B0-eRn" id="RpU-uQ-GHZ"/>
+                                                                    </connections>
+                                                                </textField>
+                                                            </subviews>
+                                                            <connections>
+                                                                <outlet property="textField" destination="8gd-Om-Ycw" id="zAb-lO-mVe"/>
+                                                            </connections>
+                                                        </tableCellView>
+                                                    </prototypeCellViews>
+                                                </tableColumn>
                                                 <tableColumn identifier="atomPositionXColumn" width="69" minWidth="40" maxWidth="1000" id="b0C-YX-R2g">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="x">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -230,7 +260,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomPositionX" id="3wn-0p-IwB">
-                                                            <rect key="frame" x="218" y="1" width="69" height="20"/>
+                                                            <rect key="frame" x="230" y="1" width="69" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q8L-5W-Snf">
@@ -254,7 +284,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="atomPositionYColumn" width="66" minWidth="40" maxWidth="1000" id="6N9-gx-TJL">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="y">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -266,7 +295,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomPositionY" id="c4u-p9-kYK">
-                                                            <rect key="frame" x="289" y="1" width="66" height="20"/>
+                                                            <rect key="frame" x="301" y="1" width="66" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JWJ-2P-iAQ">
@@ -290,7 +319,6 @@
                                                 </tableColumn>
                                                 <tableColumn identifier="atomPositionZColumn" width="62" minWidth="40" maxWidth="1000" id="i0n-q6-0ip">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="z">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -302,7 +330,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomPositionZ" id="AJj-D6-96G">
-                                                            <rect key="frame" x="357" y="1" width="62" height="20"/>
+                                                            <rect key="frame" x="369" y="1" width="62" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YUq-Sh-ztg">
@@ -324,9 +352,8 @@
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
-                                                <tableColumn identifier="atomChargeColumn" width="76" minWidth="40" maxWidth="1000" id="jFC-IV-tIn">
+                                                <tableColumn identifier="atomChargeColumn" width="70" minWidth="40" maxWidth="1000" id="jFC-IV-tIn">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="q">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -338,7 +365,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomCharge" id="UCs-uZ-Znq">
-                                                            <rect key="frame" x="421" y="1" width="76" height="20"/>
+                                                            <rect key="frame" x="433" y="1" width="75" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ap9-EO-yTZ">
@@ -370,16 +397,16 @@
                                     </subviews>
                                     <nil key="backgroundColor"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="E9y-5x-cMY">
-                                    <rect key="frame" x="1" y="663" width="498" height="16"/>
+                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.90909090909090906" horizontal="YES" id="E9y-5x-cMY">
+                                    <rect key="frame" x="1" y="685" width="498" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="4QO-D0-LKh">
                                     <rect key="frame" x="-15" y="0.0" width="16" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <tableHeaderView key="headerView" id="H06-e7-Obi">
-                                    <rect key="frame" x="0.0" y="0.0" width="498" height="23"/>
+                                <tableHeaderView key="headerView" wantsLayer="YES" id="H06-e7-Obi">
+                                    <rect key="frame" x="0.0" y="0.0" width="509" height="23"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
@@ -393,7 +420,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="500" height="24"/>
                                             <subviews>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="rni-o0-Bfz" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="4" y="3" width="20" height="22"/>
+                                                    <rect key="frame" x="4" y="-1" width="20" height="22"/>
                                                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cO3-h3-KR7">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -403,7 +430,7 @@
                                                     </connections>
                                                 </button>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="NzC-fc-oLR" customClass="NSSquareButton" customModule="iRASPAKit">
-                                                    <rect key="frame" x="26" y="3" width="20" height="22"/>
+                                                    <rect key="frame" x="26" y="-1" width="20" height="22"/>
                                                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cKU-kH-PSh">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -413,7 +440,7 @@
                                                     </connections>
                                                 </button>
                                                 <searchField wantsLayer="YES" focusRingType="none" horizontalHuggingPriority="240" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ePY-G8-ZSl">
-                                                    <rect key="frame" x="48" y="1" width="246" height="22"/>
+                                                    <rect key="frame" x="48" y="2" width="246" height="22"/>
                                                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Filter" usesSingleLineMode="YES" bezelStyle="round" id="h8W-NQ-h3a">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -424,7 +451,7 @@
                                                     </connections>
                                                 </searchField>
                                                 <textField horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="100" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="E1t-8P-81t" customClass="AtomNetChargeLabel" customModule="iRASPA" customModuleProvider="target">
-                                                    <rect key="frame" x="294" y="0.0" width="104" height="20"/>
+                                                    <rect key="frame" x="294" y="0.0" width="104" height="21"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" alignment="right" title="Net charge" id="k5O-nf-whc">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -432,7 +459,7 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <textField horizontalHuggingPriority="255" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="100" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="NqP-ZE-gar" customClass="AtomNetChargeTextField" customModule="iRASPA" customModuleProvider="target">
-                                                    <rect key="frame" x="398" y="0.0" width="100" height="22"/>
+                                                    <rect key="frame" x="398" y="0.0" width="100" height="23"/>
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="net charge" drawsBackground="YES" id="XbY-dL-0Ls">
                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="kXK-cU-sme"/>
                                                         <font key="font" metaFont="system"/>
@@ -656,7 +683,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="NSAddTemplate" width="11" height="11"/>
-        <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="NSAddTemplate" width="14" height="13"/>
+        <image name="NSRemoveTemplate" width="14" height="4"/>
     </resources>
 </document>

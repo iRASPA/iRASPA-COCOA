@@ -1,7 +1,7 @@
 /*************************************************************************************************************
  The MIT License
  
- Copyright (c) 2014-2020 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
+ Copyright (c) 2014-2021 David Dubbeldam, Sofia Calero, Thijs J.H. Vlugt.
  
  D.Dubbeldam@uva.nl      http://www.uva.nl/profiel/d/u/d.dubbeldam/d.dubbeldam.html
  S.Calero@tue.nl         https://www.tue.nl/en/research/researchers/sofia-calero/
@@ -1766,7 +1766,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
       // create cell-list based on the bond-cutoff
       for i in 0..<atoms.count
       {
-        let position: SIMD3<Double> = cell.applyUnitCellBoundaryCondition(atoms[i].position - structureCell.boundingBox.minimum)
+        let position: SIMD3<Double> = structureCell.unitCell * fract(structureCell.inverseUnitCell * atoms[i].position)
         
         let icell: Int = Int((position.x) / cutoffVector.x) +
           Int((position.y) / cutoffVector.y) * numberOfCells[0] +
