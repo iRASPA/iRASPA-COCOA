@@ -736,7 +736,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       if (!filterContent)
       {
         if let outlineView = self.atomOutlineView,
-               outlineView.numberOfRows > 0
+               outlineView.numberOfRows >= 0
         {
           outlineView.insertItems(at: IndexSet(integer: atIndex), inParent: inItem, withAnimation: .slideRight)
           outlineView.selectRowIndexes(IndexSet(integer: self.atomOutlineView!.row(forItem: node)), byExtendingSelection: true)
