@@ -280,8 +280,48 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
   
-  public func updateFieldOfView()
+  public func updateFieldOfView(newAngle: Double)
   {
+    var delta: SIMD3<Double> = SIMD3<Double>()
+    
+    centerOfScene = cameraBoundingBox.minimum + (cameraBoundingBox.maximum - cameraBoundingBox.minimum) * 0.5
+    centerOfRotation = centerOfScene
+    
+    let matrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: referenceDirection * worldRotation) , aroundPoint: centerOfRotation)
+    let transformedBoundingBox: SKBoundingBox = self.cameraBoundingBox.adjustForTransformation(matrix)
+    
+    delta.x = fabs(transformedBoundingBox.maximum.x-transformedBoundingBox.minimum.x)
+    delta.y = fabs(transformedBoundingBox.maximum.y-transformedBoundingBox.minimum.y)
+    delta.z = fabs(transformedBoundingBox.maximum.z-transformedBoundingBox.minimum.z)
+    
+    orthoScale = 0.5 * delta.x / self.resetPercentage
+    distance.z -= orthoScale / tan(0.5 * angleOfView) - orthoScale / tan(0.5 * newAngle)
+    
+    angleOfView = newAngle
+    orthoScale = (distance.z - 0.5 * delta.z) * tan(0.5 * angleOfView)
+    
+    zNear = max(1.0, position.z - length_squared(delta))
+    zFar = position.z + length_squared(delta)
+    let inverseFocalPoint: Double = tan(angleOfView * 0.5)
+    if (aspectRatio > boundingBoxAspectRatio)
+    {
+      left =  -aspectRatio * zNear * inverseFocalPoint  / boundingBoxAspectRatio
+      right = aspectRatio * zNear * inverseFocalPoint  / boundingBoxAspectRatio
+      top = zNear * inverseFocalPoint  / boundingBoxAspectRatio
+      bottom = -zNear * inverseFocalPoint  / boundingBoxAspectRatio
+    }
+    else
+    {
+      left = -zNear * inverseFocalPoint
+      right = zNear * inverseFocalPoint
+      top = zNear * inverseFocalPoint  / aspectRatio
+      bottom = -zNear * inverseFocalPoint  / aspectRatio
+    }
+    
+    eye = centerOfScene + distance + panning
+      
+    viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
+    
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
   

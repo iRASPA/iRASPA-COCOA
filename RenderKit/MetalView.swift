@@ -366,6 +366,7 @@ class MetalView: MTKView
     //}
     
     self.layer?.setNeedsDisplay()
+    super.scrollWheel(with: theEvent)
   }
   
   override var isOpaque: Bool { return true }
