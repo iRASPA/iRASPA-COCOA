@@ -1388,6 +1388,28 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       let observeNotificationsStored: Bool = self.observeNotifications
       self.observeNotifications = false
+      
+      
+      NSAnimationContext.beginGrouping()
+      
+      // set the completion-handler _before_ any animations have been run
+      NSAnimationContext.current.completionHandler = {
+        
+        if let atomOutlineView = self.atomOutlineView
+        {
+          if(atomOutlineView.numberOfRows==0)
+          {
+            // if deleted all, reloadData to redraw all the alternating rows
+            atomOutlineView.reloadData()
+          }
+          else
+          {
+            // reload to redraw all the alternating rows
+            self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<atomOutlineView.numberOfRows), columnIndexes: IndexSet(integer: 0))
+          }
+        }
+      }
+      
       self.atomOutlineView?.beginUpdates()
       for atom in atoms
       {
@@ -1416,6 +1438,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
       }
       self.atomOutlineView?.endUpdates()
+      
+      NSAnimationContext.endGrouping()
+      
       self.observeNotifications = observeNotificationsStored
     
       if (self.filterContent)
