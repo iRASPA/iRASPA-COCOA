@@ -927,9 +927,35 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
             buttonOrthogonal.state = NSControl.StateValue.on
           }
         }
-        
-        outlineView.setNeedsDisplay(outlineView.rect(ofRow: row))
       }
+    
+      if let textFieldResetPercentage: NSTextField = view.viewWithTag(50) as? NSTextField,
+        let textFieldFieldOfField: NSTextField = view.viewWithTag(40) as? NSTextField,
+        let textFieldCenterOfSceneX: NSTextField = view.viewWithTag(41) as? NSTextField,
+        let textFieldCenterOfSceneY: NSTextField = view.viewWithTag(42) as? NSTextField,
+        let textFieldCenterOfSceneZ: NSTextField = view.viewWithTag(43) as? NSTextField
+      {
+        textFieldResetPercentage.isEnabled = false
+        textFieldFieldOfField.isEnabled = false
+        textFieldCenterOfSceneX.isEnabled = false
+        textFieldCenterOfSceneY.isEnabled = false
+        textFieldCenterOfSceneZ.isEnabled = false
+        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+        {
+          textFieldResetPercentage.isEnabled = true
+          textFieldFieldOfField.isEnabled = true
+          textFieldCenterOfSceneX.isEnabled = true
+          textFieldCenterOfSceneY.isEnabled = true
+          textFieldCenterOfSceneZ.isEnabled = true
+          textFieldResetPercentage.doubleValue = camera.resetPercentage
+          textFieldFieldOfField.doubleValue = camera.angleOfView * 180.0 / Double.pi
+          textFieldCenterOfSceneX.doubleValue = camera.centerOfScene.x
+          textFieldCenterOfSceneY.doubleValue = camera.centerOfScene.y
+          textFieldCenterOfSceneZ.doubleValue = camera.centerOfScene.z
+        }
+      }
+    
+      outlineView.setNeedsDisplay(outlineView.rect(ofRow: row))
     }
     
     // only update when the row-view is visible
@@ -1079,8 +1105,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       {
         let newValue: Double = number.doubleValue
         
-        renderCamera.angleOfView = newValue * Double.pi / 180.0
-        renderCamera.updateFieldOfView()
+        renderCamera.updateFieldOfView(newAngle: newValue * Double.pi / 180.0)
         self.windowController?.document?.updateChangeCount(.changeDone)
         
         self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -1095,17 +1120,27 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   @IBAction func updateStepperAngleOfView(_ sender: NSStepper)
   {
-    let deltaValue: Double = Double(sender.intValue)
-    
     if let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
-      renderCamera.angleOfView += deltaValue * Double.pi / 180.0
-      renderCamera.updateFieldOfView()
+      var deltaValue: Double = Double(sender.intValue)
+      if(deltaValue < 0 && Int(rint(renderCamera.angleOfView * 180.0 / Double.pi)) <= 10)
+      {
+        deltaValue /= 5.0
+      }
+      if(deltaValue > 0 && Int(rint(renderCamera.angleOfView * 180.0 / Double.pi)) < 10)
+      {
+        deltaValue /= 5.0
+      }
+    
+      let newAngle: Int = Int(rint(renderCamera.angleOfView * 180.0 / Double.pi + deltaValue))
+      if(newAngle >= 2)
+      {
+        renderCamera.updateFieldOfView(newAngle: Double(newAngle) * Double.pi / 180.0)
         
-      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
-      self.windowController?.document?.updateChangeCount(.changeDone)
-      self.windowController?.detailTabViewController?.renderViewController?.redraw()
-      
+        self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+        self.windowController?.document?.updateChangeCount(.changeDone)
+        self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      }
       self.updateOutlineView(identifiers: [self.cameraCell])
     }
 

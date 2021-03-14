@@ -2628,6 +2628,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
 
       self.proxyProject?.representedObject.isEdited = true
       
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
       /*
       if structure.atomForceFieldOrder != .elementOnly
       {
@@ -2810,6 +2813,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.reComputeBoundingBox()
       
+      structure.bondController.selectedObjects = []
       structure.reComputeBonds()
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
@@ -2872,6 +2876,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.reComputeBoundingBox()
       
+      structure.bondController.selectedObjects = []
       structure.reComputeBonds()
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
@@ -2933,6 +2938,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       structure.reComputeBoundingBox()
       
+      structure.bondController.selectedObjects = []
       structure.reComputeBonds()
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])

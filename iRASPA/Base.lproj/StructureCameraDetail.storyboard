@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="9Yu-pt-V7R">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="9Yu-pt-V7R">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,14 +22,13 @@
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="wZo-0d-qV2" id="QDA-zt-q9U" customClass="NSStaticViewBasedOutlineView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="498" height="1951"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="494.85674353598881" minWidth="40" maxWidth="1000" id="wZo-0d-qV2">
+                                                <tableColumn width="485.85674353598881" minWidth="40" maxWidth="1000" id="wZo-0d-qV2">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                        <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -701,7 +700,7 @@
                                                                     <rect key="frame" x="179" y="6" width="60" height="22"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="oBm-9S-SL4">
-                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="or8-c2-LFS"/>
+                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="3" maximumFractionDigits="3" id="or8-c2-LFS"/>
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -711,7 +710,7 @@
                                                                     <rect key="frame" x="252" y="6" width="60" height="22"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="0RH-MB-2kr">
-                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="TsR-8P-9B2"/>
+                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="3" maximumFractionDigits="3" id="TsR-8P-9B2"/>
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -721,7 +720,7 @@
                                                                     <rect key="frame" x="326" y="6" width="60" height="22"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="yoe-q2-NTG">
-                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="eYP-AA-mcY"/>
+                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="3" maximumFractionDigits="3" id="eYP-AA-mcY"/>
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -731,7 +730,7 @@
                                                                     <rect key="frame" x="421" y="7" width="60" height="22"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="GAO-Kt-bpE">
-                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="VI9-Bp-D32"/>
+                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="3" maximumFractionDigits="3" id="VI9-Bp-D32"/>
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -978,7 +977,7 @@
                                                                     <font key="font" metaFont="system"/>
                                                                     <tabViewItems>
                                                                         <tabViewItem label="Color" identifier="1" id="S9f-2w-uQW">
-                                                                            <view key="view" ambiguous="YES" id="VcI-0h-MII">
+                                                                            <view key="view" id="VcI-0h-MII">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="308" height="96"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
@@ -1540,6 +1539,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="NSStopProgressFreestandingTemplate" width="14" height="14"/>
+        <image name="NSStopProgressFreestandingTemplate" width="15" height="15"/>
     </resources>
 </document>

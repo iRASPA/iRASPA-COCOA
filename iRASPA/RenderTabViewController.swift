@@ -1858,6 +1858,13 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
+  
+  override public func scrollWheel(with theEvent: NSEvent)
+  {
+    super.scrollWheel(with: theEvent)
+    cameraDidChange()
+  }
+  
   @IBAction func deleteSelectedAtoms(_ sender: NSButton)
   {
     self.deleteSelection()
