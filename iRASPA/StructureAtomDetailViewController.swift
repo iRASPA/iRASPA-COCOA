@@ -680,7 +680,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-  @IBAction func addAtom(_ sender: NSSquareButton)
+  @IBAction func addAtom(_ sender: AnyObject)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
@@ -700,7 +700,6 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         element = 6
         displayName = PredefinedElements.sharedInstance.elementSet[element].chemicalSymbol
       }
-      
       
       let color: NSColor = document.colorSets[structure.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
       let drawRadius: Double = structure.drawRadius(elementId: element)
@@ -1396,58 +1395,58 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         let index: Int = atom.indexPath.last ?? 0
         structure.atomTreeController.removeNode(atom)
       
-      if (!self.filterContent)
-      {
-        if let atomOutlineView = atomOutlineView,
-          atomOutlineView.numberOfRows>0
+        if (!self.filterContent)
         {
-          atomOutlineView.removeItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: .slideLeft)
+          if let atomOutlineView = atomOutlineView,
+                 atomOutlineView.numberOfRows>0
+          {
+            atomOutlineView.removeItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: .slideLeft)
+          }
         }
       }
-    }
     
-    structure.atomTreeController.selectedTreeNodes = []
+      structure.atomTreeController.selectedTreeNodes = []
       
-    structure.atomTreeController.tag()
+      structure.atomTreeController.tag()
     
-    if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
-      let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
-      numberOfRows>0
-    {
-      self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
-    }
-    self.atomOutlineView?.endUpdates()
-    self.observeNotifications = observeNotificationsStored
+      if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
+         let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
+         numberOfRows>0
+      {
+        self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
+      }
+      self.atomOutlineView?.endUpdates()
+      self.observeNotifications = observeNotificationsStored
     
-    if (self.filterContent)
-    {
-      structure.atomTreeController.updateFilteredNodes()
+      if (self.filterContent)
+      {
+        structure.atomTreeController.updateFilteredNodes()
       
-      self.atomOutlineView?.reloadData()
-      self.programmaticallySetSelection()
-    }
+        self.atomOutlineView?.reloadData()
+        self.programmaticallySetSelection()
+      }
     
-    if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
-      let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
-      numberOfRows>0
-    {
-      self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
-    }
+      if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
+         let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
+         numberOfRows>0
+      {
+        self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
+      }
       
       project.isEdited = true
       self.windowController?.currentDocument?.updateChangeCount(.changeDone)
       
-    self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-    self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
-    self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
-    self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
+      self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
       
       self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: false, newSelectionEmpty: true)
     
-    self.updateNetChargeTextField()
+      self.updateNetChargeTextField()
     
-    NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
     }
   }
   
@@ -1476,7 +1475,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         if (!self.filterContent)
         {
           if let atomOutlineView = atomOutlineView,
-          atomOutlineView.numberOfRows>0
+          atomOutlineView.numberOfRows>=0
           {
             atomOutlineView.insertItems(at: IndexSet(integer: index), inParent: toItem, withAnimation: .slideLeft)
             atomOutlineView.selectRowIndexes(IndexSet(integer: atomOutlineView.row(forItem: atom)), byExtendingSelection: true)
@@ -1519,7 +1518,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       project.isEdited = true
       self.windowController?.currentDocument?.updateChangeCount(.changeDone)
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.updateNetChargeTextField()

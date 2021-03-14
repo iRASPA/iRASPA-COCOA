@@ -41,7 +41,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomVisibility" id="24F-cv-X9u">
-                                                            <rect key="frame" x="1" y="1" width="29" height="20"/>
+                                                            <rect key="frame" x="11" y="1" width="29" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <button fixedFrame="YES" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="tGV-2f-SJL">
@@ -72,7 +72,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomName" id="eLz-N8-IiK">
-                                                            <rect key="frame" x="32" y="1" width="65" height="20"/>
+                                                            <rect key="frame" x="42" y="1" width="65" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B6E-K2-X93">
@@ -93,11 +93,11 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <customView identifier="atomTableRowView" wantsLayer="YES" id="XA2-3D-Qaq" customClass="AtomTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="32" y="24" width="65" height="20"/>
+                                                            <rect key="frame" x="42" y="24" width="65" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
                                                         <stackView identifier="atomGroupRow" distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="YMy-em-wxx" customClass="AtomGroupStackView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="32" y="47" width="65" height="22"/>
+                                                            <rect key="frame" x="42" y="47" width="65" height="22"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <button placeholderIntrinsicWidth="18" placeholderIntrinsicHeight="18" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="EZB-iG-X4I">
@@ -151,7 +151,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomFixed" id="5F7-Wf-UPb">
-                                                            <rect key="frame" x="99" y="1" width="65" height="20"/>
+                                                            <rect key="frame" x="109" y="1" width="65" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <segmentedControl wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="tCB-9J-xjB" customClass="NSLabelSegmentedControl" customModule="iRASPA" customModuleProvider="target">
@@ -190,7 +190,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomElement" id="Scn-xl-JLs">
-                                                            <rect key="frame" x="166" y="1" width="20" height="20"/>
+                                                            <rect key="frame" x="176" y="1" width="20" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vcW-OX-Dux">
@@ -225,7 +225,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomUniqueForceFieldIdentifier" id="pkL-TX-0kT">
-                                                            <rect key="frame" x="188" y="1" width="40" height="20"/>
+                                                            <rect key="frame" x="198" y="1" width="40" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8gd-Om-Ycw">
@@ -260,7 +260,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomPositionX" id="3wn-0p-IwB">
-                                                            <rect key="frame" x="230" y="1" width="69" height="20"/>
+                                                            <rect key="frame" x="240" y="1" width="69" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q8L-5W-Snf">
@@ -295,7 +295,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomPositionY" id="c4u-p9-kYK">
-                                                            <rect key="frame" x="301" y="1" width="66" height="20"/>
+                                                            <rect key="frame" x="311" y="1" width="66" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JWJ-2P-iAQ">
@@ -330,7 +330,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomPositionZ" id="AJj-D6-96G">
-                                                            <rect key="frame" x="369" y="1" width="62" height="20"/>
+                                                            <rect key="frame" x="379" y="1" width="62" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YUq-Sh-ztg">
@@ -365,7 +365,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="atomCharge" id="UCs-uZ-Znq">
-                                                            <rect key="frame" x="433" y="1" width="75" height="20"/>
+                                                            <rect key="frame" x="443" y="1" width="75" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ap9-EO-yTZ">
@@ -397,7 +397,7 @@
                                     </subviews>
                                     <nil key="backgroundColor"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.90909090909090906" horizontal="YES" id="E9y-5x-cMY">
+                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="E9y-5x-cMY">
                                     <rect key="frame" x="1" y="685" width="498" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -427,6 +427,7 @@
                                                     </buttonCell>
                                                     <connections>
                                                         <action selector="addAtom:" target="L26-B0-eRn" id="BND-2L-zI4"/>
+                                                        <outlet property="menu" destination="hNQ-6V-Zh4" id="bpO-uM-iPl"/>
                                                     </connections>
                                                 </button>
                                                 <button horizontalHuggingPriority="260" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="NzC-fc-oLR" customClass="NSSquareButton" customModule="iRASPAKit">
@@ -518,13 +519,13 @@
                                 <action selector="addGroupAtom:" target="L26-B0-eRn" id="poj-I2-osa"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Flatten hierarchy" id="wfF-yl-c2A">
+                        <menuItem title="Flatten Hierarchy" id="wfF-yl-c2A">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="FlattenHierarchy:" target="L26-B0-eRn" id="p9i-J0-Mhb"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="Make super-cell" id="yoN-UL-IRj">
+                        <menuItem title="Make Super-Cell" id="yoN-UL-IRj">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="makeSuperCell:" target="L26-B0-eRn" id="pa3-ZM-LD1"/>
@@ -605,9 +606,9 @@
                                 </items>
                             </menu>
                         </menuItem>
-                        <menuItem title="Scroll to" id="MpU-kw-3py">
+                        <menuItem title="Scroll To" id="MpU-kw-3py">
                             <modifierMask key="keyEquivalentModifierMask"/>
-                            <menu key="submenu" title="Scroll to" id="Ow5-ms-fWY">
+                            <menu key="submenu" title="Scroll To" id="Ow5-ms-fWY">
                                 <items>
                                     <menuItem title="Top" id="eYX-Je-wTp">
                                         <modifierMask key="keyEquivalentModifierMask"/>
@@ -636,9 +637,9 @@
                                 </items>
                             </menu>
                         </menuItem>
-                        <menuItem title="Export as" id="SBf-Vu-4GN">
+                        <menuItem title="Export As" id="SBf-Vu-4GN">
                             <modifierMask key="keyEquivalentModifierMask"/>
-                            <menu key="submenu" title="Export as" id="to4-IQ-4W7">
+                            <menu key="submenu" title="Export As" id="to4-IQ-4W7">
                                 <items>
                                     <menuItem title="PDB" id="fJ5-bP-buy">
                                         <modifierMask key="keyEquivalentModifierMask"/>
@@ -677,6 +678,20 @@
                     <connections>
                         <outlet property="delegate" destination="L26-B0-eRn" id="mwe-Vk-mn7"/>
                     </connections>
+                </menu>
+                <menu id="hNQ-6V-Zh4" userLabel="Add Atom Context Menu">
+                    <items>
+                        <menuItem title="Add Atom" tag="1" keyEquivalent="1" id="e3g-JW-gej">
+                            <connections>
+                                <action selector="addAtom:" target="L26-B0-eRn" id="hr1-Pa-zh8"/>
+                            </connections>
+                        </menuItem>
+                        <menuItem title="Add Atom Group" keyEquivalent="2" id="LoO-EL-ifx">
+                            <connections>
+                                <action selector="addGroupAtom:" target="L26-B0-eRn" id="ndG-Vt-Og5"/>
+                            </connections>
+                        </menuItem>
+                    </items>
                 </menu>
             </objects>
             <point key="canvasLocation" x="5420" y="2508"/>
