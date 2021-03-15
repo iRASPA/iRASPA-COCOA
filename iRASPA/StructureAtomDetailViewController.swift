@@ -1559,7 +1559,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
-      let selectedAtomTreeNodes: [SKAtomTreeNode] = structure.atomTreeController.selectedTreeNodes.sorted(by: { $0.indexPath > $1.indexPath })
+      // get all selected atom tree nodes _and_ the children that are implicitly selected
+      let selectedAtomTreeNodes: [SKAtomTreeNode] = structure.atomTreeController.selectedTreeNodes.flatMap{$0.flattenedNodes()}.sorted(by: { $0.indexPath > $1.indexPath })
       let indexPaths: [IndexPath] = selectedAtomTreeNodes.map{$0.indexPath}
       
       var indexSet: IndexSet = structure.bondController.selectedObjects
