@@ -667,7 +667,6 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   
   func tableView(_ tableView: NSTableView, selectionIndexesForProposedSelection proposedSelectionIndexes: IndexSet) -> IndexSet
   {
-    
     if let projectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
       let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie
     {
@@ -693,34 +692,39 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
          let selectedMovie: Movie = selectedScene.selectedMovie,
          let oldSelectedRow: Int = selectedMovie.selectedFrame != nil ? selectedMovie.frames.firstIndex(of: selectedMovie.selectedFrame!) : -1,
          let selectedRow: Int = self.framesTableView?.selectedRow, selectedRow >= 0,
-         let selectedRows: IndexSet = self.framesTableView?.selectedRowIndexes, ((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
+         let selectedRows: IndexSet = self.framesTableView?.selectedRowIndexes
       {
-        selectedMovie.selectedFrame = selectedMovie.frames[selectedRow]
-        selectedMovie.selectedFrames.insert(selectedMovie.frames[selectedRow])
+        if ((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
+        {
+          selectedMovie.selectedFrame = selectedMovie.frames[selectedRow]
+          selectedMovie.selectedFrames.insert(selectedMovie.frames[selectedRow])
         
-    
-        // set the other movies to the same movie-index
-        project.sceneList.synchronizeAllMovieFrames(to: selectedRow)
+          // set the other movies to the same movie-index
+          project.sceneList.synchronizeAllMovieFrames(to: selectedRow)
         
-        // highlight selected index
-        self.framesTableView?.enumerateAvailableRowViews({ (rowView, row) in
-          
-          if (row == selectedRow)
-          {
-            (rowView as? FrameTableRowView)?.secondaryHighlighted = true
-            (rowView as? FrameTableRowView)?.isSelected = true
-            rowView.needsDisplay = true
-          }
-          else
-          {
-            (rowView as? FrameTableRowView)?.secondaryHighlighted = false
-            rowView.needsDisplay = true
-          }
-        })
-        
-        
+          // highlight selected index
+          self.framesTableView?.enumerateAvailableRowViews({ (rowView, row) in
+            if (row == selectedRow)
+            {
+              (rowView as? FrameTableRowView)?.secondaryHighlighted = true
+              (rowView as? FrameTableRowView)?.isSelected = true
+              rowView.needsDisplay = true
+            }
+            else
+            {
+              (rowView as? FrameTableRowView)?.secondaryHighlighted = false
+              rowView.needsDisplay = true
+            }
+          })
+        }
+        else
+        {
+          // since extending the selection changes the 'selectedRow' (the last selected item), set it back
+          // this will NOT change the selection, but only update the 'selectedRow'
+          // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
+          self.framesTableView?.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
+        }
       }
-
       
       //windowController?.masterViewControllerSelectionChanged(tab: 2)
       self.updateDetailViewController()
