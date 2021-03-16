@@ -1287,6 +1287,11 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     }
   }
   
+  public func applyRepresentationColorOrder(colorSets: SKColorSets)
+  {
+    setRepresentationColorOrder(order: atomColorSchemeOrder, colorSets: colorSets)
+  }
+  
   
   
   public func unknownForceFieldNames(forceField: String, forceFieldSets: SKForceFieldSets) -> [String]
@@ -1414,6 +1419,12 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     }
   }
   
+  
+  public func applyRepresentationForceField(forceFieldSets: SKForceFieldSets)
+  {
+    setRepresentationForceField(forceField: atomForceFieldIdentifier, forceFieldSets: forceFieldSets)
+  }
+  
   public func getRepresentationStyle() -> Structure.RepresentationStyle?
   {
     return atomRepresentationStyle
@@ -1423,6 +1434,12 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   {
     let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     self.setRepresentationStyle(style: style, for: asymmetricAtoms)
+  }
+  
+  public func applyRepresentationStyle()
+  {
+    let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+    self.setRepresentationStyle(style: atomRepresentationStyle, for: asymmetricAtoms)
   }
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, for asymmetricAtoms: [SKAsymmetricAtom])

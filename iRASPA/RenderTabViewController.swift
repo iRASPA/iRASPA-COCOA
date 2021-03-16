@@ -741,9 +741,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           for structure in movie.allStructures
           {
+            // get all selected atom tree nodes _and_ the children that are implicitly selected
             // sort the selected nodes accoording to the index-paths
             // the deepest nodes should be deleted first!
-            let selectedAtoms: [SKAtomTreeNode] = structure.atomTreeController.selectedTreeNodes.sorted(by: { $0.indexPath > $1.indexPath })
+            let selectedAtoms: [SKAtomTreeNode] = structure.atomTreeController.selectedTreeNodes.flatMap{$0.flattenedNodes()}.sorted(by: { $0.indexPath > $1.indexPath })
             let indexPaths: [IndexPath] = selectedAtoms.map{$0.indexPath}
             
             let indexSet: IndexSet = structure.bondController.selectedObjects
@@ -1151,12 +1152,21 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        
         self.proxyProject?.representedObject.isEdited = true
        
+        // after a delete, and before an undo, the style, colors, and forcefields potentially could change and update. Therefore: re-apply these at undo.
+        data.structure.applyRepresentationStyle()
+        if let document: iRASPADocument = self.windowController?.currentDocument
+        {
+          data.structure.applyRepresentationColorOrder(colorSets: document.colorSets)
+          data.structure.applyRepresentationForceField(forceFieldSets: document.forceFieldSets)
+        }
+        
         self.invalidateIsosurface(cachedIsosurfaces: [data.structure])
         self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [data.structure])
          
         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: data.structure)
         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: data.structure)
       }
+      
       self.renderViewController.reloadData()
        
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
