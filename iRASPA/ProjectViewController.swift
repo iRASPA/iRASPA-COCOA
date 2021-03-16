@@ -2915,73 +2915,39 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   func outlineViewSelectionDidChange(_ aNotification: Notification)
   {
-    if let projectOutlineView = self.projectOutlineView,
-      let document = windowController?.document as? iRASPADocument
+    if self.observeNotifications
     {
-      let projectTreeController: ProjectTreeController = document.documentData.projectData
-      if self.observeNotifications
+      if let projectOutlineView = self.projectOutlineView,
+         let document = windowController?.document as? iRASPADocument
       {
-        if let undoManager: UndoManager = document.undoManager,
-          let oldSelectedRow: Int = self.projectOutlineView?.row(forItem: document.documentData.projectData.selectedTreeNode),
-          let selectedRows: IndexSet = self.projectOutlineView?.selectedRowIndexes, ((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow))),
-          let selectedRow: Int = self.projectOutlineView?.selectedRow, selectedRow >= 0
+        var projectSelectedTreeNode: ProjectTreeNode? = document.documentData.projectData.selectedTreeNode
+        if let oldSelectedRow: Int = self.projectOutlineView?.row(forItem: projectSelectedTreeNode),
+           let selectedRows: IndexSet = self.projectOutlineView?.selectedRowIndexes,
+           let selectedRow: Int = self.projectOutlineView?.selectedRow, selectedRow >= 0
         {
           let projectTreeController: ProjectTreeController = document.documentData.projectData
-          if (!undoManager.isUndoing && !undoManager.isRedoing)
+            
+          var projectSelectedTreeNodes: Set<ProjectTreeNode> = []
+            
+          if((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
           {
-            // get selected rows and the main selected row (the last selected one)
-            // Note: using the arrow-keys continues from the main selected row
-            var projectSelectedTreeNode: ProjectTreeNode? = nil
-            var projectSelectedTreeNodes: Set<ProjectTreeNode> = []
-            
-            for row in projectOutlineView.selectedRowIndexes
+            if let projectTreeNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: selectedRow) as? ProjectTreeNode
             {
-              if let selectedNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: row) as? ProjectTreeNode
-              {
-                projectSelectedTreeNodes.insert(selectedNode)
-              }
+              projectSelectedTreeNode = projectTreeNode
+              // selection set in 'selectionIndexesForProposedSelection', make sure that the selected project is included in that set
+              projectSelectedTreeNodes.insert(projectTreeNode)
             }
-            
-            if (selectedRow >= 0)
-            {
-              if let projectTreeNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: selectedRow) as? ProjectTreeNode
-              {
-                projectSelectedTreeNode = projectTreeNode
-                
-                // selection set in 'selectionIndexesForProposedSelection', make sure that the selected project is included in that set
-                if let selectedNode = projectSelectedTreeNode
-                {
-                  projectSelectedTreeNodes.insert(selectedNode)
-                }
-              }
-            }
-            
-            self.setCurrentSelection(treeController: projectTreeController, newValue: (projectSelectedTreeNode,projectSelectedTreeNodes), oldValue: (projectTreeController.selectedTreeNode, projectTreeController.selectedTreeNodes))
           }
-        }
-        else
-        {
-          if let projectOutlineView = self.projectOutlineView
+            
+          for row in projectOutlineView.selectedRowIndexes
           {
-            var projectSelectedTreeNode: ProjectTreeNode? = nil
-            var projectSelectedTreeNodes: Set<ProjectTreeNode> = []
-            
-            projectSelectedTreeNodes = []
-            for row in projectOutlineView.selectedRowIndexes
+            if let selectedNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: row) as? ProjectTreeNode
             {
-              if let selectedNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: row) as? ProjectTreeNode
-              {
-                projectSelectedTreeNodes.insert(selectedNode)
-              }
+              projectSelectedTreeNodes.insert(selectedNode)
             }
-            projectSelectedTreeNode = nil
-            if let selectedRow = self.projectOutlineView?.selectedRow, selectedRow >= 0,
-               let selectedItem: ProjectTreeNode = self.projectOutlineView?.item(atRow: selectedRow) as? ProjectTreeNode
-            {
-              projectSelectedTreeNode = selectedItem
-            }
-            self.setCurrentSelection(treeController: projectTreeController, newValue: (projectSelectedTreeNode,projectSelectedTreeNodes), oldValue: (projectTreeController.selectedTreeNode, projectTreeController.selectedTreeNodes))
           }
+          
+          self.setCurrentSelection(treeController: projectTreeController, newValue: (projectSelectedTreeNode,projectSelectedTreeNodes), oldValue: (projectTreeController.selectedTreeNode, projectTreeController.selectedTreeNodes))
         }
       }
     }
