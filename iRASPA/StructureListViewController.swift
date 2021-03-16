@@ -2234,31 +2234,40 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         
         if let oldSelectedRow: Int = self.structuresOutlineView?.row(forItem: project.sceneList.selectedScene?.selectedMovie),
            let selectedRows: IndexSet = self.structuresOutlineView?.selectedRowIndexes,
-           let selectedRow: Int = self.structuresOutlineView?.selectedRow, selectedRow >= 0,
-           ((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
+           let selectedRow: Int = self.structuresOutlineView?.selectedRow, selectedRow >= 0
         {
-          self.structuresOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
-            if (row == selectedRow)
-            {
-              (rowView as? StructureTableRowView)?.secondaryHighlighted = true
-              (rowView as? StructureTableRowView)?.isSelected = true
-              
-              // needed to force a draw of the secondary-highlight
-              rowView.needsDisplay = true
-            }
-            else
-            {
-              (rowView as? StructureTableRowView)?.secondaryHighlighted = false
-              rowView.needsDisplay = true
-            }
-          })
-          
-          // set the selected scene and movie
-          if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-             let scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene
+          if((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
           {
-            project.sceneList.selectedScene = scene
-            scene.selectedMovie = movie
+            self.structuresOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+              if (row == selectedRow)
+              {
+                (rowView as? StructureTableRowView)?.secondaryHighlighted = true
+                (rowView as? StructureTableRowView)?.isSelected = true
+              
+                // needed to force a draw of the secondary-highlight
+                rowView.needsDisplay = true
+              }
+              else
+              {
+                (rowView as? StructureTableRowView)?.secondaryHighlighted = false
+                rowView.needsDisplay = true
+              }
+            })
+          
+            // set the selected scene and movie
+            if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
+               let scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene
+            {
+              project.sceneList.selectedScene = scene
+              scene.selectedMovie = movie
+            }
+          }
+          else
+          {
+            // since extending the selection changes the 'selectedRow' (the last selected item), set it back
+            // this will NOT change the selection, but only update the 'selectedRow'
+            // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
+            self.structuresOutlineView?.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
           }
         }
         

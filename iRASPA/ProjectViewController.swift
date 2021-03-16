@@ -2889,8 +2889,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             return self.projectOutlineView?.selectedRowIndexes ?? IndexSet()
           }
         
-        // allow selection of already loaded projects or projects that can be lazily loaded on request
-        
+          // allow selection of already loaded projects or projects that can be lazily loaded on request
           allowedSelection.add(index)
         }
       }
@@ -2922,7 +2921,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       let projectTreeController: ProjectTreeController = document.documentData.projectData
       if self.observeNotifications
       {
-        
         if let undoManager: UndoManager = document.undoManager,
           let oldSelectedRow: Int = self.projectOutlineView?.row(forItem: document.documentData.projectData.selectedTreeNode),
           let selectedRows: IndexSet = self.projectOutlineView?.selectedRowIndexes, ((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow))),
