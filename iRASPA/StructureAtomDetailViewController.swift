@@ -1540,6 +1540,14 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
       }
       
+      // after a delete, and before an undo, the style, colors, and forcefields potentially could change and update. Therefore: re-apply these at undo.
+      structure.applyRepresentationStyle()
+      if let document: iRASPADocument = self.windowController?.currentDocument
+      {
+        structure.applyRepresentationColorOrder(colorSets: document.colorSets)
+        structure.applyRepresentationForceField(forceFieldSets: document.forceFieldSets)
+      }
+      
       project.isEdited = true
       self.windowController?.currentDocument?.updateChangeCount(.changeDone)
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
@@ -1560,6 +1568,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       // get all selected atom tree nodes _and_ the children that are implicitly selected
+      // sort the selected nodes accoording to the index-paths
+      // the deepest nodes should be deleted first!
       let selectedAtomTreeNodes: [SKAtomTreeNode] = structure.atomTreeController.selectedTreeNodes.flatMap{$0.flattenedNodes()}.sorted(by: { $0.indexPath > $1.indexPath })
       let indexPaths: [IndexPath] = selectedAtomTreeNodes.map{$0.indexPath}
       
