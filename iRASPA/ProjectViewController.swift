@@ -2632,6 +2632,13 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           self.projectOutlineView?.selectRowIndexes(NSIndexSet(index: row) as IndexSet, byExtendingSelection: true)
         }
       }
+      // since extending the selection changes the 'selectedRow' (the last selected item), set it back
+      // this will NOT change the selection, but only update the 'selectedRow'
+      // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
+      if let row: Int = self.projectOutlineView?.row(forItem: projectTreeController.selectedTreeNode), row >= 0
+      {
+        self.projectOutlineView?.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
+      }
       
       let cloudKitTreeController: ProjectTreeController = Cloud.shared.projectData
       let selectedCloudNodes:[ProjectTreeNode] = cloudKitTreeController.selectedNodes
@@ -2937,6 +2944,13 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
               // selection set in 'selectionIndexesForProposedSelection', make sure that the selected project is included in that set
               projectSelectedTreeNodes.insert(projectTreeNode)
             }
+          }
+          else
+          {
+            // since extending the selection changes the 'selectedRow' (the last selected item), set it back
+            // this will NOT change the selection, but only update the 'selectedRow'
+            // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
+            self.projectOutlineView?.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
           }
             
           for row in projectOutlineView.selectedRowIndexes
