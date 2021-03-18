@@ -116,8 +116,8 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     }
     
     // autosaving is being done because the document is being closed (not cancelable)
+    LogQueue.shared.info(destination: self.windowControllers.first, message: "Autosaving....")
     super.autosave(withImplicitCancellability: autosavingIsImplicitlyCancellable, completionHandler: completionHandler)
-   
   }
   
   override func write(to url: URL, ofType typeName: String) throws
@@ -182,6 +182,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         }
       }
     }
+    LogQueue.shared.info(destination: self.windowControllers.first, message: "Saving to file.")
   }
   
   
