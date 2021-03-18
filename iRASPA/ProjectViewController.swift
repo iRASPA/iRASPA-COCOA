@@ -523,6 +523,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           let displayName = url.deletingPathExtension().lastPathComponent
           let iraspaproject: iRASPAProject = iRASPAProject(projectType: .structure, fileName: UUID().uuidString, nodeType: .leaf, storageType: .local, lazyStatus: .loading)
           iraspaproject.displayName = displayName
+          iraspaproject.isEdited = true
           let node: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iraspaproject)
           
           let projectData: ProjectTreeController = document.documentData.projectData
@@ -555,6 +556,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         // there is no project attached yet, set it as lazy&loading
         let displayName = URLs[0].deletingPathExtension().lastPathComponent
         let iraspaproject: iRASPAProject = iRASPAProject.init(projectType: .structure, fileName: UUID().uuidString, nodeType: .leaf, storageType: .local, lazyStatus: .loading)
+        iraspaproject.isEdited = true
         let node: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iraspaproject)
         
         let projectData: ProjectTreeController = document.documentData.projectData
@@ -582,6 +584,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         treeController.updateFilteredNodes()
       }
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
     }
   }
   

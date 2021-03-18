@@ -36,6 +36,8 @@ class iRASPAWindow: NSWindow
   {
     super.awakeFromNib()
     
+    self.collectionBehavior = [self.collectionBehavior, .fullScreenAllowsTiling]
+    self.minFullScreenContentSize = NSSize(width: 600, height: 400)
     self.titleVisibility = .hidden
     self.setFrameAutosaveName("nl.darkwing.iRASPA.WindowAutoSaveName")
   }

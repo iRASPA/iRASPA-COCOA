@@ -134,7 +134,7 @@
 		9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */; };
 		932137D41F2B533800DAEBDF /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932137D31F2B533800DAEBDF /* Errors.swift */; };
 		93260AE41E2A46350066EC08 /* iRASPADocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AE31E2A46350066EC08 /* iRASPADocument.swift */; };
-		93260AEC1E2A63D70066EC08 /* iRASPAWIndowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AEB1E2A63D70066EC08 /* iRASPAWIndowController.swift */; };
+		93260AEC1E2A63D70066EC08 /* iRASPAWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AEB1E2A63D70066EC08 /* iRASPAWindowController.swift */; };
 		93274E7D2205A0F5004031BA /* MetalPolygonalPrismShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */; };
 		93274E812205A813004031BA /* PolygonalPrismShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93274E802205A813004031BA /* PolygonalPrismShader.metal */; };
 		93274E832205AA13004031BA /* EllipsoidPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93274E822205AA13004031BA /* EllipsoidPrimitive.swift */; };
@@ -1193,7 +1193,7 @@
 		9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedCylinderGeometry.swift; sourceTree = "<group>"; };
 		932137D31F2B533800DAEBDF /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		93260AE31E2A46350066EC08 /* iRASPADocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPADocument.swift; sourceTree = "<group>"; tabWidth = 2; };
-		93260AEB1E2A63D70066EC08 /* iRASPAWIndowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPAWIndowController.swift; sourceTree = "<group>"; tabWidth = 2; };
+		93260AEB1E2A63D70066EC08 /* iRASPAWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPAWindowController.swift; sourceTree = "<group>"; tabWidth = 2; };
 		93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPolygonalPrismShader.swift; sourceTree = "<group>"; };
 		93274E802205A813004031BA /* PolygonalPrismShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PolygonalPrismShader.metal; sourceTree = "<group>"; };
 		93274E822205AA13004031BA /* EllipsoidPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipsoidPrimitive.swift; sourceTree = "<group>"; };
@@ -2329,7 +2329,7 @@
 				93FFF0B1203B6DA800DB696A /* ExportPictureAccessoryViewController.xib */,
 				93FFF0B3203B6DBC00DB696A /* ExportPictureAccessoryViewController.swift */,
 				93915C401FCD99B7006188F0 /* iRASPAProtocols.swift */,
-				93260AEB1E2A63D70066EC08 /* iRASPAWIndowController.swift */,
+				93260AEB1E2A63D70066EC08 /* iRASPAWindowController.swift */,
 				93260AE31E2A46350066EC08 /* iRASPADocument.swift */,
 				93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */,
 				930DD6C61E28064300B8FE9B /* AppDelegate.swift */,
@@ -4224,7 +4224,7 @@
 				930DD7241E2808B700B8FE9B /* AtomSearchField.swift in Sources */,
 				93986CE31E9F6FE10045C07C /* StructureInfoDetailViewPageController.swift in Sources */,
 				93FC88A71F515B0D0009478E /* NSHorizontalSplitViewController.swift in Sources */,
-				93260AEC1E2A63D70066EC08 /* iRASPAWIndowController.swift in Sources */,
+				93260AEC1E2A63D70066EC08 /* iRASPAWindowController.swift in Sources */,
 				932A49561E537EF400F71AE7 /* LogViewController.swift in Sources */,
 				93604A6A1F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift in Sources */,
 				930DD6F11E28071200B8FE9B /* StructureListViewController.swift in Sources */,
