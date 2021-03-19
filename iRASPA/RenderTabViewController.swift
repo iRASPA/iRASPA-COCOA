@@ -699,6 +699,32 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     self.interpretKeyEvents([theEvent])
   }
   
+  public override func moveWordLeft(_ sender: Any?)
+  {
+  }
+  
+  public override func moveWordRight(_ sender: Any?)
+  {
+  }
+  
+  public override func moveBackward(_ sender: Any?)
+  {
+  }
+  
+  public override func moveToBeginningOfParagraph(_ sender: Any?)
+  {
+    
+  }
+  
+  public override func moveForward(_ sender: Any?)
+  {
+  }
+  
+  public override func moveToEndOfParagraph(_ sender: Any?)
+  {
+    
+  }
+  
   public override func deleteBackward(_ sender: Any?)
   {
     self.deleteSelection()

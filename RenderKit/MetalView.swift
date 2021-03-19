@@ -260,6 +260,7 @@ class MetalView: MTKView
     case .measurement:
       break
     case .backgroundClick:
+      autoRotationTimer?.cancel()
       break
     default:
       if let _ = startPoint
@@ -367,6 +368,144 @@ class MetalView: MTKView
     
     self.layer?.setNeedsDisplay()
     super.scrollWheel(with: theEvent)
+  }
+  
+  public override func keyDown(with theEvent: NSEvent)
+  {
+    self.interpretKeyEvents([theEvent])
+
+    super.keyDown(with: theEvent)
+  }
+  
+  let autoRotationTimerQueue = DispatchQueue(label: "nl.darkwing.timer.autorotation", attributes: .concurrent)
+  var autoRotationTimer: DispatchSourceTimer?
+  
+  public override func moveWordLeft(_ sender: Any?)
+  {
+    // cancel previous timer if any
+    autoRotationTimer?.cancel()
+    
+    autoRotationTimer = DispatchSource.makeTimerSource(queue: autoRotationTimerQueue)
+    
+    autoRotationTimer?.schedule(deadline: .now(), repeating: .milliseconds(5), leeway: .milliseconds(10))
+    
+    autoRotationTimer?.setEventHandler { [weak self] in
+      DispatchQueue.main.async(execute: {
+        if let strongSelf = self
+        {
+          if let camera = strongSelf.renderCameraSource?.renderCamera
+          {
+            let theta: Double = -0.05 * Double.pi/180.0
+            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
+            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            
+            strongSelf.renderQuality = RKRenderQuality.low
+            strongSelf.layer?.setNeedsDisplay()
+          }
+        }
+      })
+    }
+    
+    autoRotationTimer?.resume()
+  }
+  
+  public override func moveWordRight(_ sender: Any?)
+  {
+    // cancel previous timer if any
+    autoRotationTimer?.cancel()
+    
+    autoRotationTimer = DispatchSource.makeTimerSource(queue: autoRotationTimerQueue)
+    
+    autoRotationTimer?.schedule(deadline: .now(), repeating: .milliseconds(5), leeway: .milliseconds(10))
+    
+    autoRotationTimer?.setEventHandler { [weak self] in
+      DispatchQueue.main.async(execute: {
+        if let strongSelf = self
+        {
+          if let camera = strongSelf.renderCameraSource?.renderCamera
+          {
+            let theta: Double = 0.05 * Double.pi/180.0
+            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
+            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            
+            strongSelf.renderQuality = RKRenderQuality.low
+            strongSelf.layer?.setNeedsDisplay()
+          }
+        }
+      })
+    }
+    
+    autoRotationTimer?.resume()
+  }
+  
+  public override func moveBackward(_ sender: Any?)
+  {
+    // cancel previous timer if any
+    autoRotationTimer?.cancel()
+    
+    autoRotationTimer = DispatchSource.makeTimerSource(queue: autoRotationTimerQueue)
+    
+    autoRotationTimer?.schedule(deadline: .now(), repeating: .milliseconds(5), leeway: .milliseconds(10))
+    
+    autoRotationTimer?.setEventHandler { [weak self] in
+      DispatchQueue.main.async(execute: {
+        if let strongSelf = self
+        {
+          if let camera = strongSelf.renderCameraSource?.renderCamera
+          {
+            let theta: Double = -0.05 * Double.pi/180.0
+            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
+            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            
+            strongSelf.renderQuality = RKRenderQuality.low
+            strongSelf.layer?.setNeedsDisplay()
+          }
+        }
+      })
+    }
+    
+    autoRotationTimer?.resume()
+  }
+  
+  // empty stub to avoid 'beep'
+  public override func moveToBeginningOfParagraph(_ sender: Any?)
+  {
+    
+  }
+  
+  public override func moveForward(_ sender: Any?)
+  {
+    // cancel previous timer if any
+    autoRotationTimer?.cancel()
+    
+    autoRotationTimer = DispatchSource.makeTimerSource(queue: autoRotationTimerQueue)
+    
+    autoRotationTimer?.schedule(deadline: .now(), repeating: .milliseconds(5), leeway: .milliseconds(10))
+    
+    autoRotationTimer?.setEventHandler { [weak self] in
+      DispatchQueue.main.async(execute: {
+        if let strongSelf = self
+        {
+          if let camera = strongSelf.renderCameraSource?.renderCamera
+          {
+            let theta: Double = 0.05 * Double.pi/180.0
+            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
+            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            
+            strongSelf.renderQuality = RKRenderQuality.low
+            strongSelf.layer?.setNeedsDisplay()
+          }
+        }
+      })
+    }
+    
+    autoRotationTimer?.resume()
+  }
+  
+  // empty stub to avoid 'beep'
+  public override func moveToEndOfParagraph(_ sender: Any?)
+  {
+    
   }
   
   override var isOpaque: Bool { return true }
