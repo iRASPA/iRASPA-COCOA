@@ -275,11 +275,11 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     switch(type)
     {
     case NSPasteboardTypeProjectTreeNodeCopy:
-      // copy projects command-c
+      // Copy projects command-c
       return self.snapshotData
     case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
-      // copy projects command-c
-      // used for (1) writing to NSSharingService (email-attachment)
+      // Copy projects command-c
+      // Used for (1) writing to NSSharingService (email-attachment)
       //          (2) used to 'paste' into the Finder
       let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
       let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.displayName).appendingPathExtension(pathExtension)
@@ -300,8 +300,8 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       }
       return (url as NSPasteboardWriting).pasteboardPropertyList(forType: type)
     case NSPasteboardTypeProjectTreeNode:
+      // Used for drag&drop between documents
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
-      debugPrint("pasteboardPropertyList wrong \(self.childNodes.count)")
       binaryEncoder.encode(self, encodeRepresentedObject: true, encodeChildren: true)
       return Data(binaryEncoder.data)
     case NSPasteboardTypeFrame:

@@ -3215,16 +3215,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   // =====================================================================
   
   // Copy is a server-side operation where the current state of the selection is stored in a snapshot stored locally in each ProjectTreeNode
-  // The operation is performed in the background to not block the UI. However, 'paste' is disabled for the duration of this operation.
-  // It is possible to do another 'Copy' while a copy is in progress. The previous 'copy'-operations will be cancelled.
   @objc func copy(_ sender: AnyObject)
   {
     if let document: iRASPADocument = self.windowController?.document as? iRASPADocument
     {
       let treeController: ProjectTreeController = document.documentData.projectData
-      
-      // Check if the option-key (i.e. alt) is pressed during cmd-c. If so, then do a 'Deep Copy' instead of a 'Shallow Copy'
-      let alternate: Bool = (sender as? NSMenuItem)?.isAlternate ?? false
       
       // copy&paste in via the general pasteboard
       let pasteboard = NSPasteboard.general
@@ -3239,7 +3234,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       for projectTreeNode in treeNodesToBeCopied
       {
         let binaryEncoder: BinaryEncoder = BinaryEncoder()
-        binaryEncoder.encode(projectTreeNode, encodeRepresentedObject: true, encodeChildren: alternate)
+        binaryEncoder.encode(projectTreeNode, encodeRepresentedObject: true, encodeChildren: true)
         projectTreeNode.snapshotData = Data(binaryEncoder.data)
       }
       

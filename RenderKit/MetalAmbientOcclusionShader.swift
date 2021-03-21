@@ -212,7 +212,7 @@ class MetalAmbientOcclusionShader
         
         for (j, structure) in structures.enumerated()
         {
-          let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: structure.cell.boundingBox.center, withTranslation: structure.origin)
+          let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: structure.cell.boundingBox.center, withTranslation:  SIMD3<Double>(0.0, 0.0, 0.0))
           
           var structureUniforms: [RKStructureUniforms] = [RKStructureUniforms](repeating: RKStructureUniforms(), count: max(structures.count,1))
           
