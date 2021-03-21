@@ -250,12 +250,6 @@
                                                 <action selector="copy:" target="Ady-hI-5gd" id="wD1-UM-05C"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Deep Copy" alternate="YES" keyEquivalent="c" id="Zjk-sj-4wZ">
-                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="copy:" target="Ady-hI-5gd" id="T0K-FY-FQG"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Paste" keyEquivalent="v" id="gVA-U4-sdL">
                                             <connections>
                                                 <action selector="paste:" target="Ady-hI-5gd" id="UvS-8e-Qdg"/>
