@@ -105,7 +105,7 @@ extension ProjectViewController
           documentData.projectData.updateFilteredNodes()
           projectOutlineView?.reloadItem(documentData.galleryLocalRootNode)
           
-      self.windowController?.detailTabViewController?.directoryViewController?.reloadData()
+          self.windowController?.detailTabViewController?.directoryViewController?.reloadData()
         }
       }
       else

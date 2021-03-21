@@ -2,7 +2,7 @@
 //  Data+Serialization.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2021 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -22,11 +22,13 @@ extension Data {
         case unwritableFile
     }
 
-    func scanValue<T>(start: Int) -> T
-    {
-      return self.subdata(in: start..<start+MemoryLayout<T>.size).withUnsafeBytes({ (ptr: UnsafeRawBufferPointer) -> T in
-        ptr.load(as: T.self)
-      })
+    func scanValue<T>(start: Int) -> T {
+        let subdata = self.subdata(in: start..<start+MemoryLayout<T>.size)
+        #if swift(>=5.0)
+        return subdata.withUnsafeBytes { $0.load(as: T.self) }
+        #else
+        return subdata.withUnsafeBytes { $0.pointee }
+        #endif
     }
 
     static func readStruct<T>(from file: UnsafeMutablePointer<FILE>, at offset: Int) -> T? where T: DataSerializable {
@@ -42,9 +44,14 @@ extension Data {
 
     static func consumePart(of size: Int, chunkSize: Int, skipCRC32: Bool = false,
                             provider: Provider, consumer: Consumer) throws -> CRC32 {
+        var checksum = CRC32(0)
+        guard size > 0 else {
+            try consumer(Data())
+            return checksum
+        }
+
         let readInOneChunk = (size < chunkSize)
         var chunkSize = readInOneChunk ? size : chunkSize
-        var checksum = CRC32(0)
         var bytesRead = 0
         while bytesRead < size {
             let remainingSize = size - bytesRead
@@ -60,26 +67,33 @@ extension Data {
     }
 
     static func readChunk(of size: Int, from file: UnsafeMutablePointer<FILE>) throws -> Data {
+        let alignment = MemoryLayout<UInt>.alignment
         #if swift(>=4.1)
-        let bytes = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: 1)
+        let bytes = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: alignment)
         #else
-        let bytes = UnsafeMutableRawPointer.allocate(bytes: size, alignedTo: 1)
+        let bytes = UnsafeMutableRawPointer.allocate(bytes: size, alignedTo: alignment)
         #endif
         let bytesRead = fread(bytes, 1, size, file)
         let error = ferror(file)
         if error > 0 {
             throw DataError.unreadableFile
         }
-        return Data(bytesNoCopy: bytes, count: bytesRead, deallocator: Data.Deallocator.free)
+        #if swift(>=4.1)
+        return Data(bytesNoCopy: bytes, count: bytesRead, deallocator: .custom({ buf, _ in buf.deallocate() }))
+        #else
+        let deallocator = Deallocator.custom({ buf, _ in buf.deallocate(bytes: size, alignedTo: 1) })
+        return Data(bytesNoCopy: bytes, count: bytesRead, deallocator: deallocator)
+        #endif
     }
 
     static func write(chunk: Data, to file: UnsafeMutablePointer<FILE>) throws -> Int {
         var sizeWritten = 0
-      
-        chunk.withUnsafeBytes { (ptr: UnsafeRawBufferPointer) -> () in
-          sizeWritten = fwrite(ptr.baseAddress!, 1, chunk.count, file)
+        chunk.withUnsafeBytes { (rawBufferPointer) in
+            if let baseAddress = rawBufferPointer.baseAddress, rawBufferPointer.count > 0 {
+                let pointer = baseAddress.assumingMemoryBound(to: UInt8.self)
+                sizeWritten = fwrite(pointer, 1, chunk.count, file)
+            }
         }
-      
         let error = ferror(file)
         if error > 0 {
             throw DataError.unwritableFile

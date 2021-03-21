@@ -188,7 +188,6 @@ extension Array: BinaryDecodable where Element: BinaryDecodable
   public init(fromBinary decoder: BinaryDecoder) throws
   {
     let count: UInt32 = try decoder.decode(UInt32.self)
-    //debugPrint("array count: \(count)")
     self.init()
     if(count != UInt32(0xFFFFFFFF))
     {
