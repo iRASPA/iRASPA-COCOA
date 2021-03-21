@@ -392,6 +392,7 @@
 		93A31C9B1EB4CD030010101B /* ReadStructureGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9A1EB4CD030010101B /* ReadStructureGroupOperation.swift */; };
 		93A31C9F1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31C9E1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift */; };
 		93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */; };
+		93A576842606742D00B09DD6 /* Archive+MemoryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */; };
 		93ACDD451FBF266900D6527C /* CommandLinePreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */; };
 		93B07D321EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */; };
 		93B0BF1D1E2BCEB40089D292 /* iRASPAHelp.help in Resources */ = {isa = PBXBuildFile; fileRef = 930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */; };
@@ -1456,6 +1457,7 @@
 		93A31C9A1EB4CD030010101B /* ReadStructureGroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadStructureGroupOperation.swift; sourceTree = "<group>"; };
 		93A31C9E1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComputeBondsGroupOperation.swift; sourceTree = "<group>"; };
 		93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportProjectOperation.swift; sourceTree = "<group>"; };
+		93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Archive+MemoryFile.swift"; sourceTree = "<group>"; };
 		93ACDD431FBB5DC200D6527C /* iRASPA-CLI.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "iRASPA-CLI.entitlements"; sourceTree = "<group>"; };
 		93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLinePreferenceViewController.swift; sourceTree = "<group>"; };
 		93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
@@ -2997,6 +2999,7 @@
 			isa = PBXGroup;
 			children = (
 				93F697B62181D9C1003273A8 /* ZIPFoundation.h */,
+				93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */,
 				93F697C02181D9E6003273A8 /* Archive.swift */,
 				93F697C22181D9E6003273A8 /* Archive+Reading.swift */,
 				93F697C42181D9E6003273A8 /* Archive+Writing.swift */,
@@ -4434,6 +4437,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93F697CD2181D9E7003273A8 /* Data+Compression.swift in Sources */,
+				93A576842606742D00B09DD6 /* Archive+MemoryFile.swift in Sources */,
 				93F697C82181D9E7003273A8 /* Entry.swift in Sources */,
 				93F697CA2181D9E7003273A8 /* FileManager+ZIP.swift in Sources */,
 				93F697C92181D9E7003273A8 /* Archive+Reading.swift in Sources */,

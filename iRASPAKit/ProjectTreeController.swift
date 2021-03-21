@@ -513,6 +513,11 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     itemNode.updateFilteredChildren(filterPredicate)
   }
   
+  public func selectedNodesTopLevelItems() -> [ProjectTreeNode]
+  {
+    return self.hiddenRootNode.findLocalRootsOfSelectedSubTrees(selection: self.selectedTreeNodes)
+  }
+  
   public func findLocalRootsOfSelectedSubTrees(selection: Set<ProjectTreeNode>) -> [ProjectTreeNode]
   {
     return self.hiddenRootNode.findLocalRootsOfSelectedSubTrees(selection: selection)

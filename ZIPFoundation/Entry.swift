@@ -2,7 +2,7 @@
 //  Entry.swift
 //  ZIPFoundation
 //
-//  Copyright © 2017 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
+//  Copyright © 2017-2021 Thomas Zoechling, https://www.peakstep.com and the ZIP Foundation project authors.
 //  Released under the MIT License.
 //
 //  See https://github.com/weichsel/ZIPFoundation/blob/master/LICENSE for license information.
@@ -11,7 +11,7 @@
 import Foundation
 import CoreFoundation
 
-/// A value that represents a file, a direcotry or a symbolic link within a ZIP `Archive`.
+/// A value that represents a file, a directory or a symbolic link within a ZIP `Archive`.
 ///
 /// You can retrieve instances of `Entry` from an `Archive` via subscripting or iteration.
 /// Entries are identified by their `path`.
@@ -93,19 +93,25 @@ public struct Entry: Equatable {
         let extraFieldData: Data
         let fileCommentData: Data
         var usesDataDescriptor: Bool { return (self.generalPurposeBitFlag & (1 << 3 )) != 0 }
-        var isZIP64: Bool { return self.versionNeededToExtract >= 45 }
+        var usesUTF8PathEncoding: Bool { return (self.generalPurposeBitFlag & (1 << 11 )) != 0 }
         var isEncrypted: Bool { return (self.generalPurposeBitFlag & (1 << 0)) != 0 }
+        var isZIP64: Bool { return UInt8(truncatingIfNeeded: self.versionNeededToExtract) >= 45 }
     }
-
+    /// Returns the `path` of the receiver within a ZIP `Archive` using a given encoding.
+    ///
+    /// - Parameters:
+    ///   - encoding: `String.Encoding`
+    public func path(using encoding: String.Encoding) -> String {
+        return String(data: self.centralDirectoryStructure.fileNameData, encoding: encoding) ?? ""
+    }
     /// The `path` of the receiver within a ZIP `Archive`.
     public var path: String {
         let dosLatinUS = 0x400
         let dosLatinUSEncoding = CFStringEncoding(dosLatinUS)
         let dosLatinUSStringEncoding = CFStringConvertEncodingToNSStringEncoding(dosLatinUSEncoding)
         let codepage437 = String.Encoding(rawValue: dosLatinUSStringEncoding)
-        let isUTF8 = ((self.centralDirectoryStructure.generalPurposeBitFlag >> 11) & 1) != 0
-        let encoding = isUTF8 ? String.Encoding.utf8 : codepage437
-        return String(data: self.centralDirectoryStructure.fileNameData, encoding: encoding) ?? ""
+        let encoding = self.centralDirectoryStructure.usesUTF8PathEncoding ? .utf8 : codepage437
+        return self.path(using: encoding)
     }
     /// The file attributes of the receiver as key/value pairs.
     ///
@@ -119,9 +125,7 @@ public struct Entry: Equatable {
     public var checksum: CRC32 {
         var checksum = self.centralDirectoryStructure.crc32
         if self.centralDirectoryStructure.usesDataDescriptor {
-            guard let dataDescriptor = self.dataDescriptor else {
-                return 0
-            }
+            guard let dataDescriptor = self.dataDescriptor else { return 0 }
             checksum = dataDescriptor.crc32
         }
         return checksum
@@ -143,14 +147,12 @@ public struct Entry: Equatable {
             case S_IFLNK:
                 return .symlink
             default:
-                return .file
+                return isDirectory ? .directory : .file
             }
         case .msdos:
             isDirectory = isDirectory || ((centralDirectoryStructure.externalFileAttributes >> 4) == 0x01)
-            fallthrough
-        default:
-            // for all other OSes we can only guess based on the directory suffix char
-            return isDirectory ? .directory : .file
+            fallthrough // For all other OSes we can only guess based on the directory suffix char
+        default: return isDirectory ? .directory : .file
         }
     }
     /// The size of the receiver's compressed data.
@@ -185,8 +187,7 @@ public struct Entry: Equatable {
 
     public static func == (lhs: Entry, rhs: Entry) -> Bool {
         return lhs.path == rhs.path
-            && lhs.localFileHeader.crc32
-            == rhs.localFileHeader.crc32
+            && lhs.localFileHeader.crc32 == rhs.localFileHeader.crc32
             && lhs.centralDirectoryStructure.relativeOffsetOfLocalHeader
             == rhs.centralDirectoryStructure.relativeOffsetOfLocalHeader
     }
@@ -205,28 +206,29 @@ public struct Entry: Equatable {
 
 extension Entry.LocalFileHeader {
     var data: Data {
-        let localFileHeaderSignature = self.localFileHeaderSignature
-        let versionNeededToExtract = self.versionNeededToExtract
-        let generalPurposeBitFlag = self.generalPurposeBitFlag
-        let compressionMethod = self.compressionMethod
-        let lastModFileTime = self.lastModFileTime
-        let lastModFileDate = self.lastModFileDate
-        let crc32 = self.crc32
-        let compressedSize = self.compressedSize
-        let uncompressedSize = self.uncompressedSize
-        let fileNameLength = self.fileNameLength
-        let extraFieldLength = self.extraFieldLength
-        var data: Data = withUnsafeBytes(of: localFileHeaderSignature) { Data($0) }
-        data.append(withUnsafeBytes(of: versionNeededToExtract) { Data($0) })
-        data.append(withUnsafeBytes(of: generalPurposeBitFlag) { Data($0) })
-        data.append(withUnsafeBytes(of: compressionMethod) { Data($0) })
-        data.append(withUnsafeBytes(of: lastModFileTime) { Data($0) })
-        data.append(withUnsafeBytes(of: lastModFileDate) { Data($0) })
-        data.append(withUnsafeBytes(of: crc32) { Data($0) })
-        data.append(withUnsafeBytes(of: compressedSize) { Data($0) })
-        data.append(withUnsafeBytes(of: uncompressedSize) { Data($0) })
-        data.append(withUnsafeBytes(of: fileNameLength) { Data($0) })
-        data.append(withUnsafeBytes(of: extraFieldLength) { Data($0) })
+        var localFileHeaderSignature = self.localFileHeaderSignature
+        var versionNeededToExtract = self.versionNeededToExtract
+        var generalPurposeBitFlag = self.generalPurposeBitFlag
+        var compressionMethod = self.compressionMethod
+        var lastModFileTime = self.lastModFileTime
+        var lastModFileDate = self.lastModFileDate
+        var crc32 = self.crc32
+        var compressedSize = self.compressedSize
+        var uncompressedSize = self.uncompressedSize
+        var fileNameLength = self.fileNameLength
+        var extraFieldLength = self.extraFieldLength
+        var data = Data()
+        withUnsafePointer(to: &localFileHeaderSignature, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &versionNeededToExtract, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &generalPurposeBitFlag, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &compressionMethod, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &lastModFileTime, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &lastModFileDate, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &crc32, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &compressedSize, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &uncompressedSize, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &fileNameLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &extraFieldLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
         data.append(self.fileNameData)
         data.append(self.extraFieldData)
         return data
@@ -245,7 +247,7 @@ extension Entry.LocalFileHeader {
         self.uncompressedSize = data.scanValue(start: 22)
         self.fileNameLength = data.scanValue(start: 26)
         self.extraFieldLength = data.scanValue(start: 28)
-        let additionalDataLength = Int(self.fileNameLength + self.extraFieldLength)
+        let additionalDataLength = Int(self.fileNameLength) + Int(self.extraFieldLength)
         guard let additionalData = try? provider(additionalDataLength) else { return nil }
         guard additionalData.count == additionalDataLength else { return nil }
         var subRangeStart = 0
@@ -259,42 +261,41 @@ extension Entry.LocalFileHeader {
 
 extension Entry.CentralDirectoryStructure {
     var data: Data {
-        let centralDirectorySignature = self.centralDirectorySignature
-        let versionMadeBy = self.versionMadeBy
-        let versionNeededToExtract = self.versionNeededToExtract
-        let generalPurposeBitFlag = self.generalPurposeBitFlag
-        let compressionMethod = self.compressionMethod
-        let lastModFileTime = self.lastModFileTime
-        let lastModFileDate = self.lastModFileDate
-        let crc32 = self.crc32
-        let compressedSize = self.compressedSize
-        let uncompressedSize = self.uncompressedSize
-        let fileNameLength = self.fileNameLength
-        let extraFieldLength = self.extraFieldLength
-        let fileCommentLength = self.fileCommentLength
-        let diskNumberStart = self.diskNumberStart
-        let internalFileAttributes = self.internalFileAttributes
-        let externalFileAttributes = self.externalFileAttributes
-        let relativeOffsetOfLocalHeader = self.relativeOffsetOfLocalHeader
-      
-        var data = withUnsafeBytes(of: centralDirectorySignature) { Data($0) }
-        data.append(withUnsafeBytes(of: versionMadeBy) { Data($0) })
-        data.append(withUnsafeBytes(of: versionNeededToExtract) { Data($0) })
-        data.append(withUnsafeBytes(of: generalPurposeBitFlag) { Data($0) })
-        data.append(withUnsafeBytes(of: compressionMethod) { Data($0) })
-        data.append(withUnsafeBytes(of: lastModFileTime) { Data($0) })
-        data.append(withUnsafeBytes(of: lastModFileDate) { Data($0) })
-        data.append(withUnsafeBytes(of: crc32) { Data($0) })
-        data.append(withUnsafeBytes(of: compressedSize) { Data($0) })
-        data.append(withUnsafeBytes(of: uncompressedSize) { Data($0) })
-        data.append(withUnsafeBytes(of: fileNameLength) { Data($0) })
-        data.append(withUnsafeBytes(of: extraFieldLength) { Data($0) })
-        data.append(withUnsafeBytes(of: fileCommentLength) { Data($0) })
-        data.append(withUnsafeBytes(of: diskNumberStart) { Data($0) })
-        data.append(withUnsafeBytes(of: internalFileAttributes) { Data($0) })
-        data.append(withUnsafeBytes(of: externalFileAttributes) { Data($0) })
-        data.append(withUnsafeBytes(of: relativeOffsetOfLocalHeader) { Data($0) })
-      
+        var centralDirectorySignature = self.centralDirectorySignature
+        var versionMadeBy = self.versionMadeBy
+        var versionNeededToExtract = self.versionNeededToExtract
+        var generalPurposeBitFlag = self.generalPurposeBitFlag
+        var compressionMethod = self.compressionMethod
+        var lastModFileTime = self.lastModFileTime
+        var lastModFileDate = self.lastModFileDate
+        var crc32 = self.crc32
+        var compressedSize = self.compressedSize
+        var uncompressedSize = self.uncompressedSize
+        var fileNameLength = self.fileNameLength
+        var extraFieldLength = self.extraFieldLength
+        var fileCommentLength = self.fileCommentLength
+        var diskNumberStart = self.diskNumberStart
+        var internalFileAttributes = self.internalFileAttributes
+        var externalFileAttributes = self.externalFileAttributes
+        var relativeOffsetOfLocalHeader = self.relativeOffsetOfLocalHeader
+        var data = Data()
+        withUnsafePointer(to: &centralDirectorySignature, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &versionMadeBy, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &versionNeededToExtract, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &generalPurposeBitFlag, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &compressionMethod, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &lastModFileTime, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &lastModFileDate, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &crc32, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &compressedSize, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &uncompressedSize, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &fileNameLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &extraFieldLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &fileCommentLength, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &diskNumberStart, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &internalFileAttributes, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &externalFileAttributes, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
+        withUnsafePointer(to: &relativeOffsetOfLocalHeader, { data.append(UnsafeBufferPointer(start: $0, count: 1))})
         data.append(self.fileNameData)
         data.append(self.extraFieldData)
         data.append(self.fileCommentData)
@@ -320,7 +321,7 @@ extension Entry.CentralDirectoryStructure {
         self.internalFileAttributes = data.scanValue(start: 36)
         self.externalFileAttributes = data.scanValue(start: 38)
         self.relativeOffsetOfLocalHeader = data.scanValue(start: 42)
-        let additionalDataLength = Int(self.fileNameLength + self.extraFieldLength + self.fileCommentLength)
+        let additionalDataLength = Int(self.fileNameLength) + Int(self.extraFieldLength) + Int(self.fileCommentLength)
         guard let additionalData = try? provider(additionalDataLength) else { return nil }
         guard additionalData.count == additionalDataLength else { return nil }
         var subRangeStart = 0
@@ -384,12 +385,9 @@ extension Entry.DataDescriptor {
     init?(data: Data, additionalDataProvider provider: (Int) throws -> Data) {
         guard data.count == Entry.DataDescriptor.size else { return nil }
         let signature: UInt32 = data.scanValue(start: 0)
-        // The DataDescriptor signature is not mandatory so we have to re-arrange
-        // the input data if it is missing
+        // The DataDescriptor signature is not mandatory so we have to re-arrange the input data if it is missing.
         var readOffset = 0
-        if signature == self.dataDescriptorSignature {
-            readOffset = 4
-        }
+        if signature == self.dataDescriptorSignature { readOffset = 4 }
         self.crc32 = data.scanValue(start: readOffset + 0)
         self.compressedSize = data.scanValue(start: readOffset + 4)
         self.uncompressedSize = data.scanValue(start: readOffset + 8)

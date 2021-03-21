@@ -124,6 +124,11 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   {
     if let archive: Archive = Archive(url: url, accessMode: Archive.AccessMode.create)
     {
+      var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
+      mach_timebase_info(&info)
+      
+      let startTime: UInt64  = mach_absolute_time()
+      
       let binaryEncoder: BinaryEncoder = BinaryEncoder.init()
       binaryEncoder.encode(documentData)
       let mainData: Data = Data(binaryEncoder.data)
@@ -181,8 +186,17 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
           })
         }
       }
+      let endTime: UInt64  = mach_absolute_time()
+      let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000000001
+      let formattedTime = String(format: "%.3f", time)
+      
+      LogQueue.shared.verbose(destination: self.windowControllers.first, message: "Saving to archive in \(formattedTime) seconds")
     }
-    LogQueue.shared.info(destination: self.windowControllers.first, message: "Saving to file.")
+    else
+    {
+      LogQueue.shared.error(destination: self.windowControllers.first, message: "Failed to create archive \(url.absoluteString) of type \(typeName)")
+    }
+    
   }
   
   
@@ -191,66 +205,27 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   
   func readModernDocumentFileFormat(url: URL) throws
   {
-    guard let archive = Archive(url: url, accessMode: .read) else  {
+    var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
+    mach_timebase_info(&info)
+    
+    let startTime: UInt64  = mach_absolute_time()
+    
+    let data = try Data(contentsOf: url)
+    guard let archive = Archive(data: data, accessMode: .read, preferredEncoding: .utf8) else {
+      LogQueue.shared.error(destination: self.windowControllers.first, message: "Unable to open archive, " + url.absoluteString)
       return
     }
+    
+    // create dictionary to create an order of magntitude speed up in reading the entries.
+    let dictionary = Dictionary(grouping: archive, by: { $0.path})
    
-    if let entry = archive["nl.darkwing.iRASPA_forceFieldData"]
+    if let forceFieldData = dictionary["nl.darkwing.iRASPA_forceFieldData"]
     {
-      do
+      if forceFieldData.count > 1
       {
-        var readData: Data = Data(capacity: entry.uncompressedSize)
-        let _ = try archive.extract(entry, consumer: { (data: Data) in
-          readData.append(data)
-        })
-        self.forceFieldSets = try BinaryDecoder(data: [UInt8](readData)).decode(SKForceFieldSets.self)
+        LogQueue.shared.warning(destination: self.windowControllers.first, message: "Multiple Force field-sets found in archive, only reading the first")
       }
-      catch
-      {
-        LogQueue.shared.error(destination: self.windowControllers.first, message: "Force field-set loading error, " + error.localizedDescription)
-      }
-    }
-    
-    if let entry = archive["nl.darkwing.iRASPA_colorData"]
-    {
-      do
-      {
-        var readData: Data = Data(capacity: entry.uncompressedSize)
-        let _ = try archive.extract(entry, consumer: { (data: Data) in
-          readData.append(data)
-        })
-        self.colorSets = try BinaryDecoder(data: [UInt8](readData)).decode(SKColorSets.self)
-      }
-      catch
-      {
-        LogQueue.shared.error(destination: self.windowControllers.first, message: "Force field-set loading error, " + error.localizedDescription)
-      }
-    }
-    
-    guard let entry = archive["nl.darkwing.iRASPA_projectData"] else {
-      LogQueue.shared.error(destination: self.windowControllers.first, message: "Color data missing")
-      return
-    }
-    
-    do
-    {
-      var readData: Data = Data(capacity: entry.uncompressedSize)
-      let _ = try archive.extract(entry, consumer: { (data: Data) in
-        readData.append(data)
-      })
-      
-      self.documentData = try BinaryDecoder(data: [UInt8](readData)).decode(DocumentData.self)
-    }
-    catch let error
-    {
-      LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing main entry from ZIP archive failed with error, " + error.localizedDescription)
-      return
-    }
-    
-    let projectTreeNodes: [ProjectTreeNode] = self.documentData.projectLocalRootNode.flattenedNodes()
-    for node: ProjectTreeNode in projectTreeNodes
-    {
-      if let entry = archive["nl.darkwing.iRASPA_Project_" + node.representedObject.fileNameUUID]
+      if let entry = forceFieldData.first
       {
         do
         {
@@ -258,21 +233,97 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
           let _ = try archive.extract(entry, consumer: { (data: Data) in
             readData.append(data)
           })
-          
-          // store the untouched/unwrapped data in the project
-          node.representedObject.data = readData
+          self.forceFieldSets = try BinaryDecoder(data: [UInt8](readData)).decode(SKForceFieldSets.self)
         }
-        catch let error
+        catch
         {
-          LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing main entry from ZIP archive failed with error, " + error.localizedDescription)
-          return
+          LogQueue.shared.warning(destination: self.windowControllers.first, message: "Force field-set loading error, " + error.localizedDescription)
+        }
+      }
+    }
+    else
+    {
+      LogQueue.shared.warning(destination: self.windowControllers.first, message: "Force field-sets not found in archive")
+    }
+    
+    if let colorData = dictionary["nl.darkwing.iRASPA_colorData"]
+    {
+      if colorData.count > 1
+      {
+        LogQueue.shared.warning(destination: self.windowControllers.first, message: "Multiple Color-sets found in archive, only reading the first")
+      }
+      if let entry = colorData.first
+      {
+        do
+        {
+          var readData: Data = Data(capacity: entry.uncompressedSize)
+          let _ = try archive.extract(entry, consumer: { (data: Data) in
+            readData.append(data)
+          })
+          self.colorSets = try BinaryDecoder(data: [UInt8](readData)).decode(SKColorSets.self)
+        }
+        catch
+        {
+          LogQueue.shared.warning(destination: self.windowControllers.first, message: "Color-set loading error, " + error.localizedDescription)
         }
       }
     }
     
+    guard let projectEntry = dictionary["nl.darkwing.iRASPA_projectData"]?.first else {
+      LogQueue.shared.error(destination: self.windowControllers.first, message: "Project data missing")
+      return
+    }
+    
+    do
+    {
+      var readData: Data = Data(capacity: projectEntry.uncompressedSize)
+      let _ = try archive.extract(projectEntry, consumer: { (data: Data) in
+        readData.append(data)
+      })
+      self.documentData = try BinaryDecoder(data: [UInt8](readData)).decode(DocumentData.self)
+    }
+    catch let error
+    {
+      LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing entry \(projectEntry.path) from ZIP archive failed with error, " + error.localizedDescription)
+      return
+    }
+    
+    let projectTreeNodes: [ProjectTreeNode] = self.documentData.projectLocalRootNode.flattenedNodes()
+    for projectTreeNode: ProjectTreeNode in projectTreeNodes
+    {
+      if let projectData = dictionary["nl.darkwing.iRASPA_Project_" + projectTreeNode.representedObject.fileNameUUID]
+      {
+        if projectData.count > 1
+        {
+          LogQueue.shared.warning(destination: self.windowControllers.first, message: "Multiple projects with the same id-found in archive, only reading the first")
+        }
+        if let entry = projectData.first
+        {
+          do
+          {
+            var readData: Data = Data(capacity: entry.uncompressedSize)
+            let _ = try archive.extract(entry, consumer: { (data: Data) in
+              readData.append(data)
+            })
+            // store the untouched/unwrapped data in the project
+            projectTreeNode.representedObject.data = readData
+          }
+          catch let error
+          {
+            LogQueue.shared.error(destination: self.windowControllers.first, message: "Accesing entry \(entry.path) from ZIP archive failed with error, " + error.localizedDescription)
+          }
+        }
+      }
+    }
+    let endTime: UInt64  = mach_absolute_time()
+    let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000000001
+    
     // make sure to run this on the main thread
     DispatchQueue.main.async(execute: {
       self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
+      
+      let formattedTime = String(format: "%.3f", time)
+      LogQueue.shared.verbose(destination: self.windowControllers.first, message: "Document read in \(formattedTime) seconds")
     })
   }
   

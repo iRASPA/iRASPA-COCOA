@@ -1134,22 +1134,18 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         selection.insert(item)
       }
-      return projectTreeController.findLocalRootsOfSelectedSubTrees(selection: selection)
+      return Array(selection)
     }
     return []
   }
   
   func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting?
   {
-    if let projectTreeController: ProjectTreeController = (windowController?.document as? iRASPADocument)?.documentData.projectData,
-       let localRootsOfSelectedNodes = self.projectOutlineView?.localRootsOfSelectedNodes,
+    if let localRootsOfSelectedNodes = self.projectOutlineView?.localRootsOfSelectedNodes,
        let node: ProjectTreeNode = item as? ProjectTreeNode,
        localRootsOfSelectedNodes.contains(node)
     {
-      var selection: Set<ProjectTreeNode> = projectTreeController.selectedTreeNodes
-      selection.insert(node)
-      
-      return projectTreeController.copyOfSelectionOfSubTree(of: node, selection: selection, recursive: false)
+      return node
     }
     
     return EmptyPasteboardItem()
@@ -1317,7 +1313,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       self.projectOutlineView?.beginUpdates()
       
-      
       for node: ProjectTreeNode in self.draggedNodes
       {
         // Moving it from within the same parent -> account for the remove, if it is past the oldIndex
@@ -1334,6 +1329,12 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         {
           if let placeholder = node.deepCopy
           {
+            // give the projects new uuid's
+            placeholder.flattenedNodes().forEach { (node) in
+              node.isEditable = true
+              node.representedObject.fileNameUUID = UUID().uuidString
+            }
+            
             placeholder.isEditable = true
             placeholder.lockedChildren = false
             placeholder.updateFilteredChildrenRecursively(predicate)
@@ -1349,8 +1350,16 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
         else if node.isDescendantOfNode(document.documentData.cloudRootNode)
         {
-          if let placeholder = node.shallowCopy
+          if let placeholder = node.deepCopy
           {
+            // Give the projects new uuid's if loaded, but uuid's are left the same for a lazy cloud project (so that theycan be loaded from the cloud via the uuid)
+            placeholder.flattenedNodes().forEach { (node) in
+              if node.representedObject.lazyStatus == .loaded
+              {
+                node.isEditable = true
+                node.representedObject.fileNameUUID = UUID().uuidString
+              }
+            }
             placeholder.isEditable = true
             placeholder.lockedChildren = false
             placeholder.updateFilteredChildrenRecursively(predicate)
@@ -1365,14 +1374,14 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
         else
         {
-          placeholders.append(node)
+          // Note: uuid's are left the same for a move
           
+          placeholders.append(node)
           self.moveNode(node, toItem: toItem, childIndex: childIndex)
         }
         
         childIndex = childIndex + 1
       }
-      
       
       info.enumerateDraggingItems(options: [.concurrent], for: self.projectOutlineView, classes: [NSPasteboardItem.self], searchOptions: [:], using: { (draggingItem, index, stop) in
         let node = placeholders[index]
@@ -1395,7 +1404,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   func externalDrop(info: NSDraggingInfo, item: Any?, index: Int) -> Bool
   {
     var childIndex: Int = index
-        
+            
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
     {
       var insertionIndex: Int = 0
@@ -1420,6 +1429,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         
         if let item: ProjectTreeNode = draggingItem.item as? ProjectTreeNode
         {
+          debugPrint("drag/drop \(item.displayName)")
           self.addNode(item, inItem: toItem, atIndex: childIndex, animationOptions:  [.effectGap])
           
           childIndex += 1
@@ -1436,6 +1446,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           }
         }
       })
+      document.documentData.projectData.updateFilteredNodes()
       
       self.projectOutlineView?.endUpdates()
     }
@@ -2889,13 +2900,20 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         if let node: ProjectTreeNode = self.projectOutlineView?.item(atRow: index) as? ProjectTreeNode
         {
+          // do not allow the selection of loading nodes
+          if(node.representedObject.isLoading)
+          {
+            return self.projectOutlineView?.selectedRowIndexes ?? IndexSet()
+          }
+          
+          // do not allow the selection of root nodes like GALLERY, LOCAL PROJECTS, and ICLOUD PUBLIC
           if document.documentData.projectData.rootNodes.contains(node)
           {
             return self.projectOutlineView?.selectedRowIndexes ?? IndexSet()
           }
           
-          if node.isDescendantOfNode(document.documentData.cloudRootNode),
-            !connectedToNetwork()
+          // do not allow the selection of cloud-nodes when disconnected from the network
+          if node.isDescendantOfNode(document.documentData.cloudRootNode), !connectedToNetwork()
           {
             return self.projectOutlineView?.selectedRowIndexes ?? IndexSet()
           }
@@ -3211,90 +3229,27 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       // copy&paste in via the general pasteboard
       let pasteboard = NSPasteboard.general
       
-      let rootsOfSelectedNodes: [ProjectTreeNode] = treeController.findLocalRootsOfSelectedSubTrees(selection: treeController.selectedTreeNodes)
-      let treeNodesToBeCopied: [ProjectTreeNode] = rootsOfSelectedNodes.compactMap{treeController.copyOfSelectionOfSubTree(of: $0, selection: treeController.selectedTreeNodes,recursive: alternate)}
+      let treeNodesToBeCopied: [ProjectTreeNode] = Array(treeController.selectedTreeNodes)
       
-      // run the copy in the background so that the UI is responsive
-      DispatchQueue.global(qos: .userInitiated).async {
-        
-        if iRASPAWindowController.copyAndPasteConcurrentQueue.operationCount > 0
-        {
-          // Previous copy still running, so cancel all copy-operations
-          iRASPAWindowController.copyAndPasteConcurrentQueue.cancelAllOperations()
-        }
-        
-        
-        // The final operation will be to clear the pasteboard and write the objects. This operation depends on all copy-operations,
-        // e.g. all copy-operations must have finished before the objects are written.
-        let writeObjectsToPasteboordOperation: BlockOperation = BlockOperation()
-        weak var weakWriteObjectsToPasteboordOperation: BlockOperation? = writeObjectsToPasteboordOperation
-        writeObjectsToPasteboordOperation.addExecutionBlock({
-          if let strongWriteObjectsToPasteboordOperation = weakWriteObjectsToPasteboordOperation, strongWriteObjectsToPasteboordOperation.isCancelled
-          {
-            // Return immediately if cancelled
-            return
-          }
-          DispatchQueue.main.async(execute: {
-            pasteboard.clearContents()
-            pasteboard.writeObjects(treeNodesToBeCopied)
-          })
-        })
-        
-        // A copy-operation is basically just creating a snapshot of the current state of the copied ProjectTreeNode.
-        treeNodesToBeCopied.flatMap{$0.flattenedNodes()}.forEach{ projectTreeNode in
-          
-          // First make sure all involved ProjectTreeNodes are set as "TemporarilyLocked" and update the UI
-          // Execute the 'snapshot'-operations _after_ this one has finished
-          let updateMainUIBlock: BlockOperation = BlockOperation(block: {
-            self.selectedProject?.isTemporarilyLocked = true
-            if let proxyProject: ProjectTreeNode = self.selectedProject,
-                   proxyProject.representedObject.fileNameUUID == projectTreeNode.representedObject.fileNameUUID
-            {
-              // reload all
-              self.windowController?.detailTabViewController?.reloadData()
-            }
-          })
-          let snapshotOperation: BlockOperation = BlockOperation()
-          snapshotOperation.addDependency(updateMainUIBlock)
-          OperationQueue.main.addOperation(updateMainUIBlock)
-          
-          weak var weakSnapshotOperation: BlockOperation? = snapshotOperation
-          snapshotOperation.addExecutionBlock({
-            if let strongSnapshotOperation = weakSnapshotOperation, strongSnapshotOperation.isCancelled
-            {
-              LogQueue.shared.info(destination: self.windowController, message: "Previous copy cancelled")
-              // Return immediately if cancelled
-              return
-            }
-            
-            
-            let data: Data = projectTreeNode.representedObject.projectData()
-            
-            if let strongSnapshotOperation = weakSnapshotOperation, strongSnapshotOperation.isCancelled
-            {
-              LogQueue.shared.info(destination: self.windowController, message: "Previous copy cancelled")
-              // Return if cancellation requested
-              return
-            }
-            
-            // On the main queue, set the snapshot Data as a property of the ProjectTreeNode, unlock the ProjectTreeNode and update the UI
-            DispatchQueue.main.async(execute: {
-                projectTreeNode.representedObject.data = data
-                self.selectedProject?.isTemporarilyLocked = false
-                if let proxyProject: ProjectTreeNode = self.selectedProject ,
-                       proxyProject.representedObject.fileNameUUID == projectTreeNode.representedObject.fileNameUUID
-                {
-                  // Reload and update the UI
-                  self.windowController?.detailTabViewController?.reloadData()
-                }
-              })
-          })
-          
-          // the write of the objects depends on finishing all snapshot-operations
-          writeObjectsToPasteboordOperation.addDependency(snapshotOperation)
-          iRASPAWindowController.copyAndPasteConcurrentQueue.addOperation(snapshotOperation)
-        }
-        iRASPAWindowController.copyAndPasteConcurrentQueue.addOperation(writeObjectsToPasteboordOperation)
+      // the projectTreeNode member 'snapshotData' is used for two reasons:
+      //   1) We can generate the data here for either shallow or deep-copies,
+      //   2) We can handle NSPasteboardTypeProjectTreeNodeCopy and kUTTypeFileURL in one go.
+      //   Both are used in 'immediate' mode of the pasteboard, since kUTTypeFileURL needs that anyway,
+      //   i.e. the file needs to be saved and the url returned in 'pasteboardPropertyList' of the NSPasteboardWriting
+      for projectTreeNode in treeNodesToBeCopied
+      {
+        let binaryEncoder: BinaryEncoder = BinaryEncoder()
+        binaryEncoder.encode(projectTreeNode, encodeRepresentedObject: true, encodeChildren: alternate)
+        projectTreeNode.snapshotData = Data(binaryEncoder.data)
+      }
+      
+      pasteboard.clearContents()
+      pasteboard.writeObjects(treeNodesToBeCopied)
+      
+      for projectTreeNode in treeNodesToBeCopied
+      {
+        // the snapshot can now be released
+        projectTreeNode.snapshotData = nil
       }
     }
   }
@@ -3317,11 +3272,21 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         var insertionIndex: Int = isExpandable ? 0 : childIndex + 1
         
         self.projectOutlineView?.beginUpdates()
+        
         for pasteboardItem in pasteboardItems
         {
-          if let placeholder =  pasteboardItem as? ProjectTreeNode
+          if let projectTreeNode =  pasteboardItem as? ProjectTreeNode
           {
-            self.addNode(placeholder, inItem: toItem, atIndex: insertionIndex, animationOptions:  [.effectGap])
+            // give the projects new uuid's, unless they are cloud-stored projects
+            projectTreeNode.flattenedNodes().forEach { (node) in
+              if(![.publicCloud, .privateCloud, .sharedCloud].contains(node.representedObject.storageType) || node.representedObject.lazyStatus == .loaded)
+              {
+                node.isEditable = true
+                node.representedObject.fileNameUUID = UUID().uuidString
+              }
+            }
+            
+            self.addNode(projectTreeNode, inItem: toItem, atIndex: insertionIndex, animationOptions:  [.effectGap])
             insertionIndex += 1
           }
           else
@@ -3329,6 +3294,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             LogQueue.shared.info(destination: self.windowController, message: "Pasted item of unknown type skipped")
           }
         }
+        document.documentData.projectData.updateFilteredNodes()
         self.projectOutlineView?.endUpdates()
       }
     }
@@ -3336,7 +3302,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   @objc func cut(_ sender: AnyObject)
   {
-
+    copy(sender)
+    self.deleteSelection()
   }
 }
 

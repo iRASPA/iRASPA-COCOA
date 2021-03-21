@@ -84,7 +84,7 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
   public var storageType: StorageType
   public var project: ProjectNode
   public var lazyStatus: LazyStatus
-  public var data: Data?
+  public var data: Data? = nil
   public var fileWrapper: FileWrapper?
   
   //cached properties (dynamically accesible)
