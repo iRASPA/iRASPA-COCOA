@@ -1127,7 +1127,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     
     if encodeChildren
     {
-      encoder.encode(self.childNodes.filter{$0.representedObject.lazyStatus != .loading}, encodeRepresentedObject: encodeRepresentedObject, encodeChildren: encodeChildren)
+      encoder.encode(self.filteredAndSortedNodes.filter{$0.representedObject.lazyStatus != .loading}, encodeRepresentedObject: encodeRepresentedObject, encodeChildren: encodeChildren)
     }
     else
     {

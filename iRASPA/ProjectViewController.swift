@@ -60,7 +60,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   weak var windowController: iRASPAWindowController?
   
   let folderIcon: NSImage = NSImage(named: "FolderIcon")!
-  let cifFileIcon: NSImage = NSImage(named: "CrystalProject")!
+  let materialsIcon: NSImage = NSImage(named: "MaterialsIcon")!
+  let materialsCloudIcon: NSImage = NSImage(named: "MaterialsCloudIcon")!
   
   private var draggedNodes: [ProjectTreeNode] = []
   
@@ -747,7 +748,14 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       }
       else
       {
-        view.imageView?.image = self.cifFileIcon
+        if node.representedObject.storageType == .publicCloud
+        {
+          view.imageView?.image = self.materialsCloudIcon
+        }
+        else
+        {
+          view.imageView?.image = self.materialsIcon
+        }
       }
       
       if node.representedObject.lazyStatus == .loading || node.representedObject.lazyStatus == .error
