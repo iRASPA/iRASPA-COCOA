@@ -43,11 +43,12 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
     case none = 0
     case generic=1
     case group=2
-    case structure=3
+    case material=3
     case VASP=4
     case RASPA=5
-    case GULP=6
+    case GROMACS=6
     case CP2K=7
+    case OPENMM=8
   }
   
   enum iRASPAProjectError: Error
@@ -107,7 +108,7 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
   public init(structureProject: ProjectStructureNode)
   {
     self.project = structureProject
-    self.projectType = ProjectType.structure
+    self.projectType = ProjectType.material
     self.fileNameUUID = UUID().uuidString
     self.nodeType = .leaf
     self.storageType = .local
@@ -158,7 +159,7 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
               nodeType: NodeType, storageType: StorageType, lazyStatus: LazyStatus)
   {
     self.project = ProjectNode(name: "")
-    self.projectType = ProjectType.structure
+    self.projectType = ProjectType.material
     self.fileNameUUID = fileName
     self.nodeType = nodeType
     self.storageType = storageType
@@ -196,7 +197,7 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
   
   public var isProjectStructureNode: Bool
   {
-    if projectType == .structure
+    if projectType == .material
     {
       return true
     }
@@ -215,7 +216,7 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
   
   public var loadedProjectStructureNode: ProjectStructureNode?
   {
-    if projectType == .structure
+    if projectType == .material
     {
       return project as? ProjectStructureNode
     }
@@ -270,7 +271,7 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
     encoder.encode(storageType.rawValue)
     encoder.encode(iRASPAProject.LazyStatus.lazy.rawValue) // set the status to 'lazy'
     
-    if(storageType == .publicCloud && projectType == .structure)
+    if(storageType == .publicCloud && projectType == .material)
     {
       encoder.encode(volumetricSurfaceArea)
       encoder.encode(gravimetricSurfaceArea)
@@ -311,7 +312,7 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
     
     self.project = ProjectNode(name: "")
     
-    if(readStorageType == .publicCloud && readProjectType == .structure)
+    if(readStorageType == .publicCloud && readProjectType == .material)
     {
       volumetricSurfaceArea = try decoder.decode(Double.self)
       gravimetricSurfaceArea = try decoder.decode(Double.self)
@@ -389,16 +390,18 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
           self.project = try decoder.decode(ProjectNode.self)
         case .group:
           self.project = try decoder.decode(ProjectGroup.self)
-        case .structure:
+        case .material:
           self.project = try decoder.decode(ProjectStructureNode.self)
         case .VASP:
           self.project = try decoder.decode(ProjectVASPNode.self)
         case .RASPA:
           self.project = try decoder.decode(ProjectRASPANode.self)
-        case .GULP:
-          self.project = try decoder.decode(ProjectGULPNode.self)
+        case .GROMACS:
+          self.project = try decoder.decode(ProjectGromacsNode.self)
         case .CP2K:
           self.project = try decoder.decode(ProjectCP2KNode.self)
+        case .OPENMM:
+          self.project = try decoder.decode(ProjectOpenMMNode.self)
         }
       }
     }

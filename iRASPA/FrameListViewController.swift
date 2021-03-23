@@ -52,6 +52,19 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   
   @IBOutlet private var addContextMenu: NSMenu?
   
+  let crystalIcon: NSImage = NSImage(named: "CrystalIcon")!
+  let molecularIcon: NSImage = NSImage(named: "MolecularIcon")!
+  let molecularCrystalIcon: NSImage = NSImage(named: "MolecularCrystalIcon")!
+  let proteinIcon: NSImage = NSImage(named: "ProteinIcon")!
+  let proteinCrystalIcon: NSImage = NSImage(named: "ProteinCrystalIcon")!
+  let ellipsoidIcon: NSImage = NSImage(named: "EllipsoidIcon")!
+  let ellipsoidCrystalIcon: NSImage = NSImage(named: "EllipsoidCrystalIcon")!
+  let cylinderIcon: NSImage = NSImage(named: "CylinderIcon")!
+  let cylinderCrystalIcon: NSImage = NSImage(named: "CylinderCrystalIcon")!
+  let prismIcon: NSImage = NSImage(named: "PrismIcon")!
+  let prismCrystalIcon: NSImage = NSImage(named: "PrismCrystalIcon")!
+  let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
+  
   lazy var frameQueue: FKOperationQueue = {
     var queue = FKOperationQueue()
     queue.name = "Structure queue"
@@ -262,6 +275,35 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        row < movie.frames.count
     {
       view.textField?.stringValue = movie.frames[row].structure.displayName
+      
+      switch(movie.frames[row].structure.materialType)
+      {
+      case .crystal:
+        view.imageView?.image = crystalIcon
+      case .molecularCrystal:
+        view.imageView?.image = molecularCrystalIcon
+      case .molecule:
+        view.imageView?.image = molecularIcon
+      case .protein:
+        view.imageView?.image = proteinIcon
+      case .proteinCrystal:
+        view.imageView?.image = proteinCrystalIcon
+      case .crystalEllipsoidPrimitive:
+        view.imageView?.image = ellipsoidCrystalIcon
+      case .crystalCylinderPrimitive:
+        view.imageView?.image = cylinderCrystalIcon
+      case .crystalPolygonalPrismPrimitive:
+        view.imageView?.image = prismCrystalIcon
+      case .ellipsoidPrimitive:
+        view.imageView?.image = ellipsoidIcon
+      case .cylinderPrimitive:
+        view.imageView?.image = cylinderIcon
+      case .polygonalPrismPrimitive:
+        view.imageView?.image = prismIcon
+      default:
+        view.imageView?.image = unknownIcon
+      }
+      
       return view
     }
     return nil

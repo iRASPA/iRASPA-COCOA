@@ -82,7 +82,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
   }
   
-  override var materialType: SKStructure.Kind
+  public override var materialType: SKStructure.Kind
   {
     return .molecule
   }

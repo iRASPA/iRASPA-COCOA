@@ -411,7 +411,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   public var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
   
-  var materialType: SKStructure.Kind
+  public var materialType: SKStructure.Kind
   {
     return .structure
   }

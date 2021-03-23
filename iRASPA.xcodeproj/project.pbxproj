@@ -431,6 +431,8 @@
 		93BDF7651FB638810006692C /* SimulationKitProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDF7641FB638810006692C /* SimulationKitProtocols.swift */; };
 		93BDF76B1FB73F900006692C /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDF76A1FB73F900006692C /* Console.swift */; };
 		93BDF76D1FB7442F0006692C /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDF76C1FB7442F0006692C /* Options.swift */; };
+		93BF1B012609FE2600AFFCF3 /* ProjectGromacsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B002609FE2600AFFCF3 /* ProjectGromacsNode.swift */; };
+		93BF1B122609FE4500AFFCF3 /* ProjectOpenMMNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */; };
 		93BF25F31EE71DC200128CD4 /* OperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 93BF25F11EE71DC200128CD4 /* OperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93BF25F61EE71DC200128CD4 /* OperationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; };
 		93BF25F71EE71DC200128CD4 /* OperationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1488,6 +1490,8 @@
 		93BDF7641FB638810006692C /* SimulationKitProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationKitProtocols.swift; sourceTree = "<group>"; };
 		93BDF76A1FB73F900006692C /* Console.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
 		93BDF76C1FB7442F0006692C /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
+		93BF1B002609FE2600AFFCF3 /* ProjectGromacsNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectGromacsNode.swift; sourceTree = "<group>"; };
+		93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectOpenMMNode.swift; sourceTree = "<group>"; };
 		93BF25EF1EE71DC200128CD4 /* OperationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OperationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93BF25F11EE71DC200128CD4 /* OperationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OperationKit.h; sourceTree = "<group>"; };
 		93BF25F21EE71DC200128CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2239,6 +2243,8 @@
 				930DD65D1E26BAD400B8FE9B /* ProjectVaspNode.swift */,
 				93F9363E1EBCDC500094C509 /* ProjectRASPANode.swift */,
 				93F936401EBCE2600094C509 /* ProjectGULPNode.swift */,
+				93BF1B002609FE2600AFFCF3 /* ProjectGromacsNode.swift */,
+				93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */,
 				93F936421EBCE26E0094C509 /* ProjectCP2KNode.swift */,
 				930DD6541E26BAAD00B8FE9B /* ProjectGroup.swift */,
 				930DD6571E26BAAD00B8FE9B /* ProjectNode.swift */,
@@ -4158,6 +4164,8 @@
 				938B44F51EB7BEC0006B7704 /* FetchRecordFromCloudOperation.swift in Sources */,
 				93F9362F1EB8FEF10094C509 /* String.swift in Sources */,
 				930090EF1EB86DD00050FBC6 /* SaveProjectToCloudOperation.swift in Sources */,
+				93BF1B122609FE4500AFFCF3 /* ProjectOpenMMNode.swift in Sources */,
+				93BF1B012609FE2600AFFCF3 /* ProjectGromacsNode.swift in Sources */,
 				93A31C9B1EB4CD030010101B /* ReadStructureGroupOperation.swift in Sources */,
 				9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */,
 				933F4F241FB1C24D00753D08 /* Errors.swift in Sources */,

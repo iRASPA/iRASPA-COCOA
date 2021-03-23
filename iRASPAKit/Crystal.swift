@@ -104,7 +104,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return true
   }
   
-  override var materialType: SKStructure.Kind
+  public override var materialType: SKStructure.Kind
   {
     return .crystal
   }

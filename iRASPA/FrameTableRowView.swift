@@ -41,6 +41,7 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
   var shapeLayer: CAShapeLayer? = nil
   var path: CGPath = CGMutablePath()
   
+  var correction: CGFloat = 0.0
   
   override public var isOpaque: Bool { return false }
   
@@ -51,6 +52,11 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
     
     // Optimzing Drawing and scrolling, 2013 session 215
     self.canDrawSubviewsIntoLayer = true
+    
+    if #available(OSX 11.0, *)
+    {
+      correction = 20.0
+    }
   }
   
   required public init?(coder: NSCoder)
@@ -60,6 +66,11 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
     
     // Optimzing Drawing and scrolling, 2013 session 215
     self.canDrawSubviewsIntoLayer = true
+    
+    if #available(OSX 11.0, *)
+    {
+      correction = 20.0
+    }
   }
   
   override public var wantsUpdateLayer: Bool
@@ -81,7 +92,7 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
       shapeLayer?.lineWidth = 1.5
       shapeLayer?.strokeColor = NSColor.white.cgColor
       shapeLayer?.fillColor = nil
-      self.path = CGPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: self.bounds.width, height: max(12,self.bounds.height)), cornerWidth: 6.0, cornerHeight: 6.0, transform: nil)
+      self.path = CGPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: self.bounds.width - correction, height: max(12,self.bounds.height)), cornerWidth: 6.0, cornerHeight: 6.0, transform: nil)
       self.layer?.addSublayer(shapeLayer!)
     }
     
@@ -89,7 +100,7 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
     {
       let cornerHeight: CGFloat = 6.0
       let cornerWidth: CGFloat = 6.0
-      let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: self.bounds.width, height: max(12,self.bounds.height))
+      let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: self.bounds.width - correction, height: max(12,self.bounds.height))
       
       // Assertion: (corner_height >= 0 && 2 * corner_height <= CGRectGetHeight(rect))
       if ((cornerHeight >= 0) && (2.0 * cornerHeight <= rect.height ))
