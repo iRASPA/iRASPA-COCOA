@@ -403,7 +403,12 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
        let clickedRow: Int = self.framesTableView?.clickedRow, clickedRow >= 0
     {
-      self.framesTableView?.editColumn(0, row: clickedRow, with: nil, select: false)
+      if let view: NSTableCellView = self.framesTableView?.view(atColumn: 0, row: clickedRow, makeIfNecessary: true) as? NSTableCellView,
+         let textField: NSTextField = view.textField,
+         textField.acceptsFirstResponder
+      {
+        view.window?.makeFirstResponder(textField)
+      }
     }
   }
   

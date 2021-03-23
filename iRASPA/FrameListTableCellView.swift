@@ -32,11 +32,8 @@
 import Cocoa
 import iRASPAKit
 
-public class ProjectTableCellView: NSTableCellView, ProgressIndicator
+public class FrameListTableCellView: NSTableCellView
 {
-  @IBOutlet public weak var progressIndicator: ProjectProgressIndicator? = nil
-  @IBOutlet public weak var cancelButton: NSButton? = nil
-  
   override init(frame frameRect: NSRect)
   {
     super.init(frame: frameRect)
@@ -54,12 +51,11 @@ public class ProjectTableCellView: NSTableCellView, ProgressIndicator
     didSet
     {
       // forward to textField
-      self.textField?.cell?.backgroundStyle = backgroundStyle
       self.imageView?.cell?.backgroundStyle = backgroundStyle
-      self.progressIndicator?.backgroundStyle = backgroundStyle
-      self.cancelButton?.cell?.backgroundStyle = backgroundStyle
+      self.textField?.cell?.backgroundStyle = backgroundStyle
     }
   }
 }
+
 
 
