@@ -433,6 +433,7 @@
 		93BDF76D1FB7442F0006692C /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDF76C1FB7442F0006692C /* Options.swift */; };
 		93BF1B012609FE2600AFFCF3 /* ProjectGromacsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B002609FE2600AFFCF3 /* ProjectGromacsNode.swift */; };
 		93BF1B122609FE4500AFFCF3 /* ProjectOpenMMNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */; };
+		93BF1B23260A62C900AFFCF3 /* FrameListTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B22260A62C900AFFCF3 /* FrameListTableCellView.swift */; };
 		93BF25F31EE71DC200128CD4 /* OperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 93BF25F11EE71DC200128CD4 /* OperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93BF25F61EE71DC200128CD4 /* OperationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; };
 		93BF25F71EE71DC200128CD4 /* OperationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1492,6 +1493,7 @@
 		93BDF76C1FB7442F0006692C /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		93BF1B002609FE2600AFFCF3 /* ProjectGromacsNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectGromacsNode.swift; sourceTree = "<group>"; };
 		93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectOpenMMNode.swift; sourceTree = "<group>"; };
+		93BF1B22260A62C900AFFCF3 /* FrameListTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameListTableCellView.swift; sourceTree = "<group>"; };
 		93BF25EF1EE71DC200128CD4 /* OperationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OperationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93BF25F11EE71DC200128CD4 /* OperationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OperationKit.h; sourceTree = "<group>"; };
 		93BF25F21EE71DC200128CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2286,6 +2288,7 @@
 				93475A981FC8648A006F6A19 /* FrameListTableView.swift */,
 				93F9363A1EB9123D0094C509 /* ProjectTableCellView.swift */,
 				933CAA2A207253E300F74729 /* StructureTableCellView.swift */,
+				93BF1B22260A62C900AFFCF3 /* FrameListTableCellView.swift */,
 				93F9363C1EB912760094C509 /* ProjectTableRowView.swift */,
 				933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */,
 				935D60B61FD2FB9D00B34D07 /* FrameTableRowView.swift */,
@@ -4244,6 +4247,7 @@
 				93FC88A91F515B1C0009478E /* NSVerticalSplitViewController.swift in Sources */,
 				93B747E91F0E98EE00B1D8E0 /* ProjectSlideCarrierView.swift in Sources */,
 				9330F4181F28F97800291E72 /* RenderTabView.swift in Sources */,
+				93BF1B23260A62C900AFFCF3 /* FrameListTableCellView.swift in Sources */,
 				93784A9D1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift in Sources */,
 				933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */,
 				93784A9B1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift in Sources */,
