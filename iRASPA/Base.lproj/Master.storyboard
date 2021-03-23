@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -499,11 +499,11 @@
                                                             <rect key="frame" x="11" y="23" width="222" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                             <subviews>
-                                                                <stackView distribution="fill" orientation="horizontal" alignment="bottom" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MzX-EK-jab">
+                                                                <stackView distribution="fillProportionally" orientation="horizontal" alignment="bottom" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MzX-EK-jab">
                                                                     <rect key="frame" x="0.0" y="0.0" width="222" height="18"/>
                                                                     <subviews>
-                                                                        <button tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="oNh-zT-kR7">
-                                                                            <rect key="frame" x="-2" y="-2" width="25" height="18"/>
+                                                                        <button horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="oNh-zT-kR7">
+                                                                            <rect key="frame" x="-2" y="-2" width="19" height="18"/>
                                                                             <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tol-rb-BLx">
                                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                                 <font key="font" metaFont="system"/>
@@ -512,8 +512,8 @@
                                                                                 <action selector="toggleStructureVisibility:" target="Ihf-P0-mYS" id="Ap3-Bj-cg5"/>
                                                                             </connections>
                                                                         </button>
-                                                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dwO-WE-w5q">
-                                                                            <rect key="frame" x="27" y="0.0" width="138" height="16"/>
+                                                                        <textField horizontalHuggingPriority="240" verticalHuggingPriority="750" horizontalCompressionResistancePriority="240" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dwO-WE-w5q">
+                                                                            <rect key="frame" x="17" y="0.0" width="155" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Table View Cell" id="dBi-km-AAD">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -524,13 +524,13 @@
                                                                             </connections>
                                                                         </textField>
                                                                         <progressIndicator wantsLayer="YES" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="HZY-BM-10c" customClass="ProjectProgressIndicator" customModule="iRASPAKit">
-                                                                            <rect key="frame" x="171" y="-1" width="32" height="20"/>
+                                                                            <rect key="frame" x="174" y="-1" width="32" height="20"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="32" id="0li-w2-br0"/>
                                                                             </constraints>
                                                                         </progressIndicator>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="677-XU-cCq">
-                                                                            <rect key="frame" x="211" y="-2" width="11" height="10.5"/>
+                                                                            <rect key="frame" x="210" y="-2" width="12" height="10.5"/>
                                                                             <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSStopProgressFreestandingTemplate" imagePosition="only" alignment="center" controlSize="mini" transparent="YES" imageScaling="proportionallyDown" inset="2" id="Td4-01-48k">
                                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                                 <font key="font" metaFont="miniSystem"/>
@@ -777,29 +777,35 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="frameName" id="OCP-3q-Sus">
-                                                            <rect key="frame" x="11" y="1" width="202" height="18"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                        <tableCellView identifier="frameName" id="DOB-tl-Gr0">
+                                                            <rect key="frame" x="11" y="1" width="202" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yVi-90-ONu">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="207" height="18"/>
-                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Table View Cell" id="kfc-hZ-Upn">
+                                                                <imageView wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tww-IS-SYX">
+                                                                    <rect key="frame" x="3" y="0.0" width="17" height="17"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="nZ7-vs-oQo"/>
+                                                                </imageView>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y38-wK-6yy">
+                                                                    <rect key="frame" x="25" y="0.0" width="177" height="17"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="YB5-wc-eQ1">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                     <connections>
-                                                                        <action selector="changeFrameDisplayName:" target="xIH-6N-knL" id="VAW-rb-Iw1"/>
+                                                                        <action selector="changeFrameDisplayName:" target="xIH-6N-knL" id="asW-jc-kLA"/>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
                                                             <connections>
-                                                                <outlet property="textField" destination="yVi-90-ONu" id="f7P-OS-8EP"/>
+                                                                <outlet property="imageView" destination="tww-IS-SYX" id="goQ-mi-bgS"/>
+                                                                <outlet property="textField" destination="Y38-wK-6yy" id="IQ6-md-xrO"/>
                                                             </connections>
                                                         </tableCellView>
                                                         <customView identifier="frameTableRowView" wantsLayer="YES" id="qOt-Ok-HOM" customClass="FrameTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="11" y="21" width="202" height="18"/>
+                                                            <rect key="frame" x="11" y="20" width="202" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>

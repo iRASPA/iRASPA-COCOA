@@ -90,7 +90,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
   }
   
-  override var materialType: SKStructure.Kind
+  public override var materialType: SKStructure.Kind
   {
     return .proteinCrystal
   }

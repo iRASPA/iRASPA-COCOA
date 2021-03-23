@@ -138,7 +138,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     }
     self.recordID = record.recordID
     
-    self.representedObject = iRASPAProject.init(projectType: .structure, fileName: record.recordID.recordName, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy)
+    self.representedObject = iRASPAProject.init(projectType: .material, fileName: record.recordID.recordName, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy)
       
       
       //.projectProjectLazy(iRASPAProject.ProjectStatus(fileWrapper: nil, fileName: record.recordID.recordName, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy, projectType: 3))
@@ -149,7 +149,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   {
     self.displayName = displayName
     self.recordID = recordID
-    self.representedObject = iRASPAProject.init(projectType: .structure, fileName: recordID.recordName, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy)
+    self.representedObject = iRASPAProject.init(projectType: .material, fileName: recordID.recordName, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy)
       
       //.projectProjectLazy(iRASPAProject.ProjectStatus(fileWrapper: nil, fileName: recordID.recordName, nodeType: .leaf, storageType: .publicCloud, lazyStatus: .lazy, projectType: iRASPAProject.structure))
     super.init()
@@ -1003,7 +1003,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
           {
             switch(self.representedObject.projectType)
             {
-            case .structure:
+            case .material:
               let projectStructureNode: ProjectStructureNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectStructureNode.self)
             
               // legacy for new file-format
@@ -1039,7 +1039,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       }
       else if self.representedObject.storageType == iRASPAProject.StorageType.publicCloud
       {
-        let loadingStatus: iRASPAProject = iRASPAProject(projectType: .structure, fileName: self.representedObject.fileNameUUID, nodeType: self.representedObject.nodeType, storageType: self.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loading)
+        let loadingStatus: iRASPAProject = iRASPAProject(projectType: .material, fileName: self.representedObject.fileNameUUID, nodeType: self.representedObject.nodeType, storageType: self.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loading)
         loadingStatus.volumetricSurfaceArea = self.representedObject.volumetricSurfaceArea
         loadingStatus.gravimetricSurfaceArea = self.representedObject.gravimetricSurfaceArea
         loadingStatus.heliumVoidFraction = self.representedObject.heliumVoidFraction
@@ -1076,7 +1076,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       {
         switch(self.representedObject.projectType)
         {
-        case .structure:
+        case .material:
           let projectStructureNode: ProjectStructureNode = try BinaryDecoder(data: [UInt8](data)).decode(ProjectStructureNode.self)
           
           self.representedObject = iRASPAProject(structureProject: projectStructureNode)

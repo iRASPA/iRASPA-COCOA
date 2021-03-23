@@ -59,9 +59,20 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   weak var windowController: iRASPAWindowController?
   
-  let folderIcon: NSImage = NSImage(named: "FolderIcon")!
+  let groupIcon: NSImage = NSImage(named: "FolderIcon")!
   let materialsIcon: NSImage = NSImage(named: "MaterialsIcon")!
   let materialsCloudIcon: NSImage = NSImage(named: "MaterialsCloudIcon")!
+  let raspaIcon: NSImage = NSImage(named: "RaspaIcon")!
+  let raspaCloudIcon: NSImage = NSImage(named: "RaspaCloudIcon")!
+  let cp2kIcon: NSImage = NSImage(named: "Cp2kIcon")!
+  let cp2kCloudIcon: NSImage = NSImage(named: "Cp2kCloudIcon")!
+  let vaspIcon: NSImage = NSImage(named: "VaspIcon")!
+  let vaspCloudIcon: NSImage = NSImage(named: "VaspCloudIcon")!
+  let gromacsIcon: NSImage = NSImage(named: "GromacsIcon")!
+  let gromacsCloudIcon: NSImage = NSImage(named: "GromacsCloudIcon")!
+  let openMMIcon: NSImage = NSImage(named: "OpenMMIcon")!
+  let OpenMMCloudIcon: NSImage = NSImage(named: "OpenMMCloudIcon")!
+  let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
   
   private var draggedNodes: [ProjectTreeNode] = []
   
@@ -522,7 +533,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           // create a holder that can be already be inserted into the 'projectViewController'
           // there is no project attached yet, set it as lazy&loading
           let displayName = url.deletingPathExtension().lastPathComponent
-          let iraspaproject: iRASPAProject = iRASPAProject(projectType: .structure, fileName: UUID().uuidString, nodeType: .leaf, storageType: .local, lazyStatus: .loading)
+          let iraspaproject: iRASPAProject = iRASPAProject(projectType: .material, fileName: UUID().uuidString, nodeType: .leaf, storageType: .local, lazyStatus: .loading)
           iraspaproject.displayName = displayName
           iraspaproject.isEdited = true
           let node: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iraspaproject)
@@ -556,7 +567,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         // create a holder that can be already be inserted into the 'projectViewController'
         // there is no project attached yet, set it as lazy&loading
         let displayName = URLs[0].deletingPathExtension().lastPathComponent
-        let iraspaproject: iRASPAProject = iRASPAProject.init(projectType: .structure, fileName: UUID().uuidString, nodeType: .leaf, storageType: .local, lazyStatus: .loading)
+        let iraspaproject: iRASPAProject = iRASPAProject.init(projectType: .material, fileName: UUID().uuidString, nodeType: .leaf, storageType: .local, lazyStatus: .loading)
         iraspaproject.isEdited = true
         let node: ProjectTreeNode = ProjectTreeNode(displayName: displayName, representedObject: iraspaproject)
         
@@ -740,21 +751,48 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       view.textField?.stringValue = node.displayName
       
-      
-      
-      if node.representedObject.isProjectGroup
+      if node.representedObject.storageType == .publicCloud
       {
-        view.imageView?.image = self.folderIcon
+        switch(node.representedObject.projectType)
+        {
+        case .group:
+          view.imageView?.image = self.groupIcon
+        case .material:
+          view.imageView?.image = self.materialsCloudIcon
+        case .VASP:
+          view.imageView?.image = self.vaspCloudIcon
+        case .RASPA:
+          view.imageView?.image = self.raspaCloudIcon
+        case .GROMACS:
+          view.imageView?.image = self.gromacsCloudIcon
+        case .CP2K:
+          view.imageView?.image = self.cp2kCloudIcon
+        case .OPENMM:
+          view.imageView?.image = self.OpenMMCloudIcon
+        default:
+          view.imageView?.image = self.unknownIcon
+        }
       }
       else
       {
-        if node.representedObject.storageType == .publicCloud
+        switch(node.representedObject.projectType)
         {
-          view.imageView?.image = self.materialsCloudIcon
-        }
-        else
-        {
+        case .group:
+          view.imageView?.image = self.groupIcon
+        case .material:
           view.imageView?.image = self.materialsIcon
+        case .VASP:
+          view.imageView?.image = self.vaspIcon
+        case .RASPA:
+          view.imageView?.image = self.raspaIcon
+        case .GROMACS:
+          view.imageView?.image = self.gromacsIcon
+        case .CP2K:
+          view.imageView?.image = self.cp2kIcon
+        case .OPENMM:
+          view.imageView?.image = self.openMMIcon
+        default:
+          view.imageView?.image = self.unknownIcon
         }
       }
       
