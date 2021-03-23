@@ -40,9 +40,7 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
   
   var shapeLayer: CAShapeLayer? = nil
   var path: CGPath = CGMutablePath()
-  
-  var correction: CGFloat = 0.0
-  
+    
   override public var isOpaque: Bool { return false }
   
   override init(frame frameRect: NSRect)
@@ -53,10 +51,7 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
     // Optimzing Drawing and scrolling, 2013 session 215
     self.canDrawSubviewsIntoLayer = true
     
-    if #available(OSX 11.0, *)
-    {
-      correction = 20.0
-    }
+    self.autoresizesSubviews = true
   }
   
   required public init?(coder: NSCoder)
@@ -67,15 +62,25 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
     // Optimzing Drawing and scrolling, 2013 session 215
     self.canDrawSubviewsIntoLayer = true
     
-    if #available(OSX 11.0, *)
-    {
-      correction = 20.0
-    }
+    self.autoresizesSubviews = true
+  }
+  
+  public override func makeBackingLayer() -> CALayer
+  {
+    let layer = super.makeBackingLayer()
+    let shapeLayer =  CAShapeLayer()
+    shapeLayer.fillColor = nil
+    
+    // Make sure to draw 'on top'
+    shapeLayer.zPosition = 1.0
+    layer.addSublayer(shapeLayer)
+    self.shapeLayer = shapeLayer
+    return layer
   }
   
   override public var wantsUpdateLayer: Bool
   {
-    return false
+    return true
   }
   
   deinit
@@ -83,58 +88,49 @@ public class FrameTableRowView: NSTableRowView, CALayerDelegate
     self.shapeLayer = nil
   }
   
-  
-  public func draw(_ layer: CALayer, in ctx: CGContext)
+  public override func updateLayer()
   {
-    if shapeLayer == nil
-    {
-      self.shapeLayer =  CAShapeLayer()
-      shapeLayer?.lineWidth = 1.5
-      shapeLayer?.strokeColor = NSColor.white.cgColor
-      shapeLayer?.fillColor = nil
-      self.path = CGPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: self.bounds.width - correction, height: max(12,self.bounds.height)), cornerWidth: 6.0, cornerHeight: 6.0, transform: nil)
-      self.layer?.addSublayer(shapeLayer!)
-    }
-    
     if secondaryHighlighted
     {
-      let cornerHeight: CGFloat = 6.0
-      let cornerWidth: CGFloat = 6.0
-      let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: self.bounds.width - correction, height: max(12,self.bounds.height))
-      
-      // Assertion: (corner_height >= 0 && 2 * corner_height <= CGRectGetHeight(rect))
-      if ((cornerHeight >= 0) && (2.0 * cornerHeight <= rect.height ))
+      if let shapeLayer = shapeLayer
       {
-        self.path = CGPath(roundedRect: rect, cornerWidth: cornerWidth, cornerHeight: cornerHeight, transform: nil)
-      }
+        var leftBoundary: CGFloat = self.frame.minX
+        var width: CGFloat = self.frame.width
+        if let visualEffectView = self.subviews.filter({$0.isKind(of: NSVisualEffectView.self)}).first
+        {
+          leftBoundary = visualEffectView.frame.minX
+          width = visualEffectView.frame.width
+        }
+        
+        let cornerHeight: CGFloat = 6.0
+        let cornerWidth: CGFloat = 6.0
+        let rect: CGRect = CGRect(x: leftBoundary, y: 0.0, width: width, height: max(12,self.bounds.height))
       
-      self.shapeLayer?.path = self.path
+        // Assertion: (corner_height >= 0 && 2 * corner_height <= CGRectGetHeight(rect))
+        if ((cornerHeight >= 0) && (2.0 * cornerHeight <= rect.height ))
+        {
+          self.path = CGPath(roundedRect: rect, cornerWidth: cornerWidth, cornerHeight: cornerHeight, transform: nil)
+        }
       
-      if (isEmphasized)
-      {
-        shapeLayer?.strokeColor = NSColor.white.cgColor
-        shapeLayer?.lineWidth = 2.0
-      }
-      else
-      {
-        shapeLayer?.strokeColor = NSColor.systemGray.cgColor
-        shapeLayer?.lineWidth = 2.0
+        shapeLayer.path = self.path
+      
+        if (isEmphasized)
+        {
+          shapeLayer.strokeColor = NSColor.white.cgColor
+          shapeLayer.lineWidth = 2.0
+        }
+        else
+        {
+          shapeLayer.strokeColor = NSColor.systemGray.cgColor
+          shapeLayer.lineWidth = 2.0
+        }
       }
     }
     else
     {
       self.shapeLayer?.path = nil
     }
-    
-    // Needed on High Sierra
-    let subLayers: [CALayer] = self.layer?.sublayers?.filter{$0.name == "NSVisualEffectView"} ?? []
-    if !subLayers.isEmpty
-    {
-      subLayers.first?.addSublayer(shapeLayer!)
-    }
   }
-  
-  
 }
 
 
