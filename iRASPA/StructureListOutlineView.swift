@@ -53,6 +53,14 @@ class StructureListOutlineView: NSOutlineView
     return true
   }
   
+  public override func resize(withOldSuperviewSize oldSize: NSSize)
+  {
+    super.resizeSubviews(withOldSize: oldSize)
+    self.enumerateAvailableRowViews { (rowView, index) in
+      rowView.layer?.setNeedsDisplay()
+    }
+  }
+  
   public func reloadSelection()
   {
     (self.delegate as? Reloadable)?.reloadData()
