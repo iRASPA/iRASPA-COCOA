@@ -1435,7 +1435,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
            let frame: NSRect = self.projectOutlineView?.frameOfCell(atColumn: 0, row: row),
            let height: CGFloat = self.projectOutlineView?.rowHeight
         {
-          draggingItem.draggingFrame = NSMakeRect(frame.origin.x, frame.origin.y+height*(CGFloat(index)+1.0), frame.width, frame.height)
+          draggingItem.draggingFrame = NSMakeRect(frame.origin.x, frame.origin.y+height*(CGFloat(index)), frame.width, height)
         }
       })
       
@@ -3206,7 +3206,12 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     if let clickedRow: Int = self.projectOutlineView?.clickedRow, clickedRow >= 0,
        let projectTreeNode: ProjectTreeNode = self.projectOutlineView?.item(atRow: clickedRow) as? ProjectTreeNode, projectTreeNode.isEditable
     {
-      self.projectOutlineView?.editColumn(0, row: clickedRow, with: nil, select: false)
+      if let view: NSTableCellView = self.projectOutlineView?.view(atColumn: 0, row: clickedRow, makeIfNecessary: true) as? NSTableCellView,
+         let textField: NSTextField = view.textField,
+         textField.acceptsFirstResponder
+      {
+        view.window?.makeFirstResponder(textField)
+      }
     }
   }
   
