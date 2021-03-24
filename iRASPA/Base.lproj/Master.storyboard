@@ -186,7 +186,7 @@
                                                             <rect key="frame" x="11" y="16" width="200" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="7" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dAH-Uf-084">
+                                                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dAH-Uf-084">
                                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="18"/>
                                                                     <subviews>
                                                                         <imageView wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zxv-kd-iru" customClass="TableImageViewIcon" customModule="iRASPA" customModuleProvider="target">
@@ -194,7 +194,7 @@
                                                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="tg4-ah-Nep"/>
                                                                         </imageView>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pKy-u3-mQq">
-                                                                            <rect key="frame" x="20" y="1" width="125" height="16"/>
+                                                                            <rect key="frame" x="17" y="1" width="134" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="rpD-Za-uPb">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -205,7 +205,7 @@
                                                                             </connections>
                                                                         </textField>
                                                                         <progressIndicator wantsLayer="YES" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="sf0-hf-7ZT" customClass="ProjectProgressIndicator" customModule="iRASPAKit">
-                                                                            <rect key="frame" x="150" y="-1" width="32" height="20"/>
+                                                                            <rect key="frame" x="153" y="-1" width="32" height="20"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="32" id="NUD-8A-o8x"/>
                                                                             </constraints>
@@ -506,7 +506,7 @@
                                                             <rect key="frame" x="11" y="16" width="202" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="7" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tCZ-vW-MJc">
+                                                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tCZ-vW-MJc">
                                                                     <rect key="frame" x="0.0" y="0.0" width="202" height="17"/>
                                                                     <subviews>
                                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JGE-rE-349">
@@ -520,11 +520,11 @@
                                                                             </connections>
                                                                         </button>
                                                                         <imageView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YNU-en-U4p" customClass="TableImageViewIcon" customModule="iRASPA" customModuleProvider="target">
-                                                                            <rect key="frame" x="21" y="1" width="15" height="15"/>
+                                                                            <rect key="frame" x="18" y="1" width="15" height="15"/>
                                                                             <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="HVg-Rw-Y2H"/>
                                                                         </imageView>
                                                                         <textField horizontalHuggingPriority="240" verticalHuggingPriority="750" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="yFf-MP-s27">
-                                                                            <rect key="frame" x="41" y="1" width="163" height="16"/>
+                                                                            <rect key="frame" x="35" y="1" width="169" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="sxb-xU-PUp">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>

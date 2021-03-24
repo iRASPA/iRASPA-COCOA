@@ -55,6 +55,7 @@ public class MovieTableCellView: NSTableCellView, ProgressIndicator
     {
       // forward to textField
       self.textField?.cell?.backgroundStyle = backgroundStyle
+      self.imageView?.cell?.backgroundStyle = backgroundStyle
       self.progressIndicator?.backgroundStyle = backgroundStyle
       self.cancelButton?.cell?.backgroundStyle = backgroundStyle
     }
