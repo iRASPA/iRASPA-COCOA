@@ -2636,6 +2636,13 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     
       treeController.selectedTreeNode = newValue.selected
       treeController.selectedTreeNodes = newValue.selection
+      
+      self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+        if let rowView = rowView as? ProjectTableRowView
+        {
+          rowView.layer?.setNeedsDisplay()
+        }
+      })
     
       NSAnimationContext.beginGrouping()
       
@@ -2658,7 +2665,15 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   
   func reloadSelection()
   {
-   
+    // clear all rowViews
+    self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+      if let rowView = rowView as? ProjectTableRowView
+      {
+        rowView.secondaryHighlighted = false
+        rowView.layer?.setNeedsDisplay()
+      }
+    })
+    
     if let document: iRASPADocument = windowController?.document as? iRASPADocument
     {
       let savedObserveNotifications: Bool = self.observeNotifications
