@@ -31,7 +31,7 @@
 
 import Cocoa
 
-class StructureListOutlineView: NSOutlineView
+class MovieListOutlineView: NSOutlineView
 {
   override var isOpaque: Bool
   {
