@@ -53,6 +53,10 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   
   @IBOutlet private var addContextMenu: NSMenu?
   
+  let movieSingleFrameIcon: NSImage = NSImage(named: "MovieSingleFrameIcon")!
+  let movieMultipleFramesIcon: NSImage = NSImage(named: "MovieMultipleFramesIcon")!
+  let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
+  
   lazy var structureQueue: FKOperationQueue = {
     var queue = FKOperationQueue()
     queue.name = "Structure queue"
@@ -1301,6 +1305,17 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
             {
               button.state =  movie.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
             }
+            
+            switch(movie.frames.count)
+            {
+            case 0:
+              view.imageView?.image = unknownIcon
+            case 1:
+              view.imageView?.image = movieSingleFrameIcon
+            default:
+              view.imageView?.image = movieMultipleFramesIcon
+            }
+            
             return view
           }
         default:
