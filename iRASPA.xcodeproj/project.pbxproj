@@ -98,7 +98,7 @@
 		930DD6EB1E28071200B8FE9B /* ProjectOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6DE1E28071200B8FE9B /* ProjectOutlineView.swift */; };
 		930DD6ED1E28071200B8FE9B /* ProjectSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6E01E28071200B8FE9B /* ProjectSearchField.swift */; };
 		930DD6F01E28071200B8FE9B /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6E31E28071200B8FE9B /* ProjectViewController.swift */; };
-		930DD6F11E28071200B8FE9B /* StructureListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6E41E28071200B8FE9B /* StructureListViewController.swift */; };
+		930DD6F11E28071200B8FE9B /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6E41E28071200B8FE9B /* MovieListViewController.swift */; };
 		930DD6F41E28074E00B8FE9B /* DetailTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6F31E28074E00B8FE9B /* DetailTabViewController.swift */; };
 		930DD6FA1E28079900B8FE9B /* ViewControllerVASP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6F81E28079900B8FE9B /* ViewControllerVASP.swift */; };
 		930DD70C1E28083700B8FE9B /* CustomPathControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD6FE1E28083700B8FE9B /* CustomPathControl.swift */; };
@@ -158,7 +158,7 @@
 		9338251825716A6600BD7AC6 /* libpython3.10.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9338251725716A6600BD7AC6 /* libpython3.10.a */; };
 		933A8F28218CD2100073C653 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */; };
 		933A8F2A218CD4AD0073C653 /* DataCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933A8F29218CD4AD0073C653 /* DataCompression.swift */; };
-		933CAA2B207253E300F74729 /* StructureTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CAA2A207253E300F74729 /* StructureTableCellView.swift */; };
+		933CAA2B207253E300F74729 /* MovieTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CAA2A207253E300F74729 /* MovieTableCellView.swift */; };
 		933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */; };
 		933CFE171F14B47700BC9DCA /* iRASPAProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE161F14B47700BC9DCA /* iRASPAProject.swift */; };
 		933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */; };
@@ -179,7 +179,7 @@
 		93446EDA23796A380040CD8E /* StructureBondDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93446EDC23796A380040CD8E /* StructureBondDetail.storyboard */; };
 		9345F86B1F3DD17D00181224 /* EmptyPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9345F86A1F3DD17D00181224 /* EmptyPasteboardItem.swift */; };
 		9345F86D1F40B9D300181224 /* MasterTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9345F86C1F40B9D300181224 /* MasterTabViewController.swift */; };
-		93475A971FC86477006F6A19 /* StructureListOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93475A961FC86477006F6A19 /* StructureListOutlineView.swift */; };
+		93475A971FC86477006F6A19 /* MovieListOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93475A961FC86477006F6A19 /* MovieListOutlineView.swift */; };
 		93475A991FC8648A006F6A19 /* FrameListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93475A981FC8648A006F6A19 /* FrameListTableView.swift */; };
 		93475A9B1FC98E71006F6A19 /* NSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93475A9A1FC98E71006F6A19 /* NSViewController.swift */; };
 		934983BD1F4EAC5F007BE9C7 /* PowerSourceKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 934983BB1F4EAC5F007BE9C7 /* PowerSourceKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -433,7 +433,8 @@
 		93BDF76D1FB7442F0006692C /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BDF76C1FB7442F0006692C /* Options.swift */; };
 		93BF1B012609FE2600AFFCF3 /* ProjectGromacsNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B002609FE2600AFFCF3 /* ProjectGromacsNode.swift */; };
 		93BF1B122609FE4500AFFCF3 /* ProjectOpenMMNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */; };
-		93BF1B23260A62C900AFFCF3 /* FrameListTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B22260A62C900AFFCF3 /* FrameListTableCellView.swift */; };
+		93BF1B23260A62C900AFFCF3 /* FrameTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B22260A62C900AFFCF3 /* FrameTableCellView.swift */; };
+		93BF1B8E260B5DD300AFFCF3 /* TableImageViewIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BF1B8D260B5DD300AFFCF3 /* TableImageViewIcon.swift */; };
 		93BF25F31EE71DC200128CD4 /* OperationKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 93BF25F11EE71DC200128CD4 /* OperationKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93BF25F61EE71DC200128CD4 /* OperationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; };
 		93BF25F71EE71DC200128CD4 /* OperationKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93BF25EF1EE71DC200128CD4 /* OperationKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1144,7 +1145,7 @@
 		930DD6DE1E28071200B8FE9B /* ProjectOutlineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectOutlineView.swift; sourceTree = "<group>"; };
 		930DD6E01E28071200B8FE9B /* ProjectSearchField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectSearchField.swift; sourceTree = "<group>"; };
 		930DD6E31E28071200B8FE9B /* ProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ProjectViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
-		930DD6E41E28071200B8FE9B /* StructureListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = StructureListViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
+		930DD6E41E28071200B8FE9B /* MovieListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
 		930DD6F31E28074E00B8FE9B /* DetailTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTabViewController.swift; sourceTree = "<group>"; };
 		930DD6F81E28079900B8FE9B /* ViewControllerVASP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerVASP.swift; sourceTree = "<group>"; };
 		930DD6FE1E28083700B8FE9B /* CustomPathControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPathControl.swift; sourceTree = "<group>"; };
@@ -1220,7 +1221,7 @@
 		933700C91EDC610800DD5961 /* SKSpaceGroupSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSpaceGroupSetting.swift; sourceTree = "<group>"; };
 		9338251725716A6600BD7AC6 /* libpython3.10.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpython3.10.a; sourceTree = "<group>"; };
 		933A8F29218CD4AD0073C653 /* DataCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCompression.swift; sourceTree = "<group>"; };
-		933CAA2A207253E300F74729 /* StructureTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureTableCellView.swift; sourceTree = "<group>"; };
+		933CAA2A207253E300F74729 /* MovieTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableCellView.swift; sourceTree = "<group>"; };
 		933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedPropertiesLayer.swift; sourceTree = "<group>"; };
 		933CFE161F14B47700BC9DCA /* iRASPAProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProject.swift; sourceTree = "<group>"; };
 		933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAStructure.swift; sourceTree = "<group>"; };
@@ -1245,7 +1246,7 @@
 		93446EDB23796A380040CD8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/StructureBondDetail.storyboard; sourceTree = "<group>"; };
 		9345F86A1F3DD17D00181224 /* EmptyPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPasteboardItem.swift; sourceTree = "<group>"; };
 		9345F86C1F40B9D300181224 /* MasterTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterTabViewController.swift; sourceTree = "<group>"; };
-		93475A961FC86477006F6A19 /* StructureListOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureListOutlineView.swift; sourceTree = "<group>"; };
+		93475A961FC86477006F6A19 /* MovieListOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListOutlineView.swift; sourceTree = "<group>"; };
 		93475A981FC8648A006F6A19 /* FrameListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameListTableView.swift; sourceTree = "<group>"; };
 		93475A9A1FC98E71006F6A19 /* NSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSViewController.swift; sourceTree = "<group>"; };
 		934983B91F4EAC5F007BE9C7 /* PowerSourceKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PowerSourceKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1493,7 +1494,8 @@
 		93BDF76C1FB7442F0006692C /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		93BF1B002609FE2600AFFCF3 /* ProjectGromacsNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectGromacsNode.swift; sourceTree = "<group>"; };
 		93BF1B112609FE4500AFFCF3 /* ProjectOpenMMNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectOpenMMNode.swift; sourceTree = "<group>"; };
-		93BF1B22260A62C900AFFCF3 /* FrameListTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameListTableCellView.swift; sourceTree = "<group>"; };
+		93BF1B22260A62C900AFFCF3 /* FrameTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTableCellView.swift; sourceTree = "<group>"; };
+		93BF1B8D260B5DD300AFFCF3 /* TableImageViewIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableImageViewIcon.swift; sourceTree = "<group>"; };
 		93BF25EF1EE71DC200128CD4 /* OperationKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OperationKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93BF25F11EE71DC200128CD4 /* OperationKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OperationKit.h; sourceTree = "<group>"; };
 		93BF25F21EE71DC200128CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2284,11 +2286,11 @@
 				930DD6CC1E28064300B8FE9B /* NSInformationPanelView.swift */,
 				9381D8A01E5B6EC100263860 /* BottomToolbarPanel.swift */,
 				930DD6DE1E28071200B8FE9B /* ProjectOutlineView.swift */,
-				93475A961FC86477006F6A19 /* StructureListOutlineView.swift */,
+				93475A961FC86477006F6A19 /* MovieListOutlineView.swift */,
 				93475A981FC8648A006F6A19 /* FrameListTableView.swift */,
 				93F9363A1EB9123D0094C509 /* ProjectTableCellView.swift */,
-				933CAA2A207253E300F74729 /* StructureTableCellView.swift */,
-				93BF1B22260A62C900AFFCF3 /* FrameListTableCellView.swift */,
+				933CAA2A207253E300F74729 /* MovieTableCellView.swift */,
+				93BF1B22260A62C900AFFCF3 /* FrameTableCellView.swift */,
 				93F9363C1EB912760094C509 /* ProjectTableRowView.swift */,
 				933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */,
 				935D60B61FD2FB9D00B34D07 /* FrameTableRowView.swift */,
@@ -2303,6 +2305,7 @@
 				930DD7191E2808B700B8FE9B /* AtomSearchField.swift */,
 				93FD046C1EC1B161005226F4 /* AtomNetChargeLabel.swift */,
 				93FD046E1EC1B172005226F4 /* AtomNetChargeTextField.swift */,
+				93BF1B8D260B5DD300AFFCF3 /* TableImageViewIcon.swift */,
 				930DD71A1E2808B700B8FE9B /* AtomTableRowView.swift */,
 				930C97621FCEC52A00B4611E /* AppearanceTableRowView.swift */,
 				930C97641FCEC69E00B4611E /* CameraTableRowView.swift */,
@@ -2389,7 +2392,7 @@
 				93B6CCCD1F4C1C86004E798D /* StructureMasterTabViewController.swift */,
 				930DD6E31E28071200B8FE9B /* ProjectViewController.swift */,
 				93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */,
-				930DD6E41E28071200B8FE9B /* StructureListViewController.swift */,
+				930DD6E41E28071200B8FE9B /* MovieListViewController.swift */,
 				930DD6D91E28071200B8FE9B /* FrameListViewController.swift */,
 			);
 			name = ProjectTabView;
@@ -4223,7 +4226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				932137D41F2B533800DAEBDF /* Errors.swift in Sources */,
-				93475A971FC86477006F6A19 /* StructureListOutlineView.swift in Sources */,
+				93475A971FC86477006F6A19 /* MovieListOutlineView.swift in Sources */,
 				930DD6C31E2805F600B8FE9B /* iRaspaPythonInterface.swift in Sources */,
 				938B1C711F2682410017116B /* DirectoryCollectionSplitViewController.swift in Sources */,
 				93B6CCCE1F4C1C86004E798D /* StructureMasterTabViewController.swift in Sources */,
@@ -4241,13 +4244,13 @@
 				93260AEC1E2A63D70066EC08 /* iRASPAWindowController.swift in Sources */,
 				932A49561E537EF400F71AE7 /* LogViewController.swift in Sources */,
 				93604A6A1F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift in Sources */,
-				930DD6F11E28071200B8FE9B /* StructureListViewController.swift in Sources */,
+				930DD6F11E28071200B8FE9B /* MovieListViewController.swift in Sources */,
 				933D93E51FD326CA0075AB92 /* StructureTableRowView.swift in Sources */,
 				93B747E31F0E6F4100B1D8E0 /* DirectoryCollectionViewController.swift in Sources */,
 				93FC88A91F515B1C0009478E /* NSVerticalSplitViewController.swift in Sources */,
 				93B747E91F0E98EE00B1D8E0 /* ProjectSlideCarrierView.swift in Sources */,
 				9330F4181F28F97800291E72 /* RenderTabView.swift in Sources */,
-				93BF1B23260A62C900AFFCF3 /* FrameListTableCellView.swift in Sources */,
+				93BF1B23260A62C900AFFCF3 /* FrameTableCellView.swift in Sources */,
 				93784A9D1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift in Sources */,
 				933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */,
 				93784A9B1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift in Sources */,
@@ -4275,7 +4278,7 @@
 				930DD7161E28083700B8FE9B /* NSStaticViewBasedOutlineView.swift in Sources */,
 				93D1B52E1F45ECD300D0F932 /* NSPageView.swift in Sources */,
 				93FC88A51F5058A70009478E /* GeneralPreferenceViewController.swift in Sources */,
-				933CAA2B207253E300F74729 /* StructureTableCellView.swift in Sources */,
+				933CAA2B207253E300F74729 /* MovieTableCellView.swift in Sources */,
 				930DD70C1E28083700B8FE9B /* CustomPathControl.swift in Sources */,
 				930DD6ED1E28071200B8FE9B /* ProjectSearchField.swift in Sources */,
 				93784AAD1E61C5E200A7FF23 /* StructureCenterViewController.swift in Sources */,
@@ -4314,6 +4317,7 @@
 				930DD7251E2808B700B8FE9B /* AtomTableRowView.swift in Sources */,
 				9345F86D1F40B9D300181224 /* MasterTabViewController.swift in Sources */,
 				935DABE41F0E43EA00C1C8D0 /* DirectoryViewController.swift in Sources */,
+				93BF1B8E260B5DD300AFFCF3 /* TableImageViewIcon.swift in Sources */,
 				93F9363D1EB912760094C509 /* ProjectTableRowView.swift in Sources */,
 				93784A931E61B5CE00A7FF23 /* StructureDetailTabViewController.swift in Sources */,
 				93CEEFBE1F42193700EAF673 /* DirectoryMasterViewController.swift in Sources */,

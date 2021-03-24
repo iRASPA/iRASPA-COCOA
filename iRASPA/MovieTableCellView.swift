@@ -32,7 +32,7 @@
 import Cocoa
 import iRASPAKit
 
-public class StructureTableCellView: NSTableCellView, ProgressIndicator
+public class MovieTableCellView: NSTableCellView, ProgressIndicator
 {
   @IBOutlet public weak var progressIndicator: ProjectProgressIndicator? = nil
   @IBOutlet public weak var cancelButton: NSButton? = nil

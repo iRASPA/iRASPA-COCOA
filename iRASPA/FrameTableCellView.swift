@@ -32,7 +32,7 @@
 import Cocoa
 import iRASPAKit
 
-public class FrameListTableCellView: NSTableCellView
+public class FrameTableCellView: NSTableCellView
 {
   override init(frame frameRect: NSRect)
   {

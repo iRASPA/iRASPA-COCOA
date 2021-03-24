@@ -40,9 +40,9 @@ import LogViewKit
 /// StructureListViewController controls a tableView with scenes.
 ///
 /// Note: representedObject is a SceneList
-class StructureListViewController: NSViewController, NSMenuItemValidation, NSOutlineViewDataSource, NSOutlineViewDelegate, WindowControllerConsumer, ProjectConsumer, Reloadable, SelectionIndex
+class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutlineViewDataSource, NSOutlineViewDelegate, WindowControllerConsumer, ProjectConsumer, Reloadable, SelectionIndex
 {
-  @IBOutlet private weak var structuresOutlineView: StructureListOutlineView?
+  @IBOutlet private weak var movieOutlineView: MovieListOutlineView?
   
   weak var windowController: iRASPAWindowController?
   
@@ -95,27 +95,27 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     // check that it works with strong-references off (for compatibility with 'El Capitan')
     if #available(OSX 10.12, *)
     {
-      self.structuresOutlineView?.stronglyReferencesItems = false
+      self.movieOutlineView?.stronglyReferencesItems = false
     }
     
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
-    self.structuresOutlineView?.registerForDraggedTypes([NSPasteboardTypeProjectTreeNode,
+    self.movieOutlineView?.registerForDraggedTypes([NSPasteboardTypeProjectTreeNode,
                                                          NSPasteboardTypeMovie,
                                                          NSPasteboardTypeFrame])
-    self.structuresOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType(String(kUTTypeFileURL))])
-    self.structuresOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))])
+    self.movieOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType(String(kUTTypeFileURL))])
+    self.movieOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))])
     
-    self.structuresOutlineView?.setDraggingSourceOperationMask(.every, forLocal: true)
-    self.structuresOutlineView?.setDraggingSourceOperationMask(.every, forLocal: false)
+    self.movieOutlineView?.setDraggingSourceOperationMask(.every, forLocal: true)
+    self.movieOutlineView?.setDraggingSourceOperationMask(.every, forLocal: false)
   }
   
   override func awakeFromNib()
   {
     super.awakeFromNib()
     
-    self.structuresOutlineView?.doubleAction = #selector(StructureListViewController.structureOutlineViewDoubleClick)
+    self.movieOutlineView?.doubleAction = #selector(MovieListViewController.movieSceneListViewDoubleClick)
     
   }
   
@@ -124,10 +124,10 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     super.viewWillAppear()
     
-    self.structuresOutlineView?.reloadItem(nil)
+    self.movieOutlineView?.reloadItem(nil)
     NSAnimationContext.beginGrouping()
     NSAnimationContext.current.duration=0
-    self.structuresOutlineView?.expandItem(nil, expandChildren: true)
+    self.movieOutlineView?.expandItem(nil, expandChildren: true)
     NSAnimationContext.endGrouping()
     
     self.reloadData()
@@ -166,13 +166,13 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     self.observeNotifications = false
     if let _: ProjectTreeNode = self.proxyProject
     {
-      self.structuresOutlineView?.reloadItem(nil)
+      self.movieOutlineView?.reloadItem(nil)
       NSAnimationContext.beginGrouping()
       NSAnimationContext.current.duration=0
-      self.structuresOutlineView?.expandItem(nil, expandChildren: true)
+      self.movieOutlineView?.expandItem(nil, expandChildren: true)
       NSAnimationContext.endGrouping()
       
-      self.structuresOutlineView?.reloadData()
+      self.movieOutlineView?.reloadData()
       self.reloadSelection()
     }
     self.observeNotifications = true
@@ -209,7 +209,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       let currentSelectedMovie: Movie? = project.sceneList.selectedScene?.selectedMovie
       let currentSelection: [Scene: Set<Movie>] = project.sceneList.selectedMovies
       
-      self.structuresOutlineView?.beginUpdates()
+      self.movieOutlineView?.beginUpdates()
       for index in 0..<movies.count
       {
         let sceneIndex: Int = indexPaths[index][0]
@@ -217,9 +217,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         let scene: Scene = project.sceneList.scenes[sceneIndex]
         scene.movies.insert(movies[index], at: movieIndex)
         scene.selectedMovies.insert(movies[index])
-        self.structuresOutlineView?.insertItems(at: IndexSet(integer: movieIndex), inParent: scene, withAnimation: .slideRight)
+        self.movieOutlineView?.insertItems(at: IndexSet(integer: movieIndex), inParent: scene, withAnimation: .slideRight)
       }
-      self.structuresOutlineView?.endUpdates()
+      self.movieOutlineView?.endUpdates()
       
       project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedMovies(movies.reversed(), from: indexPaths.reversed(), newSelectedScene: currentSelectedScene, newSelectedMovie: currentSelectedMovie, newSelection: currentSelection)})
       
@@ -252,14 +252,14 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedMovies(movies.reversed(), at: indexPaths.reversed(), newSelectedScene: currentSelectedScene, newSelectedMovie: currentSelectedMovie, newSelection: currentSelection)})
       
-      self.structuresOutlineView?.beginUpdates()
+      self.movieOutlineView?.beginUpdates()
       for index in 0..<movies.count
       {
         let sceneIndex: Int = indexPaths[index][0]
         let movieIndex: Int = indexPaths[index][1]
         let scene: Scene = project.sceneList.scenes[sceneIndex]
         scene.movies.remove(at: movieIndex)
-        self.structuresOutlineView?.removeItems(at: IndexSet(integer: movieIndex), inParent: scene, withAnimation: .slideLeft)
+        self.movieOutlineView?.removeItems(at: IndexSet(integer: movieIndex), inParent: scene, withAnimation: .slideLeft)
         
         scene.selectedMovies.remove(movies[index])
         if scene.selectedMovie === movies[index]
@@ -279,16 +279,16 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
             project.undoManager.registerUndo(withTarget: self, handler: {target in
               
               project.sceneList.scenes.insert(scene, at: index)
-              target.structuresOutlineView?.insertItems(at: IndexSet(integer: index), inParent: nil, withAnimation: .slideRight)
-              target.structuresOutlineView?.expandItem(nil, expandChildren: true)
+              target.movieOutlineView?.insertItems(at: IndexSet(integer: index), inParent: nil, withAnimation: .slideRight)
+              target.movieOutlineView?.expandItem(nil, expandChildren: true)
             })
             
             project.sceneList.scenes.remove(at: index)
-            self.structuresOutlineView?.removeItems(at: IndexSet(integer: index), inParent: nil, withAnimation: .slideLeft)
+            self.movieOutlineView?.removeItems(at: IndexSet(integer: index), inParent: nil, withAnimation: .slideLeft)
           }
         }
       }
-      self.structuresOutlineView?.endUpdates()
+      self.movieOutlineView?.endUpdates()
 
       if !project.undoManager.isUndoing
       {
@@ -322,7 +322,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      if let indexes: IndexSet = self.structuresOutlineView?.selectedRowIndexes
+      if let indexes: IndexSet = self.movieOutlineView?.selectedRowIndexes
       {
         var movies: [Movie] = []
         var indexPaths: [IndexPath] = []
@@ -330,7 +330,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         {
           // enumerate reverse; start with last index (because then all other indices are still valid after remove)
           (indexes as NSIndexSet).enumerate(options: .reverse, using: {(index, stop) -> Void in
-            if let node: Movie = self.structuresOutlineView?.item(atRow: index) as? Movie,
+            if let node: Movie = self.movieOutlineView?.item(atRow: index) as? Movie,
               let indexPath: IndexPath = project.sceneList.indexPath(node)
             {
               movies.append(node)
@@ -339,9 +339,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
           })
         }
         
-        let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+        let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
         let notSelectedIndices: IndexSet = IndexSet(integersIn: 0..<numberOfRows).symmetricDifference(indexes)
-        let notselectedMovies: [Movie] = notSelectedIndices.compactMap{self.structuresOutlineView?.item(atRow: $0) as? Movie}
+        let notselectedMovies: [Movie] = notSelectedIndices.compactMap{self.movieOutlineView?.item(atRow: $0) as? Movie}
         
         var newSelectedScene: Scene? = nil
         var newSelectedMovie: Movie? = nil
@@ -369,7 +369,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       project.undoManager.registerUndo(withTarget: self, handler: {$0.addMovieNode(node, inItem: fromItem, atIndex: childIndex)})
     
       (fromItem as! Scene).movies.remove(at: childIndex)
-      self.structuresOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: fromItem, withAnimation: .slideLeft)
+      self.movieOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: fromItem, withAnimation: .slideLeft)
     }
   }
   
@@ -395,7 +395,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       // insert new node
       (inItem as? Scene)?.movies.insert(movie, at: childIndex)
-      self.structuresOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: inItem, withAnimation: .slideRight)
+      self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: inItem, withAnimation: .slideRight)
     }
   }
 
@@ -410,7 +410,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       project.undoManager.registerUndo(withTarget: self, handler: {$0.addMovieNode(movie, inItem: fromItem, atIndex: childIndex, newSelectedScene: currentSelectedScene, newSelectedMovie: currentSelectedMovie, newSelection: currentSelection)})
       
       fromItem?.movies.remove(at: childIndex)
-      self.structuresOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: fromItem, withAnimation: .slideLeft)
+      self.movieOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: fromItem, withAnimation: .slideLeft)
       
       project.sceneList.selectedScene = newSelectedScene
       newSelectedScene?.selectedMovie = newSelectedMovie
@@ -459,7 +459,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       // insert new node
       inItem?.movies.insert(movie, at: childIndex)
-      self.structuresOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: inItem, withAnimation: .slideRight)
+      self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: inItem, withAnimation: .slideRight)
 
       project.sceneList.selectedScene = newSelectedScene
       newSelectedScene?.selectedMovie = newSelectedMovie
@@ -488,7 +488,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       project.undoManager.registerUndo(withTarget: self, handler: {$0.addSceneNode(scene, atIndex: childIndex)})
       
       project.sceneList.scenes.remove(at: childIndex)
-      self.structuresOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideLeft)
+      self.movieOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideLeft)
       
       
     }
@@ -506,11 +506,11 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       
       // insert new node
-      self.structuresOutlineView?.beginUpdates()
+      self.movieOutlineView?.beginUpdates()
       project.sceneList.scenes.insert(scene, at: childIndex)
-      self.structuresOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
-      self.structuresOutlineView?.expandItem(nil, expandChildren: true)
-      self.structuresOutlineView?.endUpdates()
+      self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
+      self.movieOutlineView?.expandItem(nil, expandChildren: true)
+      self.movieOutlineView?.endUpdates()
       
       if let currentSelectedScene = project.sceneList.selectedScene
       {
@@ -523,12 +523,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-       let selectedRow=self.structuresOutlineView?.selectedRow
+       let selectedRow=self.movieOutlineView?.selectedRow
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
       
-      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+      let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
     
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -540,9 +540,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       else
       {
-        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-           let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-           let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+           let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+           let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           toItem = scene
           index = childIndex + 1
@@ -580,12 +580,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let selectedRow=self.structuresOutlineView?.selectedRow
+      let selectedRow=self.movieOutlineView?.selectedRow
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
       
-      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+      let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -597,9 +597,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       else
       {
-        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           toItem = scene
           index = childIndex + 1
@@ -637,12 +637,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let selectedRow=self.structuresOutlineView?.selectedRow
+      let selectedRow=self.movieOutlineView?.selectedRow
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
       
-      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+      let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -654,9 +654,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       else
       {
-        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           toItem = scene
           index = childIndex + 1
@@ -695,12 +695,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let selectedRow=self.structuresOutlineView?.selectedRow
+      let selectedRow=self.movieOutlineView?.selectedRow
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
       
-      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+      let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -712,9 +712,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       else
       {
-        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           toItem = scene
           index = childIndex + 1
@@ -752,12 +752,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let selectedRow=self.structuresOutlineView?.selectedRow
+      let selectedRow=self.movieOutlineView?.selectedRow
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
       
-      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+      let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New scene"
@@ -769,9 +769,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       else
       {
-        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           toItem = scene
           index = childIndex + 1
@@ -809,12 +809,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let selectedRow=self.structuresOutlineView?.selectedRow
+      let selectedRow=self.movieOutlineView?.selectedRow
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
       
-      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+      let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New crystal ellipsoid"
@@ -829,9 +829,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       else
       {
-        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           toItem = scene
           index = childIndex + 1
@@ -872,12 +872,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let selectedRow=self.structuresOutlineView?.selectedRow
+      let selectedRow=self.movieOutlineView?.selectedRow
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
       
-      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+      let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New crystal polygonal prism"
@@ -893,9 +893,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       else
       {
-        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           toItem = scene
           index = childIndex + 1
@@ -935,12 +935,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let selectedRow=self.structuresOutlineView?.selectedRow
+      let selectedRow=self.movieOutlineView?.selectedRow
     {
       var index: Int = selectedRow
       var toItem: Scene? = nil
       
-      let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+      let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
       
       let scene: Scene = Scene()
       scene.displayName = "New crystal cylinder"
@@ -956,9 +956,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       }
       else
       {
-        if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-          let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-          let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+          let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+          let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           toItem = scene
           index = childIndex + 1
@@ -1000,12 +1000,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
    {
      if let proxyProject = self.proxyProject, proxyProject.isEditable,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-       let selectedRow=self.structuresOutlineView?.selectedRow
+       let selectedRow=self.movieOutlineView?.selectedRow
      {
        var index: Int = selectedRow
        var toItem: Scene? = nil
        
-       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+       let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
        
        let scene: Scene = Scene()
        scene.displayName = "New ellipsoid"
@@ -1019,9 +1019,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
        }
        else
        {
-         if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-           let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-           let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+         if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+           let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+           let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
          {
            toItem = scene
            index = childIndex + 1
@@ -1062,12 +1062,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
    {
      if let proxyProject = self.proxyProject, proxyProject.isEditable,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-       let selectedRow=self.structuresOutlineView?.selectedRow
+       let selectedRow=self.movieOutlineView?.selectedRow
      {
        var index: Int = selectedRow
        var toItem: Scene? = nil
        
-       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+       let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
        
        let scene: Scene = Scene()
        scene.displayName = "New polygonal prism"
@@ -1082,9 +1082,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
        }
        else
        {
-         if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-           let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-           let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+         if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+           let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+           let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
          {
            toItem = scene
            index = childIndex + 1
@@ -1124,12 +1124,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
    {
      if let proxyProject = self.proxyProject, proxyProject.isEditable,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-       let selectedRow=self.structuresOutlineView?.selectedRow
+       let selectedRow=self.movieOutlineView?.selectedRow
      {
        var index: Int = selectedRow
        var toItem: Scene? = nil
        
-       let numberOfRows: Int = self.structuresOutlineView?.numberOfRows ?? 0
+       let numberOfRows: Int = self.movieOutlineView?.numberOfRows ?? 0
        
        let scene: Scene = Scene()
        scene.displayName = "New cylinder"
@@ -1144,9 +1144,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
        }
        else
        {
-         if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-           let scene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-           let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+         if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+           let scene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+           let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
          {
            toItem = scene
            index = childIndex + 1
@@ -1269,7 +1269,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if tableColumn == nil
     {
-      if let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "structureViewGroup"), owner: self) as? NSTableCellView
+      if let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "sceneView"), owner: self) as? NSTableCellView
       {
         view.textField!.stringValue = (item as? Scene)?.displayName.uppercased() ?? "unknown"
         view.imageView?.isHidden = true
@@ -1280,18 +1280,18 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       switch(tableColumn!.identifier)
       {
-      case NSUserInterfaceItemIdentifier(rawValue: "structureNameColumn"):
+      case NSUserInterfaceItemIdentifier(rawValue: "movieNameColumn"):
         // only Movie (Scene are group-items and handled as nil)
         switch(item)
         {
         case is Scene:
-          if let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "structureViewRoot"), owner: self) as? NSTableCellView
+          if let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "movieView"), owner: self) as? NSTableCellView
           {
             view.textField!.stringValue = (item as? Scene)?.displayName.uppercased() ?? ""
             return view
           }
         case let movie as Movie:
-          if let view: StructureTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "structureViewRoot"), owner: self) as? StructureTableCellView
+          if let view: MovieTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "movieView"), owner: self) as? MovieTableCellView
           {
             view.textField?.stringValue = movie.displayName
             view.progressIndicator?.isHidden = !movie.isLoading
@@ -1362,7 +1362,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       {
         let selectedMovies: [Movie] = project.sceneList.scenes.flatMap{$0.selectedMovies}
         
-        if let _: Scene = self.structuresOutlineView?.item(atRow: row) as? Scene
+        if let _: Scene = self.movieOutlineView?.item(atRow: row) as? Scene
         {
           rowView.isGroupRowStyle = true
         }
@@ -1371,14 +1371,14 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
           rowView.isGroupRowStyle = false
         }
         
-        if let movie: Movie = self.structuresOutlineView?.item(atRow: row) as? Movie,
+        if let movie: Movie = self.movieOutlineView?.item(atRow: row) as? Movie,
            selectedMovies.contains(movie)
         {
           rowView.isSelected = true
         }
         
         if let selectedMovie: Movie = project.sceneList.selectedScene?.selectedMovie,
-           let selectedRow = self.structuresOutlineView?.row(forItem: selectedMovie)
+           let selectedRow = self.movieOutlineView?.row(forItem: selectedMovie)
         {
           if (row == selectedRow)
           {
@@ -1403,12 +1403,17 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   // MARK: NSOutlineView rename on double-click
   // =====================================================================
   
-  @objc func structureOutlineViewDoubleClick(_ sender: AnyObject)
+  @objc func movieSceneListViewDoubleClick(_ sender: AnyObject)
   {
     if let proxyProject = self.proxyProject, proxyProject.isEditable,
-       let clickedRow: Int = self.structuresOutlineView?.clickedRow, clickedRow >= 0
+       let clickedRow: Int = self.movieOutlineView?.clickedRow, clickedRow >= 0
     {
-      self.structuresOutlineView?.editColumn(0, row: clickedRow, with: nil, select: false)
+      if let view: NSTableCellView = self.movieOutlineView?.view(atColumn: 0, row: clickedRow, makeIfNecessary: true) as? NSTableCellView,
+         let textField: NSTextField = view.textField,
+         textField.acceptsFirstResponder
+      {
+        view.window?.makeFirstResponder(textField)
+      }
     }
   }
 
@@ -1429,9 +1434,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       movie.displayName = newValue
     
       // reload item in the outlineView
-      if let row: Int = self.structuresOutlineView?.row(forItem: movie), row >= 0
+      if let row: Int = self.movieOutlineView?.row(forItem: movie), row >= 0
       {
-        self.structuresOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
+        self.movieOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
       }
 
       project.isEdited = true
@@ -1445,9 +1450,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       let newValue: String = sender.stringValue
     
-      if let row: Int = self.structuresOutlineView?.row(for: sender), row >= 0
+      if let row: Int = self.movieOutlineView?.row(for: sender), row >= 0
       {
-        if let movie: Movie = self.structuresOutlineView?.item(atRow: row) as? Movie,
+        if let movie: Movie = self.movieOutlineView?.item(atRow: row) as? Movie,
             movie.displayName != newValue
         {
           self.setMovieDisplayName(movie, to: newValue)
@@ -1485,9 +1490,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     {
       let newValue: String = sender.stringValue
     
-      if let row: Int = self.structuresOutlineView?.row(for: sender), row >= 0
+      if let row: Int = self.movieOutlineView?.row(for: sender), row >= 0
       {
-        if let scene: Scene = self.structuresOutlineView?.item(atRow: row) as? Scene,
+        if let scene: Scene = self.movieOutlineView?.item(atRow: row) as? Scene,
            scene.displayName != newValue
         {
           self.setSceneDisplayName(scene, to: newValue)
@@ -1610,7 +1615,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       NSAnimationContext.runAnimationGroup({ context in
       project.undoManager.beginUndoGrouping()
-      structuresOutlineView?.beginUpdates()
+      movieOutlineView?.beginUpdates()
       
       // keep the selected node selected
       let selectedObject: Movie? = project.sceneList.selectedScene?.selectedMovie
@@ -1625,12 +1630,12 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       // remove old node and remove it from the selection of the parent scene
       scene.selectedMovies.remove(movie)
       scene.movies.remove(at: lastIndex)
-      self.structuresOutlineView?.removeItems(at: IndexSet(integer: lastIndex), inParent: scene, withAnimation: [])
+      self.movieOutlineView?.removeItems(at: IndexSet(integer: lastIndex), inParent: scene, withAnimation: [])
       
       // insert new node and add it to its selection
       toItem?.selectedMovies.insert(movie)
       toItem?.movies.insert(movie, at: childIndex)
-      self.structuresOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: toItem, withAnimation: .effectGap)
+      self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: toItem, withAnimation: .effectGap)
       
       /*
       if project.sceneList.selectedObjects.contains(movie)
@@ -1652,13 +1657,13 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
             // Put the undo for the removal on the stack. The redo is 'moveMovieNode' itself
             project.undoManager.registerUndo(withTarget: self, handler: {target in
               project.sceneList.scenes.insert(scene, at: index)
-              target.structuresOutlineView?.insertItems(at: IndexSet(integer: index), inParent: nil, withAnimation: .slideRight)
-              target.structuresOutlineView?.expandItem(scene)
-              target.structuresOutlineView?.reloadItem(scene)
+              target.movieOutlineView?.insertItems(at: IndexSet(integer: index), inParent: nil, withAnimation: .slideRight)
+              target.movieOutlineView?.expandItem(scene)
+              target.movieOutlineView?.reloadItem(scene)
             })
             
             project.sceneList.scenes.remove(at: index)
-            self.structuresOutlineView?.removeItems(at: IndexSet(integer: index), inParent: nil, withAnimation: .slideLeft)
+            self.movieOutlineView?.removeItems(at: IndexSet(integer: index), inParent: nil, withAnimation: .slideLeft)
           }
         }
       }
@@ -1676,7 +1681,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       project.sceneList.selectedMovies = selectedObjects
       reloadSelection()
       
-      structuresOutlineView?.endUpdates()
+      movieOutlineView?.endUpdates()
       project.undoManager.endUndoGrouping()
         
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: toItem!.allRenderFrames)
@@ -1727,7 +1732,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
         NSAnimationContext.runAnimationGroup({context in
-          self.structuresOutlineView?.beginUpdates()
+          self.movieOutlineView?.beginUpdates()
           if (newItem == nil)
           {
             let scene: Scene = Scene()
@@ -1735,17 +1740,17 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
             if childIndex == 0
             {
               project.sceneList.scenes.insert(scene, at: childIndex)
-              self.structuresOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
-              self.structuresOutlineView?.expandItem(scene)
-              self.structuresOutlineView?.reloadItem(scene)
+              self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
+              self.movieOutlineView?.expandItem(scene)
+              self.movieOutlineView?.reloadItem(scene)
             }
             else
             {
               childIndex = project.sceneList.scenes.count
               project.sceneList.scenes.insert(scene, at: childIndex)
-              self.structuresOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
-              self.structuresOutlineView?.expandItem(scene)
-              self.structuresOutlineView?.reloadItem(scene)
+              self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
+              self.movieOutlineView?.expandItem(scene)
+              self.movieOutlineView?.reloadItem(scene)
             }
             newItem = scene
             childIndex = 0
@@ -1774,7 +1779,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
               childIndex = childIndex + 1
             }
           }
-          self.structuresOutlineView?.endUpdates()
+          self.movieOutlineView?.endUpdates()
         }, completionHandler: {
           self.setDetailViewController()
         
@@ -1821,7 +1826,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       // First place holders are inserted
       // Note that undo works for these inserted objects, so only the content should be modified, but the objects themselves should never be replaced.
       
-      self.structuresOutlineView?.beginUpdates()
+      self.movieOutlineView?.beginUpdates()
       info.enumerateDraggingItems(options: .concurrent, for: outlineView, classes: [Movie.self], searchOptions: [:], using: { (draggingItem , idx, stop)  in
         if let movie  = draggingItem.item as? Movie
         {
@@ -1830,9 +1835,9 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
           insertionIndex += 1
         
           // set the draggingframe for all pasteboard-items
-          if let height: CGFloat = self.structuresOutlineView?.rowHeight,
-             let row: Int = self.structuresOutlineView?.row(forItem: movie), row>=0,
-             let frame: NSRect = self.structuresOutlineView?.frameOfCell(atColumn: 0, row: row),
+          if let height: CGFloat = self.movieOutlineView?.rowHeight,
+             let row: Int = self.movieOutlineView?.row(forItem: movie), row>=0,
+             let frame: NSRect = self.movieOutlineView?.frameOfCell(atColumn: 0, row: row),
              frame.width > 0, height > 0
           {
             // frameOfCell(atColumn:row:) not working in NSOutlineview 'Sourcelist'-style
@@ -1840,7 +1845,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
           }
         }
       })
-      self.structuresOutlineView?.endUpdates()
+      self.movieOutlineView?.endUpdates()
       
       self.setDetailViewController()
       
@@ -1882,7 +1887,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     return
     if let tableColumn: NSTableColumn = outlineView.outlineTableColumn,
-      let tableCellView: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "structureViewRoot"), owner: self) as? NSTableCellView
+      let tableCellView: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "movieView"), owner: self) as? NSTableCellView
     {
       // Calculate a base frame for new cells
       var cellFrame: NSRect = NSMakeRect(0, 0, tableColumn.width, outlineView.rowHeight)
@@ -1921,21 +1926,21 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   @IBAction func cancelImport(sender: NSButton)
   {
     if let superview = sender.superview,
-      let row: Int = self.structuresOutlineView?.row(for: superview), row >= 0
+      let row: Int = self.movieOutlineView?.row(for: superview), row >= 0
     {
-      if let movie: Movie = self.structuresOutlineView?.item(atRow: row) as? Movie
+      if let movie: Movie = self.movieOutlineView?.item(atRow: row) as? Movie
       {
         movie.importOperation?.cancel()
         
-        self.structuresOutlineView?.beginUpdates()
+        self.movieOutlineView?.beginUpdates()
 
-        if let fromScene: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
-           let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie)
+        if let fromScene: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
+           let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie)
         {
           fromScene.movies.removeObject(movie)
-          self.structuresOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: fromScene, withAnimation: .slideLeft)
+          self.movieOutlineView?.removeItems(at: IndexSet(integer: childIndex), inParent: fromScene, withAnimation: .slideLeft)
         }
-        self.structuresOutlineView?.endUpdates()
+        self.movieOutlineView?.endUpdates()
       }
     }
   }
@@ -2067,25 +2072,25 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       let selectedNodes: Set< Movie > = Set(project.sceneList.scenes.flatMap{$0.selectedMovies})
       
      
-      self.structuresOutlineView?.deselectAll(nil)
+      self.movieOutlineView?.deselectAll(nil)
       
       var indexSet: IndexSet = IndexSet()
       for node in selectedNodes
       {
-        if let row: Int = self.structuresOutlineView?.row(forItem: node) , row >= 0
+        if let row: Int = self.movieOutlineView?.row(forItem: node) , row >= 0
         {
           indexSet.insert(row)
         }
       }
-      self.structuresOutlineView?.selectRowIndexes(indexSet, byExtendingSelection: false)
+      self.movieOutlineView?.selectRowIndexes(indexSet, byExtendingSelection: false)
       
      
       if let selectedItem: Movie = project.sceneList.selectedScene?.selectedMovie
       {
-        if let selectedRow: Int = self.structuresOutlineView?.row(forItem: selectedItem)
+        if let selectedRow: Int = self.movieOutlineView?.row(forItem: selectedItem)
         {
-          self.structuresOutlineView?.selectRowIndexes(NSIndexSet(index: selectedRow) as IndexSet, byExtendingSelection: true)
-          self.structuresOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+          self.movieOutlineView?.selectRowIndexes(NSIndexSet(index: selectedRow) as IndexSet, byExtendingSelection: true)
+          self.movieOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
         
             if (row == selectedRow)
             {
@@ -2189,7 +2194,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       if (!selectedScenes.isEmpty)
       {
         // return the value of the table view’s existing selection to avoid changing the selection
-        if let rowIndexes =  self.structuresOutlineView?.selectedRowIndexes
+        if let rowIndexes =  self.movieOutlineView?.selectedRowIndexes
         {
           return rowIndexes
         }
@@ -2232,13 +2237,13 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
         // case selectedRows.count == 1: a new single item is selected
         // case !selectedRows.contains(oldSelectedRow): the old selected row (-1 for no previous selection) is not in the current selection
         
-        if let oldSelectedRow: Int = self.structuresOutlineView?.row(forItem: project.sceneList.selectedScene?.selectedMovie),
-           let selectedRows: IndexSet = self.structuresOutlineView?.selectedRowIndexes,
-           let selectedRow: Int = self.structuresOutlineView?.selectedRow, selectedRow >= 0
+        if let oldSelectedRow: Int = self.movieOutlineView?.row(forItem: project.sceneList.selectedScene?.selectedMovie),
+           let selectedRows: IndexSet = self.movieOutlineView?.selectedRowIndexes,
+           let selectedRow: Int = self.movieOutlineView?.selectedRow, selectedRow >= 0
         {
           if((selectedRows.count == 1) || (!selectedRows.contains(oldSelectedRow)))
           {
-            self.structuresOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+            self.movieOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
               if (row == selectedRow)
               {
                 (rowView as? StructureTableRowView)?.secondaryHighlighted = true
@@ -2255,8 +2260,8 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
             })
           
             // set the selected scene and movie
-            if let movie = self.structuresOutlineView?.item(atRow: selectedRow) as? Movie,
-               let scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene
+            if let movie = self.movieOutlineView?.item(atRow: selectedRow) as? Movie,
+               let scene = self.movieOutlineView?.parent(forItem: movie) as? Scene
             {
               project.sceneList.selectedScene = scene
               scene.selectedMovie = movie
@@ -2267,7 +2272,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
             // since extending the selection changes the 'selectedRow' (the last selected item), set it back
             // this will NOT change the selection, but only update the 'selectedRow'
             // This is important when changing the selection afterwards with the 'up/down' keys, it will start from the 'selectedRow'.
-            self.structuresOutlineView?.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
+            self.movieOutlineView?.selectRowIndexes(IndexSet(integer: oldSelectedRow), byExtendingSelection: true)
           }
         }
         
@@ -2284,17 +2289,17 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   // =====================================================================
   
   
-  @IBAction func toggleStructureVisibility(_ sender: NSButton)
+  @IBAction func toggleMovieVisibility(_ sender: NSButton)
   {
     if let _ = self.proxyProject
     {
-      if let row: Int = self.structuresOutlineView?.row(for: sender.superview!), row >= 0
+      if let row: Int = self.movieOutlineView?.row(for: sender.superview!), row >= 0
       {
-        if let movie: Movie = self.structuresOutlineView?.item(atRow: row) as? Movie
+        if let movie: Movie = self.movieOutlineView?.item(atRow: row) as? Movie
         {
           movie.isVisible = (sender.state == NSControl.StateValue.on)
         
-          if let scene: Scene = structuresOutlineView?.parent(forItem: movie) as? Scene
+          if let scene: Scene = movieOutlineView?.parent(forItem: movie) as? Scene
           {
          self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: scene.allRenderFrames)
           }
@@ -2328,7 +2333,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   {
     if (menuItem.action == #selector(copy(_:)))
     {
-      return (self.structuresOutlineView?.selectedRowIndexes.count ?? 0) > 0
+      return (self.movieOutlineView?.selectedRowIndexes.count ?? 0) > 0
     }
     
     if let proxyProject: ProjectTreeNode = self.proxyProject, !proxyProject.isEnabled
@@ -2369,7 +2374,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
     
     if (menuItem.action == #selector(cut(_:)))
     {
-      return (self.structuresOutlineView?.selectedRowIndexes.count ?? 0) > 0
+      return (self.movieOutlineView?.selectedRowIndexes.count ?? 0) > 0
     }
     
     return true
@@ -2403,14 +2408,14 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
   
   @objc func paste(_ sender: AnyObject)
   {
-    let index: Int = self.structuresOutlineView?.selectedRow ?? 0
+    let index: Int = self.movieOutlineView?.selectedRow ?? 0
     
     let pasteboard = NSPasteboard.general
     if let proxyProject: ProjectTreeNode = self.proxyProject,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-       let movie: Movie = self.structuresOutlineView?.item(atRow: index) as? Movie,
-       let childIndex: Int = self.structuresOutlineView?.childIndex(forItem: movie),
-       let newItem: Scene = self.structuresOutlineView?.parent(forItem: movie) as? Scene,
+       let movie: Movie = self.movieOutlineView?.item(atRow: index) as? Movie,
+       let childIndex: Int = self.movieOutlineView?.childIndex(forItem: movie),
+       let newItem: Scene = self.movieOutlineView?.parent(forItem: movie) as? Scene,
        let pasteboardItems: [Any]  = pasteboard.readObjects(forClasses: [Movie.self], options: nil)
     {
       let newSelectedScene: Scene? = project.sceneList.selectedScene
@@ -2419,7 +2424,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
       
       var insertionIndex = childIndex + 1
       
-      self.structuresOutlineView?.beginUpdates()
+      self.movieOutlineView?.beginUpdates()
       for pasteboardItem in pasteboardItems
       {
         if let movie  = pasteboardItem as? Movie
@@ -2428,7 +2433,7 @@ class StructureListViewController: NSViewController, NSMenuItemValidation, NSOut
           insertionIndex += 1
         }
       }
-      self.structuresOutlineView?.endUpdates()
+      self.movieOutlineView?.endUpdates()
       
       self.setDetailViewController()
             
