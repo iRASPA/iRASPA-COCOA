@@ -1306,15 +1306,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
               button.state =  movie.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
             }
             
-            switch(movie.frames.count)
-            {
-            case 0:
-              view.imageView?.image = unknownIcon
-            case 1:
-              view.imageView?.image = movieSingleFrameIcon
-            default:
-              view.imageView?.image = movieMultipleFramesIcon
-            }
+            view.imageView?.image = movie.infoPanelIcon
             
             return view
           }
@@ -2102,6 +2094,8 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
      
       if let selectedItem: Movie = project.sceneList.selectedScene?.selectedMovie
       {
+        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: selectedItem.infoPanelIcon, message: selectedItem.infoPanelString))
+        
         if let selectedRow: Int = self.movieOutlineView?.row(forItem: selectedItem)
         {
           self.movieOutlineView?.selectRowIndexes(NSIndexSet(index: selectedRow) as IndexSet, byExtendingSelection: true)
@@ -2280,6 +2274,8 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
             {
               project.sceneList.selectedScene = scene
               scene.selectedMovie = movie
+              
+              self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: movie.infoPanelIcon, message: movie.infoPanelString))
             }
           }
           else

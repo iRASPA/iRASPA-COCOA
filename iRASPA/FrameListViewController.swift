@@ -276,33 +276,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     {
       view.textField?.stringValue = movie.frames[row].structure.displayName
       
-      switch(movie.frames[row].structure.materialType)
-      {
-      case .crystal:
-        view.imageView?.image = crystalIcon
-      case .molecularCrystal:
-        view.imageView?.image = molecularCrystalIcon
-      case .molecule:
-        view.imageView?.image = molecularIcon
-      case .protein:
-        view.imageView?.image = proteinIcon
-      case .proteinCrystal:
-        view.imageView?.image = proteinCrystalIcon
-      case .crystalEllipsoidPrimitive:
-        view.imageView?.image = ellipsoidCrystalIcon
-      case .crystalCylinderPrimitive:
-        view.imageView?.image = cylinderCrystalIcon
-      case .crystalPolygonalPrismPrimitive:
-        view.imageView?.image = prismCrystalIcon
-      case .ellipsoidPrimitive:
-        view.imageView?.image = ellipsoidIcon
-      case .cylinderPrimitive:
-        view.imageView?.image = cylinderIcon
-      case .polygonalPrismPrimitive:
-        view.imageView?.image = prismIcon
-      default:
-        view.imageView?.image = unknownIcon
-      }
+      view.imageView?.image = movie.frames[row].infoPanelIcon
+      
       
       return view
     }
@@ -692,6 +667,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       if let selectedFrame = selectedMovie.selectedFrame,
          let selectedRow: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
       {
+        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: selectedFrame.infoPanelIcon, message: selectedFrame.infoPanelString))
+        
         self.framesTableView?.enumerateAvailableRowViews({ (rowView, row) in
           if (row == selectedRow)
           {
@@ -745,6 +722,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
         {
           selectedMovie.selectedFrame = selectedMovie.frames[selectedRow]
           selectedMovie.selectedFrames.insert(selectedMovie.frames[selectedRow])
+          
+          self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: selectedMovie.selectedFrame?.infoPanelIcon, message: selectedMovie.selectedFrame?.infoPanelString))
         
           // set the other movies to the same movie-index
           project.sceneList.synchronizeAllMovieFrames(to: selectedRow)

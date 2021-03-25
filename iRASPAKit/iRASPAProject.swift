@@ -181,7 +181,7 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
     self.lazyStatus = lazyStatus
   }
   
-  public var displayIcon: NSImage
+  public var infoPanelIcon: NSImage
   {
     if(storageType == .publicCloud)
     {
