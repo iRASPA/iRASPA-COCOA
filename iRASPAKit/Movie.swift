@@ -37,6 +37,11 @@ import MathKit
 import LogViewKit
 import simd
 
+
+fileprivate let movieSingleFrameIcon: NSImage = NSImage(named: "MovieSingleFrameIcon")!
+fileprivate let movieMultipleFramesIcon: NSImage = NSImage(named: "MovieMultipleFramesIcon")!
+fileprivate let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
+
 // A Movie is a list of structure-data, each element is a snapshot/frame
 
 public let NSPasteboardTypeMovie: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Movie")
@@ -108,6 +113,24 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   public override var description: String
   {
     return "Movie (\(super.description)), arranged structure-objects: \(self.frames)"
+  }
+  
+  public var infoPanelIcon: NSImage
+  {
+    switch(frames.count)
+    {
+    case 0:
+      return unknownIcon
+    case 1:
+      return movieSingleFrameIcon
+    default:
+      return movieMultipleFramesIcon
+    }
+  }
+  
+  public var infoPanelString: String
+  {
+    return self.displayName
   }
   
   public var isVisible: Bool

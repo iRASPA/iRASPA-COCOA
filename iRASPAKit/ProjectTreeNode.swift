@@ -184,9 +184,14 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     }
   }
   
-  public var displayIcon: NSImage
+  public var infoPanelIcon: NSImage
   {
-    return representedObject.displayIcon
+    return representedObject.infoPanelIcon
+  }
+  
+  public var infoPanelString: String
+  {
+    return self.displayName
   }
   
   // MARK: -

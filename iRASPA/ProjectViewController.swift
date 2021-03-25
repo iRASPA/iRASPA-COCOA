@@ -750,7 +750,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       */
       
       view.textField?.stringValue = node.displayName
-      view.imageView?.image = node.displayIcon
+      view.imageView?.image = node.infoPanelIcon
       
       if node.representedObject.lazyStatus == .loading || node.representedObject.lazyStatus == .error
       {
@@ -2596,7 +2596,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       if switchToNewProject
       {
-        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: treeController.selectedTreeNode?.displayIcon, message: treeController.selectedTreeNode?.displayName))
+        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: treeController.selectedTreeNode?.infoPanelIcon, message: treeController.selectedTreeNode?.infoPanelString))
       }
       
       self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in

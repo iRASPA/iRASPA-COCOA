@@ -39,6 +39,19 @@ import MathKit
 
 public let NSPasteboardTypeFrame: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Frame")
 
+fileprivate let crystalIcon: NSImage = NSImage(named: "CrystalIcon")!
+fileprivate let molecularIcon: NSImage = NSImage(named: "MolecularIcon")!
+fileprivate let molecularCrystalIcon: NSImage = NSImage(named: "MolecularCrystalIcon")!
+fileprivate let proteinIcon: NSImage = NSImage(named: "ProteinIcon")!
+fileprivate let proteinCrystalIcon: NSImage = NSImage(named: "ProteinCrystalIcon")!
+fileprivate let ellipsoidIcon: NSImage = NSImage(named: "EllipsoidIcon")!
+fileprivate let ellipsoidCrystalIcon: NSImage = NSImage(named: "EllipsoidCrystalIcon")!
+fileprivate let cylinderIcon: NSImage = NSImage(named: "CylinderIcon")!
+fileprivate let cylinderCrystalIcon: NSImage = NSImage(named: "CylinderCrystalIcon")!
+fileprivate let prismIcon: NSImage = NSImage(named: "PrismIcon")!
+fileprivate let prismCrystalIcon: NSImage = NSImage(named: "PrismCrystalIcon")!
+fileprivate let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
+
 public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, PrimitiveVisualAppearanceViewer, Copying
 {
   
@@ -61,6 +74,42 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
   {
     self.type = .crystal
     self.structure = crystal
+  }
+  
+  public var infoPanelIcon: NSImage
+  {
+    switch(structure.materialType)
+    {
+    case .crystal:
+      return crystalIcon
+    case .molecularCrystal:
+      return molecularCrystalIcon
+    case .molecule:
+      return molecularIcon
+    case .protein:
+      return proteinIcon
+    case .proteinCrystal:
+      return proteinCrystalIcon
+    case .crystalEllipsoidPrimitive:
+      return ellipsoidCrystalIcon
+    case .crystalCylinderPrimitive:
+      return cylinderCrystalIcon
+    case .crystalPolygonalPrismPrimitive:
+      return prismCrystalIcon
+    case .ellipsoidPrimitive:
+      return ellipsoidIcon
+    case .cylinderPrimitive:
+      return cylinderIcon
+    case .polygonalPrismPrimitive:
+      return prismIcon
+    default:
+      return unknownIcon
+    }
+  }
+  
+  public var infoPanelString: String
+  {
+    return structure.displayName
   }
   
   public var allPrimitiveStructure: [Structure]
