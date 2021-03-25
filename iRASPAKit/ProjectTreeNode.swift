@@ -184,6 +184,11 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     }
   }
   
+  public var displayIcon: NSImage
+  {
+    return representedObject.displayIcon
+  }
+  
   // MARK: -
   // MARK: Encodable support
   

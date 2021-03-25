@@ -420,6 +420,9 @@
 		93B747E91F0E98EE00B1D8E0 /* ProjectSlideCarrierView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B747E81F0E98EE00B1D8E0 /* ProjectSlideCarrierView.swift */; };
 		93B777341FA47AB700A5DF86 /* SKColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B777331FA47AB700A5DF86 /* SKColorSet.swift */; };
 		93B777361FA47AD300A5DF86 /* SKColorSets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B777351FA47AD300A5DF86 /* SKColorSets.swift */; };
+		93B8541F260C96AE00B6408C /* InfoPanelItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B8541E260C96AE00B6408C /* InfoPanelItemView.swift */; };
+		93B85430260C9B4A00B6408C /* MaterialsInfoPanelItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B8542F260C9B4A00B6408C /* MaterialsInfoPanelItemView.swift */; };
+		93B85450260CA5E300B6408C /* InfoPanelIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B8544F260CA5E300B6408C /* InfoPanelIconView.swift */; };
 		93B8BB161F286A5D0024EEC7 /* iRASPAPopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B8BB151F286A5D0024EEC7 /* iRASPAPopUpButton.swift */; };
 		93B8BB181F286F1E0024EEC7 /* iRASPAComboBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B8BB171F286F1E0024EEC7 /* iRASPAComboBox.swift */; };
 		93B8F2E31EB1DDF00052BDF8 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B8F2E21EB1DDF00052BDF8 /* Cloud.swift */; };
@@ -1485,6 +1488,9 @@
 		93B747E81F0E98EE00B1D8E0 /* ProjectSlideCarrierView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSlideCarrierView.swift; sourceTree = "<group>"; };
 		93B777331FA47AB700A5DF86 /* SKColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKColorSet.swift; sourceTree = "<group>"; };
 		93B777351FA47AD300A5DF86 /* SKColorSets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKColorSets.swift; sourceTree = "<group>"; };
+		93B8541E260C96AE00B6408C /* InfoPanelItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPanelItemView.swift; sourceTree = "<group>"; };
+		93B8542F260C9B4A00B6408C /* MaterialsInfoPanelItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialsInfoPanelItemView.swift; sourceTree = "<group>"; };
+		93B8544F260CA5E300B6408C /* InfoPanelIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPanelIconView.swift; sourceTree = "<group>"; };
 		93B8BB151F286A5D0024EEC7 /* iRASPAPopUpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAPopUpButton.swift; sourceTree = "<group>"; };
 		93B8BB171F286F1E0024EEC7 /* iRASPAComboBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAComboBox.swift; sourceTree = "<group>"; };
 		93B8F2E21EB1DDF00052BDF8 /* Cloud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
@@ -2284,6 +2290,9 @@
 				93FC88A61F515B0D0009478E /* NSHorizontalSplitViewController.swift */,
 				93FC88A81F515B1C0009478E /* NSVerticalSplitViewController.swift */,
 				930DD6CC1E28064300B8FE9B /* NSInformationPanelView.swift */,
+				93B8541E260C96AE00B6408C /* InfoPanelItemView.swift */,
+				93B8544F260CA5E300B6408C /* InfoPanelIconView.swift */,
+				93B8542F260C9B4A00B6408C /* MaterialsInfoPanelItemView.swift */,
 				9381D8A01E5B6EC100263860 /* BottomToolbarPanel.swift */,
 				930DD6DE1E28071200B8FE9B /* ProjectOutlineView.swift */,
 				93475A961FC86477006F6A19 /* MovieListOutlineView.swift */,
@@ -4251,6 +4260,7 @@
 				93B747E91F0E98EE00B1D8E0 /* ProjectSlideCarrierView.swift in Sources */,
 				9330F4181F28F97800291E72 /* RenderTabView.swift in Sources */,
 				93BF1B23260A62C900AFFCF3 /* FrameTableCellView.swift in Sources */,
+				93B85450260CA5E300B6408C /* InfoPanelIconView.swift in Sources */,
 				93784A9D1E61BB2E00A7FF23 /* StructureAppearanceDetailViewController.swift in Sources */,
 				933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */,
 				93784A9B1E61BA1A00A7FF23 /* StructureAppearanceDetailViewPageController.swift in Sources */,
@@ -4300,6 +4310,7 @@
 				93784A951E61B6EB00A7FF23 /* StructureCameraDetailViewController.swift in Sources */,
 				930DD7231E2808B700B8FE9B /* AtomOutlineView.swift in Sources */,
 				93784A971E61B81500A7FF23 /* StructureElementDetailViewController.swift in Sources */,
+				93B85430260C9B4A00B6408C /* MaterialsInfoPanelItemView.swift in Sources */,
 				935F34601E5C625D005C0EE1 /* iRASPAWindow.swift in Sources */,
 				939155741E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift in Sources */,
 				93B8BB161F286A5D0024EEC7 /* iRASPAPopUpButton.swift in Sources */,
@@ -4319,6 +4330,7 @@
 				935DABE41F0E43EA00C1C8D0 /* DirectoryViewController.swift in Sources */,
 				93BF1B8E260B5DD300AFFCF3 /* TableImageViewIcon.swift in Sources */,
 				93F9363D1EB912760094C509 /* ProjectTableRowView.swift in Sources */,
+				93B8541F260C96AE00B6408C /* InfoPanelItemView.swift in Sources */,
 				93784A931E61B5CE00A7FF23 /* StructureDetailTabViewController.swift in Sources */,
 				93CEEFBE1F42193700EAF673 /* DirectoryMasterViewController.swift in Sources */,
 				935DABE61F0E44D900C1C8D0 /* PredicateEditorViewController.swift in Sources */,

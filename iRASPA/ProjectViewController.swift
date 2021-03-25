@@ -750,51 +750,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       */
       
       view.textField?.stringValue = node.displayName
-      
-      if node.representedObject.storageType == .publicCloud
-      {
-        switch(node.representedObject.projectType)
-        {
-        case .group:
-          view.imageView?.image = self.groupIcon
-        case .material:
-          view.imageView?.image = self.materialsCloudIcon
-        case .VASP:
-          view.imageView?.image = self.vaspCloudIcon
-        case .RASPA:
-          view.imageView?.image = self.raspaCloudIcon
-        case .GROMACS:
-          view.imageView?.image = self.gromacsCloudIcon
-        case .CP2K:
-          view.imageView?.image = self.cp2kCloudIcon
-        case .OPENMM:
-          view.imageView?.image = self.OpenMMCloudIcon
-        default:
-          view.imageView?.image = self.unknownIcon
-        }
-      }
-      else
-      {
-        switch(node.representedObject.projectType)
-        {
-        case .group:
-          view.imageView?.image = self.groupIcon
-        case .material:
-          view.imageView?.image = self.materialsIcon
-        case .VASP:
-          view.imageView?.image = self.vaspIcon
-        case .RASPA:
-          view.imageView?.image = self.raspaIcon
-        case .GROMACS:
-          view.imageView?.image = self.gromacsIcon
-        case .CP2K:
-          view.imageView?.image = self.cp2kIcon
-        case .OPENMM:
-          view.imageView?.image = self.openMMIcon
-        default:
-          view.imageView?.image = self.unknownIcon
-        }
-      }
+      view.imageView?.image = node.displayIcon
       
       if node.representedObject.lazyStatus == .loading || node.representedObject.lazyStatus == .error
       {
@@ -2633,9 +2589,15 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       let switchToNewProject = newValue.selected != treeController.selectedTreeNode
       
+      
     
       treeController.selectedTreeNode = newValue.selected
       treeController.selectedTreeNodes = newValue.selection
+      
+      if switchToNewProject
+      {
+        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: treeController.selectedTreeNode?.displayIcon, message: treeController.selectedTreeNode?.displayName))
+      }
       
       self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
         if let rowView = rowView as? ProjectTableRowView
@@ -2861,8 +2823,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   {
     if let proxyProject: ProjectTreeNode = selectedProject,
        let projectOutlineView = self.projectOutlineView,
-       let document: iRASPADocument = self.windowController?.currentDocument
+       let windowController: iRASPAWindowController = self.windowController,
+       let document: iRASPADocument = windowController.currentDocument
     {
+      //windowController.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: proxyProject.displayIcon, message: proxyProject.displayName))
+      
       self.projectOutlineView?.makeItemVisible(item: proxyProject)
       if let row = self.projectOutlineView?.row(forItem: proxyProject)
       {

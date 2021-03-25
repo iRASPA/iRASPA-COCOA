@@ -74,6 +74,7 @@ extension WindowControllerConsumer
 class iRASPAWindowController: NSWindowController, NSMenuItemValidation, WindowControllerConsumer, NSSharingServicePickerDelegate, NSSharingServiceDelegate, NSWindowDelegate, NSOpenSavePanelDelegate
 {
   @IBOutlet private weak var actionButton: NSButton?
+  @IBOutlet public weak var infoPanel: NSInformationPanelView?
   
   // fulfill the WindowControllerConsumer protocol-requirement
   weak var windowController: iRASPAWindowController?
