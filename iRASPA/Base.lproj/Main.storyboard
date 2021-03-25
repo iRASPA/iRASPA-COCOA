@@ -931,6 +931,7 @@
                     </window>
                     <connections>
                         <outlet property="actionButton" destination="9K4-HB-tTt" id="WCI-CJ-Td0"/>
+                        <outlet property="infoPanel" destination="WXy-eN-Cn1" id="re8-NE-wLm"/>
                         <segue destination="f3F-G5-4rG" kind="relationship" relationship="window.shadowedContentViewController" id="Wiq-LD-W2L"/>
                     </connections>
                 </windowController>

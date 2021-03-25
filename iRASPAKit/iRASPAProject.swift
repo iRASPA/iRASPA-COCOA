@@ -35,6 +35,21 @@ import BinaryCodable
 public let iRASPAProjectPasteboardType: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.iraspa")
 
 
+fileprivate let groupIcon: NSImage = NSImage(named: "FolderIcon")!
+fileprivate let materialsIcon: NSImage = NSImage(named: "MaterialsIcon")!
+fileprivate let materialsCloudIcon: NSImage = NSImage(named: "MaterialsCloudIcon")!
+fileprivate let raspaIcon: NSImage = NSImage(named: "RaspaIcon")!
+fileprivate let raspaCloudIcon: NSImage = NSImage(named: "RaspaCloudIcon")!
+fileprivate let cp2kIcon: NSImage = NSImage(named: "Cp2kIcon")!
+fileprivate let cp2kCloudIcon: NSImage = NSImage(named: "Cp2kCloudIcon")!
+fileprivate let vaspIcon: NSImage = NSImage(named: "VaspIcon")!
+fileprivate let vaspCloudIcon: NSImage = NSImage(named: "VaspCloudIcon")!
+fileprivate let gromacsIcon: NSImage = NSImage(named: "GromacsIcon")!
+fileprivate let gromacsCloudIcon: NSImage = NSImage(named: "GromacsCloudIcon")!
+fileprivate let openMMIcon: NSImage = NSImage(named: "OpenMMIcon")!
+fileprivate let OpenMMCloudIcon: NSImage = NSImage(named: "OpenMMCloudIcon")!
+fileprivate let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
+
 
 public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, BinaryEncodableRepresentedObject, BinaryDecodableRepresentedObject
 {
@@ -164,6 +179,58 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
     self.nodeType = nodeType
     self.storageType = storageType
     self.lazyStatus = lazyStatus
+  }
+  
+  public var displayIcon: NSImage
+  {
+    if(storageType == .publicCloud)
+    {
+      switch(projectType)
+      {
+      case .none:
+        return unknownIcon
+      case .generic:
+        return materialsCloudIcon
+      case .group:
+        return groupIcon
+      case .material:
+        return materialsCloudIcon
+      case .VASP:
+        return vaspCloudIcon
+      case .RASPA:
+        return raspaCloudIcon
+      case .GROMACS:
+        return gromacsCloudIcon
+      case .CP2K:
+        return cp2kCloudIcon
+      case .OPENMM:
+        return OpenMMCloudIcon
+      }
+    }
+    else
+    {
+      switch(projectType)
+      {
+      case .none:
+        return unknownIcon
+      case .generic:
+        return materialsIcon
+      case .group:
+        return groupIcon
+      case .material:
+        return materialsIcon
+      case .VASP:
+        return vaspIcon
+      case .RASPA:
+        return raspaIcon
+      case .GROMACS:
+        return gromacsIcon
+      case .CP2K:
+        return cp2kIcon
+      case .OPENMM:
+        return openMMIcon
+      }
+    }
   }
   
   public var isEdited: Bool
