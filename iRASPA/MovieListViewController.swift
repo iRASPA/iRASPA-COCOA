@@ -1729,72 +1729,65 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   {
     var childIndex: Int = index
     
-    if(index == NSOutlineViewDropOnItemIndex)
+    var newItem: Scene? = item as? Scene
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      // drop on item
-    }
-    else
-    {
-      var newItem: Scene? = item as? Scene
-      if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
-      {
-        NSAnimationContext.runAnimationGroup({context in
-          self.movieOutlineView?.beginUpdates()
-          if (newItem == nil)
+      NSAnimationContext.runAnimationGroup({context in
+        self.movieOutlineView?.beginUpdates()
+        if (newItem == nil)
+        {
+          let scene: Scene = Scene()
+          scene.displayName = "New scene"
+          if childIndex == 0
           {
-            let scene: Scene = Scene()
-            scene.displayName = "New scene"
-            if childIndex == 0
-            {
-              project.sceneList.scenes.insert(scene, at: childIndex)
-              self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
-              self.movieOutlineView?.expandItem(scene)
-              self.movieOutlineView?.reloadItem(scene)
-            }
-            else
-            {
-              childIndex = project.sceneList.scenes.count
-              project.sceneList.scenes.insert(scene, at: childIndex)
-              self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
-              self.movieOutlineView?.expandItem(scene)
-              self.movieOutlineView?.reloadItem(scene)
-            }
-            newItem = scene
-            childIndex = 0
+            project.sceneList.scenes.insert(scene, at: childIndex)
+            self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
+            self.movieOutlineView?.expandItem(scene)
+            self.movieOutlineView?.reloadItem(scene)
           }
-        
-          // drag/drop occured within the same outlineView -> reordering
-          for node: Movie in self.draggedNodes
+          else
           {
-            // Moving it from within the same parent! Account for the remove, if it is past the oldIndex
+            childIndex = project.sceneList.scenes.count
+            project.sceneList.scenes.insert(scene, at: childIndex)
+            self.movieOutlineView?.insertItems(at: IndexSet(integer: childIndex), inParent: nil, withAnimation: .slideRight)
+            self.movieOutlineView?.expandItem(scene)
+            self.movieOutlineView?.reloadItem(scene)
+          }
+          newItem = scene
+          childIndex = 0
+        }
+        
+        // drag/drop occured within the same outlineView -> reordering
+        for node: Movie in self.draggedNodes
+        {
+          // Moving it from within the same parent! Account for the remove, if it is past the oldIndex
           
-            if let indexPath: IndexPath = project.sceneList.indexPath(node)
+          if let indexPath: IndexPath = project.sceneList.indexPath(node)
+          {
+            let parent: Scene = project.sceneList.scenes[indexPath[0]]
+            
+            // Moving it from within the same parent -> account for the remove, if it is past the oldIndex
+            if (newItem as AnyObject? === parent as AnyObject?)
             {
-              let parent: Scene = project.sceneList.scenes[indexPath[0]]
-            
-              // Moving it from within the same parent -> account for the remove, if it is past the oldIndex
-              if (newItem as AnyObject? === parent as AnyObject?)
+              let oldIndex = indexPath[1]
+              if (childIndex > oldIndex)
               {
-                let oldIndex = indexPath[1]
-                if (childIndex > oldIndex)
-                {
-                  childIndex = childIndex - 1 // account for the remove
-                }
+                childIndex = childIndex - 1 // account for the remove
               }
-            
-              self.moveMovieNode(node, toItem: newItem, childIndex: childIndex)
-              childIndex = childIndex + 1
             }
+            
+            self.moveMovieNode(node, toItem: newItem, childIndex: childIndex)
+            childIndex = childIndex + 1
           }
-          self.movieOutlineView?.endUpdates()
-        }, completionHandler: {
-          self.setDetailViewController()
+        }
+        self.movieOutlineView?.endUpdates()
+      }, completionHandler: {
+        self.setDetailViewController()
         
-          self.windowController?.detailTabViewController?.renderViewController?.reloadData()
-          (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
-        })
-        return true
-      }
+        self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+        (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      })
+      return true
     }
     return false
   }

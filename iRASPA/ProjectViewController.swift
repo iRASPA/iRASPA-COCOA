@@ -55,24 +55,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   private let projectNodeSubscriptionID = "iRASPA projects"
   private var reachability: Reachability? = nil
   
-  private var stateLock: NSLock = NSLock()
-  
   weak var windowController: iRASPAWindowController?
   
-  let groupIcon: NSImage = NSImage(named: "FolderIcon")!
-  let materialsIcon: NSImage = NSImage(named: "MaterialsIcon")!
-  let materialsCloudIcon: NSImage = NSImage(named: "MaterialsCloudIcon")!
-  let raspaIcon: NSImage = NSImage(named: "RaspaIcon")!
-  let raspaCloudIcon: NSImage = NSImage(named: "RaspaCloudIcon")!
-  let cp2kIcon: NSImage = NSImage(named: "Cp2kIcon")!
-  let cp2kCloudIcon: NSImage = NSImage(named: "Cp2kCloudIcon")!
-  let vaspIcon: NSImage = NSImage(named: "VaspIcon")!
-  let vaspCloudIcon: NSImage = NSImage(named: "VaspCloudIcon")!
-  let gromacsIcon: NSImage = NSImage(named: "GromacsIcon")!
-  let gromacsCloudIcon: NSImage = NSImage(named: "GromacsCloudIcon")!
-  let openMMIcon: NSImage = NSImage(named: "OpenMMIcon")!
-  let OpenMMCloudIcon: NSImage = NSImage(named: "OpenMMCloudIcon")!
-  let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
   
   private var draggedNodes: [ProjectTreeNode] = []
   
@@ -124,11 +108,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     queue.maxConcurrentOperationCount = 8
     return queue
   }()
-  
-  var projectView: NSView?
-  {
-    return self.view
-  }
   
   override func awakeFromNib()
   {
