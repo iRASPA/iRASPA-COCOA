@@ -644,6 +644,7 @@
 		93CE77F91EA0ECBC00D068E1 /* ObjectiveCException.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77F81EA0EA7F00D068E1 /* ObjectiveCException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CEEFBE1F42193700EAF673 /* DirectoryMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */; };
 		93D1B52E1F45ECD300D0F932 /* NSPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D1B52D1F45ECD300D0F932 /* NSPageView.swift */; };
+		93D397AA260F2C700010BDDC /* ActionCALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D397A9260F2C700010BDDC /* ActionCALayer.swift */; };
 		93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */; };
 		93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */; };
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
@@ -1707,6 +1708,7 @@
 		93CE77F81EA0EA7F00D068E1 /* ObjectiveCException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveCException.h; sourceTree = "<group>"; };
 		93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryMasterViewController.swift; sourceTree = "<group>"; };
 		93D1B52D1F45ECD300D0F932 /* NSPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPageView.swift; sourceTree = "<group>"; };
+		93D397A9260F2C700010BDDC /* ActionCALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCALayer.swift; sourceTree = "<group>"; };
 		93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPrecisionNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionalNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2301,6 +2303,7 @@
 				933CAA2A207253E300F74729 /* MovieTableCellView.swift */,
 				93BF1B22260A62C900AFFCF3 /* FrameTableCellView.swift */,
 				93F9363C1EB912760094C509 /* ProjectTableRowView.swift */,
+				93D397A9260F2C700010BDDC /* ActionCALayer.swift */,
 				933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */,
 				935D60B61FD2FB9D00B34D07 /* FrameTableRowView.swift */,
 				93B8BB151F286A5D0024EEC7 /* iRASPAPopUpButton.swift */,
@@ -4270,6 +4273,7 @@
 				93B8BB181F286F1E0024EEC7 /* iRASPAComboBox.swift in Sources */,
 				93FD046D1EC1B161005226F4 /* AtomNetChargeLabel.swift in Sources */,
 				9381D8A31E5B72C700263860 /* InterpreterViewController.swift in Sources */,
+				93D397AA260F2C700010BDDC /* ActionCALayer.swift in Sources */,
 				933D6B8623CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift in Sources */,
 				93604A6E1F4EFCBB0053ADE2 /* Preferences.swift in Sources */,
 				9397C622203B4F6800FE4A9C /* ImportAccessoryViewController.swift in Sources */,

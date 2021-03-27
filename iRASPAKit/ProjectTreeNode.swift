@@ -81,7 +81,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   // must be true to allow insert/deletions in the table with animations
   public var matchesFilter: Bool = true
   
-  public var selected: Bool = false // used at run-time for AtomTableRowView-implicit selection
+  public var isImplicitelySelected: Bool = false // used at run-time for AtomTableRowView-implicit selection
   
   public var isDropEnabled: Bool = false;
   public var isEditable: Bool = true
@@ -97,7 +97,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   public var isExpanded: Bool = false
   public var disallowDrag: Bool = false
-  
+    
   /// The object the tree node represents.
   ///
   public var representedObject: iRASPAProject

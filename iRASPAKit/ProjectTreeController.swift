@@ -41,6 +41,13 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
   // there is a general selection, and a specific single selected tree-node
   public weak var selectedTreeNode: ProjectTreeNode? = nil
   public var selectedTreeNodes: Set< ProjectTreeNode > = Set()
+  {
+    didSet
+    {
+      self.flattenedNodes().forEach({$0.isImplicitelySelected = false})
+      self.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
+    }
+  }
   
   public var filterPredicate: (ProjectTreeNode) -> Bool = {_ in return true}
   
@@ -438,10 +445,9 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     {
       return Array(selectedTreeNodes)
     }
-    
   }
   
-  public var allSelectedNodes: [ProjectTreeNode]!
+  private var allSelectedNodes: [ProjectTreeNode]!
   {
     get
     {
@@ -455,7 +461,6 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
       }
       return Array(selectedNodes)
     }
-    
   }
   
   

@@ -814,6 +814,10 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       {
         let projectTreeController: ProjectTreeController = document.documentData.projectData
   
+        if let item: ProjectTreeNode = item as? ProjectTreeNode
+        {
+          rowView.isImplicitelySelected = item.isImplicitelySelected
+        }
         
         if (node == projectTreeController.selectedTreeNode)
         {
@@ -861,7 +865,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         rowView.isSelected = true
         rowView.secondaryHighlighted = true
       }
-      //rowView.needsDisplay = true
+      
+      if let item: ProjectTreeNode = outlineView.item(atRow: row) as? ProjectTreeNode
+      {
+        rowView.isImplicitelySelected = item.isImplicitelySelected
+      }
     }
   }
   
@@ -871,6 +879,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     {
       (rowView as? ProjectTableRowView)?.isSelected = false
       (rowView as? ProjectTableRowView)?.secondaryHighlighted = false
+      
+      (rowView as? ProjectTableRowView)?.isImplicitelySelected = false
     }
   }
   
@@ -2589,8 +2599,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       let switchToNewProject = newValue.selected != treeController.selectedTreeNode
       
-      
-    
+      // Here the selection of the model is set
+      // 'selectedTreeNodes' sets the property 'selected' on all implicitely selected projects
       treeController.selectedTreeNode = newValue.selected
       treeController.selectedTreeNodes = newValue.selection
       
@@ -2600,8 +2610,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       }
       
       self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
-        if let rowView = rowView as? ProjectTableRowView
+        // set the implicit selection to all the rowViews
+        if let item: ProjectTreeNode = self.projectOutlineView?.item(atRow: row) as? ProjectTreeNode
         {
+          (rowView as? ProjectTableRowView)?.allowAction = true
+          (rowView as? ProjectTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
           rowView.layer?.setNeedsDisplay()
         }
       })
@@ -2609,6 +2622,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       NSAnimationContext.beginGrouping()
       
       NSAnimationContext.current.completionHandler = { () -> Void in
+        self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
+          // set the implicit selection to all the rowViews
+          (rowView as? ProjectTableRowView)?.allowAction = false
+        })
+        
         if switchToNewProject
         {
           self.switchToCurrentProject()
@@ -2622,9 +2640,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   }
 
   
-  
-  
-  
   func reloadSelection()
   {
     // clear all rowViews
@@ -2632,7 +2647,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       if let rowView = rowView as? ProjectTableRowView
       {
         rowView.secondaryHighlighted = false
-        rowView.layer?.setNeedsDisplay()
       }
     })
     
@@ -2655,12 +2669,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           if let rowView = rowView as? ProjectTableRowView
           {
             rowView.secondaryHighlighted = (row == selectedRow)
-            rowView.needsDisplay = true
+            rowView.layer?.setNeedsDisplay()
             self.projectOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: 0))
           }
         })
       }
-      
       
       let selectedProjectNodes:[ProjectTreeNode] = projectTreeController.selectedNodes
       for node in selectedProjectNodes
