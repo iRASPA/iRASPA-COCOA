@@ -54,11 +54,19 @@ class ProjectOutlineView: NSOutlineView
   
   override func becomeFirstResponder() -> Bool
   {
+    self.enumerateAvailableRowViews({ (rowView,row) in
+      rowView.isEmphasized = true
+      rowView.layer?.setNeedsDisplay()
+    })
     return true
   }
   
   override func resignFirstResponder() -> Bool
   {
+    self.enumerateAvailableRowViews({ (rowView,row) in
+      rowView.isEmphasized = false
+      rowView.layer?.setNeedsDisplay()
+    })
     return true
   }
   

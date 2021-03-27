@@ -40,6 +40,7 @@ public class ProjectTableRowView: NSTableRowView, CALayerDelegate
   var isImplicitelySelected: Bool = false
   
   var shapeLayer: CAShapeLayer? = nil
+  var implicitelySelectedLayer:ActionCALayer?
   var path: CGPath = CGMutablePath()
   
   override public var isOpaque: Bool { return false }
@@ -67,13 +68,22 @@ public class ProjectTableRowView: NSTableRowView, CALayerDelegate
   public override func makeBackingLayer() -> CALayer
   {
     let layer = super.makeBackingLayer()
+    
+    
     let shapeLayer =  CAShapeLayer()
     shapeLayer.fillColor = nil
     
     // Make sure to draw 'on top'
     shapeLayer.zPosition = 1.0
     layer.addSublayer(shapeLayer)
+    
     self.shapeLayer = shapeLayer
+    
+    let maskLayer = ActionCALayer()
+    maskLayer.allowActions = false
+    layer.addSublayer(maskLayer)
+    self.implicitelySelectedLayer = maskLayer
+    
     return layer
   }
   
@@ -87,8 +97,37 @@ public class ProjectTableRowView: NSTableRowView, CALayerDelegate
     self.shapeLayer = nil
   }
   
+  public var allowAction: Bool
+  {
+    get
+    {
+      return self.implicitelySelectedLayer?.allowActions ?? false
+    }
+    set(newValue)
+    {
+      self.implicitelySelectedLayer?.allowActions = newValue
+    }
+  }
+  
   public override func updateLayer()
   {
+    if isImplicitelySelected && !secondaryHighlighted
+    {
+      implicitelySelectedLayer?.frame = (self.layer?.bounds ?? CGRect()).insetBy(dx: 10, dy: 0)
+      if self.isEmphasized
+      {
+        implicitelySelectedLayer?.backgroundColor = NSColor.alternateSelectedControlColor.withAlphaComponent(0.20).cgColor
+      }
+      else
+      {
+        implicitelySelectedLayer?.backgroundColor = NSColor.systemGray.withAlphaComponent(0.2).cgColor
+      }
+    }
+    else
+    {
+      self.implicitelySelectedLayer?.backgroundColor = CGColor.init(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.0)
+    }
+    
     if secondaryHighlighted
     {
       if let shapeLayer = shapeLayer

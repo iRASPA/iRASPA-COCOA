@@ -55,6 +55,11 @@ class AtomTableRowView: NSTableRowView
     self.canDrawSubviewsIntoLayer = true
   }
   
+  override public var wantsUpdateLayer: Bool
+  {
+    return true
+  }
+  
   override var isOpaque: Bool { return false }
   
     
@@ -93,7 +98,7 @@ class AtomTableRowView: NSTableRowView
     }
   }
   
-  
+  // called for non-sourcelist selection
   override func drawSelection(in dirtyRect: NSRect)
   {
     let lightBlue: NSColor
@@ -111,5 +116,4 @@ class AtomTableRowView: NSTableRowView
     selectionPath.fill()
     selectionPath.stroke()
   }
-  
 }
