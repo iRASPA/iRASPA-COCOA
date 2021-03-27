@@ -71,16 +71,25 @@ class DirectoryMasterViewController: NSViewController, WindowControllerConsumer,
   
   func switchToCurrentProject()
   {
+    func importFileOpenPanel()
+    {
+      if let projectViewController: ProjectViewController = self.children.first as? ProjectViewController
+      {
+        projectViewController.switchToCurrentProject()
+      }
+    }
   }
   
   func reloadData()
   {
-    
   }
   
   func importFileOpenPanel()
   {
-    
+    if let projectViewController: ProjectViewController = self.children.first as? ProjectViewController
+    {
+      projectViewController.importFileOpenPanel()
+    }
   }
   
   var projectsView: NSView?
