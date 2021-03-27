@@ -94,7 +94,7 @@ class StructureMasterViewController: NSViewController, WindowControllerConsumer,
     if let tabViewController: NSTabViewController = self.children.first as? NSTabViewController
     {
       // foward to ProjectViewController
-      return (tabViewController.tabViewItems[0].viewController as? ProjectViewController)?.projectView
+      return (tabViewController.tabViewItems[0].viewController as? ProjectViewController)?.view
     }
     return nil
   }
