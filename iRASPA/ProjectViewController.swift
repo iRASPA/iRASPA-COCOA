@@ -410,16 +410,42 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       return true
     }
     
-    if let type = try? NSDocumentController.shared.typeForContents(of: url)
+    if #available(OSX 11.0, *)
     {
-      switch(type)
+      if let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
+         let type = resourceValues.contentType
       {
-      case iRASPA_CIF_UTI,
-           iRASPA_PDB_UTI,
-           iRASPA_XYZ_UTI:
-        return true
-      default:
-        break
+        if type.conforms(to: .cif)
+        {
+          return true
+        }
+        if type.conforms(to: .pdb)
+        {
+          return true
+        }
+        if type.conforms(to: .xyz)
+        {
+          return true
+        }
+      }
+    }
+    else
+    {
+      if let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
+         let type = resourceValues.typeIdentifier
+      {
+        if UTTypeConformsTo(type as CFString, typeCIF)
+        {
+          return true
+        }
+        if UTTypeConformsTo(type as CFString, typePDB)
+        {
+          return true
+        }
+        if UTTypeConformsTo(type as CFString, typeXYZ)
+        {
+          return true
+        }
       }
     }
     
@@ -448,7 +474,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
      
      openPanel.delegate = self
      openPanel.canChooseFiles = true
-     openPanel.allowedFileTypes = ["cif","pdb", "xyz", "poscar", "contcar"]
      openPanel.allowedFileTypes = nil
      
      openPanel.begin { (result) -> Void in

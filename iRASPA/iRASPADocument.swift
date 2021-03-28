@@ -41,7 +41,7 @@ import Compression
 import BinaryCodable
 import ZIPFoundation
 import Compression
-
+import UniformTypeIdentifiers
 
 
 class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDelegate
@@ -343,7 +343,14 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
           {
             projectTreeNode.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
             
-            self.fileType = iRASPAUniversalDocumentUTI
+            if #available(OSX 11.0, *)
+            {
+              self.fileType = UTType.irspdoc.identifier
+            }
+            else
+            {
+              self.fileType = typeirspdoc as String
+            }
             self.fileURL = nil    // disassociate document from file; makes document "untitled"
             self.displayName = projectTreeNode.displayName
             (self.windowControllers.first as? iRASPAWindowController)?.masterTabViewController?.reloadData()
@@ -383,7 +390,14 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         DispatchQueue.main.async {
           proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
-          self.fileType = iRASPAUniversalDocumentUTI
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
           self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
@@ -416,7 +430,14 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         DispatchQueue.main.async {
            proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
-          self.fileType = iRASPAUniversalDocumentUTI
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
           self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
@@ -449,7 +470,14 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         DispatchQueue.main.async {
           proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
-          self.fileType = iRASPAUniversalDocumentUTI
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
           self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
@@ -482,7 +510,14 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         DispatchQueue.main.async {
           proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
-          self.fileType = iRASPAUniversalDocumentUTI
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
           self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
@@ -515,7 +550,14 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
         DispatchQueue.main.async {
           proxyProject.insert(inParent: self.documentData.projectLocalRootNode, atIndex: 0)
           
-          self.fileType = iRASPAUniversalDocumentUTI
+          if #available(OSX 11.0, *)
+          {
+            self.fileType = UTType.irspdoc.identifier
+          }
+          else
+          {
+            self.fileType = typeirspdoc as String
+          }
           self.fileURL = nil                   // disassociate document from file; makes document "untitled"
           self.displayName = displayName
           self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
@@ -531,29 +573,61 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   
   override func read(from url: URL, ofType typeName: String) throws
   {
-    switch(typeName)
+    if #available(OSX 11.0, *)
     {
-    case iRASPAUniversalDocumentUTI:
-      try readModernDocumentFileFormat(url: url)
-    case iRASPAProjectUTI:
-      try readModernProjectFileFormat(url: url)
-    case iRASPA_CIF_UTI:
-      try readCIFFileFormat(url: url)
-    case iRASPA_PDB_UTI:
-      try readPDBFileFormat(url: url)
-    case iRASPA_XYZ_UTI:
-      try readXYZFileFormat(url: url)
-    default:
-      if (url.pathExtension.isEmpty)
+      switch(typeName)
       {
-        if (url.lastPathComponent.uppercased() == "POSCAR" ||
-            url.lastPathComponent.uppercased() == "CONTCAR")
+      case UTType.irspdoc.identifier:
+        try readModernDocumentFileFormat(url: url)
+      case UTType.iraspa.identifier:
+        try readModernProjectFileFormat(url: url)
+      case UTType.cif.identifier:
+        try readCIFFileFormat(url: url)
+      case UTType.pdb.identifier:
+        try readPDBFileFormat(url: url)
+      case UTType.xyz.identifier:
+        try readXYZFileFormat(url: url)
+      default:
+        if (url.pathExtension.isEmpty)
         {
-          try readPOSCARFileFormat(url: url)
+          if (url.lastPathComponent.uppercased() == "POSCAR" ||
+              url.lastPathComponent.uppercased() == "CONTCAR")
+          {
+            try readPOSCARFileFormat(url: url)
+          }
+          else if (url.lastPathComponent.uppercased() == "XDATCAR")
+          {
+            try readXDATCARFileFormat(url: url)
+          }
         }
-        else if (url.lastPathComponent.uppercased() == "XDATCAR")
+      }
+    }
+    else
+    {
+      switch(typeName as CFString)
+      {
+      case typeirspdoc:
+        try readModernDocumentFileFormat(url: url)
+      case typeProject:
+        try readModernProjectFileFormat(url: url)
+      case typeCIF:
+        try readCIFFileFormat(url: url)
+      case typePDB:
+        try readPDBFileFormat(url: url)
+      case typeXYZ:
+        try readXYZFileFormat(url: url)
+      default:
+        if (url.pathExtension.isEmpty)
         {
-          try readXDATCARFileFormat(url: url)
+          if (url.lastPathComponent.uppercased() == "POSCAR" ||
+              url.lastPathComponent.uppercased() == "CONTCAR")
+          {
+            try readPOSCARFileFormat(url: url)
+          }
+          else if (url.lastPathComponent.uppercased() == "XDATCAR")
+          {
+            try readXDATCARFileFormat(url: url)
+          }
         }
       }
     }
