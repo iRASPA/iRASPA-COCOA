@@ -40,14 +40,6 @@ import SymmetryKit
 import LogViewKit
 
 
-
-let iRASPAProjectUTI: String = "nl.darkwing.iraspa.iraspa"
-let typeCIF: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "cif" as CFString, kUTTypeData)?.takeRetainedValue())!
-let typePDB: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "pdb" as CFString, kUTTypeData)?.takeRetainedValue())!
-let typeXYZ: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "xyz" as CFString, kUTTypeData)?.takeRetainedValue())!
-let typePOSCAR: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "poscar" as CFString, kUTTypeData)?.takeRetainedValue())!
-let typeProject: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "iraspa" as CFString, kUTTypeData)?.takeRetainedValue())!
-
 public let NSPasteboardTypeProjectTreeNode: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.iraspa")
 public let NSPasteboardTypeProjectTreeNodeCopy: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.project.copy")
 
@@ -439,69 +431,143 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
          let data: Data = try? Data(contentsOf: url, options: [])
       {
         let displayName: String = url.deletingPathExtension().lastPathComponent
-        if let type = try? NSWorkspace.shared.type(ofFile: url.path)
+        
+        if #available(OSX 11.0, *)
         {
-          switch(type)
+          if let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
+             let type = resourceValues.contentType
           {
-          case _ where NSWorkspace.shared.type(type, conformsToType: iRASPAProjectUTI):
-            guard let data = data.decompress(withAlgorithm: .lzma) else {return nil}
-            let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-            guard let node: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: true) else {return nil}
-            self.init(treeNode: node)
-            self.isEditable = true
-            return
-          case _ where NSWorkspace.shared.type(type, conformsToType: String(typePOSCAR)) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
-            guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-            let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
-            try? poscarParser.startParsing()
-            let scene: Scene = Scene(parser: poscarParser.scene)
-            let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
-            let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
-            self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
-            self.isEditable = true
-            return
-          case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
-            guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-            let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
-            try? poscarParser.startParsing()
-            let scene: Scene = Scene(parser: poscarParser.scene)
-            let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
-            let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
-            self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
-            self.isEditable = true
-            return
-          case _ where NSWorkspace.shared.type(type, conformsToType: String(typeCIF)):
-            guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-            let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
-            try? cifParser.startParsing()
-            let scene: Scene = Scene(parser: cifParser.scene)
-            let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
-            let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
-            self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
-            self.isEditable = true
-            return
-          case _ where NSWorkspace.shared.type(type, conformsToType: String(typePDB)):
-            guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-            let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
-            try? pdbParser.startParsing()
-            let scene: Scene = Scene(parser: pdbParser.scene)
-            let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
-            let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
-            self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
-            self.isEditable = true
-            return
-          case _ where NSWorkspace.shared.type(type, conformsToType: String(typeXYZ)):
-            guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-            let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
-            try? xyzParser.startParsing()
-            let scene: Scene = Scene(parser: xyzParser.scene)
-            let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
-            let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
-            self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
-            self.isEditable = true
-            return
-          default:
-            return nil
+            switch(type)
+            {
+            case _ where type.conforms(to: .iraspa):
+              guard let data = data.decompress(withAlgorithm: .lzma) else {return nil}
+              let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+              guard let node: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: true) else {return nil}
+              self.init(treeNode: node)
+              self.isEditable = true
+              return
+            case _ where type.conforms(to: .poscar) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
+              try? poscarParser.startParsing()
+              let scene: Scene = Scene(parser: poscarParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
+              try? poscarParser.startParsing()
+              let scene: Scene = Scene(parser: poscarParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            case _ where type.conforms(to: .cif):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
+              try? cifParser.startParsing()
+              let scene: Scene = Scene(parser: cifParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            case _ where type.conforms(to: .pdb):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
+              try? pdbParser.startParsing()
+              let scene: Scene = Scene(parser: pdbParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            case _ where type.conforms(to: .xyz):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
+              try? xyzParser.startParsing()
+              let scene: Scene = Scene(parser: xyzParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            default:
+              return nil
+            }
+          }
+        }
+        else
+        {
+          if let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
+             let type = resourceValues.typeIdentifier
+          {
+            switch(type)
+            {
+            case _ where UTTypeConformsTo(type as CFString, typeProject as CFString):
+              guard let data = data.decompress(withAlgorithm: .lzma) else {return nil}
+              let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+              guard let node: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: true) else {return nil}
+              self.init(treeNode: node)
+              self.isEditable = true
+              return
+            case _ where UTTypeConformsTo(type as CFString, typePOSCAR as CFString) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
+              try? poscarParser.startParsing()
+              let scene: Scene = Scene(parser: poscarParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
+              try? poscarParser.startParsing()
+              let scene: Scene = Scene(parser: poscarParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            case _ where UTTypeConformsTo(type as CFString, typeCIF as CFString):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
+              try? cifParser.startParsing()
+              let scene: Scene = Scene(parser: cifParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            case _ where UTTypeConformsTo(type as CFString, typePDB as CFString):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
+              try? pdbParser.startParsing()
+              let scene: Scene = Scene(parser: pdbParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            case _ where UTTypeConformsTo(type as CFString, typeXYZ as CFString):
+              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+              let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
+              try? xyzParser.startParsing()
+              let scene: Scene = Scene(parser: xyzParser.scene)
+              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+              let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
+              self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
+              self.isEditable = true
+              return
+            default:
+              return nil
+            }
           }
         }
       }

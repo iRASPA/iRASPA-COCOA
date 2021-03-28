@@ -18,6 +18,7 @@
 		9303760225723891000F641D /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9303760125723891000F641D /* libffi.a */; };
 		930663C51E7C4808004F9299 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 930663C41E7C4808004F9299 /* Credits.rtf */; };
 		930C1FA72201E576006AEF30 /* MetalCubeGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C1FA62201E576006AEF30 /* MetalCubeGeometry.swift */; };
+		930C4ECC261070BF00FA49BB /* UniformTypeIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C4ECB261070BF00FA49BB /* UniformTypeIdentifiers.swift */; };
 		930C97631FCEC52A00B4611E /* AppearanceTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97621FCEC52A00B4611E /* AppearanceTableRowView.swift */; };
 		930C97651FCEC69E00B4611E /* CameraTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97641FCEC69E00B4611E /* CameraTableRowView.swift */; };
 		930C97671FCEC6AD00B4611E /* InfoTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */; };
@@ -1073,6 +1074,7 @@
 		9303760125723891000F641D /* libffi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libffi.a; sourceTree = "<group>"; };
 		930663C41E7C4808004F9299 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		930C1FA62201E576006AEF30 /* MetalCubeGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCubeGeometry.swift; sourceTree = "<group>"; };
+		930C4ECB261070BF00FA49BB /* UniformTypeIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniformTypeIdentifiers.swift; sourceTree = "<group>"; };
 		930C97621FCEC52A00B4611E /* AppearanceTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceTableRowView.swift; sourceTree = "<group>"; };
 		930C97641FCEC69E00B4611E /* CameraTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTableRowView.swift; sourceTree = "<group>"; };
 		930C97661FCEC6AD00B4611E /* InfoTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableRowView.swift; sourceTree = "<group>"; };
@@ -2211,6 +2213,7 @@
 				930DD6111E26B96A00B8FE9B /* iRASPAKit.h */,
 				930DD6351E26B9F500B8FE9B /* Timer.swift */,
 				93B8F2E41EB1DE630052BDF8 /* Notifications.swift */,
+				930C4ECB261070BF00FA49BB /* UniformTypeIdentifiers.swift */,
 				93F936381EB910B90094C509 /* ProgressIndicatorProtocol.swift */,
 				933F4F231FB1C24D00753D08 /* Errors.swift */,
 				930DD62C1E26B98200B8FE9B /* Model */,
@@ -4192,6 +4195,7 @@
 				930DD6481E26BA5D00B8FE9B /* Molecule.swift in Sources */,
 				9373377B1EB5D60800E0655F /* ProjectProgressIndicator.swift in Sources */,
 				9399E62F2459C6E900036EBF /* CrystalCylinderPrimitive.swift in Sources */,
+				930C4ECC261070BF00FA49BB /* UniformTypeIdentifiers.swift in Sources */,
 				93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */,
 				930DD6581E26BAAD00B8FE9B /* ProjectGroup.swift in Sources */,
 				93F936371EB900A10094C509 /* MyNSClipView.swift in Sources */,

@@ -31,14 +31,16 @@
 
 
 import Cocoa
+import iRASPAKit
+import UniformTypeIdentifiers
 
-let iRASPADocumentUTI: String = "nl.darkwing.iraspa.irspdoc"
-let iRASPAUniversalDocumentUTI: String = "nl.darkwing.iraspa.universal.irspdoc"
-let iRASPAProjectUTI: String = "nl.darkwing.iraspa.iraspa"
+@available(OSX 11.0, *)
+extension UTType
+{
+  public static let irspdoc : UTType = UTType(exportedAs: "nl.darkwing.iraspa.universal.irspdoc")
+}
 
-let iRASPA_CIF_UTI: String = "Crystallographic Information File"
-let iRASPA_PDB_UTI: String = "Protein DataBank"
-let iRASPA_XYZ_UTI: String = "Coordinate Animation format"
+public let typeirspdoc: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "irspdoc" as CFString, kUTTypeData)?.takeRetainedValue())!
 
 
 class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
@@ -50,19 +52,58 @@ class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
       return true
     }
     
-    if let type = try? typeForContents(of: url)
+    if #available(OSX 11.0, *)
     {
-      switch(type)
+      if let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
+         let type = resourceValues.contentType
       {
-      case iRASPAUniversalDocumentUTI,
-           iRASPAProjectUTI,
-           iRASPADocumentUTI,
-           iRASPA_CIF_UTI,
-           iRASPA_PDB_UTI,
-           iRASPA_XYZ_UTI:
-        return true
-      default:
-        break
+        if type.conforms(to: .irspdoc)
+        {
+          return true
+        }
+        if type.conforms(to: .iraspa)
+        {
+          return true
+        }
+        if type.conforms(to: .cif)
+        {
+          return true
+        }
+        if type.conforms(to: .pdb)
+        {
+          return true
+        }
+        if type.conforms(to: .xyz)
+        {
+          return true
+        }
+      }
+    }
+    else
+    {
+      if let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
+         let type = resourceValues.typeIdentifier
+      {
+        if UTTypeConformsTo(type as CFString, typeirspdoc)
+        {
+          return true
+        }
+        if UTTypeConformsTo(type as CFString, typeProject)
+        {
+          return true
+        }
+        if UTTypeConformsTo(type as CFString, typeCIF)
+        {
+          return true
+        }
+        if UTTypeConformsTo(type as CFString, typePDB)
+        {
+          return true
+        }
+        if UTTypeConformsTo(type as CFString, typeXYZ)
+        {
+          return true
+        }
       }
     }
     
