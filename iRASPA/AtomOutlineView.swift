@@ -49,7 +49,7 @@ class AtomOutlineView: NSOutlineView
     self.enumerateAvailableRowViews({ (rowView,row) in
       if let item: SKAtomTreeNode = self.item(atRow: row) as? SKAtomTreeNode
       {
-        (rowView as? AtomTableRowView)?.isImplicitelySelected = item.selected
+        (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
         rowView.needsDisplay = true
       }
     })
@@ -61,7 +61,7 @@ class AtomOutlineView: NSOutlineView
     self.enumerateAvailableRowViews({ (rowView,row) in
       if let item: SKAtomTreeNode = self.item(atRow: row) as? SKAtomTreeNode
       {
-        (rowView as? AtomTableRowView)?.isImplicitelySelected = item.selected
+        (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
         rowView.needsDisplay = true
       }
     })

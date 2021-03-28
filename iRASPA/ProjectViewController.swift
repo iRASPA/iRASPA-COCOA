@@ -577,6 +577,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       }
       
       self.windowController?.document?.updateChangeCount(.changeDone)
+      
+      // reload, e.g. for updating the directory-viewer
+      self.windowController?.detailTabViewController?.reloadData()
     }
   }
   

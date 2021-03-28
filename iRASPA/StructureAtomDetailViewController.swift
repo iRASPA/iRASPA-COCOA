@@ -467,7 +467,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     {
       if let item: SKAtomTreeNode = item as? SKAtomTreeNode
       {
-        rowView.isImplicitelySelected = item.selected
+        rowView.isImplicitelySelected = item.isImplicitelySelected
       }
       
       return rowView
@@ -487,7 +487,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
     if let item: SKAtomTreeNode = outlineView.item(atRow: row) as? SKAtomTreeNode
     {
-      (rowView as? AtomTableRowView)?.isImplicitelySelected = item.selected
+      (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
     }
     rowView.needsDisplay = true
   }
@@ -983,13 +983,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       // set the completion-handler _before_ any animations have been run
       NSAnimationContext.current.completionHandler = {
         
-        structure.atomTreeController.flattenedNodes().forEach({$0.selected = false})
-        structure.atomTreeController.allSelectedNodes.forEach({$0.selected = true})
+        structure.atomTreeController.flattenedNodes().forEach({$0.isImplicitelySelected = false})
+        structure.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
         
         self.atomOutlineView?.enumerateAvailableRowViews({ (rowView,row) in
           if let item: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
           {
-            (rowView as? AtomTableRowView)?.isImplicitelySelected = item.selected
+            (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
             rowView.needsDisplay = true
           }
         })
@@ -1195,13 +1195,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.atomOutlineView?.reloadItem(treeNode)
       self.restoreSelectedItems(treeNode)
       
-      structure.atomTreeController.flattenedNodes().forEach({$0.selected = false})
-      structure.atomTreeController.allSelectedNodes.forEach({$0.selected = true})
+      structure.atomTreeController.flattenedNodes().forEach({$0.isImplicitelySelected = false})
+      structure.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
       
       self.atomOutlineView?.enumerateAvailableRowViews({ (rowView,row) in
         if let item: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
         {
-          (rowView as? AtomTableRowView)?.isImplicitelySelected = item.selected
+          (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
           rowView.needsDisplay = true
         }
       })
@@ -1255,8 +1255,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
       
-      structure.atomTreeController.flattenedNodes().forEach({$0.selected = false})
-      structure.atomTreeController.allSelectedNodes.forEach({$0.selected = true})
+      structure.atomTreeController.flattenedNodes().forEach({$0.isImplicitelySelected = false})
+      structure.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
       
       // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
       structure.recomputeSelectionBodyFixedBasis(index: -1)
@@ -1264,7 +1264,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.atomOutlineView?.enumerateAvailableRowViews({ (rowView,row) in
         if let item: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
         {
-          (rowView as? AtomTableRowView)?.isImplicitelySelected = item.selected
+          (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
           rowView.needsDisplay = true
         }
       })
@@ -1354,13 +1354,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         setCurrentSelection(structure: structure, atomSelection: selectedAtomTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondController.selectedObjects)
         
         // draw implicitely seleceted nodes as 'light blue'
-        structure.atomTreeController.flattenedNodes().forEach({$0.selected = false})
-        structure.atomTreeController.allSelectedNodes.forEach({$0.selected = true})
+        structure.atomTreeController.flattenedNodes().forEach({$0.isImplicitelySelected = false})
+        structure.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
         
         self.atomOutlineView?.enumerateAvailableRowViews({ (rowView,row) in
           if let item: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
           {
-            (rowView as? AtomTableRowView)?.isImplicitelySelected = item.selected
+            (rowView as? AtomTableRowView)?.isImplicitelySelected = item.isImplicitelySelected
             rowView.needsDisplay = true
           }
         })
