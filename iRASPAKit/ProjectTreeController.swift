@@ -260,6 +260,7 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     else
     {
       node.insert(inParent: parent!, atIndex: index)
+      node.isImplicitelySelected = parent!.isImplicitelySelected
       parent!.updateFilteredChildren(filterPredicate)
     }
     

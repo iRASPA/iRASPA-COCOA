@@ -61,7 +61,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
   // must be true to allow insert/deletions in the table with animations
   public var matchesFilter: Bool = true
   
-  public var selected: Bool = false // used at run-time for AtomTableRowView-implicit selection
+  public var isImplicitelySelected: Bool = false // used at run-time for AtomTableRowView-implicit selection
   
   public var isGroup: Bool = false
   
