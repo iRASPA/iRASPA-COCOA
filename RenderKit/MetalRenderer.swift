@@ -700,7 +700,7 @@ public class MetalRenderer
   // MARK: Rendering
   // =====================================================================
 
-  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
+  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, opaque: Bool = true)
   {
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     commandEncoder.label = "Scene command encoder"
@@ -708,7 +708,7 @@ public class MetalRenderer
     commandEncoder.setCullMode(MTLCullMode.back)
     commandEncoder.setFrontFacing(MTLWinding.clockwise)
     
-    backgroundShader.renderBackgroundWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size)
+    backgroundShader.renderBackgroundWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, opaque: opaque)
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
@@ -1023,7 +1023,7 @@ public class MetalRenderer
       if let commandQueue: MTLCommandQueue = device.makeCommandQueue(),
          let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
       {
-        renderSceneWithEncoder(commandBuffer, renderPassDescriptor: sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
+        renderSceneWithEncoder(commandBuffer, renderPassDescriptor: sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, opaque: false)
       
         atomSelectionGlowPictureShader.renderWithEncoder(commandBuffer, renderPassDescriptor: atomSelectionGlowAtomsRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       

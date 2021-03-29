@@ -79,4 +79,33 @@ class StructureViewController: NSVerticalSplitViewController, WindowControllerCo
   {
     //Swift.print("deinit: StructureViewController")
   }
+  
+  override func cancelOperation(_ sender: Any?)
+  {
+    (self.children[0].children[0] as? RenderTabViewController)?.tabViewItems[0].view?.cancelOperation(sender)
+  }
+  
+  // shift-option-up
+  public override func moveParagraphBackwardAndModifySelection(_ sender: Any?)
+  {
+    (self.children[0].children[0] as? RenderTabViewController)?.tabViewItems[0].view?.moveParagraphBackwardAndModifySelection(sender)
+  }
+  
+  // shift-option-down
+  public override func moveParagraphForwardAndModifySelection(_ sender: Any?)
+  {
+    (self.children[0].children[0] as? RenderTabViewController)?.tabViewItems[0].view?.moveParagraphForwardAndModifySelection(sender)
+  }
+  
+  // shift-option-left
+  public override func moveWordLeftAndModifySelection(_ sender: Any?)
+  {
+    (self.children[0].children[0] as? RenderTabViewController)?.tabViewItems[0].view?.moveWordLeftAndModifySelection(sender)
+  }
+  
+  // shift-option-right
+  public override func moveWordRightAndModifySelection(_ sender: Any?)
+  {
+    (self.children[0].children[0] as? RenderTabViewController)?.tabViewItems[0].view?.moveWordRightAndModifySelection(sender)
+  }
 }

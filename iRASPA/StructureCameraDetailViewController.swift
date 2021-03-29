@@ -130,7 +130,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateAspectRatioView), name: NSView.boundsDidChangeNotification, object: self.windowController?.detailTabViewController?.renderViewController)
     
     // update the camera view-matrix data in the Camera-views when the camera direction or distance changes
-    NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraViewMatrix), name: NSNotification.Name(rawValue: NotificationStrings.CameraDidChangeNotification), object: windowController)
+    NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraViewMatrix), name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: windowController)
   }
   
   // the windowController still exists when the view is there
@@ -140,7 +140,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     
     NotificationCenter.default.removeObserver(self, name: NSView.boundsDidChangeNotification, object: self.windowController?.detailTabViewController?.renderViewController)
 
-    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationStrings.CameraDidChangeNotification), object: windowController)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: windowController)
   }
   
   

@@ -1371,7 +1371,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
  
   func cameraDidChange()
   {
-    let notification: Notification = Notification(name: Notification.Name(NotificationStrings.CameraDidChangeNotification), object: windowController)
+    let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: windowController)
     NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle)
   }
   
@@ -2579,11 +2579,24 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
       let size: NSSize = NSMakeSize(2048.0,CGFloat(rint(2048.0/aspectRatioValue)))
-      let imageData: Data = renderViewController.makePicture(size: size, imageQuality: project.renderImageQuality)
+      let imageData: Data = renderViewController.makePicture(size: size, camera: project.renderCamera, imageQuality: project.renderImageQuality)
       return imageData
     }
     return nil
   }
+  
+  func thumbnail(size: NSSize, camera: RKCamera?) -> Data?
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
+       let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    {
+      return renderViewController.makeThumbnail(size: size, camera: camera, imageQuality: project.renderImageQuality)
+    }
+    return nil
+  }
+    
   
   
   func makePicture()
@@ -2594,7 +2607,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
       let size: NSSize = NSMakeSize(CGFloat(project.renderImageNumberOfPixels),CGFloat(rint(Double(project.renderImageNumberOfPixels)/aspectRatioValue)))
-      let imageData: Data = renderViewController.makePicture(size: size, imageQuality: project.renderImageQuality)
+      let imageData: Data = renderViewController.makePicture(size: size, camera: project.renderCamera, imageQuality: project.renderImageQuality)
     
       let savePanel: NSSavePanel = NSSavePanel()
       savePanel.nameFieldStringValue = "picture.tiff"

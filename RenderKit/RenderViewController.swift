@@ -425,14 +425,41 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   // MARK: -
   // MARK: Picture
   
-  public func makePicture(size: NSSize, imageQuality: RKImageQuality) -> Data
+  public func makeThumbnail(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data?
   {
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource
     {
       // create Ambient Occlusion in higher quality
       self.invalidateCachedAmbientOcclusionTexture(crystalProjectData.renderStructures)
       
-      let data: Data = self.drawSceneToTexture(size: size, imageQuality: imageQuality)
+      let data: Data = self.drawSceneToTexture(size: size, camera: camera, imageQuality: imageQuality)
+     
+      let cgImage: CGImage
+      
+      let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.first.rawValue)
+      let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
+      let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)!
+      let bitsPerComponent: Int = 8
+      let bitsPerPixel: Int = 32
+      let bytesPerRow: Int = 4 * Int(size.width)
+      cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)!
+        
+      let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
+      imageRep.size = NSMakeSize(CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72), CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
+      
+      return imageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
+    }
+    return nil
+  }
+  
+  public func makePicture(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data
+  {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+    {
+      // create Ambient Occlusion in higher quality
+      self.invalidateCachedAmbientOcclusionTexture(crystalProjectData.renderStructures)
+      
+      let data: Data = self.drawSceneToTexture(size: size, camera: camera, imageQuality: imageQuality)
      
       let cgImage: CGImage
       switch(imageQuality)
@@ -474,16 +501,17 @@ public class RenderViewController: NSViewController, MTKViewDelegate
 
   public func makeCVPicture(_ pixelBuffer: CVPixelBuffer)
   {
-    if let _: RKRenderDataSource = self.renderDataSource
+    if let _: RKRenderDataSource = self.renderDataSource,
+       let view: MetalView = self.view as? MetalView
     {
       let width: Int = CVPixelBufferGetWidth(pixelBuffer)
       let height: Int = CVPixelBufferGetHeight(pixelBuffer)
       
-      self.makeCVPicture(pixelBuffer, width: width, height: height)
+      self.makeCVPicture(pixelBuffer, camera: view.renderCameraSource?.renderCamera, width: width, height: height)
     }
   }
   
-  public func makeCVPicture(_ pixelBuffer: CVPixelBuffer, width: Int, height: Int)
+  public func makeCVPicture(_ pixelBuffer: CVPixelBuffer, camera: RKCamera?, width: Int, height: Int)
   {
     if let device = self.device
     {
@@ -494,7 +522,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, coreVideoTextureCache!, pixelBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &renderTexture)
     
       let size: NSSize = NSMakeSize(CGFloat(width), CGFloat(height))
-      let data: Data = self.drawSceneToTexture(size: size, imageQuality: RKImageQuality.rgb_8_bits)
+      let data: Data = self.drawSceneToTexture(size: size, camera: camera, imageQuality: RKImageQuality.rgb_8_bits)
     
       CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
       if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)
@@ -505,15 +533,15 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     }
   }
   
-  public func drawSceneToTexture(size: NSSize, imageQuality: RKImageQuality) -> Data
+  public func drawSceneToTexture(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data
   {
     if let device = self.device,
        let commandQueue: MTLCommandQueue = self.renderCommandQueue,
        let view: MetalView = self.view as? MetalView
     {
       self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
-    
-      return self.renderer.drawSceneToTexture(device: device, size: size, imageQuality: imageQuality, maximumNumberOfSamples: maximumNumberOfSamples, camera: view.renderCameraSource?.renderCamera, renderQuality: view.renderQuality)
+      
+      return self.renderer.drawSceneToTexture(device: device, size: size, imageQuality: imageQuality, maximumNumberOfSamples: maximumNumberOfSamples, camera: camera, renderQuality: view.renderQuality)
     }
     return Data()
   }

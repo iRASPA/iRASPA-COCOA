@@ -380,65 +380,20 @@ class MetalView: MTKView
   let autoRotationTimerQueue = DispatchQueue(label: "nl.darkwing.timer.autorotation", attributes: .concurrent)
   var autoRotationTimer: DispatchSourceTimer?
   
-  public override func moveWordLeft(_ sender: Any?)
+  private func cameraDidChange()
+  {
+    let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: self.window?.windowController)
+    NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle)
+  }
+  
+  override func cancelOperation(_ sender: Any?)
   {
     // cancel previous timer if any
     autoRotationTimer?.cancel()
-    
-    autoRotationTimer = DispatchSource.makeTimerSource(queue: autoRotationTimerQueue)
-    
-    autoRotationTimer?.schedule(deadline: .now(), repeating: .milliseconds(5), leeway: .milliseconds(10))
-    
-    autoRotationTimer?.setEventHandler { [weak self] in
-      DispatchQueue.main.async(execute: {
-        if let strongSelf = self
-        {
-          if let camera = strongSelf.renderCameraSource?.renderCamera
-          {
-            let theta: Double = -0.05 * Double.pi/180.0
-            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
-            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
-            
-            strongSelf.renderQuality = RKRenderQuality.low
-            strongSelf.layer?.setNeedsDisplay()
-          }
-        }
-      })
-    }
-    
-    autoRotationTimer?.resume()
   }
   
-  public override func moveWordRight(_ sender: Any?)
-  {
-    // cancel previous timer if any
-    autoRotationTimer?.cancel()
-    
-    autoRotationTimer = DispatchSource.makeTimerSource(queue: autoRotationTimerQueue)
-    
-    autoRotationTimer?.schedule(deadline: .now(), repeating: .milliseconds(5), leeway: .milliseconds(10))
-    
-    autoRotationTimer?.setEventHandler { [weak self] in
-      DispatchQueue.main.async(execute: {
-        if let strongSelf = self
-        {
-          if let camera = strongSelf.renderCameraSource?.renderCamera
-          {
-            let theta: Double = 0.05 * Double.pi/180.0
-            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
-            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
-            
-            strongSelf.renderQuality = RKRenderQuality.low
-            strongSelf.layer?.setNeedsDisplay()
-          }
-        }
-      })
-    }
-    
-    autoRotationTimer?.resume()
-  }
-  
-  public override func moveBackward(_ sender: Any?)
+  // shift-option-up
+  override func moveParagraphBackwardAndModifySelection(_ sender: Any?)
   {
     // cancel previous timer if any
     autoRotationTimer?.cancel()
@@ -459,6 +414,7 @@ class MetalView: MTKView
             
             strongSelf.renderQuality = RKRenderQuality.low
             strongSelf.layer?.setNeedsDisplay()
+            strongSelf.cameraDidChange()
           }
         }
       })
@@ -467,13 +423,8 @@ class MetalView: MTKView
     autoRotationTimer?.resume()
   }
   
-  // empty stub to avoid 'beep'
-  public override func moveToBeginningOfParagraph(_ sender: Any?)
-  {
-    
-  }
-  
-  public override func moveForward(_ sender: Any?)
+  // shift-option-down
+  override func moveParagraphForwardAndModifySelection(_ sender: Any?)
   {
     // cancel previous timer if any
     autoRotationTimer?.cancel()
@@ -494,6 +445,7 @@ class MetalView: MTKView
             
             strongSelf.renderQuality = RKRenderQuality.low
             strongSelf.layer?.setNeedsDisplay()
+            strongSelf.cameraDidChange()
           }
         }
       })
@@ -502,10 +454,66 @@ class MetalView: MTKView
     autoRotationTimer?.resume()
   }
   
-  // empty stub to avoid 'beep'
-  public override func moveToEndOfParagraph(_ sender: Any?)
+  // shift-option-left
+  override func moveWordLeftAndModifySelection(_ sender: Any?)
   {
+    // cancel previous timer if any
+    autoRotationTimer?.cancel()
     
+    autoRotationTimer = DispatchSource.makeTimerSource(queue: autoRotationTimerQueue)
+    
+    autoRotationTimer?.schedule(deadline: .now(), repeating: .milliseconds(5), leeway: .milliseconds(10))
+    
+    autoRotationTimer?.setEventHandler { [weak self] in
+      DispatchQueue.main.async(execute: {
+        if let strongSelf = self
+        {
+          if let camera = strongSelf.renderCameraSource?.renderCamera
+          {
+            let theta: Double = -0.05 * Double.pi/180.0
+            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
+            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            
+            strongSelf.renderQuality = RKRenderQuality.low
+            strongSelf.layer?.setNeedsDisplay()
+            strongSelf.cameraDidChange()
+          }
+        }
+      })
+    }
+    
+    autoRotationTimer?.resume()
+  }
+  
+  // shift-option-right
+  override func moveWordRightAndModifySelection(_ sender: Any?)
+  {
+    // cancel previous timer if any
+    autoRotationTimer?.cancel()
+    
+    autoRotationTimer = DispatchSource.makeTimerSource(queue: autoRotationTimerQueue)
+    
+    autoRotationTimer?.schedule(deadline: .now(), repeating: .milliseconds(5), leeway: .milliseconds(10))
+    
+    autoRotationTimer?.setEventHandler { [weak self] in
+      DispatchQueue.main.async(execute: {
+        if let strongSelf = self
+        {
+          if let camera = strongSelf.renderCameraSource?.renderCamera
+          {
+            let theta: Double = 0.05 * Double.pi/180.0
+            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
+            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            
+            strongSelf.renderQuality = RKRenderQuality.low
+            strongSelf.layer?.setNeedsDisplay()
+            strongSelf.cameraDidChange()
+          }
+        }
+      })
+    }
+    
+    autoRotationTimer?.resume()
   }
   
   override var isOpaque: Bool { return true }

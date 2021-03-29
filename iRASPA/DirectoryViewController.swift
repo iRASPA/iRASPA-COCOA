@@ -62,4 +62,29 @@ class DirectoryViewController: NSVerticalSplitViewController, WindowControllerCo
     
     self.splitViewItems[1].viewController.representedObject = (self.splitViewItems[0].viewController as? NSSplitViewController)?.splitViewItems[0].viewController
   }
+  
+  override func cancelOperation(_ sender: Any?)
+  {
+  }
+  
+  // shift-option-up
+  public override func moveParagraphBackwardAndModifySelection(_ sender: Any?)
+  {
+  }
+  
+  // shift-option-down
+  public override func moveParagraphForwardAndModifySelection(_ sender: Any?)
+  {
+  }
+  
+  // shift-option-left
+  public override func moveWordLeftAndModifySelection(_ sender: Any?)
+  {
+
+  }
+  
+  // shift-option-right
+  public override func moveWordRightAndModifySelection(_ sender: Any?)
+  {
+  }
 }

@@ -294,9 +294,11 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public func renderStructuresForScene(_ i: Int) -> [RKRenderStructure]
   {
-    let structures = self.sceneList.scenes[i].movies.flatMap{$0.selectedRenderFrames}
-    
-    return structures
+    if (i>=0 && i<self.sceneList.scenes.count)
+    {
+      return self.sceneList.scenes[i].movies.flatMap{$0.selectedRenderFrames}
+    }
+    return []
   }
   
   public var renderStructures: [RKRenderStructure]

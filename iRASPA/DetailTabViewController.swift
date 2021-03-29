@@ -117,4 +117,53 @@ class DetailTabViewController: NSTabViewController, WindowControllerConsumer, Re
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]    
   }
+  
+  override func cancelOperation(_ sender: Any?)
+  {
+    let index: Int = self.selectedTabViewItemIndex
+    if let currentViewController: NSViewController = self.tabViewItems[index].viewController
+    {
+      currentViewController.cancelOperation(sender)
+    }
+  }
+
+  // shift-option-up
+  override func moveParagraphBackwardAndModifySelection(_ sender: Any?)
+  {
+    let index: Int = self.selectedTabViewItemIndex
+    if let currentViewController: NSViewController = self.tabViewItems[index].viewController
+    {
+      currentViewController.moveParagraphBackwardAndModifySelection(sender)
+    }
+  }
+  
+  // shift-option-down
+  override func moveParagraphForwardAndModifySelection(_ sender: Any?)
+  {
+    let index: Int = self.selectedTabViewItemIndex
+    if let currentViewController: NSViewController = self.tabViewItems[index].viewController
+    {
+      currentViewController.moveParagraphForwardAndModifySelection(sender)
+    }
+  }
+  
+  // shift-option-left
+  override func moveWordLeftAndModifySelection(_ sender: Any?)
+  {
+    let index: Int = self.selectedTabViewItemIndex
+    if let currentViewController: NSViewController = self.tabViewItems[index].viewController
+    {
+      currentViewController.moveWordLeftAndModifySelection(sender)
+    }
+  }
+  
+  // shift-option-right
+  override func moveWordRightAndModifySelection(_ sender: Any?)
+  {
+    let index: Int = self.selectedTabViewItemIndex
+    if let currentViewController: NSViewController = self.tabViewItems[index].viewController
+    {
+      currentViewController.moveWordRightAndModifySelection(sender)
+    }
+  }
 }
