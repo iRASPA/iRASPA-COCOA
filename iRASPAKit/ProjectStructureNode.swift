@@ -45,6 +45,13 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public var showBoundingBox: Bool = false
   
+  
+  public override var infoPanelString: String
+  {
+    let numberOfAtomString: String = " (\(self.sceneList.totalNumberOfAtoms) atoms)"
+    return self.displayName + numberOfAtomString
+  }
+  
   public var allIRASPAStructures: [iRASPAStructure]
   {
     return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.flatMap{$0.allIRASPAStructures}}

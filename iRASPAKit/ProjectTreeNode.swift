@@ -183,7 +183,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   public var infoPanelString: String
   {
-    return self.displayName
+    return self.representedObject.infoPanelString
   }
   
   // MARK: -

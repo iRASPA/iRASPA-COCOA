@@ -233,6 +233,11 @@ public final class iRASPAProject: NSObject, BinaryDecodable, BinaryEncodable, Bi
     }
   }
   
+  public var infoPanelString: String
+  {
+    return self.project.infoPanelString
+  }
+  
   public var isEdited: Bool
   {
     get

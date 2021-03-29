@@ -2613,7 +2613,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       if switchToNewProject
       {
-        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: treeController.selectedTreeNode?.infoPanelIcon, message: treeController.selectedTreeNode?.infoPanelString))
+        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: treeController.selectedTreeNode?.infoPanelIcon, message: "Loading \(treeController.selectedTreeNode?.displayName ?? "")"))
       }
       
       self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
@@ -2918,6 +2918,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.setDetailViewController()
+      
+      self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: proxyProject.infoPanelIcon, message: proxyProject.representedObject.infoPanelString))
     }
     else
     {

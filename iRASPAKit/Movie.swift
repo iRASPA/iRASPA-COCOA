@@ -128,9 +128,18 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     }
   }
   
+  public var totalNumberOfAtoms: Int
+  {
+    return self.frames.map{$0.totalNumberOfAtoms}.reduce(0,+)
+  }
+  
   public var infoPanelString: String
   {
-    return self.displayName
+    let numberOfAtoms: [Int] = self.frames.map{$0.totalNumberOfAtoms}
+    let minimumNumberOfAtoms: Int = numberOfAtoms.min() ?? 0
+    let maximumNumberOfAtoms: Int = numberOfAtoms.max() ?? 0
+    let atomInfoString: String = (minimumNumberOfAtoms == maximumNumberOfAtoms) ? " (\(minimumNumberOfAtoms) atoms)" : " (min \(minimumNumberOfAtoms) atoms, max \(maximumNumberOfAtoms) atoms)"
+    return self.displayName + atomInfoString
   }
   
   public var isVisible: Bool

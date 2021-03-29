@@ -82,7 +82,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   // =====================================================================
   
   
-  //var cancelAutosave: Bool = false
+  // var cancelAutosave: Bool = false
   // avoid periodic autosaving when there is work on the 'Window-controller-queue' (e.g. importing projects)
   override func autosave(withImplicitCancellability autosavingIsImplicitlyCancellable: Bool, completionHandler: @escaping (Error?) -> Void)
   {
