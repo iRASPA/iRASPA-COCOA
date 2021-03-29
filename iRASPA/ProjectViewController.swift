@@ -359,6 +359,36 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   override func keyDown(with theEvent: NSEvent)
   {
     self.interpretKeyEvents([theEvent])
+    super.keyDown(with: theEvent)
+  }
+  
+  override func cancelOperation(_ sender: Any?)
+  {
+    self.windowController?.detailTabViewController?.cancelOperation(sender)
+  }
+  
+  // shift-option-up
+  override func moveParagraphBackwardAndModifySelection(_ sender: Any?)
+  {
+    self.windowController?.detailTabViewController?.moveParagraphBackwardAndModifySelection(sender)
+  }
+  
+  // shift-option-down
+  override func moveParagraphForwardAndModifySelection(_ sender: Any?)
+  {
+    self.windowController?.detailTabViewController?.moveParagraphForwardAndModifySelection(sender)
+  }
+  
+  // shift-option-left
+  override func moveWordLeftAndModifySelection(_ sender: Any?)
+  {
+    self.windowController?.detailTabViewController?.moveWordLeftAndModifySelection(sender)
+  }
+  
+  // shift-option-right
+  override func moveWordRightAndModifySelection(_ sender: Any?)
+  {
+    self.windowController?.detailTabViewController?.moveWordRightAndModifySelection(sender)
   }
   
   override func deleteBackward(_ sender: Any?)
@@ -2918,6 +2948,24 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.setDetailViewController()
+      
+      // create a thumbnail if not created before
+      if let projectStructureNode: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+         let camera: RKCamera = projectStructureNode.renderCamera,
+         proxyProject.thumbnail == nil
+      {
+        let thumbnailSize: NSSize = NSSize(width: 160, height: 140)
+        let camera: RKCamera = RKCamera(camera: camera)
+        camera.initialized = true
+        camera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+        camera.resetCameraDistance()
+        camera.updateCameraForWindowResize(width: Double(thumbnailSize.width), height: Double(thumbnailSize.height))
+        
+        if let data: Data = self.windowController?.detailTabViewController?.renderViewController?.thumbnail(size: thumbnailSize, camera: camera)
+        {
+          proxyProject.thumbnail = data
+        }
+      }
       
       self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: proxyProject.infoPanelIcon, message: proxyProject.representedObject.infoPanelString))
     }

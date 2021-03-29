@@ -45,7 +45,7 @@ public let NSPasteboardTypeProjectTreeNodeCopy: NSPasteboard.PasteboardType = NS
 
 public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, BinaryEncodableRecursive, BinaryDecodableRecursive
 {
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   
   @objc dynamic public var displayName: String = "Empty"
   
@@ -98,6 +98,8 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   public var recordID: CKRecord.ID? = nil
   
   public var snapshotData: Data? = nil
+  
+  public var thumbnail: Data? = nil
   
   public convenience init(representedObject modelObject: iRASPAProject)
   {
@@ -1187,6 +1189,16 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     
     encoder.encode(self.representedObject)
     
+    
+    if let pngData = thumbnail
+    {
+      encoder.encode(pngData)
+    }
+    else
+    {
+      encoder.encode(Data())
+    }
+    
     encoder.encode(self.childNodes)
   }
   
@@ -1217,8 +1229,8 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   public  init(fromBinary decoder: BinaryDecoder) throws
   {
-    let versionNumber: Int = try decoder.decode(Int.self)
-    if versionNumber > ProjectTreeNode.classVersionNumber
+    let readVersionNumber: Int = try decoder.decode(Int.self)
+    if readVersionNumber > ProjectTreeNode.classVersionNumber
     {
       throw iRASPAError.invalidArchiveVersion
     }
@@ -1229,6 +1241,21 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     
     representedObject = try decoder.decode(iRASPAProject.self)
     
+    if readVersionNumber >= 2 // introduced in version 2
+    {
+      // read picture from PNG-data
+      let dataLength: UInt32 = try decoder.decode(UInt32.self)
+      if(dataLength != UInt32(0xffffffff))
+      {
+        var imageData: Data = Data(count: Int(dataLength))
+      
+        try imageData.withUnsafeMutableBytes { (rawPtr: UnsafeMutableRawBufferPointer) in
+          try decoder.read(Int(dataLength), into: rawPtr.baseAddress!)
+        }
+     
+        self.thumbnail = imageData
+      }
+    }
     
     childNodes = try decoder.decode([ProjectTreeNode].self)
     

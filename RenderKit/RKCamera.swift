@@ -35,6 +35,10 @@ import simd
 import MathKit
 import SymmetryKit
 
+public struct CameraNotificationStrings
+{
+  public static let didChangeNotification: String = "CameraDidChangeNotification"
+}
 
 public class RKCamera: BinaryDecodable, BinaryEncodable
 {

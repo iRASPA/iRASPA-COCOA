@@ -98,7 +98,7 @@ class DirectoryCollectionViewController: NSViewController, NSCollectionViewDeleg
     
     let flowLayout = NSCollectionViewFlowLayout()
     flowLayout.itemSize = NSSize(width: 160.0, height: 140.0)
-    flowLayout.sectionInset = NSEdgeInsets(top: 20.0, left: 20.0, bottom: 30.0, right: 20.0)
+    flowLayout.sectionInset = NSEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
     flowLayout.minimumInteritemSpacing = 10.0
     flowLayout.minimumLineSpacing = 20.0
     if #available(OSX 10.12, *) {
@@ -137,7 +137,14 @@ class DirectoryCollectionViewController: NSViewController, NSCollectionViewDeleg
     item.textField?.stringValue = projectTreeNodes[indexPath.last!].displayName
     item.textField?.textColor = NSColor.black
     item.representedObject = projectTreeNodes[indexPath.last!]
-    item.imageView?.image = NSImage(named: "MOF")
+    if let data = projectTreeNodes[indexPath.last!].thumbnail
+    {
+      item.imageView?.image = NSImage(data: data)
+    }
+    else
+    {
+      item.imageView?.image = NSImage(named: "MOF")
+    }
     return item
   }
   

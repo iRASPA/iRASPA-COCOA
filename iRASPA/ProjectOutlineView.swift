@@ -120,4 +120,15 @@ class ProjectOutlineView: NSOutlineView
    
     return dragOperation
   }
+  
+  // must be set, to key key-code to the ProjectViewController too
+  override func keyDown(with theEvent: NSEvent)
+  {
+    self.interpretKeyEvents([theEvent])
+    super.keyDown(with: theEvent)
+  }
+  
+  override func cancelOperation(_ sender: Any?)
+  {
+  }
 }

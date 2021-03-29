@@ -37,7 +37,6 @@ public struct NotificationStrings
   public static let iCloudReloadDataNotification: String = "iCloudReloadDataNotification"
   public static let iCloudAddNodeNotification: String = "iCloudAddNodeNotification"
   
-  public static let CameraDidChangeNotification: String = "CameraDidChangeNotification"
   public static let RendererSelectionDidChangeNotification: String = "SelectionDidChangeNotification"
   
   public static let AtomsShouldReloadNotification: String = "AtomsShouldReloadNotification"
