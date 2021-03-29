@@ -107,9 +107,16 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
     }
   }
   
+  public var totalNumberOfAtoms: Int
+  {
+    return self.structure.atomTreeController.flattenedLeafNodes().reduce(0, { (Result: Int, atomTreeNode: SKAtomTreeNode) -> Int in
+      return Result + atomTreeNode.representedObject.copies.filter{$0.type == .copy}.count
+    })
+  }
+  
   public var infoPanelString: String
   {
-    return structure.displayName
+    return structure.displayName + " (\(self.totalNumberOfAtoms) atoms)"
   }
   
   public var allPrimitiveStructure: [Structure]

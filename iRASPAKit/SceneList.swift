@@ -56,6 +56,11 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
     return self.scenes.flatMap{$0.movies}.flatMap{$0.frames}
   }
   
+  public var totalNumberOfAtoms: Int
+  {
+    return self.scenes.map{$0.totalNumberOfAtoms}.reduce(0,+)
+  }
+  
   public init()
   {
     scenes = []

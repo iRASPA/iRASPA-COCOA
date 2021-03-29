@@ -32,7 +32,7 @@
 import Foundation
 import BinaryCodable
 
-public class ProjectNode: CustomStringConvertible, BinaryDecodable, BinaryEncodable
+public class ProjectNode: BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
   public var displayName: String = "Default"
@@ -45,15 +45,15 @@ public class ProjectNode: CustomStringConvertible, BinaryDecodable, BinaryEncoda
   ///
   /// - returns: true if the project is edited, otherwise false
   public var isEdited: Bool = false
-  
-  public var description: String
-  {
-    return self.displayName
-  }
 
   public init(name: String)
   {
     self.displayName = name
+  }
+  
+  public var infoPanelString: String
+  {
+    return self.displayName
   }
   
   // MARK: -
