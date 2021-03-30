@@ -447,7 +447,8 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
       imageRep.size = NSMakeSize(CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72), CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
       
-      return imageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
+      //return imageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
+      return imageRep.representation(using: NSBitmapImageRep.FileType.jpeg2000, properties: [.compressionFactor : 0.5])
     }
     return nil
   }

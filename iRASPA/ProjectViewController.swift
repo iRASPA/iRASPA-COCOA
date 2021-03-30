@@ -2382,6 +2382,48 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
     }
   }
+  
+  @IBAction func ProjectContextRegenerateThumbnail(_ sender: NSMenuItem)
+  {
+    generateThumbnail()
+  }
+  
+  @IBAction func ProjectContextGenerateThumbnailForSelection(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = windowController?.document as? iRASPADocument
+    {
+      let selectedObjects = document.documentData.projectData.selectedTreeNodes
+      
+      for node in selectedObjects
+      {
+        if node.isEditable
+        {
+          node.unwrapLazyLocalPresentedObjectIfNeeded()
+          
+          document.documentData.projectData.selectedTreeNode = node
+          switchToCurrentProject()
+        }
+      }
+    }
+  }
+  
+  func generateThumbnail()
+  {
+    if let proxyProject: ProjectTreeNode = selectedProject,
+       let projectStructureNode: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+       let camera: RKCamera = projectStructureNode.renderCamera
+    {
+      let thumbnailSize: NSSize = NSSize(width: 80, height: 70)
+      let camera: RKCamera = RKCamera(camera: camera)
+      camera.updateCameraForWindowResize(width: Double(thumbnailSize.width), height: Double(thumbnailSize.height))
+    
+      if let data: Data = self.windowController?.detailTabViewController?.renderViewController?.thumbnail(size: thumbnailSize, camera: camera)
+      {
+        debugPrint("size: \(data.count)")
+        proxyProject.thumbnail = data
+      }
+    }
+  }
 
   
   // MARK: Add button
@@ -2954,9 +2996,10 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
          let camera: RKCamera = projectStructureNode.renderCamera,
          proxyProject.thumbnail == nil
       {
-        let thumbnailSize: NSSize = NSSize(width: 160, height: 140)
+        let thumbnailSize: NSSize = NSSize(width: 96, height: 84)
         let camera: RKCamera = RKCamera(camera: camera)
         camera.initialized = true
+        camera.resetPercentage = 0.7
         camera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
         camera.resetCameraDistance()
         camera.updateCameraForWindowResize(width: Double(thumbnailSize.width), height: Double(thumbnailSize.height))

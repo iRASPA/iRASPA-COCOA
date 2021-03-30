@@ -3612,7 +3612,14 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.adsorptionSurfaceBackSideSpecularIntensity = try decoder.decode(Double.self)
     self.adsorptionSurfaceBackSideShininess = try decoder.decode(Double.self)
     
-   
+    /* Used for making the IZA Database
+    self.adsorptionSurfaceProbeMolecule = ProbeMolecule.argon
+    self.adsorptionSurfaceOpacity = 0.66666
+    self.adsorptionSurfaceFrontSideAmbientColor = NSColor(red: 0.502, green: 0.855, blue: 0.922, alpha: 1.0)
+    self.adsorptionSurfaceFrontSideDiffuseColor = NSColor(red: 0.502, green: 0.855, blue: 0.922, alpha: 1.0)
+    self.adsorptionSurfaceBackSideAmbientColor = NSColor(red: 0.502, green: 0.855, blue: 0.922, alpha: 1.0)
+    self.adsorptionSurfaceBackSideDiffuseColor = NSColor(red: 0.502, green: 0.855, blue: 0.922, alpha: 1.0)
+    */
     
     // Structure properties
     guard let structureType = StructureType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
