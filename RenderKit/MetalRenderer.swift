@@ -897,7 +897,7 @@ public class MetalRenderer
       var uniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0, camera: camera)
       let frameUniformBuffer: MTLBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
       
-      let sceneTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+      let sceneTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       sceneTextureDescriptor.textureType = MTLTextureType.type2DMultisample
       sceneTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
       sceneTextureDescriptor.sampleCount = maximumNumberOfSamples
@@ -905,7 +905,7 @@ public class MetalRenderer
       let sceneTexture: MTLTexture! = device.makeTexture(descriptor: sceneTextureDescriptor)
       sceneTexture.label = "scene multisampled texture"
       
-      let sceneDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float_stencil8, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+      let sceneDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float_stencil8, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       sceneDepthTextureDescriptor.textureType = MTLTextureType.type2DMultisample
       sceneDepthTextureDescriptor.sampleCount = maximumNumberOfSamples
       sceneDepthTextureDescriptor.storageMode = MTLStorageMode.private
@@ -913,7 +913,7 @@ public class MetalRenderer
       let sceneDepthTexture: MTLTexture = device.makeTexture(descriptor: sceneDepthTextureDescriptor)!
       sceneDepthTexture.label = "scene multisampled depth texture"
       
-      let sceneResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+      let sceneResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       sceneResolveTextureDescriptor.textureType = MTLTextureType.type2D
       sceneResolveTextureDescriptor.storageMode = MTLStorageMode.private
       let sceneResolveTexture: MTLTexture = device.makeTexture(descriptor: sceneResolveTextureDescriptor)!
@@ -938,7 +938,7 @@ public class MetalRenderer
       sceneStencilAttachment.storeAction = MTLStoreAction.dontCare
       sceneStencilAttachment.clearStencil = 0
       
-      let atomSelectionGlowTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+      let atomSelectionGlowTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       atomSelectionGlowTextureDescriptor.textureType = MTLTextureType.type2DMultisample
       atomSelectionGlowTextureDescriptor.sampleCount = maximumNumberOfSamples
       atomSelectionGlowTextureDescriptor.storageMode = MTLStorageMode.private
@@ -946,7 +946,7 @@ public class MetalRenderer
       let atomSelectionGlowTexture: MTLTexture = device.makeTexture(descriptor: atomSelectionGlowTextureDescriptor)!
       atomSelectionGlowTexture.label = "glow atoms texture"
       
-      let atomSelectionGlowResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+      let atomSelectionGlowResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       atomSelectionGlowResolveTextureDescriptor.textureType = MTLTextureType.type2D
       atomSelectionGlowResolveTextureDescriptor.storageMode = MTLStorageMode.private
       let atomSelectionGlowResolveTexture: MTLTexture = device.makeTexture(descriptor: atomSelectionGlowResolveTextureDescriptor)!
@@ -971,7 +971,7 @@ public class MetalRenderer
       atomSelectionGlowAtomsStencilAttachment.loadAction = MTLLoadAction.load
       atomSelectionGlowAtomsStencilAttachment.storeAction = MTLStoreAction.dontCare
       
-      let blurHorizontalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+      let blurHorizontalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       blurHorizontalTextureDescriptor.textureType = MTLTextureType.type2D
       blurHorizontalTextureDescriptor.storageMode = MTLStorageMode.managed
       blurHorizontalTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
@@ -984,7 +984,7 @@ public class MetalRenderer
       blurHorizontalColorAttachment.loadAction = MTLLoadAction.clear
       blurHorizontalColorAttachment.storeAction = MTLStoreAction.store
       
-      let blurVerticalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+      let blurVerticalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       blurVerticalTextureDescriptor.textureType = MTLTextureType.type2D
       blurVerticalTextureDescriptor.storageMode = MTLStorageMode.managed // change to private soon
       blurVerticalTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
@@ -1002,9 +1002,9 @@ public class MetalRenderer
       switch(imageQuality)
       {
       case .rgb_16_bits, .cmyk_16_bits:
-        pictureTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Unorm, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+        pictureTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Unorm, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       case .rgb_8_bits, .cmyk_8_bits:
-        pictureTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+        pictureTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
       }
       
       pictureTextureDescriptor.textureType = MTLTextureType.type2D
