@@ -115,8 +115,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     self.framesTableView?.registerForDraggedTypes([NSPasteboardTypeProjectTreeNode,
                                                    NSPasteboardTypeMovie,
                                                    NSPasteboardTypeFrame])
-    self.framesTableView?.registerForDraggedTypes([NSPasteboard.PasteboardType(String(kUTTypeFileURL))])
-    self.framesTableView?.registerForDraggedTypes([NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))])
+    self.framesTableView?.registerForDraggedTypes([NSPasteboard.PasteboardType.fileURL])
+    self.framesTableView?.registerForDraggedTypes([NSPasteboard.PasteboardType.filePromise])
     
     self.framesTableView?.setDraggingSourceOperationMask(.every, forLocal: true)
     self.framesTableView?.setDraggingSourceOperationMask(.every, forLocal: false)

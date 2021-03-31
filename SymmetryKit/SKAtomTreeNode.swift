@@ -116,7 +116,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
   // 2) the object will then receive an 'pasteboardPropertyListForType' for each of these types
   
   // kPasteboardTypeFilePromiseContent
-  // kPasteboardTypeFileURLPromise
+  // filePromise
   
   
   
@@ -124,10 +124,10 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
   {
     switch(pasteboard.name)
     {
-    case NSPasteboard.Name.dragPboard:
+    case NSPasteboard.Name.drag:
       return [NSPasteboard.PasteboardType(kPasteboardTypeFilePromiseContent),NSPasteboardTypeAtomTreeNode]
-    case NSPasteboard.Name.generalPboard:
-      return [NSPasteboardTypeAtomTreeNode, NSPasteboard.PasteboardType(String(kUTTypeFileURL))]
+    case NSPasteboard.Name.general:
+      return [NSPasteboardTypeAtomTreeNode, NSPasteboard.PasteboardType.fileURL]
     default:
       return [NSPasteboardTypeAtomTreeNode]
     }
@@ -151,7 +151,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
       return Data(binaryEncoder.data)
     case NSPasteboard.PasteboardType(kPasteboardTypeFilePromiseContent):
       return NSPasteboardTypeAtomTreeNode.rawValue
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)): // for writing to NSSharingService (email-attachment)
+    case NSPasteboard.PasteboardType.fileURL: // for writing to NSSharingService (email-attachment)
       let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeAtomTreeNode.rawValue).pathExtension
       let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.displayName).appendingPathExtension(pathExtension)
       
@@ -178,7 +178,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
   {
     switch(type)
     {
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
+    case NSPasteboard.PasteboardType.fileURL:
       return NSURL.readingOptions(forType: type, pasteboard: pasteboard)
     default:
       return [.asData]
@@ -200,7 +200,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
       guard let data: Data = propertyList as? Data,
             let atom: SKAtomTreeNode = try? BinaryDecoder(data: [UInt8](data)).decode(SKAtomTreeNode.self) else {return nil}
       self.init(name: atom.displayName, representedObject: atom.representedObject)
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
+    case NSPasteboard.PasteboardType.fileURL:
       guard let url: URL = propertyList as? URL,
            let data: Data = try? Data(contentsOf: url),
            let atom: SKAtomTreeNode = try? BinaryDecoder(data: [UInt8](data)).decode(SKAtomTreeNode.self) else {return nil}

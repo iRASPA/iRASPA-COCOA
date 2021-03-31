@@ -69,7 +69,7 @@ public class RKMovieCreator: NSObject
     self.framesPerSecond = Int32(framesPerSecond)
     self.provider = provider
     
-    qualitySetting = [AVVideoCodecKey:AVVideoCodecH264 as AnyObject, AVVideoWidthKey: width as AnyObject, AVVideoHeightKey: height as AnyObject,
+    qualitySetting = [AVVideoCodecKey:AVVideoCodecType.h264 as AnyObject, AVVideoWidthKey: width as AnyObject, AVVideoHeightKey: height as AnyObject,
       AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: width*height*24 as AnyObject, AVVideoMaxKeyFrameIntervalKey: 150 as AnyObject, AVVideoProfileLevelKey:AVVideoProfileLevelH264HighAutoLevel as AnyObject, AVVideoAllowFrameReorderingKey: false as AnyObject, AVVideoH264EntropyModeKey:AVVideoH264EntropyModeCAVLC as AnyObject] as AnyObject]
     
     self.width = width

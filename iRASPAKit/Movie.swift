@@ -266,17 +266,17 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   {
     switch(pasteboard.name)
     {
-    case NSPasteboard.Name.dragPboard:
+    case NSPasteboard.Name.drag:
       return [NSPasteboardTypeMovie,
               NSPasteboardTypeProjectTreeNode,
               NSPasteboardTypeFrame,
               NSPasteboard.PasteboardType(String(kPasteboardTypeFilePromiseContent)),
               NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))]
-    case NSPasteboard.Name.generalPboard:
+    case NSPasteboard.Name.general:
       return [NSPasteboardTypeMovie,
               NSPasteboardTypeProjectTreeNode,
               NSPasteboardTypeFrame,
-              NSPasteboard.PasteboardType(String(kUTTypeFileURL))]
+              NSPasteboard.PasteboardType.fileURL]
     default:
       return [NSPasteboardTypeMovie]
     }
@@ -310,9 +310,9 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
       return Data(binaryEncoder.data)
     case NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise)):
       // used for dragging to the Finder if 'kPasteboardTypeFilePromiseContent' is not available
-      let pasteboard: NSPasteboard = NSPasteboard(name: NSPasteboard.Name.dragPboard)
+      let pasteboard: NSPasteboard = NSPasteboard(name: NSPasteboard.Name.drag)
       if let string: String = pasteboard.string(forType: NSPasteboard.PasteboardType(rawValue: "com.apple.pastelocation")),
-        let directoryURL: URL = URL(string: string)
+         let directoryURL: URL = URL(string: string)
       {
         let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
         let finalURL:URL = directoryURL.appendingPathComponent(self.displayName).appendingPathExtension(pathExtension)
@@ -347,7 +347,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
       // outlineView(_:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:)
       return NSPasteboardTypeProjectTreeNode.rawValue
       
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
+    case NSPasteboard.PasteboardType.fileURL:
       // used for (1) writing to NSSharingService (email-attachment)
       //          (2) used to 'paste' into the Finder
       let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
@@ -396,7 +396,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     return [NSPasteboardTypeMovie,
             NSPasteboardTypeProjectTreeNode,
             NSPasteboardTypeFrame,
-            NSPasteboard.PasteboardType(String(kUTTypeFileURL))] // NSPasteboard.PasteboardType.fileURL
+            NSPasteboard.PasteboardType.fileURL]
   }
   
   public convenience required init?(pasteboardPropertyList propertyList: Any, ofType type: NSPasteboard.PasteboardType)
@@ -411,7 +411,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
       self.init(movie: data)
     case NSPasteboardTypeFrame:
       self.init(frame: data)
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
+    case NSPasteboard.PasteboardType.fileURL:
       guard let str = String(data: data, encoding: .utf8),
             let url = URL(string: str),
             FileManager.default.fileExists(atPath: url.path),

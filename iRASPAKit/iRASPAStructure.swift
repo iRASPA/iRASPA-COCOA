@@ -427,7 +427,7 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
     return [NSPasteboardTypeFrame,
             NSPasteboardTypeMovie,
             NSPasteboardTypeProjectTreeNode,
-            NSPasteboard.PasteboardType(String(kUTTypeFileURL))] // NSPasteboard.PasteboardType.fileURL
+            NSPasteboard.PasteboardType.fileURL] // NSPasteboard.PasteboardType.fileURL
   }
   
   public convenience init?(pasteboardPropertyList propertyList: Any, ofType type: NSPasteboard.PasteboardType)
@@ -442,7 +442,7 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
       self.init(movie: data)
     case NSPasteboardTypeFrame:
       self.init(frame: data)
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
+    case NSPasteboard.PasteboardType.fileURL:
       guard let str = String(data: data, encoding: .utf8),
             let url = URL(string: str),
             FileManager.default.fileExists(atPath: url.path),
@@ -513,17 +513,17 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
   {
     switch(pasteboard.name)
     {
-    case NSPasteboard.Name.dragPboard:
+    case NSPasteboard.Name.drag:
       return [NSPasteboardTypeFrame,
               NSPasteboardTypeMovie,
               NSPasteboardTypeProjectTreeNode,
               NSPasteboard.PasteboardType(String(kPasteboardTypeFilePromiseContent)),
               NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))]
-    case NSPasteboard.Name.generalPboard:
+    case NSPasteboard.Name.general:
       return [NSPasteboardTypeFrame,
               NSPasteboardTypeMovie,
               NSPasteboardTypeProjectTreeNode,
-              NSPasteboard.PasteboardType(String(kUTTypeFileURL))]
+              NSPasteboard.PasteboardType.fileURL]
     default:
       return [NSPasteboardTypeFrame]
     }
@@ -557,7 +557,7 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
       return Data(binaryEncoder.data)
     case NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise)):
       // used for dragging to the Finder if 'kPasteboardTypeFilePromiseContent' is not available
-      let pasteboard: NSPasteboard = NSPasteboard(name: NSPasteboard.Name.dragPboard)
+      let pasteboard: NSPasteboard = NSPasteboard(name: NSPasteboard.Name.drag)
       if let string: String = pasteboard.string(forType: NSPasteboard.PasteboardType(rawValue: "com.apple.pastelocation")),
         let directoryURL: URL = URL(string: string)
       {
@@ -596,7 +596,7 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
       // outlineView(_:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:)
       return NSPasteboardTypeProjectTreeNode.rawValue
       
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
+    case NSPasteboard.PasteboardType.fileURL:
       // used for (1) writing to NSSharingService (email-attachment)
       //          (2) used to 'paste' into the Finder
       let displayName: String = structure.displayName
