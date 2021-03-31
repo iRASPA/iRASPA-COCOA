@@ -109,6 +109,90 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     self.frames = movie.frames
   }
   
+  private convenience init?(treeNode data: Data)
+  {
+    let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+    guard let projectTreeNode: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: false) else {return nil}
+    guard let project: ProjectStructureNode = projectTreeNode.representedObject.project as? ProjectStructureNode else {return nil}
+    guard let movie: Movie = project.sceneList.scenes.first?.movies.first else {return nil}
+    self.init(movie: movie)
+  }
+  
+  private convenience init?(movie data: Data)
+  {
+    let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+    guard let movie: Movie = try? binaryDecoder.decode(Movie.self) else {return nil}
+    self.init(movie: movie)
+  }
+  
+  private convenience init?(frame data: Data)
+  {
+    let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+    guard let frame: iRASPAStructure = try? binaryDecoder.decode(iRASPAStructure.self) else {return nil}
+    let movie: Movie = Movie.init(name: frame.structure.displayName, structure: frame)
+    self.init(movie: movie)
+  }
+  
+  private convenience init?(iraspa data: Data)
+  {
+    guard let data = data.decompress(withAlgorithm: .lzma) else {return nil}
+    let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
+    guard let node: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: false) else {return nil}
+    node.unwrapLazyLocalPresentedObjectIfNeeded()
+    guard let project = node.representedObject.project as? ProjectStructureNode else {return nil}
+    guard let movie = project.sceneList.scenes.first?.movies.first else {return nil}
+    self.init(movie: movie)
+  }
+  
+  private convenience init?(displayName: String, poscar data: Data)
+  {
+    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+    let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
+    try? poscarParser.startParsing()
+    let scene: Scene = Scene(parser: poscarParser.scene)
+    guard let movie = scene.movies.first else {return nil}
+    self.init(movie: movie)
+  }
+  
+  private convenience init?(displayName: String, xdatcar data: Data)
+  {
+    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+    let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
+    try? poscarParser.startParsing()
+    let scene: Scene = Scene(parser: poscarParser.scene)
+    guard let movie = scene.movies.first else {return nil}
+    self.init(movie: movie)
+  }
+  
+  private convenience init?(displayName: String, cif data: Data)
+  {
+    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+    let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
+    try? cifParser.startParsing()
+    let scene: Scene = Scene(parser: cifParser.scene)
+    guard let movie = scene.movies.first else {return nil}
+    self.init(movie: movie)
+  }
+  
+  private convenience init?(displayName: String, pdb data: Data)
+  {
+    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+    let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
+    try? pdbParser.startParsing()
+    let scene: Scene = Scene(parser: pdbParser.scene)
+    guard let movie = scene.movies.first else {return nil}
+    self.init(movie: movie)
+  }
+  
+  private convenience init?(displayName: String, xyz data: Data)
+  {
+    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
+    let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
+    try? xyzParser.startParsing()
+    let scene: Scene = Scene(parser: xyzParser.scene)
+    guard let movie = scene.movies.first else {return nil}
+    self.init(movie: movie)
+  }
   
   public override var description: String
   {
@@ -321,158 +405,66 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     
     switch(type)
     {
-    case NSPasteboardTypeFrame:
-      debugPrint("NSPasteboardTypeFrame")
-      
-      let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-      guard let frame: iRASPAStructure = try? binaryDecoder.decode(iRASPAStructure.self) else {return nil}
-      let movie: Movie = Movie.init(name: frame.structure.displayName, structure: frame)
-      self.init(movie: movie)
-      return
-    case NSPasteboardTypeMovie:
-      let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-      guard let movie: Movie = try? binaryDecoder.decode(Movie.self) else {return nil}
-      self.init(movie: movie)
-      return
     case NSPasteboardTypeProjectTreeNode:
-      let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-      guard let projectTreeNode: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: false) else {return nil}
-      guard let project: ProjectStructureNode = projectTreeNode.representedObject.project as? ProjectStructureNode else {return nil}
-      guard let movie: Movie = project.sceneList.scenes.first?.movies.first else {return nil}
-      self.init(movie: movie)
-      return
+      self.init(treeNode: data)
+    case NSPasteboardTypeMovie:
+      self.init(movie: data)
+    case NSPasteboardTypeFrame:
+      self.init(frame: data)
     case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
-      if let str = String(data: data, encoding: .utf8),
-        let url = URL(string: str),
-        FileManager.default.fileExists(atPath: url.path),
-        let data: Data = try? Data(contentsOf: url, options: [])
-      {
-        let displayName: String = url.deletingPathExtension().lastPathComponent
+      guard let str = String(data: data, encoding: .utf8),
+            let url = URL(string: str),
+            FileManager.default.fileExists(atPath: url.path),
+            let data: Data = try? Data(contentsOf: url, options: []) else {return nil}
+    
+      let displayName: String = url.deletingPathExtension().lastPathComponent
         
-        if #available(OSX 11.0, *)
+      if #available(OSX 11.0, *)
+      {
+        guard let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
+              let type = resourceValues.contentType else {return nil}
+        
+        switch(type)
         {
-          if let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
-             let type = resourceValues.contentType
-          {
-            switch(type)
-            {
-            case _ where type.conforms(to: .iraspa):
-              guard let data = data.decompress(withAlgorithm: .lzma) else {return nil}
-              let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-              guard let node: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: false) else {return nil}
-              node.unwrapLazyLocalPresentedObjectIfNeeded()
-              guard let project = node.representedObject.project as? ProjectStructureNode else {return nil}
-              guard let movie = project.sceneList.scenes.first?.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where type.conforms(to: .poscar) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
-              try? poscarParser.startParsing()
-              let scene: Scene = Scene(parser: poscarParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
-              try? poscarParser.startParsing()
-              let scene: Scene = Scene(parser: poscarParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where type.conforms(to: .cif):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
-              try? cifParser.startParsing()
-              let scene: Scene = Scene(parser: cifParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where type.conforms(to: .pdb):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
-              try? pdbParser.startParsing()
-              let scene: Scene = Scene(parser: pdbParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where type.conforms(to: .xyz):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
-              try? xyzParser.startParsing()
-              let scene: Scene = Scene(parser: xyzParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            default:
-              return nil
-            }
-          }
-        }
-        else
-        {
-          if let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
-             let type = resourceValues.typeIdentifier
-          {
-            switch(type)
-            {
-            case _ where UTTypeConformsTo(type as CFString, typeProject as CFString):
-              guard let data = data.decompress(withAlgorithm: .lzma) else {return nil}
-              let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-              guard let node: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: false) else {return nil}
-              node.unwrapLazyLocalPresentedObjectIfNeeded()
-              guard let project = node.representedObject.project as? ProjectStructureNode else {return nil}
-              guard let movie = project.sceneList.scenes.first?.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where UTTypeConformsTo(type as CFString, typePOSCAR as CFString) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
-              try? poscarParser.startParsing()
-              let scene: Scene = Scene(parser: poscarParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
-              try? poscarParser.startParsing()
-              let scene: Scene = Scene(parser: poscarParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where UTTypeConformsTo(type as CFString, typeCIF as CFString):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
-              try? cifParser.startParsing()
-              let scene: Scene = Scene(parser: cifParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where UTTypeConformsTo(type as CFString, typePDB as CFString):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
-              try? pdbParser.startParsing()
-              let scene: Scene = Scene(parser: pdbParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            case _ where UTTypeConformsTo(type as CFString, typeXYZ as CFString):
-              guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-              let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
-              try? xyzParser.startParsing()
-              let scene: Scene = Scene(parser: xyzParser.scene)
-              guard let movie = scene.movies.first else {return nil}
-              self.init(movie: movie)
-              return
-            default:
-              return nil
-            }
-          }
+        case _ where type.conforms(to: .iraspa):
+          self.init(iraspa: data)
+        case _ where type.conforms(to: .poscar) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
+          self.init(displayName: displayName, poscar: data)
+        case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
+          self.init(displayName: displayName, xdatcar: data)
+        case _ where type.conforms(to: .cif):
+          self.init(displayName: displayName, cif: data)
+        case _ where type.conforms(to: .pdb):
+          self.init(displayName: displayName, pdb: data)
+        case _ where type.conforms(to: .xyz):
+          self.init(displayName: displayName, xyz: data)
+        default:
+          return nil
         }
       }
-      return nil
+      else
+      {
+        guard let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
+              let type = resourceValues.typeIdentifier else {return nil}
+          
+        switch(type)
+        {
+        case _ where UTTypeConformsTo(type as CFString, typeProject as CFString):
+          self.init(iraspa: data)
+        case _ where UTTypeConformsTo(type as CFString, typePOSCAR as CFString) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
+          self.init(displayName: displayName, poscar: data)
+        case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
+          self.init(displayName: displayName, xdatcar: data)
+        case _ where UTTypeConformsTo(type as CFString, typeCIF as CFString):
+          self.init(displayName: displayName, cif: data)
+        case _ where UTTypeConformsTo(type as CFString, typePDB as CFString):
+          self.init(displayName: displayName, pdb: data)
+        case _ where UTTypeConformsTo(type as CFString, typeXYZ as CFString):
+          self.init(displayName: displayName, xyz: data)
+        default:
+          return nil
+        }
+      }
     default:
       return nil
     }
