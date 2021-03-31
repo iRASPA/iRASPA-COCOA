@@ -125,7 +125,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
     switch(pasteboard.name)
     {
     case NSPasteboard.Name.drag:
-      return [NSPasteboard.PasteboardType(kPasteboardTypeFilePromiseContent),NSPasteboardTypeAtomTreeNode]
+      return [NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFilePromiseContent), NSPasteboardTypeAtomTreeNode]
     case NSPasteboard.Name.general:
       return [NSPasteboardTypeAtomTreeNode, NSPasteboard.PasteboardType.fileURL]
     default:
@@ -149,7 +149,7 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
       binaryEncoder.encode(self)
       return Data(binaryEncoder.data)
-    case NSPasteboard.PasteboardType(kPasteboardTypeFilePromiseContent):
+    case NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFilePromiseContent):
       return NSPasteboardTypeAtomTreeNode.rawValue
     case NSPasteboard.PasteboardType.fileURL: // for writing to NSSharingService (email-attachment)
       let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeAtomTreeNode.rawValue).pathExtension

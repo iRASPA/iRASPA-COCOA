@@ -676,10 +676,8 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     let airDropService: NSSharingService? = NSSharingService(named: NSSharingService.Name.sendViaAirDrop)
     let messageService: NSSharingService? = NSSharingService(named: NSSharingService.Name.composeMessage)
     var cloudSharingService: NSSharingService? = nil
-    if #available(OSX 10.12, *)
-    {
-      cloudSharingService = NSSharingService(named: NSSharingService.Name.cloudSharing)
-    }
+    
+    cloudSharingService = NSSharingService(named: NSSharingService.Name.cloudSharing)
     
     // only selected the ones that are available (airdrop is only available when wifi is supported,
     // email when an email-client is installed)

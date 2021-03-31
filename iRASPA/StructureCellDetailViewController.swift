@@ -76,10 +76,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     super.viewDidLoad()
     
     // check that it works with strong-references off (for compatibility with 'El Capitan')
-    if #available(OSX 10.12, *)
-    {
-      self.cellOutlineView?.stronglyReferencesItems = false
-    }
+    self.cellOutlineView?.stronglyReferencesItems = false
     
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]

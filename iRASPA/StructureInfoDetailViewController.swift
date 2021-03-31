@@ -61,10 +61,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
     super.viewDidLoad()
     
     // check that it works with strong-references off (for compatibility with 'El Capitan')
-    if #available(OSX 10.12, *)
-    {
-      self.infoOutlineView?.stronglyReferencesItems = false
-    }
+    self.infoOutlineView?.stronglyReferencesItems = false
     
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
