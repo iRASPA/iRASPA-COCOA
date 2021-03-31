@@ -101,11 +101,8 @@ class DirectoryCollectionViewController: NSViewController, NSCollectionViewDeleg
     flowLayout.sectionInset = NSEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
     flowLayout.minimumInteritemSpacing = 10.0
     flowLayout.minimumLineSpacing = 20.0
-    if #available(OSX 10.12, *) {
-      flowLayout.sectionHeadersPinToVisibleBounds = true
-    } else {
-      // Fallback on earlier versions
-    }
+    flowLayout.sectionHeadersPinToVisibleBounds = true
+   
     collectionView?.collectionViewLayout = flowLayout
     view.wantsLayer = true
     

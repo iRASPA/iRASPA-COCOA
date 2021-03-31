@@ -41,7 +41,6 @@ import LogViewKit
 
 
 public let NSPasteboardTypeProjectTreeNode: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.iraspa")
-public let NSPasteboardTypeProjectTreeNodeCopy: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.project.copy")
 
 public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboardWriting, BinaryDecodable, BinaryEncodable, BinaryEncodableRecursive, BinaryDecodableRecursive
 {
@@ -96,9 +95,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
 
   
   public var recordID: CKRecord.ID? = nil
-  
-  public var snapshotData: Data? = nil
-  
+    
   public var thumbnail: Data? = nil
   
   public convenience init(representedObject modelObject: iRASPAProject)
@@ -334,17 +331,17 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       return [NSPasteboardTypeProjectTreeNode,
               NSPasteboardTypeFrame,
               NSPasteboardTypeMovie,
-              NSPasteboard.PasteboardType(String(kPasteboardTypeFilePromiseContent)),
-              NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))]
+              NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFilePromiseContent),
+              NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFileURLPromise)]
     case NSPasteboard.Name.general:
-      return [NSPasteboardTypeProjectTreeNodeCopy, NSPasteboard.PasteboardType.fileURL]
+      return [NSPasteboardTypeProjectTreeNode, NSPasteboard.PasteboardType.fileURL]
     default:
       return [NSPasteboardTypeProjectTreeNode]
     }
   }
   
   
-  // copy & paste: data has been backed up at copy to 'snapshotData' and written to the pasteboard immediately.
+  // copy & paste: data will be written to the pasteboard immediately.
   // drag & drop: promise the data on the pasteboard
   // Finder requires that the file actually be present on disk for the paste action to be enabled for a file URL. 
   public func writingOptions(forType type: NSPasteboard.PasteboardType, pasteboard: NSPasteboard) -> NSPasteboard.WritingOptions
@@ -360,43 +357,12 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     }
   }
   
-  // the projectTreeNode member 'snapshotData' is used for two reasons:
-  //   1) We can generate the data here for either shallow or deep-copies,
-  //   2) We can handle NSPasteboardTypeProjectTreeNodeCopy and fileURL in one go.
-  //   Both are used in 'immediate' mode of the pasteboard, since fileURL needs that anyway,
-  //   i.e. the file needs to be saved and the url returned in 'pasteboardPropertyList' of the NSPasteboardWriting
-  
   public func pasteboardPropertyList(forType type: NSPasteboard.PasteboardType) -> Any?
   {
     switch(type)
     {
-    case NSPasteboardTypeProjectTreeNodeCopy:
-      // Copy projects command-c
-      return self.snapshotData
-    case NSPasteboard.PasteboardType.fileURL:
-      // Copy projects command-c
-      // Used for (1) writing to NSSharingService (email-attachment)
-      //          (2) used to 'paste' into the Finder
-      let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
-      let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.displayName).appendingPathExtension(pathExtension)
-      
-      guard let data = self.snapshotData?.compress(withAlgorithm: .lzma) else
-      {
-        LogQueue.shared.error(destination: nil, message: "Could not compress data during encoding of \(self.displayName)")
-        return nil
-      }
-      do
-      {
-        try data.write(to: url, options: .atomicWrite)
-      }
-      catch
-      {
-        LogQueue.shared.error(destination: nil, message: "Could not write temporary file during encoding of \(self.displayName)")
-        return nil
-      }
-      return (url as NSPasteboardWriting).pasteboardPropertyList(forType: type)
     case NSPasteboardTypeProjectTreeNode:
-      // Used for drag&drop between documents
+      // Used for copy&paste and drag&drop between documents
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
       binaryEncoder.encode(self, encodeRepresentedObject: true, encodeChildren: true)
       return Data(binaryEncoder.data)
@@ -415,7 +381,36 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
       binaryEncoder.encode(movie)
       return Data(binaryEncoder.data)
-    case NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise)):
+    case NSPasteboard.PasteboardType.fileURL:
+      // Copy projects command-c
+      // Used for (1) writing to NSSharingService (email-attachment)
+      //          (2) used to 'paste' into the Finder
+      let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
+      let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.displayName).appendingPathExtension(pathExtension)
+      
+      let binaryEncoder: BinaryEncoder = BinaryEncoder()
+      binaryEncoder.encode(self, encodeRepresentedObject: true, encodeChildren: true)
+      guard let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma) else
+      {
+        LogQueue.shared.error(destination: nil, message: "Could not compress data during encoding of \(self.displayName)")
+        return nil
+      }
+      do
+      {
+        try data.write(to: url, options: .atomicWrite)
+      }
+      catch
+      {
+        LogQueue.shared.error(destination: nil, message: "Could not write temporary file during encoding of \(self.displayName)")
+        return nil
+      }
+      return (url as NSPasteboardWriting).pasteboardPropertyList(forType: type)
+    case NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFilePromiseContent):
+      // used for dragging to the Finder
+      // write the ProjectTreeNodePasteboardType UTI that will be asked next by calling
+      // outlineView(_:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:)
+      return NSPasteboardTypeProjectTreeNode.rawValue
+    case NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFileURLPromise):
       // used for dragging to the Finder if 'kPasteboardTypeFilePromiseContent' is not available
       let pasteboard: NSPasteboard = NSPasteboard(name: NSPasteboard.Name.drag)
       if let string: String = pasteboard.string(forType: NSPasteboard.PasteboardType(rawValue: "com.apple.pastelocation")),
@@ -443,12 +438,6 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
         return finalURL.absoluteString
       }
       return nil
-      
-    case NSPasteboard.PasteboardType(String(kPasteboardTypeFilePromiseContent)):
-      // used for dragging to the Finder
-      // write the ProjectTreeNodePasteboardType UTI that will be asked next by calling
-      // outlineView(_:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:)
-      return NSPasteboardTypeProjectTreeNode.rawValue
     default:
       return nil
     }
@@ -471,10 +460,9 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   public class func readableTypes(for pasteboard: NSPasteboard) -> [NSPasteboard.PasteboardType]
   {
     return [NSPasteboardTypeProjectTreeNode,
-            NSPasteboardTypeProjectTreeNodeCopy,
             NSPasteboardTypeMovie,
             NSPasteboardTypeFrame,
-            NSPasteboard.PasteboardType.fileURL] // NSPasteboard.PasteboardType.fileURL
+            NSPasteboard.PasteboardType.fileURL]
   }
   
   
@@ -484,8 +472,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     
     switch(type)
     {
-    case NSPasteboardTypeProjectTreeNode,
-         NSPasteboardTypeProjectTreeNodeCopy:
+    case NSPasteboardTypeProjectTreeNode:
       self.init(treeNode: data)
     case NSPasteboardTypeMovie:
       self.init(movie: data)
@@ -1182,6 +1169,15 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     
     encoder.encode(self.representedObject, encodeRepresentedObject: encodeRepresentedObject)
     
+    if let pngData = thumbnail
+    {
+      encoder.encode(pngData)
+    }
+    else
+    {
+      encoder.encode(Data())
+    }
+    
     if encodeChildren
     {
       encoder.encode(self.filteredAndSortedNodes.filter{$0.representedObject.lazyStatus != .loading}, encodeRepresentedObject: encodeRepresentedObject, encodeChildren: encodeChildren)
@@ -1238,8 +1234,8 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   public init(fromBinary decoder: BinaryDecoder, decodeRepresentedObject: Bool, decodeChildren: Bool) throws
   {
-    let versionNumber: Int = try decoder.decode(Int.self)
-    if versionNumber > ProjectTreeNode.classVersionNumber
+    let readVersionNumber: Int = try decoder.decode(Int.self)
+    if readVersionNumber > ProjectTreeNode.classVersionNumber
     {
       throw iRASPAError.invalidArchiveVersion
     }
@@ -1249,6 +1245,22 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     isDropEnabled = try decoder.decode(Bool.self)
   
     representedObject = try decoder.decode(iRASPAProject.self, decodeRepresentedObject: decodeRepresentedObject)
+    
+    if readVersionNumber >= 2 // introduced in version 2
+    {
+      // read picture from PNG-data
+      let dataLength: UInt32 = try decoder.decode(UInt32.self)
+      if(dataLength != UInt32(0xffffffff))
+      {
+        var imageData: Data = Data(count: Int(dataLength))
+      
+        try imageData.withUnsafeMutableBytes { (rawPtr: UnsafeMutableRawBufferPointer) in
+          try decoder.read(Int(dataLength), into: rawPtr.baseAddress!)
+        }
+     
+        self.thumbnail = imageData
+      }
+    }
   
     super.init()
     //if decodeChildren

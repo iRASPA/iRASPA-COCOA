@@ -191,17 +191,11 @@ class NSInformationPanelView: NSView
     item.frame = self.frame
     self.addSubview(item)
     
-    if #available(OSX 10.12, *) {
-      Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { (time: Timer) in
-        
-        NSAnimationContext.beginGrouping()
-        NSAnimationContext.current.duration = 1.0
-        item.animator().removeFromSuperview()
-        NSAnimationContext.endGrouping()
-      }
-    } else {
-      // Fallback on earlier versions
+    Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { (time: Timer) in
+      NSAnimationContext.beginGrouping()
+      NSAnimationContext.current.duration = 1.0
+      item.animator().removeFromSuperview()
+      NSAnimationContext.endGrouping()
     }
   }
-  
 }

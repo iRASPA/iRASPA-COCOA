@@ -1171,8 +1171,9 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     }
   }
   
-  
   @objc func cut(_ sender: AnyObject)
   {
+    copy(sender)
+    self.deleteSelection()
   }
 }

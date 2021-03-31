@@ -45,64 +45,31 @@ public class CloudSubscribeOperation: FKGroupOperation
     let projectSubscription : CKSubscription
     let predicate: NSPredicate = NSPredicate(format: "TRUEPREDICATE")
     
-    if #available(OSX 10.12, *)
-    {
-      projectSubscription = CKQuerySubscription(recordType: "ProjectNode", predicate: predicate, subscriptionID: subscriptionID, options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordDeletion, CKQuerySubscription.Options.firesOnRecordUpdate])
+    projectSubscription = CKQuerySubscription(recordType: "ProjectNode", predicate: predicate, subscriptionID: subscriptionID, options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordDeletion, CKQuerySubscription.Options.firesOnRecordUpdate])
       
-      // silent push notification
-      let notificationInfo = CKSubscription.NotificationInfo()
-      notificationInfo.shouldSendContentAvailable = true
-      notificationInfo.desiredKeys = ["displayName", "parent"] // max 3 keys
-      projectSubscription.notificationInfo = notificationInfo
+    // silent push notification
+    let notificationInfo = CKSubscription.NotificationInfo()
+    notificationInfo.shouldSendContentAvailable = true
+    notificationInfo.desiredKeys = ["displayName", "parent"] // max 3 keys
+    projectSubscription.notificationInfo = notificationInfo
       
-      let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [projectSubscription], subscriptionIDsToDelete: [])
-      operation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
-      operation.modifySubscriptionsCompletionBlock = { [weak self] (subscription: [CKSubscription]?, string: [String]?, error: Error?) in
-        if let error = error as? CKError
+    let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [projectSubscription], subscriptionIDsToDelete: [])
+    operation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
+    operation.modifySubscriptionsCompletionBlock = { [weak self] (subscription: [CKSubscription]?, string: [String]?, error: Error?) in
+      if let error = error as? CKError
+      {
+        switch(error)
         {
-          switch(error)
-          {
-          case CKError.notAuthenticated:
-            break
-          //self.windowController?.logQueue.verbose(message: "iCloud authentication error: enable iCloud and iCloud-drive ")
-          default:
-            self?.handleCloudKitFetchError(error: error, retryOperation: operation)
-          }
+        case CKError.notAuthenticated:
+          break
+        //self.windowController?.logQueue.verbose(message: "iCloud authentication error: enable iCloud and iCloud-drive ")
+        default:
+          self?.handleCloudKitFetchError(error: error, retryOperation: operation)
         }
       }
-      
-      self.addOperation(operation)
     }
-    else
-    {
-      /*
-      projectSubscription = CKSubscription(recordType: "ProjectNode", predicate: predicate, subscriptionID: subscriptionID, options: [.firesOnRecordCreation, .firesOnRecordDeletion, .firesOnRecordUpdate])
       
-      // silent push notification
-      let notificationInfo = CKSubscription.NotificationInfo()
-      notificationInfo.shouldSendContentAvailable = true
-      notificationInfo.desiredKeys = ["displayName", "parent"] // max 3 keys
-      projectSubscription.notificationInfo = notificationInfo
-      
-      let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [projectSubscription], subscriptionIDsToDelete: [])
-      operation.database = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
-      operation.modifySubscriptionsCompletionBlock = { [weak self] (subscription: [CKSubscription]?, string: [String]?, error: Error?) in
-        if let error = error as? CKError
-        {
-          switch(error)
-          {
-          case CKError.notAuthenticated:
-            break
-          //self.windowController?.logQueue.verbose(message: "iCloud authentication error: enable iCloud and iCloud-drive ")
-          default:
-            self?.handleCloudKitFetchError(error: error, retryOperation: operation)
-          }
-        }
-      }
-      
-      self.addOperation(operation)
-      */
-    }
+    self.addOperation(operation)
   }
   
   func handleCloudKitFetchError(error: CKError, retryOperation : Operation)

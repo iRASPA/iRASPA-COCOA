@@ -124,10 +124,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     self.searchField?.toolTip = "Show Projects with matching names"
     
     // check that it works with strong-references off (for compatibility with 'El Capitan')
-    if #available(OSX 10.12, *)
-    {
-      self.projectOutlineView?.stronglyReferencesItems = false
-    }
+    self.projectOutlineView?.stronglyReferencesItems = false
     
     self.reachability = Reachability()
     do
@@ -770,22 +767,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       view.textField?.isEditable = false
       
-      /*
-      let owner: String
-      if #available(OSX 10.12, *) { owner = CKCurrentUserDefaultName}
-      else { owner = CKOwnerDefaultName}
-      if Cloud.shared.projectData.contains(node) && node.owner == owner
-      {
-        view.textField?.isEditable = true
-        view.textField?.font = NSFont.systemFont(ofSize: view.textField!.font!.pointSize, weight: NSFont.Weight.semibold)
-      }
-      else
-      {
-        view.textField?.isEditable = false
-        view.textField?.font = NSFont.systemFont(ofSize: view.textField!.font!.pointSize, weight: NSFont.Weight.regular)
-      }
-      */
-      
       view.textField?.stringValue = node.displayName
       view.imageView?.image = node.infoPanelIcon
       
@@ -968,8 +949,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
   func addCloudNode(_ node: ProjectTreeNode, parent: ProjectTreeNode)
   {
     let index: Int = parent.childNodes.binarySearch{ $0.displayName.lowercased() < node.displayName.lowercased() }
-    if #available(OSX 10.12, *) { node.owner = CKCurrentUserDefaultName}
-    else { node.owner = "__defaultOwner__"}  // CKOwnerDefaultName
+    node.owner = CKCurrentUserDefaultName
     node.isEditable = false
     Cloud.shared.projectData.insertNode(node, inItem: parent, atIndex: index)
     
@@ -1442,6 +1422,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
       })
       
+      document.documentData.projectData.updateFilteredNodes()
+      document.documentData.projectData.updateImplicitlySelected()
       
       self.projectOutlineView?.endUpdates()
       self.observeNotifications = savedObserveNotifications
@@ -1496,6 +1478,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         }
       })
       document.documentData.projectData.updateFilteredNodes()
+      document.documentData.projectData.updateImplicitlySelected()
       
       self.projectOutlineView?.endUpdates()
     }
@@ -3370,26 +3353,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       let treeNodesToBeCopied: [ProjectTreeNode] = Array(treeController.selectedTreeNodes)
       
-      // the projectTreeNode member 'snapshotData' is used for two reasons:
-      //   1) We can generate the data here for either shallow or deep-copies,
-      //   2) We can handle NSPasteboardTypeProjectTreeNodeCopy and fleURL in one go.
-      //   Both are used in 'immediate' mode of the pasteboard, since fileURL needs that anyway,
-      //   i.e. the file needs to be saved and the url returned in 'pasteboardPropertyList' of the NSPasteboardWriting
-      for projectTreeNode in treeNodesToBeCopied
-      {
-        let binaryEncoder: BinaryEncoder = BinaryEncoder()
-        binaryEncoder.encode(projectTreeNode, encodeRepresentedObject: true, encodeChildren: true)
-        projectTreeNode.snapshotData = Data(binaryEncoder.data)
-      }
-      
       pasteboard.clearContents()
       pasteboard.writeObjects(treeNodesToBeCopied)
-      
-      for projectTreeNode in treeNodesToBeCopied
-      {
-        // the snapshot can now be released
-        projectTreeNode.snapshotData = nil
-      }
     }
   }
   
@@ -3434,6 +3399,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           }
         }
         document.documentData.projectData.updateFilteredNodes()
+        document.documentData.projectData.updateImplicitlySelected()
         self.projectOutlineView?.endUpdates()
       }
     }

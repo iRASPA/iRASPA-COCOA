@@ -270,8 +270,8 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
       return [NSPasteboardTypeMovie,
               NSPasteboardTypeProjectTreeNode,
               NSPasteboardTypeFrame,
-              NSPasteboard.PasteboardType(String(kPasteboardTypeFilePromiseContent)),
-              NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))]
+              NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFilePromiseContent),
+              NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFileURLPromise)]
     case NSPasteboard.Name.general:
       return [NSPasteboardTypeMovie,
               NSPasteboardTypeProjectTreeNode,
@@ -308,7 +308,38 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
       binaryEncoder.encode(projectTreeNode, encodeRepresentedObject: true, encodeChildren: false)
       return Data(binaryEncoder.data)
-    case NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise)):
+    case NSPasteboard.PasteboardType.fileURL:
+      // used for (1) writing to NSSharingService (email-attachment)
+      //          (2) used to 'paste' into the Finder
+      let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
+      let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.displayName).appendingPathExtension(pathExtension)
+      let scene: Scene = Scene(name: self.displayName, movies: [self])
+      let sceneList: SceneList = SceneList.init(name: self.displayName, scenes: [scene])
+      let project: ProjectStructureNode = ProjectStructureNode(name: self.displayName, sceneList: sceneList)
+      let projectTreeNode = ProjectTreeNode(displayName: self.displayName, representedObject: iRASPAProject(structureProject: project))
+      let binaryEncoder: BinaryEncoder = BinaryEncoder()
+      binaryEncoder.encode(projectTreeNode, encodeRepresentedObject: true, encodeChildren: false)
+      guard let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma) else
+      {
+        LogQueue.shared.error(destination: nil, message: "Could not compress data during encoding of \(self.displayName)")
+        return nil
+      }
+      do
+      {
+        try data.write(to: url, options: .atomicWrite)
+      }
+      catch
+      {
+        LogQueue.shared.error(destination: nil, message: "Could not write temporary file during encoding of \(self.displayName)")
+        return nil
+      }
+      return (url as NSPasteboardWriting).pasteboardPropertyList(forType: type)
+    case NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFilePromiseContent):
+      // used for dragging to the Finder
+      // write the ProjectTreeNodePasteboardType UTI that will be asked next by calling
+      // outlineView(_:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:)
+      return NSPasteboardTypeProjectTreeNode.rawValue
+    case NSPasteboard.PasteboardType(rawValue: kPasteboardTypeFileURLPromise):
       // used for dragging to the Finder if 'kPasteboardTypeFilePromiseContent' is not available
       let pasteboard: NSPasteboard = NSPasteboard(name: NSPasteboard.Name.drag)
       if let string: String = pasteboard.string(forType: NSPasteboard.PasteboardType(rawValue: "com.apple.pastelocation")),
@@ -340,42 +371,8 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
         return finalURL.absoluteString
       }
       return nil
-      
-    case NSPasteboard.PasteboardType(String(kPasteboardTypeFilePromiseContent)):
-      // used for dragging to the Finder
-      // write the ProjectTreeNodePasteboardType UTI that will be asked next by calling
-      // outlineView(_:namesOfPromisedFilesDroppedAtDestination:forDraggedItems:)
-      return NSPasteboardTypeProjectTreeNode.rawValue
-      
-    case NSPasteboard.PasteboardType.fileURL:
-      // used for (1) writing to NSSharingService (email-attachment)
-      //          (2) used to 'paste' into the Finder
-      let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
-      let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(self.displayName).appendingPathExtension(pathExtension)
-      let scene: Scene = Scene(name: self.displayName, movies: [self])
-      let sceneList: SceneList = SceneList.init(name: self.displayName, scenes: [scene])
-      let project: ProjectStructureNode = ProjectStructureNode(name: self.displayName, sceneList: sceneList)
-      let projectTreeNode = ProjectTreeNode(displayName: self.displayName, representedObject: iRASPAProject(structureProject: project))
-      let binaryEncoder: BinaryEncoder = BinaryEncoder()
-      binaryEncoder.encode(projectTreeNode, encodeRepresentedObject: true, encodeChildren: false)
-      guard let data = Data(binaryEncoder.data).compress(withAlgorithm: .lzma) else
-      {
-        LogQueue.shared.error(destination: nil, message: "Could not compress data during encoding of \(self.displayName)")
-        return nil
-      }
-      do
-      {
-        try data.write(to: url, options: .atomicWrite)
-      }
-      catch
-      {
-        LogQueue.shared.error(destination: nil, message: "Could not write temporary file during encoding of \(self.displayName)")
-        return nil
-      }
-      return (url as NSPasteboardWriting).pasteboardPropertyList(forType: type)
-      
     default:
-      fatalError()
+      return nil
     }
   }
   

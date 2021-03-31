@@ -49,6 +49,12 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     }
   }
   
+  public func updateImplicitlySelected()
+  {
+    self.flattenedNodes().forEach({$0.isImplicitelySelected = false})
+    self.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
+  }
+  
   public var filterPredicate: (ProjectTreeNode) -> Bool = {_ in return true}
   
   public var rootNodes: [ProjectTreeNode]
