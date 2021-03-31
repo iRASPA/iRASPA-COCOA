@@ -146,8 +146,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     self.projectOutlineView?.registerForDraggedTypes([NSPasteboardTypeProjectTreeNode,
                                                       NSPasteboardTypeMovie,
                                                       NSPasteboardTypeFrame])
-    self.projectOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType(String(kUTTypeFileURL))])
-    self.projectOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))])
+    self.projectOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType.fileURL])
+    self.projectOutlineView?.registerForDraggedTypes([NSPasteboard.PasteboardType.filePromise])
     
     
     self.projectOutlineView?.setDraggingSourceOperationMask(.every, forLocal: true)
@@ -3372,8 +3372,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       // the projectTreeNode member 'snapshotData' is used for two reasons:
       //   1) We can generate the data here for either shallow or deep-copies,
-      //   2) We can handle NSPasteboardTypeProjectTreeNodeCopy and kUTTypeFileURL in one go.
-      //   Both are used in 'immediate' mode of the pasteboard, since kUTTypeFileURL needs that anyway,
+      //   2) We can handle NSPasteboardTypeProjectTreeNodeCopy and fleURL in one go.
+      //   Both are used in 'immediate' mode of the pasteboard, since fileURL needs that anyway,
       //   i.e. the file needs to be saved and the url returned in 'pasteboardPropertyList' of the NSPasteboardWriting
       for projectTreeNode in treeNodesToBeCopied
       {

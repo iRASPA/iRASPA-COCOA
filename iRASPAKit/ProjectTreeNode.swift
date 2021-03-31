@@ -318,26 +318,26 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   // 2) the object will then receive an 'pasteboardPropertyListForType' for each of these types
   
   // kPasteboardTypeFilePromiseContent: used for dragging to the Finder
-  // kUTTypeFileURL: used for paste into the Finder
+  // fileURL: used for paste into the Finder
   
   // NSFilesPromisePboardType expects filename extensions;
   // kPasteboardTypeFileURLPromise expects file URLs; replaces NSFilesPromisePboardType
   // kPasteboardTypeFilePromiseContent (only mentioned in Pasteboard.h, AFAIK) expects UTIs.
  
   // drag & drop: Promise the data on the pasteboard, so all types of data can be promised.
-  // copy & paste: Write data immediately, so choose which data to put on the pasteboard. The Finder copy 'kUTTypeFileURL' can always be added (URLs is a small amount of data).
+  // copy & paste: Write data immediately, so choose which data to put on the pasteboard. The Finder copy 'fileURL' can always be added (URLs is a small amount of data).
   public func writableTypes(for pasteboard: NSPasteboard) -> [NSPasteboard.PasteboardType]
   {
     switch(pasteboard.name)
     {
-    case NSPasteboard.Name.dragPboard:
+    case NSPasteboard.Name.drag:
       return [NSPasteboardTypeProjectTreeNode,
               NSPasteboardTypeFrame,
               NSPasteboardTypeMovie,
               NSPasteboard.PasteboardType(String(kPasteboardTypeFilePromiseContent)),
               NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise))]
-    case NSPasteboard.Name.generalPboard:
-      return [NSPasteboardTypeProjectTreeNodeCopy, NSPasteboard.PasteboardType(String(kUTTypeFileURL))]
+    case NSPasteboard.Name.general:
+      return [NSPasteboardTypeProjectTreeNodeCopy, NSPasteboard.PasteboardType.fileURL]
     default:
       return [NSPasteboardTypeProjectTreeNode]
     }
@@ -351,9 +351,9 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   {
     switch(pasteboard.name)
     {
-    case NSPasteboard.Name.dragPboard:
+    case NSPasteboard.Name.drag:
       return NSPasteboard.WritingOptions.promised
-    case NSPasteboard.Name.generalPboard:
+    case NSPasteboard.Name.general:
       return NSPasteboard.WritingOptions()
     default:
       return NSPasteboard.WritingOptions.promised
@@ -362,8 +362,8 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   // the projectTreeNode member 'snapshotData' is used for two reasons:
   //   1) We can generate the data here for either shallow or deep-copies,
-  //   2) We can handle NSPasteboardTypeProjectTreeNodeCopy and kUTTypeFileURL in one go.
-  //   Both are used in 'immediate' mode of the pasteboard, since kUTTypeFileURL needs that anyway,
+  //   2) We can handle NSPasteboardTypeProjectTreeNodeCopy and fileURL in one go.
+  //   Both are used in 'immediate' mode of the pasteboard, since fileURL needs that anyway,
   //   i.e. the file needs to be saved and the url returned in 'pasteboardPropertyList' of the NSPasteboardWriting
   
   public func pasteboardPropertyList(forType type: NSPasteboard.PasteboardType) -> Any?
@@ -373,7 +373,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     case NSPasteboardTypeProjectTreeNodeCopy:
       // Copy projects command-c
       return self.snapshotData
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
+    case NSPasteboard.PasteboardType.fileURL:
       // Copy projects command-c
       // Used for (1) writing to NSSharingService (email-attachment)
       //          (2) used to 'paste' into the Finder
@@ -417,7 +417,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       return Data(binaryEncoder.data)
     case NSPasteboard.PasteboardType(String(kPasteboardTypeFileURLPromise)):
       // used for dragging to the Finder if 'kPasteboardTypeFilePromiseContent' is not available
-      let pasteboard: NSPasteboard = NSPasteboard(name: NSPasteboard.Name.dragPboard)
+      let pasteboard: NSPasteboard = NSPasteboard(name: NSPasteboard.Name.drag)
       if let string: String = pasteboard.string(forType: NSPasteboard.PasteboardType(rawValue: "com.apple.pastelocation")),
         let directoryURL: URL = URL(string: string)
       {
@@ -474,7 +474,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
             NSPasteboardTypeProjectTreeNodeCopy,
             NSPasteboardTypeMovie,
             NSPasteboardTypeFrame,
-            NSPasteboard.PasteboardType(String(kUTTypeFileURL))] // NSPasteboard.PasteboardType.fileURL
+            NSPasteboard.PasteboardType.fileURL] // NSPasteboard.PasteboardType.fileURL
   }
   
   
@@ -491,7 +491,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       self.init(movie: data)
     case NSPasteboardTypeFrame:
       self.init(frame: data)
-    case NSPasteboard.PasteboardType(String(kUTTypeFileURL)):
+    case NSPasteboard.PasteboardType.fileURL:
       guard let str = String(data: data, encoding: .utf8),
             let url = URL(string: str),
             FileManager.default.fileExists(atPath: url.path),
