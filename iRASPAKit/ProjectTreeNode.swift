@@ -178,7 +178,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     }
   }
   
-  public convenience init?(treeNode data: Data)
+  private convenience init?(treeNode data: Data)
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
     guard let node: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: true) else {return nil}
@@ -186,7 +186,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(movie data: Data)
+  private convenience init?(movie data: Data)
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
     guard let movie: Movie = try? binaryDecoder.decode(Movie.self) else {return nil}
@@ -198,7 +198,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(frame data: Data)
+  private convenience init?(frame data: Data)
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
     guard let iraspaStructure: iRASPAStructure = try? binaryDecoder.decode(iRASPAStructure.self) else {return nil}
@@ -212,7 +212,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(iraspa data: Data)
+  private convenience init?(iraspa data: Data)
   {
     guard let data = data.decompress(withAlgorithm: .lzma) else {return nil}
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
@@ -221,7 +221,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(displayName: String, pdb data: Data)
+  private convenience init?(displayName: String, pdb data: Data)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
@@ -233,7 +233,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(displayName: String, cif data: Data)
+  private convenience init?(displayName: String, cif data: Data)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
@@ -245,7 +245,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(displayName: String, xyz data: Data)
+  private convenience init?(displayName: String, xyz data: Data)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
@@ -257,7 +257,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(displayName: String, poscar data: Data)
+  private convenience init?(displayName: String, poscar data: Data)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
@@ -269,7 +269,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(displayName: String, xdatcar data: Data)
+  private convenience init?(displayName: String, xdatcar data: Data)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
@@ -310,17 +310,6 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     "dim" : NSNumber(value: 0.0),
     "type" : NSString(string: "Unspecified")
   ]
-  
-  public enum EncodingStrategy: Int
-  {
-    case saveRepresentedObject = 0                   // save normally (used to save individual projects to local files, leaving copied cloud-nodes as 'lazy')
-    case unwrapLocalRepresentedObject = 1            // drag to finder
-    case unwrapLocalRepresentedObjectAndChildren = 2 // drag to finder, all childNodes need to be unwrapped
-    case saveDocument = 3                            // save the projects as 'lazy'-projects (used for saving the whole project-tree)
-    case saveSnapshot = 4                            // use the snapshot (type: Data), used for copy/paste
-    case saveLeafNodeToCloud = 5                     // save the project into the cloud and turn into a 'lazy'-cloud project
-    case placeholder = 6
-  }
   
   // MARK: -
   // MARK: NSPasteboardWriting support
