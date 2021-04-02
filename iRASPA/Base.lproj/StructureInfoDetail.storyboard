@@ -27,7 +27,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="486" minWidth="40" maxWidth="1000" id="htY-YN-zPY">
+                                                <tableColumn width="457" minWidth="40" maxWidth="1000" id="htY-YN-zPY">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -40,7 +40,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="CreatorGroup" id="KRz-Be-H2B" userLabel="Creator Group">
-                                                            <rect key="frame" x="1" y="1" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="1" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zPM-ii-YH8">
@@ -58,7 +58,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="CreatorCell" id="6I5-jV-Frb" userLabel="Creator Cell">
-                                                            <rect key="frame" x="1" y="20" width="495" height="285"/>
+                                                            <rect key="frame" x="11" y="20" width="466" height="285"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BXW-8P-dXv">
@@ -226,7 +226,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="CreationGroup" id="sDS-ns-6gf" userLabel="Creation Group">
-                                                            <rect key="frame" x="1" y="307" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="307" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4uB-yA-cBX">
@@ -244,7 +244,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="CreationCell" id="oad-E1-rcV" userLabel="Creation Cell">
-                                                            <rect key="frame" x="1" y="326" width="495" height="525"/>
+                                                            <rect key="frame" x="11" y="326" width="466" height="525"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NnC-7M-pFS">
@@ -1037,7 +1037,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="ChemicalGroup" id="4hn-GO-fR4" userLabel="Chemical Group">
-                                                            <rect key="frame" x="1" y="853" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="853" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Wi-rh-Hrk">
@@ -1055,7 +1055,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="ChemicalCell" id="XSE-GF-Ugb" userLabel="Chemical Cell">
-                                                            <rect key="frame" x="1" y="872" width="495" height="92"/>
+                                                            <rect key="frame" x="11" y="872" width="466" height="92"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Pb1-5o-BRn">
@@ -1132,7 +1132,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="PublicationGroup" id="ztV-Lj-de3" userLabel="Publication Group">
-                                                            <rect key="frame" x="1" y="966" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="966" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xws-lr-iMQ">
@@ -1150,7 +1150,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="PublicationCell" id="aPD-Bi-ciT" userLabel="Publication Cell">
-                                                            <rect key="frame" x="1" y="985" width="495" height="344"/>
+                                                            <rect key="frame" x="11" y="985" width="466" height="344"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="nHT-DX-hc5">
@@ -1376,14 +1376,13 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <customView identifier="infoTableRowView" id="udQ-mV-PuX" customClass="InfoTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="1331" width="495" height="96"/>
+                                                            <rect key="frame" x="11" y="1331" width="466" height="96"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <outlet property="dataSource" destination="1Uq-V5-lQQ" id="tK9-rJ-Y9Q"/>
                                                 <outlet property="delegate" destination="1Uq-V5-lQQ" id="Jax-ln-oYX"/>
                                             </connections>
                                         </outlineView>

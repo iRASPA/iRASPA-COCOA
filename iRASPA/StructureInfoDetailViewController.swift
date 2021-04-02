@@ -32,18 +32,17 @@
 import Cocoa
 import iRASPAKit
 
-class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTextViewDelegate, WindowControllerConsumer, ProjectConsumer
+class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate, NSTextViewDelegate, WindowControllerConsumer, ProjectConsumer
 {
   weak var windowController: iRASPAWindowController?
   
   @IBOutlet private weak var infoOutlineView: NSStaticViewBasedOutlineView?
   
-  var list: [NSDictionary] = []
   var heights: [String : CGFloat] = [:]
-  let creatorCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CreatorCell")]
-  let creationCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CreationCell")]
-  let chemicalCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "ChemicalCell")]
-  let publicationCell: [NSString : AnyObject] = [NSString(string: "cellType"):NSString(string: "PublicationCell")]
+  let creatorCell: OutlineViewItem = OutlineViewItem("CreatorCell")
+  let creationCell: OutlineViewItem = OutlineViewItem("CreationCell")
+  let chemicalCell: OutlineViewItem = OutlineViewItem("ChemicalCell")
+  let publicationCell: OutlineViewItem = OutlineViewItem("PublicationCell")
   
   deinit
   {
@@ -66,12 +65,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
-    let creatorDictionary: NSDictionary = [NSString(string: "cellType"):NSString(string: "CreatorGroup") as AnyObject,NSString(string: "children"): [creatorCell] as AnyObject]
-    let creationDictionary: NSDictionary = [NSString(string: "cellType"):NSString(string: "CreationGroup") as AnyObject,NSString(string: "children"): [creationCell] as AnyObject]
-    let chemicalDictionary: NSDictionary = [NSString(string: "cellType"):NSString(string: "ChemicalGroup") as AnyObject,NSString(string: "children"): [chemicalCell] as AnyObject]
-    let publicationDictionary: NSDictionary = [NSString(string: "cellType"):NSString(string: "PublicationGroup") as AnyObject,NSString(string: "children"): [publicationCell] as AnyObject]
+    let creatorItem: OutlineViewItem = OutlineViewItem(title: "CreatorGroup", children: [creatorCell])
+    let creationItem: OutlineViewItem = OutlineViewItem(title: "CreationGroup", children: [creationCell])
+    let chemicalItem: OutlineViewItem = OutlineViewItem(title: "ChemicalGroup", children: [chemicalCell])
+    let publicationItem: OutlineViewItem = OutlineViewItem(title: "PublicationGroup", children: [publicationCell])
     
-    self.list = [creatorDictionary, creationDictionary, chemicalDictionary, publicationDictionary]
+    self.infoOutlineView?.items = [creatorItem, creationItem, chemicalItem, publicationItem]
     
     self.heights =
     [
@@ -92,9 +91,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   {
     if let outlineView = self.infoOutlineView
     {
-      for i in 0..<list.count
+      for i in 0..<outlineView.items.count
       {
-        self.expandedItems[i] = outlineView.isItemExpanded(list[i])
+        self.expandedItems[i] = outlineView.isItemExpanded(outlineView.items[i])
       }
     }
   }
@@ -108,15 +107,18 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
     NSAnimationContext.runAnimationGroup({context in
       context.duration = 0
       
-      for i in 0..<self.list.count
+      if let outlineView = self.infoOutlineView
       {
-        if (self.expandedItems[i])
+        for i in 0..<outlineView.items.count
         {
-          self.infoOutlineView?.expandItem(list[i])
-        }
-        else
-        {
-          self.infoOutlineView?.collapseItem(list[i])
+          if (self.expandedItems[i])
+          {
+            outlineView.expandItem(outlineView.items[i])
+          }
+          else
+          {
+            outlineView.collapseItem(outlineView.items[i])
+          }
         }
       }
     }, completionHandler: {})
@@ -126,22 +128,6 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   // MARK: NSTableView Delegate Methods
   // =====================================================================
   
-  // Returns a Boolean value that indicates whether the a given item is expandable
-  func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
-  {
-    if let dictionary = item as? NSDictionary
-    {
-      if let _: [AnyObject] = dictionary["children"] as? [AnyObject]
-      {
-        return true
-      }
-      else
-      {
-        return false
-      }
-    }
-    return false
-  }
   
   func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool
   {
@@ -153,48 +139,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
     return false
   }
   
-  func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
-  {
-    if (item == nil)
-    {
-      return list.count
-    }
-    else
-    {
-      if let dictionary = item as? NSDictionary
-      {
-        let children: [AnyObject] = dictionary["children"] as! [AnyObject]
-        return children.count
-      }
-      else // no children more than 1 deep
-      {
-        return 0
-      }
-    }
-  }
-  
-  func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any
-  {
-    //item is nil for root level items
-    if (item == nil)
-    {
-      // return an Dictionary<String, AnyObject>
-      return self.list[index]
-    }
-    else
-    {
-      let dictionary: NSDictionary = item as! NSDictionary
-      
-      let children: [AnyObject] = dictionary["children"] as! [AnyObject]
-      
-      return children[index]
-    }
-  }
-  
-  
   func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
   {
-    if let string: String = (item as? NSDictionary)?["cellType"] as? String
+    if let string: String = (item as? OutlineViewItem)?.title
     {
       return self.heights[string] ?? 200.0
     }
@@ -217,8 +164,8 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   
   @objc func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
   {
-    if let string: String = (item as? NSDictionary)?["cellType"] as? String,
-      let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: string), owner: self) as? NSTableCellView
+    if let string: String = (item as? OutlineViewItem)?.title,
+       let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: string), owner: self) as? NSTableCellView
     {
       let enabled: Bool = proxyProject?.isEnabled ?? false
       
@@ -1294,7 +1241,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDataSour
   // MARK: Update outlineView
   // =====================================================================
   
-  func updateOutlineView(identifiers: [[NSString : AnyObject]])
+  func updateOutlineView(identifiers: [OutlineViewItem])
   {
     // Update at the next iteration (reloading could be in progress)
     DispatchQueue.main.async(execute: {[weak self] in
