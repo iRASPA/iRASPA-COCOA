@@ -27,7 +27,7 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="485.85674353598881" minWidth="40" maxWidth="1000" id="wZo-0d-qV2">
+                                                <tableColumn width="456.85674353598881" minWidth="40" maxWidth="1000" id="wZo-0d-qV2">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -40,7 +40,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="CameraGroup" id="8e3-cK-auO" userLabel="Camera Group">
-                                                            <rect key="frame" x="1" y="1" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="1" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EPj-P4-qYg">
@@ -58,7 +58,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraCell" id="OCh-4E-pca" userLabel="Camera Cell">
-                                                            <rect key="frame" x="1" y="20" width="495" height="222"/>
+                                                            <rect key="frame" x="11" y="20" width="466" height="222"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ca-GQ-nM8">
@@ -346,7 +346,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraViewMatrixCell" id="0lK-hz-Ty7" userLabel="Camera View Matrix Cell">
-                                                            <rect key="frame" x="1" y="244" width="495" height="380"/>
+                                                            <rect key="frame" x="11" y="244" width="466" height="380"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="View matrix" translatesAutoresizingMaskIntoConstraints="NO" id="hLY-tu-UFu">
@@ -748,7 +748,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraSelectionGroup" id="Srz-h6-kXZ" userLabel="Selection Group">
-                                                            <rect key="frame" x="1" y="626" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="626" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8fs-30-tJm">
@@ -766,7 +766,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraSelectionCell" id="4iD-TI-U1m" userLabel="Selection Cell">
-                                                            <rect key="frame" x="1" y="645" width="495" height="30"/>
+                                                            <rect key="frame" x="11" y="645" width="466" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TgB-40-bzb">
@@ -802,7 +802,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraLightsGroup" id="F9H-pk-mmu" userLabel="Lights Group">
-                                                            <rect key="frame" x="1" y="677" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="677" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ko-rl-zBB">
@@ -820,7 +820,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraLightsCell" id="nLW-t3-UIr" userLabel="Lights Cell">
-                                                            <rect key="frame" x="1" y="696" width="495" height="141"/>
+                                                            <rect key="frame" x="11" y="696" width="466" height="141"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Camera light" translatesAutoresizingMaskIntoConstraints="NO" id="Jzl-ba-QmS">
@@ -950,7 +950,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraBackgroundGroup" id="APq-3b-46i" userLabel="Background Group">
-                                                            <rect key="frame" x="1" y="839" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="839" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hQl-Xt-eWI">
@@ -968,7 +968,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraBackgroundCell" id="FoU-ab-axL" userLabel="Background Cell">
-                                                            <rect key="frame" x="1" y="858" width="495" height="102"/>
+                                                            <rect key="frame" x="11" y="858" width="466" height="102"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <tabView identifier="BackgroundTabView" fixedFrame="YES" drawsBackground="NO" type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="cWE-dq-RMV">
@@ -1222,7 +1222,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraPictureGroup" id="jSb-XR-EZl" userLabel="Picture Group">
-                                                            <rect key="frame" x="1" y="962" width="495" height="17"/>
+                                                            <rect key="frame" x="11" y="962" width="466" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FZN-z9-eUc">
@@ -1240,7 +1240,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraPictureCell" id="gK7-2L-EeW" userLabel="Picture Cell">
-                                                            <rect key="frame" x="1" y="981" width="495" height="194"/>
+                                                            <rect key="frame" x="11" y="981" width="466" height="194"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="yHS-8L-Nfe">
@@ -1461,7 +1461,7 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraMovieCell" id="Zs2-CT-ZY8" userLabel="Movie Cell">
-                                                            <rect key="frame" x="1" y="1177" width="495" height="38"/>
+                                                            <rect key="frame" x="11" y="1177" width="466" height="38"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ghT-T1-mnJ">
@@ -1499,14 +1499,13 @@
                                                             </subviews>
                                                         </tableCellView>
                                                         <customView identifier="cameraTableRowView" id="u4U-C0-fgC" customClass="CameraTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="1217" width="495" height="96"/>
+                                                            <rect key="frame" x="11" y="1217" width="466" height="96"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <outlet property="dataSource" destination="9Yu-pt-V7R" id="LRt-no-BVq"/>
                                                 <outlet property="delegate" destination="9Yu-pt-V7R" id="jkJ-AO-WzH"/>
                                             </connections>
                                         </outlineView>

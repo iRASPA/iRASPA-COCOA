@@ -54,7 +54,7 @@ import LogViewKit
 // This is shown as an view with all controls disabled.
 
 
-class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource, WindowControllerConsumer, ProjectConsumer
+class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDelegate, WindowControllerConsumer, ProjectConsumer
 {
   @IBOutlet private weak var appearanceOutlineView: NSStaticViewBasedOutlineView?
   
@@ -71,14 +71,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
 
   weak var proxyProject: ProjectTreeNode?
   
-  var list: [NSDictionary] = []
   var heights : [String : CGFloat] = [:]
-  let primitiveVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "PrimitiveVisualAppearanceCell")]
-  let atomsVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "AtomsVisualAppearanceCell")]
-  let bondsVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType"): NSString(string: "BondsVisualAppearanceCell")]
-  let unitCellVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "UnitCellVisualAppearanceCell")]
-  let adsorptionVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "AdsorptionVisualAppearanceCell")]
-  let annotationVisualAppearanceCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "AnnotationVisualAppearanceCell")]
+  
+  let primitiveVisualAppearanceCell: OutlineViewItem = OutlineViewItem("PrimitiveVisualAppearanceCell")
+  let atomsVisualAppearanceCell: OutlineViewItem = OutlineViewItem("AtomsVisualAppearanceCell")
+  let bondsVisualAppearanceCell: OutlineViewItem = OutlineViewItem("BondsVisualAppearanceCell")
+  let unitCellVisualAppearanceCell: OutlineViewItem = OutlineViewItem("UnitCellVisualAppearanceCell")
+  let adsorptionVisualAppearanceCell: OutlineViewItem = OutlineViewItem("AdsorptionVisualAppearanceCell")
+  let annotationVisualAppearanceCell: OutlineViewItem = OutlineViewItem("AnnotationVisualAppearanceCell")
   
   
   var surfaceUpdateBlock: () -> () = {}
@@ -117,15 +117,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
-    let primitiveVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "PrimitiveVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [primitiveVisualAppearanceCell] as AnyObject]
-    let atomsVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "AtomsVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [atomsVisualAppearanceCell] as AnyObject]
-    let bondsVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "BondsVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [bondsVisualAppearanceCell] as AnyObject]
-    let unitCellVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "UnitCellVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [unitCellVisualAppearanceCell] as AnyObject]
-    let adsorptionVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType"):NSString(string: "AdsorptionVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [adsorptionVisualAppearanceCell] as AnyObject]
-    let annotationVisualAppearanceDictionary: NSDictionary = [NSString(string: "cellType") : NSString(string: "AnnotationVisualAppearanceGroup") as AnyObject,NSString(string: "children") : [annotationVisualAppearanceCell] as AnyObject]
+    let primitiveVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "PrimitiveVisualAppearanceGroup", children: [primitiveVisualAppearanceCell])
+    let atomsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AtomsVisualAppearanceGroup", children: [atomsVisualAppearanceCell])
+    let bondsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "BondsVisualAppearanceGroup", children: [bondsVisualAppearanceCell])
+    let unitCellVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "UnitCellVisualAppearanceGroup", children: [unitCellVisualAppearanceCell])
+    let adsorptionVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AdsorptionVisualAppearanceGroup", children: [adsorptionVisualAppearanceCell])
+    let annotationVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AnnotationVisualAppearanceGroup", children: [annotationVisualAppearanceCell])
     
     
-    self.list = [primitiveVisualAppearanceDictionary, atomsVisualAppearanceDictionary,bondsVisualAppearanceDictionary,unitCellVisualAppearanceDictionary,adsorptionVisualAppearanceDictionary, annotationVisualAppearanceDictionary]
+    self.appearanceOutlineView?.items = [primitiveVisualAppearanceItem, atomsVisualAppearanceItem, bondsVisualAppearanceItem, unitCellVisualAppearanceItem, adsorptionVisualAppearanceItem, annotationVisualAppearanceItem]
     
     self.heights =
     [
@@ -161,9 +161,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let outlineView = self.appearanceOutlineView
     {
-      for i in 0..<self.list.count
+      for i in 0..<outlineView.items.count
       {
-        self.expandedItems[i] = outlineView.isItemExpanded(list[i])
+        self.expandedItems[i] = outlineView.isItemExpanded(outlineView.items[i])
       }
     }
   }
@@ -177,15 +177,18 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     NSAnimationContext.runAnimationGroup({context in
       context.duration = 0
       
-      for i in 0..<self.list.count
+      if let outlineView = self.appearanceOutlineView
       {
-        if (self.expandedItems[i])
+        for i in 0..<outlineView.items.count
         {
-          self.appearanceOutlineView?.expandItem(list[i])
-        }
-        else
-        {
-          self.appearanceOutlineView?.collapseItem(list[i])
+          if (self.expandedItems[i])
+          {
+            self.appearanceOutlineView?.expandItem(outlineView.items[i])
+          }
+          else
+          {
+            self.appearanceOutlineView?.collapseItem(outlineView.items[i])
+          }
         }
       }
     }, completionHandler: {})
@@ -193,23 +196,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   // MARK: NSTableView Delegate Methods
   // =====================================================================
-  
-  // Returns a Boolean value that indicates whether the a given item is expandable
-  func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
-  {
-    if let dictionary = item as? NSDictionary
-    {
-      if let _: [AnyObject] = dictionary["children"] as? [AnyObject]
-      {
-        return true
-      }
-      else
-      {
-        return false
-      }
-    }
-    return false
-  }
   
   func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool
   {
@@ -221,48 +207,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     return false
   }
   
-  func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
-  {
-    if (item == nil)
-    {
-      return list.count
-    }
-    else
-    {
-      if let dictionary = item as? NSDictionary
-      {
-        let children: [AnyObject] = dictionary["children"] as! [AnyObject]
-        return children.count
-      }
-      else // no children more than 1 deep
-      {
-        return 0
-      }
-    }
-  }
-  
-  func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any
-  {
-    //item is nil for root level items
-    if (item == nil)
-    {
-      // return an Dictionary<String, AnyObject>
-      return self.list[index]
-    }
-    else
-    {
-      let dictionary: NSDictionary = item as! NSDictionary
-      
-      let children: [AnyObject] = dictionary["children"] as! [AnyObject]
-      
-      return children[index]
-    }
-  }
-  
-  
   func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
   {
-    if let string: String = (item as? NSDictionary)?["cellType"] as? String
+    if let string: String = (item as? OutlineViewItem)?.title
     {
       return self.heights[string] ?? 200.0
     }
@@ -271,9 +218,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
   {
-    if let string: String = (item as! NSDictionary)["cellType"] as? String
+    if let string: String = (item as? OutlineViewItem)?.title,
+       let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: string), owner: self) as? NSTableCellView
     {
-      let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: string), owner: self) as! NSTableCellView
+      
       
       let enabled: Bool = proxyProject?.isEnabled ?? false
       
@@ -3428,7 +3376,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // MARK: Update outlineView
   // =====================================================================
   
-  func updateOutlineView(identifiers: [[NSString : AnyObject]])
+  func updateOutlineView(identifiers: [OutlineViewItem])
   {
     // Update at the next iteration (reloading could be in progress)
     DispatchQueue.main.async(execute: {[weak self] in

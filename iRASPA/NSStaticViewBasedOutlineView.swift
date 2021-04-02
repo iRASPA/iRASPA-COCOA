@@ -31,9 +31,21 @@
 
 import Cocoa
 
-class NSStaticViewBasedOutlineView: NSOutlineView
+class NSStaticViewBasedOutlineView: NSOutlineView, NSOutlineViewDataSource
 {
+  var items: [OutlineViewItem] = []
+  
   var isReloading = false
+  
+  override init(frame frameRect: NSRect) {
+    super.init(frame: frameRect)
+    self.dataSource = self
+  }
+  
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    self.dataSource = self
+  }
   
   // Now normally when you try to directly click on one of the NSTextFields the table will first select the row.
   // Then a second click will allow you to start editing. For most tables, this is the behavior you want.
@@ -48,8 +60,6 @@ class NSStaticViewBasedOutlineView: NSOutlineView
   override func draw(_ dirtyRect: NSRect)
   {
     super.draw(dirtyRect)
-
-    // Drawing code here.
   }
   
   override func frameOfCell(atColumn columnIndex: Int, row rowIndex: Int) -> NSRect
@@ -71,5 +81,38 @@ class NSStaticViewBasedOutlineView: NSOutlineView
     self.isReloading = true
     super.reloadData()
     self.isReloading = false
+  }
+  
+  // MARK: NSOutlineView DataSource Methods
+  // =====================================================================
+  
+  // Returns a Boolean value that indicates whether the a given item is expandable
+  func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
+  {
+    return (item as! OutlineViewItem).children.count > 0
+  }
+  
+  func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
+  {
+    if item == nil
+    {
+      return items.count
+    }
+
+    assert(item is OutlineViewItem)
+
+    return (item as! OutlineViewItem).children.count
+  }
+  
+  func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any
+  {
+    if item == nil
+    {
+      return items[index]
+    }
+
+    assert(item is OutlineViewItem)
+    
+    return (item as! OutlineViewItem).children[index]
   }
 }

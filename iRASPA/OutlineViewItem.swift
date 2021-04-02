@@ -30,19 +30,21 @@
  *************************************************************************************************************/
 
 import Foundation
-import SymmetryKit
-import iRASPAKit
 
-struct AtomAndBondsChangeDataStructure
+class OutlineViewItem
 {
-  var structure: Structure
-  var atoms: [SKAtomTreeNode]
-  var indexPaths: [IndexPath]
-  var selectedBonds: [SKAsymmetricBond<SKAsymmetricAtom,SKAsymmetricAtom>]
-  var indexSet: IndexSet
+  let title: String
+  let children: [OutlineViewItem]
   
-  func reversed() -> AtomAndBondsChangeDataStructure
+  init(_ title: String)
   {
-    return AtomAndBondsChangeDataStructure(structure: structure, atoms: atoms.reversed(), indexPaths: indexPaths.reversed(), selectedBonds: selectedBonds, indexSet: indexSet)
+    self.title = title
+    self.children = []
+  }
+  
+  init(title: String, children: [OutlineViewItem])
+  {
+    self.title = title
+    self.children = children
   }
 }

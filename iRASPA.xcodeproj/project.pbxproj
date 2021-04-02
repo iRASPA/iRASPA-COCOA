@@ -361,6 +361,7 @@
 		939343D325694C5A001D7D2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 939343D225694C5A001D7D2E /* Assets.xcassets */; };
 		9397C620203B4F4300FE4A9C /* ImportAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9397C61F203B4F4300FE4A9C /* ImportAccessoryViewController.xib */; };
 		9397C622203B4F6800FE4A9C /* ImportAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9397C621203B4F6800FE4A9C /* ImportAccessoryViewController.swift */; };
+		93986CCD2616FF8E00D10B7D /* OutlineViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93986CCC2616FF8E00D10B7D /* OutlineViewItem.swift */; };
 		93986CE31E9F6FE10045C07C /* StructureInfoDetailViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93986CE21E9F6FE10045C07C /* StructureInfoDetailViewPageController.swift */; };
 		9399E62D2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E62C2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift */; };
 		9399E62F2459C6E900036EBF /* CrystalCylinderPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9399E62E2459C6E900036EBF /* CrystalCylinderPrimitive.swift */; };
@@ -1436,6 +1437,7 @@
 		939343D225694C5A001D7D2E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9397C61F203B4F4300FE4A9C /* ImportAccessoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportAccessoryViewController.xib; sourceTree = "<group>"; };
 		9397C621203B4F6800FE4A9C /* ImportAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccessoryViewController.swift; sourceTree = "<group>"; };
+		93986CCC2616FF8E00D10B7D /* OutlineViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewItem.swift; sourceTree = "<group>"; };
 		93986CE21E9F6FE10045C07C /* StructureInfoDetailViewPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureInfoDetailViewPageController.swift; sourceTree = "<group>"; };
 		9399E62C2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrystalEllipsoidPrimitive.swift; sourceTree = "<group>"; };
 		9399E62E2459C6E900036EBF /* CrystalCylinderPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrystalCylinderPrimitive.swift; sourceTree = "<group>"; };
@@ -2334,6 +2336,7 @@
 				932E539C205456F800A17E26 /* NSLabelSegmentedCell.swift */,
 				93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */,
 				933D6B8523CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift */,
+				93986CCC2616FF8E00D10B7D /* OutlineViewItem.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -4275,6 +4278,7 @@
 				932BB99E1F4ADC7700FC9C4E /* StructureMasterViewController.swift in Sources */,
 				930DD6D31E28064300B8FE9B /* NSInformationPanelView.swift in Sources */,
 				93B8BB181F286F1E0024EEC7 /* iRASPAComboBox.swift in Sources */,
+				93986CCD2616FF8E00D10B7D /* OutlineViewItem.swift in Sources */,
 				93FD046D1EC1B161005226F4 /* AtomNetChargeLabel.swift in Sources */,
 				9381D8A31E5B72C700263860 /* InterpreterViewController.swift in Sources */,
 				93D397AA260F2C700010BDDC /* ActionCALayer.swift in Sources */,
@@ -5234,7 +5238,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				MTL_FAST_MATH = YES;
 				MTL_OPTIMIZATION_LEVEL = 0;
@@ -5294,7 +5298,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				MTL_OPTIMIZATION_LEVEL = s;

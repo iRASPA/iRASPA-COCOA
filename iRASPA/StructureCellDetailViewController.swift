@@ -40,7 +40,7 @@ import LogViewKit
 
 // CellViewer
 
-class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource, WindowControllerConsumer, ProjectConsumer
+class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate, WindowControllerConsumer, ProjectConsumer
 {
   @IBOutlet private weak var cellOutlineView: NSStaticViewBasedOutlineView?
  
@@ -58,17 +58,16 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   // =====================================================================
   
   weak var proxyProject: ProjectTreeNode?
-  
-  
-  var list: [NSDictionary] = []
+    
   var heights: [String : CGFloat] = [:]
-  let simulationCellBoundingBoxCell: [NSString: AnyObject] = [NSString(string: "cellType") : NSString(string: "SimulationCellBoundingBoxCell")]
-  let simulationCellPropertiesCell: [NSString: AnyObject] = [NSString(string: "cellType") :NSString(string: "SimulationCellPropertiesCell")]
-  let simulationCellReplicaCell: [NSString: AnyObject] = [NSString(string: "cellType") :NSString(string: "SimulationCellReplicaCell")]
-  let simulationCellModelMatrix: [NSString: AnyObject] = [NSString(string: "cellType") :NSString(string: "SimulationCellModelMatrix")]
-  let simulationCellContentTransform: [NSString: AnyObject] = [NSString(string: "cellType") :NSString(string: "SimulationCellContentTransformCell")]
-  let structuralPropertiesCell: [NSString: AnyObject] = [NSString(string: "cellType") : NSString(string: "StructuralPropertiesCell")]
-  let symmetryCell: [NSString: AnyObject] = [NSString(string: "cellType") : NSString(string: "SymmetryCell")]
+  
+  let simulationCellBoundingBoxCell: OutlineViewItem = OutlineViewItem("SimulationCellBoundingBoxCell")
+  let simulationCellPropertiesCell: OutlineViewItem = OutlineViewItem("SimulationCellPropertiesCell")
+  let simulationCellReplicaCell: OutlineViewItem = OutlineViewItem("SimulationCellReplicaCell")
+  let simulationCellModelMatrix: OutlineViewItem = OutlineViewItem("SimulationCellModelMatrix")
+  let simulationCellContentTransform: OutlineViewItem = OutlineViewItem("SimulationCellContentTransformCell")
+  let structuralPropertiesCell: OutlineViewItem = OutlineViewItem("StructuralPropertiesCell")
+  let symmetryCell: OutlineViewItem = OutlineViewItem("SymmetryCell")
   
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
   override func viewDidLoad()
@@ -81,27 +80,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
+    let cellStructureItem: OutlineViewItem =  OutlineViewItem(title: "SimulationCellPropertiesGroup", children: [simulationCellBoundingBoxCell, simulationCellPropertiesCell, simulationCellReplicaCell, simulationCellModelMatrix])
     
-    let cellStructureDictionary: NSDictionary =
-      [NSString(string: "cellType"):NSString(string: "SimulationCellPropertiesGroup") as AnyObject,
-       NSString(string: "children"): [simulationCellBoundingBoxCell,
-                                      simulationCellPropertiesCell,
-                                      simulationCellReplicaCell,
-                                      simulationCellModelMatrix] as AnyObject]
+    let cellContentTransformItem: OutlineViewItem = OutlineViewItem(title: "SimulationCellContentTransformGroup", children: [simulationCellContentTransform])
     
-    let cellContentTransformDictionary: NSDictionary =
-      [NSString(string: "cellType"):NSString(string: "SimulationCellContentTransformGroup") as AnyObject,
-       NSString(string: "children"): [simulationCellContentTransform] as AnyObject]
+    let structuralPropertiesItem: OutlineViewItem = OutlineViewItem(title: "StructuralPropertiesGroup", children: [structuralPropertiesCell])
     
-    let structuralPropertiesDictionary: NSDictionary =
-      [NSString(string: "cellType"):NSString(string: "StructuralPropertiesGroup") as AnyObject,
-       NSString(string: "children"): [structuralPropertiesCell] as AnyObject]
+    let symmetryItem: OutlineViewItem = OutlineViewItem(title: "SymmetryPropertiesGroup", children: [symmetryCell])
     
-    let symmetryDictionary: NSDictionary =
-      [NSString(string: "cellType"):NSString(string: "SymmetryPropertiesGroup") as AnyObject,
-       NSString(string: "children"): [symmetryCell] as AnyObject]
-    
-    self.list = [cellStructureDictionary, cellContentTransformDictionary, structuralPropertiesDictionary, symmetryDictionary]
+    self.cellOutlineView?.items = [cellStructureItem, cellContentTransformItem, structuralPropertiesItem, symmetryItem]
     
     self.heights =
     [
@@ -141,9 +128,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let outlineView = self.cellOutlineView
     {
-      for i in 0..<list.count
+      for i in 0..<outlineView.items.count
       {
-        self.expandedItems[i] = outlineView.isItemExpanded(list[i])
+        self.expandedItems[i] = outlineView.isItemExpanded(outlineView.items[i])
       }
     }
   }
@@ -157,15 +144,18 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     NSAnimationContext.runAnimationGroup({context in
       context.duration = 0
     
-      for i in 0..<self.list.count
+      if let outlineView = self.cellOutlineView
       {
-        if (self.expandedItems[i])
+        for i in 0..<outlineView.items.count
         {
-          self.cellOutlineView?.expandItem(list[i])
-        }
-        else
-        {
-          self.cellOutlineView?.collapseItem(list[i])
+          if (self.expandedItems[i])
+          {
+            self.cellOutlineView?.expandItem(outlineView.items[i])
+          }
+          else
+          {
+            self.cellOutlineView?.collapseItem(outlineView.items[i])
+          }
         }
       }
     }, completionHandler: {})
@@ -201,70 +191,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   // MARK: NSTableView Delegate Methods
   // =====================================================================
   
-  // Returns a Boolean value that indicates whether the a given item is expandable
-  
-  func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
-  {
-    if let dictionary = item as? NSDictionary
-    {
-      if let _: [AnyObject] = dictionary["children"] as? [AnyObject]
-      {
-        return true
-      }
-      else
-      {
-        return false
-      }
-    }
-    return false
-  }
-  
   func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool
   {
     return true
   }
   
-  func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
-  {
-    if (item == nil)
-    {
-      return list.count
-    }
-    else
-    {
-      if let dictionary = item as? NSDictionary
-      {
-        let children: [AnyObject] = dictionary["children"] as! [AnyObject]
-        return children.count
-      }
-      else // no children more than 1 deep
-      {
-        return 0
-      }
-    }
-  }
-  
-  func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any
-  {
-    //item is nil for root level items
-    if (item == nil)
-    {
-      // return an Dictionary<String, AnyObject>
-      return self.list[index]
-    }
-    else
-    {
-      let dictionary: NSDictionary = item as! NSDictionary
-      
-      let children: [AnyObject] = dictionary["children"] as! [AnyObject]
-      
-      return children[index]
-    }
-  }
-  
   func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
   {
-    if let string: String = (item as? NSDictionary)?["cellType"] as? String
+    if let string: String = (item as? OutlineViewItem)?.title
     {
       return self.heights[string] ?? 200.0
     }
@@ -273,7 +207,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
   {
-    if let string: String = (item as? NSDictionary)?["cellType"] as? String,
+    if let string: String = (item as? OutlineViewItem)?.title,
       let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: string), owner: self) as? NSTableCellView
     {
       let enabled: Bool = proxyProject?.isEnabled ?? false
@@ -1734,7 +1668,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   // MARK: Update outlineView
   // =====================================================================
   
-  func updateOutlineView(identifiers: [[NSString : AnyObject]])
+  func updateOutlineView(identifiers: [OutlineViewItem])
   {
     // Update at the next iteration (reloading could be in progress)
     DispatchQueue.main.async(execute: {[weak self] in

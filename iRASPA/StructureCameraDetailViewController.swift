@@ -39,22 +39,22 @@ import MathKit
 import Dispatch
 
 
-
-class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource, WindowControllerConsumer, ProjectConsumer
+class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelegate, WindowControllerConsumer, ProjectConsumer
 {
   weak var windowController: iRASPAWindowController?
   
   @IBOutlet private weak var cameraOutlineView: NSStaticViewBasedOutlineView?
   
-  var list: [NSDictionary] = []
   var heights: [String : CGFloat] = [:]
-  let cameraCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CameraCell")]
-  let cameraViewMatrixCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CameraViewMatrixCell")]
-  let cameraSelectionCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CameraSelectionCell")]
-  let cameraLightsCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CameraLightsCell")]
-  let cameraPictureCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CameraPictureCell")]
-  let cameraMovieCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CameraMovieCell")]
-  let cameraBackgroundCell: [NSString : AnyObject] = [NSString(string: "cellType") : NSString(string: "CameraBackgroundCell")]
+  
+  let cameraCell: OutlineViewItem = OutlineViewItem("CameraCell")
+  let cameraViewMatrixCell: OutlineViewItem = OutlineViewItem("CameraViewMatrixCell")
+  let cameraSelectionCell: OutlineViewItem = OutlineViewItem("CameraSelectionCell")
+  let cameraLightsCell: OutlineViewItem = OutlineViewItem("CameraLightsCell")
+  let cameraPictureCell: OutlineViewItem = OutlineViewItem("CameraPictureCell")
+  let cameraMovieCell: OutlineViewItem = OutlineViewItem("CameraMovieCell")
+  let cameraBackgroundCell: OutlineViewItem = OutlineViewItem("CameraBackgroundCell")
+
   
   var movieTimer: DispatchSourceTimer? = nil
   
@@ -88,13 +88,14 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
-    let cameraDictionary: NSDictionary = ["cellType":"CameraGroup" as AnyObject,"children": [cameraCell, cameraViewMatrixCell] as AnyObject]
-    let cameraSelectionDictionary: NSDictionary = ["cellType":"CameraSelectionGroup" as AnyObject,"children": [cameraSelectionCell] as AnyObject]
-    let cameraLightsDictionary: NSDictionary = ["cellType":"CameraLightsGroup" as AnyObject,"children": [cameraLightsCell] as AnyObject]
-    let cameraPictureDictionary: NSDictionary = ["cellType":"CameraPictureGroup" as AnyObject,"children": [cameraPictureCell, cameraMovieCell] as AnyObject]
-    let cameraBackgroundDictionary: NSDictionary = ["cellType":"CameraBackgroundGroup" as AnyObject,"children": [cameraBackgroundCell] as AnyObject]
+    let cameraItem: OutlineViewItem = OutlineViewItem(title: "CameraGroup", children: [cameraCell, cameraViewMatrixCell])
+    let cameraSelectionItem: OutlineViewItem = OutlineViewItem(title: "CameraSelectionGroup", children: [cameraSelectionCell])
+    let cameraLightsItem: OutlineViewItem = OutlineViewItem(title: "CameraLightsGroup", children: [cameraLightsCell])
+    let cameraPictureItem: OutlineViewItem = OutlineViewItem(title: "CameraPictureGroup", children: [cameraPictureCell, cameraMovieCell])
+    let cameraBackgroundItem: OutlineViewItem = OutlineViewItem(title: "CameraBackgroundGroup",children: [cameraBackgroundCell])
+
     
-    self.list = [cameraDictionary,cameraSelectionDictionary,cameraLightsDictionary,cameraPictureDictionary,cameraBackgroundDictionary]
+    self.cameraOutlineView?.items = [cameraItem, cameraSelectionItem, cameraLightsItem, cameraPictureItem, cameraBackgroundItem]
     
     self.heights =
     [
@@ -152,22 +153,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   // MARK: NSTableView Delegate Methods
   // =====================================================================
   
-  // Returns a Boolean value that indicates whether the a given item is expandable
-  func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
-  {
-    if let dictionary = item as? NSDictionary
-    {
-      if let _: [AnyObject] = dictionary["children"] as? [AnyObject]
-      {
-        return true
-      }
-      else
-      {
-        return false
-      }
-    }
-    return false
-  }
+  
   
   func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool
   {
@@ -179,48 +165,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     return false
   }
   
-  func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
-  {
-    if (item == nil)
-    {
-      return list.count
-    }
-    else
-    {
-      if let dictionary = item as? NSDictionary
-      {
-        let children: [AnyObject] = dictionary["children"] as! [AnyObject]
-        return children.count
-      }
-      else // no children more than 1 deep
-      {
-        return 0
-      }
-    }
-  }
-  
-  func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any
-  {
-    //item is nil for root level items
-    if (item == nil)
-    {
-      // return an Dictionary<String, AnyObject>
-      return self.list[index]
-    }
-    else
-    {
-      let dictionary: NSDictionary = item as! NSDictionary
-      
-      let children: [AnyObject] = dictionary["children"] as! [AnyObject]
-      
-      //return [AnyObject]
-      return children[index]
-    }
-  }
   
   func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
   {
-    if let string: String = (item as? NSDictionary)?["cellType"] as? String
+    if let string: String = (item as? OutlineViewItem)?.title
     {
       return self.heights[string] ?? 200.0
     }
@@ -243,7 +191,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
   {
-    if let string: String = (item as! NSDictionary)["cellType"] as? String,
+    if let string: String = (item as? OutlineViewItem)?.title,
       let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: string), owner: self) as? NSTableCellView
     {
       switch(string)
@@ -769,7 +717,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   // MARK: Update outlineView
   // =====================================================================
   
-  func updateOutlineView(identifiers: [[NSString : AnyObject]])
+  func updateOutlineView(identifiers: [OutlineViewItem])
   {
     // Update at the next iteration (reloading could be in progress)
     DispatchQueue.main.async(execute: {[weak self] in
