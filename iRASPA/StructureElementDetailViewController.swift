@@ -81,6 +81,7 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   
   override func viewWillAppear()
   {
+    self.forceFieldTableView?.needsLayout = true
     super.viewWillAppear()
     
     self.reloadData()

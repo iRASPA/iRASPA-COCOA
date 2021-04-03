@@ -117,6 +117,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   override func viewWillAppear()
   {
+    self.atomOutlineView?.needsLayout = true
     super.viewWillAppear()
     
     self.atomOutlineView?.dataSource = self

@@ -116,6 +116,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   override func viewWillAppear()
   {
+    self.cameraOutlineView?.needsLayout = true
     super.viewWillAppear()
     self.cameraOutlineView?.reloadData()
   }

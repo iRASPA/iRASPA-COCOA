@@ -85,6 +85,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
     ]
   }
   
+  override func viewWillAppear()
+  {
+    self.infoOutlineView?.needsLayout = true
+    super.viewWillAppear()
+  }
+  
   var expandedItems: [Bool] = [false,false, false,false,false,false,false,false]
   
   func storeExpandedItems()
@@ -103,7 +109,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
     assert(Thread.isMainThread)
     
     self.infoOutlineView?.reloadData()
-    
+        
     NSAnimationContext.runAnimationGroup({context in
       context.duration = 0
       
