@@ -198,7 +198,7 @@ class StructureCellDetailViewPageController: NSPageController, WindowControllerC
       }
       
       viewController.proxyProject = self.proxyProject
-      if let currentViewController = self.selectedViewController as? StructureAppearanceDetailViewController
+      if let currentViewController = self.selectedViewController as? StructureCellDetailViewController
       {
         viewController.expandedItems = currentViewController.expandedItems
       }
