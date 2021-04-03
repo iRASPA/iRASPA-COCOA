@@ -41,6 +41,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   var heights: [String : CGFloat] = [:]
   let creatorCell: OutlineViewItem = OutlineViewItem("CreatorCell")
   let creationCell: OutlineViewItem = OutlineViewItem("CreationCell")
+  let creationMethods: OutlineViewItem = OutlineViewItem("CreationMethods")
   let chemicalCell: OutlineViewItem = OutlineViewItem("ChemicalCell")
   let publicationCell: OutlineViewItem = OutlineViewItem("PublicationCell")
   
@@ -66,7 +67,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
     let creatorItem: OutlineViewItem = OutlineViewItem(title: "CreatorGroup", children: [creatorCell])
-    let creationItem: OutlineViewItem = OutlineViewItem(title: "CreationGroup", children: [creationCell])
+    let creationItem: OutlineViewItem = OutlineViewItem(title: "CreationGroup", children: [creationCell, creationMethods])
     let chemicalItem: OutlineViewItem = OutlineViewItem(title: "ChemicalGroup", children: [chemicalCell])
     let publicationItem: OutlineViewItem = OutlineViewItem(title: "PublicationGroup", children: [publicationCell])
     
@@ -77,7 +78,8 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       "CreatorGroup" : 17.0,
       "CreatorCell" : 285.0,
       "CreationGroup" : 17.0,
-      "CreationCell" : 525.0,
+      "CreationCell" : 225.0,
+      "CreationMethods" : 300,
       "ChemicalGroup" : 17.0,
       "ChemicalCell" : 92.0,
       "PublicationGroup": 17.0,
@@ -145,6 +147,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
     return false
   }
   
+  /*
   func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
   {
     if let string: String = (item as? OutlineViewItem)?.title
@@ -152,7 +155,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       return self.heights[string] ?? 200.0
     }
     return 200.0
-  }
+  }*/
   
   func getSubviewsOfView(_ v:NSView) -> [NSView]
   {
@@ -470,9 +473,8 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             }
           }
         }
-        
-        
-        
+        return view
+      case "CreationMethods":
         if let tabView: NSTabView = getSubviewsOfView(view).filter({$0.identifier?.rawValue == "creationTabView"}).first as? NSTabView
         {
           if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer],
@@ -1496,7 +1498,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       ProjectTreeNode.representedObject.isEdited = true
       structure.structureCreationMethod = Structure.CreationMethod(rawValue: sender.indexOfSelectedItem)
       
-      self.updateOutlineView(identifiers: [self.creationCell])
+      self.updateOutlineView(identifiers: [self.creationCell, self.creationMethods])
     }
   }
   
