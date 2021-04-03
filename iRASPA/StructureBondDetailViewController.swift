@@ -81,6 +81,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   
   override func viewWillAppear()
   {
+    self.bondTableView?.needsLayout = true
     super.viewWillAppear()
     
     self.bondTableView?.dataSource = self

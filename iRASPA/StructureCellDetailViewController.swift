@@ -105,6 +105,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       "SymmetryCell" : 389.0
     ]
   }
+  
+  override func viewWillAppear()
+  {
+    self.cellOutlineView?.needsLayout = true
+    super.viewWillAppear()
+  }
 
   override func viewDidAppear()
   {

@@ -144,6 +144,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     ]
   }
   
+  override func viewWillAppear()
+  {
+    self.appearanceOutlineView?.needsLayout = true
+    super.viewWillAppear()
+  }
+  
   override func viewDidAppear()
   {
     super.viewDidAppear()
