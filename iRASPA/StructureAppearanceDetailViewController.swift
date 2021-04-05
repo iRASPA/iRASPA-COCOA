@@ -148,43 +148,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     
     self.appearanceOutlineView?.items = [primitiveVisualAppearanceItem, atomsVisualAppearanceItem, bondsVisualAppearanceItem, unitCellVisualAppearanceItem, adsorptionVisualAppearanceItem, annotationVisualAppearanceItem]
     
-    self.heights =
-    [
-      "PrimitiveVisualAppearanceGroup" : 17.0,
-      "PrimitiveOrientationPropertiesCell" : 200.0,
-      "PrimitiveTransformationPropertiesCell": 100.0,
-      "PrimitiveOpacityPropertiesCell" : 100.0,
-      "PrimitiveSelectionPropertiesCell" : 100.0,
-      "PrimitiveHSVPropertiesCell" : 100.0,
-      "PrimitiveFrontPropertiesCell": 200.0,
-      "PrimitiveBackPropertiesCell" : 200.0,
-      
-      "AtomsVisualAppearanceGroup" : 17.0,
-      "AtomsRepresentationCell": 146.0,
-      "AtomsSelectionCell": 114.0,
-      "AtomsScalingCell": 100.0,
-      "AtomsHDRCell": 200.0,
-      "AtomsLightingCell" : 185,
-      
-      "BondsVisualAppearanceGroup" : 17.0,
-      "BondsScalingCell" : 105,
-      "BondsSelectionCell" : 100.0,
-      "BondsHDRCell" : 100.0,
-      "BondsLightingCell" : 200.0,
-      
-      
-      "UnitCellVisualAppearanceGroup" : 17.0,
-      "UnitCellScalingCell" : 126.0,
-      
-      "AdsorptionVisualAppearanceGroup": 17.0,
-      "AdsorptionPropertiesCell" : 200,
-      "AdsorptionHSVCell" : 100,
-      "AdsorptionFrontSurfaceCell" : 200,
-      "AdsorptionBackSurfaceCell" : 200,
-      
-      "AnnotationVisualAppearanceGroup" : 17.0,
-      "AnnotationVisualAppearanceCell" : 204.0
-    ]
   }
   
   override func viewWillAppear()
@@ -254,15 +217,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool
   {
     return false
-  }
-  
-  func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
-  {
-    if let string: String = (item as? OutlineViewItem)?.title
-    {
-      return self.heights[string] ?? 200.0
-    }
-    return 200.0
   }
   
   func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView?
