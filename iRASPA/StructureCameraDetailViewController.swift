@@ -47,11 +47,23 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   var heights: [String : CGFloat] = [:]
   
-  let cameraCell: OutlineViewItem = OutlineViewItem("CameraCell")
+  let cameraOrientationCell: OutlineViewItem = OutlineViewItem("CameraOrientationCell")
+  let cameraRotationCell: OutlineViewItem = OutlineViewItem("CameraRotationCell")
   let cameraViewMatrixCell: OutlineViewItem = OutlineViewItem("CameraViewMatrixCell")
+  let cameraVirtualPositionCell: OutlineViewItem = OutlineViewItem("CameraVirtualPositionCell")
+  
+  
   let cameraSelectionCell: OutlineViewItem = OutlineViewItem("CameraSelectionCell")
+  
+  
+  
+  
   let cameraLightsCell: OutlineViewItem = OutlineViewItem("CameraLightsCell")
   let cameraPictureCell: OutlineViewItem = OutlineViewItem("CameraPictureCell")
+  
+  
+  let cameraPictureDimensionsCell: OutlineViewItem = OutlineViewItem("CameraPictureDimensionsCell")
+  
   let cameraMovieCell: OutlineViewItem = OutlineViewItem("CameraMovieCell")
   let cameraBackgroundCell: OutlineViewItem = OutlineViewItem("CameraBackgroundCell")
 
@@ -88,30 +100,14 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
-    let cameraItem: OutlineViewItem = OutlineViewItem(title: "CameraGroup", children: [cameraCell, cameraViewMatrixCell])
+    let cameraItem: OutlineViewItem = OutlineViewItem(title: "CameraGroup", children: [cameraOrientationCell, cameraRotationCell, cameraViewMatrixCell, cameraVirtualPositionCell])
     let cameraSelectionItem: OutlineViewItem = OutlineViewItem(title: "CameraSelectionGroup", children: [cameraSelectionCell])
     let cameraLightsItem: OutlineViewItem = OutlineViewItem(title: "CameraLightsGroup", children: [cameraLightsCell])
-    let cameraPictureItem: OutlineViewItem = OutlineViewItem(title: "CameraPictureGroup", children: [cameraPictureCell, cameraMovieCell])
+    let cameraPictureItem: OutlineViewItem = OutlineViewItem(title: "CameraPictureGroup", children: [cameraPictureCell, cameraPictureDimensionsCell, cameraMovieCell])
     let cameraBackgroundItem: OutlineViewItem = OutlineViewItem(title: "CameraBackgroundGroup",children: [cameraBackgroundCell])
 
     
     self.cameraOutlineView?.items = [cameraItem, cameraSelectionItem, cameraLightsItem, cameraPictureItem, cameraBackgroundItem]
-    
-    self.heights =
-    [
-      "CameraGroup" : 17.0,
-      "CameraCell" : 222.0,
-      "CameraViewMatrixCell" : 380.0,
-      "CameraSelectionGroup" : 17.0,
-      "CameraSelectionCell" : 30.0,
-      "CameraLightsGroup" : 17.0,
-      "CameraLightsCell" : 141.0,
-      "CameraBackgroundGroup": 17.0,
-      "CameraBackgroundCell" : 102.0,
-      "CameraPictureGroup" : 17,
-      "CameraPictureCell" : 194.0,
-      "CameraMovieCell" : 38.0
-    ]
   }
   
   override func viewWillAppear()
@@ -164,16 +160,6 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool
   {
     return false
-  }
-  
-  
-  func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
-  {
-    if let string: String = (item as? OutlineViewItem)?.title
-    {
-      return self.heights[string] ?? 200.0
-    }
-    return 200.0
   }
   
   func getSubviewsOfView(_ v:NSView) -> [NSView]
@@ -815,7 +801,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   {
     self.windowController?.document?.updateChangeCount(.changeDone)
     
-    if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraCell), row >= 0,
+    if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraOrientationCell), row >= 0,
        let outlineView = self.cameraOutlineView,
        let view: NSTableCellView = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView
     {
@@ -1087,7 +1073,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.windowController?.detailTabViewController?.renderViewController?.redraw()
       }
-      self.updateOutlineView(identifiers: [self.cameraCell])
+      self.updateOutlineView(identifiers: [self.cameraOrientationCell])
     }
 
     sender.intValue = 0
