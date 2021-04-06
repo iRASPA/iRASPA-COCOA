@@ -52,16 +52,11 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   let cameraViewMatrixCell: OutlineViewItem = OutlineViewItem("CameraViewMatrixCell")
   let cameraVirtualPositionCell: OutlineViewItem = OutlineViewItem("CameraVirtualPositionCell")
   
-  
   let cameraSelectionCell: OutlineViewItem = OutlineViewItem("CameraSelectionCell")
   
-  
-  
-  
   let cameraLightsCell: OutlineViewItem = OutlineViewItem("CameraLightsCell")
+  
   let cameraPictureCell: OutlineViewItem = OutlineViewItem("CameraPictureCell")
-  
-  
   let cameraPictureDimensionsCell: OutlineViewItem = OutlineViewItem("CameraPictureDimensionsCell")
   
   let cameraMovieCell: OutlineViewItem = OutlineViewItem("CameraMovieCell")
@@ -125,7 +120,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateAspectRatioView), name: NSView.boundsDidChangeNotification, object: self.windowController?.detailTabViewController?.renderViewController)
     
     // update the camera view-matrix data in the Camera-views when the camera direction or distance changes
-    NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraViewMatrix), name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: windowController)
+    NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraViews), name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: windowController)
   }
   
   // the windowController still exists when the view is there
@@ -181,515 +176,586 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     if let string: String = (item as? OutlineViewItem)?.title,
       let view: NSTableCellView = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: string), owner: self) as? NSTableCellView
     {
-      switch(string)
-      {
-      case "CameraCell":
-        if let buttonMinusX: NSButton = view.viewWithTag(10) as? NSButton,
-          let buttonMinusY: NSButton = view.viewWithTag(11) as? NSButton,
-          let buttonMinusZ: NSButton = view.viewWithTag(12) as? NSButton,
-          let buttonPlusX: NSButton = view.viewWithTag(13) as? NSButton,
-          let buttonPlusY: NSButton = view.viewWithTag(14) as? NSButton,
-          let buttonPlusZ: NSButton = view.viewWithTag(15) as? NSButton
-        {
-          buttonMinusX.isEnabled = false
-          buttonMinusY.isEnabled = false
-          buttonMinusZ.isEnabled = false
-          buttonPlusX.isEnabled = false
-          buttonPlusY.isEnabled = false
-          buttonPlusZ.isEnabled = false
-          if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-          {
-            buttonMinusX.isEnabled = true
-            buttonMinusY.isEnabled = true
-            buttonMinusZ.isEnabled = true
-            buttonPlusX.isEnabled = true
-            buttonPlusY.isEnabled = true
-            buttonPlusZ.isEnabled = true
-            switch(camera.resetDirectionType)
-            {
-            case RKCamera.ResetDirectionType.minus_X:
-              buttonMinusX.state = NSControl.StateValue.on
-            case RKCamera.ResetDirectionType.minus_Y:
-              buttonMinusY.state = NSControl.StateValue.on
-            case RKCamera.ResetDirectionType.minus_Z:
-              buttonMinusZ.state = NSControl.StateValue.on
-            case RKCamera.ResetDirectionType.plus_X:
-              buttonPlusX.state = NSControl.StateValue.on
-            case RKCamera.ResetDirectionType.plus_Y:
-              buttonPlusY.state = NSControl.StateValue.on
-            case RKCamera.ResetDirectionType.plus_Z:
-              buttonPlusZ.state = NSControl.StateValue.on
-            }
-          }
-        }
-        
-        if let buttonPerspective: NSButton = view.viewWithTag(20) as? NSButton,
-          let buttonOrthogonal: NSButton = view.viewWithTag(21) as? NSButton
-        {
-          buttonPerspective.isEnabled = false
-          buttonOrthogonal.isEnabled = false
-          if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-          {
-            buttonPerspective.isEnabled = true
-            buttonOrthogonal.isEnabled = true
-            switch(camera.frustrumType)
-            {
-            case RKCamera.FrustrumType.perspective:
-              buttonPerspective.state = NSControl.StateValue.on
-            case RKCamera.FrustrumType.orthographic:
-              buttonOrthogonal.state = NSControl.StateValue.on
-            }
-          }
-        }
-        
-        if let textFieldResetPercentage: NSTextField = view.viewWithTag(50) as? NSTextField,
-          let textFieldFieldOfField: NSTextField = view.viewWithTag(40) as? NSTextField,
-          let textFieldCenterOfSceneX: NSTextField = view.viewWithTag(41) as? NSTextField,
-          let textFieldCenterOfSceneY: NSTextField = view.viewWithTag(42) as? NSTextField,
-          let textFieldCenterOfSceneZ: NSTextField = view.viewWithTag(43) as? NSTextField
-        {
-          textFieldResetPercentage.isEnabled = false
-          textFieldFieldOfField.isEnabled = false
-          textFieldCenterOfSceneX.isEnabled = false
-          textFieldCenterOfSceneY.isEnabled = false
-          textFieldCenterOfSceneZ.isEnabled = false
-          if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-          {
-            textFieldResetPercentage.isEnabled = true
-            textFieldFieldOfField.isEnabled = true
-            textFieldCenterOfSceneX.isEnabled = true
-            textFieldCenterOfSceneY.isEnabled = true
-            textFieldCenterOfSceneZ.isEnabled = true
-            textFieldResetPercentage.doubleValue = camera.resetPercentage
-            textFieldFieldOfField.doubleValue = camera.angleOfView * 180.0 / Double.pi
-            textFieldCenterOfSceneX.doubleValue = camera.centerOfScene.x
-            textFieldCenterOfSceneY.doubleValue = camera.centerOfScene.y
-            textFieldCenterOfSceneZ.doubleValue = camera.centerOfScene.z
-          }
-        }
-      case "CameraViewMatrixCell":
-        if let textFieldRotationDelta: NSTextField = view.viewWithTag(30) as? NSTextField,
-          let textFieldYawPlusX: NSButton = view.viewWithTag(31) as? NSButton,
-          let textFieldYawPlusY: NSButton = view.viewWithTag(32) as? NSButton,
-          let textFieldYawPlusZ: NSButton = view.viewWithTag(33) as? NSButton,
-          let textFieldYawMinusX: NSButton = view.viewWithTag(34) as? NSButton,
-          let textFieldYawMinusY: NSButton = view.viewWithTag(35) as? NSButton,
-          let textFieldYawMinusZ: NSButton = view.viewWithTag(36) as? NSButton
-        {
-          textFieldRotationDelta.isEnabled = false
-          textFieldYawPlusX.isEnabled = false
-          textFieldYawPlusY.isEnabled = false
-          textFieldYawPlusZ.isEnabled = false
-          textFieldYawMinusX.isEnabled = false
-          textFieldYawMinusY.isEnabled = false
-          textFieldYawMinusZ.isEnabled = false
-          if let rotationDelta: Double = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.rotationDelta
-          {
-            textFieldRotationDelta.isEnabled = true
-            textFieldYawPlusX.isEnabled = true
-            textFieldYawPlusY.isEnabled = true
-            textFieldYawPlusZ.isEnabled = true
-            textFieldYawMinusX.isEnabled = true
-            textFieldYawMinusY.isEnabled = true
-            textFieldYawMinusZ.isEnabled = true
-            textFieldRotationDelta.doubleValue =  rotationDelta
-            textFieldYawPlusX.title =  "Rotate +\(rotationDelta)°"
-            textFieldYawPlusY.title =  "Rotate +\(rotationDelta)°"
-            textFieldYawPlusZ.title =  "Rotate +\(rotationDelta)°"
-            textFieldYawMinusX.title =  "Rotate -\(rotationDelta)°"
-            textFieldYawMinusY.title =  "Rotate -\(rotationDelta)°"
-            textFieldYawMinusZ.title =  "Rotate -\(rotationDelta)°"
-          }
-        }
-        
-        if let textFieldEulerAngleX: NSTextField = view.viewWithTag(40) as? NSTextField,
-          let sliderEulerAngleX: NSSlider = view.viewWithTag(37) as? NSSlider,
-          let textFieldEulerAngleZ: NSTextField = view.viewWithTag(41) as? NSTextField,
-          let sliderEulerAngleZ: NSSlider = view.viewWithTag(38) as? NSSlider,
-          let textFieldEulerAngleY: NSTextField = view.viewWithTag(42) as? NSTextField,
-          let sliderEulerAngleY: NSSlider = view.viewWithTag(39) as? NSSlider
-        {
-          textFieldEulerAngleX.isEnabled = false
-          sliderEulerAngleX.isEnabled = false
-          textFieldEulerAngleY.isEnabled = false
-          sliderEulerAngleY.isEnabled = false
-          textFieldEulerAngleZ.isEnabled = false
-          sliderEulerAngleZ.isEnabled = false
-          if let EulerAngles: SIMD3<Double> = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.EulerAngles
-          {
-            textFieldEulerAngleX.isEnabled = true
-            sliderEulerAngleX.isEnabled = true
-            textFieldEulerAngleY.isEnabled = true
-            sliderEulerAngleY.isEnabled = true
-            textFieldEulerAngleZ.isEnabled = true
-            sliderEulerAngleZ.isEnabled = true
-            textFieldEulerAngleX.doubleValue =  EulerAngles.x * 180.0/Double.pi
-            sliderEulerAngleX.doubleValue = (EulerAngles.x * 180.0/Double.pi)
-            textFieldEulerAngleZ.doubleValue =  EulerAngles.z * 180.0/Double.pi
-            sliderEulerAngleZ.doubleValue = EulerAngles.z * 180.0/Double.pi
-            textFieldEulerAngleY.doubleValue =  EulerAngles.y * 180.0/Double.pi
-            sliderEulerAngleY.doubleValue = EulerAngles.y * 180.0/Double.pi
-          }
-        }
-        
-        if let fieldM11: NSTextField = view.viewWithTag(0) as? NSTextField,
-          let fieldM21: NSTextField = view.viewWithTag(1) as? NSTextField,
-          let fieldM31: NSTextField = view.viewWithTag(2) as? NSTextField,
-          let fieldM41: NSTextField = view.viewWithTag(3) as? NSTextField,
-          let fieldM12: NSTextField = view.viewWithTag(4) as? NSTextField,
-          let fieldM22: NSTextField = view.viewWithTag(5) as? NSTextField,
-          let fieldM32: NSTextField = view.viewWithTag(6) as? NSTextField,
-          let fieldM42: NSTextField = view.viewWithTag(7) as? NSTextField,
-          let fieldM13: NSTextField = view.viewWithTag(8) as? NSTextField,
-          let fieldM23: NSTextField = view.viewWithTag(9) as? NSTextField,
-          let fieldM33: NSTextField = view.viewWithTag(10) as? NSTextField,
-          let fieldM43: NSTextField = view.viewWithTag(11) as? NSTextField,
-          let fieldM14: NSTextField = view.viewWithTag(12) as? NSTextField,
-          let fieldM24: NSTextField = view.viewWithTag(13) as? NSTextField,
-          let fieldM34: NSTextField = view.viewWithTag(14) as? NSTextField,
-          let fieldM44: NSTextField = view.viewWithTag(15) as? NSTextField
-        {
-          fieldM11.isEnabled = false
-          fieldM21.isEnabled = false
-          fieldM31.isEnabled = false
-          fieldM41.isEnabled = false
-          
-          fieldM12.isEnabled = false
-          fieldM22.isEnabled = false
-          fieldM32.isEnabled = false
-          fieldM42.isEnabled = false
-          
-          fieldM13.isEnabled = false
-          fieldM23.isEnabled = false
-          fieldM33.isEnabled = false
-          fieldM43.isEnabled = false
-          
-          fieldM14.isEnabled = false
-          fieldM24.isEnabled = false
-          fieldM34.isEnabled = false
-          fieldM44.isEnabled = false
-          if let viewMatrix: double4x4 = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.modelViewMatrix
-          {
-            fieldM11.isEnabled = true
-            fieldM21.isEnabled = true
-            fieldM31.isEnabled = true
-            fieldM41.isEnabled = true
-            
-            fieldM12.isEnabled = true
-            fieldM22.isEnabled = true
-            fieldM32.isEnabled = true
-            fieldM42.isEnabled = true
-            
-            fieldM13.isEnabled = true
-            fieldM23.isEnabled = true
-            fieldM33.isEnabled = true
-            fieldM43.isEnabled = true
-            
-            fieldM14.isEnabled = true
-            fieldM24.isEnabled = true
-            fieldM34.isEnabled = true
-            fieldM44.isEnabled = true
-            
-            fieldM11.doubleValue = viewMatrix[0][0]
-            fieldM21.doubleValue = viewMatrix[0][1]
-            fieldM31.doubleValue = viewMatrix[0][2]
-            fieldM41.doubleValue = viewMatrix[0][3]
-            
-            fieldM12.doubleValue = viewMatrix[1][0]
-            fieldM22.doubleValue = viewMatrix[1][1]
-            fieldM32.doubleValue = viewMatrix[1][2]
-            fieldM42.doubleValue = viewMatrix[1][3]
-            
-            fieldM13.doubleValue = viewMatrix[2][0]
-            fieldM23.doubleValue = viewMatrix[2][1]
-            fieldM33.doubleValue = viewMatrix[2][2]
-            fieldM43.doubleValue = viewMatrix[2][3]
-            
-            fieldM14.doubleValue = viewMatrix[3][0]
-            fieldM24.doubleValue = viewMatrix[3][1]
-            fieldM34.doubleValue = viewMatrix[3][2]
-            fieldM44.doubleValue = viewMatrix[3][3]
-          }
-        }
-        
-        if let textFieldCameraPositionX: NSTextField = view.viewWithTag(20) as? NSTextField,
-           let textFieldCameraPositionY: NSTextField = view.viewWithTag(21) as? NSTextField,
-           let textFieldCameraPositionZ: NSTextField = view.viewWithTag(22) as? NSTextField,
-           let textFieldCameraDistance: NSTextField = view.viewWithTag(23) as? NSTextField
-        {
-          if let position: SIMD3<Double> = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.position
-          {
-            textFieldCameraPositionX.doubleValue = position.x
-            textFieldCameraPositionY.doubleValue = position.y
-            textFieldCameraPositionZ.doubleValue = position.z
-            textFieldCameraDistance.doubleValue = length(position)
-          }
-        }
-      case "CameraSelectionCell":
-        // Overall bloom level
-        if let textFieldAtomSelectionIntensityLevel: NSTextField = view.viewWithTag(2) as? NSTextField
-        {
-          textFieldAtomSelectionIntensityLevel.isEditable = false
-          if let camera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-          {
-            textFieldAtomSelectionIntensityLevel.isEditable = true
-            textFieldAtomSelectionIntensityLevel.doubleValue = camera.bloomLevel
-          }
-        }
-        if let sliderAtomSelectionIntensityLevel: NSSlider = view.viewWithTag(3) as? NSSlider
-        {
-          sliderAtomSelectionIntensityLevel.isEnabled = false
-          sliderAtomSelectionIntensityLevel.minValue = 0.0
-          sliderAtomSelectionIntensityLevel.maxValue = 2.0
-          if let camera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-          {
-            sliderAtomSelectionIntensityLevel.isEnabled = true
-            sliderAtomSelectionIntensityLevel.doubleValue = camera.bloomLevel
-          }
-        }
-      case "CameraLightsCell":
-        if let ambientLightIntensitity: NSTextField = view.viewWithTag(1) as? NSTextField,
-          let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(5) as? NSSlider,
-          let ambientColor: NSColorWell = view.viewWithTag(9) as? NSColorWell
-        {
-          ambientLightIntensitity.isEnabled = false
-          sliderAmbientLightIntensitity.isEnabled = false
-          ambientColor.isEnabled = false
-          if let project = representedObject as? ProjectStructureNode
-          {
-            ambientLightIntensitity.isEnabled = true
-            sliderAmbientLightIntensitity.isEnabled = true
-            ambientColor.isEnabled = true
-            ambientLightIntensitity.doubleValue = project.renderLights[0].ambientIntensity
-            sliderAmbientLightIntensitity.minValue = 0.0
-            sliderAmbientLightIntensitity.maxValue = 1.0
-            sliderAmbientLightIntensitity.doubleValue = project.renderLights[0].ambientIntensity
-            ambientColor.color = project.renderLights[0].ambient
-          }
-        }
-        
-        
-        if let diffuseLightIntensitity: NSTextField = view.viewWithTag(2) as? NSTextField,
-          let sliderDiffuseLightIntensitity: NSSlider = view.viewWithTag(6) as? NSSlider,
-          let diffuseColor: NSColorWell = view.viewWithTag(10) as? NSColorWell
-        {
-          diffuseLightIntensitity.isEnabled = false
-          sliderDiffuseLightIntensitity.isEnabled = false
-          diffuseColor.isEnabled = false
-          if let project = representedObject as? ProjectStructureNode
-          {
-            diffuseLightIntensitity.isEnabled = true
-            sliderDiffuseLightIntensitity.isEnabled = true
-            diffuseColor.isEnabled = true
-            diffuseLightIntensitity.doubleValue = project.renderLights[0].diffuseIntensity
-            sliderDiffuseLightIntensitity.minValue = 0.0
-            sliderDiffuseLightIntensitity.maxValue = 1.0
-            sliderDiffuseLightIntensitity.doubleValue = project.renderLights[0].diffuseIntensity
-            diffuseColor.color = project.renderLights[0].diffuse
-          }
-        }
-        
-        if let specularLightIntensitity: NSTextField = view.viewWithTag(3) as? NSTextField,
-          let sliderSpecularLightIntensitity: NSSlider = view.viewWithTag(7) as? NSSlider,
-          let specularColor: NSColorWell = view.viewWithTag(11) as? NSColorWell
-        {
-          specularLightIntensitity.isEnabled = false
-          sliderSpecularLightIntensitity.isEnabled = false
-          specularColor.isEnabled = false
-          if let project = representedObject as? ProjectStructureNode
-          {
-            specularLightIntensitity.isEnabled = true
-            sliderSpecularLightIntensitity.isEnabled = true
-            specularColor.isEnabled = true
-            specularLightIntensitity.doubleValue = project.renderLights[0].specularIntensity
-            sliderSpecularLightIntensitity.minValue = 0.0
-            sliderSpecularLightIntensitity.maxValue = 5.0
-            sliderSpecularLightIntensitity.doubleValue = project.renderLights[0].specularIntensity
-            specularColor.color = project.renderLights[0].specular
-          }
-        }
-        
-        if let shininess: NSTextField = view.viewWithTag(4) as? NSTextField,
-          let sliderShininess: NSSlider = view.viewWithTag(8) as? NSSlider
-        {
-          shininess.isEnabled = false
-          sliderShininess.isEnabled = false
-          if let project = representedObject as? ProjectStructureNode
-          {
-            shininess.isEnabled = true
-            sliderShininess.isEnabled = true
-            shininess.doubleValue = project.renderLights[0].shininess
-            sliderShininess.minValue = 0.1
-            sliderShininess.maxValue = 128.0
-            sliderShininess.doubleValue = project.renderLights[0].shininess
-          }
-        }
-      case "CameraPictureCell":
-        if let popUpbuttonDPI: NSPopUpButton = view.viewWithTag(1) as? NSPopUpButton,
-          let textFieldPhysicalDimensionsX: NSTextField = view.viewWithTag(3) as? NSTextField,
-          let textFieldPhysicalDimensionsY: NSTextField = view.viewWithTag(4) as? NSTextField,
-          let popUpbuttonPictureQuality: NSPopUpButton = view.viewWithTag(5) as? NSPopUpButton,
-          let textFieldNumberOfPixelsX: NSTextField = view.viewWithTag(6) as? NSTextField,
-          let textFieldNumberOfPixelsY: NSTextField = view.viewWithTag(7) as? NSTextField,
-          let buttonPhysical: NSButton = view.viewWithTag(8) as? NSButton,
-          let buttonPixels: NSButton = view.viewWithTag(9) as? NSButton,
-          let buttonUnitInch: NSButton = view.viewWithTag(10) as? NSButton,
-          let buttonUnitCM: NSButton = view.viewWithTag(11) as? NSButton
-        {
-          popUpbuttonDPI.isEnabled = false
-          textFieldPhysicalDimensionsX.isEnabled = false
-          textFieldPhysicalDimensionsY.isEnabled = false
-          popUpbuttonPictureQuality.isEnabled = false
-          textFieldNumberOfPixelsX.isEnabled = false
-          textFieldNumberOfPixelsY.isEnabled = false
-          buttonPhysical.isEnabled = false
-          buttonPixels.isEnabled = false
-          buttonUnitInch.isEnabled = false
-          buttonUnitCM.isEnabled = false
-          
-          if let project = representedObject as? ProjectStructureNode
-          {
-            popUpbuttonDPI.isEnabled = true
-            textFieldPhysicalDimensionsX.isEnabled = true
-            textFieldPhysicalDimensionsY.isEnabled = true
-            popUpbuttonPictureQuality.isEnabled = true
-            textFieldNumberOfPixelsX.isEnabled = true
-            textFieldNumberOfPixelsY.isEnabled = true
-            buttonPhysical.isEnabled = true
-            buttonPixels.isEnabled = true
-            buttonUnitInch.isEnabled = true
-            buttonUnitCM.isEnabled = true
-            
-            popUpbuttonDPI.selectItem(at: project.imageDPI.rawValue)
-            
-            switch(project.imageUnits)
-            {
-            case .inch:
-              textFieldPhysicalDimensionsX.doubleValue = Double(project.renderImagePhysicalSizeInInches)
-            case .cm:
-              textFieldPhysicalDimensionsX.doubleValue = Double(2.54 * project.renderImagePhysicalSizeInInches)
-            }
-            
-            let aspectRatioValue: Double = self.windowController?.detailTabViewController?.renderViewController?.aspectRatioValue ?? 1.0
-            
-            switch(project.imageUnits)
-            {
-            case .inch:
-              textFieldPhysicalDimensionsY.doubleValue = Double(project.renderImagePhysicalSizeInInches / aspectRatioValue)
-            case .cm:
-              textFieldPhysicalDimensionsY.doubleValue = Double(2.54 * project.renderImagePhysicalSizeInInches / aspectRatioValue)
-            }
-            
-            
-            popUpbuttonPictureQuality.selectItem(at: project.renderImageQuality.rawValue)
-            
-            textFieldNumberOfPixelsX.doubleValue = Double(project.renderImageNumberOfPixels)
-            
-            textFieldNumberOfPixelsY.doubleValue = rint(Double(project.renderImageNumberOfPixels) / aspectRatioValue)
-            
-            switch(project.imageDimensions)
-            {
-            case ProjectStructureNode.Dimensions.physical:
-              buttonPhysical.state = NSControl.StateValue.on
-              textFieldPhysicalDimensionsX.isEnabled = true
-              textFieldPhysicalDimensionsY.isEnabled = false
-              textFieldNumberOfPixelsX.isEnabled = false
-              textFieldNumberOfPixelsY.isEnabled = false
-            case ProjectStructureNode.Dimensions.pixels:
-              buttonPixels.state = NSControl.StateValue.on
-              textFieldPhysicalDimensionsX.isEnabled = false
-              textFieldPhysicalDimensionsY.isEnabled = false
-              textFieldNumberOfPixelsX.isEnabled = true
-              textFieldNumberOfPixelsY.isEnabled = false
-            }
-            
-            switch(project.imageUnits)
-            {
-            case ProjectStructureNode.Units.inch:
-              buttonUnitInch.state = NSControl.StateValue.on
-            case ProjectStructureNode.Units.cm:
-              buttonUnitCM.state = NSControl.StateValue.on
-            }
-          }
-        }
-      case "CameraBackgroundCell":
-        let tabView: NSTabView = getSubviewsOfView(view).filter{$0.identifier?.rawValue == "BackgroundTabView"}.first as! NSTabView
-        if let buttonColor: NSButton = view.viewWithTag(1) as? NSButton,
-          let buttonLinearGradient: NSButton = view.viewWithTag(2) as? NSButton,
-          let buttonRadialGradient: NSButton = view.viewWithTag(3) as? NSButton,
-          let buttonImage: NSButton = view.viewWithTag(4) as? NSButton
-        {
-          if let project = representedObject as? ProjectStructureNode
-          {
-            switch(project.renderBackgroundType)
-            {
-            case RKBackgroundType.color:
-              tabView.selectTabViewItem(at: 0)
-              if let imageViewColor: NSColorWell = view.viewWithTag(23) as? NSColorWell
-              {
-                buttonColor.state = NSControl.StateValue.on
-                imageViewColor.color = project.renderBackgroundColor
-              }
-            case RKBackgroundType.linearGradient:
-              tabView.selectTabViewItem(at: 1)
-              if let fromColorLinearGradient: NSColorWell = view.viewWithTag(10) as? NSColorWell,
-                let toColorLinearGradient: NSColorWell = view.viewWithTag(11) as? NSColorWell,
-                let sliderLinearGradient: NSSlider = view.viewWithTag(12) as? NSSlider,
-                let textFieldLinearGradient: NSTextField = view.viewWithTag(13) as? NSTextField
-              {
-                buttonLinearGradient.state = NSControl.StateValue.on
-                fromColorLinearGradient.color = project.backgroundLinearGradientFromColor
-                toColorLinearGradient.color = project.backgroundLinearGradientToColor
-                sliderLinearGradient.doubleValue = project.backgroundLinearGradientAngle
-                textFieldLinearGradient.doubleValue = project.backgroundLinearGradientAngle
-              }
-            case RKBackgroundType.radialGradient:
-              tabView.selectTabViewItem(at: 2)
-              if let  fromColorRadialGradient: NSColorWell = view.viewWithTag(15) as? NSColorWell,
-                let toColorRadialGradient: NSColorWell = view.viewWithTag(16) as? NSColorWell,
-                let sliderRadialGradient: NSSlider = view.viewWithTag(17) as? NSSlider,
-                let textFieldRadialGradient: NSTextField = view.viewWithTag(18) as? NSTextField
-              {
-                buttonRadialGradient.state = NSControl.StateValue.on
-                fromColorRadialGradient.color = project.backgroundRadialGradientFromColor
-                toColorRadialGradient.color = project.backgroundRadialGradientToColor
-                sliderRadialGradient.doubleValue = project.backgroundRadialGradientRoundness
-                textFieldRadialGradient.doubleValue = project.backgroundRadialGradientRoundness
-              }
-            case RKBackgroundType.image:
-              tabView.selectTabViewItem(at: 3)
-              if let imageView: NSButton = view.viewWithTag(25) as? NSButton
-              {
-                buttonImage.state = NSControl.StateValue.on
-                if (project.renderBackgroundImage != nil)
-                {
-                  imageView.image = NSImage(cgImage: project.renderBackgroundImage!, size: NSSize(width: 128.0, height: 128.0))
-                }
-                else
-                {
-                  imageView.image = nil
-                }
-              }
-            }
-          }
-        }
-      case "CameraMovieCell":
-        if let framesPerSecondTextField: NSTextField = view.viewWithTag(1) as? NSTextField
-        {
-          framesPerSecondTextField.isEditable = false
-          if let project = representedObject as? ProjectStructureNode
-          {
-            framesPerSecondTextField.isEditable = true
-            framesPerSecondTextField.integerValue = project.numberOfFramesPerSecond
-          }
-        }
-      default:
-        break
-      }
+      setPropertiesCameraTableCells(on: view, identifier: string)
+      setPropertiesSelectionTableCells(on: view, identifier: string)
+      setPropertiesLightsTableCells(on: view, identifier: string)
+      setPropertiesExportMediaTableCells(on: view, identifier: string)
+      setPropertiesBackgroundTableCells(on: view, identifier: string)
       
       return view
     }
     return nil
+  }
+  
+  func setPropertiesCameraTableCells(on view: NSTableCellView, identifier: String)
+  {
+    switch(identifier)
+    {
+    case "CameraOrientationCell":
+      if let textFieldResetPercentage: NSTextField = view.viewWithTag(1) as? NSTextField
+      {
+        textFieldResetPercentage.isEnabled = false
+        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+        {
+          textFieldResetPercentage.isEnabled = true
+          textFieldResetPercentage.doubleValue = camera.resetPercentage
+        }
+      }
+      
+      if let buttonMinusX: NSButton = view.viewWithTag(10) as? NSButton,
+         let buttonMinusY: NSButton = view.viewWithTag(11) as? NSButton,
+         let buttonMinusZ: NSButton = view.viewWithTag(12) as? NSButton,
+         let buttonPlusX: NSButton = view.viewWithTag(13) as? NSButton,
+         let buttonPlusY: NSButton = view.viewWithTag(14) as? NSButton,
+         let buttonPlusZ: NSButton = view.viewWithTag(15) as? NSButton
+      {
+        buttonMinusX.isEnabled = false
+        buttonMinusY.isEnabled = false
+        buttonMinusZ.isEnabled = false
+        buttonPlusX.isEnabled = false
+        buttonPlusY.isEnabled = false
+        buttonPlusZ.isEnabled = false
+        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+        {
+          buttonMinusX.isEnabled = true
+          buttonMinusY.isEnabled = true
+          buttonMinusZ.isEnabled = true
+          buttonPlusX.isEnabled = true
+          buttonPlusY.isEnabled = true
+          buttonPlusZ.isEnabled = true
+          switch(camera.resetDirectionType)
+          {
+          case RKCamera.ResetDirectionType.minus_X:
+            buttonMinusX.state = NSControl.StateValue.on
+          case RKCamera.ResetDirectionType.minus_Y:
+            buttonMinusY.state = NSControl.StateValue.on
+          case RKCamera.ResetDirectionType.minus_Z:
+            buttonMinusZ.state = NSControl.StateValue.on
+          case RKCamera.ResetDirectionType.plus_X:
+            buttonPlusX.state = NSControl.StateValue.on
+          case RKCamera.ResetDirectionType.plus_Y:
+            buttonPlusY.state = NSControl.StateValue.on
+          case RKCamera.ResetDirectionType.plus_Z:
+            buttonPlusZ.state = NSControl.StateValue.on
+          }
+        }
+      }
+      
+     
+      
+      if let buttonPerspective: NSButton = view.viewWithTag(20) as? NSButton,
+         let buttonOrthogonal: NSButton = view.viewWithTag(21) as? NSButton
+      {
+        buttonPerspective.isEnabled = false
+        buttonOrthogonal.isEnabled = false
+        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+        {
+          buttonPerspective.isEnabled = true
+          buttonOrthogonal.isEnabled = true
+          switch(camera.frustrumType)
+          {
+          case RKCamera.FrustrumType.perspective:
+            buttonPerspective.state = NSControl.StateValue.on
+          case RKCamera.FrustrumType.orthographic:
+            buttonOrthogonal.state = NSControl.StateValue.on
+          }
+        }
+      }
+      
+      if let textFieldFieldOfField: NSTextField = view.viewWithTag(22) as? NSTextField
+      {
+        textFieldFieldOfField.isEnabled = false
+        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+        {
+          textFieldFieldOfField.isEnabled = true
+          textFieldFieldOfField.doubleValue = camera.angleOfView * 180.0 / Double.pi
+        }
+      }
+      
+      if let textFieldCenterOfSceneX: NSTextField = view.viewWithTag(30) as? NSTextField,
+         let textFieldCenterOfSceneY: NSTextField = view.viewWithTag(31) as? NSTextField,
+         let textFieldCenterOfSceneZ: NSTextField = view.viewWithTag(32) as? NSTextField
+      {
+        textFieldCenterOfSceneX.isEnabled = false
+        textFieldCenterOfSceneY.isEnabled = false
+        textFieldCenterOfSceneZ.isEnabled = false
+        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+        {
+          textFieldCenterOfSceneX.isEnabled = true
+          textFieldCenterOfSceneY.isEnabled = true
+          textFieldCenterOfSceneZ.isEnabled = true
+          textFieldCenterOfSceneX.doubleValue = camera.centerOfScene.x
+          textFieldCenterOfSceneY.doubleValue = camera.centerOfScene.y
+          textFieldCenterOfSceneZ.doubleValue = camera.centerOfScene.z
+        }
+      }
+    case "CameraRotationCell":
+      if let textFieldRotationDelta: NSTextField = view.viewWithTag(1) as? NSTextField,
+         let textFieldYawPlusX: NSButton = view.viewWithTag(10) as? NSButton,
+         let textFieldYawPlusY: NSButton = view.viewWithTag(11) as? NSButton,
+         let textFieldYawPlusZ: NSButton = view.viewWithTag(12) as? NSButton,
+         let textFieldYawMinusX: NSButton = view.viewWithTag(13) as? NSButton,
+         let textFieldYawMinusY: NSButton = view.viewWithTag(14) as? NSButton,
+         let textFieldYawMinusZ: NSButton = view.viewWithTag(15) as? NSButton
+      {
+        textFieldRotationDelta.isEnabled = false
+        textFieldYawPlusX.isEnabled = false
+        textFieldYawPlusY.isEnabled = false
+        textFieldYawPlusZ.isEnabled = false
+        textFieldYawMinusX.isEnabled = false
+        textFieldYawMinusY.isEnabled = false
+        textFieldYawMinusZ.isEnabled = false
+        if let rotationDelta: Double = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.rotationDelta
+        {
+          textFieldRotationDelta.isEnabled = true
+          textFieldYawPlusX.isEnabled = true
+          textFieldYawPlusY.isEnabled = true
+          textFieldYawPlusZ.isEnabled = true
+          textFieldYawMinusX.isEnabled = true
+          textFieldYawMinusY.isEnabled = true
+          textFieldYawMinusZ.isEnabled = true
+          textFieldRotationDelta.doubleValue =  rotationDelta
+          textFieldYawPlusX.title =  "Rotate +\(rotationDelta)°"
+          textFieldYawPlusY.title =  "Rotate +\(rotationDelta)°"
+          textFieldYawPlusZ.title =  "Rotate +\(rotationDelta)°"
+          textFieldYawMinusX.title =  "Rotate -\(rotationDelta)°"
+          textFieldYawMinusY.title =  "Rotate -\(rotationDelta)°"
+          textFieldYawMinusZ.title =  "Rotate -\(rotationDelta)°"
+        }
+      }
+      
+      if let sliderEulerAngleZ: NSSlider = view.viewWithTag(20) as? NSSlider,
+         let sliderEulerAngleX: NSSlider = view.viewWithTag(21) as? NSSlider,
+         let sliderEulerAngleY: NSSlider = view.viewWithTag(22) as? NSSlider,
+         let textFieldEulerAngleX: NSTextField = view.viewWithTag(23) as? NSTextField,
+         let textFieldEulerAngleZ: NSTextField = view.viewWithTag(24) as? NSTextField,
+         let textFieldEulerAngleY: NSTextField = view.viewWithTag(25) as? NSTextField
+      {
+        textFieldEulerAngleX.isEnabled = false
+        sliderEulerAngleX.isEnabled = false
+        textFieldEulerAngleY.isEnabled = false
+        sliderEulerAngleY.isEnabled = false
+        textFieldEulerAngleZ.isEnabled = false
+        sliderEulerAngleZ.isEnabled = false
+        if let EulerAngles: SIMD3<Double> = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.EulerAngles
+        {
+          textFieldEulerAngleX.isEnabled = true
+          sliderEulerAngleX.isEnabled = true
+          textFieldEulerAngleY.isEnabled = true
+          sliderEulerAngleY.isEnabled = true
+          textFieldEulerAngleZ.isEnabled = true
+          sliderEulerAngleZ.isEnabled = true
+          textFieldEulerAngleX.doubleValue =  EulerAngles.x * 180.0/Double.pi
+          sliderEulerAngleX.doubleValue = (EulerAngles.x * 180.0/Double.pi)
+          textFieldEulerAngleZ.doubleValue =  EulerAngles.z * 180.0/Double.pi
+          sliderEulerAngleZ.doubleValue = EulerAngles.z * 180.0/Double.pi
+          textFieldEulerAngleY.doubleValue =  EulerAngles.y * 180.0/Double.pi
+          sliderEulerAngleY.doubleValue = EulerAngles.y * 180.0/Double.pi
+        }
+      }
+    case "CameraViewMatrixCell":
+      if let fieldM11: NSTextField = view.viewWithTag(0) as? NSTextField,
+         let fieldM21: NSTextField = view.viewWithTag(1) as? NSTextField,
+         let fieldM31: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let fieldM41: NSTextField = view.viewWithTag(3) as? NSTextField,
+         let fieldM12: NSTextField = view.viewWithTag(4) as? NSTextField,
+         let fieldM22: NSTextField = view.viewWithTag(5) as? NSTextField,
+         let fieldM32: NSTextField = view.viewWithTag(6) as? NSTextField,
+         let fieldM42: NSTextField = view.viewWithTag(7) as? NSTextField,
+         let fieldM13: NSTextField = view.viewWithTag(8) as? NSTextField,
+         let fieldM23: NSTextField = view.viewWithTag(9) as? NSTextField,
+         let fieldM33: NSTextField = view.viewWithTag(10) as? NSTextField,
+         let fieldM43: NSTextField = view.viewWithTag(11) as? NSTextField,
+         let fieldM14: NSTextField = view.viewWithTag(12) as? NSTextField,
+         let fieldM24: NSTextField = view.viewWithTag(13) as? NSTextField,
+         let fieldM34: NSTextField = view.viewWithTag(14) as? NSTextField,
+         let fieldM44: NSTextField = view.viewWithTag(15) as? NSTextField
+      {
+        fieldM11.isEnabled = false
+        fieldM21.isEnabled = false
+        fieldM31.isEnabled = false
+        fieldM41.isEnabled = false
+        
+        fieldM12.isEnabled = false
+        fieldM22.isEnabled = false
+        fieldM32.isEnabled = false
+        fieldM42.isEnabled = false
+        
+        fieldM13.isEnabled = false
+        fieldM23.isEnabled = false
+        fieldM33.isEnabled = false
+        fieldM43.isEnabled = false
+        
+        fieldM14.isEnabled = false
+        fieldM24.isEnabled = false
+        fieldM34.isEnabled = false
+        fieldM44.isEnabled = false
+        if let viewMatrix: double4x4 = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.modelViewMatrix
+        {
+          fieldM11.isEnabled = true
+          fieldM21.isEnabled = true
+          fieldM31.isEnabled = true
+          fieldM41.isEnabled = true
+          
+          fieldM12.isEnabled = true
+          fieldM22.isEnabled = true
+          fieldM32.isEnabled = true
+          fieldM42.isEnabled = true
+          
+          fieldM13.isEnabled = true
+          fieldM23.isEnabled = true
+          fieldM33.isEnabled = true
+          fieldM43.isEnabled = true
+          
+          fieldM14.isEnabled = true
+          fieldM24.isEnabled = true
+          fieldM34.isEnabled = true
+          fieldM44.isEnabled = true
+          
+          fieldM11.doubleValue = viewMatrix[0][0]
+          fieldM21.doubleValue = viewMatrix[0][1]
+          fieldM31.doubleValue = viewMatrix[0][2]
+          fieldM41.doubleValue = viewMatrix[0][3]
+          
+          fieldM12.doubleValue = viewMatrix[1][0]
+          fieldM22.doubleValue = viewMatrix[1][1]
+          fieldM32.doubleValue = viewMatrix[1][2]
+          fieldM42.doubleValue = viewMatrix[1][3]
+          
+          fieldM13.doubleValue = viewMatrix[2][0]
+          fieldM23.doubleValue = viewMatrix[2][1]
+          fieldM33.doubleValue = viewMatrix[2][2]
+          fieldM43.doubleValue = viewMatrix[2][3]
+          
+          fieldM14.doubleValue = viewMatrix[3][0]
+          fieldM24.doubleValue = viewMatrix[3][1]
+          fieldM34.doubleValue = viewMatrix[3][2]
+          fieldM44.doubleValue = viewMatrix[3][3]
+        }
+      }
+    case "CameraVirtualPositionCell":
+      if let textFieldCameraPositionX: NSTextField = view.viewWithTag(1) as? NSTextField,
+         let textFieldCameraPositionY: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let textFieldCameraPositionZ: NSTextField = view.viewWithTag(3) as? NSTextField,
+         let textFieldCameraDistance: NSTextField = view.viewWithTag(4) as? NSTextField
+      {
+        if let position: SIMD3<Double> = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.position
+        {
+          textFieldCameraPositionX.doubleValue = position.x
+          textFieldCameraPositionY.doubleValue = position.y
+          textFieldCameraPositionZ.doubleValue = position.z
+          textFieldCameraDistance.doubleValue = length(position)
+        }
+      }
+    default:
+      break
+    }
+  }
+  
+  func setPropertiesSelectionTableCells(on view: NSTableCellView, identifier: String)
+  {
+    switch(identifier)
+    {
+    case "CameraSelectionCell":
+      // Overall bloom level
+      if let textFieldAtomSelectionIntensityLevel: NSTextField = view.viewWithTag(1) as? NSTextField
+      {
+        textFieldAtomSelectionIntensityLevel.isEditable = false
+        if let camera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+        {
+          textFieldAtomSelectionIntensityLevel.isEditable = true
+          textFieldAtomSelectionIntensityLevel.doubleValue = camera.bloomLevel
+        }
+      }
+      if let sliderAtomSelectionIntensityLevel: NSSlider = view.viewWithTag(2) as? NSSlider
+      {
+        sliderAtomSelectionIntensityLevel.isEnabled = false
+        sliderAtomSelectionIntensityLevel.minValue = 0.0
+        sliderAtomSelectionIntensityLevel.maxValue = 2.0
+        if let camera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+        {
+          sliderAtomSelectionIntensityLevel.isEnabled = true
+          sliderAtomSelectionIntensityLevel.doubleValue = camera.bloomLevel
+        }
+      }
+    default:
+      break
+    }
+  }
+  
+  func setPropertiesLightsTableCells(on view: NSTableCellView, identifier: String)
+  {
+    switch(identifier)
+    {
+    case "CameraLightsCell":
+      if let ambientLightIntensitity: NSTextField = view.viewWithTag(1) as? NSTextField,
+        let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(2) as? NSSlider,
+        let ambientColor: NSColorWell = view.viewWithTag(3) as? NSColorWell
+      {
+        ambientLightIntensitity.isEnabled = false
+        sliderAmbientLightIntensitity.isEnabled = false
+        ambientColor.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          ambientLightIntensitity.isEnabled = true
+          sliderAmbientLightIntensitity.isEnabled = true
+          ambientColor.isEnabled = true
+          ambientLightIntensitity.doubleValue = project.renderLights[0].ambientIntensity
+          sliderAmbientLightIntensitity.minValue = 0.0
+          sliderAmbientLightIntensitity.maxValue = 1.0
+          sliderAmbientLightIntensitity.doubleValue = project.renderLights[0].ambientIntensity
+          ambientColor.color = project.renderLights[0].ambient
+        }
+      }
+      
+      
+      if let diffuseLightIntensitity: NSTextField = view.viewWithTag(4) as? NSTextField,
+        let sliderDiffuseLightIntensitity: NSSlider = view.viewWithTag(5) as? NSSlider,
+        let diffuseColor: NSColorWell = view.viewWithTag(6) as? NSColorWell
+      {
+        diffuseLightIntensitity.isEnabled = false
+        sliderDiffuseLightIntensitity.isEnabled = false
+        diffuseColor.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          diffuseLightIntensitity.isEnabled = true
+          sliderDiffuseLightIntensitity.isEnabled = true
+          diffuseColor.isEnabled = true
+          diffuseLightIntensitity.doubleValue = project.renderLights[0].diffuseIntensity
+          sliderDiffuseLightIntensitity.minValue = 0.0
+          sliderDiffuseLightIntensitity.maxValue = 1.0
+          sliderDiffuseLightIntensitity.doubleValue = project.renderLights[0].diffuseIntensity
+          diffuseColor.color = project.renderLights[0].diffuse
+        }
+      }
+      
+      if let specularLightIntensitity: NSTextField = view.viewWithTag(7) as? NSTextField,
+        let sliderSpecularLightIntensitity: NSSlider = view.viewWithTag(8) as? NSSlider,
+        let specularColor: NSColorWell = view.viewWithTag(9) as? NSColorWell
+      {
+        specularLightIntensitity.isEnabled = false
+        sliderSpecularLightIntensitity.isEnabled = false
+        specularColor.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          specularLightIntensitity.isEnabled = true
+          sliderSpecularLightIntensitity.isEnabled = true
+          specularColor.isEnabled = true
+          specularLightIntensitity.doubleValue = project.renderLights[0].specularIntensity
+          sliderSpecularLightIntensitity.minValue = 0.0
+          sliderSpecularLightIntensitity.maxValue = 1.0
+          sliderSpecularLightIntensitity.doubleValue = project.renderLights[0].specularIntensity
+          specularColor.color = project.renderLights[0].specular
+        }
+      }
+      
+      if let shininess: NSTextField = view.viewWithTag(10) as? NSTextField,
+        let sliderShininess: NSSlider = view.viewWithTag(11) as? NSSlider
+      {
+        shininess.isEnabled = false
+        sliderShininess.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          shininess.isEnabled = true
+          sliderShininess.isEnabled = true
+          shininess.doubleValue = project.renderLights[0].shininess
+          sliderShininess.minValue = 0.1
+          sliderShininess.maxValue = 128.0
+          sliderShininess.doubleValue = project.renderLights[0].shininess
+        }
+      }
+    default:
+      break
+    }
+  }
+  
+  func setPropertiesExportMediaTableCells(on view: NSTableCellView, identifier: String)
+  {
+    switch(identifier)
+    {
+    case "CameraPictureCell":
+      if let popUpbuttonDPI: NSPopUpButton = view.viewWithTag(1) as? NSPopUpButton,
+        let textFieldPhysicalDimensionsX: NSTextField = view.viewWithTag(3) as? NSTextField,
+        let textFieldPhysicalDimensionsY: NSTextField = view.viewWithTag(4) as? NSTextField,
+        let popUpbuttonPictureQuality: NSPopUpButton = view.viewWithTag(5) as? NSPopUpButton,
+        let textFieldNumberOfPixelsX: NSTextField = view.viewWithTag(6) as? NSTextField,
+        let textFieldNumberOfPixelsY: NSTextField = view.viewWithTag(7) as? NSTextField
+      {
+        popUpbuttonDPI.isEnabled = false
+        textFieldPhysicalDimensionsX.isEnabled = false
+        textFieldPhysicalDimensionsY.isEnabled = false
+        popUpbuttonPictureQuality.isEnabled = false
+        textFieldNumberOfPixelsX.isEnabled = false
+        textFieldNumberOfPixelsY.isEnabled = false
+        
+        if let project = representedObject as? ProjectStructureNode
+        {
+          popUpbuttonDPI.isEnabled = true
+          textFieldPhysicalDimensionsX.isEnabled = true
+          textFieldPhysicalDimensionsY.isEnabled = true
+          popUpbuttonPictureQuality.isEnabled = true
+          textFieldNumberOfPixelsX.isEnabled = true
+          textFieldNumberOfPixelsY.isEnabled = true
+          
+          popUpbuttonDPI.selectItem(at: project.imageDPI.rawValue)
+          
+          switch(project.imageUnits)
+          {
+          case .inch:
+            textFieldPhysicalDimensionsX.doubleValue = Double(project.renderImagePhysicalSizeInInches)
+          case .cm:
+            textFieldPhysicalDimensionsX.doubleValue = Double(2.54 * project.renderImagePhysicalSizeInInches)
+          }
+          
+          let aspectRatioValue: Double = self.windowController?.detailTabViewController?.renderViewController?.aspectRatioValue ?? 1.0
+          
+          switch(project.imageUnits)
+          {
+          case .inch:
+            textFieldPhysicalDimensionsY.doubleValue = Double(project.renderImagePhysicalSizeInInches / aspectRatioValue)
+          case .cm:
+            textFieldPhysicalDimensionsY.doubleValue = Double(2.54 * project.renderImagePhysicalSizeInInches / aspectRatioValue)
+          }
+          
+          popUpbuttonPictureQuality.selectItem(at: project.renderImageQuality.rawValue)
+          
+          textFieldNumberOfPixelsX.doubleValue = Double(project.renderImageNumberOfPixels)
+          textFieldNumberOfPixelsY.doubleValue = rint(Double(project.renderImageNumberOfPixels) / aspectRatioValue)
+          
+          switch(project.imageDimensions)
+          {
+          case ProjectStructureNode.Dimensions.physical:
+            textFieldPhysicalDimensionsX.isEnabled = true
+            textFieldPhysicalDimensionsY.isEnabled = false
+            textFieldNumberOfPixelsX.isEnabled = false
+            textFieldNumberOfPixelsY.isEnabled = false
+          case ProjectStructureNode.Dimensions.pixels:
+            textFieldPhysicalDimensionsX.isEnabled = false
+            textFieldPhysicalDimensionsY.isEnabled = false
+            textFieldNumberOfPixelsX.isEnabled = true
+            textFieldNumberOfPixelsY.isEnabled = false
+          }
+        }
+      }
+    case "CameraPictureDimensionsCell":
+      if let buttonPhysical: NSButton = view.viewWithTag(8) as? NSButton,
+         let buttonPixels: NSButton = view.viewWithTag(9) as? NSButton,
+         let buttonUnitInch: NSButton = view.viewWithTag(10) as? NSButton,
+         let buttonUnitCM: NSButton = view.viewWithTag(11) as? NSButton
+      {
+        buttonPhysical.isEnabled = false
+        buttonPixels.isEnabled = false
+        buttonUnitInch.isEnabled = false
+        buttonUnitCM.isEnabled = false
+        
+        if let project = representedObject as? ProjectStructureNode
+        {
+          buttonPhysical.isEnabled = true
+          buttonPixels.isEnabled = true
+          buttonUnitInch.isEnabled = true
+          buttonUnitCM.isEnabled = true
+          
+          
+          switch(project.imageDimensions)
+          {
+          case ProjectStructureNode.Dimensions.physical:
+            buttonPhysical.state = NSControl.StateValue.on
+          case ProjectStructureNode.Dimensions.pixels:
+            buttonPixels.state = NSControl.StateValue.on
+          }
+          
+          switch(project.imageUnits)
+          {
+          case ProjectStructureNode.Units.inch:
+            buttonUnitInch.state = NSControl.StateValue.on
+          case ProjectStructureNode.Units.cm:
+            buttonUnitCM.state = NSControl.StateValue.on
+          }
+        }
+      }
+    case "CameraMovieCell":
+      if let framesPerSecondTextField: NSTextField = view.viewWithTag(1) as? NSTextField
+      {
+        framesPerSecondTextField.isEditable = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          framesPerSecondTextField.isEditable = true
+          framesPerSecondTextField.integerValue = project.numberOfFramesPerSecond
+        }
+      }
+    default:
+      break
+    }
+  }
+  
+  func setPropertiesBackgroundTableCells(on view: NSTableCellView, identifier: String)
+  {
+    switch(identifier)
+    {
+    case "CameraBackgroundCell":
+      if let tabView: NSTabView = getSubviewsOfView(view).filter({$0.identifier?.rawValue == "BackgroundTabView"}).first as? NSTabView,
+         let buttonColor: NSButton = view.viewWithTag(1) as? NSButton,
+         let buttonLinearGradient: NSButton = view.viewWithTag(2) as? NSButton,
+         let buttonRadialGradient: NSButton = view.viewWithTag(3) as? NSButton,
+         let buttonImage: NSButton = view.viewWithTag(4) as? NSButton
+      {
+        if let project = representedObject as? ProjectStructureNode
+        {
+          switch(project.renderBackgroundType)
+          {
+          case RKBackgroundType.color:
+            tabView.selectTabViewItem(at: 0)
+            if let imageViewColor: NSColorWell = view.viewWithTag(10) as? NSColorWell
+            {
+              buttonColor.state = NSControl.StateValue.on
+              imageViewColor.color = project.renderBackgroundColor
+            }
+          case RKBackgroundType.linearGradient:
+            tabView.selectTabViewItem(at: 1)
+            if let fromColorLinearGradient: NSColorWell = view.viewWithTag(20) as? NSColorWell,
+              let toColorLinearGradient: NSColorWell = view.viewWithTag(21) as? NSColorWell,
+              let sliderLinearGradient: NSSlider = view.viewWithTag(22) as? NSSlider,
+              let textFieldLinearGradient: NSTextField = view.viewWithTag(23) as? NSTextField
+            {
+              buttonLinearGradient.state = NSControl.StateValue.on
+              fromColorLinearGradient.color = project.backgroundLinearGradientFromColor
+              toColorLinearGradient.color = project.backgroundLinearGradientToColor
+              sliderLinearGradient.doubleValue = project.backgroundLinearGradientAngle
+              textFieldLinearGradient.doubleValue = project.backgroundLinearGradientAngle
+            }
+          case RKBackgroundType.radialGradient:
+            tabView.selectTabViewItem(at: 2)
+            if let  fromColorRadialGradient: NSColorWell = view.viewWithTag(30) as? NSColorWell,
+              let toColorRadialGradient: NSColorWell = view.viewWithTag(31) as? NSColorWell,
+              let sliderRadialGradient: NSSlider = view.viewWithTag(32) as? NSSlider,
+              let textFieldRadialGradient: NSTextField = view.viewWithTag(33) as? NSTextField
+            {
+              buttonRadialGradient.state = NSControl.StateValue.on
+              fromColorRadialGradient.color = project.backgroundRadialGradientFromColor
+              toColorRadialGradient.color = project.backgroundRadialGradientToColor
+              sliderRadialGradient.doubleValue = project.backgroundRadialGradientRoundness
+              textFieldRadialGradient.doubleValue = project.backgroundRadialGradientRoundness
+            }
+          case RKBackgroundType.image:
+            tabView.selectTabViewItem(at: 3)
+            if let imageView: NSButton = view.viewWithTag(40) as? NSButton
+            {
+              buttonImage.state = NSControl.StateValue.on
+              if (project.renderBackgroundImage != nil)
+              {
+                imageView.image = NSImage(cgImage: project.renderBackgroundImage!, size: NSSize(width: 100.0, height: 100.0))
+              }
+              else
+              {
+                imageView.image = nil
+              }
+            }
+          }
+        }
+      }
+    default:
+      break
+    }
   }
   
   func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView?
@@ -745,7 +811,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         LogQueue.shared.error(destination: self.windowController, message: "Undefined camera-direction in 'changedCameraDefaultViewPosition'")
       }
       
-      self.updateCameraViewMatrix()
+      self.updateCameraViews()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
@@ -768,7 +834,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
     }
@@ -796,234 +862,40 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   }
   
  
-  
-  @objc func updateCameraViewMatrix()
+  @objc func updateCameraViews()
   {
     self.windowController?.document?.updateChangeCount(.changeDone)
     
     if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraOrientationCell), row >= 0,
-       let outlineView = self.cameraOutlineView,
+       let outlineView: NSOutlineView = self.cameraOutlineView,
        let view: NSTableCellView = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView
     {
-      if let buttonMinusX: NSButton = view.viewWithTag(10) as? NSButton,
-         let buttonMinusY: NSButton = view.viewWithTag(11) as? NSButton,
-         let buttonMinusZ: NSButton = view.viewWithTag(12) as? NSButton,
-         let buttonPlusX: NSButton = view.viewWithTag(13) as? NSButton,
-         let buttonPlusY: NSButton = view.viewWithTag(14) as? NSButton,
-         let buttonPlusZ: NSButton = view.viewWithTag(15) as? NSButton,
-         let buttonPerspective: NSButton = view.viewWithTag(20) as? NSButton,
-         let buttonOrthogonal: NSButton = view.viewWithTag(21) as? NSButton
-      {
-        buttonMinusX.isEnabled = false
-        buttonMinusY.isEnabled = false
-        buttonMinusZ.isEnabled = false
-        buttonPlusX.isEnabled = false
-        buttonPlusY.isEnabled = false
-        buttonPlusZ.isEnabled = false
-        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-        {
-          buttonMinusX.isEnabled = true
-          buttonMinusY.isEnabled = true
-          buttonMinusZ.isEnabled = true
-          buttonPlusX.isEnabled = true
-          buttonPlusY.isEnabled = true
-          buttonPlusZ.isEnabled = true
-          switch(camera.resetDirectionType)
-          {
-          case RKCamera.ResetDirectionType.minus_X:
-            buttonMinusX.state = NSControl.StateValue.on
-          case RKCamera.ResetDirectionType.minus_Y:
-            buttonMinusY.state = NSControl.StateValue.on
-          case RKCamera.ResetDirectionType.minus_Z:
-            buttonMinusZ.state = NSControl.StateValue.on
-          case RKCamera.ResetDirectionType.plus_X:
-            buttonPlusX.state = NSControl.StateValue.on
-          case RKCamera.ResetDirectionType.plus_Y:
-            buttonPlusY.state = NSControl.StateValue.on
-          case RKCamera.ResetDirectionType.plus_Z:
-            buttonPlusZ.state = NSControl.StateValue.on
-          }
-        }
-        
-        buttonPerspective.isEnabled = false
-        buttonOrthogonal.isEnabled = false
-        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-        {
-          buttonPerspective.isEnabled = true
-          buttonOrthogonal.isEnabled = true
-          switch(camera.frustrumType)
-          {
-          case RKCamera.FrustrumType.perspective:
-            buttonPerspective.state = NSControl.StateValue.on
-          case RKCamera.FrustrumType.orthographic:
-            buttonOrthogonal.state = NSControl.StateValue.on
-          }
-        }
-      }
-    
-      if let textFieldResetPercentage: NSTextField = view.viewWithTag(50) as? NSTextField,
-        let textFieldFieldOfField: NSTextField = view.viewWithTag(40) as? NSTextField,
-        let textFieldCenterOfSceneX: NSTextField = view.viewWithTag(41) as? NSTextField,
-        let textFieldCenterOfSceneY: NSTextField = view.viewWithTag(42) as? NSTextField,
-        let textFieldCenterOfSceneZ: NSTextField = view.viewWithTag(43) as? NSTextField
-      {
-        textFieldResetPercentage.isEnabled = false
-        textFieldFieldOfField.isEnabled = false
-        textFieldCenterOfSceneX.isEnabled = false
-        textFieldCenterOfSceneY.isEnabled = false
-        textFieldCenterOfSceneZ.isEnabled = false
-        if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
-        {
-          textFieldResetPercentage.isEnabled = true
-          textFieldFieldOfField.isEnabled = true
-          textFieldCenterOfSceneX.isEnabled = true
-          textFieldCenterOfSceneY.isEnabled = true
-          textFieldCenterOfSceneZ.isEnabled = true
-          textFieldResetPercentage.doubleValue = camera.resetPercentage
-          textFieldFieldOfField.doubleValue = camera.angleOfView * 180.0 / Double.pi
-          textFieldCenterOfSceneX.doubleValue = camera.centerOfScene.x
-          textFieldCenterOfSceneY.doubleValue = camera.centerOfScene.y
-          textFieldCenterOfSceneZ.doubleValue = camera.centerOfScene.z
-        }
-      }
-    
+      setPropertiesCameraTableCells(on: view, identifier: "CameraOrientationCell")
       outlineView.setNeedsDisplay(outlineView.rect(ofRow: row))
     }
     
-    // only update when the row-view is visible
-    // fast way of updating: get the current-view, set properties on it, and update the rect to redraw
-    if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraViewMatrixCell), row >= 0,
-      let outlineView = self.cameraOutlineView,
-      let view: NSTableCellView = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
-      let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
+    if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraRotationCell), row >= 0,
+       let outlineView: NSOutlineView = self.cameraOutlineView,
+       let view: NSTableCellView = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView
     {
-      let EulerAngles: SIMD3<Double> = renderCamera.EulerAngles
+      setPropertiesCameraTableCells(on: view, identifier: "CameraRotationCell")
+      outlineView.setNeedsDisplay(outlineView.rect(ofRow: row))
+    }
+    
+    if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraViewMatrixCell), row >= 0,
+       let outlineView: NSOutlineView = self.cameraOutlineView,
+       let view: NSTableCellView = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView
+    {
+      setPropertiesCameraTableCells(on: view, identifier: "CameraViewMatrixCell")
+      outlineView.setNeedsDisplay(outlineView.rect(ofRow: row))
+    }
       
-      if let textFieldEulerAngleX: NSTextField = view.viewWithTag(40) as? NSTextField
-      {
-        textFieldEulerAngleX.doubleValue =  EulerAngles.x * 180.0/Double.pi
-      }
-      
-      if let sliderEulerAngleX: NSSlider = view.viewWithTag(37) as? NSSlider
-      {
-        sliderEulerAngleX.doubleValue = (EulerAngles.x * 180.0/Double.pi)
-      }
-      
-      if let textFieldEulerAngleZ: NSTextField = view.viewWithTag(41) as? NSTextField
-      {
-        textFieldEulerAngleZ.doubleValue =  EulerAngles.z * 180.0/Double.pi
-      }
-      
-      if let sliderEulerAngleZ: NSSlider = view.viewWithTag(38) as? NSSlider
-      {
-        sliderEulerAngleZ.doubleValue = EulerAngles.z * 180.0/Double.pi
-      }
-      
-      if let textFieldEulerAngleY: NSTextField = view.viewWithTag(42) as? NSTextField
-      {
-        textFieldEulerAngleY.doubleValue =  EulerAngles.y * 180.0/Double.pi
-      }
-      
-      if let sliderEulerAngleY: NSSlider = view.viewWithTag(39) as? NSSlider
-      {
-        sliderEulerAngleY.doubleValue = EulerAngles.y * 180.0/Double.pi
-      }
-      
-      
-      let position: SIMD3<Double> = renderCamera.position
-      let centerOfScene: SIMD3<Double> = renderCamera.centerOfScene
-      
-      if let textFieldCamerPositionX: NSTextField = view.viewWithTag(20) as? NSTextField
-      {
-        textFieldCamerPositionX.doubleValue = position.x
-      }
-      
-      if let textFieldCamerPositionY: NSTextField = view.viewWithTag(21) as? NSTextField
-      {
-        textFieldCamerPositionY.doubleValue = position.y
-      }
-      
-      if let textFieldCamerPositionZ: NSTextField = view.viewWithTag(22) as? NSTextField
-      {
-        textFieldCamerPositionZ.doubleValue = position.z
-      }
-      
-      if let textFieldCamerDistance: NSTextField = view.viewWithTag(23) as? NSTextField
-      {
-        textFieldCamerDistance.doubleValue = length(position - centerOfScene)
-      }
-      
-      
-      let viewMatrix: double4x4 = renderCamera.modelViewMatrix
-      
-      if let fieldM11: NSTextField = view.viewWithTag(0) as? NSTextField
-      {
-        fieldM11.doubleValue = viewMatrix[0][0]
-      }
-      if let fieldM21: NSTextField = view.viewWithTag(1) as? NSTextField
-      {
-        fieldM21.doubleValue = viewMatrix[0][1]
-      }
-      if let fieldM31: NSTextField = view.viewWithTag(2) as? NSTextField
-      {
-        fieldM31.doubleValue = viewMatrix[0][2]
-      }
-      if let fieldM41: NSTextField = view.viewWithTag(3) as? NSTextField
-      {
-        fieldM41.doubleValue = viewMatrix[0][3]
-      }
-      
-      if let fieldM12: NSTextField = view.viewWithTag(4) as? NSTextField
-      {
-        fieldM12.doubleValue = viewMatrix[1][0]
-      }
-      if let fieldM22: NSTextField = view.viewWithTag(5) as? NSTextField
-      {
-        fieldM22.doubleValue = viewMatrix[1][1]
-      }
-      if let fieldM32: NSTextField = view.viewWithTag(6) as? NSTextField
-      {
-        fieldM32.doubleValue = viewMatrix[1][2]
-      }
-      if let fieldM42: NSTextField = view.viewWithTag(7) as? NSTextField
-      {
-        fieldM42.doubleValue = viewMatrix[1][3]
-      }
-      
-      if let fieldM13: NSTextField = view.viewWithTag(8) as? NSTextField
-      {
-        fieldM13.doubleValue = viewMatrix[2][0]
-      }
-      if let fieldM23: NSTextField = view.viewWithTag(9) as? NSTextField
-      {
-        fieldM23.doubleValue = viewMatrix[2][1]
-      }
-      if let fieldM33: NSTextField = view.viewWithTag(10) as? NSTextField
-      {
-        fieldM33.doubleValue = viewMatrix[2][2]
-      }
-      if let fieldM43: NSTextField = view.viewWithTag(11) as? NSTextField
-      {
-        fieldM43.doubleValue = viewMatrix[2][3]
-      }
-      
-      if let fieldM14: NSTextField = view.viewWithTag(12) as? NSTextField
-      {
-        fieldM14.doubleValue = viewMatrix[3][0]
-      }
-      if let fieldM24: NSTextField = view.viewWithTag(13) as? NSTextField
-      {
-        fieldM24.doubleValue = viewMatrix[3][1]
-      }
-      if let fieldM34: NSTextField = view.viewWithTag(14) as? NSTextField
-      {
-        fieldM34.doubleValue = viewMatrix[3][2]
-      }
-      if let fieldM44: NSTextField = view.viewWithTag(15) as? NSTextField
-      {
-        fieldM44.doubleValue = viewMatrix[3][3]
-      }
-      
+    if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraVirtualPositionCell), row >= 0,
+       let outlineView: NSOutlineView = self.cameraOutlineView,
+       let view: NSTableCellView = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView
+    {
+      setPropertiesCameraTableCells(on: view, identifier: "CameraVirtualPositionCell")
+        
       outlineView.setNeedsDisplay(outlineView.rect(ofRow: row))
     }
   }
@@ -1109,7 +981,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         
         self.windowController?.detailTabViewController?.renderViewController?.redraw()
         
-        updateCameraViewMatrix()
+        updateCameraViews()
         self.windowController?.document?.updateChangeCount(.changeDone)
       }
       else
@@ -1130,7 +1002,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -1148,7 +1020,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.document?.updateChangeCount(.changeDone)
     }
@@ -1166,7 +1038,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -1185,7 +1057,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       self.windowController?.document?.updateChangeCount(.changeDone)
     }
   }
@@ -1201,7 +1073,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -1219,7 +1091,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -1237,7 +1109,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -1257,7 +1129,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -1275,7 +1147,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -1294,7 +1166,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
@@ -1312,7 +1184,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
-      updateCameraViewMatrix()
+      updateCameraViews()
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
