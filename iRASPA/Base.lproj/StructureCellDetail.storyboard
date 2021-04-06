@@ -10,7 +10,7 @@
         <scene sceneID="66c-ZX-5YT">
             <objects>
                 <viewController storyboardIdentifier="StructureCellDetailViewController" id="b7G-Em-dfk" customClass="StructureCellDetailViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
-                    <stackView key="view" wantsLayer="YES" distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalClippingResistancePriority="800" verticalClippingResistancePriority="800" misplaced="YES" detachesHiddenViews="YES" id="aZs-pA-gPx">
+                    <stackView key="view" wantsLayer="YES" distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalClippingResistancePriority="800" verticalClippingResistancePriority="800" detachesHiddenViews="YES" id="aZs-pA-gPx">
                         <rect key="frame" x="0.0" y="0.0" width="500" height="2279"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -20,7 +20,7 @@
                                     <rect key="frame" x="1" y="1" width="498" height="2277"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" multipleSelection="NO" autosaveColumns="NO" rowHeight="16" rowSizeStyle="automatic" usesAutomaticRowHeights="YES" viewBased="YES" indentationMarkerFollowsCell="NO" outlineTableColumn="T7h-e1-cMX" id="0N2-Jb-R1R" customClass="NSStaticViewBasedOutlineView" customModule="iRASPA" customModuleProvider="target">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" selectionHighlightStyle="none" multipleSelection="NO" autosaveColumns="NO" rowHeight="16" rowSizeStyle="automatic" usesAutomaticRowHeights="YES" viewBased="YES" indentationMarkerFollowsCell="NO" outlineTableColumn="T7h-e1-cMX" id="0N2-Jb-R1R" customClass="NSStaticViewBasedOutlineView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="498" height="2313"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
