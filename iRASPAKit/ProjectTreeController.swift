@@ -91,9 +91,16 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     self.hiddenRootNode = ProjectTreeNode(displayName: "hiddenRootNode", recordID: recordID)
     hiddenRootNode.recordID = recordID
     
-    let galleryRootNode = ProjectTreeNode(displayName: "GALLERY", representedObject: iRASPAProject(group: ProjectGroup(name: "GALLERY")))
-    let projectRootNode = ProjectTreeNode(displayName: "LOCAL PROJECTS", representedObject: iRASPAProject(group: ProjectGroup(name: "LOCAL PROJECTS")))
-    let cloudRootNode = ProjectTreeNode(displayName: "ICLOUD PUBLIC", representedObject: iRASPAProject(group: ProjectGroup(name: "ICLOUD PUBLIC")))
+    let bundle: Bundle = Bundle(for: ProjectTreeController.self)
+    
+    let galleryRootNodeDisplayName = NSLocalizedString("GALLERY", bundle: bundle , comment: "GALLERY")
+    let galleryRootNode = ProjectTreeNode(displayName: galleryRootNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: galleryRootNodeDisplayName)))
+    
+    let projectRootNodeDisplayName = NSLocalizedString("LOCAL PROJECTS", bundle: bundle, comment: "LOCAL PROJECTS")
+    let projectRootNode = ProjectTreeNode(displayName: projectRootNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: projectRootNodeDisplayName)))
+    
+    let cloudRootNodeDisplayName = NSLocalizedString("ICLOUD PUBLIC", bundle: bundle, comment: "ICLOUD PUBLIC")
+    let cloudRootNode = ProjectTreeNode(displayName: cloudRootNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: cloudRootNodeDisplayName)))
     
     galleryRootNode.isEditable = false
     projectRootNode.isEditable = false
@@ -104,18 +111,21 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     self.insertNode(cloudRootNode, inItem: nil, atIndex: 2)
     
     
-    let localGalleryNode: ProjectTreeNode = ProjectTreeNode(displayName: "Gallery", representedObject: iRASPAProject(group: ProjectGroup(name: "Gallery")))
+    let localGalleryNodeDisplayName = NSLocalizedString("Gallery", bundle: bundle , comment: "Gallery")
+    let localGalleryNode: ProjectTreeNode = ProjectTreeNode(displayName: localGalleryNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: localGalleryNodeDisplayName)))
     localGalleryNode.isEditable = false
     self.insertNode(localGalleryNode, inItem: galleryRootNode, atIndex: 0)
     
-    let localMainNode: ProjectTreeNode = ProjectTreeNode(displayName: "Local projects", representedObject: iRASPAProject(group: ProjectGroup(name: "Local projects")))
+    let localMainNodeDisplayName = NSLocalizedString("Local projects", bundle: bundle , comment: "Local projects")
+    let localMainNode: ProjectTreeNode = ProjectTreeNode(displayName: localMainNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: localMainNodeDisplayName)))
     localMainNode.isEditable = false
     localMainNode.isDropEnabled = true
     localMainNode.isExpanded = true
     self.insertNode(localMainNode, inItem: projectRootNode, atIndex: 0)
         
     // updated 18-10-2017
-    let cloudMainNode: ProjectTreeNode = ProjectTreeNode(displayName: "iCloud public", recordID: CKRecord.ID(recordName: "30089089-3163-633B-62B2-390C63E92789"), representedObject: iRASPAProject(group: ProjectGroup(name: "iCloud public")))
+    let cloudMainNodeDisplayName = NSLocalizedString("iCloud public", bundle: bundle , comment: "iCloud public")
+    let cloudMainNode: ProjectTreeNode = ProjectTreeNode(displayName: cloudMainNodeDisplayName, recordID: CKRecord.ID(recordName: "30089089-3163-633B-62B2-390C63E92789"), representedObject: iRASPAProject(group: ProjectGroup(name: cloudMainNodeDisplayName)))
     self.insertNode(cloudMainNode, inItem: cloudRootNode, atIndex: 0)
     
     let cloudNodeCoREMOF: ProjectTreeNode = ProjectTreeNode(displayName: "CoRE MOF v1.0", recordID: CKRecord.ID(recordName: "982F3A9C-7B2D-809B-8F9D-852F2F7FB839"), representedObject: iRASPAProject(group: ProjectGroup(name: "CoRE MOF v1.0")))
