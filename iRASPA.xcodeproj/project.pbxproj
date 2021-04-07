@@ -1473,6 +1473,20 @@
 		93ACDD431FBB5DC200D6527C /* iRASPA-CLI.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "iRASPA-CLI.entitlements"; sourceTree = "<group>"; };
 		93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLinePreferenceViewController.swift; sourceTree = "<group>"; };
 		93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
+		93B1EC72261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AboutWindow.strings; sourceTree = "<group>"; };
+		93B1EC73261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Preferences.strings; sourceTree = "<group>"; };
+		93B1EC74261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Main.strings; sourceTree = "<group>"; };
+		93B1EC75261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureViewer.strings; sourceTree = "<group>"; };
+		93B1EC76261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/DirectoryViewer.strings; sourceTree = "<group>"; };
+		93B1EC77261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Master.strings; sourceTree = "<group>"; };
+		93B1EC78261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureCameraDetail.strings; sourceTree = "<group>"; };
+		93B1EC79261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureElementDetail.strings; sourceTree = "<group>"; };
+		93B1EC7A261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureInfoDetail.strings; sourceTree = "<group>"; };
+		93B1EC7B261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureAppearanceDetail.strings; sourceTree = "<group>"; };
+		93B1EC7C261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureCellDetail.strings; sourceTree = "<group>"; };
+		93B1EC7D261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureAtomDetail.strings; sourceTree = "<group>"; };
+		93B1EC7E261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureBondDetail.strings; sourceTree = "<group>"; };
+		93B1EC7F261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PreviewViewController.strings; sourceTree = "<group>"; };
 		93B56CD1202F1D8D0044057C /* SKmmCIFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKmmCIFWriter.swift; sourceTree = "<group>"; };
 		93B5EE501FC2CACF009922F2 /* LocalAboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAboutWindowController.swift; sourceTree = "<group>"; };
 		93B5EE541FC2D200009922F2 /* LocalAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAboutViewController.swift; sourceTree = "<group>"; };
@@ -3762,6 +3776,7 @@
 			knownRegions = (
 				en,
 				Base,
+				nl,
 			);
 			mainGroup = 938387FF1E26A4A800112FBA;
 			productRefGroup = 938388091E26A4A800112FBA /* Products */;
@@ -4692,6 +4707,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93446EBD237968500040CD8E /* Base */,
+				93B1EC78261DD6DF002E9069 /* nl */,
 			);
 			name = StructureCameraDetail.storyboard;
 			sourceTree = "<group>";
@@ -4700,6 +4716,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93446EC2237968870040CD8E /* Base */,
+				93B1EC79261DD6DF002E9069 /* nl */,
 			);
 			name = StructureElementDetail.storyboard;
 			sourceTree = "<group>";
@@ -4708,6 +4725,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93446EC7237968E90040CD8E /* Base */,
+				93B1EC7A261DD6DF002E9069 /* nl */,
 			);
 			name = StructureInfoDetail.storyboard;
 			sourceTree = "<group>";
@@ -4716,6 +4734,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93446ECC237969980040CD8E /* Base */,
+				93B1EC7B261DD6DF002E9069 /* nl */,
 			);
 			name = StructureAppearanceDetail.storyboard;
 			sourceTree = "<group>";
@@ -4724,6 +4743,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93446ED1237969DB0040CD8E /* Base */,
+				93B1EC7C261DD6DF002E9069 /* nl */,
 			);
 			name = StructureCellDetail.storyboard;
 			sourceTree = "<group>";
@@ -4732,6 +4752,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93446ED623796A0A0040CD8E /* Base */,
+				93B1EC7D261DD6DF002E9069 /* nl */,
 			);
 			name = StructureAtomDetail.storyboard;
 			sourceTree = "<group>";
@@ -4740,6 +4761,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93446EDB23796A380040CD8E /* Base */,
+				93B1EC7E261DD6DF002E9069 /* nl */,
 			);
 			name = StructureBondDetail.storyboard;
 			sourceTree = "<group>";
@@ -4748,6 +4770,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				934B76621EF938E0004A1ABA /* Base */,
+				93B1EC74261DD6DF002E9069 /* nl */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -4756,6 +4779,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				934B76651EF93903004A1ABA /* Base */,
+				93B1EC75261DD6DF002E9069 /* nl */,
 			);
 			name = StructureViewer.storyboard;
 			sourceTree = "<group>";
@@ -4764,6 +4788,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				934B76681EF93914004A1ABA /* Base */,
+				93B1EC77261DD6DF002E9069 /* nl */,
 			);
 			name = Master.storyboard;
 			sourceTree = "<group>";
@@ -4772,6 +4797,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				935DABE01F0E236900C1C8D0 /* Base */,
+				93B1EC76261DD6DF002E9069 /* nl */,
 			);
 			name = DirectoryViewer.storyboard;
 			sourceTree = "<group>";
@@ -4788,6 +4814,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93A0C42B2567B20D002BC083 /* Base */,
+				93B1EC7F261DD6DF002E9069 /* nl */,
 			);
 			name = PreviewViewController.xib;
 			sourceTree = "<group>";
@@ -4796,6 +4823,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93B5EE571FC31D5A009922F2 /* Base */,
+				93B1EC72261DD6DF002E9069 /* nl */,
 			);
 			name = AboutWindow.storyboard;
 			sourceTree = "<group>";
@@ -4804,6 +4832,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				93FC88A21F5042E80009478E /* Base */,
+				93B1EC73261DD6DF002E9069 /* nl */,
 			);
 			name = Preferences.storyboard;
 			sourceTree = "<group>";
