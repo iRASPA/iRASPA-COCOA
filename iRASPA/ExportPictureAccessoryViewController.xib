@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,12 +16,14 @@
         <textView editable="NO" importsGraphics="NO" verticallyResizable="YES" findStyle="panel" allowsCharacterPickerTouchBarItem="NO" allowsUndo="YES" allowsNonContiguousLayout="YES" textCompletion="NO" id="REY-oq-XI3" customClass="CitationAccessoryTextView" customModule="iRASPA" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="478" height="70"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
             <size key="minSize" width="478" height="70"/>
             <size key="maxSize" width="478" height="10000000"/>
             <attributedString key="textStorage">
                 <fragment content="For use in scientific publication, please cite:">
                     <attributes>
+                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <font key="NSFont" metaFont="smallSystemBold"/>
                         <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                     </attributes>
@@ -29,12 +31,13 @@
                 <fragment>
                     <string key="content"> D.Dubbeldam, S. Calero, and T.j.H. Vlugt, "iRASPA, GPU-Accelerated Visualization Software for Materials Scientists", Mol. Simulat., DOI: 10.1080/08927022.2018.1426855, 2018. </string>
                     <attributes>
+                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                         <font key="NSFont" metaFont="smallSystem"/>
                         <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                     </attributes>
                 </fragment>
             </attributedString>
-            <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
             <point key="canvasLocation" x="79" y="83"/>
         </textView>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
