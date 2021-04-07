@@ -398,6 +398,7 @@
 		93ACDD451FBF266900D6527C /* CommandLinePreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */; };
 		93B07D321EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */; };
 		93B0BF1D1E2BCEB40089D292 /* iRASPAHelp.help in Resources */ = {isa = PBXBuildFile; fileRef = 930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */; };
+		93B1ECAF261E0FAF002E9069 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93B1ECB1261E0FAF002E9069 /* Localizable.strings */; };
 		93B56CD2202F1D8D0044057C /* SKmmCIFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B56CD1202F1D8D0044057C /* SKmmCIFWriter.swift */; };
 		93B5EE511FC2CACF009922F2 /* LocalAboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B5EE501FC2CACF009922F2 /* LocalAboutWindowController.swift */; };
 		93B5EE551FC2D200009922F2 /* LocalAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B5EE541FC2D200009922F2 /* LocalAboutViewController.swift */; };
@@ -1487,6 +1488,8 @@
 		93B1EC7D261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureAtomDetail.strings; sourceTree = "<group>"; };
 		93B1EC7E261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/StructureBondDetail.strings; sourceTree = "<group>"; };
 		93B1EC7F261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PreviewViewController.strings; sourceTree = "<group>"; };
+		93B1ECB0261E0FAF002E9069 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		93B1ECC1261E1028002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		93B56CD1202F1D8D0044057C /* SKmmCIFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKmmCIFWriter.swift; sourceTree = "<group>"; };
 		93B5EE501FC2CACF009922F2 /* LocalAboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAboutWindowController.swift; sourceTree = "<group>"; };
 		93B5EE541FC2D200009922F2 /* LocalAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAboutViewController.swift; sourceTree = "<group>"; };
@@ -2044,6 +2047,7 @@
 			isa = PBXGroup;
 			children = (
 				930DD4C11E26AA0100B8FE9B /* SymmetryKit.h */,
+				93B1ECB1261E0FAF002E9069 /* Localizable.strings */,
 				93F3A5902187399E008E41A2 /* SKAtomTreeController.swift */,
 				93F3A592218739D9008E41A2 /* SKAtomTreeNode.swift */,
 				93F12B5B203830B500FFABC3 /* SymmetryKitErrors.swift */,
@@ -3817,6 +3821,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93793B4B21DE0FDF004CAD9C /* LICENSE in Resources */,
+				93B1ECAF261E0FAF002E9069 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4817,6 +4822,15 @@
 				93B1EC7F261DD6DF002E9069 /* nl */,
 			);
 			name = PreviewViewController.xib;
+			sourceTree = "<group>";
+		};
+		93B1ECB1261E0FAF002E9069 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				93B1ECB0261E0FAF002E9069 /* en */,
+				93B1ECC1261E1028002E9069 /* nl */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		93B5EE581FC31D5A009922F2 /* AboutWindow.storyboard */ = {

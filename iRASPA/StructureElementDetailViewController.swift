@@ -178,7 +178,14 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
       }
       if let atomElementNameView: NSTextField = view?.viewWithTag(3) as? NSTextField
       {
-        atomElementNameView.stringValue = element.name
+        if let bundle = Bundle(identifier: "nl.darkwing.SymmetryKit")
+        {
+          atomElementNameView.stringValue = NSLocalizedString(element.name, bundle: bundle, comment: element.name)
+        }
+        else
+        {
+          atomElementNameView.stringValue = element.name
+        }
         atomElementNameView.isEditable = false
       }
       
