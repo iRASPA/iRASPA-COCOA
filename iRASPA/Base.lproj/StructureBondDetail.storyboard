@@ -14,13 +14,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="500" height="1033"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="27" horizontalPageScroll="10" verticalLineScroll="27" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNE-tp-XOs">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="21" horizontalPageScroll="10" verticalLineScroll="21" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNE-tp-XOs">
                                 <rect key="frame" x="0.0" y="2" width="500" height="1031"/>
                                 <clipView key="contentView" id="OYM-08-5ag">
                                     <rect key="frame" x="1" y="1" width="498" height="1029"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" headerView="AVE-GF-2YK" viewBased="YES" floatsGroupRows="NO" id="4t4-q5-gBA">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" headerView="AVE-GF-2YK" viewBased="YES" floatsGroupRows="NO" id="4t4-q5-gBA">
                                             <rect key="frame" x="0.0" y="0.0" width="498" height="1001"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="4" height="3"/>
@@ -103,7 +103,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="fixedAtomsInBondRow" id="fwK-Td-asn">
-                                                            <rect key="frame" x="89" y="1" width="114" height="18"/>
+                                                            <rect key="frame" x="89" y="1" width="115" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <segmentedControl wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="x4s-Mu-gd3" customClass="NSLabelSegmentedControl" customModule="iRASPA" customModuleProvider="target">
@@ -161,7 +161,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="bondTypeRow" id="3CH-CW-EV9">
-                                                            <rect key="frame" x="207" y="1" width="51" height="18"/>
+                                                            <rect key="frame" x="208" y="1" width="50" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <popUpButton verticalHuggingPriority="750" fixedFrame="YES" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="iPF-HR-Ue1">
@@ -266,11 +266,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="bondLengthRow" id="GwC-2I-3Mx">
-                                                            <rect key="frame" x="352" y="1" width="68" height="18"/>
+                                                            <rect key="frame" x="352" y="1" width="69" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="lxR-9j-Ztg">
-                                                                    <rect key="frame" x="0.0" y="1" width="68" height="17"/>
+                                                                    <rect key="frame" x="0.0" y="1" width="69" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" id="WUM-Xr-wzU">
                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="xli-Pf-gBu"/>
@@ -302,7 +302,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="bondLengthSliderRow" id="g7h-p2-h9O">
-                                                            <rect key="frame" x="424" y="1" width="71" height="18"/>
+                                                            <rect key="frame" x="425" y="1" width="70" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <slider verticalHuggingPriority="750" fixedFrame="YES" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="ko1-tl-a6u">
@@ -355,7 +355,7 @@
                 <customObject id="kW7-9X-30O" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <menu id="52w-Qk-Ft0">
                     <items>
-                        <menuItem title="Recompute bonds" id="w5W-4P-qvW">
+                        <menuItem title="Recompute Bonds" id="w5W-4P-qvW">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="RecomputeBonds:" target="1Qs-2A-QWY" id="4lx-eo-34Q"/>
