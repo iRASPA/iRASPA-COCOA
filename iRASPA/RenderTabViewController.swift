@@ -1130,6 +1130,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         }
         data.structure.atomTreeController.tag()
         data.structure.atomTreeController.selectedTreeNodes = []
+        data.structure.reComputeBoundingBox()
          
         project.isEdited = true
          
@@ -1141,6 +1142,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: data.structure)
         NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: data.structure)
       }
+      
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+      
       self.renderViewController.reloadData()
        
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()

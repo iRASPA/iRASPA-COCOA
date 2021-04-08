@@ -1426,8 +1426,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
     
       structure.atomTreeController.selectedTreeNodes = []
-      
       structure.atomTreeController.tag()
+      structure.reComputeBoundingBox()
     
       if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
          let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
@@ -1455,6 +1455,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       {
         self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
       }
+      
+      
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
       project.isEdited = true
       self.windowController?.currentDocument?.updateChangeCount(.changeDone)
