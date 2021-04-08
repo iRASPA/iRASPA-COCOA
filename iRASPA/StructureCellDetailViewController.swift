@@ -61,6 +61,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
   var heights: [String : CGFloat] = [:]
   
+  let boxMaterialInfoCell: OutlineViewItem = OutlineViewItem("BoxMaterialInfoCell")
   let boxBoundingBoxInfoCell: OutlineViewItem = OutlineViewItem("BoxBoundingBoxInfoCell")
   let boxUnitCellPropertiesCell: OutlineViewItem = OutlineViewItem("BoxUnitCellPropertiesCell")
   let boxUnitCellInfoCell: OutlineViewItem = OutlineViewItem("BoxUnitCellInfoCell")
@@ -92,7 +93,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
-    let cellStructureItem: OutlineViewItem =  OutlineViewItem(title: "BoxGroup", children: [boxBoundingBoxInfoCell, boxUnitCellPropertiesCell, boxUnitCellInfoCell, boxVolumeCell, boxReplicasCell, boxOrientationCell, boxOriginCell])
+    let cellStructureItem: OutlineViewItem =  OutlineViewItem(title: "BoxGroup", children: [boxMaterialInfoCell, boxBoundingBoxInfoCell, boxUnitCellPropertiesCell, boxUnitCellInfoCell, boxVolumeCell, boxReplicasCell, boxOrientationCell, boxOriginCell])
     
     let cellContentTransformItem: OutlineViewItem = OutlineViewItem(title: "TransformContentGroup", children: [transformContentCell])
     
