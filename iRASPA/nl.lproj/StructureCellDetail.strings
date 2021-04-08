@@ -12,7 +12,7 @@
 "2sE-L5-Mde.title" = "Oriëntatie";
 
 /* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
-"39F-yr-VYx.title" = "Cel/Begrenzing Eigenschappen";
+"39F-yr-VYx.title" = "Cel/Begrenzing Eigenschappen (Alleen Leesbaar)";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
 "3Fv-hH-asL.title" = "Toegankelijk Poriënvolume";
@@ -126,7 +126,9 @@
 "GpO-nT-2ds.title" = "[m²/cm³]";
 
 /* Class = "NSBox"; title = "Bounding Box"; ObjectID = "Hgj-ha-Kto"; */
-"Hgj-ha-Kto.title" = "Omsluitend Kader";
+"Hgj-ha-Kto.title" = "Omsluitend Kader  (Alleen Leesbaar)";
+
+"tF3-vm-zpF.title" = "Eenheidscel Matrix (Alleen Leesbaar)";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "JAA-9x-5kf"; */
 "JAA-9x-5kf.title" = "0";

@@ -21,7 +21,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" selectionHighlightStyle="none" multipleSelection="NO" autosaveColumns="NO" rowHeight="16" rowSizeStyle="automatic" usesAutomaticRowHeights="YES" viewBased="YES" indentationMarkerFollowsCell="NO" outlineTableColumn="T7h-e1-cMX" id="0N2-Jb-R1R" customClass="NSStaticViewBasedOutlineView" customModule="iRASPA" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="498" height="2313"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="498" height="2277"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -73,13 +73,13 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="BoxMaterialInfoCell" translatesAutoresizingMaskIntoConstraints="NO" id="qRp-SD-dHh" userLabel="Box Material Info Cell">
-                                                            <rect key="frame" x="1" y="19" width="495" height="160"/>
+                                                            <rect key="frame" x="1" y="19" width="495" height="53"/>
                                                             <subviews>
-                                                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="9" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fvh-Fp-TMW">
-                                                                    <rect key="frame" x="8" y="0.0" width="467" height="160"/>
+                                                                <stackView distribution="fillProportionally" orientation="horizontal" alignment="firstBaseline" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fvh-Fp-TMW">
+                                                                    <rect key="frame" x="8" y="0.0" width="467" height="53"/>
                                                                     <subviews>
                                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oBM-bg-QaF">
-                                                                            <rect key="frame" x="-2" y="72" width="86" height="16"/>
+                                                                            <rect key="frame" x="-2" y="36" width="147" height="16"/>
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Material Type" id="jgD-yL-2kq">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -87,7 +87,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <popUpButton verticalHuggingPriority="750" tag="91" translatesAutoresizingMaskIntoConstraints="NO" id="aei-qQ-IUM" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
-                                                                            <rect key="frame" x="88" y="66" width="383" height="25"/>
+                                                                            <rect key="frame" x="160" y="29" width="311" height="25"/>
                                                                             <popUpButtonCell key="cell" type="push" title="Unknown" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="9x5-Do-xLf" id="Y8c-dr-gtf">
                                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                 <font key="font" metaFont="menu"/>
@@ -134,21 +134,19 @@
                                                                 <constraint firstAttribute="trailing" secondItem="Fvh-Fp-TMW" secondAttribute="trailing" constant="20" symbolic="YES" id="sjE-gv-e1T"/>
                                                             </constraints>
                                                         </tableCellView>
-                                                        <tableCellView identifier="BoxBoundingBoxInfoCell" id="O6z-hh-Buu" userLabel="Box Boundingbox Info Cell">
-                                                            <rect key="frame" x="1" y="181" width="495" height="160"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <tableCellView identifier="BoxBoundingBoxInfoCell" translatesAutoresizingMaskIntoConstraints="NO" id="O6z-hh-Buu" userLabel="Box Boundingbox Info Cell">
+                                                            <rect key="frame" x="1" y="74" width="495" height="95"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nfs-8X-psq">
-                                                                    <rect key="frame" x="8" y="8" width="467" height="144"/>
+                                                                    <rect key="frame" x="8" y="8" width="467" height="79"/>
                                                                     <subviews>
-                                                                        <box horizontalHuggingPriority="240" borderType="line" title="Bounding Box" translatesAutoresizingMaskIntoConstraints="NO" id="Hgj-ha-Kto">
-                                                                            <rect key="frame" x="-3" y="-4" width="473" height="148"/>
-                                                                            <view key="contentView" id="hbO-zE-SAF">
-                                                                                <rect key="frame" x="3" y="3" width="467" height="130"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                        <box horizontalHuggingPriority="240" verticalHuggingPriority="240" borderType="line" title="Bounding Box (Read Only)" translatesAutoresizingMaskIntoConstraints="NO" id="Hgj-ha-Kto">
+                                                                            <rect key="frame" x="-3" y="-4" width="473" height="83"/>
+                                                                            <view key="contentView" horizontalHuggingPriority="230" verticalHuggingPriority="230" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hbO-zE-SAF">
+                                                                                <rect key="frame" x="3" y="3" width="467" height="65"/>
                                                                                 <subviews>
-                                                                                    <gridView fixedFrame="YES" xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="15" columnSpacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="dQB-UX-gcY">
-                                                                                        <rect key="frame" x="20" y="61" width="335" height="57"/>
+                                                                                    <gridView horizontalHuggingPriority="220" verticalHuggingPriority="220" xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="15" columnSpacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="dQB-UX-gcY">
+                                                                                        <rect key="frame" x="4" y="4" width="335" height="57"/>
                                                                                         <constraints>
                                                                                             <constraint firstItem="6Dg-iS-0T9" firstAttribute="width" secondItem="nfG-5S-jCt" secondAttribute="width" id="ImZ-0w-tUi"/>
                                                                                             <constraint firstItem="jIh-SI-yEX" firstAttribute="width" secondItem="nfG-5S-jCt" secondAttribute="width" id="RGE-mw-BcO"/>
@@ -175,7 +173,7 @@
                                                                                                 </textField>
                                                                                             </gridCell>
                                                                                             <gridCell row="ET7-Zf-arR" column="olf-vY-S5j" id="MNN-nb-REh">
-                                                                                                <textField key="contentView" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="RWL-qB-YV1">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" verticalCompressionResistancePriority="760" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="RWL-qB-YV1">
                                                                                                     <rect key="frame" x="72" y="36" width="79" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Maximum X" drawsBackground="YES" id="SYu-kq-Pn4">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="OJ7-OG-JY0"/>
@@ -186,7 +184,7 @@
                                                                                                 </textField>
                                                                                             </gridCell>
                                                                                             <gridCell row="ET7-Zf-arR" column="daO-p0-fDw" id="am5-wW-khj">
-                                                                                                <textField key="contentView" verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="ZM9-Q8-yU2">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" verticalCompressionResistancePriority="760" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="ZM9-Q8-yU2">
                                                                                                     <rect key="frame" x="164" y="36" width="79" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Maximum Y" drawsBackground="YES" id="RFb-cp-hSr">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="MvZ-AA-aBu"/>
@@ -197,7 +195,7 @@
                                                                                                 </textField>
                                                                                             </gridCell>
                                                                                             <gridCell row="ET7-Zf-arR" column="aR1-dD-sVk" id="OML-wf-yGf">
-                                                                                                <textField key="contentView" verticalHuggingPriority="750" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="jWc-ln-7wp">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" verticalCompressionResistancePriority="760" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="jWc-ln-7wp">
                                                                                                     <rect key="frame" x="256" y="36" width="79" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Maximum Z" drawsBackground="YES" id="Y0x-AR-NvS">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="qD9-55-4Up"/>
@@ -218,7 +216,7 @@
                                                                                                 </textField>
                                                                                             </gridCell>
                                                                                             <gridCell row="8gB-go-c3P" column="olf-vY-S5j" id="gKR-XJ-3pV">
-                                                                                                <textField key="contentView" verticalHuggingPriority="750" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="nfG-5S-jCt">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" verticalCompressionResistancePriority="760" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="nfG-5S-jCt">
                                                                                                     <rect key="frame" x="72" y="0.0" width="79" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Minimum X" drawsBackground="YES" id="3a2-UB-zfk">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="j50-aF-gHL"/>
@@ -229,7 +227,7 @@
                                                                                                 </textField>
                                                                                             </gridCell>
                                                                                             <gridCell row="8gB-go-c3P" column="daO-p0-fDw" id="xRw-tL-01l">
-                                                                                                <textField key="contentView" verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="jIh-SI-yEX">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" verticalCompressionResistancePriority="760" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="jIh-SI-yEX">
                                                                                                     <rect key="frame" x="164" y="0.0" width="79" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Minimum Y" drawsBackground="YES" id="mhY-GY-BNd">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="MK5-VP-9Um"/>
@@ -240,7 +238,7 @@
                                                                                                 </textField>
                                                                                             </gridCell>
                                                                                             <gridCell row="8gB-go-c3P" column="aR1-dD-sVk" id="84n-FB-fSg">
-                                                                                                <textField key="contentView" verticalHuggingPriority="750" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="6Dg-iS-0T9">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" verticalCompressionResistancePriority="760" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="6Dg-iS-0T9">
                                                                                                     <rect key="frame" x="256" y="0.0" width="79" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Minimum Z" drawsBackground="YES" id="ZfA-8U-voh">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="APw-hG-Yvo"/>
@@ -253,6 +251,12 @@
                                                                                         </gridCells>
                                                                                     </gridView>
                                                                                 </subviews>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="bottom" secondItem="dQB-UX-gcY" secondAttribute="bottom" constant="4" id="Rdb-Vb-Y8c"/>
+                                                                                    <constraint firstItem="dQB-UX-gcY" firstAttribute="leading" secondItem="hbO-zE-SAF" secondAttribute="leading" constant="4" id="bjm-nz-aUM"/>
+                                                                                    <constraint firstItem="dQB-UX-gcY" firstAttribute="top" secondItem="hbO-zE-SAF" secondAttribute="top" constant="4" id="mrh-zb-ZzC"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="dQB-UX-gcY" secondAttribute="trailing" constant="4" id="tT9-gS-T1R"/>
+                                                                                </constraints>
                                                                             </view>
                                                                         </box>
                                                                     </subviews>
@@ -272,13 +276,13 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="BoxUnitCellPropertiesCell" translatesAutoresizingMaskIntoConstraints="NO" id="Yur-00-G6O" userLabel="Box Unit Cell Propertie Cell">
-                                                            <rect key="frame" x="1" y="343" width="495" height="174"/>
+                                                            <rect key="frame" x="1" y="171" width="568" height="121"/>
                                                             <subviews>
-                                                                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VD9-HW-0Zr">
-                                                                    <rect key="frame" x="8" y="8" width="467" height="158"/>
+                                                                <stackView distribution="fillEqually" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VD9-HW-0Zr">
+                                                                    <rect key="frame" x="8" y="8" width="540" height="105"/>
                                                                     <subviews>
-                                                                        <gridView xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="7yI-Il-4jJ">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="236" height="158"/>
+                                                                        <gridView horizontalHuggingPriority="240" verticalHuggingPriority="240" xPlacement="fill" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="8" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7yI-Il-4jJ">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="540" height="105"/>
                                                                             <constraints>
                                                                                 <constraint firstItem="Cr0-aK-P2b" firstAttribute="width" secondItem="JfW-KN-iSi" secondAttribute="width" id="ykX-Kg-Nrt"/>
                                                                             </constraints>
@@ -288,15 +292,15 @@
                                                                                 <gridRow id="RFS-mI-0to"/>
                                                                             </rows>
                                                                             <columns>
-                                                                                <gridColumn id="W15-AP-gn8"/>
+                                                                                <gridColumn xPlacement="trailing" id="W15-AP-gn8"/>
                                                                                 <gridColumn id="fqK-AM-A6k"/>
-                                                                                <gridColumn id="bLf-ag-dLX"/>
+                                                                                <gridColumn xPlacement="trailing" id="bLf-ag-dLX"/>
                                                                                 <gridColumn id="Kb8-TI-Kyl"/>
                                                                             </columns>
                                                                             <gridCells>
                                                                                 <gridCell row="dfc-K6-vJz" column="W15-AP-gn8" id="wqr-Oe-EX9">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="259" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="qdl-uE-LGc">
-                                                                                        <rect key="frame" x="-2" y="100" width="14" height="55"/>
+                                                                                        <rect key="frame" x="-1" y="60" width="13" height="42"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="A" id="YTE-5c-osk">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -305,11 +309,11 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="dfc-K6-vJz" column="fqK-AM-A6k" id="Xs6-rC-Gnb">
-                                                                                    <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="bottom" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JfW-KN-iSi">
-                                                                                        <rect key="frame" x="16" y="136" width="100" height="22"/>
+                                                                                    <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="firstBaseline" spacing="5" horizontalStackHuggingPriority="240" verticalStackHuggingPriority="240" horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JfW-KN-iSi">
+                                                                                        <rect key="frame" x="18" y="83" width="249" height="22"/>
                                                                                         <subviews>
-                                                                                            <textField verticalHuggingPriority="750" tag="9" translatesAutoresizingMaskIntoConstraints="NO" id="HQa-sa-VFI">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="21"/>
+                                                                                            <textField horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" tag="9" translatesAutoresizingMaskIntoConstraints="NO" id="HQa-sa-VFI">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="231" height="21"/>
                                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Length a" drawsBackground="YES" id="rkG-hU-SdP">
                                                                                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="2hJ-PH-gsh"/>
                                                                                                     <font key="font" metaFont="system"/>
@@ -320,8 +324,8 @@
                                                                                                     <action selector="changedCellLengthA:" target="b7G-Em-dfk" id="g4C-xl-QDu"/>
                                                                                                 </connections>
                                                                                             </textField>
-                                                                                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" tag="20" translatesAutoresizingMaskIntoConstraints="NO" id="C2b-AI-uep">
-                                                                                                <rect key="frame" x="84" y="-3" width="19" height="28"/>
+                                                                                            <stepper horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="20" translatesAutoresizingMaskIntoConstraints="NO" id="C2b-AI-uep">
+                                                                                                <rect key="frame" x="233" y="-3" width="19" height="28"/>
                                                                                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="-100" maxValue="100" id="E4d-cF-q8x"/>
                                                                                                 <connections>
                                                                                                     <action selector="updateStepperCellLengthA:" target="b7G-Em-dfk" id="Tad-zX-rWS"/>
@@ -340,7 +344,7 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="dfc-K6-vJz" column="bLf-ag-dLX" id="GDS-Wf-aiJ">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="KPr-ef-ryE">
-                                                                                        <rect key="frame" x="120" y="139" width="12" height="16"/>
+                                                                                        <rect key="frame" x="273" y="86" width="12" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="α" id="7wU-K6-1d3">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -349,11 +353,11 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="dfc-K6-vJz" column="Kb8-TI-Kyl" id="ADy-ih-SI8">
-                                                                                    <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="bottom" spacing="3" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cr0-aK-P2b">
-                                                                                        <rect key="frame" x="136" y="136" width="100" height="22"/>
+                                                                                    <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="firstBaseline" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cr0-aK-P2b">
+                                                                                        <rect key="frame" x="291" y="83" width="249" height="22"/>
                                                                                         <subviews>
-                                                                                            <textField verticalHuggingPriority="750" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="m44-z1-gKc">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="84" height="21"/>
+                                                                                            <textField horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="m44-z1-gKc">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="231" height="21"/>
                                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="α Angle" drawsBackground="YES" id="jHJ-5h-ehN">
                                                                                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="AqG-m9-yqm"/>
                                                                                                     <font key="font" metaFont="system"/>
@@ -364,8 +368,8 @@
                                                                                                     <action selector="changedCellAngleAlpha:" target="b7G-Em-dfk" id="L68-d5-8fx"/>
                                                                                                 </connections>
                                                                                             </textField>
-                                                                                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" tag="23" translatesAutoresizingMaskIntoConstraints="NO" id="8Rp-ky-3qn">
-                                                                                                <rect key="frame" x="84" y="-3" width="19" height="28"/>
+                                                                                            <stepper horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="23" translatesAutoresizingMaskIntoConstraints="NO" id="8Rp-ky-3qn">
+                                                                                                <rect key="frame" x="233" y="-3" width="19" height="28"/>
                                                                                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="-100" maxValue="100" id="M1o-24-KjT"/>
                                                                                                 <connections>
                                                                                                     <action selector="updateStepperCellAngleAlpha:" target="b7G-Em-dfk" id="ZGV-qd-Xce"/>
@@ -384,7 +388,7 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="zKn-Ty-8bs" column="W15-AP-gn8" id="s0Y-9W-E7D">
                                                                                     <textField key="contentView" horizontalHuggingPriority="258" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Uig-47-i0U">
-                                                                                        <rect key="frame" x="-2" y="50" width="14" height="19"/>
+                                                                                        <rect key="frame" x="-1" y="30" width="13" height="19"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="B" id="axn-lz-p51">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -393,11 +397,11 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="zKn-Ty-8bs" column="fqK-AM-A6k" id="KAx-Bg-Vq5">
-                                                                                    <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="bottom" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V4F-mZ-Fc2">
-                                                                                        <rect key="frame" x="16" y="50" width="100" height="22"/>
+                                                                                    <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="firstBaseline" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V4F-mZ-Fc2">
+                                                                                        <rect key="frame" x="18" y="30" width="249" height="22"/>
                                                                                         <subviews>
-                                                                                            <textField verticalHuggingPriority="750" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="uZ1-yu-N8p">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="21"/>
+                                                                                            <textField horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="uZ1-yu-N8p">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="231" height="21"/>
                                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Length b" drawsBackground="YES" id="KWe-Mf-Gny">
                                                                                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="I2a-b9-tbD"/>
                                                                                                     <font key="font" metaFont="system"/>
@@ -408,8 +412,8 @@
                                                                                                     <action selector="changedCellLengthB:" target="b7G-Em-dfk" id="69O-Ap-1zu"/>
                                                                                                 </connections>
                                                                                             </textField>
-                                                                                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" tag="21" translatesAutoresizingMaskIntoConstraints="NO" id="HkK-OL-KCM">
-                                                                                                <rect key="frame" x="84" y="-3" width="19" height="28"/>
+                                                                                            <stepper horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="21" translatesAutoresizingMaskIntoConstraints="NO" id="HkK-OL-KCM">
+                                                                                                <rect key="frame" x="233" y="-3" width="19" height="28"/>
                                                                                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="-100" maxValue="100" id="omk-DT-TOn"/>
                                                                                                 <connections>
                                                                                                     <action selector="updateStepperCellLengthB:" target="b7G-Em-dfk" id="FsU-J5-vEX"/>
@@ -428,7 +432,7 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="zKn-Ty-8bs" column="bLf-ag-dLX" id="2Ow-QC-LWP">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="NMI-tb-WzF">
-                                                                                        <rect key="frame" x="120" y="53" width="12" height="16"/>
+                                                                                        <rect key="frame" x="273" y="33" width="12" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="β" id="o5e-Ej-avz">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -437,11 +441,11 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="zKn-Ty-8bs" column="Kb8-TI-Kyl" id="jIg-6q-B24">
-                                                                                    <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="bottom" spacing="3" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="16m-gr-pSH">
-                                                                                        <rect key="frame" x="136" y="50" width="100" height="22"/>
+                                                                                    <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="firstBaseline" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="16m-gr-pSH">
+                                                                                        <rect key="frame" x="291" y="30" width="249" height="22"/>
                                                                                         <subviews>
-                                                                                            <textField verticalHuggingPriority="750" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="Lh9-FT-IqA">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="84" height="21"/>
+                                                                                            <textField horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="Lh9-FT-IqA">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="231" height="21"/>
                                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="β Angle" drawsBackground="YES" id="WcQ-vR-rvO">
                                                                                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="cP8-gh-dXI"/>
                                                                                                     <font key="font" metaFont="system"/>
@@ -452,8 +456,8 @@
                                                                                                     <action selector="changedCellAngleBeta:" target="b7G-Em-dfk" id="dDO-QT-aIV"/>
                                                                                                 </connections>
                                                                                             </textField>
-                                                                                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" tag="24" translatesAutoresizingMaskIntoConstraints="NO" id="1Z1-XU-3PF">
-                                                                                                <rect key="frame" x="84" y="-3" width="19" height="28"/>
+                                                                                            <stepper horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="24" translatesAutoresizingMaskIntoConstraints="NO" id="1Z1-XU-3PF">
+                                                                                                <rect key="frame" x="233" y="-3" width="19" height="28"/>
                                                                                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="-100" maxValue="100" id="3V1-lJ-Xp8"/>
                                                                                                 <connections>
                                                                                                     <action selector="updateStepperCellAngleBeta:" target="b7G-Em-dfk" id="uXf-yh-wNe"/>
@@ -482,10 +486,10 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="RFS-mI-0to" column="fqK-AM-A6k" id="BLz-l6-SHP">
                                                                                     <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="bottom" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hdd-bE-RlA">
-                                                                                        <rect key="frame" x="16" y="0.0" width="100" height="22"/>
+                                                                                        <rect key="frame" x="18" y="0.0" width="249" height="22"/>
                                                                                         <subviews>
-                                                                                            <textField verticalHuggingPriority="750" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="F4n-0X-eeO">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="21"/>
+                                                                                            <textField horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="F4n-0X-eeO">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="234" height="22"/>
                                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Length c" drawsBackground="YES" id="QHx-PC-pGJ">
                                                                                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="Loc-22-eza"/>
                                                                                                     <font key="font" metaFont="system"/>
@@ -496,8 +500,8 @@
                                                                                                     <action selector="changedCellLengthC:" target="b7G-Em-dfk" id="HA9-QA-EF5"/>
                                                                                                 </connections>
                                                                                             </textField>
-                                                                                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" tag="22" translatesAutoresizingMaskIntoConstraints="NO" id="3GN-sT-M6J">
-                                                                                                <rect key="frame" x="84" y="-3" width="19" height="28"/>
+                                                                                            <stepper horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="22" translatesAutoresizingMaskIntoConstraints="NO" id="3GN-sT-M6J">
+                                                                                                <rect key="frame" x="233" y="-3" width="19" height="28"/>
                                                                                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="-100" maxValue="100" id="aNc-LJ-pQD"/>
                                                                                                 <connections>
                                                                                                     <action selector="updateStepperCellLengthC:" target="b7G-Em-dfk" id="DhV-0k-KWs"/>
@@ -516,7 +520,7 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="RFS-mI-0to" column="bLf-ag-dLX" id="u0K-FW-RAf">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="HDB-Il-18U">
-                                                                                        <rect key="frame" x="120" y="3" width="12" height="16"/>
+                                                                                        <rect key="frame" x="274" y="3" width="11" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="ɣ" id="AeQ-3d-ynD">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -526,10 +530,10 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="RFS-mI-0to" column="Kb8-TI-Kyl" id="GPp-51-sjy">
                                                                                     <stackView key="contentView" distribution="fill" orientation="horizontal" alignment="bottom" spacing="3" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RuJ-Q9-c69">
-                                                                                        <rect key="frame" x="136" y="0.0" width="100" height="22"/>
+                                                                                        <rect key="frame" x="291" y="0.0" width="249" height="22"/>
                                                                                         <subviews>
-                                                                                            <textField verticalHuggingPriority="750" tag="14" translatesAutoresizingMaskIntoConstraints="NO" id="5Jh-na-z9b">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="84" height="21"/>
+                                                                                            <textField horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" tag="14" translatesAutoresizingMaskIntoConstraints="NO" id="5Jh-na-z9b">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="233" height="22"/>
                                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ɣ Angle" drawsBackground="YES" id="dre-c1-hTc">
                                                                                                     <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="KFz-5q-8Vk"/>
                                                                                                     <font key="font" metaFont="system"/>
@@ -540,8 +544,8 @@
                                                                                                     <action selector="changedCellAngleGamma:" target="b7G-Em-dfk" id="e5B-ho-TF6"/>
                                                                                                 </connections>
                                                                                             </textField>
-                                                                                            <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" tag="25" translatesAutoresizingMaskIntoConstraints="NO" id="dHx-0t-Np4">
-                                                                                                <rect key="frame" x="84" y="-3" width="19" height="28"/>
+                                                                                            <stepper horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="25" translatesAutoresizingMaskIntoConstraints="NO" id="dHx-0t-Np4">
+                                                                                                <rect key="frame" x="233" y="-3" width="19" height="28"/>
                                                                                                 <stepperCell key="cell" continuous="YES" alignment="left" minValue="-100" maxValue="100" id="hjw-79-hzN"/>
                                                                                                 <connections>
                                                                                                     <action selector="updateStepperCellAngleGamma:" target="b7G-Em-dfk" id="x0r-yT-hHd"/>
@@ -571,225 +575,242 @@
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="VD9-HW-0Zr" firstAttribute="top" secondItem="Yur-00-G6O" secondAttribute="top" constant="8" id="73h-qn-ggN"/>
-                                                                <constraint firstAttribute="height" constant="174" id="Pdp-1N-FlU"/>
                                                                 <constraint firstAttribute="trailing" secondItem="VD9-HW-0Zr" secondAttribute="trailing" constant="20" symbolic="YES" id="f4B-EO-0Mg"/>
                                                                 <constraint firstItem="VD9-HW-0Zr" firstAttribute="leading" secondItem="Yur-00-G6O" secondAttribute="leading" constant="8" id="fQx-OQ-ciL"/>
                                                                 <constraint firstAttribute="bottom" secondItem="VD9-HW-0Zr" secondAttribute="bottom" constant="8" id="llK-6Z-Vrf"/>
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="BoxUnitCellInfoCell" translatesAutoresizingMaskIntoConstraints="NO" id="Fwe-lg-1Nb" userLabel="Box Unit Cell Info Cell">
-                                                            <rect key="frame" x="1" y="519" width="495" height="135"/>
+                                                            <rect key="frame" x="1" y="294" width="495" height="135"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mGJ-em-Net">
                                                                     <rect key="frame" x="8" y="8" width="467" height="119"/>
                                                                     <subviews>
-                                                                        <gridView xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="28" columnSpacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="0zn-Cb-g27">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="243" height="119"/>
-                                                                            <rows>
-                                                                                <gridRow id="23S-fX-bdK"/>
-                                                                                <gridRow id="h6G-6O-DZq"/>
-                                                                                <gridRow id="QH5-SL-jef"/>
-                                                                            </rows>
-                                                                            <columns>
-                                                                                <gridColumn id="u8s-O1-k2R"/>
-                                                                                <gridColumn id="b4U-Mr-vUO"/>
-                                                                                <gridColumn id="QMb-a8-6CE"/>
-                                                                                <gridColumn id="Qqv-en-zcQ"/>
-                                                                                <gridColumn id="Eek-KI-Hhm"/>
-                                                                                <gridColumn id="HOy-4O-s43"/>
-                                                                            </columns>
-                                                                            <gridCells>
-                                                                                <gridCell row="23S-fX-bdK" column="u8s-O1-k2R" id="piY-yP-me8">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bl1-VB-tKg">
-                                                                                        <rect key="frame" x="-2" y="98" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="AX" id="q87-Wf-RMj">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="23S-fX-bdK" column="b4U-Mr-vUO" id="JET-CG-mkT">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WYz-AG-owI">
-                                                                                        <rect key="frame" x="42" y="98" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ax" drawsBackground="YES" id="hx7-iu-woV">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="vGS-nD-g15"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="23S-fX-bdK" column="QMb-a8-6CE" id="GS1-b3-1OC">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pav-J2-GCD">
-                                                                                        <rect key="frame" x="87" y="98" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BX" id="qzc-iK-Ddm">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="23S-fX-bdK" column="Qqv-en-zcQ" id="6b1-Hj-okT">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="ggl-Tu-ss4">
-                                                                                        <rect key="frame" x="131" y="98" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="bx" drawsBackground="YES" id="fyC-NT-WE4">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="hHc-an-BWI"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="23S-fX-bdK" column="Eek-KI-Hhm" id="mfu-g5-obn">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ujC-29-T9n">
-                                                                                        <rect key="frame" x="176" y="98" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="CX" id="abl-im-dvl">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="23S-fX-bdK" column="HOy-4O-s43" id="fIy-Cz-eQW">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="D85-19-gjx">
-                                                                                        <rect key="frame" x="220" y="98" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="cx" drawsBackground="YES" id="pqT-rt-W8M">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="qDX-DQ-vYA"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="h6G-6O-DZq" column="u8s-O1-k2R" id="7ya-rx-pk5">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cs1-Le-lzL">
-                                                                                        <rect key="frame" x="-2" y="49" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="AY" id="DMt-1o-jxX">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="h6G-6O-DZq" column="b4U-Mr-vUO" id="7Pt-Kv-dTL">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="GXB-rs-tyW">
-                                                                                        <rect key="frame" x="42" y="49" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ay" drawsBackground="YES" id="R4U-X2-ZJs">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="GPm-PT-LEI"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="h6G-6O-DZq" column="QMb-a8-6CE" id="1DF-pj-EaL">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8c0-zq-QxF">
-                                                                                        <rect key="frame" x="87" y="49" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BY" id="ug2-Cb-fdV">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="h6G-6O-DZq" column="Qqv-en-zcQ" id="sYA-ce-zFr">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="lWy-xr-Pkm">
-                                                                                        <rect key="frame" x="131" y="49" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="by" drawsBackground="YES" id="f5k-y5-5L1">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="H8J-az-2WY"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="h6G-6O-DZq" column="Eek-KI-Hhm" id="Gat-Gc-lbb">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bmN-JV-sW2">
-                                                                                        <rect key="frame" x="176" y="49" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="CY" id="OU6-Uu-uVv">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="h6G-6O-DZq" column="HOy-4O-s43" id="9MT-hK-9RL">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="7" translatesAutoresizingMaskIntoConstraints="NO" id="qAD-M2-hIl">
-                                                                                        <rect key="frame" x="220" y="49" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="cy" drawsBackground="YES" id="NtP-sh-9XR">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="w1L-b3-gkf"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="QH5-SL-jef" column="u8s-O1-k2R" id="qzz-eo-cSm">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F8O-g4-LkA">
-                                                                                        <rect key="frame" x="-2" y="0.0" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="AZ" id="bTK-cR-IRN">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="QH5-SL-jef" column="b4U-Mr-vUO" id="MQd-Od-JLb">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="NKu-04-ayr">
-                                                                                        <rect key="frame" x="42" y="0.0" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="az" drawsBackground="YES" id="Rb3-t0-5yA">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="Lm4-Ri-rhr"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="QH5-SL-jef" column="QMb-a8-6CE" id="P7l-8T-nEH">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="M9k-eV-pNK">
-                                                                                        <rect key="frame" x="87" y="0.0" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BZ" id="RpE-4F-UFL">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="QH5-SL-jef" column="Qqv-en-zcQ" id="McG-BP-liR">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="zrI-aw-9Uz">
-                                                                                        <rect key="frame" x="131" y="0.0" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="bz" drawsBackground="YES" id="0mz-pu-d5l">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="Ksc-De-kaX"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="QH5-SL-jef" column="Eek-KI-Hhm" id="7hy-7E-KaZ">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x3W-mN-6Ce">
-                                                                                        <rect key="frame" x="176" y="0.0" width="22" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="CZ" id="U3N-UV-Jmi">
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                                <gridCell row="QH5-SL-jef" column="HOy-4O-s43" id="fsk-Qi-cf4">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="2qq-rs-f9c">
-                                                                                        <rect key="frame" x="220" y="0.0" width="23" height="21"/>
-                                                                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="cz" drawsBackground="YES" id="VU3-db-82D">
-                                                                                            <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="y7T-eI-xYH"/>
-                                                                                            <font key="font" metaFont="system"/>
-                                                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </gridCell>
-                                                                            </gridCells>
-                                                                        </gridView>
+                                                                        <box horizontalHuggingPriority="240" verticalHuggingPriority="240" borderType="line" title="Box Matrix (Read Only)" translatesAutoresizingMaskIntoConstraints="NO" id="tF3-vm-zpF">
+                                                                            <rect key="frame" x="-3" y="-4" width="473" height="123"/>
+                                                                            <view key="contentView" horizontalHuggingPriority="230" verticalHuggingPriority="230" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JIP-oi-K5c">
+                                                                                <rect key="frame" x="3" y="3" width="467" height="105"/>
+                                                                                <subviews>
+                                                                                    <gridView horizontalHuggingPriority="220" verticalHuggingPriority="220" verticalCompressionResistancePriority="760" xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="10" columnSpacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0zn-Cb-g27">
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="173" height="83"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstItem="D85-19-gjx" firstAttribute="width" secondItem="WYz-AG-owI" secondAttribute="width" id="6EM-5W-9kv"/>
+                                                                                            <constraint firstItem="ggl-Tu-ss4" firstAttribute="width" secondItem="WYz-AG-owI" secondAttribute="width" id="ul8-yI-wCA"/>
+                                                                                        </constraints>
+                                                                                        <rows>
+                                                                                            <gridRow rowAlignment="firstBaseline" id="23S-fX-bdK"/>
+                                                                                            <gridRow rowAlignment="firstBaseline" id="h6G-6O-DZq"/>
+                                                                                            <gridRow rowAlignment="firstBaseline" id="QH5-SL-jef"/>
+                                                                                        </rows>
+                                                                                        <columns>
+                                                                                            <gridColumn id="u8s-O1-k2R"/>
+                                                                                            <gridColumn id="b4U-Mr-vUO"/>
+                                                                                            <gridColumn id="QMb-a8-6CE"/>
+                                                                                            <gridColumn id="Qqv-en-zcQ"/>
+                                                                                            <gridColumn id="Eek-KI-Hhm"/>
+                                                                                            <gridColumn id="HOy-4O-s43"/>
+                                                                                        </columns>
+                                                                                        <gridCells>
+                                                                                            <gridCell row="23S-fX-bdK" column="u8s-O1-k2R" id="piY-yP-me8">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bl1-VB-tKg">
+                                                                                                    <rect key="frame" x="-2" y="65" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="AX" id="q87-Wf-RMj">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="23S-fX-bdK" column="b4U-Mr-vUO" id="JET-CG-mkT">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" translatesAutoresizingMaskIntoConstraints="NO" id="WYz-AG-owI">
+                                                                                                    <rect key="frame" x="28" y="62" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ax" drawsBackground="YES" id="hx7-iu-woV">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="vGS-nD-g15"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="23S-fX-bdK" column="QMb-a8-6CE" id="GS1-b3-1OC">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pav-J2-GCD">
+                                                                                                    <rect key="frame" x="59" y="65" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BX" id="qzc-iK-Ddm">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="23S-fX-bdK" column="Qqv-en-zcQ" id="6b1-Hj-okT">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="ggl-Tu-ss4">
+                                                                                                    <rect key="frame" x="89" y="62" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="bx" drawsBackground="YES" id="fyC-NT-WE4">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="hHc-an-BWI"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="23S-fX-bdK" column="Eek-KI-Hhm" id="mfu-g5-obn">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ujC-29-T9n">
+                                                                                                    <rect key="frame" x="120" y="65" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="CX" id="abl-im-dvl">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="23S-fX-bdK" column="HOy-4O-s43" id="fIy-Cz-eQW">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="D85-19-gjx">
+                                                                                                    <rect key="frame" x="150" y="62" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="cx" drawsBackground="YES" id="pqT-rt-W8M">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="qDX-DQ-vYA"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="h6G-6O-DZq" column="u8s-O1-k2R" id="7ya-rx-pk5">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cs1-Le-lzL">
+                                                                                                    <rect key="frame" x="-2" y="34" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="AY" id="DMt-1o-jxX">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="h6G-6O-DZq" column="b4U-Mr-vUO" id="7Pt-Kv-dTL">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="GXB-rs-tyW">
+                                                                                                    <rect key="frame" x="28" y="31" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ay" drawsBackground="YES" id="R4U-X2-ZJs">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="GPm-PT-LEI"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="h6G-6O-DZq" column="QMb-a8-6CE" id="1DF-pj-EaL">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8c0-zq-QxF">
+                                                                                                    <rect key="frame" x="59" y="34" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BY" id="ug2-Cb-fdV">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="h6G-6O-DZq" column="Qqv-en-zcQ" id="sYA-ce-zFr">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="lWy-xr-Pkm">
+                                                                                                    <rect key="frame" x="89" y="31" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="by" drawsBackground="YES" id="f5k-y5-5L1">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="H8J-az-2WY"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="h6G-6O-DZq" column="Eek-KI-Hhm" id="Gat-Gc-lbb">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bmN-JV-sW2">
+                                                                                                    <rect key="frame" x="120" y="34" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="CY" id="OU6-Uu-uVv">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="h6G-6O-DZq" column="HOy-4O-s43" id="9MT-hK-9RL">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" tag="7" translatesAutoresizingMaskIntoConstraints="NO" id="qAD-M2-hIl">
+                                                                                                    <rect key="frame" x="150" y="31" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="cy" drawsBackground="YES" id="NtP-sh-9XR">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="w1L-b3-gkf"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="QH5-SL-jef" column="u8s-O1-k2R" id="qzz-eo-cSm">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F8O-g4-LkA">
+                                                                                                    <rect key="frame" x="-2" y="3" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="AZ" id="bTK-cR-IRN">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="QH5-SL-jef" column="b4U-Mr-vUO" id="MQd-Od-JLb">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="NKu-04-ayr">
+                                                                                                    <rect key="frame" x="28" y="0.0" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="az" drawsBackground="YES" id="Rb3-t0-5yA">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="Lm4-Ri-rhr"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="QH5-SL-jef" column="QMb-a8-6CE" id="P7l-8T-nEH">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="M9k-eV-pNK">
+                                                                                                    <rect key="frame" x="59" y="3" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="BZ" id="RpE-4F-UFL">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="QH5-SL-jef" column="Qqv-en-zcQ" id="McG-BP-liR">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="zrI-aw-9Uz">
+                                                                                                    <rect key="frame" x="89" y="0.0" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="bz" drawsBackground="YES" id="0mz-pu-d5l">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="Ksc-De-kaX"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="QH5-SL-jef" column="Eek-KI-Hhm" id="7hy-7E-KaZ">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x3W-mN-6Ce">
+                                                                                                    <rect key="frame" x="120" y="3" width="22" height="16"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="CZ" id="U3N-UV-Jmi">
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                            <gridCell row="QH5-SL-jef" column="HOy-4O-s43" id="fsk-Qi-cf4">
+                                                                                                <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="2qq-rs-f9c">
+                                                                                                    <rect key="frame" x="150" y="0.0" width="23" height="21"/>
+                                                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="cz" drawsBackground="YES" id="VU3-db-82D">
+                                                                                                        <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="y7T-eI-xYH"/>
+                                                                                                        <font key="font" metaFont="system"/>
+                                                                                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                                                    </textFieldCell>
+                                                                                                </textField>
+                                                                                            </gridCell>
+                                                                                        </gridCells>
+                                                                                    </gridView>
+                                                                                </subviews>
+                                                                                <constraints>
+                                                                                    <constraint firstItem="0zn-Cb-g27" firstAttribute="leading" secondItem="JIP-oi-K5c" secondAttribute="leading" id="Egu-vh-FiQ"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="0zn-Cb-g27" secondAttribute="trailing" id="HYM-uw-pwn"/>
+                                                                                    <constraint firstAttribute="bottom" secondItem="0zn-Cb-g27" secondAttribute="bottom" id="T3h-Ri-VOl"/>
+                                                                                    <constraint firstItem="0zn-Cb-g27" firstAttribute="top" secondItem="JIP-oi-K5c" secondAttribute="top" id="tJE-Ot-HXh"/>
+                                                                                </constraints>
+                                                                            </view>
+                                                                        </box>
                                                                     </subviews>
                                                                     <visibilityPriorities>
                                                                         <integer value="1000"/>
@@ -807,13 +828,17 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="BoxVolumeCell" translatesAutoresizingMaskIntoConstraints="NO" id="w6D-DS-NrP" userLabel="Box Volume Cell">
-                                                            <rect key="frame" x="1" y="656" width="495" height="82"/>
+                                                            <rect key="frame" x="1" y="431" width="495" height="82"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dki-2f-xxO">
                                                                     <rect key="frame" x="8" y="8" width="467" height="66"/>
                                                                     <subviews>
-                                                                        <gridView xPlacement="leading" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="12" columnSpacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="753-BW-TEJ">
+                                                                        <gridView horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" xPlacement="leading" yPlacement="fill" rowAlignment="firstBaseline" rowSpacing="12" columnSpacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="753-BW-TEJ">
                                                                             <rect key="frame" x="0.0" y="0.0" width="467" height="66"/>
+                                                                            <constraints>
+                                                                                <constraint firstItem="PFB-M7-Y8s" firstAttribute="width" secondItem="ZZY-PF-CAV" secondAttribute="width" id="C3O-un-mPO"/>
+                                                                                <constraint firstItem="CD5-Pe-4OZ" firstAttribute="width" secondItem="ZZY-PF-CAV" secondAttribute="width" id="aTK-92-xrS"/>
+                                                                            </constraints>
                                                                             <rows>
                                                                                 <gridRow id="7Qw-ZB-XHf"/>
                                                                                 <gridRow id="ggs-22-rKO"/>
@@ -821,13 +846,13 @@
                                                                             <columns>
                                                                                 <gridColumn xPlacement="trailing" id="eHR-Dq-Q9H"/>
                                                                                 <gridColumn xPlacement="fill" id="USp-U2-GO9"/>
-                                                                                <gridColumn id="EDc-2B-KKR"/>
-                                                                                <gridColumn id="1KE-g5-Al3"/>
+                                                                                <gridColumn xPlacement="fill" id="EDc-2B-KKR"/>
+                                                                                <gridColumn xPlacement="fill" id="1KE-g5-Al3"/>
                                                                             </columns>
                                                                             <gridCells>
                                                                                 <gridCell row="7Qw-ZB-XHf" column="eHR-Dq-Q9H" id="40Z-ZQ-blR">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="XqX-Zz-sv8">
-                                                                                        <rect key="frame" x="-2" y="33" width="135" height="31"/>
+                                                                                    <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="XqX-Zz-sv8">
+                                                                                        <rect key="frame" x="84" y="33" width="49" height="31"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Volume" id="OfX-2V-31n">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -836,8 +861,8 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="7Qw-ZB-XHf" column="USp-U2-GO9" id="09v-kf-PzF">
-                                                                                    <textField key="contentView" verticalHuggingPriority="750" tag="15" translatesAutoresizingMaskIntoConstraints="NO" id="FFD-aa-tSR">
-                                                                                        <rect key="frame" x="143" y="45" width="57" height="21"/>
+                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="740" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="15" translatesAutoresizingMaskIntoConstraints="NO" id="FFD-aa-tSR">
+                                                                                        <rect key="frame" x="143" y="45" width="100" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Volume" drawsBackground="YES" id="RAD-Mk-7MY">
                                                                                             <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="tkP-i6-P0p"/>
                                                                                             <font key="font" metaFont="system"/>
@@ -859,8 +884,8 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="ggs-22-rKO" column="USp-U2-GO9" id="iD3-s7-KK9">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="16" translatesAutoresizingMaskIntoConstraints="NO" id="ZZY-PF-CAV">
-                                                                                        <rect key="frame" x="143" y="0.0" width="57" height="21"/>
+                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="740" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="16" translatesAutoresizingMaskIntoConstraints="NO" id="ZZY-PF-CAV">
+                                                                                        <rect key="frame" x="143" y="0.0" width="100" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Width X" drawsBackground="YES" id="8D1-xf-EQg">
                                                                                             <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Izq-6O-6Ox"/>
                                                                                             <font key="font" metaFont="system"/>
@@ -870,8 +895,8 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="ggs-22-rKO" column="EDc-2B-KKR" id="06d-0J-81t">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="17" translatesAutoresizingMaskIntoConstraints="NO" id="PFB-M7-Y8s">
-                                                                                        <rect key="frame" x="212" y="0.0" width="187" height="21"/>
+                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="740" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="17" translatesAutoresizingMaskIntoConstraints="NO" id="PFB-M7-Y8s">
+                                                                                        <rect key="frame" x="255" y="0.0" width="100" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Width Y" drawsBackground="YES" id="4Kr-Kc-oKG">
                                                                                             <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="DSN-BX-w9a"/>
                                                                                             <font key="font" metaFont="system"/>
@@ -881,8 +906,8 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="ggs-22-rKO" column="1KE-g5-Al3" id="DYY-e5-XoW">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="241" verticalHuggingPriority="260" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="18" translatesAutoresizingMaskIntoConstraints="NO" id="CD5-Pe-4OZ">
-                                                                                        <rect key="frame" x="411" y="0.0" width="56" height="21"/>
+                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="740" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="18" translatesAutoresizingMaskIntoConstraints="NO" id="CD5-Pe-4OZ">
+                                                                                        <rect key="frame" x="367" y="0.0" width="100" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Width Z" drawsBackground="YES" id="M3B-3E-Pj6">
                                                                                             <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="mJM-uo-FJt"/>
                                                                                             <font key="font" metaFont="system"/>
@@ -910,7 +935,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="BoxReplicasCell" translatesAutoresizingMaskIntoConstraints="NO" id="u8n-pG-pFj" userLabel="Box Replicas Cell">
-                                                            <rect key="frame" x="1" y="740" width="509" height="69"/>
+                                                            <rect key="frame" x="1" y="515" width="509" height="69"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HDg-s8-rdB">
                                                                     <rect key="frame" x="8" y="8" width="481" height="53"/>
@@ -1169,27 +1194,26 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="BoxOrientationCell" translatesAutoresizingMaskIntoConstraints="NO" id="tav-6s-NEt" userLabel="Box Orientation Cell">
-                                                            <rect key="frame" x="1" y="811" width="558" height="220"/>
+                                                            <rect key="frame" x="1" y="586" width="500" height="220"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gal-Bx-MVA">
-                                                                    <rect key="frame" x="8" y="8" width="530" height="204"/>
+                                                                    <rect key="frame" x="8" y="8" width="472" height="204"/>
                                                                     <subviews>
                                                                         <box horizontalHuggingPriority="240" verticalHuggingPriority="240" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" borderType="line" title="Orientation" translatesAutoresizingMaskIntoConstraints="NO" id="2sE-L5-Mde">
-                                                                            <rect key="frame" x="-3" y="-4" width="536" height="208"/>
-                                                                            <view key="contentView" id="7pI-9w-klk">
-                                                                                <rect key="frame" x="3" y="3" width="530" height="190"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                            <rect key="frame" x="-3" y="-4" width="478" height="208"/>
+                                                                            <view key="contentView" horizontalHuggingPriority="230" verticalHuggingPriority="230" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7pI-9w-klk">
+                                                                                <rect key="frame" x="3" y="3" width="472" height="190"/>
                                                                                 <subviews>
-                                                                                    <stackView distribution="fill" orientation="horizontal" alignment="bottom" spacing="21" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tyi-kH-wJG">
-                                                                                        <rect key="frame" x="4" y="4" width="522" height="182"/>
+                                                                                    <stackView distribution="fill" orientation="horizontal" alignment="bottom" spacing="21" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tyi-kH-wJG" userLabel="Stack View Horizontal Orientation">
+                                                                                        <rect key="frame" x="4" y="4" width="477" height="182"/>
                                                                                         <subviews>
-                                                                                            <gridView xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="14" columnSpacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="P3s-7l-JtH">
+                                                                                            <gridView horizontalHuggingPriority="220" verticalHuggingPriority="220" xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="14" columnSpacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="P3s-7l-JtH">
                                                                                                 <rect key="frame" x="0.0" y="0.0" width="207" height="123"/>
                                                                                                 <rows>
-                                                                                                    <gridRow id="6X5-ch-kxl"/>
-                                                                                                    <gridRow id="unE-nd-Nzz"/>
-                                                                                                    <gridRow id="rNY-7g-DXc"/>
-                                                                                                    <gridRow id="Ty5-wA-cpK"/>
+                                                                                                    <gridRow rowAlignment="firstBaseline" id="6X5-ch-kxl"/>
+                                                                                                    <gridRow rowAlignment="firstBaseline" id="unE-nd-Nzz"/>
+                                                                                                    <gridRow rowAlignment="firstBaseline" id="rNY-7g-DXc"/>
+                                                                                                    <gridRow rowAlignment="firstBaseline" id="Ty5-wA-cpK"/>
                                                                                                 </rows>
                                                                                                 <columns>
                                                                                                     <gridColumn id="sCb-lD-P98"/>
@@ -1198,7 +1222,7 @@
                                                                                                 <gridCells>
                                                                                                     <gridCell row="6X5-ch-kxl" column="sCb-lD-P98" id="BOi-PK-Yeb">
                                                                                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DJb-SW-K9q">
-                                                                                                            <rect key="frame" x="-2" y="102" width="93" height="21"/>
+                                                                                                            <rect key="frame" x="-2" y="105" width="93" height="16"/>
                                                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Rotation Angle" id="dIk-F3-XKu">
                                                                                                                 <font key="font" metaFont="system"/>
                                                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1294,11 +1318,11 @@
                                                                                                     </gridCell>
                                                                                                 </gridCells>
                                                                                             </gridView>
-                                                                                            <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="CXv-Oj-dh1">
+                                                                                            <box horizontalHuggingPriority="760" verticalHuggingPriority="220" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="CXv-Oj-dh1">
                                                                                                 <rect key="frame" x="226" y="0.0" width="5" height="182"/>
                                                                                             </box>
-                                                                                            <gridView xPlacement="center" yPlacement="fill" rowAlignment="none" rowSpacing="12" columnSpacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="iGN-gD-MGl">
-                                                                                                <rect key="frame" x="250" y="0.0" width="272" height="182"/>
+                                                                                            <gridView horizontalHuggingPriority="220" verticalHuggingPriority="220" xPlacement="center" yPlacement="fill" rowAlignment="none" rowSpacing="12" columnSpacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="iGN-gD-MGl">
+                                                                                                <rect key="frame" x="250" y="0.0" width="227" height="182"/>
                                                                                                 <rows>
                                                                                                     <gridRow yPlacement="top" id="Hmh-0k-JoL"/>
                                                                                                     <gridRow id="35N-Z3-sKN"/>
@@ -1311,8 +1335,8 @@
                                                                                                 </columns>
                                                                                                 <gridCells>
                                                                                                     <gridCell row="Hmh-0k-JoL" column="ryn-2g-NY7" id="vEs-uO-fkM">
-                                                                                                        <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OOU-eQ-ne9">
-                                                                                                            <rect key="frame" x="33" y="166" width="80" height="16"/>
+                                                                                                        <textField key="contentView" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="OOU-eQ-ne9">
+                                                                                                            <rect key="frame" x="10" y="166" width="80" height="16"/>
                                                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Euler Angles" id="ZnC-Km-HZJ">
                                                                                                                 <font key="font" metaFont="system"/>
                                                                                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1322,8 +1346,8 @@
                                                                                                     </gridCell>
                                                                                                     <gridCell row="Hmh-0k-JoL" column="Ko7-tL-Z9T" id="pO1-hy-yXg"/>
                                                                                                     <gridCell row="35N-Z3-sKN" column="ryn-2g-NY7" id="Thb-rG-POc">
-                                                                                                        <slider key="contentView" horizontalHuggingPriority="750" verticalHuggingPriority="750" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="T85-ie-Ocz">
-                                                                                                            <rect key="frame" x="59" y="66" width="28" height="30"/>
+                                                                                                        <slider key="contentView" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="T85-ie-Ocz">
+                                                                                                            <rect key="frame" x="36" y="65" width="28" height="30"/>
                                                                                                             <sliderCell key="cell" continuous="YES" alignment="left" minValue="-180" maxValue="180" sliderType="circular" id="dDl-lk-Vbu"/>
                                                                                                             <connections>
                                                                                                                 <action selector="changeRotationYawSlider:" target="b7G-Em-dfk" id="pNq-o7-awo"/>
@@ -1331,8 +1355,8 @@
                                                                                                         </slider>
                                                                                                     </gridCell>
                                                                                                     <gridCell row="35N-Z3-sKN" column="Ko7-tL-Z9T" id="ZFi-7S-Ot8">
-                                                                                                        <textField key="contentView" verticalHuggingPriority="750" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="VZr-SI-h1W">
-                                                                                                            <rect key="frame" x="172" y="69" width="100" height="24"/>
+                                                                                                        <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" tag="13" translatesAutoresizingMaskIntoConstraints="NO" id="VZr-SI-h1W">
+                                                                                                            <rect key="frame" x="127" y="68" width="100" height="24"/>
                                                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Angle X" drawsBackground="YES" id="sHe-dm-0Lo">
                                                                                                                 <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="Ej8-8d-bpk"/>
                                                                                                                 <font key="font" metaFont="system"/>
@@ -1345,8 +1369,8 @@
                                                                                                         </textField>
                                                                                                     </gridCell>
                                                                                                     <gridCell row="eFO-LA-L8I" column="ryn-2g-NY7" id="3ks-3R-YNw">
-                                                                                                        <slider key="contentView" horizontalHuggingPriority="750" verticalHuggingPriority="750" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="rnC-KQ-RLK">
-                                                                                                            <rect key="frame" x="59" y="30" width="28" height="30"/>
+                                                                                                        <slider key="contentView" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="rnC-KQ-RLK">
+                                                                                                            <rect key="frame" x="36" y="29" width="28" height="30"/>
                                                                                                             <sliderCell key="cell" continuous="YES" alignment="left" minValue="-180" maxValue="180" sliderType="circular" id="AFb-2U-b2i"/>
                                                                                                             <connections>
                                                                                                                 <action selector="changeRotationPitchSlider:" target="b7G-Em-dfk" id="fqA-Lp-HWe"/>
@@ -1354,8 +1378,8 @@
                                                                                                         </slider>
                                                                                                     </gridCell>
                                                                                                     <gridCell row="eFO-LA-L8I" column="Ko7-tL-Z9T" id="zF5-XW-6AS">
-                                                                                                        <textField key="contentView" verticalHuggingPriority="750" tag="14" translatesAutoresizingMaskIntoConstraints="NO" id="JW6-ak-9Up">
-                                                                                                            <rect key="frame" x="172" y="33" width="100" height="24"/>
+                                                                                                        <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" tag="14" translatesAutoresizingMaskIntoConstraints="NO" id="JW6-ak-9Up">
+                                                                                                            <rect key="frame" x="127" y="32" width="100" height="24"/>
                                                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Angle Z" drawsBackground="YES" id="PV6-bk-AS4">
                                                                                                                 <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="xgs-ob-CNz"/>
                                                                                                                 <font key="font" metaFont="system"/>
@@ -1368,8 +1392,8 @@
                                                                                                         </textField>
                                                                                                     </gridCell>
                                                                                                     <gridCell row="vz6-K7-OeS" column="ryn-2g-NY7" id="VHX-99-tqc">
-                                                                                                        <slider key="contentView" verticalHuggingPriority="750" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="ffn-2x-h47">
-                                                                                                            <rect key="frame" x="21" y="-6" width="104" height="29"/>
+                                                                                                        <slider key="contentView" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="12" translatesAutoresizingMaskIntoConstraints="NO" id="ffn-2x-h47">
+                                                                                                            <rect key="frame" x="-2" y="-6" width="104" height="28"/>
                                                                                                             <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-90" maxValue="90" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="kx5-rj-172"/>
                                                                                                             <connections>
                                                                                                                 <action selector="changeRotationRollSlider:" target="b7G-Em-dfk" id="bBY-Ke-9X9"/>
@@ -1377,8 +1401,8 @@
                                                                                                         </slider>
                                                                                                     </gridCell>
                                                                                                     <gridCell row="vz6-K7-OeS" column="Ko7-tL-Z9T" id="mKC-GX-vwv">
-                                                                                                        <textField key="contentView" verticalHuggingPriority="750" tag="15" translatesAutoresizingMaskIntoConstraints="NO" id="9OF-mK-0jj">
-                                                                                                            <rect key="frame" x="172" y="0.0" width="100" height="21"/>
+                                                                                                        <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="710" horizontalCompressionResistancePriority="710" tag="15" translatesAutoresizingMaskIntoConstraints="NO" id="9OF-mK-0jj">
+                                                                                                            <rect key="frame" x="127" y="0.0" width="100" height="20"/>
                                                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Angle Y" drawsBackground="YES" id="cGa-VQ-Eds">
                                                                                                                 <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="869-ht-jiU"/>
                                                                                                                 <font key="font" metaFont="system"/>
@@ -1406,10 +1430,10 @@
                                                                                     </stackView>
                                                                                 </subviews>
                                                                                 <constraints>
-                                                                                    <constraint firstItem="Tyi-kH-wJG" firstAttribute="leading" secondItem="7pI-9w-klk" secondAttribute="leading" constant="4" id="AcE-Bh-3Pb"/>
-                                                                                    <constraint firstItem="Tyi-kH-wJG" firstAttribute="top" secondItem="7pI-9w-klk" secondAttribute="top" constant="4" id="F75-qF-z4t"/>
-                                                                                    <constraint firstAttribute="bottom" secondItem="Tyi-kH-wJG" secondAttribute="bottom" constant="4" id="KHJ-OV-f8h"/>
-                                                                                    <constraint firstAttribute="trailing" secondItem="Tyi-kH-wJG" secondAttribute="trailing" constant="4" id="N2y-6J-thH"/>
+                                                                                    <constraint firstAttribute="bottom" secondItem="Tyi-kH-wJG" secondAttribute="bottom" constant="4" id="VcI-EG-ZeX"/>
+                                                                                    <constraint firstItem="Tyi-kH-wJG" firstAttribute="leading" secondItem="7pI-9w-klk" secondAttribute="leading" constant="4" id="dXs-cO-3M0"/>
+                                                                                    <constraint firstItem="Tyi-kH-wJG" firstAttribute="top" secondItem="7pI-9w-klk" secondAttribute="top" constant="4" id="m50-6z-bmD"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="Tyi-kH-wJG" secondAttribute="trailing" constant="4" id="si2-n6-cWF"/>
                                                                                 </constraints>
                                                                             </view>
                                                                         </box>
@@ -1430,7 +1454,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="BoxOriginCell" translatesAutoresizingMaskIntoConstraints="NO" id="SCb-N8-gL8" userLabel="Box Orirgin Cell">
-                                                            <rect key="frame" x="1" y="1033" width="500" height="49"/>
+                                                            <rect key="frame" x="1" y="808" width="500" height="49"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="horizontal" alignment="bottom" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MNL-Rs-89s">
                                                                     <rect key="frame" x="8" y="4" width="472" height="41"/>
@@ -1506,7 +1530,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="TransformContentGroup" translatesAutoresizingMaskIntoConstraints="NO" id="GLE-6b-zi7" userLabel="Transform Content Group">
-                                                            <rect key="frame" x="1" y="1084" width="495" height="16"/>
+                                                            <rect key="frame" x="1" y="859" width="495" height="16"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Azx-f4-AeH">
                                                                     <rect key="frame" x="13" y="0.0" width="462" height="16"/>
@@ -1539,7 +1563,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="TransformContentCell" translatesAutoresizingMaskIntoConstraints="NO" id="jtB-HQ-2zI" userLabel="Transform Content Cell">
-                                                            <rect key="frame" x="1" y="1102" width="495" height="150"/>
+                                                            <rect key="frame" x="1" y="877" width="495" height="150"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mgg-Sa-8Av">
                                                                     <rect key="frame" x="13" y="4" width="462" height="142"/>
@@ -1769,7 +1793,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralGroup" translatesAutoresizingMaskIntoConstraints="NO" id="UW0-2I-vas" userLabel="Structural Group">
-                                                            <rect key="frame" x="1" y="1254" width="495" height="16"/>
+                                                            <rect key="frame" x="1" y="1029" width="495" height="16"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qx8-rM-3z0">
                                                                     <rect key="frame" x="13" y="0.0" width="462" height="16"/>
@@ -1802,7 +1826,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralPropertiesCell" translatesAutoresizingMaskIntoConstraints="NO" id="tbS-Tf-Zx0" userLabel="Structural Properties Cell">
-                                                            <rect key="frame" x="1" y="1272" width="497" height="181"/>
+                                                            <rect key="frame" x="1" y="1047" width="497" height="181"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-8k-mcR">
                                                                     <rect key="frame" x="13" y="4" width="464" height="173"/>
@@ -2054,7 +2078,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralProbeCell" translatesAutoresizingMaskIntoConstraints="NO" id="UOl-sD-WWY" userLabel="Structural Probe Cell">
-                                                            <rect key="frame" x="1" y="1455" width="495" height="164"/>
+                                                            <rect key="frame" x="1" y="1230" width="495" height="164"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ugh-V4-NJx">
                                                                     <rect key="frame" x="13" y="4" width="462" height="156"/>
@@ -2287,7 +2311,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="StructuralChannelCell" translatesAutoresizingMaskIntoConstraints="NO" id="vm1-h9-ojg" userLabel="Structural Channel Cell">
-                                                            <rect key="frame" x="1" y="1621" width="495" height="156"/>
+                                                            <rect key="frame" x="1" y="1396" width="495" height="156"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zng-Xu-wbV">
                                                                     <rect key="frame" x="13" y="4" width="462" height="148"/>
@@ -2476,7 +2500,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="SymmetryGroup" translatesAutoresizingMaskIntoConstraints="NO" id="SpZ-Pt-hSl" userLabel="Symmetry Group">
-                                                            <rect key="frame" x="1" y="1779" width="495" height="16"/>
+                                                            <rect key="frame" x="1" y="1554" width="495" height="16"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EPl-Hs-KP8">
                                                                     <rect key="frame" x="13" y="0.0" width="462" height="16"/>
@@ -2509,7 +2533,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="SymmetrySpaceGroupCell" translatesAutoresizingMaskIntoConstraints="NO" id="CeK-mo-Or3" userLabel="Symmetry Space Group Cell">
-                                                            <rect key="frame" x="1" y="1797" width="495" height="86"/>
+                                                            <rect key="frame" x="1" y="1572" width="495" height="86"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Te5-E6-TqU">
                                                                     <rect key="frame" x="13" y="4" width="462" height="78"/>
@@ -2667,7 +2691,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="SymmetryCenteringCell" translatesAutoresizingMaskIntoConstraints="NO" id="POJ-oq-Sri" userLabel="Symmetry Centering Cell">
-                                                            <rect key="frame" x="1" y="1885" width="495" height="58"/>
+                                                            <rect key="frame" x="1" y="1660" width="495" height="58"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4A9-vx-kAs">
                                                                     <rect key="frame" x="13" y="4" width="462" height="50"/>
@@ -2770,7 +2794,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="SymmetryPropertiesCell" translatesAutoresizingMaskIntoConstraints="NO" id="Yq1-YQ-8xg" userLabel="Symmetry Properties Cell">
-                                                            <rect key="frame" x="1" y="1945" width="495" height="269"/>
+                                                            <rect key="frame" x="1" y="1720" width="495" height="269"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jF6-Gg-0rc">
                                                                     <rect key="frame" x="13" y="4" width="462" height="261"/>
@@ -2983,7 +3007,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <customView identifier="cellTableRowView" id="CrT-Wi-gdq" customClass="CellTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="2216" width="495" height="96"/>
+                                                            <rect key="frame" x="1" y="1991" width="495" height="96"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>
