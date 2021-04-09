@@ -59,7 +59,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   weak var proxyProject: ProjectTreeNode?
     
-  var heights: [String : CGFloat] = [:]
   
   let boxMaterialInfoCell: OutlineViewItem = OutlineViewItem("BoxMaterialInfoCell")
   let boxBoundingBoxInfoCell: OutlineViewItem = OutlineViewItem("BoxBoundingBoxInfoCell")
@@ -103,31 +102,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
     self.cellOutlineView?.items = [cellStructureItem, cellContentTransformItem, structuralPropertiesItem, symmetryItem]
     
-    
-    self.heights =
-    [
-      "BoxGroup" : 17.0,
-      "BoxBoundingBoxInfoCell" : 160.0,
-      "BoxUnitCellPropertiesCell" : 174.0,
-      "BoxUnitCellInfoCell" : 166.0,
-      "BoxVolumeCell" : 94.0,
-      "BoxReplicasCell" : 78.0,
-      "BoxOrientationCell" : 150.0,
-      "BoxOriginCell" : 49.0,
-      
-      "TransformContentGroup" : 17.0,
-      "TransformContentCell" : 150.0,
-      
-      "StructuralGroup" : 17.0,
-      "StructuralPropertiesCell" : 213.0,
-      "StructuralProbeCell" : 188.0,
-      "StructuralChannelCell" : 187.0,
-      
-      "SymmetryGroup" : 17.0,
-      "SymmetrySpaceGroupCell" : 115,
-      "SymmetryCenteringCell" : 76,
-      "SymmetryPropertiesCell" : 270
-    ]
   }
   
   override func viewWillAppear()
@@ -258,8 +232,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     switch(identifier)
     {
-    case "SimulationCellBoundingBoxCell":
-      if let popUpbuttonRepresentationType: iRASPAPopUpButton = view.viewWithTag(91) as? iRASPAPopUpButton
+    case "BoxMaterialInfoCell":
+      if let popUpbuttonRepresentationType: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonRepresentationType.isEditable = false
         popUpbuttonRepresentationType.isEnabled = false
@@ -302,6 +276,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
         
       }
+    case "BoxBoundingBoxInfoCell":
+   
       if let textFieldMaximumX: NSTextField = view.viewWithTag(1) as? NSTextField,
          let textFieldMaximumY: NSTextField = view.viewWithTag(2) as? NSTextField,
          let textFieldMaximumZ: NSTextField = view.viewWithTag(3) as? NSTextField,
@@ -331,286 +307,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           textFieldMinimumZ.doubleValue = representedStructure.renderBoundingBox.minimum.z
         }
       }
-    case "SimulationCellPropertiesCell":
-      if let textFieldRenderUnitCellAX: NSTextField = view.viewWithTag(0) as? NSTextField
-      {
-        textFieldRenderUnitCellAX.isEditable = false
-        textFieldRenderUnitCellAX.stringValue = ""
-        textFieldRenderUnitCellAX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellAX.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellAX: Double = representedStructure.renderUnitCellAX
-          {
-            textFieldRenderUnitCellAX.doubleValue = renderUnitCellAX
-          }
-          else
-          {
-            textFieldRenderUnitCellAX.stringValue = "Mult. Val."
-          }
-        }
-      }
-      if let textFieldRenderUnitCellAY: NSTextField = view.viewWithTag(1) as? NSTextField
-      {
-        textFieldRenderUnitCellAY.isEditable = false
-        textFieldRenderUnitCellAY.stringValue = ""
-        textFieldRenderUnitCellAY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellAY.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellAY: Double = representedStructure.renderUnitCellAY
-          {
-            textFieldRenderUnitCellAY.doubleValue = renderUnitCellAY
-          }
-          else
-          {
-            textFieldRenderUnitCellAY.stringValue = "Mult. Val."
-          }
-        }
-      }
-      if let textFieldRenderUnitCellAZ: NSTextField = view.viewWithTag(2) as? NSTextField
-      {
-        textFieldRenderUnitCellAZ.isEditable = false
-        textFieldRenderUnitCellAZ.stringValue = ""
-        textFieldRenderUnitCellAZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellAZ.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellAZ: Double = representedStructure.renderUnitCellAZ
-          {
-            textFieldRenderUnitCellAZ.doubleValue = renderUnitCellAZ
-          }
-          else
-          {
-            textFieldRenderUnitCellAZ.stringValue = "Mult. Val."
-          }
-        }
-      }
-      
-      if let textFieldRenderUnitCellBX: NSTextField = view.viewWithTag(3) as? NSTextField
-      {
-        textFieldRenderUnitCellBX.isEditable = false
-        textFieldRenderUnitCellBX.stringValue = ""
-        textFieldRenderUnitCellBX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellBX.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellBX: Double = representedStructure.renderUnitCellBX
-          {
-            textFieldRenderUnitCellBX.doubleValue = renderUnitCellBX
-          }
-          else
-          {
-            textFieldRenderUnitCellBX.stringValue = "Mult. Val."
-          }
-        }
-      }
-      if let textFieldRenderUnitCellBY: NSTextField = view.viewWithTag(4) as? NSTextField
-      {
-        textFieldRenderUnitCellBY.isEditable = false
-        textFieldRenderUnitCellBY.stringValue = ""
-        textFieldRenderUnitCellBY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellBY.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellBY: Double = representedStructure.renderUnitCellBY
-          {
-            textFieldRenderUnitCellBY.doubleValue = renderUnitCellBY
-          }
-          else
-          {
-            textFieldRenderUnitCellBY.stringValue = "Mult. Val."
-          }
-        }
-      }
-      if let textFieldRenderUnitCellBZ: NSTextField = view.viewWithTag(5) as? NSTextField
-      {
-        textFieldRenderUnitCellBZ.isEditable = false
-        textFieldRenderUnitCellBZ.stringValue = ""
-        textFieldRenderUnitCellBZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellBZ.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellBZ: Double = representedStructure.renderUnitCellBZ
-          {
-            textFieldRenderUnitCellBZ.doubleValue = renderUnitCellBZ
-          }
-          else
-          {
-            textFieldRenderUnitCellBZ.stringValue = "Mult. Val."
-          }
-        }
-      }
-      
-      if let textFieldRenderUnitCellCX: NSTextField = view.viewWithTag(6) as? NSTextField
-      {
-        textFieldRenderUnitCellCX.isEditable = false
-        textFieldRenderUnitCellCX.stringValue = ""
-        textFieldRenderUnitCellCX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellCX.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellCX: Double = representedStructure.renderUnitCellCX
-          {
-            textFieldRenderUnitCellCX.doubleValue = renderUnitCellCX
-          }
-          else
-          {
-            textFieldRenderUnitCellCX.stringValue = "Mult. Val."
-          }
-        }
-      }
-      if let textFieldRenderUnitCellCY: NSTextField = view.viewWithTag(7) as? NSTextField
-      {
-        textFieldRenderUnitCellCY.isEditable = false
-        textFieldRenderUnitCellCY.stringValue = ""
-        textFieldRenderUnitCellCY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellCY.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellCY: Double = representedStructure.renderUnitCellCY
-          {
-            textFieldRenderUnitCellCY.doubleValue = renderUnitCellCY
-          }
-          else
-          {
-            textFieldRenderUnitCellCY.stringValue = "Mult. Val."
-          }
-        }
-      }
-      if let textFieldRenderUnitCellCZ: NSTextField = view.viewWithTag(8) as? NSTextField
-      {
-        textFieldRenderUnitCellCZ.isEditable = false
-        textFieldRenderUnitCellCZ.stringValue = ""
-        textFieldRenderUnitCellCZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellCZ.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellCZ: Double = representedStructure.renderUnitCellCZ
-          {
-            textFieldRenderUnitCellCZ.doubleValue = renderUnitCellCZ
-          }
-          else
-          {
-            textFieldRenderUnitCellCZ.stringValue = "Mult. Val."
-          }
-        }
-      }
-      
-      
-      if let textFieldVolume: NSTextField = view.viewWithTag(15) as? NSTextField
-      {
-        textFieldVolume.isEditable = false
-        textFieldVolume.stringValue = ""
-        textFieldVolume.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldVolume.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellVolume: Double = representedStructure.renderCellVolume
-          {
-            textFieldVolume.doubleValue = renderUnitCellVolume
-          }
-          else
-          {
-            textFieldVolume.stringValue = "Multiple Values"
-          }
-        }
-      }
-      
-      if let textFieldPerpendicularWidthX: NSTextField = view.viewWithTag(16) as? NSTextField
-      {
-        textFieldPerpendicularWidthX.isEditable = false
-        textFieldPerpendicularWidthX.stringValue = ""
-        textFieldPerpendicularWidthX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldPerpendicularWidthX.isEnabled = enabled && renderPeriodic
-          }
-          if let renderPerpendicularWidthX: Double = representedStructure.renderCellPerpendicularWidthX
-          {
-            textFieldPerpendicularWidthX.doubleValue = renderPerpendicularWidthX
-          }
-          else
-          {
-            textFieldPerpendicularWidthX.stringValue = "Multiple Values"
-          }
-        }
-      }
-      if let textFieldPerpendicularWidthY: NSTextField = view.viewWithTag(17) as? NSTextField
-      {
-        textFieldPerpendicularWidthY.isEditable = false
-        textFieldPerpendicularWidthY.stringValue = ""
-        textFieldPerpendicularWidthY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldPerpendicularWidthY.isEnabled = enabled && renderPeriodic
-          }
-          if let renderPerpendicularWidthY: Double = representedStructure.renderCellPerpendicularWidthY
-          {
-            textFieldPerpendicularWidthY.doubleValue = renderPerpendicularWidthY
-          }
-          else
-          {
-            textFieldPerpendicularWidthY.stringValue = "Multiple Values"
-          }
-        }
-      }
-      if let textFieldPerpendicularWidthZ: NSTextField = view.viewWithTag(18) as? NSTextField
-      {
-        textFieldPerpendicularWidthZ.isEditable = false
-        textFieldPerpendicularWidthZ.stringValue = ""
-        textFieldPerpendicularWidthZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldPerpendicularWidthZ.isEnabled = enabled && renderPeriodic
-          }
-          if let renderPerpendicularWidthZ: Double = representedStructure.renderCellPerpendicularWidthZ
-          {
-            textFieldPerpendicularWidthZ.doubleValue = renderPerpendicularWidthZ
-          }
-          else
-          {
-            textFieldPerpendicularWidthZ.stringValue = "Multiple Values"
-          }
-        }
-      }
-      if let textFieldLengthA: NSTextField = view.viewWithTag(9) as? NSTextField
+    case "BoxUnitCellPropertiesCell":
+      if let textFieldLengthA: NSTextField = view.viewWithTag(1) as? NSTextField
       {
         textFieldLengthA.isEditable = false
         textFieldLengthA.stringValue = ""
@@ -632,7 +330,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldLengthB: NSTextField = view.viewWithTag(10) as? NSTextField
+      if let textFieldLengthB: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldLengthB.isEditable = false
         textFieldLengthB.stringValue = ""
@@ -654,7 +352,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldLengthC: NSTextField = view.viewWithTag(11) as? NSTextField
+      if let textFieldLengthC: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         textFieldLengthC.isEditable = false
         textFieldLengthC.stringValue = ""
@@ -677,7 +375,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let textFieldAlphaAngle: NSTextField = view.viewWithTag(12) as? NSTextField
+      if let textFieldAlphaAngle: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldAlphaAngle.isEditable = false
         textFieldAlphaAngle.stringValue = ""
@@ -700,7 +398,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldBetaAngle: NSTextField = view.viewWithTag(13) as? NSTextField
+      if let textFieldBetaAngle: NSTextField = view.viewWithTag(5) as? NSTextField
       {
         textFieldBetaAngle.isEditable = false
         textFieldBetaAngle.stringValue = ""
@@ -723,7 +421,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldGammaAngle: NSTextField = view.viewWithTag(14) as? NSTextField
+      if let textFieldGammaAngle: NSTextField = view.viewWithTag(6) as? NSTextField
       {
         textFieldGammaAngle.isEditable = false
         textFieldGammaAngle.stringValue = ""
@@ -747,12 +445,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let stepperLengthA: NSStepper = view.viewWithTag(20) as? NSStepper,
-         let stepperLengthB: NSStepper = view.viewWithTag(21) as? NSStepper,
-         let stepperLengthC: NSStepper = view.viewWithTag(22) as? NSStepper,
-         let stepperAngleAlpha: NSStepper = view.viewWithTag(23) as? NSStepper,
-         let stepperAngleBeta: NSStepper = view.viewWithTag(24) as? NSStepper,
-         let stepperAngleGamma: NSStepper = view.viewWithTag(25) as? NSStepper
+      if let stepperLengthA: NSStepper = view.viewWithTag(7) as? NSStepper,
+         let stepperLengthB: NSStepper = view.viewWithTag(8) as? NSStepper,
+         let stepperLengthC: NSStepper = view.viewWithTag(9) as? NSStepper,
+         let stepperAngleAlpha: NSStepper = view.viewWithTag(10) as? NSStepper,
+         let stepperAngleBeta: NSStepper = view.viewWithTag(11) as? NSStepper,
+         let stepperAngleGamma: NSStepper = view.viewWithTag(12) as? NSStepper
       {
         stepperLengthA.isEnabled = false
         stepperLengthB.isEnabled = false
@@ -771,17 +469,285 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           stepperAngleGamma.isEnabled = enabled && renderPeriodic
         }
       }
-   
-    default:
-      break
-    }
-  }
-  
-  func setPropertiesTransformTableCells(on view: NSTableCellView, identifier: String, enabled: Bool)
-  {
-    switch(identifier)
-    {
-    case "SimulationCellReplicaCell":
+    case "BoxUnitCellInfoCell":
+      if let textFieldRenderUnitCellAX: NSTextField = view.viewWithTag(1) as? NSTextField
+      {
+        textFieldRenderUnitCellAX.isEditable = false
+        textFieldRenderUnitCellAX.stringValue = ""
+        textFieldRenderUnitCellAX.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellAX.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellAX: Double = representedStructure.renderUnitCellAX
+          {
+            textFieldRenderUnitCellAX.doubleValue = renderUnitCellAX
+          }
+          else
+          {
+            textFieldRenderUnitCellAX.stringValue = "Mult. Val."
+          }
+        }
+      }
+      if let textFieldRenderUnitCellAY: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldRenderUnitCellAY.isEditable = false
+        textFieldRenderUnitCellAY.stringValue = ""
+        textFieldRenderUnitCellAY.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellAY.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellAY: Double = representedStructure.renderUnitCellAY
+          {
+            textFieldRenderUnitCellAY.doubleValue = renderUnitCellAY
+          }
+          else
+          {
+            textFieldRenderUnitCellAY.stringValue = "Mult. Val."
+          }
+        }
+      }
+      if let textFieldRenderUnitCellAZ: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        textFieldRenderUnitCellAZ.isEditable = false
+        textFieldRenderUnitCellAZ.stringValue = ""
+        textFieldRenderUnitCellAZ.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellAZ.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellAZ: Double = representedStructure.renderUnitCellAZ
+          {
+            textFieldRenderUnitCellAZ.doubleValue = renderUnitCellAZ
+          }
+          else
+          {
+            textFieldRenderUnitCellAZ.stringValue = "Mult. Val."
+          }
+        }
+      }
+      
+      if let textFieldRenderUnitCellBX: NSTextField = view.viewWithTag(4) as? NSTextField
+      {
+        textFieldRenderUnitCellBX.isEditable = false
+        textFieldRenderUnitCellBX.stringValue = ""
+        textFieldRenderUnitCellBX.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellBX.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellBX: Double = representedStructure.renderUnitCellBX
+          {
+            textFieldRenderUnitCellBX.doubleValue = renderUnitCellBX
+          }
+          else
+          {
+            textFieldRenderUnitCellBX.stringValue = "Mult. Val."
+          }
+        }
+      }
+      if let textFieldRenderUnitCellBY: NSTextField = view.viewWithTag(5) as? NSTextField
+      {
+        textFieldRenderUnitCellBY.isEditable = false
+        textFieldRenderUnitCellBY.stringValue = ""
+        textFieldRenderUnitCellBY.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellBY.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellBY: Double = representedStructure.renderUnitCellBY
+          {
+            textFieldRenderUnitCellBY.doubleValue = renderUnitCellBY
+          }
+          else
+          {
+            textFieldRenderUnitCellBY.stringValue = "Mult. Val."
+          }
+        }
+      }
+      if let textFieldRenderUnitCellBZ: NSTextField = view.viewWithTag(6) as? NSTextField
+      {
+        textFieldRenderUnitCellBZ.isEditable = false
+        textFieldRenderUnitCellBZ.stringValue = ""
+        textFieldRenderUnitCellBZ.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellBZ.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellBZ: Double = representedStructure.renderUnitCellBZ
+          {
+            textFieldRenderUnitCellBZ.doubleValue = renderUnitCellBZ
+          }
+          else
+          {
+            textFieldRenderUnitCellBZ.stringValue = "Mult. Val."
+          }
+        }
+      }
+      
+      if let textFieldRenderUnitCellCX: NSTextField = view.viewWithTag(7) as? NSTextField
+      {
+        textFieldRenderUnitCellCX.isEditable = false
+        textFieldRenderUnitCellCX.stringValue = ""
+        textFieldRenderUnitCellCX.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellCX.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellCX: Double = representedStructure.renderUnitCellCX
+          {
+            textFieldRenderUnitCellCX.doubleValue = renderUnitCellCX
+          }
+          else
+          {
+            textFieldRenderUnitCellCX.stringValue = "Mult. Val."
+          }
+        }
+      }
+      if let textFieldRenderUnitCellCY: NSTextField = view.viewWithTag(8) as? NSTextField
+      {
+        textFieldRenderUnitCellCY.isEditable = false
+        textFieldRenderUnitCellCY.stringValue = ""
+        textFieldRenderUnitCellCY.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellCY.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellCY: Double = representedStructure.renderUnitCellCY
+          {
+            textFieldRenderUnitCellCY.doubleValue = renderUnitCellCY
+          }
+          else
+          {
+            textFieldRenderUnitCellCY.stringValue = "Mult. Val."
+          }
+        }
+      }
+      if let textFieldRenderUnitCellCZ: NSTextField = view.viewWithTag(9) as? NSTextField
+      {
+        textFieldRenderUnitCellCZ.isEditable = false
+        textFieldRenderUnitCellCZ.stringValue = ""
+        textFieldRenderUnitCellCZ.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldRenderUnitCellCZ.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellCZ: Double = representedStructure.renderUnitCellCZ
+          {
+            textFieldRenderUnitCellCZ.doubleValue = renderUnitCellCZ
+          }
+          else
+          {
+            textFieldRenderUnitCellCZ.stringValue = "Mult. Val."
+          }
+        }
+      }
+    case "BoxVolumeCell":
+      if let textFieldVolume: NSTextField = view.viewWithTag(1) as? NSTextField
+      {
+        textFieldVolume.isEditable = false
+        textFieldVolume.stringValue = ""
+        textFieldVolume.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldVolume.isEnabled = enabled && renderPeriodic
+          }
+          if let renderUnitCellVolume: Double = representedStructure.renderCellVolume
+          {
+            textFieldVolume.doubleValue = renderUnitCellVolume
+          }
+          else
+          {
+            textFieldVolume.stringValue = "Multiple Values"
+          }
+        }
+      }
+      
+      if let textFieldPerpendicularWidthX: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldPerpendicularWidthX.isEditable = false
+        textFieldPerpendicularWidthX.stringValue = ""
+        textFieldPerpendicularWidthX.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldPerpendicularWidthX.isEnabled = enabled && renderPeriodic
+          }
+          if let renderPerpendicularWidthX: Double = representedStructure.renderCellPerpendicularWidthX
+          {
+            textFieldPerpendicularWidthX.doubleValue = renderPerpendicularWidthX
+          }
+          else
+          {
+            textFieldPerpendicularWidthX.stringValue = "Multiple Values"
+          }
+        }
+      }
+      if let textFieldPerpendicularWidthY: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        textFieldPerpendicularWidthY.isEditable = false
+        textFieldPerpendicularWidthY.stringValue = ""
+        textFieldPerpendicularWidthY.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldPerpendicularWidthY.isEnabled = enabled && renderPeriodic
+          }
+          if let renderPerpendicularWidthY: Double = representedStructure.renderCellPerpendicularWidthY
+          {
+            textFieldPerpendicularWidthY.doubleValue = renderPerpendicularWidthY
+          }
+          else
+          {
+            textFieldPerpendicularWidthY.stringValue = "Multiple Values"
+          }
+        }
+      }
+      if let textFieldPerpendicularWidthZ: NSTextField = view.viewWithTag(4) as? NSTextField
+      {
+        textFieldPerpendicularWidthZ.isEditable = false
+        textFieldPerpendicularWidthZ.stringValue = ""
+        textFieldPerpendicularWidthZ.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          {
+            textFieldPerpendicularWidthZ.isEnabled = enabled && renderPeriodic
+          }
+          if let renderPerpendicularWidthZ: Double = representedStructure.renderCellPerpendicularWidthZ
+          {
+            textFieldPerpendicularWidthZ.doubleValue = renderPerpendicularWidthZ
+          }
+          else
+          {
+            textFieldPerpendicularWidthZ.stringValue = "Multiple Values"
+          }
+        }
+      }
+    case "BoxReplicasCell":
       if let textFieldMaximumReplicaX: NSTextField = view.viewWithTag(1) as? NSTextField
       {
         textFieldMaximumReplicaX.isEditable = false
@@ -915,12 +881,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let stepperMaximumReplicaX: NSStepper = view.viewWithTag(11) as? NSStepper,
-         let stepperMaximumReplicaY: NSStepper = view.viewWithTag(12) as? NSStepper,
-         let stepperMaximumReplicaZ: NSStepper = view.viewWithTag(13) as? NSStepper,
-         let stepperMinimumReplicaX: NSStepper = view.viewWithTag(14) as? NSStepper,
-         let stepperMinimumReplicaY: NSStepper = view.viewWithTag(15) as? NSStepper,
-         let stepperMinimumReplicaZ: NSStepper = view.viewWithTag(16) as? NSStepper
+      if let stepperMaximumReplicaX: NSStepper = view.viewWithTag(7) as? NSStepper,
+         let stepperMaximumReplicaY: NSStepper = view.viewWithTag(8) as? NSStepper,
+         let stepperMaximumReplicaZ: NSStepper = view.viewWithTag(9) as? NSStepper,
+         let stepperMinimumReplicaX: NSStepper = view.viewWithTag(10) as? NSStepper,
+         let stepperMinimumReplicaY: NSStepper = view.viewWithTag(11) as? NSStepper,
+         let stepperMinimumReplicaZ: NSStepper = view.viewWithTag(12) as? NSStepper
       {
         stepperMaximumReplicaX.isEnabled = false
         stepperMaximumReplicaY.isEnabled = false
@@ -939,7 +905,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           stepperMinimumReplicaZ.isEnabled = enabled && renderPeriodic
         }
       }
-    case "SimulationCellModelMatrix":
+    case "BoxOrientationCell":
       if let renderRotationDelta: Double = (self.representedObject as? [CellViewer])?.renderRotationDelta
       {
         
@@ -969,65 +935,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
 
-      if let textFieldOriginX: NSTextField = view.viewWithTag(20) as? NSTextField
-      {
-        textFieldOriginX.isEditable = false
-        textFieldOriginX.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          textFieldOriginX.isEditable = enabled
-          if let renderOriginX: Double = representedStructure.renderOriginX
-          {
-            textFieldOriginX.doubleValue =  renderOriginX
-          }
-          else
-          {
-            textFieldOriginX.stringValue = "Multiple Values"
-          }
-        }
-      }
-      if let textFieldOriginY: NSTextField = view.viewWithTag(21) as? NSTextField
-      {
-        textFieldOriginY.isEditable = false
-        textFieldOriginY.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          textFieldOriginY.isEditable = enabled
-          if let renderOriginY: Double = representedStructure.renderOriginY
-          {
-            textFieldOriginY.doubleValue =  renderOriginY
-          }
-          else
-          {
-            textFieldOriginY.stringValue = "Multiple Values"
-          }
-        }
-      }
-      if let textFieldOriginZ: NSTextField = view.viewWithTag(22) as? NSTextField
-      {
-        textFieldOriginZ.isEditable = false
-        textFieldOriginZ.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          textFieldOriginZ.isEditable = enabled
-          if let renderOriginZ: Double = representedStructure.renderOriginZ
-          {
-            textFieldOriginZ.doubleValue =  renderOriginZ
-          }
-          else
-          {
-            textFieldOriginZ.stringValue = "Multiple Values"
-          }
-        }
-      }
-       
-      
-      if let sliderEulerAngleX: NSSlider = view.viewWithTag(10) as? NSSlider,
-         let sliderEulerAngleZ: NSSlider = view.viewWithTag(11) as? NSSlider,
-         let sliderEulerAngleY: NSSlider = view.viewWithTag(12) as? NSSlider,
-         let textFieldEulerAngleX: NSTextField = view.viewWithTag(13) as? NSTextField,
-         let textFieldEulerAngleY: NSTextField = view.viewWithTag(14) as? NSTextField,
-         let textFieldEulerAngleZ: NSTextField = view.viewWithTag(15) as? NSTextField
+      if let sliderEulerAngleX: NSSlider = view.viewWithTag(8) as? NSSlider,
+         let sliderEulerAngleZ: NSSlider = view.viewWithTag(9) as? NSSlider,
+         let sliderEulerAngleY: NSSlider = view.viewWithTag(10) as? NSSlider,
+         let textFieldEulerAngleX: NSTextField = view.viewWithTag(11) as? NSTextField,
+         let textFieldEulerAngleY: NSTextField = view.viewWithTag(12) as? NSTextField,
+         let textFieldEulerAngleZ: NSTextField = view.viewWithTag(13) as? NSTextField
       {
         sliderEulerAngleX.isEnabled = false
         sliderEulerAngleZ.isEnabled = false
@@ -1069,6 +982,67 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
+    case "BoxOriginCell":
+      if let textFieldOriginX: NSTextField = view.viewWithTag(1) as? NSTextField
+      {
+        textFieldOriginX.isEditable = false
+        textFieldOriginX.stringValue = ""
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          textFieldOriginX.isEditable = enabled
+          if let renderOriginX: Double = representedStructure.renderOriginX
+          {
+            textFieldOriginX.doubleValue =  renderOriginX
+          }
+          else
+          {
+            textFieldOriginX.stringValue = "Multiple Values"
+          }
+        }
+      }
+      if let textFieldOriginY: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldOriginY.isEditable = false
+        textFieldOriginY.stringValue = ""
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          textFieldOriginY.isEditable = enabled
+          if let renderOriginY: Double = representedStructure.renderOriginY
+          {
+            textFieldOriginY.doubleValue =  renderOriginY
+          }
+          else
+          {
+            textFieldOriginY.stringValue = "Multiple Values"
+          }
+        }
+      }
+      if let textFieldOriginZ: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        textFieldOriginZ.isEditable = false
+        textFieldOriginZ.stringValue = ""
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          textFieldOriginZ.isEditable = enabled
+          if let renderOriginZ: Double = representedStructure.renderOriginZ
+          {
+            textFieldOriginZ.doubleValue =  renderOriginZ
+          }
+          else
+          {
+            textFieldOriginZ.stringValue = "Multiple Values"
+          }
+        }
+      }
+    default:
+      break
+    }
+  }
+  
+  func setPropertiesTransformTableCells(on view: NSTableCellView, identifier: String, enabled: Bool)
+  {
+    switch(identifier)
+    {
     case "SimulationCellContentTransformCell":
       if let button: NSButton = view.viewWithTag(120) as? NSButton
       {
