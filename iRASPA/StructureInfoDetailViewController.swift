@@ -1026,7 +1026,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
     switch(identifier)
     {
     case "ChemicalCell":
-      if let textFieldChemicalFormulaMoiety: NSTextField = view.viewWithTag(50) as? NSTextField
+      if let textFieldChemicalFormulaMoiety: NSTextField = view.viewWithTag(1) as? NSTextField
       {
         textFieldChemicalFormulaMoiety.isEditable = false
         textFieldChemicalFormulaMoiety.stringValue = ""
@@ -1044,7 +1044,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldChemicalFormulaSum: NSTextField = view.viewWithTag(51) as? NSTextField
+      if let textFieldChemicalFormulaSum: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldChemicalFormulaSum.isEditable = false
         textFieldChemicalFormulaSum.stringValue = ""
@@ -1062,7 +1062,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldChemicalNameSystematic: NSTextField = view.viewWithTag(52) as? NSTextField
+      if let textFieldChemicalNameSystematic: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         textFieldChemicalNameSystematic.isEditable = false
         textFieldChemicalNameSystematic.stringValue = ""
@@ -1111,7 +1111,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         
       }
       
-      if let textFieldCitationJournalTitle: iRASPAComboBox = view.viewWithTag(61) as? iRASPAComboBox
+      if let textFieldCitationJournalTitle: iRASPAComboBox = view.viewWithTag(1) as? iRASPAComboBox
       {
         textFieldCitationJournalTitle.isEditable = false
         if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
@@ -1154,7 +1154,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         
       }
       
-      if let textFieldCitationJournalVolume: NSTextField = view.viewWithTag(63) as? NSTextField
+      if let textFieldCitationJournalVolume: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         textFieldCitationJournalVolume.isEditable = false
         textFieldCitationJournalVolume.stringValue = ""
@@ -1173,7 +1173,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let textFieldCitationJournalNumber: NSTextField = view.viewWithTag(64) as? NSTextField
+      if let textFieldCitationJournalNumber: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldCitationJournalNumber.isEditable = false
         textFieldCitationJournalNumber.stringValue = ""
@@ -1192,7 +1192,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let datePickerCitationPublicationDate: NSDatePicker = view.viewWithTag(65) as? NSDatePicker
+      if let datePickerCitationPublicationDate: NSDatePicker = view.viewWithTag(5) as? NSDatePicker
       {
         datePickerCitationPublicationDate.isEnabled = false
         if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
@@ -1209,7 +1209,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let textFieldCitationDOI: NSTextField = view.viewWithTag(66) as? NSTextField
+      if let textFieldCitationDOI: NSTextField = view.viewWithTag(6) as? NSTextField
       {
         textFieldCitationDOI.isEditable = false
         textFieldCitationDOI.stringValue = ""
@@ -1228,7 +1228,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let textFieldCitationDatebaseCodes: NSTextField = view.viewWithTag(67) as? NSTextField
+      if let textFieldCitationDatebaseCodes: NSTextField = view.viewWithTag(7) as? NSTextField
       {
         textFieldCitationDatebaseCodes.isEditable = false
         textFieldCitationDatebaseCodes.stringValue = ""

@@ -1419,7 +1419,7 @@
                                                                             </textField>
                                                                         </gridCell>
                                                                         <gridCell row="PJZ-Yd-Nta" column="QOJ-zX-7ux" id="0ah-CV-aKp">
-                                                                            <textField key="contentView" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" tag="50" translatesAutoresizingMaskIntoConstraints="NO" id="FZR-PQ-lxP">
+                                                                            <textField key="contentView" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="FZR-PQ-lxP">
                                                                                 <rect key="frame" x="200" y="68" width="267" height="21"/>
                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Unknown" drawsBackground="YES" id="USD-gk-tal">
                                                                                     <font key="font" metaFont="system"/>
@@ -1442,7 +1442,7 @@
                                                                             </textField>
                                                                         </gridCell>
                                                                         <gridCell row="2nb-MR-M5e" column="QOJ-zX-7ux" id="SqT-Ey-umx">
-                                                                            <textField key="contentView" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" tag="51" translatesAutoresizingMaskIntoConstraints="NO" id="tfY-hT-Vqm">
+                                                                            <textField key="contentView" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="tfY-hT-Vqm">
                                                                                 <rect key="frame" x="200" y="34" width="267" height="21"/>
                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Unknown" drawsBackground="YES" id="Qbd-YO-NWQ">
                                                                                     <font key="font" metaFont="system"/>
@@ -1465,7 +1465,7 @@
                                                                             </textField>
                                                                         </gridCell>
                                                                         <gridCell row="yJ8-36-eNi" column="QOJ-zX-7ux" id="MGr-b6-8j4">
-                                                                            <textField key="contentView" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" tag="52" translatesAutoresizingMaskIntoConstraints="NO" id="NSh-8K-4YJ">
+                                                                            <textField key="contentView" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="NSh-8K-4YJ">
                                                                                 <rect key="frame" x="200" y="0.0" width="267" height="21"/>
                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Unknown" drawsBackground="YES" id="bgc-3c-w1h">
                                                                                     <font key="font" metaFont="system"/>
@@ -1595,7 +1595,7 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="sjO-n3-iXa" column="9mh-0O-OQ9" id="uPO-9T-g0A">
-                                                                                    <comboBox key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" tag="61" translatesAutoresizingMaskIntoConstraints="NO" id="kCw-Ux-r6D" customClass="iRASPAComboBox" customModule="iRASPA" customModuleProvider="target">
+                                                                                    <comboBox key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="kCw-Ux-r6D" customClass="iRASPAComboBox" customModule="iRASPA" customModuleProvider="target">
                                                                                         <rect key="frame" x="154" y="306" width="305" height="25"/>
                                                                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Unknown" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="sRA-iw-pcK">
                                                                                             <font key="font" metaFont="system"/>
@@ -1664,7 +1664,7 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="DfF-JS-aVs" column="9mh-0O-OQ9" id="Uva-ah-0CA">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" tag="63" translatesAutoresizingMaskIntoConstraints="NO" id="GoD-f3-YuR">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="GoD-f3-YuR">
                                                                                         <rect key="frame" x="154" y="175" width="302" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Unknown" drawsBackground="YES" id="wMv-kw-520">
                                                                                             <font key="font" metaFont="system"/>
@@ -1687,7 +1687,7 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="KwJ-tG-cIr" column="9mh-0O-OQ9" id="Vwm-MS-2R8">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" tag="64" translatesAutoresizingMaskIntoConstraints="NO" id="H6q-A7-ObB">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="H6q-A7-ObB">
                                                                                         <rect key="frame" x="154" y="132" width="302" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Unknown" drawsBackground="YES" id="6KC-hH-6j8">
                                                                                             <font key="font" metaFont="system"/>
@@ -1710,7 +1710,7 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="pz6-Pt-nur" column="9mh-0O-OQ9" id="r99-KN-rs9">
-                                                                                    <datePicker key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" tag="65" translatesAutoresizingMaskIntoConstraints="NO" id="JWQ-Jk-siN">
+                                                                                    <datePicker key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="JWQ-Jk-siN">
                                                                                         <rect key="frame" x="154" y="86" width="305" height="28"/>
                                                                                         <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="gG2-10-NFj">
                                                                                             <font key="font" metaFont="system"/>
@@ -1736,7 +1736,7 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="XLq-5t-srL" column="9mh-0O-OQ9" id="xZ3-Vs-pCb">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" tag="66" translatesAutoresizingMaskIntoConstraints="NO" id="KDP-wp-JiN">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="KDP-wp-JiN">
                                                                                         <rect key="frame" x="154" y="43" width="302" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Unknown" drawsBackground="YES" id="EMw-Fn-YYe">
                                                                                             <font key="font" metaFont="system"/>
@@ -1759,7 +1759,7 @@
                                                                                     </textField>
                                                                                 </gridCell>
                                                                                 <gridCell row="m8B-Lw-upr" column="9mh-0O-OQ9" id="Fd4-cy-79H">
-                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" tag="67" translatesAutoresizingMaskIntoConstraints="NO" id="ISv-WV-MsB">
+                                                                                    <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" verticalCompressionResistancePriority="760" tag="7" translatesAutoresizingMaskIntoConstraints="NO" id="ISv-WV-MsB">
                                                                                         <rect key="frame" x="154" y="0.0" width="302" height="21"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Unknown" drawsBackground="YES" id="pD1-Es-0pE">
                                                                                             <font key="font" metaFont="system"/>

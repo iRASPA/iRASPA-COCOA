@@ -7727,8 +7727,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      var structure: [AtomVisualAppearanceViewer] = self.representedObject as? [AtomVisualAppearanceViewer],
-      let renderTextOffsetZ: Double = structure.renderTextOffsetZ
+       var structure: [AtomVisualAppearanceViewer] = self.representedObject as? [AtomVisualAppearanceViewer],
+       let renderTextOffsetZ: Double = structure.renderTextOffsetZ
     {
       let newValue: Double = renderTextOffsetZ + deltaValue * 0.1
       structure.renderTextOffsetZ = newValue

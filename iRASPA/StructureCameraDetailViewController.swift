@@ -202,12 +202,12 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         }
       }
       
-      if let buttonMinusX: NSButton = view.viewWithTag(10) as? NSButton,
-         let buttonMinusY: NSButton = view.viewWithTag(11) as? NSButton,
-         let buttonMinusZ: NSButton = view.viewWithTag(12) as? NSButton,
-         let buttonPlusX: NSButton = view.viewWithTag(13) as? NSButton,
-         let buttonPlusY: NSButton = view.viewWithTag(14) as? NSButton,
-         let buttonPlusZ: NSButton = view.viewWithTag(15) as? NSButton
+      if let buttonMinusX: NSButton = view.viewWithTag(2) as? NSButton,
+         let buttonMinusY: NSButton = view.viewWithTag(3) as? NSButton,
+         let buttonMinusZ: NSButton = view.viewWithTag(4) as? NSButton,
+         let buttonPlusX: NSButton = view.viewWithTag(5) as? NSButton,
+         let buttonPlusY: NSButton = view.viewWithTag(6) as? NSButton,
+         let buttonPlusZ: NSButton = view.viewWithTag(7) as? NSButton
       {
         buttonMinusX.isEnabled = false
         buttonMinusY.isEnabled = false
@@ -243,8 +243,8 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
      
       
-      if let buttonPerspective: NSButton = view.viewWithTag(20) as? NSButton,
-         let buttonOrthogonal: NSButton = view.viewWithTag(21) as? NSButton
+      if let buttonPerspective: NSButton = view.viewWithTag(9) as? NSButton,
+         let buttonOrthogonal: NSButton = view.viewWithTag(10) as? NSButton
       {
         buttonPerspective.isEnabled = false
         buttonOrthogonal.isEnabled = false
@@ -262,7 +262,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         }
       }
       
-      if let textFieldFieldOfField: NSTextField = view.viewWithTag(22) as? NSTextField
+      if let textFieldFieldOfField: NSTextField = view.viewWithTag(11) as? NSTextField
       {
         textFieldFieldOfField.isEnabled = false
         if let camera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
@@ -272,9 +272,9 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         }
       }
       
-      if let textFieldCenterOfSceneX: NSTextField = view.viewWithTag(30) as? NSTextField,
-         let textFieldCenterOfSceneY: NSTextField = view.viewWithTag(31) as? NSTextField,
-         let textFieldCenterOfSceneZ: NSTextField = view.viewWithTag(32) as? NSTextField
+      if let textFieldCenterOfSceneX: NSTextField = view.viewWithTag(13) as? NSTextField,
+         let textFieldCenterOfSceneY: NSTextField = view.viewWithTag(14) as? NSTextField,
+         let textFieldCenterOfSceneZ: NSTextField = view.viewWithTag(15) as? NSTextField
       {
         textFieldCenterOfSceneX.isEnabled = false
         textFieldCenterOfSceneY.isEnabled = false
@@ -291,12 +291,12 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       }
     case "CameraRotationCell":
       if let textFieldRotationDelta: NSTextField = view.viewWithTag(1) as? NSTextField,
-         let textFieldYawPlusX: NSButton = view.viewWithTag(10) as? NSButton,
-         let textFieldYawPlusY: NSButton = view.viewWithTag(11) as? NSButton,
-         let textFieldYawPlusZ: NSButton = view.viewWithTag(12) as? NSButton,
-         let textFieldYawMinusX: NSButton = view.viewWithTag(13) as? NSButton,
-         let textFieldYawMinusY: NSButton = view.viewWithTag(14) as? NSButton,
-         let textFieldYawMinusZ: NSButton = view.viewWithTag(15) as? NSButton
+         let textFieldYawPlusX: NSButton = view.viewWithTag(2) as? NSButton,
+         let textFieldYawPlusY: NSButton = view.viewWithTag(3) as? NSButton,
+         let textFieldYawPlusZ: NSButton = view.viewWithTag(4) as? NSButton,
+         let textFieldYawMinusX: NSButton = view.viewWithTag(5) as? NSButton,
+         let textFieldYawMinusY: NSButton = view.viewWithTag(6) as? NSButton,
+         let textFieldYawMinusZ: NSButton = view.viewWithTag(7) as? NSButton
       {
         textFieldRotationDelta.isEnabled = false
         textFieldYawPlusX.isEnabled = false
@@ -324,12 +324,12 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         }
       }
       
-      if let sliderEulerAngleZ: NSSlider = view.viewWithTag(20) as? NSSlider,
-         let sliderEulerAngleX: NSSlider = view.viewWithTag(21) as? NSSlider,
-         let sliderEulerAngleY: NSSlider = view.viewWithTag(22) as? NSSlider,
-         let textFieldEulerAngleX: NSTextField = view.viewWithTag(23) as? NSTextField,
-         let textFieldEulerAngleZ: NSTextField = view.viewWithTag(24) as? NSTextField,
-         let textFieldEulerAngleY: NSTextField = view.viewWithTag(25) as? NSTextField
+      if let sliderEulerAngleZ: NSSlider = view.viewWithTag(8) as? NSSlider,
+         let sliderEulerAngleX: NSSlider = view.viewWithTag(9) as? NSSlider,
+         let sliderEulerAngleY: NSSlider = view.viewWithTag(10) as? NSSlider,
+         let textFieldEulerAngleX: NSTextField = view.viewWithTag(11) as? NSTextField,
+         let textFieldEulerAngleZ: NSTextField = view.viewWithTag(12) as? NSTextField,
+         let textFieldEulerAngleY: NSTextField = view.viewWithTag(13) as? NSTextField
       {
         textFieldEulerAngleX.isEnabled = false
         sliderEulerAngleX.isEnabled = false
@@ -354,22 +354,22 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         }
       }
     case "CameraViewMatrixCell":
-      if let fieldM11: NSTextField = view.viewWithTag(0) as? NSTextField,
-         let fieldM21: NSTextField = view.viewWithTag(1) as? NSTextField,
-         let fieldM31: NSTextField = view.viewWithTag(2) as? NSTextField,
-         let fieldM41: NSTextField = view.viewWithTag(3) as? NSTextField,
-         let fieldM12: NSTextField = view.viewWithTag(4) as? NSTextField,
-         let fieldM22: NSTextField = view.viewWithTag(5) as? NSTextField,
-         let fieldM32: NSTextField = view.viewWithTag(6) as? NSTextField,
-         let fieldM42: NSTextField = view.viewWithTag(7) as? NSTextField,
-         let fieldM13: NSTextField = view.viewWithTag(8) as? NSTextField,
-         let fieldM23: NSTextField = view.viewWithTag(9) as? NSTextField,
-         let fieldM33: NSTextField = view.viewWithTag(10) as? NSTextField,
-         let fieldM43: NSTextField = view.viewWithTag(11) as? NSTextField,
-         let fieldM14: NSTextField = view.viewWithTag(12) as? NSTextField,
-         let fieldM24: NSTextField = view.viewWithTag(13) as? NSTextField,
-         let fieldM34: NSTextField = view.viewWithTag(14) as? NSTextField,
-         let fieldM44: NSTextField = view.viewWithTag(15) as? NSTextField
+      if let fieldM11: NSTextField = view.viewWithTag(1) as? NSTextField,
+         let fieldM21: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let fieldM31: NSTextField = view.viewWithTag(3) as? NSTextField,
+         let fieldM41: NSTextField = view.viewWithTag(4) as? NSTextField,
+         let fieldM12: NSTextField = view.viewWithTag(5) as? NSTextField,
+         let fieldM22: NSTextField = view.viewWithTag(6) as? NSTextField,
+         let fieldM32: NSTextField = view.viewWithTag(7) as? NSTextField,
+         let fieldM42: NSTextField = view.viewWithTag(8) as? NSTextField,
+         let fieldM13: NSTextField = view.viewWithTag(9) as? NSTextField,
+         let fieldM23: NSTextField = view.viewWithTag(10) as? NSTextField,
+         let fieldM33: NSTextField = view.viewWithTag(11) as? NSTextField,
+         let fieldM43: NSTextField = view.viewWithTag(12) as? NSTextField,
+         let fieldM14: NSTextField = view.viewWithTag(13) as? NSTextField,
+         let fieldM24: NSTextField = view.viewWithTag(14) as? NSTextField,
+         let fieldM34: NSTextField = view.viewWithTag(15) as? NSTextField,
+         let fieldM44: NSTextField = view.viewWithTag(16) as? NSTextField
       {
         fieldM11.isEnabled = false
         fieldM21.isEnabled = false
@@ -575,11 +575,11 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     {
     case "CameraPictureCell":
       if let popUpbuttonDPI: NSPopUpButton = view.viewWithTag(1) as? NSPopUpButton,
-        let textFieldPhysicalDimensionsX: NSTextField = view.viewWithTag(3) as? NSTextField,
-        let textFieldPhysicalDimensionsY: NSTextField = view.viewWithTag(4) as? NSTextField,
-        let popUpbuttonPictureQuality: NSPopUpButton = view.viewWithTag(5) as? NSPopUpButton,
-        let textFieldNumberOfPixelsX: NSTextField = view.viewWithTag(6) as? NSTextField,
-        let textFieldNumberOfPixelsY: NSTextField = view.viewWithTag(7) as? NSTextField
+         let popUpbuttonPictureQuality: NSPopUpButton = view.viewWithTag(2) as? NSPopUpButton,
+         let textFieldPhysicalDimensionsX: NSTextField = view.viewWithTag(3) as? NSTextField,
+         let textFieldPhysicalDimensionsY: NSTextField = view.viewWithTag(4) as? NSTextField,
+         let textFieldNumberOfPixelsX: NSTextField = view.viewWithTag(5) as? NSTextField,
+         let textFieldNumberOfPixelsY: NSTextField = view.viewWithTag(6) as? NSTextField
       {
         popUpbuttonDPI.isEnabled = false
         textFieldPhysicalDimensionsX.isEnabled = false
@@ -638,10 +638,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         }
       }
     case "CameraPictureDimensionsCell":
-      if let buttonPhysical: NSButton = view.viewWithTag(8) as? NSButton,
-         let buttonPixels: NSButton = view.viewWithTag(9) as? NSButton,
-         let buttonUnitInch: NSButton = view.viewWithTag(10) as? NSButton,
-         let buttonUnitCM: NSButton = view.viewWithTag(11) as? NSButton
+      if let buttonPhysical: NSButton = view.viewWithTag(1) as? NSButton,
+         let buttonPixels: NSButton = view.viewWithTag(2) as? NSButton,
+         let buttonUnitInch: NSButton = view.viewWithTag(3) as? NSButton,
+         let buttonUnitCM: NSButton = view.viewWithTag(4) as? NSButton
       {
         buttonPhysical.isEnabled = false
         buttonPixels.isEnabled = false
