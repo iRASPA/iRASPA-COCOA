@@ -4884,7 +4884,7 @@
 				INFOPLIST_FILE = SimulationKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
@@ -4915,7 +4915,7 @@
 				INFOPLIST_FILE = SimulationKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
@@ -4943,7 +4943,7 @@
 				INFOPLIST_FILE = SymmetryKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4972,7 +4972,7 @@
 				INFOPLIST_FILE = SymmetryKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4999,7 +4999,7 @@
 				INFOPLIST_FILE = RenderKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
@@ -5030,7 +5030,7 @@
 				INFOPLIST_FILE = RenderKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
@@ -5060,7 +5060,7 @@
 				INFOPLIST_FILE = iRASPAKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5091,7 +5091,7 @@
 				INFOPLIST_FILE = iRASPAKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5129,7 +5129,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/PythonKit",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -5170,7 +5170,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/PythonKit",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
@@ -5203,7 +5203,7 @@
 				INFOPLIST_FILE = PowerSourceKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -5233,7 +5233,7 @@
 				INFOPLIST_FILE = PowerSourceKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -5295,7 +5295,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				MTL_FAST_MATH = YES;
 				MTL_OPTIMIZATION_LEVEL = 0;
@@ -5355,7 +5355,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				MTL_OPTIMIZATION_LEVEL = s;
@@ -5391,7 +5391,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/PythonKit",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
@@ -5427,7 +5427,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/PythonKit",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
@@ -5455,7 +5455,7 @@
 				INFOPLIST_FILE = MathKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5484,7 +5484,7 @@
 				INFOPLIST_FILE = MathKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5618,7 +5618,7 @@
 				INFOPLIST_FILE = LogViewKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -5651,7 +5651,7 @@
 				INFOPLIST_FILE = LogViewKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -5679,7 +5679,7 @@
 				INFOPLIST_FILE = OperationKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5708,7 +5708,7 @@
 				INFOPLIST_FILE = OperationKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5738,7 +5738,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "${SYMROOT}/Debug/iRASPA.app/Contents/Frameworks/";
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5767,7 +5767,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../../../../../Frameworks/";
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5794,7 +5794,7 @@
 				INFOPLIST_FILE = CatchObjectiveCExceptions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5822,7 +5822,7 @@
 				INFOPLIST_FILE = CatchObjectiveCExceptions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5854,7 +5854,7 @@
 				INFOPLIST_FILE = BinaryCodable/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
@@ -5889,7 +5889,7 @@
 				INFOPLIST_FILE = BinaryCodable/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -5922,7 +5922,7 @@
 				INFOPLIST_FILE = ZIPFoundation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
@@ -5957,7 +5957,7 @@
 				INFOPLIST_FILE = ZIPFoundation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
 				MARKETING_VERSION = 2.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
