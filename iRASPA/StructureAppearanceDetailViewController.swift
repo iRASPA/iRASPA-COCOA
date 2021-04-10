@@ -340,15 +340,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
     case "PrimitiveTransformationPropertiesCell":
-      if let textFieldAtomScalingAX: NSTextField = view.viewWithTag(20) as? NSTextField,
-        let textFieldAtomScalingBX: NSTextField = view.viewWithTag(21) as? NSTextField,
-        let textFieldAtomScalingCX: NSTextField = view.viewWithTag(22) as? NSTextField,
-        let textFieldAtomScalingAY: NSTextField = view.viewWithTag(23) as? NSTextField,
-        let textFieldAtomScalingBY: NSTextField = view.viewWithTag(24) as? NSTextField,
-        let textFieldAtomScalingCY: NSTextField = view.viewWithTag(25) as? NSTextField,
-        let textFieldAtomScalingAZ: NSTextField = view.viewWithTag(26) as? NSTextField,
-        let textFieldAtomScalingBZ: NSTextField = view.viewWithTag(27) as? NSTextField,
-        let textFieldAtomScalingCZ: NSTextField = view.viewWithTag(28) as? NSTextField
+      if let textFieldAtomScalingAX: NSTextField = view.viewWithTag(1) as? NSTextField,
+         let textFieldAtomScalingBX: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let textFieldAtomScalingCX: NSTextField = view.viewWithTag(3) as? NSTextField,
+         let textFieldAtomScalingAY: NSTextField = view.viewWithTag(4) as? NSTextField,
+         let textFieldAtomScalingBY: NSTextField = view.viewWithTag(5) as? NSTextField,
+         let textFieldAtomScalingCY: NSTextField = view.viewWithTag(6) as? NSTextField,
+         let textFieldAtomScalingAZ: NSTextField = view.viewWithTag(7) as? NSTextField,
+         let textFieldAtomScalingBZ: NSTextField = view.viewWithTag(8) as? NSTextField,
+         let textFieldAtomScalingCZ: NSTextField = view.viewWithTag(9) as? NSTextField
       {
         textFieldAtomScalingAX.isEditable = false
         textFieldAtomScalingAY.isEditable = false
@@ -409,8 +409,27 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
   
     case "PrimitiveOpacityPropertiesCell":
-      
-      if let textFieldOpacity: NSTextField = view.viewWithTag(35) as? NSTextField
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
+      {
+        button.isEnabled = false
+        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+          !representedStructure.allPrimitiveStructure.isEmpty
+        {
+          button.isEnabled = enabled
+          
+          if let renderPrimitiveIsCapped: Bool = representedStructure.renderPrimitiveIsCapped
+          {
+            button.allowsMixedState = false
+            button.state = renderPrimitiveIsCapped ? NSControl.StateValue.on : NSControl.StateValue.off
+          }
+          else
+          {
+            button.allowsMixedState = true
+            button.state = NSControl.StateValue.mixed
+          }
+        }
+      }
+      if let textFieldOpacity: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldOpacity.isEditable = false
         textFieldOpacity.stringValue = "1.0"
@@ -428,7 +447,27 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderOpacity: NSSlider = view.viewWithTag(36) as? NSSlider
+      if let textFieldNumberOfSides: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        textFieldNumberOfSides.isEditable = false
+        textFieldNumberOfSides.stringValue = "41"
+        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+          !representedStructure.allPrimitiveStructure.isEmpty
+        {
+          textFieldNumberOfSides.isEditable = enabled
+          if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
+          {
+            textFieldNumberOfSides.integerValue = numberOfSides
+          }
+          else
+          {
+            textFieldNumberOfSides.stringValue = "Mult. Val."
+          }
+        }
+      }
+      
+      
+      if let sliderOpacity: NSSlider = view.viewWithTag(4) as? NSSlider
       {
         sliderOpacity.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -449,25 +488,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let textFieldNumberOfSides: NSTextField = view.viewWithTag(37) as? NSTextField
-      {
-        textFieldNumberOfSides.isEditable = false
-        textFieldNumberOfSides.stringValue = "41"
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
-          !representedStructure.allPrimitiveStructure.isEmpty
-        {
-          textFieldNumberOfSides.isEditable = enabled
-          if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
-          {
-            textFieldNumberOfSides.integerValue = numberOfSides
-          }
-          else
-          {
-            textFieldNumberOfSides.stringValue = "Mult. Val."
-          }
-        }
-      }
-      if let sliderNumberOfSides: NSSlider = view.viewWithTag(38) as? NSSlider
+     
+      if let sliderNumberOfSides: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderNumberOfSides.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -477,44 +499,23 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
           {
             sliderNumberOfSides.minValue = 2
-            sliderNumberOfSides.maxValue = 16
+            sliderNumberOfSides.maxValue = 41
             sliderNumberOfSides.integerValue = numberOfSides
           }
           else
           {
             sliderNumberOfSides.minValue = 2
-            sliderNumberOfSides.maxValue = 16
+            sliderNumberOfSides.maxValue = 41
             sliderNumberOfSides.doubleValue = 6
-          }
-        }
-      }
-      
-      if let button: NSButton = view.viewWithTag(39) as? NSButton
-      {
-        button.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
-          !representedStructure.allPrimitiveStructure.isEmpty
-        {
-          button.isEnabled = enabled
-          
-          if let renderPrimitiveIsCapped: Bool = representedStructure.renderPrimitiveIsCapped
-          {
-            button.allowsMixedState = false
-            button.state = renderPrimitiveIsCapped ? NSControl.StateValue.on : NSControl.StateValue.off
-          }
-          else
-          {
-            button.allowsMixedState = true
-            button.state = NSControl.StateValue.mixed
           }
         }
       }
       
     case "PrimitiveSelectionPropertiesCell":
       // Selection-style
-      if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(2208) as? iRASPAPopUpButton,
-         let textFieldSelectionFrequency: NSTextField = view.viewWithTag(2209) as? NSTextField,
-         let textFieldSelectionDensity: NSTextField = view.viewWithTag(2210) as? NSTextField
+      if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton,
+         let textFieldSelectionFrequency: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let textFieldSelectionDensity: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         popUpbuttonSelectionStyle.isEditable = false
         textFieldSelectionFrequency.isEditable = false
@@ -565,7 +566,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      if let textFieldBondSelectionIntensityLevel: NSTextField = view.viewWithTag(2234) as? NSTextField
+      if let textFieldBondSelectionIntensityLevel: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldBondSelectionIntensityLevel.isEditable = false
         textFieldBondSelectionIntensityLevel.stringValue = ""
@@ -583,7 +584,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
         
-      if let sliderSelectionIntensityLevel: NSSlider = view.viewWithTag(2235) as? NSSlider
+      if let sliderSelectionIntensityLevel: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderSelectionIntensityLevel.isEnabled = false
         sliderSelectionIntensityLevel.minValue = 0.0
@@ -599,7 +600,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
         
       
-      if let textFieldSelectionScaling: NSTextField = view.viewWithTag(2281) as? NSTextField
+      if let textFieldSelectionScaling: NSTextField = view.viewWithTag(6) as? NSTextField
       {
         textFieldSelectionScaling.isEditable = false
         textFieldSelectionScaling.stringValue = ""
@@ -616,7 +617,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderSelectionScaling: NSSlider = view.viewWithTag(2282) as? NSSlider
+      if let sliderSelectionScaling: NSSlider = view.viewWithTag(7) as? NSSlider
       {
         sliderSelectionScaling.isEnabled = false
         sliderSelectionScaling.minValue = 1.0
@@ -633,7 +634,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
     case "PrimitiveHSVPropertiesCell":
       // Hue
-      if let textFieldHue: NSTextField = view.viewWithTag(2213) as? NSTextField
+      if let textFieldHue: NSTextField = view.viewWithTag(1) as? NSTextField
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
@@ -646,7 +647,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderHue: NSSlider = view.viewWithTag(2214) as? NSSlider
+      if let sliderHue: NSSlider = view.viewWithTag(2) as? NSSlider
       {
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
@@ -662,7 +663,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Saturation
-      if let textFieldSaturation: NSTextField = view.viewWithTag(2215) as? NSTextField
+      if let textFieldSaturation: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
@@ -675,7 +676,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderSaturation: NSSlider = view.viewWithTag(2216) as? NSSlider
+      if let sliderSaturation: NSSlider = view.viewWithTag(4) as? NSSlider
       {
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
@@ -691,7 +692,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Value
-      if let textFieldValue: NSTextField = view.viewWithTag(2217) as? NSTextField
+      if let textFieldValue: NSTextField = view.viewWithTag(5) as? NSTextField
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
@@ -704,7 +705,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderValue: NSSlider = view.viewWithTag(2218) as? NSSlider
+      if let sliderValue: NSSlider = view.viewWithTag(6) as? NSSlider
       {
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
@@ -722,7 +723,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     case "PrimitiveFrontPropertiesCell":
       
       // High dynamic range
-      if let button: NSButton = view.viewWithTag(41) as? NSButton
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -744,7 +745,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Exposure
-      if let textFieldExposure: NSTextField = view.viewWithTag(42) as? NSTextField
+      if let textFieldExposure: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
@@ -762,7 +763,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderExposure: NSSlider = view.viewWithTag(43) as? NSSlider
+      if let sliderExposure: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
@@ -780,7 +781,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       
       // ambient intensity and color
-      if let textFieldFrontAmbientIntensity: NSTextField = view.viewWithTag(44) as? NSTextField
+      if let textFieldFrontAmbientIntensity: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldFrontAmbientIntensity.isEditable = false
         textFieldFrontAmbientIntensity.stringValue = ""
@@ -798,7 +799,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(45) as? NSSlider
+      if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderFrontAmbientIntensity.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -813,7 +814,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let ambientFrontSideColor: NSColorWell = view.viewWithTag(46) as? NSColorWell
+      if let ambientFrontSideColor: NSColorWell = view.viewWithTag(6) as? NSColorWell
       {
         ambientFrontSideColor.isEnabled = false
         ambientFrontSideColor.color = NSColor.lightGray
@@ -829,7 +830,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // diffuse intensity and color
-      if let textFieldFrontDiffuseIntensity: NSTextField = view.viewWithTag(47) as? NSTextField
+      if let textFieldFrontDiffuseIntensity: NSTextField = view.viewWithTag(7) as? NSTextField
       {
         textFieldFrontDiffuseIntensity.isEditable = false
         textFieldFrontDiffuseIntensity.stringValue = ""
@@ -847,7 +848,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(48) as? NSSlider
+      if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderFrontDiffuseIntensity.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -862,7 +863,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let diffuseFrontSideColor: NSColorWell = view.viewWithTag(49) as? NSColorWell
+      if let diffuseFrontSideColor: NSColorWell = view.viewWithTag(9) as? NSColorWell
       {
         diffuseFrontSideColor.isEnabled = false
         diffuseFrontSideColor.color = NSColor.lightGray
@@ -878,7 +879,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // specular intensity and color
-      if let textFieldFrontSpecularIntensity: NSTextField = view.viewWithTag(50) as? NSTextField
+      if let textFieldFrontSpecularIntensity: NSTextField = view.viewWithTag(10) as? NSTextField
       {
         textFieldFrontSpecularIntensity.isEditable = false
         textFieldFrontSpecularIntensity.stringValue = ""
@@ -896,7 +897,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(51) as? NSSlider
+      if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderFrontSpecularIntensity.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -911,7 +912,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let specularFrontSideColor: NSColorWell = view.viewWithTag(52) as? NSColorWell
+      if let specularFrontSideColor: NSColorWell = view.viewWithTag(12) as? NSColorWell
       {
         specularFrontSideColor.isEnabled = false
         specularFrontSideColor.color = NSColor.lightGray
@@ -928,7 +929,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       
       
-      if let textFieldFrontShininess: NSTextField = view.viewWithTag(53) as? NSTextField
+      if let textFieldFrontShininess: NSTextField = view.viewWithTag(13) as? NSTextField
       {
         textFieldFrontShininess.isEditable = false
         textFieldFrontShininess.stringValue = ""
@@ -946,7 +947,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderFrontShininess: NSSlider = view.viewWithTag(54) as? NSSlider
+      if let sliderFrontShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderFrontShininess.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -964,7 +965,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     case "PrimitiveBackPropertiesCell":
       
       // High dynamic range
-      if let button: NSButton = view.viewWithTag(57) as? NSButton
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -985,7 +986,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Exposure
-      if let textFieldExposure: NSTextField = view.viewWithTag(58) as? NSTextField
+      if let textFieldExposure: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
@@ -1003,7 +1004,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderExposure: NSSlider = view.viewWithTag(59) as? NSSlider
+      if let sliderExposure: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
@@ -1021,7 +1022,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       
       // Ambient color
-      if let textFieldBackAmbientIntensity: NSTextField = view.viewWithTag(60) as? NSTextField
+      if let textFieldBackAmbientIntensity: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldBackAmbientIntensity.isEditable = false
         textFieldBackAmbientIntensity.stringValue = ""
@@ -1039,7 +1040,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(61) as? NSSlider
+      if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderBackAmbientIntensity.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -1054,7 +1055,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let ambientBackSideColor: NSColorWell = view.viewWithTag(62) as? NSColorWell
+      if let ambientBackSideColor: NSColorWell = view.viewWithTag(6) as? NSColorWell
       {
         ambientBackSideColor.isEnabled = false
         ambientBackSideColor.color = NSColor.lightGray
@@ -1070,7 +1071,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Diffuse color
-      if let textFieldBackDiffuseIntensity: NSTextField = view.viewWithTag(63) as? NSTextField
+      if let textFieldBackDiffuseIntensity: NSTextField = view.viewWithTag(7) as? NSTextField
       {
         textFieldBackDiffuseIntensity.isEditable = false
         textFieldBackDiffuseIntensity.stringValue = ""
@@ -1088,7 +1089,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(64) as? NSSlider
+      if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderBackDiffuseIntensity.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -1103,7 +1104,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let diffuseBackSideColor: NSColorWell = view.viewWithTag(65) as? NSColorWell
+      if let diffuseBackSideColor: NSColorWell = view.viewWithTag(9) as? NSColorWell
       {
         diffuseBackSideColor.isEnabled = false
         diffuseBackSideColor.color = NSColor.lightGray
@@ -1119,7 +1120,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Specular color
-      if let textFieldBackSpecularIntensity: NSTextField = view.viewWithTag(66) as? NSTextField
+      if let textFieldBackSpecularIntensity: NSTextField = view.viewWithTag(10) as? NSTextField
       {
         textFieldBackSpecularIntensity.isEditable = false
         textFieldBackSpecularIntensity.stringValue = ""
@@ -1137,7 +1138,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(67) as? NSSlider
+      if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderBackSpecularIntensity.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -1152,7 +1153,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let specularBackSideColor: NSColorWell = view.viewWithTag(68) as? NSColorWell
+      if let specularBackSideColor: NSColorWell = view.viewWithTag(12) as? NSColorWell
       {
         specularBackSideColor.isEnabled = false
         specularBackSideColor.color = NSColor.lightGray
@@ -1168,7 +1169,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Shininess
-      if let textFieldBackShininess: NSTextField = view.viewWithTag(69) as? NSTextField
+      if let textFieldBackShininess: NSTextField = view.viewWithTag(13) as? NSTextField
       {
         textFieldBackShininess.isEditable = false
         textFieldBackShininess.stringValue = ""
@@ -1186,7 +1187,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderBackShininess: NSSlider = view.viewWithTag(70) as? NSSlider
+      if let sliderBackShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderBackShininess.isEnabled = false
         if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
@@ -1201,9 +1202,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-   
-      
-      
     default:
       break
     }
@@ -1366,9 +1364,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
     case "AtomsSelectionCell":
       // Selection-style
-      if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(7) as? iRASPAPopUpButton,
-         let textFieldSelectionFrequency: NSTextField = view.viewWithTag(8) as? NSTextField,
-         let textFieldSelectionDensity: NSTextField = view.viewWithTag(10) as? NSTextField
+      if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton,
+         let textFieldSelectionFrequency: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let textFieldSelectionDensity: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         popUpbuttonSelectionStyle.isEditable = false
         textFieldSelectionFrequency.isEditable = false
@@ -1419,7 +1417,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
 
-      if let textFieldAtomSelectionIntensityLevel: NSTextField = view.viewWithTag(34) as? NSTextField
+      if let textFieldAtomSelectionIntensityLevel: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldAtomSelectionIntensityLevel.isEditable = false
         textFieldAtomSelectionIntensityLevel.stringValue = ""
@@ -1437,7 +1435,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      if let sliderAtomSelectionIntensityLevel: NSSlider = view.viewWithTag(35) as? NSSlider
+      if let sliderAtomSelectionIntensityLevel: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderAtomSelectionIntensityLevel.isEnabled = false
         sliderAtomSelectionIntensityLevel.minValue = 0.0
@@ -1453,7 +1451,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
     
-      if let textFieldSelectionScaling: NSTextField = view.viewWithTag(81) as? NSTextField
+      if let textFieldSelectionScaling: NSTextField = view.viewWithTag(6) as? NSTextField
       {
         textFieldSelectionScaling.isEditable = false
         textFieldSelectionScaling.stringValue = ""
@@ -1470,7 +1468,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderSelectionScaling: NSSlider = view.viewWithTag(82) as? NSSlider
+      if let sliderSelectionScaling: NSSlider = view.viewWithTag(7) as? NSSlider
       {
         sliderSelectionScaling.isEnabled = false
         sliderSelectionScaling.minValue = 1.0
@@ -1487,7 +1485,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
     case "AtomsHDRCell":
       // High dynamic range
-      if let button: NSButton = view.viewWithTag(11) as? NSButton
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
         if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
@@ -1508,7 +1506,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Exposure
-      if let textFieldExposure: NSTextField = view.viewWithTag(12) as? NSTextField
+      if let textFieldExposure: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
@@ -1525,7 +1523,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderExposure: NSSlider = view.viewWithTag(13) as? NSSlider
+      if let sliderExposure: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
@@ -1541,7 +1539,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Hue
-      if let textFieldHue: NSTextField = view.viewWithTag(16) as? NSTextField
+      if let textFieldHue: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
@@ -1558,7 +1556,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderHue: NSSlider = view.viewWithTag(17) as? NSSlider
+      if let sliderHue: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
@@ -1574,7 +1572,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Saturation
-      if let textFieldSaturation: NSTextField = view.viewWithTag(18) as? NSTextField
+      if let textFieldSaturation: NSTextField = view.viewWithTag(6) as? NSTextField
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
@@ -1591,7 +1589,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderSaturation: NSSlider = view.viewWithTag(19) as? NSSlider
+      if let sliderSaturation: NSSlider = view.viewWithTag(7) as? NSSlider
       {
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
@@ -1607,7 +1605,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Value
-      if let textFieldValue: NSTextField = view.viewWithTag(20) as? NSTextField
+      if let textFieldValue: NSTextField = view.viewWithTag(8) as? NSTextField
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
@@ -1624,7 +1622,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderValue: NSSlider = view.viewWithTag(21) as? NSSlider
+      if let sliderValue: NSSlider = view.viewWithTag(9) as? NSSlider
       {
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
@@ -1642,7 +1640,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     
     case "AtomsScalingCell":
       // Draw atoms yes/no
-      if let checkDrawAtomsbutton: NSButton = view.viewWithTag(31) as? NSButton
+      if let checkDrawAtomsbutton: NSButton = view.viewWithTag(1) as? NSButton
       {
         checkDrawAtomsbutton.isEnabled = false
         if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
@@ -1662,7 +1660,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Atom scaling
-      if let textFieldAtomScaling: NSTextField = view.viewWithTag(32) as? NSTextField
+      if let textFieldAtomScaling: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldAtomScaling.isEditable = false
         textFieldAtomScaling.stringValue = ""
@@ -1680,7 +1678,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      if let sliderAtomScaling: NSSlider = view.viewWithTag(33) as? NSSlider
+      if let sliderAtomScaling: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderAtomScaling.isEnabled = false
         sliderAtomScaling.minValue = 0.1
@@ -1696,7 +1694,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
     case "AtomsLightingCell":
       // Ambient occlusion
-      if let buttonAmbientOcclusion: NSButton = view.viewWithTag(41) as? NSButton
+      if let buttonAmbientOcclusion: NSButton = view.viewWithTag(1) as? NSButton
       {
         buttonAmbientOcclusion.isEnabled = false
         if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
@@ -1716,7 +1714,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Atom ambient light
-      if let ambientLightIntensitity: NSTextField = view.viewWithTag(42) as? NSTextField
+      if let ambientLightIntensitity: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         ambientLightIntensitity.isEditable = false
         ambientLightIntensitity.stringValue = ""
@@ -1734,7 +1732,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
         }
       }
-      if let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(43) as? NSSlider
+      if let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderAmbientLightIntensitity.isEnabled = false
         sliderAmbientLightIntensitity.minValue = 0.0
@@ -1748,7 +1746,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let ambientColor: NSColorWell = view.viewWithTag(44) as? NSColorWell
+      if let ambientColor: NSColorWell = view.viewWithTag(4) as? NSColorWell
       {
         ambientColor.isEnabled = false
         ambientColor.color = NSColor.lightGray
@@ -1767,7 +1765,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Atom diffuse light
-      if let diffuseLightIntensitity: NSTextField = view.viewWithTag(45) as? NSTextField
+      if let diffuseLightIntensitity: NSTextField = view.viewWithTag(5) as? NSTextField
       {
         diffuseLightIntensitity.isEditable = false
         diffuseLightIntensitity.stringValue = ""
@@ -1785,7 +1783,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderDiffuseLightIntensitity: NSSlider = view.viewWithTag(46) as? NSSlider
+      if let sliderDiffuseLightIntensitity: NSSlider = view.viewWithTag(6) as? NSSlider
       {
         sliderDiffuseLightIntensitity.isEnabled = false
         sliderDiffuseLightIntensitity.minValue = 0.0
@@ -1799,7 +1797,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let diffuseColor: NSColorWell = view.viewWithTag(47) as? NSColorWell
+      if let diffuseColor: NSColorWell = view.viewWithTag(7) as? NSColorWell
       {
         diffuseColor.isEnabled = false
         diffuseColor.color = NSColor.lightGray
@@ -1818,7 +1816,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Atom specular light
-      if let specularLightIntensitity: NSTextField = view.viewWithTag(48) as? NSTextField
+      if let specularLightIntensitity: NSTextField = view.viewWithTag(8) as? NSTextField
       {
         specularLightIntensitity.isEditable = false
         specularLightIntensitity.stringValue = ""
@@ -1836,7 +1834,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderSpecularLightIntensitity: NSSlider = view.viewWithTag(49) as? NSSlider
+      if let sliderSpecularLightIntensitity: NSSlider = view.viewWithTag(9) as? NSSlider
       {
         sliderSpecularLightIntensitity.isEnabled = false
         sliderSpecularLightIntensitity.minValue = 0.0
@@ -1850,7 +1848,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let specularColor: NSColorWell = view.viewWithTag(50) as? NSColorWell
+      if let specularColor: NSColorWell = view.viewWithTag(10) as? NSColorWell
       {
         specularColor.isEnabled = false
         specularColor.color = NSColor.lightGray
@@ -1865,7 +1863,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Atom specular shininess
-      if let shininess: NSTextField = view.viewWithTag(51) as? NSTextField
+      if let shininess: NSTextField = view.viewWithTag(11) as? NSTextField
       {
         shininess.isEditable = false
         shininess.stringValue = ""
@@ -1882,7 +1880,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderShininess: NSSlider = view.viewWithTag(52) as? NSSlider
+      if let sliderShininess: NSSlider = view.viewWithTag(12) as? NSSlider
       {
         sliderShininess.isEnabled = false
         sliderShininess.minValue = 0.1
@@ -1970,9 +1968,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
     case "BondsSelectionCell":
       // Selection-style
-      if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(1117) as? iRASPAPopUpButton,
-         let textFieldSelectionFrequency: NSTextField = view.viewWithTag(1118) as? NSTextField,
-         let textFieldSelectionDensity: NSTextField = view.viewWithTag(1110) as? NSTextField
+      if let popUpbuttonSelectionStyle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton,
+         let textFieldSelectionFrequency: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let textFieldSelectionDensity: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         popUpbuttonSelectionStyle.isEditable = false
         textFieldSelectionFrequency.isEditable = false
@@ -2023,7 +2021,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      if let textFieldBondSelectionIntensityLevel: NSTextField = view.viewWithTag(1134) as? NSTextField
+      if let textFieldBondSelectionIntensityLevel: NSTextField = view.viewWithTag(4) as? NSTextField
         {
           textFieldBondSelectionIntensityLevel.isEditable = false
           textFieldBondSelectionIntensityLevel.stringValue = ""
@@ -2041,7 +2039,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
-        if let sliderBondSelectionIntensityLevel: NSSlider = view.viewWithTag(1135) as? NSSlider
+        if let sliderBondSelectionIntensityLevel: NSSlider = view.viewWithTag(5) as? NSSlider
         {
           sliderBondSelectionIntensityLevel.isEnabled = false
           sliderBondSelectionIntensityLevel.minValue = 0.0
@@ -2057,7 +2055,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
         
       
-        if let textFieldBondSelectionScaling: NSTextField = view.viewWithTag(1181) as? NSTextField
+        if let textFieldBondSelectionScaling: NSTextField = view.viewWithTag(6) as? NSTextField
         {
           textFieldBondSelectionScaling.isEditable = false
           textFieldBondSelectionScaling.stringValue = ""
@@ -2074,7 +2072,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
           }
         }
-        if let sliderBondSelectionScaling: NSSlider = view.viewWithTag(1182) as? NSSlider
+        if let sliderBondSelectionScaling: NSSlider = view.viewWithTag(7) as? NSSlider
         {
           sliderBondSelectionScaling.isEnabled = false
           sliderBondSelectionScaling.minValue = 1.0
@@ -2090,7 +2088,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
     case "BondsHDRCell":
       // Use High Dynamic Range yes/no
-      if let checkDrawHDRButton: NSButton = view.viewWithTag(10) as? NSButton
+      if let checkDrawHDRButton: NSButton = view.viewWithTag(1) as? NSButton
       {
         checkDrawHDRButton.isEnabled = false
         if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
@@ -2111,7 +2109,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       
       // Exposure
-      if let textFieldExposure: NSTextField = view.viewWithTag(11) as? NSTextField
+      if let textFieldExposure: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
@@ -2124,7 +2122,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderExposure: NSSlider = view.viewWithTag(12) as? NSSlider
+      if let sliderExposure: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
@@ -2140,7 +2138,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Hue
-      if let textFieldHue: NSTextField = view.viewWithTag(13) as? NSTextField
+      if let textFieldHue: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
@@ -2153,7 +2151,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderHue: NSSlider = view.viewWithTag(14) as? NSSlider
+      if let sliderHue: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
@@ -2169,7 +2167,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Saturation
-      if let textFieldSaturation: NSTextField = view.viewWithTag(15) as? NSTextField
+      if let textFieldSaturation: NSTextField = view.viewWithTag(6) as? NSTextField
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
@@ -2182,7 +2180,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderSaturation: NSSlider = view.viewWithTag(16) as? NSSlider
+      if let sliderSaturation: NSSlider = view.viewWithTag(7) as? NSSlider
       {
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
@@ -2198,7 +2196,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Value
-      if let textFieldValue: NSTextField = view.viewWithTag(17) as? NSTextField
+      if let textFieldValue: NSTextField = view.viewWithTag(8) as? NSTextField
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
@@ -2211,7 +2209,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderValue: NSSlider = view.viewWithTag(18) as? NSSlider
+      if let sliderValue: NSSlider = view.viewWithTag(9) as? NSSlider
       {
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
@@ -2228,7 +2226,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
     case "BondsLightingCell":
       // Use ambient occlusion yes/no
-      if let buttonAmbientOcclusion: NSButton = view.viewWithTag(30) as? NSButton
+      if let buttonAmbientOcclusion: NSButton = view.viewWithTag(1) as? NSButton
       {
         buttonAmbientOcclusion.isEnabled = false
         if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
@@ -2251,7 +2249,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Atom ambient light
-      if let ambientLightIntensitity: NSTextField = view.viewWithTag(31) as? NSTextField
+      if let ambientLightIntensitity: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         ambientLightIntensitity.isEditable = false
         ambientLightIntensitity.stringValue = ""
@@ -2264,7 +2262,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(32) as? NSSlider
+      if let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderAmbientLightIntensitity.isEnabled = false
         sliderAmbientLightIntensitity.minValue = 0.0
@@ -2278,7 +2276,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let ambientColor: NSColorWell = view.viewWithTag(33) as? NSColorWell
+      if let ambientColor: NSColorWell = view.viewWithTag(4) as? NSColorWell
       {
         ambientColor.isEnabled = false
         ambientColor.color = NSColor.lightGray
@@ -2293,7 +2291,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Bond diffuse light
-      if let diffuseLightIntensitity: NSTextField = view.viewWithTag(34) as? NSTextField
+      if let diffuseLightIntensitity: NSTextField = view.viewWithTag(5) as? NSTextField
       {
         diffuseLightIntensitity.isEditable = false
         diffuseLightIntensitity.stringValue = ""
@@ -2306,7 +2304,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderDiffuseLightIntensitity: NSSlider = view.viewWithTag(35) as? NSSlider
+      if let sliderDiffuseLightIntensitity: NSSlider = view.viewWithTag(6) as? NSSlider
       {
         sliderDiffuseLightIntensitity.isEnabled = false
         sliderDiffuseLightIntensitity.minValue = 0.0
@@ -2320,7 +2318,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let diffuseColor: NSColorWell = view.viewWithTag(36) as? NSColorWell
+      if let diffuseColor: NSColorWell = view.viewWithTag(7) as? NSColorWell
       {
         diffuseColor.isEnabled = false
         diffuseColor.color = NSColor.lightGray
@@ -2335,7 +2333,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Atom specular light
-      if let specularLightIntensitity: NSTextField = view.viewWithTag(37) as? NSTextField
+      if let specularLightIntensitity: NSTextField = view.viewWithTag(8) as? NSTextField
       {
         specularLightIntensitity.isEditable = false
         specularLightIntensitity.stringValue = ""
@@ -2348,7 +2346,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderSpecularLightIntensitity: NSSlider = view.viewWithTag(38) as? NSSlider
+      if let sliderSpecularLightIntensitity: NSSlider = view.viewWithTag(9) as? NSSlider
       {
         sliderSpecularLightIntensitity.isEnabled = false
         sliderSpecularLightIntensitity.minValue = 0.0
@@ -2362,7 +2360,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let specularColor: NSColorWell = view.viewWithTag(39) as? NSColorWell
+      if let specularColor: NSColorWell = view.viewWithTag(10) as? NSColorWell
       {
         specularColor.isEnabled = false
         specularColor.color = NSColor.lightGray
@@ -2377,7 +2375,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Bond specular shininess
-      if let shininess: NSTextField = view.viewWithTag(40) as? NSTextField
+      if let shininess: NSTextField = view.viewWithTag(11) as? NSTextField
       {
         shininess.isEditable = false
         shininess.stringValue = ""
@@ -2390,7 +2388,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderShininess: NSSlider = view.viewWithTag(41) as? NSSlider
+      if let sliderShininess: NSSlider = view.viewWithTag(12) as? NSSlider
       {
         sliderShininess.isEnabled = false
         sliderShininess.minValue = 0.1
@@ -2633,7 +2631,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      if let popUpbuttonSurfaceSize: iRASPAPopUpButton = view.viewWithTag(207) as? iRASPAPopUpButton
+      if let popUpbuttonSurfaceSize: iRASPAPopUpButton = view.viewWithTag(7) as? iRASPAPopUpButton
       {
         popUpbuttonSurfaceSize.isEditable = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -2653,7 +2651,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
     case "AdsorptionHSVCell":
       // Hue
-      if let textFieldHue: NSTextField = view.viewWithTag(4413) as? NSTextField
+      if let textFieldHue: NSTextField = view.viewWithTag(1) as? NSTextField
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
@@ -2666,7 +2664,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderHue: NSSlider = view.viewWithTag(4414) as? NSSlider
+      if let sliderHue: NSSlider = view.viewWithTag(2) as? NSSlider
       {
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
@@ -2682,7 +2680,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Saturation
-      if let textFieldSaturation: NSTextField = view.viewWithTag(4415) as? NSTextField
+      if let textFieldSaturation: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
@@ -2695,7 +2693,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderSaturation: NSSlider = view.viewWithTag(4416) as? NSSlider
+      if let sliderSaturation: NSSlider = view.viewWithTag(4) as? NSSlider
       {
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
@@ -2711,7 +2709,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Value
-      if let textFieldValue: NSTextField = view.viewWithTag(4417) as? NSTextField
+      if let textFieldValue: NSTextField = view.viewWithTag(5) as? NSTextField
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
@@ -2724,7 +2722,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderValue: NSSlider = view.viewWithTag(4418) as? NSSlider
+      if let sliderValue: NSSlider = view.viewWithTag(6) as? NSSlider
       {
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
@@ -2742,7 +2740,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
     case "AdsorptionFrontSurfaceCell":
       // High dynamic range
-      if let button: NSButton = view.viewWithTag(7) as? NSButton
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -2763,7 +2761,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Exposure
-      if let textFieldExposure: NSTextField = view.viewWithTag(8) as? NSTextField
+      if let textFieldExposure: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
@@ -2780,7 +2778,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderExposure: NSSlider = view.viewWithTag(9) as? NSSlider
+      if let sliderExposure: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
@@ -2797,7 +2795,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       
       // ambient intensity and color
-      if let textFieldFrontAmbientIntensity: NSTextField = view.viewWithTag(10) as? NSTextField
+      if let textFieldFrontAmbientIntensity: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldFrontAmbientIntensity.isEditable = false
         textFieldFrontAmbientIntensity.stringValue = ""
@@ -2814,7 +2812,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
+      if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderFrontAmbientIntensity.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -2828,7 +2826,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let ambientFrontSideColor: NSColorWell = view.viewWithTag(12) as? NSColorWell
+      if let ambientFrontSideColor: NSColorWell = view.viewWithTag(6) as? NSColorWell
       {
         ambientFrontSideColor.isEnabled = false
         ambientFrontSideColor.color = NSColor.lightGray
@@ -2843,7 +2841,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // diffuse intensity and color
-      if let textFieldFrontDiffuseIntensity: NSTextField = view.viewWithTag(13) as? NSTextField
+      if let textFieldFrontDiffuseIntensity: NSTextField = view.viewWithTag(7) as? NSTextField
       {
         textFieldFrontDiffuseIntensity.isEditable = false
         textFieldFrontDiffuseIntensity.stringValue = ""
@@ -2860,7 +2858,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(14) as? NSSlider
+      if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderFrontDiffuseIntensity.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -2874,7 +2872,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let diffuseFrontSideColor: NSColorWell = view.viewWithTag(15) as? NSColorWell
+      if let diffuseFrontSideColor: NSColorWell = view.viewWithTag(9) as? NSColorWell
       {
         diffuseFrontSideColor.isEnabled = false
         diffuseFrontSideColor.color = NSColor.lightGray
@@ -2889,7 +2887,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // specular intensity and color
-      if let textFieldFrontSpecularIntensity: NSTextField = view.viewWithTag(16) as? NSTextField
+      if let textFieldFrontSpecularIntensity: NSTextField = view.viewWithTag(10) as? NSTextField
       {
         textFieldFrontSpecularIntensity.isEditable = false
         textFieldFrontSpecularIntensity.stringValue = ""
@@ -2906,7 +2904,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(17) as? NSSlider
+      if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderFrontSpecularIntensity.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -2920,7 +2918,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let specularFrontSideColor: NSColorWell = view.viewWithTag(18) as? NSColorWell
+      if let specularFrontSideColor: NSColorWell = view.viewWithTag(12) as? NSColorWell
       {
         specularFrontSideColor.isEnabled = false
         specularFrontSideColor.color = NSColor.lightGray
@@ -2936,7 +2934,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       
       
-      if let textFieldFrontShininess: NSTextField = view.viewWithTag(19) as? NSTextField
+      if let textFieldFrontShininess: NSTextField = view.viewWithTag(13) as? NSTextField
       {
         textFieldFrontShininess.isEditable = false
         textFieldFrontShininess.stringValue = ""
@@ -2953,7 +2951,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderFrontShininess: NSSlider = view.viewWithTag(20) as? NSSlider
+      if let sliderFrontShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderFrontShininess.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -2971,7 +2969,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     case "AdsorptionBackSurfaceCell":
       
       // High dynamic range
-      if let button: NSButton = view.viewWithTag(21) as? NSButton
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -2991,7 +2989,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Exposure
-      if let textFieldExposure: NSTextField = view.viewWithTag(22) as? NSTextField
+      if let textFieldExposure: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
@@ -3008,7 +3006,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderExposure: NSSlider = view.viewWithTag(23) as? NSSlider
+      if let sliderExposure: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
@@ -3025,7 +3023,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       
       
       // Ambient color
-      if let textFieldBackAmbientIntensity: NSTextField = view.viewWithTag(24) as? NSTextField
+      if let textFieldBackAmbientIntensity: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldBackAmbientIntensity.isEditable = false
         textFieldBackAmbientIntensity.stringValue = ""
@@ -3042,7 +3040,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(25) as? NSSlider
+      if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderBackAmbientIntensity.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -3056,7 +3054,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let ambientBackSideColor: NSColorWell = view.viewWithTag(26) as? NSColorWell
+      if let ambientBackSideColor: NSColorWell = view.viewWithTag(6) as? NSColorWell
       {
         ambientBackSideColor.isEnabled = false
         ambientBackSideColor.color = NSColor.lightGray
@@ -3071,7 +3069,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Diffuse color
-      if let textFieldBackDiffuseIntensity: NSTextField = view.viewWithTag(27) as? NSTextField
+      if let textFieldBackDiffuseIntensity: NSTextField = view.viewWithTag(7) as? NSTextField
       {
         textFieldBackDiffuseIntensity.isEditable = false
         textFieldBackDiffuseIntensity.stringValue = ""
@@ -3088,7 +3086,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(28) as? NSSlider
+      if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderBackDiffuseIntensity.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -3102,7 +3100,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let diffuseBackSideColor: NSColorWell = view.viewWithTag(29) as? NSColorWell
+      if let diffuseBackSideColor: NSColorWell = view.viewWithTag(9) as? NSColorWell
       {
         diffuseBackSideColor.isEnabled = false
         diffuseBackSideColor.color = NSColor.lightGray
@@ -3117,7 +3115,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Specular color
-      if let textFieldBackSpecularIntensity: NSTextField = view.viewWithTag(30) as? NSTextField
+      if let textFieldBackSpecularIntensity: NSTextField = view.viewWithTag(10) as? NSTextField
       {
         textFieldBackSpecularIntensity.isEditable = false
         textFieldBackSpecularIntensity.stringValue = ""
@@ -3134,7 +3132,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(31) as? NSSlider
+      if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderBackSpecularIntensity.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -3148,7 +3146,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let specularBackSideColor: NSColorWell = view.viewWithTag(32) as? NSColorWell
+      if let specularBackSideColor: NSColorWell = view.viewWithTag(12) as? NSColorWell
       {
         specularBackSideColor.isEnabled = false
         specularBackSideColor.color = NSColor.lightGray
@@ -3163,7 +3161,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       // Shininess
-      if let textFieldBackShininess: NSTextField = view.viewWithTag(33) as? NSTextField
+      if let textFieldBackShininess: NSTextField = view.viewWithTag(13) as? NSTextField
       {
         textFieldBackShininess.isEditable = false
         textFieldBackShininess.stringValue = ""
@@ -3180,7 +3178,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderBackShininess: NSSlider = view.viewWithTag(34) as? NSSlider
+      if let sliderBackShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderBackShininess.isEnabled = false
         if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
@@ -3206,7 +3204,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
     case "AnnotationVisualAppearanceCell":
       // Annotation type
-      if let popUpbuttonAnnotationType: iRASPAPopUpButton = view.viewWithTag(60) as? iRASPAPopUpButton
+      if let popUpbuttonAnnotationType: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonAnnotationType.isEditable = false
         if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
@@ -3225,7 +3223,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      if let textColor: NSColorWell = view.viewWithTag(61) as? NSColorWell
+      if let textColor: NSColorWell = view.viewWithTag(2) as? NSColorWell
       {
         textColor.isEnabled = false
         textColor.color = NSColor.lightGray
@@ -3243,8 +3241,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      if let popUpbuttonFontFamily: iRASPAPopUpButton = view.viewWithTag(62) as? iRASPAPopUpButton,
-        let popUpbuttonFontFamilyMembers: iRASPAPopUpButton = view.viewWithTag(63) as? iRASPAPopUpButton
+      if let popUpbuttonFontFamily: iRASPAPopUpButton = view.viewWithTag(3) as? iRASPAPopUpButton,
+        let popUpbuttonFontFamilyMembers: iRASPAPopUpButton = view.viewWithTag(4) as? iRASPAPopUpButton
       {
         popUpbuttonFontFamily.isEditable = false
         popUpbuttonFontFamilyMembers.isEditable = false
@@ -3287,7 +3285,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
-        if let popUpbuttonAnnotationAlignment: iRASPAPopUpButton = view.viewWithTag(64) as? iRASPAPopUpButton
+        if let popUpbuttonAnnotationAlignment: iRASPAPopUpButton = view.viewWithTag(5) as? iRASPAPopUpButton
         {
           popUpbuttonAnnotationAlignment.isEditable = false
           if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
@@ -3306,7 +3304,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
-        if let popUpbuttonAnnotationStyle: iRASPAPopUpButton = view.viewWithTag(65) as? iRASPAPopUpButton
+        if let popUpbuttonAnnotationStyle: iRASPAPopUpButton = view.viewWithTag(6) as? iRASPAPopUpButton
         {
           popUpbuttonAnnotationStyle.isEditable = false
           if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
@@ -3327,7 +3325,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         
         
         // Scaling
-        if let textFieldScaling: NSTextField = view.viewWithTag(66) as? NSTextField
+        if let textFieldScaling: NSTextField = view.viewWithTag(7) as? NSTextField
         {
           textFieldScaling.isEditable = false
           textFieldScaling.stringValue = ""
@@ -3344,7 +3342,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
           }
         }
-        if let sliderScaling: NSSlider = view.viewWithTag(67) as? NSSlider
+        if let sliderScaling: NSSlider = view.viewWithTag(8) as? NSSlider
         {
           sliderScaling.isEnabled = false
           sliderScaling.minValue = 0.0
@@ -3359,7 +3357,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
-        if let textFieldAnnotionTextDisplacementX: NSTextField = view.viewWithTag(70) as? NSTextField
+        if let textFieldAnnotionTextDisplacementX: NSTextField = view.viewWithTag(10) as? NSTextField
         {
           textFieldAnnotionTextDisplacementX.isEditable = false
           textFieldAnnotionTextDisplacementX.stringValue = ""
@@ -3377,7 +3375,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
-        if let textFieldAnnotionTextDisplacementY: NSTextField = view.viewWithTag(72) as? NSTextField
+        if let textFieldAnnotionTextDisplacementY: NSTextField = view.viewWithTag(11) as? NSTextField
         {
           textFieldAnnotionTextDisplacementY.isEditable = false
           textFieldAnnotionTextDisplacementY.stringValue = ""
@@ -3395,7 +3393,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
         
-        if let textFieldAnnotionTextDisplacementZ: NSTextField = view.viewWithTag(74) as? NSTextField
+        if let textFieldAnnotionTextDisplacementZ: NSTextField = view.viewWithTag(12) as? NSTextField
         {
           textFieldAnnotionTextDisplacementZ.isEditable = false
           textFieldAnnotionTextDisplacementZ.stringValue = ""
@@ -4060,7 +4058,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveOpacity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveOpacityPropertiesCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -4093,7 +4091,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveOpacity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveOpacityPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4111,7 +4109,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveOpacityPropertiesCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -4145,7 +4143,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveOpacityPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.reloadRenderData()
@@ -4218,7 +4216,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveSelectionStyle = selectionStyle
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -4237,7 +4235,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveSelectionFrequency = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4254,7 +4252,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveSelectionDensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4271,7 +4269,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveSelectionIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4288,7 +4286,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveSelectionIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -4322,7 +4320,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveSelectionScaling = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4339,7 +4337,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveSelectionScaling = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -4374,7 +4372,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderPrimitiveHue = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+       self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4392,7 +4390,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderPrimitiveHue = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+       self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
        if let event: NSEvent = NSApplication.shared.currentEvent
        {
@@ -4426,7 +4424,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderPrimitiveSaturation = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+       self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4444,7 +4442,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderPrimitiveSaturation = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+       self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
        if let event: NSEvent = NSApplication.shared.currentEvent
        {
@@ -4478,7 +4476,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderPrimitiveValue = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+       self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4496,7 +4494,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderPrimitiveValue = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+       self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
        if let event: NSEvent = NSApplication.shared.currentEvent
        {
@@ -4533,7 +4531,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4551,7 +4549,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4569,7 +4567,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4587,7 +4585,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4621,7 +4619,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4674,7 +4672,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4728,7 +4726,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveFrontSideShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4745,7 +4743,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveFrontSideShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4780,7 +4778,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4798,7 +4796,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4817,7 +4815,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4835,7 +4833,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4870,7 +4868,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4888,7 +4886,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4923,7 +4921,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4941,7 +4939,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4977,7 +4975,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4994,7 +4992,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderPrimitiveBackSideShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
+      self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5043,7 +5041,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.setRepresentationStyle(style: representationStyle, colorSets: document.colorSets)
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell,self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.atomsSelectionCell, self.atomsScalingCell, self.atomsHDRCell, self.atomsLightingCell, self.bondsScalingCell, self.bondsSelectionCell, self.bondsHDRCell, self.bondsLightingCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [])
@@ -5162,7 +5160,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAtomSelectionStyle = selectionStyle
       
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -5641,7 +5639,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderAtomAmbientIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5660,7 +5658,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderAtomAmbientIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5678,7 +5676,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAtomAmbientColor = sender.color
       
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5698,7 +5696,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderAtomDiffuseIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5716,7 +5714,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderAtomDiffuseIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5734,7 +5732,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAtomDiffuseColor = sender.color
       
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5753,7 +5751,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderAtomSpecularIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5771,7 +5769,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAtomSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5790,7 +5788,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderAtomSpecularColor = sender.color
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5809,7 +5807,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderAtomShininess = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5827,7 +5825,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderAtomShininess = sender.doubleValue
       
       representedStructure.recheckRepresentationStyle()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
+      self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5967,7 +5965,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondSelectionStyle = selectionStyle
       
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsSelectionCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -6023,7 +6021,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderBondSelectionIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyleBond()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsSelectionCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6041,7 +6039,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderBondSelectionIntensity = sender.doubleValue
       
       representedStructure.recheckRepresentationStyleBond()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsSelectionCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -6076,7 +6074,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       representedStructure.renderBondSelectionScaling = sender.doubleValue
       
       representedStructure.recheckRepresentationStyleBond()
-      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsSelectionCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6150,7 +6148,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsHDRCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6169,7 +6167,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondHue = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsHDRCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6187,7 +6185,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondHue = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsHDRCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -6221,7 +6219,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondSaturation = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsHDRCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6239,7 +6237,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondSaturation = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsHDRCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -6273,7 +6271,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondValue = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsHDRCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6291,7 +6289,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondValue = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsHDRCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -6329,7 +6327,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6347,7 +6345,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6381,7 +6379,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6398,7 +6396,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6432,7 +6430,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6450,7 +6448,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6484,7 +6482,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6501,7 +6499,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderBondShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.bondsScalingCell])
+      self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6826,7 +6824,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderAdsorptionSurfaceHue = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+       self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6878,7 +6876,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderAdsorptionSurfaceSaturation = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+       self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6930,7 +6928,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
      {
        representedStructure.renderAdsorptionSurfaceValue = sender.doubleValue
        
-       self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+       self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7000,7 +6998,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7018,7 +7016,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7036,7 +7034,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7054,7 +7052,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7088,7 +7086,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7106,7 +7104,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7141,7 +7139,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7159,7 +7157,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7195,7 +7193,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7212,7 +7210,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceFrontSideShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7247,7 +7245,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7265,7 +7263,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideHDRExposure = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7284,7 +7282,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7302,7 +7300,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7337,7 +7335,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7355,7 +7353,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7390,7 +7388,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7408,7 +7406,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7444,7 +7442,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7461,7 +7459,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     {
       representedStructure.renderAdsorptionSurfaceBackSideShininess = sender.doubleValue
       
-      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7747,6 +7745,4 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     
     sender.doubleValue = 0
   }
-  
-  
 }
