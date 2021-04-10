@@ -71,7 +71,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   let transformContentCell: OutlineViewItem = OutlineViewItem("TransformContentCell")
   
-  
   let structuralPropertiesCell: OutlineViewItem = OutlineViewItem("StructuralPropertiesCell")
   let structuralProbeCell: OutlineViewItem = OutlineViewItem("StructuralProbeCell")
   let structuralChannelCell: OutlineViewItem = OutlineViewItem("StructuralChannelCell")
@@ -220,7 +219,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       setPropertiesBoxTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesTransformTableCells(on: view, identifier: string, enabled: enabled)
-      setPropertiesBoxTableCells(on: view, identifier: string, enabled: enabled)
+      setPropertiesStructuralTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesSymmetryTableCells(on: view, identifier: string, enabled: enabled)
       
       return view
@@ -1043,8 +1042,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     switch(identifier)
     {
-    case "SimulationCellContentTransformCell":
-      if let button: NSButton = view.viewWithTag(120) as? NSButton
+    case "TransformContentCell":
+      if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
         if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
@@ -1062,7 +1061,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let button: NSButton = view.viewWithTag(121) as? NSButton
+      if let button: NSButton = view.viewWithTag(2) as? NSButton
       {
         button.isEnabled = false
         if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
@@ -1080,7 +1079,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let button: NSButton = view.viewWithTag(122) as? NSButton
+      if let button: NSButton = view.viewWithTag(3) as? NSButton
       {
         button.isEnabled = false
         if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
@@ -1099,7 +1098,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
      
-      if let textFieldCenterShiftX: NSTextField = view.viewWithTag(123) as? NSTextField
+      if let textFieldCenterShiftX: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldCenterShiftX.isEditable = false
         textFieldCenterShiftX.stringValue = "test"
@@ -1116,7 +1115,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldCenterShiftY: NSTextField = view.viewWithTag(124) as? NSTextField
+      if let textFieldCenterShiftY: NSTextField = view.viewWithTag(5) as? NSTextField
       {
         textFieldCenterShiftY.isEditable = false
         textFieldCenterShiftY.stringValue = "test"
@@ -1133,7 +1132,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldCenterShiftZ: NSTextField = view.viewWithTag(125) as? NSTextField
+      if let textFieldCenterShiftZ: NSTextField = view.viewWithTag(6) as? NSTextField
       {
         textFieldCenterShiftZ.isEditable = false
         textFieldCenterShiftZ.stringValue = "test"
@@ -1283,7 +1282,40 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldRenderStructureVolumetricNitrogenSurfaceArea: NSTextField = view.viewWithTag(7) as? NSTextField
+      
+      if let buttonComputeHeliumVoidFraction: NSButton = view.viewWithTag(10) as? NSButton
+      {
+        buttonComputeHeliumVoidFraction.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
+          {
+            buttonComputeHeliumVoidFraction.isEnabled = enabled
+          }
+          else
+          {
+            buttonComputeHeliumVoidFraction.isEnabled = false
+          }
+        }
+      }
+      
+     
+    case "StructuralProbeCell":
+      // Probe molecule
+      if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
+      {
+        popUpbuttonProbeParticle.isEditable = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          popUpbuttonProbeParticle.isEditable = enabled
+          if let probeMolecule: Structure.ProbeMolecule = representedStructure.renderFrameworkProbeMolecule
+          {
+            popUpbuttonProbeParticle.selectItem(at: probeMolecule.rawValue)
+          }
+        }
+      }
+      
+      if let textFieldRenderStructureVolumetricNitrogenSurfaceArea: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.stringValue = ""
@@ -1304,7 +1336,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldRenderStructureGravimetricNitrogenSurfaceArea: NSTextField = view.viewWithTag(8) as? NSTextField
+      if let textFieldRenderStructureGravimetricNitrogenSurfaceArea: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = ""
@@ -1325,7 +1357,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldRenderStructureNumberOfChannelSystems: NSTextField = view.viewWithTag(9) as? NSTextField
+      
+      if let textFieldRenderStructureNumberOfChannelSystems: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldRenderStructureNumberOfChannelSystems.isEditable = false
         textFieldRenderStructureNumberOfChannelSystems.stringValue = ""
@@ -1347,7 +1380,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldRenderStructureNumberOfInaccessiblePockets: NSTextField = view.viewWithTag(10) as? NSTextField
+      if let textFieldRenderStructureNumberOfInaccessiblePockets: NSTextField = view.viewWithTag(5) as? NSTextField
       {
         textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = false
         textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = ""
@@ -1370,7 +1403,43 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
       
-      if let textFieldRenderStructureDimensionalityOfPoreSystem: NSTextField = view.viewWithTag(15) as? NSTextField
+      
+     
+      if let buttonComputeVolumetricSurfaceArea: NSButton = view.viewWithTag(10) as? NSButton
+      {
+        buttonComputeVolumetricSurfaceArea.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
+          {
+            buttonComputeVolumetricSurfaceArea.isEnabled = enabled
+          }
+          else
+          {
+            buttonComputeVolumetricSurfaceArea.isEnabled = false
+          }
+        }
+      }
+    
+      if let buttonComputeGeometricSurfaceArea: NSButton = view.viewWithTag(11) as? NSButton
+      {
+        buttonComputeGeometricSurfaceArea.isEnabled = false
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
+          {
+            buttonComputeGeometricSurfaceArea.isEnabled = enabled
+          }
+          else
+          {
+            buttonComputeGeometricSurfaceArea.isEnabled = false
+          }
+        }
+      }
+  
+    case "StructuralChannelCell":
+     
+      if let textFieldRenderStructureDimensionalityOfPoreSystem: NSTextField = view.viewWithTag(1) as? NSTextField
       {
         textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = false
         textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = ""
@@ -1392,7 +1461,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldRenderStructureLargestCavityDiameter: NSTextField = view.viewWithTag(16) as? NSTextField
+      if let textFieldRenderStructureLargestCavityDiameter: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         textFieldRenderStructureLargestCavityDiameter.isEditable = false
         textFieldRenderStructureLargestCavityDiameter.stringValue = ""
@@ -1414,7 +1483,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldRenderStructureRestrictingPoreLimitingDiameter: NSTextField = view.viewWithTag(17) as? NSTextField
+      if let textFieldRenderStructureRestrictingPoreLimitingDiameter: NSTextField = view.viewWithTag(3) as? NSTextField
       {
         textFieldRenderStructureRestrictingPoreLimitingDiameter.isEditable = false
         textFieldRenderStructureRestrictingPoreLimitingDiameter.stringValue = ""
@@ -1436,7 +1505,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let textFieldRenderStructureLargestCavityDiameterAlongAViablePath: NSTextField = view.viewWithTag(18) as? NSTextField
+      if let textFieldRenderStructureLargestCavityDiameterAlongAViablePath: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEditable = false
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.stringValue = ""
@@ -1458,66 +1527,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      if let buttonComputeHeliumVoidFraction: NSButton = view.viewWithTag(20) as? NSButton
-      {
-        buttonComputeHeliumVoidFraction.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
-          {
-            buttonComputeHeliumVoidFraction.isEnabled = enabled
-          }
-          else
-          {
-            buttonComputeHeliumVoidFraction.isEnabled = false
-          }
-        }
-      }
       
-      // Probe molecule
-      if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(122) as? iRASPAPopUpButton
-      {
-        popUpbuttonProbeParticle.isEditable = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          popUpbuttonProbeParticle.isEditable = enabled
-          if let probeMolecule: Structure.ProbeMolecule = representedStructure.renderFrameworkProbeMolecule
-          {
-            popUpbuttonProbeParticle.selectItem(at: probeMolecule.rawValue)
-          }
-        }
-      }
       
-      if let buttonComputeVolumetricSurfaceArea: NSButton = view.viewWithTag(21) as? NSButton
-      {
-        buttonComputeVolumetricSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
-          {
-            buttonComputeVolumetricSurfaceArea.isEnabled = enabled
-          }
-          else
-          {
-            buttonComputeVolumetricSurfaceArea.isEnabled = false
-          }
-        }
-      }
-      if let buttonComputeGeometricSurfaceArea: NSButton = view.viewWithTag(22) as? NSButton
-      {
-        buttonComputeGeometricSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
-          {
-            buttonComputeGeometricSurfaceArea.isEnabled = enabled
-          }
-          else
-          {
-            buttonComputeGeometricSurfaceArea.isEnabled = false
-          }
-        }
-      }
+      
     default:
       break
     }
@@ -1527,83 +1539,22 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     switch(identifier)
     {
-    case "SymmetryCell":
-      if let textFieldRenderPrecision: NSTextField = view.viewWithTag(20) as? NSTextField
-      {
-        textFieldRenderPrecision.isEditable = false
-        textFieldRenderPrecision.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
-        {
-          textFieldRenderPrecision.isEditable = enabled
-          if let renderPrecision: Double = representedStructure.renderCellPrecision
-          {
-            textFieldRenderPrecision.doubleValue = renderPrecision
-          }
-          else
-          {
-            textFieldRenderPrecision.stringValue = "Mult. Val."
-          }
-        }
-      }
-      
+    case "SymmetrySpaceGroupCell":
       if let HallSpaceGroupPopUpButton: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton,
          let SpaceGroupHolohedry: NSTextField = view.viewWithTag(2) as? NSTextField,
          let spaceGroupNumberPopUpButton: iRASPAPopUpButton = view.viewWithTag(3) as? iRASPAPopUpButton,
-         let spaceGroupQualifierPopUpButton: iRASPAPopUpButton = view.viewWithTag(4) as? iRASPAPopUpButton,
-         let centringTextField: NSTextField = view.viewWithTag(5) as? NSTextField,
-         let centringLatticeVector1TextField: NSTextField = view.viewWithTag(6) as? NSTextField,
-         let centringLatticeVector2TextField: NSTextField = view.viewWithTag(7) as? NSTextField,
-         let centringLatticeVector3TextField: NSTextField = view.viewWithTag(8) as? NSTextField,
-         let centringLatticeVector4TextField: NSTextField = view.viewWithTag(9) as? NSTextField,
-         let hasInversionTextField: NSTextField = view.viewWithTag(10) as? NSTextField,
-         let inversionTextField: NSTextField = view.viewWithTag(11) as? NSTextField,
-         let centrosymmetricTextField: NSTextField = view.viewWithTag(12) as? NSTextField,
-         let enantiomorphicTextField: NSTextField = view.viewWithTag(13) as? NSTextField,
-         let LaueGroupTextField: NSTextField = view.viewWithTag(14) as? NSTextField,
-         let pointGroupTextField: NSTextField = view.viewWithTag(15) as? NSTextField,
-         let SchoenfliesTextField: NSTextField = view.viewWithTag(16) as? NSTextField,
-         let symmorphicityTextField: NSTextField = view.viewWithTag(17) as? NSTextField,
-         let numberOfElementsTextField: NSTextField = view.viewWithTag(18) as? NSTextField
+         let spaceGroupQualifierPopUpButton: iRASPAPopUpButton = view.viewWithTag(4) as? iRASPAPopUpButton
       {
-        
         HallSpaceGroupPopUpButton.isEditable = false
         SpaceGroupHolohedry.isEditable = false
         spaceGroupNumberPopUpButton.isEditable = false
         spaceGroupQualifierPopUpButton.isEditable = false
-        centringTextField.isEditable = false
-        centringLatticeVector1TextField.isEditable = false
-        centringLatticeVector2TextField.isEditable = false
-        centringLatticeVector3TextField.isEditable = false
-        centringLatticeVector4TextField.isEditable = false
-        hasInversionTextField.isEditable = false
-        inversionTextField.isEditable = false
-        centrosymmetricTextField.isEditable = false
-        enantiomorphicTextField.isEditable = false
-        LaueGroupTextField.isEditable = false
-        pointGroupTextField.isEditable = false
-        SchoenfliesTextField.isEditable = false
-        symmorphicityTextField.isEditable = false
-        numberOfElementsTextField.isEditable = false
         
         HallSpaceGroupPopUpButton.stringValue = ""
         SpaceGroupHolohedry.stringValue = ""
         spaceGroupNumberPopUpButton.stringValue = ""
         spaceGroupQualifierPopUpButton.stringValue = ""
-        centringTextField.stringValue = ""
-        centringLatticeVector1TextField.stringValue = ""
-        centringLatticeVector2TextField.stringValue = ""
-        centringLatticeVector3TextField.stringValue = ""
-        centringLatticeVector4TextField.stringValue = ""
-        hasInversionTextField.stringValue = ""
-        inversionTextField.stringValue = ""
-        centrosymmetricTextField.stringValue = ""
-        enantiomorphicTextField.stringValue = ""
-        LaueGroupTextField.stringValue = ""
-        pointGroupTextField.stringValue = ""
-        SchoenfliesTextField.stringValue = ""
-        symmorphicityTextField.stringValue = ""
-        numberOfElementsTextField.stringValue = ""
-        
+       
         
         HallSpaceGroupPopUpButton.removeAllItems()
         HallSpaceGroupPopUpButton.addItems(withTitles: SKSpacegroup.HallSymbols)
@@ -1620,14 +1571,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         spaceGroupQualifierPopUpButton.selectItem(at: ext)
         
         SpaceGroupHolohedry.stringValue = SKSpacegroup.HolohedryString(HallNumber: 1)
-        centringTextField.stringValue = SKSpacegroup.CentringString(HallNumber: 1)
-        centrosymmetricTextField.stringValue = SKSpacegroup.CentrosymmetricString(HallNumber: 1)
-        enantiomorphicTextField.stringValue = SKSpacegroup.EnantionmorphicString(HallNumber: 1)
-        LaueGroupTextField.stringValue = SKSpacegroup.LaueGroupString(HallNumber: 1)
-        pointGroupTextField.stringValue = SKSpacegroup.PointGroupString(HallNumber: 1)
-        SchoenfliesTextField.stringValue = SKSpacegroup.SchoenfliesString(HallNumber: 1)
-        symmorphicityTextField.stringValue = SKSpacegroup.SymmorphicityString(HallNumber: 1)
-        numberOfElementsTextField.stringValue = SKSpacegroup.NumberOfElementsString(HallNumber: 1)
         
         if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
           !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
@@ -1654,12 +1597,121 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
             spaceGroupQualifierPopUpButton.selectItem(at: ext)
             
             SpaceGroupHolohedry.stringValue = SKSpacegroup.HolohedryString(HallNumber: spaceGroupHallNumber)
+          }
+          else
+          {
+            spaceGroupQualifierPopUpButton.removeAllItems()
+            spaceGroupQualifierPopUpButton.addItem(withTitle: "Multiple Values")
+            HallSpaceGroupPopUpButton.setTitle("Multiple Values")
+            SpaceGroupHolohedry.stringValue = "Multiple Values"
+            spaceGroupNumberPopUpButton.setTitle("Multiple Values")
+            spaceGroupQualifierPopUpButton.setTitle("Multiple Values")
+          }
+        }
+      }
+      
+      if let textFieldRenderPrecision: NSTextField = view.viewWithTag(5) as? NSTextField
+      {
+        textFieldRenderPrecision.isEditable = false
+        textFieldRenderPrecision.stringValue = ""
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        {
+          textFieldRenderPrecision.isEditable = enabled
+          if let renderPrecision: Double = representedStructure.renderCellPrecision
+          {
+            textFieldRenderPrecision.doubleValue = renderPrecision
+          }
+          else
+          {
+            textFieldRenderPrecision.stringValue = "Mult. Val."
+          }
+        }
+      }
+    case "SymmetryCenteringCell":
+      if let centringTextField: NSTextField = view.viewWithTag(1) as? NSTextField,
+         let centringLatticeVector1TextField: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let centringLatticeVector2TextField: NSTextField = view.viewWithTag(3) as? NSTextField,
+         let centringLatticeVector3TextField: NSTextField = view.viewWithTag(4) as? NSTextField,
+         let centringLatticeVector4TextField: NSTextField = view.viewWithTag(5) as? NSTextField
+      {
+        centringTextField.isEditable = false
+        centringLatticeVector1TextField.isEditable = false
+        centringLatticeVector2TextField.isEditable = false
+        centringLatticeVector3TextField.isEditable = false
+        centringLatticeVector4TextField.isEditable = false
+       
+        centringTextField.stringValue = ""
+        centringLatticeVector1TextField.stringValue = ""
+        centringLatticeVector2TextField.stringValue = ""
+        centringLatticeVector3TextField.stringValue = ""
+        centringLatticeVector4TextField.stringValue = ""
+        
+        centringTextField.stringValue = SKSpacegroup.CentringString(HallNumber: 1)
+        
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+          !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
+        {
+        
+          if let spaceGroupHallNumber: Int = representedStructure.spaceGroupHallNumber
+          {
             centringTextField.stringValue = SKSpacegroup.CentringString(HallNumber: spaceGroupHallNumber)
             let latticeTranslationStrings: [String] = SKSpacegroup.LatticeTranslationStrings(HallNumber: spaceGroupHallNumber)
             centringLatticeVector1TextField.stringValue = latticeTranslationStrings[0]
             centringLatticeVector2TextField.stringValue = latticeTranslationStrings[1]
             centringLatticeVector3TextField.stringValue = latticeTranslationStrings[2]
             centringLatticeVector4TextField.stringValue = latticeTranslationStrings[3]
+          }
+          else
+          {
+            centringTextField.stringValue = "Multiple Values"
+          }
+        }
+
+      }
+    case "SymmetryPropertiesCell":
+      if let hasInversionTextField: NSTextField = view.viewWithTag(1) as? NSTextField,
+         let inversionTextField: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let centrosymmetricTextField: NSTextField = view.viewWithTag(3) as? NSTextField,
+         let enantiomorphicTextField: NSTextField = view.viewWithTag(4) as? NSTextField,
+         let LaueGroupTextField: NSTextField = view.viewWithTag(5) as? NSTextField,
+         let pointGroupTextField: NSTextField = view.viewWithTag(6) as? NSTextField,
+         let SchoenfliesTextField: NSTextField = view.viewWithTag(7) as? NSTextField,
+         let symmorphicityTextField: NSTextField = view.viewWithTag(8) as? NSTextField,
+         let numberOfElementsTextField: NSTextField = view.viewWithTag(9) as? NSTextField
+      {
+        hasInversionTextField.isEditable = false
+        inversionTextField.isEditable = false
+        centrosymmetricTextField.isEditable = false
+        enantiomorphicTextField.isEditable = false
+        LaueGroupTextField.isEditable = false
+        pointGroupTextField.isEditable = false
+        SchoenfliesTextField.isEditable = false
+        symmorphicityTextField.isEditable = false
+        numberOfElementsTextField.isEditable = false
+        
+        hasInversionTextField.stringValue = ""
+        inversionTextField.stringValue = ""
+        centrosymmetricTextField.stringValue = ""
+        enantiomorphicTextField.stringValue = ""
+        LaueGroupTextField.stringValue = ""
+        pointGroupTextField.stringValue = ""
+        SchoenfliesTextField.stringValue = ""
+        symmorphicityTextField.stringValue = ""
+        numberOfElementsTextField.stringValue = ""
+        
+        centrosymmetricTextField.stringValue = SKSpacegroup.CentrosymmetricString(HallNumber: 1)
+        enantiomorphicTextField.stringValue = SKSpacegroup.EnantionmorphicString(HallNumber: 1)
+        LaueGroupTextField.stringValue = SKSpacegroup.LaueGroupString(HallNumber: 1)
+        pointGroupTextField.stringValue = SKSpacegroup.PointGroupString(HallNumber: 1)
+        SchoenfliesTextField.stringValue = SKSpacegroup.SchoenfliesString(HallNumber: 1)
+        symmorphicityTextField.stringValue = SKSpacegroup.SymmorphicityString(HallNumber: 1)
+        numberOfElementsTextField.stringValue = SKSpacegroup.NumberOfElementsString(HallNumber: 1)
+        
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+          !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
+        {
+          if let spaceGroupHallNumber: Int = representedStructure.spaceGroupHallNumber
+          {
             hasInversionTextField.stringValue = SKSpacegroup.hasInversionString(HallNumber: spaceGroupHallNumber)
             inversionTextField.stringValue = SKSpacegroup.hasInversion(HallNumber: spaceGroupHallNumber) ? SKSpacegroup.InversionCenterString(HallNumber: spaceGroupHallNumber) : ""
             centrosymmetricTextField.stringValue = SKSpacegroup.CentrosymmetricString(HallNumber: spaceGroupHallNumber)
@@ -1672,14 +1724,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            spaceGroupQualifierPopUpButton.removeAllItems()
-            spaceGroupQualifierPopUpButton.addItem(withTitle: "Multiple Values")
-            HallSpaceGroupPopUpButton.setTitle("Multiple Values")
-            SpaceGroupHolohedry.stringValue = "Multiple Values"
-            spaceGroupNumberPopUpButton.setTitle("Multiple Values")
-            spaceGroupQualifierPopUpButton.setTitle("Multiple Values")
-            
-            centringTextField.stringValue = "Multiple Values"
             hasInversionTextField.stringValue = "Multiple Values"
             inversionTextField.stringValue = "Multiple Values"
             centrosymmetricTextField.stringValue = "Multiple Values"
@@ -1691,7 +1735,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
             numberOfElementsTextField.stringValue = "Multiple Values"
           }
         }
-
       }
     default:
       break
@@ -1818,7 +1861,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellLengthA = newValue
       structure.reComputeBoundingBox()
       
-      ////self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -1849,7 +1892,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellLengthA = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -1877,7 +1920,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellLengthB = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -1906,7 +1949,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellLengthB = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -1935,7 +1978,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellLengthC = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -1964,7 +2007,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellLengthC = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -1992,7 +2035,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellAlphaAngle = newValue * Double.pi / 180.0
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
         
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -2021,7 +2064,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellAlphaAngle = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -2049,7 +2092,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellBetaAngle = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -2078,7 +2121,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellBetaAngle = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -2107,7 +2150,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellGammaAngle = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -2136,7 +2179,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderUnitCellGammaAngle = newValue
       structure.reComputeBoundingBox()
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell, self.simulationCellPropertiesCell])
+      self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       
@@ -2186,7 +2229,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       }
     }
   }
@@ -2219,7 +2262,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       }
     }
   }
@@ -2251,7 +2294,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       }
     }
   }
@@ -2283,7 +2326,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       }
     }
   }
@@ -2315,7 +2358,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       }
     }
   }
@@ -2348,7 +2391,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       }
     }
   }
@@ -2387,7 +2430,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellReplicaCell, self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxReplicasCell, self.boxBoundingBoxInfoCell])
       }
     }
     
@@ -2425,7 +2468,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellReplicaCell, self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxReplicasCell, self.boxBoundingBoxInfoCell])
       }
     }
     
@@ -2464,7 +2507,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellReplicaCell, self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxReplicasCell, self.boxBoundingBoxInfoCell])
       }
     }
     
@@ -2503,7 +2546,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellReplicaCell, self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxReplicasCell, self.boxBoundingBoxInfoCell])
       }
     }
     
@@ -2541,7 +2584,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellReplicaCell, self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxReplicasCell, self.boxBoundingBoxInfoCell])
       }
     }
     
@@ -2579,7 +2622,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         self.windowController?.document?.updateChangeCount(.changeDone)
         self.proxyProject?.representedObject.isEdited = true
         
-        //self.updateOutlineView(identifiers: [self.simulationCellReplicaCell, self.simulationCellBoundingBoxCell])
+        self.updateOutlineView(identifiers: [self.boxReplicasCell, self.boxBoundingBoxInfoCell])
       }
     }
     
@@ -2603,7 +2646,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
       {
@@ -2631,7 +2674,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
       {
@@ -2659,7 +2702,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
-      //self.updateOutlineView(identifiers: [self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxBoundingBoxInfoCell])
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
       {
@@ -2689,9 +2732,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderContentShiftX = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
-      
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
-      
+            
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
       {
         self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
@@ -2703,6 +2744,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -2725,14 +2768,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         project.checkValidatyOfMeasurementPoints()
       }
         
-  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
         
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
     
     sender.doubleValue = 0.0
@@ -2749,9 +2792,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderContentShiftY = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
-      
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
-      
+            
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
       {
         self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
@@ -2763,6 +2804,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -2792,7 +2835,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
     
     sender.doubleValue = 0.0
@@ -2809,9 +2852,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderContentShiftZ = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
-      
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
-      
+            
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure}), renderStructures.count > 1
       {
         self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
@@ -2823,6 +2864,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
+      
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -2852,7 +2895,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
     
     sender.doubleValue = 0.0
@@ -2880,7 +2923,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -2906,7 +2949,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -2933,7 +2976,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.transformContentCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3005,7 +3048,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellContentTransform])
+      self.updateOutlineView(identifiers: [self.transformContentCell])
     }
   }
   
@@ -3038,7 +3081,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3066,7 +3109,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3094,7 +3137,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3124,7 +3167,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3155,7 +3198,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
     
   }
@@ -3186,7 +3229,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3217,7 +3260,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3247,7 +3290,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3278,7 +3321,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3294,7 +3337,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -3343,7 +3386,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -3390,7 +3433,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       structure.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
       {
@@ -3435,7 +3478,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.simulationCellModelMatrix, self.simulationCellBoundingBoxCell])
+      self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
     }
   }
   
@@ -3452,8 +3495,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
       structure.renderStructureMaterialType = sender.stringValue
-      
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
     }
   }
   
@@ -3468,7 +3509,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
     }
   }
   
@@ -3490,7 +3531,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
     }
   }
   
@@ -3520,7 +3561,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralProbeCell])
     }
   }
   
@@ -3546,7 +3587,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralProbeCell])
     }
   }
   
@@ -3560,7 +3601,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralProbeCell])
     }
   }
   
@@ -3573,7 +3614,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralProbeCell])
     }
   }
   
@@ -3587,7 +3628,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralChannelCell])
     }
   }
   
@@ -3601,7 +3642,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralChannelCell])
     }
   }
   
@@ -3616,7 +3657,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralChannelCell])
     }
   }
   
@@ -3630,7 +3671,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.structuralChannelCell])
     }
   }
   
@@ -3701,7 +3742,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
       
-      //self.updateOutlineView(identifiers: [self.symmetryCell])
+      self.updateOutlineView(identifiers: [self.symmetrySpaceGroupCell, self.symmetryCenteringCell, self.symmetryPropertiesCell])
     }
   }
   
@@ -3748,7 +3789,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       
-      //self.updateOutlineView(identifiers: [self.structuralPropertiesCell])
+      self.updateOutlineView(identifiers: [self.symmetrySpaceGroupCell, self.symmetryCenteringCell, self.symmetryPropertiesCell])
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
