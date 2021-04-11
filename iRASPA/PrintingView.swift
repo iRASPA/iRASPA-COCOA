@@ -71,7 +71,7 @@ class PrintingView: NSView
   
   convenience init(_ renderViewController: RenderTabViewController?)
   {
-    let data: Data = renderViewController?.picture ?? Data()
+    let data: Data = renderViewController?.printingPicture ?? Data()
     let picture: NSImage = NSImage(data: data) ?? NSImage()
     
     self.init(frame: NSMakeRect(0, 0, picture.size.width, picture.size.height))

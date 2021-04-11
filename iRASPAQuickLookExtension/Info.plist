@@ -29,8 +29,10 @@
 			<key>QLSupportedContentTypes</key>
 			<array>
 				<string>nl.darkwing.iraspa.universal.irspdoc</string>
-				<string>nl.darkwing.iraspa.irspdoc</string>
 				<string>nl.darkwing.iraspa.iraspa</string>
+				<string>net.sourceforge.openbabel.cif</string>
+				<string>net.sourceforge.openbabel.pdb</string>
+				<string>net.sourceforge.openbabel.xyz</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<true/>

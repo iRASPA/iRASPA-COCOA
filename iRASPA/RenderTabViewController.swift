@@ -2575,7 +2575,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   // MARK: Export picture or movie
   // =====================================================================
   
-  var picture: Data?
+  var printingPicture: Data?
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
     let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
@@ -2583,26 +2583,26 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
       let size: NSSize = NSMakeSize(2048.0,CGFloat(rint(2048.0/aspectRatioValue)))
-      let imageData: Data = renderViewController.makePicture(size: size, camera: project.renderCamera, imageQuality: project.renderImageQuality)
-      return imageData
+      if let imageData: Data = renderViewController.makePicture(size: size, camera: project.renderCamera, imageQuality: project.renderImageQuality)
+      {
+        return imageData
+      }
     }
     return nil
   }
   
-  func thumbnail(size: NSSize, camera: RKCamera?) -> Data?
+  func thumbnail(size: NSSize, camera: RKCamera) -> Data?
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
     let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
-    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController,
-       let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
+    if let renderViewController: RenderViewController = tabViewItem.viewController as? RenderViewController
     {
-      return renderViewController.makeThumbnail(size: size, camera: camera, imageQuality: project.renderImageQuality)
+      return renderViewController.makeThumbnail(size: size, camera: camera)
     }
     return nil
   }
     
-  
-  
+
   func makePicture()
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
@@ -2611,7 +2611,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        let project: ProjectStructureNode = proxyProject?.representedObject.loadedProjectStructureNode
     {
       let size: NSSize = NSMakeSize(CGFloat(project.renderImageNumberOfPixels),CGFloat(rint(Double(project.renderImageNumberOfPixels)/aspectRatioValue)))
-      let imageData: Data = renderViewController.makePicture(size: size, camera: project.renderCamera, imageQuality: project.renderImageQuality)
+      
+      guard let imageData: Data = renderViewController.makePicture(size: size, camera: project.renderCamera, imageQuality: project.renderImageQuality) else {return}
     
       let savePanel: NSSavePanel = NSSavePanel()
       savePanel.nameFieldStringValue = "picture.tiff"
