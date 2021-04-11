@@ -39,6 +39,7 @@ let transferWritePermissionDataKey: String = "group.nl.darkwing.iRASPA.transferW
 let helpOption = OptionType.bool(value: false, shortOption: "h", longOption: "help", description: "Prints a help message.")
 let surfaceAreaOption = OptionType.bool(value: false, shortOption: "s", longOption: "surfacearea", description: "Computes the surface area.")
 let voidFractionOption = OptionType.bool(value: false, shortOption: "v", longOption: "voidfraction", description: "Computes the void fraction.")
+let pictureOption = OptionType.bool(value: false, shortOption: "p", longOption: "picture", description: "Renders a picture.")
 
 
 if let groupDefaults: UserDefaults = UserDefaults(suiteName: "24U2ZRZ6SC.nl.darkwing.iRASPA")
@@ -99,7 +100,7 @@ if let groupDefaults: UserDefaults = UserDefaults(suiteName: "24U2ZRZ6SC.nl.dark
   }
 }
 
-let options: [OptionType] = [surfaceAreaOption, voidFractionOption, helpOption]
+let options: [OptionType] = [surfaceAreaOption, voidFractionOption, pictureOption, helpOption]
 let console = Console(arguments: Swift.CommandLine.arguments, options: options)
 
 if Swift.CommandLine.arguments.count <= 1
@@ -146,6 +147,19 @@ else
                 {
                   print("\(fileName) Helium void-fraction: \(project.voidFractions) [-]")
                 }
+              case pictureOption:
+                if case .bool(let value, _, _, _) = option, value
+                {
+                  let data: Data =  project.makePicture
+                  let paths = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)
+                  let filename = paths.first!.appendingPathComponent("output.tiff")
+                  do {
+                      try data.write(to: filename)
+                  } catch let error {
+                    print("error \(error.localizedDescription)")
+                      // failed to write file – bad permissions, bad filename, missing permissions, or more likely it can't be converted to the encoding
+                  }
+                }
               default:
                 break
               }
@@ -170,7 +184,6 @@ else
         console.printUsage()
       }
         
-      //writePermissionURL?.stopAccessingSecurityScopedResource()
         
       permissionURL.stopAccessingSecurityScopedResource()
     }

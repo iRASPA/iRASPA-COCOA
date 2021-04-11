@@ -38,7 +38,7 @@ import Compression
 import RenderKit
 import SymmetryKit
 import LogViewKit
-
+import ZIPFoundation
 
 public let NSPasteboardTypeProjectTreeNode: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType(rawValue: "nl.darkwing.iraspa.iraspa")
 
@@ -218,6 +218,62 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
+  private convenience init?(irspdoc data: Data)
+  {
+    var documentData: DocumentData = DocumentData()
+    if let archive = Archive(data: data, accessMode: .read, preferredEncoding: .utf8)
+    {
+      // create dictionary to create an order of magntitude speed up in reading the entries.
+      let dictionary = Dictionary(grouping: archive, by: { $0.path})
+    
+      if let projectEntry = archive["nl.darkwing.iRASPA_projectData"]
+      {
+        var readData: Data = Data(capacity: projectEntry.uncompressedSize)
+        let _ = try? archive.extract(projectEntry, consumer: { (data: Data) in
+          readData.append(data)
+        })
+        do
+        {
+          documentData = try BinaryDecoder(data: [UInt8](readData)).decode(DocumentData.self)
+        }
+        catch
+        {
+          return nil
+        }
+      }
+    
+      let projectTreeNodes: [ProjectTreeNode] = documentData.projectLocalRootNode.descendantNodes()
+      
+      if projectTreeNodes.count > 0
+      {
+        if let projectTreeNode: ProjectTreeNode = projectTreeNodes.first,
+           let entry: Entry = dictionary["nl.darkwing.iRASPA_Project_" + projectTreeNode.representedObject.fileNameUUID]?.first
+        {
+          
+          do
+          {
+            var readData: Data = Data(capacity: entry.uncompressedSize)
+            let _ = try archive.extract(entry, consumer: { (data: Data) in
+              readData.append(data)
+            })
+            // store the untouched/unwrapped data in the project
+            projectTreeNode.representedObject.data = readData
+          
+            projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
+            
+            self.init(treeNode: projectTreeNode)
+            return
+          }
+          catch
+          {
+            return nil
+          }
+        }
+      }
+    }
+    return nil
+  }
+  
   private convenience init?(displayName: String, pdb data: Data)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
@@ -276,6 +332,65 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     let project: ProjectStructureNode = ProjectStructureNode(name: displayName, sceneList: sceneList)
     self.init(treeNode: ProjectTreeNode(displayName: displayName, representedObject: iRASPAProject(structureProject: project)))
     self.isEditable = true
+  }
+  
+  public convenience init?(url: URL)
+  {
+    guard FileManager.default.fileExists(atPath: url.path),
+          let data: Data = try? Data(contentsOf: url, options: []) else {return nil}
+
+    let displayName: String = url.deletingPathExtension().lastPathComponent
+
+    if #available(OSX 11.0, *)
+    {
+      guard let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey]),
+            let type = resourceValues.contentType else {return nil}
+  
+      switch(type)
+      {
+      case _ where type.conforms(to: .irspdoc):
+        self.init(irspdoc: data)
+      case _ where type.conforms(to: .iraspa):
+        self.init(iraspa: data)
+      case _ where type.conforms(to: .poscar) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
+        self.init(displayName: displayName, poscar: data)
+      case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
+        self.init(displayName: displayName, xdatcar: data)
+      case _ where type.conforms(to: .cif):
+        self.init(displayName: displayName, cif: data)
+      case _ where type.conforms(to: .pdb):
+        self.init(displayName: displayName, pdb: data)
+      case _ where type.conforms(to: .xyz):
+        self.init(displayName: displayName, xyz: data)
+      default:
+        return nil
+      }
+    }
+    else
+    {
+      guard let resourceValues = try? url.resourceValues(forKeys: [.typeIdentifierKey]),
+            let type = resourceValues.typeIdentifier else {return nil}
+      
+      switch(type)
+      {
+      case _ where UTTypeConformsTo(type as CFString, typeirspdoc as CFString):
+        self.init(irspdoc: data)
+      case _ where UTTypeConformsTo(type as CFString, typeProject as CFString):
+        self.init(treeNode: data)
+      case _ where UTTypeConformsTo(type as CFString, typePOSCAR as CFString) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
+        self.init(displayName: displayName, poscar: data)
+      case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
+        self.init(displayName: displayName, xdatcar: data)
+      case _ where UTTypeConformsTo(type as CFString, typeCIF as CFString):
+        self.init(displayName: displayName, cif: data)
+      case _ where UTTypeConformsTo(type as CFString, typePDB as CFString):
+        self.init(displayName: displayName, pdb: data)
+      case _ where UTTypeConformsTo(type as CFString, typeXYZ as CFString):
+        self.init(displayName: displayName, xyz: data)
+      default:
+        return nil
+      }
+    }
   }
   
   public var infoPanelIcon: NSImage

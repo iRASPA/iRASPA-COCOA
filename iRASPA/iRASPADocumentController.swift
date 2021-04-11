@@ -34,15 +34,6 @@ import Cocoa
 import iRASPAKit
 import UniformTypeIdentifiers
 
-@available(OSX 11.0, *)
-extension UTType
-{
-  public static let irspdoc : UTType = UTType(exportedAs: "nl.darkwing.iraspa.universal.irspdoc")
-}
-
-public let typeirspdoc: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "irspdoc" as CFString, kUTTypeData)?.takeRetainedValue())!
-
-
 class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
 {
   func panel(_ sender: Any, shouldEnable url: URL) -> Bool

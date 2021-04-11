@@ -138,11 +138,36 @@ public class MetalRenderer
   var isosurfaceUniformBuffers: MTLBuffer! = nil
   var lightUniformBuffers: MTLBuffer! = nil
   
-  weak var renderDataSource: RKRenderDataSource?
+  public weak var renderDataSource: RKRenderDataSource?
   
   
   public init()
   {
+  }
+  
+  // initialize Renderer for creating pictures
+  public init(device: MTLDevice, size: CGSize, dataSource: RKRenderDataSource, camera: RKCamera)
+  {
+    let bundle: Bundle = Bundle(for: MetalRenderer.self)
+    
+    if let file: String = bundle.path(forResource: "default", ofType: "metallib"),
+       let defaultLibrary = try? device.makeLibrary(filepath: file)
+    {
+      self.buildPipeLines(device: device, defaultLibrary, maximumNumberOfSamples: 8)
+      self.backgroundShader.buildPermanentTextures(device: device)
+      
+      self.buildTextures(device: device, size: size, maximumNumberOfSamples: 8)
+      
+      self.renderDataSource = dataSource
+      self.reloadData(device: device, size, maximumNumberOfSamples: 8)
+      
+      self.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
+      
+      self.buildLightUniforms(device: device)
+      self.buildStructureUniforms(device: device)
+      self.buildIsosurfaceUniforms(device: device)
+      
+    }
   }
   
   func setDataSources(renderDataSource: RKRenderDataSource, renderStructures: [[RKRenderStructure]])
@@ -531,6 +556,7 @@ public class MetalRenderer
     boundingBoxSphereShader.buildVertexBuffers(device: device)
     
     isosurfaceShader.buildInstanceBuffers(device: device)
+    isosurfaceShader.buildVertexBuffers()
     
     textShader.buildVertexBuffers(device: device)
     
@@ -700,7 +726,7 @@ public class MetalRenderer
   // MARK: Rendering
   // =====================================================================
 
-  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, opaque: Bool = true)
+  public func renderSceneWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool = false)
   {
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     commandEncoder.label = "Scene command encoder"
@@ -708,7 +734,7 @@ public class MetalRenderer
     commandEncoder.setCullMode(MTLCullMode.back)
     commandEncoder.setFrontFacing(MTLWinding.clockwise)
     
-    backgroundShader.renderBackgroundWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, opaque: opaque)
+    backgroundShader.renderBackgroundWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, transparentBackground: transparentBackground)
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
@@ -841,9 +867,9 @@ public class MetalRenderer
                                                   structureUniformBuffers: structureUniformBuffers, size: size)
   }
   
-  func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
+  func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool)
   {
-    renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
+    renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
     
     if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)
     {
@@ -890,113 +916,26 @@ public class MetalRenderer
     quadShader.renderWithEncoder(commandBuffer, renderPass: renderPass, frameUniformBuffer: frameUniformBuffer, sceneResolveTexture: backgroundShader.sceneResolveTexture, blurVerticalTexture: blurVerticalShader.blurVerticalTexture, size: size)
   }
   
-  public func drawSceneToTexture(device: MTLDevice, size: NSSize, imageQuality: RKImageQuality, maximumNumberOfSamples: Int, camera: RKCamera?, renderQuality: RKRenderQuality) -> Data
+ 
+  // MARK: -
+  // MARK: Make Pictures
+  
+
+  public func renderPictureData(device: MTLDevice, size: CGSize, camera: RKCamera, imageQuality: RKImageQuality, transparentBackground: Bool) -> Data?
   {
-    if let _: RKRenderDataSource = renderDataSource
+    if let _: RKRenderDataSource = renderDataSource,
+       let commandQueue: MTLCommandQueue = device.makeCommandQueue(),
+       let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
     {
       var uniforms: RKTransformationUniforms = self.transformUniforms(maximumExtendedDynamicRangeColorComponentValue: 1.0, camera: camera)
       let frameUniformBuffer: MTLBuffer = device.makeBuffer(bytes: &uniforms, length: MemoryLayout<RKTransformationUniforms>.stride, options: .storageModeManaged)!
       
-      let sceneTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
-      sceneTextureDescriptor.textureType = MTLTextureType.type2DMultisample
-      sceneTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
-      sceneTextureDescriptor.sampleCount = maximumNumberOfSamples
-      sceneTextureDescriptor.storageMode = MTLStorageMode.private
-      let sceneTexture: MTLTexture! = device.makeTexture(descriptor: sceneTextureDescriptor)
-      sceneTexture.label = "scene multisampled texture"
       
-      let sceneDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float_stencil8, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
-      sceneDepthTextureDescriptor.textureType = MTLTextureType.type2DMultisample
-      sceneDepthTextureDescriptor.sampleCount = maximumNumberOfSamples
-      sceneDepthTextureDescriptor.storageMode = MTLStorageMode.private
-      sceneDepthTextureDescriptor.usage = MTLTextureUsage.renderTarget
-      let sceneDepthTexture: MTLTexture = device.makeTexture(descriptor: sceneDepthTextureDescriptor)!
-      sceneDepthTexture.label = "scene multisampled depth texture"
+      self.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: self.atomShader, atomOrthographicImposterShader: self.atomOrthographicImposterShader)
+    
+      self.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       
-      let sceneResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
-      sceneResolveTextureDescriptor.textureType = MTLTextureType.type2D
-      sceneResolveTextureDescriptor.storageMode = MTLStorageMode.private
-      let sceneResolveTexture: MTLTexture = device.makeTexture(descriptor: sceneResolveTextureDescriptor)!
-      sceneResolveTexture.label = "scene resolved texture"
-      
-      let sceneRenderPassDescriptor: MTLRenderPassDescriptor = MTLRenderPassDescriptor()
-      let sceneColorAttachment: MTLRenderPassColorAttachmentDescriptor = sceneRenderPassDescriptor.colorAttachments[0]
-      sceneColorAttachment.texture = sceneTexture
-      sceneColorAttachment.loadAction = MTLLoadAction.load
-      sceneColorAttachment.resolveTexture = sceneResolveTexture
-      sceneColorAttachment.storeAction = MTLStoreAction.multisampleResolve
-      
-      let sceneDepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderPassDescriptor.depthAttachment
-      sceneDepthAttachment.texture = sceneDepthTexture
-      sceneDepthAttachment.loadAction = MTLLoadAction.clear
-      sceneDepthAttachment.storeAction = MTLStoreAction.dontCare
-      sceneDepthAttachment.clearDepth = 1.0
-      
-      let sceneStencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderPassDescriptor.stencilAttachment
-      sceneStencilAttachment.texture = sceneDepthTexture
-      sceneStencilAttachment.loadAction = MTLLoadAction.clear
-      sceneStencilAttachment.storeAction = MTLStoreAction.dontCare
-      sceneStencilAttachment.clearStencil = 0
-      
-      let atomSelectionGlowTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
-      atomSelectionGlowTextureDescriptor.textureType = MTLTextureType.type2DMultisample
-      atomSelectionGlowTextureDescriptor.sampleCount = maximumNumberOfSamples
-      atomSelectionGlowTextureDescriptor.storageMode = MTLStorageMode.private
-      atomSelectionGlowTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
-      let atomSelectionGlowTexture: MTLTexture = device.makeTexture(descriptor: atomSelectionGlowTextureDescriptor)!
-      atomSelectionGlowTexture.label = "glow atoms texture"
-      
-      let atomSelectionGlowResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
-      atomSelectionGlowResolveTextureDescriptor.textureType = MTLTextureType.type2D
-      atomSelectionGlowResolveTextureDescriptor.storageMode = MTLStorageMode.private
-      let atomSelectionGlowResolveTexture: MTLTexture = device.makeTexture(descriptor: atomSelectionGlowResolveTextureDescriptor)!
-      atomSelectionGlowResolveTexture.label = "glow resolved texture"
-      
-      let atomSelectionGlowAtomsRenderPassDescriptor: MTLRenderPassDescriptor = MTLRenderPassDescriptor()
-      let atomSelectionGlowAtomsColorAttachment: MTLRenderPassColorAttachmentDescriptor = atomSelectionGlowAtomsRenderPassDescriptor.colorAttachments[0]
-      atomSelectionGlowAtomsColorAttachment.texture = atomSelectionGlowTexture
-      atomSelectionGlowAtomsColorAttachment.loadAction = MTLLoadAction.clear
-      atomSelectionGlowAtomsColorAttachment.clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
-      atomSelectionGlowAtomsColorAttachment.storeAction = MTLStoreAction.store
-      atomSelectionGlowAtomsColorAttachment.resolveTexture = atomSelectionGlowResolveTexture
-      atomSelectionGlowAtomsColorAttachment.storeAction = MTLStoreAction.multisampleResolve
-      
-      let atomSelectionGlowAtomsDepthAttachment: MTLRenderPassDepthAttachmentDescriptor = atomSelectionGlowAtomsRenderPassDescriptor.depthAttachment
-      atomSelectionGlowAtomsDepthAttachment.texture = sceneDepthTexture
-      atomSelectionGlowAtomsDepthAttachment.loadAction = MTLLoadAction.load
-      atomSelectionGlowAtomsDepthAttachment.storeAction = MTLStoreAction.dontCare
-      
-      let atomSelectionGlowAtomsStencilAttachment: MTLRenderPassStencilAttachmentDescriptor = atomSelectionGlowAtomsRenderPassDescriptor.stencilAttachment
-      atomSelectionGlowAtomsStencilAttachment.texture = sceneDepthTexture
-      atomSelectionGlowAtomsStencilAttachment.loadAction = MTLLoadAction.load
-      atomSelectionGlowAtomsStencilAttachment.storeAction = MTLStoreAction.dontCare
-      
-      let blurHorizontalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
-      blurHorizontalTextureDescriptor.textureType = MTLTextureType.type2D
-      blurHorizontalTextureDescriptor.storageMode = MTLStorageMode.managed
-      blurHorizontalTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
-      let blurHorizontalTexture: MTLTexture = device.makeTexture(descriptor: blurHorizontalTextureDescriptor)!
-      blurHorizontalTexture.label = "blur horizontal texture"
-      
-      let blurHorizontalRenderPassDescriptor: MTLRenderPassDescriptor = MTLRenderPassDescriptor()
-      let blurHorizontalColorAttachment: MTLRenderPassColorAttachmentDescriptor = blurHorizontalRenderPassDescriptor.colorAttachments[0]
-      blurHorizontalColorAttachment.texture = blurHorizontalTexture
-      blurHorizontalColorAttachment.loadAction = MTLLoadAction.clear
-      blurHorizontalColorAttachment.storeAction = MTLStoreAction.store
-      
-      let blurVerticalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
-      blurVerticalTextureDescriptor.textureType = MTLTextureType.type2D
-      blurVerticalTextureDescriptor.storageMode = MTLStorageMode.managed // change to private soon
-      blurVerticalTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
-      let blurVerticalTexture: MTLTexture = device.makeTexture(descriptor: blurVerticalTextureDescriptor)!
-      blurVerticalTexture.label = "blur vertical texture"
-      
-      let blurVerticalRenderPassDescriptor: MTLRenderPassDescriptor = MTLRenderPassDescriptor()
-      let blurVerticalColorAttachment: MTLRenderPassColorAttachmentDescriptor = blurVerticalRenderPassDescriptor.colorAttachments[0]
-      blurVerticalColorAttachment.texture = blurVerticalTexture
-      blurVerticalColorAttachment.loadAction = MTLLoadAction.clear
-      blurVerticalColorAttachment.clearColor = MTLClearColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.0)
-      blurVerticalColorAttachment.storeAction = MTLStoreAction.store
+      self.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: .picture, camera: camera, transparentBackground: transparentBackground)
       
       let pictureTextureDescriptor: MTLTextureDescriptor
       switch(imageQuality)
@@ -1020,66 +959,97 @@ public class MetalRenderer
       pictureColorAttachment.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0)
       pictureColorAttachment.storeAction = MTLStoreAction.store
       
-      if let commandQueue: MTLCommandQueue = device.makeCommandQueue(),
-         let commandBuffer: MTLCommandBuffer = commandQueue.makeCommandBuffer()
+      if let quadCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: picturePassDescriptor)
       {
-        renderSceneWithEncoder(commandBuffer, renderPassDescriptor: sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, opaque: false)
-      
-        atomSelectionGlowPictureShader.renderWithEncoder(commandBuffer, renderPassDescriptor: atomSelectionGlowAtomsRenderPassDescriptor, instanceBuffer: atomSelectionShader.instanceBuffer, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-      
-        blurHorizontalPictureShader.renderWithEncoder(commandBuffer, renderPassDescriptor: blurHorizontalRenderPassDescriptor, texture: atomSelectionGlowResolveTexture, frameUniformBuffer: frameUniformBuffer, size: size)
-      
-        blurVerticalPictureShader.renderWithEncoder(commandBuffer, renderPassDescriptor: blurVerticalRenderPassDescriptor, texture: blurHorizontalTexture, frameUniformBuffer: frameUniformBuffer, size: size)
-      
-        if let quadCommandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: picturePassDescriptor)
+        quadCommandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
+        quadCommandEncoder.label = "Quad Pass Encoder"
+        switch(imageQuality)
         {
-          quadCommandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
-          quadCommandEncoder.label = "Quad Pass Encoder"
-          switch(imageQuality)
-          {
-          case .rgb_16_bits, .cmyk_16_bits:
-            quadCommandEncoder.setRenderPipelineState(quadShader.textureQuad16bitsPipeLine)
-          case .rgb_8_bits, .cmyk_8_bits:
-            quadCommandEncoder.setRenderPipelineState(quadShader.quadPipeLine)
-          }
-      
-          quadCommandEncoder.setVertexBuffer(quadShader.vertexBuffer, offset: 0, index: 0)
-          quadCommandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
-          quadCommandEncoder.setFragmentTexture(sceneResolveTexture, index: 0)
-          quadCommandEncoder.setFragmentTexture(blurVerticalTexture, index: 1)
-          quadCommandEncoder.setFragmentSamplerState(quadShader.quadSamplerState, index: 0)
-          quadCommandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 4, indexType: .uint16, indexBuffer: quadShader.indexBuffer, indexBufferOffset: 0)
-          quadCommandEncoder.endEncoding()
+        case .rgb_16_bits, .cmyk_16_bits:
+          quadCommandEncoder.setRenderPipelineState(quadShader.textureQuad16bitsPipeLine)
+        case .rgb_8_bits, .cmyk_8_bits:
+          quadCommandEncoder.setRenderPipelineState(quadShader.quadPipeLine)
+        }
     
-          let dataLength: Int
-          let bytesPerRow: Int
-          switch(imageQuality)
-          {
-          case .rgb_16_bits, .cmyk_16_bits:
-            bytesPerRow = Int(size.width) * 4 * 2
-            dataLength = bytesPerRow * Int(size.height)
-          case .rgb_8_bits, .cmyk_8_bits:
-            bytesPerRow = Int(size.width) * 4
-            dataLength = bytesPerRow * Int(size.height)
-          }
-          if let pictureTextureBuffer: MTLBuffer = device.makeBuffer(length: dataLength, options: MTLResourceOptions()),
-             let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
-          {
-            blitEncoder.synchronize(resource: pictureTexture)
-      
-            blitEncoder.copy(from: pictureTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0,0, 0), sourceSize: MTLSizeMake(Int(size.width), Int(size.height), 1), to: pictureTextureBuffer, destinationOffset: 0, destinationBytesPerRow: bytesPerRow, destinationBytesPerImage: 0)
-            blitEncoder.endEncoding()
-      
-            commandBuffer.commit()
-            commandBuffer.waitUntilCompleted()
-      
-            return Data(bytes: pictureTextureBuffer.contents().assumingMemoryBound(to: UInt8.self), count: pictureTextureBuffer.length)
-          }
+        quadCommandEncoder.setVertexBuffer(quadShader.vertexBuffer, offset: 0, index: 0)
+        quadCommandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+        quadCommandEncoder.setFragmentTexture(backgroundShader.sceneResolveTexture, index: 0)
+        quadCommandEncoder.setFragmentTexture(blurVerticalShader.blurVerticalTexture, index: 1)
+        quadCommandEncoder.setFragmentSamplerState(quadShader.quadSamplerState, index: 0)
+        quadCommandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: 4, indexType: .uint16, indexBuffer: quadShader.indexBuffer, indexBufferOffset: 0)
+        quadCommandEncoder.endEncoding()
+  
+        let dataLength: Int
+        let bytesPerRow: Int
+        switch(imageQuality)
+        {
+        case .rgb_16_bits, .cmyk_16_bits:
+          bytesPerRow = Int(size.width) * 4 * 2
+          dataLength = bytesPerRow * Int(size.height)
+        case .rgb_8_bits, .cmyk_8_bits:
+          bytesPerRow = Int(size.width) * 4
+          dataLength = bytesPerRow * Int(size.height)
+        }
+        if let pictureTextureBuffer: MTLBuffer = device.makeBuffer(length: dataLength, options: MTLResourceOptions()),
+           let blitEncoder: MTLBlitCommandEncoder = commandBuffer.makeBlitCommandEncoder()
+        {
+          blitEncoder.synchronize(resource: pictureTexture)
+    
+          blitEncoder.copy(from: pictureTexture, sourceSlice: 0, sourceLevel: 0, sourceOrigin: MTLOriginMake(0,0, 0), sourceSize: MTLSizeMake(Int(size.width), Int(size.height), 1), to: pictureTextureBuffer, destinationOffset: 0, destinationBytesPerRow: bytesPerRow, destinationBytesPerImage: 0)
+          blitEncoder.endEncoding()
+    
+          commandBuffer.commit()
+          commandBuffer.waitUntilCompleted()
+    
+          return Data(bytes: pictureTextureBuffer.contents().assumingMemoryBound(to: UInt8.self), count: pictureTextureBuffer.length)
         }
       }
     }
-    return Data()
+    return nil
+  }
+  
+  public func renderPicture(device: MTLDevice, size: CGSize, imagePhysicalSizeInInches: Double, camera: RKCamera, imageQuality: RKImageQuality, transparentBackground: Bool = false) -> Data?
+  {
+    if let data: Data = self.renderPictureData(device: device, size: size, camera: camera, imageQuality: imageQuality, transparentBackground: transparentBackground)
+    {
+      let cgImage: CGImage
+      switch(imageQuality)
+      {
+      case .rgb_16_bits, .cmyk_16_bits:
+        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder16Little.rawValue | CGImageAlphaInfo.last.rawValue)
+        let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
+        let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)!
+        let bitsPerComponent: Int = 8 * 2
+        let bitsPerPixel: Int = 32 * 2
+        let bytesPerRow: Int = 4 * Int(size.width) * 2
+        cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)!
+      case .rgb_8_bits, .cmyk_8_bits:
+        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.first.rawValue)
+        let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
+        let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)!
+        let bitsPerComponent: Int = 8
+        let bitsPerPixel: Int = 32
+        let bytesPerRow: Int = 4 * Int(size.width)
+        cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)!
+      }
+        
+        
+      let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
+      imageRep.size = NSMakeSize(CGFloat(imagePhysicalSizeInInches * 72), CGFloat(imagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
+        
+      switch(imageQuality)
+      {
+      case .rgb_8_bits, .rgb_16_bits:
+        return imageRep.tiffRepresentation(using: NSBitmapImageRep.TIFFCompression.lzw, factor: 1.0)!
+      case .cmyk_8_bits, .cmyk_16_bits:
+        let imageRepCMYK: NSBitmapImageRep = imageRep.converting(to: NSColorSpace.genericCMYK, renderingIntent: NSColorRenderingIntent.perceptual)!
+        imageRepCMYK.size = NSMakeSize(CGFloat(imagePhysicalSizeInInches * 72), CGFloat(imagePhysicalSizeInInches * 72))
+        return imageRepCMYK.tiffRepresentation(using: NSBitmapImageRep.TIFFCompression.lzw, factor: 1.0)!
+      }
+    }
+    return nil
   }
 }
+
 
 

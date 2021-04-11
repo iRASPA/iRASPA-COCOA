@@ -8,48 +8,92 @@
 
 import QuickLookThumbnailing
 import Cocoa
+import BinaryCodable
+import ZIPFoundation
+import iRASPAKit
+import RenderKit
 
 class ThumbnailProvider: QLThumbnailProvider
 {
   override func provideThumbnail(for request: QLFileThumbnailRequest, _ handler: @escaping (QLThumbnailReply?, Error?) -> Void)
   {
-    let image: NSImage? = NSImage(named: "MOF")
-
+    // set fall-back image
+    var image: NSImage? = NSImage(named: "MOF")
+    
     // size calculations
-    let maximumSize = request.maximumSize
-    let imageSize = image?.size ?? NSSize()
-
-    // calculate `newImageSize` and `contextSize` such that the image fits perfectly and respects the constraints
-    var newImageSize = maximumSize
-    var contextSize = maximumSize
-    let aspectRatio = imageSize.height / imageSize.width
-    let proposedHeight = aspectRatio * maximumSize.width
-
-    if proposedHeight <= maximumSize.height
+    let maximumSize: CGSize = request.maximumSize
+    
+    guard let projectTreeNode = ProjectTreeNode(url: request.fileURL) else {return}
+    projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
+          
+    if let project: ProjectStructureNode  = projectTreeNode.representedObject.loadedProjectStructureNode,
+       let device = MTLCreateSystemDefaultDevice()
     {
-      newImageSize.height = proposedHeight
-      contextSize.height = max(proposedHeight.rounded(.down), request.minimumSize.height)
+      let camera: RKCamera = RKCamera()
+      
+      // Critical: set the selection, otherwise no frames will be drawn
+      project.setInitialSelectionIfNeeded()
+        
+      project.renderBackgroundCachedImage = project.drawGradientCGImage()
+      camera.resetPercentage = 0.95
+      camera.resetForNewBoundingBox(project.renderBoundingBox)
+        
+      camera.updateCameraForWindowResize(width: Double(maximumSize.width), height: Double(maximumSize.height))
+      camera.resetCameraDistance()
+      
+      let renderer: MetalRenderer = MetalRenderer(device: device, size: maximumSize, dataSource: project, camera: camera)
+      
+      if let data: Data = renderer.renderPicture(device: device, size: maximumSize, imagePhysicalSizeInInches: project.renderImagePhysicalSizeInInches, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false)
+      {
+        image = NSImage(data: data)
+          
+        handler(QLThumbnailReply(contextSize: maximumSize, currentContextDrawing: { () -> Bool in
+                     
+        image?.draw(in: CGRect(x: 0,
+                               y: 0,
+                               width: maximumSize.width,
+                               height: maximumSize.height))
+
+        // Return true if the thumbnail was successfully drawn inside this block.
+        return true
+        }), nil)
+      }
     }
     else
     {
-      newImageSize.width = maximumSize.height / aspectRatio
-      contextSize.width = max(newImageSize.width.rounded(.down), request.minimumSize.width)
+      let imageSize = image?.size ?? NSSize()
+
+      // calculate `newImageSize` and `contextSize` such that the image fits perfectly and respects the constraints
+      var newImageSize = maximumSize
+      var contextSize = maximumSize
+      let aspectRatio = imageSize.height / imageSize.width
+      let proposedHeight = aspectRatio * maximumSize.width
+
+      if proposedHeight <= maximumSize.height
+      {
+        newImageSize.height = proposedHeight
+        contextSize.height = max(proposedHeight.rounded(.down), request.minimumSize.height)
+      }
+      else
+      {
+        newImageSize.width = maximumSize.height / aspectRatio
+        contextSize.width = max(newImageSize.width.rounded(.down), request.minimumSize.width)
+      }
+
+      handler(QLThumbnailReply(contextSize: contextSize, currentContextDrawing: { () -> Bool in
+          // draw the image centered
+          if let image = image
+          {
+            image.draw(in: CGRect(x: contextSize.width/2 - newImageSize.width/2,
+                                  y: contextSize.height/2 - newImageSize.height/2,
+                                  width: newImageSize.width,
+                                  height: newImageSize.height))
+
+            // Return true if the thumbnail was successfully drawn inside this block.
+            return true
+          }
+          return false
+        }), nil)
     }
-
-    handler(QLThumbnailReply(contextSize: contextSize, currentContextDrawing: { () -> Bool in
-              
-        // draw the image centered
-        if let image = image
-        {
-          image.draw(in: CGRect(x: contextSize.width/2 - newImageSize.width/2,
-                                y: contextSize.height/2 - newImageSize.height/2,
-                                width: newImageSize.width,
-                                height: newImageSize.height))
-
-          // Return true if the thumbnail was successfully drawn inside this block.
-          return true
-        }
-        return false
-      }), nil)
   }
 }

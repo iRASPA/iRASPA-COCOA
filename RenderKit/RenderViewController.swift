@@ -423,10 +423,40 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   
   
   // MARK: -
-  // MARK: Picture
+  // MARK: Make Pictures
   
-  public func makeThumbnail(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data?
+  public func makeThumbnail(size: NSSize, camera: RKCamera) -> Data?
   {
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+    {
+      // create Ambient Occlusion in higher quality
+      self.invalidateCachedAmbientOcclusionTexture(crystalProjectData.renderStructures)
+      
+      if let device = MTLCreateSystemDefaultDevice()
+      {
+        let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera)
+        
+        if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false)
+        {
+          let cgImage: CGImage
+          
+          let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.first.rawValue)
+          let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
+          let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)!
+          let bitsPerComponent: Int = 8
+          let bitsPerPixel: Int = 32
+          let bytesPerRow: Int = 4 * Int(size.width)
+          cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)!
+            
+          let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
+          imageRep.size = NSMakeSize(CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72), CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
+          
+          return imageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
+        }
+      }
+    }
+    return nil
+    /*
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource
     {
       // create Ambient Occlusion in higher quality
@@ -449,55 +479,29 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       
       //return imageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
       return imageRep.representation(using: NSBitmapImageRep.FileType.jpeg2000, properties: [.compressionFactor : 0.5])
-    }
+    }*/
     return nil
   }
   
-  public func makePicture(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data
+  public func makePicture(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data?
   {
-    if let crystalProjectData: RKRenderDataSource = self.renderDataSource
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+       let camera: RKCamera = camera
     {
       // create Ambient Occlusion in higher quality
       self.invalidateCachedAmbientOcclusionTexture(crystalProjectData.renderStructures)
       
-      let data: Data = self.drawSceneToTexture(size: size, camera: camera, imageQuality: imageQuality)
-     
-      let cgImage: CGImage
-      switch(imageQuality)
+      if let device = MTLCreateSystemDefaultDevice()
       {
-      case .rgb_16_bits, .cmyk_16_bits:
-        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder16Little.rawValue | CGImageAlphaInfo.last.rawValue)
-        let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
-        let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)!
-        let bitsPerComponent: Int = 8 * 2
-        let bitsPerPixel: Int = 32 * 2
-        let bytesPerRow: Int = 4 * Int(size.width) * 2
-        cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)!
-      case .rgb_8_bits, .cmyk_8_bits:
-        let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.first.rawValue)
-        let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
-        let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)!
-        let bitsPerComponent: Int = 8
-        let bitsPerPixel: Int = 32
-        let bytesPerRow: Int = 4 * Int(size.width)
-        cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)!
-      }
+        let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera)
         
-        
-      let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
-      imageRep.size = NSMakeSize(CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72), CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
-        
-      switch(imageQuality)
-      {
-      case .rgb_8_bits, .rgb_16_bits:
-        return imageRep.tiffRepresentation(using: NSBitmapImageRep.TIFFCompression.lzw, factor: 1.0)!
-      case .cmyk_8_bits, .cmyk_16_bits:
-        let imageRepCMYK: NSBitmapImageRep = imageRep.converting(to: NSColorSpace.genericCMYK, renderingIntent: NSColorRenderingIntent.perceptual)!
-        imageRepCMYK.size = NSMakeSize(CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72), CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72))
-        return imageRepCMYK.tiffRepresentation(using: NSBitmapImageRep.TIFFCompression.lzw, factor: 1.0)!
+        if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: crystalProjectData.renderImagePhysicalSizeInInches, camera: camera, imageQuality: imageQuality)
+        {
+          return data
+        }
       }
     }
-    return Data()
+    return nil
   }
 
   public func makeCVPicture(_ pixelBuffer: CVPixelBuffer)
@@ -512,9 +516,11 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     }
   }
   
+  
   public func makeCVPicture(_ pixelBuffer: CVPixelBuffer, camera: RKCamera?, width: Int, height: Int)
   {
-    if let device = self.device
+    if let crystalProjectData: RKRenderDataSource = self.renderDataSource,
+       let device = MTLCreateSystemDefaultDevice()
     {
       var coreVideoTextureCache: CVMetalTextureCache? = nil
       CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &coreVideoTextureCache)
@@ -523,7 +529,9 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, coreVideoTextureCache!, pixelBuffer, nil, MTLPixelFormat.bgra8Unorm, width, height, 0, &renderTexture)
     
       let size: NSSize = NSMakeSize(CGFloat(width), CGFloat(height))
-      let data: Data = self.drawSceneToTexture(size: size, camera: camera, imageQuality: RKImageQuality.rgb_8_bits)
+      
+      let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera!)
+      let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera!, imageQuality: .rgb_8_bits, transparentBackground: false)!
     
       CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
       if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)
@@ -532,19 +540,6 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       }
       CVPixelBufferUnlockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
     }
-  }
-  
-  public func drawSceneToTexture(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data
-  {
-    if let device = self.device,
-       let commandQueue: MTLCommandQueue = self.renderCommandQueue,
-       let view: MetalView = self.view as? MetalView
-    {
-      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
-      
-      return self.renderer.drawSceneToTexture(device: device, size: size, imageQuality: imageQuality, maximumNumberOfSamples: maximumNumberOfSamples, camera: camera, renderQuality: view.renderQuality)
-    }
-    return Data()
   }
   
   // MARK: -
@@ -608,7 +603,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
                     
         renderer.pickingOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size)
        
-        renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera)
+        renderer.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffers[constantDataBufferIndex], size: size, renderQuality: view.renderQuality, camera: view.renderCameraSource?.renderCamera, transparentBackground: false)
          
         if let renderPass: MTLRenderPassDescriptor = (self.view as? MTKView)?.currentRenderPassDescriptor,
            let currentDrawable = (self.view as? MTKView)?.currentDrawable

@@ -99,19 +99,19 @@ public class MetalBackgroundShader
   }
   
   
-  public func renderBackgroundWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, opaque: Bool = true)
+  public func renderBackgroundWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, transparentBackground: Bool)
   {
     commandEncoder.label = "Background command encoder"
     commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
     commandEncoder.setRenderPipelineState(self.pipeLine)
     commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
-    if(opaque)
+    if(transparentBackground)
     {
-      commandEncoder.setFragmentTexture(self.texture, index: 0)
+      commandEncoder.setFragmentTexture(self.transparentTexture, index: 0)
     }
     else
     {
-      commandEncoder.setFragmentTexture(self.transparentTexture, index: 0)
+      commandEncoder.setFragmentTexture(self.texture, index: 0)
     }
     commandEncoder.setFragmentSamplerState(samplerState, index: 0)
     commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)

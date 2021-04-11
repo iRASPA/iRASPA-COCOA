@@ -8,6 +8,10 @@
 
 import Cocoa
 import Quartz
+import BinaryCodable
+import ZIPFoundation
+import iRASPAKit
+import RenderKit
 
 class PreviewViewController: NSViewController, QLPreviewingController
 {
@@ -24,8 +28,7 @@ class PreviewViewController: NSViewController, QLPreviewingController
   override func loadView()
   {
     super.loadView()
-    stackView?.orientation = .horizontal
-    preferredContentSize = NSSize(width: 480, height: 168)
+    preferredContentSize = NSSize(width: 512, height: 512)
   }
    
   func preparePreviewOfSearchableItem(identifier: String, queryString: String?, completionHandler handler: @escaping (Error?) -> Void)
@@ -39,16 +42,51 @@ class PreviewViewController: NSViewController, QLPreviewingController
     
   func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void)
   {
-    appIcon?.image = NSImage(named: "MOF")
+    // set fall-back image
+    var image: NSImage? = NSImage(named: "MOF")
+    let size: CGSize = CGSize(width: 512, height: 512)
+    
+    guard let projectTreeNode = ProjectTreeNode(url: url) else {return}
+    projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
+          
+    if let project: ProjectStructureNode  = projectTreeNode.representedObject.loadedProjectStructureNode,
+       let device = MTLCreateSystemDefaultDevice()
+    {
+      let camera: RKCamera = RKCamera()
+      
+      // Critical: set the selection, otherwise no frames will be drawn
+      project.setInitialSelectionIfNeeded()
+        
+      project.renderBackgroundCachedImage = project.drawGradientCGImage()
+      camera.resetPercentage = 0.95
+      camera.resetForNewBoundingBox(project.renderBoundingBox)
+        
+      camera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
+      camera.resetCameraDistance()
+      
+      let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: project, camera: camera)
+      
+      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: project.renderImagePhysicalSizeInInches, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false)
+      {
+        image = NSImage(data: data)
+      }
+    }
+    
+    appIcon?.image = image
     fileName?.stringValue = url.lastPathComponent
     
-    do {
-        let resourceValues = try url.resourceValues(forKeys: [.fileSizeKey])
-        if let size = resourceValues.fileSize
-        {
-          fileSize?.stringValue = ByteCountFormatter().string(fromByteCount: Int64(size))
-        }
-    } catch { print(error) }
+    do
+    {
+      let resourceValues = try url.resourceValues(forKeys: [.fileSizeKey])
+      if let size = resourceValues.fileSize
+      {
+        fileSize?.stringValue = ByteCountFormatter().string(fromByteCount: Int64(size))
+      }
+    }
+    catch
+    {
+      print(error)
+    }
         
     handler(nil)
   }

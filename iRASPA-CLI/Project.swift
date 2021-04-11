@@ -100,28 +100,30 @@ class Project
   
   var makePicture: Data
   {
-    let bundle: Bundle = Bundle(for: MetalRenderer.self)
+    let camera: RKCamera = RKCamera()
+   
+    projectStructureNode.setInitialSelectionIfNeeded()
     
-    if let device = MTLCreateSystemDefaultDevice(),
-       let _: MTLCommandQueue = device.makeCommandQueue(),
-       let file: String = bundle.path(forResource: "default", ofType: "metallib")
-    {
-      print("Metal")
-      let renderer: MetalRenderer = MetalRenderer()
+    projectStructureNode.renderBackgroundCachedImage = projectStructureNode.drawGradientCGImage()
       
-      let defaultLibrary = try! device.makeLibrary(filepath: file)
-      renderer.buildPipeLines(device: device, defaultLibrary, maximumNumberOfSamples: 8)
-       
-       
-      renderer.buildTextures(device: device, size: CGSize(width: 400, height: 400), maximumNumberOfSamples: 8)
-      renderer.buildVertexBuffers(device: device)
-       
-      renderer.backgroundShader.buildPermanentTextures(device: device)
-      return Data()
-    }
-    else
+    camera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+      
+    camera.updateCameraForWindowResize(width: Double(512), height: Double(512))
+    camera.resetCameraDistance()
+    
+    let size: CGSize = CGSize.init(width: 512, height: 512)
+    let imagePhysicalSizeInInches: Double = projectStructureNode.renderImagePhysicalSizeInInches
+    
+    if let device = MTLCreateSystemDefaultDevice()
     {
-      return Data()
+      let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: projectStructureNode, camera: camera)
+      
+      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: imagePhysicalSizeInInches, camera: camera, imageQuality: RKImageQuality.rgb_8_bits)
+      {
+        return data
+      }
     }
+    
+    return Data()
   }
 }

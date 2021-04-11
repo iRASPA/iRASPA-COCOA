@@ -34,6 +34,8 @@ import UniformTypeIdentifiers
 @available(OSX 11.0, *)
 extension UTType
 {
+  public static let irspdoc : UTType = UTType(exportedAs: "nl.darkwing.iraspa.universal.irspdoc")
+  
   public static let iraspa : UTType = UTType(exportedAs: "nl.darkwing.iraspa.iraspa")
  
   public static var cif : UTType
@@ -59,7 +61,7 @@ extension UTType
 
 
 let iRASPAProjectUTI: String = "nl.darkwing.iraspa.iraspa"
-
+public let typeirspdoc: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "irspdoc" as CFString, kUTTypeData)?.takeRetainedValue())!
 public let typeCIF: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "cif" as CFString, kUTTypeData)?.takeRetainedValue())!
 public let typePDB: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "pdb" as CFString, kUTTypeData)?.takeRetainedValue())!
 public let typeXYZ: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "xyz" as CFString, kUTTypeData)?.takeRetainedValue())!
