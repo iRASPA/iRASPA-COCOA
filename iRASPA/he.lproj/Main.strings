@@ -1,0 +1,498 @@
+
+/* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "1O8-LR-tZG"; */
+"1O8-LR-tZG.title" = "אליפסואיד";
+
+/* Class = "NSMenuItem"; title = "Customize Toolbar…"; ObjectID = "1UK-8n-QPP"; */
+"1UK-8n-QPP.title" = "התאם אישית את סרגל הכלים...";
+
+/* Class = "NSMenuItem"; title = "iRASPA"; ObjectID = "1Xt-HY-uBw"; */
+"1Xt-HY-uBw.title" = "iRASPA";
+
+/* Class = "NSMenu"; title = "Find"; ObjectID = "1b7-l0-nxx"; */
+"1b7-l0-nxx.title" = "למצוא";
+
+/* Class = "NSMenuItem"; title = "Lower"; ObjectID = "1tx-W0-xDw"; */
+"1tx-W0-xDw.title" = "נמוך יותר";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "2fK-ne-Lfp"; */
+"2fK-ne-Lfp.title" = "Box";
+
+/* Class = "NSMenuItem"; title = "Raise"; ObjectID = "2h7-ER-AoG"; */
+"2h7-ER-AoG.title" = "הַעֲלָאָה";
+
+/* Class = "NSMenuItem"; title = "Transformations"; ObjectID = "2oI-Rn-ZJC"; */
+"2oI-Rn-ZJC.title" = "טרנספורמציות";
+
+/* Class = "NSMenuItem"; title = "3:1"; ObjectID = "3GP-Eu-vtX"; */
+"3GP-Eu-vtX.title" = "3:1";
+
+/* Class = "NSMenu"; title = "Spelling"; ObjectID = "3IN-sU-3Bg"; */
+"3IN-sU-3Bg.title" = "אִיוּת";
+
+/* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "3Om-Ey-2VK"; */
+"3Om-Ey-2VK.title" = "השתמש ברירת מחדל";
+
+/* Class = "NSMenu"; title = "Speech"; ObjectID = "3rS-ZA-NoH"; */
+"3rS-ZA-NoH.title" = "דיבור";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "3x3-A1-D5u"; */
+"3x3-A1-D5u.title" = "Box";
+
+/* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
+"46P-cB-AYj.title" = "לְהַדֵק";
+
+/* Class = "NSMenuItem"; title = "Find"; ObjectID = "4EN-yA-p0u"; */
+"4EN-yA-p0u.title" = "למצוא";
+
+/* Class = "NSMenuItem"; title = "Enter Full Screen"; ObjectID = "4J7-dP-txa"; */
+"4J7-dP-txa.title" = "היכנס למסך מלא";
+
+/* Class = "NSMenuItem"; title = "Quit iRASPA"; ObjectID = "4sb-4s-VLi"; */
+"4sb-4s-VLi.title" = "צא מ- iRASPA";
+
+/* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
+"5QF-Oa-p0T.title" = "לַעֲרוֹך";
+
+/* Class = "NSMenuItem"; title = "Copy Style"; ObjectID = "5Vv-lz-BsD"; */
+"5Vv-lz-BsD.title" = "העתק סגנון";
+
+/* Class = "NSMenuItem"; title = "About iRASPA"; ObjectID = "5kV-Vb-QxS"; */
+"5kV-Vb-QxS.title" = "אודות iRASPA";
+
+/* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
+"6dh-zS-Vam.title" = "לַעֲשׂוֹת שׁוּב";
+
+/* Class = "NSMenuItem"; title = "Correct Spelling Automatically"; ObjectID = "78Y-hA-62v"; */
+"78Y-hA-62v.title" = "תקן איות באופן אוטומטי";
+
+/* Class = "NSMenu"; title = "Writing Direction"; ObjectID = "8mr-sm-Yjd"; */
+"8mr-sm-Yjd.title" = "כיוון כתיבה";
+
+/* Class = "NSWindow"; title = "Window"; ObjectID = "9EX-YN-jcB"; */
+"9EX-YN-jcB.title" = "חַלוֹן";
+
+/* Class = "NSMenuItem"; title = "Substitutions"; ObjectID = "9ic-FL-obx"; */
+"9ic-FL-obx.title" = "חילופים";
+
+/* Class = "NSMenuItem"; title = "Smart Copy/Paste"; ObjectID = "9yt-4B-nSM"; */
+"9yt-4B-nSM.title" = "העתקה / הדבקה חכמה";
+
+/* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
+"AYu-sK-qS6.title" = "תפריט ראשי";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "BOF-NM-1cW"; */
+"BOF-NM-1cW.title" = "העדפות...";
+
+/* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "BgM-ve-c93"; */
+"BgM-ve-c93.title" = "\tמשמאל לימין";
+
+/* Class = "NSMenuItem"; title = "Save As…"; ObjectID = "Bw7-FT-i3A"; */
+"Bw7-FT-i3A.title" = "שמור כ…";
+
+/* Class = "NSMenuItem"; title = "Molecule"; ObjectID = "CFt-im-cWe"; */
+"CFt-im-cWe.title" = "מולקולה";
+
+/* Class = "NSMenuItem"; title = "Close"; ObjectID = "DVo-aG-piG"; */
+"DVo-aG-piG.title" = "סגור";
+
+/* Class = "NSMenuItem"; title = "Spelling and Grammar"; ObjectID = "Dv1-io-Yv7"; */
+"Dv1-io-Yv7.title" = "איות ודקדוק";
+
+/* Class = "NSMenuItem"; title = "Import"; ObjectID = "EH2-Bo-SW5"; */
+"EH2-Bo-SW5.title" = "ייבא";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
+"F2S-fz-NVQ.title" = "עֶזרָה";
+
+/* Class = "NSMenuItem"; title = "Export"; ObjectID = "F46-CC-yoN"; */
+"F46-CC-yoN.title" = "ייצא";
+
+/* Class = "NSMenuItem"; title = "iRASPA Help"; ObjectID = "FKE-Sm-Kum"; */
+"FKE-Sm-Kum.title" = "עזרה ל- iRASPA";
+
+/* Class = "NSMenuItem"; title = "Structure project"; ObjectID = "FM9-Av-rXr"; */
+"FM9-Av-rXr.title" = "פרויקט מבנה";
+
+/* Class = "NSMenuItem"; title = "Text"; ObjectID = "Fal-I4-PZk"; */
+"Fal-I4-PZk.title" = "טֶקסט";
+
+/* Class = "NSMenu"; title = "Substitutions"; ObjectID = "FeM-D8-WVr"; */
+"FeM-D8-WVr.title" = "חילופים";
+
+/* Class = "NSMenuItem"; title = "Bold"; ObjectID = "GB9-OM-e27"; */
+"GB9-OM-e27.title" = "מודגש";
+
+/* Class = "NSMenu"; title = "Format"; ObjectID = "GEO-Iw-cKr"; */
+"GEO-Iw-cKr.title" = "פוּרמָט";
+
+/* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "GUa-eO-cwY"; */
+"GUa-eO-cwY.title" = "השתמש ברירת מחדל";
+
+/* Class = "NSMenuItem"; title = "Font"; ObjectID = "Gi5-1S-RQB"; */
+"Gi5-1S-RQB.title" = "גוֹפָן";
+
+/* Class = "NSMenu"; title = "New"; ObjectID = "Gkc-Nb-nPC"; */
+"Gkc-Nb-nPC.title" = "חָדָשׁ";
+
+/* Class = "NSMenuItem"; title = "Writing Direction"; ObjectID = "H1b-Si-o9J"; */
+"H1b-Si-o9J.title" = "כיוון כתיבה";
+
+/* Class = "NSMenuItem"; title = "View"; ObjectID = "H8h-7b-M4v"; */
+"H8h-7b-M4v.title" = "נוף";
+
+/* Class = "NSMenuItem"; title = "Molecular crystal"; ObjectID = "H8o-f4-o3W"; */
+"H8o-f4-o3W.title" = "גביש מולקולרי";
+
+/* Class = "NSMenuItem"; title = "Text Replacement"; ObjectID = "HFQ-gK-NFA"; */
+"HFQ-gK-NFA.title" = "החלפת טקסט";
+
+/* Class = "NSMenuItem"; title = "Show Spelling and Grammar"; ObjectID = "HFo-cy-zxI"; */
+"HFo-cy-zxI.title" = "הראה איות ודקדוק";
+
+/* Class = "NSMenu"; title = "View"; ObjectID = "HyV-fh-RgO"; */
+"HyV-fh-RgO.title" = "נוף";
+
+/* Class = "NSMenuItem"; title = "Subscript"; ObjectID = "I0S-gh-46l"; */
+"I0S-gh-46l.title" = "כתב תחתי";
+
+/* Class = "NSMenuItem"; title = "Open…"; ObjectID = "IAo-SY-fd9"; */
+"IAo-SY-fd9.title" = "לִפְתוֹחַ…";
+
+/* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "IsF-P6-kfc"; */
+"IsF-P6-kfc.title" = "גָבִישׁ";
+
+/* Class = "NSMenuItem"; title = "Justify"; ObjectID = "J5U-5w-g23"; */
+"J5U-5w-g23.title" = "הצדק";
+
+/* Class = "NSMenuItem"; title = "Use None"; ObjectID = "J7y-lM-qPV"; */
+"J7y-lM-qPV.title" = "השתמש באף אחד";
+
+/* Class = "NSMenuItem"; title = "21:9"; ObjectID = "JWT-Cn-v6t"; */
+"JWT-Cn-v6t.title" = "21:9";
+
+/* Class = "NSMenuItem"; title = "Project group"; ObjectID = "JkK-8X-2kf"; */
+"JkK-8X-2kf.title" = "קבוצת פרויקטים";
+
+/* Class = "NSMenuItem"; title = "Aspect ratio"; ObjectID = "JtX-r6-bas"; */
+"JtX-r6-bas.title" = "יחס גובה-רוחב";
+
+/* Class = "NSMenuItem"; title = "Revert to Saved"; ObjectID = "KaW-ft-85H"; */
+"KaW-ft-85H.title" = "חזור לשמור";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
+"Kd2-mp-pUS.title" = "תראה את כל";
+
+/* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[0] = "Hide or show the Navigator"; ObjectID = "Khj-N3-fhm"; */
+"Khj-N3-fhm.ibShadowedToolTips[0]" = "הסתר או הראה את הנווט";
+
+/* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[1] = "Hide or show the Log/Python consoles"; ObjectID = "Khj-N3-fhm"; */
+"Khj-N3-fhm.ibShadowedToolTips[1]" = "הסתר או הראה את קונסולות ה- Log / Python";
+
+/* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[2] = "Hide or show the Utility area"; ObjectID = "Khj-N3-fhm"; */
+"Khj-N3-fhm.ibShadowedToolTips[2]" = "הסתר או הראה את אזור השירות";
+
+/* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "LE2-aR-0XJ"; */
+"LE2-aR-0XJ.title" = "תביא את הכל לחזית";
+
+/* Class = "NSMenuItem"; title = "Paste Ruler"; ObjectID = "LVM-kO-fVI"; */
+"LVM-kO-fVI.title" = "הדבק שליט";
+
+/* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "Lbh-J2-qVU"; */
+"Lbh-J2-qVU.title" = "\tמשמאל לימין";
+
+/* Class = "NSMenuItem"; title = "1:1"; ObjectID = "Lr4-9V-B0Y"; */
+"Lr4-9V-B0Y.title" = "1:1";
+
+/* Class = "NSMenuItem"; title = "Copy Ruler"; ObjectID = "MkV-Pr-PK5"; */
+"MkV-Pr-PK5.title" = "העתק שליט";
+
+/* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "MzS-m8-rt0"; */
+"MzS-m8-rt0.title" = "צִילִינדֶר";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
+"NMo-om-nkz.title" = "שירותים";
+
+/* Class = "NSMenuItem"; title = "\tDefault"; ObjectID = "Nop-cj-93Q"; */
+"Nop-cj-93Q.title" = "\tבְּרִירַת מֶחדָל";
+
+/* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "OY7-WF-poV"; */
+"OY7-WF-poV.title" = "לְצַמְצֵם";
+
+/* Class = "NSMenuItem"; title = "Baseline"; ObjectID = "OaQ-X3-Vso"; */
+"OaQ-X3-Vso.title" = "קו בסיס";
+
+/* Class = "NSMenuItem"; title = "Hide test"; ObjectID = "Olw-nP-bQN"; */
+"Olw-nP-bQN.title" = "הסתר מבחן";
+
+/* Class = "NSMenuItem"; title = "Find Previous"; ObjectID = "OwM-mh-QMV"; */
+"OwM-mh-QMV.title" = "מצא הקודם";
+
+/* Class = "NSMenuItem"; title = "Stop Speaking"; ObjectID = "Oyz-dy-DGm"; */
+"Oyz-dy-DGm.title" = "תפסיק לדבר";
+
+/* Class = "NSMenuItem"; title = "Bigger"; ObjectID = "Ptp-SP-VEL"; */
+"Ptp-SP-VEL.title" = "גדול יותר";
+
+/* Class = "NSMenuItem"; title = "Show Fonts"; ObjectID = "Q5e-8K-NDq"; */
+"Q5e-8K-NDq.title" = "הצג גופנים";
+
+/* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "R4o-n2-Eq4"; */
+"R4o-n2-Eq4.title" = "תקריב";
+
+/* Class = "NSMenuItem"; title = "\tRight to Left"; ObjectID = "RB4-Sm-HuC"; */
+"RB4-Sm-HuC.title" = "\tמימין לשמאל";
+
+/* Class = "NSMenuItem"; title = "Superscript"; ObjectID = "Rqc-34-cIF"; */
+"Rqc-34-cIF.title" = "כתב עילי";
+
+/* Class = "NSMenuItem"; title = "Select All"; ObjectID = "Ruw-6m-B2m"; */
+"Ruw-6m-B2m.title" = "בחר הכל";
+
+/* Class = "NSMenuItem"; title = "Jump to Selection"; ObjectID = "S0p-oC-mLd"; */
+"S0p-oC-mLd.title" = "קפיצה לבחירה";
+
+/* Class = "NSMenuItem"; title = "3:2"; ObjectID = "Spc-qz-Euj"; */
+"Spc-qz-Euj.title" = "3:2";
+
+/* Class = "NSMenu"; title = "Window"; ObjectID = "Td7-aD-5lo"; */
+"Td7-aD-5lo.title" = "חַלוֹן";
+
+/* Class = "NSMenu"; title = "Aspect ratio"; ObjectID = "TrX-ZY-bLC"; */
+"TrX-ZY-bLC.title" = "יחס גובה-רוחב";
+
+/* Class = "NSMenuItem"; title = "Capitalize"; ObjectID = "UEZ-Bs-lqG"; */
+"UEZ-Bs-lqG.title" = "רישיות";
+
+/* Class = "NSMenuItem"; title = "Center"; ObjectID = "VIY-Ag-zcb"; */
+"VIY-Ag-zcb.title" = "במרכז";
+
+/* Class = "NSMenuItem"; title = "Invert selection"; ObjectID = "VNS-yB-1c3"; */
+"VNS-yB-1c3.title" = "בחירה הפוך";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
+"Vdr-fp-XzO.title" = "הסתר אחרים";
+
+/* Class = "NSMenuItem"; title = "Italic"; ObjectID = "Vjx-xi-njq"; */
+"Vjx-xi-njq.title" = "נטוי";
+
+/* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
+"W48-6f-4Dl.title" = "לַעֲרוֹך";
+
+/* Class = "NSMenuItem"; title = "Protein"; ObjectID = "WJS-5R-dt1"; */
+"WJS-5R-dt1.title" = "חֶלְבּוֹן";
+
+/* Class = "NSMenuItem"; title = "Underline"; ObjectID = "WRG-CD-K1S"; */
+"WRG-CD-K1S.title" = "קו תחתון";
+
+/* Class = "NSMenuItem"; title = "Copy"; ObjectID = "Wm2-za-IFp"; */
+"Wm2-za-IFp.title" = "עותק";
+
+/* Class = "NSMenuItem"; title = "Objects"; ObjectID = "WvN-oW-JtI"; */
+"WvN-oW-JtI.title" = "חפצים";
+
+/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "X1N-VI-cwY"; */
+"X1N-VI-cwY.title" = "מנסרה מצולעת";
+
+/* Class = "NSMenuItem"; title = "New"; ObjectID = "Xa3-2R-g2O"; */
+"Xa3-2R-g2O.title" = "חָדָשׁ";
+
+/* Class = "NSMenuItem"; title = "Find…"; ObjectID = "Xz5-n4-O0W"; */
+"Xz5-n4-O0W.title" = "למצוא…";
+
+/* Class = "NSMenuItem"; title = "4:3"; ObjectID = "YAH-xY-wfC"; */
+"YAH-xY-wfC.title" = "4:3";
+
+/* Class = "NSMenuItem"; title = "Find and Replace…"; ObjectID = "YEy-JH-Tfz"; */
+"YEy-JH-Tfz.title" = "מצא והחלף…";
+
+/* Class = "NSMenuItem"; title = "\tDefault"; ObjectID = "YGs-j5-SAR"; */
+"YGs-j5-SAR.title" = "\tבְּרִירַת מֶחדָל";
+
+/* Class = "NSMenuItem"; title = "Start Speaking"; ObjectID = "Ynk-f8-cLZ"; */
+"Ynk-f8-cLZ.title" = "התחל לדבר";
+
+/* Class = "NSMenuItem"; title = "Align Left"; ObjectID = "ZM1-6Q-yy1"; */
+"ZM1-6Q-yy1.title" = "ישר לשמאל";
+
+/* Class = "NSMenuItem"; title = "Paragraph"; ObjectID = "ZvO-Gk-QUH"; */
+"ZvO-Gk-QUH.title" = "פסקה";
+
+/* Class = "NSMenuItem"; title = "Print…"; ObjectID = "aTl-1u-JFS"; */
+"aTl-1u-JFS.title" = "הדפס…";
+
+/* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
+"aUF-d1-5bR.title" = "חַלוֹן";
+
+/* Class = "NSMenu"; title = "Font"; ObjectID = "aXa-aM-Jaq"; */
+"aXa-aM-Jaq.title" = "גוֹפָן";
+
+/* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "agt-UL-0e3"; */
+"agt-UL-0e3.title" = "השתמש ברירת מחדל";
+
+/* Class = "NSMenuItem"; title = "Show Colors"; ObjectID = "bgn-CT-cEk"; */
+"bgn-CT-cEk.title" = "הראה צבעים";
+
+/* Class = "NSMenu"; title = "File"; ObjectID = "bib-Uj-vzu"; */
+"bib-Uj-vzu.title" = "קוֹבֶץ";
+
+/* Class = "NSMenuItem"; title = "Use Selection for Find"; ObjectID = "buJ-ug-pKt"; */
+"buJ-ug-pKt.title" = "השתמש בבחירה לחיפוש";
+
+/* Class = "NSMenu"; title = "Transformations"; ObjectID = "c8a-y6-VQd"; */
+"c8a-y6-VQd.title" = "טרנספורמציות";
+
+/* Class = "NSMenuItem"; title = "Use None"; ObjectID = "cDB-IK-hbR"; */
+"cDB-IK-hbR.title" = "השתמש באף אחד";
+
+/* Class = "NSMenuItem"; title = "Atom group"; ObjectID = "cMR-OP-H7e"; */
+"cMR-OP-H7e.title" = "קבוצת אטומים";
+
+/* Class = "NSMenuItem"; title = "16:9"; ObjectID = "cfR-kj-UKf"; */
+"cfR-kj-UKf.title" = "16:9";
+
+/* Class = "NSMenuItem"; title = "Selection"; ObjectID = "cqv-fj-IhA"; */
+"cqv-fj-IhA.title" = "בחירה";
+
+/* Class = "NSMenuItem"; title = "Smart Links"; ObjectID = "cwL-P1-jid"; */
+"cwL-P1-jid.title" = "קישורים חכמים";
+
+/* Class = "NSMenuItem"; title = "Make Lower Case"; ObjectID = "d9M-CD-aMd"; */
+"d9M-CD-aMd.title" = "להכין אותיות קטנות";
+
+/* Class = "NSMenu"; title = "Text"; ObjectID = "d9c-me-L2H"; */
+"d9c-me-L2H.title" = "טֶקסט";
+
+/* Class = "NSMenuItem"; title = "File"; ObjectID = "dMs-cI-mzQ"; */
+"dMs-cI-mzQ.title" = "קוֹבֶץ";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
+"dRJ-4n-Yzg.title" = "לבטל";
+
+/* Class = "NSMenuItem"; title = "Workspace"; ObjectID = "fCt-M2-s9M"; */
+"fCt-M2-s9M.title" = "סביבת עבודה";
+
+/* Class = "NSMenuItem"; title = "Paste"; ObjectID = "gVA-U4-sdL"; */
+"gVA-U4-sdL.title" = "לְהַדבִּיק";
+
+/* Class = "NSMenuItem"; title = "Smart Quotes"; ObjectID = "hQb-2v-fYv"; */
+"hQb-2v-fYv.title" = "ציטוטים חכמים";
+
+/* Class = "NSMenuItem"; title = "Atom"; ObjectID = "hUG-eb-3cj"; */
+"hUG-eb-3cj.title" = "אָטוֹם";
+
+/* Class = "NSMenuItem"; title = "Check Document Now"; ObjectID = "hz2-CU-CR7"; */
+"hz2-CU-CR7.title" = "בדוק את המסמך עכשיו";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
+"hz9-B4-Xy5.title" = "שירותים";
+
+/* Class = "NSMenuItem"; title = "Smaller"; ObjectID = "i1d-Er-qST"; */
+"i1d-Er-qST.title" = "קטן יותר";
+
+/* Class = "NSMenu"; title = "Baseline"; ObjectID = "ijk-EB-dga"; */
+"ijk-EB-dga.title" = "קו בסיס";
+
+/* Class = "NSMenuItem"; title = "Kern"; ObjectID = "jBQ-r6-VK2"; */
+"jBQ-r6-VK2.title" = "קרן";
+
+/* Class = "NSMenuItem"; title = "2.39:1"; ObjectID = "jF0-uJ-F9d"; */
+"jF0-uJ-F9d.title" = "2.39:1";
+
+/* Class = "NSMenuItem"; title = "\tRight to Left"; ObjectID = "jFq-tB-4Kx"; */
+"jFq-tB-4Kx.title" = "\tמימין לשמאל";
+
+/* Class = "NSMenuItem"; title = "Format"; ObjectID = "jxT-CU-nIS"; */
+"jxT-CU-nIS.title" = "פוּרמָט";
+
+/* Class = "NSMenuItem"; title = "Show Sidebar"; ObjectID = "kIP-vf-haE"; */
+"kIP-vf-haE.title" = "הראה את סרגל הצד";
+
+/* Class = "NSMenuItem"; title = "Check Grammar With Spelling"; ObjectID = "mK6-2p-4JG"; */
+"mK6-2p-4JG.title" = "בדוק דקדוק עם איות";
+
+/* Class = "NSMenuItem"; title = "1.85:1"; ObjectID = "mum-mQ-dln"; */
+"mum-mQ-dln.title" = "1.85:1";
+
+/* Class = "NSMenuItem"; title = "Ligatures"; ObjectID = "o6e-r0-MWq"; */
+"o6e-r0-MWq.title" = "ליגטורות";
+
+/* Class = "NSMenu"; title = "Open Recent"; ObjectID = "oas-Oc-fiZ"; */
+"oas-Oc-fiZ.title" = "פתח לאחרונה";
+
+/* Class = "NSMenuItem"; title = "Loosen"; ObjectID = "ogc-rX-tC1"; */
+"ogc-rX-tC1.title" = "לְשַׁחְרֵר";
+
+/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
+"pa3-QI-u2k.title" = "לִמְחוֹק";
+
+/* Class = "NSMenuItem"; title = "Save…"; ObjectID = "pxx-59-PXV"; */
+"pxx-59-PXV.title" = "להציל…";
+
+/* Class = "NSMenuItem"; title = "Find Next"; ObjectID = "q09-fT-Sye"; */
+"q09-fT-Sye.title" = "מצא את הבא";
+
+/* Class = "NSMenu"; title = "Objects"; ObjectID = "q81-1F-c5Z"; */
+"q81-1F-c5Z.title" = "חפצים";
+
+/* Class = "NSMenuItem"; title = "Page Setup…"; ObjectID = "qIS-W8-SiK"; */
+"qIS-W8-SiK.title" = "הגדרות עמוד…";
+
+/* Class = "NSMenuItem"; title = "Check Spelling While Typing"; ObjectID = "rbD-Rh-wIN"; */
+"rbD-Rh-wIN.title" = "בדוק איות בזמן הקלדה";
+
+/* Class = "NSMenuItem"; title = "Protein crystal"; ObjectID = "rdX-r1-eMs"; */
+"rdX-r1-eMs.title" = "גביש חלבון";
+
+/* Class = "NSMenuItem"; title = "Smart Dashes"; ObjectID = "rgM-f4-ycn"; */
+"rgM-f4-ycn.title" = "מקפים חכמים";
+
+/* Class = "NSMenuItem"; title = "Show Toolbar"; ObjectID = "snW-S8-Cw5"; */
+"snW-S8-Cw5.title" = "הצג סרגל כלים";
+
+/* Class = "NSMenuItem"; title = "Data Detectors"; ObjectID = "tRr-pd-1PS"; */
+"tRr-pd-1PS.title" = "גלאי נתונים";
+
+/* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
+"tXI-mr-wws.title" = "פתח לאחרונה";
+
+/* Class = "NSMenuItem"; title = "Off"; ObjectID = "tjs-df-O3M"; */
+"tjs-df-O3M.title" = "כבוי";
+
+/* Class = "NSMenu"; title = "Kern"; ObjectID = "tlD-Oa-oAM"; */
+"tlD-Oa-oAM.title" = "קרן";
+
+/* Class = "NSMenu"; title = "iRASPA"; ObjectID = "uQy-DD-JDr"; */
+"uQy-DD-JDr.title" = "iRASPA";
+
+/* Class = "NSMenuItem"; title = "Cut"; ObjectID = "uRl-iY-unG"; */
+"uRl-iY-unG.title" = "לחתוך";
+
+/* Class = "NSMenuItem"; title = "Paste Style"; ObjectID = "vKC-jM-MkH"; */
+"vKC-jM-MkH.title" = "הדבק סגנון";
+
+/* Class = "NSMenuItem"; title = "Show Ruler"; ObjectID = "vLm-3I-IUL"; */
+"vLm-3I-IUL.title" = "הצג שליט";
+
+/* Class = "NSMenuItem"; title = "Clear Menu"; ObjectID = "vNY-rz-j42"; */
+"vNY-rz-j42.title" = "תפריט נקה";
+
+/* Class = "NSMenuItem"; title = "Make Upper Case"; ObjectID = "vmV-6d-7jI"; */
+"vmV-6d-7jI.title" = "הפוך אותיות גדולות";
+
+/* Class = "NSMenu"; title = "Ligatures"; ObjectID = "w0m-vy-SC9"; */
+"w0m-vy-SC9.title" = "ליגטורות";
+
+/* Class = "NSMenuItem"; title = "Align Right"; ObjectID = "wb2-vD-lq4"; */
+"wb2-vD-lq4.title" = "ישר לימין";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
+"wpr-3q-Mcd.title" = "עֶזרָה";
+
+/* Class = "NSMenuItem"; title = "Use All"; ObjectID = "xQD-1f-W4t"; */
+"xQD-1f-W4t.title" = "השתמש בכול";
+
+/* Class = "NSMenuItem"; title = "Speech"; ObjectID = "xrE-MZ-jX0"; */
+"xrE-MZ-jX0.title" = "דיבור";
+
+/* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
+"z6F-FW-3nz.title" = "הראה תחליפים";

@@ -1,12 +1,12 @@
 
 /* Class = "NSMenuItem"; title = "All positive"; ObjectID = "07j-yA-XWL"; */
-"07j-yA-XWL.title" = "Allemaal positief";
+"07j-yA-XWL.title" = "הכל חיובי";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
-"43t-f2-d0i.placeholderString" = "Naam van het instituut";
+"43t-f2-d0i.placeholderString" = "שם המכון";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "444-5s-8Su"; */
-"444-5s-8Su.placeholderString" = "Onbekend";
+"444-5s-8Su.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; 444-5s-8Su.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "444-5s-8Su"; */
 "444-5s-8Su.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
@@ -15,169 +15,169 @@
 "4EP-SI-3P9.title" = "Item 1";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "4I2-J0-a1F"; */
-"4I2-J0-a1F.title" = "Onbekend";
+"4I2-J0-a1F.title" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; title = "Affiliation"; ObjectID = "4KL-dd-ODO"; */
-"4KL-dd-ODO.title" = "Professionele Verbondenheid";
+"4KL-dd-ODO.title" = "שיוך";
 
 /* Class = "NSTextFieldCell"; title = "DOI"; ObjectID = "4z1-VY-1Pd"; */
 "4z1-VY-1Pd.title" = "DOI";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "6KC-hH-6j8"; */
-"6KC-hH-6j8.placeholderString" = "Onbekend";
+"6KC-hH-6j8.placeholderString" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "7Ft-CF-yt2"; */
-"7Ft-CF-yt2.title" = "Kracht Veld";
+"7Ft-CF-yt2.title" = "שדה כוח";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "8lJ-Qe-9Bj"; */
-"8lJ-Qe-9Bj.title" = "Onbekend";
+"8lJ-Qe-9Bj.title" = "לא ידוע";
 
 /* Class = "NSMenuItem"; title = "Many Negative Eigenvalues"; ObjectID = "ANg-Kl-3lM"; */
-"ANg-Kl-3lM.title" = "Veel Negatieve Eigenwaardes";
+"ANg-Kl-3lM.title" = "הרבה ערכי שלילי שליליים";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "ASc-zU-QqD"; */
-"ASc-zU-QqD.placeholderString" = "Onbekend";
+"ASc-zU-QqD.placeholderString" = "לא ידוע";
 
 /* Class = "NSMenuItem"; title = "Some Small Negative Values"; ObjectID = "C5C-Je-5WX"; */
-"C5C-Je-5WX.title" = "Enkele Kleine Negatieve Waardes";
+"C5C-Je-5WX.title" = "כמה ערכים שליליים קטנים";
 
 /* Class = "NSTextFieldCell"; placeholderString = "City"; ObjectID = "Cvy-Hd-HUC"; */
-"Cvy-Hd-HUC.placeholderString" = "Stad";
+"Cvy-Hd-HUC.placeholderString" = "עִיר";
 
 /* Class = "NSMenuItem"; title = "Bar"; ObjectID = "DBX-tl-g65"; */
-"DBX-tl-g65.title" = "Bar";
+"DBX-tl-g65.title" = "בר";
 
 /* Class = "NSTextFieldCell"; placeholderString = "k_max"; ObjectID = "DQs-oL-hqO"; */
 "DQs-oL-hqO.placeholderString" = "k_max";
 
 /* Class = "NSTextFieldCell"; title = "Researcher ID"; ObjectID = "DXa-ef-f0b"; */
-"DXa-ef-f0b.title" = "Researcher ID";
+"DXa-ef-f0b.title" = "מזהה חוקר";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "EMw-Fn-YYe"; */
-"EMw-Fn-YYe.placeholderString" = "Onbekend";
+"EMw-Fn-YYe.placeholderString" = "לא ידוע";
 
 /* Class = "NSMenuItem"; title = "Fixed Volume; Shape Change"; ObjectID = "Etd-c0-eiU"; */
-"Etd-c0-eiU.title" = "Vast Volume; Vorm Varieert";
+"Etd-c0-eiU.title" = "נפח קבוע; שינוי צורה";
 
 /* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
-"FgA-hr-Zjg.title" = "Details";
+"FgA-hr-Zjg.title" = "פרטים";
 
 /* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "FkD-oS-zpo"; */
 "FkD-oS-zpo.title" = "Item 2";
 
 /* Class = "NSMenuItem"; title = "Experimental"; ObjectID = "G2E-hb-9HS"; */
-"G2E-hb-9HS.title" = "Experimenteel";
+"G2E-hb-9HS.title" = "נִסיוֹנִי";
 
 /* Class = "NSTextFieldCell"; placeholderString = "max"; ObjectID = "GOg-L9-MUC"; */
 "GOg-L9-MUC.placeholderString" = "max";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "GbD-Bi-g8J"; */
-"GbD-Bi-g8J.placeholderString" = "Onbekend";
+"GbD-Bi-g8J.placeholderString" = "לא ידוע";
 
 /* Class = "NSMenuItem"; title = "Conjugate Gradient"; ObjectID = "H8k-8m-eEZ"; */
 "H8k-8m-eEZ.title" = "Conjugate Gradient";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "HQa-wI-SvD"; */
-"HQa-wI-SvD.title" = "Geen";
+"HQa-wI-SvD.title" = "אף אחד";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "IDD-Ef-45v"; */
-"IDD-Ef-45v.title" = "Algoritme";
+"IDD-Ef-45v.title" = "אַלגוֹרִיתְם";
 
 /* Class = "NSMenuItem"; title = "Baker's Algorithm"; ObjectID = "JIL-cM-jP3"; */
-"JIL-cM-jP3.title" = "Baker's Algoritme";
+"JIL-cM-jP3.title" = "Baker's Algorithm";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Last name"; ObjectID = "JJr-Hi-ZjS"; */
-"JJr-Hi-ZjS.placeholderString" = "Achternaam";
+"JJr-Hi-ZjS.placeholderString" = "שם משפחה";
 
 /* Class = "NSTextFieldCell"; title = "Limits"; ObjectID = "Jff-Rs-w9O"; */
-"Jff-Rs-w9O.title" = "Limieten";
+"Jff-Rs-w9O.title" = "גבולות";
 
 /* Class = "NSBox"; title = "Unit Cell"; ObjectID = "KEX-co-NaZ"; */
-"KEX-co-NaZ.title" = "Eenheidscel";
+"KEX-co-NaZ.title" = "בתא היחידה";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_min"; ObjectID = "KRx-ka-ed4"; */
 "KRx-ka-ed4.placeholderString" = "h_min";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Kyz-vh-wLM"; */
-"Kyz-vh-wLM.title" = "Kracht Veld Details";
+"Kyz-vh-wLM.title" = "פרטי שדה כוח";
 
-/* Class = "NSTextFieldCell"; title = "Chemical"; ObjectID = "L9b-nA-LZg"; */
-"L9b-nA-LZg.title" = "Chemische Informatie";
+/* Class = "NSTextFieldCell"; title = "Chemical Information"; ObjectID = "L9b-nA-LZg"; */
+"L9b-nA-LZg.title" = "מידע כימי";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "LRn-Q5-NIv"; */
-"LRn-Q5-NIv.title" = "Algoritme";
+"LRn-Q5-NIv.title" = "אַלגוֹרִיתְם";
 
 /* Class = "NSTabViewItem"; label = "View"; ObjectID = "Lsj-0L-zLx"; */
-"Lsj-0L-zLx.label" = "View";
+"Lsj-0L-zLx.label" = "נוף";
 
 /* Class = "NSTextFieldCell"; title = "Radiation type"; ObjectID = "M4G-j9-ni3"; */
-"M4G-j9-ni3.title" = "Stralingstype";
+"M4G-j9-ni3.title" = "סוג קרינה";
 
 /* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "Simulated Annealing";
+"MCu-aJ-XRY.title" = "חישול מדומה";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
-"MYm-ia-kRD.title" = "Simplex";
+"MYm-ia-kRD.title" = "סימפלקס";
 
 /* Class = "NSTextFieldCell"; title = "Eigenvalues"; ObjectID = "Mz0-GD-bP9"; */
-"Mz0-GD-bP9.title" = "Eigenwaarden";
+"Mz0-GD-bP9.title" = "ערכים עצמיים";
 
 /* Class = "NSTextFieldCell"; title = "Article Authors"; ObjectID = "NEs-Kg-SVJ"; */
-"NEs-Kg-SVJ.title" = "Artikel Auteurs";
+"NEs-Kg-SVJ.title" = "מחברי המאמרים";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Sum"; ObjectID = "Niu-c7-eAz"; */
-"Niu-c7-eAz.title" = "Chemische Formule Som";
+"Niu-c7-eAz.title" = "סכום פורמולה כימית";
 
 /* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "OEK-pW-ejo"; */
-"OEK-pW-ejo.title" = "Software Pakket";
+"OEK-pW-ejo.title" = "חבילת תוכנה";
 
 /* Class = "NSTextFieldCell"; placeholderString = "l_min"; ObjectID = "P5f-Dc-mAR"; */
 "P5f-Dc-mAR.placeholderString" = "l_min";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Moiety"; ObjectID = "QLD-HG-16U"; */
-"QLD-HG-16U.title" = "Chemische Formule";
+"QLD-HG-16U.title" = "פורמולה כימית";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "Qbd-YO-NWQ"; */
-"Qbd-YO-NWQ.placeholderString" = "Onbekend";
+"Qbd-YO-NWQ.placeholderString" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "R5l-j2-8rL"; */
-"R5l-j2-8rL.title" = "Kracht Veld Details";
+"R5l-j2-8rL.title" = "פרטי שדה כוח";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
-"USD-gk-tal.placeholderString" = "Onbekend";
+"USD-gk-tal.placeholderString" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "UdZ-E6-hGm"; */
-"UdZ-E6-hGm.title" = "Kracht Veld";
+"UdZ-E6-hGm.title" = "שדה כוח";
 
 /* Class = "NSTextFieldCell"; title = "Software"; ObjectID = "VSi-Bz-b4f"; */
-"VSi-Bz-b4f.title" = "Software";
+"VSi-Bz-b4f.title" = "תוֹכנָה";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "VW9-bX-xkL"; */
-"VW9-bX-xkL.placeholderString" = "Onbekend";
+"VW9-bX-xkL.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; VW9-bX-xkL.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "VW9-bX-xkL"; */
 "VW9-bX-xkL.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
 
 /* Class = "NSTextFieldCell"; placeholderString = "First name"; ObjectID = "Vtz-4v-Kmv"; */
-"Vtz-4v-Kmv.placeholderString" = "Voornaam";
+"Vtz-4v-Kmv.placeholderString" = "שם פרטי";
 
 /* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "Vvv-Ri-fwX"; */
-"Vvv-Ri-fwX.title" = "Nummer";
+"Vvv-Ri-fwX.title" = "מספר";
 
-/* Class = "NSTextFieldCell"; title = "R indices (all data)"; ObjectID = "WBA-sr-NKP"; */
-"WBA-sr-NKP.title" = "R Indices (Alle Data)";
+/* Class = "NSTextFieldCell"; title = "R Indices (All Data)"; ObjectID = "WBA-sr-NKP"; */
+"WBA-sr-NKP.title" = "מדדי R (כל הנתונים)";
 
 /* Class = "NSTextFieldCell"; title = "Article Title"; ObjectID = "Wih-6z-Wmy"; */
-"Wih-6z-Wmy.title" = "Artikel Titel";
+"Wih-6z-Wmy.title" = "כותרת המאמר";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "X0T-Gc-sil"; */
-"X0T-Gc-sil.placeholderString" = "Onbekend";
+"X0T-Gc-sil.placeholderString" = "לא ידוע";
 
-/* Class = "NSTextFieldCell"; title = "Radiation wavelength"; ObjectID = "Xx6-F7-2Db"; */
-"Xx6-F7-2Db.title" = "Straling Golflengte";
+/* Class = "NSTextFieldCell"; title = "Radiation Wavelength"; ObjectID = "Xx6-F7-2Db"; */
+"Xx6-F7-2Db.title" = "אורך גל קרינה";
 
 /* Class = "NSTextFieldCell"; title = "Journal Title"; ObjectID = "Zmo-LS-hfO"; */
-"Zmo-LS-hfO.title" = "Tijdschrift Titel";
+"Zmo-LS-hfO.title" = "כותרת היומן";
 
 /* Class = "NSMenuItem"; title = "Kelvin"; ObjectID = "Zqh-RB-jIF"; */
 "Zqh-RB-jIF.title" = "Kelvin";
@@ -186,19 +186,19 @@
 "a8y-Dh-rHh.title" = "Text Cell";
 
 /* Class = "NSTextFieldCell"; title = "Creation"; ObjectID = "aGv-FE-SDq"; */
-"aGv-FE-SDq.title" = "Creatie";
+"aGv-FE-SDq.title" = "יצירה";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "au5-Fr-4P5"; */
-"au5-Fr-4P5.placeholderString" = "Onbekend";
+"au5-Fr-4P5.placeholderString" = "לא ידוע";
 
 /* Class = "NSMenuItem"; title = "Genetic Algorithm"; ObjectID = "b6n-Qn-6ik"; */
-"b6n-Qn-6ik.title" = "Genetic Algorithm";
+"b6n-Qn-6ik.title" = "אלגוריתם גנטי";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.placeholderString" = "Onbekend";
+"b8q-Dr-Dt5.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "Experimenteel";
+"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "נִסיוֹנִי";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[1] = "Ab initio"; ObjectID = "b8q-Dr-Dt5"; */
 "b8q-Dr-Dt5.ibShadowedObjectValues[1]" = "Ab initio";
@@ -252,13 +252,13 @@
 "b8q-Dr-Dt5.ibShadowedObjectValues[17]" = "Openbabel";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "bgc-3c-w1h"; */
-"bgc-3c-w1h.placeholderString" = "Unknown";
+"bgc-3c-w1h.placeholderString" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; title = "Final R indices [I>2sigma(I)]"; ObjectID = "bw9-xG-XoD"; */
-"bw9-xG-XoD.title" = "Laatste R Indices [I>2sigma(I)]";
+"bw9-xG-XoD.title" = "מדדי R סופיים [I>2sigma(I)]";
 
 /* Class = "NSBox"; title = "Atomic Positions"; ObjectID = "cgg-LX-ohN"; */
-"cgg-LX-ohN.title" = "Atoomposities";
+"cgg-LX-ohN.title" = "עמדות אטומיות";
 
 /* Class = "NSTextFieldCell"; placeholderString = "A-0000-0000"; ObjectID = "ciB-v0-3ow"; */
 "ciB-v0-3ow.placeholderString" = "A-0000-0000";
@@ -270,34 +270,34 @@
 "d7Y-ez-Ze7.label" = "CreationTabView";
 
 /* Class = "NSTextFieldCell"; title = "ORCHID ID"; ObjectID = "d8y-By-uMu"; */
-"d8y-By-uMu.title" = "ORCHID ID";
+"d8y-By-uMu.title" = "מזהה ORCID";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Name Systematic"; ObjectID = "df5-Wf-bLj"; */
-"df5-Wf-bLj.title" = "Chemische Naam Systematisch";
+"df5-Wf-bLj.title" = "שם כימי שיטתי";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0000-0000-0000-0000"; ObjectID = "eA1-Nk-SW5"; */
 "eA1-Nk-SW5.placeholderString" = "0000-0000-0000-0000";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "eef-6i-4me"; */
-"eef-6i-4me.title" = "Onbekend";
+"eef-6i-4me.title" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Faculty"; ObjectID = "fCm-83-aYg"; */
-"fCm-83-aYg.placeholderString" = "Faculteit";
+"fCm-83-aYg.placeholderString" = "סגל";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_max"; ObjectID = "fRC-r2-uGt"; */
 "fRC-r2-uGt.placeholderString" = "h_max";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "hJX-yG-tEQ"; */
-"hJX-yG-tEQ.title" = "Datum";
+"hJX-yG-tEQ.title" = "תַאֲרִיך";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "hf1-Cm-G3M"; */
-"hf1-Cm-G3M.title" = "Onbekend";
+"hf1-Cm-G3M.title" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "hx2-K2-gHI"; */
-"hx2-K2-gHI.placeholderString" = "Onbekend";
+"hx2-K2-gHI.placeholderString" = "לא ידוע";
 
 /* Class = "NSMenuItem"; title = "Simulation"; ObjectID = "iWi-p0-Jvt"; */
-"iWi-p0-Jvt.title" = "Simulatie";
+"iWi-p0-Jvt.title" = "סימולציה";
 
 /* Class = "NSTextFieldCell"; placeholderString = "k_min"; ObjectID = "ikt-1W-AxJ"; */
 "ikt-1W-AxJ.placeholderString" = "k_min";
@@ -315,10 +315,10 @@
 "jxw-bd-YgS.title" = "Celsius";
 
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "k9a-VC-uKW"; */
-"k9a-VC-uKW.title" = "Volume";
+"k9a-VC-uKW.title" = "כרך";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.placeholderString" = "Onbekend";
+"kf2-0x-3Vl.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "kf2-0x-3Vl"; */
 "kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab Initio";
@@ -342,46 +342,46 @@
 "kzO-x9-s2F.placeholderString" = "min";
 
 /* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "Relaxeer Eenheidscel";
+"lIz-1D-3Ai.title" = "Relax  בתא היחידה";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
-"lKv-hk-525.title" = "Druk";
+"lKv-hk-525.title" = "Pressure";
 
 /* Class = "NSMenuItem"; title = "Fixed Cell"; ObjectID = "lh2-7H-hGC"; */
-"lh2-7H-hGC.title" = "Vaste Eenheidscel";
+"lh2-7H-hGC.title" = "תא קבוע";
 
 /* Class = "NSTextFieldCell"; title = "Method"; ObjectID = "m81-kt-8rG"; */
-"m81-kt-8rG.title" = "Methode";
+"m81-kt-8rG.title" = "שיטה";
 
 /* Class = "NSTextFieldCell"; title = "Temperature"; ObjectID = "mR9-kH-oL9"; */
-"mR9-kH-oL9.title" = "Temperatuur";
+"mR9-kH-oL9.title" = "טֶמפֶּרָטוּרָה";
 
 /* Class = "NSTextFieldCell"; placeholderString = "University or Company name"; ObjectID = "nZ6-yf-S1l"; */
-"nZ6-yf-S1l.placeholderString" = "Universiteit of Bedrijfs Naam";
+"nZ6-yf-S1l.placeholderString" = "שם האוניברסיטה או החברה";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "nb3-dm-cDY"; */
-"nb3-dm-cDY.placeholderString" = "Onbekend";
+"nb3-dm-cDY.placeholderString" = "לא ידוע";
 
 /* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "oND-jh-tZA"; */
-"oND-jh-tZA.title" = "Atomaire Ladingen";
+"oND-jh-tZA.title" = "מטענים אטומיים";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "pD1-Es-0pE"; */
-"pD1-Es-0pE.placeholderString" = "Onbekend";
+"pD1-Es-0pE.placeholderString" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; title = "Creator"; ObjectID = "pWj-ey-8li"; */
-"pWj-ey-8li.title" = "Maker";
+"pWj-ey-8li.title" = "בורא";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "qFO-wb-T6b"; */
-"qFO-wb-T6b.title" = "Geen";
+"qFO-wb-T6b.title" = "אף אחד";
 
 /* Class = "NSTextFieldCell"; title = "Measurement Theta"; ObjectID = "qbj-K1-xUb"; */
-"qbj-K1-xUb.title" = "Meting Theta";
+"qbj-K1-xUb.title" = "מדידת תטא";
 
 /* Class = "NSTextFieldCell"; title = "Goodness-of-fit on F²"; ObjectID = "qmj-e3-XI9"; */
-"qmj-e3-XI9.title" = "Goodness-of-fit on F²";
+"qmj-e3-XI9.title" = "טוב בכושר ב- F²";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.placeholderString" = "Onbekend";
+"sRA-iw-pcK.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[0] = "Journal of the American Chemical Society"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[0]" = "Journal of the American Chemical Society";
@@ -393,13 +393,13 @@
 "sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Change"; ObjectID = "sah-qX-FWQ"; */
-"sah-qX-FWQ.title" = "Fixed Angles; Isotropic Edge-Length Change";
+"sah-qX-FWQ.title" = "זוויות קבועות; שינוי אורך קצה איזוטרופי";
 
 /* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
-"seM-pw-mPI.title" = "Databasecodes";
+"seM-pw-mPI.title" = "קודי בסיס נתונים";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.placeholderString" = "Onbekend";
+"tBE-VU-7Q1.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[0] = "REPEAT"; ObjectID = "tBE-VU-7Q1"; */
 "tBE-VU-7Q1.ibShadowedObjectValues[0]" = "REPEAT";
@@ -441,25 +441,25 @@
 "tBE-VU-7Q1.ibShadowedObjectValues[12]" = "Qeq - Wilmer, Kim, Snurr 2012";
 
 /* Class = "NSTextFieldCell"; title = "Citation"; ObjectID = "tC6-Zq-7Lv"; */
-"tC6-Zq-7Lv.title" = "Citaat";
+"tC6-Zq-7Lv.title" = "צִיטָטָה";
 
 /* Class = "NSMenuItem"; title = "Steepest Descent"; ObjectID = "tWh-do-MeZ"; */
 "tWh-do-MeZ.title" = "Steepest Descent";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "uMx-Zh-Bqv"; */
-"uMx-Zh-Bqv.title" = "Datum";
+"uMx-Zh-Bqv.title" = "תַאֲרִיך";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "uRa-2J-GGz"; */
-"uRa-2J-GGz.placeholderString" = "Onbekend";
+"uRa-2J-GGz.placeholderString" = "לא ידוע";
 
 /* Class = "NSTextFieldCell"; title = "Author"; ObjectID = "uaM-oQ-eaJ"; */
-"uaM-oQ-eaJ.title" = "Auteur";
+"uaM-oQ-eaJ.title" = "מְחַבֵּר";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Change"; ObjectID = "ucW-XP-BfZ"; */
-"ucW-XP-BfZ.title" = "Vaste Hoeken; Anisotropic Eenheidscel Assen Variabel";
+"ucW-XP-BfZ.title" = "זוויות קבועות; שינוי באורך הקצה האניסוטרופי";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.placeholderString" = "Onbekend";
+"urK-zQ-9a7.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "urK-zQ-9a7"; */
 "urK-zQ-9a7.ibShadowedObjectValues[0]" = "Ab Initio";
@@ -480,16 +480,16 @@
 "urK-zQ-9a7.ibShadowedObjectValues[5]" = "MM4";
 
 /* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "utU-RL-9NT"; */
-"utU-RL-9NT.title" = "Enkele Signficante Negatieve Waardes";
+"utU-RL-9NT.title" = "כמה ערכים שליליים באופן משמעותי";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "wMv-kw-520"; */
-"wMv-kw-520.placeholderString" = "Onbekend";
+"wMv-kw-520.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.placeholderString" = "Onbekend";
+"wrO-uI-kgr.placeholderString" = "לא ידוע";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[0]" = "Experimenteel";
+"wrO-uI-kgr.ibShadowedObjectValues[0]" = "נִסיוֹנִי";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[1] = "Gaussian"; ObjectID = "wrO-uI-kgr"; */
 "wrO-uI-kgr.ibShadowedObjectValues[1]" = "Gaussian";
@@ -510,16 +510,16 @@
 "xEm-NF-Owh.title" = "Newton-Raphson";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Middle Name"; ObjectID = "yR3-PF-JAn"; */
-"yR3-PF-JAn.placeholderString" = "Midden Naam";
+"yR3-PF-JAn.placeholderString" = "שם אמצעי";
 
 /* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Change"; ObjectID = "ylL-90-vOx"; */
-"ylL-90-vOx.title" = "Vaste 𝝰- 𝝱; en 𝝲-Hoeken en Eenheidscell Assen Variabel";
+"ylL-90-vOx.title" = "קבוע 𝝰- 𝝱; ו- 𝝲- זוויות ואורכי קצה שינוי";
 
 /* Class = "NSTextFieldCell"; title = "Number of reflections"; ObjectID = "z73-uc-ODJ"; */
-"z73-uc-ODJ.title" = "Aantal Reflecties";
+"z73-uc-ODJ.title" = "מספר השתקפויות";
 
 /* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "zKZ-Xu-F5z"; */
-"zKZ-Xu-F5z.title" = "Software Pakket";
+"zKZ-Xu-F5z.title" = "חבילת תוכנה";
 
 /* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Change"; ObjectID = "zUt-yS-ax8"; */
-"zUt-yS-ax8.title" = "Eenheidscel Assen en Hoeken Variabel";
+"zUt-yS-ax8.title" = "שינוי אורכי הקצה והקצה";

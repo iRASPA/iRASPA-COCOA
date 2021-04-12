@@ -456,31 +456,6 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       }
     }
     return nil
-    /*
-    if let crystalProjectData: RKRenderDataSource = self.renderDataSource
-    {
-      // create Ambient Occlusion in higher quality
-      self.invalidateCachedAmbientOcclusionTexture(crystalProjectData.renderStructures)
-      
-      let data: Data = self.drawSceneToTexture(size: size, camera: camera, imageQuality: imageQuality)
-     
-      let cgImage: CGImage
-      
-      let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.first.rawValue)
-      let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
-      let dataProvider: CGDataProvider = CGDataProvider(data: data as CFData)!
-      let bitsPerComponent: Int = 8
-      let bitsPerPixel: Int = 32
-      let bytesPerRow: Int = 4 * Int(size.width)
-      cgImage = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo, provider: dataProvider, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)!
-        
-      let imageRep: NSBitmapImageRep = NSBitmapImageRep(cgImage: cgImage)
-      imageRep.size = NSMakeSize(CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72), CGFloat(crystalProjectData.renderImagePhysicalSizeInInches * 72.0 * Double(size.height) / Double(size.width)))
-      
-      //return imageRep.representation(using: NSBitmapImageRep.FileType.png, properties: [:])
-      return imageRep.representation(using: NSBitmapImageRep.FileType.jpeg2000, properties: [.compressionFactor : 0.5])
-    }*/
-    return nil
   }
   
   public func makePicture(size: NSSize, camera: RKCamera?, imageQuality: RKImageQuality) -> Data?

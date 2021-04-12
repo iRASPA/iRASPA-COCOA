@@ -14,13 +14,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="500" height="2279"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIw-Js-Bno">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="84" horizontalPageScroll="10" verticalLineScroll="84" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIw-Js-Bno">
                                 <rect key="frame" x="0.0" y="0.0" width="500" height="2279"/>
                                 <clipView key="contentView" id="r7f-eU-D77">
                                     <rect key="frame" x="1" y="1" width="498" height="2277"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" selectionHighlightStyle="none" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" rowSizeStyle="automatic" usesAutomaticRowHeights="YES" viewBased="YES" indentationMarkerFollowsCell="NO" outlineTableColumn="T7h-e1-cMX" id="0N2-Jb-R1R" customClass="NSStaticViewBasedOutlineView" customModule="iRASPA" customModuleProvider="target">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" selectionHighlightStyle="none" multipleSelection="NO" autosaveColumns="NO" rowHeight="82" rowSizeStyle="automatic" usesAutomaticRowHeights="YES" viewBased="YES" indentationMarkerFollowsCell="NO" outlineTableColumn="T7h-e1-cMX" id="0N2-Jb-R1R" customClass="NSStaticViewBasedOutlineView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="498" height="2277"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -46,7 +46,7 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="475" height="20"/>
                                                                     <subviews>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="gbV-ct-r6S">
-                                                                            <rect key="frame" x="11" y="2" width="466" height="16"/>
+                                                                            <rect key="frame" x="11" y="4" width="466" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Cell/Bounding-Box Properties" id="39F-yr-VYx">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -54,7 +54,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                     </subviews>
-                                                                    <edgeInsets key="edgeInsets" left="13" right="0.0" top="2" bottom="2"/>
+                                                                    <edgeInsets key="edgeInsets" left="13" right="0.0" top="0.0" bottom="0.0"/>
                                                                     <visibilityPriorities>
                                                                         <integer value="1000"/>
                                                                     </visibilityPriorities>
@@ -1551,7 +1551,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                     </subviews>
-                                                                    <edgeInsets key="edgeInsets" left="13" right="0.0" top="2" bottom="2"/>
+                                                                    <edgeInsets key="edgeInsets" left="13" right="0.0" top="0.0" bottom="0.0"/>
                                                                     <visibilityPriorities>
                                                                         <integer value="1000"/>
                                                                     </visibilityPriorities>
@@ -2510,13 +2510,13 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="SymmetryGroup" translatesAutoresizingMaskIntoConstraints="NO" id="SpZ-Pt-hSl" userLabel="Symmetry Group">
-                                                            <rect key="frame" x="1" y="1578" width="495" height="20"/>
+                                                            <rect key="frame" x="1" y="1578" width="495" height="16"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EPl-Hs-KP8">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="20"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="475" height="16"/>
                                                                     <subviews>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="x0W-SD-Y4K">
-                                                                            <rect key="frame" x="11" y="2" width="132" height="16"/>
+                                                                            <rect key="frame" x="11" y="0.0" width="132" height="16"/>
                                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Symmetry Properties" id="KBR-dm-dts">
                                                                                 <font key="font" metaFont="system"/>
                                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2524,7 +2524,7 @@
                                                                             </textFieldCell>
                                                                         </textField>
                                                                     </subviews>
-                                                                    <edgeInsets key="edgeInsets" left="13" right="0.0" top="2" bottom="2"/>
+                                                                    <edgeInsets key="edgeInsets" left="13" right="0.0" top="0.0" bottom="0.0"/>
                                                                     <visibilityPriorities>
                                                                         <integer value="1000"/>
                                                                     </visibilityPriorities>
@@ -2544,7 +2544,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <tableCellView identifier="SymmetrySpaceGroupCell" translatesAutoresizingMaskIntoConstraints="NO" id="CeK-mo-Or3" userLabel="Symmetry Space Group Cell">
-                                                            <rect key="frame" x="1" y="1600" width="495" height="82"/>
+                                                            <rect key="frame" x="1" y="1596" width="495" height="82"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Te5-E6-TqU">
                                                                     <rect key="frame" x="0.0" y="0.0" width="475" height="82"/>
@@ -2700,7 +2700,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="SymmetryCenteringCell" translatesAutoresizingMaskIntoConstraints="NO" id="POJ-oq-Sri" userLabel="Symmetry Centering Cell">
-                                                            <rect key="frame" x="1" y="1684" width="495" height="58"/>
+                                                            <rect key="frame" x="1" y="1680" width="495" height="58"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4A9-vx-kAs">
                                                                     <rect key="frame" x="13" y="4" width="462" height="50"/>
@@ -2803,7 +2803,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="SymmetryPropertiesCell" translatesAutoresizingMaskIntoConstraints="NO" id="Yq1-YQ-8xg" userLabel="Symmetry Properties Cell">
-                                                            <rect key="frame" x="1" y="1744" width="495" height="265"/>
+                                                            <rect key="frame" x="1" y="1740" width="495" height="265"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jF6-Gg-0rc">
                                                                     <rect key="frame" x="0.0" y="0.0" width="475" height="265"/>
@@ -3017,7 +3017,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <customView identifier="cellTableRowView" id="CrT-Wi-gdq" customClass="CellTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="2011" width="495" height="96"/>
+                                                            <rect key="frame" x="1" y="2007" width="495" height="96"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>

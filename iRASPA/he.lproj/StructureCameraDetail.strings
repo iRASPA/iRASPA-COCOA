@@ -1,60 +1,60 @@
 
 /* Class = "NSButtonCell"; title = "Inch"; ObjectID = "0BR-Ed-UAj"; */
-"0BR-Ed-UAj.title" = "Inch";
+"0BR-Ed-UAj.title" = "אִינְטשׁ";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "0bK-Qa-X5f"; */
-"0bK-Qa-X5f.title" = "Euler Hoeken";
+"0bK-Qa-X5f.title" = "זוויות אוילר";
 
 /* Class = "NSButtonCell"; title = "+Z"; ObjectID = "0ro-vd-hvU"; */
 "0ro-vd-hvU.title" = "+Z";
 
 /* Class = "NSTextFieldCell"; title = "Angle of View"; ObjectID = "1zS-f8-iGq"; */
-"1zS-f8-iGq.title" = "Kijkhoek";
+"1zS-f8-iGq.title" = "זווית הראייה";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "3AB-fJ-slY"; */
-"3AB-fJ-slY.title" = "Roteer +90°";
+"3AB-fJ-slY.title" = "להתחלף +90°";
 
 /* Class = "NSButtonCell"; title = "Cm"; ObjectID = "3pH-Uc-D8j"; */
-"3pH-Uc-D8j.title" = "Cm";
+"3pH-Uc-D8j.title" = "ס\"מ";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "57t-sa-bti"; */
-"57t-sa-bti.title" = "Rotatie Hoek";
+"57t-sa-bti.title" = "זווית סיבוב";
 
 /* Class = "NSTextFieldCell"; title = "From"; ObjectID = "5QT-Q5-u3Q"; */
-"5QT-Q5-u3Q.title" = "Van";
+"5QT-Q5-u3Q.title" = "מ";
 
 /* Class = "NSTextFieldCell"; title = "Dots-per-Inch"; ObjectID = "6Kn-fw-14a"; */
-"6Kn-fw-14a.title" = "Punten-per-Inch";
+"6Kn-fw-14a.title" = "נקודות לאינץ '";
 
 /* Class = "NSTextFieldCell"; placeholderString = "w0"; ObjectID = "6Z3-l1-QCv"; */
 "6Z3-l1-QCv.placeholderString" = "w0";
 
 /* Class = "NSTextFieldCell"; title = "Reset to"; ObjectID = "6ax-JH-gEz"; */
-"6ax-JH-gEz.title" = "Reset naar";
+"6ax-JH-gEz.title" = "אפס ל";
 
 /* Class = "NSBox"; title = "Edit Dimensions"; ObjectID = "6eO-AH-Xf2"; */
-"6eO-AH-Xf2.title" = "Bewerk afmetingen";
+"6eO-AH-Xf2.title" = "ערוך מידות";
 
 /* Class = "NSButtonCell"; title = "Image"; ObjectID = "76r-PN-1MB"; */
-"76r-PN-1MB.title" = "Afbeelding";
+"76r-PN-1MB.title" = "תמונה";
 
 /* Class = "NSMenuItem"; title = "8-bits, RGB"; ObjectID = "7II-ou-nrF"; */
-"7II-ou-nrF.title" = "8-bits, RGB";
+"7II-ou-nrF.title" = "8 סיביות, RGB";
 
 /* Class = "NSButtonCell"; title = "Reset Camera"; ObjectID = "7OD-5b-Be8"; */
-"7OD-5b-Be8.title" = "Reset Camera";
+"7OD-5b-Be8.title" = "אפס מצלמה";
 
 /* Class = "NSTabViewItem"; label = "Image"; ObjectID = "7Xu-ua-Aaa"; */
-"7Xu-ua-Aaa.label" = "Plaatje";
+"7Xu-ua-Aaa.label" = "תמונה";
 
 /* Class = "NSMenuItem"; title = "150 dpi"; ObjectID = "8FT-Ib-RKI"; */
 "8FT-Ib-RKI.title" = "150 dpi";
 
 /* Class = "NSButtonCell"; title = "Perspective"; ObjectID = "9XT-W6-7iV"; */
-"9XT-W6-7iV.title" = "Perspectief";
+"9XT-W6-7iV.title" = "פרספקטיבה";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
-"A0b-wl-zfu.title" = "Lichten";
+"A0b-wl-zfu.title" = "אורות";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
 "AWE-1B-YAz.placeholderString" = "cx";
@@ -63,70 +63,70 @@
 "Abc-jz-2v1.title" = "300 dpi";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Ac4-9i-94c"; */
-"Ac4-9i-94c.title" = "Diffuse Lichtintensiteit";
+"Ac4-9i-94c.title" = "עוצמת אור מפוזרת";
 
 /* Class = "NSTextFieldCell"; title = "Virtual Camera Position"; ObjectID = "BVw-iu-XbK"; */
-"BVw-iu-XbK.title" = "Virtuele Camerapositie";
+"BVw-iu-XbK.title" = "מיקום מצלמה וירטואלית";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "DsX-mM-8X0"; */
-"DsX-mM-8X0.title" = "Glans";
+"DsX-mM-8X0.title" = "זוהר";
 
 /* Class = "NSTextFieldCell"; title = "Pixel Width"; ObjectID = "F9Y-qR-A6U"; */
-"F9Y-qR-A6U.title" = "Pixel Breedte";
+"F9Y-qR-A6U.title" = "רוחב פיקסל";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ax"; ObjectID = "G3V-jP-oz6"; */
 "G3V-jP-oz6.placeholderString" = "ax";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "G71-xR-yVF"; */
-"G71-xR-yVF.title" = "Roteer +90°";
+"G71-xR-yVF.title" = "להתחלף +90°";
 
 /* Class = "NSButtonCell"; title = "Linear Gradient"; ObjectID = "I7e-iR-yaY"; */
-"I7e-iR-yaY.title" = "Lineair Verloop";
+"I7e-iR-yaY.title" = "שיפוע לינארי";
 
 /* Class = "NSMenuItem"; title = "8-bits, CMYK"; ObjectID = "JiR-AU-7kF"; */
-"JiR-AU-7kF.title" = "8-bits, CMYK";
+"JiR-AU-7kF.title" = "8 סיביות, CMYK";
 
 /* Class = "NSButtonCell"; title = "Create Movie"; ObjectID = "Juc-g9-TL7"; */
-"Juc-g9-TL7.title" = "Maak Filmpje";
+"Juc-g9-TL7.title" = "צור סרט";
 
 /* Class = "NSBox"; title = "Camera Light"; ObjectID = "Jzl-ba-QmS"; */
-"Jzl-ba-QmS.title" = "Camera Licht";
+"Jzl-ba-QmS.title" = "אור המצלמה";
 
 /* Class = "NSTextFieldCell"; title = "From"; ObjectID = "Kzo-ya-Jtv"; */
-"Kzo-ya-Jtv.title" = "Van";
+"Kzo-ya-Jtv.title" = "מ";
 
 /* Class = "NSTextFieldCell"; placeholderString = "bz"; ObjectID = "LQP-iH-ONP"; */
 "LQP-iH-ONP.placeholderString" = "bz";
 
 /* Class = "NSTextFieldCell"; title = "Pictures/Movies"; ObjectID = "MBE-Ci-b6w"; */
-"MBE-Ci-b6w.title" = "Plaatjes/Filmpjes";
+"MBE-Ci-b6w.title" = "תמונות / סרטים";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "MEZ-QI-Kgi"; */
-"MEZ-QI-Kgi.title" = "Roteer +90°";
+"MEZ-QI-Kgi.title" = "להתחלף +90°";
 
 /* Class = "NSTabViewItem"; label = "Radial Gradient"; ObjectID = "NfR-n9-0Kg"; */
-"NfR-n9-0Kg.label" = "Radiaal Verloop";
+"NfR-n9-0Kg.label" = "שיפוע רדיאלי";
 
 /* Class = "NSMenuItem"; title = "72 dpi"; ObjectID = "OgY-Mc-Pa0"; */
 "OgY-Mc-Pa0.title" = "72 dpi";
 
 /* Class = "NSButtonCell"; title = "Create Picture"; ObjectID = "Oki-uY-N6d"; */
-"Oki-uY-N6d.title" = "Maak Plaatje";
+"Oki-uY-N6d.title" = "צור תמונה";
 
 /* Class = "NSTextFieldCell"; placeholderString = "w1"; ObjectID = "P2r-W6-ODo"; */
 "P2r-W6-ODo.placeholderString" = "w1";
 
-/* Class = "NSTextFieldCell"; title = "Frames per Seconds"; ObjectID = "Qsi-Kr-087"; */
-"Qsi-Kr-087.title" = "Frames per seconde";
+/* Class = "NSTextFieldCell"; title = "Frames per Seconds:"; ObjectID = "Qsi-Kr-087"; */
+"Qsi-Kr-087.title" = "מסגרות לשנייה";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "R6f-wb-uXg"; */
 "R6f-wb-uXg.title" = "Text Cell";
 
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "RnM-1Y-4q4"; */
-"RnM-1Y-4q4.title" = "Roteer -90°";
+"RnM-1Y-4q4.title" = "להתחלף -90°";
 
 /* Class = "NSTabViewItem"; label = "Color"; ObjectID = "S9f-2w-uQW"; */
-"S9f-2w-uQW.label" = "Kleur";
+"S9f-2w-uQW.label" = "צֶבַע";
 
 /* Class = "NSTextFieldCell"; placeholderString = "bw"; ObjectID = "STl-YE-VJv"; */
 "STl-YE-VJv.placeholderString" = "bw";
@@ -135,22 +135,22 @@
 "Twg-bH-Whh.placeholderString" = "ay";
 
 /* Class = "NSMenuItem"; title = "16-bits, RGB"; ObjectID = "U06-XP-AuE"; */
-"U06-XP-AuE.title" = "16-bits, RGB";
+"U06-XP-AuE.title" = "16 סיביות, RGB";
 
 /* Class = "NSBox"; title = "Units"; ObjectID = "UGp-7G-KbC"; */
-"UGp-7G-KbC.title" = "Eenheden";
+"UGp-7G-KbC.title" = "יחידות";
 
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "Ume-JN-QU8"; */
-"Ume-JN-QU8.title" = "Roteer -90°";
+"Ume-JN-QU8.title" = "להתחלף -90°";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "V5t-DE-51J"; */
 "V5t-DE-51J.placeholderString" = "cy";
 
 /* Class = "NSButtonCell"; title = "Pixel Dimensions"; ObjectID = "VDa-dN-sUv"; */
-"VDa-dN-sUv.title" = "Pixelafmetingen";
+"VDa-dN-sUv.title" = "מידות פיקסל";
 
 /* Class = "NSTextFieldCell"; title = "Overall Luminance"; ObjectID = "VKg-ty-t0D"; */
-"VKg-ty-t0D.title" = "Algemene helderheid";
+"VKg-ty-t0D.title" = "זוהר כולל";
 
 /* Class = "NSButtonCell"; title = "-X"; ObjectID = "Vlq-HR-Lxn"; */
 "Vlq-HR-Lxn.title" = "-X";
@@ -159,79 +159,79 @@
 "WFD-2H-apd.placeholderString" = "bx";
 
 /* Class = "NSButtonCell"; title = "Radial Gradient"; ObjectID = "X0p-ze-Zzs"; */
-"X0p-ze-Zzs.title" = "Radiaal Verloop";
+"X0p-ze-Zzs.title" = "שיפוע רדיאלי";
 
 /* Class = "NSTextFieldCell"; title = "To"; ObjectID = "XeU-0O-MTz"; */
-"XeU-0O-MTz.title" = "Naar";
+"XeU-0O-MTz.title" = "ל";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cz"; ObjectID = "Y12-m8-sOG"; */
 "Y12-m8-sOG.placeholderString" = "cz";
 
 /* Class = "NSTextFieldCell"; title = "Quality/Type"; ObjectID = "YN2-kq-iUD"; */
-"YN2-kq-iUD.title" = "Kwaliteit/Type";
+"YN2-kq-iUD.title" = "איכות / סוג";
 
 /* Class = "NSButtonCell"; title = "Color"; ObjectID = "aLW-k0-vrB"; */
-"aLW-k0-vrB.title" = "Kleur";
+"aLW-k0-vrB.title" = "צֶבַע";
 
 /* Class = "NSButtonCell"; title = "-Y"; ObjectID = "bAt-Aw-Vk1"; */
 "bAt-Aw-Vk1.title" = "-Y";
 
 /* Class = "NSTextFieldCell"; title = "Physical Width"; ObjectID = "c0g-Es-8K7"; */
-"c0g-Es-8K7.title" = "Fysieke breedte";
+"c0g-Es-8K7.title" = "רוחב פיזי";
 
 /* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "cBz-Hl-la6"; */
 "cBz-Hl-la6.placeholderString" = "az";
 
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "cLR-D8-6iw"; */
-"cLR-D8-6iw.title" = "Roteer -90°";
+"cLR-D8-6iw.title" = "להתחלף -90°";
 
 /* Class = "NSTextFieldCell"; title = "Camera"; ObjectID = "ccJ-oG-yZH"; */
-"ccJ-oG-yZH.title" = "Camera";
+"ccJ-oG-yZH.title" = "מַצלֵמָה";
 
 /* Class = "NSTextFieldCell"; title = "To"; ObjectID = "dnF-bb-iSR"; */
-"dnF-bb-iSR.title" = "Naar";
+"dnF-bb-iSR.title" = "ל";
 
 /* Class = "NSTextFieldCell"; title = "Background"; ObjectID = "dor-ov-Wkd"; */
-"dor-ov-Wkd.title" = "Achtergrond";
+"dor-ov-Wkd.title" = "רקע כללי";
 
 /* Class = "NSTabViewItem"; label = "Linear Gradient"; ObjectID = "enh-gY-DeN"; */
-"enh-gY-DeN.label" = "Lineair verloop";
+"enh-gY-DeN.label" = "שיפוע לינארי";
 
 /* Class = "NSBox"; title = "Projection"; ObjectID = "fM1-LC-a88"; */
-"fM1-LC-a88.title" = "Projectie";
+"fM1-LC-a88.title" = "הַקרָנָה";
 
 /* Class = "NSBox"; title = "Reset Direction"; ObjectID = "fU4-qD-Ex2"; */
-"fU4-qD-Ex2.title" = "Reset Richting";
+"fU4-qD-Ex2.title" = "אפס כיוון";
 
 /* Class = "NSTextFieldCell"; title = "Roundness"; ObjectID = "fXK-FR-6i0"; */
-"fXK-FR-6i0.title" = "Rondheid";
+"fXK-FR-6i0.title" = "עֲגַלגַלוּת";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "fwm-RT-44D"; */
-"fwm-RT-44D.title" = "Intensiteit omgevingslicht";
+"fwm-RT-44D.title" = "עוצמת אור הסביבה";
 
 /* Class = "NSTextFieldCell"; title = "Pixel Height"; ObjectID = "iXA-YM-Nj6"; */
-"iXA-YM-Nj6.title" = "Pixel Hoogte";
+"iXA-YM-Nj6.title" = "גובה פיקסל";
 
 /* Class = "NSMenuItem"; title = "16-bits, CMYK"; ObjectID = "ilw-zG-CvO"; */
-"ilw-zG-CvO.title" = "16-bits, CMYK";
+"ilw-zG-CvO.title" = "16 סיביות, CMYK";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cw"; ObjectID = "ios-n2-EM2"; */
 "ios-n2-EM2.placeholderString" = "cw";
 
 /* Class = "NSTextFieldCell"; title = "Physical Height"; ObjectID = "kIf-EY-uff"; */
-"kIf-EY-uff.title" = "Fysieke hoogte";
+"kIf-EY-uff.title" = "גובה פיזי";
 
 /* Class = "NSButtonCell"; title = "-Z"; ObjectID = "l7h-Ex-PBb"; */
 "l7h-Ex-PBb.title" = "-Z";
 
 /* Class = "NSButtonCell"; title = "Physical Dimensions"; ObjectID = "lDC-eo-YDn"; */
-"lDC-eo-YDn.title" = "Fysieke afmetingen";
+"lDC-eo-YDn.title" = "ממדים פיזיים";
 
 /* Class = "NSBox"; title = "Center of Scene"; ObjectID = "loi-gG-s0z"; */
-"loi-gG-s0z.title" = "Centrum van de scène";
+"loi-gG-s0z.title" = "מרכז הסצנה";
 
 /* Class = "NSBox"; title = "View Matrix"; ObjectID = "lws-F1-am6"; */
-"lws-F1-am6.title" = "Kijk Matrix";
+"lws-F1-am6.title" = "מטריצה ​​לצפייה";
 
 /* Class = "NSMenuItem"; title = "600 dpi"; ObjectID = "mfB-Ok-4s0"; */
 "mfB-Ok-4s0.title" = "600 dpi";
@@ -258,25 +258,25 @@
 "rYg-yJ-LZh.title" = "75 dpi";
 
 /* Class = "NSTextFieldCell"; title = "Angle"; ObjectID = "s1v-KQ-wWY"; */
-"s1v-KQ-wWY.title" = "Hoek";
+"s1v-KQ-wWY.title" = "זָוִית";
 
 /* Class = "NSTextFieldCell"; title = "Distance"; ObjectID = "wZf-ug-0PD"; */
-"wZf-ug-0PD.title" = "Afstand";
+"wZf-ug-0PD.title" = "מֶרְחָק";
 
 /* Class = "NSTextFieldCell"; title = "95%"; ObjectID = "wbM-MI-727"; */
 "wbM-MI-727.title" = "95%";
 
 /* Class = "NSButtonCell"; title = "Orthographic"; ObjectID = "xBp-1E-rPs"; */
-"xBp-1E-rPs.title" = "Orthografisch";
+"xBp-1E-rPs.title" = "אורטוגרפית";
 
 /* Class = "NSMenuItem"; title = "1200 dpi"; ObjectID = "yBW-uB-hCP"; */
 "yBW-uB-hCP.title" = "1200 dpi";
 
 /* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "yHr-tp-pfy"; */
-"yHr-tp-pfy.title" = "Selectie";
+"yHr-tp-pfy.title" = "בְּחִירָה";
 
 /* Class = "NSTextFieldCell"; title = "Image"; ObjectID = "zBc-ll-o44"; */
-"zBc-ll-o44.title" = "Plaatje";
+"zBc-ll-o44.title" = "תמונה";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "zor-Zk-OSK"; */
-"zor-Zk-OSK.title" = "Spiegelende lichtintensiteit";
+"zor-Zk-OSK.title" = "עוצמת אור ספציפית";

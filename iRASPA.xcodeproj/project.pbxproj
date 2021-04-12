@@ -1572,6 +1572,23 @@
 		93B1ECC1261E1028002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		93B1ED67261E3866002E9069 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		93B1ED78261E3868002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		93B1EF0726242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/AboutWindow.strings; sourceTree = "<group>"; };
+		93B1EF0826242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Preferences.strings; sourceTree = "<group>"; };
+		93B1EF0926242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Main.strings; sourceTree = "<group>"; };
+		93B1EF0A26242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/VASP.strings; sourceTree = "<group>"; };
+		93B1EF0B26242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/StructureViewer.strings; sourceTree = "<group>"; };
+		93B1EF0C26242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/DirectoryViewer.strings; sourceTree = "<group>"; };
+		93B1EF0D26242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Master.strings; sourceTree = "<group>"; };
+		93B1EF0E26242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/StructureCameraDetail.strings; sourceTree = "<group>"; };
+		93B1EF0F26242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/StructureElementDetail.strings; sourceTree = "<group>"; };
+		93B1EF1026242BE7002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/StructureInfoDetail.strings; sourceTree = "<group>"; };
+		93B1EF1126242BE8002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/StructureAppearanceDetail.strings; sourceTree = "<group>"; };
+		93B1EF1226242BE8002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/StructureCellDetail.strings; sourceTree = "<group>"; };
+		93B1EF1326242BE8002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/StructureAtomDetail.strings; sourceTree = "<group>"; };
+		93B1EF1426242BE8002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/StructureBondDetail.strings; sourceTree = "<group>"; };
+		93B1EF1526242BE8002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/PreviewViewController.strings; sourceTree = "<group>"; };
+		93B1EF1626242BE8002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
+		93B1EF1726242BE8002E9069 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
 		93B56CD1202F1D8D0044057C /* SKmmCIFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKmmCIFWriter.swift; sourceTree = "<group>"; };
 		93B5EE501FC2CACF009922F2 /* LocalAboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAboutWindowController.swift; sourceTree = "<group>"; };
 		93B5EE541FC2D200009922F2 /* LocalAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAboutViewController.swift; sourceTree = "<group>"; };
@@ -3878,6 +3895,7 @@
 				en,
 				Base,
 				nl,
+				he,
 			);
 			mainGroup = 938387FF1E26A4A800112FBA;
 			productRefGroup = 938388091E26A4A800112FBA /* Products */;
@@ -4851,6 +4869,7 @@
 			children = (
 				93446EBD237968500040CD8E /* Base */,
 				93B1EC78261DD6DF002E9069 /* nl */,
+				93B1EF0E26242BE7002E9069 /* he */,
 			);
 			name = StructureCameraDetail.storyboard;
 			sourceTree = "<group>";
@@ -4860,6 +4879,7 @@
 			children = (
 				93446EC2237968870040CD8E /* Base */,
 				93B1EC79261DD6DF002E9069 /* nl */,
+				93B1EF0F26242BE7002E9069 /* he */,
 			);
 			name = StructureElementDetail.storyboard;
 			sourceTree = "<group>";
@@ -4869,6 +4889,7 @@
 			children = (
 				93446EC7237968E90040CD8E /* Base */,
 				93B1EC7A261DD6DF002E9069 /* nl */,
+				93B1EF1026242BE7002E9069 /* he */,
 			);
 			name = StructureInfoDetail.storyboard;
 			sourceTree = "<group>";
@@ -4878,6 +4899,7 @@
 			children = (
 				93446ECC237969980040CD8E /* Base */,
 				93B1EC7B261DD6DF002E9069 /* nl */,
+				93B1EF1126242BE8002E9069 /* he */,
 			);
 			name = StructureAppearanceDetail.storyboard;
 			sourceTree = "<group>";
@@ -4887,6 +4909,7 @@
 			children = (
 				93446ED1237969DB0040CD8E /* Base */,
 				93B1EC7C261DD6DF002E9069 /* nl */,
+				93B1EF1226242BE8002E9069 /* he */,
 			);
 			name = StructureCellDetail.storyboard;
 			sourceTree = "<group>";
@@ -4896,6 +4919,7 @@
 			children = (
 				93446ED623796A0A0040CD8E /* Base */,
 				93B1EC7D261DD6DF002E9069 /* nl */,
+				93B1EF1326242BE8002E9069 /* he */,
 			);
 			name = StructureAtomDetail.storyboard;
 			sourceTree = "<group>";
@@ -4905,6 +4929,7 @@
 			children = (
 				93446EDB23796A380040CD8E /* Base */,
 				93B1EC7E261DD6DF002E9069 /* nl */,
+				93B1EF1426242BE8002E9069 /* he */,
 			);
 			name = StructureBondDetail.storyboard;
 			sourceTree = "<group>";
@@ -4914,6 +4939,7 @@
 			children = (
 				934B76621EF938E0004A1ABA /* Base */,
 				93B1EC74261DD6DF002E9069 /* nl */,
+				93B1EF0926242BE7002E9069 /* he */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -4923,6 +4949,7 @@
 			children = (
 				934B76651EF93903004A1ABA /* Base */,
 				93B1EC75261DD6DF002E9069 /* nl */,
+				93B1EF0B26242BE7002E9069 /* he */,
 			);
 			name = StructureViewer.storyboard;
 			sourceTree = "<group>";
@@ -4932,6 +4959,7 @@
 			children = (
 				934B76681EF93914004A1ABA /* Base */,
 				93B1EC77261DD6DF002E9069 /* nl */,
+				93B1EF0D26242BE7002E9069 /* he */,
 			);
 			name = Master.storyboard;
 			sourceTree = "<group>";
@@ -4941,6 +4969,7 @@
 			children = (
 				935DABE01F0E236900C1C8D0 /* Base */,
 				93B1EC76261DD6DF002E9069 /* nl */,
+				93B1EF0C26242BE7002E9069 /* he */,
 			);
 			name = DirectoryViewer.storyboard;
 			sourceTree = "<group>";
@@ -4949,6 +4978,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				935DABE81F0E544B00C1C8D0 /* Base */,
+				93B1EF0A26242BE7002E9069 /* he */,
 			);
 			name = VASP.storyboard;
 			sourceTree = "<group>";
@@ -4958,6 +4988,7 @@
 			children = (
 				93A0C42B2567B20D002BC083 /* Base */,
 				93B1EC7F261DD6DF002E9069 /* nl */,
+				93B1EF1526242BE8002E9069 /* he */,
 			);
 			name = PreviewViewController.xib;
 			sourceTree = "<group>";
@@ -4967,6 +4998,7 @@
 			children = (
 				93B1ECB0261E0FAF002E9069 /* en */,
 				93B1ECC1261E1028002E9069 /* nl */,
+				93B1EF1726242BE8002E9069 /* he */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -4976,6 +5008,7 @@
 			children = (
 				93B1ED67261E3866002E9069 /* en */,
 				93B1ED78261E3868002E9069 /* nl */,
+				93B1EF1626242BE8002E9069 /* he */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -4985,6 +5018,7 @@
 			children = (
 				93B5EE571FC31D5A009922F2 /* Base */,
 				93B1EC72261DD6DF002E9069 /* nl */,
+				93B1EF0726242BE7002E9069 /* he */,
 			);
 			name = AboutWindow.storyboard;
 			sourceTree = "<group>";
@@ -4994,6 +5028,7 @@
 			children = (
 				93FC88A21F5042E80009478E /* Base */,
 				93B1EC73261DD6DF002E9069 /* nl */,
+				93B1EF0826242BE7002E9069 /* he */,
 			);
 			name = Preferences.storyboard;
 			sourceTree = "<group>";
