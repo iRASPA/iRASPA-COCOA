@@ -1,0 +1,141 @@
+
+/* Class = "NSMenuItem"; title = "Add Structure project"; ObjectID = "17P-ML-bef"; */
+"17P-ML-bef.title" = "הוסף פרויקט מבנה";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "1Xb-ls-pt9"; */
+"1Xb-ls-pt9.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Compute properties for selection"; ObjectID = "2Jt-NB-sPl"; */
+"2Jt-NB-sPl.title" = "חישוב מאפיינים לבחירה";
+
+/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "39L-RF-she"; */
+"39L-RF-she.title" = "הוסף מולקולה";
+
+/* Class = "NSMenuItem"; title = "Save IZA Database"; ObjectID = "4Wl-iP-Pbc"; */
+"4Wl-iP-Pbc.title" = "שמור מסד נתונים של IZA";
+
+/* Class = "NSSegmentedCell"; 5km-ay-bRW.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "5km-ay-bRW"; */
+"5km-ay-bRW.ibShadowedToolTips[0]" = "מציג את נווט הפרויקט";
+
+/* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "5vG-bx-ocx"; */
+"5vG-bx-ocx.title" = "צילינדר קריסטל";
+
+/* Class = "NSMenuItem"; title = "Delete Selection"; ObjectID = "7fp-uc-cJb"; */
+"7fp-uc-cJb.title" = "מחק את הבחירה";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "A2b-v0-dYs"; */
+"A2b-v0-dYs.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "DOk-0m-owF"; */
+"DOk-0m-owF.title" = "הוסף גביש מולקולרי";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "Dl8-Oq-8Mi"; */
+"Dl8-Oq-8Mi.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Group project"; ObjectID = "Fyj-yE-B9G"; */
+"Fyj-yE-B9G.title" = "הוסף פרויקט קבוצתי";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "J49-HP-IXW"; */
+"J49-HP-IXW.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "JDc-Lg-RBz"; */
+"JDc-Lg-RBz.title" = "הוסף גביש חלבון";
+
+/* Class = "NSMenuItem"; title = "Add Project group"; ObjectID = "K8j-Rb-vrc"; */
+"K8j-Rb-vrc.title" = "הוסף קבוצת פרויקט";
+
+/* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "NQW-mX-NqP"; */
+"NQW-mX-NqP.placeholderString" = "לְסַנֵן";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "NtS-cJ-UOq"; */
+"NtS-cJ-UOq.title" = "Box";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "O1x-dW-EEr"; */
+"O1x-dW-EEr.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Save CoRE MOF DDEC Database"; ObjectID = "O3V-w8-TnC"; */
+"O3V-w8-TnC.title" = "שמור מסד נתונים של CoRE MOF DDEC";
+
+/* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "OOb-3Y-cOg"; */
+"OOb-3Y-cOg.title" = "הוסף גביש מולקולרי";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "PBb-Do-JMr"; */
+"PBb-Do-JMr.title" = "Box";
+
+/* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
+"PS8-Ne-mbi.ibShadowedToolTips[0]" = "מציג את נווט הפרויקט";
+
+/* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[1] = "Shows the Scenes Navigator"; ObjectID = "PS8-Ne-mbi"; */
+"PS8-Ne-mbi.ibShadowedToolTips[1]" = "מציג את נווט הקלעים";
+
+/* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[2] = "Shows the Frames Navigator"; ObjectID = "PS8-Ne-mbi"; */
+"PS8-Ne-mbi.ibShadowedToolTips[2]" = "מציג את נווט המסגרות";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
+"QFA-05-Kql.title" = "Box";
+
+/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
+"RMC-nN-w7D.title" = "הוסף חלבון";
+
+/* Class = "NSMenuItem"; title = "Crystal polygonal prism"; ObjectID = "RXK-7F-kYl"; */
+"RXK-7F-kYl.title" = "מנסרה מצולעת   מצולעת גָבִישׁ";
+
+/* Class = "NSMenuItem"; title = "Crystal ellipsoid"; ObjectID = "RaT-FZ-Ofn"; */
+"RaT-FZ-Ofn.title" = "קריסטל אליפסואיד";
+
+/* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "Rj0-p0-TFM"; */
+"Rj0-p0-TFM.title" = "צִילִינדֶר";
+
+/* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "TAX-Oq-9O2"; */
+"TAX-Oq-9O2.title" = "אליפסואיד";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
+"Toa-8e-8sy.title" = "Box";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
+"VoW-P5-q6k.title" = "Box";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
+"Ypv-d2-rqY.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Load from Cloud/make editable"; ObjectID = "buF-AA-E4m"; */
+"buF-AA-E4m.title" = "הורד מענן / הפוך לעריכה";
+
+/* Class = "NSMenu"; title = "Add Objects"; ObjectID = "d98-LF-qMp"; */
+"d98-LF-qMp.title" = "הוסף אובייקטים";
+
+/* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "dYh-5W-YT9"; */
+"dYh-5W-YT9.title" = "הוסף קריסטל";
+
+/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
+"eMF-nr-fbD.title" = "מנסרה מצולעת";
+
+/* Class = "NSMenuItem"; title = "Save CoREMOF Database"; ObjectID = "guV-7k-U3c"; */
+"guV-7k-U3c.title" = "שמור מסד נתונים של CoREMOF";
+
+/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "muR-Z9-sae"; */
+"muR-Z9-sae.title" = "הוסף מולקולה";
+
+/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "pCe-xU-zfX"; */
+"pCe-xU-zfX.title" = "הוסף חלבון";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "rpD-Za-uPb"; */
+"rpD-Za-uPb.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Structure Project"; ObjectID = "rwA-at-3T8"; */
+"rwA-at-3T8.title" = "הוסף מבנה פרויקט";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "sxb-xU-PUp"; */
+"sxb-xU-PUp.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "uN8-UC-za6"; */
+"uN8-UC-za6.title" = "הוסף גביש חלבון";
+
+/* Class = "NSMenuItem"; title = "Save selected to cloud"; ObjectID = "w2Z-Qn-qLb"; */
+"w2Z-Qn-qLb.title" = "שמור את הנבחר לענן";
+
+/* Class = "NSMenuItem"; title = "Add Objects"; ObjectID = "xGp-L1-szQ"; */
+"xGp-L1-szQ.title" = "הוסף אובייקטים";
+
+/* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "xX5-m0-Lkz"; */
+"xX5-m0-Lkz.title" = "הוסף קריסטל";
