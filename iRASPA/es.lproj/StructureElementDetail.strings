@@ -1,0 +1,105 @@
+
+/* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "2cf-Hu-YKT"; */
+"2cf-Hu-YKT.title" = "Å";
+
+/* Class = "NSTextFieldCell"; title = "Color"; ObjectID = "8BT-Kg-fhV"; */
+"8BT-Kg-fhV.title" = "Color";
+
+/* Class = "NSTextFieldCell"; title = "Covalent Radius"; ObjectID = "8e2-Cm-y6m"; */
+"8e2-Cm-y6m.title" = "Radio covalente";
+
+/* Class = "NSTextFieldCell"; title = "Element"; ObjectID = "As1-ca-pPh"; */
+"As1-ca-pPh.title" = "Elemento";
+
+/* Class = "NSTextFieldCell"; title = "Atomic Mass"; ObjectID = "Au8-cE-UXV"; */
+"Au8-cE-UXV.title" = "Masa atomica";
+
+/* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "E2Y-V4-8rp"; */
+"E2Y-V4-8rp.title" = "Å";
+
+/* Class = "NSTextFieldCell"; title = "User-defined Radius"; ObjectID = "HW9-vP-rgD"; */
+"HW9-vP-rgD.title" = "Radio definido por el usuario";
+
+/* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[0] = "Item 1"; ObjectID = "JMk-0p-M2g"; */
+"JMk-0p-M2g.ibShadowedObjectValues[0]" = "Item 1";
+
+/* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[1] = "Item 2"; ObjectID = "JMk-0p-M2g"; */
+"JMk-0p-M2g.ibShadowedObjectValues[1]" = "Item 2";
+
+/* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[2] = "Item 3"; ObjectID = "JMk-0p-M2g"; */
+"JMk-0p-M2g.ibShadowedObjectValues[2]" = "Item 3";
+
+/* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[0] = "Item 1"; ObjectID = "MPA-12-IGt"; */
+"MPA-12-IGt.ibShadowedObjectValues[0]" = "Item 1";
+
+/* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[1] = "Item 2"; ObjectID = "MPA-12-IGt"; */
+"MPA-12-IGt.ibShadowedObjectValues[1]" = "Item 2";
+
+/* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[2] = "Item 3"; ObjectID = "MPA-12-IGt"; */
+"MPA-12-IGt.ibShadowedObjectValues[2]" = "Item 3";
+
+/* Class = "NSMenuItem"; title = "Insert new type"; ObjectID = "OfD-wL-UX4"; */
+"OfD-wL-UX4.title" = "Insertar nuevo tipo";
+
+/* Class = "NSTextFieldCell"; title = "amu"; ObjectID = "Ong-v4-ie0"; */
+"Ong-v4-ie0.title" = "amu";
+
+/* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "Pzr-4b-xG5"; */
+"Pzr-4b-xG5.title" = "Å";
+
+/* Class = "NSTextFieldCell"; title = "Force field"; ObjectID = "RAy-Tn-Q9h"; */
+"RAy-Tn-Q9h.title" = "Campo de fuerza";
+
+/* Class = "NSTextFieldCell"; title = "C"; ObjectID = "RN5-9P-5zL"; */
+"RN5-9P-5zL.title" = "C";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Rhd-q6-XIy"; */
+"Rhd-q6-XIy.title" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "Atom Visibility"; ObjectID = "V2o-qv-t9c"; */
+"V2o-qv-t9c.title" = "Visibilidad del átomo";
+
+/* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "XSg-KN-Gvs"; */
+"XSg-KN-Gvs.title" = "Número";
+
+/* Class = "NSTextFieldCell"; title = "Sigma"; ObjectID = "Zuq-uJ-RRd"; */
+"Zuq-uJ-RRd.title" = "Sigma";
+
+/* Class = "NSTextFieldCell"; title = "Group"; ObjectID = "a5h-Uu-h84"; */
+"a5h-Uu-h84.title" = "Grupo";
+
+/* Class = "NSTextFieldCell"; title = "Atomic Radius"; ObjectID = "d0R-zc-cge"; */
+"d0R-zc-cge.title" = "Radio atómico";
+
+/* Class = "NSTextFieldCell"; title = "Triple Bond Covalent Radius"; ObjectID = "dAx-rW-eh4"; */
+"dAx-rW-eh4.title" = "Radio de enlace triple covalente";
+
+/* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "ed7-vv-cRQ"; */
+"ed7-vv-cRQ.title" = "Å";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "exg-Lr-h93"; */
+"exg-Lr-h93.title" = "Box";
+
+/* Class = "NSTextFieldCell"; title = "Epsilon"; ObjectID = "fcz-SI-vXv"; */
+"fcz-SI-vXv.title" = "Épsilon";
+
+/* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "hbT-eZ-OBK"; */
+"hbT-eZ-OBK.title" = "Å";
+
+/* Class = "NSBox"; title = "Possible Oxidation States"; ObjectID = "nb3-UI-e9y"; */
+"nb3-UI-e9y.title" = "Posibles estados de oxidación";
+
+/* Class = "NSTextFieldCell"; title = "Van der Waals Radius"; ObjectID = "prv-DF-MqL"; */
+"prv-DF-MqL.title" = "Radio de Van der Waals";
+
+/* Class = "NSTextFieldCell"; title = "Carbon"; ObjectID = "rF4-Eu-aR8"; */
+"rF4-Eu-aR8.title" = "Carbón";
+
+/* Class = "NSTextFieldCell"; title = "Period"; ObjectID = "vGB-CZ-myl"; */
+"vGB-CZ-myl.title" = "Período";
+
+/* Class = "NSMenuItem"; title = "Delete type"; ObjectID = "yJO-k1-No9"; */
+"yJO-k1-No9.title" = "Eliminar tipo";
+
+/* Class = "NSTextFieldCell"; title = "1"; ObjectID = "z20-4j-Y98"; */
+"z20-4j-Y98.title" = "1";
