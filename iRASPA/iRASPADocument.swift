@@ -116,7 +116,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     }
     
     // autosaving is being done because the document is being closed (not cancelable)
-    LogQueue.shared.info(destination: self.windowControllers.first, message: "Autosaving....")
+    LogQueue.shared.info(destination: self.windowControllers.first, message: NSLocalizedString("Autosaving....", bundle: Bundle(for: iRASPADocument.self),  comment: ""))
     super.autosave(withImplicitCancellability: autosavingIsImplicitlyCancellable, completionHandler: completionHandler)
   }
   
@@ -188,9 +188,15 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
       }
       let endTime: UInt64  = mach_absolute_time()
       let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000000001
-      let formattedTime = String(format: "%.3f", time)
+      //let formattedTime = String(format: "%.3f", time)
       
-      LogQueue.shared.verbose(destination: self.windowControllers.first, message: "Saving to archive in \(formattedTime) seconds")
+      let formatter = MeasurementFormatter()
+      formatter.unitStyle = .short
+      formatter.unitOptions = .providedUnit
+      let string = formatter.string(from: Measurement(value: time, unit: UnitDuration.seconds))
+      let message: String = String.localizedStringWithFormat(NSLocalizedString("Saving to archive (%@)", comment: ""), string)
+      
+      LogQueue.shared.verbose(destination: self.windowControllers.first, message: message)
     }
     else
     {
@@ -318,12 +324,17 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     let endTime: UInt64  = mach_absolute_time()
     let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000000001
     
+    let formatter = MeasurementFormatter()
+    formatter.unitStyle = .short
+    formatter.unitOptions = .providedUnit
+    let string = formatter.string(from: Measurement(value: time, unit: UnitDuration.seconds))
+    let message: String = String.localizedStringWithFormat(NSLocalizedString("Document read (%@)", comment: ""), string)
+    
     // make sure to run this on the main thread
     DispatchQueue.main.async(execute: {
       self.windowControllers.forEach{($0 as? iRASPAWindowController)?.masterTabViewController?.reloadData()}
       
-      let formattedTime = String(format: "%.3f", time)
-      LogQueue.shared.verbose(destination: self.windowControllers.first, message: "Document read in \(formattedTime) seconds")
+      LogQueue.shared.verbose(destination: self.windowControllers.first, message: message)
     })
   }
   

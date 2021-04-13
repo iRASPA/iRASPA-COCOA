@@ -51,7 +51,7 @@ public class LogQueue
   public var destinations: NSMapTable<LogReporting, NSWindowController> = NSMapTable(keyOptions: .weakMemory, valueOptions: .weakMemory, capacity: 5)
   
   // Create the text-storage in the LogQueue. This allows logging of initalization (e.g. iCloud) messages when the viewcontrollers are not yet onscreen.
-  public var textStorageView: NSTextStorage = NSTextStorage(string: "Log console ready",  attributes: [.foregroundColor : NSColor.textColor])
+  public var textStorageView: NSTextStorage = NSTextStorage(string: NSLocalizedString("Log console ready", bundle: Bundle(for: LogQueue.self), comment: "Log console ready"),  attributes: [.foregroundColor : NSColor.textColor])
   
   
   public enum Level: Int
@@ -119,6 +119,8 @@ public class LogQueue
   
   public func dispatchMessage(windowController: NSWindowController?, level: Level, message: String, thread: String, completionHandler: @escaping () -> () = {})
   {
+    let bundle: Bundle = Bundle(for: LogQueue.self)
+    
     queue.async(execute: {
       
       let formatter = DateFormatter()
@@ -129,30 +131,35 @@ public class LogQueue
       let baseFont: NSFont = NSFont.systemFont(ofSize: NSFont.systemFontSize)
       
       let levelString: NSString
+      let colorString: String
       let color: NSColor
       let stringRange: NSRange
       let fontMask: NSFontTraitMask
       switch(level)
       {
       case .error:
-        levelString = "error (\(timeString)):" as NSString
+        colorString = NSLocalizedString("Error", bundle: bundle, comment: "Error")
+        levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
         color = NSColor.red
         fontMask = NSFontTraitMask.boldFontMask
       case .warning:
-        levelString = "warning (\(timeString)):" as NSString
+        colorString = NSLocalizedString("Warning", bundle: bundle, comment: "Warning")
+        levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
         color = NSColor.blue
         fontMask = NSFontTraitMask.italicFontMask
       case .verbose:
-        levelString = "verbose (\(timeString)):" as NSString
+        colorString = NSLocalizedString("Verbose", bundle: bundle, comment: "Verbose")
+        levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
         color = NSColor(calibratedRed:0.13333333333333333, green:0.5450980392156862, blue:0.13333333333333333, alpha:1.0)   // Forest green
         fontMask = NSFontTraitMask.fixedPitchFontMask
       case .info:
-        levelString = "info (\(timeString)):" as NSString
+        colorString = NSLocalizedString("Info", bundle: bundle, comment: "Info")
+        levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
         color = NSColor.magenta
         fontMask = NSFontTraitMask.fixedPitchFontMask
       }
-      let attributedString: NSTextStorage = NSTextStorage(string: "\n" + String(levelString) + " " + message, attributes: [.foregroundColor : NSColor.textColor])
-      let colorRange: NSRange = NSMakeRange(1, levelString.length)
+      let attributedString: NSTextStorage = NSTextStorage(string: String(levelString), attributes: [.foregroundColor : NSColor.textColor])
+      let colorRange: NSRange = levelString.localizedStandardRange(of: colorString)
       attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: colorRange)
       stringRange = NSMakeRange(1, attributedString.length - 1)
       attributedString.addAttribute(NSAttributedString.Key.font, value: baseFont, range: stringRange)

@@ -4,3 +4,9 @@
 "Local projects" = "פרויקטים מקומיים";
 "ICLOUD PUBLIC" = "ציבור iCloud";
 "iCloud public" = "ציבור iCloud";
+"Could not determine status of iCloud account" = "לא ניתן היה לקבוע את מצב חשבון iCloud";
+"iCloud account available" = "חשבון iCloud זמין";
+"iCloud account authentication error: enable iCloud and iCloud-drive" = "שגיאת אימות חשבון iCloud: הפעל את כונן iCloud ו- iCloud";
+"iCloud account restricted" = "חשבון iCloud מוגבל";
+"iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "יכולת גילוי ציבורית של iCloud הוענקה. ניתן לגלות (דרך כתובת הדוא\"ל שלך) למשתמשים אחרים באפליקציה. אתה יכול לשנות את זה באפליקציית ההגדרות, iCloud, כונן iCloud, גלה באמצעות דוא\"ל";
+"iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "יכולת הציבור של iCloud נדחתה. אינך ניתנת לניתוק (דרך כתובת הדוא\"ל שלך) למשתמשים אחרים באפליקציה. אתה יכול לשנות את זה באפליקציית ההגדרות, iCloud, כונן iCloud, לגלות בדוא\"ל";

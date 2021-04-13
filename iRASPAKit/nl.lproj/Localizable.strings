@@ -4,3 +4,9 @@
 "Local projects" = "Lokale projecten";
 "ICLOUD PUBLIC" = "ICLOUD OPENBAAR";
 "iCloud public" = "iCloud openbaar";
+"Could not determine status of iCloud account" = "Kan status van iCloud-account niet bepalen";
+"iCloud account available" = "iCloud-account beschikbaar";
+"iCloud account authentication error: enable iCloud and iCloud-drive" = "Verificatiefout iCloud-account: schakel iCloud en iCloud-drive in";
+"iCloud account restricted" = "iCloud-account beperkt";
+"iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "Openbare vindbaarheid van iCloud is verleend. U bent vindbaar (via uw e-mailadres) voor andere gebruikers van de app. U kunt dit wijzigen in de instellingen-app, iCloud, iCloud-schijf, ontdek via e-mail";
+"iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "Openbare vindbaarheid van iCloud is geweigerd. U bent niet te vinden (via uw e-mailadres) voor andere gebruikers van de app. U kunt dit wijzigen in de instellingen-app, iCloud, iCloud-schijf, ontdek via e-mail";

@@ -6,25 +6,25 @@
 "8jm-NB-F14.title" = "Box";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[0] = "Camera"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[0]" = "Camera";
+"KMJ-Zm-flM.ibShadowedLabels[0]" = "Cámara";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[1] = "Elements"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[1]" = "Elements";
+"KMJ-Zm-flM.ibShadowedLabels[1]" = "Elementos";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[2] = "Info"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[2]" = "Info";
+"KMJ-Zm-flM.ibShadowedLabels[2]" = "Información";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[3] = "Appearance"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[3]" = "Appearance";
+"KMJ-Zm-flM.ibShadowedLabels[3]" = "Apariencia";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[4] = "Cell"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[4]" = "Cell";
+"KMJ-Zm-flM.ibShadowedLabels[4]" = "Célula";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[5] = "Atoms"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[5]" = "Atoms";
+"KMJ-Zm-flM.ibShadowedLabels[5]" = "Átomos";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[6] = "Bonds"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[6]" = "Bonds";
+"KMJ-Zm-flM.ibShadowedLabels[6]" = "Enlaces";
 
 /* Class = "NSTabViewItem"; label = "Tab"; ObjectID = "Xel-Em-yJ8"; */
 "Xel-Em-yJ8.label" = "Tab";

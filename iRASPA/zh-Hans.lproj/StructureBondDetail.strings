@@ -9,7 +9,7 @@
 "7uB-Nb-mkk.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Type bonds"; ObjectID = "9rV-cN-bzl"; */
-"9rV-cN-bzl.title" = "Type bonds";
+"9rV-cN-bzl.title" = "类型债券";
 
 /* Class = "NSTableColumn"; headerCell.title = "length"; ObjectID = "DvX-tf-DBg"; */
 "DvX-tf-DBg.headerCell.title" = "length";
@@ -48,4 +48,4 @@
 "oBx-QK-c2U.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Recompute Bonds"; ObjectID = "w5W-4P-qvW"; */
-"w5W-4P-qvW.title" = "Recompute Bonds";
+"w5W-4P-qvW.title" = "重新计算原子键";
