@@ -206,8 +206,8 @@
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "g4T-WC-bhk"; */
 "g4T-WC-bhk.title" = "is kleiner dan";
 
-/* Class = "NSTextFieldCell"; title = "Number of items:"; ObjectID = "gRs-oY-ROY"; */
-"gRs-oY-ROY.title" = "Aantal items:";
+/* Class = "NSTextFieldCell"; title = "Number of items"; ObjectID = "gRs-oY-ROY"; */
+"gRs-oY-ROY.title" = "Aantal Items";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "ggX-BU-UR6"; */
 "ggX-BU-UR6.title" = "is ongelijk aan";

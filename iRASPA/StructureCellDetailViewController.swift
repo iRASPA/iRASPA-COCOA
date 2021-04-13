@@ -907,7 +907,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     case "BoxOrientationCell":
       if let renderRotationDelta: Double = (self.representedObject as? [CellViewer])?.renderRotationDelta
       {
-        
         if let textFieldRotationAngle: NSTextField = view.viewWithTag(1) as? NSTextField,
           let textFieldYawPlusX: NSButton = view.viewWithTag(2) as? NSButton,
           let textFieldYawPlusY: NSButton = view.viewWithTag(3) as? NSButton,
@@ -924,13 +923,19 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           textFieldYawMinusY.isEnabled = enabled
           textFieldYawMinusZ.isEnabled = enabled
           
+          let formatter = MeasurementFormatter()
+          formatter.unitStyle = .short
+          formatter.unitOptions = .providedUnit
+          let minusString = formatter.string(from: Measurement(value: -renderRotationDelta, unit: UnitAngle.degrees))
+          let plusString = formatter.string(from: Measurement(value: renderRotationDelta, unit: UnitAngle.degrees))
+          
           textFieldRotationAngle.doubleValue = renderRotationDelta
-          textFieldYawPlusX.title =  "Rotate +\(renderRotationDelta)°"
-          textFieldYawPlusY.title =  "Rotate -\(renderRotationDelta)°"
-          textFieldYawPlusZ.title =  "Rotate +\(renderRotationDelta)°"
-          textFieldYawMinusX.title =  "Rotate -\(renderRotationDelta)°"
-          textFieldYawMinusY.title =  "Rotate +\(renderRotationDelta)°"
-          textFieldYawMinusZ.title =  "Rotate -\(renderRotationDelta)°"
+          textFieldYawPlusX.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), plusString)
+          textFieldYawPlusY.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), plusString)
+          textFieldYawPlusZ.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), plusString)
+          textFieldYawMinusX.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), minusString)
+          textFieldYawMinusY.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), minusString)
+          textFieldYawMinusZ.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), minusString)
         }
       }
 

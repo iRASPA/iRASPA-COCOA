@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="s3g-Ko-vfq">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="s3g-Ko-vfq">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -41,11 +41,11 @@
                             <scrollView wantsLayer="YES" fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vGx-KB-Wb1">
                                 <rect key="frame" x="0.0" y="0.0" width="500" height="750"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <clipView key="contentView" ambiguous="YES" id="wsh-iY-9Vm">
+                                <clipView key="contentView" id="wsh-iY-9Vm">
                                     <rect key="frame" x="1" y="1" width="498" height="748"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <predicateEditor verticalHuggingPriority="750" ambiguous="YES" nestingMode="compound" rowHeight="25" id="EdV-D8-FwX">
+                                        <predicateEditor verticalHuggingPriority="750" nestingMode="compound" rowHeight="25" id="EdV-D8-FwX">
                                             <rect key="frame" x="0.0" y="0.0" width="498" height="748"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <rowTemplates>
@@ -734,7 +734,7 @@
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" placeholderIntrinsicWidth="105" placeholderIntrinsicHeight="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tk3-B2-8u5">
                                             <rect key="frame" x="483" y="4" width="109" height="17"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of items:" id="gRs-oY-ROY">
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Number of Items" id="gRs-oY-ROY">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

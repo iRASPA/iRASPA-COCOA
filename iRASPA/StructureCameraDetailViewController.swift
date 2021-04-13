@@ -314,13 +314,20 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
           textFieldYawMinusX.isEnabled = true
           textFieldYawMinusY.isEnabled = true
           textFieldYawMinusZ.isEnabled = true
+          
+          let formatter = MeasurementFormatter()
+          formatter.unitStyle = .short
+          formatter.unitOptions = .providedUnit
+          let minusString = formatter.string(from: Measurement(value: -rotationDelta, unit: UnitAngle.degrees))
+          let plusString = formatter.string(from: Measurement(value: rotationDelta, unit: UnitAngle.degrees))
+
           textFieldRotationDelta.doubleValue =  rotationDelta
-          textFieldYawPlusX.title =  "Rotate +\(rotationDelta)°"
-          textFieldYawPlusY.title =  "Rotate +\(rotationDelta)°"
-          textFieldYawPlusZ.title =  "Rotate +\(rotationDelta)°"
-          textFieldYawMinusX.title =  "Rotate -\(rotationDelta)°"
-          textFieldYawMinusY.title =  "Rotate -\(rotationDelta)°"
-          textFieldYawMinusZ.title =  "Rotate -\(rotationDelta)°"
+          textFieldYawPlusX.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), plusString)
+          textFieldYawPlusY.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), plusString)
+          textFieldYawPlusZ.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), plusString)
+          textFieldYawMinusX.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), minusString)
+          textFieldYawMinusY.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), minusString)
+          textFieldYawMinusZ.title =  String.localizedStringWithFormat(NSLocalizedString("Rotate (%@)", comment: ""), minusString)
         }
       }
       

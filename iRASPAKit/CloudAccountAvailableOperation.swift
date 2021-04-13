@@ -45,16 +45,17 @@ class CloudAccountAvailableOperation: Operation
       }
       else
       {
+        let bundle: Bundle = Bundle(for: CloudAccountAvailableOperation.self)
         switch(accountStatus)
         {
         case .couldNotDetermine:
-          LogQueue.shared.warning(destination: nil, message: "Could not determine status of iCloud account")
+          LogQueue.shared.warning(destination: nil, message: NSLocalizedString("Could not determine status of iCloud account", bundle: bundle, comment: ""))
         case .available:
-          LogQueue.shared.info(destination: nil, message: "iCloud account available")
+          LogQueue.shared.info(destination: nil, message: NSLocalizedString("iCloud account available", bundle: bundle, comment: ""))
         case .noAccount:
-          LogQueue.shared.warning(destination: nil, message: "iCloud account authentication error: enable iCloud and iCloud-drive")
+          LogQueue.shared.warning(destination: nil, message: NSLocalizedString("iCloud account authentication error: enable iCloud and iCloud-drive", bundle: bundle, comment: ""))
         case .restricted:
-          LogQueue.shared.warning(destination: nil, message: "iCloud account restricted")
+          LogQueue.shared.warning(destination: nil, message: NSLocalizedString("iCloud account restricted", bundle: bundle, comment: ""))
         @unknown default:
            fatalError()
         }

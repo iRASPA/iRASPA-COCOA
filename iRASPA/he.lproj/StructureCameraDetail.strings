@@ -116,7 +116,7 @@
 /* Class = "NSTextFieldCell"; placeholderString = "w1"; ObjectID = "P2r-W6-ODo"; */
 "P2r-W6-ODo.placeholderString" = "w1";
 
-/* Class = "NSTextFieldCell"; title = "Frames per Seconds:"; ObjectID = "Qsi-Kr-087"; */
+/* Class = "NSTextFieldCell"; title = "Frames per Second"; ObjectID = "Qsi-Kr-087"; */
 "Qsi-Kr-087.title" = "מסגרות לשנייה";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "R6f-wb-uXg"; */
