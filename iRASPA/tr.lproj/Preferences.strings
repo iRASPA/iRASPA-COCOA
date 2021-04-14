@@ -1,51 +1,51 @@
 
-/* Class = "NSBox"; title = "Read permission for"; ObjectID = "DrV-v1-Dd6"; */
-"DrV-v1-Dd6.title" = "קרא אישור עבור";
+/* Class = "NSBox"; title = "Read permission for:"; ObjectID = "DrV-v1-Dd6"; */
+"DrV-v1-Dd6.title" = "İçin okuma izni";
 
 /* Class = "NSViewController"; title = "Command-line"; ObjectID = "ErL-rs-pho"; */
-"ErL-rs-pho.title" = "שורת פיקוד";
+"ErL-rs-pho.title" = "Komut satırı";
 
-/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
-"KqL-r5-hBW.title" = "כתוב הרשאה עבור";
+/* Class = "NSBox"; title = "Write permission for:"; ObjectID = "KqL-r5-hBW"; */
+"KqL-r5-hBW.title" = "İçin yazma izni";
 
 /* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
-"LKB-pQ-lE8.title" = "הגדרות אנימציה";
+"LKB-pQ-lE8.title" = "Animasyon ayarları";
 
 /* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
-"N3b-Db-pad.title" = "העדפות";
+"N3b-Db-pad.title" = "Tercihler";
 
 /* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
-"RvG-Ag-1yO.title" = "תמיד פועל";
+"RvG-Ag-1yO.title" = "Her zaman";
 
 /* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
-"V1Y-Hh-Pro.title" = "בְּחִירָה";
+"V1Y-Hh-Pro.title" = "Seçimi";
 
 /* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
-"dAK-62-iur.title" = "כללי";
+"dAK-62-iur.title" = "Genel";
 
 /* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
-"dQ7-i1-ieW.title" = "הגדרות כלליות";
+"dQ7-i1-ieW.title" = "Genel Ayarlar";
 
 /* Class = "NSViewController"; title = "Animations"; ObjectID = "eTl-7O-cbU"; */
-"eTl-7O-cbU.title" = "אנימציות";
+"eTl-7O-cbU.title" = "Animasyonlar";
 
 /* Class = "NSMenuItem"; title = "Always off"; ObjectID = "i78-OK-HJu"; */
-"i78-OK-HJu.title" = "תמיד כבוי";
+"i78-OK-HJu.title" = "Herzaman kapalı";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "jDF-PS-epK"; */
-"jDF-PS-epK.placeholderString" = "גרור אובייקט מערכת קבצים לאזור זה או לחץ כדי להגדיר נתיב";
+"jDF-PS-epK.placeholderString" = "Bir dosya sistemi nesnesini bu alana sürükleyin veya yolu ayarlamak için tıklayın";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
-"kfw-MK-t7S.placeholderString" = "גרור אובייקט מערכת קבצים לאזור זה או לחץ כדי להגדיר נתיב";
+"kfw-MK-t7S.placeholderString" = "Bir dosya sistemi nesnesini bu alana sürükleyin veya yolu ayarlamak için tıklayın";
 
 /* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
-"lDy-gc-II8.title" = "העדפות";
+"lDy-gc-II8.title" = "Tercihler";
 
 /* Class = "NSMenuItem"; title = "When connected to power source"; ObjectID = "miP-5k-r8f"; */
-"miP-5k-r8f.title" = "כאשר מחובר למקור חשמל";
+"miP-5k-r8f.title" = "Güç kaynağına bağlandığında";
 
 /* Class = "NSButtonCell"; title = "Autosaving"; ObjectID = "n57-Vp-DI4"; */
-"n57-Vp-DI4.title" = "שמירה אוטומטית";
+"n57-Vp-DI4.title" = "Otomatik kaydetme";
 
 /* Class = "NSButtonCell"; title = "Show tooltip in renderer"; ObjectID = "zSD-B6-1hO"; */
-"zSD-B6-1hO.title" = "הצג את תיאור הכלים במעבד";
+"zSD-B6-1hO.title" = "Araç ipucunu oluşturucuda göster";
