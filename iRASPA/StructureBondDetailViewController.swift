@@ -220,12 +220,6 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
     return view
   }
   
-  
-  func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat
-  {
-    return 18.0
-  }
-  
   func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView?
   {
     let view: NSTableRowView = NSTableRowView()
