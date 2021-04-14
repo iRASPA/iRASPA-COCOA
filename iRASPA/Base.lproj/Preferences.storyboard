@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="lDy-gc-II8">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="lDy-gc-II8">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <capability name="box content view" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -78,11 +77,11 @@
                                 <rect key="frame" x="17" y="12" width="416" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" id="fCI-62-wHP">
-                                    <rect key="frame" x="1" y="1" width="414" height="78"/>
+                                    <rect key="frame" x="3" y="3" width="410" height="74"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="grk-ZB-NQc">
-                                            <rect key="frame" x="18" y="46" width="201" height="16"/>
+                                            <rect key="frame" x="18" y="42" width="201" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Show tooltip in renderer" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="zSD-B6-1hO">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -93,7 +92,7 @@
                                             </connections>
                                         </button>
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HL0-1y-A2e">
-                                            <rect key="frame" x="18" y="16" width="142" height="16"/>
+                                            <rect key="frame" x="18" y="12" width="142" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Autosaving" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="n57-Vp-DI4">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -129,11 +128,11 @@
                                 <rect key="frame" x="17" y="16" width="416" height="66"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" id="Vyc-D3-wnQ">
-                                    <rect key="frame" x="1" y="1" width="414" height="64"/>
+                                    <rect key="frame" x="3" y="3" width="410" height="60"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H66-BO-0Fa">
-                                            <rect key="frame" x="18" y="27" width="83" height="17"/>
+                                            <rect key="frame" x="18" y="23" width="83" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Selection" id="V1Y-Hh-Pro">
                                                 <font key="font" metaFont="system"/>
@@ -142,7 +141,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iaN-hg-2H5">
-                                            <rect key="frame" x="124" y="22" width="273" height="26"/>
+                                            <rect key="frame" x="124" y="18" width="273" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <popUpButtonCell key="cell" type="push" title="Always on" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="RvG-Ag-1yO" id="ROi-ht-fBk">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -180,15 +179,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="451" height="100"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Read permission for:" translatesAutoresizingMaskIntoConstraints="NO" id="DrV-v1-Dd6">
+                            <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Read permission for" translatesAutoresizingMaskIntoConstraints="NO" id="DrV-v1-Dd6">
                                 <rect key="frame" x="2" y="49" width="447" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" id="PqE-xS-caG">
-                                    <rect key="frame" x="1" y="1" width="445" height="27"/>
+                                    <rect key="frame" x="3" y="3" width="441" height="25"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <pathControl focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BAe-Db-c9b">
-                                            <rect key="frame" x="17" y="3" width="411" height="26"/>
+                                            <rect key="frame" x="17" y="1" width="411" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <pathCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" placeholderString="Drag a file system object to this area or click to set path" pathStyle="popUp" id="kfw-MK-t7S">
                                                 <font key="font" metaFont="system"/>
@@ -201,15 +200,15 @@
                                     </subviews>
                                 </view>
                             </box>
-                            <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Write permission for:" translatesAutoresizingMaskIntoConstraints="NO" id="KqL-r5-hBW">
+                            <box autoresizesSubviews="NO" fixedFrame="YES" borderType="line" title="Write permission for" translatesAutoresizingMaskIntoConstraints="NO" id="KqL-r5-hBW">
                                 <rect key="frame" x="2" y="3" width="447" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" id="sm0-Ra-RkU">
-                                    <rect key="frame" x="1" y="1" width="445" height="26"/>
+                                    <rect key="frame" x="3" y="3" width="441" height="24"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <pathControl focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZWv-6w-LjQ">
-                                            <rect key="frame" x="19" y="2" width="411" height="26"/>
+                                            <rect key="frame" x="19" y="0.0" width="411" height="26"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <pathCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" placeholderString="Drag a file system object to this area or click to set path" pathStyle="popUp" id="jDF-PS-epK">
                                                 <font key="font" metaFont="system"/>

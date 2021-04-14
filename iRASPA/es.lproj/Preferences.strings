@@ -1,51 +1,51 @@
 
-/* Class = "NSBox"; title = "Read permission for:"; ObjectID = "DrV-v1-Dd6"; */
-"DrV-v1-Dd6.title" = "Read permission for:";
+/* Class = "NSBox"; title = "Read permission for"; ObjectID = "DrV-v1-Dd6"; */
+"DrV-v1-Dd6.title" = "Leer permiso para";
 
 /* Class = "NSViewController"; title = "Command-line"; ObjectID = "ErL-rs-pho"; */
-"ErL-rs-pho.title" = "Command-line";
+"ErL-rs-pho.title" = "Línea de comando";
 
-/* Class = "NSBox"; title = "Write permission for:"; ObjectID = "KqL-r5-hBW"; */
-"KqL-r5-hBW.title" = "Write permission for:";
+/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
+"KqL-r5-hBW.title" = "Permiso de escritura para";
 
 /* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
-"LKB-pQ-lE8.title" = "Animation settings";
+"LKB-pQ-lE8.title" = "Configuración de animación";
 
 /* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
-"N3b-Db-pad.title" = "Preferences";
+"N3b-Db-pad.title" = "Preferencias";
 
 /* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
-"RvG-Ag-1yO.title" = "Always on";
+"RvG-Ag-1yO.title" = "Siempre encendido";
 
 /* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
-"V1Y-Hh-Pro.title" = "Selection";
+"V1Y-Hh-Pro.title" = "Selección";
 
 /* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
 "dAK-62-iur.title" = "General";
 
 /* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
-"dQ7-i1-ieW.title" = "General settings";
+"dQ7-i1-ieW.title" = "Configuración general";
 
 /* Class = "NSViewController"; title = "Animations"; ObjectID = "eTl-7O-cbU"; */
-"eTl-7O-cbU.title" = "Animations";
+"eTl-7O-cbU.title" = "Animaciones";
 
 /* Class = "NSMenuItem"; title = "Always off"; ObjectID = "i78-OK-HJu"; */
-"i78-OK-HJu.title" = "Always off";
+"i78-OK-HJu.title" = "Siempre apagado";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "jDF-PS-epK"; */
-"jDF-PS-epK.placeholderString" = "Drag a file system object to this area or click to set path";
+"jDF-PS-epK.placeholderString" = "Arrastre un objeto del sistema de archivos a esta área o haga clic para establecer la ruta";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
-"kfw-MK-t7S.placeholderString" = "Drag a file system object to this area or click to set path";
+"kfw-MK-t7S.placeholderString" = "Arrastre un objeto del sistema de archivos a esta área o haga clic para establecer la ruta";
 
 /* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
-"lDy-gc-II8.title" = "Preferences";
+"lDy-gc-II8.title" = "Preferencias";
 
 /* Class = "NSMenuItem"; title = "When connected to power source"; ObjectID = "miP-5k-r8f"; */
-"miP-5k-r8f.title" = "When connected to power source";
+"miP-5k-r8f.title" = "Cuando está conectado a la fuente de alimentación";
 
 /* Class = "NSButtonCell"; title = "Autosaving"; ObjectID = "n57-Vp-DI4"; */
-"n57-Vp-DI4.title" = "Autosaving";
+"n57-Vp-DI4.title" = "Autoguardado";
 
 /* Class = "NSButtonCell"; title = "Show tooltip in renderer"; ObjectID = "zSD-B6-1hO"; */
-"zSD-B6-1hO.title" = "Show tooltip in renderer";
+"zSD-B6-1hO.title" = "Mostrar información sobre herramientas en el renderizador";
