@@ -442,11 +442,6 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     return view
   }
   
-  func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
-  {
-    return 18.0
-  }
-  
   func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool
   {
     
