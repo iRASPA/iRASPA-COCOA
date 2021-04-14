@@ -1,0 +1,141 @@
+
+/* Class = "NSMenuItem"; title = "Add Structure project"; ObjectID = "17P-ML-bef"; */
+"17P-ML-bef.title" = "संरचना परियोजना जोड़ें";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "1Xb-ls-pt9"; */
+"1Xb-ls-pt9.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Compute properties for selection"; ObjectID = "2Jt-NB-sPl"; */
+"2Jt-NB-sPl.title" = "चयन के लिए संपत्तियों की गणना करें";
+
+/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "39L-RF-she"; */
+"39L-RF-she.title" = "अणु जोड़ें";
+
+/* Class = "NSMenuItem"; title = "Save IZA Database"; ObjectID = "4Wl-iP-Pbc"; */
+"4Wl-iP-Pbc.title" = "IZA डेटाबेस सहेजें";
+
+/* Class = "NSSegmentedCell"; 5km-ay-bRW.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "5km-ay-bRW"; */
+"5km-ay-bRW.ibShadowedToolTips[0]" = "प्रोजेक्ट नेविगेटर दिखाता है";
+
+/* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "5vG-bx-ocx"; */
+"5vG-bx-ocx.title" = "क्रिस्टल सिलेंडर";
+
+/* Class = "NSMenuItem"; title = "Delete Selection"; ObjectID = "7fp-uc-cJb"; */
+"7fp-uc-cJb.title" = "चयन हटाएं";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "A2b-v0-dYs"; */
+"A2b-v0-dYs.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "DOk-0m-owF"; */
+"DOk-0m-owF.title" = "आणविक क्रिस्टल जोड़ें";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "Dl8-Oq-8Mi"; */
+"Dl8-Oq-8Mi.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Group project"; ObjectID = "Fyj-yE-B9G"; */
+"Fyj-yE-B9G.title" = "समूह परियोजना जोड़ें";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "J49-HP-IXW"; */
+"J49-HP-IXW.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "JDc-Lg-RBz"; */
+"JDc-Lg-RBz.title" = "प्रोटीन क्रिस्टल जोड़ें";
+
+/* Class = "NSMenuItem"; title = "Add Project group"; ObjectID = "K8j-Rb-vrc"; */
+"K8j-Rb-vrc.title" = "प्रोजेक्ट समूह जोड़ें";
+
+/* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "NQW-mX-NqP"; */
+"NQW-mX-NqP.placeholderString" = "फ़िल्टर";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "NtS-cJ-UOq"; */
+"NtS-cJ-UOq.title" = "Box";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "O1x-dW-EEr"; */
+"O1x-dW-EEr.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Save CoRE MOF DDEC Database"; ObjectID = "O3V-w8-TnC"; */
+"O3V-w8-TnC.title" = "CoRE MOF DDEC डेटाबेस सहेजें";
+
+/* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "OOb-3Y-cOg"; */
+"OOb-3Y-cOg.title" = "आणविक क्रिस्टल जोड़ें";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "PBb-Do-JMr"; */
+"PBb-Do-JMr.title" = "Box";
+
+/* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
+"PS8-Ne-mbi.ibShadowedToolTips[0]" = "प्रोजेक्ट नेविगेटर दिखाता है";
+
+/* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[1] = "Shows the Scenes Navigator"; ObjectID = "PS8-Ne-mbi"; */
+"PS8-Ne-mbi.ibShadowedToolTips[1]" = "दृश्य नेविगेटर दिखाता है";
+
+/* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[2] = "Shows the Frames Navigator"; ObjectID = "PS8-Ne-mbi"; */
+"PS8-Ne-mbi.ibShadowedToolTips[2]" = "फ्रेम्स नेविगेटर दिखाता है";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
+"QFA-05-Kql.title" = "Box";
+
+/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
+"RMC-nN-w7D.title" = "प्रोटीन जोड़ें";
+
+/* Class = "NSMenuItem"; title = "Crystal polygonal prism"; ObjectID = "RXK-7F-kYl"; */
+"RXK-7F-kYl.title" = "क्रिस्टल बहुभुज प्रिज्म";
+
+/* Class = "NSMenuItem"; title = "Crystal ellipsoid"; ObjectID = "RaT-FZ-Ofn"; */
+"RaT-FZ-Ofn.title" = "क्रिस्टल दीर्घवृत्ताभ";
+
+/* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "Rj0-p0-TFM"; */
+"Rj0-p0-TFM.title" = "सिलेंडर";
+
+/* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "TAX-Oq-9O2"; */
+"TAX-Oq-9O2.title" = "दीर्घवृत्ताभ";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
+"Toa-8e-8sy.title" = "Box";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
+"VoW-P5-q6k.title" = "Box";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
+"Ypv-d2-rqY.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Load from Cloud/make editable"; ObjectID = "buF-AA-E4m"; */
+"buF-AA-E4m.title" = "क्लाउड से लोड करें / संपादन योग्य बनाएं";
+
+/* Class = "NSMenu"; title = "Add Objects"; ObjectID = "d98-LF-qMp"; */
+"d98-LF-qMp.title" = "ऑब्जेक्ट जोड़ें";
+
+/* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "dYh-5W-YT9"; */
+"dYh-5W-YT9.title" = "क्रिस्टल जोड़ें";
+
+/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
+"eMF-nr-fbD.title" = "बहुभुज प्रिज्म";
+
+/* Class = "NSMenuItem"; title = "Save CoREMOF Database"; ObjectID = "guV-7k-U3c"; */
+"guV-7k-U3c.title" = "सहेजें CoREMOF डेटाबेस";
+
+/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "muR-Z9-sae"; */
+"muR-Z9-sae.title" = "अणु जोड़ें";
+
+/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "pCe-xU-zfX"; */
+"pCe-xU-zfX.title" = "प्रोटीन जोड़ें";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "rpD-Za-uPb"; */
+"rpD-Za-uPb.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Structure Project"; ObjectID = "rwA-at-3T8"; */
+"rwA-at-3T8.title" = "संरचना परियोजना जोड़ें";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "sxb-xU-PUp"; */
+"sxb-xU-PUp.title" = "Table View Cell";
+
+/* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "uN8-UC-za6"; */
+"uN8-UC-za6.title" = "प्रोटीन क्रिस्टल जोड़ें";
+
+/* Class = "NSMenuItem"; title = "Save selected to cloud"; ObjectID = "w2Z-Qn-qLb"; */
+"w2Z-Qn-qLb.title" = "क्लाउड पर चयनित सहेजें";
+
+/* Class = "NSMenuItem"; title = "Add Objects"; ObjectID = "xGp-L1-szQ"; */
+"xGp-L1-szQ.title" = "ऑब्जेक्ट जोड़ें";
+
+/* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "xX5-m0-Lkz"; */
+"xX5-m0-Lkz.title" = "क्रिस्टल जोड़ें";
