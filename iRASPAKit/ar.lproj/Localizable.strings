@@ -1,0 +1,12 @@
+"GALLERY" = "صالة عرض";
+"Gallery" = "صالة عرض";
+"LOCAL PROJECTS" = "مشاريع محلية";
+"Local projects" = "مشاريع محلية";
+"ICLOUD PUBLIC" = "ICLOUD عام";
+"iCloud public" = "iCloud عام";
+"Could not determine status of iCloud account" = "تعذر تحديد حالة حساب iCloud";
+"iCloud account available" = "حساب iCloud متاح";
+"iCloud account authentication error: enable iCloud and iCloud-drive" = "خطأ في مصادقة حساب iCloud: قم بتمكين iCloud و iCloud-drive";
+"iCloud account restricted" = "حساب iCloud مقيد";
+"iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "تم منح قابلية الاكتشاف العام على iCloud. يمكنك اكتشافك (من خلال عنوان بريدك الإلكتروني) للمستخدمين الآخرين للتطبيق. يمكنك تغيير ذلك في تطبيق الإعدادات ، iCloud ، iCloud drive ، اكتشف عبر البريد الإلكتروني";
+"iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "تم رفض قابلية الاكتشاف العام على iCloud. أنت غير قابل للإزالة (من خلال عنوان البريد الإلكتروني الخاص بك) لمستخدمي التطبيق الآخرين. يمكنك تغيير ذلك في تطبيق الإعدادات ، iCloud ، iCloud drive ، اكتشف عبر البريد الإلكتروني";

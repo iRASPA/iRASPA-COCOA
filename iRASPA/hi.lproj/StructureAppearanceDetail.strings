@@ -1,0 +1,585 @@
+
+/* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "126-Ob-v2F"; */
+"126-Ob-v2F.title" = "Rotate +90";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "1Ms-wb-ECb"; */
+"1Ms-wb-ECb.title" = "Specular Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "𝜈"; ObjectID = "1gP-QT-h2b"; */
+"1gP-QT-h2b.title" = "𝜈";
+
+/* Class = "NSMenuItem"; title = "Glow"; ObjectID = "1ht-pW-CQ0"; */
+"1ht-pW-CQ0.title" = "Glow";
+
+/* Class = "NSBox"; title = "Back Properties"; ObjectID = "1i4-zc-FLO"; */
+"1i4-zc-FLO.title" = "Back Properties";
+
+/* Class = "NSMenuItem"; title = "Argon"; ObjectID = "3Ik-9O-zWy"; */
+"3Ik-9O-zWy.title" = "Argon";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "3sL-9T-b9T"; */
+"3sL-9T-b9T.title" = "None";
+
+/* Class = "NSMenuItem"; title = "Water"; ObjectID = "4Ul-Kb-Iv7"; */
+"4Ul-Kb-Iv7.title" = "Water";
+
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "4Xx-zc-qJB"; */
+"4Xx-zc-qJB.title" = "Ambient Light Intensity";
+
+/* Class = "NSMenuItem"; title = "Default"; ObjectID = "4hE-df-ALQ"; */
+"4hE-df-ALQ.title" = "Default";
+
+/* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "4vF-aa-ild"; */
+"4vF-aa-ild.title" = "Display Name";
+
+/* Class = "NSMenuItem"; title = "Left"; ObjectID = "51e-MD-soy"; */
+"51e-MD-soy.title" = "Left";
+
+/* Class = "NSMenuItem"; title = "Van der Waals"; ObjectID = "543-nV-Xw2"; */
+"543-nV-Xw2.title" = "Van der Waals";
+
+/* Class = "NSTextFieldCell"; title = "Type"; ObjectID = "5Pc-9v-LWF"; */
+"5Pc-9v-LWF.title" = "Type";
+
+/* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "5Sp-Jr-Fld"; */
+"5Sp-Jr-Fld.title" = "Identifer";
+
+/* Class = "NSTextFieldCell"; title = "Font"; ObjectID = "5dw-7I-GMG"; */
+"5dw-7I-GMG.title" = "Font";
+
+/* Class = "NSTextFieldCell"; title = "Unit cell"; ObjectID = "5pu-BI-tJR"; */
+"5pu-BI-tJR.title" = "Unit cell";
+
+/* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
+"5tk-gG-FdV.title" = "Bond Scale Factor";
+
+/* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
+"5xK-C0-rPU.title" = "Adsorption Surface";
+
+/* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
+"6Aw-j2-ekx.title" = "Bond Lighting";
+
+/* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "6LE-C6-Xi3"; */
+"6LE-C6-Xi3.title" = "Bottom";
+
+/* Class = "NSMenuItem"; title = "Center"; ObjectID = "6My-58-9Eo"; */
+"6My-58-9Eo.title" = "Center";
+
+/* Class = "NSMenuItem"; title = "Licorice"; ObjectID = "6mE-0U-P7u"; */
+"6mE-0U-P7u.title" = "Licorice";
+
+/* Class = "NSMenuItem"; title = "Force Field First"; ObjectID = "7mT-Qt-DKy"; */
+"7mT-Qt-DKy.title" = "Force Field First";
+
+/* Class = "NSMenuItem"; title = "Hydrogen"; ObjectID = "8Fb-07-tja"; */
+"8Fb-07-tja.title" = "Hydrogen";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "8ga-HD-e1b"; */
+"8ga-HD-e1b.title" = "Diffuse Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Atoms"; ObjectID = "8ht-z0-szM"; */
+"8ht-z0-szM.title" = "Atoms";
+
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "8iy-di-Ufc"; */
+"8iy-di-Ufc.title" = "Ambient Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "90a-Ax-VRf"; */
+"90a-Ax-VRf.title" = "Exposure";
+
+/* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "97c-Ea-ha8"; */
+"97c-Ea-ha8.title" = "Selection Style";
+
+/* Class = "NSTextFieldCell"; title = "Primitive Properties"; ObjectID = "A1A-Jh-xnr"; */
+"A1A-Jh-xnr.title" = "Primitive Properties";
+
+/* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "AjV-MB-P5w"; */
+"AjV-MB-P5w.title" = "CO₂";
+
+/* Class = "NSMenuItem"; title = "Striped"; ObjectID = "B19-8Y-fy7"; */
+"B19-8Y-fy7.title" = "Striped";
+
+/* Class = "NSMenuItem"; title = "Krypton"; ObjectID = "BF6-bP-WrL"; */
+"BF6-bP-WrL.title" = "Krypton";
+
+/* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "BKm-75-TFG"; */
+"BKm-75-TFG.title" = "Display Name";
+
+/* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "BMS-ba-E5g"; */
+"BMS-ba-E5g.title" = "Chemical Element";
+
+/* Class = "NSTextFieldCell"; title = "Probe Particle"; ObjectID = "BZA-dF-ael"; */
+"BZA-dF-ael.title" = "Probe Particle";
+
+/* Class = "NSMenuItem"; title = "Element"; ObjectID = "BhQ-29-eXX"; */
+"BhQ-29-eXX.title" = "Element";
+
+/* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "Bvc-rc-vqi"; */
+"Bvc-rc-vqi.title" = "Euler Angles";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "C4F-mR-Wqd"; */
+"C4F-mR-Wqd.title" = "Exposure";
+
+/* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "Cur-NK-N96"; */
+"Cur-NK-N96.title" = "Style Parameters";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Df4-cu-Yqn"; */
+"Df4-cu-Yqn.title" = "Diffuse Light Intensity";
+
+/* Class = "NSMenuItem"; title = "Jmol"; ObjectID = "Dvd-oC-whc"; */
+"Dvd-oC-whc.title" = "Jmol";
+
+/* Class = "NSTextFieldCell"; title = "Alignment"; ObjectID = "E3F-gq-hXm"; */
+"E3F-gq-hXm.title" = "Alignment";
+
+/* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "ENi-9x-fAK"; */
+"ENi-9x-fAK.title" = "Worley Noise 3D";
+
+/* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "Eg3-1V-ocA"; */
+"Eg3-1V-ocA.title" = "Rotate +90";
+
+/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "Eph-jb-rGr"; */
+"Eph-jb-rGr.title" = "Rotate -90";
+
+/* Class = "NSMenuItem"; title = "Glow"; ObjectID = "F0U-6l-67M"; */
+"F0U-6l-67M.title" = "Glow";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "Fj4-J7-jzg"; */
+"Fj4-J7-jzg.title" = "Specular Light Intensity";
+
+/* Class = "NSButtonCell"; title = "Ambient Occlusion"; ObjectID = "Ftc-mi-NgX"; */
+"Ftc-mi-NgX.title" = "Ambient Occlusion";
+
+/* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "FvL-0N-TdY"; */
+"FvL-0N-TdY.title" = "Value";
+
+/* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "GOQ-bY-t1V"; */
+"GOQ-bY-t1V.title" = "Z";
+
+/* Class = "NSMenuItem"; title = "Vesta"; ObjectID = "GdU-El-L7o"; */
+"GdU-El-L7o.title" = "Vesta";
+
+/* Class = "NSMenuItem"; title = "Striped"; ObjectID = "Gf0-Qp-gqQ"; */
+"Gf0-Qp-gqQ.title" = "Striped";
+
+/* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "GfJ-48-dF4"; */
+"GfJ-48-dF4.title" = "Selection Radial Scaling";
+
+/* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
+"H3R-9w-R7d.title" = "Hue";
+
+/* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "IIB-vI-u3a"; */
+"IIB-vI-u3a.title" = "Selection Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "JAw-bD-rCT"; */
+"JAw-bD-rCT.title" = "Diffuse Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
+"JKn-cA-MRP.title" = "Bond Type";
+
+/* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "JdC-cy-4oD"; */
+"JdC-cy-4oD.title" = "Chemical Element";
+
+/* Class = "NSTextFieldCell"; title = "𝜌"; ObjectID = "Jmg-H4-WAg"; */
+"Jmg-H4-WAg.title" = "𝜌";
+
+/* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "JuP-Bk-71g"; */
+"JuP-Bk-71g.title" = "Nitrogen";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "KZZ-4u-w8e"; */
+"KZZ-4u-w8e.title" = "Shininess";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "Kl4-HX-HyG"; */
+"Kl4-HX-HyG.title" = "High Dynamic Range";
+
+/* Class = "NSTextFieldCell"; title = "Light Intensity"; ObjectID = "LA8-y5-QWc"; */
+"LA8-y5-QWc.title" = "Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "LSL-D7-VXo"; */
+"LSL-D7-VXo.title" = "Selection Radial Scaling";
+
+/* Class = "NSTextFieldCell"; title = "Annotation"; ObjectID = "LSN-af-m9O"; */
+"LSN-af-m9O.title" = "Annotation";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "M4h-TV-oAo"; */
+"M4h-TV-oAo.title" = "Shininess";
+
+/* Class = "NSTextFieldCell"; title = "Representation Type"; ObjectID = "NF8-dJ-o6x"; */
+"NF8-dJ-o6x.title" = "Representation Type";
+
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "NGy-sK-enb"; */
+"NGy-sK-enb.title" = "Ambient Light Intensity";
+
+/* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "NQu-nU-YxM"; */
+"NQu-nU-YxM.title" = "Worley Noise 3D";
+
+/* Class = "NSMenuItem"; title = "Unity"; ObjectID = "NUE-Dx-H8c"; */
+"NUE-Dx-H8c.title" = "Unity";
+
+/* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "OC0-RP-spe"; */
+"OC0-RP-spe.title" = "Saturation";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "OPu-dU-h6H"; */
+"OPu-dU-h6H.title" = "High Dynamic Range";
+
+/* Class = "NSMenuItem"; title = "Methane"; ObjectID = "OqP-s8-Ltq"; */
+"OqP-s8-Ltq.title" = "Methane";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "Ozn-KS-ZB5"; */
+"Ozn-KS-ZB5.title" = "None";
+
+/* Class = "NSTextFieldCell"; title = "Quality"; ObjectID = "P5F-ca-L8c"; */
+"P5F-ca-L8c.title" = "Quality";
+
+/* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "P9I-KW-dUL"; */
+"P9I-KW-dUL.title" = "Style Parameters";
+
+/* Class = "NSMenuItem"; title = "Top"; ObjectID = "PE4-MK-cmU"; */
+"PE4-MK-cmU.title" = "Top";
+
+/* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "PG2-24-2KF"; */
+"PG2-24-2KF.title" = "Style Parameters";
+
+/* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "Pac-P8-T19"; */
+"Pac-P8-T19.title" = "Y";
+
+/* Class = "NSMenuItem"; title = "Ball and Stick"; ObjectID = "Q9V-K7-74d"; */
+"Q9V-K7-74d.title" = "Ball and Stick";
+
+/* Class = "NSTextFieldCell"; title = "𝜌"; ObjectID = "QAl-Oz-tMg"; */
+"QAl-Oz-tMg.title" = "𝜌";
+
+/* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "Qvw-wH-dnp"; */
+"Qvw-wH-dnp.title" = "Hue";
+
+/* Class = "NSMenuItem"; title = "128x128x128"; ObjectID = "R0Z-ra-sDa"; */
+"R0Z-ra-sDa.title" = "128x128x128";
+
+/* Class = "NSMenuItem"; title = "Top-Left"; ObjectID = "R4G-mG-N7c"; */
+"R4G-mG-N7c.title" = "Top-Left";
+
+/* Class = "NSMenuItem"; title = "Bottom-Right"; ObjectID = "RUW-tq-w6V"; */
+"RUW-tq-w6V.title" = "Bottom-Right";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "Rjl-1D-n7b"; */
+"Rjl-1D-n7b.title" = "Shininess";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "Rwu-J1-bjK"; */
+"Rwu-J1-bjK.title" = "None";
+
+/* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "SFF-hg-8Cg"; */
+"SFF-hg-8Cg.title" = "Force Field Only";
+
+/* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "SMT-Ir-R2J"; */
+"SMT-Ir-R2J.title" = "Value";
+
+/* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "Sdq-Z4-nnY"; */
+"Sdq-Z4-nnY.title" = "Rotation Angle";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Sgk-qh-f3p"; */
+"Sgk-qh-f3p.title" = "Diffuse Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "TPc-vg-PLV"; */
+"TPc-vg-PLV.title" = "Selection Radial Scaling";
+
+/* Class = "NSMenuItem"; title = "Force Field Type"; ObjectID = "TZ6-3e-HHS"; */
+"TZ6-3e-HHS.title" = "Force Field Type";
+
+/* Class = "NSMenuItem"; title = "Gradient"; ObjectID = "Tlc-XL-RDG"; */
+"Tlc-XL-RDG.title" = "Gradient";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "Tqo-qK-6Fc"; */
+"Tqo-qK-6Fc.title" = "None";
+
+/* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "UXl-KR-D8o"; */
+"UXl-KR-D8o.title" = "Saturation";
+
+/* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "V0t-KV-zMh"; */
+"V0t-KV-zMh.title" = "Hue";
+
+/* Class = "NSTextFieldCell"; title = "Exposure:"; ObjectID = "V4C-Dq-82n"; */
+"V4C-Dq-82n.title" = "Exposure:";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "VIk-Df-Zyf"; */
+"VIk-Df-Zyf.title" = "Shininess";
+
+/* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "Vh4-fU-NL9"; */
+"Vh4-fU-NL9.title" = "Saturation";
+
+/* Class = "NSTextFieldCell"; title = "Representation Style"; ObjectID = "WBt-UZ-XVV"; */
+"WBt-UZ-XVV.title" = "Representation Style";
+
+/* Class = "NSBox"; title = "Properties"; ObjectID = "WKe-o0-0cK"; */
+"WKe-o0-0cK.title" = "Properties";
+
+/* Class = "NSMenuItem"; title = "Element"; ObjectID = "WOL-ns-wXc"; */
+"WOL-ns-wXc.title" = "Element";
+
+/* Class = "NSTextFieldCell"; title = "Isocontour Value"; ObjectID = "WdL-X5-IMH"; */
+"WdL-X5-IMH.title" = "Isocontour Value";
+
+/* Class = "NSTextFieldCell"; title = "Color Set"; ObjectID = "WlB-zZ-igz"; */
+"WlB-zZ-igz.title" = "Color Set";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "Y1s-d7-iYT"; */
+"Y1s-d7-iYT.title" = "Specular Light Intensity";
+
+/* Class = "NSButtonCell"; title = "Capped"; ObjectID = "YAJ-aq-PPI"; */
+"YAJ-aq-PPI.title" = "Capped";
+
+/* Class = "NSMenuItem"; title = "Uniform"; ObjectID = "YN6-b4-xiX"; */
+"YN6-b4-xiX.title" = "Uniform";
+
+/* Class = "NSBox"; title = "Front surface"; ObjectID = "Yh2-SE-hS4"; */
+"Yh2-SE-hS4.title" = "Front surface";
+
+/* Class = "NSBox"; title = "Front Properties"; ObjectID = "YnR-7d-k8p"; */
+"YnR-7d-k8p.title" = "Front Properties";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
+"ZX7-oF-dgu.title" = "High Dynamic Range";
+
+/* Class = "NSMenuItem"; title = "Helium"; ObjectID = "Zjr-02-4gi"; */
+"Zjr-02-4gi.title" = "Helium";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "Zpi-ZT-H9N"; */
+"Zpi-ZT-H9N.title" = "Exposure";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "aUf-Ct-Ubf"; */
+"aUf-Ct-Ubf.title" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "𝜌"; ObjectID = "aeb-iy-ZTT"; */
+"aeb-iy-ZTT.title" = "𝜌";
+
+/* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
+"ajZ-C1-kOG.title" = "Draw Bonds";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
+"bBY-15-FbE.title" = "Specular Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "bXw-93-Dat"; */
+"bXw-93-Dat.title" = "Shininess";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bca-zz-KOf"; */
+"bca-zz-KOf.title" = "Specular Light Intensity";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "bdI-Je-pwI"; */
+"bdI-Je-pwI.title" = "None";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "bdU-wM-QtZ"; */
+"bdU-wM-QtZ.title" = "Exposure";
+
+/* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "bsZ-9F-KAn"; */
+"bsZ-9F-KAn.title" = "Display Name";
+
+/* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "c06-RH-XTq"; */
+"c06-RH-XTq.title" = "Chemical Element";
+
+/* Class = "NSTextFieldCell"; title = "𝜈"; ObjectID = "cJr-Nn-bS9"; */
+"cJr-Nn-bS9.title" = "𝜈";
+
+/* Class = "NSTextFieldCell"; title = "Opacity"; ObjectID = "cTs-hC-amJ"; */
+"cTs-hC-amJ.title" = "Opacity";
+
+/* Class = "NSMenuItem"; title = "Right"; ObjectID = "cVb-J3-NgY"; */
+"cVb-J3-NgY.title" = "Right";
+
+/* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "ceh-je-eNg"; */
+"ceh-je-eNg.title" = "Rotate +90";
+
+/* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "con-dz-J2j"; */
+"con-dz-J2j.title" = "Selection Intensity";
+
+/* Class = "NSMenuItem"; title = "Position"; ObjectID = "ddP-zl-i4G"; */
+"ddP-zl-i4G.title" = "Position";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "dfq-2k-AIF"; */
+"dfq-2k-AIF.title" = "None";
+
+/* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "dg1-vw-fab"; */
+"dg1-vw-fab.title" = "Selection Style";
+
+/* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "dk2-KV-Pe3"; */
+"dk2-KV-Pe3.title" = "Force Field Only";
+
+/* Class = "NSButtonCell"; title = "Draw Atoms"; ObjectID = "dmK-0a-HKm"; */
+"dmK-0a-HKm.title" = "Draw Atoms";
+
+/* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
+"e0E-bj-7fz.title" = "Value";
+
+/* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
+"e5a-zk-fFj.title" = "Rasmol";
+
+/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
+"eY8-q5-Em9.title" = "Order";
+
+/* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
+"ehx-ML-HSl.title" = "Objects";
+
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "erk-nB-D85"; */
+"erk-nB-D85.title" = "Ambient Light Intensity";
+
+/* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "feQ-1h-daH"; */
+"feQ-1h-daH.title" = "Xenon";
+
+/* Class = "NSBox"; title = "Back Surface"; ObjectID = "g6G-xC-2Lr"; */
+"g6G-xC-2Lr.title" = "Back Surface";
+
+/* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "gDS-zY-6ne"; */
+"gDS-zY-6ne.title" = "Selection Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Atom Size Scaling"; ObjectID = "gMu-cC-hhG"; */
+"gMu-cC-hhG.title" = "Atom Size Scaling";
+
+/* Class = "NSMenuItem"; title = "Glow"; ObjectID = "hJp-8F-jyf"; */
+"hJp-8F-jyf.title" = "Glow";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "hyu-qj-36T"; */
+"hyu-qj-36T.title" = "Diffuse Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
+"iNJ-ng-4ga.title" = "Order";
+
+/* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
+"iOI-Yp-RuB.title" = "Identifer";
+
+/* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "iRX-2G-KQd"; */
+"iRX-2G-KQd.title" = "Hue";
+
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "iUY-dW-y5v"; */
+"iUY-dW-y5v.title" = "Ambient Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
+"imT-16-aB9.title" = "Value";
+
+/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "jHe-aU-zpQ"; */
+"jHe-aU-zpQ.title" = "Rotate -90";
+
+/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "jQX-px-t8j"; */
+"jQX-px-t8j.title" = "Rotate -90";
+
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "jjn-ZG-OAy"; */
+"jjn-ZG-OAy.title" = "Exposure";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Angle x"; ObjectID = "kRP-v9-JWX"; */
+"kRP-v9-JWX.placeholderString" = "Angle x";
+
+/* Class = "NSMenuItem"; title = "Rasmol Modern"; ObjectID = "kZU-4j-doq"; */
+"kZU-4j-doq.title" = "Rasmol Modern";
+
+/* Class = "NSMenuItem"; title = "Force Field First"; ObjectID = "ka1-4C-dDf"; */
+"ka1-4C-dDf.title" = "Force Field First";
+
+/* Class = "NSMenuItem"; title = "256x256x256"; ObjectID = "l14-dN-lr4"; */
+"l14-dN-lr4.title" = "256x256x256";
+
+/* Class = "NSTextFieldCell"; title = "Unit Cell Size Scaling"; ObjectID = "lsI-qu-rBk"; */
+"lsI-qu-rBk.title" = "Unit Cell Size Scaling";
+
+/* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "mx2-LA-CaG"; */
+"mx2-LA-CaG.title" = "Rasmol";
+
+/* Class = "NSTextFieldCell"; title = "Bonds"; ObjectID = "nGx-4p-hvc"; */
+"nGx-4p-hvc.title" = "Bonds";
+
+/* Class = "NSButtonCell"; title = "Show Adsorption Surface"; ObjectID = "nOa-3D-Seb"; */
+"nOa-3D-Seb.title" = "Show Adsorption Surface";
+
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "nTL-aw-5vW"; */
+"nTL-aw-5vW.title" = "Ambient Light Intensity";
+
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "nUw-Lz-pBk"; */
+"nUw-Lz-pBk.title" = "Specular Light Intensity";
+
+/* Class = "NSMenuItem"; title = "Bottom-Left"; ObjectID = "nV6-NG-mmZ"; */
+"nV6-NG-mmZ.title" = "Bottom-Left";
+
+/* Class = "NSMenuItem"; title = "Striped"; ObjectID = "nZL-Pd-jrp"; */
+"nZL-Pd-jrp.title" = "Striped";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "oEa-7e-zlj"; */
+"oEa-7e-zlj.title" = "Diffuse Light Intensity";
+
+/* Class = "NSMenuItem"; title = "Identifier"; ObjectID = "ofQ-6q-SUf"; */
+"ofQ-6q-SUf.title" = "Identifier";
+
+/* Class = "NSMenuItem"; title = "Charge"; ObjectID = "orw-61-fer"; */
+"orw-61-fer.title" = "Charge";
+
+/* Class = "NSBox"; title = "Atom Lighting"; ObjectID = "osH-Uy-RWH"; */
+"osH-Uy-RWH.title" = "Atom Lighting";
+
+/* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "qxB-3k-fDI"; */
+"qxB-3k-fDI.title" = "Force Field";
+
+/* Class = "NSTextFieldCell"; title = "𝜈"; ObjectID = "r01-Rv-5CI"; */
+"r01-Rv-5CI.title" = "𝜈";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "rce-PZ-Uxh"; */
+"rce-PZ-Uxh.title" = "High Dynamic Range";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "sNS-go-NVl"; */
+"sNS-go-NVl.title" = "High Dynamic Range";
+
+/* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "sbB-IC-Nwj"; */
+"sbB-IC-Nwj.title" = "Selection Style";
+
+/* Class = "NSButtonCell"; title = "Ambient Occlusion"; ObjectID = "sg7-lY-CcT"; */
+"sg7-lY-CcT.title" = "Ambient Occlusion";
+
+/* Class = "NSMenuItem"; title = "Rasmol Modern"; ObjectID = "tB8-Qh-FEQ"; */
+"tB8-Qh-FEQ.title" = "Rasmol Modern";
+
+/* Class = "NSTextFieldCell"; title = "Number of Sides"; ObjectID = "tGv-cl-rkV"; */
+"tGv-cl-rkV.title" = "Number of Sides";
+
+/* Class = "NSMenuItem"; title = "Split"; ObjectID = "tR7-cx-f3N"; */
+"tR7-cx-f3N.title" = "Split";
+
+/* Class = "NSMenuItem"; title = "Vesta"; ObjectID = "toC-zQ-Spl"; */
+"toC-zQ-Spl.title" = "Vesta";
+
+/* Class = "NSMenuItem"; title = "Flat Billboard"; ObjectID = "u3h-os-pF2"; */
+"u3h-os-pF2.title" = "Flat Billboard";
+
+/* Class = "NSMenuItem"; title = "Fancy"; ObjectID = "uwl-dE-KfA"; */
+"uwl-dE-KfA.title" = "Fancy";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Angle z"; ObjectID = "v4w-js-bAc"; */
+"v4w-js-bAc.placeholderString" = "Angle z";
+
+/* Class = "NSTextFieldCell"; title = "Style"; ObjectID = "vDP-ra-J7r"; */
+"vDP-ra-J7r.title" = "Style";
+
+/* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "vI4-zj-6Yx"; */
+"vI4-zj-6Yx.title" = "Worley Noise 3D";
+
+/* Class = "NSButtonCell"; title = "Draw Unit Cell"; ObjectID = "vYr-pF-LLC"; */
+"vYr-pF-LLC.title" = "Draw Unit Cell";
+
+/* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
+"vvr-MF-ufZ.title" = "Top-Right";
+
+/* Class = "NSTextFieldCell"; title = "Opacity"; ObjectID = "wEC-gm-GXl"; */
+"wEC-gm-GXl.title" = "Opacity";
+
+/* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "x58-hu-1Tw"; */
+"x58-hu-1Tw.title" = "Saturation";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Angle y"; ObjectID = "xAe-5S-ReY"; */
+"xAe-5S-ReY.placeholderString" = "Angle y";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "xHF-Xt-vUY"; */
+"xHF-Xt-vUY.title" = "Shininess";
+
+/* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "xHV-Ix-L3w"; */
+"xHV-Ix-L3w.title" = "High Dynamic Range";
+
+/* Class = "NSTextFieldCell"; title = "Scaling"; ObjectID = "xNf-lS-ROp"; */
+"xNf-lS-ROp.title" = "Scaling";
+
+/* Class = "NSTextFieldCell"; title = "Text offset X"; ObjectID = "xmm-Ng-98Y"; */
+"xmm-Ng-98Y.title" = "Text offset X";
+
+/* Class = "NSMenuItem"; title = "Jmol"; ObjectID = "zp7-mL-bWB"; */
+"zp7-mL-bWB.title" = "Jmol";

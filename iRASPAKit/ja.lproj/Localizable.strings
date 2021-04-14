@@ -1,0 +1,12 @@
+"GALLERY" = "ギャラリー";
+"Gallery" = "ギャラリー";
+"LOCAL PROJECTS" = "ローカルプロジェクト";
+"Local projects" = "ローカルプロジェクト";
+"ICLOUD PUBLIC" = "ICLOUD パブリック";
+"iCloud public" = "iCloud パブリック";
+"Could not determine status of iCloud account" = "iCloudアカウントのステータスを確認できませんでした";
+"iCloud account available" = "利用可能なiCloudアカウント";
+"iCloud account authentication error: enable iCloud and iCloud-drive" = "iCloudアカウント認証エラー：iCloudとiCloudドライブを有効にする";
+"iCloud account restricted" = "iCloudアカウントが制限されています";
+"iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "iCloudの公開発見可能性が認められました。あなたはアプリの他のユーザーに（あなたのメールアドレスを通して）発見可能です。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます";
+"iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "iCloudの公開発見可能性は否定されました。アプリの他のユーザーが（メールアドレスを介して）発見することはできません。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます";

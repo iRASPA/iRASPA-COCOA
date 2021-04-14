@@ -1,0 +1,12 @@
+"GALLERY" = "गेलरी";
+"Gallery" = "गेलरी";
+"LOCAL PROJECTS" = "स्थानीय परियोजनाएं";
+"Local projects" = "स्थानीय परियोजनाएं";
+"ICLOUD PUBLIC" = "आईसीयूएलयूडी पब्लिक";
+"iCloud public" = "आईसीयूएलयूडी पब्लिक";
+"Could not determine status of iCloud account" = "ICloud खाते की स्थिति निर्धारित नहीं कर सका";
+"iCloud account available" = "iCloud खाता उपलब्ध है";
+"iCloud account authentication error: enable iCloud and iCloud-drive" = "iCloud खाता प्रमाणीकरण त्रुटि: iCloud और iCloud- ड्राइव सक्षम करें";
+"iCloud account restricted" = "iCloud खाता प्रतिबंधित है";
+"iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "iCloud सार्वजनिक खोज की अनुमति दी गई है। आप ऐप के अन्य उपयोगकर्ताओं के लिए खोज करने योग्य हैं (आपके ईमेल पते के माध्यम से)। इसे आप सेटिंग ऐप, iCloud, iCloud ड्राइव में बदल सकते हैं, ईमेल द्वारा खोज सकते हैं";
+"iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "iCloud सार्वजनिक खोज को अस्वीकार कर दिया गया है। आप एप्लिकेशन के अन्य उपयोगकर्ताओं के लिए (अपने ईमेल पते के माध्यम से) डिस्कोवेबल नहीं हैं। इसे आप सेटिंग ऐप, iCloud, iCloud ड्राइव में बदल सकते हैं, ईमेल द्वारा खोज सकते हैं";
