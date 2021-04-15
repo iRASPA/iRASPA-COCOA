@@ -1,6 +1,6 @@
 
 /* Class = "NSMenuItem"; title = "Invert"; ObjectID = "1YF-gj-uzt"; */
-"1YF-gj-uzt.title" = "Invert";
+"1YF-gj-uzt.title" = "Invertido";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "2Be-nn-F4a"; */
 "2Be-nn-F4a.title" = "Text Cell";
@@ -9,13 +9,13 @@
 "2NZ-GO-iX3.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Remove symmetry"; ObjectID = "3ev-cg-Wwc"; */
-"3ev-cg-Wwc.title" = "Remove symmetry";
+"3ev-cg-Wwc.title" = "Remover simetria";
 
 /* Class = "NSMenuItem"; title = "CIF"; ObjectID = "71t-6P-hE6"; */
 "71t-6P-hE6.title" = "CIF";
 
 /* Class = "NSMenuItem"; title = "Wrap atoms to cell"; ObjectID = "7M8-ac-pMA"; */
-"7M8-ac-pMA.title" = "Wrap atoms to cell";
+"7M8-ac-pMA.title" = "Envolva os átomos na célula";
 
 /* Class = "NSTableColumn"; headerCell.title = "ff id."; ObjectID = "8Bh-oV-6t8"; */
 "8Bh-oV-6t8.headerCell.title" = "ff id.";
@@ -24,55 +24,55 @@
 "9Ye-dF-VRo.headerCell.title" = "el";
 
 /* Class = "NSMenu"; title = "Symmetry"; ObjectID = "Ac0-xf-6ro"; */
-"Ac0-xf-6ro.title" = "Symmetry";
+"Ac0-xf-6ro.title" = "Simetria";
 
 /* Class = "NSMenuItem"; title = "Selection"; ObjectID = "DZz-iK-mHB"; */
-"DZz-iK-mHB.title" = "Selection";
+"DZz-iK-mHB.title" = "Seleção";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "HHk-Gx-Fpn"; */
 "HHk-Gx-Fpn.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "LoO-EL-ifx"; */
-"LoO-EL-ifx.title" = "Add Atom Group";
+"LoO-EL-ifx.title" = "Adicionar Grupo Atom";
 
 /* Class = "NSMenuItem"; title = "mmCIF"; ObjectID = "M4C-ue-e5C"; */
 "M4C-ue-e5C.title" = "mmCIF";
 
 /* Class = "NSMenuItem"; title = "Scroll To"; ObjectID = "MpU-kw-3py"; */
-"MpU-kw-3py.title" = "Scroll To";
+"MpU-kw-3py.title" = "Role para";
 
 /* Class = "NSMenuItem"; title = "XYZ"; ObjectID = "Myp-ax-WUH"; */
 "Myp-ax-WUH.title" = "XYZ";
 
 /* Class = "NSMenu"; title = "Scroll To"; ObjectID = "Ow5-ms-fWY"; */
-"Ow5-ms-fWY.title" = "Scroll To";
+"Ow5-ms-fWY.title" = "Role para";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "PwS-Ps-jhn"; */
 "PwS-Ps-jhn.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Export As"; ObjectID = "SBf-Vu-4GN"; */
-"SBf-Vu-4GN.title" = "Export As";
+"SBf-Vu-4GN.title" = "Exportar como";
 
 /* Class = "NSTextFieldCell"; placeholderString = "net charge"; ObjectID = "XbY-dL-0Ls"; */
-"XbY-dL-0Ls.placeholderString" = "net charge";
+"XbY-dL-0Ls.placeholderString" = "carga líquida";
 
 /* Class = "NSMenuItem"; title = "Visibility"; ObjectID = "bRE-uw-nCc"; */
-"bRE-uw-nCc.title" = "Visibility";
+"bRE-uw-nCc.title" = "Visibilidade";
 
 /* Class = "NSTableColumn"; headerCell.title = "q"; ObjectID = "cHJ-9s-H4f"; */
 "cHJ-9s-H4f.headerCell.title" = "q";
 
 /* Class = "NSMenuItem"; title = "First selected"; ObjectID = "cPa-hL-tU1"; */
-"cPa-hL-tU1.title" = "First selected";
+"cPa-hL-tU1.title" = "Selecionado pela primeira vez";
 
 /* Class = "NSMenuItem"; title = "Symmetry"; ObjectID = "dp9-ww-pqx"; */
-"dp9-ww-pqx.title" = "Symmetry";
+"dp9-ww-pqx.title" = "Simetria";
 
 /* Class = "NSMenuItem"; title = "Add Atom"; ObjectID = "e3g-JW-gej"; */
-"e3g-JW-gej.title" = "Add Atom";
+"e3g-JW-gej.title" = "Adicionar Atom";
 
 /* Class = "NSMenuItem"; title = "Top"; ObjectID = "eYX-Je-wTp"; */
-"eYX-Je-wTp.title" = "Top";
+"eYX-Je-wTp.title" = "Principal";
 
 /* Class = "NSTableColumn"; headerCell.title = "name"; ObjectID = "etS-f2-gyR"; */
 "etS-f2-gyR.headerCell.title" = "name";
@@ -81,22 +81,22 @@
 "fJ5-bP-buy.title" = "PDB";
 
 /* Class = "NSMenuItem"; title = "Match selection"; ObjectID = "fMn-ZP-dZ4"; */
-"fMn-ZP-dZ4.title" = "Match selection";
+"fMn-ZP-dZ4.title" = "Seleção de partidas";
 
 /* Class = "NSMenuItem"; title = "Move to new Movie"; ObjectID = "fmI-pV-gCy"; */
-"fmI-pV-gCy.title" = "Move to new Movie";
+"fmI-pV-gCy.title" = "Mover para o novo filme";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "fya-RH-Hvh"; */
-"fya-RH-Hvh.title" = "Bottom";
+"fya-RH-Hvh.title" = "Inferior";
 
 /* Class = "NSTableColumn"; headerCell.title = "y"; ObjectID = "gam-Tz-1cQ"; */
 "gam-Tz-1cQ.headerCell.title" = "y";
 
 /* Class = "NSMenuItem"; title = "Copy to new Movie"; ObjectID = "h1l-YI-Yex"; */
-"h1l-YI-Yex.title" = "Copy to new Movie";
+"h1l-YI-Yex.title" = "Copiar para novo filme";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "h8W-NQ-h3a"; */
-"h8W-NQ-h3a.placeholderString" = "Filter";
+"h8W-NQ-h3a.placeholderString" = "Filtro";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "hry-LW-0DM"; */
 "hry-LW-0DM.title" = "Box";
@@ -105,25 +105,25 @@
 "iBx-v6-SHn.headerCell.title" = "atom id.";
 
 /* Class = "NSMenuItem"; title = "Find and Impose symmetry"; ObjectID = "j0C-ap-N1A"; */
-"j0C-ap-N1A.title" = "Find and Impose symmetry";
+"j0C-ap-N1A.title" = "Encontre e imponha simetria";
 
 /* Class = "NSMenuItem"; title = "Find primitive"; ObjectID = "j46-Tq-XrE"; */
-"j46-Tq-XrE.title" = "Find primitive";
+"j46-Tq-XrE.title" = "Encontre o primitivo";
 
 /* Class = "NSTextFieldCell"; title = "Net charge"; ObjectID = "k5O-nf-whc"; */
-"k5O-nf-whc.title" = "Net charge";
+"k5O-nf-whc.title" = "Carga líquida";
 
 /* Class = "NSTableColumn"; headerCell.title = "vis"; ObjectID = "njX-Kx-nwX"; */
 "njX-Kx-nwX.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Invert"; ObjectID = "oGN-yG-mfe"; */
-"oGN-yG-mfe.title" = "Invert";
+"oGN-yG-mfe.title" = "Invertido";
 
 /* Class = "NSTableColumn"; headerCell.title = "x"; ObjectID = "ohE-dV-Fg7"; */
 "ohE-dV-Fg7.headerCell.title" = "x";
 
 /* Class = "NSMenuItem"; title = "Last selected"; ObjectID = "qCy-Oi-Hlq"; */
-"qCy-Oi-Hlq.title" = "Last selected";
+"qCy-Oi-Hlq.title" = "Última seleção";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "qJy-Jz-RI1"; */
 "qJy-Jz-RI1.title" = "Text Cell";
@@ -138,28 +138,28 @@
 "tl6-9S-wf8.title" = "VASP POSCAR";
 
 /* Class = "NSMenu"; title = "Export As"; ObjectID = "to4-IQ-4W7"; */
-"to4-IQ-4W7.title" = "Export As";
+"to4-IQ-4W7.title" = "Exportar como";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "txI-SF-Ef5"; */
-"txI-SF-Ef5.title" = "Add Atom Group";
+"txI-SF-Ef5.title" = "Adicionar Grupo Atom";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "wAb-gF-oXG"; */
 "wAb-gF-oXG.title" = "Text Cell";
 
 /* Class = "NSMenu"; title = "Selection"; ObjectID = "wMK-kB-PjB"; */
-"wMK-kB-PjB.title" = "Selection";
+"wMK-kB-PjB.title" = "Seleção";
 
 /* Class = "NSMenuItem"; title = "Flatten Hierarchy"; ObjectID = "wfF-yl-c2A"; */
-"wfF-yl-c2A.title" = "Flatten Hierarchy";
+"wfF-yl-c2A.title" = "Hierarquia plana";
 
 /* Class = "NSMenu"; title = "Visibility"; ObjectID = "yiu-Al-H1i"; */
-"yiu-Al-H1i.title" = "Visibility";
+"yiu-Al-H1i.title" = "Visibilidade";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "ynH-ie-NeJ"; */
 "ynH-ie-NeJ.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Make Super-Cell"; ObjectID = "yoN-UL-IRj"; */
-"yoN-UL-IRj.title" = "Make Super-Cell";
+"yoN-UL-IRj.title" = "Faça Super-Cell";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "zgU-ei-acC"; */
 "zgU-ei-acC.title" = "Text Cell";
