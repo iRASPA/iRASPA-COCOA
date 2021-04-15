@@ -1,51 +1,51 @@
 
 /* Class = "NSMenuItem"; title = "Add Structure project"; ObjectID = "17P-ML-bef"; */
-"17P-ML-bef.title" = "Add Structure project";
+"17P-ML-bef.title" = "構造プロジェクトを追加";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "1Xb-ls-pt9"; */
 "1Xb-ls-pt9.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Compute properties for selection"; ObjectID = "2Jt-NB-sPl"; */
-"2Jt-NB-sPl.title" = "Compute properties for selection";
+"2Jt-NB-sPl.title" = "選択のためのプロパティの計算";
 
 /* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "39L-RF-she"; */
-"39L-RF-she.title" = "Add Molecule";
+"39L-RF-she.title" = "分子を追加する";
 
 /* Class = "NSMenuItem"; title = "Save IZA Database"; ObjectID = "4Wl-iP-Pbc"; */
-"4Wl-iP-Pbc.title" = "Save IZA Database";
+"4Wl-iP-Pbc.title" = "IZAデータベースを保存する";
 
 /* Class = "NSSegmentedCell"; 5km-ay-bRW.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "5km-ay-bRW"; */
-"5km-ay-bRW.ibShadowedToolTips[0]" = "Shows the Project Navigator";
+"5km-ay-bRW.ibShadowedToolTips[0]" = "プロジェクトナビゲータを表示します";
 
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "5vG-bx-ocx"; */
-"5vG-bx-ocx.title" = "Crystal Cylinder";
+"5vG-bx-ocx.title" = "クリスタルシリンダー";
 
 /* Class = "NSMenuItem"; title = "Delete Selection"; ObjectID = "7fp-uc-cJb"; */
-"7fp-uc-cJb.title" = "Delete Selection";
+"7fp-uc-cJb.title" = "選択を削除";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "A2b-v0-dYs"; */
 "A2b-v0-dYs.title" = "Table View Cell";
 
 /* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "DOk-0m-owF"; */
-"DOk-0m-owF.title" = "Add Molecular crystal";
+"DOk-0m-owF.title" = "分子結晶を追加する";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "Dl8-Oq-8Mi"; */
 "Dl8-Oq-8Mi.title" = "Table View Cell";
 
 /* Class = "NSMenuItem"; title = "Add Group project"; ObjectID = "Fyj-yE-B9G"; */
-"Fyj-yE-B9G.title" = "Add Group project";
+"Fyj-yE-B9G.title" = "グループプロジェクトを追加";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "J49-HP-IXW"; */
 "J49-HP-IXW.title" = "Table View Cell";
 
 /* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "JDc-Lg-RBz"; */
-"JDc-Lg-RBz.title" = "Add Protein crystal";
+"JDc-Lg-RBz.title" = "プロテインクリスタルを追加";
 
 /* Class = "NSMenuItem"; title = "Add Project group"; ObjectID = "K8j-Rb-vrc"; */
-"K8j-Rb-vrc.title" = "Add Project group";
+"K8j-Rb-vrc.title" = "プロジェクトグループを追加";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "NQW-mX-NqP"; */
-"NQW-mX-NqP.placeholderString" = "Filter";
+"NQW-mX-NqP.placeholderString" = "フィルタ";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "NtS-cJ-UOq"; */
 "NtS-cJ-UOq.title" = "Box";
@@ -54,40 +54,40 @@
 "O1x-dW-EEr.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Save CoRE MOF DDEC Database"; ObjectID = "O3V-w8-TnC"; */
-"O3V-w8-TnC.title" = "Save CoRE MOF DDEC Database";
+"O3V-w8-TnC.title" = "CoRE MOFDDECデータベースを保存する";
 
 /* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "OOb-3Y-cOg"; */
-"OOb-3Y-cOg.title" = "Add Molecular crystal";
+"OOb-3Y-cOg.title" = "分子結晶を追加する";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "PBb-Do-JMr"; */
 "PBb-Do-JMr.title" = "Box";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
-"PS8-Ne-mbi.ibShadowedToolTips[0]" = "Shows the Project Navigator";
+"PS8-Ne-mbi.ibShadowedToolTips[0]" = "プロジェクトナビゲータを表示します";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[1] = "Shows the Scenes Navigator"; ObjectID = "PS8-Ne-mbi"; */
-"PS8-Ne-mbi.ibShadowedToolTips[1]" = "Shows the Scenes Navigator";
+"PS8-Ne-mbi.ibShadowedToolTips[1]" = "シーンナビゲーターを表示します";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[2] = "Shows the Frames Navigator"; ObjectID = "PS8-Ne-mbi"; */
-"PS8-Ne-mbi.ibShadowedToolTips[2]" = "Shows the Frames Navigator";
+"PS8-Ne-mbi.ibShadowedToolTips[2]" = "フレームナビゲーターを表示します";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
 "QFA-05-Kql.title" = "Box";
 
 /* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
-"RMC-nN-w7D.title" = "Add Protein";
+"RMC-nN-w7D.title" = "タンパク質を追加する";
 
 /* Class = "NSMenuItem"; title = "Crystal polygonal prism"; ObjectID = "RXK-7F-kYl"; */
-"RXK-7F-kYl.title" = "Crystal polygonal prism";
+"RXK-7F-kYl.title" = "水晶五角プリズム";
 
 /* Class = "NSMenuItem"; title = "Crystal ellipsoid"; ObjectID = "RaT-FZ-Ofn"; */
-"RaT-FZ-Ofn.title" = "Crystal ellipsoid";
+"RaT-FZ-Ofn.title" = "結晶楕円体";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "Rj0-p0-TFM"; */
-"Rj0-p0-TFM.title" = "Cylinder";
+"Rj0-p0-TFM.title" = "シリンダー";
 
 /* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "TAX-Oq-9O2"; */
-"TAX-Oq-9O2.title" = "Ellipsoid";
+"TAX-Oq-9O2.title" = "楕円";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
 "Toa-8e-8sy.title" = "Box";
@@ -99,43 +99,43 @@
 "Ypv-d2-rqY.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Load from Cloud/make editable"; ObjectID = "buF-AA-E4m"; */
-"buF-AA-E4m.title" = "Load from Cloud/make editable";
+"buF-AA-E4m.title" = "クラウドからロード/編集可能にする";
 
 /* Class = "NSMenu"; title = "Add Objects"; ObjectID = "d98-LF-qMp"; */
-"d98-LF-qMp.title" = "Add Objects";
+"d98-LF-qMp.title" = "オブジェクトの追加";
 
 /* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "dYh-5W-YT9"; */
-"dYh-5W-YT9.title" = "Add Crystal";
+"dYh-5W-YT9.title" = "クリスタルを追加";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
-"eMF-nr-fbD.title" = "Polygonal prism";
+"eMF-nr-fbD.title" = "五角プリズム";
 
 /* Class = "NSMenuItem"; title = "Save CoREMOF Database"; ObjectID = "guV-7k-U3c"; */
-"guV-7k-U3c.title" = "Save CoREMOF Database";
+"guV-7k-U3c.title" = "CoREMOFデータベースを保存する";
 
 /* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "muR-Z9-sae"; */
-"muR-Z9-sae.title" = "Add Molecule";
+"muR-Z9-sae.title" = "分子を追加する";
 
 /* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "pCe-xU-zfX"; */
-"pCe-xU-zfX.title" = "Add Protein";
+"pCe-xU-zfX.title" = "タンパク質を追加する";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "rpD-Za-uPb"; */
 "rpD-Za-uPb.title" = "Table View Cell";
 
 /* Class = "NSMenuItem"; title = "Add Structure Project"; ObjectID = "rwA-at-3T8"; */
-"rwA-at-3T8.title" = "Add Structure Project";
+"rwA-at-3T8.title" = "構造プロジェクトの追加";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "sxb-xU-PUp"; */
 "sxb-xU-PUp.title" = "Table View Cell";
 
 /* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "uN8-UC-za6"; */
-"uN8-UC-za6.title" = "Add Protein crystal";
+"uN8-UC-za6.title" = "プロテインクリスタルを追加";
 
 /* Class = "NSMenuItem"; title = "Save selected to cloud"; ObjectID = "w2Z-Qn-qLb"; */
-"w2Z-Qn-qLb.title" = "Save selected to cloud";
+"w2Z-Qn-qLb.title" = "選択したものをクラウドに保存";
 
 /* Class = "NSMenuItem"; title = "Add Objects"; ObjectID = "xGp-L1-szQ"; */
-"xGp-L1-szQ.title" = "Add Objects";
+"xGp-L1-szQ.title" = "オブジェクトの追加";
 
 /* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "xX5-m0-Lkz"; */
-"xX5-m0-Lkz.title" = "Add Crystal";
+"xX5-m0-Lkz.title" = "クリスタルを追加";

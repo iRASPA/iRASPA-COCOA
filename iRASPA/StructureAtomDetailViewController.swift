@@ -350,9 +350,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           return localview
         }
       }
-      else
+      else if let tableColumn = tableColumn
       {
-        switch(tableColumn!.identifier)
+        switch(tableColumn.identifier)
         {
         case NSUserInterfaceItemIdentifier(rawValue: "atomVisibilityColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomVisibility"), owner: self) as? NSTableCellView
