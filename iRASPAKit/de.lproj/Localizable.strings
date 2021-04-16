@@ -1,0 +1,12 @@
+"GALLERY" = "GALERIE";
+"Gallery" = "Galerie";
+"LOCAL PROJECTS" = "LOKALE PROJEKTE";
+"Local projects" = "Lokale Projekte";
+"ICLOUD PUBLIC" = "ICLOUD ÖFFENTLICHKEIT";
+"iCloud public" = "iCloud öffentlich";
+"Could not determine status of iCloud account" = "Der Status des iCloud-Kontos konnte nicht ermittelt werden";
+"iCloud account available" = "iCloud-Konto verfügbar";
+"iCloud account authentication error: enable iCloud and iCloud-drive" = "Fehler bei der Authentifizierung des iCloud-Kontos: Aktivieren Sie iCloud und iCloud-Laufwerk";
+"iCloud account restricted" = "iCloud-Konto eingeschränkt";
+"iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "Die öffentliche Auffindbarkeit von iCloud wurde gewährt. Sie sind (über Ihre E-Mail-Adresse) für andere Benutzer der App erkennbar. Sie können dies in der Einstellungs-App, iCloud, iCloud-Laufwerk ändern, per E-Mail entdecken.";
+"iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "Die öffentliche Auffindbarkeit von iCloud wurde verweigert. Sie sind (über Ihre E-Mail-Adresse) für andere Benutzer der App nicht erkennbar. Sie können dies in der Einstellungs-App, iCloud, iCloud-Laufwerk ändern, per E-Mail entdecken.";
