@@ -1,0 +1,51 @@
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "0rs-gb-TNq"; */
+"0rs-gb-TNq.title" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "1a6-zX-TZh"; */
+"1a6-zX-TZh.title" = "Text Cell";
+
+/* Class = "NSTableColumn"; headerCell.title = "vis"; ObjectID = "7uB-Nb-mkk"; */
+"7uB-Nb-mkk.headerCell.title" = "vis";
+
+/* Class = "NSMenuItem"; title = "Type bonds"; ObjectID = "9rV-cN-bzl"; */
+"9rV-cN-bzl.title" = "Art bindungen";
+
+/* Class = "NSTableColumn"; headerCell.title = "length"; ObjectID = "DvX-tf-DBg"; */
+"DvX-tf-DBg.headerCell.title" = "length";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "EdV-9a-T5U"; */
+"EdV-9a-T5U.title" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Fvp-lB-wZd"; */
+"Fvp-lB-wZd.title" = "Text Cell";
+
+/* Class = "NSTableColumn"; headerCell.title = "type"; ObjectID = "H3C-4S-esH"; */
+"H3C-4S-esH.headerCell.title" = "type";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "HM6-fh-qvs"; */
+"HM6-fh-qvs.title" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Jka-TF-hn8"; */
+"Jka-TF-hn8.title" = "Text Cell";
+
+/* Class = "NSTableColumn"; headerCell.title = "atom ids."; ObjectID = "JlI-7Q-4ku"; */
+"JlI-7Q-4ku.headerCell.title" = "atom ids.";
+
+/* Class = "NSTableColumn"; headerCell.title = "el(B)"; ObjectID = "MEg-vK-jym"; */
+"MEg-vK-jym.headerCell.title" = "el(B)";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "VEA-fx-CwG"; */
+"VEA-fx-CwG.title" = "Text Cell";
+
+/* Class = "NSTableColumn"; headerCell.title = "el(A)"; ObjectID = "cgZ-aN-w1n"; */
+"cgZ-aN-w1n.headerCell.title" = "el(A)";
+
+/* Class = "NSTableColumn"; headerCell.title = "id"; ObjectID = "dMm-6E-Gds"; */
+"dMm-6E-Gds.headerCell.title" = "id";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "oBx-QK-c2U"; */
+"oBx-QK-c2U.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Recompute Bonds"; ObjectID = "w5W-4P-qvW"; */
+"w5W-4P-qvW.title" = "Berechnen bindungen";
