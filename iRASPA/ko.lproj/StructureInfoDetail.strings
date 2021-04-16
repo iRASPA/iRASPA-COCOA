@@ -1,12 +1,12 @@
 
 /* Class = "NSMenuItem"; title = "All positive"; ObjectID = "07j-yA-XWL"; */
-"07j-yA-XWL.title" = "All positive";
+"07j-yA-XWL.title" = "모두 긍정적";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
-"43t-f2-d0i.placeholderString" = "Institute name";
+"43t-f2-d0i.placeholderString" = "연구소 이름";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "444-5s-8Su"; */
-"444-5s-8Su.placeholderString" = "Unknown";
+"444-5s-8Su.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; 444-5s-8Su.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "444-5s-8Su"; */
 "444-5s-8Su.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
@@ -15,34 +15,34 @@
 "4EP-SI-3P9.title" = "Item 1";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "4I2-J0-a1F"; */
-"4I2-J0-a1F.title" = "Unknown";
+"4I2-J0-a1F.title" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; title = "Affiliation"; ObjectID = "4KL-dd-ODO"; */
-"4KL-dd-ODO.title" = "Affiliation";
+"4KL-dd-ODO.title" = "입회";
 
 /* Class = "NSTextFieldCell"; title = "DOI"; ObjectID = "4z1-VY-1Pd"; */
 "4z1-VY-1Pd.title" = "DOI";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "6KC-hH-6j8"; */
-"6KC-hH-6j8.placeholderString" = "Unknown";
+"6KC-hH-6j8.placeholderString" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "7Ft-CF-yt2"; */
-"7Ft-CF-yt2.title" = "Force Field";
+"7Ft-CF-yt2.title" = "역장";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "8lJ-Qe-9Bj"; */
-"8lJ-Qe-9Bj.title" = "Unknown";
+"8lJ-Qe-9Bj.title" = "알 수 없는";
 
 /* Class = "NSMenuItem"; title = "Many Negative Eigenvalues"; ObjectID = "ANg-Kl-3lM"; */
-"ANg-Kl-3lM.title" = "Many Negative Eigenvalues";
+"ANg-Kl-3lM.title" = "많은 음의 고유 값";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "ASc-zU-QqD"; */
-"ASc-zU-QqD.placeholderString" = "Unknown";
+"ASc-zU-QqD.placeholderString" = "알 수 없는";
 
 /* Class = "NSMenuItem"; title = "Some Small Negative Values"; ObjectID = "C5C-Je-5WX"; */
-"C5C-Je-5WX.title" = "Some Small Negative Values";
+"C5C-Je-5WX.title" = "작은 음수 값";
 
 /* Class = "NSTextFieldCell"; placeholderString = "City"; ObjectID = "Cvy-Hd-HUC"; */
-"Cvy-Hd-HUC.placeholderString" = "City";
+"Cvy-Hd-HUC.placeholderString" = "시티";
 
 /* Class = "NSMenuItem"; title = "Bar"; ObjectID = "DBX-tl-g65"; */
 "DBX-tl-g65.title" = "Bar";
@@ -54,151 +54,151 @@
 "DXa-ef-f0b.title" = "Researcher ID";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "EMw-Fn-YYe"; */
-"EMw-Fn-YYe.placeholderString" = "Unknown";
+"EMw-Fn-YYe.placeholderString" = "알 수 없는";
 
 /* Class = "NSMenuItem"; title = "Fixed Volume; Shape Change"; ObjectID = "Etd-c0-eiU"; */
-"Etd-c0-eiU.title" = "Fixed Volume; Shape Change";
+"Etd-c0-eiU.title" = "고정 볼륨; 모양 변경";
 
 /* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
-"FgA-hr-Zjg.title" = "Details";
+"FgA-hr-Zjg.title" = "세부";
 
 /* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "FkD-oS-zpo"; */
 "FkD-oS-zpo.title" = "Item 2";
 
 /* Class = "NSMenuItem"; title = "Experimental"; ObjectID = "G2E-hb-9HS"; */
-"G2E-hb-9HS.title" = "Experimental";
+"G2E-hb-9HS.title" = "실험적";
 
 /* Class = "NSTextFieldCell"; placeholderString = "max"; ObjectID = "GOg-L9-MUC"; */
 "GOg-L9-MUC.placeholderString" = "max";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "GbD-Bi-g8J"; */
-"GbD-Bi-g8J.placeholderString" = "Unknown";
+"GbD-Bi-g8J.placeholderString" = "알 수 없는";
 
 /* Class = "NSMenuItem"; title = "Conjugate Gradient"; ObjectID = "H8k-8m-eEZ"; */
-"H8k-8m-eEZ.title" = "Conjugate Gradient";
+"H8k-8m-eEZ.title" = "켤레 기울기";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "HQa-wI-SvD"; */
-"HQa-wI-SvD.title" = "None";
+"HQa-wI-SvD.title" = "없음";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "IDD-Ef-45v"; */
-"IDD-Ef-45v.title" = "Algorithm";
+"IDD-Ef-45v.title" = "연산";
 
 /* Class = "NSMenuItem"; title = "Baker's Algorithm"; ObjectID = "JIL-cM-jP3"; */
 "JIL-cM-jP3.title" = "Baker's Algorithm";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Last name"; ObjectID = "JJr-Hi-ZjS"; */
-"JJr-Hi-ZjS.placeholderString" = "Last name";
+"JJr-Hi-ZjS.placeholderString" = "성";
 
 /* Class = "NSTextFieldCell"; title = "Limits"; ObjectID = "Jff-Rs-w9O"; */
-"Jff-Rs-w9O.title" = "Limits";
+"Jff-Rs-w9O.title" = "제한";
 
 /* Class = "NSBox"; title = "Unit Cell"; ObjectID = "KEX-co-NaZ"; */
-"KEX-co-NaZ.title" = "Unit Cell";
+"KEX-co-NaZ.title" = "단위 세포";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_min"; ObjectID = "KRx-ka-ed4"; */
 "KRx-ka-ed4.placeholderString" = "h_min";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Kyz-vh-wLM"; */
-"Kyz-vh-wLM.title" = "Force Field Details";
+"Kyz-vh-wLM.title" = "역장 세부 정보";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Information"; ObjectID = "L9b-nA-LZg"; */
-"L9b-nA-LZg.title" = "Chemical Information";
+"L9b-nA-LZg.title" = "화학 정보";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "LRn-Q5-NIv"; */
-"LRn-Q5-NIv.title" = "Algorithm";
+"LRn-Q5-NIv.title" = "연산";
 
 /* Class = "NSTabViewItem"; label = "View"; ObjectID = "Lsj-0L-zLx"; */
-"Lsj-0L-zLx.label" = "View";
+"Lsj-0L-zLx.label" = "전망";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Type"; ObjectID = "M4G-j9-ni3"; */
-"M4G-j9-ni3.title" = "Radiation Type";
+"M4G-j9-ni3.title" = "방사선 유형";
 
 /* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "Simulated Annealing";
+"MCu-aJ-XRY.title" = "시뮬레이션 된 어닐링";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
-"MYm-ia-kRD.title" = "Simplex";
+"MYm-ia-kRD.title" = "단순";
 
 /* Class = "NSTextFieldCell"; title = "Eigenvalues"; ObjectID = "Mz0-GD-bP9"; */
-"Mz0-GD-bP9.title" = "Eigenvalues";
+"Mz0-GD-bP9.title" = "고유 값";
 
 /* Class = "NSTextFieldCell"; title = "Article Authors"; ObjectID = "NEs-Kg-SVJ"; */
-"NEs-Kg-SVJ.title" = "Article Authors";
+"NEs-Kg-SVJ.title" = "기사 작성자";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Sum"; ObjectID = "Niu-c7-eAz"; */
-"Niu-c7-eAz.title" = "Chemical Formula Sum";
+"Niu-c7-eAz.title" = "화학식 합계";
 
 /* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "OEK-pW-ejo"; */
-"OEK-pW-ejo.title" = "Software Package";
+"OEK-pW-ejo.title" = "소프트웨어 패키지";
 
 /* Class = "NSTextFieldCell"; placeholderString = "l_min"; ObjectID = "P5f-Dc-mAR"; */
 "P5f-Dc-mAR.placeholderString" = "l_min";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Moiety"; ObjectID = "QLD-HG-16U"; */
-"QLD-HG-16U.title" = "Chemical Formula Moiety";
+"QLD-HG-16U.title" = "화학식 모이어 티";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "Qbd-YO-NWQ"; */
-"Qbd-YO-NWQ.placeholderString" = "Unknown";
+"Qbd-YO-NWQ.placeholderString" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "R5l-j2-8rL"; */
-"R5l-j2-8rL.title" = "Force Field Details";
+"R5l-j2-8rL.title" = "역장 세부 정보";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
-"USD-gk-tal.placeholderString" = "Unknown";
+"USD-gk-tal.placeholderString" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "UdZ-E6-hGm"; */
-"UdZ-E6-hGm.title" = "Force Field";
+"UdZ-E6-hGm.title" = "역장";
 
 /* Class = "NSTextFieldCell"; title = "Software"; ObjectID = "VSi-Bz-b4f"; */
-"VSi-Bz-b4f.title" = "Software";
+"VSi-Bz-b4f.title" = "소프트웨어";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "VW9-bX-xkL"; */
-"VW9-bX-xkL.placeholderString" = "Unknown";
+"VW9-bX-xkL.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; VW9-bX-xkL.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "VW9-bX-xkL"; */
 "VW9-bX-xkL.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
 
 /* Class = "NSTextFieldCell"; placeholderString = "First name"; ObjectID = "Vtz-4v-Kmv"; */
-"Vtz-4v-Kmv.placeholderString" = "First name";
+"Vtz-4v-Kmv.placeholderString" = "이름";
 
 /* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "Vvv-Ri-fwX"; */
-"Vvv-Ri-fwX.title" = "Number";
+"Vvv-Ri-fwX.title" = "번호";
 
 /* Class = "NSTextFieldCell"; title = "R Indices (All Data)"; ObjectID = "WBA-sr-NKP"; */
-"WBA-sr-NKP.title" = "R Indices (All Data)";
+"WBA-sr-NKP.title" = "R 인덱스 (모든 데이터)";
 
 /* Class = "NSTextFieldCell"; title = "Article Title"; ObjectID = "Wih-6z-Wmy"; */
-"Wih-6z-Wmy.title" = "Article Title";
+"Wih-6z-Wmy.title" = "기사 제목";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "X0T-Gc-sil"; */
-"X0T-Gc-sil.placeholderString" = "Unknown";
+"X0T-Gc-sil.placeholderString" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Wavelength"; ObjectID = "Xx6-F7-2Db"; */
-"Xx6-F7-2Db.title" = "Radiation Wavelength";
+"Xx6-F7-2Db.title" = "방사선 파장";
 
 /* Class = "NSTextFieldCell"; title = "Journal Title"; ObjectID = "Zmo-LS-hfO"; */
-"Zmo-LS-hfO.title" = "Journal Title";
+"Zmo-LS-hfO.title" = "저널 제목";
 
 /* Class = "NSMenuItem"; title = "Kelvin"; ObjectID = "Zqh-RB-jIF"; */
-"Zqh-RB-jIF.title" = "Kelvin";
+"Zqh-RB-jIF.title" = "켈빈";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "a8y-Dh-rHh"; */
 "a8y-Dh-rHh.title" = "Text Cell";
 
 /* Class = "NSTextFieldCell"; title = "Creation"; ObjectID = "aGv-FE-SDq"; */
-"aGv-FE-SDq.title" = "Creation";
+"aGv-FE-SDq.title" = "창조";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "au5-Fr-4P5"; */
-"au5-Fr-4P5.placeholderString" = "Unknown";
+"au5-Fr-4P5.placeholderString" = "알 수 없는";
 
 /* Class = "NSMenuItem"; title = "Genetic Algorithm"; ObjectID = "b6n-Qn-6ik"; */
-"b6n-Qn-6ik.title" = "Genetic Algorithm";
+"b6n-Qn-6ik.title" = "유전 알고리즘";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.placeholderString" = "Unknown";
+"b8q-Dr-Dt5.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "Experimental";
+"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "실험적";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[1] = "Ab initio"; ObjectID = "b8q-Dr-Dt5"; */
 "b8q-Dr-Dt5.ibShadowedObjectValues[1]" = "Ab initio";
@@ -252,13 +252,13 @@
 "b8q-Dr-Dt5.ibShadowedObjectValues[17]" = "Openbabel";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "bgc-3c-w1h"; */
-"bgc-3c-w1h.placeholderString" = "Unknown";
+"bgc-3c-w1h.placeholderString" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; title = "Final R indices [I>2sigma(I)]"; ObjectID = "bw9-xG-XoD"; */
-"bw9-xG-XoD.title" = "Final R indices [I>2sigma(I)]";
+"bw9-xG-XoD.title" = "최종 R 인덱스 [I>2sigma(I)]";
 
 /* Class = "NSBox"; title = "Atomic Positions"; ObjectID = "cgg-LX-ohN"; */
-"cgg-LX-ohN.title" = "Atomic Positions";
+"cgg-LX-ohN.title" = "원자 위치";
 
 /* Class = "NSTextFieldCell"; placeholderString = "A-0000-0000"; ObjectID = "ciB-v0-3ow"; */
 "ciB-v0-3ow.placeholderString" = "A-0000-0000";
@@ -273,31 +273,31 @@
 "d8y-By-uMu.title" = "ORCHID ID";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Name Systematic"; ObjectID = "df5-Wf-bLj"; */
-"df5-Wf-bLj.title" = "Chemical Name Systematic";
+"df5-Wf-bLj.title" = "화학명 체계적";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0000-0000-0000-0000"; ObjectID = "eA1-Nk-SW5"; */
 "eA1-Nk-SW5.placeholderString" = "0000-0000-0000-0000";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "eef-6i-4me"; */
-"eef-6i-4me.title" = "Unknown";
+"eef-6i-4me.title" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Faculty"; ObjectID = "fCm-83-aYg"; */
-"fCm-83-aYg.placeholderString" = "Faculty";
+"fCm-83-aYg.placeholderString" = "학부";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_max"; ObjectID = "fRC-r2-uGt"; */
 "fRC-r2-uGt.placeholderString" = "h_max";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "hJX-yG-tEQ"; */
-"hJX-yG-tEQ.title" = "Date";
+"hJX-yG-tEQ.title" = "데이트";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "hf1-Cm-G3M"; */
-"hf1-Cm-G3M.title" = "Unknown";
+"hf1-Cm-G3M.title" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "hx2-K2-gHI"; */
-"hx2-K2-gHI.placeholderString" = "Unknown";
+"hx2-K2-gHI.placeholderString" = "알 수 없는";
 
 /* Class = "NSMenuItem"; title = "Simulation"; ObjectID = "iWi-p0-Jvt"; */
-"iWi-p0-Jvt.title" = "Simulation";
+"iWi-p0-Jvt.title" = "시뮬레이션";
 
 /* Class = "NSTextFieldCell"; placeholderString = "k_min"; ObjectID = "ikt-1W-AxJ"; */
 "ikt-1W-AxJ.placeholderString" = "k_min";
@@ -306,19 +306,19 @@
 "ioC-pe-oXb.placeholderString" = "l_max";
 
 /* Class = "NSMenuItem"; title = "Pascal"; ObjectID = "j7h-V3-vWj"; */
-"j7h-V3-vWj.title" = "Pascal";
+"j7h-V3-vWj.title" = "파스칼";
 
 /* Class = "NSMenuItem"; title = "Quasi-Newton"; ObjectID = "jIx-ec-cc5"; */
 "jIx-ec-cc5.title" = "Quasi-Newton";
 
 /* Class = "NSMenuItem"; title = "Celsius"; ObjectID = "jxw-bd-YgS"; */
-"jxw-bd-YgS.title" = "Celsius";
+"jxw-bd-YgS.title" = "섭씨";
 
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "k9a-VC-uKW"; */
-"k9a-VC-uKW.title" = "Volume";
+"k9a-VC-uKW.title" = "음량";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.placeholderString" = "Unknown";
+"kf2-0x-3Vl.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "kf2-0x-3Vl"; */
 "kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab Initio";
@@ -342,46 +342,46 @@
 "kzO-x9-s2F.placeholderString" = "min";
 
 /* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "Relax Unit Cell";
+"lIz-1D-3Ai.title" = "릴렉스 유닛 셀";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
-"lKv-hk-525.title" = "Pressure";
+"lKv-hk-525.title" = "압력";
 
 /* Class = "NSMenuItem"; title = "Fixed Cell"; ObjectID = "lh2-7H-hGC"; */
-"lh2-7H-hGC.title" = "Fixed Cell";
+"lh2-7H-hGC.title" = "고정 셀";
 
 /* Class = "NSTextFieldCell"; title = "Method"; ObjectID = "m81-kt-8rG"; */
-"m81-kt-8rG.title" = "Method";
+"m81-kt-8rG.title" = "방법";
 
 /* Class = "NSTextFieldCell"; title = "Temperature"; ObjectID = "mR9-kH-oL9"; */
-"mR9-kH-oL9.title" = "Temperature";
+"mR9-kH-oL9.title" = "온도";
 
 /* Class = "NSTextFieldCell"; placeholderString = "University or Company name"; ObjectID = "nZ6-yf-S1l"; */
-"nZ6-yf-S1l.placeholderString" = "University or Company name";
+"nZ6-yf-S1l.placeholderString" = "대학 또는 회사 이름";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "nb3-dm-cDY"; */
-"nb3-dm-cDY.placeholderString" = "Unknown";
+"nb3-dm-cDY.placeholderString" = "알 수 없는";
 
 /* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "oND-jh-tZA"; */
-"oND-jh-tZA.title" = "Atomic Charges";
+"oND-jh-tZA.title" = "원자 전하";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "pD1-Es-0pE"; */
-"pD1-Es-0pE.placeholderString" = "Unknown";
+"pD1-Es-0pE.placeholderString" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; title = "Creator"; ObjectID = "pWj-ey-8li"; */
-"pWj-ey-8li.title" = "Creator";
+"pWj-ey-8li.title" = "창조자";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "qFO-wb-T6b"; */
-"qFO-wb-T6b.title" = "None";
+"qFO-wb-T6b.title" = "없음";
 
 /* Class = "NSTextFieldCell"; title = "Measurement Theta"; ObjectID = "qbj-K1-xUb"; */
-"qbj-K1-xUb.title" = "Measurement Theta";
+"qbj-K1-xUb.title" = "측정 세타";
 
 /* Class = "NSTextFieldCell"; title = "Goodness-of-fit on F²"; ObjectID = "qmj-e3-XI9"; */
-"qmj-e3-XI9.title" = "Goodness-of-fit on F²";
+"qmj-e3-XI9.title" = "F²에 대한 적합도";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.placeholderString" = "Unknown";
+"sRA-iw-pcK.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[0] = "Journal of the American Chemical Society"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[0]" = "Journal of the American Chemical Society";
@@ -393,13 +393,13 @@
 "sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Change"; ObjectID = "sah-qX-FWQ"; */
-"sah-qX-FWQ.title" = "Fixed Angles; Isotropic Edge-Length Change";
+"sah-qX-FWQ.title" = "고정 각도; 등방성 가장자리 길이 변경";
 
 /* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
-"seM-pw-mPI.title" = "Database Codes";
+"seM-pw-mPI.title" = "데이터베이스 코드";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.placeholderString" = "Unknown";
+"tBE-VU-7Q1.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[0] = "REPEAT"; ObjectID = "tBE-VU-7Q1"; */
 "tBE-VU-7Q1.ibShadowedObjectValues[0]" = "REPEAT";
@@ -441,25 +441,25 @@
 "tBE-VU-7Q1.ibShadowedObjectValues[12]" = "Qeq - Wilmer, Kim, Snurr 2012";
 
 /* Class = "NSTextFieldCell"; title = "Citation"; ObjectID = "tC6-Zq-7Lv"; */
-"tC6-Zq-7Lv.title" = "Citation";
+"tC6-Zq-7Lv.title" = "소환";
 
 /* Class = "NSMenuItem"; title = "Steepest Descent"; ObjectID = "tWh-do-MeZ"; */
-"tWh-do-MeZ.title" = "Steepest Descent";
+"tWh-do-MeZ.title" = "가파른 하강";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "uMx-Zh-Bqv"; */
-"uMx-Zh-Bqv.title" = "Date";
+"uMx-Zh-Bqv.title" = "데이트";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "uRa-2J-GGz"; */
-"uRa-2J-GGz.placeholderString" = "Unknown";
+"uRa-2J-GGz.placeholderString" = "알 수 없는";
 
 /* Class = "NSTextFieldCell"; title = "Author"; ObjectID = "uaM-oQ-eaJ"; */
-"uaM-oQ-eaJ.title" = "Author";
+"uaM-oQ-eaJ.title" = "저자";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Change"; ObjectID = "ucW-XP-BfZ"; */
-"ucW-XP-BfZ.title" = "Fixed Angles; Anisotropic Edge-Length Change";
+"ucW-XP-BfZ.title" = "고정 각도; 이방성 가장자리 길이 변경";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.placeholderString" = "Unknown";
+"urK-zQ-9a7.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "urK-zQ-9a7"; */
 "urK-zQ-9a7.ibShadowedObjectValues[0]" = "Ab Initio";
@@ -480,13 +480,13 @@
 "urK-zQ-9a7.ibShadowedObjectValues[5]" = "MM4";
 
 /* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "utU-RL-9NT"; */
-"utU-RL-9NT.title" = "Some Signficantly Negative Values";
+"utU-RL-9NT.title" = "일부 현저히 부정적인 값";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "wMv-kw-520"; */
-"wMv-kw-520.placeholderString" = "Unknown";
+"wMv-kw-520.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.placeholderString" = "Unknown";
+"wrO-uI-kgr.placeholderString" = "알 수 없는";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "wrO-uI-kgr"; */
 "wrO-uI-kgr.ibShadowedObjectValues[0]" = "Experimental";
@@ -504,22 +504,22 @@
 "wrO-uI-kgr.ibShadowedObjectValues[4]" = "CP2K";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[5] = "Classical"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[5]" = "Classical";
+"wrO-uI-kgr.ibShadowedObjectValues[5]" = "고전";
 
 /* Class = "NSMenuItem"; title = "Newton-Raphson"; ObjectID = "xEm-NF-Owh"; */
 "xEm-NF-Owh.title" = "Newton-Raphson";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Middle Name"; ObjectID = "yR3-PF-JAn"; */
-"yR3-PF-JAn.placeholderString" = "Middle Name";
+"yR3-PF-JAn.placeholderString" = "중간 이름";
 
 /* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Change"; ObjectID = "ylL-90-vOx"; */
-"ylL-90-vOx.title" = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Change";
+"ylL-90-vOx.title" = "고정 𝝰- 𝝱; 및 𝝲- 각도 및 가장자리 길이 변경";
 
 /* Class = "NSTextFieldCell"; title = "Number of Reflections"; ObjectID = "z73-uc-ODJ"; */
-"z73-uc-ODJ.title" = "Number of Reflections";
+"z73-uc-ODJ.title" = "반사 수";
 
 /* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "zKZ-Xu-F5z"; */
-"zKZ-Xu-F5z.title" = "Software Package";
+"zKZ-Xu-F5z.title" = "소프트웨어 패키지";
 
 /* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Change"; ObjectID = "zUt-yS-ax8"; */
-"zUt-yS-ax8.title" = "Cell and Edge-Lengths Change";
+"zUt-yS-ax8.title" = "셀 및 가장자리 길이 변경";

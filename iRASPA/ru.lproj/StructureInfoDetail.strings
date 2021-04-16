@@ -1,12 +1,12 @@
 
 /* Class = "NSMenuItem"; title = "All positive"; ObjectID = "07j-yA-XWL"; */
-"07j-yA-XWL.title" = "All positive";
+"07j-yA-XWL.title" = "Все положительное";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
-"43t-f2-d0i.placeholderString" = "Institute name";
+"43t-f2-d0i.placeholderString" = "Название института";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "444-5s-8Su"; */
-"444-5s-8Su.placeholderString" = "Unknown";
+"444-5s-8Su.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; 444-5s-8Su.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "444-5s-8Su"; */
 "444-5s-8Su.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
@@ -15,34 +15,34 @@
 "4EP-SI-3P9.title" = "Item 1";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "4I2-J0-a1F"; */
-"4I2-J0-a1F.title" = "Unknown";
+"4I2-J0-a1F.title" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; title = "Affiliation"; ObjectID = "4KL-dd-ODO"; */
-"4KL-dd-ODO.title" = "Affiliation";
+"4KL-dd-ODO.title" = "Принадлежность";
 
 /* Class = "NSTextFieldCell"; title = "DOI"; ObjectID = "4z1-VY-1Pd"; */
 "4z1-VY-1Pd.title" = "DOI";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "6KC-hH-6j8"; */
-"6KC-hH-6j8.placeholderString" = "Unknown";
+"6KC-hH-6j8.placeholderString" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "7Ft-CF-yt2"; */
-"7Ft-CF-yt2.title" = "Force Field";
+"7Ft-CF-yt2.title" = "Силовое поле";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "8lJ-Qe-9Bj"; */
-"8lJ-Qe-9Bj.title" = "Unknown";
+"8lJ-Qe-9Bj.title" = "Неизвестный";
 
 /* Class = "NSMenuItem"; title = "Many Negative Eigenvalues"; ObjectID = "ANg-Kl-3lM"; */
-"ANg-Kl-3lM.title" = "Many Negative Eigenvalues";
+"ANg-Kl-3lM.title" = "Множество отрицательных собственных значений";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "ASc-zU-QqD"; */
-"ASc-zU-QqD.placeholderString" = "Unknown";
+"ASc-zU-QqD.placeholderString" = "Неизвестный";
 
 /* Class = "NSMenuItem"; title = "Some Small Negative Values"; ObjectID = "C5C-Je-5WX"; */
-"C5C-Je-5WX.title" = "Some Small Negative Values";
+"C5C-Je-5WX.title" = "Некоторые небольшие отрицательные значения";
 
 /* Class = "NSTextFieldCell"; placeholderString = "City"; ObjectID = "Cvy-Hd-HUC"; */
-"Cvy-Hd-HUC.placeholderString" = "City";
+"Cvy-Hd-HUC.placeholderString" = "Город";
 
 /* Class = "NSMenuItem"; title = "Bar"; ObjectID = "DBX-tl-g65"; */
 "DBX-tl-g65.title" = "Bar";
@@ -54,151 +54,151 @@
 "DXa-ef-f0b.title" = "Researcher ID";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "EMw-Fn-YYe"; */
-"EMw-Fn-YYe.placeholderString" = "Unknown";
+"EMw-Fn-YYe.placeholderString" = "Неизвестный";
 
 /* Class = "NSMenuItem"; title = "Fixed Volume; Shape Change"; ObjectID = "Etd-c0-eiU"; */
-"Etd-c0-eiU.title" = "Fixed Volume; Shape Change";
+"Etd-c0-eiU.title" = "Фиксированный объем; Изменение формы";
 
 /* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
-"FgA-hr-Zjg.title" = "Details";
+"FgA-hr-Zjg.title" = "Подробности";
 
 /* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "FkD-oS-zpo"; */
 "FkD-oS-zpo.title" = "Item 2";
 
 /* Class = "NSMenuItem"; title = "Experimental"; ObjectID = "G2E-hb-9HS"; */
-"G2E-hb-9HS.title" = "Experimental";
+"G2E-hb-9HS.title" = "Экспериментальный";
 
 /* Class = "NSTextFieldCell"; placeholderString = "max"; ObjectID = "GOg-L9-MUC"; */
 "GOg-L9-MUC.placeholderString" = "max";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "GbD-Bi-g8J"; */
-"GbD-Bi-g8J.placeholderString" = "Unknown";
+"GbD-Bi-g8J.placeholderString" = "Неизвестный";
 
 /* Class = "NSMenuItem"; title = "Conjugate Gradient"; ObjectID = "H8k-8m-eEZ"; */
-"H8k-8m-eEZ.title" = "Conjugate Gradient";
+"H8k-8m-eEZ.title" = "Сопряженный градиент";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "HQa-wI-SvD"; */
-"HQa-wI-SvD.title" = "None";
+"HQa-wI-SvD.title" = "Никто";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "IDD-Ef-45v"; */
-"IDD-Ef-45v.title" = "Algorithm";
+"IDD-Ef-45v.title" = "Алгоритм";
 
 /* Class = "NSMenuItem"; title = "Baker's Algorithm"; ObjectID = "JIL-cM-jP3"; */
 "JIL-cM-jP3.title" = "Baker's Algorithm";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Last name"; ObjectID = "JJr-Hi-ZjS"; */
-"JJr-Hi-ZjS.placeholderString" = "Last name";
+"JJr-Hi-ZjS.placeholderString" = "Фамилия";
 
 /* Class = "NSTextFieldCell"; title = "Limits"; ObjectID = "Jff-Rs-w9O"; */
-"Jff-Rs-w9O.title" = "Limits";
+"Jff-Rs-w9O.title" = "Пределы";
 
 /* Class = "NSBox"; title = "Unit Cell"; ObjectID = "KEX-co-NaZ"; */
-"KEX-co-NaZ.title" = "Unit Cell";
+"KEX-co-NaZ.title" = "Ячейка";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_min"; ObjectID = "KRx-ka-ed4"; */
 "KRx-ka-ed4.placeholderString" = "h_min";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Kyz-vh-wLM"; */
-"Kyz-vh-wLM.title" = "Force Field Details";
+"Kyz-vh-wLM.title" = "Детали силового поля";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Information"; ObjectID = "L9b-nA-LZg"; */
-"L9b-nA-LZg.title" = "Chemical Information";
+"L9b-nA-LZg.title" = "Химическая информация";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "LRn-Q5-NIv"; */
-"LRn-Q5-NIv.title" = "Algorithm";
+"LRn-Q5-NIv.title" = "Алгоритм";
 
 /* Class = "NSTabViewItem"; label = "View"; ObjectID = "Lsj-0L-zLx"; */
-"Lsj-0L-zLx.label" = "View";
+"Lsj-0L-zLx.label" = "Вид";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Type"; ObjectID = "M4G-j9-ni3"; */
-"M4G-j9-ni3.title" = "Radiation Type";
+"M4G-j9-ni3.title" = "Тип излучения";
 
 /* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "Simulated Annealing";
+"MCu-aJ-XRY.title" = "Имитация отжига";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
-"MYm-ia-kRD.title" = "Simplex";
+"MYm-ia-kRD.title" = "Симплекс";
 
 /* Class = "NSTextFieldCell"; title = "Eigenvalues"; ObjectID = "Mz0-GD-bP9"; */
-"Mz0-GD-bP9.title" = "Eigenvalues";
+"Mz0-GD-bP9.title" = "Собственные значения";
 
 /* Class = "NSTextFieldCell"; title = "Article Authors"; ObjectID = "NEs-Kg-SVJ"; */
-"NEs-Kg-SVJ.title" = "Article Authors";
+"NEs-Kg-SVJ.title" = "Авторы статей";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Sum"; ObjectID = "Niu-c7-eAz"; */
-"Niu-c7-eAz.title" = "Chemical Formula Sum";
+"Niu-c7-eAz.title" = "Химическая формула сумма";
 
 /* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "OEK-pW-ejo"; */
-"OEK-pW-ejo.title" = "Software Package";
+"OEK-pW-ejo.title" = "Пакет программного обеспечения";
 
 /* Class = "NSTextFieldCell"; placeholderString = "l_min"; ObjectID = "P5f-Dc-mAR"; */
 "P5f-Dc-mAR.placeholderString" = "l_min";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Moiety"; ObjectID = "QLD-HG-16U"; */
-"QLD-HG-16U.title" = "Chemical Formula Moiety";
+"QLD-HG-16U.title" = "Химическая формула";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "Qbd-YO-NWQ"; */
-"Qbd-YO-NWQ.placeholderString" = "Unknown";
+"Qbd-YO-NWQ.placeholderString" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "R5l-j2-8rL"; */
-"R5l-j2-8rL.title" = "Force Field Details";
+"R5l-j2-8rL.title" = "Детали силового поля";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
-"USD-gk-tal.placeholderString" = "Unknown";
+"USD-gk-tal.placeholderString" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "UdZ-E6-hGm"; */
-"UdZ-E6-hGm.title" = "Force Field";
+"UdZ-E6-hGm.title" = "Силовое поле";
 
 /* Class = "NSTextFieldCell"; title = "Software"; ObjectID = "VSi-Bz-b4f"; */
-"VSi-Bz-b4f.title" = "Software";
+"VSi-Bz-b4f.title" = "Программное обеспечение";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "VW9-bX-xkL"; */
-"VW9-bX-xkL.placeholderString" = "Unknown";
+"VW9-bX-xkL.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; VW9-bX-xkL.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "VW9-bX-xkL"; */
 "VW9-bX-xkL.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
 
 /* Class = "NSTextFieldCell"; placeholderString = "First name"; ObjectID = "Vtz-4v-Kmv"; */
-"Vtz-4v-Kmv.placeholderString" = "First name";
+"Vtz-4v-Kmv.placeholderString" = "Имя";
 
 /* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "Vvv-Ri-fwX"; */
-"Vvv-Ri-fwX.title" = "Number";
+"Vvv-Ri-fwX.title" = "Число";
 
 /* Class = "NSTextFieldCell"; title = "R Indices (All Data)"; ObjectID = "WBA-sr-NKP"; */
-"WBA-sr-NKP.title" = "R Indices (All Data)";
+"WBA-sr-NKP.title" = "Индексы R (все данные)";
 
 /* Class = "NSTextFieldCell"; title = "Article Title"; ObjectID = "Wih-6z-Wmy"; */
-"Wih-6z-Wmy.title" = "Article Title";
+"Wih-6z-Wmy.title" = "Название статьи";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "X0T-Gc-sil"; */
-"X0T-Gc-sil.placeholderString" = "Unknown";
+"X0T-Gc-sil.placeholderString" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Wavelength"; ObjectID = "Xx6-F7-2Db"; */
-"Xx6-F7-2Db.title" = "Radiation Wavelength";
+"Xx6-F7-2Db.title" = "Длина волны излучения";
 
 /* Class = "NSTextFieldCell"; title = "Journal Title"; ObjectID = "Zmo-LS-hfO"; */
-"Zmo-LS-hfO.title" = "Journal Title";
+"Zmo-LS-hfO.title" = "Название журнала";
 
 /* Class = "NSMenuItem"; title = "Kelvin"; ObjectID = "Zqh-RB-jIF"; */
-"Zqh-RB-jIF.title" = "Kelvin";
+"Zqh-RB-jIF.title" = "Кельвин";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "a8y-Dh-rHh"; */
 "a8y-Dh-rHh.title" = "Text Cell";
 
 /* Class = "NSTextFieldCell"; title = "Creation"; ObjectID = "aGv-FE-SDq"; */
-"aGv-FE-SDq.title" = "Creation";
+"aGv-FE-SDq.title" = "Создание";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "au5-Fr-4P5"; */
-"au5-Fr-4P5.placeholderString" = "Unknown";
+"au5-Fr-4P5.placeholderString" = "Неизвестный";
 
 /* Class = "NSMenuItem"; title = "Genetic Algorithm"; ObjectID = "b6n-Qn-6ik"; */
-"b6n-Qn-6ik.title" = "Genetic Algorithm";
+"b6n-Qn-6ik.title" = "Генетический алгоритм";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.placeholderString" = "Unknown";
+"b8q-Dr-Dt5.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "Experimental";
+"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "Экспериментальный";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[1] = "Ab initio"; ObjectID = "b8q-Dr-Dt5"; */
 "b8q-Dr-Dt5.ibShadowedObjectValues[1]" = "Ab initio";
@@ -252,13 +252,13 @@
 "b8q-Dr-Dt5.ibShadowedObjectValues[17]" = "Openbabel";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "bgc-3c-w1h"; */
-"bgc-3c-w1h.placeholderString" = "Unknown";
+"bgc-3c-w1h.placeholderString" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; title = "Final R indices [I>2sigma(I)]"; ObjectID = "bw9-xG-XoD"; */
-"bw9-xG-XoD.title" = "Final R indices [I>2sigma(I)]";
+"bw9-xG-XoD.title" = "Конечные индексы R [I>2sigma(I)]";
 
 /* Class = "NSBox"; title = "Atomic Positions"; ObjectID = "cgg-LX-ohN"; */
-"cgg-LX-ohN.title" = "Atomic Positions";
+"cgg-LX-ohN.title" = "Атомные позиции";
 
 /* Class = "NSTextFieldCell"; placeholderString = "A-0000-0000"; ObjectID = "ciB-v0-3ow"; */
 "ciB-v0-3ow.placeholderString" = "A-0000-0000";
@@ -273,31 +273,31 @@
 "d8y-By-uMu.title" = "ORCHID ID";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Name Systematic"; ObjectID = "df5-Wf-bLj"; */
-"df5-Wf-bLj.title" = "Chemical Name Systematic";
+"df5-Wf-bLj.title" = "Систематическое химическое название";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0000-0000-0000-0000"; ObjectID = "eA1-Nk-SW5"; */
 "eA1-Nk-SW5.placeholderString" = "0000-0000-0000-0000";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "eef-6i-4me"; */
-"eef-6i-4me.title" = "Unknown";
+"eef-6i-4me.title" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Faculty"; ObjectID = "fCm-83-aYg"; */
-"fCm-83-aYg.placeholderString" = "Faculty";
+"fCm-83-aYg.placeholderString" = "Факультет";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_max"; ObjectID = "fRC-r2-uGt"; */
 "fRC-r2-uGt.placeholderString" = "h_max";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "hJX-yG-tEQ"; */
-"hJX-yG-tEQ.title" = "Date";
+"hJX-yG-tEQ.title" = "Дата";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "hf1-Cm-G3M"; */
-"hf1-Cm-G3M.title" = "Unknown";
+"hf1-Cm-G3M.title" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "hx2-K2-gHI"; */
-"hx2-K2-gHI.placeholderString" = "Unknown";
+"hx2-K2-gHI.placeholderString" = "Неизвестный";
 
 /* Class = "NSMenuItem"; title = "Simulation"; ObjectID = "iWi-p0-Jvt"; */
-"iWi-p0-Jvt.title" = "Simulation";
+"iWi-p0-Jvt.title" = "Моделирование";
 
 /* Class = "NSTextFieldCell"; placeholderString = "k_min"; ObjectID = "ikt-1W-AxJ"; */
 "ikt-1W-AxJ.placeholderString" = "k_min";
@@ -306,19 +306,19 @@
 "ioC-pe-oXb.placeholderString" = "l_max";
 
 /* Class = "NSMenuItem"; title = "Pascal"; ObjectID = "j7h-V3-vWj"; */
-"j7h-V3-vWj.title" = "Pascal";
+"j7h-V3-vWj.title" = "Паскаль";
 
 /* Class = "NSMenuItem"; title = "Quasi-Newton"; ObjectID = "jIx-ec-cc5"; */
 "jIx-ec-cc5.title" = "Quasi-Newton";
 
 /* Class = "NSMenuItem"; title = "Celsius"; ObjectID = "jxw-bd-YgS"; */
-"jxw-bd-YgS.title" = "Celsius";
+"jxw-bd-YgS.title" = "Цельсия";
 
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "k9a-VC-uKW"; */
-"k9a-VC-uKW.title" = "Volume";
+"k9a-VC-uKW.title" = "Объем";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.placeholderString" = "Unknown";
+"kf2-0x-3Vl.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "kf2-0x-3Vl"; */
 "kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab Initio";
@@ -342,46 +342,46 @@
 "kzO-x9-s2F.placeholderString" = "min";
 
 /* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "Relax Unit Cell";
+"lIz-1D-3Ai.title" = "Расслабляющая элементарная ячейка";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
-"lKv-hk-525.title" = "Pressure";
+"lKv-hk-525.title" = "Давление";
 
 /* Class = "NSMenuItem"; title = "Fixed Cell"; ObjectID = "lh2-7H-hGC"; */
-"lh2-7H-hGC.title" = "Fixed Cell";
+"lh2-7H-hGC.title" = "Фиксированная ячейка";
 
 /* Class = "NSTextFieldCell"; title = "Method"; ObjectID = "m81-kt-8rG"; */
-"m81-kt-8rG.title" = "Method";
+"m81-kt-8rG.title" = "Методика";
 
 /* Class = "NSTextFieldCell"; title = "Temperature"; ObjectID = "mR9-kH-oL9"; */
-"mR9-kH-oL9.title" = "Temperature";
+"mR9-kH-oL9.title" = "Температура";
 
 /* Class = "NSTextFieldCell"; placeholderString = "University or Company name"; ObjectID = "nZ6-yf-S1l"; */
-"nZ6-yf-S1l.placeholderString" = "University or Company name";
+"nZ6-yf-S1l.placeholderString" = "Название университета или компании";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "nb3-dm-cDY"; */
-"nb3-dm-cDY.placeholderString" = "Unknown";
+"nb3-dm-cDY.placeholderString" = "Неизвестный";
 
 /* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "oND-jh-tZA"; */
-"oND-jh-tZA.title" = "Atomic Charges";
+"oND-jh-tZA.title" = "Атомные заряды";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "pD1-Es-0pE"; */
-"pD1-Es-0pE.placeholderString" = "Unknown";
+"pD1-Es-0pE.placeholderString" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; title = "Creator"; ObjectID = "pWj-ey-8li"; */
-"pWj-ey-8li.title" = "Creator";
+"pWj-ey-8li.title" = "Создатель";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "qFO-wb-T6b"; */
-"qFO-wb-T6b.title" = "None";
+"qFO-wb-T6b.title" = "Никто";
 
 /* Class = "NSTextFieldCell"; title = "Measurement Theta"; ObjectID = "qbj-K1-xUb"; */
-"qbj-K1-xUb.title" = "Measurement Theta";
+"qbj-K1-xUb.title" = "Измерение Тет";
 
 /* Class = "NSTextFieldCell"; title = "Goodness-of-fit on F²"; ObjectID = "qmj-e3-XI9"; */
-"qmj-e3-XI9.title" = "Goodness-of-fit on F²";
+"qmj-e3-XI9.title" = "Степень соответствия на F²";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.placeholderString" = "Unknown";
+"sRA-iw-pcK.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[0] = "Journal of the American Chemical Society"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[0]" = "Journal of the American Chemical Society";
@@ -393,13 +393,13 @@
 "sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Change"; ObjectID = "sah-qX-FWQ"; */
-"sah-qX-FWQ.title" = "Fixed Angles; Isotropic Edge-Length Change";
+"sah-qX-FWQ.title" = "Фиксированные углы; Изотропное изменение длины кромки";
 
 /* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
-"seM-pw-mPI.title" = "Database Codes";
+"seM-pw-mPI.title" = "Коды базы данных";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.placeholderString" = "Unknown";
+"tBE-VU-7Q1.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[0] = "REPEAT"; ObjectID = "tBE-VU-7Q1"; */
 "tBE-VU-7Q1.ibShadowedObjectValues[0]" = "REPEAT";
@@ -441,25 +441,25 @@
 "tBE-VU-7Q1.ibShadowedObjectValues[12]" = "Qeq - Wilmer, Kim, Snurr 2012";
 
 /* Class = "NSTextFieldCell"; title = "Citation"; ObjectID = "tC6-Zq-7Lv"; */
-"tC6-Zq-7Lv.title" = "Citation";
+"tC6-Zq-7Lv.title" = "Цитата";
 
 /* Class = "NSMenuItem"; title = "Steepest Descent"; ObjectID = "tWh-do-MeZ"; */
-"tWh-do-MeZ.title" = "Steepest Descent";
+"tWh-do-MeZ.title" = "Крутой спуск";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "uMx-Zh-Bqv"; */
-"uMx-Zh-Bqv.title" = "Date";
+"uMx-Zh-Bqv.title" = "Дата";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "uRa-2J-GGz"; */
-"uRa-2J-GGz.placeholderString" = "Unknown";
+"uRa-2J-GGz.placeholderString" = "Неизвестный";
 
 /* Class = "NSTextFieldCell"; title = "Author"; ObjectID = "uaM-oQ-eaJ"; */
-"uaM-oQ-eaJ.title" = "Author";
+"uaM-oQ-eaJ.title" = "Автор";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Change"; ObjectID = "ucW-XP-BfZ"; */
-"ucW-XP-BfZ.title" = "Fixed Angles; Anisotropic Edge-Length Change";
+"ucW-XP-BfZ.title" = "Фиксированные углы; Анизотропное изменение длины кромки";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.placeholderString" = "Unknown";
+"urK-zQ-9a7.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "urK-zQ-9a7"; */
 "urK-zQ-9a7.ibShadowedObjectValues[0]" = "Ab Initio";
@@ -480,16 +480,16 @@
 "urK-zQ-9a7.ibShadowedObjectValues[5]" = "MM4";
 
 /* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "utU-RL-9NT"; */
-"utU-RL-9NT.title" = "Some Signficantly Negative Values";
+"utU-RL-9NT.title" = "Некоторые существенно отрицательные значения";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "wMv-kw-520"; */
-"wMv-kw-520.placeholderString" = "Unknown";
+"wMv-kw-520.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.placeholderString" = "Unknown";
+"wrO-uI-kgr.placeholderString" = "Неизвестный";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[0]" = "Experimental";
+"wrO-uI-kgr.ibShadowedObjectValues[0]" = "Экспериментальный";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[1] = "Gaussian"; ObjectID = "wrO-uI-kgr"; */
 "wrO-uI-kgr.ibShadowedObjectValues[1]" = "Gaussian";
@@ -504,22 +504,22 @@
 "wrO-uI-kgr.ibShadowedObjectValues[4]" = "CP2K";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[5] = "Classical"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[5]" = "Classical";
+"wrO-uI-kgr.ibShadowedObjectValues[5]" = "Классический";
 
 /* Class = "NSMenuItem"; title = "Newton-Raphson"; ObjectID = "xEm-NF-Owh"; */
 "xEm-NF-Owh.title" = "Newton-Raphson";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Middle Name"; ObjectID = "yR3-PF-JAn"; */
-"yR3-PF-JAn.placeholderString" = "Middle Name";
+"yR3-PF-JAn.placeholderString" = "Второе имя";
 
 /* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Change"; ObjectID = "ylL-90-vOx"; */
-"ylL-90-vOx.title" = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Change";
+"ylL-90-vOx.title" = "Фиксированный 𝝰- 𝝱; и 𝝲-углы и длина кромки изменяются";
 
 /* Class = "NSTextFieldCell"; title = "Number of Reflections"; ObjectID = "z73-uc-ODJ"; */
-"z73-uc-ODJ.title" = "Number of Reflections";
+"z73-uc-ODJ.title" = "Количество отражений";
 
 /* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "zKZ-Xu-F5z"; */
-"zKZ-Xu-F5z.title" = "Software Package";
+"zKZ-Xu-F5z.title" = "Пакет программного обеспечения";
 
 /* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Change"; ObjectID = "zUt-yS-ax8"; */
-"zUt-yS-ax8.title" = "Cell and Edge-Lengths Change";
+"zUt-yS-ax8.title" = "Изменение длины ячейки и ребра";
