@@ -327,10 +327,10 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let node: SKAtomTreeNode = item as? SKAtomTreeNode
     {
       let atomNode: SKAsymmetricAtom = node.representedObject
-      if (atomNode.symmetryType == .container)
+      if (node.isGroup)
       {
         let localview: NSView? = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomGroupRow"), owner: self)
-        
+
         // group-row
         if tableColumn == nil
         {
@@ -444,10 +444,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool
   {
-    
     if let node = item as? SKAtomTreeNode
     {
-      return node.representedObject.symmetryType == .container
+      return node.isGroup
     }
     
     return false

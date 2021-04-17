@@ -3,3 +3,5 @@
 "Autosaving...." = "Autosaving....";
 "Rotate (%@)" = "Rotate (%@)";
 "Loading (%@)" = "Loading (%@)";
+"Select a top-level directory" = "Select a top-level directory";
+"Remove permission" = "Remove permission";

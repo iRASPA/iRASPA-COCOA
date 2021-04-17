@@ -3,3 +3,5 @@
 "Autosaving...." = "Otomatik kaydetme....";
 "Rotate (%@)" = "Döndür (%@)";
 "Loading (%@)" = "Yükleniyor (%@)";
+"Select a top-level directory" = "Üst düzey bir dizin seçin";
+"Remove permission" = "İzni kaldır";

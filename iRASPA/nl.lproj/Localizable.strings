@@ -3,3 +3,5 @@
 "Autosaving...." = "Automatisch bewaren....";
 "Rotate (%@)" = "Roteer (%@)";
 "Loading (%@)" = "Bezig met laden (%@)";
+"Select a top-level directory" = "Selecteer een hoogste-niveau directory";
+"Remove permission" = "Toestemming verwijderen";
