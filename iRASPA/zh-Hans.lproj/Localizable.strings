@@ -3,3 +3,5 @@
 "Autosaving...." = "自动保存....";
 "Rotate (%@)" = "旋转 (%@)";
 "Loading (%@)" = "装货 (%@)";
+"Select a top-level directory" = "选择一个顶级目录";
+"Remove permission" = "删除权限";

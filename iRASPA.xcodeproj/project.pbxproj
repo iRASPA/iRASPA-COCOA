@@ -1523,6 +1523,7 @@
 		934B76681EF93914004A1ABA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Master.storyboard; sourceTree = "<group>"; };
 		935105541F16558B002F424C /* int4x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = int4x3.swift; sourceTree = "<group>"; };
 		9354FE491F45A6A400155DC3 /* CartesianNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartesianNumberFormatter.swift; sourceTree = "<group>"; };
+		9357FA33262B244300F42F47 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Preferences.strings; sourceTree = "<group>"; };
 		93584CC11FFFB9AE005F01A7 /* AcknowledgedLicenses.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AcknowledgedLicenses.pdf; sourceTree = "<group>"; };
 		93584CC31FFFBB94005F01A7 /* AcknowledgedLicenses.pages */ = {isa = PBXFileReference; lastKnownFileType = file; path = AcknowledgedLicenses.pages; sourceTree = "<group>"; };
 		93584CC51FFFC485005F01A7 /* Common.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Common.metal; sourceTree = "<group>"; };
@@ -5492,6 +5493,7 @@
 				930505322628130C00E0CC6B /* ko */,
 				93050553262816A700E0CC6B /* pt-PT */,
 				930505742629FEEB00E0CC6B /* de */,
+				9357FA33262B244300F42F47 /* en */,
 			);
 			name = Preferences.storyboard;
 			sourceTree = "<group>";

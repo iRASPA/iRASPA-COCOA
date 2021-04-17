@@ -3,3 +3,5 @@
 "Autosaving...." = "Automatisch-speichern....";
 "Rotate (%@)" = "Drehen (%@)";
 "Loading (%@)" = "Wird geladen (%@)";
+"Select a top-level directory" = "Wählen Sie ein Verzeichnis der obersten Ebene aus";
+"Remove permission" = "Berechtigung entfernen";

@@ -3,3 +3,5 @@
 "Autosaving...." = "الحفظ التلقائي....";
 "Rotate (%@)" = "استدارة (%@)";
 "Loading (%@)" = "جار التحميل (%@)";
+"Select a top-level directory" = "حدد دليل المستوى الأعلى";
+"Remove permission" = "إزالة الإذن";

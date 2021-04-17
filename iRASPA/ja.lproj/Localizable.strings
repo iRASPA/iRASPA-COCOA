@@ -3,3 +3,5 @@
 "Autosaving...." = "自動保存....";
 "Rotate (%@)" = "回転する (%@)";
 "Loading (%@)" = "読み込み中 (%@)";
+"Select a top-level directory" = "トップレベルのディレクトリを選択します";
+"Remove permission" = "許可を削除する";
