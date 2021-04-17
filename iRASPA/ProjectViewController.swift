@@ -2668,7 +2668,8 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       if switchToNewProject
       {
-        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: treeController.selectedTreeNode?.infoPanelIcon, message: "Loading \(treeController.selectedTreeNode?.displayName ?? "")"))
+        let message: String = String.localizedStringWithFormat(NSLocalizedString("Loading (%@)", comment: ""), treeController.selectedTreeNode?.displayName ?? "")
+        self.windowController?.infoPanel?.showInfoItem(item: MaterialsInfoPanelItemView(image: treeController.selectedTreeNode?.infoPanelIcon, message: message))
       }
       
       self.projectOutlineView?.enumerateAvailableRowViews({ (rowView, row) in
