@@ -75,7 +75,7 @@
 "eYX-Je-wTp.title" = "oben";
 
 /* Class = "NSTableColumn"; headerCell.title = "name"; ObjectID = "etS-f2-gyR"; */
-"etS-f2-gyR.headerCell.title" = "name";
+"etS-f2-gyR.headerCell.title" = "Name";
 
 /* Class = "NSMenuItem"; title = "PDB"; ObjectID = "fJ5-bP-buy"; */
 "fJ5-bP-buy.title" = "PDB";
