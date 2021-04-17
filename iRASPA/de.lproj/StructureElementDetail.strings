@@ -3,22 +3,22 @@
 "2cf-Hu-YKT.title" = "Å";
 
 /* Class = "NSTextFieldCell"; title = "Color"; ObjectID = "8BT-Kg-fhV"; */
-"8BT-Kg-fhV.title" = "Color";
+"8BT-Kg-fhV.title" = "Farbe";
 
 /* Class = "NSTextFieldCell"; title = "Covalent Radius"; ObjectID = "8e2-Cm-y6m"; */
-"8e2-Cm-y6m.title" = "Covalent Radius";
+"8e2-Cm-y6m.title" = "Kovalenter Radius";
 
 /* Class = "NSTextFieldCell"; title = "Element"; ObjectID = "As1-ca-pPh"; */
 "As1-ca-pPh.title" = "Element";
 
 /* Class = "NSTextFieldCell"; title = "Atomic Mass"; ObjectID = "Au8-cE-UXV"; */
-"Au8-cE-UXV.title" = "Atomic Mass";
+"Au8-cE-UXV.title" = "Atommasse";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "E2Y-V4-8rp"; */
 "E2Y-V4-8rp.title" = "Å";
 
 /* Class = "NSTextFieldCell"; title = "User-defined Radius"; ObjectID = "HW9-vP-rgD"; */
-"HW9-vP-rgD.title" = "User-defined Radius";
+"HW9-vP-rgD.title" = "Benutzerdefinierter Radius";
 
 /* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[0] = "Item 1"; ObjectID = "JMk-0p-M2g"; */
 "JMk-0p-M2g.ibShadowedObjectValues[0]" = "Item 1";
@@ -39,7 +39,7 @@
 "MPA-12-IGt.ibShadowedObjectValues[2]" = "Item 3";
 
 /* Class = "NSMenuItem"; title = "Insert new type"; ObjectID = "OfD-wL-UX4"; */
-"OfD-wL-UX4.title" = "Insert new type";
+"OfD-wL-UX4.title" = "Neuen Typ einfügen";
 
 /* Class = "NSTextFieldCell"; title = "amu"; ObjectID = "Ong-v4-ie0"; */
 "Ong-v4-ie0.title" = "amu";
@@ -48,7 +48,7 @@
 "Pzr-4b-xG5.title" = "Å";
 
 /* Class = "NSTextFieldCell"; title = "Force field"; ObjectID = "RAy-Tn-Q9h"; */
-"RAy-Tn-Q9h.title" = "Force field";
+"RAy-Tn-Q9h.title" = "Kraftfeld";
 
 /* Class = "NSTextFieldCell"; title = "C"; ObjectID = "RN5-9P-5zL"; */
 "RN5-9P-5zL.title" = "C";
@@ -57,22 +57,22 @@
 "Rhd-q6-XIy.title" = "Text Cell";
 
 /* Class = "NSTextFieldCell"; title = "Atom Visibility"; ObjectID = "V2o-qv-t9c"; */
-"V2o-qv-t9c.title" = "Atom Visibility";
+"V2o-qv-t9c.title" = "Atomsichtbarkeit";
 
 /* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "XSg-KN-Gvs"; */
-"XSg-KN-Gvs.title" = "Number";
+"XSg-KN-Gvs.title" = "Nummer";
 
 /* Class = "NSTextFieldCell"; title = "Sigma"; ObjectID = "Zuq-uJ-RRd"; */
 "Zuq-uJ-RRd.title" = "Sigma";
 
 /* Class = "NSTextFieldCell"; title = "Group"; ObjectID = "a5h-Uu-h84"; */
-"a5h-Uu-h84.title" = "Group";
+"a5h-Uu-h84.title" = "Gruppe";
 
 /* Class = "NSTextFieldCell"; title = "Atomic Radius"; ObjectID = "d0R-zc-cge"; */
-"d0R-zc-cge.title" = "Atomic Radius";
+"d0R-zc-cge.title" = "Atomradius";
 
 /* Class = "NSTextFieldCell"; title = "Triple Bond Covalent Radius"; ObjectID = "dAx-rW-eh4"; */
-"dAx-rW-eh4.title" = "Triple Bond Covalent Radius";
+"dAx-rW-eh4.title" = "Kovalenter Dreifachbindungsradius";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "ed7-vv-cRQ"; */
 "ed7-vv-cRQ.title" = "Å";
@@ -87,19 +87,19 @@
 "hbT-eZ-OBK.title" = "Å";
 
 /* Class = "NSBox"; title = "Possible Oxidation States"; ObjectID = "nb3-UI-e9y"; */
-"nb3-UI-e9y.title" = "Possible Oxidation States";
+"nb3-UI-e9y.title" = "Mögliche Oxidationszustände";
 
 /* Class = "NSTextFieldCell"; title = "Van der Waals Radius"; ObjectID = "prv-DF-MqL"; */
 "prv-DF-MqL.title" = "Van der Waals Radius";
 
 /* Class = "NSTextFieldCell"; title = "Carbon"; ObjectID = "rF4-Eu-aR8"; */
-"rF4-Eu-aR8.title" = "Carbon";
+"rF4-Eu-aR8.title" = "Kohlenstoff";
 
 /* Class = "NSTextFieldCell"; title = "Period"; ObjectID = "vGB-CZ-myl"; */
-"vGB-CZ-myl.title" = "Period";
+"vGB-CZ-myl.title" = "Zeitraum";
 
 /* Class = "NSMenuItem"; title = "Delete type"; ObjectID = "yJO-k1-No9"; */
-"yJO-k1-No9.title" = "Delete type";
+"yJO-k1-No9.title" = "Typ löschen";
 
 /* Class = "NSTextFieldCell"; title = "1"; ObjectID = "z20-4j-Y98"; */
 "z20-4j-Y98.title" = "1";
