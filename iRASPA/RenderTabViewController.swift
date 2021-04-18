@@ -137,44 +137,44 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
    
     self.view.menu = NSMenu(title: "test")
-    self.view.menu?.insertItem(withTitle: "Reset camera distance", action: #selector(resetCamera), keyEquivalent: "", at: 0)
-    let camerProjectionMenuItem = NSMenuItem(title: "Camera projection", action: nil, keyEquivalent: "")
+    self.view.menu?.insertItem(withTitle: NSLocalizedString("Reset Camera Distance", comment: ""), action: #selector(resetCamera), keyEquivalent: "", at: 0)
+    let camerProjectionMenuItem = NSMenuItem(title: NSLocalizedString("Reset Camera Distance", comment: ""), action: nil, keyEquivalent: "")
     
-    let resetMenuItem = NSMenuItem(title: "Reset camera to", action: nil, keyEquivalent: "")
+    let resetMenuItem = NSMenuItem(title: NSLocalizedString("Reset Camera To", comment: ""), action: nil, keyEquivalent: "")
     self.view.menu?.insertItem(resetMenuItem, at: 1)
     
     self.view.menu?.insertItem(camerProjectionMenuItem, at: 2)
    
-    cameraBoundingBoxMenuItem = NSMenuItem(title: "Show bounding box", action: #selector(toggleBoundingBox), keyEquivalent: "")
+    cameraBoundingBoxMenuItem = NSMenuItem(title: NSLocalizedString("Show Bounding Box", comment: ""), action: #selector(toggleBoundingBox), keyEquivalent: "")
     cameraBoundingBoxMenuItem?.state = .off
     if let cameraBoundingBoxMenuItem = cameraBoundingBoxMenuItem
     {
       self.view.menu?.insertItem(cameraBoundingBoxMenuItem, at: 3)
     }
     
-    self.view.menu?.insertItem(withTitle: "Compute AO high-quality", action: #selector(computeHighQualityAmbientOcclusion), keyEquivalent: "", at: 4)
+    self.view.menu?.insertItem(withTitle: NSLocalizedString("Compute AO High-Quality", comment: ""), action: #selector(computeHighQualityAmbientOcclusion), keyEquivalent: "", at: 4)
     
-    let exportMenuItem = NSMenuItem(title: "Export to", action: nil, keyEquivalent: "")
+    let exportMenuItem = NSMenuItem(title: NSLocalizedString("Export To", comment: ""), action: nil, keyEquivalent: "")
     self.view.menu?.insertItem(exportMenuItem, at: 5)
     
     
-    let projectionMenu: NSMenu = NSMenu(title: "Camera projection")
-    projectionMenu.insertItem(withTitle: "Orthographic", action: #selector(setCameraToOrthographic), keyEquivalent: "", at: 0)
-    projectionMenu.insertItem(withTitle: "Perspective", action: #selector(setCameraToPerspective), keyEquivalent: "", at: 1)
+    let projectionMenu: NSMenu = NSMenu(title: NSLocalizedString("Camera Projection", comment: ""))
+    projectionMenu.insertItem(withTitle: NSLocalizedString("Orthographic", comment: ""), action: #selector(setCameraToOrthographic), keyEquivalent: "", at: 0)
+    projectionMenu.insertItem(withTitle: NSLocalizedString("Perspective", comment: ""), action: #selector(setCameraToPerspective), keyEquivalent: "", at: 1)
     camerProjectionMenuItem.submenu = projectionMenu
     
-    let resetMenu: NSMenu = NSMenu(title: "Camera projection")
-    resetMenu.insertItem(withTitle: "Z-direction", action: #selector(resetCameraToZ), keyEquivalent: "", at: 0)
-    resetMenu.insertItem(withTitle: "Y-direction", action: #selector(resetCameraToY), keyEquivalent: "", at: 1)
-    resetMenu.insertItem(withTitle: "X-direction", action: #selector(resetCameraToX), keyEquivalent: "", at: 2)
+    let resetMenu: NSMenu = NSMenu(title: NSLocalizedString("Camera Reset To Direction", comment: ""))
+    resetMenu.insertItem(withTitle: NSLocalizedString("Z-Direction", comment: ""), action: #selector(resetCameraToZ), keyEquivalent: "", at: 0)
+    resetMenu.insertItem(withTitle: NSLocalizedString("Y-Direction", comment: ""), action: #selector(resetCameraToY), keyEquivalent: "", at: 1)
+    resetMenu.insertItem(withTitle: NSLocalizedString("X-Direction", comment: ""), action: #selector(resetCameraToX), keyEquivalent: "", at: 2)
     resetMenuItem.submenu = resetMenu
     
-    let exportMenu: NSMenu = NSMenu(title: "Export to")
-    exportMenu.insertItem(withTitle: "PDB", action: #selector(exportToPDB), keyEquivalent: "", at: 0)
-    exportMenu.insertItem(withTitle: "mmCIF", action: #selector(exportToMMCIF), keyEquivalent: "", at: 1)
-    exportMenu.insertItem(withTitle: "CIF", action: #selector(exportToCIF), keyEquivalent: "", at: 2)
-    exportMenu.insertItem(withTitle: "XYZ", action: #selector(exportToXYZ), keyEquivalent: "", at: 3)
-    exportMenu.insertItem(withTitle: "VASP POSCAR", action: #selector(exportToVASP), keyEquivalent: "", at: 4)
+    let exportMenu: NSMenu = NSMenu(title: NSLocalizedString("Export To", comment: ""))
+    exportMenu.insertItem(withTitle: NSLocalizedString("PDB", comment: ""), action: #selector(exportToPDB), keyEquivalent: "", at: 0)
+    exportMenu.insertItem(withTitle: NSLocalizedString("mmCIF", comment: ""), action: #selector(exportToMMCIF), keyEquivalent: "", at: 1)
+    exportMenu.insertItem(withTitle: NSLocalizedString("CIF", comment: ""), action: #selector(exportToCIF), keyEquivalent: "", at: 2)
+    exportMenu.insertItem(withTitle: NSLocalizedString("XYZ", comment: ""), action: #selector(exportToXYZ), keyEquivalent: "", at: 3)
+    exportMenu.insertItem(withTitle: NSLocalizedString("VASP POSCAR", comment: ""), action: #selector(exportToVASP), keyEquivalent: "", at: 4)
     exportMenuItem.submenu = exportMenu
     
 /*

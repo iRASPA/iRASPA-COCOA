@@ -802,17 +802,17 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     {
       switch(button.tag)
       {
-      case 10:
+      case 2:
         renderCamera.resetDirectionType = RKCamera.ResetDirectionType.minus_X
-      case 11:
+      case 3:
         renderCamera.resetDirectionType = RKCamera.ResetDirectionType.minus_Y
-      case 12:
+      case 4:
         renderCamera.resetDirectionType = RKCamera.ResetDirectionType.minus_Z
-      case 13:
+      case 5:
         renderCamera.resetDirectionType = RKCamera.ResetDirectionType.plus_X
-      case 14:
+      case 6:
         renderCamera.resetDirectionType = RKCamera.ResetDirectionType.plus_Y
-      case 15:
+      case 7:
         renderCamera.resetDirectionType = RKCamera.ResetDirectionType.plus_Z
       default:
         LogQueue.shared.error(destination: self.windowController, message: "Undefined camera-direction in 'changedCameraDefaultViewPosition'")
@@ -853,9 +853,9 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     {
       switch(sender.tag)
       {
-      case 20:
+      case 9:
         renderCamera.setCameraToPerspective()
-      case 21:
+      case 10:
         renderCamera.setCameraToOrthographic()
       default:
         fatalError("Unknown camera projection")
@@ -1410,6 +1410,43 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     }
   }
   
+  
+  @IBAction func changeShininessSlider(_ sender: NSSlider)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderLights[0].shininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraLightsCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeShininessTextField(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderLights[0].shininess = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraLightsCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateLightUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+ 
+  
     
   
   // MARK: Background actions
@@ -1693,9 +1730,9 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     {
       switch(sender.tag)
       {
-      case 8:
+      case 1:
         crystals.imageDimensions = ProjectStructureNode.Dimensions.physical
-      case 9:
+      case 2:
         crystals.imageDimensions = ProjectStructureNode.Dimensions.pixels
       default:
         fatalError("Unknown dimension option")
@@ -1715,9 +1752,9 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     {
       switch(sender.tag)
       {
-      case 10:
+      case 3:
         crystals.imageUnits = ProjectStructureNode.Units.inch
-      case 11:
+      case 4:
         crystals.imageUnits = ProjectStructureNode.Units.cm
       default:
         fatalError("Unknown unit option")
