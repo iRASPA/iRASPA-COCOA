@@ -243,7 +243,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change fix atom", comment: "Change fix atom"))
+        project.undoManager.setActionName(NSLocalizedString("Change Fix Atom", comment: ""))
       }
       
       asymmetricAtom.isFixed = isFixed
@@ -329,7 +329,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       project.undoManager.registerUndo(withTarget: self, handler: {
         $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, newBondSelection: oldBondSelection, oldbonds: newbonds, oldBondSelection: newBondSelection)
       })
-      project.undoManager.setActionName(NSLocalizedString("Change bondlength", comment: "Change bondlength"))
+      project.undoManager.setActionName(NSLocalizedString("Change Bond-Length", comment: ""))
       
       for i in 0..<atoms.count
       {
@@ -494,7 +494,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       proxyProject.representedObject.isEdited = true
       document.updateChangeCount(.changeDone)
       
-      project.undoManager.setActionName(NSLocalizedString("Recompute bonds", comment: "Recompute bonds"))
+      project.undoManager.setActionName(NSLocalizedString("Recompute Bonds", comment: ""))
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setBondState(oldBonds: newBonds, newBonds: oldBonds)})
       
       structure.bondController = newBonds
@@ -596,7 +596,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Delete bonds", comment:"Delete bonds"))
+        project.undoManager.setActionName(NSLocalizedString("Delete Bonds", comment: ""))
       }
       
       let observeNotificationsStored: Bool = self.observeNotifications
@@ -629,7 +629,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Insert bonds", comment:"Insert bonds"))
+        project.undoManager.setActionName(NSLocalizedString("Insert Bonds", comment: ""))
       }
       let observeNotificationsStored: Bool = self.observeNotifications
       self.observeNotifications = false
@@ -698,7 +698,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      project.undoManager.setActionName(NSLocalizedString("Change bond selection", comment: "Change bond selection"))
+      project.undoManager.setActionName(NSLocalizedString("Change Bond Selection", comment: ""))
       
       // save off the current selectedNode and current selection for undo/redo
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(structure: structure, atomSelection: previousAtomSelection, previousAtomSelection: atomSelection, bondSelection: previousBondSelection, previousBondSelection: bondSelection)})

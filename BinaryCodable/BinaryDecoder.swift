@@ -59,7 +59,7 @@ public struct BinaryDecodableError
     case invalidArchiveVersion
   }
   
-  public static let invalidArchiveVersion: NSError = NSError.init(domain: BinaryDecodableError.domain, code: BinaryDecodableError.code.invalidArchiveVersion.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid archive version (upgrade to latest iRASPA version)", comment: "Invalid archive version (upgrade to latest iRASPA version)")])
+  public static let invalidArchiveVersion: NSError = NSError.init(domain: BinaryDecodableError.domain, code: BinaryDecodableError.code.invalidArchiveVersion.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid Archive Version (Upgrade to latest iRASPA version)", bundle: Bundle(for: BinaryEncoder.self), comment: "")])
 }
 
 /// The actual binary decoder class.

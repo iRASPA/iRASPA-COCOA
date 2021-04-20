@@ -1830,7 +1830,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     {
       project.undoManager.registerUndo(withTarget: self, handler: {$0.replaceStructure(structures: from, to: to)})
       
-      project.undoManager.setActionName(NSLocalizedString("Change material type", comment:"Change material type"))
+      project.undoManager.setActionName(NSLocalizedString("Change Material Type", comment: ""))
       
       for i in 0..<from.count
       {
@@ -3728,7 +3728,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      self.proxyProject?.representedObject.undoManager.setActionName(NSLocalizedString("Change space group", comment: "Change space group"))
+      self.proxyProject?.representedObject.undoManager.setActionName(NSLocalizedString("Change Space Group", comment: ""))
      
       for (index, structure) in structures.enumerated()
       {

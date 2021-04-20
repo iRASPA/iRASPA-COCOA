@@ -196,6 +196,7 @@
 		935105551F16558B002F424C /* int4x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935105541F16558B002F424C /* int4x3.swift */; };
 		9354FE4A1F45A6A400155DC3 /* CartesianNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354FE491F45A6A400155DC3 /* CartesianNumberFormatter.swift */; };
 		9356D04C1F921BA90063A349 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
+		9357FA60262D97B300F42F47 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9357FA62262D97B300F42F47 /* Localizable.strings */; };
 		93584CC21FFFB9AF005F01A7 /* AcknowledgedLicenses.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 93584CC11FFFB9AE005F01A7 /* AcknowledgedLicenses.pdf */; };
 		93584CC61FFFC485005F01A7 /* Common.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CC51FFFC485005F01A7 /* Common.metal */; };
 		93584CC81FFFC4C7005F01A7 /* CellularNoise.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93584CC71FFFC4C7005F01A7 /* CellularNoise.metal */; };
@@ -1524,6 +1525,20 @@
 		935105541F16558B002F424C /* int4x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = int4x3.swift; sourceTree = "<group>"; };
 		9354FE491F45A6A400155DC3 /* CartesianNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartesianNumberFormatter.swift; sourceTree = "<group>"; };
 		9357FA33262B244300F42F47 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Preferences.strings; sourceTree = "<group>"; };
+		9357FA61262D97B300F42F47 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA71262D97B900F42F47 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA72262D97B900F42F47 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		9357FA73262D97BB00F42F47 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA74262D97BD00F42F47 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA75262D97BE00F42F47 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA76262D97BF00F42F47 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA77262D97C000F42F47 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA78262D97C100F42F47 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA79262D97C100F42F47 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA7A262D97C200F42F47 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		9357FA7B262D97C300F42F47 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA7C262D97C400F42F47 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9357FA7D262D97C500F42F47 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		93584CC11FFFB9AE005F01A7 /* AcknowledgedLicenses.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AcknowledgedLicenses.pdf; sourceTree = "<group>"; };
 		93584CC31FFFBB94005F01A7 /* AcknowledgedLicenses.pages */ = {isa = PBXFileReference; lastKnownFileType = file; path = AcknowledgedLicenses.pages; sourceTree = "<group>"; };
 		93584CC51FFFC485005F01A7 /* Common.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Common.metal; sourceTree = "<group>"; };
@@ -3365,6 +3380,7 @@
 				93F3A5AD21874AE3008E41A2 /* BinaryCodableExtensions.swift */,
 				93F3A5A021874A15008E41A2 /* Info.plist */,
 				9377C4B72403C8FA0015FF35 /* Errors.swift */,
+				9357FA62262D97B300F42F47 /* Localizable.strings */,
 			);
 			path = BinaryCodable;
 			sourceTree = "<group>";
@@ -4303,6 +4319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93793B5121DE1023004CAD9C /* LICENSE in Resources */,
+				9357FA60262D97B300F42F47 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5306,6 +5323,27 @@
 				930505792629FEEC00E0CC6B /* de */,
 			);
 			name = Master.storyboard;
+			sourceTree = "<group>";
+		};
+		9357FA62262D97B300F42F47 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9357FA61262D97B300F42F47 /* en */,
+				9357FA71262D97B900F42F47 /* ar */,
+				9357FA72262D97B900F42F47 /* zh-Hans */,
+				9357FA73262D97BB00F42F47 /* nl */,
+				9357FA74262D97BD00F42F47 /* de */,
+				9357FA75262D97BE00F42F47 /* he */,
+				9357FA76262D97BF00F42F47 /* hi */,
+				9357FA77262D97C000F42F47 /* ja */,
+				9357FA78262D97C100F42F47 /* ko */,
+				9357FA79262D97C100F42F47 /* fa */,
+				9357FA7A262D97C200F42F47 /* pt-PT */,
+				9357FA7B262D97C300F42F47 /* ru */,
+				9357FA7C262D97C400F42F47 /* es */,
+				9357FA7D262D97C500F42F47 /* tr */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		935DABE11F0E236900C1C8D0 /* DirectoryViewer.storyboard */ = {

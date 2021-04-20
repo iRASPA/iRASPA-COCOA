@@ -45,8 +45,8 @@ public struct SimulationKitError
     case couldNotMakeCommandEncoder
   }
   
-  public static let couldNotCreateBuffer: NSError = NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.couldNotCreateBuffer.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unable to create Metal Buffer (SimulationKit)", comment: "Unable to create Metal Buffer")])
-  public static let couldNotCreateTexture: NSError = NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.couldNotCreateTexture.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unable to create Metal Texture (SimulationKit)", comment: "Unable to create Metal Texture")])
-  public static let couldNotMakeCommandBuffer: NSError = NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.couldNotMakeCommandBuffer.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unable to create Metal CommandBuffer (SimulationKit)", comment: "Unable to create Metal CommandBuffer")])
-  public static let couldNotMakeCommandEncoder: NSError = NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.couldNotMakeCommandEncoder.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unable to create Metal CommandEncoder (SimulationKit)", comment: "Unable to create Metal CommandEncoder")])
+  public static let couldNotCreateBuffer: NSError = NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.couldNotCreateBuffer.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unable to Create Metal Buffer (SimulationKit)", comment: "")])
+  public static let couldNotCreateTexture: NSError = NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.couldNotCreateTexture.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unable to Create Metal Texture (SimulationKit)", comment: "")])
+  public static let couldNotMakeCommandBuffer: NSError = NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.couldNotMakeCommandBuffer.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unable to Create Metal CommandBuffer (SimulationKit)", comment: "")])
+  public static let couldNotMakeCommandEncoder: NSError = NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.couldNotMakeCommandEncoder.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unable to Create Metal CommandEncoder (SimulationKit)", comment: "")])
 }

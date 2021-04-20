@@ -919,7 +919,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         undoManager.registerUndo(withTarget: self, handler: {$0.removeNode(treeNode, fromItem: inItem, atIndex: atIndex)})
         if(!undoManager.isUndoing)
         {
-          undoManager.setActionName(NSLocalizedString("Add project(s)", comment: "Add project"))
+          undoManager.setActionName(NSLocalizedString("Add Projects", comment: ""))
         }
       }
       
@@ -985,7 +985,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         undoManager.registerUndo(withTarget: self, handler: {$0.addNode(node, inItem: fromItem, atIndex: lastIndex)})
         if(!undoManager.isUndoing)
         {
-          undoManager.setActionName(NSLocalizedString("Remove project(s)", comment: "Remove project"))
+          undoManager.setActionName(NSLocalizedString("Remove Projects", comment: ""))
         }
       }
    
@@ -1028,7 +1028,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         undoManager.registerUndo(withTarget: self, handler: {$0.addCloudNode(node, inItem: fromItem, atIndex: lastIndex)})
         if(!undoManager.isUndoing)
         {
-          undoManager.setActionName(NSLocalizedString("Remove project(s)", comment: "Remove project"))
+          undoManager.setActionName(NSLocalizedString("Remove Projects", comment: ""))
         }
       }
       
@@ -1063,7 +1063,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       if let undoManager = document.undoManager
       {
         
-        undoManager.setActionName(NSLocalizedString("Reorder projects", comment: "Reorder projects"))
+        undoManager.setActionName(NSLocalizedString("Reorder Projects", comment: ""))
         undoManager.registerUndo(withTarget: self, handler: {$0.moveNode(node, toItem: fromItem, childIndex: lastIndex)})
       }
       
@@ -1118,7 +1118,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       if let undoManager = document.undoManager
       {
         let lastIndex: Int = nodeIndexPath.last ?? 0
-        undoManager.setActionName(NSLocalizedString("Reorder projects", comment: "Reorder projects"))
+        undoManager.setActionName(NSLocalizedString("Reorder Projects", comment: ""))
         undoManager.registerUndo(withTarget: self, handler: {$0.moveCloudNode(node, toItem: fromItem, childIndex: lastIndex)})
       }
       
@@ -2652,7 +2652,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
     {
       if !undoManager.isUndoing
       {
-        undoManager.setActionName(NSLocalizedString("Change project selection", comment: "Change project selection"))
+        undoManager.setActionName(NSLocalizedString("Change Project Selection", comment: ""))
       }
       
       // save off the current selectedNode and current selection for undo/redo
@@ -3304,7 +3304,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       
       if !undoManager.isUndoing
       {
-        undoManager.setActionName(NSLocalizedString("Change project name", comment: "Change project name"))
+        undoManager.setActionName(NSLocalizedString("Change Project Name", comment: ""))
       }
       projectTreeNode.displayName = newValue
       projectTreeNode.representedObject.displayName = newValue

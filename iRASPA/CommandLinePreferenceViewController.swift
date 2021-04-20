@@ -108,7 +108,7 @@ class CommandLinePreferences: NSViewController, NSPathControlDelegate
   
   func pathControl(_ pathControl: NSPathControl, willDisplay openPanel: NSOpenPanel)
   {
-    openPanel.title = NSLocalizedString("Select a top-level directory", comment: "Open panel title")
+    openPanel.title = NSLocalizedString("Select a Top-Level Directory", comment: "")
     openPanel.prompt = "Select"
     openPanel.canChooseDirectories = true
     openPanel.canChooseFiles = false
@@ -117,7 +117,7 @@ class CommandLinePreferences: NSViewController, NSPathControlDelegate
   
   func pathControl(_ pathControl: NSPathControl, willPopUp menu: NSMenu)
   {
-    let title: String = NSLocalizedString("Remove permission", comment: "Used in dynamic popup menu")
+    let title: String = NSLocalizedString("Remove Permission", comment: "")
     
     if pathControl === self.readPermissionPathControl, pathControl.url != nil
     {

@@ -93,13 +93,13 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     
     let bundle: Bundle = Bundle(for: ProjectTreeController.self)
     
-    let galleryRootNodeDisplayName = NSLocalizedString("GALLERY", bundle: bundle , comment: "GALLERY")
+    let galleryRootNodeDisplayName = NSLocalizedString("GALLERY", bundle: bundle , comment: "")
     let galleryRootNode = ProjectTreeNode(displayName: galleryRootNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: galleryRootNodeDisplayName)))
     
-    let projectRootNodeDisplayName = NSLocalizedString("LOCAL PROJECTS", bundle: bundle, comment: "LOCAL PROJECTS")
+    let projectRootNodeDisplayName = NSLocalizedString("LOCAL PROJECTS", bundle: bundle, comment: "")
     let projectRootNode = ProjectTreeNode(displayName: projectRootNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: projectRootNodeDisplayName)))
     
-    let cloudRootNodeDisplayName = NSLocalizedString("ICLOUD PUBLIC", bundle: bundle, comment: "ICLOUD PUBLIC")
+    let cloudRootNodeDisplayName = NSLocalizedString("ICLOUD PUBLIC", bundle: bundle, comment: "")
     let cloudRootNode = ProjectTreeNode(displayName: cloudRootNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: cloudRootNodeDisplayName)))
     
     galleryRootNode.isEditable = false
@@ -111,12 +111,12 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     self.insertNode(cloudRootNode, inItem: nil, atIndex: 2)
     
     
-    let localGalleryNodeDisplayName = NSLocalizedString("Gallery", bundle: bundle , comment: "Gallery")
+    let localGalleryNodeDisplayName = NSLocalizedString("Gallery", bundle: bundle , comment: "")
     let localGalleryNode: ProjectTreeNode = ProjectTreeNode(displayName: localGalleryNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: localGalleryNodeDisplayName)))
     localGalleryNode.isEditable = false
     self.insertNode(localGalleryNode, inItem: galleryRootNode, atIndex: 0)
     
-    let localMainNodeDisplayName = NSLocalizedString("Local projects", bundle: bundle , comment: "Local projects")
+    let localMainNodeDisplayName = NSLocalizedString("Local Projects", bundle: bundle , comment: "")
     let localMainNode: ProjectTreeNode = ProjectTreeNode(displayName: localMainNodeDisplayName, representedObject: iRASPAProject(group: ProjectGroup(name: localMainNodeDisplayName)))
     localMainNode.isEditable = false
     localMainNode.isDropEnabled = true
@@ -124,7 +124,7 @@ public final class ProjectTreeController: BinaryDecodable, BinaryEncodable
     self.insertNode(localMainNode, inItem: projectRootNode, atIndex: 0)
         
     // updated 18-10-2017
-    let cloudMainNodeDisplayName = NSLocalizedString("iCloud public", bundle: bundle , comment: "iCloud public")
+    let cloudMainNodeDisplayName = NSLocalizedString("iCloud Public", bundle: bundle , comment: "")
     let cloudMainNode: ProjectTreeNode = ProjectTreeNode(displayName: cloudMainNodeDisplayName, recordID: CKRecord.ID(recordName: "30089089-3163-633B-62B2-390C63E92789"), representedObject: iRASPAProject(group: ProjectGroup(name: cloudMainNodeDisplayName)))
     self.insertNode(cloudMainNode, inItem: cloudRootNode, atIndex: 0)
     
