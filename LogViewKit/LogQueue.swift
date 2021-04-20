@@ -51,7 +51,7 @@ public class LogQueue
   public var destinations: NSMapTable<LogReporting, NSWindowController> = NSMapTable(keyOptions: .weakMemory, valueOptions: .weakMemory, capacity: 5)
   
   // Create the text-storage in the LogQueue. This allows logging of initalization (e.g. iCloud) messages when the viewcontrollers are not yet onscreen.
-  public var textStorageView: NSTextStorage = NSTextStorage(string: NSLocalizedString("Log console ready", bundle: Bundle(for: LogQueue.self), comment: "Log console ready"),  attributes: [.foregroundColor : NSColor.textColor])
+  public var textStorageView: NSTextStorage = NSTextStorage(string: NSLocalizedString("Log console ready", bundle: Bundle(for: LogQueue.self), comment: ""),  attributes: [.foregroundColor : NSColor.textColor])
   
   
   public enum Level: Int
@@ -138,22 +138,22 @@ public class LogQueue
       switch(level)
       {
       case .error:
-        colorString = NSLocalizedString("Error", bundle: bundle, comment: "Error")
+        colorString = NSLocalizedString("Error", bundle: bundle, comment: "")
         levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
         color = NSColor.red
         fontMask = NSFontTraitMask.boldFontMask
       case .warning:
-        colorString = NSLocalizedString("Warning", bundle: bundle, comment: "Warning")
+        colorString = NSLocalizedString("Warning", bundle: bundle, comment: "")
         levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
         color = NSColor.blue
         fontMask = NSFontTraitMask.italicFontMask
       case .verbose:
-        colorString = NSLocalizedString("Verbose", bundle: bundle, comment: "Verbose")
+        colorString = NSLocalizedString("Verbose", bundle: bundle, comment: "")
         levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
         color = NSColor(calibratedRed:0.13333333333333333, green:0.5450980392156862, blue:0.13333333333333333, alpha:1.0)   // Forest green
         fontMask = NSFontTraitMask.fixedPitchFontMask
       case .info:
-        colorString = NSLocalizedString("Info", bundle: bundle, comment: "Info")
+        colorString = NSLocalizedString("Info", bundle: bundle, comment: "")
         levelString = NSString.localizedStringWithFormat("\n%@ %@: %@", colorString, timeString, message)
         color = NSColor.magenta
         fontMask = NSFontTraitMask.fixedPitchFontMask

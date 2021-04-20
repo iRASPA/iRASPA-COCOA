@@ -4,9 +4,10 @@
 "Local projects" = "Local projects";
 "ICLOUD PUBLIC" = "ICLOUD PUBLIC";
 "iCloud public" = "iCloud public";
-"Could not determine status of iCloud account" = "Could not determine status of iCloud account";
-"iCloud account available" = "iCloud account available";
-"iCloud account authentication error: enable iCloud and iCloud-drive" = "iCloud account authentication error: enable iCloud and iCloud-drive";
-"iCloud account restricted" = "iCloud account restricted";
-"iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email";
-"iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email" = "iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email";
+"Could Not Determine Status of iCloud Account" = "Could Not Determine Status of iCloud Account";
+"iCloud Account Available" = "iCloud Account Available";
+"iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive";
+"iCloud Account Restricted" = "iCloud Account Restricted";
+"iCloud Public Discoverability Granted" = "iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email.";
+"iCloud Public Discoverability Denied" = "iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email.";
+"Invalid Archive Version (Upgrade to latest iRASPA version)" = "Invalid Archive Version (Upgrade to latest iRASPA version).";

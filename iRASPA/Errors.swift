@@ -58,9 +58,9 @@ public struct iRASPAMainError
           switch(errorCode)
           {
           case .corruptedGalleryFile:
-            return NSLocalizedString("Gallery-file not found", comment: "Gallery-file not found")
+            return NSLocalizedString("Gallery-File Not Found", comment: "")
           case .pasteboardReadingError:
-            return NSLocalizedString("Cannot init from data", comment: "Failure init from data")
+            return NSLocalizedString("Cannot Initialize from Data", comment: "")
           default:
             return nil
           }

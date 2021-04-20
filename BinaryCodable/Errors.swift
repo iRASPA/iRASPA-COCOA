@@ -41,7 +41,7 @@ public struct BinaryCodableError
     case unsupportedFileType
   }
   
-  public static let invalidArchiveData: NSError = NSError.init(domain: BinaryCodableError.domain, code: BinaryCodableError.code.invalidArchiveData.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid archive data", comment: "Invalid archive data")])
+  public static let invalidArchiveData: NSError = NSError.init(domain: BinaryCodableError.domain, code: BinaryCodableError.code.invalidArchiveData.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid Archive Data", bundle: Bundle(for: BinaryEncoder.self), comment: "")])
   
-  public static let unsupportedFileType: NSError = NSError.init(domain: BinaryCodableError.domain, code: BinaryCodableError.code.unsupportedFileType.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unsuported file type", comment: "Unsuported file type")])
+  public static let unsupportedFileType: NSError = NSError.init(domain: BinaryCodableError.domain, code: BinaryCodableError.code.unsupportedFileType.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Unsuported File Type", bundle: Bundle(for: BinaryEncoder.self), comment: "")])
 }

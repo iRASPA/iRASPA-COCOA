@@ -857,7 +857,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      project.undoManager.setActionName(NSLocalizedString("Clear selection", comment: "Clear selection"))
+      project.undoManager.setActionName(NSLocalizedString("Clear Selection", comment: ""))
       self.setCurrentSelection(structure: structure, atomSelection: [], previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: [], previousBondSelection: structure.bondController.selectedObjects)
   
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
@@ -887,7 +887,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     {
       // save off the current selectedNode and current selection for undo/redo
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(structure: structure, atomSelection: previousAtomSelection, previousAtomSelection: atomSelection, bondSelection: previousBondSelection, previousBondSelection:  bondSelection)})
-      project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
+      project.undoManager.setActionName(NSLocalizedString("Change Selection", comment: ""))
    
       showTransformationPanel(oldSelectionEmpty: structure.atomTreeController.selectedTreeNodes.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
       
@@ -938,7 +938,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       if selectedAtomTreeNodes != structure.atomTreeController.selectedTreeNodes ||
          selectedBonds != structure.bondController.selectedObjects
       {
-        project.undoManager.setActionName(NSLocalizedString("Change selection", comment: "Change selection"))
+        project.undoManager.setActionName(NSLocalizedString("Change Selection", comment: ""))
         self.setCurrentSelection(structure: structure, atomSelection: selectedAtomTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondController.selectedObjects)
       }
      
@@ -1072,7 +1072,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         }
       }
     
-      project.undoManager.setActionName(NSLocalizedString("Toggle atom selection", comment: "Toggle atom selection"))
+      project.undoManager.setActionName(NSLocalizedString("Toggle Atom Selection", comment: ""))
       self.setCurrentSelection(structure: structure, atomSelection: selectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondController.selectedObjects)
     
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
@@ -1097,7 +1097,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           selectedInternalBonds.insert(index)
         }
       }
-      project.undoManager.setActionName(NSLocalizedString("Toggle bond selection", comment: "Toggle bond selection"))
+      project.undoManager.setActionName(NSLocalizedString("Toggle Bond Selection", comment: ""))
       self.setCurrentSelection(structure: structure, atomSelection: structure.atomTreeController.selectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedInternalBonds, previousBondSelection: structure.bondController.selectedObjects)
     
       //(self.view as? RenderTabView)?.evaluateSelectionAnimation()
@@ -1115,7 +1115,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Delete atoms", comment:"Delete atoms"))
+        project.undoManager.setActionName(NSLocalizedString("Delete Atoms", comment:""))
       }
        
       for data in deletedData
@@ -1162,7 +1162,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
+        project.undoManager.setActionName(NSLocalizedString("Insert Atoms", comment: ""))
       }
        
       for data in insertedData
@@ -1968,7 +1968,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       project.undoManager.registerUndo(withTarget: self, handler: {
         $0.updatePositions(structure: structure, atoms: atoms, newpositions: oldpositions, oldpositions: newpositions, newbonds: oldbonds, newBondSelection: oldBondSelection, oldbonds: newbonds, oldBondSelection: newBondSelection)
       })
-      project.undoManager.setActionName(NSLocalizedString("Change positions", comment: "Change positions"))
+      project.undoManager.setActionName(NSLocalizedString("Change Positions", comment: ""))
       
       for i in 0..<atoms.count
       {

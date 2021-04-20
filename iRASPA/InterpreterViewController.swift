@@ -72,7 +72,7 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
     
     pythonScriptView?.setUpLineNumberView()
     
-    let message: NSString = NSString(string: NSLocalizedString("Python console ready\n", comment: ""))
+    let message: NSString = NSString(string: NSLocalizedString("Python Console Ready\n", comment: ""))
     self.pythonScriptView?.pythonOut(string: message)
   }
   

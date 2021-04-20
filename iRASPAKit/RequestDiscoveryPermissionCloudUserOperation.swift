@@ -63,9 +63,9 @@ public class RequestDiscoveryPermissionCloudUserOperation: Operation
         case .couldNotComplete:
           break
         case .granted:
-          LogQueue.shared.info(destination: nil, message: NSLocalizedString("iCloud public discoverability has been granted. You are discoverable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email", bundle: bundle, comment: ""))
+          LogQueue.shared.info(destination: nil, message: NSLocalizedString("iCloud Public Discoverability Granted", bundle: bundle, comment: ""))
         case .denied:
-          LogQueue.shared.warning(destination: nil, message: NSLocalizedString("iCloud public discoverability has been denied. You are not discovable (through your email address) to other users of the app. You can change this in the settings app, iCloud, iCloud drive, discover by email", bundle: bundle, comment: ""))
+          LogQueue.shared.warning(destination: nil, message: NSLocalizedString("iCloud Public Discoverability Denied", bundle: bundle, comment: ""))
           // NSWorkspace.shared().openFile("/System/Library/PreferencePanes/iCloudPref.prefPane")
         @unknown default:
           fatalError()

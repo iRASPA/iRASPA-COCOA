@@ -226,7 +226,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Insert selection", comment: "Insert selection"))
+        project.undoManager.setActionName(NSLocalizedString("Insert Selection", comment: ""))
       }
       
       project.sceneList.selectedScene = newSelectedScene
@@ -293,7 +293,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
 
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Delete selection", comment: "Delete selection"))
+        project.undoManager.setActionName(NSLocalizedString("Delete Selection", comment: ""))
       }
     
       project.sceneList.selectedScene = newSelectedScene
@@ -443,7 +443,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
      
       if(!project.undoManager.isUndoing)
       {
-        project.undoManager.setActionName(NSLocalizedString("Add movie(s)", comment: "Add movie"))
+        project.undoManager.setActionName(NSLocalizedString("Add Movies", comment: ""))
       }
       
       // make sure the movie has a selected-frame
@@ -503,7 +503,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
 
       if(!project.undoManager.isUndoing)
       {
-        project.undoManager.setActionName(NSLocalizedString("Add scene(s)", comment: "Add scene"))
+        project.undoManager.setActionName(NSLocalizedString("Add Scenes", comment: ""))
       }
       
       // insert new node
@@ -1432,7 +1432,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
     
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change movie name", comment: "Change movie name"))
+        project.undoManager.setActionName(NSLocalizedString("Change Movie Name", comment: ""))
       }
     
       movie.displayName = newValue
@@ -1475,7 +1475,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
     
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change scene name", comment: "Change scene name"))
+        project.undoManager.setActionName(NSLocalizedString("Change Scene Name", comment: ""))
       }
     
       scene.displayName = newValue
@@ -1628,7 +1628,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       let scene: Scene = project.sceneList.scenes[indexPath[0]]
       let lastIndex: Int = indexPath[1]
       
-      project.undoManager.setActionName(NSLocalizedString("Reorder movies", comment: "Reorder movies"))
+      project.undoManager.setActionName(NSLocalizedString("Reorder Movies", comment: ""))
       project.undoManager.registerUndo(withTarget: self, handler: {$0.moveMovieNode(movie, toItem: scene, childIndex : lastIndex)})
       
       // remove old node and remove it from the selection of the parent scene

@@ -194,7 +194,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
       formatter.unitStyle = .short
       formatter.unitOptions = .providedUnit
       let string = formatter.string(from: Measurement(value: time, unit: UnitDuration.seconds))
-      let message: String = String.localizedStringWithFormat(NSLocalizedString("Saving to archive (%@)", comment: ""), string)
+      let message: String = String.localizedStringWithFormat(NSLocalizedString("Saving to Archive (%@)", comment: ""), string)
       
       LogQueue.shared.verbose(destination: self.windowControllers.first, message: message)
     }
@@ -328,7 +328,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     formatter.unitStyle = .short
     formatter.unitOptions = .providedUnit
     let string = formatter.string(from: Measurement(value: time, unit: UnitDuration.seconds))
-    let message: String = String.localizedStringWithFormat(NSLocalizedString("Document read (%@)", comment: ""), string)
+    let message: String = String.localizedStringWithFormat(NSLocalizedString("Document Read (%@)", comment: ""), string)
     
     // make sure to run this on the main thread
     DispatchQueue.main.async(execute: {
@@ -376,8 +376,8 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     else
     {
       throw NSError(domain: NSCocoaErrorDomain, code: NSFileReadCorruptFileError, userInfo: [
-        NSLocalizedDescriptionKey: NSLocalizedString("Could not read main database file.", comment: "Read error description"),
-        NSLocalizedFailureReasonErrorKey: NSLocalizedString("File was in an invalid format.", comment: "Read failure reason")
+        NSLocalizedDescriptionKey: NSLocalizedString("Could Not Read Main Database File", comment: ""),
+        NSLocalizedFailureReasonErrorKey: NSLocalizedString("Invalid File Format", comment: "")
         ])
     }
   }

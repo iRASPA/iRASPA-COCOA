@@ -652,7 +652,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       {
         if !project.undoManager.isUndoing
         {
-          project.undoManager.setActionName(NSLocalizedString("Add atom-group", comment: "Add atom-group"))
+          project.undoManager.setActionName(NSLocalizedString("Add Atom-Group", comment: ""))
         }
         
         if (clickedRowContextMenu != -1)
@@ -704,7 +704,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Adding new atom", comment: "Adding new atom"))
+        project.undoManager.setActionName(NSLocalizedString("Adding New Atom", comment: ""))
       }
       
       self.addNode(atomTreeNode, inItem: nil, atIndex: 0, inStructure: structure)
@@ -1056,7 +1056,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       self.observeNotifications = observeNotificationsStored
       
-      project.undoManager.setActionName(NSLocalizedString("Reorder atoms", comment: "Reorder atoms"))
+      project.undoManager.setActionName(NSLocalizedString("Reorder Atoms", comment: ""))
       project.undoManager.registerUndo(withTarget: self, handler: {$0.moveNodes(reverseMoves.reversed(), inStructure: structure)})
       
       // the order of the atoms of the structure have changed, so remake the textures and reload the render-data
@@ -1272,7 +1272,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     {
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change atom selection", comment: "Change atom selection"))
+        project.undoManager.setActionName(NSLocalizedString("Change Atom Selection", comment: ""))
       }
       // save off the current selectedNode and current selection for undo/redo
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(structure: structure, atomSelection: previousAtomSelection, previousAtomSelection: atomSelection, bondSelection: previousBondSelection, previousBondSelection: bondSelection)})
@@ -1371,7 +1371,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Delete atoms", comment:"Delete atoms"))
+        project.undoManager.setActionName(NSLocalizedString("Delete Atoms", comment: ""))
       }
       
       structure.bondController.arrangedObjects.remove(at: indexSet)
@@ -1479,7 +1479,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Insert atoms", comment:"Insert atoms"))
+        project.undoManager.setActionName(NSLocalizedString("Insert Atoms", comment: ""))
       }
       let observeNotificationsStored: Bool = self.observeNotifications
       self.observeNotifications = false
@@ -1645,7 +1645,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let outlineView: AtomOutlineView = self.atomOutlineView,
       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
-      project.undoManager.setActionName(NSLocalizedString("Find and impose symmetry", comment: "Find and impose symmetry"))
+      project.undoManager.setActionName(NSLocalizedString("Find and Impose Symmetry", comment: ""))
       
       if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.imposedSymmetry(colorSets: document.colorSets, forceFieldSets: document.forceFieldSets)
       {
@@ -1664,7 +1664,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let outlineView: AtomOutlineView = self.atomOutlineView,
       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
-      project.undoManager.setActionName(NSLocalizedString("Flatten hierarchy", comment: "Flatten hierarchy"))
+      project.undoManager.setActionName(NSLocalizedString("Flatten Hierarchy", comment: ""))
       
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.flattenedHierarchy
       self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
@@ -1680,7 +1680,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let outlineView: AtomOutlineView = self.atomOutlineView,
       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
-      project.undoManager.setActionName(NSLocalizedString("Remove symmetry", comment: "Remove symmetry"))
+      project.undoManager.setActionName(NSLocalizedString("Remove Symmetry", comment: ""))
       
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.removedSymmetry
       self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
@@ -1696,7 +1696,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let outlineView: AtomOutlineView = self.atomOutlineView,
       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
-      project.undoManager.setActionName(NSLocalizedString("Wrap atoms to cell", comment: "Wrap atoms to cell"))
+      project.undoManager.setActionName(NSLocalizedString("Wrap Atoms to Cell", comment: ""))
       
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.wrapAtomsToCell
       self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
@@ -1713,7 +1713,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let outlineView: AtomOutlineView = self.atomOutlineView,
       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
-      project.undoManager.setActionName(NSLocalizedString("Find primitive", comment: "Find primitive"))
+      project.undoManager.setActionName(NSLocalizedString("Find Primitive", comment: ""))
       
       if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.primitive(colorSets: document.colorSets, forceFieldSets: document.forceFieldSets)
       {
@@ -1730,7 +1730,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let outlineView: AtomOutlineView = self.atomOutlineView,
       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
-      project.undoManager.setActionName(NSLocalizedString("Make super-cell", comment: "Make super-cell"))
+      project.undoManager.setActionName(NSLocalizedString("Make Super-Cell", comment: ""))
       
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.superCell
       self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
@@ -1874,7 +1874,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
     {
-      project.undoManager.setActionName(NSLocalizedString("Invert selection", comment:"Invert selection"))
+      project.undoManager.setActionName(NSLocalizedString("Invert Selection", comment:""))
       
       let invertedSelectedTreeNodes: Set<SKAtomTreeNode> = structure.atomTreeController.invertedSelection
       let invertedSelectedAsymmetricAtoms: Set<SKAsymmetricAtom> = Set(invertedSelectedTreeNodes.map{$0.representedObject})
@@ -1951,7 +1951,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       project.undoManager.registerUndo(withTarget: self, handler: {$0.removeMovieNode(movie, fromItem: inItem, atIndex: childIndex, structure: structure, atoms: atoms.reversed(), from: indexPaths.reversed(), bonds: bonds, from: indexSet, move: move)})
       if(!project.undoManager.isUndoing)
       {
-        project.undoManager.setActionName(NSLocalizedString("Add movie(s)", comment: "Add movie"))
+        project.undoManager.setActionName(NSLocalizedString("Add Movies", comment: ""))
       }
       
       if(move)
@@ -2588,7 +2588,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         
       if !project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change fix atom", comment: "Change fix atom"))
+        project.undoManager.setActionName(NSLocalizedString("Change Fix Atom", comment: ""))
       }
       
       asymmetricAtom.isFixed = isFixed
@@ -2640,7 +2640,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change atom name", comment: "Change atom name"))
+        project.undoManager.setActionName(NSLocalizedString("Change Atom Name", comment: "Change atom name"))
       }
       atomTreeNode.representedObject.displayName = newValue
       
@@ -2700,7 +2700,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setAtomElement(atomTreeNode, to: oldId)})
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change atom element", comment: "Change atom element"))
+        project.undoManager.setActionName(NSLocalizedString("Change Atom Element", comment: ""))
       }
       
       atom.elementIdentifier = newElementId
@@ -2743,7 +2743,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setForceFieldType(atomTreeNode, to: oldId)})
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change atom force field type", comment: "Change atom force field type"))
+        project.undoManager.setActionName(NSLocalizedString("Change Atom Force Field Type", comment: ""))
       }
       
       atom.uniqueForceFieldName  = newUniqueForceFieldName
@@ -2825,7 +2825,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change atom x-position", comment: "Change atom x-position"))
+        project.undoManager.setActionName(NSLocalizedString("Change Atom X-Position", comment: ""))
       }
       atom.position.x = newValue
       
@@ -2888,7 +2888,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change atom y-position", comment: "Change atom y-position"))
+        project.undoManager.setActionName(NSLocalizedString("Change Atom Y-Position", comment: ""))
       }
       atom.position.y = newValue
       
@@ -2950,7 +2950,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
  
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change atom z-position", comment: "Change atom z-position"))
+        project.undoManager.setActionName(NSLocalizedString("Change Atom Z-position", comment: ""))
       }
       atom.position.z = newValue
      
@@ -3012,7 +3012,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if project.undoManager.isUndoing
       {
-        project.undoManager.setActionName(NSLocalizedString("Change atom charge", comment: "Change atom charge"))
+        project.undoManager.setActionName(NSLocalizedString("Change Atom Charge", comment: ""))
       }
       atomTreeNode.representedObject.charge = newValue
       

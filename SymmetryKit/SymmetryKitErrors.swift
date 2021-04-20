@@ -40,5 +40,5 @@ public struct SKError
     case invalidArchiveVersion
   }
   
-  public static let invalidArchiveVersion: NSError = NSError.init(domain: SKError.domain, code: SKError.code.invalidArchiveVersion.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid archive version (upgrade to latest iRASPA version)", comment: "Invalid archive version (upgrade to latest iRASPA version)")])
+  public static let invalidArchiveVersion: NSError = NSError.init(domain: SKError.domain, code: SKError.code.invalidArchiveVersion.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Invalid Archive Version (Upgrade to latest iRASPA version)", bundle: Bundle(for: SKParser.self), comment: "")])
 }
