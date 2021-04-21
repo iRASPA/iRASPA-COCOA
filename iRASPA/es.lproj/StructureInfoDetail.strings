@@ -57,7 +57,7 @@
 "EMw-Fn-YYe.placeholderString" = "Desconocido";
 
 /* Class = "NSMenuItem"; title = "Fixed Volume; Shape Change"; ObjectID = "Etd-c0-eiU"; */
-"Etd-c0-eiU.title" = "Volumen arreglado; Cambio de forma";
+"Etd-c0-eiU.title" = "Volumen fijado; Cambio de forma";
 
 /* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
 "FgA-hr-Zjg.title" = "Detalles";
@@ -84,7 +84,7 @@
 "IDD-Ef-45v.title" = "Algoritmo";
 
 /* Class = "NSMenuItem"; title = "Baker's Algorithm"; ObjectID = "JIL-cM-jP3"; */
-"JIL-cM-jP3.title" = "Baker's Algorithm";
+"JIL-cM-jP3.title" = "Algoritmo de Baker";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Last name"; ObjectID = "JJr-Hi-ZjS"; */
 "JJr-Hi-ZjS.placeholderString" = "Apellido";
@@ -114,7 +114,7 @@
 "M4G-j9-ni3.title" = "Tipo de radiación";
 
 /* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "Recocido simulado";
+"MCu-aJ-XRY.title" = "Simulated Annealing";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
 "MYm-ia-kRD.title" = "Simplex";
@@ -522,4 +522,4 @@
 "zKZ-Xu-F5z.title" = "Paquete de software";
 
 /* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Change"; ObjectID = "zUt-yS-ax8"; */
-"zUt-yS-ax8.title" = "Cambio de longitud de celda y borde";
+"zUt-yS-ax8.title" = "Cambio de longitud de celda y bordes";

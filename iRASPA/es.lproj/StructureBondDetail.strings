@@ -9,10 +9,10 @@
 "7uB-Nb-mkk.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Type bonds"; ObjectID = "9rV-cN-bzl"; */
-"9rV-cN-bzl.title" = "Tipo de bonos";
+"9rV-cN-bzl.title" = "Tipo de enlaces";
 
 /* Class = "NSTableColumn"; headerCell.title = "length"; ObjectID = "DvX-tf-DBg"; */
-"DvX-tf-DBg.headerCell.title" = "length";
+"DvX-tf-DBg.headerCell.title" = "longitud";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "EdV-9a-T5U"; */
 "EdV-9a-T5U.title" = "Text Cell";
@@ -21,7 +21,7 @@
 "Fvp-lB-wZd.title" = "Text Cell";
 
 /* Class = "NSTableColumn"; headerCell.title = "type"; ObjectID = "H3C-4S-esH"; */
-"H3C-4S-esH.headerCell.title" = "type";
+"H3C-4S-esH.headerCell.title" = "tipo";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "HM6-fh-qvs"; */
 "HM6-fh-qvs.title" = "Text Cell";
@@ -30,7 +30,7 @@
 "Jka-TF-hn8.title" = "Text Cell";
 
 /* Class = "NSTableColumn"; headerCell.title = "atom ids."; ObjectID = "JlI-7Q-4ku"; */
-"JlI-7Q-4ku.headerCell.title" = "atom ids.";
+"JlI-7Q-4ku.headerCell.title" = "Identificador del átomo";
 
 /* Class = "NSTableColumn"; headerCell.title = "el(B)"; ObjectID = "MEg-vK-jym"; */
 "MEg-vK-jym.headerCell.title" = "el(B)";
@@ -42,7 +42,7 @@
 "cgZ-aN-w1n.headerCell.title" = "el(A)";
 
 /* Class = "NSTableColumn"; headerCell.title = "id"; ObjectID = "dMm-6E-Gds"; */
-"dMm-6E-Gds.headerCell.title" = "id";
+"dMm-6E-Gds.headerCell.title" = "identificador";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "oBx-QK-c2U"; */
 "oBx-QK-c2U.title" = "Text Cell";

@@ -12,7 +12,7 @@
 "39L-RF-she.title" = "Agregar molécula";
 
 /* Class = "NSMenuItem"; title = "Save IZA Database"; ObjectID = "4Wl-iP-Pbc"; */
-"4Wl-iP-Pbc.title" = "Guardar la base de datos de IZA";
+"4Wl-iP-Pbc.title" = "Guardar la base de datos del IZA";
 
 /* Class = "NSSegmentedCell"; 5km-ay-bRW.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "5km-ay-bRW"; */
 "5km-ay-bRW.ibShadowedToolTips[0]" = "Muestra el navegador de proyectos";
@@ -48,7 +48,7 @@
 "NQW-mX-NqP.placeholderString" = "Filtrar";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "NtS-cJ-UOq"; */
-"NtS-cJ-UOq.title" = "Box";
+"NtS-cJ-UOq.title" = "Caja";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "O1x-dW-EEr"; */
 "O1x-dW-EEr.title" = "Text Cell";
@@ -60,7 +60,7 @@
 "OOb-3Y-cOg.title" = "Agregar cristal molecular";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "PBb-Do-JMr"; */
-"PBb-Do-JMr.title" = "Box";
+"PBb-Do-JMr.title" = "Caja";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
 "PS8-Ne-mbi.ibShadowedToolTips[0]" = "Muestra el navegador de proyectos";
@@ -72,7 +72,7 @@
 "PS8-Ne-mbi.ibShadowedToolTips[2]" = "Muestra el navegador de tramas";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
-"QFA-05-Kql.title" = "Box";
+"QFA-05-Kql.title" = "Caja";
 
 /* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
 "RMC-nN-w7D.title" = "Agregar proteína";
@@ -90,10 +90,10 @@
 "TAX-Oq-9O2.title" = "Elipsoide";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
-"Toa-8e-8sy.title" = "Box";
+"Toa-8e-8sy.title" = "Caja";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
-"VoW-P5-q6k.title" = "Box";
+"VoW-P5-q6k.title" = "Caja";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
 "Ypv-d2-rqY.title" = "Text Cell";
