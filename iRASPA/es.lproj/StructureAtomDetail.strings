@@ -15,7 +15,7 @@
 "71t-6P-hE6.title" = "CIF";
 
 /* Class = "NSMenuItem"; title = "Wrap atoms to cell"; ObjectID = "7M8-ac-pMA"; */
-"7M8-ac-pMA.title" = "Envuelva los átomos en la celda";
+"7M8-ac-pMA.title" = "Devolver los átomos a la celda";
 
 /* Class = "NSTableColumn"; headerCell.title = "ff id."; ObjectID = "8Bh-oV-6t8"; */
 "8Bh-oV-6t8.headerCell.title" = "ff id.";
@@ -51,7 +51,7 @@
 "PwS-Ps-jhn.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Export As"; ObjectID = "SBf-Vu-4GN"; */
-"SBf-Vu-4GN.title" = "Exportar cómo";
+"SBf-Vu-4GN.title" = "Exportar como";
 
 /* Class = "NSTextFieldCell"; placeholderString = "net charge"; ObjectID = "XbY-dL-0Ls"; */
 "XbY-dL-0Ls.placeholderString" = "carga neta";
@@ -72,7 +72,7 @@
 "e3g-JW-gej.title" = "Agregar átomo";
 
 /* Class = "NSMenuItem"; title = "Top"; ObjectID = "eYX-Je-wTp"; */
-"eYX-Je-wTp.title" = "Cima";
+"eYX-Je-wTp.title" = "Arriba";
 
 /* Class = "NSTableColumn"; headerCell.title = "name"; ObjectID = "etS-f2-gyR"; */
 "etS-f2-gyR.headerCell.title" = "Nombre";
@@ -81,7 +81,7 @@
 "fJ5-bP-buy.title" = "PDB";
 
 /* Class = "NSMenuItem"; title = "Match selection"; ObjectID = "fMn-ZP-dZ4"; */
-"fMn-ZP-dZ4.title" = "Selección de partidos";
+"fMn-ZP-dZ4.title" = "Encajar Selección";
 
 /* Class = "NSMenuItem"; title = "Move to new Movie"; ObjectID = "fmI-pV-gCy"; */
 "fmI-pV-gCy.title" = "Mover a una nueva película";
@@ -99,10 +99,10 @@
 "h8W-NQ-h3a.placeholderString" = "Filtrar";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "hry-LW-0DM"; */
-"hry-LW-0DM.title" = "Box";
+"hry-LW-0DM.title" = "Caja";
 
 /* Class = "NSTableColumn"; headerCell.title = "atom id."; ObjectID = "iBx-v6-SHn"; */
-"iBx-v6-SHn.headerCell.title" = "atom id.";
+"iBx-v6-SHn.headerCell.title" = "Identificador del átomo";
 
 /* Class = "NSMenuItem"; title = "Find and Impose symmetry"; ObjectID = "j0C-ap-N1A"; */
 "j0C-ap-N1A.title" = "Encontrar e imponer simetría";

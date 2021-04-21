@@ -54,7 +54,7 @@
 "9XT-W6-7iV.title" = "Proyección en perspectiva";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
-"A0b-wl-zfu.title" = "Luces";
+"A0b-wl-zfu.title" = "Iluminación";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
 "AWE-1B-YAz.placeholderString" = "cx";
@@ -90,7 +90,7 @@
 "Juc-g9-TL7.title" = "Crear película";
 
 /* Class = "NSBox"; title = "Camera Light"; ObjectID = "Jzl-ba-QmS"; */
-"Jzl-ba-QmS.title" = "Luz de la cámara";
+"Jzl-ba-QmS.title" = "Iluminación de la cámara";
 
 /* Class = "NSTextFieldCell"; title = "From"; ObjectID = "Kzo-ya-Jtv"; */
 "Kzo-ya-Jtv.title" = "De";
@@ -117,7 +117,7 @@
 "P2r-W6-ODo.placeholderString" = "w1";
 
 /* Class = "NSTextFieldCell"; title = "Frames per Second"; ObjectID = "Qsi-Kr-087"; */
-"Qsi-Kr-087.title" = "Cuadros por segundo";
+"Qsi-Kr-087.title" = "Imágenes por segundo";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "R6f-wb-uXg"; */
 "R6f-wb-uXg.title" = "Text Cell";
@@ -177,7 +177,7 @@
 "bAt-Aw-Vk1.title" = "-Y";
 
 /* Class = "NSTextFieldCell"; title = "Physical Width"; ObjectID = "c0g-Es-8K7"; */
-"c0g-Es-8K7.title" = "Ancho físico";
+"c0g-Es-8K7.title" = "Anchura física";
 
 /* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "cBz-Hl-la6"; */
 "cBz-Hl-la6.placeholderString" = "az";
