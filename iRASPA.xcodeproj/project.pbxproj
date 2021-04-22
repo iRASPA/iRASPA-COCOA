@@ -1727,6 +1727,26 @@
 		939B206E1EF2D0310061DE8D /* int3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = int3.swift; sourceTree = "<group>"; };
 		939B20721EF2D0920061DE8D /* Int32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int32.swift; sourceTree = "<group>"; };
 		939C5692234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D_256x256x256.metal; sourceTree = "<group>"; };
+		939C8A5926319BF700ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/AboutWindow.strings; sourceTree = "<group>"; };
+		939C8A5A26319BF700ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Preferences.strings; sourceTree = "<group>"; };
+		939C8A5B26319BF700ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Main.strings; sourceTree = "<group>"; };
+		939C8A5C26319BF700ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/VASP.strings; sourceTree = "<group>"; };
+		939C8A5D26319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/StructureViewer.strings; sourceTree = "<group>"; };
+		939C8A5E26319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/DirectoryViewer.strings; sourceTree = "<group>"; };
+		939C8A5F26319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Master.strings; sourceTree = "<group>"; };
+		939C8A6026319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/StructureCameraDetail.strings; sourceTree = "<group>"; };
+		939C8A6126319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/StructureElementDetail.strings; sourceTree = "<group>"; };
+		939C8A6226319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/StructureInfoDetail.strings; sourceTree = "<group>"; };
+		939C8A6326319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/StructureAppearanceDetail.strings; sourceTree = "<group>"; };
+		939C8A6426319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/StructureCellDetail.strings; sourceTree = "<group>"; };
+		939C8A6526319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/StructureAtomDetail.strings; sourceTree = "<group>"; };
+		939C8A6626319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/StructureBondDetail.strings; sourceTree = "<group>"; };
+		939C8A6726319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/PreviewViewController.strings; sourceTree = "<group>"; };
+		939C8A6826319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939C8A6926319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939C8A6A26319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939C8A6B26319BF900ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939C8A6C26319BF900ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
 		939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXDATCARParser.swift; sourceTree = "<group>"; };
 		93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveString.swift; sourceTree = "<group>"; };
 		93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Gallery.irspdoc; sourceTree = "<group>"; };
@@ -4186,6 +4206,7 @@
 				de,
 				fr,
 				it,
+				el,
 			);
 			mainGroup = 938387FF1E26A4A800112FBA;
 			productRefGroup = 938388091E26A4A800112FBA /* Products */;
@@ -5176,6 +5197,7 @@
 				9305057A2629FEEC00E0CC6B /* de */,
 				93A1CCD9262F103E009E5E8D /* fr */,
 				93A1CCFB262F3A5C009E5E8D /* it */,
+				939C8A6026319BF800ECA258 /* el */,
 			);
 			name = StructureCameraDetail.storyboard;
 			sourceTree = "<group>";
@@ -5199,6 +5221,7 @@
 				9305057B2629FEEC00E0CC6B /* de */,
 				93A1CCDA262F103F009E5E8D /* fr */,
 				93A1CCFC262F3A5D009E5E8D /* it */,
+				939C8A6126319BF800ECA258 /* el */,
 			);
 			name = StructureElementDetail.storyboard;
 			sourceTree = "<group>";
@@ -5222,6 +5245,7 @@
 				9305057C2629FEEC00E0CC6B /* de */,
 				93A1CCDB262F103F009E5E8D /* fr */,
 				93A1CCFD262F3A5D009E5E8D /* it */,
+				939C8A6226319BF800ECA258 /* el */,
 			);
 			name = StructureInfoDetail.storyboard;
 			sourceTree = "<group>";
@@ -5245,6 +5269,7 @@
 				9305057D2629FEEC00E0CC6B /* de */,
 				93A1CCDC262F103F009E5E8D /* fr */,
 				93A1CCFE262F3A5D009E5E8D /* it */,
+				939C8A6326319BF800ECA258 /* el */,
 			);
 			name = StructureAppearanceDetail.storyboard;
 			sourceTree = "<group>";
@@ -5268,6 +5293,7 @@
 				9305057E2629FEEC00E0CC6B /* de */,
 				93A1CCDD262F103F009E5E8D /* fr */,
 				93A1CCFF262F3A5D009E5E8D /* it */,
+				939C8A6426319BF800ECA258 /* el */,
 			);
 			name = StructureCellDetail.storyboard;
 			sourceTree = "<group>";
@@ -5291,6 +5317,7 @@
 				9305057F2629FEEC00E0CC6B /* de */,
 				93A1CCDE262F103F009E5E8D /* fr */,
 				93A1CD00262F3A5D009E5E8D /* it */,
+				939C8A6526319BF800ECA258 /* el */,
 			);
 			name = StructureAtomDetail.storyboard;
 			sourceTree = "<group>";
@@ -5314,6 +5341,7 @@
 				930505802629FEEC00E0CC6B /* de */,
 				93A1CCDF262F103F009E5E8D /* fr */,
 				93A1CD01262F3A5D009E5E8D /* it */,
+				939C8A6626319BF800ECA258 /* el */,
 			);
 			name = StructureBondDetail.storyboard;
 			sourceTree = "<group>";
@@ -5337,6 +5365,7 @@
 				930505752629FEEB00E0CC6B /* de */,
 				93A1CCD4262F103E009E5E8D /* fr */,
 				93A1CCF6262F3A5C009E5E8D /* it */,
+				939C8A5B26319BF700ECA258 /* el */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -5360,6 +5389,7 @@
 				930505772629FEEC00E0CC6B /* de */,
 				93A1CCD6262F103E009E5E8D /* fr */,
 				93A1CCF8262F3A5C009E5E8D /* it */,
+				939C8A5D26319BF800ECA258 /* el */,
 			);
 			name = StructureViewer.storyboard;
 			sourceTree = "<group>";
@@ -5383,6 +5413,7 @@
 				930505792629FEEC00E0CC6B /* de */,
 				93A1CCD8262F103E009E5E8D /* fr */,
 				93A1CCFA262F3A5C009E5E8D /* it */,
+				939C8A5F26319BF800ECA258 /* el */,
 			);
 			name = Master.storyboard;
 			sourceTree = "<group>";
@@ -5406,6 +5437,7 @@
 				9357FA7D262D97C500F42F47 /* tr */,
 				93A1CCE5262F103F009E5E8D /* fr */,
 				93A1CD07262F3A5D009E5E8D /* it */,
+				939C8A6C26319BF900ECA258 /* el */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5429,6 +5461,7 @@
 				930505782629FEEC00E0CC6B /* de */,
 				93A1CCD7262F103E009E5E8D /* fr */,
 				93A1CCF9262F3A5C009E5E8D /* it */,
+				939C8A5E26319BF800ECA258 /* el */,
 			);
 			name = DirectoryViewer.storyboard;
 			sourceTree = "<group>";
@@ -5452,6 +5485,7 @@
 				930505762629FEEC00E0CC6B /* de */,
 				93A1CCD5262F103E009E5E8D /* fr */,
 				93A1CCF7262F3A5C009E5E8D /* it */,
+				939C8A5C26319BF700ECA258 /* el */,
 			);
 			name = VASP.storyboard;
 			sourceTree = "<group>";
@@ -5475,6 +5509,7 @@
 				930505812629FEEC00E0CC6B /* de */,
 				93A1CCE0262F103F009E5E8D /* fr */,
 				93A1CD02262F3A5D009E5E8D /* it */,
+				939C8A6726319BF800ECA258 /* el */,
 			);
 			name = PreviewViewController.xib;
 			sourceTree = "<group>";
@@ -5498,6 +5533,7 @@
 				930505842629FEED00E0CC6B /* de */,
 				93A1CCE3262F103F009E5E8D /* fr */,
 				93A1CD05262F3A5D009E5E8D /* it */,
+				939C8A6A26319BF800ECA258 /* el */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5521,6 +5557,7 @@
 				930505832629FEED00E0CC6B /* de */,
 				93A1CCE2262F103F009E5E8D /* fr */,
 				93A1CD04262F3A5D009E5E8D /* it */,
+				939C8A6926319BF800ECA258 /* el */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5544,6 +5581,7 @@
 				930505852629FEED00E0CC6B /* de */,
 				93A1CCE4262F103F009E5E8D /* fr */,
 				93A1CD06262F3A5D009E5E8D /* it */,
+				939C8A6B26319BF900ECA258 /* el */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5567,6 +5605,7 @@
 				930505822629FEEC00E0CC6B /* de */,
 				93A1CCE1262F103F009E5E8D /* fr */,
 				93A1CD03262F3A5D009E5E8D /* it */,
+				939C8A6826319BF800ECA258 /* el */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5590,6 +5629,7 @@
 				930505732629FEEB00E0CC6B /* de */,
 				93A1CCD2262F103E009E5E8D /* fr */,
 				93A1CCF4262F3A5C009E5E8D /* it */,
+				939C8A5926319BF700ECA258 /* el */,
 			);
 			name = AboutWindow.storyboard;
 			sourceTree = "<group>";
@@ -5614,6 +5654,7 @@
 				9357FA33262B244300F42F47 /* en */,
 				93A1CCD3262F103E009E5E8D /* fr */,
 				93A1CCF5262F3A5C009E5E8D /* it */,
+				939C8A5A26319BF700ECA258 /* el */,
 			);
 			name = Preferences.storyboard;
 			sourceTree = "<group>";

@@ -1,0 +1,51 @@
+
+/* Class = "NSBox"; title = "Read permission for"; ObjectID = "DrV-v1-Dd6"; */
+"DrV-v1-Dd6.title" = "Διαβάστε την άδεια για";
+
+/* Class = "NSViewController"; title = "Command-line"; ObjectID = "ErL-rs-pho"; */
+"ErL-rs-pho.title" = "Γραμμή εντολών";
+
+/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
+"KqL-r5-hBW.title" = "Γράψτε άδεια για";
+
+/* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
+"LKB-pQ-lE8.title" = "Ρυθμίσεις κινουμένων σχεδίων";
+
+/* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
+"N3b-Db-pad.title" = "Προτιμήσεις";
+
+/* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
+"RvG-Ag-1yO.title" = "Πάντα ανοιχτό";
+
+/* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
+"V1Y-Hh-Pro.title" = "Επιλογή";
+
+/* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
+"dAK-62-iur.title" = "Γενικός";
+
+/* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
+"dQ7-i1-ieW.title" = "Γενικές Ρυθμίσεις";
+
+/* Class = "NSViewController"; title = "Animations"; ObjectID = "eTl-7O-cbU"; */
+"eTl-7O-cbU.title" = "Κινούμενα σχέδια";
+
+/* Class = "NSMenuItem"; title = "Always off"; ObjectID = "i78-OK-HJu"; */
+"i78-OK-HJu.title" = "Πάντα μακριά";
+
+/* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "jDF-PS-epK"; */
+"jDF-PS-epK.placeholderString" = "Σύρετε ένα αντικείμενο συστήματος αρχείων σε αυτήν την περιοχή ή κάντε κλικ για να ορίσετε τη διαδρομή";
+
+/* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
+"kfw-MK-t7S.placeholderString" = "Σύρετε ένα αντικείμενο συστήματος αρχείων σε αυτήν την περιοχή ή κάντε κλικ για να ορίσετε τη διαδρομή";
+
+/* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
+"lDy-gc-II8.title" = "Προτιμήσεις";
+
+/* Class = "NSMenuItem"; title = "When connected to power source"; ObjectID = "miP-5k-r8f"; */
+"miP-5k-r8f.title" = "Όταν συνδέεστε στην πηγή τροφοδοσίας";
+
+/* Class = "NSButtonCell"; title = "Autosaving"; ObjectID = "n57-Vp-DI4"; */
+"n57-Vp-DI4.title" = "Αυτόματη αποθήκευση";
+
+/* Class = "NSButtonCell"; title = "Show tooltip in renderer"; ObjectID = "zSD-B6-1hO"; */
+"zSD-B6-1hO.title" = "Εμφάνιση συμβουλής εργαλείου στο πρόγραμμα απόδοσης";

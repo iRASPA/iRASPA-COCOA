@@ -1,0 +1,14 @@
+"GALLERY" = "ΕΚΘΕΣΙΑΚΟΣ ΧΩΡΟΣ";
+"Gallery" = "Εκθεσιακός χώρος";
+"LOCAL PROJECTS" = "ΤΟΠΙΚΑ ΕΡΓΑ";
+"Local Projects" = "Τοπικά έργα";
+"ICLOUD PUBLIC" = "ΔΗΜΟΣΙΟ ICLOUD";
+"iCloud Public" = "Δημόσιο iCloud";
+"Could Not Determine Status of iCloud Account" = "Δεν ήταν δυνατός ο προσδιορισμός της κατάστασης του λογαριασμού iCloud";
+"iCloud Account Available" = "Διαθέσιμος λογαριασμός iCloud";
+"iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "Σφάλμα ελέγχου ταυτότητας λογαριασμού iCloud: Ενεργοποιήστε το iCloud και το iCloud-Drive";
+"iCloud Account Restricted" = "Περιορισμένος λογαριασμός iCloud";
+"iCloud Public Discoverability Granted" = "
+Έχει παραχωρηθεί δημόσια δυνατότητα εντοπισμού iCloud. Μπορείτε να εντοπίσετε (μέσω της διεύθυνσης email σας) σε άλλους χρήστες της εφαρμογής. Μπορείτε να το αλλάξετε από την εφαρμογή ρυθμίσεων, το iCloud, το iCloud drive, να το ανακαλύψετε μέσω email.";
+"iCloud Public Discoverability Denied" = "Η δημόσια δυνατότητα εντοπισμού iCloud απορρίφθηκε. Δεν μπορείτε να μεταβείτε (μέσω της διεύθυνσης email σας) σε άλλους χρήστες της εφαρμογής. Μπορείτε να το αλλάξετε από την εφαρμογή ρυθμίσεων, το iCloud, το iCloud drive, να το ανακαλύψετε μέσω email.";
+"Invalid Archive Version (Upgrade to latest iRASPA version)" = "Μη έγκυρη έκδοση αρχείου (Αναβάθμιση στην πιο πρόσφατη έκδοση iRASPA).";
