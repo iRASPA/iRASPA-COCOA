@@ -96,7 +96,7 @@ class LocalAboutViewController: NSViewController
       let foundRangeYoungchul: NSRange = mutableAttributedString.mutableString.range(of: "Chung G. Yongchul ")
       if foundRangeYoungchul.location != NSNotFound
       {
-        mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "http://gregchung.github.io", range: foundRangeYoungchul)
+        mutableAttributedString.addAttribute(NSAttributedString.Key.link, value: "https://cmcp-group.github.io", range: foundRangeYoungchul)
       }
       
       let foundRangeStefanGustavson: NSRange = mutableAttributedString.mutableString.range(of: "Stefan Gustavson")
@@ -117,11 +117,11 @@ class LocalAboutViewController: NSViewController
       
       
       self.textView?.linkTextAttributes = [
-        NSAttributedString.Key.foregroundColor : NSColor.tertiaryLabelColor,
+        NSAttributedString.Key.foregroundColor : NSColor.selectedControlTextColor,
         NSAttributedString.Key.cursor : NSCursor.pointingHand]
       
       self.textView?.font = NSFont(name: "HelveticaNeue", size: 12.0) ?? NSFont.systemFont(ofSize: 12.0)
-      self.textView?.textColor = NSColor.tertiaryLabelColor
+      self.textView?.textColor = NSColor.secondaryLabelColor
     }
   }
   
