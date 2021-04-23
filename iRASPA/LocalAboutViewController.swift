@@ -38,6 +38,7 @@ class LocalAboutViewController: NSViewController
   @IBOutlet var textView: NSTextView?
   @IBOutlet var versionTextField: NSTextField?
   @IBOutlet var acknowledgementButton: NSButton?
+  @IBOutlet var otherContributorsTextView: NSTextView?
   
   var version: String
   {
@@ -54,6 +55,7 @@ class LocalAboutViewController: NSViewController
   override func viewDidLoad()
   {
     super.viewDidLoad()
+    
     self.appNameTextField?.attributedStringValue = NSAttributedString(string: "iRASPA", attributes: [.foregroundColor : NSColor.textColor])
     self.versionTextField?.attributedStringValue = NSAttributedString(string:  version, attributes: [.foregroundColor : NSColor.textColor])
     self.appURL = URL(string:"https://www.uva.nl/en/profile/d/u/d.dubbeldam/d.dubbeldam.html")
@@ -122,6 +124,14 @@ class LocalAboutViewController: NSViewController
       
       self.textView?.font = NSFont(name: "HelveticaNeue", size: 12.0) ?? NSFont.systemFont(ofSize: 12.0)
       self.textView?.textColor = NSColor.secondaryLabelColor
+    }
+    
+    if let creditsURL: URL = Bundle.main.url(forResource: "CreditsOtherContributors", withExtension: "rtf"),
+      let attributedString: NSAttributedString = try? NSAttributedString(url: creditsURL, options: [:], documentAttributes: nil)
+    {
+      self.otherContributorsTextView?.textStorage?.setAttributedString(attributedString)
+      self.otherContributorsTextView?.font = NSFont(name: "HelveticaNeue", size: 12.0) ?? NSFont.systemFont(ofSize: 12.0)
+      self.otherContributorsTextView?.textColor = NSColor.secondaryLabelColor
     }
   }
   

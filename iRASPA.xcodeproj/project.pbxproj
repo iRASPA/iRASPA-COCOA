@@ -381,6 +381,7 @@
 		939B206F1EF2D0310061DE8D /* int3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B206E1EF2D0310061DE8D /* int3.swift */; };
 		939B20731EF2D0920061DE8D /* Int32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939B20721EF2D0920061DE8D /* Int32.swift */; };
 		939C5693234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal in Sources */ = {isa = PBXBuildFile; fileRef = 939C5692234A3BC1009A9BB2 /* MarchingCubes3D_256x256x256.metal */; };
+		939C8A7C263308C700ECA258 /* CreditsOtherContributors.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 939C8A7B263308C700ECA258 /* CreditsOtherContributors.rtf */; };
 		939FFA7F225362B1000A1A46 /* SKXDATCARParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */; };
 		93A067AF2257D7C70099A880 /* CaseInsensitiveString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */; };
 		93A0BE381F24ED15001647D7 /* Gallery.irspdoc in Resources */ = {isa = PBXBuildFile; fileRef = 93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */; };
@@ -1747,6 +1748,7 @@
 		939C8A6A26319BF800ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
 		939C8A6B26319BF900ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
 		939C8A6C26319BF900ECA258 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939C8A7B263308C700ECA258 /* CreditsOtherContributors.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = CreditsOtherContributors.rtf; sourceTree = "<group>"; };
 		939FFA7E225362B1000A1A46 /* SKXDATCARParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXDATCARParser.swift; sourceTree = "<group>"; };
 		93A067AE2257D7C70099A880 /* CaseInsensitiveString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseInsensitiveString.swift; sourceTree = "<group>"; };
 		93A0BE371F24ECCD001647D7 /* Gallery.irspdoc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Gallery.irspdoc; sourceTree = "<group>"; };
@@ -3176,6 +3178,7 @@
 				935D60B51FD2CE9900B34D07 /* ProjectDesign.key */,
 				938657AD1F2349AC0029395C /* StructureDatabases */,
 				930663C41E7C4808004F9299 /* Credits.rtf */,
+				939C8A7B263308C700ECA258 /* CreditsOtherContributors.rtf */,
 				938388111E26A4A800112FBA /* Assets.xcassets */,
 				93B1EF9B26258942002E9069 /* Localizable.strings */,
 				93B5EE4F1FC2CAA4009922F2 /* AboutWindow */,
@@ -4311,6 +4314,7 @@
 				935DABDF1F0E236900C1C8D0 /* DirectoryViewer.storyboard in Resources */,
 				93446ECB237969980040CD8E /* StructureAppearanceDetail.storyboard in Resources */,
 				930663C51E7C4808004F9299 /* Credits.rtf in Resources */,
+				939C8A7C263308C700ECA258 /* CreditsOtherContributors.rtf in Resources */,
 				93B747E71F0E735000B1D8E0 /* ProjectCollectionViewItem.xib in Resources */,
 				93FFF0B2203B6DA800DB696A /* ExportPictureAccessoryViewController.xib in Resources */,
 				934B76671EF93914004A1ABA /* Master.storyboard in Resources */,
