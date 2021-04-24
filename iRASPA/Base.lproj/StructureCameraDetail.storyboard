@@ -1940,22 +1940,22 @@
                                                                             </customSpacing>
                                                                         </stackView>
                                                                         <tabView identifier="BackgroundTabView" drawsBackground="NO" type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="cWE-dq-RMV">
-                                                                            <rect key="frame" x="180" y="6" width="308" height="101"/>
+                                                                            <rect key="frame" x="180" y="8" width="308" height="96"/>
                                                                             <font key="font" metaFont="system"/>
                                                                             <tabViewItems>
                                                                                 <tabViewItem label="Color" identifier="1" id="S9f-2w-uQW">
                                                                                     <view key="view" horizontalHuggingPriority="240" verticalHuggingPriority="240" id="VcI-0h-MII">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="308" height="101"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="308" height="96"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
-                                                                                            <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" fixedFrame="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cMT-wD-tea">
-                                                                                                <rect key="frame" x="129" y="11" width="50" height="50"/>
+                                                                                            <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cMT-wD-tea">
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="308" height="96"/>
                                                                                                 <subviews>
                                                                                                     <colorWell horizontalHuggingPriority="260" verticalHuggingPriority="260" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZEg-Dx-s6o" customClass="NSAlphaColorWell" customModule="iRASPAKit">
-                                                                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                                                                        <rect key="frame" x="106" y="0.0" width="96" height="96"/>
                                                                                                         <constraints>
-                                                                                                            <constraint firstAttribute="width" constant="50" id="FRk-ZB-ruX"/>
-                                                                                                            <constraint firstAttribute="height" constant="50" id="nzL-12-4sL"/>
+                                                                                                            <constraint firstAttribute="width" constant="96" id="FRk-ZB-ruX"/>
+                                                                                                            <constraint firstAttribute="height" constant="96" id="nzL-12-4sL"/>
                                                                                                         </constraints>
                                                                                                         <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                                                         <connections>
@@ -1971,6 +1971,12 @@
                                                                                                 </customSpacing>
                                                                                             </stackView>
                                                                                         </subviews>
+                                                                                        <constraints>
+                                                                                            <constraint firstItem="cMT-wD-tea" firstAttribute="top" secondItem="VcI-0h-MII" secondAttribute="top" id="935-RS-nL8"/>
+                                                                                            <constraint firstAttribute="trailing" secondItem="cMT-wD-tea" secondAttribute="trailing" id="EuE-1y-RkN"/>
+                                                                                            <constraint firstAttribute="bottom" secondItem="cMT-wD-tea" secondAttribute="bottom" id="e2E-pb-A1b"/>
+                                                                                            <constraint firstItem="cMT-wD-tea" firstAttribute="leading" secondItem="VcI-0h-MII" secondAttribute="leading" id="zL9-eV-bRM"/>
+                                                                                        </constraints>
                                                                                     </view>
                                                                                 </tabViewItem>
                                                                                 <tabViewItem label="Linear Gradient" identifier="2" id="enh-gY-DeN" userLabel="Linear Gradient">
