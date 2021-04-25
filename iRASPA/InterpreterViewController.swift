@@ -104,13 +104,24 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
           Py_SetProgramName(wname)
       }
       
+      // should be called before Initialize
+      //initPythonModuleiRASPA()
+      //initPythonModuleConstants()
+      
       Py_InitializeEx(0)
- 
+      
       tstate = Py_NewInterpreter()
       PyThreadState_Swap(tstate)
     
       mainModule = Python.import("catch_out")
+      
+      //PyRun_SimpleString("import constants\n")
+      //PyRun_SimpleString("import iraspa\n")
+      
+      //setupPythonModuleConstants()
     }
+    
+    
   }
   
   func runPythonCmd()

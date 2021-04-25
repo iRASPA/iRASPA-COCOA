@@ -18,7 +18,7 @@
 "3Ik-9O-zWy.title" = "氩气";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "3sL-9T-b9T"; */
-"3sL-9T-b9T.title" = "没有任何";
+"3sL-9T-b9T.title" = "无";
 
 /* Class = "NSMenuItem"; title = "Water"; ObjectID = "4Ul-Kb-Iv7"; */
 "4Ul-Kb-Iv7.title" = "水";
@@ -45,10 +45,10 @@
 "5Sp-Jr-Fld.title" = "识别码";
 
 /* Class = "NSTextFieldCell"; title = "Font"; ObjectID = "5dw-7I-GMG"; */
-"5dw-7I-GMG.title" = "字形";
+"5dw-7I-GMG.title" = "字体";
 
 /* Class = "NSTextFieldCell"; title = "Unit cell"; ObjectID = "5pu-BI-tJR"; */
-"5pu-BI-tJR.title" = "晶胞";
+"5pu-BI-tJR.title" = "单元晶胞";
 
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
 "5tk-gG-FdV.title" = "键比例因子";
@@ -225,7 +225,7 @@
 "OqP-s8-Ltq.title" = "甲烷";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Ozn-KS-ZB5"; */
-"Ozn-KS-ZB5.title" = "没有任何";
+"Ozn-KS-ZB5.title" = "无";
 
 /* Class = "NSTextFieldCell"; title = "Quality"; ObjectID = "P5F-ca-L8c"; */
 "P5F-ca-L8c.title" = "质量";
@@ -264,7 +264,7 @@
 "Rjl-1D-n7b.title" = "光泽度";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Rwu-J1-bjK"; */
-"Rwu-J1-bjK.title" = "没有任何";
+"Rwu-J1-bjK.title" = "无";
 
 /* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "SFF-hg-8Cg"; */
 "SFF-hg-8Cg.title" = "仅力场";
@@ -288,7 +288,7 @@
 "Tlc-XL-RDG.title" = "坡度";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Tqo-qK-6Fc"; */
-"Tqo-qK-6Fc.title" = "没有任何";
+"Tqo-qK-6Fc.title" = "无";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "UXl-KR-D8o"; */
 "UXl-KR-D8o.title" = "饱和";
@@ -363,7 +363,7 @@
 "bca-zz-KOf.title" = "镜面光强度";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "bdI-Je-pwI"; */
-"bdI-Je-pwI.title" = "没有任何";
+"bdI-Je-pwI.title" = "无";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "bdU-wM-QtZ"; */
 "bdU-wM-QtZ.title" = "接触";
@@ -393,7 +393,7 @@
 "ddP-zl-i4G.title" = "位置";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "dfq-2k-AIF"; */
-"dfq-2k-AIF.title" = "没有任何";
+"dfq-2k-AIF.title" = "无";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "dg1-vw-fab"; */
 "dg1-vw-fab.title" = "选择风格";
@@ -474,13 +474,13 @@
 "l14-dN-lr4.title" = "256x256x256";
 
 /* Class = "NSTextFieldCell"; title = "Unit Cell Size Scaling"; ObjectID = "lsI-qu-rBk"; */
-"lsI-qu-rBk.title" = "单位像元大小缩放";
+"lsI-qu-rBk.title" = "单元晶胞大小缩放";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "mx2-LA-CaG"; */
 "mx2-LA-CaG.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Bonds"; ObjectID = "nGx-4p-hvc"; */
-"nGx-4p-hvc.title" = "债券";
+"nGx-4p-hvc.title" = "键";
 
 /* Class = "NSButtonCell"; title = "Show Adsorption Surface"; ObjectID = "nOa-3D-Seb"; */
 "nOa-3D-Seb.title" = "显示吸附面";
@@ -504,7 +504,7 @@
 "ofQ-6q-SUf.title" = "识别码";
 
 /* Class = "NSMenuItem"; title = "Charge"; ObjectID = "orw-61-fer"; */
-"orw-61-fer.title" = "收费";
+"orw-61-fer.title" = "电荷";
 
 /* Class = "NSBox"; title = "Atom Lighting"; ObjectID = "osH-Uy-RWH"; */
 "osH-Uy-RWH.title" = "原子照明";
@@ -555,7 +555,7 @@
 "vI4-zj-6Yx.title" = "Worley Noise 3D";
 
 /* Class = "NSButtonCell"; title = "Draw Unit Cell"; ObjectID = "vYr-pF-LLC"; */
-"vYr-pF-LLC.title" = "显示单元格";
+"vYr-pF-LLC.title" = "显示元胞";
 
 /* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
 "vvr-MF-ufZ.title" = "右上";

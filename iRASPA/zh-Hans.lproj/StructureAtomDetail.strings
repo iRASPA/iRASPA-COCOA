@@ -15,7 +15,7 @@
 "71t-6P-hE6.title" = "CIF";
 
 /* Class = "NSMenuItem"; title = "Wrap atoms to cell"; ObjectID = "7M8-ac-pMA"; */
-"7M8-ac-pMA.title" = "将原子包裹到细胞中";
+"7M8-ac-pMA.title" = "将原子包裹到晶胞中";
 
 /* Class = "NSTableColumn"; headerCell.title = "ff id."; ObjectID = "8Bh-oV-6t8"; */
 "8Bh-oV-6t8.headerCell.title" = "ff id.";
@@ -53,8 +53,8 @@
 /* Class = "NSMenuItem"; title = "Export As"; ObjectID = "SBf-Vu-4GN"; */
 "SBf-Vu-4GN.title" = "导出为";
 
-/* Class = "NSTextFieldCell"; placeholderString = "net charge"; ObjectID = "XbY-dL-0Ls"; */
-"XbY-dL-0Ls.placeholderString" = "净费用";
+/* Class = "NSTextFieldCell"; placeholderString = "Net charge"; ObjectID = "XbY-dL-0Ls"; */
+"XbY-dL-0Ls.placeholderString" = "净电荷";
 
 /* Class = "NSMenuItem"; title = "Visibility"; ObjectID = "bRE-uw-nCc"; */
 "bRE-uw-nCc.title" = "能见度";
@@ -72,7 +72,7 @@
 "e3g-JW-gej.title" = "添加原子";
 
 /* Class = "NSMenuItem"; title = "Top"; ObjectID = "eYX-Je-wTp"; */
-"eYX-Je-wTp.title" = "最佳";
+"eYX-Je-wTp.title" = "顶部";
 
 /* Class = "NSTableColumn"; headerCell.title = "name"; ObjectID = "etS-f2-gyR"; */
 "etS-f2-gyR.headerCell.title" = "名称";
@@ -81,10 +81,10 @@
 "fJ5-bP-buy.title" = "PDB";
 
 /* Class = "NSMenuItem"; title = "Match selection"; ObjectID = "fMn-ZP-dZ4"; */
-"fMn-ZP-dZ4.title" = "比赛选择";
+"fMn-ZP-dZ4.title" = "匹配选择";
 
 /* Class = "NSMenuItem"; title = "Move to new Movie"; ObjectID = "fmI-pV-gCy"; */
-"fmI-pV-gCy.title" = "移至新电影";
+"fmI-pV-gCy.title" = "移至新影片";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "fya-RH-Hvh"; */
 "fya-RH-Hvh.title" = "底部";
@@ -93,7 +93,7 @@
 "gam-Tz-1cQ.headerCell.title" = "y";
 
 /* Class = "NSMenuItem"; title = "Copy to new Movie"; ObjectID = "h1l-YI-Yex"; */
-"h1l-YI-Yex.title" = "复制到新电影";
+"h1l-YI-Yex.title" = "复制到新影片";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "h8W-NQ-h3a"; */
 "h8W-NQ-h3a.placeholderString" = "筛选";
@@ -111,7 +111,7 @@
 "j46-Tq-XrE.title" = "查找原始";
 
 /* Class = "NSTextFieldCell"; title = "Net charge"; ObjectID = "k5O-nf-whc"; */
-"k5O-nf-whc.title" = "净费用";
+"k5O-nf-whc.title" = "净电荷";
 
 /* Class = "NSTableColumn"; headerCell.title = "vis"; ObjectID = "njX-Kx-nwX"; */
 "njX-Kx-nwX.headerCell.title" = "vis";
@@ -159,7 +159,7 @@
 "ynH-ie-NeJ.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Make Super-Cell"; ObjectID = "yoN-UL-IRj"; */
-"yoN-UL-IRj.title" = "使超级细胞";
+"yoN-UL-IRj.title" = "生成超级细胞";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "zgU-ei-acC"; */
 "zgU-ei-acC.title" = "Text Cell";

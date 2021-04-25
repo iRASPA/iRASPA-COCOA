@@ -3,25 +3,25 @@
 "1O8-LR-tZG.title" = "Ellipsoïde";
 
 /* Class = "NSMenuItem"; title = "Customize Toolbar…"; ObjectID = "1UK-8n-QPP"; */
-"1UK-8n-QPP.title" = "Werkbalk aanpassen…";
+"1UK-8n-QPP.title" = "Pas knoppenbalk aan…";
 
 /* Class = "NSMenuItem"; title = "iRASPA"; ObjectID = "1Xt-HY-uBw"; */
 "1Xt-HY-uBw.title" = "iRASPA";
 
 /* Class = "NSMenu"; title = "Find"; ObjectID = "1b7-l0-nxx"; */
-"1b7-l0-nxx.title" = "Vind";
+"1b7-l0-nxx.title" = "Zoek";
 
 /* Class = "NSMenuItem"; title = "Lower"; ObjectID = "1tx-W0-xDw"; */
-"1tx-W0-xDw.title" = "Verlaag";
+"1tx-W0-xDw.title" = "Omlaag";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "2fK-ne-Lfp"; */
 "2fK-ne-Lfp.title" = "Box";
 
 /* Class = "NSMenuItem"; title = "Raise"; ObjectID = "2h7-ER-AoG"; */
-"2h7-ER-AoG.title" = "Ophogen";
+"2h7-ER-AoG.title" = "Omhoog";
 
 /* Class = "NSMenuItem"; title = "Transformations"; ObjectID = "2oI-Rn-ZJC"; */
-"2oI-Rn-ZJC.title" = "Transformaties";
+"2oI-Rn-ZJC.title" = "Omzetting";
 
 /* Class = "NSMenuItem"; title = "3:1"; ObjectID = "3GP-Eu-vtX"; */
 "3GP-Eu-vtX.title" = "3:1";
@@ -30,7 +30,7 @@
 "3IN-sU-3Bg.title" = "Spelling";
 
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "3Om-Ey-2VK"; */
-"3Om-Ey-2VK.title" = "Gebruik Standaard";
+"3Om-Ey-2VK.title" = "Standaard";
 
 /* Class = "NSMenu"; title = "Speech"; ObjectID = "3rS-ZA-NoH"; */
 "3rS-ZA-NoH.title" = "Spraak";
@@ -39,19 +39,19 @@
 "3x3-A1-D5u.title" = "Box";
 
 /* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
-"46P-cB-AYj.title" = "Vaster Maken";
+"46P-cB-AYj.title" = "Versmald";
 
 /* Class = "NSMenuItem"; title = "Find"; ObjectID = "4EN-yA-p0u"; */
-"4EN-yA-p0u.title" = "Vind";
+"4EN-yA-p0u.title" = "Zoek";
 
 /* Class = "NSMenuItem"; title = "Enter Full Screen"; ObjectID = "4J7-dP-txa"; */
-"4J7-dP-txa.title" = "Volledig Scherm Openen";
+"4J7-dP-txa.title" = "Schakel schermvullende weergave in";
 
 /* Class = "NSMenuItem"; title = "Quit iRASPA"; ObjectID = "4sb-4s-VLi"; */
 "4sb-4s-VLi.title" = "Sluit iRASPA af";
 
 /* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
-"5QF-Oa-p0T.title" = "Bewerk";
+"5QF-Oa-p0T.title" = "Wijzig";
 
 /* Class = "NSMenuItem"; title = "Copy Style"; ObjectID = "5Vv-lz-BsD"; */
 "5Vv-lz-BsD.title" = "Kopieer stijl";
@@ -60,10 +60,10 @@
 "5kV-Vb-QxS.title" = "Over iRASPA";
 
 /* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
-"6dh-zS-Vam.title" = "Opnieuw doen";
+"6dh-zS-Vam.title" = "Opnieuw";
 
 /* Class = "NSMenuItem"; title = "Correct Spelling Automatically"; ObjectID = "78Y-hA-62v"; */
-"78Y-hA-62v.title" = "Corrigeer Spelling Automatisch";
+"78Y-hA-62v.title" = "Corrigeer spelling automatisch";
 
 /* Class = "NSMenu"; title = "Writing Direction"; ObjectID = "8mr-sm-Yjd"; */
 "8mr-sm-Yjd.title" = "Schrijfrichting";
@@ -72,10 +72,10 @@
 "9EX-YN-jcB.title" = "Venster";
 
 /* Class = "NSMenuItem"; title = "Substitutions"; ObjectID = "9ic-FL-obx"; */
-"9ic-FL-obx.title" = "Vervangingen";
+"9ic-FL-obx.title" = "Vervanging";
 
 /* Class = "NSMenuItem"; title = "Smart Copy/Paste"; ObjectID = "9yt-4B-nSM"; */
-"9yt-4B-nSM.title" = "Slim Kopiëren/Plakken";
+"9yt-4B-nSM.title" = "Slim kopiëren/plakken";
 
 /* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
 "AYu-sK-qS6.title" = "Hoofdmenu";
@@ -84,7 +84,7 @@
 "BOF-NM-1cW.title" = "Voorkeuren…";
 
 /* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "BgM-ve-c93"; */
-"BgM-ve-c93.title" = "\tLinks naar Rechts";
+"BgM-ve-c93.title" = "\tLinks naar rechts";
 
 /* Class = "NSMenuItem"; title = "Save As…"; ObjectID = "Bw7-FT-i3A"; */
 "Bw7-FT-i3A.title" = "Opslaan als…";
@@ -93,10 +93,10 @@
 "CFt-im-cWe.title" = "Molecuul";
 
 /* Class = "NSMenuItem"; title = "Close"; ObjectID = "DVo-aG-piG"; */
-"DVo-aG-piG.title" = "Afsluiten";
+"DVo-aG-piG.title" = "Sluit";
 
 /* Class = "NSMenuItem"; title = "Spelling and Grammar"; ObjectID = "Dv1-io-Yv7"; */
-"Dv1-io-Yv7.title" = "Spelling en Grammatica";
+"Dv1-io-Yv7.title" = "Spelling en grammatica";
 
 /* Class = "NSMenuItem"; title = "Import"; ObjectID = "EH2-Bo-SW5"; */
 "EH2-Bo-SW5.title" = "Importeer";
@@ -117,16 +117,16 @@
 "Fal-I4-PZk.title" = "Tekst";
 
 /* Class = "NSMenu"; title = "Substitutions"; ObjectID = "FeM-D8-WVr"; */
-"FeM-D8-WVr.title" = "Substitutions";
+"FeM-D8-WVr.title" = "Vervanging";
 
 /* Class = "NSMenuItem"; title = "Bold"; ObjectID = "GB9-OM-e27"; */
-"GB9-OM-e27.title" = "Dikgedrukt";
+"GB9-OM-e27.title" = "Vet";
 
 /* Class = "NSMenu"; title = "Format"; ObjectID = "GEO-Iw-cKr"; */
-"GEO-Iw-cKr.title" = "Formaat";
+"GEO-Iw-cKr.title" = "Opmaak";
 
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "GUa-eO-cwY"; */
-"GUa-eO-cwY.title" = "Gebruik Standaard";
+"GUa-eO-cwY.title" = "Standaard";
 
 /* Class = "NSMenuItem"; title = "Font"; ObjectID = "Gi5-1S-RQB"; */
 "Gi5-1S-RQB.title" = "Lettertype";
@@ -138,19 +138,19 @@
 "H1b-Si-o9J.title" = "Schrijfrichting";
 
 /* Class = "NSMenuItem"; title = "View"; ObjectID = "H8h-7b-M4v"; */
-"H8h-7b-M4v.title" = "Bekijk";
+"H8h-7b-M4v.title" = "Weergave";
 
 /* Class = "NSMenuItem"; title = "Molecular crystal"; ObjectID = "H8o-f4-o3W"; */
 "H8o-f4-o3W.title" = "Moleculair kristal";
 
 /* Class = "NSMenuItem"; title = "Text Replacement"; ObjectID = "HFQ-gK-NFA"; */
-"HFQ-gK-NFA.title" = "Tekst vervangen";
+"HFQ-gK-NFA.title" = "Tekstvervanging";
 
 /* Class = "NSMenuItem"; title = "Show Spelling and Grammar"; ObjectID = "HFo-cy-zxI"; */
-"HFo-cy-zxI.title" = "Toon Spelling en Grammatica";
+"HFo-cy-zxI.title" = "Toon spelling en grammatica";
 
 /* Class = "NSMenu"; title = "View"; ObjectID = "HyV-fh-RgO"; */
-"HyV-fh-RgO.title" = "Bekijk";
+"HyV-fh-RgO.title" = "Weergave";
 
 /* Class = "NSMenuItem"; title = "Subscript"; ObjectID = "I0S-gh-46l"; */
 "I0S-gh-46l.title" = "Subscript";
@@ -162,10 +162,10 @@
 "IsF-P6-kfc.title" = "Kristal";
 
 /* Class = "NSMenuItem"; title = "Justify"; ObjectID = "J5U-5w-g23"; */
-"J5U-5w-g23.title" = "Uitvullen";
+"J5U-5w-g23.title" = "Vul uit";
 
 /* Class = "NSMenuItem"; title = "Use None"; ObjectID = "J7y-lM-qPV"; */
-"J7y-lM-qPV.title" = "Gebruik Geen";
+"J7y-lM-qPV.title" = "Geen";
 
 /* Class = "NSMenuItem"; title = "21:9"; ObjectID = "JWT-Cn-v6t"; */
 "JWT-Cn-v6t.title" = "21:9";
@@ -183,7 +183,7 @@
 "Kd2-mp-pUS.title" = "Toon Alles";
 
 /* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[0] = "Hide or show the Navigator"; ObjectID = "Khj-N3-fhm"; */
-"Khj-N3-fhm.ibShadowedToolTips[0]" = "Verberg of Toon de Navigato";
+"Khj-N3-fhm.ibShadowedToolTips[0]" = "Verberg of Toon de Navigator";
 
 /* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[1] = "Hide or show the Log/Python consoles"; ObjectID = "Khj-N3-fhm"; */
 "Khj-N3-fhm.ibShadowedToolTips[1]" = "Verberg of Toon de Log/Python-Consoles";
@@ -192,25 +192,25 @@
 "Khj-N3-fhm.ibShadowedToolTips[2]" = "Verberg of Toon het Utility-Gebied";
 
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "LE2-aR-0XJ"; */
-"LE2-aR-0XJ.title" = "Breng alles naar voren";
+"LE2-aR-0XJ.title" = "Alles op de voorgrond";
 
 /* Class = "NSMenuItem"; title = "Paste Ruler"; ObjectID = "LVM-kO-fVI"; */
-"LVM-kO-fVI.title" = "Plak de liniaal";
+"LVM-kO-fVI.title" = "Plak liniaal";
 
 /* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "Lbh-J2-qVU"; */
-"Lbh-J2-qVU.title" = "\tVan Links naar Rechts";
+"Lbh-J2-qVU.title" = "\tVan links naar rechts";
 
 /* Class = "NSMenuItem"; title = "1:1"; ObjectID = "Lr4-9V-B0Y"; */
 "Lr4-9V-B0Y.title" = "1:1";
 
 /* Class = "NSMenuItem"; title = "Copy Ruler"; ObjectID = "MkV-Pr-PK5"; */
-"MkV-Pr-PK5.title" = "Kopieer de Liniaal";
+"MkV-Pr-PK5.title" = "Kopieer liniaal";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "MzS-m8-rt0"; */
 "MzS-m8-rt0.title" = "Cilinder";
 
 /* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
-"NMo-om-nkz.title" = "Diensten";
+"NMo-om-nkz.title" = "Voorzieningen";
 
 /* Class = "NSMenuItem"; title = "\tDefault"; ObjectID = "Nop-cj-93Q"; */
 "Nop-cj-93Q.title" = "\tStandaard";
@@ -219,37 +219,37 @@
 "OY7-WF-poV.title" = "Minimaliseer";
 
 /* Class = "NSMenuItem"; title = "Baseline"; ObjectID = "OaQ-X3-Vso"; */
-"OaQ-X3-Vso.title" = "Baseline";
+"OaQ-X3-Vso.title" = "Basislijn";
 
 /* Class = "NSMenuItem"; title = "Hide test"; ObjectID = "Olw-nP-bQN"; */
 "Olw-nP-bQN.title" = "Verberg test";
 
 /* Class = "NSMenuItem"; title = "Find Previous"; ObjectID = "OwM-mh-QMV"; */
-"OwM-mh-QMV.title" = "Vond Vorige";
+"OwM-mh-QMV.title" = "Zoek vorige";
 
 /* Class = "NSMenuItem"; title = "Stop Speaking"; ObjectID = "Oyz-dy-DGm"; */
-"Oyz-dy-DGm.title" = "Stop met Praten";
+"Oyz-dy-DGm.title" = "Stop spraakfunctie";
 
 /* Class = "NSMenuItem"; title = "Bigger"; ObjectID = "Ptp-SP-VEL"; */
 "Ptp-SP-VEL.title" = "Groter";
 
 /* Class = "NSMenuItem"; title = "Show Fonts"; ObjectID = "Q5e-8K-NDq"; */
-"Q5e-8K-NDq.title" = "Toon Lettertypen";
+"Q5e-8K-NDq.title" = "Toon lettertypen";
 
 /* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "R4o-n2-Eq4"; */
-"R4o-n2-Eq4.title" = "Zoom";
+"R4o-n2-Eq4.title" = "Vergroot/verklein";
 
 /* Class = "NSMenuItem"; title = "\tRight to Left"; ObjectID = "RB4-Sm-HuC"; */
-"RB4-Sm-HuC.title" = "\tRechts naar Links";
+"RB4-Sm-HuC.title" = "\tRechts naar links";
 
 /* Class = "NSMenuItem"; title = "Superscript"; ObjectID = "Rqc-34-cIF"; */
 "Rqc-34-cIF.title" = "Superscript";
 
 /* Class = "NSMenuItem"; title = "Select All"; ObjectID = "Ruw-6m-B2m"; */
-"Ruw-6m-B2m.title" = "Selecteer Alles";
+"Ruw-6m-B2m.title" = "Selecteer alles";
 
 /* Class = "NSMenuItem"; title = "Jump to Selection"; ObjectID = "S0p-oC-mLd"; */
-"S0p-oC-mLd.title" = "Spring naar Selectie";
+"S0p-oC-mLd.title" = "Ga naar selectie";
 
 /* Class = "NSMenuItem"; title = "3:2"; ObjectID = "Spc-qz-Euj"; */
 "Spc-qz-Euj.title" = "3:2";
@@ -261,16 +261,16 @@
 "TrX-ZY-bLC.title" = "Hoogte-breedteverhouding";
 
 /* Class = "NSMenuItem"; title = "Capitalize"; ObjectID = "UEZ-Bs-lqG"; */
-"UEZ-Bs-lqG.title" = "Maeek Hoofdletters";
+"UEZ-Bs-lqG.title" = "Zet om in beginhoofdletters";
 
 /* Class = "NSMenuItem"; title = "Center"; ObjectID = "VIY-Ag-zcb"; */
 "VIY-Ag-zcb.title" = "Centreer";
 
 /* Class = "NSMenuItem"; title = "Invert selection"; ObjectID = "VNS-yB-1c3"; */
-"VNS-yB-1c3.title" = "Inverteer Selectie";
+"VNS-yB-1c3.title" = "Inverteer selectie";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
-"Vdr-fp-XzO.title" = "Verberg Anderen";
+"Vdr-fp-XzO.title" = "Verberg andere";
 
 /* Class = "NSMenuItem"; title = "Italic"; ObjectID = "Vjx-xi-njq"; */
 "Vjx-xi-njq.title" = "Cursief";
@@ -282,7 +282,7 @@
 "WJS-5R-dt1.title" = "Eiwit";
 
 /* Class = "NSMenuItem"; title = "Underline"; ObjectID = "WRG-CD-K1S"; */
-"WRG-CD-K1S.title" = "Onderstreep";
+"WRG-CD-K1S.title" = "Onderstreept";
 
 /* Class = "NSMenuItem"; title = "Copy"; ObjectID = "Wm2-za-IFp"; */
 "Wm2-za-IFp.title" = "Kopiëren";
@@ -291,61 +291,61 @@
 "WvN-oW-JtI.title" = "Voorwerpen";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "X1N-VI-cwY"; */
-"X1N-VI-cwY.title" = "Veelhoekig Prisma";
+"X1N-VI-cwY.title" = "Veelhoekig prisma";
 
 /* Class = "NSMenuItem"; title = "New"; ObjectID = "Xa3-2R-g2O"; */
 "Xa3-2R-g2O.title" = "Nieuw";
 
 /* Class = "NSMenuItem"; title = "Find…"; ObjectID = "Xz5-n4-O0W"; */
-"Xz5-n4-O0W.title" = "Vind…";
+"Xz5-n4-O0W.title" = "Zoek…";
 
 /* Class = "NSMenuItem"; title = "4:3"; ObjectID = "YAH-xY-wfC"; */
 "YAH-xY-wfC.title" = "4:3";
 
 /* Class = "NSMenuItem"; title = "Find and Replace…"; ObjectID = "YEy-JH-Tfz"; */
-"YEy-JH-Tfz.title" = "Vind and Vervang…";
+"YEy-JH-Tfz.title" = "Zoek and vervang…";
 
 /* Class = "NSMenuItem"; title = "\tDefault"; ObjectID = "YGs-j5-SAR"; */
 "YGs-j5-SAR.title" = "\tStandaard";
 
 /* Class = "NSMenuItem"; title = "Start Speaking"; ObjectID = "Ynk-f8-cLZ"; */
-"Ynk-f8-cLZ.title" = "Begin met Spreken";
+"Ynk-f8-cLZ.title" = "Start spraakfunctie";
 
 /* Class = "NSMenuItem"; title = "Align Left"; ObjectID = "ZM1-6Q-yy1"; */
-"ZM1-6Q-yy1.title" = "Links Uitlijnen";
+"ZM1-6Q-yy1.title" = "Lijn links uit";
 
 /* Class = "NSMenuItem"; title = "Paragraph"; ObjectID = "ZvO-Gk-QUH"; */
-"ZvO-Gk-QUH.title" = "Paragraaf";
+"ZvO-Gk-QUH.title" = "Alinea";
 
 /* Class = "NSMenuItem"; title = "Print…"; ObjectID = "aTl-1u-JFS"; */
-"aTl-1u-JFS.title" = "Afdrukken…";
+"aTl-1u-JFS.title" = "Druk af…";
 
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
-"aUF-d1-5bR.title" = "Window";
+"aUF-d1-5bR.title" = "Venster";
 
 /* Class = "NSMenu"; title = "Font"; ObjectID = "aXa-aM-Jaq"; */
 "aXa-aM-Jaq.title" = "Lettertype";
 
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "agt-UL-0e3"; */
-"agt-UL-0e3.title" = "Gebruik Standaard";
+"agt-UL-0e3.title" = "Standaard";
 
 /* Class = "NSMenuItem"; title = "Show Colors"; ObjectID = "bgn-CT-cEk"; */
-"bgn-CT-cEk.title" = "Toon Kleuren";
+"bgn-CT-cEk.title" = "Toon kleuren";
 
 /* Class = "NSMenu"; title = "File"; ObjectID = "bib-Uj-vzu"; */
 "bib-Uj-vzu.title" = "Bestand";
 
 /* Class = "NSMenuItem"; title = "Use Selection for Find"; ObjectID = "buJ-ug-pKt"; */
-"buJ-ug-pKt.title" = "Gebruik Selectie voor Zoeken";
+"buJ-ug-pKt.title" = "Gebruik selectie voor zoekactie";
 
 /* Class = "NSMenu"; title = "Transformations"; ObjectID = "c8a-y6-VQd"; */
-"c8a-y6-VQd.title" = "Transformaties";
+"c8a-y6-VQd.title" = "Omzetting";
 
 /* Class = "NSMenuItem"; title = "Use None"; ObjectID = "cDB-IK-hbR"; */
-"cDB-IK-hbR.title" = "Gebruik Geen";
+"cDB-IK-hbR.title" = "Geen";
 
 /* Class = "NSMenuItem"; title = "Atom group"; ObjectID = "cMR-OP-H7e"; */
-"cMR-OP-H7e.title" = "Atoom Groep";
+"cMR-OP-H7e.title" = "Atoom groep";
 
 /* Class = "NSMenuItem"; title = "16:9"; ObjectID = "cfR-kj-UKf"; */
 "cfR-kj-UKf.title" = "16:9";
@@ -354,10 +354,10 @@
 "cqv-fj-IhA.title" = "Selectie";
 
 /* Class = "NSMenuItem"; title = "Smart Links"; ObjectID = "cwL-P1-jid"; */
-"cwL-P1-jid.title" = "Slimme Koppelingen";
+"cwL-P1-jid.title" = "Slimme links";
 
 /* Class = "NSMenuItem"; title = "Make Lower Case"; ObjectID = "d9M-CD-aMd"; */
-"d9M-CD-aMd.title" = "Maak Kleine Letters";
+"d9M-CD-aMd.title" = "Zet om kleine letters";
 
 /* Class = "NSMenu"; title = "Text"; ObjectID = "d9c-me-L2H"; */
 "d9c-me-L2H.title" = "Tekst";
@@ -366,22 +366,22 @@
 "dMs-cI-mzQ.title" = "Bestand";
 
 /* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
-"dRJ-4n-Yzg.title" = "Ongedaan Maken";
+"dRJ-4n-Yzg.title" = "Herstel";
 
 /* Class = "NSMenuItem"; title = "Workspace"; ObjectID = "fCt-M2-s9M"; */
-"fCt-M2-s9M.title" = "Werkruimte";
+"fCt-M2-s9M.title" = "Werkblad";
 
 /* Class = "NSMenuItem"; title = "Paste"; ObjectID = "gVA-U4-sdL"; */
-"gVA-U4-sdL.title" = "Plakken";
+"gVA-U4-sdL.title" = "Plak";
 
 /* Class = "NSMenuItem"; title = "Smart Quotes"; ObjectID = "hQb-2v-fYv"; */
-"hQb-2v-fYv.title" = "Slimme Aanhalingstekens";
+"hQb-2v-fYv.title" = "Slimme aanhalingstekens";
 
 /* Class = "NSMenuItem"; title = "Atom"; ObjectID = "hUG-eb-3cj"; */
 "hUG-eb-3cj.title" = "Atoom";
 
 /* Class = "NSMenuItem"; title = "Check Document Now"; ObjectID = "hz2-CU-CR7"; */
-"hz2-CU-CR7.title" = "Controleer het Document Nu";
+"hz2-CU-CR7.title" = "Controleer document nu";
 
 /* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
 "hz9-B4-Xy5.title" = "Diensten";
@@ -393,22 +393,22 @@
 "ijk-EB-dga.title" = "Basislijn";
 
 /* Class = "NSMenuItem"; title = "Kern"; ObjectID = "jBQ-r6-VK2"; */
-"jBQ-r6-VK2.title" = "Kern";
+"jBQ-r6-VK2.title" = "Spatiëring";
 
 /* Class = "NSMenuItem"; title = "2.39:1"; ObjectID = "jF0-uJ-F9d"; */
 "jF0-uJ-F9d.title" = "2.39:1";
 
 /* Class = "NSMenuItem"; title = "\tRight to Left"; ObjectID = "jFq-tB-4Kx"; */
-"jFq-tB-4Kx.title" = "\tRechts naar Links";
+"jFq-tB-4Kx.title" = "\tRechts naar links";
 
 /* Class = "NSMenuItem"; title = "Format"; ObjectID = "jxT-CU-nIS"; */
-"jxT-CU-nIS.title" = "Formaat";
+"jxT-CU-nIS.title" = "Opmaak";
 
 /* Class = "NSMenuItem"; title = "Show Sidebar"; ObjectID = "kIP-vf-haE"; */
-"kIP-vf-haE.title" = "Toon Zijbalk";
+"kIP-vf-haE.title" = "Toon navigatiekolom";
 
 /* Class = "NSMenuItem"; title = "Check Grammar With Spelling"; ObjectID = "mK6-2p-4JG"; */
-"mK6-2p-4JG.title" = "Controleer Grammatica met Spelling";
+"mK6-2p-4JG.title" = "Controleer grammatica tegelijk met spelling";
 
 /* Class = "NSMenuItem"; title = "1.85:1"; ObjectID = "mum-mQ-dln"; */
 "mum-mQ-dln.title" = "1.85:1";
@@ -417,10 +417,10 @@
 "o6e-r0-MWq.title" = "Ligaturen";
 
 /* Class = "NSMenu"; title = "Open Recent"; ObjectID = "oas-Oc-fiZ"; */
-"oas-Oc-fiZ.title" = "Open Recentelijk";
+"oas-Oc-fiZ.title" = "Open recente bestanden";
 
 /* Class = "NSMenuItem"; title = "Loosen"; ObjectID = "ogc-rX-tC1"; */
-"ogc-rX-tC1.title" = "Losser Maken";
+"ogc-rX-tC1.title" = "Uitgerekt";
 
 /* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
 "pa3-QI-u2k.title" = "Verwijder";
@@ -429,37 +429,37 @@
 "pxx-59-PXV.title" = "Bewaar…";
 
 /* Class = "NSMenuItem"; title = "Find Next"; ObjectID = "q09-fT-Sye"; */
-"q09-fT-Sye.title" = "Vind Volgende";
+"q09-fT-Sye.title" = "Zoek volgende";
 
 /* Class = "NSMenu"; title = "Objects"; ObjectID = "q81-1F-c5Z"; */
 "q81-1F-c5Z.title" = "Voorwerpen";
 
 /* Class = "NSMenuItem"; title = "Page Setup…"; ObjectID = "qIS-W8-SiK"; */
-"qIS-W8-SiK.title" = "Pagina Instellingen…";
+"qIS-W8-SiK.title" = "Pagina-instelling…";
 
 /* Class = "NSMenuItem"; title = "Check Spelling While Typing"; ObjectID = "rbD-Rh-wIN"; */
-"rbD-Rh-wIN.title" = "Controleer de Spelling Tijdens het Typen";
+"rbD-Rh-wIN.title" = "Controleer spelling tijdens typen";
 
 /* Class = "NSMenuItem"; title = "Protein crystal"; ObjectID = "rdX-r1-eMs"; */
 "rdX-r1-eMs.title" = "Eiwitkristal";
 
 /* Class = "NSMenuItem"; title = "Smart Dashes"; ObjectID = "rgM-f4-ycn"; */
-"rgM-f4-ycn.title" = "Slimme Streepjes";
+"rgM-f4-ycn.title" = "Slimme streepjes";
 
 /* Class = "NSMenuItem"; title = "Show Toolbar"; ObjectID = "snW-S8-Cw5"; */
-"snW-S8-Cw5.title" = "Werkbalk Weergeven";
+"snW-S8-Cw5.title" = "Werkbalk weergeven";
 
 /* Class = "NSMenuItem"; title = "Data Detectors"; ObjectID = "tRr-pd-1PS"; */
-"tRr-pd-1PS.title" = "Datadetectoren";
+"tRr-pd-1PS.title" = "Datadetectie";
 
 /* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
-"tXI-mr-wws.title" = "Open Recentelijk";
+"tXI-mr-wws.title" = "Open recente bestanden";
 
 /* Class = "NSMenuItem"; title = "Off"; ObjectID = "tjs-df-O3M"; */
 "tjs-df-O3M.title" = "Uit";
 
 /* Class = "NSMenu"; title = "Kern"; ObjectID = "tlD-Oa-oAM"; */
-"tlD-Oa-oAM.title" = "Kern";
+"tlD-Oa-oAM.title" = "Spatiëring";
 
 /* Class = "NSMenu"; title = "iRASPA"; ObjectID = "uQy-DD-JDr"; */
 "uQy-DD-JDr.title" = "iRASPA";
@@ -468,31 +468,31 @@
 "uRl-iY-unG.title" = "Knip";
 
 /* Class = "NSMenuItem"; title = "Paste Style"; ObjectID = "vKC-jM-MkH"; */
-"vKC-jM-MkH.title" = "Plak Stijl";
+"vKC-jM-MkH.title" = "Plak en pas stijl aan";
 
 /* Class = "NSMenuItem"; title = "Show Ruler"; ObjectID = "vLm-3I-IUL"; */
-"vLm-3I-IUL.title" = "Toon Liniaal";
+"vLm-3I-IUL.title" = "Toon liniaal";
 
 /* Class = "NSMenuItem"; title = "Clear Menu"; ObjectID = "vNY-rz-j42"; */
-"vNY-rz-j42.title" = "Menu Wissen";
+"vNY-rz-j42.title" = "Menu wissen";
 
 /* Class = "NSMenuItem"; title = "Make Upper Case"; ObjectID = "vmV-6d-7jI"; */
-"vmV-6d-7jI.title" = "Maak Hoofdletters";
+"vmV-6d-7jI.title" = "Zet om in hoofdletters";
 
 /* Class = "NSMenu"; title = "Ligatures"; ObjectID = "w0m-vy-SC9"; */
 "w0m-vy-SC9.title" = "Ligaturen";
 
 /* Class = "NSMenuItem"; title = "Align Right"; ObjectID = "wb2-vD-lq4"; */
-"wb2-vD-lq4.title" = "Rechts Uitlijnen";
+"wb2-vD-lq4.title" = "Lijn rechts uit";
 
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
 "wpr-3q-Mcd.title" = "Help";
 
 /* Class = "NSMenuItem"; title = "Use All"; ObjectID = "xQD-1f-W4t"; */
-"xQD-1f-W4t.title" = "Gebruik Alles";
+"xQD-1f-W4t.title" = "Alle";
 
 /* Class = "NSMenuItem"; title = "Speech"; ObjectID = "xrE-MZ-jX0"; */
 "xrE-MZ-jX0.title" = "Spraak";
 
 /* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
-"z6F-FW-3nz.title" = "Toon Vervangingen";
+"z6F-FW-3nz.title" = "Toon vervangingen";
