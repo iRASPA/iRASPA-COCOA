@@ -120,7 +120,7 @@
 "Ph1-69-211.title" = "氦气空隙率";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Pt2-gj-hYD"; */
-"Pt2-gj-hYD.title" = "没有任何";
+"Pt2-gj-hYD.title" = "无";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "PwB-qr-PSc"; */
 "PwB-qr-PSc.title" = "大于或等于";
@@ -129,7 +129,7 @@
 "QAT-BU-IHn.title" = "是";
 
 /* Class = "NSMenuItem"; title = "Largest cavity diameter"; ObjectID = "QZV-BO-K2P"; */
-"QZV-BO-K2P.title" = "最大型腔直径";
+"QZV-BO-K2P.title" = "最大腔直径";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "QjQ-JG-tdg"; */
 "QjQ-JG-tdg.title" = "大于";
@@ -195,7 +195,7 @@
 "cRo-CA-Ium.title" = "不是";
 
 /* Class = "NSMenuItem"; title = "Framework specific volume"; ObjectID = "cSF-kJ-biE"; */
-"cSF-kJ-biE.title" = "特定于框架的卷";
+"cSF-kJ-biE.title" = "特定于框架的体积";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "dOd-mh-hCL"; */
 "dOd-mh-hCL.title" = "大于";
@@ -207,7 +207,7 @@
 "g4T-WC-bhk.title" = "小于";
 
 /* Class = "NSTextFieldCell"; title = "Number of items"; ObjectID = "gRs-oY-ROY"; */
-"gRs-oY-ROY.title" = "项目数";
+"gRs-oY-ROY.title" = "品目数";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "ggX-BU-UR6"; */
 "ggX-BU-UR6.title" = "不是";
@@ -246,7 +246,7 @@
 "lbV-FO-8zT.title" = "火柴";
 
 /* Class = "NSMenuItem"; title = "Framework accessible volume"; ObjectID = "lc0-Us-BEz"; */
-"lc0-Us-BEz.title" = "框架可访问量";
+"lc0-Us-BEz.title" = "框架可用体积";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "nkM-Gr-sR9"; */
 "nkM-Gr-sR9.title" = "大于或等于";

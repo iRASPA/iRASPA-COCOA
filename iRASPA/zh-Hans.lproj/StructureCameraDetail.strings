@@ -87,7 +87,7 @@
 "JiR-AU-7kF.title" = "8位，CMYK";
 
 /* Class = "NSButtonCell"; title = "Create Movie"; ObjectID = "Juc-g9-TL7"; */
-"Juc-g9-TL7.title" = "制作电影";
+"Juc-g9-TL7.title" = "制作影片";
 
 /* Class = "NSBox"; title = "Camera Light"; ObjectID = "Jzl-ba-QmS"; */
 "Jzl-ba-QmS.title" = "摄影灯";
@@ -99,7 +99,7 @@
 "LQP-iH-ONP.placeholderString" = "bz";
 
 /* Class = "NSTextFieldCell"; title = "Pictures/Movies"; ObjectID = "MBE-Ci-b6w"; */
-"MBE-Ci-b6w.title" = "图片/电影";
+"MBE-Ci-b6w.title" = "图片/影片";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "MEZ-QI-Kgi"; */
 "MEZ-QI-Kgi.title" = "旋转 +90°";

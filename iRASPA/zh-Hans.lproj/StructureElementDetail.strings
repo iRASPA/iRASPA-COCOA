@@ -63,7 +63,7 @@
 "XSg-KN-Gvs.title" = "数字";
 
 /* Class = "NSTextFieldCell"; title = "Sigma"; ObjectID = "Zuq-uJ-RRd"; */
-"Zuq-uJ-RRd.title" = "西格玛";
+"Zuq-uJ-RRd.title" = "Sigma(Σ)";
 
 /* Class = "NSTextFieldCell"; title = "Group"; ObjectID = "a5h-Uu-h84"; */
 "a5h-Uu-h84.title" = "团体";
@@ -72,7 +72,7 @@
 "d0R-zc-cge.title" = "原子半径";
 
 /* Class = "NSTextFieldCell"; title = "Triple Bond Covalent Radius"; ObjectID = "dAx-rW-eh4"; */
-"dAx-rW-eh4.title" = "三价共价半径";
+"dAx-rW-eh4.title" = "三键共价半径";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "ed7-vv-cRQ"; */
 "ed7-vv-cRQ.title" = "Å";

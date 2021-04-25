@@ -1,6 +1,6 @@
 
 /* Class = "NSMenuItem"; title = "All positive"; ObjectID = "07j-yA-XWL"; */
-"07j-yA-XWL.title" = "全部正面";
+"07j-yA-XWL.title" = "全部正价";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
 "43t-f2-d0i.placeholderString" = "机构名称";
@@ -18,7 +18,7 @@
 "4I2-J0-a1F.title" = "未知";
 
 /* Class = "NSTextFieldCell"; title = "Affiliation"; ObjectID = "4KL-dd-ODO"; */
-"4KL-dd-ODO.title" = "联系";
+"4KL-dd-ODO.title" = "归属";
 
 /* Class = "NSTextFieldCell"; title = "DOI"; ObjectID = "4z1-VY-1Pd"; */
 "4z1-VY-1Pd.title" = "DOI";
@@ -57,7 +57,7 @@
 "EMw-Fn-YYe.placeholderString" = "未知";
 
 /* Class = "NSMenuItem"; title = "Fixed Volume; Shape Change"; ObjectID = "Etd-c0-eiU"; */
-"Etd-c0-eiU.title" = "固定音量；形状变化";
+"Etd-c0-eiU.title" = "固定体积；形状变化";
 
 /* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
 "FgA-hr-Zjg.title" = "细节";
@@ -66,7 +66,7 @@
 "FkD-oS-zpo.title" = "Item 2";
 
 /* Class = "NSMenuItem"; title = "Experimental"; ObjectID = "G2E-hb-9HS"; */
-"G2E-hb-9HS.title" = "实验性";
+"G2E-hb-9HS.title" = "实验的";
 
 /* Class = "NSTextFieldCell"; placeholderString = "max"; ObjectID = "GOg-L9-MUC"; */
 "GOg-L9-MUC.placeholderString" = "max";
@@ -78,7 +78,7 @@
 "H8k-8m-eEZ.title" = "Conjugate Gradient";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "HQa-wI-SvD"; */
-"HQa-wI-SvD.title" = "没有任何";
+"HQa-wI-SvD.title" = "无";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "IDD-Ef-45v"; */
 "IDD-Ef-45v.title" = "算法";
@@ -108,7 +108,7 @@
 "LRn-Q5-NIv.title" = "算法";
 
 /* Class = "NSTabViewItem"; label = "View"; ObjectID = "Lsj-0L-zLx"; */
-"Lsj-0L-zLx.label" = "看法";
+"Lsj-0L-zLx.label" = "查看";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Type"; ObjectID = "M4G-j9-ni3"; */
 "M4G-j9-ni3.title" = "辐射类型";
@@ -117,7 +117,7 @@
 "MCu-aJ-XRY.title" = "模拟退火";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
-"MYm-ia-kRD.title" = "单面";
+"MYm-ia-kRD.title" = "单纯形法";
 
 /* Class = "NSTextFieldCell"; title = "Eigenvalues"; ObjectID = "Mz0-GD-bP9"; */
 "Mz0-GD-bP9.title" = "特征值";
@@ -198,7 +198,7 @@
 "b8q-Dr-Dt5.placeholderString" = "未知";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "实验性";
+"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "实验的";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[1] = "Ab initio"; ObjectID = "b8q-Dr-Dt5"; */
 "b8q-Dr-Dt5.ibShadowedObjectValues[1]" = "Ab initio";
@@ -342,7 +342,7 @@
 "kzO-x9-s2F.placeholderString" = "min";
 
 /* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "放松晶胞";
+"lIz-1D-3Ai.title" = "放松元胞";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
 "lKv-hk-525.title" = "压力";
@@ -372,7 +372,7 @@
 "pWj-ey-8li.title" = "创作者";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "qFO-wb-T6b"; */
-"qFO-wb-T6b.title" = "没有任何";
+"qFO-wb-T6b.title" = "无";
 
 /* Class = "NSTextFieldCell"; title = "Measurement Theta"; ObjectID = "qbj-K1-xUb"; */
 "qbj-K1-xUb.title" = "测量角";
@@ -522,4 +522,4 @@
 "zKZ-Xu-F5z.title" = "软件包";
 
 /* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Change"; ObjectID = "zUt-yS-ax8"; */
-"zUt-yS-ax8.title" = "像元和边长变化";
+"zUt-yS-ax8.title" = "单元和边长变化";

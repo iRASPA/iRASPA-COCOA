@@ -6,19 +6,19 @@
 "1gf-ji-nCa.title" = "0";
 
 /* Class = "NSMenuItem"; title = "Crystal Ellipsoid"; ObjectID = "1ov-vh-bRX"; */
-"1ov-vh-bRX.title" = "水晶椭球";
+"1ov-vh-bRX.title" = "晶体椭球";
 
 /* Class = "NSBox"; title = "Orientation"; ObjectID = "2sE-L5-Mde"; */
 "2sE-L5-Mde.title" = "方向";
 
 /* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
-"39F-yr-VYx.title" = "单元格/边界框属性";
+"39F-yr-VYx.title" = "元胞/边界框属性";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
-"3Fv-hH-asL.title" = "毛孔容积";
+"3Fv-hH-asL.title" = "可得孔隙体积";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum X"; ObjectID = "3a2-UB-zfk"; */
-"3a2-UB-zfk.placeholderString" = "最低限度 X";
+"3a2-UB-zfk.placeholderString" = "最小 X";
 
 /* Class = "NSTextFieldCell"; title = "[-]"; ObjectID = "3yK-10-X6T"; */
 "3yK-10-X6T.title" = "[-]";
@@ -63,7 +63,7 @@
 "92b-lC-W5K.title" = "通道系统数";
 
 /* Class = "NSTextFieldCell"; title = "Helium Void Fraction"; ObjectID = "9na-rU-hDF"; */
-"9na-rU-hDF.title" = "氦空分";
+"9na-rU-hDF.title" = "氦空隙率";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "9x5-Do-xLf"; */
 "9x5-Do-xLf.title" = "未知";
@@ -78,7 +78,7 @@
 "Bj5-6C-Yn3.title" = "氮";
 
 /* Class = "NSBox"; title = "Channel Information"; ObjectID = "Bsc-yB-qAX"; */
-"Bsc-yB-qAX.title" = "频道资讯";
+"Bsc-yB-qAX.title" = "通道信息";
 
 /* Class = "NSMenuItem"; title = "Methane"; ObjectID = "C9m-fX-LjX"; */
 "C9m-fX-LjX.title" = "甲烷";
@@ -87,7 +87,7 @@
 "CSF-1Y-UQa.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "Cao-y3-ptB"; */
-"Cao-y3-ptB.title" = "水晶";
+"Cao-y3-ptB.title" = "晶体";
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "CcD-DW-aQM"; */
 "CcD-DW-aQM.title" = "[Å]";
@@ -120,7 +120,7 @@
 "GCR-0z-KdY.title" = "分子晶体";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
-"Geb-Or-zb5.title" = "预选赛";
+"Geb-Or-zb5.title" = "合格的";
 
 /* Class = "NSTextFieldCell"; title = "[m²/cm³]"; ObjectID = "GpO-nT-2ds"; */
 "GpO-nT-2ds.title" = "[m²/cm³]";
@@ -141,13 +141,13 @@
 "KBR-dm-dts.title" = "对称性";
 
 /* Class = "NSBox"; title = "Cell content"; ObjectID = "KGV-zA-HoJ"; */
-"KGV-zA-HoJ.title" = "单元格内容";
+"KGV-zA-HoJ.title" = "晶胞内容";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Length b"; ObjectID = "KWe-Mf-Gny"; */
 "KWe-Mf-Gny.placeholderString" = "长度 b";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Y"; ObjectID = "Lso-gV-DWL"; */
-"Lso-gV-DWL.placeholderString" = "原产地 Y";
+"Lso-gV-DWL.placeholderString" = "原点 Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Width Z"; ObjectID = "M3B-3E-Pj6"; */
 "M3B-3E-Pj6.placeholderString" = "宽度 Z";
@@ -225,13 +225,13 @@
 "WcQ-vR-rvO.placeholderString" = "β 角";
 
 /* Class = "NSTextFieldCell"; title = "Laue Group"; ObjectID = "Wgg-RQ-dI1"; */
-"Wgg-RQ-dI1.title" = "劳埃集团";
+"Wgg-RQ-dI1.title" = "劳厄群";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
 "X5S-a7-xCf.placeholderString" = "原点 Z";
 
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
-"XeZ-Hb-tao.title" = "水晶缸";
+"XeZ-Hb-tao.title" = "晶体圆柱";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
 "Y0x-AR-NvS.placeholderString" = "最大 Z";
@@ -246,7 +246,7 @@
 "ZNQ-TG-HdE.title" = "蛋白质晶体溶剂";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Z"; ObjectID = "ZfA-8U-voh"; */
-"ZfA-8U-voh.placeholderString" = "最低限度 Z";
+"ZfA-8U-voh.placeholderString" = "最小 Z";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "ZnC-Km-HZJ"; */
 "ZnC-Km-HZJ.title" = "欧拉角";
@@ -261,7 +261,7 @@
 "axn-lz-p51.title" = "B";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "b6A-6m-fKp"; */
-"b6A-6m-fKp.title" = "圆筒";
+"b6A-6m-fKp.title" = "圆柱";
 
 /* Class = "NSTextFieldCell"; title = "AZ"; ObjectID = "bTK-cR-IRN"; */
 "bTK-cR-IRN.title" = "AZ";
@@ -282,7 +282,7 @@
 "dIk-F3-XKu.title" = "旋转角度";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ɣ Angle"; ObjectID = "dre-c1-hTc"; */
-"dre-c1-hTc.placeholderString" = "ɣ 角度";
+"dre-c1-hTc.placeholderString" = "ɣ 角";
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "dsn-Pq-Tq1"; */
 "dsn-Pq-Tq1.title" = "[Å]";
@@ -291,7 +291,7 @@
 "ewU-xG-8Qg.title" = "[kg/m³]";
 
 /* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "ezl-cN-6ra"; */
-"ezl-cN-6ra.title" = "椭圆体";
+"ezl-cN-6ra.title" = "椭球";
 
 /* Class = "NSTextFieldCell"; placeholderString = "by"; ObjectID = "f5k-y5-5L1"; */
 "f5k-y5-5L1.placeholderString" = "经过";
@@ -318,7 +318,7 @@
 "gay-1o-b6B.title" = "氩气";
 
 /* Class = "NSMenuItem"; title = "Crystal Polygonal Prism"; ObjectID = "h3A-5g-irg"; */
-"h3A-5g-irg.title" = "水晶多边形棱镜";
+"h3A-5g-irg.title" = "晶体多边形棱镜";
 
 /* Class = "NSTextFieldCell"; title = "Mass"; ObjectID = "hGv-Sn-Ok6"; */
 "hGv-Sn-Ok6.title" = "大量的";
@@ -327,7 +327,7 @@
 "hx7-iu-woV.placeholderString" = "ax";
 
 /* Class = "NSTextFieldCell"; placeholderString = "α Angle"; ObjectID = "jHJ-5h-ehN"; */
-"jHJ-5h-ehN.placeholderString" = "α 角度";
+"jHJ-5h-ehN.placeholderString" = "α 角";
 
 /* Class = "NSTextFieldCell"; title = "Material Type"; ObjectID = "jgD-yL-2kq"; */
 "jgD-yL-2kq.title" = "材料类型";
@@ -351,7 +351,7 @@
 "lhA-fm-5dQ.title" = "蛋白质";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin X"; ObjectID = "mBe-hd-Fy3"; */
-"mBe-hd-Fy3.placeholderString" = "起源 X";
+"mBe-hd-Fy3.placeholderString" = "原点 X";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "mLH-lp-rcD"; */
 "mLH-lp-rcD.title" = "0";
@@ -360,13 +360,13 @@
 "mZ6-cg-pcL.title" = "空间群";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Y"; ObjectID = "mhY-GY-BNd"; */
-"mhY-GY-BNd.placeholderString" = "最低限度 Y";
+"mhY-GY-BNd.placeholderString" = "最小 Y";
 
 /* Class = "NSTextFieldCell"; title = "Precision"; ObjectID = "n3J-VH-Fux"; */
 "n3J-VH-Fux.title" = "精确";
 
 /* Class = "NSTextFieldCell"; title = "Origin"; ObjectID = "nOH-gZ-CNR"; */
-"nOH-gZ-CNR.title" = "起源";
+"nOH-gZ-CNR.title" = "原点";
 
 /* Class = "NSMenuItem"; title = "Helium"; ObjectID = "nos-k0-eV6"; */
 "nos-k0-eV6.title" = "氦";
@@ -411,7 +411,7 @@
 "siG-7J-hEu.title" = "体积表面积（氮)";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
-"swk-Q8-afT.title" = "结晶溶剂";
+"swk-Q8-afT.title" = "晶体溶剂";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "t15-It-Wye"; */
 "t15-It-Wye.title" = "旋转 +90";
@@ -459,7 +459,7 @@
 "ugQ-Gv-6sx.title" = "旋转 +90";
 
 /* Class = "NSTextFieldCell"; title = "Flip"; ObjectID = "v83-YD-3LI"; */
-"v83-YD-3LI.title" = "翻动";
+"v83-YD-3LI.title" = "翻转";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
 "vhk-8d-Ytl.title" = "结构性质";

@@ -6,7 +6,7 @@
 "1Xb-ls-pt9.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Compute properties for selection"; ObjectID = "2Jt-NB-sPl"; */
-"2Jt-NB-sPl.title" = "计算属性以供选择";
+"2Jt-NB-sPl.title" = "计算选项属性";
 
 /* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "39L-RF-she"; */
 "39L-RF-she.title" = "添加分子";
@@ -18,7 +18,7 @@
 "5km-ay-bRW.ibShadowedToolTips[0]" = "显示项目浏览器";
 
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "5vG-bx-ocx"; */
-"5vG-bx-ocx.title" = "水晶缸";
+"5vG-bx-ocx.title" = "晶体圆柱";
 
 /* Class = "NSMenuItem"; title = "Delete Selection"; ObjectID = "7fp-uc-cJb"; */
 "7fp-uc-cJb.title" = "删除选择";
@@ -63,13 +63,13 @@
 "PBb-Do-JMr.title" = "Box";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
-"PS8-Ne-mbi.ibShadowedToolTips[0]" = "显示项目浏览器";
+"PS8-Ne-mbi.ibShadowedToolTips[0]" = "显示项目导航";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[1] = "Shows the Scenes Navigator"; ObjectID = "PS8-Ne-mbi"; */
-"PS8-Ne-mbi.ibShadowedToolTips[1]" = "显示场景导航器";
+"PS8-Ne-mbi.ibShadowedToolTips[1]" = "显示场景导航";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[2] = "Shows the Frames Navigator"; ObjectID = "PS8-Ne-mbi"; */
-"PS8-Ne-mbi.ibShadowedToolTips[2]" = "显示框架导航器";
+"PS8-Ne-mbi.ibShadowedToolTips[2]" = "显示框架导航";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
 "QFA-05-Kql.title" = "Box";
@@ -78,16 +78,16 @@
 "RMC-nN-w7D.title" = "添加蛋白质";
 
 /* Class = "NSMenuItem"; title = "Crystal polygonal prism"; ObjectID = "RXK-7F-kYl"; */
-"RXK-7F-kYl.title" = "水晶多边形棱镜";
+"RXK-7F-kYl.title" = "晶体多边形棱镜";
 
 /* Class = "NSMenuItem"; title = "Crystal ellipsoid"; ObjectID = "RaT-FZ-Ofn"; */
 "RaT-FZ-Ofn.title" = "晶体椭球";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "Rj0-p0-TFM"; */
-"Rj0-p0-TFM.title" = "圆筒";
+"Rj0-p0-TFM.title" = "圆柱";
 
 /* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "TAX-Oq-9O2"; */
-"TAX-Oq-9O2.title" = "椭圆体";
+"TAX-Oq-9O2.title" = "椭球";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
 "Toa-8e-8sy.title" = "Box";
@@ -105,7 +105,7 @@
 "d98-LF-qMp.title" = "添加对象";
 
 /* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "dYh-5W-YT9"; */
-"dYh-5W-YT9.title" = "添加水晶";
+"dYh-5W-YT9.title" = "添加晶体";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
 "eMF-nr-fbD.title" = "多边形棱镜";
@@ -138,4 +138,4 @@
 "xGp-L1-szQ.title" = "添加对象";
 
 /* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "xX5-m0-Lkz"; */
-"xX5-m0-Lkz.title" = "添加水晶";
+"xX5-m0-Lkz.title" = "添加晶体";
