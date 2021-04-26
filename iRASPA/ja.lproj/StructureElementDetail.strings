@@ -21,22 +21,22 @@
 "HW9-vP-rgD.title" = "ユーザー定義の半径";
 
 /* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[0] = "Item 1"; ObjectID = "JMk-0p-M2g"; */
-"JMk-0p-M2g.ibShadowedObjectValues[0]" = "Item 1";
+"JMk-0p-M2g.ibShadowedObjectValues[0]" = "アイテム１";
 
 /* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[1] = "Item 2"; ObjectID = "JMk-0p-M2g"; */
-"JMk-0p-M2g.ibShadowedObjectValues[1]" = "Item 2";
+"JMk-0p-M2g.ibShadowedObjectValues[1]" = "アイテム２";
 
 /* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[2] = "Item 3"; ObjectID = "JMk-0p-M2g"; */
-"JMk-0p-M2g.ibShadowedObjectValues[2]" = "Item 3";
+"JMk-0p-M2g.ibShadowedObjectValues[2]" = "アイテム３";
 
 /* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[0] = "Item 1"; ObjectID = "MPA-12-IGt"; */
-"MPA-12-IGt.ibShadowedObjectValues[0]" = "Item 1";
+"MPA-12-IGt.ibShadowedObjectValues[0]" = "アイテム１";
 
 /* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[1] = "Item 2"; ObjectID = "MPA-12-IGt"; */
-"MPA-12-IGt.ibShadowedObjectValues[1]" = "Item 2";
+"MPA-12-IGt.ibShadowedObjectValues[1]" = "アイテム２";
 
 /* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[2] = "Item 3"; ObjectID = "MPA-12-IGt"; */
-"MPA-12-IGt.ibShadowedObjectValues[2]" = "Item 3";
+"MPA-12-IGt.ibShadowedObjectValues[2]" = "アイテム３";
 
 /* Class = "NSMenuItem"; title = "Insert new type"; ObjectID = "OfD-wL-UX4"; */
 "OfD-wL-UX4.title" = "新しいタイプを挿入";
@@ -48,13 +48,13 @@
 "Pzr-4b-xG5.title" = "Å";
 
 /* Class = "NSTextFieldCell"; title = "Force field"; ObjectID = "RAy-Tn-Q9h"; */
-"RAy-Tn-Q9h.title" = "フォースフィールド";
+"RAy-Tn-Q9h.title" = "力場";
 
 /* Class = "NSTextFieldCell"; title = "C"; ObjectID = "RN5-9P-5zL"; */
 "RN5-9P-5zL.title" = "C";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Rhd-q6-XIy"; */
-"Rhd-q6-XIy.title" = "Text Cell";
+"Rhd-q6-XIy.title" = "テキストセル";
 
 /* Class = "NSTextFieldCell"; title = "Atom Visibility"; ObjectID = "V2o-qv-t9c"; */
 "V2o-qv-t9c.title" = "原子の可視性";
@@ -72,13 +72,13 @@
 "d0R-zc-cge.title" = "原子半径";
 
 /* Class = "NSTextFieldCell"; title = "Triple Bond Covalent Radius"; ObjectID = "dAx-rW-eh4"; */
-"dAx-rW-eh4.title" = "トリプルボンド共有結合半径";
+"dAx-rW-eh4.title" = "三重結合共有結合半径";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "ed7-vv-cRQ"; */
 "ed7-vv-cRQ.title" = "Å";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "exg-Lr-h93"; */
-"exg-Lr-h93.title" = "Box";
+"exg-Lr-h93.title" = "ボックス";
 
 /* Class = "NSTextFieldCell"; title = "Epsilon"; ObjectID = "fcz-SI-vXv"; */
 "fcz-SI-vXv.title" = "イプシロン";
@@ -87,7 +87,7 @@
 "hbT-eZ-OBK.title" = "Å";
 
 /* Class = "NSBox"; title = "Possible Oxidation States"; ObjectID = "nb3-UI-e9y"; */
-"nb3-UI-e9y.title" = "考えられる酸化状態";
+"nb3-UI-e9y.title" = "可能な酸化状態";
 
 /* Class = "NSTextFieldCell"; title = "Van der Waals Radius"; ObjectID = "prv-DF-MqL"; */
 "prv-DF-MqL.title" = "ファンデルワールス半径";
@@ -96,7 +96,7 @@
 "rF4-Eu-aR8.title" = "炭素";
 
 /* Class = "NSTextFieldCell"; title = "Period"; ObjectID = "vGB-CZ-myl"; */
-"vGB-CZ-myl.title" = "限目";
+"vGB-CZ-myl.title" = "期間";
 
 /* Class = "NSMenuItem"; title = "Delete type"; ObjectID = "yJO-k1-No9"; */
 "yJO-k1-No9.title" = "タイプを削除";

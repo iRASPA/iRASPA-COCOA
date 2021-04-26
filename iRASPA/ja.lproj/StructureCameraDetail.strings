@@ -30,7 +30,7 @@
 "6Z3-l1-QCv.placeholderString" = "w0";
 
 /* Class = "NSTextFieldCell"; title = "Reset to"; ObjectID = "6ax-JH-gEz"; */
-"6ax-JH-gEz.title" = "にリセット";
+"6ax-JH-gEz.title" = "初期値";
 
 /* Class = "NSBox"; title = "Edit Dimensions"; ObjectID = "6eO-AH-Xf2"; */
 "6eO-AH-Xf2.title" = "寸法の編集";
@@ -39,7 +39,7 @@
 "76r-PN-1MB.title" = "画像";
 
 /* Class = "NSMenuItem"; title = "8-bits, RGB"; ObjectID = "7II-ou-nrF"; */
-"7II-ou-nrF.title" = "8ビット、RGB";
+"7II-ou-nrF.title" = "8bit　RGB";
 
 /* Class = "NSButtonCell"; title = "Reset Camera"; ObjectID = "7OD-5b-Be8"; */
 "7OD-5b-Be8.title" = "カメラをリセット";
@@ -51,7 +51,7 @@
 "8FT-Ib-RKI.title" = "150 dpi";
 
 /* Class = "NSButtonCell"; title = "Perspective"; ObjectID = "9XT-W6-7iV"; */
-"9XT-W6-7iV.title" = "展望";
+"9XT-W6-7iV.title" = "透視図法";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
 "A0b-wl-zfu.title" = "ライト";
@@ -63,13 +63,13 @@
 "Abc-jz-2v1.title" = "300 dpi";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Ac4-9i-94c"; */
-"Ac4-9i-94c.title" = "拡散光強度";
+"Ac4-9i-94c.title" = "散乱光強度";
 
 /* Class = "NSTextFieldCell"; title = "Virtual Camera Position"; ObjectID = "BVw-iu-XbK"; */
 "2oJ-c8-LXO.title" = "仮想カメラの位置";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "DsX-mM-8X0"; */
-"DsX-mM-8X0.title" = "輝き";
+"DsX-mM-8X0.title" = "光沢";
 
 /* Class = "NSTextFieldCell"; title = "Pixel Width"; ObjectID = "F9Y-qR-A6U"; */
 "F9Y-qR-A6U.title" = "ピクセル幅";
@@ -78,16 +78,16 @@
 "G3V-jP-oz6.placeholderString" = "ax";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "G71-xR-yVF"; */
-"G71-xR-yVF.title" = "回転する +90°";
+"G71-xR-yVF.title" = "+90°回転する";
 
 /* Class = "NSButtonCell"; title = "Linear Gradient"; ObjectID = "I7e-iR-yaY"; */
-"I7e-iR-yaY.title" = "線形勾配";
+"I7e-iR-yaY.title" = "線形グラデーション";
 
 /* Class = "NSMenuItem"; title = "8-bits, CMYK"; ObjectID = "JiR-AU-7kF"; */
-"JiR-AU-7kF.title" = "8ビット、CMYK";
+"JiR-AU-7kF.title" = "8bit　CMYK";
 
 /* Class = "NSButtonCell"; title = "Create Movie"; ObjectID = "Juc-g9-TL7"; */
-"Juc-g9-TL7.title" = "映画を作成する";
+"Juc-g9-TL7.title" = "動画を作成する";
 
 /* Class = "NSBox"; title = "Camera Light"; ObjectID = "Jzl-ba-QmS"; */
 "Jzl-ba-QmS.title" = "カメラライト";
@@ -99,10 +99,10 @@
 "LQP-iH-ONP.placeholderString" = "bz";
 
 /* Class = "NSTextFieldCell"; title = "Pictures/Movies"; ObjectID = "MBE-Ci-b6w"; */
-"MBE-Ci-b6w.title" = "写真/映画";
+"MBE-Ci-b6w.title" = "写真/動画";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "MEZ-QI-Kgi"; */
-"MEZ-QI-Kgi.title" = "回転する +90°";
+"MEZ-QI-Kgi.title" = "+90°回転する";
 
 /* Class = "NSTabViewItem"; label = "Radial Gradient"; ObjectID = "NfR-n9-0Kg"; */
 "NfR-n9-0Kg.label" = "放射状グラデーション";
@@ -120,10 +120,10 @@
 "Qsi-Kr-087.title" = "1秒あたりのフレーム数";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "R6f-wb-uXg"; */
-"R6f-wb-uXg.title" = "Text Cell";
+"R6f-wb-uXg.title" = "テキストセル";
 
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "RnM-1Y-4q4"; */
-"RnM-1Y-4q4.title" = "回転する -90°";
+"RnM-1Y-4q4.title" = "-90°回転する";
 
 /* Class = "NSTabViewItem"; label = "Color"; ObjectID = "S9f-2w-uQW"; */
 "S9f-2w-uQW.label" = "色";
@@ -141,7 +141,7 @@
 "UGp-7G-KbC.title" = "単位";
 
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "Ume-JN-QU8"; */
-"Ume-JN-QU8.title" = "回転する -90°";
+"Ume-JN-QU8.title" = "-90°回転する";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "V5t-DE-51J"; */
 "V5t-DE-51J.placeholderString" = "cy";
@@ -150,7 +150,7 @@
 "VDa-dN-sUv.title" = "ピクセル寸法";
 
 /* Class = "NSTextFieldCell"; title = "Overall Luminance"; ObjectID = "VKg-ty-t0D"; */
-"VKg-ty-t0D.title" = "全体的な輝度";
+"VKg-ty-t0D.title" = "全体の輝度";
 
 /* Class = "NSButtonCell"; title = "-X"; ObjectID = "Vlq-HR-Lxn"; */
 "Vlq-HR-Lxn.title" = "-X";
@@ -183,7 +183,7 @@
 "cBz-Hl-la6.placeholderString" = "az";
 
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "cLR-D8-6iw"; */
-"cLR-D8-6iw.title" = "回転する -90°";
+"cLR-D8-6iw.title" = "-90°回転する";
 
 /* Class = "NSTextFieldCell"; title = "Camera"; ObjectID = "ccJ-oG-yZH"; */
 "ccJ-oG-yZH.title" = "カメラ";
@@ -195,31 +195,31 @@
 "dor-ov-Wkd.title" = "バックグラウンド";
 
 /* Class = "NSTabViewItem"; label = "Linear Gradient"; ObjectID = "enh-gY-DeN"; */
-"enh-gY-DeN.label" = "線形勾配";
+"enh-gY-DeN.label" = "線形グラデーション";
 
 /* Class = "NSBox"; title = "Projection"; ObjectID = "fM1-LC-a88"; */
 "fM1-LC-a88.title" = "投影";
 
 /* Class = "NSBox"; title = "Reset Direction"; ObjectID = "fU4-qD-Ex2"; */
-"fU4-qD-Ex2.title" = "方向をリセット";
+"fU4-qD-Ex2.title" = "方向のリセット";
 
 /* Class = "NSTextFieldCell"; title = "Roundness"; ObjectID = "fXK-FR-6i0"; */
 "fXK-FR-6i0.title" = "真円度";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "fwm-RT-44D"; */
-"fwm-RT-44D.title" = "周囲光強度";
+"fwm-RT-44D.title" = "環境光強度";
 
 /* Class = "NSTextFieldCell"; title = "Pixel Height"; ObjectID = "iXA-YM-Nj6"; */
 "iXA-YM-Nj6.title" = "ピクセルの高さ";
 
 /* Class = "NSMenuItem"; title = "16-bits, CMYK"; ObjectID = "ilw-zG-CvO"; */
-"ilw-zG-CvO.title" = "16ビット、CMYK";
+"ilw-zG-CvO.title" = "16bit　CMYK";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cw"; ObjectID = "ios-n2-EM2"; */
 "ios-n2-EM2.placeholderString" = "cw";
 
 /* Class = "NSTextFieldCell"; title = "Physical Height"; ObjectID = "kIf-EY-uff"; */
-"kIf-EY-uff.title" = "身長";
+"kIf-EY-uff.title" = "物理的な高さ";
 
 /* Class = "NSButtonCell"; title = "-Z"; ObjectID = "l7h-Ex-PBb"; */
 "l7h-Ex-PBb.title" = "-Z";
@@ -267,7 +267,7 @@
 "wbM-MI-727.title" = "95%";
 
 /* Class = "NSButtonCell"; title = "Orthographic"; ObjectID = "xBp-1E-rPs"; */
-"xBp-1E-rPs.title" = "正書法";
+"xBp-1E-rPs.title" = "正投影図法";
 
 /* Class = "NSMenuItem"; title = "1200 dpi"; ObjectID = "yBW-uB-hCP"; */
 "yBW-uB-hCP.title" = "1200 dpi";

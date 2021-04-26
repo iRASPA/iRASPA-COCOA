@@ -1,12 +1,12 @@
 
 /* Class = "NSBox"; title = "Read permission for"; ObjectID = "DrV-v1-Dd6"; */
-"DrV-v1-Dd6.title" = "の読み取り許可";
+"DrV-v1-Dd6.title" = "読み取り許可";
 
 /* Class = "NSViewController"; title = "Command-line"; ObjectID = "ErL-rs-pho"; */
 "ErL-rs-pho.title" = "コマンドライン";
 
 /* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
-"KqL-r5-hBW.title" = "の書き込み許可";
+"KqL-r5-hBW.title" = "書き込み許可";
 
 /* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
 "LKB-pQ-lE8.title" = "アニメーション設定";
@@ -33,10 +33,10 @@
 "i78-OK-HJu.title" = "常にオフ";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "jDF-PS-epK"; */
-"jDF-PS-epK.placeholderString" = "ファイルシステムオブジェクトをこの領域にドラッグするか、クリックしてパスを設定します";
+"jDF-PS-epK.placeholderString" = "ファイルシステムオブジェクトをこの領域にドラッグするか、クリックしてパスを設定する";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
-"kfw-MK-t7S.placeholderString" = "ファイルシステムオブジェクトをこの領域にドラッグするか、クリックしてパスを設定します";
+"kfw-MK-t7S.placeholderString" = "ファイルシステムオブジェクトをこの領域にドラッグするか、クリックしてパスを設定する";
 
 /* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
 "lDy-gc-II8.title" = "環境設定";

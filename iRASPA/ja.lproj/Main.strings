@@ -15,7 +15,7 @@
 "1tx-W0-xDw.title" = "下";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "2fK-ne-Lfp"; */
-"2fK-ne-Lfp.title" = "Box";
+"2fK-ne-Lfp.title" = "ボックス";
 
 /* Class = "NSMenuItem"; title = "Raise"; ObjectID = "2h7-ER-AoG"; */
 "2h7-ER-AoG.title" = "上げる";
@@ -30,13 +30,13 @@
 "3IN-sU-3Bg.title" = "つづり";
 
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "3Om-Ey-2VK"; */
-"3Om-Ey-2VK.title" = "デフォルトを使用します";
+"3Om-Ey-2VK.title" = "デフォルトを使用する";
 
 /* Class = "NSMenu"; title = "Speech"; ObjectID = "3rS-ZA-NoH"; */
-"3rS-ZA-NoH.title" = "スピーチ";
+"3rS-ZA-NoH.title" = "話す";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "3x3-A1-D5u"; */
-"3x3-A1-D5u.title" = "Box";
+"3x3-A1-D5u.title" = "ボックス";
 
 /* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
 "46P-cB-AYj.title" = "締める";
@@ -45,10 +45,10 @@
 "4EN-yA-p0u.title" = "検索";
 
 /* Class = "NSMenuItem"; title = "Enter Full Screen"; ObjectID = "4J7-dP-txa"; */
-"4J7-dP-txa.title" = "フルスクリーンに入る";
+"4J7-dP-txa.title" = "フルスクリーン表示";
 
 /* Class = "NSMenuItem"; title = "Quit iRASPA"; ObjectID = "4sb-4s-VLi"; */
-"4sb-4s-VLi.title" = "iRASPA を終了します";
+"4sb-4s-VLi.title" = "iRASPA を終了する";
 
 /* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
 "5QF-Oa-p0T.title" = "編集";
@@ -66,16 +66,16 @@
 "78Y-hA-62v.title" = "スペルを自動的に修正する";
 
 /* Class = "NSMenu"; title = "Writing Direction"; ObjectID = "8mr-sm-Yjd"; */
-"8mr-sm-Yjd.title" = "執筆方向";
+"8mr-sm-Yjd.title" = "文字列の方向";
 
 /* Class = "NSWindow"; title = "Window"; ObjectID = "9EX-YN-jcB"; */
-"9EX-YN-jcB.title" = "窓";
+"9EX-YN-jcB.title" = "ウインドウ";
 
 /* Class = "NSMenuItem"; title = "Substitutions"; ObjectID = "9ic-FL-obx"; */
 "9ic-FL-obx.title" = "代替";
 
 /* Class = "NSMenuItem"; title = "Smart Copy/Paste"; ObjectID = "9yt-4B-nSM"; */
-"9yt-4B-nSM.title" = "スマートコピー/貼り付け";
+"9yt-4B-nSM.title" = "スマートコピー/ペースト";
 
 /* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
 "AYu-sK-qS6.title" = "メインメニュー";
@@ -96,16 +96,16 @@
 "DVo-aG-piG.title" = "閉じる";
 
 /* Class = "NSMenuItem"; title = "Spelling and Grammar"; ObjectID = "Dv1-io-Yv7"; */
-"Dv1-io-Yv7.title" = "スペルおよび文法";
+"Dv1-io-Yv7.title" = "スペルと文法";
 
 /* Class = "NSMenuItem"; title = "Import"; ObjectID = "EH2-Bo-SW5"; */
 "EH2-Bo-SW5.title" = "インポート";
 
 /* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
-"F2S-fz-NVQ.title" = "助けて";
+"F2S-fz-NVQ.title" = "ヘルプ";
 
 /* Class = "NSMenuItem"; title = "Export"; ObjectID = "F46-CC-yoN"; */
-"F46-CC-yoN.title" = "書き出す";
+"F46-CC-yoN.title" = "エクスポート";
 
 /* Class = "NSMenuItem"; title = "iRASPA Help"; ObjectID = "FKE-Sm-Kum"; */
 "FKE-Sm-Kum.title" = "iRASPA ヘルプ";
@@ -114,31 +114,31 @@
 "FM9-Av-rXr.title" = "構造プロジェクト";
 
 /* Class = "NSMenuItem"; title = "Text"; ObjectID = "Fal-I4-PZk"; */
-"Fal-I4-PZk.title" = "Text";
+"Fal-I4-PZk.title" = "テキスト";
 
 /* Class = "NSMenu"; title = "Substitutions"; ObjectID = "FeM-D8-WVr"; */
 "FeM-D8-WVr.title" = "代替";
 
 /* Class = "NSMenuItem"; title = "Bold"; ObjectID = "GB9-OM-e27"; */
-"GB9-OM-e27.title" = "大胆な";
+"GB9-OM-e27.title" = "太字";
 
 /* Class = "NSMenu"; title = "Format"; ObjectID = "GEO-Iw-cKr"; */
 "GEO-Iw-cKr.title" = "フォーマット";
 
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "GUa-eO-cwY"; */
-"GUa-eO-cwY.title" = "デフォルトを使用します";
+"GUa-eO-cwY.title" = "デフォルトを使用する";
 
 /* Class = "NSMenuItem"; title = "Font"; ObjectID = "Gi5-1S-RQB"; */
 "Gi5-1S-RQB.title" = "フォント";
 
 /* Class = "NSMenu"; title = "New"; ObjectID = "Gkc-Nb-nPC"; */
-"Gkc-Nb-nPC.title" = "新着";
+"Gkc-Nb-nPC.title" = "新しい";
 
 /* Class = "NSMenuItem"; title = "Writing Direction"; ObjectID = "H1b-Si-o9J"; */
-"H1b-Si-o9J.title" = "執筆方向";
+"H1b-Si-o9J.title" = "文字列の方向";
 
 /* Class = "NSMenuItem"; title = "View"; ObjectID = "H8h-7b-M4v"; */
-"H8h-7b-M4v.title" = "見る";
+"H8h-7b-M4v.title" = "ビュー";
 
 /* Class = "NSMenuItem"; title = "Molecular crystal"; ObjectID = "H8o-f4-o3W"; */
 "H8o-f4-o3W.title" = "分子結晶";
@@ -150,22 +150,22 @@
 "HFo-cy-zxI.title" = "スペルと文法を表示する";
 
 /* Class = "NSMenu"; title = "View"; ObjectID = "HyV-fh-RgO"; */
-"HyV-fh-RgO.title" = "見る";
+"HyV-fh-RgO.title" = "ビュー";
 
 /* Class = "NSMenuItem"; title = "Subscript"; ObjectID = "I0S-gh-46l"; */
-"I0S-gh-46l.title" = "添字";
+"I0S-gh-46l.title" = "下付き文字";
 
 /* Class = "NSMenuItem"; title = "Open…"; ObjectID = "IAo-SY-fd9"; */
-"IAo-SY-fd9.title" = "開いた…";
+"IAo-SY-fd9.title" = "開く…";
 
 /* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "IsF-P6-kfc"; */
 "IsF-P6-kfc.title" = "結晶";
 
 /* Class = "NSMenuItem"; title = "Justify"; ObjectID = "J5U-5w-g23"; */
-"J5U-5w-g23.title" = "正当化する";
+"J5U-5w-g23.title" = "整える";
 
 /* Class = "NSMenuItem"; title = "Use None"; ObjectID = "J7y-lM-qPV"; */
-"J7y-lM-qPV.title" = "使用なし";
+"J7y-lM-qPV.title" = "何も使用しない";
 
 /* Class = "NSMenuItem"; title = "21:9"; ObjectID = "JWT-Cn-v6t"; */
 "JWT-Cn-v6t.title" = "21:9";
@@ -177,25 +177,25 @@
 "JtX-r6-bas.title" = "アスペクト比";
 
 /* Class = "NSMenuItem"; title = "Revert to Saved"; ObjectID = "KaW-ft-85H"; */
-"KaW-ft-85H.title" = "保存済みに戻す";
+"KaW-ft-85H.title" = "復帰";
 
 /* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
 "Kd2-mp-pUS.title" = "すべて表示する";
 
 /* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[0] = "Hide or show the Navigator"; ObjectID = "Khj-N3-fhm"; */
-"Khj-N3-fhm.ibShadowedToolTips[0]" = "ナビゲーターを表示または非表示にします";
+"Khj-N3-fhm.ibShadowedToolTips[0]" = "ナビゲーターを表示または非表示にする";
 
 /* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[1] = "Hide or show the Log/Python consoles"; ObjectID = "Khj-N3-fhm"; */
-"Khj-N3-fhm.ibShadowedToolTips[1]" = "Log / Pythonコンソールを表示または非表示にします";
+"Khj-N3-fhm.ibShadowedToolTips[1]" = "Log/Pythonコンソールを表示または非表示にする";
 
 /* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[2] = "Hide or show the Utility area"; ObjectID = "Khj-N3-fhm"; */
-"Khj-N3-fhm.ibShadowedToolTips[2]" = "ユーティリティエリアを表示または非表示にします";
+"Khj-N3-fhm.ibShadowedToolTips[2]" = "ユーティリティエリアを表示または非表示にする";
 
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "LE2-aR-0XJ"; */
 "LE2-aR-0XJ.title" = "すべてを前面に出す";
 
 /* Class = "NSMenuItem"; title = "Paste Ruler"; ObjectID = "LVM-kO-fVI"; */
-"LVM-kO-fVI.title" = "定規を貼り付けます";
+"LVM-kO-fVI.title" = "ルーラーをペーストする";
 
 /* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "Lbh-J2-qVU"; */
 "Lbh-J2-qVU.title" = "\t左から右へ";
@@ -204,7 +204,7 @@
 "Lr4-9V-B0Y.title" = "1:1";
 
 /* Class = "NSMenuItem"; title = "Copy Ruler"; ObjectID = "MkV-Pr-PK5"; */
-"MkV-Pr-PK5.title" = "コピー定規";
+"MkV-Pr-PK5.title" = "ルーラーをコピーする";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "MzS-m8-rt0"; */
 "MzS-m8-rt0.title" = "シリンダー";
@@ -249,13 +249,13 @@
 "Ruw-6m-B2m.title" = "すべて選択";
 
 /* Class = "NSMenuItem"; title = "Jump to Selection"; ObjectID = "S0p-oC-mLd"; */
-"S0p-oC-mLd.title" = "選択にジャンプ";
+"S0p-oC-mLd.title" = "選択箇所にジャンプ";
 
 /* Class = "NSMenuItem"; title = "3:2"; ObjectID = "Spc-qz-Euj"; */
 "Spc-qz-Euj.title" = "3:2";
 
 /* Class = "NSMenu"; title = "Window"; ObjectID = "Td7-aD-5lo"; */
-"Td7-aD-5lo.title" = "窓";
+"Td7-aD-5lo.title" = "ウインドウ";
 
 /* Class = "NSMenu"; title = "Aspect ratio"; ObjectID = "TrX-ZY-bLC"; */
 "TrX-ZY-bLC.title" = "アスペクト比";
@@ -282,7 +282,7 @@
 "WJS-5R-dt1.title" = "タンパク質";
 
 /* Class = "NSMenuItem"; title = "Underline"; ObjectID = "WRG-CD-K1S"; */
-"WRG-CD-K1S.title" = "下線を引く";
+"WRG-CD-K1S.title" = "下線";
 
 /* Class = "NSMenuItem"; title = "Copy"; ObjectID = "Wm2-za-IFp"; */
 "Wm2-za-IFp.title" = "コピー";
@@ -294,7 +294,7 @@
 "X1N-VI-cwY.title" = "五角プリズム";
 
 /* Class = "NSMenuItem"; title = "New"; ObjectID = "Xa3-2R-g2O"; */
-"Xa3-2R-g2O.title" = "新着";
+"Xa3-2R-g2O.title" = "新しい";
 
 /* Class = "NSMenuItem"; title = "Find…"; ObjectID = "Xz5-n4-O0W"; */
 "Xz5-n4-O0W.title" = "検索…";
@@ -321,13 +321,13 @@
 "aTl-1u-JFS.title" = "印刷…";
 
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
-"aUF-d1-5bR.title" = "窓";
+"aUF-d1-5bR.title" = "ウインドウ";
 
 /* Class = "NSMenu"; title = "Font"; ObjectID = "aXa-aM-Jaq"; */
 "aXa-aM-Jaq.title" = "フォント";
 
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "agt-UL-0e3"; */
-"agt-UL-0e3.title" = "デフォルトを使用します";
+"agt-UL-0e3.title" = "デフォルトを使用する";
 
 /* Class = "NSMenuItem"; title = "Show Colors"; ObjectID = "bgn-CT-cEk"; */
 "bgn-CT-cEk.title" = "色を表示";
@@ -336,16 +336,16 @@
 "bib-Uj-vzu.title" = "ファイル";
 
 /* Class = "NSMenuItem"; title = "Use Selection for Find"; ObjectID = "buJ-ug-pKt"; */
-"buJ-ug-pKt.title" = "検索に選択を使用";
+"buJ-ug-pKt.title" = "検索に選択箇所を使用";
 
 /* Class = "NSMenu"; title = "Transformations"; ObjectID = "c8a-y6-VQd"; */
 "c8a-y6-VQd.title" = "変換";
 
 /* Class = "NSMenuItem"; title = "Use None"; ObjectID = "cDB-IK-hbR"; */
-"cDB-IK-hbR.title" = "使用なし";
+"cDB-IK-hbR.title" = "何も使用しない";
 
 /* Class = "NSMenuItem"; title = "Atom group"; ObjectID = "cMR-OP-H7e"; */
-"cMR-OP-H7e.title" = "アトムグループ";
+"cMR-OP-H7e.title" = "原子グループ";
 
 /* Class = "NSMenuItem"; title = "16:9"; ObjectID = "cfR-kj-UKf"; */
 "cfR-kj-UKf.title" = "16:9";
@@ -357,10 +357,10 @@
 "cwL-P1-jid.title" = "スマートリンク";
 
 /* Class = "NSMenuItem"; title = "Make Lower Case"; ObjectID = "d9M-CD-aMd"; */
-"d9M-CD-aMd.title" = "小文字にする";
+"d9M-CD-aMd.title" = "ロウアーケースを作る";
 
 /* Class = "NSMenu"; title = "Text"; ObjectID = "d9c-me-L2H"; */
-"d9c-me-L2H.title" = "Text";
+"d9c-me-L2H.title" = "テキスト";
 
 /* Class = "NSMenuItem"; title = "File"; ObjectID = "dMs-cI-mzQ"; */
 "dMs-cI-mzQ.title" = "ファイル";
@@ -393,7 +393,7 @@
 "ijk-EB-dga.title" = "ベースライン";
 
 /* Class = "NSMenuItem"; title = "Kern"; ObjectID = "jBQ-r6-VK2"; */
-"jBQ-r6-VK2.title" = "カーン";
+"jBQ-r6-VK2.title" = "カーニングする";
 
 /* Class = "NSMenuItem"; title = "2.39:1"; ObjectID = "jF0-uJ-F9d"; */
 "jF0-uJ-F9d.title" = "2.39:1";
@@ -417,19 +417,19 @@
 "o6e-r0-MWq.title" = "合字";
 
 /* Class = "NSMenu"; title = "Open Recent"; ObjectID = "oas-Oc-fiZ"; */
-"oas-Oc-fiZ.title" = "最近開く";
+"oas-Oc-fiZ.title" = "最近のものを開く";
 
 /* Class = "NSMenuItem"; title = "Loosen"; ObjectID = "ogc-rX-tC1"; */
-"ogc-rX-tC1.title" = "緩む";
+"ogc-rX-tC1.title" = "緩める";
 
 /* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
 "pa3-QI-u2k.title" = "削除";
 
 /* Class = "NSMenuItem"; title = "Save…"; ObjectID = "pxx-59-PXV"; */
-"pxx-59-PXV.title" = "セーブ…";
+"pxx-59-PXV.title" = "保存する…";
 
 /* Class = "NSMenuItem"; title = "Find Next"; ObjectID = "q09-fT-Sye"; */
-"q09-fT-Sye.title" = "次を見つける";
+"q09-fT-Sye.title" = "次を検索する";
 
 /* Class = "NSMenu"; title = "Objects"; ObjectID = "q81-1F-c5Z"; */
 "q81-1F-c5Z.title" = "オブジェクト";
@@ -453,22 +453,22 @@
 "tRr-pd-1PS.title" = "データ検出器";
 
 /* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
-"tXI-mr-wws.title" = "最近開く";
+"tXI-mr-wws.title" = "最近のものを開く";
 
 /* Class = "NSMenuItem"; title = "Off"; ObjectID = "tjs-df-O3M"; */
 "tjs-df-O3M.title" = "オフ";
 
 /* Class = "NSMenu"; title = "Kern"; ObjectID = "tlD-Oa-oAM"; */
-"tlD-Oa-oAM.title" = "カーン";
+"tlD-Oa-oAM.title" = "カーニングする";
 
 /* Class = "NSMenu"; title = "iRASPA"; ObjectID = "uQy-DD-JDr"; */
 "uQy-DD-JDr.title" = "iRASPA";
 
 /* Class = "NSMenuItem"; title = "Cut"; ObjectID = "uRl-iY-unG"; */
-"uRl-iY-unG.title" = "切る";
+"uRl-iY-unG.title" = "カット";
 
 /* Class = "NSMenuItem"; title = "Paste Style"; ObjectID = "vKC-jM-MkH"; */
-"vKC-jM-MkH.title" = "貼り付けスタイル";
+"vKC-jM-MkH.title" = "ペーストスタイル";
 
 /* Class = "NSMenuItem"; title = "Show Ruler"; ObjectID = "vLm-3I-IUL"; */
 "vLm-3I-IUL.title" = "ルーラーを表示";
@@ -477,7 +477,7 @@
 "vNY-rz-j42.title" = "メニューをクリア";
 
 /* Class = "NSMenuItem"; title = "Make Upper Case"; ObjectID = "vmV-6d-7jI"; */
-"vmV-6d-7jI.title" = "大文字にする";
+"vmV-6d-7jI.title" = "アッパーケースを作る";
 
 /* Class = "NSMenu"; title = "Ligatures"; ObjectID = "w0m-vy-SC9"; */
 "w0m-vy-SC9.title" = "合字";
@@ -486,13 +486,13 @@
 "wb2-vD-lq4.title" = "右揃え";
 
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
-"wpr-3q-Mcd.title" = "助けて";
+"wpr-3q-Mcd.title" = "ヘルプ";
 
 /* Class = "NSMenuItem"; title = "Use All"; ObjectID = "xQD-1f-W4t"; */
 "xQD-1f-W4t.title" = "すべて使用";
 
 /* Class = "NSMenuItem"; title = "Speech"; ObjectID = "xrE-MZ-jX0"; */
-"xrE-MZ-jX0.title" = "スピーチ";
+"xrE-MZ-jX0.title" = "話す";
 
 /* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
 "z6F-FW-3nz.title" = "置換を表示";
