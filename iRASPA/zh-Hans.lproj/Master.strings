@@ -69,7 +69,7 @@
 "PS8-Ne-mbi.ibShadowedToolTips[1]" = "显示场景导航";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[2] = "Shows the Frames Navigator"; ObjectID = "PS8-Ne-mbi"; */
-"PS8-Ne-mbi.ibShadowedToolTips[2]" = "显示框架导航";
+"PS8-Ne-mbi.ibShadowedToolTips[2]" = "显示图片导航";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
 "QFA-05-Kql.title" = "Box";

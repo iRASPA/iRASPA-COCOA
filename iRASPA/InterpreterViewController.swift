@@ -105,7 +105,7 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
       }
       
       // should be called before Initialize
-      //initPythonModuleiRASPA()
+      initPythonModuleiRASPA()
       //initPythonModuleConstants()
       
       Py_InitializeEx(0)
@@ -116,7 +116,7 @@ class InterpreterViewController: NSViewController, WindowControllerConsumer, NST
       mainModule = Python.import("catch_out")
       
       //PyRun_SimpleString("import constants\n")
-      //PyRun_SimpleString("import iraspa\n")
+      PyRun_SimpleString("import iraspa\n")
       
       //setupPythonModuleConstants()
     }

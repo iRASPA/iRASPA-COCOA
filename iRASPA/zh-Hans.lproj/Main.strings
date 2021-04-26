@@ -39,7 +39,7 @@
 "3x3-A1-D5u.title" = "Box";
 
 /* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
-"46P-cB-AYj.title" = "紧排";
+"46P-cB-AYj.title" = "紧缩";   //"紧排";
 
 /* Class = "NSMenuItem"; title = "Find"; ObjectID = "4EN-yA-p0u"; */
 "4EN-yA-p0u.title" = "查找";
@@ -192,7 +192,7 @@
 "Khj-N3-fhm.ibShadowedToolTips[2]" = "隐藏或显示实用程序区域";
 
 /* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "LE2-aR-0XJ"; */
-"LE2-aR-0XJ.title" = "全部移至最前";
+"LE2-aR-0XJ.title" = "全部前置";
 
 /* Class = "NSMenuItem"; title = "Paste Ruler"; ObjectID = "LVM-kO-fVI"; */
 "LVM-kO-fVI.title" = "粘贴标尺";
@@ -204,7 +204,7 @@
 "Lr4-9V-B0Y.title" = "1:1";
 
 /* Class = "NSMenuItem"; title = "Copy Ruler"; ObjectID = "MkV-Pr-PK5"; */
-"MkV-Pr-PK5.title" = "拷贝标尺";
+"MkV-Pr-PK5.title" = "复制标尺";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "MzS-m8-rt0"; */
 "MzS-m8-rt0.title" = "圆柱";
