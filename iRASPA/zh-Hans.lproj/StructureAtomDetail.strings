@@ -1,6 +1,6 @@
 
 /* Class = "NSMenuItem"; title = "Invert"; ObjectID = "1YF-gj-uzt"; */
-"1YF-gj-uzt.title" = "倒置";
+"1YF-gj-uzt.title" = "反转";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "2Be-nn-F4a"; */
 "2Be-nn-F4a.title" = "Text Cell";
@@ -117,7 +117,7 @@
 "njX-Kx-nwX.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Invert"; ObjectID = "oGN-yG-mfe"; */
-"oGN-yG-mfe.title" = "倒置";
+"oGN-yG-mfe.title" = "反转";
 
 /* Class = "NSTableColumn"; headerCell.title = "x"; ObjectID = "ohE-dV-Fg7"; */
 "ohE-dV-Fg7.headerCell.title" = "x";
