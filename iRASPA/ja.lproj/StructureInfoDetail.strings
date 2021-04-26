@@ -1,21 +1,21 @@
 
 /* Class = "NSMenuItem"; title = "All positive"; ObjectID = "07j-yA-XWL"; */
-"07j-yA-XWL.title" = "すべてポジティブ";
+"07j-yA-XWL.title" = "すべて正";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
 "43t-f2-d0i.placeholderString" = "研究所名";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "444-5s-8Su"; */
-"444-5s-8Su.placeholderString" = "わからない";
+"444-5s-8Su.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; 444-5s-8Su.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "444-5s-8Su"; */
-"444-5s-8Su.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
+"444-5s-8Su.ibShadowedObjectValues[0]" = "PBE、600 eV cutoff、ガンマ点のみ";
 
 /* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "4EP-SI-3P9"; */
-"4EP-SI-3P9.title" = "Item 1";
+"4EP-SI-3P9.title" = "アイテム１";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "4I2-J0-a1F"; */
-"4I2-J0-a1F.title" = "わからない";
+"4I2-J0-a1F.title" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Affiliation"; ObjectID = "4KL-dd-ODO"; */
 "4KL-dd-ODO.title" = "所属";
@@ -24,19 +24,19 @@
 "4z1-VY-1Pd.title" = "DOI";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "6KC-hH-6j8"; */
-"6KC-hH-6j8.placeholderString" = "わからない";
+"6KC-hH-6j8.placeholderString" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "7Ft-CF-yt2"; */
-"7Ft-CF-yt2.title" = "フォースフィールド";
+"7Ft-CF-yt2.title" = "力場";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "8lJ-Qe-9Bj"; */
-"8lJ-Qe-9Bj.title" = "わからない";
+"8lJ-Qe-9Bj.title" = "不明";
 
 /* Class = "NSMenuItem"; title = "Many Negative Eigenvalues"; ObjectID = "ANg-Kl-3lM"; */
 "ANg-Kl-3lM.title" = "多くの負の固有値";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "ASc-zU-QqD"; */
-"ASc-zU-QqD.placeholderString" = "わからない";
+"ASc-zU-QqD.placeholderString" = "不明";
 
 /* Class = "NSMenuItem"; title = "Some Small Negative Values"; ObjectID = "C5C-Je-5WX"; */
 "C5C-Je-5WX.title" = "いくつかの小さな負の値";
@@ -45,7 +45,7 @@
 "Cvy-Hd-HUC.placeholderString" = "市";
 
 /* Class = "NSMenuItem"; title = "Bar"; ObjectID = "DBX-tl-g65"; */
-"DBX-tl-g65.title" = "Bar";
+"DBX-tl-g65.title" = "バール";
 
 /* Class = "NSTextFieldCell"; placeholderString = "k_max"; ObjectID = "DQs-oL-hqO"; */
 "DQs-oL-hqO.placeholderString" = "k_max";
@@ -54,16 +54,16 @@
 "DXa-ef-f0b.title" = "Researcher ID";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "EMw-Fn-YYe"; */
-"EMw-Fn-YYe.placeholderString" = "わからない";
+"EMw-Fn-YYe.placeholderString" = "不明";
 
 /* Class = "NSMenuItem"; title = "Fixed Volume; Shape Change"; ObjectID = "Etd-c0-eiU"; */
-"Etd-c0-eiU.title" = "固定ボリューム;形状変化";
+"Etd-c0-eiU.title" = "体積固定　形状変化";
 
 /* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
 "FgA-hr-Zjg.title" = "詳細";
 
 /* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "FkD-oS-zpo"; */
-"FkD-oS-zpo.title" = "Item 2";
+"FkD-oS-zpo.title" = "アイテム２";
 
 /* Class = "NSMenuItem"; title = "Experimental"; ObjectID = "G2E-hb-9HS"; */
 "G2E-hb-9HS.title" = "実験的";
@@ -72,7 +72,7 @@
 "GOg-L9-MUC.placeholderString" = "max";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "GbD-Bi-g8J"; */
-"GbD-Bi-g8J.placeholderString" = "わからない";
+"GbD-Bi-g8J.placeholderString" = "不明";
 
 /* Class = "NSMenuItem"; title = "Conjugate Gradient"; ObjectID = "H8k-8m-eEZ"; */
 "H8k-8m-eEZ.title" = "共役勾配";
@@ -99,7 +99,7 @@
 "KRx-ka-ed4.placeholderString" = "h_min";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Kyz-vh-wLM"; */
-"Kyz-vh-wLM.title" = "フォースフィールドの詳細";
+"Kyz-vh-wLM.title" = "力場の詳細";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Information"; ObjectID = "L9b-nA-LZg"; */
 "L9b-nA-LZg.title" = "化学情報";
@@ -135,43 +135,43 @@
 "P5f-Dc-mAR.placeholderString" = "l_min";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Moiety"; ObjectID = "QLD-HG-16U"; */
-"QLD-HG-16U.title" = "化学式部分";
+"QLD-HG-16U.title" = "化学式の一部";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "Qbd-YO-NWQ"; */
-"Qbd-YO-NWQ.placeholderString" = "わからない";
+"Qbd-YO-NWQ.placeholderString" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "R5l-j2-8rL"; */
-"R5l-j2-8rL.title" = "フォースフィールドの詳細";
+"R5l-j2-8rL.title" = "力場の詳細";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
-"USD-gk-tal.placeholderString" = "わからない";
+"USD-gk-tal.placeholderString" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "UdZ-E6-hGm"; */
-"UdZ-E6-hGm.title" = "フォースフィールド";
+"UdZ-E6-hGm.title" = "力場";
 
 /* Class = "NSTextFieldCell"; title = "Software"; ObjectID = "VSi-Bz-b4f"; */
 "VSi-Bz-b4f.title" = "ソフトウェア";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "VW9-bX-xkL"; */
-"VW9-bX-xkL.placeholderString" = "わからない";
+"VW9-bX-xkL.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; VW9-bX-xkL.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "VW9-bX-xkL"; */
-"VW9-bX-xkL.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
+"VW9-bX-xkL.ibShadowedObjectValues[0]" = "PBE、600 eV cutoff、ガンマ点のみ";
 
 /* Class = "NSTextFieldCell"; placeholderString = "First name"; ObjectID = "Vtz-4v-Kmv"; */
-"Vtz-4v-Kmv.placeholderString" = "ファーストネーム";
+"Vtz-4v-Kmv.placeholderString" = "名前";
 
 /* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "Vvv-Ri-fwX"; */
-"Vvv-Ri-fwX.title" = "数";
+"Vvv-Ri-fwX.title" = "番号";
 
 /* Class = "NSTextFieldCell"; title = "R Indices (All Data)"; ObjectID = "WBA-sr-NKP"; */
-"WBA-sr-NKP.title" = "Rインデックス（すべてのデータ";
+"WBA-sr-NKP.title" = "Rインデックス（すべてのデータ）";
 
 /* Class = "NSTextFieldCell"; title = "Article Title"; ObjectID = "Wih-6z-Wmy"; */
 "Wih-6z-Wmy.title" = "記事のタイトル";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "X0T-Gc-sil"; */
-"X0T-Gc-sil.placeholderString" = "わからない";
+"X0T-Gc-sil.placeholderString" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Wavelength"; ObjectID = "Xx6-F7-2Db"; */
 "Xx6-F7-2Db.title" = "放射波長";
@@ -183,19 +183,19 @@
 "Zqh-RB-jIF.title" = "ケルビン";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "a8y-Dh-rHh"; */
-"a8y-Dh-rHh.title" = "Text Cell";
+"a8y-Dh-rHh.title" = "テキストセル";
 
 /* Class = "NSTextFieldCell"; title = "Creation"; ObjectID = "aGv-FE-SDq"; */
-"aGv-FE-SDq.title" = "創造";
+"aGv-FE-SDq.title" = "クリエーション";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "au5-Fr-4P5"; */
-"au5-Fr-4P5.placeholderString" = "わからない";
+"au5-Fr-4P5.placeholderString" = "不明";
 
 /* Class = "NSMenuItem"; title = "Genetic Algorithm"; ObjectID = "b6n-Qn-6ik"; */
 "b6n-Qn-6ik.title" = "遺伝的アルゴリズム";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.placeholderString" = "わからない";
+"b8q-Dr-Dt5.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "b8q-Dr-Dt5"; */
 "b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "実験的";
@@ -252,7 +252,7 @@
 "b8q-Dr-Dt5.ibShadowedObjectValues[17]" = "Openbabel";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "bgc-3c-w1h"; */
-"bgc-3c-w1h.placeholderString" = "わからない";
+"bgc-3c-w1h.placeholderString" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Final R indices [I>2sigma(I)]"; ObjectID = "bw9-xG-XoD"; */
 "bw9-xG-XoD.title" = "最終的なRインデックス [I>2sigma(I)]";
@@ -264,22 +264,22 @@
 "ciB-v0-3ow.placeholderString" = "A-0000-0000";
 
 /* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "cw1-G3-6lk"; */
-"cw1-G3-6lk.title" = "Item 3";
+"cw1-G3-6lk.title" = "アイテム３";
 
 /* Class = "NSTabViewItem"; label = "CreationTabView"; ObjectID = "d7Y-ez-Ze7"; */
-"d7Y-ez-Ze7.label" = "CreationTabView";
+"d7Y-ez-Ze7.label" = "クリエーションタブビュー";
 
 /* Class = "NSTextFieldCell"; title = "ORCHID ID"; ObjectID = "d8y-By-uMu"; */
 "d8y-By-uMu.title" = "ORCHID ID";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Name Systematic"; ObjectID = "df5-Wf-bLj"; */
-"df5-Wf-bLj.title" = "化学名体系的";
+"df5-Wf-bLj.title" = "化学物質の組織名";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0000-0000-0000-0000"; ObjectID = "eA1-Nk-SW5"; */
 "eA1-Nk-SW5.placeholderString" = "0000-0000-0000-0000";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "eef-6i-4me"; */
-"eef-6i-4me.title" = "わからない";
+"eef-6i-4me.title" = "不明";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Faculty"; ObjectID = "fCm-83-aYg"; */
 "fCm-83-aYg.placeholderString" = "学部";
@@ -291,10 +291,10 @@
 "hJX-yG-tEQ.title" = "日付";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "hf1-Cm-G3M"; */
-"hf1-Cm-G3M.title" = "わからない";
+"hf1-Cm-G3M.title" = "不明";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "hx2-K2-gHI"; */
-"hx2-K2-gHI.placeholderString" = "わからない";
+"hx2-K2-gHI.placeholderString" = "不明";
 
 /* Class = "NSMenuItem"; title = "Simulation"; ObjectID = "iWi-p0-Jvt"; */
 "iWi-p0-Jvt.title" = "シミュレーション";
@@ -318,7 +318,7 @@
 "k9a-VC-uKW.title" = "ボリューム";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.placeholderString" = "わからない";
+"kf2-0x-3Vl.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "kf2-0x-3Vl"; */
 "kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab Initio";
@@ -342,7 +342,7 @@
 "kzO-x9-s2F.placeholderString" = "min";
 
 /* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "ユニットセルをリラックス";
+"lIz-1D-3Ai.title" = "ユニットセルの緩和";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
 "lKv-hk-525.title" = "圧力";
@@ -360,13 +360,13 @@
 "nZ6-yf-S1l.placeholderString" = "大学または会社名";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "nb3-dm-cDY"; */
-"nb3-dm-cDY.placeholderString" = "わからない";
+"nb3-dm-cDY.placeholderString" = "不明";
 
 /* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "oND-jh-tZA"; */
-"oND-jh-tZA.title" = "原子電荷";
+"oND-jh-tZA.title" = "原子の電荷";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "pD1-Es-0pE"; */
-"pD1-Es-0pE.placeholderString" = "わからない";
+"pD1-Es-0pE.placeholderString" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Creator"; ObjectID = "pWj-ey-8li"; */
 "pWj-ey-8li.title" = "クリエイター";
@@ -381,7 +381,7 @@
 "qmj-e3-XI9.title" = "F²の適合度";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.placeholderString" = "わからない";
+"sRA-iw-pcK.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[0] = "Journal of the American Chemical Society"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[0]" = "Journal of the American Chemical Society";
@@ -393,13 +393,13 @@
 "sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Change"; ObjectID = "sah-qX-FWQ"; */
-"sah-qX-FWQ.title" = "固定角度;等方性エッジ長の変化";
+"sah-qX-FWQ.title" = "角度固定　等方的エッジ長の変化";
 
 /* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
 "seM-pw-mPI.title" = "データベースコード";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.placeholderString" = "わからない";
+"tBE-VU-7Q1.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[0] = "REPEAT"; ObjectID = "tBE-VU-7Q1"; */
 "tBE-VU-7Q1.ibShadowedObjectValues[0]" = "REPEAT";
@@ -450,16 +450,16 @@
 "uMx-Zh-Bqv.title" = "日付";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "uRa-2J-GGz"; */
-"uRa-2J-GGz.placeholderString" = "わからない";
+"uRa-2J-GGz.placeholderString" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Author"; ObjectID = "uaM-oQ-eaJ"; */
 "uaM-oQ-eaJ.title" = "著者";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Change"; ObjectID = "ucW-XP-BfZ"; */
-"ucW-XP-BfZ.title" = "固定角度;異方性エッジ長の変化";
+"ucW-XP-BfZ.title" = "角度固定　異方的エッジ長の変化";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.placeholderString" = "わからない";
+"urK-zQ-9a7.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "urK-zQ-9a7"; */
 "urK-zQ-9a7.ibShadowedObjectValues[0]" = "Ab Initio";
@@ -480,13 +480,13 @@
 "urK-zQ-9a7.ibShadowedObjectValues[5]" = "MM4";
 
 /* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "utU-RL-9NT"; */
-"utU-RL-9NT.title" = "いくつかの著しく負の値";
+"utU-RL-9NT.title" = "いくつかの大きな負の値";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "wMv-kw-520"; */
-"wMv-kw-520.placeholderString" = "わからない";
+"wMv-kw-520.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.placeholderString" = "わからない";
+"wrO-uI-kgr.placeholderString" = "不明";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "wrO-uI-kgr"; */
 "wrO-uI-kgr.ibShadowedObjectValues[0]" = "実験的";
@@ -513,7 +513,7 @@
 "yR3-PF-JAn.placeholderString" = "ミドルネーム";
 
 /* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Change"; ObjectID = "ylL-90-vOx"; */
-"ylL-90-vOx.title" = "修正済み𝝰-𝝱;および𝝲-角度とエッジの長さの変更";
+"ylL-90-vOx.title" = "𝝰-𝝱固定　および𝝲-角度とエッジの長さの変更";
 
 /* Class = "NSTextFieldCell"; title = "Number of Reflections"; ObjectID = "z73-uc-ODJ"; */
 "z73-uc-ODJ.title" = "反射の数";

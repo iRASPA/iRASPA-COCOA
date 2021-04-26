@@ -1,15 +1,15 @@
 
 /* Class = "NSTabViewItem"; label = "Item 1"; ObjectID = "0Aa-TO-Uin"; */
-"0Aa-TO-Uin.label" = "Item 1";
+"0Aa-TO-Uin.label" = "アイテム１";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "8jm-NB-F14"; */
-"8jm-NB-F14.title" = "Box";
+"8jm-NB-F14.title" = "ボックス";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[0] = "Camera"; ObjectID = "KMJ-Zm-flM"; */
 "KMJ-Zm-flM.ibShadowedLabels[0]" = "カメラ";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[1] = "Elements"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[1]" = "要素";
+"KMJ-Zm-flM.ibShadowedLabels[1]" = "元素";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[2] = "Info"; ObjectID = "KMJ-Zm-flM"; */
 "KMJ-Zm-flM.ibShadowedLabels[2]" = "情報";
@@ -18,7 +18,7 @@
 "KMJ-Zm-flM.ibShadowedLabels[3]" = "外観";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[4] = "Cell"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[4]" = "細胞";
+"KMJ-Zm-flM.ibShadowedLabels[4]" = "セル";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[5] = "Atoms"; ObjectID = "KMJ-Zm-flM"; */
 "KMJ-Zm-flM.ibShadowedLabels[5]" = "原子";
@@ -27,10 +27,10 @@
 "KMJ-Zm-flM.ibShadowedLabels[6]" = "結合";
 
 /* Class = "NSTabViewItem"; label = "Tab"; ObjectID = "Xel-Em-yJ8"; */
-"Xel-Em-yJ8.label" = "Tab";
+"Xel-Em-yJ8.label" = "タブ";
 
 /* Class = "NSTabViewItem"; label = "Item 2"; ObjectID = "hLV-ao-VrN"; */
-"hLV-ao-VrN.label" = "Item 2";
+"hLV-ao-VrN.label" = "アイテム２";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "w1T-pF-1Dy"; */
-"w1T-pF-1Dy.title" = "Box";
+"w1T-pF-1Dy.title" = "ボックス";

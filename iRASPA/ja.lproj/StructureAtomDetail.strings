@@ -3,10 +3,10 @@
 "1YF-gj-uzt.title" = "反転";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "2Be-nn-F4a"; */
-"2Be-nn-F4a.title" = "Text Cell";
+"2Be-nn-F4a.title" = "テキストセル";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "2NZ-GO-iX3"; */
-"2NZ-GO-iX3.title" = "Text Cell";
+"2NZ-GO-iX3.title" = "テキストセル";
 
 /* Class = "NSMenuItem"; title = "Remove symmetry"; ObjectID = "3ev-cg-Wwc"; */
 "3ev-cg-Wwc.title" = "対称性を取り除く";
@@ -15,7 +15,7 @@
 "71t-6P-hE6.title" = "CIF";
 
 /* Class = "NSMenuItem"; title = "Wrap atoms to cell"; ObjectID = "7M8-ac-pMA"; */
-"7M8-ac-pMA.title" = "原子をセルにラップする";
+"7M8-ac-pMA.title" = "全原子をユニットセルに入れ込む";
 
 /* Class = "NSTableColumn"; headerCell.title = "ff id."; ObjectID = "8Bh-oV-6t8"; */
 "8Bh-oV-6t8.headerCell.title" = "ff id.";
@@ -30,7 +30,7 @@
 "DZz-iK-mHB.title" = "選択";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "HHk-Gx-Fpn"; */
-"HHk-Gx-Fpn.title" = "Text Cell";
+"HHk-Gx-Fpn.title" = "テキストセル";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "LoO-EL-ifx"; */
 "LoO-EL-ifx.title" = "原子グループを追加";
@@ -39,22 +39,22 @@
 "M4C-ue-e5C.title" = "mmCIF";
 
 /* Class = "NSMenuItem"; title = "Scroll To"; ObjectID = "MpU-kw-3py"; */
-"MpU-kw-3py.title" = "スクロールして";
+"MpU-kw-3py.title" = "スクロール";
 
 /* Class = "NSMenuItem"; title = "XYZ"; ObjectID = "Myp-ax-WUH"; */
 "Myp-ax-WUH.title" = "XYZ";
 
 /* Class = "NSMenu"; title = "Scroll To"; ObjectID = "Ow5-ms-fWY"; */
-"Ow5-ms-fWY.title" = "スクロールして";
+"Ow5-ms-fWY.title" = "スクロール";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "PwS-Ps-jhn"; */
-"PwS-Ps-jhn.title" = "Text Cell";
+"PwS-Ps-jhn.title" = "テキストセル";
 
 /* Class = "NSMenuItem"; title = "Export As"; ObjectID = "SBf-Vu-4GN"; */
 "SBf-Vu-4GN.title" = "名前を付けてエクスポート";
 
 /* Class = "NSTextFieldCell"; placeholderString = "net charge"; ObjectID = "XbY-dL-0Ls"; */
-"XbY-dL-0Ls.placeholderString" = "正味料金";
+"XbY-dL-0Ls.placeholderString" = "正味電荷";
 
 /* Class = "NSMenuItem"; title = "Visibility"; ObjectID = "bRE-uw-nCc"; */
 "bRE-uw-nCc.title" = "可視性";
@@ -63,7 +63,7 @@
 "cHJ-9s-H4f.headerCell.title" = "q";
 
 /* Class = "NSMenuItem"; title = "First selected"; ObjectID = "cPa-hL-tU1"; */
-"cPa-hL-tU1.title" = "最初に選択された";
+"cPa-hL-tU1.title" = "選択範囲の一行目";
 
 /* Class = "NSMenuItem"; title = "Symmetry"; ObjectID = "dp9-ww-pqx"; */
 "dp9-ww-pqx.title" = "対称";
@@ -72,7 +72,7 @@
 "e3g-JW-gej.title" = "原子を追加";
 
 /* Class = "NSMenuItem"; title = "Top"; ObjectID = "eYX-Je-wTp"; */
-"eYX-Je-wTp.title" = "上";
+"eYX-Je-wTp.title" = "一番上";
 
 /* Class = "NSTableColumn"; headerCell.title = "name"; ObjectID = "etS-f2-gyR"; */
 "etS-f2-gyR.headerCell.title" = "名前";
@@ -84,25 +84,25 @@
 "fMn-ZP-dZ4.title" = "マッチセレクション";
 
 /* Class = "NSMenuItem"; title = "Move to new Movie"; ObjectID = "fmI-pV-gCy"; */
-"fmI-pV-gCy.title" = "新しい映画に移動する";
+"fmI-pV-gCy.title" = "新しい動画に移動する";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "fya-RH-Hvh"; */
-"fya-RH-Hvh.title" = "下";
+"fya-RH-Hvh.title" = "一番下";
 
 /* Class = "NSTableColumn"; headerCell.title = "y"; ObjectID = "gam-Tz-1cQ"; */
 "gam-Tz-1cQ.headerCell.title" = "y";
 
 /* Class = "NSMenuItem"; title = "Copy to new Movie"; ObjectID = "h1l-YI-Yex"; */
-"h1l-YI-Yex.title" = "新しいムービーにコピー";
+"h1l-YI-Yex.title" = "新しい動画にコピー";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "h8W-NQ-h3a"; */
 "h8W-NQ-h3a.placeholderString" = "フィルタ";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "hry-LW-0DM"; */
-"hry-LW-0DM.title" = "Box";
+"hry-LW-0DM.title" = "ボックス";
 
 /* Class = "NSTableColumn"; headerCell.title = "atom id."; ObjectID = "iBx-v6-SHn"; */
-"iBx-v6-SHn.headerCell.title" = "atom id.";
+"iBx-v6-SHn.headerCell.title" = "原子 ID";
 
 /* Class = "NSMenuItem"; title = "Find and Impose symmetry"; ObjectID = "j0C-ap-N1A"; */
 "j0C-ap-N1A.title" = "対称性を見つけて課す";
@@ -111,7 +111,7 @@
 "j46-Tq-XrE.title" = "プリミティブを見つける";
 
 /* Class = "NSTextFieldCell"; title = "Net charge"; ObjectID = "k5O-nf-whc"; */
-"k5O-nf-whc.title" = "正味料金";
+"k5O-nf-whc.title" = "正味電荷";
 
 /* Class = "NSTableColumn"; headerCell.title = "vis"; ObjectID = "njX-Kx-nwX"; */
 "njX-Kx-nwX.headerCell.title" = "vis";
@@ -123,16 +123,16 @@
 "ohE-dV-Fg7.headerCell.title" = "x";
 
 /* Class = "NSMenuItem"; title = "Last selected"; ObjectID = "qCy-Oi-Hlq"; */
-"qCy-Oi-Hlq.title" = "最後に選択";
+"qCy-Oi-Hlq.title" = "選択範囲の最終行";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "qJy-Jz-RI1"; */
-"qJy-Jz-RI1.title" = "Text Cell";
+"qJy-Jz-RI1.title" = "テキストセル";
 
 /* Class = "NSTableColumn"; headerCell.title = "z"; ObjectID = "s9s-rj-7uf"; */
 "s9s-rj-7uf.headerCell.title" = "z";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "taw-ox-fe7"; */
-"taw-ox-fe7.title" = "Text Cell";
+"taw-ox-fe7.title" = "テキストセル";
 
 /* Class = "NSMenuItem"; title = "VASP POSCAR"; ObjectID = "tl6-9S-wf8"; */
 "tl6-9S-wf8.title" = "VASP POSCAR";
@@ -144,22 +144,22 @@
 "txI-SF-Ef5.title" = "原子グループを追加";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "wAb-gF-oXG"; */
-"wAb-gF-oXG.title" = "Text Cell";
+"wAb-gF-oXG.title" = "テキストセル";
 
 /* Class = "NSMenu"; title = "Selection"; ObjectID = "wMK-kB-PjB"; */
 "wMK-kB-PjB.title" = "選択";
 
 /* Class = "NSMenuItem"; title = "Flatten Hierarchy"; ObjectID = "wfF-yl-c2A"; */
-"wfF-yl-c2A.title" = "階層をフラット化する";
+"wfF-yl-c2A.title" = "階層を平坦化する";
 
 /* Class = "NSMenu"; title = "Visibility"; ObjectID = "yiu-Al-H1i"; */
 "yiu-Al-H1i.title" = "可視性";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "ynH-ie-NeJ"; */
-"ynH-ie-NeJ.title" = "Text Cell";
+"ynH-ie-NeJ.title" = "テキストセル";
 
 /* Class = "NSMenuItem"; title = "Make Super-Cell"; ObjectID = "yoN-UL-IRj"; */
 "yoN-UL-IRj.title" = "スーパーセルを作る";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "zgU-ei-acC"; */
-"zgU-ei-acC.title" = "Text Cell";
+"zgU-ei-acC.title" = "テキストセル";
