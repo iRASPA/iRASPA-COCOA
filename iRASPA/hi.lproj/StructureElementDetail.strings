@@ -1,6 +1,6 @@
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "2cf-Hu-YKT"; */
-"2cf-Hu-YKT.title" = "Å";
+"2cf-Hu-YKT.title" = "ऐंग्स्ट्रम";
 
 /* Class = "NSTextFieldCell"; title = "Color"; ObjectID = "8BT-Kg-fhV"; */
 "8BT-Kg-fhV.title" = "रंग";
@@ -12,10 +12,10 @@
 "As1-ca-pPh.title" = "रासायनिक तत्व";
 
 /* Class = "NSTextFieldCell"; title = "Atomic Mass"; ObjectID = "Au8-cE-UXV"; */
-"Au8-cE-UXV.title" = "परमाणु भार";
+"Au8-cE-UXV.title" = "परमाण्विक भार";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "E2Y-V4-8rp"; */
-"E2Y-V4-8rp.title" = "Å";
+"E2Y-V4-8rp.title" = "ऐंग्स्ट्रम";
 
 /* Class = "NSTextFieldCell"; title = "User-defined Radius"; ObjectID = "HW9-vP-rgD"; */
 "HW9-vP-rgD.title" = "उपयोगकर्ता-परिभाषित त्रिज्या";
@@ -39,25 +39,25 @@
 "MPA-12-IGt.ibShadowedObjectValues[2]" = "Item 3";
 
 /* Class = "NSMenuItem"; title = "Insert new type"; ObjectID = "OfD-wL-UX4"; */
-"OfD-wL-UX4.title" = "नए प्रकार डालें";
+"OfD-wL-UX4.title" = "नए प्रकार अंतर्गत करें";
 
 /* Class = "NSTextFieldCell"; title = "amu"; ObjectID = "Ong-v4-ie0"; */
-"Ong-v4-ie0.title" = "amu";
+"Ong-v4-ie0.title" = "एएमयु";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "Pzr-4b-xG5"; */
-"Pzr-4b-xG5.title" = "Å";
+"Pzr-4b-xG5.title" = "ऐंग्स्ट्रम";
 
 /* Class = "NSTextFieldCell"; title = "Force field"; ObjectID = "RAy-Tn-Q9h"; */
 "RAy-Tn-Q9h.title" = "बल क्षेत्र";
 
 /* Class = "NSTextFieldCell"; title = "C"; ObjectID = "RN5-9P-5zL"; */
-"RN5-9P-5zL.title" = "C";
+"RN5-9P-5zL.title" = "सी";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Rhd-q6-XIy"; */
 "Rhd-q6-XIy.title" = "Text Cell";
 
 /* Class = "NSTextFieldCell"; title = "Atom Visibility"; ObjectID = "V2o-qv-t9c"; */
-"V2o-qv-t9c.title" = "एटम दृश्यता";
+"V2o-qv-t9c.title" = "परमाणु का दृश्यता";
 
 /* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "XSg-KN-Gvs"; */
 "XSg-KN-Gvs.title" = "संख्या";
@@ -69,13 +69,13 @@
 "a5h-Uu-h84.title" = "समूह";
 
 /* Class = "NSTextFieldCell"; title = "Atomic Radius"; ObjectID = "d0R-zc-cge"; */
-"d0R-zc-cge.title" = "परमाणु का आधा घेरा";
+"d0R-zc-cge.title" = "परमाण्विक त्रिज्या";
 
 /* Class = "NSTextFieldCell"; title = "Triple Bond Covalent Radius"; ObjectID = "dAx-rW-eh4"; */
 "dAx-rW-eh4.title" = "ट्रिपल बॉन्ड सहसंयोजक त्रिज्या";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "ed7-vv-cRQ"; */
-"ed7-vv-cRQ.title" = "Å";
+"ed7-vv-cRQ.title" = "ऐंग्स्ट्रम";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "exg-Lr-h93"; */
 "exg-Lr-h93.title" = "Box";
@@ -84,10 +84,10 @@
 "fcz-SI-vXv.title" = "एप्सिलॉन";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "hbT-eZ-OBK"; */
-"hbT-eZ-OBK.title" = "Å";
+"hbT-eZ-OBK.title" = "ऐंग्स्ट्रम";
 
 /* Class = "NSBox"; title = "Possible Oxidation States"; ObjectID = "nb3-UI-e9y"; */
-"nb3-UI-e9y.title" = "संभव ऑक्सीकरण राज्य";
+"nb3-UI-e9y.title" = "संभावित ऑक्सीकरण अवस्था";
 
 /* Class = "NSTextFieldCell"; title = "Van der Waals Radius"; ObjectID = "prv-DF-MqL"; */
 "prv-DF-MqL.title" = "वैन डेर वाल्स त्रिज्या";
@@ -99,7 +99,7 @@
 "vGB-CZ-myl.title" = "अवधि";
 
 /* Class = "NSMenuItem"; title = "Delete type"; ObjectID = "yJO-k1-No9"; */
-"yJO-k1-No9.title" = "प्रकार हटाएं";
+"yJO-k1-No9.title" = "प्रकार विलोप करें";
 
 /* Class = "NSTextFieldCell"; title = "1"; ObjectID = "z20-4j-Y98"; */
 "z20-4j-Y98.title" = "1";

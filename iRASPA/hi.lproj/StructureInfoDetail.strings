@@ -1,6 +1,6 @@
 
 /* Class = "NSMenuItem"; title = "All positive"; ObjectID = "07j-yA-XWL"; */
-"07j-yA-XWL.title" = "सभी सकारात्मक";
+"07j-yA-XWL.title" = "सर्व सकारात्मक";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
 "43t-f2-d0i.placeholderString" = "संस्थान का नाम";
@@ -9,7 +9,7 @@
 "444-5s-8Su.placeholderString" = "अनजान";
 
 /* Class = "NSComboBoxCell"; 444-5s-8Su.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "444-5s-8Su"; */
-"444-5s-8Su.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
+"444-5s-8Su.ibShadowedObjectValues[0]" = "पीबीइ, 600 इवी  कट ऑफ,  गामा पॉइंट केवल";
 
 /* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "4EP-SI-3P9"; */
 "4EP-SI-3P9.title" = "Item 1";
@@ -21,7 +21,7 @@
 "4KL-dd-ODO.title" = "संबंधन";
 
 /* Class = "NSTextFieldCell"; title = "DOI"; ObjectID = "4z1-VY-1Pd"; */
-"4z1-VY-1Pd.title" = "DOI";
+"4z1-VY-1Pd.title" = "डीओआई";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "6KC-hH-6j8"; */
 "6KC-hH-6j8.placeholderString" = "अनजान";
@@ -45,19 +45,19 @@
 "Cvy-Hd-HUC.placeholderString" = "सिटी";
 
 /* Class = "NSMenuItem"; title = "Bar"; ObjectID = "DBX-tl-g65"; */
-"DBX-tl-g65.title" = "Bar";
+"DBX-tl-g65.title" = "बार";
 
 /* Class = "NSTextFieldCell"; placeholderString = "k_max"; ObjectID = "DQs-oL-hqO"; */
-"DQs-oL-hqO.placeholderString" = "k_max";
+"DQs-oL-hqO.placeholderString" = "के_मैक्स";
 
 /* Class = "NSTextFieldCell"; title = "Researcher ID"; ObjectID = "DXa-ef-f0b"; */
-"DXa-ef-f0b.title" = "Researcher ID";
+"DXa-ef-f0b.title" = "गवेक्षक की आईडी";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "EMw-Fn-YYe"; */
 "EMw-Fn-YYe.placeholderString" = "अनजान";
 
 /* Class = "NSMenuItem"; title = "Fixed Volume; Shape Change"; ObjectID = "Etd-c0-eiU"; */
-"Etd-c0-eiU.title" = "निश्चित मात्रा; आकार बदलें";
+"Etd-c0-eiU.title" = "निर्धारित आयतन; आकार बदलें";
 
 /* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
 "FgA-hr-Zjg.title" = "विवरण";
@@ -69,7 +69,7 @@
 "G2E-hb-9HS.title" = "प्रयोगात्मक";
 
 /* Class = "NSTextFieldCell"; placeholderString = "max"; ObjectID = "GOg-L9-MUC"; */
-"GOg-L9-MUC.placeholderString" = "max";
+"GOg-L9-MUC.placeholderString" = "अधिकतम";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "GbD-Bi-g8J"; */
 "GbD-Bi-g8J.placeholderString" = "अनजान";
@@ -84,10 +84,10 @@
 "IDD-Ef-45v.title" = "कलन विधि";
 
 /* Class = "NSMenuItem"; title = "Baker's Algorithm"; ObjectID = "JIL-cM-jP3"; */
-"JIL-cM-jP3.title" = "Baker's Algorithm";
+"JIL-cM-jP3.title" = "बेकर्स अल्गोरिथम";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Last name"; ObjectID = "JJr-Hi-ZjS"; */
-"JJr-Hi-ZjS.placeholderString" = "अंतिम नाम";
+"JJr-Hi-ZjS.placeholderString" = "कुलनाम";
 
 /* Class = "NSTextFieldCell"; title = "Limits"; ObjectID = "Jff-Rs-w9O"; */
 "Jff-Rs-w9O.title" = "सीमाएं";
@@ -96,10 +96,10 @@
 "KEX-co-NaZ.title" = "यूनिट सेल";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_min"; ObjectID = "KRx-ka-ed4"; */
-"KRx-ka-ed4.placeholderString" = "h_min";
+"KRx-ka-ed4.placeholderString" = "एच_मिन";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Kyz-vh-wLM"; */
-"Kyz-vh-wLM.title" = "फोर्स फील्ड विवरण";
+"Kyz-vh-wLM.title" = "बल क्षेत्र का विवरण";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Information"; ObjectID = "L9b-nA-LZg"; */
 "L9b-nA-LZg.title" = "रासायनिक जानकारी";
@@ -111,10 +111,10 @@
 "Lsj-0L-zLx.label" = "राय";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Type"; ObjectID = "M4G-j9-ni3"; */
-"M4G-j9-ni3.title" = "विकिरण प्रकार";
+"M4G-j9-ni3.title" = "किरण पात के प्रकार";
 
 /* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "तैयार किए हुयी धातु पे पानी चढाने की कला";
+"MCu-aJ-XRY.title" = "अनुकारित अनीलिंग";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
 "MYm-ia-kRD.title" = "सिंप्लेक्स";
@@ -123,7 +123,7 @@
 "Mz0-GD-bP9.title" = "आइजनवेल्स";
 
 /* Class = "NSTextFieldCell"; title = "Article Authors"; ObjectID = "NEs-Kg-SVJ"; */
-"NEs-Kg-SVJ.title" = "लेख लेखक";
+"NEs-Kg-SVJ.title" = "लेख के लेखक";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Sum"; ObjectID = "Niu-c7-eAz"; */
 "Niu-c7-eAz.title" = "रासायनिक सूत्र योग";
@@ -141,7 +141,7 @@
 "Qbd-YO-NWQ.placeholderString" = "अनजान";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "R5l-j2-8rL"; */
-"R5l-j2-8rL.title" = "फोर्स फील्ड विवरण";
+"R5l-j2-8rL.title" = "बल क्षेत्र का विवरण";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
 "USD-gk-tal.placeholderString" = "अनजान";
@@ -156,10 +156,10 @@
 "VW9-bX-xkL.placeholderString" = "अनजान";
 
 /* Class = "NSComboBoxCell"; VW9-bX-xkL.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "VW9-bX-xkL"; */
-"VW9-bX-xkL.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
+"VW9-bX-xkL.ibShadowedObjectValues[0]" = "पीबीइ, 600 इवी  कट ऑफ,  गामा पॉइंट केवल";
 
 /* Class = "NSTextFieldCell"; placeholderString = "First name"; ObjectID = "Vtz-4v-Kmv"; */
-"Vtz-4v-Kmv.placeholderString" = "पहला नाम";
+"Vtz-4v-Kmv.placeholderString" = "प्रथम नाम";
 
 /* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "Vvv-Ri-fwX"; */
 "Vvv-Ri-fwX.title" = "संख्या";
@@ -174,13 +174,13 @@
 "X0T-Gc-sil.placeholderString" = "अनजान";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Wavelength"; ObjectID = "Xx6-F7-2Db"; */
-"Xx6-F7-2Db.title" = "विकिरण तरंग दैर्ध्य";
+"Xx6-F7-2Db.title" = "किरण पात की तरंग दैर्ध्य";
 
 /* Class = "NSTextFieldCell"; title = "Journal Title"; ObjectID = "Zmo-LS-hfO"; */
 "Zmo-LS-hfO.title" = "जर्नल शीर्षक";
 
 /* Class = "NSMenuItem"; title = "Kelvin"; ObjectID = "Zqh-RB-jIF"; */
-"Zqh-RB-jIF.title" = "Kelvin";
+"Zqh-RB-jIF.title" = "कैल्विन";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "a8y-Dh-rHh"; */
 "a8y-Dh-rHh.title" = "Text Cell";
@@ -192,7 +192,7 @@
 "au5-Fr-4P5.placeholderString" = "अनजान";
 
 /* Class = "NSMenuItem"; title = "Genetic Algorithm"; ObjectID = "b6n-Qn-6ik"; */
-"b6n-Qn-6ik.title" = "जेनेटिक एल्गोरिद्म";
+"b6n-Qn-6ik.title" = "जेनेटिक अल्गोरिथम";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "b8q-Dr-Dt5"; */
 "b8q-Dr-Dt5.placeholderString" = "अनजान";
@@ -201,64 +201,64 @@
 "b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "प्रयोगात्मक";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[1] = "Ab initio"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[1]" = "Ab initio";
+"b8q-Dr-Dt5.ibShadowedObjectValues[1]" = "आदित";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[2] = "VASP"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[2]" = "VASP";
+"b8q-Dr-Dt5.ibShadowedObjectValues[2]" = "वास्प";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[3] = "Gaussian"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[3]" = "Gaussian";
+"b8q-Dr-Dt5.ibShadowedObjectValues[3]" = "गौसीय";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[4] = "Spartan"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[4]" = "Spartan";
+"b8q-Dr-Dt5.ibShadowedObjectValues[4]" = "स्पार्टन";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[5] = "CP2K"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[5]" = "CP2K";
+"b8q-Dr-Dt5.ibShadowedObjectValues[5]" = "सीपी2के";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[6] = "DMOL3"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[6]" = "DMOL3";
+"b8q-Dr-Dt5.ibShadowedObjectValues[6]" = "डीमोल3";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[7] = "TURBOMOLE"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[7]" = "TURBOMOLE";
+"b8q-Dr-Dt5.ibShadowedObjectValues[7]" = "टर्बोमोल";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[8] = "SIESTA"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[8]" = "SIESTA";
+"b8q-Dr-Dt5.ibShadowedObjectValues[8]" = "सिएस्टा";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[9] = "NWCHEM"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[9]" = "NWCHEM";
+"b8q-Dr-Dt5.ibShadowedObjectValues[9]" = "एनडब्ल्यूकेम";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[10] = "ORCA"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[10]" = "ORCA";
+"b8q-Dr-Dt5.ibShadowedObjectValues[10]" = "ओर्का";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[11] = "ADF"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[11]" = "ADF";
+"b8q-Dr-Dt5.ibShadowedObjectValues[11]" = "एडीएफ";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[12] = "WIEN2K"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[12]" = "WIEN2K";
+"b8q-Dr-Dt5.ibShadowedObjectValues[12]" = "विएन2के";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[13] = "Classical"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[13]" = "Classical";
+"b8q-Dr-Dt5.ibShadowedObjectValues[13]" = "चिरप्रतिष्ठित";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[14] = "RASPA"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[14]" = "RASPA";
+"b8q-Dr-Dt5.ibShadowedObjectValues[14]" = "रास्पा";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[15] = "Materials Studio"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[15]" = "Materials Studio";
+"b8q-Dr-Dt5.ibShadowedObjectValues[15]" = "पदार्थ स्टूडियो";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[16] = "GULP"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[16]" = "GULP";
+"b8q-Dr-Dt5.ibShadowedObjectValues[16]" = "गाल्प";
 
 /* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[17] = "Openbabel"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[17]" = "Openbabel";
+"b8q-Dr-Dt5.ibShadowedObjectValues[17]" = "लैबल खोले";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "bgc-3c-w1h"; */
 "bgc-3c-w1h.placeholderString" = "अनजान";
 
 /* Class = "NSTextFieldCell"; title = "Final R indices [I>2sigma(I)]"; ObjectID = "bw9-xG-XoD"; */
-"bw9-xG-XoD.title" = "अंतिम आर सूचकांक [I>2sigma(I)]";
+"bw9-xG-XoD.title" = "अंतिम आर सूचकांक [I>2सिग्मा(I)]";
 
 /* Class = "NSBox"; title = "Atomic Positions"; ObjectID = "cgg-LX-ohN"; */
-"cgg-LX-ohN.title" = "परमाणु स्थिति";
+"cgg-LX-ohN.title" = "परमाण्विक स्थिति";
 
 /* Class = "NSTextFieldCell"; placeholderString = "A-0000-0000"; ObjectID = "ciB-v0-3ow"; */
 "ciB-v0-3ow.placeholderString" = "A-0000-0000";
@@ -270,7 +270,7 @@
 "d7Y-ez-Ze7.label" = "CreationTabView";
 
 /* Class = "NSTextFieldCell"; title = "ORCHID ID"; ObjectID = "d8y-By-uMu"; */
-"d8y-By-uMu.title" = "ORCHID ID";
+"d8y-By-uMu.title" = "ऑर्किड आईडी";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Name Systematic"; ObjectID = "df5-Wf-bLj"; */
 "df5-Wf-bLj.title" = "रासायनिक नाम व्यवस्थित";
@@ -285,7 +285,7 @@
 "fCm-83-aYg.placeholderString" = "संकाय";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_max"; ObjectID = "fRC-r2-uGt"; */
-"fRC-r2-uGt.placeholderString" = "h_max";
+"fRC-r2-uGt.placeholderString" = "एच_मैक्स";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "hJX-yG-tEQ"; */
 "hJX-yG-tEQ.title" = "तारीख";
@@ -297,22 +297,22 @@
 "hx2-K2-gHI.placeholderString" = "अनजान";
 
 /* Class = "NSMenuItem"; title = "Simulation"; ObjectID = "iWi-p0-Jvt"; */
-"iWi-p0-Jvt.title" = "सिमुलेशन";
+"iWi-p0-Jvt.title" = "अनुकार";
 
 /* Class = "NSTextFieldCell"; placeholderString = "k_min"; ObjectID = "ikt-1W-AxJ"; */
-"ikt-1W-AxJ.placeholderString" = "k_min";
+"ikt-1W-AxJ.placeholderString" = "के_मिन";
 
 /* Class = "NSTextFieldCell"; placeholderString = "l_max"; ObjectID = "ioC-pe-oXb"; */
-"ioC-pe-oXb.placeholderString" = "l_max";
+"ioC-pe-oXb.placeholderString" = "एल_मैक्स";
 
 /* Class = "NSMenuItem"; title = "Pascal"; ObjectID = "j7h-V3-vWj"; */
-"j7h-V3-vWj.title" = "Pascal";
+"j7h-V3-vWj.title" = "पास्कल";
 
 /* Class = "NSMenuItem"; title = "Quasi-Newton"; ObjectID = "jIx-ec-cc5"; */
-"jIx-ec-cc5.title" = "Quasi-Newton";
+"jIx-ec-cc5.title" = "क्वासी-न्यूटन";
 
 /* Class = "NSMenuItem"; title = "Celsius"; ObjectID = "jxw-bd-YgS"; */
-"jxw-bd-YgS.title" = "Celsius";
+"jxw-bd-YgS.title" = "सेल्सीयस";
 
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "k9a-VC-uKW"; */
 "k9a-VC-uKW.title" = "आयतन";
@@ -321,34 +321,34 @@
 "kf2-0x-3Vl.placeholderString" = "अनजान";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab Initio";
+"kf2-0x-3Vl.ibShadowedObjectValues[0]" = "आदित";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[1] = "UFF"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[1]" = "UFF";
+"kf2-0x-3Vl.ibShadowedObjectValues[1]" = "यूएफ़एफ़";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[2] = "DREIDING"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[2]" = "DREIDING";
+"kf2-0x-3Vl.ibShadowedObjectValues[2]" = "ड्राइडिंग";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[3] = "UFF"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[3]" = "UFF";
+"kf2-0x-3Vl.ibShadowedObjectValues[3]" = "यूएफ़एफ़";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[4] = "MM3"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[4]" = "MM3";
+"kf2-0x-3Vl.ibShadowedObjectValues[4]" = "एमएम3";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[5] = "MM4"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[5]" = "MM4";
+"kf2-0x-3Vl.ibShadowedObjectValues[5]" = "एमएम4";
 
 /* Class = "NSTextFieldCell"; placeholderString = "min"; ObjectID = "kzO-x9-s2F"; */
-"kzO-x9-s2F.placeholderString" = "min";
+"kzO-x9-s2F.placeholderString" = "मिन";
 
 /* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "आराम करो सेल सेल";
+"lIz-1D-3Ai.title" = "युनिट सेल को तनाव मुक्त करे";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
 "lKv-hk-525.title" = "दबाव";
 
 /* Class = "NSMenuItem"; title = "Fixed Cell"; ObjectID = "lh2-7H-hGC"; */
-"lh2-7H-hGC.title" = "निश्चित सेल";
+"lh2-7H-hGC.title" = "निर्धारित सेल";
 
 /* Class = "NSTextFieldCell"; title = "Method"; ObjectID = "m81-kt-8rG"; */
 "m81-kt-8rG.title" = "तरीका";
@@ -363,37 +363,37 @@
 "nb3-dm-cDY.placeholderString" = "अनजान";
 
 /* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "oND-jh-tZA"; */
-"oND-jh-tZA.title" = "Atomic Charges";
+"oND-jh-tZA.title" = "परमाणाविक  चा";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "pD1-Es-0pE"; */
 "pD1-Es-0pE.placeholderString" = "अनजान";
 
 /* Class = "NSTextFieldCell"; title = "Creator"; ObjectID = "pWj-ey-8li"; */
-"pWj-ey-8li.title" = "बनाने वाला";
+"pWj-ey-8li.title" = "रचयिता";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "qFO-wb-T6b"; */
 "qFO-wb-T6b.title" = "कोई नहीं";
 
 /* Class = "NSTextFieldCell"; title = "Measurement Theta"; ObjectID = "qbj-K1-xUb"; */
-"qbj-K1-xUb.title" = "माप थीटा";
+"qbj-K1-xUb.title" = "थीटा मापन";
 
 /* Class = "NSTextFieldCell"; title = "Goodness-of-fit on F²"; ObjectID = "qmj-e3-XI9"; */
-"qmj-e3-XI9.title" = "F² पर अच्छाई-की-फिट";
+"qmj-e3-XI9.title" = "एफ² पर गुडनेस-ऑफ़-फिट";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.placeholderString" = "अनजान";
 
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[0] = "Journal of the American Chemical Society"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.ibShadowedObjectValues[0]" = "Journal of the American Chemical Society";
+"sRA-iw-pcK.ibShadowedObjectValues[0]" = "जर्नल ऑफ़ द अमेरिकन केमिकल सोसाइटी";
 
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[1] = "Angewandte Chemie Int. Ed."; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.ibShadowedObjectValues[1]" = "Angewandte Chemie Int. Ed.";
+"sRA-iw-pcK.ibShadowedObjectValues[1]" = "आंगेवाण्डट शेमी इन्ट. एड.";
 
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[2] = "Journal of the Physical Chemstry"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
+"sRA-iw-pcK.ibShadowedObjectValues[2]" = "जर्नल ऑफ़ द फिज़िकल केमिस्ट्री";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Change"; ObjectID = "sah-qX-FWQ"; */
-"sah-qX-FWQ.title" = "निश्चित कोण; आइसोट्रोपिक एज-लेंथ चेंज";
+"sah-qX-FWQ.title" = "निर्धारित कोण; समदैशिक किनारो की लंबाई बदलें";
 
 /* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
 "seM-pw-mPI.title" = "डेटाबेस कोड";
@@ -402,49 +402,49 @@
 "tBE-VU-7Q1.placeholderString" = "अनजान";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[0] = "REPEAT"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[0]" = "REPEAT";
+"tBE-VU-7Q1.ibShadowedObjectValues[0]" = "पुनराव्रत्ति";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[1] = "CHELPG"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[1]" = "CHELPG";
+"tBE-VU-7Q1.ibShadowedObjectValues[1]" = "सीएचइएलपीजी";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[2] = "CHELP"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[2]" = "CHELP";
+"tBE-VU-7Q1.ibShadowedObjectValues[2]" = "सीएचइएलपी";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[3] = "RESP"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[3]" = "RESP";
+"tBE-VU-7Q1.ibShadowedObjectValues[3]" = "रेस्प";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[4] = "Mulliken"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[4]" = "Mulliken";
+"tBE-VU-7Q1.ibShadowedObjectValues[4]" = "मूलीकन";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[5] = "Merz-Kollman"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[5]" = "Merz-Kollman";
+"tBE-VU-7Q1.ibShadowedObjectValues[5]" = "मैर्त्स-कोल्लमान";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[6] = "Hirshfeld"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[6]" = "Hirshfeld";
+"tBE-VU-7Q1.ibShadowedObjectValues[6]" = "हिर्शफ़ेल्ड";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[7] = "Natural Bond Orbital"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[7]" = "Natural Bond Orbital";
+"tBE-VU-7Q1.ibShadowedObjectValues[7]" = "प्राकृतिक बॉन्ड ऑर्बिटल";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[8] = "Qeq - Rappe and Goddard 1991"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[8]" = "Qeq - Rappe and Goddard 1991";
+"tBE-VU-7Q1.ibShadowedObjectValues[8]" = "क्यूइक्यू - राप्प ऐन्ड गोद्दार्द 1991";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[9] = "Qeq - Rick, Stuart, Berne 1994"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[9]" = "Qeq - Rick, Stuart, Berne 1994";
+"tBE-VU-7Q1.ibShadowedObjectValues[9]" = "क्यूइक्यू - रिक, स्टुअर्ट, बेर्ने  1994";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[10] = "Qeq - York and Yang 1996"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[10]" = "Qeq - York and Yang 1996";
+"tBE-VU-7Q1.ibShadowedObjectValues[10]" = "क्यूइक्यू - यॉर्क ऐन्ड यांग 1996";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[11] = "Qeq - Itskoqitz and Berkowitz 1997"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[11]" = "Qeq - Itskoqitz and Berkowitz 1997";
+"tBE-VU-7Q1.ibShadowedObjectValues[11]" = "क्यूइक्यू - इटकोकिट्ज़ ऐन्ड बर्कोविट्ज़ 1997";
 
 /* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[12] = "Qeq - Wilmer, Kim, Snurr 2012"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[12]" = "Qeq - Wilmer, Kim, Snurr 2012";
+"tBE-VU-7Q1.ibShadowedObjectValues[12]" = "क्यूइक्यू - विल्मर,  किम, स्नर्र 2012";
 
 /* Class = "NSTextFieldCell"; title = "Citation"; ObjectID = "tC6-Zq-7Lv"; */
 "tC6-Zq-7Lv.title" = "उद्धरण";
 
 /* Class = "NSMenuItem"; title = "Steepest Descent"; ObjectID = "tWh-do-MeZ"; */
-"tWh-do-MeZ.title" = "Steepest Descent";
+"tWh-do-MeZ.title" = "प्रवणतम अवरोहण";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "uMx-Zh-Bqv"; */
 "uMx-Zh-Bqv.title" = "तारीख";
@@ -456,31 +456,31 @@
 "uaM-oQ-eaJ.title" = "लेखक";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Change"; ObjectID = "ucW-XP-BfZ"; */
-"ucW-XP-BfZ.title" = "निश्चित कोण; एनिसोट्रोपिक एज-लेंथ चेंज";
+"ucW-XP-BfZ.title" = "निर्धारित कोण; विषमदैशिक किनारो की  लंबाई बदलें";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "urK-zQ-9a7"; */
 "urK-zQ-9a7.placeholderString" = "अनजान";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[0]" = "Ab Initio";
+"urK-zQ-9a7.ibShadowedObjectValues[0]" = "आदित";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[1] = "UFF"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[1]" = "UFF";
+"urK-zQ-9a7.ibShadowedObjectValues[1]" = "यूएफ़एफ़";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[2] = "DREIDING"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[2]" = "DREIDING";
+"urK-zQ-9a7.ibShadowedObjectValues[2]" = "ड्राइडिंग";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[3] = "UFF"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[3]" = "UFF";
+"urK-zQ-9a7.ibShadowedObjectValues[3]" = "यूएफ़एफ़";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[4] = "MM3"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[4]" = "MM3";
+"urK-zQ-9a7.ibShadowedObjectValues[4]" = "एमएम3";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[5] = "MM4"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[5]" = "MM4";
+"urK-zQ-9a7.ibShadowedObjectValues[5]" = "एमएम4";
 
 /* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "utU-RL-9NT"; */
-"utU-RL-9NT.title" = "कुछ सांकेतिक रूप से नकारात्मक मूल्य";
+"utU-RL-9NT.title" = "कुछ उल्लेखनीय ढंग से नकारात्मक मूल्य";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "wMv-kw-520"; */
 "wMv-kw-520.placeholderString" = "अनजान";
@@ -492,28 +492,28 @@
 "wrO-uI-kgr.ibShadowedObjectValues[0]" = "प्रयोगात्मक";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[1] = "Gaussian"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[1]" = "Gaussian";
+"wrO-uI-kgr.ibShadowedObjectValues[1]" = "गौसीयन";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[2] = "VASP"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[2]" = "VASP";
+"wrO-uI-kgr.ibShadowedObjectValues[2]" = "वास्प";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[3] = "Spartan"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[3]" = "Spartan";
+"wrO-uI-kgr.ibShadowedObjectValues[3]" = "स्पार्टन";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[4] = "CP2K"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[4]" = "CP2K";
+"wrO-uI-kgr.ibShadowedObjectValues[4]" = "सीपी2के";
 
 /* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[5] = "Classical"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[5]" = "Classical";
+"wrO-uI-kgr.ibShadowedObjectValues[5]" = "चिरप्रतिष्ठित";
 
 /* Class = "NSMenuItem"; title = "Newton-Raphson"; ObjectID = "xEm-NF-Owh"; */
-"xEm-NF-Owh.title" = "Newton-Raphson";
+"xEm-NF-Owh.title" = "न्यूटन-रफ़सन";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Middle Name"; ObjectID = "yR3-PF-JAn"; */
 "yR3-PF-JAn.placeholderString" = "मध्य नाम";
 
 /* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Change"; ObjectID = "ylL-90-vOx"; */
-"ylL-90-vOx.title" = "निश्चित 𝝱- 𝝱; और and-कोण और एज-लंबाई बदलें";
+"ylL-90-vOx.title" = "निर्धारित अल्फा, बीटा और गामा कोण और किनारो की  लंबाई बदलें";
 
 /* Class = "NSTextFieldCell"; title = "Number of Reflections"; ObjectID = "z73-uc-ODJ"; */
 "z73-uc-ODJ.title" = "प्रतिबिंबों की संख्या";
@@ -522,4 +522,4 @@
 "zKZ-Xu-F5z.title" = "सॉफ़्टवेयर पैकेज";
 
 /* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Change"; ObjectID = "zUt-yS-ax8"; */
-"zUt-yS-ax8.title" = "सेल और एज-लेंथ चेंज";
+"zUt-yS-ax8.title" = "कोशिका और किनारो की लंबाई बदलें";

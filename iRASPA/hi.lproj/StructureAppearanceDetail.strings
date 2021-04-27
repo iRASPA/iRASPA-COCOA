@@ -3,7 +3,7 @@
 "126-Ob-v2F.title" = "घुमाएँ +90";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "1Ms-wb-ECb"; */
-"1Ms-wb-ECb.title" = "विशेष प्रकाश तीव्रता";
+"1Ms-wb-ECb.title" = "विशेष प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "𝜈"; ObjectID = "1gP-QT-h2b"; */
 "1gP-QT-h2b.title" = "𝜈";
@@ -27,7 +27,7 @@
 "4Xx-zc-qJB.title" = "परिवेश प्रकाश की तीव्रता";
 
 /* Class = "NSMenuItem"; title = "Default"; ObjectID = "4hE-df-ALQ"; */
-"4hE-df-ALQ.title" = "चूक";
+"4hE-df-ALQ.title" = "पूर्व निर्धारित मूल्य";
 
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "4vF-aa-ild"; */
 "4vF-aa-ild.title" = "प्रदर्शित होने वाला नाम";
@@ -54,7 +54,7 @@
 "5tk-gG-FdV.title" = "बॉन्ड स्केल फैक्टर";
 
 /* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
-"5xK-C0-rPU.title" = "सोखना सतह";
+"5xK-C0-rPU.title" = "अधिशोषण सतह";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
 "6Aw-j2-ekx.title" = "बॉन्ड लाइटिंग";
@@ -75,22 +75,22 @@
 "8Fb-07-tja.title" = "हाइड्रोजन";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "8ga-HD-e1b"; */
-"8ga-HD-e1b.title" = "डिफ्यूज़ लाइट इंटेंसिटी";
+"8ga-HD-e1b.title" = "विसरित प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Atoms"; ObjectID = "8ht-z0-szM"; */
-"8ht-z0-szM.title" = "परमाणुओं";
+"8ht-z0-szM.title" = "परमाणुएँ";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "8iy-di-Ufc"; */
-"8iy-di-Ufc.title" = "परिवेश प्रकाश की तीव्रता";
+"8iy-di-Ufc.title" = "परिवेशी प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "90a-Ax-VRf"; */
-"90a-Ax-VRf.title" = "एक्सपोजर";
+"90a-Ax-VRf.title" = "उद्भासन";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "97c-Ea-ha8"; */
 "97c-Ea-ha8.title" = "चयन शैली";
 
 /* Class = "NSTextFieldCell"; title = "Primitive Properties"; ObjectID = "A1A-Jh-xnr"; */
-"A1A-Jh-xnr.title" = "आदिम गुण";
+"A1A-Jh-xnr.title" = "साधारण गुणध";
 
 /* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "AjV-MB-P5w"; */
 "AjV-MB-P5w.title" = "CO₂";
@@ -114,25 +114,25 @@
 "BhQ-29-eXX.title" = "तत्त्व";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "Bvc-rc-vqi"; */
-"Bvc-rc-vqi.title" = "यूलर एंगल्स";
+"Bvc-rc-vqi.title" = "यूलर कोणें";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "C4F-mR-Wqd"; */
-"C4F-mR-Wqd.title" = "एक्सपोजर";
+"C4F-mR-Wqd.title" = "उद्भासन";
 
 /* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "Cur-NK-N96"; */
 "Cur-NK-N96.title" = "स्टाइल पैरामीटर्स";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Df4-cu-Yqn"; */
-"Df4-cu-Yqn.title" = "डिफ्यूज़ लाइट इंटेंसिटी";
+"Df4-cu-Yqn.title" = "विसरित प्रकाश की तीव्रता";
 
 /* Class = "NSMenuItem"; title = "Jmol"; ObjectID = "Dvd-oC-whc"; */
-"Dvd-oC-whc.title" = "Jmol";
+"Dvd-oC-whc.title" = "जे मोल";
 
 /* Class = "NSTextFieldCell"; title = "Alignment"; ObjectID = "E3F-gq-hXm"; */
 "E3F-gq-hXm.title" = "संरेखण";
 
 /* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "ENi-9x-fAK"; */
-"ENi-9x-fAK.title" = "Worley Noise 3D";
+"ENi-9x-fAK.title" = "वर्ली नॉइज़ 3D";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "Eg3-1V-ocA"; */
 "Eg3-1V-ocA.title" = "घुमाएँ +90";
@@ -144,7 +144,7 @@
 "F0U-6l-67M.title" = "चमक";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "Fj4-J7-jzg"; */
-"Fj4-J7-jzg.title" = "विशेष प्रकाश तीव्रता";
+"Fj4-J7-jzg.title" = "विशेष प्रकाश की तीव्रता";
 
 /* Class = "NSButtonCell"; title = "Ambient Occlusion"; ObjectID = "Ftc-mi-NgX"; */
 "Ftc-mi-NgX.title" = "परिवेशी बाधा";
@@ -153,25 +153,25 @@
 "FvL-0N-TdY.title" = "मूल्य";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "GOQ-bY-t1V"; */
-"GOQ-bY-t1V.title" = "Z";
+"GOQ-bY-t1V.title" = "जेड";
 
 /* Class = "NSMenuItem"; title = "Vesta"; ObjectID = "GdU-El-L7o"; */
-"GdU-El-L7o.title" = "Vesta";
+"GdU-El-L7o.title" = "वेस्टा";
 
 /* Class = "NSMenuItem"; title = "Striped"; ObjectID = "Gf0-Qp-gqQ"; */
 "Gf0-Qp-gqQ.title" = "धारीदार";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "GfJ-48-dF4"; */
-"GfJ-48-dF4.title" = "चयन रेडियल स्केलिंग";
+"GfJ-48-dF4.title" = "रेडियल स्केलिंग के चयन";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
-"H3R-9w-R7d.title" = "ह्यू";
+"H3R-9w-R7d.title" = "रंग";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "IIB-vI-u3a"; */
 "IIB-vI-u3a.title" = "चयन की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "JAw-bD-rCT"; */
-"JAw-bD-rCT.title" = "डिफ्यूज़ लाइट इंटेंसिटी";
+"JAw-bD-rCT.title" = "विसरित प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
 "JKn-cA-MRP.title" = "बॉन्ड प्रकार";
@@ -189,13 +189,13 @@
 "KZZ-4u-w8e.title" = "चमक";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "Kl4-HX-HyG"; */
-"Kl4-HX-HyG.title" = "उच्च गतिशील रेंज";
+"Kl4-HX-HyG.title" = "उच्च गतिशील फैलाव";
 
 /* Class = "NSTextFieldCell"; title = "Light Intensity"; ObjectID = "LA8-y5-QWc"; */
 "LA8-y5-QWc.title" = "प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "LSL-D7-VXo"; */
-"LSL-D7-VXo.title" = "चयन रेडियल स्केलिंग";
+"LSL-D7-VXo.title" = "रेडियल स्केलिंग के चयन";
 
 /* Class = "NSTextFieldCell"; title = "Annotation"; ObjectID = "LSN-af-m9O"; */
 "LSN-af-m9O.title" = "टिप्पणी";
@@ -204,13 +204,13 @@
 "M4h-TV-oAo.title" = "चमक";
 
 /* Class = "NSTextFieldCell"; title = "Representation Type"; ObjectID = "NF8-dJ-o6x"; */
-"NF8-dJ-o6x.title" = "प्रतिनिधित्व प्रकार";
+"NF8-dJ-o6x.title" = "प्रतिनिधित्व के प्रकार";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "NGy-sK-enb"; */
-"NGy-sK-enb.title" = "परिवेश प्रकाश की तीव्रता";
+"NGy-sK-enb.title" = "परिवेशी प्रकाश की तीव्रता";
 
 /* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "NQu-nU-YxM"; */
-"NQu-nU-YxM.title" = "Worley Noise 3D";
+"NQu-nU-YxM.title" = "वर्ली नॉइज़ 3D";
 
 /* Class = "NSMenuItem"; title = "Unity"; ObjectID = "NUE-Dx-H8c"; */
 "NUE-Dx-H8c.title" = "एकता";
@@ -219,7 +219,7 @@
 "OC0-RP-spe.title" = "संतृप्ति";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "OPu-dU-h6H"; */
-"OPu-dU-h6H.title" = "उच्च गतिशील रेंज";
+"OPu-dU-h6H.title" = "उच्च गतिशील फैलाव";
 
 /* Class = "NSMenuItem"; title = "Methane"; ObjectID = "OqP-s8-Ltq"; */
 "OqP-s8-Ltq.title" = "मीथेन";
@@ -240,25 +240,25 @@
 "PG2-24-2KF.title" = "स्टाइल पैरामीटर्स";
 
 /* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "Pac-P8-T19"; */
-"Pac-P8-T19.title" = "Y";
+"Pac-P8-T19.title" = "वाई";
 
 /* Class = "NSMenuItem"; title = "Ball and Stick"; ObjectID = "Q9V-K7-74d"; */
-"Q9V-K7-74d.title" = "बॉल और स्टिक";
+"Q9V-K7-74d.title" = "गेंद और छड़ी";
 
 /* Class = "NSTextFieldCell"; title = "𝜌"; ObjectID = "QAl-Oz-tMg"; */
 "QAl-Oz-tMg.title" = "𝜌";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "Qvw-wH-dnp"; */
-"Qvw-wH-dnp.title" = "ह्यू";
+"Qvw-wH-dnp.title" = "रंग";
 
 /* Class = "NSMenuItem"; title = "128x128x128"; ObjectID = "R0Z-ra-sDa"; */
 "R0Z-ra-sDa.title" = "128x128x128";
 
 /* Class = "NSMenuItem"; title = "Top-Left"; ObjectID = "R4G-mG-N7c"; */
-"R4G-mG-N7c.title" = "बाएं से बाएं";
+"R4G-mG-N7c.title" = "ऊपरी बायाँ भाग";
 
 /* Class = "NSMenuItem"; title = "Bottom-Right"; ObjectID = "RUW-tq-w6V"; */
-"RUW-tq-w6V.title" = "नीचे दाएं";
+"RUW-tq-w6V.title" = "नीचला दायाँ भाग";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "Rjl-1D-n7b"; */
 "Rjl-1D-n7b.title" = "चमक";
@@ -267,7 +267,7 @@
 "Rwu-J1-bjK.title" = "कोई नहीं";
 
 /* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "SFF-hg-8Cg"; */
-"SFF-hg-8Cg.title" = "फोर्स फील्ड ओनली";
+"SFF-hg-8Cg.title" = "केवल बल क्षेत्र";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "SMT-Ir-R2J"; */
 "SMT-Ir-R2J.title" = "मूल्य";
@@ -276,16 +276,16 @@
 "Sdq-Z4-nnY.title" = "वर्तन कोण";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Sgk-qh-f3p"; */
-"Sgk-qh-f3p.title" = "डिफ्यूज़ लाइट इंटेंसिटी";
+"Sgk-qh-f3p.title" = "विसरित प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "TPc-vg-PLV"; */
-"TPc-vg-PLV.title" = "चयन रेडियल स्केलिंग";
+"TPc-vg-PLV.title" = "त्रिज्यीय स्केलिंग परिवर्तन के चयन";
 
 /* Class = "NSMenuItem"; title = "Force Field Type"; ObjectID = "TZ6-3e-HHS"; */
-"TZ6-3e-HHS.title" = "फोर्स फील्ड प्रकार";
+"TZ6-3e-HHS.title" = "बल क्षेत्र के प्रकार";
 
 /* Class = "NSMenuItem"; title = "Gradient"; ObjectID = "Tlc-XL-RDG"; */
-"Tlc-XL-RDG.title" = "ढाल";
+"Tlc-XL-RDG.title" = "ढलान";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Tqo-qK-6Fc"; */
 "Tqo-qK-6Fc.title" = "कोई नहीं";
@@ -294,10 +294,10 @@
 "UXl-KR-D8o.title" = "संतृप्ति";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "V0t-KV-zMh"; */
-"V0t-KV-zMh.title" = "ह्यू";
+"V0t-KV-zMh.title" = "रंग";
 
 /* Class = "NSTextFieldCell"; title = "Exposure:"; ObjectID = "V4C-Dq-82n"; */
-"V4C-Dq-82n.title" = "एक्सपोजर:";
+"V4C-Dq-82n.title" = "उद्भासन:";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "VIk-Df-Zyf"; */
 "VIk-Df-Zyf.title" = "चमक";
@@ -309,40 +309,40 @@
 "WBt-UZ-XVV.title" = "प्रतिनिधित्व शैली";
 
 /* Class = "NSBox"; title = "Properties"; ObjectID = "WKe-o0-0cK"; */
-"WKe-o0-0cK.title" = "गुण";
+"WKe-o0-0cK.title" = "गुणधर्म";
 
 /* Class = "NSMenuItem"; title = "Element"; ObjectID = "WOL-ns-wXc"; */
 "WOL-ns-wXc.title" = "तत्त्व";
 
 /* Class = "NSTextFieldCell"; title = "Isocontour Value"; ObjectID = "WdL-X5-IMH"; */
-"WdL-X5-IMH.title" = "Isocontour मान";
+"WdL-X5-IMH.title" = "समरेखा परिमाण";
 
 /* Class = "NSTextFieldCell"; title = "Color Set"; ObjectID = "WlB-zZ-igz"; */
-"WlB-zZ-igz.title" = "रंग सेट";
+"WlB-zZ-igz.title" = "रंगों का सेट";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "Y1s-d7-iYT"; */
-"Y1s-d7-iYT.title" = "विशेष प्रकाश तीव्रता";
+"Y1s-d7-iYT.title" = "विशेष प्रकाश की तीव्रता";
 
 /* Class = "NSButtonCell"; title = "Capped"; ObjectID = "YAJ-aq-PPI"; */
 "YAJ-aq-PPI.title" = "छाया हुआ";
 
 /* Class = "NSMenuItem"; title = "Uniform"; ObjectID = "YN6-b4-xiX"; */
-"YN6-b4-xiX.title" = "यूनिफार्म";
+"YN6-b4-xiX.title" = "एकसमान";
 
 /* Class = "NSBox"; title = "Front surface"; ObjectID = "Yh2-SE-hS4"; */
 "Yh2-SE-hS4.title" = "सामने की सतह";
 
 /* Class = "NSBox"; title = "Front Properties"; ObjectID = "YnR-7d-k8p"; */
-"YnR-7d-k8p.title" = "सामने गुण";
+"YnR-7d-k8p.title" = "सम्मुख के गुणध";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
-"ZX7-oF-dgu.title" = "उच्च गतिशील रेंज";
+"ZX7-oF-dgu.title" = "उच्च गतिशील फैलाव";
 
 /* Class = "NSMenuItem"; title = "Helium"; ObjectID = "Zjr-02-4gi"; */
 "Zjr-02-4gi.title" = "हीलियम";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "Zpi-ZT-H9N"; */
-"Zpi-ZT-H9N.title" = "एक्सपोजर";
+"Zpi-ZT-H9N.title" = "उद्भासन";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "aUf-Ct-Ubf"; */
 "aUf-Ct-Ubf.title" = "Text Cell";
@@ -351,22 +351,22 @@
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "बांड दिखाएं";
+"ajZ-C1-kOG.title" = "बॉन्ड्स बनाएँ";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
-"bBY-15-FbE.title" = "विशेष प्रकाश तीव्रता";
+"bBY-15-FbE.title" = "परावर्तक प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "bXw-93-Dat"; */
 "bXw-93-Dat.title" = "चमक";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bca-zz-KOf"; */
-"bca-zz-KOf.title" = "विशेष प्रकाश तीव्रता";
+"bca-zz-KOf.title" = "परावर्तक प्रकाश की तीव्रता";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "bdI-Je-pwI"; */
 "bdI-Je-pwI.title" = "कोई नहीं";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "bdU-wM-QtZ"; */
-"bdU-wM-QtZ.title" = "एक्सपोजर";
+"bdU-wM-QtZ.title" = "उद्भासन";
 
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "bsZ-9F-KAn"; */
 "bsZ-9F-KAn.title" = "प्रदर्शित होने वाला नाम";
@@ -378,10 +378,10 @@
 "cJr-Nn-bS9.title" = "𝜈";
 
 /* Class = "NSTextFieldCell"; title = "Opacity"; ObjectID = "cTs-hC-amJ"; */
-"cTs-hC-amJ.title" = "अस्पष्टता";
+"cTs-hC-amJ.title" = "अपारदर्शिता";
 
 /* Class = "NSMenuItem"; title = "Right"; ObjectID = "cVb-J3-NgY"; */
-"cVb-J3-NgY.title" = "सही";
+"cVb-J3-NgY.title" = "दाएँ";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "ceh-je-eNg"; */
 "ceh-je-eNg.title" = "घुमाएँ +90";
@@ -390,7 +390,7 @@
 "con-dz-J2j.title" = "चयन की तीव्रता";
 
 /* Class = "NSMenuItem"; title = "Position"; ObjectID = "ddP-zl-i4G"; */
-"ddP-zl-i4G.title" = "पद";
+"ddP-zl-i4G.title" = "स्थान";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "dfq-2k-AIF"; */
 "dfq-2k-AIF.title" = "कोई नहीं";
@@ -399,43 +399,43 @@
 "dg1-vw-fab.title" = "चयन शैली";
 
 /* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "dk2-KV-Pe3"; */
-"dk2-KV-Pe3.title" = "फोर्स फील्ड ओनली";
+"dk2-KV-Pe3.title" = "केवल बल क्षेत्र";
 
 /* Class = "NSButtonCell"; title = "Draw Atoms"; ObjectID = "dmK-0a-HKm"; */
-"dmK-0a-HKm.title" = "परमाणु दिखाओ";
+"dmK-0a-HKm.title" = "परमाणु निकालें";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
 "e0E-bj-7fz.title" = "मूल्य";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
-"e5a-zk-fFj.title" = "Rasmol";
+"e5a-zk-fFj.title" = "रसमोल";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "गण";
+"eY8-q5-Em9.title" = "क्रम";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
-"ehx-ML-HSl.title" = "वस्तुओं";
+"ehx-ML-HSl.title" = "वस्तुएँ";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "erk-nB-D85"; */
-"erk-nB-D85.title" = "परिवेश प्रकाश की तीव्रता";
+"erk-nB-D85.title" = "परिवेशी प्रकाश की तीव्रता";
 
 /* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "feQ-1h-daH"; */
-"feQ-1h-daH.title" = "क्सीनन";
+"feQ-1h-daH.title" = "ज़ीनान";
 
 /* Class = "NSBox"; title = "Back Surface"; ObjectID = "g6G-xC-2Lr"; */
-"g6G-xC-2Lr.title" = "बैक सरफेस";
+"g6G-xC-2Lr.title" = "पीछे की सतह";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "gDS-zY-6ne"; */
 "gDS-zY-6ne.title" = "चयन की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Atom Size Scaling"; ObjectID = "gMu-cC-hhG"; */
-"gMu-cC-hhG.title" = "परमाणु आकार स्केलिंग";
+"gMu-cC-hhG.title" = "परमाणु के आकार की स्केलिंग परिवर्तन";
 
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "hJp-8F-jyf"; */
 "hJp-8F-jyf.title" = "चमक";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "hyu-qj-36T"; */
-"hyu-qj-36T.title" = "डिफ्यूज़ लाइट इंटेंसिटी";
+"hyu-qj-36T.title" = "विसरित प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
 "iNJ-ng-4ga.title" = "गण";
@@ -444,10 +444,10 @@
 "iOI-Yp-RuB.title" = "पहचानकर्ता";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "iRX-2G-KQd"; */
-"iRX-2G-KQd.title" = "ह्यू";
+"iRX-2G-KQd.title" = "रंग";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "iUY-dW-y5v"; */
-"iUY-dW-y5v.title" = "परिवेश प्रकाश की तीव्रता";
+"iUY-dW-y5v.title" = "परिवेशी प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
 "imT-16-aB9.title" = "मूल्य";
@@ -462,43 +462,43 @@
 "jjn-ZG-OAy.title" = "एक्सपोजर";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle x"; ObjectID = "kRP-v9-JWX"; */
-"kRP-v9-JWX.placeholderString" = "कोण x";
+"kRP-v9-JWX.placeholderString" = "एक्स कोण";
 
 /* Class = "NSMenuItem"; title = "Rasmol Modern"; ObjectID = "kZU-4j-doq"; */
 "kZU-4j-doq.title" = "Rasmol Modern";
 
 /* Class = "NSMenuItem"; title = "Force Field First"; ObjectID = "ka1-4C-dDf"; */
-"ka1-4C-dDf.title" = "फोर्स फील्ड प्रथम";
+"ka1-4C-dDf.title" = "बल क्षेत्र प्रथम";
 
 /* Class = "NSMenuItem"; title = "256x256x256"; ObjectID = "l14-dN-lr4"; */
 "l14-dN-lr4.title" = "256x256x256";
 
 /* Class = "NSTextFieldCell"; title = "Unit Cell Size Scaling"; ObjectID = "lsI-qu-rBk"; */
-"lsI-qu-rBk.title" = "यूनिट सेल का आकार स्केलिंग";
+"lsI-qu-rBk.title" = "यूनिट सेल के आकार की स्केलिंग परिवर्तन";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "mx2-LA-CaG"; */
 "mx2-LA-CaG.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Bonds"; ObjectID = "nGx-4p-hvc"; */
-"nGx-4p-hvc.title" = "बांड";
+"nGx-4p-hvc.title" = "बॉन्ड";
 
 /* Class = "NSButtonCell"; title = "Show Adsorption Surface"; ObjectID = "nOa-3D-Seb"; */
-"nOa-3D-Seb.title" = "सोखना सतह दिखाएँ";
+"nOa-3D-Seb.title" = "अवशोषण सतह दिखाएँ";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "nTL-aw-5vW"; */
-"nTL-aw-5vW.title" = "परिवेश प्रकाश की तीव्रता";
+"nTL-aw-5vW.title" = "परीवेशी प्रकाश की तीव्रता";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "nUw-Lz-pBk"; */
-"nUw-Lz-pBk.title" = "विशेष प्रकाश तीव्रता";
+"nUw-Lz-pBk.title" = "परावर्तक प्रकाश की तीव्रता";
 
 /* Class = "NSMenuItem"; title = "Bottom-Left"; ObjectID = "nV6-NG-mmZ"; */
-"nV6-NG-mmZ.title" = "तली छोड़ें";
+"nV6-NG-mmZ.title" = "नीचला बायाँ भाग";
 
 /* Class = "NSMenuItem"; title = "Striped"; ObjectID = "nZL-Pd-jrp"; */
 "nZL-Pd-jrp.title" = "धारीदार";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "oEa-7e-zlj"; */
-"oEa-7e-zlj.title" = "डिफ्यूज़ लाइट इंटेंसिटी";
+"oEa-7e-zlj.title" = "विसरित प्रकाश की तीव्रता";
 
 /* Class = "NSMenuItem"; title = "Identifier"; ObjectID = "ofQ-6q-SUf"; */
 "ofQ-6q-SUf.title" = "पहचानकर्ता";
@@ -516,10 +516,10 @@
 "r01-Rv-5CI.title" = "𝜈";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "rce-PZ-Uxh"; */
-"rce-PZ-Uxh.title" = "उच्च गतिशील रेंज";
+"rce-PZ-Uxh.title" = "उच्च गतिशील फैलाव";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "sNS-go-NVl"; */
-"sNS-go-NVl.title" = "उच्च गतिशील रेंज";
+"sNS-go-NVl.title" = "उच्च गतिशील फैलाव";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "sbB-IC-Nwj"; */
 "sbB-IC-Nwj.title" = "चयन शैली";
@@ -528,7 +528,7 @@
 "sg7-lY-CcT.title" = "परिवेशी बाधा";
 
 /* Class = "NSMenuItem"; title = "Rasmol Modern"; ObjectID = "tB8-Qh-FEQ"; */
-"tB8-Qh-FEQ.title" = "Rasmol Modern";
+"tB8-Qh-FEQ.title" = "रसमोल मॉड";
 
 /* Class = "NSTextFieldCell"; title = "Number of Sides"; ObjectID = "tGv-cl-rkV"; */
 "tGv-cl-rkV.title" = "पक्षों की संख्या";
@@ -537,7 +537,7 @@
 "tR7-cx-f3N.title" = "विभाजित करें";
 
 /* Class = "NSMenuItem"; title = "Vesta"; ObjectID = "toC-zQ-Spl"; */
-"toC-zQ-Spl.title" = "Vesta";
+"toC-zQ-Spl.title" = "वेस्टा";
 
 /* Class = "NSMenuItem"; title = "Flat Billboard"; ObjectID = "u3h-os-pF2"; */
 "u3h-os-pF2.title" = "फ्लैट बिलबोर्ड";
@@ -546,16 +546,16 @@
 "uwl-dE-KfA.title" = "कल्पना";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle z"; ObjectID = "v4w-js-bAc"; */
-"v4w-js-bAc.placeholderString" = "कोण z";
+"v4w-js-bAc.placeholderString" = "कोण जेड";
 
 /* Class = "NSTextFieldCell"; title = "Style"; ObjectID = "vDP-ra-J7r"; */
 "vDP-ra-J7r.title" = "अंदाज";
 
 /* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "vI4-zj-6Yx"; */
-"vI4-zj-6Yx.title" = "Worley Noise 3D";
+"vI4-zj-6Yx.title" = "वर्ली नॉइज़ 3D";
 
 /* Class = "NSButtonCell"; title = "Draw Unit Cell"; ObjectID = "vYr-pF-LLC"; */
-"vYr-pF-LLC.title" = "शो यूनिट सेल";
+"vYr-pF-LLC.title" = "यूनिट सेल बनाएँ";
 
 /* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
 "vvr-MF-ufZ.title" = "ठीक तरह से ऊपर";
@@ -567,19 +567,19 @@
 "x58-hu-1Tw.title" = "संतृप्ति";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle y"; ObjectID = "xAe-5S-ReY"; */
-"xAe-5S-ReY.placeholderString" = "कोण y";
+"xAe-5S-ReY.placeholderString" = "कोण वाई";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "xHF-Xt-vUY"; */
 "xHF-Xt-vUY.title" = "चमक";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "xHV-Ix-L3w"; */
-"xHV-Ix-L3w.title" = "उच्च गतिशील रेंज";
+"xHV-Ix-L3w.title" = "उच्च गतिशील फैलाव";
 
 /* Class = "NSTextFieldCell"; title = "Scaling"; ObjectID = "xNf-lS-ROp"; */
-"xNf-lS-ROp.title" = "स्केलिंग";
+"xNf-lS-ROp.title" = "स्केलिंग परिवर्तन";
 
 /* Class = "NSTextFieldCell"; title = "Text offset X"; ObjectID = "xmm-Ng-98Y"; */
-"xmm-Ng-98Y.title" = "पाठ ऑफसेट X";
+"xmm-Ng-98Y.title" = "पाठ्य भाग का ऑफसेट एक्स दीशा में";
 
 /* Class = "NSMenuItem"; title = "Jmol"; ObjectID = "zp7-mL-bWB"; */
 "zp7-mL-bWB.title" = "Jmol";
