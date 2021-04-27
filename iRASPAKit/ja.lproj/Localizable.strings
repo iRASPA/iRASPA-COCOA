@@ -8,6 +8,6 @@
 "iCloud Account Available" = "利用可能なiCloudアカウント";
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "iCloudアカウント認証エラー：iCloudとiCloudドライブを有効にする";
 "iCloud Account Restricted" = "iCloudアカウントが制限されています";
-"iCloud Public Discoverability Granted" = "iCloud Public Discoverability Granted" = "iCloudの公開発見可能性が認められました。あなたはアプリの他のユーザーから（メールアドレスを介して）発見されます。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます。";
-"iCloud Public Discoverability Denied" = "iCloud Public Discoverability Denied" = "iCloudの公開発見可能性は否定されました。あなたはアプリの他のユーザーから（メールアドレスを介して）発見されません。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます。";
+"iCloud Public Discoverability Granted" = "iCloudの公開発見可能性が認められました。あなたはアプリの他のユーザーから（メールアドレスを介して）発見されます。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます。";
+"iCloud Public Discoverability Denied" = "iCloudの公開発見可能性は否定されました。あなたはアプリの他のユーザーから（メールアドレスを介して）発見されません。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます。";
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "無効なアーカイブバージョン（最新版のiRASPAにアップグレードしてください）";

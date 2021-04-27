@@ -324,7 +324,7 @@
 "Y1s-d7-iYT.title" = "鏡面光強度";
 
 /* Class = "NSButtonCell"; title = "Capped"; ObjectID = "YAJ-aq-PPI"; */
-"YAJ-aq-PPI.title" = "上限あり";
+"YAJ-aq-PPI.title" = "キャップをつける";
 
 /* Class = "NSMenuItem"; title = "Uniform"; ObjectID = "YN6-b4-xiX"; */
 "YN6-b4-xiX.title" = "一様";

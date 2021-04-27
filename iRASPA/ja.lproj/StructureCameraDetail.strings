@@ -12,7 +12,7 @@
 "1zS-f8-iGq.title" = "画角";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "3AB-fJ-slY"; */
-"3AB-fJ-slY.title" = "回転する +90°";
+"3AB-fJ-slY.title" = "+90°回転する";
 
 /* Class = "NSButtonCell"; title = "Cm"; ObjectID = "3pH-Uc-D8j"; */
 "3pH-Uc-D8j.title" = "Cm";
