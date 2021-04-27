@@ -27,7 +27,7 @@
 "Delete Atoms" = "原子を削除する";
 "Insert Atoms" = "原子を挿入する";
 "Change Positions" = "位置を変更する";
-"Python Console Ready\n" = "Pythonコンソール準備\n";
+"Python Console Ready\n" = "Pythonコンソール準備完了\n";
 "Change Material Type" = "マテリアルタイプの変更";
 "Change Space Group" = "空間群の変更";
 "Reset Camera Distance" = "カメラの距離をリセット";
@@ -73,3 +73,4 @@
 "Insert Bonds" = "結合の挿入";
 "Change Bond Selection" = "結合選択の変更";
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "無効なアーカイブバージョン（最新版のiRASPAにアップグレードしてください）";
+"Multiple Values" = "複数の値";

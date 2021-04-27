@@ -12,7 +12,7 @@
 "1b7-l0-nxx.title" = "検索";
 
 /* Class = "NSMenuItem"; title = "Lower"; ObjectID = "1tx-W0-xDw"; */
-"1tx-W0-xDw.title" = "下";
+"1tx-W0-xDw.title" = "下げる";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "2fK-ne-Lfp"; */
 "2fK-ne-Lfp.title" = "ボックス";
@@ -33,7 +33,7 @@
 "3Om-Ey-2VK.title" = "デフォルトを使用する";
 
 /* Class = "NSMenu"; title = "Speech"; ObjectID = "3rS-ZA-NoH"; */
-"3rS-ZA-NoH.title" = "話す";
+"3rS-ZA-NoH.title" = "Siriを使う";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "3x3-A1-D5u"; */
 "3x3-A1-D5u.title" = "ボックス";
@@ -72,7 +72,7 @@
 "9EX-YN-jcB.title" = "ウインドウ";
 
 /* Class = "NSMenuItem"; title = "Substitutions"; ObjectID = "9ic-FL-obx"; */
-"9ic-FL-obx.title" = "代替";
+"9ic-FL-obx.title" = "置換";
 
 /* Class = "NSMenuItem"; title = "Smart Copy/Paste"; ObjectID = "9yt-4B-nSM"; */
 "9yt-4B-nSM.title" = "スマートコピー/ペースト";
@@ -117,7 +117,7 @@
 "Fal-I4-PZk.title" = "テキスト";
 
 /* Class = "NSMenu"; title = "Substitutions"; ObjectID = "FeM-D8-WVr"; */
-"FeM-D8-WVr.title" = "代替";
+"FeM-D8-WVr.title" = "置換";
 
 /* Class = "NSMenuItem"; title = "Bold"; ObjectID = "GB9-OM-e27"; */
 "GB9-OM-e27.title" = "太字";
@@ -231,7 +231,7 @@
 "Oyz-dy-DGm.title" = "話すのをやめる";
 
 /* Class = "NSMenuItem"; title = "Bigger"; ObjectID = "Ptp-SP-VEL"; */
-"Ptp-SP-VEL.title" = "より大きい";
+"Ptp-SP-VEL.title" = "大きく";
 
 /* Class = "NSMenuItem"; title = "Show Fonts"; ObjectID = "Q5e-8K-NDq"; */
 "Q5e-8K-NDq.title" = "フォントを表示する";
@@ -387,7 +387,7 @@
 "hz9-B4-Xy5.title" = "サービス";
 
 /* Class = "NSMenuItem"; title = "Smaller"; ObjectID = "i1d-Er-qST"; */
-"i1d-Er-qST.title" = "小さい";
+"i1d-Er-qST.title" = "小さく";
 
 /* Class = "NSMenu"; title = "Baseline"; ObjectID = "ijk-EB-dga"; */
 "ijk-EB-dga.title" = "ベースライン";
@@ -429,7 +429,7 @@
 "pxx-59-PXV.title" = "保存する…";
 
 /* Class = "NSMenuItem"; title = "Find Next"; ObjectID = "q09-fT-Sye"; */
-"q09-fT-Sye.title" = "次を検索する";
+"q09-fT-Sye.title" = "次を検索";
 
 /* Class = "NSMenu"; title = "Objects"; ObjectID = "q81-1F-c5Z"; */
 "q81-1F-c5Z.title" = "オブジェクト";
@@ -492,7 +492,7 @@
 "xQD-1f-W4t.title" = "すべて使用";
 
 /* Class = "NSMenuItem"; title = "Speech"; ObjectID = "xrE-MZ-jX0"; */
-"xrE-MZ-jX0.title" = "話す";
+"xrE-MZ-jX0.title" = "Siriを使う";
 
 /* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
 "z6F-FW-3nz.title" = "置換を表示";

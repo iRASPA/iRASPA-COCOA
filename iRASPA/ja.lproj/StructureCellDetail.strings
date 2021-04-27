@@ -120,7 +120,7 @@
 "GCR-0z-KdY.title" = "分子結晶";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
-"Geb-Or-zb5.title" = "修飾語句";
+"Geb-Or-zb5.title" = "Qualifier";
 
 /* Class = "NSTextFieldCell"; title = "[m²/cm³]"; ObjectID = "GpO-nT-2ds"; */
 "GpO-nT-2ds.title" = "[m²/cm³]";
@@ -204,7 +204,7 @@
 "U3N-UV-Jmi.title" = "CZ";
 
 /* Class = "NSTextFieldCell"; title = "Point Group"; ObjectID = "U8h-89-HjM"; */
-"U8h-89-HjM.title" = "ポイントグループ";
+"U8h-89-HjM.title" = "点群";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "Ukv-mk-DpD"; */
 "Ukv-mk-DpD.title" = "-90回転する";
@@ -225,7 +225,7 @@
 "WcQ-vR-rvO.placeholderString" = "βの角度";
 
 /* Class = "NSTextFieldCell"; title = "Laue Group"; ObjectID = "Wgg-RQ-dI1"; */
-"Wgg-RQ-dI1.title" = "ラウエグループ";
+"Wgg-RQ-dI1.title" = "ラウエ群";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
 "X5S-a7-xCf.placeholderString" = "原点Z";
@@ -345,7 +345,7 @@
 "lTN-44-tVw.title" = "アクセスできないポケットの数";
 
 /* Class = "NSTextFieldCell"; title = "Specific Volume"; ObjectID = "leN-tT-E4L"; */
-"leN-tT-E4L.title" = "特定のボリューム";
+"leN-tT-E4L.title" = "比容積";
 
 /* Class = "NSMenuItem"; title = "Protein"; ObjectID = "lhA-fm-5dQ"; */
 "lhA-fm-5dQ.title" = "タンパク質";
@@ -393,7 +393,7 @@
 "qRO-nO-wHb.title" = "センタリング";
 
 /* Class = "NSTextFieldCell"; title = "Schoenflies"; ObjectID = "qgW-qA-9fR"; */
-"qgW-qA-9fR.title" = "シェーンフリース";
+"qgW-qA-9fR.title" = "Schoenflies";
 
 /* Class = "NSTextFieldCell"; title = "BX"; ObjectID = "qzc-iK-Ddm"; */
 "qzc-iK-Ddm.title" = "BX";
@@ -402,7 +402,7 @@
 "rkG-hU-SdP.placeholderString" = "長さa";
 
 /* Class = "NSTextFieldCell"; title = "Holohedry"; ObjectID = "sDc-yH-bwk"; */
-"sDc-yH-bwk.title" = "完面";
+"sDc-yH-bwk.title" = "完面像";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "角度X";
@@ -459,7 +459,7 @@
 "ugQ-Gv-6sx.title" = "+90回転する";
 
 /* Class = "NSTextFieldCell"; title = "Flip"; ObjectID = "v83-YD-3LI"; */
-"v83-YD-3LI.title" = "フリップ";
+"v83-YD-3LI.title" = "反転";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
 "vhk-8d-Ytl.title" = "構造特性";

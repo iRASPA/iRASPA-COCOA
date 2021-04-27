@@ -12,7 +12,7 @@
 "9rV-cN-bzl.title" = "タイプ　結合";
 
 /* Class = "NSTableColumn"; headerCell.title = "length"; ObjectID = "DvX-tf-DBg"; */
-"DvX-tf-DBg.headerCell.title" = "length";
+"DvX-tf-DBg.headerCell.title" = "長さ";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "EdV-9a-T5U"; */
 "EdV-9a-T5U.title" = "テキストセル";
