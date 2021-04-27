@@ -120,7 +120,7 @@
 "FeM-D8-WVr.title" = "Замены";
 
 /* Class = "NSMenuItem"; title = "Bold"; ObjectID = "GB9-OM-e27"; */
-"GB9-OM-e27.title" = "Смелый";
+"GB9-OM-e27.title" = "Жирный";
 
 /* Class = "NSMenu"; title = "Format"; ObjectID = "GEO-Iw-cKr"; */
 "GEO-Iw-cKr.title" = "Формат";
@@ -267,7 +267,7 @@
 "VIY-Ag-zcb.title" = "Центр";
 
 /* Class = "NSMenuItem"; title = "Invert selection"; ObjectID = "VNS-yB-1c3"; */
-"VNS-yB-1c3.title" = "Наоборот";
+"VNS-yB-1c3.title" = "Инвертировать выбор";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
 "Vdr-fp-XzO.title" = "Скрыть других";
@@ -345,7 +345,7 @@
 "cDB-IK-hbR.title" = "Не использовать";
 
 /* Class = "NSMenuItem"; title = "Atom group"; ObjectID = "cMR-OP-H7e"; */
-"cMR-OP-H7e.title" = "Группа Атом";
+"cMR-OP-H7e.title" = "Группа атомов";
 
 /* Class = "NSMenuItem"; title = "16:9"; ObjectID = "cfR-kj-UKf"; */
 "cfR-kj-UKf.title" = "16:9";
@@ -360,7 +360,7 @@
 "d9M-CD-aMd.title" = "Сделать нижний регистр";
 
 /* Class = "NSMenu"; title = "Text"; ObjectID = "d9c-me-L2H"; */
-"d9c-me-L2H.title" = "Text";
+"d9c-me-L2H.title" = "текст";
 
 /* Class = "NSMenuItem"; title = "File"; ObjectID = "dMs-cI-mzQ"; */
 "dMs-cI-mzQ.title" = "Файл";
@@ -465,7 +465,7 @@
 "uQy-DD-JDr.title" = "iRASPA";
 
 /* Class = "NSMenuItem"; title = "Cut"; ObjectID = "uRl-iY-unG"; */
-"uRl-iY-unG.title" = "Резать";
+"uRl-iY-unG.title" = "вырезать";
 
 /* Class = "NSMenuItem"; title = "Paste Style"; ObjectID = "vKC-jM-MkH"; */
 "vKC-jM-MkH.title" = "Вставить стиль";
