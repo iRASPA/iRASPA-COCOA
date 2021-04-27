@@ -6,25 +6,25 @@
 "1gf-ji-nCa.title" = "0";
 
 /* Class = "NSMenuItem"; title = "Crystal Ellipsoid"; ObjectID = "1ov-vh-bRX"; */
-"1ov-vh-bRX.title" = "क्रिस्टल एलीपोसिड";
+"1ov-vh-bRX.title" = "क्रिस्टल दीर्घवृत्तज";
 
 /* Class = "NSBox"; title = "Orientation"; ObjectID = "2sE-L5-Mde"; */
-"2sE-L5-Mde.title" = "अभिविन्यास";
+"2sE-L5-Mde.title" = "स्थिति निर्धारण";
 
 /* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
-"39F-yr-VYx.title" = "सेल / बाउंडिंग-बॉक्स गुण";
+"39F-yr-VYx.title" = "सेल / बाउंडिंग-बॉक्स के गुणध";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
-"3Fv-hH-asL.title" = "सुलभ पोर वॉल्यूम";
+"3Fv-hH-asL.title" = "छिद्र की सुलभ आयतन";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum X"; ObjectID = "3a2-UB-zfk"; */
-"3a2-UB-zfk.placeholderString" = "न्यूनतम X";
+"3a2-UB-zfk.placeholderString" = "न्यूनतम एक्स";
 
 /* Class = "NSTextFieldCell"; title = "[-]"; ObjectID = "3yK-10-X6T"; */
 "3yK-10-X6T.title" = "[-]";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Width Y"; ObjectID = "4Kr-Kc-oKG"; */
-"4Kr-Kc-oKG.placeholderString" = "चौड़ाई Y";
+"4Kr-Kc-oKG.placeholderString" = "चौड़ाई वाई";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "4bY-pw-mB9"; */
 "4bY-pw-mB9.title" = "0";
@@ -36,19 +36,19 @@
 "7SE-t2-fqM.title" = "रूपांतरण सामग्री";
 
 /* Class = "NSTextFieldCell"; title = "[cm³/g]"; ObjectID = "7tH-M9-iSB"; */
-"7tH-M9-iSB.title" = "[cm³/g]";
+"7tH-M9-iSB.title" = "[सीएम³/जी]";
 
 /* Class = "NSTextFieldCell"; title = "α"; ObjectID = "7wU-K6-1d3"; */
-"7wU-K6-1d3.title" = "α";
+"7wU-K6-1d3.title" = "अल्फ़ा";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Width X"; ObjectID = "8D1-xf-EQg"; */
-"8D1-xf-EQg.placeholderString" = "चौड़ाई X";
+"8D1-xf-EQg.placeholderString" = "चौड़ाई एक्स";
 
 /* Class = "NSTextFieldCell"; title = "Shift"; ObjectID = "8JV-Fj-uoG"; */
-"8JV-Fj-uoG.title" = "खिसक जाना";
+"8JV-Fj-uoG.title" = "स्थानान्तरित करें";
 
 /* Class = "NSButtonCell"; title = "b-Axis"; ObjectID = "8PJ-K5-04D"; */
-"8PJ-K5-04D.title" = "b-एक्सिस";
+"8PJ-K5-04D.title" = "बी-एक्सिस";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "8Y3-Ix-I3M"; */
 "8Y3-Ix-I3M.title" = "घुमाएँ +90";
@@ -72,7 +72,7 @@
 "AGj-no-ne0.title" = "घुमाएँ -90";
 
 /* Class = "NSTextFieldCell"; title = "ɣ"; ObjectID = "AeQ-3d-ynD"; */
-"AeQ-3d-ynD.title" = "ɣ";
+"AeQ-3d-ynD.title" = "गामा";
 
 /* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bj5-6C-Yn3"; */
 "Bj5-6C-Yn3.title" = "नाइट्रोजन";
@@ -90,10 +90,10 @@
 "Cao-y3-ptB.title" = "क्रिस्टल";
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "CcD-DW-aQM"; */
-"CcD-DW-aQM.title" = "[Å]";
+"CcD-DW-aQM.title" = "[ऐंग्स्ट्रम]";
 
 /* Class = "NSTextFieldCell"; title = "Maximum"; ObjectID = "DCo-vl-STs"; */
-"DCo-vl-STs.title" = "ज्यादा से ज्यादा";
+"DCo-vl-STs.title" = "अधिकतम";
 
 /* Class = "NSTextFieldCell"; title = "AY"; ObjectID = "DMt-1o-jxX"; */
 "DMt-1o-jxX.title" = "AY";
@@ -102,16 +102,16 @@
 "Dhg-S1-rrN.title" = "समरूपता";
 
 /* Class = "NSButtonCell"; title = "c-Axis"; ObjectID = "ESl-70-xbH"; */
-"ESl-70-xbH.title" = "c-एक्सिस";
+"ESl-70-xbH.title" = "सी-एक्सिस";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Shift Z"; ObjectID = "Emf-RO-Pko"; */
-"Emf-RO-Pko.placeholderString" = "खिसक जाना Z";
+"Emf-RO-Pko.placeholderString" = "ज़ेड की स्थानान्तरित करें";
 
 /* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "EoT-Wn-jDW"; */
-"EoT-Wn-jDW.title" = "क्सीनन";
+"EoT-Wn-jDW.title" = "ज़ेनन";
 
 /* Class = "NSTextFieldCell"; title = "[cm³/g]"; ObjectID = "FKq-3b-x77"; */
-"FKq-3b-x77.title" = "[cm³/g]";
+"FKq-3b-x77.title" = "[सीएम³/जी]";
 
 /* Class = "NSButtonCell"; title = "Apply"; ObjectID = "Fi0-La-ItK"; */
 "Fi0-La-ItK.title" = "लागू";
@@ -120,10 +120,10 @@
 "GCR-0z-KdY.title" = "आणविक क्रिस्टल";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
-"Geb-Or-zb5.title" = "क्वालीफायर";
+"Geb-Or-zb5.title" = "विशेषक";
 
 /* Class = "NSTextFieldCell"; title = "[m²/cm³]"; ObjectID = "GpO-nT-2ds"; */
-"GpO-nT-2ds.title" = "[m²/cm³]";
+"GpO-nT-2ds.title" = "[एम²/सीएम³]";
 
 /* Class = "NSBox"; title = "Bounding Box (Read Only)"; ObjectID = "Hgj-ha-Kto"; */
 "Hgj-ha-Kto.title" = "बाउंडिंग बॉक्स (केवल पढ़ने के लिए)";
@@ -138,22 +138,22 @@
 "JtJ-tY-Q48.title" = "न्यूनतम प्रतिकृतियां";
 
 /* Class = "NSTextFieldCell"; title = "Symmetry Properties"; ObjectID = "KBR-dm-dts"; */
-"KBR-dm-dts.title" = "समरूपता गुण";
+"KBR-dm-dts.title" = "अनुपातिक प्रतिष्ठा गुणध";
 
 /* Class = "NSBox"; title = "Cell content"; ObjectID = "KGV-zA-HoJ"; */
-"KGV-zA-HoJ.title" = "सेल सामग्री";
+"KGV-zA-HoJ.title" = "सेल कॉन्टेंट";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Length b"; ObjectID = "KWe-Mf-Gny"; */
-"KWe-Mf-Gny.placeholderString" = "लंबाई b";
+"KWe-Mf-Gny.placeholderString" = "लंबाई बी";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Y"; ObjectID = "Lso-gV-DWL"; */
-"Lso-gV-DWL.placeholderString" = "मूल Y";
+"Lso-gV-DWL.placeholderString" = "उत्पत्ति वाई";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Width Z"; ObjectID = "M3B-3E-Pj6"; */
-"M3B-3E-Pj6.placeholderString" = "चौड़ाई Z";
+"M3B-3E-Pj6.placeholderString" = "चौड़ाई ज़ेड";
 
 /* Class = "NSTextFieldCell"; title = "Enantiomorphic"; ObjectID = "MX2-7S-v34"; */
-"MX2-7S-v34.title" = "एनेंटिओमॉर्फिक";
+"MX2-7S-v34.title" = "प्रतिबिम्बरुपी";
 
 /* Class = "NSTextFieldCell"; title = "Maximum Replicas"; ObjectID = "NEE-uA-Vza"; */
 "NEE-uA-Vza.title" = "अधिकतम प्रतिकृतियां";
@@ -162,7 +162,7 @@
 "NtP-sh-9XR.placeholderString" = "cy";
 
 /* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
-"OFQ-fA-vGT.title" = "जांच अणु";
+"OFQ-fA-vGT.title" = "अणु की जांच करें";
 
 /* Class = "NSTextFieldCell"; title = "CY"; ObjectID = "OU6-Uu-uVv"; */
 "OU6-Uu-uVv.title" = "CY";
@@ -171,16 +171,16 @@
 "OfX-2V-31n.title" = "आयतन";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Z"; ObjectID = "PV6-bk-AS4"; */
-"PV6-bk-AS4.placeholderString" = "कोण Z";
+"PV6-bk-AS4.placeholderString" = "कोण ज़ेड";
 
 /* Class = "NSTextFieldCell"; title = "Perpendicular Widths"; ObjectID = "Pwp-AP-cUV"; */
 "Pwp-AP-cUV.title" = "लंबवत चौड़ाई";
 
 /* Class = "NSTextFieldCell"; title = "C"; ObjectID = "Q8Z-NZ-LUj"; */
-"Q8Z-NZ-LUj.title" = "C";
+"Q8Z-NZ-LUj.title" = "सी";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Length c"; ObjectID = "QHx-PC-pGJ"; */
-"QHx-PC-pGJ.placeholderString" = "लंबाई c";
+"QHx-PC-pGJ.placeholderString" = "लंबाई सी";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ay"; ObjectID = "R4U-X2-ZJs"; */
 "R4U-X2-ZJs.placeholderString" = "ay";
@@ -189,7 +189,7 @@
 "RAD-Mk-7MY.placeholderString" = "आयतन";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Y"; ObjectID = "RFb-cp-hSr"; */
-"RFb-cp-hSr.placeholderString" = "ज्यादा से ज्यादा Y";
+"RFb-cp-hSr.placeholderString" = "अधिकतम वाई";
 
 /* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "Rb3-t0-5yA"; */
 "Rb3-t0-5yA.placeholderString" = "az";
@@ -198,7 +198,7 @@
 "RpE-4F-UFL.title" = "BZ";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum X"; ObjectID = "SYu-kq-Pn4"; */
-"SYu-kq-Pn4.placeholderString" = "ज्यादा से ज्यादा X";
+"SYu-kq-Pn4.placeholderString" = "अधिकतम एक्स";
 
 /* Class = "NSTextFieldCell"; title = "CZ"; ObjectID = "U3N-UV-Jmi"; */
 "U3N-UV-Jmi.title" = "CZ";
@@ -219,46 +219,46 @@
 "VU3-db-82D.placeholderString" = "cz";
 
 /* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "W6l-2i-ujZ"; */
-"W6l-2i-ujZ.title" = "CO₂";
+"W6l-2i-ujZ.title" = "सीओ₂";
 
 /* Class = "NSTextFieldCell"; placeholderString = "β Angle"; ObjectID = "WcQ-vR-rvO"; */
-"WcQ-vR-rvO.placeholderString" = "β कोण";
+"WcQ-vR-rvO.placeholderString" = "बीटा कोण";
 
 /* Class = "NSTextFieldCell"; title = "Laue Group"; ObjectID = "Wgg-RQ-dI1"; */
-"Wgg-RQ-dI1.title" = "Laue समूह";
+"Wgg-RQ-dI1.title" = "लाउए समूह";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
-"X5S-a7-xCf.placeholderString" = "मूल Z";
+"X5S-a7-xCf.placeholderString" = "मूल ज़ेड";
 
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
 "XeZ-Hb-tao.title" = "क्रिस्टल सिलेंडर";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
-"Y0x-AR-NvS.placeholderString" = "ज्यादा से ज्यादा Z";
+"Y0x-AR-NvS.placeholderString" = "अधिकतम ज़ेड";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "Y4c-N8-Uvu"; */
 "Y4c-N8-Uvu.title" = "0";
 
 /* Class = "NSTextFieldCell"; title = "A"; ObjectID = "YTE-5c-osk"; */
-"YTE-5c-osk.title" = "A";
+"YTE-5c-osk.title" = "ए";
 
 /* Class = "NSMenuItem"; title = "Protein Crystal Solvent"; ObjectID = "ZNQ-TG-HdE"; */
 "ZNQ-TG-HdE.title" = "प्रोटीन क्रिस्टल सॉल्वेंट";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Z"; ObjectID = "ZfA-8U-voh"; */
-"ZfA-8U-voh.placeholderString" = "न्यूनतम Z";
+"ZfA-8U-voh.placeholderString" = "न्यूनतम ज़ेड";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "ZnC-Km-HZJ"; */
-"ZnC-Km-HZJ.title" = "यूलर एंगल्स";
+"ZnC-Km-HZJ.title" = "ऑयलर कोणे";
 
 /* Class = "NSTextFieldCell"; title = "[m²/g]"; ObjectID = "aCG-eP-d5V"; */
-"aCG-eP-d5V.title" = "[m²/g]";
+"aCG-eP-d5V.title" = "[एम²/जी]";
 
 /* Class = "NSTextFieldCell"; title = "CX"; ObjectID = "abl-im-dvl"; */
 "abl-im-dvl.title" = "CX";
 
 /* Class = "NSTextFieldCell"; title = "B"; ObjectID = "axn-lz-p51"; */
-"axn-lz-p51.title" = "B";
+"axn-lz-p51.title" = "बी";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "b6A-6m-fKp"; */
 "b6A-6m-fKp.title" = "सिलेंडर";
@@ -267,28 +267,28 @@
 "bTK-cR-IRN.title" = "AZ";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Shift Y"; ObjectID = "beQ-3E-uTa"; */
-"beQ-3E-uTa.placeholderString" = "खिसक जाना Y";
+"beQ-3E-uTa.placeholderString" = "वाई कास्थानान्तरित करें";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Y"; ObjectID = "cGa-VQ-Eds"; */
-"cGa-VQ-Eds.placeholderString" = "कोण Y";
+"cGa-VQ-Eds.placeholderString" = "कोण वाई";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Shift X"; ObjectID = "cPv-Rn-zyw"; */
-"cPv-Rn-zyw.placeholderString" = "खिसक जाना X";
+"cPv-Rn-zyw.placeholderString" = "एक्स का स्थानान्तरित करें";
 
 /* Class = "NSTextFieldCell"; title = "Restricting Pore Diameter (Df)"; ObjectID = "d4y-Ea-h9U"; */
-"d4y-Ea-h9U.title" = "प्रतिबंधित व्यास (Df)";
+"d4y-Ea-h9U.title" = "छिद्र व्यास पर प्रतिबन्ध लगाए (डीएफ)";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "dIk-F3-XKu"; */
 "dIk-F3-XKu.title" = "वर्तन कोण";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ɣ Angle"; ObjectID = "dre-c1-hTc"; */
-"dre-c1-hTc.placeholderString" = "ɣ कोण";
+"dre-c1-hTc.placeholderString" = "गामा कोण";
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "dsn-Pq-Tq1"; */
-"dsn-Pq-Tq1.title" = "[Å]";
+"dsn-Pq-Tq1.title" = "[ऐंग्स्ट्रॉम]";
 
 /* Class = "NSTextFieldCell"; title = "[kg/m³]"; ObjectID = "ewU-xG-8Qg"; */
-"ewU-xG-8Qg.title" = "[kg/m³]";
+"ewU-xG-8Qg.title" = "[केजी/एम³]";
 
 /* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "ezl-cN-6ra"; */
 "ezl-cN-6ra.title" = "दीर्घवृत्ताभ";
@@ -297,10 +297,10 @@
 "f5k-y5-5L1.placeholderString" = "by";
 
 /* Class = "NSTextFieldCell"; title = "Material Type"; ObjectID = "f97-S8-buy"; */
-"f97-S8-buy.title" = "सामग्री के प्रकार";
+"f97-S8-buy.title" = "पदार्थ के प्रकार";
 
 /* Class = "NSTextFieldCell"; title = "Inversion"; ObjectID = "fB7-jl-oUy"; */
-"fB7-jl-oUy.title" = "उलट देना";
+"fB7-jl-oUy.title" = "उलटाव";
 
 /* Class = "NSTextFieldCell"; title = "Density"; ObjectID = "frH-cs-eiu"; */
 "frH-cs-eiu.title" = "घनत्व";
@@ -309,7 +309,7 @@
 "fyC-NT-WE4.placeholderString" = "bx";
 
 /* Class = "NSTextFieldCell"; title = "[g/mol]"; ObjectID = "gBf-y0-O3M"; */
-"gBf-y0-O3M.title" = "[g/mol]";
+"gBf-y0-O3M.title" = "[जी/मोल]";
 
 /* Class = "NSMenuItem"; title = "Molecule"; ObjectID = "gTm-Bg-d2W"; */
 "gTm-Bg-d2W.title" = "अणु";
@@ -327,13 +327,13 @@
 "hx7-iu-woV.placeholderString" = "ax";
 
 /* Class = "NSTextFieldCell"; placeholderString = "α Angle"; ObjectID = "jHJ-5h-ehN"; */
-"jHJ-5h-ehN.placeholderString" = "α कोण";
+"jHJ-5h-ehN.placeholderString" = "अल्फ़ा कोण";
 
 /* Class = "NSTextFieldCell"; title = "Material Type"; ObjectID = "jgD-yL-2kq"; */
-"jgD-yL-2kq.title" = "सामग्री के प्रकार";
+"jgD-yL-2kq.title" = "पदार्थ के प्रकार";
 
 /* Class = "NSTextFieldCell"; title = "Largest Diameter Along a Viable Path (Dif)"; ObjectID = "jrj-nk-OqJ"; */
-"jrj-nk-OqJ.title" = "एक व्यवहार्य पथ के साथ सबसे बड़ा व्यास (Dif)";
+"jrj-nk-OqJ.title" = "एक व्यवहार्य पथ मे  बृहत्तम व्यास (डीफ)";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "बहुभुज प्रिज्म";
@@ -351,7 +351,7 @@
 "lhA-fm-5dQ.title" = "प्रोटीन";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin X"; ObjectID = "mBe-hd-Fy3"; */
-"mBe-hd-Fy3.placeholderString" = "मूल X";
+"mBe-hd-Fy3.placeholderString" = "मूल बिंदु एक्स";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "mLH-lp-rcD"; */
 "mLH-lp-rcD.title" = "0";
@@ -360,13 +360,13 @@
 "mZ6-cg-pcL.title" = "अंतरिक्ष समूह";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Y"; ObjectID = "mhY-GY-BNd"; */
-"mhY-GY-BNd.placeholderString" = "न्यूनतम Y";
+"mhY-GY-BNd.placeholderString" = "न्यूनतम वाई";
 
 /* Class = "NSTextFieldCell"; title = "Precision"; ObjectID = "n3J-VH-Fux"; */
-"n3J-VH-Fux.title" = "शुद्धता";
+"n3J-VH-Fux.title" = "यथार्थमापी";
 
 /* Class = "NSTextFieldCell"; title = "Origin"; ObjectID = "nOH-gZ-CNR"; */
-"nOH-gZ-CNR.title" = "मूल";
+"nOH-gZ-CNR.title" = "मूल बिंदु";
 
 /* Class = "NSMenuItem"; title = "Helium"; ObjectID = "nos-k0-eV6"; */
 "nos-k0-eV6.title" = "हीलियम";
@@ -375,13 +375,13 @@
 "nrz-4U-Tdb.title" = "[-]";
 
 /* Class = "NSTextFieldCell"; title = "β"; ObjectID = "o5e-Ej-avz"; */
-"o5e-Ej-avz.title" = "β";
+"o5e-Ej-avz.title" = "बीटा";
 
 /* Class = "NSTextFieldCell"; title = "[-]"; ObjectID = "pC8-T5-EKr"; */
 "pC8-T5-EKr.title" = "[-]";
 
 /* Class = "NSTextFieldCell"; title = "Largest Overall Cavity Diameter (Di)"; ObjectID = "pMK-0S-ytH"; */
-"pMK-0S-ytH.title" = "सबसे बड़ा समग्र गुहा व्यास (Di)";
+"pMK-0S-ytH.title" = "बृहत्तम सर्वसमावेशी छिद्र व्यास (डीआई)";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "pqT-rt-W8M"; */
 "pqT-rt-W8M.placeholderString" = "cx";
@@ -393,25 +393,25 @@
 "qRO-nO-wHb.title" = "केंद्रित";
 
 /* Class = "NSTextFieldCell"; title = "Schoenflies"; ObjectID = "qgW-qA-9fR"; */
-"qgW-qA-9fR.title" = "Schoenflies";
+"qgW-qA-9fR.title" = "शोयेनफ्लीज़";
 
 /* Class = "NSTextFieldCell"; title = "BX"; ObjectID = "qzc-iK-Ddm"; */
 "qzc-iK-Ddm.title" = "BX";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Length a"; ObjectID = "rkG-hU-SdP"; */
-"rkG-hU-SdP.placeholderString" = "लंबाई a";
+"rkG-hU-SdP.placeholderString" = "लंबाई ए";
 
 /* Class = "NSTextFieldCell"; title = "Holohedry"; ObjectID = "sDc-yH-bwk"; */
 "sDc-yH-bwk.title" = "होल्हेड्री";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
-"sHe-dm-0Lo.placeholderString" = "कोण X";
+"sHe-dm-0Lo.placeholderString" = "कोण एक्स";
 
 /* Class = "NSTextFieldCell"; title = "Volumetric Surface Area (Nitrogen)"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "वॉल्यूमेट्रिक सरफेस एरिया (नाइट्रोजन)";
+"siG-7J-hEu.title" = "आयतनमितीय सतह  क्षेत्र (नाइट्रोजन)";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
-"swk-Q8-afT.title" = "क्रिस्टल सॉल्वेंट";
+"swk-Q8-afT.title" = "क्रिस्टल शोधक्षम";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "t15-It-Wye"; */
 "t15-It-Wye.title" = "घुमाएँ +90";
@@ -426,31 +426,31 @@
 "u9E-1I-eSn.ibShadowedObjectValues[0]" = "अनिर्दिष्ट";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[1] = "Silica"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[1]" = "Silica";
+"u9E-1I-eSn.ibShadowedObjectValues[1]" = "सिलिका";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[2] = "Aluminosilicate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[2]" = "Aluminosilicate";
+"u9E-1I-eSn.ibShadowedObjectValues[2]" = "ऐल्यूमिनोसिलिकेट";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[3] = "Aluminophosphate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[3]" = "Aluminophosphate";
+"u9E-1I-eSn.ibShadowedObjectValues[3]" = "ऐल्यूमिनोफॉस्फेट";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[4] = "Metallophosphate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[4]" = "Metallophosphate";
+"u9E-1I-eSn.ibShadowedObjectValues[4]" = "मेटालोफॉस्फेट";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[5] = "Silicialuminophosphate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[5]" = "Silicialuminophosphate";
+"u9E-1I-eSn.ibShadowedObjectValues[5]" = "सिलिक्युलुमिनोफॉस्फेट";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[6] = "Zeolite"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[6]" = "Zeolite";
+"u9E-1I-eSn.ibShadowedObjectValues[6]" = "ज़ियोलाइट";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[7] = "MOF"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[7]" = "MOF";
+"u9E-1I-eSn.ibShadowedObjectValues[7]" = "एमओएफ";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[8] = "COF"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[8]" = "COF";
+"u9E-1I-eSn.ibShadowedObjectValues[8]" = "सीओएफ";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[9] = "ZIF"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[9]" = "ZIF";
+"u9E-1I-eSn.ibShadowedObjectValues[9]" = "ज़ेडअईएफ";
 
 /* Class = "NSTextFieldCell"; title = "BY"; ObjectID = "ug2-Cb-fdV"; */
 "ug2-Cb-fdV.title" = "BY";
@@ -462,25 +462,25 @@
 "v83-YD-3LI.title" = "फ्लिप";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
-"vhk-8d-Ytl.title" = "संरचनात्मक गुण";
+"vhk-8d-Ytl.title" = "संरचनात्मक गुणध";
 
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
-"vwN-1o-Umq.title" = "ताकना प्रणाली की आयाम";
+"vwN-1o-Umq.title" = "छिद्र व्यवस्था की विमीयता";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "ग्रेविमीटर सतह क्षेत्र (नाइट्रोजन)";
+"xXh-YD-ajh.title" = "भारात्मक सतह क्षेत्र (नाइट्रोजन)";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
 "xax-w6-E1h.title" = "घुमाएँ -90";
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "yRg-Kb-OOc"; */
-"yRg-Kb-OOc.title" = "[Å]";
+"yRg-Kb-OOc.title" = "[ऐंग्स्ट्रॉम]";
 
 /* Class = "NSMenuItem"; title = "Protein Crystal"; ObjectID = "ysY-oC-Tbz"; */
 "ysY-oC-Tbz.title" = "प्रोटीन क्रिस्टल";
 
 /* Class = "NSButtonCell"; title = "a-Axis"; ObjectID = "zJX-PM-KMU"; */
-"zJX-PM-KMU.title" = "a-एक्सिस";
+"zJX-PM-KMU.title" = "ए-एक्सिस";
 
 /* Class = "NSMenuItem"; title = "Molecular Crystal"; ObjectID = "zPm-ut-b1f"; */
 "zPm-ut-b1f.title" = "आणविक क्रिस्टल";

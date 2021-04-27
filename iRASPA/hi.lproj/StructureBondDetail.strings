@@ -9,10 +9,10 @@
 "7uB-Nb-mkk.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Type bonds"; ObjectID = "9rV-cN-bzl"; */
-"9rV-cN-bzl.title" = "कनेक्शन टाइप करें";
+"9rV-cN-bzl.title" = "बॉण्डस को टाइप करें";
 
 /* Class = "NSTableColumn"; headerCell.title = "length"; ObjectID = "DvX-tf-DBg"; */
-"DvX-tf-DBg.headerCell.title" = "length";
+"DvX-tf-DBg.headerCell.title" = "लंबाई";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "EdV-9a-T5U"; */
 "EdV-9a-T5U.title" = "Text Cell";
@@ -21,7 +21,7 @@
 "Fvp-lB-wZd.title" = "Text Cell";
 
 /* Class = "NSTableColumn"; headerCell.title = "type"; ObjectID = "H3C-4S-esH"; */
-"H3C-4S-esH.headerCell.title" = "type";
+"H3C-4S-esH.headerCell.title" = "प्रकार";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "HM6-fh-qvs"; */
 "HM6-fh-qvs.title" = "Text Cell";
@@ -48,4 +48,4 @@
 "oBx-QK-c2U.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Recompute Bonds"; ObjectID = "w5W-4P-qvW"; */
-"w5W-4P-qvW.title" = "कनेक्शन पुनः स्थापित करें";
+"w5W-4P-qvW.title" = "बॉण्डस की  पुनर्गणना करें";
