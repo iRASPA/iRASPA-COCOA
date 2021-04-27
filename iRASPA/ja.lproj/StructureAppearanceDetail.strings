@@ -1,6 +1,6 @@
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "126-Ob-v2F"; */
-"126-Ob-v2F.title" = "回転する +90";
+"126-Ob-v2F.title" = "+90回転する";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "1Ms-wb-ECb"; */
 "1Ms-wb-ECb.title" = "鏡面光強度";
@@ -12,7 +12,7 @@
 "1ht-pW-CQ0.title" = "輝き";
 
 /* Class = "NSBox"; title = "Back Properties"; ObjectID = "1i4-zc-FLO"; */
-"1i4-zc-FLO.title" = "プロパティに戻る";
+"1i4-zc-FLO.title" = "バックプロパティ";
 
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "3Ik-9O-zWy"; */
 "3Ik-9O-zWy.title" = "アルゴン";
@@ -150,7 +150,7 @@
 "Ftc-mi-NgX.title" = "環境遮蔽";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "FvL-0N-TdY"; */
-"FvL-0N-TdY.title" = "値";
+"FvL-0N-TdY.title" = "明度";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "GOQ-bY-t1V"; */
 "GOQ-bY-t1V.title" = "Z";
@@ -165,7 +165,7 @@
 "GfJ-48-dF4.title" = "選択箇所放射状スケーリング";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
-"H3R-9w-R7d.title" = "色調";
+"H3R-9w-R7d.title" = "色相";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "IIB-vI-u3a"; */
 "IIB-vI-u3a.title" = "選択箇所強度";
@@ -249,7 +249,7 @@
 "QAl-Oz-tMg.title" = "𝜌";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "Qvw-wH-dnp"; */
-"Qvw-wH-dnp.title" = "色調";
+"Qvw-wH-dnp.title" = "色相";
 
 /* Class = "NSMenuItem"; title = "128x128x128"; ObjectID = "R0Z-ra-sDa"; */
 "R0Z-ra-sDa.title" = "128x128x128";
@@ -270,7 +270,7 @@
 "SFF-hg-8Cg.title" = "力場のみ";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "SMT-Ir-R2J"; */
-"SMT-Ir-R2J.title" = "値";
+"SMT-Ir-R2J.title" = "明度";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "Sdq-Z4-nnY"; */
 "Sdq-Z4-nnY.title" = "回転角度";
@@ -294,7 +294,7 @@
 "UXl-KR-D8o.title" = "彩度";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "V0t-KV-zMh"; */
-"V0t-KV-zMh.title" = "色調";
+"V0t-KV-zMh.title" = "色相";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "V4C-Dq-82n"; */
 "V4C-Dq-82n.title" = "露光";
@@ -405,7 +405,7 @@
 "dmK-0a-HKm.title" = "原子を表示";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
-"e0E-bj-7fz.title" = "値";
+"e0E-bj-7fz.title" = "明度";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
 "e5a-zk-fFj.title" = "Rasmol";
@@ -444,13 +444,13 @@
 "iOI-Yp-RuB.title" = "識別子";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "iRX-2G-KQd"; */
-"iRX-2G-KQd.title" = "色調";
+"iRX-2G-KQd.title" = "色相";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "iUY-dW-y5v"; */
 "iUY-dW-y5v.title" = "環境光強度";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
-"imT-16-aB9.title" = "値";
+"imT-16-aB9.title" = "明度";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "jHe-aU-zpQ"; */
 "jHe-aU-zpQ.title" = "-90回転する";

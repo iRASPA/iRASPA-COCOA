@@ -24,7 +24,7 @@
 "9Ye-dF-VRo.headerCell.title" = "el";
 
 /* Class = "NSMenu"; title = "Symmetry"; ObjectID = "Ac0-xf-6ro"; */
-"Ac0-xf-6ro.title" = "対称";
+"Ac0-xf-6ro.title" = "対称性";
 
 /* Class = "NSMenuItem"; title = "Selection"; ObjectID = "DZz-iK-mHB"; */
 "DZz-iK-mHB.title" = "選択";
@@ -66,7 +66,7 @@
 "cPa-hL-tU1.title" = "選択範囲の一行目";
 
 /* Class = "NSMenuItem"; title = "Symmetry"; ObjectID = "dp9-ww-pqx"; */
-"dp9-ww-pqx.title" = "対称";
+"dp9-ww-pqx.title" = "対称性";
 
 /* Class = "NSMenuItem"; title = "Add Atom"; ObjectID = "e3g-JW-gej"; */
 "e3g-JW-gej.title" = "原子を追加";
@@ -108,7 +108,7 @@
 "j0C-ap-N1A.title" = "対称性を見つけて課す";
 
 /* Class = "NSMenuItem"; title = "Find primitive"; ObjectID = "j46-Tq-XrE"; */
-"j46-Tq-XrE.title" = "プリミティブを見つける";
+"j46-Tq-XrE.title" = "プリミティブセルを表示する";
 
 /* Class = "NSTextFieldCell"; title = "Net charge"; ObjectID = "k5O-nf-whc"; */
 "k5O-nf-whc.title" = "正味電荷";

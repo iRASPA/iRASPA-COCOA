@@ -111,10 +111,10 @@
 "Lsj-0L-zLx.label" = "見る";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Type"; ObjectID = "M4G-j9-ni3"; */
-"M4G-j9-ni3.title" = "放射線の種類";
+"M4G-j9-ni3.title" = "放射光の種類";
 
 /* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "焼き鈍し法";
+"MCu-aJ-XRY.title" = "焼きなまし法";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
 "MYm-ia-kRD.title" = "シンプレックス";
@@ -174,7 +174,7 @@
 "X0T-Gc-sil.placeholderString" = "不明";
 
 /* Class = "NSTextFieldCell"; title = "Radiation Wavelength"; ObjectID = "Xx6-F7-2Db"; */
-"Xx6-F7-2Db.title" = "放射波長";
+"Xx6-F7-2Db.title" = "波長";
 
 /* Class = "NSTextFieldCell"; title = "Journal Title"; ObjectID = "Zmo-LS-hfO"; */
 "Zmo-LS-hfO.title" = "ジャーナルタイトル";
@@ -315,7 +315,7 @@
 "jxw-bd-YgS.title" = "摂氏";
 
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "k9a-VC-uKW"; */
-"k9a-VC-uKW.title" = "ボリューム";
+"k9a-VC-uKW.title" = "巻";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "kf2-0x-3Vl"; */
 "kf2-0x-3Vl.placeholderString" = "不明";
