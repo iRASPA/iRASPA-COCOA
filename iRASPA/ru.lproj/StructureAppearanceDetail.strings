@@ -411,7 +411,7 @@
 "e5a-zk-fFj.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "Заказ";
+"eY8-q5-Em9.title" = "порядок";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
 "ehx-ML-HSl.title" = "Объекты";
@@ -438,7 +438,7 @@
 "hyu-qj-36T.title" = "Интенсивность рассеянного света";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
-"iNJ-ng-4ga.title" = "Заказ";
+"iNJ-ng-4ga.title" = "порядок";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
 "iOI-Yp-RuB.title" = "Идентификатор";
