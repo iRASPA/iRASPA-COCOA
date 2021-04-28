@@ -1,6 +1,6 @@
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "2Tn-ME-kQY"; */
-"2Tn-ME-kQY.title" = "بزرگتر یا مساوی با است";
+"2Tn-ME-kQY.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "2xV-5s-XJR"; */
 "2xV-5s-XJR.title" = "نیست";
@@ -36,10 +36,10 @@
 "BAq-UZ-KqW.title" = "نیست";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "BeK-rc-N2x"; */
-"BeK-rc-N2x.title" = "کمتر یا مساوی با است";
+"BeK-rc-N2x.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "BrN-Gl-4eW"; */
-"BrN-Gl-4eW.title" = "کمتر یا مساوی با است";
+"BrN-Gl-4eW.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "Framework density"; ObjectID = "CYp-Lk-sjk"; */
 "CYp-Lk-sjk.title" = "چگالی چارچوب";
@@ -48,10 +48,10 @@
 "CaW-PN-akd.title" = "بزرگتر است از";
 
 /* Class = "NSMenuItem"; title = "Geometric nitrogen surface area"; ObjectID = "CgQ-4C-1zP"; */
-"CgQ-4C-1zP.title" = "مساحت سطح نیتروژن هندسی";
+"CgQ-4C-1zP.title" = "سطح ویژه هندسی تعیین شده توسط نیتروژن";
 
 /* Class = "NSMenuItem"; title = "Framework mass"; ObjectID = "Cul-r9-NEn"; */
-"Cul-r9-NEn.title" = "توده چهارچوب";
+"Cul-r9-NEn.title" = "جرم چارچوب";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "DOl-fr-jFp"; */
 "DOl-fr-jFp.title" = "است";
@@ -60,13 +60,13 @@
 "E9f-nk-YdH.title" = "نیست";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "FSQ-WS-Nhl"; */
-"FSQ-WS-Nhl.title" = "بزرگتر یا مساوی با است";
+"FSQ-WS-Nhl.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "Restricting pore diameter"; ObjectID = "FYh-ov-QWw"; */
 "FYh-ov-QWw.title" = "محدود کردن قطر منافذ";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "Fa6-lm-0Z8"; */
-"Fa6-lm-0Z8.title" = "کمتر یا مساوی با است";
+"Fa6-lm-0Z8.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "Number of channels"; ObjectID = "FjZ-6F-9uB"; */
 "FjZ-6F-9uB.title" = "تعداد کانال ها";
@@ -78,10 +78,10 @@
 "GVE-CZ-118.title" = "است";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "H5f-mi-88H"; */
-"H5f-mi-88H.title" = "بزرگتر یا مساوی با است";
+"H5f-mi-88H.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "Hnq-zE-nb8"; */
-"Hnq-zE-nb8.title" = "کمتر یا مساوی با است";
+"Hnq-zE-nb8.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "IMT-eq-VAb"; */
 "IMT-eq-VAb.title" = "بزرگتر است از";
@@ -96,34 +96,34 @@
 "LGU-5X-Bsh.title" = "نیست";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "LTp-AU-H7t"; */
-"LTp-AU-H7t.title" = "کمتر یا مساوی با است";
+"LTp-AU-H7t.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "Number of pockets"; ObjectID = "LXA-xg-YSr"; */
-"LXA-xg-YSr.title" = "تعداد جیب ها";
+"LXA-xg-YSr.title" = "تعداد پاکتها";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "NFS-dV-S3m"; */
 "NFS-dV-S3m.title" = "است";
 
 /* Class = "NSMenuItem"; title = "Volumetric nitrogen surface area"; ObjectID = "OJi-AT-Kw8"; */
-"OJi-AT-Kw8.title" = "سطح نیتروژن حجمی";
+"OJi-AT-Kw8.title" = "سطح ویژه حجمی تعیین شده توسط نیتروژن";
 
 /* Class = "NSMenuItem"; title = "Dimensionality"; ObjectID = "OhS-R4-lBt"; */
-"OhS-R4-lBt.title" = "ابعاد";
+"OhS-R4-lBt.title" = "ابعادی";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "OxO-48-E7H"; */
-"OxO-48-E7H.title" = "کمتر یا مساوی با است";
+"OxO-48-E7H.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "PCQ-aW-6zJ"; */
-"PCQ-aW-6zJ.title" = "بزرگتر یا مساوی با است";
+"PCQ-aW-6zJ.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "Helium void fraction"; ObjectID = "Ph1-69-211"; */
-"Ph1-69-211.title" = "کسر باطل هلیوم";
+"Ph1-69-211.title" = "تخلخل  تعیین شده توسط هلیوم";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Pt2-gj-hYD"; */
 "Pt2-gj-hYD.title" = "هیچ یک";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "PwB-qr-PSc"; */
-"PwB-qr-PSc.title" = "بزرگتر یا مساوی با است";
+"PwB-qr-PSc.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "QAT-BU-IHn"; */
 "QAT-BU-IHn.title" = "است";
@@ -135,34 +135,34 @@
 "QjQ-JG-tdg.title" = "بزرگتر است از";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "Rh7-Pd-qYE"; */
-"Rh7-Pd-qYE.title" = "بزرگتر یا مساوی با است";
+"Rh7-Pd-qYE.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "RmR-Fs-GOf"; */
 "RmR-Fs-GOf.title" = "Box";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "SfX-iX-SBy"; */
-"SfX-iX-SBy.title" = "کمتر یا مساوی با است";
+"SfX-iX-SBy.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "SuK-Dy-eFn"; */
-"SuK-Dy-eFn.title" = "بزرگتر یا مساوی با است";
+"SuK-Dy-eFn.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "Tw0-TX-Ezb"; */
-"Tw0-TX-Ezb.title" = "کمتر یا مساوی با است";
+"Tw0-TX-Ezb.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "V8f-WR-1Ts"; */
-"V8f-WR-1Ts.title" = "بزرگتر یا مساوی با است";
+"V8f-WR-1Ts.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "VVf-Rk-1YK"; */
 "VVf-Rk-1YK.title" = "نیست";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "W2w-Gi-ZTx"; */
-"W2w-Gi-ZTx.title" = "بزرگتر یا مساوی با است";
+"W2w-Gi-ZTx.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "WIt-N4-BpW"; */
 "WIt-N4-BpW.title" = "کمتر است از";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "XGz-8U-R4b"; */
-"XGz-8U-R4b.title" = "بزرگتر یا مساوی با است";
+"XGz-8U-R4b.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "YCX-qE-A2b"; */
 "YCX-qE-A2b.title" = "کمتر است از";
@@ -177,25 +177,25 @@
 "aEs-cT-Qwx.title" = "است";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "aP4-eo-cM5"; */
-"aP4-eo-cM5.title" = "کمتر یا مساوی با است";
+"aP4-eo-cM5.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "aXl-DS-SHQ"; */
 "aXl-DS-SHQ.title" = "نیست";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "bX1-Lu-QzN"; */
-"bX1-Lu-QzN.title" = "بزرگتر یا مساوی با است";
+"bX1-Lu-QzN.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "bfc-LA-dLY"; */
 "bfc-LA-dLY.title" = "کمتر است از";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "bvg-95-Snc"; */
-"bvg-95-Snc.title" = "کمتر یا مساوی با است";
+"bvg-95-Snc.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "cRo-CA-Ium"; */
 "cRo-CA-Ium.title" = "نیست";
 
 /* Class = "NSMenuItem"; title = "Framework specific volume"; ObjectID = "cSF-kJ-biE"; */
-"cSF-kJ-biE.title" = "حجم خاص چارچوب";
+"cSF-kJ-biE.title" = "حجم مخصوص چارچوب";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "dOd-mh-hCL"; */
 "dOd-mh-hCL.title" = "بزرگتر است از";
@@ -243,16 +243,16 @@
 "lVF-n6-d3v.title" = "کمتر است از";
 
 /* Class = "NSMenuItem"; title = "matches"; ObjectID = "lbV-FO-8zT"; */
-"lbV-FO-8zT.title" = "مسابقات";
+"lbV-FO-8zT.title" = "تطابق";
 
 /* Class = "NSMenuItem"; title = "Framework accessible volume"; ObjectID = "lc0-Us-BEz"; */
-"lc0-Us-BEz.title" = "چارچوب حجم قابل دسترسی";
+"lc0-Us-BEz.title" = "حجم قابل دسترس چارچوب";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "nkM-Gr-sR9"; */
-"nkM-Gr-sR9.title" = "بزرگتر یا مساوی با است";
+"nkM-Gr-sR9.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "nkO-Je-8yy"; */
-"nkO-Je-8yy.title" = "بزرگتر یا مساوی با است";
+"nkO-Je-8yy.title" = "بزرگتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "Largest diameter along path"; ObjectID = "nwU-Tm-pkO"; */
 "nwU-Tm-pkO.title" = "بزرگترین قطر در امتداد مسیر";
@@ -279,10 +279,10 @@
 "sXW-Wz-2qR.title" = "کمتر است از";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "sby-8F-af2"; */
-"sby-8F-af2.title" = "کمتر یا مساوی با است";
+"sby-8F-af2.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "tfM-vX-PEZ"; */
-"tfM-vX-PEZ.title" = "کمتر یا مساوی با است";
+"tfM-vX-PEZ.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "uf8-cQ-lc0"; */
 "uf8-cQ-lc0.title" = "نیست";
@@ -294,7 +294,7 @@
 "v8P-y7-wJw.title" = "بزرگتر است از";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "vxq-4W-FYz"; */
-"vxq-4W-FYz.title" = "کمتر یا مساوی با است";
+"vxq-4W-FYz.title" = "کمتر از یا مساوی است با";
 
 /* Class = "NSMenuItem"; title = "Any"; ObjectID = "yCO-9y-bt0"; */
 "yCO-9y-bt0.title" = "هر";
