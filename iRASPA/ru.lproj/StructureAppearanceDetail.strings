@@ -162,7 +162,7 @@
 "Gf0-Qp-gqQ.title" = "Полосатый";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "GfJ-48-dF4"; */
-"GfJ-48-dF4.title" = "Радиальное масштабирование выделения";
+"GfJ-48-dF4.title" = "Масштабирование выделения";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
 "H3R-9w-R7d.title" = "Оттенок";
@@ -195,7 +195,7 @@
 "LA8-y5-QWc.title" = "Интенсивность света";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "LSL-D7-VXo"; */
-"LSL-D7-VXo.title" = "Радиальное масштабирование выделения";
+"LSL-D7-VXo.title" = "Масштабирование выделения";
 
 /* Class = "NSTextFieldCell"; title = "Annotation"; ObjectID = "LSN-af-m9O"; */
 "LSN-af-m9O.title" = "Аннотации";
@@ -279,7 +279,7 @@
 "Sgk-qh-f3p.title" = "Интенсивность рассеянного света";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "TPc-vg-PLV"; */
-"TPc-vg-PLV.title" = "Радиальное масштабирование выделения";
+"TPc-vg-PLV.title" = "Масштабирование выделения";
 
 /* Class = "NSMenuItem"; title = "Force Field Type"; ObjectID = "TZ6-3e-HHS"; */
 "TZ6-3e-HHS.title" = "Тип силового поля";
