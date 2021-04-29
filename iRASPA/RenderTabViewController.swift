@@ -1380,8 +1380,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
  
   func cameraDidChange()
   {
-    let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: windowController)
-    NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle)
+    let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: self)
+    NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle, coalesceMask: [.onName], forModes: nil)
   }
   
   func modifyAtomsFor(structure: Structure)
@@ -1904,6 +1904,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       startPoint = nil
       tracking = .none
     }
+    let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: self)
+    NotificationQueue(notificationCenter: NotificationCenter.default).dequeueNotifications(matching: notification, coalesceMask: Int(NotificationQueue.NotificationCoalescing.onName.rawValue))
   }
   
   

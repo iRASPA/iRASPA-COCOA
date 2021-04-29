@@ -120,7 +120,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateAspectRatioView), name: NSView.boundsDidChangeNotification, object: self.windowController?.detailTabViewController?.renderViewController)
     
     // update the camera view-matrix data in the Camera-views when the camera direction or distance changes
-    NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraViews), name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: windowController)
+    NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraViews), name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: nil)
     
     // update the camera Projection Camera-views when the camera direction or distance changes
     NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraOrientationView), name: NSNotification.Name(rawValue: CameraNotificationStrings.projectionDidChangeNotification), object: windowController)
