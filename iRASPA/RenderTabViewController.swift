@@ -1372,6 +1372,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
 
   
+  func cameraProjectionDidChange()
+  {
+    let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.projectionDidChangeNotification), object: windowController)
+    NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle)
+  }
  
   func cameraDidChange()
   {
@@ -1571,6 +1576,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       project.renderCamera?.resetCameraToDirection()
       project.renderCamera?.resetCameraDistance()
       self.cameraDidChange()
+      self.cameraProjectionDidChange()
       
       self.renderViewController.redraw()
     }
@@ -1586,6 +1592,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       project.renderCamera?.resetCameraToDirection()
       project.renderCamera?.resetCameraDistance()
       self.cameraDidChange()
+      self.cameraProjectionDidChange()
       
       self.renderViewController.redraw()
     }
@@ -1601,6 +1608,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       project.renderCamera?.resetCameraToDirection()
       project.renderCamera?.resetCameraDistance()
       self.cameraDidChange()
+      self.cameraProjectionDidChange()
       
       self.renderViewController.redraw()
     }
@@ -1632,7 +1640,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
       renderCamera.setCameraToOrthographic()
-      self.cameraDidChange()
+      self.cameraProjectionDidChange()
       self.renderViewController.redraw()
     }
   }
@@ -1642,7 +1650,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let renderCamera: RKCamera = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera
     {
       renderCamera.setCameraToPerspective()
-      self.cameraDidChange()
+      self.cameraProjectionDidChange()
       
       self.renderViewController.redraw()
     }

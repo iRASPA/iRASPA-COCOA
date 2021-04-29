@@ -121,6 +121,9 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     
     // update the camera view-matrix data in the Camera-views when the camera direction or distance changes
     NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraViews), name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: windowController)
+    
+    // update the camera Projection Camera-views when the camera direction or distance changes
+    NotificationCenter.default.addObserver(self, selector: #selector(StructureCameraDetailViewController.updateCameraOrientationView), name: NSNotification.Name(rawValue: CameraNotificationStrings.projectionDidChangeNotification), object: windowController)
   }
   
   // the windowController still exists when the view is there
@@ -331,8 +334,8 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         }
       }
       
-      if let sliderEulerAngleZ: NSSlider = view.viewWithTag(8) as? NSSlider,
-         let sliderEulerAngleX: NSSlider = view.viewWithTag(9) as? NSSlider,
+      if let sliderEulerAngleX: NSSlider = view.viewWithTag(8) as? NSSlider,
+         let sliderEulerAngleZ: NSSlider = view.viewWithTag(9) as? NSSlider,
          let sliderEulerAngleY: NSSlider = view.viewWithTag(10) as? NSSlider,
          let textFieldEulerAngleX: NSTextField = view.viewWithTag(11) as? NSTextField,
          let textFieldEulerAngleZ: NSTextField = view.viewWithTag(12) as? NSTextField,
@@ -340,18 +343,18 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       {
         textFieldEulerAngleX.isEnabled = false
         sliderEulerAngleX.isEnabled = false
-        textFieldEulerAngleY.isEnabled = false
-        sliderEulerAngleY.isEnabled = false
         textFieldEulerAngleZ.isEnabled = false
         sliderEulerAngleZ.isEnabled = false
+        textFieldEulerAngleY.isEnabled = false
+        sliderEulerAngleY.isEnabled = false
         if let EulerAngles: SIMD3<Double> = (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.EulerAngles
         {
           textFieldEulerAngleX.isEnabled = true
           sliderEulerAngleX.isEnabled = true
-          textFieldEulerAngleY.isEnabled = true
-          sliderEulerAngleY.isEnabled = true
           textFieldEulerAngleZ.isEnabled = true
           sliderEulerAngleZ.isEnabled = true
+          textFieldEulerAngleY.isEnabled = true
+          sliderEulerAngleY.isEnabled = true
           textFieldEulerAngleX.doubleValue =  EulerAngles.x * 180.0/Double.pi
           sliderEulerAngleX.doubleValue = (EulerAngles.x * 180.0/Double.pi)
           textFieldEulerAngleZ.doubleValue =  EulerAngles.z * 180.0/Double.pi
@@ -868,11 +871,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     }
   }
   
- 
-  @objc func updateCameraViews()
+  @objc func updateCameraOrientationView()
   {
     self.windowController?.document?.updateChangeCount(.changeDone)
-    
+   
     if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraOrientationCell), row >= 0,
        let outlineView: NSOutlineView = self.cameraOutlineView,
        let view: NSTableCellView = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView
@@ -880,6 +882,11 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       setPropertiesCameraTableCells(on: view, identifier: "CameraOrientationCell")
       outlineView.setNeedsDisplay(outlineView.rect(ofRow: row))
     }
+  }
+ 
+  @objc func updateCameraViews()
+  {
+    self.windowController?.document?.updateChangeCount(.changeDone)
     
     if let row: Int = self.cameraOutlineView?.row(forItem: self.cameraRotationCell), row >= 0,
        let outlineView: NSOutlineView = self.cameraOutlineView,

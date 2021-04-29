@@ -38,6 +38,7 @@ import SymmetryKit
 public struct CameraNotificationStrings
 {
   public static let didChangeNotification: String = "CameraDidChangeNotification"
+  public static let projectionDidChangeNotification: String = "CameraProjectionDidChangeNotification"
 }
 
 public class RKCamera: BinaryDecodable, BinaryEncodable
