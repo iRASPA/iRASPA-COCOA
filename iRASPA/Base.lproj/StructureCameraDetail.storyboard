@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="9Yu-pt-V7R">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="9Yu-pt-V7R">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1231,7 +1231,7 @@
                                                                                         <gridCells>
                                                                                             <gridCell row="1eE-l7-pv4" column="foP-1b-3ZT" id="vQ6-LV-Eds">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pSS-1s-0nM">
-                                                                                                    <rect key="frame" x="-2" y="108" width="147" height="16"/>
+                                                                                                    <rect key="frame" x="-2" y="117" width="147" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Ambient Light Intensity" id="fwm-RT-44D">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1241,7 +1241,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="1eE-l7-pv4" column="lFZ-hO-9ay" id="Gin-Co-fpZ">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="760" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="760" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="92M-8T-Ixe">
-                                                                                                    <rect key="frame" x="151" y="105" width="175" height="21"/>
+                                                                                                    <rect key="frame" x="151" y="114" width="175" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="3zc-7V-kOo">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="4" maximumFractionDigits="4" id="zeg-hd-fLd"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -1255,7 +1255,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="1eE-l7-pv4" column="iUz-5Z-Qso" id="4gX-24-3vx">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="t6J-Pe-UQH">
-                                                                                                    <rect key="frame" x="332" y="99" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="332" y="108" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="tsX-gs-eHe"/>
                                                                                                     <connections>
                                                                                                         <action selector="changeAmbientIntensitySlider:" target="9Yu-pt-V7R" id="WWR-4q-2gN"/>
