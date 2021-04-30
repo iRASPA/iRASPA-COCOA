@@ -939,12 +939,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
 
-      if let sliderEulerAngleX: NSSlider = view.viewWithTag(8) as? NSSlider,
-         let sliderEulerAngleZ: NSSlider = view.viewWithTag(9) as? NSSlider,
-         let sliderEulerAngleY: NSSlider = view.viewWithTag(10) as? NSSlider,
-         let textFieldEulerAngleX: NSTextField = view.viewWithTag(11) as? NSTextField,
-         let textFieldEulerAngleY: NSTextField = view.viewWithTag(12) as? NSTextField,
-         let textFieldEulerAngleZ: NSTextField = view.viewWithTag(13) as? NSTextField
+      if let textFieldEulerAngleX: NSTextField = view.viewWithTag(8) as? NSTextField,
+         let textFieldEulerAngleY: NSTextField = view.viewWithTag(9) as? NSTextField,
+         let textFieldEulerAngleZ: NSTextField = view.viewWithTag(10) as? NSTextField,
+         let sliderEulerAngleX: NSSlider = view.viewWithTag(11) as? NSSlider,
+         let sliderEulerAngleZ: NSSlider = view.viewWithTag(12) as? NSSlider,
+         let sliderEulerAngleY: NSSlider = view.viewWithTag(13) as? NSSlider
       {
         sliderEulerAngleX.isEnabled = false
         sliderEulerAngleZ.isEnabled = false
