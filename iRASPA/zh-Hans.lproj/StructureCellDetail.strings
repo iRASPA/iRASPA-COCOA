@@ -120,7 +120,7 @@
 "GCR-0z-KdY.title" = "分子晶体";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
-"Geb-Or-zb5.title" = "合格的";
+"Geb-Or-zb5.title" = "标签";
 
 /* Class = "NSTextFieldCell"; title = "[m²/cm³]"; ObjectID = "GpO-nT-2ds"; */
 "GpO-nT-2ds.title" = "[m²/cm³]";
