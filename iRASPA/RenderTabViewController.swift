@@ -1804,7 +1804,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       case .measurement:
         if let _ = startPoint
         {
-          // update camera-view at most 20 times per second
+          // update camera-view at most 10 times per second, autolayout struggles to keep up
           var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
           mach_timebase_info(&info)
           let endTime: UInt64  = mach_absolute_time()
@@ -1819,7 +1819,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         tracking = .draggedWithoutKeyModifiers
         if let _ = startPoint
         {
-          // update camera-view at most 20 times per second
+          // update camera-view at most 10 times per second, autolayout struggles to keep up
           var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
           mach_timebase_info(&info)
           let endTime: UInt64  = mach_absolute_time()
