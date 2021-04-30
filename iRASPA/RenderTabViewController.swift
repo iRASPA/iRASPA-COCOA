@@ -1381,7 +1381,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   func cameraDidChange()
   {
     let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: self)
-    NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle, coalesceMask: [.onName], forModes: nil)
+    NotificationQueue(notificationCenter: NotificationCenter.default).enqueue(notification, postingStyle: NotificationQueue.PostingStyle.whenIdle)
   }
   
   func modifyAtomsFor(structure: Structure)
@@ -1702,8 +1702,13 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   // MARK: Mouse handling
   // =====================================================================
   
+  
+  var startTime: UInt64 = 0
+  
   public override func mouseDown(with event: NSEvent)
   {
+    startTime = mach_absolute_time()
+    
     startPoint = self.view.convert(event.locationInWindow, from: nil)
     if let view: RenderTabView = self.view as? RenderTabView,
        let layer: CALayer = view.layer
@@ -1799,13 +1804,31 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       case .measurement:
         if let _ = startPoint
         {
-          cameraDidChange()
+          // update camera-view at most 20 times per second
+          var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
+          mach_timebase_info(&info)
+          let endTime: UInt64  = mach_absolute_time()
+          let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000000001
+          if(time>0.1)
+          {
+            cameraDidChange()
+            startTime = mach_absolute_time()
+          }
         }
       default:
         tracking = .draggedWithoutKeyModifiers
         if let _ = startPoint
         {
-          cameraDidChange()
+          // update camera-view at most 20 times per second
+          var info: mach_timebase_info_data_t = mach_timebase_info_data_t()
+          mach_timebase_info(&info)
+          let endTime: UInt64  = mach_absolute_time()
+          let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000000001
+          if(time>0.1)
+          {
+            cameraDidChange()
+            startTime = mach_absolute_time()
+          }
         }
       }
     }
@@ -1903,9 +1926,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
       startPoint = nil
       tracking = .none
+      cameraDidChange()
     }
-    let notification: Notification = Notification(name: Notification.Name(CameraNotificationStrings.didChangeNotification), object: self)
-    NotificationQueue(notificationCenter: NotificationCenter.default).dequeueNotifications(matching: notification, coalesceMask: Int(NotificationQueue.NotificationCoalescing.onName.rawValue))
+    
   }
   
   
