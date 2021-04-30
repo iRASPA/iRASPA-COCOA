@@ -40,7 +40,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="CameraGroup" translatesAutoresizingMaskIntoConstraints="NO" id="8e3-cK-auO" userLabel="Camera Group">
-                                                            <rect key="frame" x="1" y="1" width="516" height="16"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="516" height="16"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="knb-QB-9hm">
                                                                     <rect key="frame" x="0.0" y="0.0" width="496" height="16"/>
@@ -490,7 +490,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraRotationCell" translatesAutoresizingMaskIntoConstraints="NO" id="0lK-hz-Ty7" userLabel="Camera Rotation Cell">
-                                                            <rect key="frame" x="1" y="286" width="495" height="160"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="495" height="160"/>
                                                             <subviews>
                                                                 <gridView horizontalHuggingPriority="230" verticalHuggingPriority="230" xPlacement="fill" yPlacement="fill" rowAlignment="none" rowSpacing="8" columnSpacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HyR-qs-zvB">
                                                                     <rect key="frame" x="8" y="8" width="467" height="144"/>
@@ -1074,7 +1074,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraSelectionGroup" translatesAutoresizingMaskIntoConstraints="NO" id="Srz-h6-kXZ" userLabel="Selection Group">
-                                                            <rect key="frame" x="1" y="660" width="516" height="16"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="516" height="16"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xn9-TN-udZ">
                                                                     <rect key="frame" x="0.0" y="0.0" width="496" height="16"/>
@@ -1412,7 +1412,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraPictureGroup" translatesAutoresizingMaskIntoConstraints="NO" id="jSb-XR-EZl" userLabel="Picture Group">
-                                                            <rect key="frame" x="1" y="901" width="516" height="16"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="516" height="16"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5zo-hv-gxG">
                                                                     <rect key="frame" x="0.0" y="0.0" width="496" height="16"/>
@@ -1837,7 +1837,7 @@
                                                             </constraints>
                                                         </tableCellView>
                                                         <tableCellView identifier="CameraBackgroundGroup" translatesAutoresizingMaskIntoConstraints="NO" id="APq-3b-46i" userLabel="Background Group">
-                                                            <rect key="frame" x="1" y="1158" width="516" height="16"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="516" height="16"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nx9-0J-nK5">
                                                                     <rect key="frame" x="0.0" y="0.0" width="496" height="16"/>
