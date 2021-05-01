@@ -89,7 +89,7 @@ class MetalBlurHorizontalShader
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int)
   {
-    let blurHorizontalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+    let blurHorizontalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     blurHorizontalTextureDescriptor.textureType = MTLTextureType.type2D
     blurHorizontalTextureDescriptor.storageMode = MTLStorageMode.private
     blurHorizontalTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)

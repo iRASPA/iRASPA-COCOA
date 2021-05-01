@@ -941,9 +941,9 @@ public class MetalRenderer
       switch(imageQuality)
       {
       case .rgb_16_bits, .cmyk_16_bits:
-        pictureTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Unorm, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
+        pictureTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Unorm, width: max(Int(size.width), 1), height: max(Int(size.height), 1), mipmapped: false)
       case .rgb_8_bits, .cmyk_8_bits:
-        pictureTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),16), height: max(Int(size.height),16), mipmapped: false)
+        pictureTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width), 1), height: max(Int(size.height), 1), mipmapped: false)
       }
       
       pictureTextureDescriptor.textureType = MTLTextureType.type2D

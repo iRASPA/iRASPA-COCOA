@@ -83,7 +83,7 @@ class MetalAtomSelectionGlowShader
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int, sceneDepthTexture: MTLTexture)
   {
-    let atomSelectionGlowTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+    let atomSelectionGlowTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     atomSelectionGlowTextureDescriptor.textureType = MTLTextureType.type2DMultisample
     atomSelectionGlowTextureDescriptor.sampleCount = maximumNumberOfSamples
     atomSelectionGlowTextureDescriptor.storageMode = MTLStorageMode.private
@@ -91,7 +91,7 @@ class MetalAtomSelectionGlowShader
     atomSelectionGlowTexture = device.makeTexture(descriptor: atomSelectionGlowTextureDescriptor)
     atomSelectionGlowTexture.label = "glow atoms texture"
     
-    let atomSelectionGlowResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+    let atomSelectionGlowResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     atomSelectionGlowResolveTextureDescriptor.textureType = MTLTextureType.type2D
     atomSelectionGlowResolveTextureDescriptor.storageMode = MTLStorageMode.private
     atomSelectionGlowResolveTexture = device.makeTexture(descriptor: atomSelectionGlowResolveTextureDescriptor)
