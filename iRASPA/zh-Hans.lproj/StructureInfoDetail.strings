@@ -162,7 +162,7 @@
 "Vtz-4v-Kmv.placeholderString" = "名";
 
 /* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "Vvv-Ri-fwX"; */
-"Vvv-Ri-fwX.title" = "数字";
+"Vvv-Ri-fwX.title" = "期号";
 
 /* Class = "NSTextFieldCell"; title = "R Indices (All Data)"; ObjectID = "WBA-sr-NKP"; */
 "WBA-sr-NKP.title" = "R指数（所有数据)";
@@ -315,7 +315,7 @@
 "jxw-bd-YgS.title" = "Celsius";
 
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "k9a-VC-uKW"; */
-"k9a-VC-uKW.title" = "体积";
+"k9a-VC-uKW.title" = "卷号";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "kf2-0x-3Vl"; */
 "kf2-0x-3Vl.placeholderString" = "未知";

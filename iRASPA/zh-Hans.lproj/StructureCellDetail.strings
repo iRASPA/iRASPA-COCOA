@@ -12,7 +12,7 @@
 "2sE-L5-Mde.title" = "方向";
 
 /* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
-"39F-yr-VYx.title" = "元胞/边界框属性";
+"39F-yr-VYx.title" = "晶胞/边界框属性";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
 "3Fv-hH-asL.title" = "可得孔隙体积";
@@ -33,7 +33,7 @@
 "4wy-F5-Ju4.title" = "氢";
 
 /* Class = "NSTextFieldCell"; title = "Transform Content"; ObjectID = "7SE-t2-fqM"; */
-"7SE-t2-fqM.title" = "转换内容";
+"7SE-t2-fqM.title" = "内容转换";
 
 /* Class = "NSTextFieldCell"; title = "[cm³/g]"; ObjectID = "7tH-M9-iSB"; */
 "7tH-M9-iSB.title" = "[cm³/g]";
@@ -45,7 +45,7 @@
 "8D1-xf-EQg.placeholderString" = "宽度 X";
 
 /* Class = "NSTextFieldCell"; title = "Shift"; ObjectID = "8JV-Fj-uoG"; */
-"8JV-Fj-uoG.title" = "转移";
+"8JV-Fj-uoG.title" = "平移";
 
 /* Class = "NSButtonCell"; title = "b-Axis"; ObjectID = "8PJ-K5-04D"; */
 "8PJ-K5-04D.title" = "b-轴";
@@ -105,7 +105,7 @@
 "ESl-70-xbH.title" = "c-轴";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Shift Z"; ObjectID = "Emf-RO-Pko"; */
-"Emf-RO-Pko.placeholderString" = "转移 Z";
+"Emf-RO-Pko.placeholderString" = "平移 Z";
 
 /* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "EoT-Wn-jDW"; */
 "EoT-Wn-jDW.title" = "氙";
@@ -120,13 +120,13 @@
 "GCR-0z-KdY.title" = "分子晶体";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
-"Geb-Or-zb5.title" = "标签";
+"Geb-Or-zb5.title" = "代称";
 
 /* Class = "NSTextFieldCell"; title = "[m²/cm³]"; ObjectID = "GpO-nT-2ds"; */
 "GpO-nT-2ds.title" = "[m²/cm³]";
 
 /* Class = "NSBox"; title = "Bounding Box (Read Only)"; ObjectID = "Hgj-ha-Kto"; */
-"Hgj-ha-Kto.title" = "边界框（只读";
+"Hgj-ha-Kto.title" = "边界框（只读)";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "JAA-9x-5kf"; */
 "JAA-9x-5kf.title" = "0";
@@ -138,7 +138,7 @@
 "JtJ-tY-Q48.title" = "最小副本";
 
 /* Class = "NSTextFieldCell"; title = "Symmetry Properties"; ObjectID = "KBR-dm-dts"; */
-"KBR-dm-dts.title" = "对称性";
+"KBR-dm-dts.title" = "对称属性";
 
 /* Class = "NSBox"; title = "Cell content"; ObjectID = "KGV-zA-HoJ"; */
 "KGV-zA-HoJ.title" = "晶胞内容";
@@ -213,7 +213,7 @@
 "VGV-QG-mhd.title" = "元素数";
 
 /* Class = "NSTextFieldCell"; title = "Minimum"; ObjectID = "VPi-2B-sJL"; */
-"VPi-2B-sJL.title" = "最低限度";
+"VPi-2B-sJL.title" = "最小";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cz"; ObjectID = "VU3-db-82D"; */
 "VU3-db-82D.placeholderString" = "cz";
@@ -267,13 +267,13 @@
 "bTK-cR-IRN.title" = "AZ";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Shift Y"; ObjectID = "beQ-3E-uTa"; */
-"beQ-3E-uTa.placeholderString" = "转移 Y";
+"beQ-3E-uTa.placeholderString" = "平移 Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Y"; ObjectID = "cGa-VQ-Eds"; */
 "cGa-VQ-Eds.placeholderString" = "角度 Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Shift X"; ObjectID = "cPv-Rn-zyw"; */
-"cPv-Rn-zyw.placeholderString" = "转移 X";
+"cPv-Rn-zyw.placeholderString" = "平移 X";
 
 /* Class = "NSTextFieldCell"; title = "Restricting Pore Diameter (Df)"; ObjectID = "d4y-Ea-h9U"; */
 "d4y-Ea-h9U.title" = "限制孔径 (Df)";
@@ -303,7 +303,7 @@
 "fB7-jl-oUy.title" = "倒置";
 
 /* Class = "NSTextFieldCell"; title = "Density"; ObjectID = "frH-cs-eiu"; */
-"frH-cs-eiu.title" = "浓度";
+"frH-cs-eiu.title" = "密度";
 
 /* Class = "NSTextFieldCell"; placeholderString = "bx"; ObjectID = "fyC-NT-WE4"; */
 "fyC-NT-WE4.placeholderString" = "bx";
@@ -321,7 +321,7 @@
 "h3A-5g-irg.title" = "晶体多边形棱镜";
 
 /* Class = "NSTextFieldCell"; title = "Mass"; ObjectID = "hGv-Sn-Ok6"; */
-"hGv-Sn-Ok6.title" = "大量的";
+"hGv-Sn-Ok6.title" = "摩尔质量";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ax"; ObjectID = "hx7-iu-woV"; */
 "hx7-iu-woV.placeholderString" = "ax";
@@ -393,7 +393,7 @@
 "qRO-nO-wHb.title" = "定心";
 
 /* Class = "NSTextFieldCell"; title = "Schoenflies"; ObjectID = "qgW-qA-9fR"; */
-"qgW-qA-9fR.title" = "Schoenflies";
+"qgW-qA-9fR.title" = "盛氏";
 
 /* Class = "NSTextFieldCell"; title = "BX"; ObjectID = "qzc-iK-Ddm"; */
 "qzc-iK-Ddm.title" = "BX";
@@ -402,7 +402,7 @@
 "rkG-hU-SdP.placeholderString" = "长度 a";
 
 /* Class = "NSTextFieldCell"; title = "Holohedry"; ObjectID = "sDc-yH-bwk"; */
-"sDc-yH-bwk.title" = "哈罗德里";
+"sDc-yH-bwk.title" = "全对称";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "角度 X";
@@ -462,7 +462,7 @@
 "v83-YD-3LI.title" = "翻转";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
-"vhk-8d-Ytl.title" = "结构性质";
+"vhk-8d-Ytl.title" = "结构属性";
 
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
 "vwN-1o-Umq.title" = "孔隙系统的维数";

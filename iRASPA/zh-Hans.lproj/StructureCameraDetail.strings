@@ -54,7 +54,7 @@
 "9XT-W6-7iV.title" = "透视投影";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
-"A0b-wl-zfu.title" = "灯";
+"A0b-wl-zfu.title" = "灯光";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
 "AWE-1B-YAz.placeholderString" = "cx";
@@ -273,7 +273,7 @@
 "yBW-uB-hCP.title" = "1200 dpi";
 
 /* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "yHr-tp-pfy"; */
-"yHr-tp-pfy.title" = "选拔";
+"yHr-tp-pfy.title" = "选择";
 
 /* Class = "NSTextFieldCell"; title = "Image"; ObjectID = "zBc-ll-o44"; */
 "zBc-ll-o44.title" = "图像";
