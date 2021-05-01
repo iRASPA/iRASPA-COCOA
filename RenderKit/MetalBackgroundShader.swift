@@ -134,7 +134,7 @@ public class MetalBackgroundShader
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int)
   {
-    let sceneTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+    let sceneTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     sceneTextureDescriptor.textureType = MTLTextureType.type2DMultisample
     sceneTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
     sceneTextureDescriptor.sampleCount = maximumNumberOfSamples
@@ -142,14 +142,14 @@ public class MetalBackgroundShader
     sceneTexture = device.makeTexture(descriptor: sceneTextureDescriptor)
     sceneTexture.label = "scene multisampled texture"
     
-    let sceneResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+    let sceneResolveTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.rgba16Float, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     sceneResolveTextureDescriptor.textureType = MTLTextureType.type2D
     sceneResolveTextureDescriptor.storageMode = MTLStorageMode.private
     sceneResolveTexture = device.makeTexture(descriptor: sceneResolveTextureDescriptor)
     sceneResolveTexture.label = "scene resolved texture"
     
     
-    let sceneDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float_stencil8, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+    let sceneDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float_stencil8, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     sceneDepthTextureDescriptor.textureType = MTLTextureType.type2DMultisample
     sceneDepthTextureDescriptor.sampleCount = maximumNumberOfSamples
     sceneDepthTextureDescriptor.storageMode = MTLStorageMode.private

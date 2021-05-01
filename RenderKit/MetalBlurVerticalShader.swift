@@ -90,7 +90,7 @@ class MetalBlurVerticalShader
   
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int)
   {
-    let blurVerticalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),100), height: max(Int(size.height),100), mipmapped: false)
+    let blurVerticalTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.bgra8Unorm, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     blurVerticalTextureDescriptor.textureType = MTLTextureType.type2D
     blurVerticalTextureDescriptor.storageMode = MTLStorageMode.private
     blurVerticalTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
