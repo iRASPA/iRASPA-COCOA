@@ -31,13 +31,13 @@
 
 import Cocoa
 
-protocol StructurePageController: class
+protocol StructurePageController: AnyObject
 {
   func setPageControllerObjects(arrangedObjects objects: [Any], selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int)
   func setPageControllerSelection(selectedArrangedObjects selectedObjects: [Any], selectedIndex index: Int, isActiveTab: Bool)
 }
 
-protocol FramePageController: class
+protocol FramePageController: AnyObject
 {
   func setPageControllerFrameObject(arrangedObjects objects: [Any], selectedIndex index: Int)
   func setPageControllerFrameSelection(selectedIndex index: Int, isActiveTab: Bool)

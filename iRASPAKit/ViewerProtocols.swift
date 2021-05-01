@@ -36,12 +36,12 @@ import RenderKit
 import SymmetryKit
 import SimulationKit
 
-public protocol ForceFieldDefiner: class
+public protocol ForceFieldDefiner: AnyObject
 {
   var forceFieldSets: SKForceFieldSets {get}
 }
 
-public protocol StructureViewer: class
+public protocol StructureViewer: AnyObject
 {
   var allStructures: [Structure] {get}
   var allIRASPAStructures: [iRASPAStructure] {get}

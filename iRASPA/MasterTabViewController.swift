@@ -33,7 +33,7 @@ import Cocoa
 import iRASPAKit
 
 /// protocol to setting the index generically for all projects
-protocol SelectionIndex: class
+protocol SelectionIndex: AnyObject
 {
   func setSelectionIndex(index: Int)
 }
