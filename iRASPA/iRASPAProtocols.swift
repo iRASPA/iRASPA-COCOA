@@ -33,24 +33,24 @@ import Foundation
 import iRASPAKit
 
 // protocol to pass the current project recursively to all NSViewControllers
-protocol ProjectConsumer: class
+protocol ProjectConsumer: AnyObject
 {
   var proxyProject: ProjectTreeNode? {get set}
 }
 
 // protocol to pass the windowController recursively to all NSViewControllers
-protocol WindowControllerConsumer: class
+protocol WindowControllerConsumer: AnyObject
 {
   var windowController: iRASPAWindowController? {get set}
 }
 
-protocol GlobalModifierFlagsConsumer: class
+protocol GlobalModifierFlagsConsumer: AnyObject
 {
   func globalModifierFlagsChanged(_ value: NSEvent.ModifierFlags)
 }
 
 // protocol to signal that the object can be reloaded for new or changed data
-protocol Reloadable: class
+protocol Reloadable: AnyObject
 {
   func reloadData()
 }

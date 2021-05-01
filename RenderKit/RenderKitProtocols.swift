@@ -36,7 +36,7 @@ import SimulationKit
 import SymmetryKit
 
 
-public protocol RKRenderStructure: class
+public protocol RKRenderStructure: AnyObject
 {
   var displayName: String {get}
   var isVisible: Bool {get}
@@ -291,12 +291,12 @@ public protocol RKRenderPolygonalPrismObjectsSource: RKRenderObjectSource
 }
 
 
-public protocol RKRenderCameraSource: class
+public protocol RKRenderCameraSource: AnyObject
 {
   var renderCamera: RKCamera? {get}
 }
 
-public protocol RKRenderDataSource: class
+public protocol RKRenderDataSource: AnyObject
 {
   var numberOfScenes: Int {get}
   func numberOfMovies(sceneIndex: Int) -> Int

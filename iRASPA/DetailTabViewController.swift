@@ -34,7 +34,7 @@ import RenderKit
 import iRASPAKit
 
 // each detail-viewer must define these
-protocol Collapsable: class
+protocol Collapsable: AnyObject
 {
   var rightSplitViewItem: NSSplitViewItem? {get}
   var bottomSplitViewItem: NSSplitViewItem? {get}

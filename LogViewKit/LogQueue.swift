@@ -31,7 +31,7 @@
 
 import Foundation
 
-@objc public protocol LogReporting: class
+@objc public protocol LogReporting: AnyObject
 {
   func update(attributedString: NSTextStorage)
   var logScriptView: LogScriptTextView? {get set}

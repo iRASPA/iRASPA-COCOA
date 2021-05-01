@@ -31,7 +31,7 @@
 
 import Foundation
 
-public protocol ProgressIndicator: class
+public protocol ProgressIndicator: AnyObject
 {
   var progressIndicator: ProjectProgressIndicator? {get}
 }
