@@ -357,7 +357,7 @@
 "mLH-lp-rcD.title" = "0";
 
 /* Class = "NSTextFieldCell"; title = "Space Group"; ObjectID = "mZ6-cg-pcL"; */
-"mZ6-cg-pcL.title" = "Космическая группа";
+"mZ6-cg-pcL.title" = "зал номер";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Y"; ObjectID = "mhY-GY-BNd"; */
 "mhY-GY-BNd.placeholderString" = "Минимум Y";
@@ -468,7 +468,7 @@
 "vwN-1o-Umq.title" = "Размерность поровой системы";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "Гравиметрическая площадь поверхности (азот)";
+"xXh-YD-ajh.title" = "Гравим. площадь поверхности (азот)";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
 "xax-w6-E1h.title" = "Повернуть -90";
