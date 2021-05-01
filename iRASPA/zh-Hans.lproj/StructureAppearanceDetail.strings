@@ -84,7 +84,7 @@
 "8iy-di-Ufc.title" = "环境光强度";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "90a-Ax-VRf"; */
-"90a-Ax-VRf.title" = "接触";
+"90a-Ax-VRf.title" = "曝光";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "97c-Ea-ha8"; */
 "97c-Ea-ha8.title" = "选择风格";
@@ -117,10 +117,10 @@
 "Bvc-rc-vqi.title" = "欧拉角";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "C4F-mR-Wqd"; */
-"C4F-mR-Wqd.title" = "接触";
+"C4F-mR-Wqd.title" = "曝光";
 
 /* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "Cur-NK-N96"; */
-"Cur-NK-N96.title" = "样式参数";
+"Cur-NK-N96.title" = "风格参数";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Df4-cu-Yqn"; */
 "Df4-cu-Yqn.title" = "漫射光强度";
@@ -129,7 +129,7 @@
 "Dvd-oC-whc.title" = "Jmol";
 
 /* Class = "NSTextFieldCell"; title = "Alignment"; ObjectID = "E3F-gq-hXm"; */
-"E3F-gq-hXm.title" = "结盟";
+"E3F-gq-hXm.title" = "对齐";
 
 /* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "ENi-9x-fAK"; */
 "ENi-9x-fAK.title" = "Worley Noise 3D";
@@ -150,7 +150,7 @@
 "Ftc-mi-NgX.title" = "环境光遮蔽";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "FvL-0N-TdY"; */
-"FvL-0N-TdY.title" = "价值";
+"FvL-0N-TdY.title" = "亮度";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "GOQ-bY-t1V"; */
 "GOQ-bY-t1V.title" = "Z";
@@ -174,7 +174,7 @@
 "JAw-bD-rCT.title" = "漫射光强度";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
-"JKn-cA-MRP.title" = "债券类型";
+"JKn-cA-MRP.title" = "键类型";
 
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "JdC-cy-4oD"; */
 "JdC-cy-4oD.title" = "化学元素";
@@ -204,7 +204,7 @@
 "M4h-TV-oAo.title" = "光泽度";
 
 /* Class = "NSTextFieldCell"; title = "Representation Type"; ObjectID = "NF8-dJ-o6x"; */
-"NF8-dJ-o6x.title" = "代表类型";
+"NF8-dJ-o6x.title" = "表现类型";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "NGy-sK-enb"; */
 "NGy-sK-enb.title" = "环境光强度";
@@ -216,7 +216,7 @@
 "NUE-Dx-H8c.title" = "统一";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "OC0-RP-spe"; */
-"OC0-RP-spe.title" = "饱和";
+"OC0-RP-spe.title" = "饱和度";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "OPu-dU-h6H"; */
 "OPu-dU-h6H.title" = "高动态范围";
@@ -231,13 +231,13 @@
 "P5F-ca-L8c.title" = "质量";
 
 /* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "P9I-KW-dUL"; */
-"P9I-KW-dUL.title" = "样式参数";
+"P9I-KW-dUL.title" = "风格参数";
 
 /* Class = "NSMenuItem"; title = "Top"; ObjectID = "PE4-MK-cmU"; */
 "PE4-MK-cmU.title" = "最佳";
 
 /* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "PG2-24-2KF"; */
-"PG2-24-2KF.title" = "样式参数";
+"PG2-24-2KF.title" = "风格参数";
 
 /* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "Pac-P8-T19"; */
 "Pac-P8-T19.title" = "Y";
@@ -270,7 +270,7 @@
 "SFF-hg-8Cg.title" = "仅力场";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "SMT-Ir-R2J"; */
-"SMT-Ir-R2J.title" = "价值";
+"SMT-Ir-R2J.title" = "亮度";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "Sdq-Z4-nnY"; */
 "Sdq-Z4-nnY.title" = "旋转角度";
@@ -291,31 +291,31 @@
 "Tqo-qK-6Fc.title" = "无";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "UXl-KR-D8o"; */
-"UXl-KR-D8o.title" = "饱和";
+"UXl-KR-D8o.title" = "饱和度";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "V0t-KV-zMh"; */
-"V0t-KV-zMh.title" = "Hue";
+"V0t-KV-zMh.title" = "色调";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "V4C-Dq-82n"; */
-"V4C-Dq-82n.title" = "色调";
+"V4C-Dq-82n.title" = "曝光";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "VIk-Df-Zyf"; */
 "VIk-Df-Zyf.title" = "光泽度";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "Vh4-fU-NL9"; */
-"Vh4-fU-NL9.title" = "饱和";
+"Vh4-fU-NL9.title" = "饱和度";
 
 /* Class = "NSTextFieldCell"; title = "Representation Style"; ObjectID = "WBt-UZ-XVV"; */
 "WBt-UZ-XVV.title" = "表现风格";
 
 /* Class = "NSBox"; title = "Properties"; ObjectID = "WKe-o0-0cK"; */
-"WKe-o0-0cK.title" = "特性";
+"WKe-o0-0cK.title" = "属性";
 
 /* Class = "NSMenuItem"; title = "Element"; ObjectID = "WOL-ns-wXc"; */
 "WOL-ns-wXc.title" = "化学元素";
 
 /* Class = "NSTextFieldCell"; title = "Isocontour Value"; ObjectID = "WdL-X5-IMH"; */
-"WdL-X5-IMH.title" = "等值线值";
+"WdL-X5-IMH.title" = "亮度";
 
 /* Class = "NSTextFieldCell"; title = "Color Set"; ObjectID = "WlB-zZ-igz"; */
 "WlB-zZ-igz.title" = "颜色集";
@@ -327,7 +327,7 @@
 "YAJ-aq-PPI.title" = "封顶";
 
 /* Class = "NSMenuItem"; title = "Uniform"; ObjectID = "YN6-b4-xiX"; */
-"YN6-b4-xiX.title" = "制服";
+"YN6-b4-xiX.title" = "均匀";
 
 /* Class = "NSBox"; title = "Front surface"; ObjectID = "Yh2-SE-hS4"; */
 "Yh2-SE-hS4.title" = "前表面";
@@ -342,7 +342,7 @@
 "Zjr-02-4gi.title" = "氦";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "Zpi-ZT-H9N"; */
-"Zpi-ZT-H9N.title" = "接触";
+"Zpi-ZT-H9N.title" = "曝光";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "aUf-Ct-Ubf"; */
 "aUf-Ct-Ubf.title" = "Text Cell";
@@ -351,7 +351,7 @@
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "显示债券";
+"ajZ-C1-kOG.title" = "显示化学键";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
 "bBY-15-FbE.title" = "镜面光强度";
@@ -366,7 +366,7 @@
 "bdI-Je-pwI.title" = "无";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "bdU-wM-QtZ"; */
-"bdU-wM-QtZ.title" = "接触";
+"bdU-wM-QtZ.title" = "曝光";
 
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "bsZ-9F-KAn"; */
 "bsZ-9F-KAn.title" = "显示名称";
@@ -405,13 +405,13 @@
 "dmK-0a-HKm.title" = "显示原子";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
-"e0E-bj-7fz.title" = "价值";
+"e0E-bj-7fz.title" = "亮度";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
 "e5a-zk-fFj.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "命令";
+"eY8-q5-Em9.title" = "顺序";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
 "ehx-ML-HSl.title" = "对象";
@@ -438,7 +438,7 @@
 "hyu-qj-36T.title" = "漫射光强度";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
-"iNJ-ng-4ga.title" = "命令";
+"iNJ-ng-4ga.title" = "顺序";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
 "iOI-Yp-RuB.title" = "识别码";
@@ -450,7 +450,7 @@
 "iUY-dW-y5v.title" = "环境光强度";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
-"imT-16-aB9.title" = "价值";
+"imT-16-aB9.title" = "亮度";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "jHe-aU-zpQ"; */
 "jHe-aU-zpQ.title" = "旋转 -90";
@@ -459,7 +459,7 @@
 "jQX-px-t8j.title" = "旋转 -90";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "jjn-ZG-OAy"; */
-"jjn-ZG-OAy.title" = "接触";
+"jjn-ZG-OAy.title" = "曝光";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle x"; ObjectID = "kRP-v9-JWX"; */
 "kRP-v9-JWX.placeholderString" = "角度 x";
@@ -564,7 +564,7 @@
 "wEC-gm-GXl.title" = "不透明度";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "x58-hu-1Tw"; */
-"x58-hu-1Tw.title" = "饱和";
+"x58-hu-1Tw.title" = "饱和度";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle y"; ObjectID = "xAe-5S-ReY"; */
 "xAe-5S-ReY.placeholderString" = "角度 y";

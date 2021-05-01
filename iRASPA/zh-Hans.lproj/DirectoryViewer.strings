@@ -195,7 +195,7 @@
 "cRo-CA-Ium.title" = "不是";
 
 /* Class = "NSMenuItem"; title = "Framework specific volume"; ObjectID = "cSF-kJ-biE"; */
-"cSF-kJ-biE.title" = "特定于框架的体积";
+"cSF-kJ-biE.title" = "框架特定体积";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "dOd-mh-hCL"; */
 "dOd-mh-hCL.title" = "大于";
