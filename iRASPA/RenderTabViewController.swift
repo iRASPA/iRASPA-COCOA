@@ -1931,11 +1931,47 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
   }
   
+  var timer: DispatchSourceTimer?
+  var timerRunning: Bool = false
+  
+  let timerQueue = DispatchQueue(label: "nl.darkwing.rendertabviewcontroller.timer", attributes: .concurrent)
+  
+  private func startTimer()
+  {
+    timer?.cancel()        // cancel previous timer if any
+    
+    timer = DispatchSource.makeTimerSource(queue: timerQueue)
+        
+    timer?.schedule(deadline: .now() + 0.1)
+    
+    timer?.setEventHandler { [weak self] in
+      DispatchQueue.main.async(execute: {
+        
+        if let strongSelf = self
+        {
+          if (strongSelf.timerRunning)
+          {
+            strongSelf.timer?.cancel()
+            strongSelf.timerRunning = false
+            strongSelf.cameraDidChange()
+          }
+        }
+      })
+    }
+    
+    timer?.resume()
+  }
   
   override public func scrollWheel(with theEvent: NSEvent)
   {
+    if (!timerRunning)
+    {
+      self.startTimer()
+      
+      timerRunning = true
+    }
+    
     super.scrollWheel(with: theEvent)
-    cameraDidChange()
   }
   
   @IBAction func deleteSelectedAtoms(_ sender: NSButton)
