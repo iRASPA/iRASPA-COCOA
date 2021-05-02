@@ -1213,7 +1213,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       
       renderCamera.rotationDelta = newValue
       
-      self.updateOutlineView(identifiers: [self.cameraViewMatrixCell])
+      self.updateOutlineView(identifiers: [self.cameraRotationCell])
       
       self.windowController?.document?.updateChangeCount(.changeDone)
     }
