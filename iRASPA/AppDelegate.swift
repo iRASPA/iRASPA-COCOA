@@ -78,6 +78,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
   
   func fetchNotificationChanges()
   {
+    /*
     //let database: CKDatabase = CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").publicCloudDatabase
 
     let operation = CKFetchNotificationChangesOperation(previousServerChangeToken: nil)
@@ -136,6 +137,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
     
     let operationQueue = OperationQueue()
     operationQueue.addOperation(operation)
+ */
   }
   
 
