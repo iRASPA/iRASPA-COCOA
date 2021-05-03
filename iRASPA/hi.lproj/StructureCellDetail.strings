@@ -116,8 +116,8 @@
 /* Class = "NSButtonCell"; title = "Apply"; ObjectID = "Fi0-La-ItK"; */
 "Fi0-La-ItK.title" = "लागू";
 
-/* Class = "NSMenuItem"; title = "Molecular Crystal"; ObjectID = "GCR-0z-KdY"; */
-"GCR-0z-KdY.title" = "आणविक क्रिस्टल";
+/* Class = "NSMenuItem"; title = "Molecular Crystal Solvent"; ObjectID = "GCR-0z-KdY"; */
+"GCR-0z-KdY.title" = "आणविक क्रिस्टल सॉल्वेंट";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
 "Geb-Or-zb5.title" = "विशेषक";

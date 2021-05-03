@@ -56,7 +56,7 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "EMw-Fn-YYe"; */
 "EMw-Fn-YYe.placeholderString" = "לא ידוע";
 
-/* Class = "NSMenuItem"; title = "Fixed Volume; Shape Change"; ObjectID = "Etd-c0-eiU"; */
+/* Class = "NSMenuItem"; title = "Fixed Volume; Shape Free"; ObjectID = "Etd-c0-eiU"; */
 "Etd-c0-eiU.title" = "נפח קבוע; שינוי צורה";
 
 /* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
@@ -392,7 +392,7 @@
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[2] = "Journal of the Physical Chemstry"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
 
-/* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Change"; ObjectID = "sah-qX-FWQ"; */
+/* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Free"; ObjectID = "sah-qX-FWQ"; */
 "sah-qX-FWQ.title" = "זוויות קבועות; שינוי אורך קצה איזוטרופי";
 
 /* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
@@ -455,7 +455,7 @@
 /* Class = "NSTextFieldCell"; title = "Author"; ObjectID = "uaM-oQ-eaJ"; */
 "uaM-oQ-eaJ.title" = "מְחַבֵּר";
 
-/* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Change"; ObjectID = "ucW-XP-BfZ"; */
+/* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Free"; ObjectID = "ucW-XP-BfZ"; */
 "ucW-XP-BfZ.title" = "זוויות קבועות; שינוי באורך הקצה האניסוטרופי";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "urK-zQ-9a7"; */
@@ -512,7 +512,7 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Middle Name"; ObjectID = "yR3-PF-JAn"; */
 "yR3-PF-JAn.placeholderString" = "שם אמצעי";
 
-/* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Change"; ObjectID = "ylL-90-vOx"; */
+/* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Free"; ObjectID = "ylL-90-vOx"; */
 "ylL-90-vOx.title" = "קבוע 𝝰- 𝝱; ו- 𝝲- זוויות ואורכי קצה שינוי";
 
 /* Class = "NSTextFieldCell"; title = "Number of reflections"; ObjectID = "z73-uc-ODJ"; */
@@ -521,5 +521,5 @@
 /* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "zKZ-Xu-F5z"; */
 "zKZ-Xu-F5z.title" = "חבילת תוכנה";
 
-/* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Change"; ObjectID = "zUt-yS-ax8"; */
+/* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Free"; ObjectID = "zUt-yS-ax8"; */
 "zUt-yS-ax8.title" = "שינוי אורכי הקצה והקצה";
