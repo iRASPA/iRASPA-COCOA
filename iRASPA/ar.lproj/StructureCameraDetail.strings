@@ -3,7 +3,7 @@
 "0BR-Ed-UAj.title" = "بوصة";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "0bK-Qa-X5f"; */
-"0bK-Qa-X5f.title" = "زوايا أويلر";
+"0bK-Qa-X5f.title" = "زوايا Euler";
 
 /* Class = "NSButtonCell"; title = "+Z"; ObjectID = "0ro-vd-hvU"; */
 "0ro-vd-hvU.title" = "+Z";

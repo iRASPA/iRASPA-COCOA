@@ -18,7 +18,7 @@
 "3Ik-9O-zWy.title" = "أرجون";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "3sL-9T-b9T"; */
-"3sL-9T-b9T.title" = "لا أحد";
+"3sL-9T-b9T.title" = "لا يوجد";
 
 /* Class = "NSMenuItem"; title = "Water"; ObjectID = "4Ul-Kb-Iv7"; */
 "4Ul-Kb-Iv7.title" = "ماء";
@@ -36,7 +36,7 @@
 "51e-MD-soy.title" = "غادر";
 
 /* Class = "NSMenuItem"; title = "Van der Waals"; ObjectID = "543-nV-Xw2"; */
-"543-nV-Xw2.title" = "فان دير فال";
+"543-nV-Xw2.title" = "Van der Waals";
 
 /* Class = "NSTextFieldCell"; title = "Type"; ObjectID = "5Pc-9v-LWF"; */
 "5Pc-9v-LWF.title" = "يكتب";
@@ -57,7 +57,7 @@
 "5xK-C0-rPU.title" = "سطح الامتزاز";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
-"6Aw-j2-ekx.title" = "إضاءة بوند";
+"6Aw-j2-ekx.title" = "إضاءة الروابط";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "6LE-C6-Xi3"; */
 "6LE-C6-Xi3.title" = "الأسفل";
@@ -66,7 +66,7 @@
 "6My-58-9Eo.title" = "مركز";
 
 /* Class = "NSMenuItem"; title = "Licorice"; ObjectID = "6mE-0U-P7u"; */
-"6mE-0U-P7u.title" = "عرق السوس";
+"6mE-0U-P7u.title" = "Licorice";
 
 /* Class = "NSMenuItem"; title = "Force Field First"; ObjectID = "7mT-Qt-DKy"; */
 "7mT-Qt-DKy.title" = "مجال القوة أولا";
@@ -114,7 +114,7 @@
 "BhQ-29-eXX.title" = "جزء";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "Bvc-rc-vqi"; */
-"Bvc-rc-vqi.title" = "زوايا أويلر";
+"Bvc-rc-vqi.title" = "زوايا Euler";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "C4F-mR-Wqd"; */
 "C4F-mR-Wqd.title" = "تعرض";
@@ -129,7 +129,7 @@
 "Dvd-oC-whc.title" = "Jmol";
 
 /* Class = "NSTextFieldCell"; title = "Alignment"; ObjectID = "E3F-gq-hXm"; */
-"E3F-gq-hXm.title" = "انتقام";
+"E3F-gq-hXm.title" = "المحاذاة";
 
 /* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "ENi-9x-fAK"; */
 "ENi-9x-fAK.title" = "Worley Noise 3D";
@@ -174,7 +174,7 @@
 "JAw-bD-rCT.title" = "منتشر شدة الضوء";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
-"JKn-cA-MRP.title" = "نوع السندات";
+"JKn-cA-MRP.title" = "نوع الروابط";
 
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "JdC-cy-4oD"; */
 "JdC-cy-4oD.title" = "عنصر كيميائي";
@@ -225,7 +225,7 @@
 "OqP-s8-Ltq.title" = "الميثان";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Ozn-KS-ZB5"; */
-"Ozn-KS-ZB5.title" = "لا أحد";
+"Ozn-KS-ZB5.title" = "لا يوجد";
 
 /* Class = "NSTextFieldCell"; title = "Quality"; ObjectID = "P5F-ca-L8c"; */
 "P5F-ca-L8c.title" = "جودة";
@@ -351,7 +351,7 @@
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "إظهار السندات";
+"ajZ-C1-kOG.title" = "إظهار الروابط";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
 "bBY-15-FbE.title" = "شدة الضوء المرآوية";
@@ -363,7 +363,7 @@
 "bca-zz-KOf.title" = "شدة الضوء المرآوية";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "bdI-Je-pwI"; */
-"bdI-Je-pwI.title" = "لا أحد";
+"bdI-Je-pwI.title" = "لا يوجد";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "bdU-wM-QtZ"; */
 "bdU-wM-QtZ.title" = "تعرض";
@@ -414,7 +414,7 @@
 "eY8-q5-Em9.title" = "ترتيب";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
-"ehx-ML-HSl.title" = "شاء";
+"ehx-ML-HSl.title" = "المركبات";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "erk-nB-D85"; */
 "erk-nB-D85.title" = "شدة الضوء المحيط";
@@ -507,7 +507,7 @@
 "orw-61-fer.title" = "الشحنة";
 
 /* Class = "NSBox"; title = "Atom Lighting"; ObjectID = "osH-Uy-RWH"; */
-"osH-Uy-RWH.title" = "إضاءة أتوم";
+"osH-Uy-RWH.title" = "إضاءة الذرة";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "qxB-3k-fDI"; */
 "qxB-3k-fDI.title" = "ميدان القوة";
@@ -534,7 +534,7 @@
 "tGv-cl-rkV.title" = "عدد الجوانب";
 
 /* Class = "NSMenuItem"; title = "Split"; ObjectID = "tR7-cx-f3N"; */
-"tR7-cx-f3N.title" = "انشق، مزق";
+"tR7-cx-f3N.title" = "مزق";
 
 /* Class = "NSMenuItem"; title = "Vesta"; ObjectID = "toC-zQ-Spl"; */
 "toC-zQ-Spl.title" = "Vesta";

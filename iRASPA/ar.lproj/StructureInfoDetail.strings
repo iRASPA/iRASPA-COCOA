@@ -117,7 +117,7 @@
 "MCu-aJ-XRY.title" = "محاكاة الصلب";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
-"MYm-ia-kRD.title" = "سيمبلكس";
+"MYm-ia-kRD.title" = "Simplex";
 
 /* Class = "NSTextFieldCell"; title = "Eigenvalues"; ObjectID = "Mz0-GD-bP9"; */
 "Mz0-GD-bP9.title" = "القيم الذاتية";

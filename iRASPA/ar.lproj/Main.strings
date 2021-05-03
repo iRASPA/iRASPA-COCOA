@@ -9,7 +9,7 @@
 "1Xt-HY-uBw.title" = "iRASPA";
 
 /* Class = "NSMenu"; title = "Find"; ObjectID = "1b7-l0-nxx"; */
-"1b7-l0-nxx.title" = "تجد";
+"1b7-l0-nxx.title" = "إيجاد";
 
 /* Class = "NSMenuItem"; title = "Lower"; ObjectID = "1tx-W0-xDw"; */
 "1tx-W0-xDw.title" = "أدنى";
@@ -372,7 +372,7 @@
 "fCt-M2-s9M.title" = "مساحة العمل";
 
 /* Class = "NSMenuItem"; title = "Paste"; ObjectID = "gVA-U4-sdL"; */
-"gVA-U4-sdL.title" = "معجون";
+"gVA-U4-sdL.title" = "ألصق";
 
 /* Class = "NSMenuItem"; title = "Smart Quotes"; ObjectID = "hQb-2v-fYv"; */
 "hQb-2v-fYv.title" = "اقتباسات ذكية";
@@ -393,7 +393,7 @@
 "ijk-EB-dga.title" = "حدود";
 
 /* Class = "NSMenuItem"; title = "Kern"; ObjectID = "jBQ-r6-VK2"; */
-"jBQ-r6-VK2.title" = "كيرن";
+"jBQ-r6-VK2.title" = "kern";
 
 /* Class = "NSMenuItem"; title = "2.39:1"; ObjectID = "jF0-uJ-F9d"; */
 "jF0-uJ-F9d.title" = "2.39:1";
