@@ -45,7 +45,7 @@
 "K8j-Rb-vrc.title" = "أضف مجموعة المشروع";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "NQW-mX-NqP"; */
-"NQW-mX-NqP.placeholderString" = "منقي";
+"NQW-mX-NqP.placeholderString" = "ترشح";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "NtS-cJ-UOq"; */
 "NtS-cJ-UOq.title" = "Box";

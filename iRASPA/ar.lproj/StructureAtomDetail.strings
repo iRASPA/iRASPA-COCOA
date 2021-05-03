@@ -33,7 +33,7 @@
 "HHk-Gx-Fpn.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "LoO-EL-ifx"; */
-"LoO-EL-ifx.title" = "أضف مجموعة أتوم";
+"LoO-EL-ifx.title" = "أضف مجموعة ذرات";
 
 /* Class = "NSMenuItem"; title = "mmCIF"; ObjectID = "M4C-ue-e5C"; */
 "M4C-ue-e5C.title" = "mmCIF";
@@ -69,7 +69,7 @@
 "dp9-ww-pqx.title" = "تناظر";
 
 /* Class = "NSMenuItem"; title = "Add Atom"; ObjectID = "e3g-JW-gej"; */
-"e3g-JW-gej.title" = "أضف أتوم";
+"e3g-JW-gej.title" = "أضف ذرة";
 
 /* Class = "NSMenuItem"; title = "Top"; ObjectID = "eYX-Je-wTp"; */
 "eYX-Je-wTp.title" = "قمة";
@@ -81,7 +81,7 @@
 "fJ5-bP-buy.title" = "PDB";
 
 /* Class = "NSMenuItem"; title = "Match selection"; ObjectID = "fMn-ZP-dZ4"; */
-"fMn-ZP-dZ4.title" = "اختيار المباراة";
+"fMn-ZP-dZ4.title" = "طابق الاختيار";
 
 /* Class = "NSMenuItem"; title = "Move to new Movie"; ObjectID = "fmI-pV-gCy"; */
 "fmI-pV-gCy.title" = "الانتقال إلى فيلم جديد";
@@ -141,7 +141,7 @@
 "to4-IQ-4W7.title" = "تصدير بتنسيق";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "txI-SF-Ef5"; */
-"txI-SF-Ef5.title" = "أضف مجموعة أتوم";
+"txI-SF-Ef5.title" = "أضف مجموعة ذرات";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "wAb-gF-oXG"; */
 "wAb-gF-oXG.title" = "Text Cell";
@@ -159,7 +159,7 @@
 "ynH-ie-NeJ.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Make Super-Cell"; ObjectID = "yoN-UL-IRj"; */
-"yoN-UL-IRj.title" = "اصنع سوبر سيل";
+"yoN-UL-IRj.title" = "اصنع خلية خارقة";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "zgU-ei-acC"; */
 "zgU-ei-acC.title" = "Text Cell";

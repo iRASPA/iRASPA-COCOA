@@ -9,7 +9,7 @@
 "7uB-Nb-mkk.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Type bonds"; ObjectID = "9rV-cN-bzl"; */
-"9rV-cN-bzl.title" = "اكتب الاتصالات";
+"9rV-cN-bzl.title" = "اكتب الروابط";
 
 /* Class = "NSTableColumn"; headerCell.title = "length"; ObjectID = "DvX-tf-DBg"; */
 "DvX-tf-DBg.headerCell.title" = "length";
@@ -48,4 +48,4 @@
 "oBx-QK-c2U.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Recompute Bonds"; ObjectID = "w5W-4P-qvW"; */
-"w5W-4P-qvW.title" = "إعادة حساب الاتصالات";
+"w5W-4P-qvW.title" = "إعادة حساب الروابط";

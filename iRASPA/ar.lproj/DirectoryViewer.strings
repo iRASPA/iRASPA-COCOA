@@ -129,7 +129,7 @@
 "QAT-BU-IHn.title" = "هو";
 
 /* Class = "NSMenuItem"; title = "Largest cavity diameter"; ObjectID = "QZV-BO-K2P"; */
-"QZV-BO-K2P.title" = "أكبر قطر تجويف";
+"QZV-BO-K2P.title" = "قطر التجويف الأكبر";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "QjQ-JG-tdg"; */
 "QjQ-JG-tdg.title" = "أكبر من";
@@ -243,7 +243,7 @@
 "lVF-n6-d3v.title" = "اقل من";
 
 /* Class = "NSMenuItem"; title = "matches"; ObjectID = "lbV-FO-8zT"; */
-"lbV-FO-8zT.title" = "اعواد الكبريت";
+"lbV-FO-8zT.title" = "المتطابقين";
 
 /* Class = "NSMenuItem"; title = "Framework accessible volume"; ObjectID = "lc0-Us-BEz"; */
 "lc0-Us-BEz.title" = "حجم الوصول إلى الإطار";
@@ -300,7 +300,7 @@
 "yCO-9y-bt0.title" = "أي";
 
 /* Class = "NSMenuItem"; title = "Type"; ObjectID = "yFJ-FY-elM"; */
-"yFJ-FY-elM.title" = "يكتب";
+"yFJ-FY-elM.title" = "نوع";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "ybX-pN-Qjb"; */
 "ybX-pN-Qjb.title" = "هو";

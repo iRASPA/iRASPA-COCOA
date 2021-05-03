@@ -81,16 +81,16 @@
 "exg-Lr-h93.title" = "Box";
 
 /* Class = "NSTextFieldCell"; title = "Epsilon"; ObjectID = "fcz-SI-vXv"; */
-"fcz-SI-vXv.title" = "إبسيلون";
+"fcz-SI-vXv.title" = "Epsilon";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "hbT-eZ-OBK"; */
 "hbT-eZ-OBK.title" = "Å";
 
 /* Class = "NSBox"; title = "Possible Oxidation States"; ObjectID = "nb3-UI-e9y"; */
-"nb3-UI-e9y.title" = "الدول الأكسدة الممكنة";
+"nb3-UI-e9y.title" = "حالات الأكسدة الممكنة";
 
 /* Class = "NSTextFieldCell"; title = "Van der Waals Radius"; ObjectID = "prv-DF-MqL"; */
-"prv-DF-MqL.title" = "فان دير فالس راديوس";
+"prv-DF-MqL.title" = "نصف القطرVan der Waals ";
 
 /* Class = "NSTextFieldCell"; title = "Carbon"; ObjectID = "rF4-Eu-aR8"; */
 "rF4-Eu-aR8.title" = "كربون";
