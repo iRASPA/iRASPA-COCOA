@@ -51,7 +51,7 @@
 "8FT-Ib-RKI.title" = "150 dpi";
 
 /* Class = "NSButtonCell"; title = "Perspective"; ObjectID = "9XT-W6-7iV"; */
-"9XT-W6-7iV.title" = "إنطباع";
+"9XT-W6-7iV.title" = "منظوري";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
 "A0b-wl-zfu.title" = "أضواء";
@@ -198,7 +198,7 @@
 "enh-gY-DeN.label" = "الخطي التدرج";
 
 /* Class = "NSBox"; title = "Projection"; ObjectID = "fM1-LC-a88"; */
-"fM1-LC-a88.title" = "تنبؤ";
+"fM1-LC-a88.title" = "العرض";
 
 /* Class = "NSBox"; title = "Reset Direction"; ObjectID = "fU4-qD-Ex2"; */
 "fU4-qD-Ex2.title" = "إعادة تعيين الاتجاه";
@@ -267,7 +267,7 @@
 "wbM-MI-727.title" = "95%";
 
 /* Class = "NSButtonCell"; title = "Orthographic"; ObjectID = "xBp-1E-rPs"; */
-"xBp-1E-rPs.title" = "الهجاء";
+"xBp-1E-rPs.title" = "عامودي";
 
 /* Class = "NSMenuItem"; title = "1200 dpi"; ObjectID = "yBW-uB-hCP"; */
 "yBW-uB-hCP.title" = "1200 dpi";

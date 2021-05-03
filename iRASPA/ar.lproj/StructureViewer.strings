@@ -6,19 +6,19 @@
 "8jm-NB-F14.title" = "Box";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[0] = "Camera"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[0]" = "آلة تصوير";
+"KMJ-Zm-flM.ibShadowedLabels[0]" = "آلة التصوير";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[1] = "Elements"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[1]" = "عناصر";
+"KMJ-Zm-flM.ibShadowedLabels[1]" = "العناصر";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[2] = "Info"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[2]" = "معلومات";
+"KMJ-Zm-flM.ibShadowedLabels[2]" = "المعلومات";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[3] = "Appearance"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[3]" = "مظهر";
+"KMJ-Zm-flM.ibShadowedLabels[3]" = "المظهر";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[4] = "Cell"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[4]" = "خلية";
+"KMJ-Zm-flM.ibShadowedLabels[4]" = "الخلية";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[5] = "Atoms"; ObjectID = "KMJ-Zm-flM"; */
 "KMJ-Zm-flM.ibShadowedLabels[5]" = "الذرات";

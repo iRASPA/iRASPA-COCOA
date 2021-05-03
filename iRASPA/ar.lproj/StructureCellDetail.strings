@@ -162,7 +162,7 @@
 "NtP-sh-9XR.placeholderString" = "cy";
 
 /* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
-"OFQ-fA-vGT.title" = "دقق في جزيء";
+"OFQ-fA-vGT.title" = " جزيءالفحص";
 
 /* Class = "NSTextFieldCell"; title = "CY"; ObjectID = "OU6-Uu-uVv"; */
 "OU6-Uu-uVv.title" = "CY";
@@ -249,7 +249,7 @@
 "ZfA-8U-voh.placeholderString" = "الحد الأدنى Z";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "ZnC-Km-HZJ"; */
-"ZnC-Km-HZJ.title" = "زوايا أويلر";
+"ZnC-Km-HZJ.title" = "زوايا Euler";
 
 /* Class = "NSTextFieldCell"; title = "[m²/g]"; ObjectID = "aCG-eP-d5V"; */
 "aCG-eP-d5V.title" = "[m²/g]";
@@ -402,7 +402,7 @@
 "rkG-hU-SdP.placeholderString" = "طول a";
 
 /* Class = "NSTextFieldCell"; title = "Holohedry"; ObjectID = "sDc-yH-bwk"; */
-"sDc-yH-bwk.title" = "هولوهيدري";
+"sDc-yH-bwk.title" = "مجسم";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "زاوية X";
@@ -459,7 +459,7 @@
 "ugQ-Gv-6sx.title" = "استدارة +90";
 
 /* Class = "NSTextFieldCell"; title = "Flip"; ObjectID = "v83-YD-3LI"; */
-"v83-YD-3LI.title" = "يواجه";
+"v83-YD-3LI.title" = "قلب";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
 "vhk-8d-Ytl.title" = "الخصائص الهيكلية";

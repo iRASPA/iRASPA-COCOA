@@ -3,7 +3,7 @@
 "126-Ob-v2F.title" = "استدارة +90";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "1Ms-wb-ECb"; */
-"1Ms-wb-ECb.title" = "شدة الضوء المرآوية";
+"1Ms-wb-ECb.title" = "شدة الضوء البراق";
 
 /* Class = "NSTextFieldCell"; title = "𝜈"; ObjectID = "1gP-QT-h2b"; */
 "1gP-QT-h2b.title" = "𝜈";
@@ -51,10 +51,10 @@
 "5pu-BI-tJR.title" = "وحدة الخلية";
 
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
-"5tk-gG-FdV.title" = "عامل مقياس السندات";
+"5tk-gG-FdV.title" = "عامل مقياس الروابط";
 
 /* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
-"5xK-C0-rPU.title" = "سطح الامتزاز";
+"5xK-C0-rPU.title" = "سطح الإمتصاص الكيميائي";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
 "6Aw-j2-ekx.title" = "إضاءة الروابط";
@@ -75,7 +75,7 @@
 "8Fb-07-tja.title" = "هيدروجين";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "8ga-HD-e1b"; */
-"8ga-HD-e1b.title" = "منتشر شدة الضوء";
+"8ga-HD-e1b.title" = "نشر شدة الضوء";
 
 /* Class = "NSTextFieldCell"; title = "Atoms"; ObjectID = "8ht-z0-szM"; */
 "8ht-z0-szM.title" = "الذرات";
@@ -84,7 +84,7 @@
 "8iy-di-Ufc.title" = "شدة الضوء المحيط";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "90a-Ax-VRf"; */
-"90a-Ax-VRf.title" = "تعرض";
+"90a-Ax-VRf.title" = "التعرض";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "97c-Ea-ha8"; */
 "97c-Ea-ha8.title" = "نمط التحديد";
@@ -117,13 +117,13 @@
 "Bvc-rc-vqi.title" = "زوايا Euler";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "C4F-mR-Wqd"; */
-"C4F-mR-Wqd.title" = "تعرض";
+"C4F-mR-Wqd.title" = "التعرض";
 
 /* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "Cur-NK-N96"; */
 "Cur-NK-N96.title" = "معلمات النمط";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Df4-cu-Yqn"; */
-"Df4-cu-Yqn.title" = "منتشر شدة الضوء";
+"Df4-cu-Yqn.title" = "نشر شدة الضوء";
 
 /* Class = "NSMenuItem"; title = "Jmol"; ObjectID = "Dvd-oC-whc"; */
 "Dvd-oC-whc.title" = "Jmol";
@@ -144,7 +144,7 @@
 "F0U-6l-67M.title" = "يشع";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "Fj4-J7-jzg"; */
-"Fj4-J7-jzg.title" = "شدة الضوء المرآوية";
+"Fj4-J7-jzg.title" = "شدة الضوء البراق";
 
 /* Class = "NSButtonCell"; title = "Ambient Occlusion"; ObjectID = "Ftc-mi-NgX"; */
 "Ftc-mi-NgX.title" = "الانسداد المحيط";
@@ -162,16 +162,16 @@
 "Gf0-Qp-gqQ.title" = "مخطط";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "GfJ-48-dF4"; */
-"GfJ-48-dF4.title" = "التحديد الشعاعي التحجيم";
+"GfJ-48-dF4.title" = "التدريج الشعاعي للتحديد";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
-"H3R-9w-R7d.title" = "هوى";
+"H3R-9w-R7d.title" = "درجة اللون";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "IIB-vI-u3a"; */
 "IIB-vI-u3a.title" = "شدة التحديد";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "JAw-bD-rCT"; */
-"JAw-bD-rCT.title" = "منتشر شدة الضوء";
+"JAw-bD-rCT.title" = "نشر شدة الضوء";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
 "JKn-cA-MRP.title" = "نوع الروابط";
@@ -198,7 +198,7 @@
 "LSL-D7-VXo.title" = "التحديد الشعاعي التحجيم";
 
 /* Class = "NSTextFieldCell"; title = "Annotation"; ObjectID = "LSN-af-m9O"; */
-"LSN-af-m9O.title" = "حاشية. ملاحظة";
+"LSN-af-m9O.title" = "الشروح";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "M4h-TV-oAo"; */
 "M4h-TV-oAo.title" = "اللمعان";
@@ -249,7 +249,7 @@
 "QAl-Oz-tMg.title" = "𝜌";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "Qvw-wH-dnp"; */
-"Qvw-wH-dnp.title" = "هوى";
+"Qvw-wH-dnp.title" = "درجة اللون";
 
 /* Class = "NSMenuItem"; title = "128x128x128"; ObjectID = "R0Z-ra-sDa"; */
 "R0Z-ra-sDa.title" = "128x128x128";
@@ -264,7 +264,7 @@
 "Rjl-1D-n7b.title" = "اللمعان";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Rwu-J1-bjK"; */
-"Rwu-J1-bjK.title" = "لا أحد";
+"Rwu-J1-bjK.title" = "لا يوجد";
 
 /* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "SFF-hg-8Cg"; */
 "SFF-hg-8Cg.title" = "مجال القوة فقط";
@@ -276,7 +276,7 @@
 "Sdq-Z4-nnY.title" = "زاوية الدوران";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Sgk-qh-f3p"; */
-"Sgk-qh-f3p.title" = "منتشر شدة الضوء";
+"Sgk-qh-f3p.title" = "نشر شدة الضوء";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "TPc-vg-PLV"; */
 "TPc-vg-PLV.title" = "التحديد الشعاعي التحجيم";
@@ -288,16 +288,16 @@
 "Tlc-XL-RDG.title" = "الانحدار";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Tqo-qK-6Fc"; */
-"Tqo-qK-6Fc.title" = "لا أحد";
+"Tqo-qK-6Fc.title" = "لا يوجد";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "UXl-KR-D8o"; */
 "UXl-KR-D8o.title" = "التشبع";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "V0t-KV-zMh"; */
-"V0t-KV-zMh.title" = "هوى";
+"V0t-KV-zMh.title" = "درجة اللون";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "V4C-Dq-82n"; */
-"V4C-Dq-82n.title" = "تعرض";
+"V4C-Dq-82n.title" = "التعرض";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "VIk-Df-Zyf"; */
 "VIk-Df-Zyf.title" = "اللمعان";
@@ -321,7 +321,7 @@
 "WlB-zZ-igz.title" = "مجموعة اللون";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "Y1s-d7-iYT"; */
-"Y1s-d7-iYT.title" = "شدة الضوء المرآوية";
+"Y1s-d7-iYT.title" = "شدة الضوء البراق";
 
 /* Class = "NSButtonCell"; title = "Capped"; ObjectID = "YAJ-aq-PPI"; */
 "YAJ-aq-PPI.title" = "توج";
@@ -342,7 +342,7 @@
 "Zjr-02-4gi.title" = "الهيليوم";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "Zpi-ZT-H9N"; */
-"Zpi-ZT-H9N.title" = "تعرض";
+"Zpi-ZT-H9N.title" = "التعرض";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "aUf-Ct-Ubf"; */
 "aUf-Ct-Ubf.title" = "Text Cell";
@@ -354,19 +354,19 @@
 "ajZ-C1-kOG.title" = "إظهار الروابط";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
-"bBY-15-FbE.title" = "شدة الضوء المرآوية";
+"bBY-15-FbE.title" = "شدة الضوء البراق";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "bXw-93-Dat"; */
 "bXw-93-Dat.title" = "اللمعان";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bca-zz-KOf"; */
-"bca-zz-KOf.title" = "شدة الضوء المرآوية";
+"bca-zz-KOf.title" = "شدة الضوء البراق";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "bdI-Je-pwI"; */
 "bdI-Je-pwI.title" = "لا يوجد";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "bdU-wM-QtZ"; */
-"bdU-wM-QtZ.title" = "تعرض";
+"bdU-wM-QtZ.title" = "التعرض";
 
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "bsZ-9F-KAn"; */
 "bsZ-9F-KAn.title" = "اسم العرض";
@@ -378,7 +378,7 @@
 "cJr-Nn-bS9.title" = "𝜈";
 
 /* Class = "NSTextFieldCell"; title = "Opacity"; ObjectID = "cTs-hC-amJ"; */
-"cTs-hC-amJ.title" = "العتامة";
+"cTs-hC-amJ.title" = "التعتيم";
 
 /* Class = "NSMenuItem"; title = "Right"; ObjectID = "cVb-J3-NgY"; */
 "cVb-J3-NgY.title" = "حق";
@@ -393,7 +393,7 @@
 "ddP-zl-i4G.title" = "موضع";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "dfq-2k-AIF"; */
-"dfq-2k-AIF.title" = "لا أحد";
+"dfq-2k-AIF.title" = "لا يوجد";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "dg1-vw-fab"; */
 "dg1-vw-fab.title" = "نمط التحديد";
@@ -402,7 +402,7 @@
 "dk2-KV-Pe3.title" = "مجال القوة فقط";
 
 /* Class = "NSButtonCell"; title = "Draw Atoms"; ObjectID = "dmK-0a-HKm"; */
-"dmK-0a-HKm.title" = "تظهر الذرات";
+"dmK-0a-HKm.title" = "إظهار الذرات";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
 "e0E-bj-7fz.title" = "القيمة";
@@ -435,7 +435,7 @@
 "hJp-8F-jyf.title" = "يشع";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "hyu-qj-36T"; */
-"hyu-qj-36T.title" = "منتشر شدة الضوء";
+"hyu-qj-36T.title" = "نشر شدة الضوء";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
 "iNJ-ng-4ga.title" = "ترتيب";
@@ -444,7 +444,7 @@
 "iOI-Yp-RuB.title" = "المعرف";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "iRX-2G-KQd"; */
-"iRX-2G-KQd.title" = "هوى";
+"iRX-2G-KQd.title" = "درجة اللون";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "iUY-dW-y5v"; */
 "iUY-dW-y5v.title" = "شدة الضوء المحيط";
@@ -459,7 +459,7 @@
 "jQX-px-t8j.title" = "استدارة -90";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "jjn-ZG-OAy"; */
-"jjn-ZG-OAy.title" = "تعرض";
+"jjn-ZG-OAy.title" = "التعرض";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle x"; ObjectID = "kRP-v9-JWX"; */
 "kRP-v9-JWX.placeholderString" = "زاوية x";
@@ -480,16 +480,16 @@
 "mx2-LA-CaG.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Bonds"; ObjectID = "nGx-4p-hvc"; */
-"nGx-4p-hvc.title" = "سندات";
+"nGx-4p-hvc.title" = "روابط";
 
 /* Class = "NSButtonCell"; title = "Show Adsorption Surface"; ObjectID = "nOa-3D-Seb"; */
-"nOa-3D-Seb.title" = "إظهار سطح الامتزاز";
+"nOa-3D-Seb.title" = "إظهار سطح الإمتصاص الكيميائي";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "nTL-aw-5vW"; */
 "nTL-aw-5vW.title" = "شدة الضوء المحيط";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "nUw-Lz-pBk"; */
-"nUw-Lz-pBk.title" = "شدة الضوء المرآوية";
+"nUw-Lz-pBk.title" = "شدة الضوء البراق";
 
 /* Class = "NSMenuItem"; title = "Bottom-Left"; ObjectID = "nV6-NG-mmZ"; */
 "nV6-NG-mmZ.title" = "أسفل اليسار";
@@ -498,7 +498,7 @@
 "nZL-Pd-jrp.title" = "مخطط";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "oEa-7e-zlj"; */
-"oEa-7e-zlj.title" = "منتشر شدة الضوء";
+"oEa-7e-zlj.title" = "نشر شدة الضوء";
 
 /* Class = "NSMenuItem"; title = "Identifier"; ObjectID = "ofQ-6q-SUf"; */
 "ofQ-6q-SUf.title" = "المعرف";
@@ -555,13 +555,13 @@
 "vI4-zj-6Yx.title" = "Worley Noise 3D";
 
 /* Class = "NSButtonCell"; title = "Draw Unit Cell"; ObjectID = "vYr-pF-LLC"; */
-"vYr-pF-LLC.title" = "إظهار خلية الوحدة";
+"vYr-pF-LLC.title" = "إظهار وحدة الخلية";
 
 /* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
 "vvr-MF-ufZ.title" = "فوق على اليمين";
 
 /* Class = "NSTextFieldCell"; title = "Opacity"; ObjectID = "wEC-gm-GXl"; */
-"wEC-gm-GXl.title" = "العتامة";
+"wEC-gm-GXl.title" = "التعتيم";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "x58-hu-1Tw"; */
 "x58-hu-1Tw.title" = "التشبع";

@@ -63,7 +63,7 @@
 "XSg-KN-Gvs.title" = "عدد";
 
 /* Class = "NSTextFieldCell"; title = "Sigma"; ObjectID = "Zuq-uJ-RRd"; */
-"Zuq-uJ-RRd.title" = "سيجما";
+"Zuq-uJ-RRd.title" = "Sigma";
 
 /* Class = "NSTextFieldCell"; title = "Group"; ObjectID = "a5h-Uu-h84"; */
 "a5h-Uu-h84.title" = "مجموعة";
@@ -72,7 +72,7 @@
 "d0R-zc-cge.title" = "نصف القطر الذري";
 
 /* Class = "NSTextFieldCell"; title = "Triple Bond Covalent Radius"; ObjectID = "dAx-rW-eh4"; */
-"dAx-rW-eh4.title" = "رابطة ثلاثية تساهمية نصف قطرها";
+"dAx-rW-eh4.title" = "نصف قطر الرابطة الثلاثية التساهمية";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "ed7-vv-cRQ"; */
 "ed7-vv-cRQ.title" = "Å";
@@ -96,7 +96,7 @@
 "rF4-Eu-aR8.title" = "كربون";
 
 /* Class = "NSTextFieldCell"; title = "Period"; ObjectID = "vGB-CZ-myl"; */
-"vGB-CZ-myl.title" = "فترة";
+"vGB-CZ-myl.title" = "دورة";
 
 /* Class = "NSMenuItem"; title = "Delete type"; ObjectID = "yJO-k1-No9"; */
 "yJO-k1-No9.title" = "نوع الحذف";
