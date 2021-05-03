@@ -36,7 +36,7 @@
 "Export To" = "تصدير الى";
 "Compute AO High-Quality" = "حساب AO عالي الجودة";
 "Camera Projection" = "إسقاط الكاميرا";
-"Orthographic" = "الهجاء";
+"Orthographic" = "عامودي"; 
 "Perspective" = "إنطباع";
 "Z-Direction" = "اتجاه Z";
 "Y-Direction" = "اتجاه Y";

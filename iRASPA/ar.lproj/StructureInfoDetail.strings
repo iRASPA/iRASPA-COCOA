@@ -135,7 +135,7 @@
 "P5f-Dc-mAR.placeholderString" = "l_min";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Moiety"; ObjectID = "QLD-HG-16U"; */
-"QLD-HG-16U.title" = "مويتي الصيغة الكيميائية";
+"QLD-HG-16U.title" = "Moiety الصيغة الكيميائية";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "Qbd-YO-NWQ"; */
 "Qbd-YO-NWQ.placeholderString" = "مجهول";
