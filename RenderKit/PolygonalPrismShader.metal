@@ -82,24 +82,11 @@ fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[st
   float4 specular;
   float4 color;
   
-  float3 R = reflect(-L, N);
   
-  if(frontfacing)
+  
+  if(!frontfacing)
   {
-    ambient = structureUniforms.primitiveAmbientFrontSide;
-    diffuse = max(dot(N, L), 0.0) * structureUniforms.primitiveDiffuseFrontSide;
-    specular = pow(max(dot(R, V), 0.0), structureUniforms.primitiveShininessFrontSide) * structureUniforms.primitiveSpecularFrontSide;
-      
-    color= float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
-    if (structureUniforms.primitiveFrontSideHDR)
-    {
-      float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.primitiveFrontSideHDRExposure);
-      vLdrColor.a = 1.0;
-      color = vLdrColor;
-    }
-  }
-  else
-  {
+    float3 R = reflect(-L, -N);
     ambient = structureUniforms.primitiveAmbientBackSide;
     diffuse = max(dot(-N, L), 0.0) * structureUniforms.primitiveDiffuseBackSide;
     specular = pow(max(dot(R, V), 0.0), structureUniforms.primitiveShininessBackSide) * structureUniforms.primitiveSpecularBackSide;
@@ -108,6 +95,21 @@ fragment float4 PolygonalPrismFragmentShader(AtomSphereVertexShaderOut vert [[st
     if (structureUniforms.primitiveBackSideHDR)
     {
       float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.primitiveBackSideHDRExposure);
+      vLdrColor.a = 1.0;
+      color = vLdrColor;
+    }
+  }
+  else
+  {
+    float3 R = reflect(-L, N);
+    ambient = structureUniforms.primitiveAmbientFrontSide;
+    diffuse = max(dot(N, L), 0.0) * structureUniforms.primitiveDiffuseFrontSide;
+    specular = pow(max(dot(R, V), 0.0), structureUniforms.primitiveShininessFrontSide) * structureUniforms.primitiveSpecularFrontSide;
+      
+    color= float4((ambient.xyz + diffuse.xyz + specular.xyz), 1.0);
+    if (structureUniforms.primitiveFrontSideHDR)
+    {
+      float4 vLdrColor = 1.0 - exp2(-color * structureUniforms.primitiveFrontSideHDRExposure);
       vLdrColor.a = 1.0;
       color = vLdrColor;
     }
