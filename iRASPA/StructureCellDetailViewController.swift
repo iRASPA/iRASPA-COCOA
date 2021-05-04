@@ -199,6 +199,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     return true
   }
   
+  func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool
+  {
+    return false
+  }
   
   func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView?
   {
