@@ -38,7 +38,6 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBOutlet private weak var infoOutlineView: NSStaticViewBasedOutlineView?
   
-  var heights: [String : CGFloat] = [:]
   let creatorCell: OutlineViewItem = OutlineViewItem("CreatorCell")
   let creationCell: OutlineViewItem = OutlineViewItem("CreationCell")
   let creationMethods: OutlineViewItem = OutlineViewItem("CreationMethods")
@@ -72,19 +71,6 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
     let publicationItem: OutlineViewItem = OutlineViewItem(title: "PublicationGroup", children: [publicationCell])
     
     self.infoOutlineView?.items = [creatorItem, creationItem, chemicalItem, publicationItem]
-    
-    self.heights =
-    [
-      "CreatorGroup" : 17.0,
-      "CreatorCell" : 285.0,
-      "CreationGroup" : 17.0,
-      "CreationCell" : 225.0,
-      "CreationMethods" : 300,
-      "ChemicalGroup" : 17.0,
-      "ChemicalCell" : 92.0,
-      "PublicationGroup": 17.0,
-      "PublicationCell" : 344.0
-    ]
   }
   
   override func viewWillAppear()
@@ -146,16 +132,6 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     return false
   }
-  
-  /*
-  func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
-  {
-    if let string: String = (item as? OutlineViewItem)?.title
-    {
-      return self.heights[string] ?? 200.0
-    }
-    return 200.0
-  }*/
   
   func getSubviewsOfView(_ v:NSView) -> [NSView]
   {
