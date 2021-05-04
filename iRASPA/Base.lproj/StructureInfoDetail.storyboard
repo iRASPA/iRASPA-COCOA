@@ -131,7 +131,7 @@
                                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                         </textFieldCell>
                                                                                         <connections>
-                                                                                            <action selector="changedAuthorFirstName:" target="1Uq-V5-lQQ" id="fET-2b-4TT"/>
+                                                                                            <action selector="changedAuthorMiddleName:" target="1Uq-V5-lQQ" id="djQ-w6-CXm"/>
                                                                                         </connections>
                                                                                     </textField>
                                                                                 </gridCell>
@@ -520,7 +520,7 @@
                                                                             <tabViewItems>
                                                                                 <tabViewItem label="CreationTabView" identifier="1" id="3xu-w1-ont" userLabel="Simulation">
                                                                                     <view key="view" horizontalHuggingPriority="230" verticalHuggingPriority="230" id="Wv3-gt-WG0">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="505" height="563"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="505" height="435"/>
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <subviews>
                                                                                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="28" horizontalStackHuggingPriority="210" verticalStackHuggingPriority="210" horizontalHuggingPriority="210" verticalHuggingPriority="210" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B67-B9-nOM">
@@ -1191,7 +1191,7 @@
                                                                                                                                 <rect key="frame" x="148" y="0.0" width="315" height="60"/>
                                                                                                                                 <clipView key="contentView" drawsBackground="NO" id="QLU-ML-wjd">
                                                                                                                                     <rect key="frame" x="1" y="1" width="313" height="58"/>
-                                                                                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                                                                    <autoresizingMask key="autoresizingMask"/>
                                                                                                                                     <subviews>
                                                                                                                                         <textView identifier="ExperimentalRefinementDetails" importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="li8-0m-rQF">
                                                                                                                                             <rect key="frame" x="0.0" y="0.0" width="313" height="58"/>
