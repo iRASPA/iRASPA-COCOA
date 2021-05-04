@@ -265,12 +265,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           
           if let rawValue = representedStructure.renderMaterialType?.rawValue
           {
-            popUpbuttonRepresentationType.removeItem(withTitle: "Multiple Values")
+            popUpbuttonRepresentationType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonRepresentationType.selectItem(at: rawValue)
           }
           else
           {
-            popUpbuttonRepresentationType.setTitle("Multiple Values")
+            popUpbuttonRepresentationType.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
         
@@ -325,7 +325,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldLengthA.stringValue = "Mult. V."
+            textFieldLengthA.stringValue = NSLocalizedString("Mult. V.", comment: "")
           }
         }
       }
@@ -347,7 +347,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldLengthB.stringValue = "Mult. V."
+            textFieldLengthB.stringValue = NSLocalizedString("Mult. V.", comment: "")
           }
         }
       }
@@ -369,7 +369,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldLengthC.stringValue = "Mult. V."
+            textFieldLengthC.stringValue = NSLocalizedString("Mult. V.", comment: "")
           }
         }
       }
@@ -486,7 +486,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellAX.stringValue = "Mult. Val."
+            textFieldRenderUnitCellAX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -507,7 +507,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellAY.stringValue = "Mult. Val."
+            textFieldRenderUnitCellAY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -528,7 +528,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellAZ.stringValue = "Mult. Val."
+            textFieldRenderUnitCellAZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -550,7 +550,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellBX.stringValue = "Mult. Val."
+            textFieldRenderUnitCellBX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -571,7 +571,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellBY.stringValue = "Mult. Val."
+            textFieldRenderUnitCellBY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -592,7 +592,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellBZ.stringValue = "Mult. Val."
+            textFieldRenderUnitCellBZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -614,7 +614,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellCX.stringValue = "Mult. Val."
+            textFieldRenderUnitCellCX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -635,7 +635,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellCY.stringValue = "Mult. Val."
+            textFieldRenderUnitCellCY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -656,7 +656,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderUnitCellCZ.stringValue = "Mult. Val."
+            textFieldRenderUnitCellCZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -678,7 +678,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldVolume.stringValue = "Multiple Values"
+            textFieldVolume.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -700,7 +700,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldPerpendicularWidthX.stringValue = "Multiple Values"
+            textFieldPerpendicularWidthX.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -721,7 +721,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldPerpendicularWidthY.stringValue = "Multiple Values"
+            textFieldPerpendicularWidthY.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -742,7 +742,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldPerpendicularWidthZ.stringValue = "Multiple Values"
+            textFieldPerpendicularWidthZ.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -765,7 +765,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldMaximumReplicaX.stringValue = "Mult. Val."
+            textFieldMaximumReplicaX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -787,7 +787,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldMaximumReplicaY.stringValue = "Mult. Val."
+            textFieldMaximumReplicaY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -809,7 +809,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldMaximumReplicaZ.stringValue = "Mult. Val."
+            textFieldMaximumReplicaZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -832,7 +832,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldMinimumReplicaX.stringValue = "Mult. Val."
+            textFieldMinimumReplicaX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -854,7 +854,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldMinimumReplicaY.stringValue = "Mult. Val."
+            textFieldMinimumReplicaY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -876,7 +876,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldMinimumReplicaZ.stringValue = "Mult. Val."
+            textFieldMinimumReplicaZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -980,9 +980,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldEulerAngleX.stringValue = "Multiple Values"
-            textFieldEulerAngleY.stringValue = "Multiple Values"
-            textFieldEulerAngleZ.stringValue = "Multiple Values"
+            textFieldEulerAngleX.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            textFieldEulerAngleY.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            textFieldEulerAngleZ.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1000,7 +1000,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldOriginX.stringValue = "Multiple Values"
+            textFieldOriginX.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1017,7 +1017,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldOriginY.stringValue = "Multiple Values"
+            textFieldOriginY.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1034,7 +1034,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldOriginZ.stringValue = "Multiple Values"
+            textFieldOriginZ.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1116,7 +1116,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCenterShiftX.stringValue = "Multiple Values"
+            textFieldCenterShiftX.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1133,7 +1133,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCenterShiftY.stringValue = "Multiple Values"
+            textFieldCenterShiftY.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1150,7 +1150,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCenterShiftZ.stringValue = "Multiple Values"
+            textFieldCenterShiftZ.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1183,7 +1183,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            comboBoxRenderStructureMaterialType.stringValue = "Multiple Values"
+            comboBoxRenderStructureMaterialType.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1199,7 +1199,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureMass.stringValue = "Mult. Val."
+            textFieldRenderStructureMass.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1220,7 +1220,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureDensity.stringValue = "Mult. Val."
+            textFieldRenderStructureDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1241,7 +1241,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureHeliumVoidFraction.stringValue = "Mult. Val."
+            textFieldRenderStructureHeliumVoidFraction.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1262,7 +1262,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureSpecificVolume.stringValue = "Mult. Val."
+            textFieldRenderStructureSpecificVolume.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1283,7 +1283,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureAccessiblePoreVolume.stringValue = "Mult. Val."
+            textFieldRenderStructureAccessiblePoreVolume.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1337,7 +1337,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureVolumetricNitrogenSurfaceArea.stringValue = "Mult. Val."
+            textFieldRenderStructureVolumetricNitrogenSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1358,7 +1358,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = "Mult. Val."
+            textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1381,7 +1381,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureNumberOfChannelSystems.stringValue = "Mult. Val."
+            textFieldRenderStructureNumberOfChannelSystems.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1403,7 +1403,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = "Mult. Val."
+            textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1462,7 +1462,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = "Mult. Val."
+            textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1484,7 +1484,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureLargestCavityDiameter.stringValue = "Mult. Val."
+            textFieldRenderStructureLargestCavityDiameter.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1506,7 +1506,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureRestrictingPoreLimitingDiameter.stringValue = "Mult. Val."
+            textFieldRenderStructureRestrictingPoreLimitingDiameter.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1528,7 +1528,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderStructureLargestCavityDiameterAlongAViablePath.stringValue = "Mult. Val."
+            textFieldRenderStructureLargestCavityDiameterAlongAViablePath.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1606,11 +1606,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           else
           {
             spaceGroupQualifierPopUpButton.removeAllItems()
-            spaceGroupQualifierPopUpButton.addItem(withTitle: "Multiple Values")
-            HallSpaceGroupPopUpButton.setTitle("Multiple Values")
-            SpaceGroupHolohedry.stringValue = "Multiple Values"
-            spaceGroupNumberPopUpButton.setTitle("Multiple Values")
-            spaceGroupQualifierPopUpButton.setTitle("Multiple Values")
+            spaceGroupQualifierPopUpButton.addItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            HallSpaceGroupPopUpButton.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+            SpaceGroupHolohedry.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            spaceGroupNumberPopUpButton.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+            spaceGroupQualifierPopUpButton.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -1628,7 +1628,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldRenderPrecision.stringValue = "Mult. Val."
+            textFieldRenderPrecision.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1668,7 +1668,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            centringTextField.stringValue = "Multiple Values"
+            centringTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
 
@@ -1729,15 +1729,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            hasInversionTextField.stringValue = "Multiple Values"
-            inversionTextField.stringValue = "Multiple Values"
-            centrosymmetricTextField.stringValue = "Multiple Values"
-            enantiomorphicTextField.stringValue = "Multiple Values"
-            LaueGroupTextField.stringValue = "Multiple Values"
-            pointGroupTextField.stringValue = "Multiple Values"
-            SchoenfliesTextField.stringValue = "Multiple Values"
-            symmorphicityTextField.stringValue = "Multiple Values"
-            numberOfElementsTextField.stringValue = "Multiple Values"
+            hasInversionTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            inversionTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            centrosymmetricTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            enantiomorphicTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            LaueGroupTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            pointGroupTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            SchoenfliesTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            symmorphicityTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            numberOfElementsTextField.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }

@@ -218,7 +218,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldAuthorFirstName.stringValue = "Multiple Values"
+            textFieldAuthorFirstName.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -235,7 +235,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldAuthorMiddleName.stringValue = "Multiple Values"
+            textFieldAuthorMiddleName.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -252,7 +252,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldAuthorLastName.stringValue = "Multiple Values"
+            textFieldAuthorLastName.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -269,7 +269,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldOrchidID.stringValue = "Multiple Values"
+            textFieldOrchidID.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -286,7 +286,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldResearcherID.stringValue = "Multiple Values"
+            textFieldResearcherID.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -303,7 +303,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldAffiliationUniversityName.stringValue = "Multiple Values"
+            textFieldAffiliationUniversityName.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -320,7 +320,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldAffiliationFacultyName.stringValue = "Multiple Values"
+            textFieldAffiliationFacultyName.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -337,7 +337,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldAffiliationInstituteName.stringValue = "Multiple Values"
+            textFieldAffiliationInstituteName.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -354,7 +354,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldAffiliationCityName.stringValue = "Multiple Values"
+            textFieldAffiliationCityName.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -371,12 +371,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           countries.isEditable = enabled
           if let country: String = representedStructure.structureAuthorAffiliationCountryName
           {
-            countries.removeItem(withTitle: "Multiple Values")
+            countries.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             countries.selectItem(withTitle: country)
           }
           else
           {
-            countries.stringValue = "Multiple Values"
+            countries.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
         else
@@ -406,7 +406,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            datePickerCreationDate.stringValue = "Multiple Values"
+            datePickerCreationDate.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -424,7 +424,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCreationTemperature.stringValue = "Multiple Values"
+            textFieldCreationTemperature.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -438,12 +438,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           
           if let rawValue: Int = representedStructure.structureCreationTemperatureScale?.rawValue
           {
-            popupButtonCreationTemperatureScale.removeItem(withTitle: "Multiple Values")
+            popupButtonCreationTemperatureScale.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popupButtonCreationTemperatureScale.selectItem(at: rawValue)
           }
           else
           {
-            popupButtonCreationTemperatureScale.stringValue = "Multiple Values"
+            popupButtonCreationTemperatureScale.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -461,7 +461,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            TextFieldCreationPressure.stringValue = "Multiple Values"
+            TextFieldCreationPressure.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -474,12 +474,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           
           if let rawValue: Int = representedStructure.structureCreationPressureScale?.rawValue
           {
-            popupButtonCreationPressureScale.removeItem(withTitle: "Multiple Values")
+            popupButtonCreationPressureScale.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popupButtonCreationPressureScale.selectItem(at: rawValue)
           }
           else
           {
-            popupButtonCreationPressureScale.stringValue = "Multiple Values"
+            popupButtonCreationPressureScale.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -492,12 +492,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           
           if let rawValue = representedStructure.structureCreationMethod?.rawValue
           {
-            popUpbuttonCreationMethod.removeItem(withTitle: "Multiple Values")
+            popUpbuttonCreationMethod.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonCreationMethod.selectItem(at: rawValue)
           }
           else
           {
-            popUpbuttonCreationMethod.setTitle("Multiple Values")
+            popUpbuttonCreationMethod.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -520,12 +520,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 
                 if let index: Int = representedStructure.structureCreationUnitCellRelaxationMethod?.rawValue
                 {
-                  popUpCreationUnitCellRelaxationMethod.removeItem(withTitle: "Multiple Values")
+                  popUpCreationUnitCellRelaxationMethod.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
                   popUpCreationUnitCellRelaxationMethod.selectItem(at: index)
                 }
                 else
                 {
-                  popUpCreationUnitCellRelaxationMethod.stringValue = "Multiple Values"
+                  popUpCreationUnitCellRelaxationMethod.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -547,7 +547,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  comboBoxCreationSoftwarePackageAtomicPositions.stringValue = "Multiple Values"
+                  comboBoxCreationSoftwarePackageAtomicPositions.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -560,12 +560,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 
                 if let index: Int = representedStructure.structureCreationAtomicPositionsIonsRelaxationAlgorithm?.rawValue
                 {
-                  textFieldCreationIonsRelaxationAlgorithm.removeItem(withTitle: "Multiple Values")
+                  textFieldCreationIonsRelaxationAlgorithm.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
                   textFieldCreationIonsRelaxationAlgorithm.selectItem(at: index)
                 }
                 else
                 {
-                  textFieldCreationIonsRelaxationAlgorithm.stringValue = "Multiple Values"
+                  textFieldCreationIonsRelaxationAlgorithm.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -578,12 +578,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 
                 if let index: Int = representedStructure.structureCreationAtomicPositionsIonsRelaxationCheck?.rawValue
                 {
-                  textFieldCreationIonsRelaxationCheck.removeItem(withTitle: "Multiple Values")
+                  textFieldCreationIonsRelaxationCheck.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
                   textFieldCreationIonsRelaxationCheck.selectItem(at: index)
                 }
                 else
                 {
-                  textFieldCreationIonsRelaxationCheck.stringValue = "Multiple Values"
+                  textFieldCreationIonsRelaxationCheck.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -605,7 +605,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldCreationAtomicPositionsForceField.stringValue = "Multiple Values"
+                  textFieldCreationAtomicPositionsForceField.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -627,7 +627,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  comboBoxCreationAtomicPositionsForceFieldDetails.stringValue = "Multiple Values"
+                  comboBoxCreationAtomicPositionsForceFieldDetails.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -649,7 +649,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  comboBoxCreationSoftwarePackageAtomicCharges.stringValue = "Multiple Values"
+                  comboBoxCreationSoftwarePackageAtomicCharges.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -671,7 +671,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  comboBoxCreationAtomicChargesAlgorithms.stringValue = "Multiple Values"
+                  comboBoxCreationAtomicChargesAlgorithms.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -693,7 +693,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  comboBoxCreationAtomicChargesForcefield.stringValue = "Multiple Values"
+                  comboBoxCreationAtomicChargesForcefield.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -715,7 +715,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  comboBoxCreationAtomicChargesForcefieldDetails.stringValue = "Multiple Values"
+                  comboBoxCreationAtomicChargesForcefieldDetails.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -735,7 +735,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementRadiation.stringValue = "Multiple Values"
+                  textFieldMeasurementRadiation.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -753,7 +753,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementWaveLength.stringValue = "Multiple Values"
+                  textFieldMeasurementWaveLength.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -771,7 +771,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementThetaMin.stringValue = "Multiple Values"
+                  textFieldMeasurementThetaMin.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -789,7 +789,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementThetaMax.stringValue = "Multiple Values"
+                  textFieldMeasurementThetaMax.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -807,7 +807,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementIndexLimitsHmin.stringValue = "Multiple Values"
+                  textFieldMeasurementIndexLimitsHmin.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -825,7 +825,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementIndexLimitsHmax.stringValue = "Multiple Values"
+                  textFieldMeasurementIndexLimitsHmax.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -843,7 +843,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementIndexLimitsKmin.stringValue = "Multiple Values"
+                  textFieldMeasurementIndexLimitsKmin.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -861,7 +861,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementIndexLimitsKmax.stringValue = "Multiple Values"
+                  textFieldMeasurementIndexLimitsKmax.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -879,7 +879,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementIndexLimitsLmin.stringValue = "Multiple Values"
+                  textFieldMeasurementIndexLimitsLmin.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -897,7 +897,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementIndexLimitsLmax.stringValue = "Multiple Values"
+                  textFieldMeasurementIndexLimitsLmax.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -915,7 +915,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementNumberOfSymmetryIndependentReflections.stringValue = "Multiple Values"
+                  textFieldMeasurementNumberOfSymmetryIndependentReflections.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -933,7 +933,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textFieldMeasurementSoftware.stringValue = "Multiple Values"
+                  textFieldMeasurementSoftware.stringValue = NSLocalizedString("Multiple Values", comment: "")
                 }
               }
             }
@@ -954,7 +954,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
                 }
                 else
                 {
-                  textViewRefinementDetails.textStorage?.setAttributedString(NSAttributedString(string: "Multiple Values"))
+                  textViewRefinementDetails.textStorage?.setAttributedString(NSAttributedString(string: NSLocalizedString("Multiple Values", comment: "")))
                 }
               }
 
@@ -975,7 +975,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             }
             else
             {
-              textFieldMeasurementGoodnessOfFit.stringValue = "Multiple Values"
+              textFieldMeasurementGoodnessOfFit.stringValue = NSLocalizedString("Multiple Values", comment: "")
             }
           }
         }
@@ -993,7 +993,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             }
             else
             {
-              textFieldMeasurementRFactorGt.stringValue = "Multiple Values"
+              textFieldMeasurementRFactorGt.stringValue = NSLocalizedString("Multiple Values", comment: "")
             }
           }
         }
@@ -1011,7 +1011,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             }
             else
             {
-              textFieldMeasurementRFactorAll.stringValue = "Multiple Values"
+              textFieldMeasurementRFactorAll.stringValue = NSLocalizedString("Multiple Values", comment: "")
             }
           }
         }
@@ -1040,7 +1040,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldChemicalFormulaMoiety.stringValue = "Multiple Values"
+            textFieldChemicalFormulaMoiety.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1058,7 +1058,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldChemicalFormulaSum.stringValue = "Multiple Values"
+            textFieldChemicalFormulaSum.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1076,7 +1076,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldChemicalNameSystematic.stringValue = "Multiple Values"
+            textFieldChemicalNameSystematic.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1105,7 +1105,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textViewCitationArticleTitle.textStorage?.setAttributedString(NSAttributedString(string: "Multiple Values"))
+            textViewCitationArticleTitle.textStorage?.setAttributedString(NSAttributedString(string: NSLocalizedString("Multiple Values", comment: "")))
           }
         }
         
@@ -1128,7 +1128,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCitationJournalTitle.stringValue = "Multiple Values"
+            textFieldCitationJournalTitle.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1148,7 +1148,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textViewCitationArticleAuthors.textStorage?.setAttributedString(NSAttributedString(string: "Multiple Values"))
+            textViewCitationArticleAuthors.textStorage?.setAttributedString(NSAttributedString(string: NSLocalizedString("Multiple Values", comment: "")))
           }
         }
         
@@ -1168,7 +1168,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCitationJournalVolume.stringValue = "Multiple Values"
+            textFieldCitationJournalVolume.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1187,7 +1187,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCitationJournalNumber.stringValue = "Multiple Values"
+            textFieldCitationJournalNumber.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1204,7 +1204,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            datePickerCitationPublicationDate.stringValue = "Multiple Values"
+            datePickerCitationPublicationDate.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1223,7 +1223,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCitationDOI.stringValue = "Multiple Values"
+            textFieldCitationDOI.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1242,7 +1242,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
           }
           else
           {
-            textFieldCitationDatebaseCodes.stringValue = "Multiple Values"
+            textFieldCitationDatebaseCodes.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
