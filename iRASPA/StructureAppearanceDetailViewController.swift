@@ -333,9 +333,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldEulerAngleX.stringValue = "Multiple Values"
-            textFieldEulerAngleY.stringValue = "Multiple Values"
-            textFieldEulerAngleZ.stringValue = "Multiple Values"
+            textFieldEulerAngleX.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            textFieldEulerAngleY.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            textFieldEulerAngleZ.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -395,15 +395,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldAtomScalingAX.stringValue = "Mult. Val."
-            textFieldAtomScalingAY.stringValue = "Mult. Val."
-            textFieldAtomScalingAZ.stringValue = "Mult. Val."
-            textFieldAtomScalingBX.stringValue = "Mult. Val."
-            textFieldAtomScalingBY.stringValue = "Mult. Val."
-            textFieldAtomScalingBZ.stringValue = "Mult. Val."
-            textFieldAtomScalingCX.stringValue = "Mult. Val."
-            textFieldAtomScalingCY.stringValue = "Mult. Val."
-            textFieldAtomScalingCZ.stringValue = "Mult. Val."
+            textFieldAtomScalingAX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldAtomScalingAY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldAtomScalingAZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldAtomScalingBX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldAtomScalingBY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldAtomScalingBZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldAtomScalingCX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldAtomScalingCY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldAtomScalingCZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -443,7 +443,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldOpacity.stringValue = "Mult. Val."
+            textFieldOpacity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -461,7 +461,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldNumberOfSides.stringValue = "Mult. Val."
+            textFieldNumberOfSides.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -530,7 +530,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let selectionStyle: RKSelectionStyle = representedStructure.renderPrimitiveSelectionStyle
           {
-            popUpbuttonSelectionStyle.removeItem(withTitle: "Multiple Values")
+            popUpbuttonSelectionStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
             
             if selectionStyle == .glow
@@ -541,9 +541,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            popUpbuttonSelectionStyle.setTitle("Multiple Values")
-            textFieldSelectionFrequency.stringValue = "Mult. Val."
-            textFieldSelectionDensity.stringValue = "Mult. Val."
+            popUpbuttonSelectionStyle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+            textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
           if let renderSelectionFrequency: Double = representedStructure.renderPrimitiveSelectionFrequency
@@ -552,7 +552,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSelectionFrequency.stringValue = "Mult. Val."
+            textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
           if let renderSelectionDensity: Double = representedStructure.renderPrimitiveSelectionDensity
@@ -561,7 +561,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSelectionDensity.stringValue = "Mult. Val."
+            textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -579,7 +579,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBondSelectionIntensityLevel.stringValue = "Multiple Values"
+            textFieldBondSelectionIntensityLevel.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -613,7 +613,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSelectionScaling.stringValue = "Multiple Values"
+            textFieldSelectionScaling.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -759,7 +759,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldExposure.stringValue = "Multiple Values"
+            textFieldExposure.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -795,7 +795,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldFrontAmbientIntensity.stringValue = "Multiple Values"
+            textFieldFrontAmbientIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -844,7 +844,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldFrontDiffuseIntensity.stringValue = "Multiple Values"
+            textFieldFrontDiffuseIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -893,7 +893,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldFrontSpecularIntensity.stringValue = "Multiple Values"
+            textFieldFrontSpecularIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -943,7 +943,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldFrontShininess.stringValue = "Multiple Values"
+            textFieldFrontShininess.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1000,7 +1000,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldExposure.stringValue = "Multiple Values"
+            textFieldExposure.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1036,7 +1036,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBackAmbientIntensity.stringValue = "Multiple Values"
+            textFieldBackAmbientIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1085,7 +1085,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBackDiffuseIntensity.stringValue = "Multiple Values"
+            textFieldBackDiffuseIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1134,7 +1134,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBackSpecularIntensity.stringValue = "Multiple Values"
+            textFieldBackSpecularIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1183,7 +1183,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBackShininess.stringValue = "Multiple Values"
+            textFieldBackShininess.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1222,12 +1222,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let rawValue = representedStructure.getRepresentationType()?.rawValue
           {
-            popUpbuttonRepresentationType.removeItem(withTitle: "Multiple Values")
+            popUpbuttonRepresentationType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonRepresentationType.selectItem(at: rawValue)
           }
           else
           {
-            popUpbuttonRepresentationType.setTitle("Multiple Values")
+            popUpbuttonRepresentationType.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
         
@@ -1243,7 +1243,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let representationStyle = representedStructure.getRepresentationStyle()
           {
-            popUpbuttonRepresentationStyle.removeItem(withTitle: "Multiple values")
+            popUpbuttonRepresentationStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonRepresentationStyle.removeItem(withTitle: "Custom")
             
             if representationStyle.rawValue >= 0
@@ -1257,7 +1257,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            popUpbuttonRepresentationStyle.setTitle("Multiple values")
+            popUpbuttonRepresentationStyle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -1282,12 +1282,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let rawValue: String = representedStructure.getRepresentationColorScheme()
           {
-            popUpbuttonColorScheme.removeItem(withTitle: "Multiple Values")
+            popUpbuttonColorScheme.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonColorScheme.selectItem(withTitle: rawValue)
           }
           else
           {
-            popUpbuttonColorScheme.setTitle("Multiple Values")
+            popUpbuttonColorScheme.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -1312,12 +1312,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let rawValue: String = representedStructure.getRepresentationForceField()
           {
-            popUpbuttonForceField.removeItem(withTitle: "Multiple Values")
+            popUpbuttonForceField.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonForceField.selectItem(withTitle: rawValue)
           }
           else
           {
-            popUpbuttonForceField.setTitle("Multiple Values")
+            popUpbuttonForceField.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -1333,12 +1333,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let rawValue: Int = representedStructure.getRepresentationColorOrder()?.rawValue
           {
-            popUpbuttonColorOrder.removeItem(withTitle: "Multiple Values")
+            popUpbuttonColorOrder.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonColorOrder.selectItem(at: rawValue)
           }
           else
           {
-            popUpbuttonColorOrder.setTitle("Multiple Values")
+            popUpbuttonColorOrder.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -1353,12 +1353,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let rawValue: Int = representedStructure.getRepresentationForceFieldOrder()?.rawValue
           {
-            popUpbuttonForceFieldOrder.removeItem(withTitle: "Multiple Values")
+            popUpbuttonForceFieldOrder.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonForceFieldOrder.selectItem(at: rawValue)
           }
           else
           {
-            popUpbuttonForceFieldOrder.setTitle("Multiple Values")
+            popUpbuttonForceFieldOrder.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -1381,7 +1381,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let selectionStyle: RKSelectionStyle = representedStructure.renderAtomSelectionStyle
           {
-            popUpbuttonSelectionStyle.removeItem(withTitle: "Multiple Values")
+            popUpbuttonSelectionStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
             
             if selectionStyle == .glow
@@ -1392,9 +1392,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            popUpbuttonSelectionStyle.setTitle("Multiple Values")
-            textFieldSelectionFrequency.stringValue = "Mult. Val."
-            textFieldSelectionDensity.stringValue = "Mult. Val."
+            popUpbuttonSelectionStyle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+            textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
           if let renderSelectionFrequency: Double = representedStructure.renderAtomSelectionFrequency
@@ -1403,7 +1403,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSelectionFrequency.stringValue = "Mult. Val."
+            textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
           if let renderSelectionDensity: Double = representedStructure.renderAtomSelectionDensity
@@ -1412,7 +1412,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSelectionDensity.stringValue = "Mult. Val."
+            textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -1430,7 +1430,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldAtomSelectionIntensityLevel.stringValue = "Multiple Values"
+            textFieldAtomSelectionIntensityLevel.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1464,7 +1464,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSelectionScaling.stringValue = "Multiple Values"
+            textFieldSelectionScaling.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1519,7 +1519,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldExposure.stringValue = "Multiple Values"
+            textFieldExposure.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1552,7 +1552,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldHue.stringValue = "Multiple Values"
+            textFieldHue.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1585,7 +1585,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSaturation.stringValue = "Multiple Values"
+            textFieldSaturation.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1618,7 +1618,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldValue.stringValue = "Multiple Values"
+            textFieldValue.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1673,7 +1673,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldAtomScaling.stringValue = "Multiple Values"
+            textFieldAtomScaling.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1727,7 +1727,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            ambientLightIntensitity.stringValue = "Multiple Values"
+            ambientLightIntensitity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
           
         }
@@ -1779,7 +1779,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            diffuseLightIntensitity.stringValue = "Multiple Values"
+            diffuseLightIntensitity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1830,7 +1830,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            specularLightIntensitity.stringValue = "Multiple Values"
+            specularLightIntensitity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1876,7 +1876,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            shininess.stringValue = "Multiple Values"
+            shininess.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -1985,7 +1985,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           if let selectionStyle: RKSelectionStyle = representedStructure.renderBondSelectionStyle
           {
-            popUpbuttonSelectionStyle.removeItem(withTitle: "Multiple Values")
+            popUpbuttonSelectionStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
             
             if selectionStyle == .glow
@@ -1996,9 +1996,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            popUpbuttonSelectionStyle.setTitle("Multiple Values")
-            textFieldSelectionFrequency.stringValue = "Mult. Val."
-            textFieldSelectionDensity.stringValue = "Mult. Val."
+            popUpbuttonSelectionStyle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+            textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+            textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
           if let renderSelectionFrequency: Double = representedStructure.renderBondSelectionFrequency
@@ -2007,7 +2007,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSelectionFrequency.stringValue = "Mult. Val."
+            textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
           if let renderSelectionDensity: Double = representedStructure.renderBondSelectionDensity
@@ -2016,7 +2016,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldSelectionDensity.stringValue = "Mult. Val."
+            textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -2034,7 +2034,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
             else
             {
-              textFieldBondSelectionIntensityLevel.stringValue = "Multiple Values"
+              textFieldBondSelectionIntensityLevel.stringValue = NSLocalizedString("Multiple Values", comment: "")
             }
           }
         }
@@ -2068,7 +2068,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
             else
             {
-              textFieldBondSelectionScaling.stringValue = "Multiple Values"
+              textFieldBondSelectionScaling.stringValue = NSLocalizedString("Multiple Values", comment: "")
             }
           }
         }
@@ -2573,7 +2573,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldIsovalue.stringValue = "Mult. Val."
+            textFieldIsovalue.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -2606,7 +2606,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldOpacity.stringValue = "Mult. Val."
+            textFieldOpacity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -2639,12 +2639,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           popUpbuttonSurfaceSize.isEditable = enabled && adsorptionSurfaceOn
           if let structureSize: Int = representedStructure.renderAdsorptionSurfaceSize
           {
-            popUpbuttonSurfaceSize.removeItem(withTitle: "Multiple Values")
+            popUpbuttonSurfaceSize.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSurfaceSize.selectItem(withTitle: "\(structureSize)x\(structureSize)x\(structureSize)")
           }
           else
           {
-            popUpbuttonSurfaceSize.setTitle("Multiple Values")
+            popUpbuttonSurfaceSize.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -2773,7 +2773,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldExposure.stringValue = "Multiple Values"
+            textFieldExposure.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -2807,7 +2807,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldFrontAmbientIntensity.stringValue = "Multiple Values"
+            textFieldFrontAmbientIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -2853,7 +2853,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldFrontDiffuseIntensity.stringValue = "Multiple Values"
+            textFieldFrontDiffuseIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -2899,7 +2899,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldFrontSpecularIntensity.stringValue = "Multiple Values"
+            textFieldFrontSpecularIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -2946,7 +2946,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldFrontShininess.stringValue = "Multiple Values"
+            textFieldFrontShininess.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -3001,7 +3001,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldExposure.stringValue = "Multiple Values"
+            textFieldExposure.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -3035,7 +3035,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBackAmbientIntensity.stringValue = "Multiple Values"
+            textFieldBackAmbientIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -3081,7 +3081,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBackDiffuseIntensity.stringValue = "Multiple Values"
+            textFieldBackDiffuseIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -3127,7 +3127,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBackSpecularIntensity.stringValue = "Multiple Values"
+            textFieldBackSpecularIntensity.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -3173,7 +3173,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            textFieldBackShininess.stringValue = "Multiple Values"
+            textFieldBackShininess.stringValue = NSLocalizedString("Multiple Values", comment: "")
           }
         }
       }
@@ -3211,13 +3211,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           popUpbuttonAnnotationType.isEditable = enabled
           if let rawValue: Int = representedStructure.renderTextType?.rawValue
           {
-            popUpbuttonAnnotationType.removeItem(withTitle: "Multiple Values")
+            popUpbuttonAnnotationType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             
             popUpbuttonAnnotationType.selectItem(at: rawValue)
           }
           else
           {
-            popUpbuttonAnnotationType.setTitle("Multiple Values")
+            popUpbuttonAnnotationType.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
       }
@@ -3273,14 +3273,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
               }
               else
               {
-                popUpbuttonFontFamilyMembers.setTitle("Multiple Values")
+                popUpbuttonFontFamilyMembers.setTitle(NSLocalizedString("Multiple Values", comment: ""))
               }
             }
           }
           else
           {
-            popUpbuttonFontFamily.setTitle("Multiple Values")
-            popUpbuttonFontFamilyMembers.setTitle("Multiple Values")
+            popUpbuttonFontFamily.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+            popUpbuttonFontFamilyMembers.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
         
@@ -3292,13 +3292,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             popUpbuttonAnnotationAlignment.isEditable = enabled
             if let rawValue: Int = representedStructure.renderTextAlignment?.rawValue
             {
-              popUpbuttonAnnotationAlignment.removeItem(withTitle: "Multiple Values")
+              popUpbuttonAnnotationAlignment.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
               
               popUpbuttonAnnotationAlignment.selectItem(at: rawValue)
             }
             else
             {
-              popUpbuttonAnnotationAlignment.setTitle("Multiple Values")
+              popUpbuttonAnnotationAlignment.setTitle(NSLocalizedString("Multiple Values", comment: ""))
             }
           }
         }
@@ -3311,13 +3311,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             popUpbuttonAnnotationStyle.isEditable = enabled
             if let rawValue: Int = representedStructure.renderTextStyle?.rawValue
             {
-              popUpbuttonAnnotationStyle.removeItem(withTitle: "Multiple Values")
+              popUpbuttonAnnotationStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
               
               popUpbuttonAnnotationStyle.selectItem(at: rawValue)
             }
             else
             {
-              popUpbuttonAnnotationStyle.setTitle("Multiple Values")
+              popUpbuttonAnnotationStyle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
             }
           }
         }
@@ -3337,7 +3337,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
             else
             {
-              textFieldScaling.stringValue = "Multiple Values"
+              textFieldScaling.stringValue = NSLocalizedString("Multiple Values", comment: "")
             }
           }
         }
@@ -3369,7 +3369,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
             else
             {
-              textFieldAnnotionTextDisplacementX.stringValue = "Mult. Val."
+              textFieldAnnotionTextDisplacementX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
             }
           }
         }
@@ -3387,7 +3387,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
             else
             {
-              textFieldAnnotionTextDisplacementY.stringValue = "Mult. Val."
+              textFieldAnnotionTextDisplacementY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
             }
           }
         }
@@ -3405,7 +3405,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             }
             else
             {
-              textFieldAnnotionTextDisplacementZ.stringValue = "Mult. Val."
+              textFieldAnnotionTextDisplacementZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
             }
           }
         }

@@ -1061,7 +1061,7 @@
                                                                                             <gridCell row="ScL-Jo-YOz" column="OdK-Vm-0hk" id="47t-Cj-I39"/>
                                                                                             <gridCell row="cpo-S9-3Wn" column="Bu6-80-enm" id="m0A-Xl-BTh">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BFE-9y-id9">
-                                                                                                    <rect key="frame" x="-2" y="132" width="144" height="16"/>
+                                                                                                    <rect key="frame" x="-2" y="123" width="144" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Ambient Light Intensity" id="NGy-sK-enb">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1071,7 +1071,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="cpo-S9-3Wn" column="2Mh-UD-IZq" id="DPw-sW-EYi">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" horizontalCompressionResistancePriority="740" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="TiR-7Z-OdJ">
-                                                                                                    <rect key="frame" x="155" y="129" width="150" height="21"/>
+                                                                                                    <rect key="frame" x="155" y="120" width="150" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="dzn-IP-ZnC">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="WFH-Pk-yPp"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -1085,7 +1085,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="cpo-S9-3Wn" column="VIh-5L-n8h" id="HIh-Ry-Slv">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="fj7-gB-DwE">
-                                                                                                    <rect key="frame" x="315" y="123" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="315" y="114" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="Elq-UQ-YMK"/>
                                                                                                     <connections>
                                                                                                         <action selector="changePrimitiveFrontSideAmbientIntensitySlider:" target="A5d-Ag-J3w" id="Sw8-XY-tpu"/>
@@ -1103,7 +1103,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="4py-kb-0Eo" column="Bu6-80-enm" id="c4e-rC-BG8">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8hP-j9-8oP">
-                                                                                                    <rect key="frame" x="-2" y="89" width="137" height="16"/>
+                                                                                                    <rect key="frame" x="-2" y="80" width="137" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Diffuse Light Intensity" id="8ga-HD-e1b">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1113,7 +1113,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="4py-kb-0Eo" column="2Mh-UD-IZq" id="rJd-ve-Gkb">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="240" verticalHuggingPriority="750" horizontalCompressionResistancePriority="740" tag="7" translatesAutoresizingMaskIntoConstraints="NO" id="REs-mX-bNs">
-                                                                                                    <rect key="frame" x="155" y="86" width="150" height="21"/>
+                                                                                                    <rect key="frame" x="155" y="77" width="150" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="hOC-bo-ccm">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="tZh-6J-nwx"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -1127,7 +1127,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="4py-kb-0Eo" column="VIh-5L-n8h" id="PGA-56-8Ug">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="o8e-9v-QM4">
-                                                                                                    <rect key="frame" x="315" y="80" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="315" y="71" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="oDB-IA-MmX"/>
                                                                                                     <connections>
                                                                                                         <action selector="changePrimitiveFrontSideDiffuseIntensitySlider:" target="A5d-Ag-J3w" id="nVL-NE-tTU"/>
@@ -1368,7 +1368,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="S1b-c9-90g" column="TGz-An-uic" id="fJI-JG-MLM">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="3UV-Cz-qqy">
-                                                                                                    <rect key="frame" x="-2" y="89" width="137" height="16"/>
+                                                                                                    <rect key="frame" x="-2" y="80" width="137" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Diffuse Light Intensity" id="Sgk-qh-f3p">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1378,7 +1378,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="S1b-c9-90g" column="yv1-cD-l1Y" id="7iy-Fx-OBu">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" horizontalCompressionResistancePriority="741" verticalCompressionResistancePriority="760" tag="7" translatesAutoresizingMaskIntoConstraints="NO" id="Cew-CE-3bo">
-                                                                                                    <rect key="frame" x="155" y="86" width="150" height="21"/>
+                                                                                                    <rect key="frame" x="155" y="77" width="150" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="WUi-aL-Ua8">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="COy-8I-HcN"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -1392,7 +1392,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="S1b-c9-90g" column="hFn-Qe-wrd" id="2Md-ad-NQN">
                                                                                                 <slider key="contentView" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="egC-ZY-Vmb">
-                                                                                                    <rect key="frame" x="315" y="80" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="315" y="71" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="YeG-8u-CxG"/>
                                                                                                     <connections>
                                                                                                         <action selector="changePrimitiveBackSideDiffuseIntensitySlider:" target="A5d-Ag-J3w" id="gAU-eR-2hT"/>
@@ -1410,7 +1410,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="GFv-aG-Nto" column="TGz-An-uic" id="n2C-Tq-ZYU">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="W5i-ih-0Ud">
-                                                                                                    <rect key="frame" x="-2" y="46" width="147" height="16"/>
+                                                                                                    <rect key="frame" x="-2" y="37" width="147" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Specular Light Intensity" id="nUw-Lz-pBk">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1420,7 +1420,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="GFv-aG-Nto" column="yv1-cD-l1Y" id="45V-zv-Doq">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="760" horizontalCompressionResistancePriority="741" verticalCompressionResistancePriority="760" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="piX-D2-dGy">
-                                                                                                    <rect key="frame" x="155" y="43" width="150" height="21"/>
+                                                                                                    <rect key="frame" x="155" y="34" width="150" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="sxE-cn-hPf">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="J4D-sA-x5X"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -1434,7 +1434,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="GFv-aG-Nto" column="hFn-Qe-wrd" id="gKh-pO-tYa">
                                                                                                 <slider key="contentView" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="dyh-Z7-ESy">
-                                                                                                    <rect key="frame" x="315" y="37" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="315" y="28" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="jqv-MF-BEM"/>
                                                                                                     <connections>
                                                                                                         <action selector="changePrimitiveBackSideSpecularIntensitySlider:" target="A5d-Ag-J3w" id="Pkn-sA-TWC"/>
@@ -2300,7 +2300,7 @@
                                                                                             <gridCell row="B2U-F8-uL7" column="DEZ-Oc-7yQ" id="Yub-pZ-SyF"/>
                                                                                             <gridCell row="pyL-YK-KEB" column="ulk-hz-8up" id="Ez7-q3-WBv">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="xfR-lX-8xh">
-                                                                                                    <rect key="frame" x="51" y="132" width="144" height="16"/>
+                                                                                                    <rect key="frame" x="51" y="123" width="144" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Ambient Light Intensity" id="iUY-dW-y5v">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -2310,7 +2310,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="pyL-YK-KEB" column="tHb-Fy-pfh" id="hGh-Dc-QBg">
                                                                                                 <textField key="contentView" verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="c9v-yJ-vqY">
-                                                                                                    <rect key="frame" x="205" y="129" width="100" height="21"/>
+                                                                                                    <rect key="frame" x="205" y="120" width="100" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="bBr-x2-gag">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="QCJ-aN-uLc"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -2324,7 +2324,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="pyL-YK-KEB" column="JSz-Dr-xXl" id="oxQ-0Y-x1m">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="T2w-gL-ew5">
-                                                                                                    <rect key="frame" x="315" y="123" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="315" y="114" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="Q02-PC-03r"/>
                                                                                                     <connections>
                                                                                                         <action selector="changeAmbientIntensitySlider:" target="A5d-Ag-J3w" id="LXb-SQ-1dB"/>
@@ -2342,7 +2342,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="njM-qS-fZX" column="ulk-hz-8up" id="IMv-7j-d9D">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Drb-qG-aZb">
-                                                                                                    <rect key="frame" x="58" y="89" width="137" height="16"/>
+                                                                                                    <rect key="frame" x="58" y="80" width="137" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Diffuse Light Intensity" id="oEa-7e-zlj">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -2352,7 +2352,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="njM-qS-fZX" column="tHb-Fy-pfh" id="EOG-nN-jKF">
                                                                                                 <textField key="contentView" verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="V6d-hX-gJB">
-                                                                                                    <rect key="frame" x="205" y="86" width="100" height="21"/>
+                                                                                                    <rect key="frame" x="205" y="77" width="100" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="b7w-5u-LE2">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="wzt-X8-nyL"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -2366,7 +2366,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="njM-qS-fZX" column="JSz-Dr-xXl" id="47B-Qf-h0Y">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="efx-Ns-N8L">
-                                                                                                    <rect key="frame" x="315" y="80" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="315" y="71" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="fwC-Pn-47H"/>
                                                                                                     <connections>
                                                                                                         <action selector="changeDiffuseIntensitySlider:" target="A5d-Ag-J3w" id="P7z-gj-Fo0"/>
@@ -2384,7 +2384,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="94k-LH-fBf" column="ulk-hz-8up" id="eXc-Ca-5ya">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Gbj-ew-cmo">
-                                                                                                    <rect key="frame" x="48" y="46" width="147" height="16"/>
+                                                                                                    <rect key="frame" x="48" y="37" width="147" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Specular Light Intensity" id="bBY-15-FbE">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -2394,7 +2394,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="94k-LH-fBf" column="tHb-Fy-pfh" id="hDN-nY-C0B">
                                                                                                 <textField key="contentView" verticalHuggingPriority="750" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="AEx-5e-aej">
-                                                                                                    <rect key="frame" x="205" y="43" width="100" height="21"/>
+                                                                                                    <rect key="frame" x="205" y="34" width="100" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ced-r4-OLa">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="yTi-Zq-tHO"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -2408,7 +2408,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="94k-LH-fBf" column="JSz-Dr-xXl" id="WO9-w6-8Pf">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="9" translatesAutoresizingMaskIntoConstraints="NO" id="9Qa-CS-4ib">
-                                                                                                    <rect key="frame" x="315" y="37" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="315" y="28" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="KTc-dF-Wlh"/>
                                                                                                     <connections>
                                                                                                         <action selector="changeSpecularIntensitySlider:" target="A5d-Ag-J3w" id="ukv-0b-9O3"/>
@@ -3042,7 +3042,7 @@
                                                                                             <gridCell row="SEw-xZ-ePh" column="M4P-Kl-uLa" id="bEp-Ev-8cm"/>
                                                                                             <gridCell row="do9-uW-aWR" column="Oa1-DT-z5a" id="bOE-cQ-0Gh">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Pbd-em-byc">
-                                                                                                    <rect key="frame" x="1" y="129" width="144" height="16"/>
+                                                                                                    <rect key="frame" x="1" y="120" width="144" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Ambient Light Intensity" id="4Xx-zc-qJB">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3052,7 +3052,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="do9-uW-aWR" column="L61-90-gw5" id="DfO-eS-4pR">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="rnY-XB-KB3">
-                                                                                                    <rect key="frame" x="151" y="126" width="162" height="21"/>
+                                                                                                    <rect key="frame" x="151" y="117" width="162" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="ZHJ-Re-kJf">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="gxJ-cD-oQi"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -3066,7 +3066,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="do9-uW-aWR" column="2qV-lY-NR2" id="wvg-pv-xu7">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="5Kd-Qa-3RM">
-                                                                                                    <rect key="frame" x="319" y="120" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="319" y="111" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="5bm-2a-JfB"/>
                                                                                                     <connections>
                                                                                                         <action selector="changeBondAmbientIntensitySlider:" target="A5d-Ag-J3w" id="5pr-TG-Jh2"/>
@@ -3084,7 +3084,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="D88-ES-BIF" column="Oa1-DT-z5a" id="Kjt-AX-tWK">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="va2-7h-sFY">
-                                                                                                    <rect key="frame" x="8" y="87" width="137" height="16"/>
+                                                                                                    <rect key="frame" x="8" y="78" width="137" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Diffuse Light Intensity" id="JAw-bD-rCT">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3094,7 +3094,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="D88-ES-BIF" column="L61-90-gw5" id="d2j-Mp-ebz">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="tyT-Ek-fTL">
-                                                                                                    <rect key="frame" x="151" y="84" width="162" height="21"/>
+                                                                                                    <rect key="frame" x="151" y="75" width="162" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="lLC-sc-PET">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="1Kl-2M-eIW"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -3108,7 +3108,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="D88-ES-BIF" column="2qV-lY-NR2" id="FwP-1I-bpU">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="Iru-n8-D5j">
-                                                                                                    <rect key="frame" x="319" y="78" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="319" y="69" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="mR0-aX-2hw"/>
                                                                                                     <connections>
                                                                                                         <action selector="changeBondDiffuseIntensitySlider:" target="A5d-Ag-J3w" id="XI7-Bi-Ejm"/>
@@ -3126,7 +3126,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="Dlf-0o-tna" column="Oa1-DT-z5a" id="xCh-ko-YWG">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="4ix-Cj-CWb">
-                                                                                                    <rect key="frame" x="-2" y="45" width="147" height="16"/>
+                                                                                                    <rect key="frame" x="-2" y="36" width="147" height="16"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Specular Light Intensity" id="Fj4-J7-jzg">
                                                                                                         <font key="font" metaFont="system"/>
                                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -3136,7 +3136,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="Dlf-0o-tna" column="L61-90-gw5" id="Sah-wa-Pq4">
                                                                                                 <textField key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="750" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="jeV-DR-RP4">
-                                                                                                    <rect key="frame" x="151" y="42" width="162" height="21"/>
+                                                                                                    <rect key="frame" x="151" y="33" width="162" height="21"/>
                                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="J1p-YI-oYQ">
                                                                                                         <numberFormatter key="formatter" formatterBehavior="custom10_4" numberStyle="decimal" groupingSize="5" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" minimumFractionDigits="6" maximumFractionDigits="6" id="QtZ-Dl-I9g"/>
                                                                                                         <font key="font" metaFont="system"/>
@@ -3150,7 +3150,7 @@
                                                                                             </gridCell>
                                                                                             <gridCell row="Dlf-0o-tna" column="2qV-lY-NR2" id="juC-oe-xCx">
                                                                                                 <slider key="contentView" verticalHuggingPriority="750" tag="9" translatesAutoresizingMaskIntoConstraints="NO" id="G9G-ar-NWx">
-                                                                                                    <rect key="frame" x="319" y="36" width="74" height="28"/>
+                                                                                                    <rect key="frame" x="319" y="27" width="74" height="28"/>
                                                                                                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="mbg-TM-U2h"/>
                                                                                                     <connections>
                                                                                                         <action selector="changeBondSpecularIntensitySlider:" target="A5d-Ag-J3w" id="2Ng-0b-eTY"/>
@@ -4338,7 +4338,7 @@
                                                                             <gridCells>
                                                                                 <gridCell row="NL1-8V-Zgc" column="OtO-hM-FeK" id="cy4-Yu-pN9">
                                                                                     <textField key="contentView" horizontalHuggingPriority="260" verticalHuggingPriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="Q49-Vu-05I">
-                                                                                        <rect key="frame" x="132" y="266" width="34" height="16"/>
+                                                                                        <rect key="frame" x="132" y="276" width="34" height="16"/>
                                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Type" id="5Pc-9v-LWF">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -4348,7 +4348,7 @@
                                                                                 </gridCell>
                                                                                 <gridCell row="NL1-8V-Zgc" column="igW-uf-VcX" id="8tM-if-trS">
                                                                                     <popUpButton key="contentView" horizontalHuggingPriority="210" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="mO4-IF-dw9" customClass="iRASPAPopUpButton" customModule="iRASPA" customModuleProvider="target">
-                                                                                        <rect key="frame" x="169" y="259" width="234" height="25"/>
+                                                                                        <rect key="frame" x="169" y="269" width="234" height="25"/>
                                                                                         <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="dfq-2k-AIF" id="FZ1-w4-13m">
                                                                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                                             <font key="font" metaFont="menu"/>
