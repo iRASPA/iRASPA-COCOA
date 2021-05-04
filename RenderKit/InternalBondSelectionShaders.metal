@@ -200,12 +200,8 @@ fragment float4 internalBondSelectionWorleyNoise3DCylinderFragmentShader(Interna
     color= vLdrColor;
   }
   
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.bondHue;
-  hsv.y = hsv.y * structureUniforms.bondSaturation;
-  hsv.z = hsv.z * structureUniforms.bondValue;
   float intensity = frameUniforms.bloomLevel *  structureUniforms.bondSelectionIntensity;
-  return float4(hsv2rgb(hsv) * intensity, intensity);
+  return float4(color.xyz * intensity, intensity);
 }
 
 
@@ -327,12 +323,8 @@ fragment float4 internalBondSelectionGlowFragmentShader(InternalBondSelectionVer
     color= vLdrColor;
   }
   
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.bondHue;
-  hsv.y = hsv.y * structureUniforms.bondSaturation;
-  hsv.z = hsv.z * structureUniforms.bondValue;
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
-  return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
+  return float4(color.xyz * bloomLevel, bloomLevel);
 }
 
 
@@ -463,10 +455,6 @@ fragment float4 internalBondSelectionStripedCylinderFragmentShader(InternalBondS
     color= vLdrColor;
   }
   
-  float3 hsv = rgb2hsv(color.xyz);
-  hsv.x = hsv.x * structureUniforms.bondHue;
-  hsv.y = hsv.y * structureUniforms.bondSaturation;
-  hsv.z = hsv.z * structureUniforms.bondValue;
   float bloomLevel = frameUniforms.bloomLevel * structureUniforms.bondSelectionIntensity;
-  return float4(hsv2rgb(hsv) * bloomLevel, bloomLevel);
+  return float4(color.xyz * bloomLevel, bloomLevel);
 }
