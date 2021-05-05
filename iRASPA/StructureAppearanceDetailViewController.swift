@@ -647,7 +647,38 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-      if let sliderHue: NSSlider = view.viewWithTag(2) as? NSSlider
+      
+      // Saturation
+      if let textFieldSaturation: NSTextField = view.viewWithTag(2) as? NSTextField
+      {
+        textFieldSaturation.isEditable = false
+        textFieldSaturation.stringValue = ""
+        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        {
+          textFieldSaturation.isEditable = enabled
+          if let renderBondSaturation: Double = representedStructure.renderPrimitiveSaturation
+          {
+            textFieldSaturation.doubleValue = renderBondSaturation
+          }
+        }
+      }
+      
+      // Value
+      if let textFieldValue: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        textFieldValue.isEditable = false
+        textFieldValue.stringValue = ""
+        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        {
+          textFieldValue.isEditable = enabled
+          if let renderBondValue: Double = representedStructure.renderPrimitiveValue
+          {
+            textFieldValue.doubleValue = renderBondValue
+          }
+        }
+      }
+      
+      if let sliderHue: NSSlider = view.viewWithTag(4) as? NSSlider
       {
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
@@ -662,21 +693,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      // Saturation
-      if let textFieldSaturation: NSTextField = view.viewWithTag(3) as? NSTextField
-      {
-        textFieldSaturation.isEditable = false
-        textFieldSaturation.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
-        {
-          textFieldSaturation.isEditable = enabled
-          if let renderBondSaturation: Double = representedStructure.renderPrimitiveSaturation
-          {
-            textFieldSaturation.doubleValue = renderBondSaturation
-          }
-        }
-      }
-      if let sliderSaturation: NSSlider = view.viewWithTag(4) as? NSSlider
+      if let sliderSaturation: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
@@ -691,20 +708,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      // Value
-      if let textFieldValue: NSTextField = view.viewWithTag(5) as? NSTextField
-      {
-        textFieldValue.isEditable = false
-        textFieldValue.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
-        {
-          textFieldValue.isEditable = enabled
-          if let renderBondValue: Double = representedStructure.renderPrimitiveValue
-          {
-            textFieldValue.doubleValue = renderBondValue
-          }
-        }
-      }
+    
       if let sliderValue: NSSlider = view.viewWithTag(6) as? NSSlider
       {
         sliderValue.isEnabled = false
