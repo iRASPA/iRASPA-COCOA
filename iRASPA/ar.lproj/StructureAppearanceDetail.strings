@@ -11,7 +11,7 @@
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "1ht-pW-CQ0"; */
 "1ht-pW-CQ0.title" = "يشع";
 
-/* Class = "NSBox"; title = "Back Properties"; ObjectID = "1i4-zc-FLO"; */
+/* Class = "NSBox"; title = "Inside Properties"; ObjectID = "1i4-zc-FLO"; */
 "1i4-zc-FLO.title" = "خصائص العودة";
 
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "3Ik-9O-zWy"; */
@@ -161,7 +161,7 @@
 /* Class = "NSMenuItem"; title = "Striped"; ObjectID = "Gf0-Qp-gqQ"; */
 "Gf0-Qp-gqQ.title" = "مخطط";
 
-/* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "GfJ-48-dF4"; */
+/* Class = "NSTextFieldCell"; title = "Selection Scaling"; ObjectID = "GfJ-48-dF4"; */
 "GfJ-48-dF4.title" = "التدريج الشعاعي للتحديد";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
@@ -194,7 +194,7 @@
 /* Class = "NSTextFieldCell"; title = "Light Intensity"; ObjectID = "LA8-y5-QWc"; */
 "LA8-y5-QWc.title" = "شدة الضوء";
 
-/* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "LSL-D7-VXo"; */
+/* Class = "NSTextFieldCell"; title = "Selection Scaling"; ObjectID = "LSL-D7-VXo"; */
 "LSL-D7-VXo.title" = "التحديد الشعاعي التحجيم";
 
 /* Class = "NSTextFieldCell"; title = "Annotation"; ObjectID = "LSN-af-m9O"; */
@@ -329,10 +329,10 @@
 /* Class = "NSMenuItem"; title = "Uniform"; ObjectID = "YN6-b4-xiX"; */
 "YN6-b4-xiX.title" = "زي موحد";
 
-/* Class = "NSBox"; title = "Front surface"; ObjectID = "Yh2-SE-hS4"; */
+/* Class = "NSBox"; title = "Outside surface"; ObjectID = "Yh2-SE-hS4"; */
 "Yh2-SE-hS4.title" = "السطح الأمامي";
 
-/* Class = "NSBox"; title = "Front Properties"; ObjectID = "YnR-7d-k8p"; */
+/* Class = "NSBox"; title = "Outside Properties"; ObjectID = "YnR-7d-k8p"; */
 "YnR-7d-k8p.title" = "خصائص الجبهة";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
@@ -350,7 +350,7 @@
 /* Class = "NSTextFieldCell"; title = "𝜌"; ObjectID = "aeb-iy-ZTT"; */
 "aeb-iy-ZTT.title" = "𝜌";
 
-/* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
+/* Class = "NSButtonCell"; title = "Show Bonds"; ObjectID = "ajZ-C1-kOG"; */
 "ajZ-C1-kOG.title" = "إظهار الروابط";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
@@ -401,7 +401,7 @@
 /* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "dk2-KV-Pe3"; */
 "dk2-KV-Pe3.title" = "مجال القوة فقط";
 
-/* Class = "NSButtonCell"; title = "Draw Atoms"; ObjectID = "dmK-0a-HKm"; */
+/* Class = "NSButtonCell"; title = "Show Atoms"; ObjectID = "dmK-0a-HKm"; */
 "dmK-0a-HKm.title" = "إظهار الذرات";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
@@ -422,7 +422,7 @@
 /* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "feQ-1h-daH"; */
 "feQ-1h-daH.title" = "زينون";
 
-/* Class = "NSBox"; title = "Back Surface"; ObjectID = "g6G-xC-2Lr"; */
+/* Class = "NSBox"; title = "Inside Surface"; ObjectID = "g6G-xC-2Lr"; */
 "g6G-xC-2Lr.title" = "السطح الخلفي";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "gDS-zY-6ne"; */
@@ -554,7 +554,7 @@
 /* Class = "NSMenuItem"; title = "Worley Noise 3D"; ObjectID = "vI4-zj-6Yx"; */
 "vI4-zj-6Yx.title" = "Worley Noise 3D";
 
-/* Class = "NSButtonCell"; title = "Draw Unit Cell"; ObjectID = "vYr-pF-LLC"; */
+/* Class = "NSButtonCell"; title = "Show Unit Cell"; ObjectID = "vYr-pF-LLC"; */
 "vYr-pF-LLC.title" = "إظهار وحدة الخلية";
 
 /* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
