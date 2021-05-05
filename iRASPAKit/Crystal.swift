@@ -1280,10 +1280,9 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     }
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    superCellAtoms.tag()
     
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
-    
-    superCellAtoms.tag()
     bonds.tag()
     
     return (cell: cell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)
@@ -1342,13 +1341,12 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     }
     
     let atomList: [SKAtomCopy] = superCellAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+    superCellAtoms.tag()
     
     newCell.contentShift = SIMD3<Double>(0,0,0)
     newCell.contentFlip = Bool3(false,false,false)
     
     let bonds: SKBondSetController = SKBondSetController(arrangedObjects: self.computeBonds(cell: cell, atomList: atomList))
-    
-    superCellAtoms.tag()
     bonds.tag()
     
     return (cell: newCell, spaceGroup: spaceGroup, atoms: superCellAtoms, bonds: bonds)

@@ -579,7 +579,7 @@
 "xNf-lS-ROp.title" = "Escalado";
 
 /* Class = "NSTextFieldCell"; title = "Text offset X"; ObjectID = "xmm-Ng-98Y"; */
-"xmm-Ng-98Y.title" = "Desplazamiento de texto X";
+"xmm-Ng-98Y.title" = "Desplazamiento texto X";
 
 /* Class = "NSMenuItem"; title = "Jmol"; ObjectID = "zp7-mL-bWB"; */
 "zp7-mL-bWB.title" = "Jmol";
