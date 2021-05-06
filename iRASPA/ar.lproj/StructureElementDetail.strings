@@ -90,7 +90,7 @@
 "nb3-UI-e9y.title" = "حالات الأكسدة الممكنة";
 
 /* Class = "NSTextFieldCell"; title = "Van der Waals Radius"; ObjectID = "prv-DF-MqL"; */
-"prv-DF-MqL.title" = "نصف القطرVan der Waals ";
+"prv-DF-MqL.title" = "نصف القطرVan der Waals";
 
 /* Class = "NSTextFieldCell"; title = "Carbon"; ObjectID = "rF4-Eu-aR8"; */
 "rF4-Eu-aR8.title" = "كربون";

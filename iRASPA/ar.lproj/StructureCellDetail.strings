@@ -162,7 +162,7 @@
 "NtP-sh-9XR.placeholderString" = "cy";
 
 /* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
-"OFQ-fA-vGT.title" = " جزيءالفحص";
+"OFQ-fA-vGT.title" = "جزيءالفحص";
 
 /* Class = "NSTextFieldCell"; title = "CY"; ObjectID = "OU6-Uu-uVv"; */
 "OU6-Uu-uVv.title" = "CY";
