@@ -417,7 +417,7 @@
 "t15-It-Wye.title" = "旋转 +90";
 
 /* Class = "NSBox"; title = "Box Matrix (Read Only)"; ObjectID = "tF3-vm-zpF"; */
-"tF3-vm-zpF.title" = "单元矩阵（只读";
+"tF3-vm-zpF.title" = "单元矩阵（只读)";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "tKR-57-3vF"; */
 "tKR-57-3vF.title" = "0";
