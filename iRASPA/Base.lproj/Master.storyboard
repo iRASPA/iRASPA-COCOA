@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="KvZ-KE-4pT">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -123,13 +123,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="225" height="1151"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="28" horizontalPageScroll="10" verticalLineScroll="28" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NVI-Cv-llO">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="18" horizontalPageScroll="10" verticalLineScroll="18" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NVI-Cv-llO">
                                 <rect key="frame" x="0.0" y="24" width="225" height="1127"/>
                                 <clipView key="contentView" drawsBackground="NO" id="nct-of-Kd6" customClass="MyNSClipView" customModule="iRASPAKit">
                                     <rect key="frame" x="1" y="1" width="223" height="1125"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="28" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="13" outlineTableColumn="fsG-Ou-3ow" id="0r9-Xu-P0y" customClass="ProjectOutlineView" customModule="iRASPA" customModuleProvider="target">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="13" outlineTableColumn="fsG-Ou-3ow" id="0r9-Xu-P0y" customClass="ProjectOutlineView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="223" height="1125"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="0.0"/>
@@ -440,13 +440,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="227" height="1340"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="28" horizontalPageScroll="10" verticalLineScroll="28" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WbP-2b-M80">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="18" horizontalPageScroll="10" verticalLineScroll="18" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WbP-2b-M80">
                                 <rect key="frame" x="0.0" y="25" width="227" height="1315"/>
                                 <clipView key="contentView" drawsBackground="NO" id="ktY-we-vLo">
                                     <rect key="frame" x="1" y="1" width="225" height="1313"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="28" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="1" outlineTableColumn="qP1-Nv-0d4" id="TzS-FQ-RZv" userLabel="Scene/Movie Outline View" customClass="MovieListOutlineView" customModule="iRASPA" customModuleProvider="target">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" indentationPerLevel="1" outlineTableColumn="qP1-Nv-0d4" id="TzS-FQ-RZv" userLabel="Scene/Movie Outline View" customClass="MovieListOutlineView" customModule="iRASPA" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="225" height="1313"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="0.0"/>
@@ -744,23 +744,23 @@
             <objects>
                 <viewController id="xIH-6N-knL" customClass="FrameListViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
                     <stackView key="view" wantsLayer="YES" distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" id="Lnb-MG-Q7D">
-                        <rect key="frame" x="0.0" y="0.0" width="227" height="861"/>
+                        <rect key="frame" x="0.0" y="0.0" width="233" height="861"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="18" horizontalPageScroll="10" verticalLineScroll="18" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAD-27-31V">
-                                <rect key="frame" x="0.0" y="24" width="227" height="837"/>
+                                <rect key="frame" x="0.0" y="24" width="233" height="837"/>
                                 <clipView key="contentView" drawsBackground="NO" id="n3u-Gs-TV3">
-                                    <rect key="frame" x="1" y="1" width="225" height="835"/>
+                                    <rect key="frame" x="1" y="1" width="231" height="835"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="sourceList" selectionHighlightStyle="sourceList" autosaveColumns="NO" rowHeight="18" rowSizeStyle="automatic" viewBased="YES" floatsGroupRows="NO" id="q7L-dU-acz" userLabel="Frame Table View" customClass="FrameListTableView" customModule="iRASPA" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="225" height="835"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="231" height="835"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="17" height="0.0"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="frameNameColumn" width="193" minWidth="40" maxWidth="1000" id="BGH-yq-cr0" userLabel="name">
+                                                <tableColumn identifier="frameNameColumn" width="199" minWidth="40" maxWidth="1000" id="BGH-yq-cr0" userLabel="name">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -773,7 +773,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="frameName" id="x7f-Q2-TOl" customClass="FrameTableCellView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="18" y="0.0" width="188" height="17"/>
+                                                            <rect key="frame" x="18" y="0.0" width="194" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="7" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LiT-yt-YYh">
@@ -817,7 +817,7 @@
                                                             </connections>
                                                         </tableCellView>
                                                         <customView identifier="frameTableRowView" wantsLayer="YES" id="qOt-Ok-HOM" customClass="FrameTableRowView" customModule="iRASPA" customModuleProvider="target">
-                                                            <rect key="frame" x="18" y="17" width="188" height="18"/>
+                                                            <rect key="frame" x="18" y="17" width="194" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                         </customView>
                                                     </prototypeCellViews>

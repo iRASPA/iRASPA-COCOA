@@ -57,7 +57,7 @@
 "Lanthanum" = "Lanthaan";
 "Cerium" = "Cerium";
 "Praseodymium" = "Praseodymiu";
-"Neodymium" = "Neodymium ";
+"Neodymium" = "Neodymium";
 "Promethium" = "Promethium";
 "Samarium" = "Samarium";
 "Europium" = "Europium";
@@ -67,7 +67,7 @@
 "Holmium" = "Holmium";
 "Erbium" = "Erbium";
 "Thulium" = "Thulium";
-"Ytterbium" = "ytterbium";
+"Ytterbium" = "Ytterbium";
 "Lutetium" = "Lutetium";
 "Hafnium" = "Hafnium";
 "Tantalum" = "Tantaal";
@@ -116,4 +116,4 @@
 "Livermorium" = "Livermorium";
 "Tennessine" = "Tennessine";
 "Oganesson" = "Oganesson";
-"Invalid Archive Version (Upgrade to latest iRASPA version)" = "Ongeldige Archiefversie (upgrade naar de nieuwste iRASPA-versie)";
+"Invalid Archive Version (Upgrade to latest iRASPA version)" = "Ongeldige archiefversie (upgrade naar de nieuwste iRASPA-versie)";

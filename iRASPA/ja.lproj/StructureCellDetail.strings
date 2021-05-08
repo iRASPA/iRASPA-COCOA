@@ -126,7 +126,7 @@
 "GpO-nT-2ds.title" = "[m²/cm³]";
 
 /* Class = "NSBox"; title = "Bounding Box (Read Only)"; ObjectID = "Hgj-ha-Kto"; */
-"Hgj-ha-Kto.title" = "バウンディングボックス（読み取り専用）";
+"Hgj-ha-Kto.title" = "バウンディングボックス（読み取り専用)";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "JAA-9x-5kf"; */
 "JAA-9x-5kf.title" = "0";
@@ -408,7 +408,7 @@
 "sHe-dm-0Lo.placeholderString" = "角度X";
 
 /* Class = "NSTextFieldCell"; title = "Volumetric Surface Area (Nitrogen)"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "体積表面積（窒素）";
+"siG-7J-hEu.title" = "体積表面積（窒素)";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "結晶溶媒";
@@ -417,7 +417,7 @@
 "t15-It-Wye.title" = "+90回転する";
 
 /* Class = "NSBox"; title = "Box Matrix (Read Only)"; ObjectID = "tF3-vm-zpF"; */
-"tF3-vm-zpF.title" = "ボックスマトリックス（読み取り専用）";
+"tF3-vm-zpF.title" = "ボックスマトリックス（読み取り専用)";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "tKR-57-3vF"; */
 "tKR-57-3vF.title" = "0";
@@ -468,7 +468,7 @@
 "vwN-1o-Umq.title" = "細孔システムの次元";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
-"xXh-YD-ajh.title" = "重量分析表面積（窒素）";
+"xXh-YD-ajh.title" = "重量分析表面積（窒素)";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
 "xax-w6-E1h.title" = "-90回転する";

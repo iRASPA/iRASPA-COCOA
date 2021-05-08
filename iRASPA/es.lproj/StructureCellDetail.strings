@@ -63,7 +63,7 @@
 "92b-lC-W5K.title" = "Número de sistemas de canales";
 
 /* Class = "NSTextFieldCell"; title = "Helium Void Fraction"; ObjectID = "9na-rU-hDF"; */
-"9na-rU-hDF.title" = "Helium Void Fraction";
+"9na-rU-hDF.title" = "Helium void fraction";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "9x5-Do-xLf"; */
 "9x5-Do-xLf.title" = "Desconocido";
@@ -135,7 +135,7 @@
 "Jpa-hZ-wcV.title" = "Agua";
 
 /* Class = "NSTextFieldCell"; title = "Minimum Replicas"; ObjectID = "JtJ-tY-Q48"; */
-"JtJ-tY-Q48.title" = "Mínimo número de Réplicas";
+"JtJ-tY-Q48.title" = "Mínimo número de réplicas";
 
 /* Class = "NSTextFieldCell"; title = "Symmetry Properties"; ObjectID = "KBR-dm-dts"; */
 "KBR-dm-dts.title" = "Propiedades de simetría";
@@ -156,13 +156,13 @@
 "MX2-7S-v34.title" = "Enantiomórfico";
 
 /* Class = "NSTextFieldCell"; title = "Maximum Replicas"; ObjectID = "NEE-uA-Vza"; */
-"NEE-uA-Vza.title" = "Máximo número de Réplicas";
+"NEE-uA-Vza.title" = "Máximo número de réplicas";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "NtP-sh-9XR"; */
 "NtP-sh-9XR.placeholderString" = "cy";
 
 /* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
-"OFQ-fA-vGT.title" = "Molécula de Prueba";
+"OFQ-fA-vGT.title" = "Molécula de prueba";
 
 /* Class = "NSTextFieldCell"; title = "CY"; ObjectID = "OU6-Uu-uVv"; */
 "OU6-Uu-uVv.title" = "CY";
@@ -276,7 +276,7 @@
 "cPv-Rn-zyw.placeholderString" = "Cambiar X";
 
 /* Class = "NSTextFieldCell"; title = "Restricting Pore Diameter (Df)"; ObjectID = "d4y-Ea-h9U"; */
-"d4y-Ea-h9U.title" = "Restricción del diámetro de Poro (Df)";
+"d4y-Ea-h9U.title" = "Restricción del diámetro de poro (Df)";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "dIk-F3-XKu"; */
 "dIk-F3-XKu.title" = "Ángulo de rotación";
@@ -297,7 +297,7 @@
 "f5k-y5-5L1.placeholderString" = "por";
 
 /* Class = "NSTextFieldCell"; title = "Material Type"; ObjectID = "f97-S8-buy"; */
-"f97-S8-buy.title" = "tipo de material";
+"f97-S8-buy.title" = "Tipo de material";
 
 /* Class = "NSTextFieldCell"; title = "Inversion"; ObjectID = "fB7-jl-oUy"; */
 "fB7-jl-oUy.title" = "Inversión";
@@ -462,7 +462,7 @@
 "v83-YD-3LI.title" = "Dar la vuelta";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
-"vhk-8d-Ytl.title" = "Propiedades Estructurales";
+"vhk-8d-Ytl.title" = "Propiedades estructurales";
 
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
 "vwN-1o-Umq.title" = "Dimensionalidad del sistema de poros";

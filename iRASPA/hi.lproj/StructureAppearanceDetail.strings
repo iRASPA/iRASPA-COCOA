@@ -296,8 +296,8 @@
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "V0t-KV-zMh"; */
 "V0t-KV-zMh.title" = "रंग";
 
-/* Class = "NSTextFieldCell"; title = "Exposure:"; ObjectID = "V4C-Dq-82n"; */
-"V4C-Dq-82n.title" = "उद्भासन:";
+/* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "V4C-Dq-82n"; */
+"V4C-Dq-82n.title" = "उद्भासन";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "VIk-Df-Zyf"; */
 "VIk-Df-Zyf.title" = "चमक";

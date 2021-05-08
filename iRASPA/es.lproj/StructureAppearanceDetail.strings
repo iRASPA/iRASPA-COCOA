@@ -150,7 +150,7 @@
 "Ftc-mi-NgX.title" = "Oclusión ambiental";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "FvL-0N-TdY"; */
-"FvL-0N-TdY.title" = "valor";
+"FvL-0N-TdY.title" = "Valor";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "GOQ-bY-t1V"; */
 "GOQ-bY-t1V.title" = "Z";
@@ -162,10 +162,10 @@
 "Gf0-Qp-gqQ.title" = "A rayas";
 
 /* Class = "NSTextFieldCell"; title = "Selection Scaling"; ObjectID = "GfJ-48-dF4"; */
-"GfJ-48-dF4.title" = "Selección de escala radial";
+"GfJ-48-dF4.title" = "Escala de selección";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
-"H3R-9w-R7d.title" = "matiz";
+"H3R-9w-R7d.title" = "Matiz";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "IIB-vI-u3a"; */
 "IIB-vI-u3a.title" = "Intensidad de selección";
@@ -183,7 +183,7 @@
 "Jmg-H4-WAg.title" = "𝜌";
 
 /* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "JuP-Bk-71g"; */
-"JuP-Bk-71g.title" = "Nitrógeno";
+"JuP-Bk-71g.title" = "h";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "KZZ-4u-w8e"; */
 "KZZ-4u-w8e.title" = "Brillo";
@@ -249,7 +249,7 @@
 "QAl-Oz-tMg.title" = "𝜌";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "Qvw-wH-dnp"; */
-"Qvw-wH-dnp.title" = "matiz";
+"Qvw-wH-dnp.title" = "Matiz";
 
 /* Class = "NSMenuItem"; title = "128x128x128"; ObjectID = "R0Z-ra-sDa"; */
 "R0Z-ra-sDa.title" = "128x128x128";
@@ -270,7 +270,7 @@
 "SFF-hg-8Cg.title" = "Solo campo de fuerza";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "SMT-Ir-R2J"; */
-"SMT-Ir-R2J.title" = "valor";
+"SMT-Ir-R2J.title" = "Valor";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "Sdq-Z4-nnY"; */
 "Sdq-Z4-nnY.title" = "Ángulo de rotación";
@@ -288,13 +288,13 @@
 "Tlc-XL-RDG.title" = "Degradado";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Tqo-qK-6Fc"; */
-"Tqo-qK-6Fc.title" = "ninguno";
+"Tqo-qK-6Fc.title" = "Ninguno";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "UXl-KR-D8o"; */
 "UXl-KR-D8o.title" = "Saturación";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "V0t-KV-zMh"; */
-"V0t-KV-zMh.title" = "matiz";
+"V0t-KV-zMh.title" = "Matiz";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "V4C-Dq-82n"; */
 "V4C-Dq-82n.title" = "Exposición";
@@ -351,7 +351,7 @@
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Show Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "mostrar vínculos";
+"ajZ-C1-kOG.title" = "Mostrar vínculos";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
 "bBY-15-FbE.title" = "Intensidad de luz especular";
@@ -402,10 +402,10 @@
 "dk2-KV-Pe3.title" = "Solo campo de fuerza";
 
 /* Class = "NSButtonCell"; title = "Show Atoms"; ObjectID = "dmK-0a-HKm"; */
-"dmK-0a-HKm.title" = "mostrar átomos";
+"dmK-0a-HKm.title" = "Mostrar átomos";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
-"e0E-bj-7fz.title" = "valor";
+"e0E-bj-7fz.title" = "Valor";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
 "e5a-zk-fFj.title" = "Rasmol";
@@ -444,13 +444,13 @@
 "iOI-Yp-RuB.title" = "Identificador";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "iRX-2G-KQd"; */
-"iRX-2G-KQd.title" = "matiz";
+"iRX-2G-KQd.title" = "Matiz";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "iUY-dW-y5v"; */
 "iUY-dW-y5v.title" = "Intensidad de luz ambiental";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
-"imT-16-aB9.title" = "valor";
+"imT-16-aB9.title" = "Valor";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "jHe-aU-zpQ"; */
 "jHe-aU-zpQ.title" = "Girar -90";
@@ -555,7 +555,7 @@
 "vI4-zj-6Yx.title" = "Worley Noise 3D";
 
 /* Class = "NSButtonCell"; title = "Show Unit Cell"; ObjectID = "vYr-pF-LLC"; */
-"vYr-pF-LLC.title" = "mostrar celda unitaria";
+"vYr-pF-LLC.title" = "Mostrar celda unitaria";
 
 /* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
 "vvr-MF-ufZ.title" = "Parte superior derecha";

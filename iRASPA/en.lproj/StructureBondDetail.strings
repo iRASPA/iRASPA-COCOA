@@ -9,7 +9,7 @@
 "7uB-Nb-mkk.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Type bonds"; ObjectID = "9rV-cN-bzl"; */
-"9rV-cN-bzl.title" = "Type binding";
+"9rV-cN-bzl.title" = "Type bonds";
 
 /* Class = "NSTableColumn"; headerCell.title = "length"; ObjectID = "DvX-tf-DBg"; */
 "DvX-tf-DBg.headerCell.title" = "length";
@@ -47,5 +47,5 @@
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "oBx-QK-c2U"; */
 "oBx-QK-c2U.title" = "Text Cell";
 
-/* Class = "NSMenuItem"; title = "Recompute bonds"; ObjectID = "w5W-4P-qvW"; */
-"w5W-4P-qvW.title" = "Herbereken bindingen";
+/* Class = "NSMenuItem"; title = "Recompute Bonds"; ObjectID = "w5W-4P-qvW"; */
+"w5W-4P-qvW.title" = "Recompute Bonds";

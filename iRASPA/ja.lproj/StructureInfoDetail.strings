@@ -165,7 +165,7 @@
 "Vvv-Ri-fwX.title" = "番号";
 
 /* Class = "NSTextFieldCell"; title = "R Indices (All Data)"; ObjectID = "WBA-sr-NKP"; */
-"WBA-sr-NKP.title" = "Rインデックス（すべてのデータ）";
+"WBA-sr-NKP.title" = "Rインデックス（すべてのデータ)";
 
 /* Class = "NSTextFieldCell"; title = "Article Title"; ObjectID = "Wih-6z-Wmy"; */
 "Wih-6z-Wmy.title" = "記事のタイトル";

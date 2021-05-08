@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -855,7 +855,7 @@
                                 <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="gg6-5C-6if"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="B04-H0-ckM"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="nMe-Ou-BZg"/>
-                                <toolbarItem implicitItemIdentifier="483D26EB-800E-4E1B-9F51-B99602359BEB" label="" paletteLabel="" tag="-1" id="xcr-uF-CJi">
+                                <toolbarItem implicitItemIdentifier="483D26EB-800E-4E1B-9F51-B99602359BEB" label="" paletteLabel="" tag="-1" title="Box" id="xcr-uF-CJi">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="90" height="32"/>
                                     <size key="maxSize" width="110" height="32"/>
@@ -887,7 +887,7 @@
                                         </view>
                                     </box>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="1EE68DA0-9CEE-4470-916F-BAE9692888E0" label="" paletteLabel="" tag="-1" id="PGC-W5-BV6">
+                                <toolbarItem implicitItemIdentifier="1EE68DA0-9CEE-4470-916F-BAE9692888E0" label="" paletteLabel="" tag="-1" title="Box" id="PGC-W5-BV6">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="32" height="32"/>
                                     <size key="maxSize" width="110" height="32"/>
