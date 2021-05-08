@@ -1,6 +1,6 @@
 
 /* Class = "NSMenuItem"; title = "Invert"; ObjectID = "1YF-gj-uzt"; */
-"1YF-gj-uzt.title" = "Invert";
+"1YF-gj-uzt.title" = "Inverteer";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "2Be-nn-F4a"; */
 "2Be-nn-F4a.title" = "Text Cell";
@@ -9,13 +9,13 @@
 "2NZ-GO-iX3.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Remove symmetry"; ObjectID = "3ev-cg-Wwc"; */
-"3ev-cg-Wwc.title" = "Verwijder Symmetrie";
+"3ev-cg-Wwc.title" = "Verwijder symmetrie";
 
 /* Class = "NSMenuItem"; title = "CIF"; ObjectID = "71t-6P-hE6"; */
 "71t-6P-hE6.title" = "CIF";
 
 /* Class = "NSMenuItem"; title = "Wrap atoms to cell"; ObjectID = "7M8-ac-pMA"; */
-"7M8-ac-pMA.title" = "Wikkel Atomen Terug in Cel";
+"7M8-ac-pMA.title" = "Wikkel atomen terug in cel";
 
 /* Class = "NSTableColumn"; headerCell.title = "ff id."; ObjectID = "8Bh-oV-6t8"; */
 "8Bh-oV-6t8.headerCell.title" = "ff id.";
@@ -33,28 +33,28 @@
 "HHk-Gx-Fpn.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "LoO-EL-ifx"; */
-"LoO-EL-ifx.title" = "Voeg Atoom Groep toe";
+"LoO-EL-ifx.title" = "Voeg atoom groep toe";
 
 /* Class = "NSMenuItem"; title = "mmCIF"; ObjectID = "M4C-ue-e5C"; */
 "M4C-ue-e5C.title" = "mmCIF";
 
 /* Class = "NSMenuItem"; title = "Scroll To"; ObjectID = "MpU-kw-3py"; */
-"MpU-kw-3py.title" = "Scroll Naar";
+"MpU-kw-3py.title" = "Scroll naar";
 
 /* Class = "NSMenuItem"; title = "XYZ"; ObjectID = "Myp-ax-WUH"; */
 "Myp-ax-WUH.title" = "XYZ";
 
 /* Class = "NSMenu"; title = "Scroll To"; ObjectID = "Ow5-ms-fWY"; */
-"Ow5-ms-fWY.title" = "Scroll Naar";
+"Ow5-ms-fWY.title" = "Scroll naar";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "PwS-Ps-jhn"; */
 "PwS-Ps-jhn.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Export As"; ObjectID = "SBf-Vu-4GN"; */
-"SBf-Vu-4GN.title" = "Exporteer Als";
+"SBf-Vu-4GN.title" = "Exporteer als";
 
 /* Class = "NSTextFieldCell"; placeholderString = "net charge"; ObjectID = "XbY-dL-0Ls"; */
-"XbY-dL-0Ls.placeholderString" = "Netto Lading";
+"XbY-dL-0Ls.placeholderString" = "Netto lading";
 
 /* Class = "NSMenuItem"; title = "Visibility"; ObjectID = "bRE-uw-nCc"; */
 "bRE-uw-nCc.title" = "Zichtbaarheid";
@@ -63,13 +63,13 @@
 "cHJ-9s-H4f.headerCell.title" = "q";
 
 /* Class = "NSMenuItem"; title = "First selected"; ObjectID = "cPa-hL-tU1"; */
-"cPa-hL-tU1.title" = "Eerste Geselecteerde";
+"cPa-hL-tU1.title" = "Eerste geselecteerde";
 
 /* Class = "NSMenuItem"; title = "Symmetry"; ObjectID = "dp9-ww-pqx"; */
 "dp9-ww-pqx.title" = "Symmetrie";
 
 /* Class = "NSMenuItem"; title = "Add Atom"; ObjectID = "e3g-JW-gej"; */
-"e3g-JW-gej.title" = "Voeg Atoom toe";
+"e3g-JW-gej.title" = "Voeg atoom toe";
 
 /* Class = "NSMenuItem"; title = "Top"; ObjectID = "eYX-Je-wTp"; */
 "eYX-Je-wTp.title" = "Bovenkant";
@@ -84,7 +84,7 @@
 "fMn-ZP-dZ4.title" = "Match Selectie";
 
 /* Class = "NSMenuItem"; title = "Move to new Movie"; ObjectID = "fmI-pV-gCy"; */
-"fmI-pV-gCy.title" = "Verplaats naar Nieuwe Movie";
+"fmI-pV-gCy.title" = "Verplaats naar nieuwe movie";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "fya-RH-Hvh"; */
 "fya-RH-Hvh.title" = "Onderkant";
@@ -93,7 +93,7 @@
 "gam-Tz-1cQ.headerCell.title" = "y";
 
 /* Class = "NSMenuItem"; title = "Copy to new Movie"; ObjectID = "h1l-YI-Yex"; */
-"h1l-YI-Yex.title" = "Kopiëer naar Nieuwe Movie";
+"h1l-YI-Yex.title" = "Kopiëer naar nieuwe movie";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "h8W-NQ-h3a"; */
 "h8W-NQ-h3a.placeholderString" = "Filter";
@@ -105,13 +105,13 @@
 "iBx-v6-SHn.headerCell.title" = "atom id.";
 
 /* Class = "NSMenuItem"; title = "Find and Impose symmetry"; ObjectID = "j0C-ap-N1A"; */
-"j0C-ap-N1A.title" = "Vind en Leg symmetrie Op";
+"j0C-ap-N1A.title" = "Zoek en leg symmetrie op";
 
 /* Class = "NSMenuItem"; title = "Find primitive"; ObjectID = "j46-Tq-XrE"; */
-"j46-Tq-XrE.title" = "Vind Primitieve";
+"j46-Tq-XrE.title" = "Zoek primitieve";
 
 /* Class = "NSTextFieldCell"; title = "Net charge"; ObjectID = "k5O-nf-whc"; */
-"k5O-nf-whc.title" = "Netto Lading";
+"k5O-nf-whc.title" = "Netto lading";
 
 /* Class = "NSTableColumn"; headerCell.title = "vis"; ObjectID = "njX-Kx-nwX"; */
 "njX-Kx-nwX.headerCell.title" = "vis";
@@ -123,7 +123,7 @@
 "ohE-dV-Fg7.headerCell.title" = "x";
 
 /* Class = "NSMenuItem"; title = "Last selected"; ObjectID = "qCy-Oi-Hlq"; */
-"qCy-Oi-Hlq.title" = "Laatste Geselecteerde";
+"qCy-Oi-Hlq.title" = "Laatste geselecteerde";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "qJy-Jz-RI1"; */
 "qJy-Jz-RI1.title" = "Text Cell";
@@ -138,10 +138,10 @@
 "tl6-9S-wf8.title" = "VASP POSCAR";
 
 /* Class = "NSMenu"; title = "Export As"; ObjectID = "to4-IQ-4W7"; */
-"to4-IQ-4W7.title" = "Exporteer Als";
+"to4-IQ-4W7.title" = "Exporteer als";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "txI-SF-Ef5"; */
-"txI-SF-Ef5.title" = "Inserteer Atoom Group";
+"txI-SF-Ef5.title" = "Inserteer atoom group";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "wAb-gF-oXG"; */
 "wAb-gF-oXG.title" = "Text Cell";
@@ -150,7 +150,7 @@
 "wMK-kB-PjB.title" = "Selectie";
 
 /* Class = "NSMenuItem"; title = "Flatten Hierarchy"; ObjectID = "wfF-yl-c2A"; */
-"wfF-yl-c2A.title" = "Hiërarchie Platslaan";
+"wfF-yl-c2A.title" = "Hiërarchie platslaan";
 
 /* Class = "NSMenu"; title = "Visibility"; ObjectID = "yiu-Al-H1i"; */
 "yiu-Al-H1i.title" = "Zichtbaarheid";
@@ -159,7 +159,7 @@
 "ynH-ie-NeJ.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Make Super-Cell"; ObjectID = "yoN-UL-IRj"; */
-"yoN-UL-IRj.title" = "Maak Super-Cel";
+"yoN-UL-IRj.title" = "Maak super-cel";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "zgU-ei-acC"; */
 "zgU-ei-acC.title" = "Text Cell";

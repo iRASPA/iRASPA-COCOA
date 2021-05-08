@@ -27,7 +27,7 @@
 "6KC-hH-6j8.placeholderString" = "Onbekend";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "7Ft-CF-yt2"; */
-"7Ft-CF-yt2.title" = "Kracht Veld";
+"7Ft-CF-yt2.title" = "Krachtveld";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "8lJ-Qe-9Bj"; */
 "8lJ-Qe-9Bj.title" = "Onbekend";
@@ -39,7 +39,7 @@
 "ASc-zU-QqD.placeholderString" = "Onbekend";
 
 /* Class = "NSMenuItem"; title = "Some Small Negative Values"; ObjectID = "C5C-Je-5WX"; */
-"C5C-Je-5WX.title" = "Enkele Kleine Negatieve Waardes";
+"C5C-Je-5WX.title" = "Enkele kleine negatieve eigenwaardes";
 
 /* Class = "NSTextFieldCell"; placeholderString = "City"; ObjectID = "Cvy-Hd-HUC"; */
 "Cvy-Hd-HUC.placeholderString" = "Stad";
@@ -99,7 +99,7 @@
 "KRx-ka-ed4.placeholderString" = "h_min";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Kyz-vh-wLM"; */
-"Kyz-vh-wLM.title" = "Kracht Veld Details";
+"Kyz-vh-wLM.title" = "Krachtveld Details";
 
 /* Class = "NSTextFieldCell"; title = "Chemical"; ObjectID = "L9b-nA-LZg"; */
 "L9b-nA-LZg.title" = "Chemische Informatie";
@@ -141,13 +141,13 @@
 "Qbd-YO-NWQ.placeholderString" = "Onbekend";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "R5l-j2-8rL"; */
-"R5l-j2-8rL.title" = "Kracht Veld Details";
+"R5l-j2-8rL.title" = "Krachtveld details";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
 "USD-gk-tal.placeholderString" = "Onbekend";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "UdZ-E6-hGm"; */
-"UdZ-E6-hGm.title" = "Kracht Veld";
+"UdZ-E6-hGm.title" = "Krachtveld";
 
 /* Class = "NSTextFieldCell"; title = "Software"; ObjectID = "VSi-Bz-b4f"; */
 "VSi-Bz-b4f.title" = "Software";
@@ -165,19 +165,19 @@
 "Vvv-Ri-fwX.title" = "Nummer";
 
 /* Class = "NSTextFieldCell"; title = "R indices (all data)"; ObjectID = "WBA-sr-NKP"; */
-"WBA-sr-NKP.title" = "R Indices (Alle Data)";
+"WBA-sr-NKP.title" = "R Indices (Alle data)";
 
 /* Class = "NSTextFieldCell"; title = "Article Title"; ObjectID = "Wih-6z-Wmy"; */
-"Wih-6z-Wmy.title" = "Artikel Titel";
+"Wih-6z-Wmy.title" = "Artikel titel";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "X0T-Gc-sil"; */
 "X0T-Gc-sil.placeholderString" = "Onbekend";
 
 /* Class = "NSTextFieldCell"; title = "Radiation wavelength"; ObjectID = "Xx6-F7-2Db"; */
-"Xx6-F7-2Db.title" = "Straling Golflengte";
+"Xx6-F7-2Db.title" = "Straling golflengte";
 
 /* Class = "NSTextFieldCell"; title = "Journal Title"; ObjectID = "Zmo-LS-hfO"; */
-"Zmo-LS-hfO.title" = "Tijdschrift Titel";
+"Zmo-LS-hfO.title" = "Tijdschrift titel";
 
 /* Class = "NSMenuItem"; title = "Kelvin"; ObjectID = "Zqh-RB-jIF"; */
 "Zqh-RB-jIF.title" = "Kelvin";
@@ -192,7 +192,7 @@
 "au5-Fr-4P5.placeholderString" = "Onbekend";
 
 /* Class = "NSMenuItem"; title = "Genetic Algorithm"; ObjectID = "b6n-Qn-6ik"; */
-"b6n-Qn-6ik.title" = "Genetic Algorithm";
+"b6n-Qn-6ik.title" = "Genetic algorithm";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "b8q-Dr-Dt5"; */
 "b8q-Dr-Dt5.placeholderString" = "Onbekend";
@@ -255,7 +255,7 @@
 "bgc-3c-w1h.placeholderString" = "Unknown";
 
 /* Class = "NSTextFieldCell"; title = "Final R indices [I>2sigma(I)]"; ObjectID = "bw9-xG-XoD"; */
-"bw9-xG-XoD.title" = "Laatste R Indices [I>2sigma(I)]";
+"bw9-xG-XoD.title" = "Laatste R indices [I>2sigma(I)]";
 
 /* Class = "NSBox"; title = "Atomic Positions"; ObjectID = "cgg-LX-ohN"; */
 "cgg-LX-ohN.title" = "Atoomposities";
@@ -273,7 +273,7 @@
 "d8y-By-uMu.title" = "ORCHID ID";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Name Systematic"; ObjectID = "df5-Wf-bLj"; */
-"df5-Wf-bLj.title" = "Chemische Naam Systematisch";
+"df5-Wf-bLj.title" = "Chemische naam systematisch";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0000-0000-0000-0000"; ObjectID = "eA1-Nk-SW5"; */
 "eA1-Nk-SW5.placeholderString" = "0000-0000-0000-0000";
@@ -321,7 +321,7 @@
 "kf2-0x-3Vl.placeholderString" = "Onbekend";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab Initio";
+"kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab initio";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[1] = "UFF"; ObjectID = "kf2-0x-3Vl"; */
 "kf2-0x-3Vl.ibShadowedObjectValues[1]" = "UFF";
@@ -342,13 +342,13 @@
 "kzO-x9-s2F.placeholderString" = "min";
 
 /* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "Relaxeer Eenheidscel";
+"lIz-1D-3Ai.title" = "Relaxeer eenheidscel";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
 "lKv-hk-525.title" = "Druk";
 
 /* Class = "NSMenuItem"; title = "Fixed Cell"; ObjectID = "lh2-7H-hGC"; */
-"lh2-7H-hGC.title" = "Vaste Eenheidscel";
+"lh2-7H-hGC.title" = "Vaste eenheidscel";
 
 /* Class = "NSTextFieldCell"; title = "Method"; ObjectID = "m81-kt-8rG"; */
 "m81-kt-8rG.title" = "Methode";
@@ -357,13 +357,13 @@
 "mR9-kH-oL9.title" = "Temperatuur";
 
 /* Class = "NSTextFieldCell"; placeholderString = "University or Company name"; ObjectID = "nZ6-yf-S1l"; */
-"nZ6-yf-S1l.placeholderString" = "Universiteit of Bedrijfs Naam";
+"nZ6-yf-S1l.placeholderString" = "Universiteit of bedrijfs naam";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "nb3-dm-cDY"; */
 "nb3-dm-cDY.placeholderString" = "Onbekend";
 
 /* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "oND-jh-tZA"; */
-"oND-jh-tZA.title" = "Atomaire Ladingen";
+"oND-jh-tZA.title" = "Atomaire ladingen";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "pD1-Es-0pE"; */
 "pD1-Es-0pE.placeholderString" = "Onbekend";
@@ -393,7 +393,7 @@
 "sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Free"; ObjectID = "sah-qX-FWQ"; */
-"sah-qX-FWQ.title" = "Fixed Angles; Isotropic Edge-Length Free";
+"sah-qX-FWQ.title" = "Vaste hoeken; Assen isotropisch vrij";
 
 /* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
 "seM-pw-mPI.title" = "Databasecodes";
@@ -444,7 +444,7 @@
 "tC6-Zq-7Lv.title" = "Citaat";
 
 /* Class = "NSMenuItem"; title = "Steepest Descent"; ObjectID = "tWh-do-MeZ"; */
-"tWh-do-MeZ.title" = "Steepest Descent";
+"tWh-do-MeZ.title" = "Steepest descent";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "uMx-Zh-Bqv"; */
 "uMx-Zh-Bqv.title" = "Datum";
@@ -456,13 +456,13 @@
 "uaM-oQ-eaJ.title" = "Auteur";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Free"; ObjectID = "ucW-XP-BfZ"; */
-"ucW-XP-BfZ.title" = "Vaste Hoeken; Anisotropic Eenheidscel Assen Variabel";
+"ucW-XP-BfZ.title" = "Vaste hoeken; Assen anisotropic vrij";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "urK-zQ-9a7"; */
 "urK-zQ-9a7.placeholderString" = "Onbekend";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[0]" = "Ab Initio";
+"urK-zQ-9a7.ibShadowedObjectValues[0]" = "Ab initio";
 
 /* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[1] = "UFF"; ObjectID = "urK-zQ-9a7"; */
 "urK-zQ-9a7.ibShadowedObjectValues[1]" = "UFF";
@@ -480,7 +480,7 @@
 "urK-zQ-9a7.ibShadowedObjectValues[5]" = "MM4";
 
 /* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "utU-RL-9NT"; */
-"utU-RL-9NT.title" = "Enkele Signficante Negatieve Waardes";
+"utU-RL-9NT.title" = "Enkele signficante negatieve waardes";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "wMv-kw-520"; */
 "wMv-kw-520.placeholderString" = "Onbekend";
@@ -510,16 +510,16 @@
 "xEm-NF-Owh.title" = "Newton-Raphson";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Middle Name"; ObjectID = "yR3-PF-JAn"; */
-"yR3-PF-JAn.placeholderString" = "Midden Naam";
+"yR3-PF-JAn.placeholderString" = "Midden naam";
 
 /* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Free"; ObjectID = "ylL-90-vOx"; */
-"ylL-90-vOx.title" = "Vaste 𝝰- 𝝱; en 𝝲-Hoeken en Eenheidscell Assen Variabel";
+"ylL-90-vOx.title" = "Vaste 𝝰- 𝝱; en 𝝲-hoeken; Assen vrij";
 
 /* Class = "NSTextFieldCell"; title = "Number of reflections"; ObjectID = "z73-uc-ODJ"; */
-"z73-uc-ODJ.title" = "Aantal Reflecties";
+"z73-uc-ODJ.title" = "Aantal reflecties";
 
 /* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "zKZ-Xu-F5z"; */
-"zKZ-Xu-F5z.title" = "Software Pakket";
+"zKZ-Xu-F5z.title" = "Software pakket";
 
 /* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Free"; ObjectID = "zUt-yS-ax8"; */
-"zUt-yS-ax8.title" = "Eenheidscel Assen en Hoeken Variabel";
+"zUt-yS-ax8.title" = "Eenheidscel assen en hoeken vrij";

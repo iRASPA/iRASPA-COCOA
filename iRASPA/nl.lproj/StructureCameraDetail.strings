@@ -3,7 +3,7 @@
 "0BR-Ed-UAj.title" = "Inch";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "0bK-Qa-X5f"; */
-"0bK-Qa-X5f.title" = "Euler Hoeken";
+"0bK-Qa-X5f.title" = "Euler hoeken";
 
 /* Class = "NSButtonCell"; title = "+Z"; ObjectID = "0ro-vd-hvU"; */
 "0ro-vd-hvU.title" = "+Z";
@@ -18,13 +18,13 @@
 "3pH-Uc-D8j.title" = "Cm";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "57t-sa-bti"; */
-"57t-sa-bti.title" = "Rotatie Hoek";
+"57t-sa-bti.title" = "Rotatie hoek";
 
 /* Class = "NSTextFieldCell"; title = "From"; ObjectID = "5QT-Q5-u3Q"; */
 "5QT-Q5-u3Q.title" = "Van";
 
 /* Class = "NSTextFieldCell"; title = "Dots-per-Inch"; ObjectID = "6Kn-fw-14a"; */
-"6Kn-fw-14a.title" = "Punten-per-Inch";
+"6Kn-fw-14a.title" = "Punten-per-inch";
 
 /* Class = "NSTextFieldCell"; placeholderString = "w0"; ObjectID = "6Z3-l1-QCv"; */
 "6Z3-l1-QCv.placeholderString" = "w0";
@@ -42,7 +42,7 @@
 "7II-ou-nrF.title" = "8-bits, RGB";
 
 /* Class = "NSButtonCell"; title = "Reset Camera"; ObjectID = "7OD-5b-Be8"; */
-"7OD-5b-Be8.title" = "Reset Camera";
+"7OD-5b-Be8.title" = "Reset camera";
 
 /* Class = "NSTabViewItem"; label = "Image"; ObjectID = "7Xu-ua-Aaa"; */
 "7Xu-ua-Aaa.label" = "Plaatje";
@@ -63,16 +63,16 @@
 "Abc-jz-2v1.title" = "300 dpi";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Ac4-9i-94c"; */
-"Ac4-9i-94c.title" = "Diffuse Lichtintensiteit";
+"Ac4-9i-94c.title" = "Diffuse lichtintensiteit";
 
 /* Class = "NSTextFieldCell"; title = "Virtual Camera Position"; ObjectID = "BVw-iu-XbK"; */
-"2oJ-c8-LXO.title" = "Virtuele Camerapositie";
+"2oJ-c8-LXO.title" = "Virtuele camerapositie";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "DsX-mM-8X0"; */
 "DsX-mM-8X0.title" = "Glans";
 
 /* Class = "NSTextFieldCell"; title = "Pixel Width"; ObjectID = "F9Y-qR-A6U"; */
-"F9Y-qR-A6U.title" = "Pixel Breedte";
+"F9Y-qR-A6U.title" = "Pixel breedte";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ax"; ObjectID = "G3V-jP-oz6"; */
 "G3V-jP-oz6.placeholderString" = "ax";
@@ -81,16 +81,16 @@
 "G71-xR-yVF.title" = "Roteer +90°";
 
 /* Class = "NSButtonCell"; title = "Linear Gradient"; ObjectID = "I7e-iR-yaY"; */
-"I7e-iR-yaY.title" = "Lineair Verloop";
+"I7e-iR-yaY.title" = "Lineair verloop";
 
 /* Class = "NSMenuItem"; title = "8-bits, CMYK"; ObjectID = "JiR-AU-7kF"; */
 "JiR-AU-7kF.title" = "8-bits, CMYK";
 
 /* Class = "NSButtonCell"; title = "Create Movie"; ObjectID = "Juc-g9-TL7"; */
-"Juc-g9-TL7.title" = "Maak Filmpje";
+"Juc-g9-TL7.title" = "Maak video";
 
 /* Class = "NSBox"; title = "Camera Light"; ObjectID = "Jzl-ba-QmS"; */
-"Jzl-ba-QmS.title" = "Camera Licht";
+"Jzl-ba-QmS.title" = "Camera licht";
 
 /* Class = "NSTextFieldCell"; title = "From"; ObjectID = "Kzo-ya-Jtv"; */
 "Kzo-ya-Jtv.title" = "Van";
@@ -99,19 +99,19 @@
 "LQP-iH-ONP.placeholderString" = "bz";
 
 /* Class = "NSTextFieldCell"; title = "Pictures/Movies"; ObjectID = "MBE-Ci-b6w"; */
-"MBE-Ci-b6w.title" = "Plaatjes/Filmpjes";
+"MBE-Ci-b6w.title" = "Plaatjes/videos";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "MEZ-QI-Kgi"; */
 "MEZ-QI-Kgi.title" = "Roteer +90°";
 
 /* Class = "NSTabViewItem"; label = "Radial Gradient"; ObjectID = "NfR-n9-0Kg"; */
-"NfR-n9-0Kg.label" = "Radiaal Verloop";
+"NfR-n9-0Kg.label" = "Radiaal verloop";
 
 /* Class = "NSMenuItem"; title = "72 dpi"; ObjectID = "OgY-Mc-Pa0"; */
 "OgY-Mc-Pa0.title" = "72 dpi";
 
 /* Class = "NSButtonCell"; title = "Create Picture"; ObjectID = "Oki-uY-N6d"; */
-"Oki-uY-N6d.title" = "Maak Plaatje";
+"Oki-uY-N6d.title" = "Maak plaatje";
 
 /* Class = "NSTextFieldCell"; placeholderString = "w1"; ObjectID = "P2r-W6-ODo"; */
 "P2r-W6-ODo.placeholderString" = "w1";
@@ -159,7 +159,7 @@
 "WFD-2H-apd.placeholderString" = "bx";
 
 /* Class = "NSButtonCell"; title = "Radial Gradient"; ObjectID = "X0p-ze-Zzs"; */
-"X0p-ze-Zzs.title" = "Radiaal Verloop";
+"X0p-ze-Zzs.title" = "Radiaal verloop";
 
 /* Class = "NSTextFieldCell"; title = "To"; ObjectID = "XeU-0O-MTz"; */
 "XeU-0O-MTz.title" = "Naar";
@@ -168,7 +168,7 @@
 "Y12-m8-sOG.placeholderString" = "cz";
 
 /* Class = "NSTextFieldCell"; title = "Quality/Type"; ObjectID = "YN2-kq-iUD"; */
-"YN2-kq-iUD.title" = "Kwaliteit/Type";
+"YN2-kq-iUD.title" = "Kwaliteit/type";
 
 /* Class = "NSButtonCell"; title = "Color"; ObjectID = "aLW-k0-vrB"; */
 "aLW-k0-vrB.title" = "Kleur";
@@ -201,7 +201,7 @@
 "fM1-LC-a88.title" = "Projectie";
 
 /* Class = "NSBox"; title = "Reset Direction"; ObjectID = "fU4-qD-Ex2"; */
-"fU4-qD-Ex2.title" = "Reset Richting";
+"fU4-qD-Ex2.title" = "Reset richting";
 
 /* Class = "NSTextFieldCell"; title = "Roundness"; ObjectID = "fXK-FR-6i0"; */
 "fXK-FR-6i0.title" = "Rondheid";
@@ -210,7 +210,7 @@
 "fwm-RT-44D.title" = "Intensiteit omgevingslicht";
 
 /* Class = "NSTextFieldCell"; title = "Pixel Height"; ObjectID = "iXA-YM-Nj6"; */
-"iXA-YM-Nj6.title" = "Pixel Hoogte";
+"iXA-YM-Nj6.title" = "Pixel hoogte";
 
 /* Class = "NSMenuItem"; title = "16-bits, CMYK"; ObjectID = "ilw-zG-CvO"; */
 "ilw-zG-CvO.title" = "16-bits, CMYK";
@@ -231,7 +231,7 @@
 "loi-gG-s0z.title" = "Centrum van de scène";
 
 /* Class = "NSBox"; title = "View Matrix"; ObjectID = "lws-F1-am6"; */
-"lws-F1-am6.title" = "Kijk Matrix";
+"lws-F1-am6.title" = "Kijk matrix";
 
 /* Class = "NSMenuItem"; title = "600 dpi"; ObjectID = "mfB-Ok-4s0"; */
 "mfB-Ok-4s0.title" = "600 dpi";

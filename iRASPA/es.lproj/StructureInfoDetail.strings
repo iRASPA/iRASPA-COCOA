@@ -3,7 +3,7 @@
 "07j-yA-XWL.title" = "Todo positivo";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
-"43t-f2-d0i.placeholderString" = "Nombre del Instituto";
+"43t-f2-d0i.placeholderString" = "Nombre del instituto";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "444-5s-8Su"; */
 "444-5s-8Su.placeholderString" = "Desconocido";
@@ -114,7 +114,7 @@
 "M4G-j9-ni3.title" = "Tipo de radiación";
 
 /* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "Simulated Annealing";
+"MCu-aJ-XRY.title" = "Simulated annealing";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
 "MYm-ia-kRD.title" = "Simplex";
@@ -321,7 +321,7 @@
 "kf2-0x-3Vl.placeholderString" = "Desconocido";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab Initio";
+"kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab initio";
 
 /* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[1] = "UFF"; ObjectID = "kf2-0x-3Vl"; */
 "kf2-0x-3Vl.ibShadowedObjectValues[1]" = "UFF";
@@ -444,7 +444,7 @@
 "tC6-Zq-7Lv.title" = "Citación";
 
 /* Class = "NSMenuItem"; title = "Steepest Descent"; ObjectID = "tWh-do-MeZ"; */
-"tWh-do-MeZ.title" = "Steepest Descent";
+"tWh-do-MeZ.title" = "Steepest descent";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "uMx-Zh-Bqv"; */
 "uMx-Zh-Bqv.title" = "Fecha";
@@ -518,7 +518,7 @@
 /* Class = "NSTextFieldCell"; title = "Number of Reflections"; ObjectID = "z73-uc-ODJ"; */
 "z73-uc-ODJ.title" = "Número de reflexiones";
 
-/* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "zKZ-Xu-F5z"; */
+/* Class = "NSTextFieldCell"; title = "gooware Package"; ObjectID = "zKZ-Xu-F5z"; */
 "zKZ-Xu-F5z.title" = "Paquete de software";
 
 /* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Free"; ObjectID = "zUt-yS-ax8"; */

@@ -1347,6 +1347,19 @@
 		93159FDD1F54235200D8700E /* SKXYZParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXYZParser.swift; sourceTree = "<group>"; };
 		9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedCylinderGeometry.swift; sourceTree = "<group>"; };
 		932137D31F2B533800DAEBDF /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		9321596426468BED0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureCameraDetail.strings; sourceTree = "<group>"; };
+		9321596626468D670004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		932159682646902D0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/VASP.strings; sourceTree = "<group>"; };
+		9321596A2646903C0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DirectoryViewer.strings; sourceTree = "<group>"; };
+		9321596C264690420004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Master.strings; sourceTree = "<group>"; };
+		9321596E2646904A0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureElementDetail.strings; sourceTree = "<group>"; };
+		93215970264690510004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureInfoDetail.strings; sourceTree = "<group>"; };
+		932159722646905F0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureAppearanceDetail.strings; sourceTree = "<group>"; };
+		93215974264690680004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureCellDetail.strings; sourceTree = "<group>"; };
+		932159762646906D0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureAtomDetail.strings; sourceTree = "<group>"; };
+		93215978264690710004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureBondDetail.strings; sourceTree = "<group>"; };
+		9321597A2646908F0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PreviewViewController.strings; sourceTree = "<group>"; };
+		9321597C264690C60004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AboutWindow.strings; sourceTree = "<group>"; };
 		93260AE31E2A46350066EC08 /* iRASPADocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPADocument.swift; sourceTree = "<group>"; tabWidth = 2; };
 		93260AEB1E2A63D70066EC08 /* iRASPAWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = iRASPAWindowController.swift; sourceTree = "<group>"; tabWidth = 2; };
 		93274E7C2205A0F5004031BA /* MetalPolygonalPrismShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPolygonalPrismShader.swift; sourceTree = "<group>"; };
@@ -4982,6 +4995,7 @@
 				930504BD26274CAE00E0CC6B /* hi */,
 				930504F126276CB600E0CC6B /* ja */,
 				9305051726276CE000E0CC6B /* ar */,
+				9321596426468BED0004F241 /* en */,
 			);
 			name = StructureCameraDetail.storyboard;
 			sourceTree = "<group>";
@@ -4996,6 +5010,7 @@
 				930504BE26274CAF00E0CC6B /* hi */,
 				930504F226276CB600E0CC6B /* ja */,
 				9305051826276CE000E0CC6B /* ar */,
+				9321596E2646904A0004F241 /* en */,
 			);
 			name = StructureElementDetail.storyboard;
 			sourceTree = "<group>";
@@ -5010,6 +5025,7 @@
 				930504BF26274CAF00E0CC6B /* hi */,
 				930504F326276CB600E0CC6B /* ja */,
 				9305051926276CE000E0CC6B /* ar */,
+				93215970264690510004F241 /* en */,
 			);
 			name = StructureInfoDetail.storyboard;
 			sourceTree = "<group>";
@@ -5024,6 +5040,7 @@
 				930504C026274CAF00E0CC6B /* hi */,
 				930504F426276CB600E0CC6B /* ja */,
 				9305051A26276CE000E0CC6B /* ar */,
+				932159722646905F0004F241 /* en */,
 			);
 			name = StructureAppearanceDetail.storyboard;
 			sourceTree = "<group>";
@@ -5038,6 +5055,7 @@
 				930504C126274CAF00E0CC6B /* hi */,
 				930504F526276CB600E0CC6B /* ja */,
 				9305051B26276CE000E0CC6B /* ar */,
+				93215974264690680004F241 /* en */,
 			);
 			name = StructureCellDetail.storyboard;
 			sourceTree = "<group>";
@@ -5052,6 +5070,7 @@
 				930504C226274CAF00E0CC6B /* hi */,
 				930504F626276CB600E0CC6B /* ja */,
 				9305051C26276CE000E0CC6B /* ar */,
+				932159762646906D0004F241 /* en */,
 			);
 			name = StructureAtomDetail.storyboard;
 			sourceTree = "<group>";
@@ -5066,6 +5085,7 @@
 				930504C326274CAF00E0CC6B /* hi */,
 				930504F726276CB600E0CC6B /* ja */,
 				9305051D26276CE000E0CC6B /* ar */,
+				93215978264690710004F241 /* en */,
 			);
 			name = StructureBondDetail.storyboard;
 			sourceTree = "<group>";
@@ -5080,6 +5100,7 @@
 				930504B826274CAE00E0CC6B /* hi */,
 				930504EC26276CB500E0CC6B /* ja */,
 				9305051226276CE000E0CC6B /* ar */,
+				9321596626468D670004F241 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -5108,6 +5129,7 @@
 				930504BC26274CAE00E0CC6B /* hi */,
 				930504F026276CB600E0CC6B /* ja */,
 				9305051626276CE000E0CC6B /* ar */,
+				9321596C264690420004F241 /* en */,
 			);
 			name = Master.storyboard;
 			sourceTree = "<group>";
@@ -5136,6 +5158,7 @@
 				930504BB26274CAE00E0CC6B /* hi */,
 				930504EF26276CB600E0CC6B /* ja */,
 				9305051526276CE000E0CC6B /* ar */,
+				9321596A2646903C0004F241 /* en */,
 			);
 			name = DirectoryViewer.storyboard;
 			sourceTree = "<group>";
@@ -5150,6 +5173,7 @@
 				930504B926274CAE00E0CC6B /* hi */,
 				930504ED26276CB600E0CC6B /* ja */,
 				9305051326276CE000E0CC6B /* ar */,
+				932159682646902D0004F241 /* en */,
 			);
 			name = VASP.storyboard;
 			sourceTree = "<group>";
@@ -5164,6 +5188,7 @@
 				930504C426274CAF00E0CC6B /* hi */,
 				930504F826276CB600E0CC6B /* ja */,
 				9305051E26276CE000E0CC6B /* ar */,
+				9321597A2646908F0004F241 /* en */,
 			);
 			name = PreviewViewController.xib;
 			sourceTree = "<group>";
@@ -5234,6 +5259,7 @@
 				930504B626274CAE00E0CC6B /* hi */,
 				930504EA26276CB500E0CC6B /* ja */,
 				9305051026276CDF00E0CC6B /* ar */,
+				9321597C264690C60004F241 /* en */,
 			);
 			name = AboutWindow.storyboard;
 			sourceTree = "<group>";
@@ -5263,7 +5289,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5274,7 +5300,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
@@ -5294,7 +5320,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5306,7 +5332,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5324,7 +5350,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5335,7 +5361,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -5353,7 +5379,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5365,7 +5391,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -5382,7 +5408,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5393,7 +5419,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
@@ -5413,7 +5439,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5425,7 +5451,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5444,7 +5470,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5456,7 +5482,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5476,7 +5502,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5488,7 +5514,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5512,7 +5538,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5527,7 +5553,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
@@ -5554,7 +5580,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5569,7 +5595,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -5591,7 +5617,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5603,7 +5629,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5622,7 +5648,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5634,7 +5660,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5780,7 +5806,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5792,7 +5818,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5816,7 +5842,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -5828,7 +5854,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5846,7 +5872,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5857,7 +5883,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -5875,7 +5901,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -5887,7 +5913,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -5907,14 +5933,14 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5933,14 +5959,14 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -5958,14 +5984,14 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5984,14 +6010,14 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6010,7 +6036,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6022,7 +6048,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6044,7 +6070,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6056,7 +6082,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6074,7 +6100,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6085,7 +6111,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6104,7 +6130,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6115,7 +6141,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6135,7 +6161,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -6145,7 +6171,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6164,7 +6190,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -6174,7 +6200,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6190,7 +6216,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6202,7 +6228,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6218,7 +6244,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6231,7 +6257,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6252,7 +6278,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6264,7 +6290,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -6288,7 +6314,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6300,7 +6326,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6322,7 +6348,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6334,7 +6360,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -6358,7 +6384,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 112;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6370,7 +6396,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

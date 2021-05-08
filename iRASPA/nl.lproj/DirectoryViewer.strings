@@ -120,7 +120,7 @@
 "Ph1-69-211.title" = "Helium leegheids factor";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Pt2-gj-hYD"; */
-"Pt2-gj-hYD.title" = "Geen";
+"Pt2-gj-hYD.title" = "geen";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "PwB-qr-PSc"; */
 "PwB-qr-PSc.title" = "is groter dan of gelijk aan";
@@ -297,7 +297,7 @@
 "vxq-4W-FYz.title" = "is kleiner dan of gelijk aan";
 
 /* Class = "NSMenuItem"; title = "Any"; ObjectID = "yCO-9y-bt0"; */
-"yCO-9y-bt0.title" = "Ieder";
+"yCO-9y-bt0.title" = "ieder";
 
 /* Class = "NSMenuItem"; title = "Type"; ObjectID = "yFJ-FY-elM"; */
 "yFJ-FY-elM.title" = "Type";
