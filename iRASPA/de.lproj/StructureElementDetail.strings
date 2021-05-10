@@ -54,7 +54,7 @@
 "RN5-9P-5zL.title" = "C";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Rhd-q6-XIy"; */
-"Rhd-q6-XIy.title" = "Text Cell";
+"Rhd-q6-XIy.title" = "Textzelle";
 
 /* Class = "NSTextFieldCell"; title = "Atom Visibility"; ObjectID = "V2o-qv-t9c"; */
 "V2o-qv-t9c.title" = "Atomsichtbarkeit";
@@ -72,7 +72,7 @@
 "d0R-zc-cge.title" = "Atomradius";
 
 /* Class = "NSTextFieldCell"; title = "Triple Bond Covalent Radius"; ObjectID = "dAx-rW-eh4"; */
-"dAx-rW-eh4.title" = "Kovalenter Dreifachbindungsradius";
+"dAx-rW-eh4.title" = "Radius der kovalenten Dreifachbindung";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "ed7-vv-cRQ"; */
 "ed7-vv-cRQ.title" = "Å";

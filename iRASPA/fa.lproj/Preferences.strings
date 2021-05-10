@@ -12,7 +12,7 @@
 "LKB-pQ-lE8.title" = "تنظیمات انیمیشن";
 
 /* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
-"N3b-Db-pad.title" = "اولویت ها";
+"N3b-Db-pad.title" = "ترجیحات";
 
 /* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
 "RvG-Ag-1yO.title" = "همیشه روشن";
@@ -33,16 +33,16 @@
 "i78-OK-HJu.title" = "همیشه خاموش";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "jDF-PS-epK"; */
-"jDF-PS-epK.placeholderString" = "یک شی سیستم فایل را به این قسمت بکشید یا برای تنظیم مسیر کلیک کنید";
+"jDF-PS-epK.placeholderString" = "یک فایل سیستم را به این قسمت بکشید یا برای تنظیم مسیر کلیک کنید";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
-"kfw-MK-t7S.placeholderString" = "یک شی سیستم فایل را به این قسمت بکشید یا برای تنظیم مسیر کلیک کنید";
+"kfw-MK-t7S.placeholderString" = "یک فایل سیستم را به این قسمت بکشید یا برای تنظیم مسیر کلیک کنید";
 
 /* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
 "lDy-gc-II8.title" = "اولویت ها";
 
 /* Class = "NSMenuItem"; title = "When connected to power source"; ObjectID = "miP-5k-r8f"; */
-"miP-5k-r8f.title" = "وقتی به منبع تغذیه وصل شد";
+"miP-5k-r8f.title" = "وقتی به منبع نیرو وصل شد";
 
 /* Class = "NSButtonCell"; title = "Autosaving"; ObjectID = "n57-Vp-DI4"; */
 "n57-Vp-DI4.title" = "ذخیره خودکار";

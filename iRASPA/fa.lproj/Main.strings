@@ -3,7 +3,7 @@
 "1O8-LR-tZG.title" = "بیضوی";
 
 /* Class = "NSMenuItem"; title = "Customize Toolbar…"; ObjectID = "1UK-8n-QPP"; */
-"1UK-8n-QPP.title" = "نوار ابزار را سفارشی کنید…";
+"1UK-8n-QPP.title" = "نوار ابزار را شخصی سازی کنید";
 
 /* Class = "NSMenuItem"; title = "iRASPA"; ObjectID = "1Xt-HY-uBw"; */
 "1Xt-HY-uBw.title" = "iRASPA";
@@ -21,25 +21,25 @@
 "2h7-ER-AoG.title" = "بلند کردن";
 
 /* Class = "NSMenuItem"; title = "Transformations"; ObjectID = "2oI-Rn-ZJC"; */
-"2oI-Rn-ZJC.title" = "تحولات";
+"2oI-Rn-ZJC.title" = "ترادیسی";
 
 /* Class = "NSMenuItem"; title = "3:1"; ObjectID = "3GP-Eu-vtX"; */
 "3GP-Eu-vtX.title" = "3:1";
 
 /* Class = "NSMenu"; title = "Spelling"; ObjectID = "3IN-sU-3Bg"; */
-"3IN-sU-3Bg.title" = "هجی کردن";
+"3IN-sU-3Bg.title" = "املاء";
 
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "3Om-Ey-2VK"; */
 "3Om-Ey-2VK.title" = "استفاده به طور پیش فرض";
 
 /* Class = "NSMenu"; title = "Speech"; ObjectID = "3rS-ZA-NoH"; */
-"3rS-ZA-NoH.title" = "سخن، گفتار";
+"3rS-ZA-NoH.title" = "گفتار";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "3x3-A1-D5u"; */
 "3x3-A1-D5u.title" = "Box";
 
 /* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
-"46P-cB-AYj.title" = "سفت";
+"46P-cB-AYj.title" = "کیپ کردن";
 
 /* Class = "NSMenuItem"; title = "Find"; ObjectID = "4EN-yA-p0u"; */
 "4EN-yA-p0u.title" = "پیدا کردن";
@@ -81,7 +81,7 @@
 "AYu-sK-qS6.title" = "منوی اصلی";
 
 /* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "BOF-NM-1cW"; */
-"BOF-NM-1cW.title" = "اولویت ها…";
+"BOF-NM-1cW.title" = "ترجیحات";
 
 /* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "BgM-ve-c93"; */
 "BgM-ve-c93.title" = "\tچپ به راست";
@@ -105,13 +105,13 @@
 "F2S-fz-NVQ.title" = "کمک";
 
 /* Class = "NSMenuItem"; title = "Export"; ObjectID = "F46-CC-yoN"; */
-"F46-CC-yoN.title" = "صادرات";
+"F46-CC-yoN.title" = "صادر کردن";
 
 /* Class = "NSMenuItem"; title = "iRASPA Help"; ObjectID = "FKE-Sm-Kum"; */
 "FKE-Sm-Kum.title" = "iRASPA راهنما";
 
 /* Class = "NSMenuItem"; title = "Structure project"; ObjectID = "FM9-Av-rXr"; */
-"FM9-Av-rXr.title" = "پروژه ساختار";
+"FM9-Av-rXr.title" = "ساختار پروژه";
 
 /* Class = "NSMenuItem"; title = "Text"; ObjectID = "Fal-I4-PZk"; */
 "Fal-I4-PZk.title" = "Text";
@@ -165,7 +165,7 @@
 "J5U-5w-g23.title" = "توجیه";
 
 /* Class = "NSMenuItem"; title = "Use None"; ObjectID = "J7y-lM-qPV"; */
-"J7y-lM-qPV.title" = "از هیچ استفاده کنید";
+"J7y-lM-qPV.title" = "از هیچکدام استفاده نکنید";
 
 /* Class = "NSMenuItem"; title = "21:9"; ObjectID = "JWT-Cn-v6t"; */
 "JWT-Cn-v6t.title" = "21:9";
@@ -195,7 +195,7 @@
 "LE2-aR-0XJ.title" = "همه را به جلو بیاوری";
 
 /* Class = "NSMenuItem"; title = "Paste Ruler"; ObjectID = "LVM-kO-fVI"; */
-"LVM-kO-fVI.title" = "حاکم چسباندن";
+"LVM-kO-fVI.title" = "خط كش چسباندن";
 
 /* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "Lbh-J2-qVU"; */
 "Lbh-J2-qVU.title" = "\tچپ به راست";
@@ -204,7 +204,7 @@
 "Lr4-9V-B0Y.title" = "1:1";
 
 /* Class = "NSMenuItem"; title = "Copy Ruler"; ObjectID = "MkV-Pr-PK5"; */
-"MkV-Pr-PK5.title" = "خط کش کپی کنید";
+"MkV-Pr-PK5.title" = "کپی کردن خط کش";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "MzS-m8-rt0"; */
 "MzS-m8-rt0.title" = "سیلندر";
@@ -243,7 +243,7 @@
 "RB4-Sm-HuC.title" = "\tراست به چپ";
 
 /* Class = "NSMenuItem"; title = "Superscript"; ObjectID = "Rqc-34-cIF"; */
-"Rqc-34-cIF.title" = "نسخه خطی";
+"Rqc-34-cIF.title" = "بالا نويس";
 
 /* Class = "NSMenuItem"; title = "Select All"; ObjectID = "Ruw-6m-B2m"; */
 "Ruw-6m-B2m.title" = "انتخاب همه";
@@ -270,7 +270,7 @@
 "VNS-yB-1c3.title" = "انتخاب معکوس";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
-"Vdr-fp-XzO.title" = "دیگران را پنهان کنید";
+"Vdr-fp-XzO.title" = "بقیه را مخفی کنید";
 
 /* Class = "NSMenuItem"; title = "Italic"; ObjectID = "Vjx-xi-njq"; */
 "Vjx-xi-njq.title" = "مورب";
@@ -282,7 +282,7 @@
 "WJS-5R-dt1.title" = "پروتئین";
 
 /* Class = "NSMenuItem"; title = "Underline"; ObjectID = "WRG-CD-K1S"; */
-"WRG-CD-K1S.title" = "زیر خط بزنید";
+"WRG-CD-K1S.title" = "زیر خط بکشید";
 
 /* Class = "NSMenuItem"; title = "Copy"; ObjectID = "Wm2-za-IFp"; */
 "Wm2-za-IFp.title" = "کپی";
@@ -339,10 +339,10 @@
 "buJ-ug-pKt.title" = "برای یافتن از انتخاب استفاده کنید";
 
 /* Class = "NSMenu"; title = "Transformations"; ObjectID = "c8a-y6-VQd"; */
-"c8a-y6-VQd.title" = "تحولات";
+"c8a-y6-VQd.title" = "ترادیسی ها";
 
 /* Class = "NSMenuItem"; title = "Use None"; ObjectID = "cDB-IK-hbR"; */
-"cDB-IK-hbR.title" = "از هیچ استفاده کنید";
+"cDB-IK-hbR.title" = "از هیچکدام استفاده نکنید";
 
 /* Class = "NSMenuItem"; title = "Atom group"; ObjectID = "cMR-OP-H7e"; */
 "cMR-OP-H7e.title" = "گروه اتم";
@@ -408,7 +408,7 @@
 "kIP-vf-haE.title" = "نمایش نوار کناری";
 
 /* Class = "NSMenuItem"; title = "Check Grammar With Spelling"; ObjectID = "mK6-2p-4JG"; */
-"mK6-2p-4JG.title" = "دستور زبان را با هجی بررسی کنید";
+"mK6-2p-4JG.title" = "بررسی گرامر با املا";
 
 /* Class = "NSMenuItem"; title = "1.85:1"; ObjectID = "mum-mQ-dln"; */
 "mum-mQ-dln.title" = "1.85:1";
@@ -426,7 +426,7 @@
 "pa3-QI-u2k.title" = "حذف";
 
 /* Class = "NSMenuItem"; title = "Save…"; ObjectID = "pxx-59-PXV"; */
-"pxx-59-PXV.title" = "صرفه جویی…";
+"pxx-59-PXV.title" = "ذخیره کردن";
 
 /* Class = "NSMenuItem"; title = "Find Next"; ObjectID = "q09-fT-Sye"; */
 "q09-fT-Sye.title" = "بعدی را پیدا کنید";
@@ -438,7 +438,7 @@
 "qIS-W8-SiK.title" = "تنظیمات صفحه…";
 
 /* Class = "NSMenuItem"; title = "Check Spelling While Typing"; ObjectID = "rbD-Rh-wIN"; */
-"rbD-Rh-wIN.title" = "هنگام تایپ کردن ، هجی را بررسی کنید";
+"rbD-Rh-wIN.title" = "بررسی املا هنگام تایپ";
 
 /* Class = "NSMenuItem"; title = "Protein crystal"; ObjectID = "rdX-r1-eMs"; */
 "rdX-r1-eMs.title" = "کریستال پروتئین";
@@ -468,7 +468,7 @@
 "uRl-iY-unG.title" = "برش";
 
 /* Class = "NSMenuItem"; title = "Paste Style"; ObjectID = "vKC-jM-MkH"; */
-"vKC-jM-MkH.title" = "چسباندن سبک";
+"vKC-jM-MkH.title" = "سبک چسباندن";
 
 /* Class = "NSMenuItem"; title = "Show Ruler"; ObjectID = "vLm-3I-IUL"; */
 "vLm-3I-IUL.title" = "نمایش خط کش";

@@ -1599,6 +1599,47 @@
 		9393439D25694AA9001D7D2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9393439E25694AA9001D7D2E /* iRASPAThumbnailExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iRASPAThumbnailExtension.entitlements; sourceTree = "<group>"; };
 		939343D225694C5A001D7D2E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		939733C2264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AboutWindow.strings; sourceTree = "<group>"; };
+		939733C3264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Preferences.strings; sourceTree = "<group>"; };
+		939733C4264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		939733C5264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VASP.strings; sourceTree = "<group>"; };
+		939733C6264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/StructureViewer.strings; sourceTree = "<group>"; };
+		939733C7264913A300922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/DirectoryViewer.strings; sourceTree = "<group>"; };
+		939733C8264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Master.strings; sourceTree = "<group>"; };
+		939733C9264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/StructureCameraDetail.strings; sourceTree = "<group>"; };
+		939733CA264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/StructureElementDetail.strings; sourceTree = "<group>"; };
+		939733CB264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/StructureInfoDetail.strings; sourceTree = "<group>"; };
+		939733CC264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/StructureAppearanceDetail.strings; sourceTree = "<group>"; };
+		939733CD264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/StructureCellDetail.strings; sourceTree = "<group>"; };
+		939733CE264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/StructureAtomDetail.strings; sourceTree = "<group>"; };
+		939733CF264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/StructureBondDetail.strings; sourceTree = "<group>"; };
+		939733D0264913A400922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PreviewViewController.strings; sourceTree = "<group>"; };
+		939733D1264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/AboutWindow.strings; sourceTree = "<group>"; };
+		939733D2264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Preferences.strings; sourceTree = "<group>"; };
+		939733D3264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Main.strings; sourceTree = "<group>"; };
+		939733D4264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/VASP.strings; sourceTree = "<group>"; };
+		939733D5264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/StructureViewer.strings; sourceTree = "<group>"; };
+		939733D6264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/DirectoryViewer.strings; sourceTree = "<group>"; };
+		939733D7264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Master.strings; sourceTree = "<group>"; };
+		939733D8264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/StructureCameraDetail.strings; sourceTree = "<group>"; };
+		939733D9264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/StructureElementDetail.strings; sourceTree = "<group>"; };
+		939733DA264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/StructureInfoDetail.strings; sourceTree = "<group>"; };
+		939733DB264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/StructureAppearanceDetail.strings; sourceTree = "<group>"; };
+		939733DC264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/StructureCellDetail.strings; sourceTree = "<group>"; };
+		939733DD264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/StructureAtomDetail.strings; sourceTree = "<group>"; };
+		939733DE264913E100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/StructureBondDetail.strings; sourceTree = "<group>"; };
+		939733DF264913E200922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/PreviewViewController.strings; sourceTree = "<group>"; };
+		939733E0264916CE00922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E1264916D100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E2264916FE00922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E32649170100922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E42649170B00922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E52649170D00922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E62649171900922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E72649171B00922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E82649172300922880 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733E92649172500922880 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		939733EB2649176700922880 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureViewer.strings; sourceTree = "<group>"; };
 		9397C61F203B4F4300FE4A9C /* ImportAccessoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportAccessoryViewController.xib; sourceTree = "<group>"; };
 		9397C621203B4F6800FE4A9C /* ImportAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportAccessoryViewController.swift; sourceTree = "<group>"; };
 		93986CCC2616FF8E00D10B7D /* OutlineViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewItem.swift; sourceTree = "<group>"; };
@@ -4013,6 +4054,8 @@
 				hi,
 				ja,
 				ar,
+				de,
+				fa,
 			);
 			mainGroup = 938387FF1E26A4A800112FBA;
 			productRefGroup = 938388091E26A4A800112FBA /* Products */;
@@ -4996,6 +5039,8 @@
 				930504F126276CB600E0CC6B /* ja */,
 				9305051726276CE000E0CC6B /* ar */,
 				9321596426468BED0004F241 /* en */,
+				939733C9264913A400922880 /* de */,
+				939733D8264913E100922880 /* fa */,
 			);
 			name = StructureCameraDetail.storyboard;
 			sourceTree = "<group>";
@@ -5011,6 +5056,8 @@
 				930504F226276CB600E0CC6B /* ja */,
 				9305051826276CE000E0CC6B /* ar */,
 				9321596E2646904A0004F241 /* en */,
+				939733CA264913A400922880 /* de */,
+				939733D9264913E100922880 /* fa */,
 			);
 			name = StructureElementDetail.storyboard;
 			sourceTree = "<group>";
@@ -5026,6 +5073,8 @@
 				930504F326276CB600E0CC6B /* ja */,
 				9305051926276CE000E0CC6B /* ar */,
 				93215970264690510004F241 /* en */,
+				939733CB264913A400922880 /* de */,
+				939733DA264913E100922880 /* fa */,
 			);
 			name = StructureInfoDetail.storyboard;
 			sourceTree = "<group>";
@@ -5041,6 +5090,8 @@
 				930504F426276CB600E0CC6B /* ja */,
 				9305051A26276CE000E0CC6B /* ar */,
 				932159722646905F0004F241 /* en */,
+				939733CC264913A400922880 /* de */,
+				939733DB264913E100922880 /* fa */,
 			);
 			name = StructureAppearanceDetail.storyboard;
 			sourceTree = "<group>";
@@ -5056,6 +5107,8 @@
 				930504F526276CB600E0CC6B /* ja */,
 				9305051B26276CE000E0CC6B /* ar */,
 				93215974264690680004F241 /* en */,
+				939733CD264913A400922880 /* de */,
+				939733DC264913E100922880 /* fa */,
 			);
 			name = StructureCellDetail.storyboard;
 			sourceTree = "<group>";
@@ -5071,6 +5124,8 @@
 				930504F626276CB600E0CC6B /* ja */,
 				9305051C26276CE000E0CC6B /* ar */,
 				932159762646906D0004F241 /* en */,
+				939733CE264913A400922880 /* de */,
+				939733DD264913E100922880 /* fa */,
 			);
 			name = StructureAtomDetail.storyboard;
 			sourceTree = "<group>";
@@ -5086,6 +5141,8 @@
 				930504F726276CB600E0CC6B /* ja */,
 				9305051D26276CE000E0CC6B /* ar */,
 				93215978264690710004F241 /* en */,
+				939733CF264913A400922880 /* de */,
+				939733DE264913E100922880 /* fa */,
 			);
 			name = StructureBondDetail.storyboard;
 			sourceTree = "<group>";
@@ -5101,6 +5158,8 @@
 				930504EC26276CB500E0CC6B /* ja */,
 				9305051226276CE000E0CC6B /* ar */,
 				9321596626468D670004F241 /* en */,
+				939733C4264913A300922880 /* de */,
+				939733D3264913E100922880 /* fa */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -5115,6 +5174,9 @@
 				930504BA26274CAE00E0CC6B /* hi */,
 				930504EE26276CB600E0CC6B /* ja */,
 				9305051426276CE000E0CC6B /* ar */,
+				939733C6264913A300922880 /* de */,
+				939733D5264913E100922880 /* fa */,
+				939733EB2649176700922880 /* en */,
 			);
 			name = StructureViewer.storyboard;
 			sourceTree = "<group>";
@@ -5130,6 +5192,8 @@
 				930504F026276CB600E0CC6B /* ja */,
 				9305051626276CE000E0CC6B /* ar */,
 				9321596C264690420004F241 /* en */,
+				939733C8264913A400922880 /* de */,
+				939733D7264913E100922880 /* fa */,
 			);
 			name = Master.storyboard;
 			sourceTree = "<group>";
@@ -5144,6 +5208,8 @@
 				9357FA76262D97BF00F42F47 /* hi */,
 				9357FA77262D97C000F42F47 /* ja */,
 				9357FA7C262D97C400F42F47 /* es */,
+				939733E82649172300922880 /* fa */,
+				939733E92649172500922880 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5159,6 +5225,8 @@
 				930504EF26276CB600E0CC6B /* ja */,
 				9305051526276CE000E0CC6B /* ar */,
 				9321596A2646903C0004F241 /* en */,
+				939733C7264913A300922880 /* de */,
+				939733D6264913E100922880 /* fa */,
 			);
 			name = DirectoryViewer.storyboard;
 			sourceTree = "<group>";
@@ -5174,6 +5242,8 @@
 				930504ED26276CB600E0CC6B /* ja */,
 				9305051326276CE000E0CC6B /* ar */,
 				932159682646902D0004F241 /* en */,
+				939733C5264913A300922880 /* de */,
+				939733D4264913E100922880 /* fa */,
 			);
 			name = VASP.storyboard;
 			sourceTree = "<group>";
@@ -5189,6 +5259,8 @@
 				930504F826276CB600E0CC6B /* ja */,
 				9305051E26276CE000E0CC6B /* ar */,
 				9321597A2646908F0004F241 /* en */,
+				939733D0264913A400922880 /* de */,
+				939733DF264913E200922880 /* fa */,
 			);
 			name = PreviewViewController.xib;
 			sourceTree = "<group>";
@@ -5203,6 +5275,8 @@
 				930504C726274CAF00E0CC6B /* hi */,
 				930504FB26276CB700E0CC6B /* ja */,
 				9305052126276CE100E0CC6B /* ar */,
+				939733E42649170B00922880 /* de */,
+				939733E52649170D00922880 /* fa */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5217,6 +5291,8 @@
 				930504C626274CAF00E0CC6B /* hi */,
 				930504FA26276CB600E0CC6B /* ja */,
 				9305052026276CE000E0CC6B /* ar */,
+				939733E2264916FE00922880 /* de */,
+				939733E32649170100922880 /* fa */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5231,6 +5307,8 @@
 				930504C826274CAF00E0CC6B /* hi */,
 				930504FC26276CB700E0CC6B /* ja */,
 				9305052226276CE100E0CC6B /* ar */,
+				939733E62649171900922880 /* fa */,
+				939733E72649171B00922880 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5245,6 +5323,8 @@
 				930504C526274CAF00E0CC6B /* hi */,
 				930504F926276CB600E0CC6B /* ja */,
 				9305051F26276CE000E0CC6B /* ar */,
+				939733E0264916CE00922880 /* de */,
+				939733E1264916D100922880 /* fa */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -5260,6 +5340,8 @@
 				930504EA26276CB500E0CC6B /* ja */,
 				9305051026276CDF00E0CC6B /* ar */,
 				9321597C264690C60004F241 /* en */,
+				939733C2264913A300922880 /* de */,
+				939733D1264913E100922880 /* fa */,
 			);
 			name = AboutWindow.storyboard;
 			sourceTree = "<group>";
@@ -5275,6 +5357,8 @@
 				930504EB26276CB500E0CC6B /* ja */,
 				9305051126276CDF00E0CC6B /* ar */,
 				9357FA33262B244300F42F47 /* en */,
+				939733C3264913A300922880 /* de */,
+				939733D2264913E100922880 /* fa */,
 			);
 			name = Preferences.storyboard;
 			sourceTree = "<group>";

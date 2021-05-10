@@ -27,19 +27,19 @@
 "6KC-hH-6j8.placeholderString" = "ناشناس";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "7Ft-CF-yt2"; */
-"7Ft-CF-yt2.title" = "درست نیروی";
+"7Ft-CF-yt2.title" = "میدان نیرو";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "8lJ-Qe-9Bj"; */
 "8lJ-Qe-9Bj.title" = "ناشناس";
 
 /* Class = "NSMenuItem"; title = "Many Negative Eigenvalues"; ObjectID = "ANg-Kl-3lM"; */
-"ANg-Kl-3lM.title" = "بسیاری از ارزشهای منفی منفی";
+"ANg-Kl-3lM.title" = "تعداد بسیاری مقادیر ویژه منفی";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "ASc-zU-QqD"; */
 "ASc-zU-QqD.placeholderString" = "ناشناس";
 
 /* Class = "NSMenuItem"; title = "Some Small Negative Values"; ObjectID = "C5C-Je-5WX"; */
-"C5C-Je-5WX.title" = "برخی از ارزشهای منفی کوچک";
+"C5C-Je-5WX.title" = "تعدادی مقادیر منفی";
 
 /* Class = "NSTextFieldCell"; placeholderString = "City"; ObjectID = "Cvy-Hd-HUC"; */
 "Cvy-Hd-HUC.placeholderString" = "شهر";
@@ -93,16 +93,16 @@
 "Jff-Rs-w9O.title" = "محدودیت ها";
 
 /* Class = "NSBox"; title = "Unit Cell"; ObjectID = "KEX-co-NaZ"; */
-"KEX-co-NaZ.title" = "واحد سلول";
+"KEX-co-NaZ.title" = "سلول واحد را";
 
 /* Class = "NSTextFieldCell"; placeholderString = "h_min"; ObjectID = "KRx-ka-ed4"; */
 "KRx-ka-ed4.placeholderString" = "h_min";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Kyz-vh-wLM"; */
-"Kyz-vh-wLM.title" = "جزئیات زمینه را مجبور کنید";
+"Kyz-vh-wLM.title" = "اطلاعات میدان نیرو";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Information"; ObjectID = "L9b-nA-LZg"; */
-"L9b-nA-LZg.title" = "الگوریتم";
+"L9b-nA-LZg.title" = "اطلاعات شیمیایی";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "LRn-Q5-NIv"; */
 "LRn-Q5-NIv.title" = "الگوریتم";
@@ -135,19 +135,19 @@
 "P5f-Dc-mAR.placeholderString" = "l_min";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Formula Moiety"; ObjectID = "QLD-HG-16U"; */
-"QLD-HG-16U.title" = "میزان فرمول شیمیایی";
+"QLD-HG-16U.title" = "فرمول شیمیایی پاره‌ مولکول";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "Qbd-YO-NWQ"; */
 "Qbd-YO-NWQ.placeholderString" = "ناشناس";
 
 /* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "R5l-j2-8rL"; */
-"R5l-j2-8rL.title" = "جزئیات زمینه را مجبور کنید";
+"R5l-j2-8rL.title" = "اطلاعات میدان نیرو";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
 "USD-gk-tal.placeholderString" = "ناشناس";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "UdZ-E6-hGm"; */
-"UdZ-E6-hGm.title" = "درست نیروی";
+"UdZ-E6-hGm.title" = "میدان نیرو";
 
 /* Class = "NSTextFieldCell"; title = "Software"; ObjectID = "VSi-Bz-b4f"; */
 "VSi-Bz-b4f.title" = "نرم افزار";
@@ -342,7 +342,7 @@
 "kzO-x9-s2F.placeholderString" = "min";
 
 /* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "سلول واحد را آرام کنید";
+"lIz-1D-3Ai.title" = "سلول واحد را ریلکس کنید";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
 "lKv-hk-525.title" = "فشار";
@@ -363,7 +363,7 @@
 "nb3-dm-cDY.placeholderString" = "ناشناس";
 
 /* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "oND-jh-tZA"; */
-"oND-jh-tZA.title" = "اتهامات اتمی";
+"oND-jh-tZA.title" = "بارهای اتمی";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "pD1-Es-0pE"; */
 "pD1-Es-0pE.placeholderString" = "ناشناس";
@@ -378,7 +378,7 @@
 "qbj-K1-xUb.title" = "اندازه گیری تتا";
 
 /* Class = "NSTextFieldCell"; title = "Goodness-of-fit on F²"; ObjectID = "qmj-e3-XI9"; */
-"qmj-e3-XI9.title" = "برازندگی در F²";
+"qmj-e3-XI9.title" = "F²نیکویی برازش در";
 
 /* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.placeholderString" = "ناشناس";
@@ -480,7 +480,7 @@
 "urK-zQ-9a7.ibShadowedObjectValues[5]" = "MM4";
 
 /* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "utU-RL-9NT"; */
-"utU-RL-9NT.title" = "برخی از ارزشهای منفی قابل توجه";
+"utU-RL-9NT.title" = "تعدادی مقادیر منفی به طور قابل ملاحظه";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "wMv-kw-520"; */
 "wMv-kw-520.placeholderString" = "ناشناس";
@@ -513,7 +513,7 @@
 "yR3-PF-JAn.placeholderString" = "نام میانی";
 
 /* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Free"; ObjectID = "ylL-90-vOx"; */
-"ylL-90-vOx.title" = "ثابت-𝝱 و 𝝲-زاویه و طول لبه تغییر می کند";
+"ylL-90-vOx.title" = "ثابت-𝝱 و 𝝲-زاویه و طول لبه رایگان است";
 
 /* Class = "NSTextFieldCell"; title = "Number of Reflections"; ObjectID = "z73-uc-ODJ"; */
 "z73-uc-ODJ.title" = "تعداد بازتاب ها";

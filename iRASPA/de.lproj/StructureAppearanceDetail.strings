@@ -12,7 +12,7 @@
 "1ht-pW-CQ0.title" = "Glühen";
 
 /* Class = "NSBox"; title = "Back Properties"; ObjectID = "1i4-zc-FLO"; */
-"1i4-zc-FLO.title" = "Zurück Eigenschaften";
+"1i4-zc-FLO.title" = "Eigenschaften Rückseite";
 
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "3Ik-9O-zWy"; */
 "3Ik-9O-zWy.title" = "Argon";
@@ -51,19 +51,19 @@
 "5pu-BI-tJR.title" = "Einheitszelle";
 
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
-"5tk-gG-FdV.title" = "Bond-Skalierungsfaktor";
+"5tk-gG-FdV.title" = "Skalierungsfaktor Bindung";
 
 /* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
 "5xK-C0-rPU.title" = "Adsorptionsfläche";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
-"6Aw-j2-ekx.title" = "Bond Beleuchtung";
+"6Aw-j2-ekx.title" = "Beleuchtung Bindung";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "6LE-C6-Xi3"; */
 "6LE-C6-Xi3.title" = "Unterseite";
 
 /* Class = "NSMenuItem"; title = "Center"; ObjectID = "6My-58-9Eo"; */
-"6My-58-9Eo.title" = "Center";
+"6My-58-9Eo.title" = "Zenter";
 
 /* Class = "NSMenuItem"; title = "Licorice"; ObjectID = "6mE-0U-P7u"; */
 "6mE-0U-P7u.title" = "Lakritze";
@@ -108,7 +108,7 @@
 "BMS-ba-E5g.title" = "Chemisches Element";
 
 /* Class = "NSTextFieldCell"; title = "Probe Particle"; ObjectID = "BZA-dF-ael"; */
-"BZA-dF-ael.title" = "Sondenpartikel";
+"BZA-dF-ael.title" = "Testpartikel";
 
 /* Class = "NSMenuItem"; title = "Element"; ObjectID = "BhQ-29-eXX"; */
 "BhQ-29-eXX.title" = "Element";
@@ -174,7 +174,7 @@
 "JAw-bD-rCT.title" = "Diffuse Lichtintensität";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
-"JKn-cA-MRP.title" = "Bond-Typ";
+"JKn-cA-MRP.title" = "Bindungstyp";
 
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "JdC-cy-4oD"; */
 "JdC-cy-4oD.title" = "Chemisches Element";
@@ -279,10 +279,10 @@
 "Sgk-qh-f3p.title" = "Diffuse Lichtintensität";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "TPc-vg-PLV"; */
-"TPc-vg-PLV.title" = "Auswahl Radiale Skalierung";
+"TPc-vg-PLV.title" = "Auswahl radiale Skalierung";
 
 /* Class = "NSMenuItem"; title = "Force Field Type"; ObjectID = "TZ6-3e-HHS"; */
-"TZ6-3e-HHS.title" = "Feldtyp erzwingen";
+"TZ6-3e-HHS.title" = "Kraftfeld Typ";
 
 /* Class = "NSMenuItem"; title = "Gradient"; ObjectID = "Tlc-XL-RDG"; */
 "Tlc-XL-RDG.title" = "Gradient";
@@ -324,16 +324,16 @@
 "Y1s-d7-iYT.title" = "Spiegellichtintensität";
 
 /* Class = "NSButtonCell"; title = "Capped"; ObjectID = "YAJ-aq-PPI"; */
-"YAJ-aq-PPI.title" = "Mit einer Kappe versehen";
+"YAJ-aq-PPI.title" = "Gedeckelt";
 
 /* Class = "NSMenuItem"; title = "Uniform"; ObjectID = "YN6-b4-xiX"; */
 "YN6-b4-xiX.title" = "Uniform";
 
 /* Class = "NSBox"; title = "Front surface"; ObjectID = "Yh2-SE-hS4"; */
-"Yh2-SE-hS4.title" = "Vorderseite";
+"Yh2-SE-hS4.title" = "Oberfläche Vorderseite";
 
 /* Class = "NSBox"; title = "Front Properties"; ObjectID = "YnR-7d-k8p"; */
-"YnR-7d-k8p.title" = "Fronteigenschaften";
+"YnR-7d-k8p.title" = "Eigenschaften Vorderseite";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
 "ZX7-oF-dgu.title" = "Hoher Dynamikbereich";
@@ -345,13 +345,13 @@
 "Zpi-ZT-H9N.title" = "Belichtung";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "aUf-Ct-Ubf"; */
-"aUf-Ct-Ubf.title" = "Text Cell";
+"aUf-Ct-Ubf.title" = "Textzelle";
 
 /* Class = "NSTextFieldCell"; title = "𝜌"; ObjectID = "aeb-iy-ZTT"; */
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "Anleihen zeigen";
+"ajZ-C1-kOG.title" = "Bindungen zeichnen";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
 "bBY-15-FbE.title" = "Spiegellichtintensität";
@@ -378,10 +378,10 @@
 "cJr-Nn-bS9.title" = "𝜈";
 
 /* Class = "NSTextFieldCell"; title = "Opacity"; ObjectID = "cTs-hC-amJ"; */
-"cTs-hC-amJ.title" = "Opazität";
+"cTs-hC-amJ.title" = "Undurchsichtigkeit";
 
 /* Class = "NSMenuItem"; title = "Right"; ObjectID = "cVb-J3-NgY"; */
-"cVb-J3-NgY.title" = "Recht";
+"cVb-J3-NgY.title" = "Rechts";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "ceh-je-eNg"; */
 "ceh-je-eNg.title" = "Drehen +90";
@@ -402,7 +402,7 @@
 "dk2-KV-Pe3.title" = "Nur Kraftfeld";
 
 /* Class = "NSButtonCell"; title = "Draw Atoms"; ObjectID = "dmK-0a-HKm"; */
-"dmK-0a-HKm.title" = "Atome zeigen";
+"dmK-0a-HKm.title" = "Atome zeichnen";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
 "e0E-bj-7fz.title" = "Wert";
@@ -414,7 +414,7 @@
 "eY8-q5-Em9.title" = "Reihenfolge";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
-"ehx-ML-HSl.title" = "Objects";
+"ehx-ML-HSl.title" = "Objekte";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "erk-nB-D85"; */
 "erk-nB-D85.title" = "Umgebungslichtintensität";
@@ -423,13 +423,13 @@
 "feQ-1h-daH.title" = "Xenon";
 
 /* Class = "NSBox"; title = "Back Surface"; ObjectID = "g6G-xC-2Lr"; */
-"g6G-xC-2Lr.title" = "Rückseite";
+"g6G-xC-2Lr.title" = "Oberfläche Rückseite";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "gDS-zY-6ne"; */
 "gDS-zY-6ne.title" = "Auswahlintensität";
 
 /* Class = "NSTextFieldCell"; title = "Atom Size Scaling"; ObjectID = "gMu-cC-hhG"; */
-"gMu-cC-hhG.title" = "Atomgrößen-Skalierung";
+"gMu-cC-hhG.title" = "Skalierung Atomgröße";
 
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "hJp-8F-jyf"; */
 "hJp-8F-jyf.title" = "Glühen";
@@ -504,7 +504,7 @@
 "ofQ-6q-SUf.title" = "Kennung";
 
 /* Class = "NSMenuItem"; title = "Charge"; ObjectID = "orw-61-fer"; */
-"orw-61-fer.title" = "Aufladen";
+"orw-61-fer.title" = "Ladung";
 
 /* Class = "NSBox"; title = "Atom Lighting"; ObjectID = "osH-Uy-RWH"; */
 "osH-Uy-RWH.title" = "Atombeleuchtung";
@@ -534,13 +534,13 @@
 "tGv-cl-rkV.title" = "Anzahl der Seiten";
 
 /* Class = "NSMenuItem"; title = "Split"; ObjectID = "tR7-cx-f3N"; */
-"tR7-cx-f3N.title" = "Teilt";
+"tR7-cx-f3N.title" = "Teilen";
 
 /* Class = "NSMenuItem"; title = "Vesta"; ObjectID = "toC-zQ-Spl"; */
 "toC-zQ-Spl.title" = "Vesta";
 
 /* Class = "NSMenuItem"; title = "Flat Billboard"; ObjectID = "u3h-os-pF2"; */
-"u3h-os-pF2.title" = "Flache Werbetafel";
+"u3h-os-pF2.title" = "Flache Tafel";
 
 /* Class = "NSMenuItem"; title = "Fancy"; ObjectID = "uwl-dE-KfA"; */
 "uwl-dE-KfA.title" = "Schick";
@@ -555,7 +555,7 @@
 "vI4-zj-6Yx.title" = "Worley Noise 3D";
 
 /* Class = "NSButtonCell"; title = "Draw Unit Cell"; ObjectID = "vYr-pF-LLC"; */
-"vYr-pF-LLC.title" = "Einheitszelle anzeigen";
+"vYr-pF-LLC.title" = "Einheitszelle zeichnen";
 
 /* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
 "vvr-MF-ufZ.title" = "Oben rechts";

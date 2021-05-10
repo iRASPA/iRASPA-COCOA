@@ -12,7 +12,7 @@
 "2sE-L5-Mde.title" = "Orientierung";
 
 /* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
-"39F-yr-VYx.title" = "Eigenschaften von Zellen / Begrenzungsrahmen";
+"39F-yr-VYx.title" = "Eigenschaften von Zellen/Begrenzungsrahmen";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
 "3Fv-hH-asL.title" = "Zugängliches Porenvolumen";
@@ -63,10 +63,10 @@
 "92b-lC-W5K.title" = "Anzahl der Kanalsysteme";
 
 /* Class = "NSTextFieldCell"; title = "Helium Void Fraction"; ObjectID = "9na-rU-hDF"; */
-"9na-rU-hDF.title" = "Helium-Hohlraum-Fraktion";
+"9na-rU-hDF.title" = "Anteil Heliumhohlraum";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "9x5-Do-xLf"; */
-"9x5-Do-xLf.title" = "Unknown";
+"9x5-Do-xLf.title" = "Unbekannt";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "AGj-no-ne0"; */
 "AGj-no-ne0.title" = "Drehen -90";
@@ -84,7 +84,7 @@
 "C9m-fX-LjX.title" = "Methan";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "CSF-1Y-UQa"; */
-"CSF-1Y-UQa.title" = "Text Cell";
+"CSF-1Y-UQa.title" = "Textzelle";
 
 /* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "Cao-y3-ptB"; */
 "Cao-y3-ptB.title" = "Kristall";
@@ -93,7 +93,7 @@
 "CcD-DW-aQM.title" = "[Å]";
 
 /* Class = "NSTextFieldCell"; title = "Maximum"; ObjectID = "DCo-vl-STs"; */
-"DCo-vl-STs.title" = "Maximal";
+"DCo-vl-STs.title" = "Maximum";
 
 /* Class = "NSTextFieldCell"; title = "AY"; ObjectID = "DMt-1o-jxX"; */
 "DMt-1o-jxX.title" = "AY";
@@ -116,11 +116,11 @@
 /* Class = "NSButtonCell"; title = "Apply"; ObjectID = "Fi0-La-ItK"; */
 "Fi0-La-ItK.title" = "Anwenden";
 
-/* Class = "NSMenuItem"; title = "Molecular Crystal Solvent"; ObjectID = "GCR-0z-KdY"; */
-"GCR-0z-KdY.title" = "Molekülkristall-Lösungsmittel";
+/* Class = "NSMenuItem"; title = "Molecular Crystal"; ObjectID = "GCR-0z-KdY"; */
+"GCR-0z-KdY.title" = "Molekülkristall";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
-"Geb-Or-zb5.title" = "Qualifikation";
+"Geb-Or-zb5.title" = "Kennzeichner";
 
 /* Class = "NSTextFieldCell"; title = "[m²/cm³]"; ObjectID = "GpO-nT-2ds"; */
 "GpO-nT-2ds.title" = "[m²/cm³]";
@@ -135,7 +135,7 @@
 "Jpa-hZ-wcV.title" = "Wasser";
 
 /* Class = "NSTextFieldCell"; title = "Minimum Replicas"; ObjectID = "JtJ-tY-Q48"; */
-"JtJ-tY-Q48.title" = "Minimale Replikate";
+"JtJ-tY-Q48.title" = "Minimale Nachbildungen";
 
 /* Class = "NSTextFieldCell"; title = "Symmetry Properties"; ObjectID = "KBR-dm-dts"; */
 "KBR-dm-dts.title" = "Symmetrieeigenschaften";
@@ -156,13 +156,13 @@
 "MX2-7S-v34.title" = "Enantiomorph";
 
 /* Class = "NSTextFieldCell"; title = "Maximum Replicas"; ObjectID = "NEE-uA-Vza"; */
-"NEE-uA-Vza.title" = "Maximale Replikate";
+"NEE-uA-Vza.title" = "Maximum Nachbildungen";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "NtP-sh-9XR"; */
 "NtP-sh-9XR.placeholderString" = "cy";
 
 /* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
-"OFQ-fA-vGT.title" = "Sondenmolekül";
+"OFQ-fA-vGT.title" = "Testnmolekül";
 
 /* Class = "NSTextFieldCell"; title = "CY"; ObjectID = "OU6-Uu-uVv"; */
 "OU6-Uu-uVv.title" = "CY";
@@ -189,7 +189,7 @@
 "RAD-Mk-7MY.placeholderString" = "Volumen";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Y"; ObjectID = "RFb-cp-hSr"; */
-"RFb-cp-hSr.placeholderString" = "Maximal Y";
+"RFb-cp-hSr.placeholderString" = "Maximum Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "Rb3-t0-5yA"; */
 "Rb3-t0-5yA.placeholderString" = "az";
@@ -198,7 +198,7 @@
 "RpE-4F-UFL.title" = "BZ";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum X"; ObjectID = "SYu-kq-Pn4"; */
-"SYu-kq-Pn4.placeholderString" = "Maximal X";
+"SYu-kq-Pn4.placeholderString" = "Maximum X";
 
 /* Class = "NSTextFieldCell"; title = "CZ"; ObjectID = "U3N-UV-Jmi"; */
 "U3N-UV-Jmi.title" = "CZ";
@@ -234,7 +234,7 @@
 "XeZ-Hb-tao.title" = "Kristallzylinder";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
-"Y0x-AR-NvS.placeholderString" = "Maximal Z";
+"Y0x-AR-NvS.placeholderString" = "Maximum Z";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "Y4c-N8-Uvu"; */
 "Y4c-N8-Uvu.title" = "0";
@@ -243,13 +243,13 @@
 "YTE-5c-osk.title" = "A";
 
 /* Class = "NSMenuItem"; title = "Protein Crystal Solvent"; ObjectID = "ZNQ-TG-HdE"; */
-"ZNQ-TG-HdE.title" = "Proteinkristall-Lösungsmittel";
+"ZNQ-TG-HdE.title" = "Lösungsmittel Proteinkristall";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Z"; ObjectID = "ZfA-8U-voh"; */
 "ZfA-8U-voh.placeholderString" = "Minimum Z";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "ZnC-Km-HZJ"; */
-"ZnC-Km-HZJ.title" = "Euler-Winkel";
+"ZnC-Km-HZJ.title" = "Euler Winkel";
 
 /* Class = "NSTextFieldCell"; title = "[m²/g]"; ObjectID = "aCG-eP-d5V"; */
 "aCG-eP-d5V.title" = "[m²/g]";
@@ -276,7 +276,7 @@
 "cPv-Rn-zyw.placeholderString" = "Verschiebung X";
 
 /* Class = "NSTextFieldCell"; title = "Restricting Pore Diameter (Df)"; ObjectID = "d4y-Ea-h9U"; */
-"d4y-Ea-h9U.title" = "Poren-Durchmesser einschränken (Df)";
+"d4y-Ea-h9U.title" = "Porendurchmesser einschränken (Df)";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "dIk-F3-XKu"; */
 "dIk-F3-XKu.title" = "Drehwinkel";
@@ -300,7 +300,7 @@
 "f97-S8-buy.title" = "Materialtyp";
 
 /* Class = "NSTextFieldCell"; title = "Inversion"; ObjectID = "fB7-jl-oUy"; */
-"fB7-jl-oUy.title" = "Inversion";
+"fB7-jl-oUy.title" = "Umkehrung";
 
 /* Class = "NSTextFieldCell"; title = "Density"; ObjectID = "frH-cs-eiu"; */
 "frH-cs-eiu.title" = "Dichte";
@@ -333,7 +333,7 @@
 "jgD-yL-2kq.title" = "Materialtyp";
 
 /* Class = "NSTextFieldCell"; title = "Largest Diameter Along a Viable Path (Dif)"; ObjectID = "jrj-nk-OqJ"; */
-"jrj-nk-OqJ.title" = "Größter Durchmesser entlang eines lebensfähigen Pfades (Dif)";
+"jrj-nk-OqJ.title" = "Größter Durchmesser entlang eines gültigen Pfades (Dif)";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "Polygonales Prisma";
@@ -426,10 +426,10 @@
 "u9E-1I-eSn.ibShadowedObjectValues[0]" = "Nicht spezifiziert";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[1] = "Silica"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[1]" = "Silica";
+"u9E-1I-eSn.ibShadowedObjectValues[1]" = "Silizium";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[2] = "Aluminosilicate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[2]" = "Aluminosilicate";
+"u9E-1I-eSn.ibShadowedObjectValues[2]" = "Aluminosilikat";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[3] = "Aluminophosphate"; ObjectID = "u9E-1I-eSn"; */
 "u9E-1I-eSn.ibShadowedObjectValues[3]" = "Aluminophosphate";
@@ -441,7 +441,7 @@
 "u9E-1I-eSn.ibShadowedObjectValues[5]" = "Silicialuminophosphate";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[6] = "Zeolite"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[6]" = "Zeolite";
+"u9E-1I-eSn.ibShadowedObjectValues[6]" = "Zeolith";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[7] = "MOF"; ObjectID = "u9E-1I-eSn"; */
 "u9E-1I-eSn.ibShadowedObjectValues[7]" = "MOF";
@@ -459,7 +459,7 @@
 "ugQ-Gv-6sx.title" = "Drehen +90";
 
 /* Class = "NSTextFieldCell"; title = "Flip"; ObjectID = "v83-YD-3LI"; */
-"v83-YD-3LI.title" = "Flip";
+"v83-YD-3LI.title" = "Kippen";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
 "vhk-8d-Ytl.title" = "Strukturelle Eigenschaften";

@@ -48,7 +48,7 @@
 "Pzr-4b-xG5.title" = "Å";
 
 /* Class = "NSTextFieldCell"; title = "Force field"; ObjectID = "RAy-Tn-Q9h"; */
-"RAy-Tn-Q9h.title" = "درست نیروی";
+"RAy-Tn-Q9h.title" = "میدان نیرو";
 
 /* Class = "NSTextFieldCell"; title = "C"; ObjectID = "RN5-9P-5zL"; */
 "RN5-9P-5zL.title" = "C";
@@ -90,7 +90,7 @@
 "nb3-UI-e9y.title" = "حالتهای احتمالی اکسیداسیون";
 
 /* Class = "NSTextFieldCell"; title = "Van der Waals Radius"; ObjectID = "prv-DF-MqL"; */
-"prv-DF-MqL.title" = "شعاع Van der Waals";
+"prv-DF-MqL.title" = "شعاع واندروالسی";
 
 /* Class = "NSTextFieldCell"; title = "Carbon"; ObjectID = "rF4-Eu-aR8"; */
 "rF4-Eu-aR8.title" = "کربن";
