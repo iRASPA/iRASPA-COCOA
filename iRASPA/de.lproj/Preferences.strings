@@ -3,7 +3,7 @@
 "DrV-v1-Dd6.title" = "Leseberechtigung für";
 
 /* Class = "NSViewController"; title = "Command-line"; ObjectID = "ErL-rs-pho"; */
-"ErL-rs-pho.title" = "Befehlszeile";
+"ErL-rs-pho.title" = "Kommandozeile";
 
 /* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
 "KqL-r5-hBW.title" = "Schreibberechtigung für";
@@ -15,7 +15,7 @@
 "N3b-Db-pad.title" = "Einstellungen";
 
 /* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
-"RvG-Ag-1yO.title" = "Immer auf";
+"RvG-Ag-1yO.title" = "Immer an";
 
 /* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
 "V1Y-Hh-Pro.title" = "Auswahl";
@@ -33,16 +33,16 @@
 "i78-OK-HJu.title" = "Immer aus";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "jDF-PS-epK"; */
-"jDF-PS-epK.placeholderString" = "Ziehen Sie ein Dateisystemobjekt in diesen Bereich oder klicken Sie, um den Pfad festzulegen";
+"jDF-PS-epK.placeholderString" = "Dateisystemobjekt in diesen Bereich ziehen oder klicken, um den Pfad festzulegen";
 
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
-"kfw-MK-t7S.placeholderString" = "Ziehen Sie ein Dateisystemobjekt in diesen Bereich oder klicken Sie, um den Pfad festzulegen";
+"kfw-MK-t7S.placeholderString" = "Dateisystemobjekt in diesen Bereich ziehen oder klicken, um den Pfad festzulegen";
 
 /* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
 "lDy-gc-II8.title" = "Einstellungen";
 
 /* Class = "NSMenuItem"; title = "When connected to power source"; ObjectID = "miP-5k-r8f"; */
-"miP-5k-r8f.title" = "Bei Anschluss an die Stromquelle";
+"miP-5k-r8f.title" = "Bei Anschluss an Stromquelle";
 
 /* Class = "NSButtonCell"; title = "Autosaving"; ObjectID = "n57-Vp-DI4"; */
 "n57-Vp-DI4.title" = "Automatisch speichern";

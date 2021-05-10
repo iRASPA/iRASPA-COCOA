@@ -2,12 +2,12 @@
 "Gallery" = "Galerie";
 "LOCAL PROJECTS" = "LOKALE PROJEKTE";
 "Local Projects" = "Lokale Projekte";
-"ICLOUD PUBLIC" = "ICLOUD ÖFFENTLICHKEIT";
+"ICLOUD PUBLIC" = "ICLOUD ÖFFENTLICH";
 "iCloud Public" = "iCloud öffentlich";
 "Could Not Determine Status of iCloud Account" = "Der Status des iCloud-Kontos konnte nicht ermittelt werden";
 "iCloud Account Available" = "iCloud-Konto verfügbar";
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "Fehler bei der Authentifizierung des iCloud-Kontos: Aktivieren Sie iCloud und iCloud-Laufwerk";
 "iCloud Account Restricted" = "iCloud-Konto eingeschränkt";
-"iCloud Public Discoverability Granted" = "Die öffentliche Auffindbarkeit von iCloud wurde gewährt. Sie sind (über Ihre E-Mail-Adresse) für andere Benutzer der App erkennbar. Sie können dies in der Einstellungs-App, iCloud, iCloud-Laufwerk ändern, per E-Mail entdecken.";
-"iCloud Public Discoverability Denied" = "Die öffentliche Auffindbarkeit von iCloud wurde verweigert. Sie sind (über Ihre E-Mail-Adresse) für andere Benutzer der App nicht erkennbar. Sie können dies in der Einstellungs-App, iCloud, iCloud-Laufwerk ändern, per E-Mail entdecken.";
-"Invalid Archive Version (Upgrade to latest iRASPA version)" = "Ungültige Archivversion (Upgrade auf die neueste iRASPA-Version).";
+"iCloud Public Discoverability Granted" = "Öffentliche Auffindbarkeit von iCloud wurde gewährt";
+"iCloud Public Discoverability Denied" = "Öffentliche Auffindbarkeit von iCloud wurde verweigert";
+"Invalid Archive Version (Upgrade to latest iRASPA version)" = "Ungültige Archivversion (Upgrade zur neuesten iRASPA-Version).";

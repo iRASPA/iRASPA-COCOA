@@ -18,7 +18,7 @@
 "3Ik-9O-zWy.title" = "آرگون";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "3sL-9T-b9T"; */
-"3sL-9T-b9T.title" = "هیچ یک";
+"3sL-9T-b9T.title" = "هیچکدام";
 
 /* Class = "NSMenuItem"; title = "Water"; ObjectID = "4Ul-Kb-Iv7"; */
 "4Ul-Kb-Iv7.title" = "اب";
@@ -33,10 +33,10 @@
 "4vF-aa-ild.title" = "نمایش نام";
 
 /* Class = "NSMenuItem"; title = "Left"; ObjectID = "51e-MD-soy"; */
-"51e-MD-soy.title" = "ترک کرد";
+"51e-MD-soy.title" = "چپ";
 
 /* Class = "NSMenuItem"; title = "Van der Waals"; ObjectID = "543-nV-Xw2"; */
-"543-nV-Xw2.title" = "Van der Waals";
+"543-nV-Xw2.title" = "واندروالس";
 
 /* Class = "NSTextFieldCell"; title = "Type"; ObjectID = "5Pc-9v-LWF"; */
 "5Pc-9v-LWF.title" = "نوع";
@@ -51,7 +51,7 @@
 "5pu-BI-tJR.title" = "سلول واحد";
 
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
-"5tk-gG-FdV.title" = "عامل مقیاس باند";
+"5tk-gG-FdV.title" = "فاکتور مقیاس پیوند";
 
 /* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
 "5xK-C0-rPU.title" = "سطح جذب";
@@ -69,13 +69,13 @@
 "6mE-0U-P7u.title" = "شیرین بیان";
 
 /* Class = "NSMenuItem"; title = "Force Field First"; ObjectID = "7mT-Qt-DKy"; */
-"7mT-Qt-DKy.title" = "ابتدا میدان را تحمیل کنید";
+"7mT-Qt-DKy.title" = "ابتدا میدان نیرو";
 
 /* Class = "NSMenuItem"; title = "Hydrogen"; ObjectID = "8Fb-07-tja"; */
 "8Fb-07-tja.title" = "هیدروژن";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "8ga-HD-e1b"; */
-"8ga-HD-e1b.title" = "شدت نور منتشر";
+"8ga-HD-e1b.title" = "شدت نور پراکنده";
 
 /* Class = "NSTextFieldCell"; title = "Atoms"; ObjectID = "8ht-z0-szM"; */
 "8ht-z0-szM.title" = "اتم ها";
@@ -84,7 +84,7 @@
 "8iy-di-Ufc.title" = "شدت نور محیط";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "90a-Ax-VRf"; */
-"90a-Ax-VRf.title" = "گرفتن در معرض";
+"90a-Ax-VRf.title" = "نوردهی";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "97c-Ea-ha8"; */
 "97c-Ea-ha8.title" = "سبک انتخاب";
@@ -117,13 +117,13 @@
 "Bvc-rc-vqi.title" = "زاویه های اولر";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "C4F-mR-Wqd"; */
-"C4F-mR-Wqd.title" = "گرفتن در معرض";
+"C4F-mR-Wqd.title" = "نوردهی";
 
 /* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "Cur-NK-N96"; */
 "Cur-NK-N96.title" = "پارامترهای سبک";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Df4-cu-Yqn"; */
-"Df4-cu-Yqn.title" = "شدت نور منتشر";
+"Df4-cu-Yqn.title" = "شدت نور پراکنده";
 
 /* Class = "NSMenuItem"; title = "Jmol"; ObjectID = "Dvd-oC-whc"; */
 "Dvd-oC-whc.title" = "Jmol";
@@ -150,7 +150,7 @@
 "Ftc-mi-NgX.title" = "انسداد محیط";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "FvL-0N-TdY"; */
-"FvL-0N-TdY.title" = "ارزش";
+"FvL-0N-TdY.title" = "مقدار";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "GOQ-bY-t1V"; */
 "GOQ-bY-t1V.title" = "Z";
@@ -162,16 +162,16 @@
 "Gf0-Qp-gqQ.title" = "راه راه";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "GfJ-48-dF4"; */
-"GfJ-48-dF4.title" = "مقیاس شعاعی انتخاب";
+"GfJ-48-dF4.title" = "گزینش مقیاس شعاعی";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
 "H3R-9w-R7d.title" = "رنگ";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "IIB-vI-u3a"; */
-"IIB-vI-u3a.title" = "شدت انتخاب";
+"IIB-vI-u3a.title" = "گزینش شدت";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "JAw-bD-rCT"; */
-"JAw-bD-rCT.title" = "شدت نور منتشر";
+"JAw-bD-rCT.title" = "شدت نور پراکنده";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
 "JKn-cA-MRP.title" = "نوع باند";
@@ -195,7 +195,7 @@
 "LA8-y5-QWc.title" = "شدت نور";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "LSL-D7-VXo"; */
-"LSL-D7-VXo.title" = "مقیاس شعاعی انتخاب";
+"LSL-D7-VXo.title" = "گزینش مقیاس شعاعی";
 
 /* Class = "NSTextFieldCell"; title = "Annotation"; ObjectID = "LSN-af-m9O"; */
 "LSN-af-m9O.title" = "حاشیه نویسی";
@@ -204,7 +204,7 @@
 "M4h-TV-oAo.title" = "درخشندگی";
 
 /* Class = "NSTextFieldCell"; title = "Representation Type"; ObjectID = "NF8-dJ-o6x"; */
-"NF8-dJ-o6x.title" = "نوع نمایندگی";
+"NF8-dJ-o6x.title" = "نوع نمایش";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "NGy-sK-enb"; */
 "NGy-sK-enb.title" = "شدت نور محیط";
@@ -213,7 +213,7 @@
 "NQu-nU-YxM.title" = "Worley Noise 3D";
 
 /* Class = "NSMenuItem"; title = "Unity"; ObjectID = "NUE-Dx-H8c"; */
-"NUE-Dx-H8c.title" = "وحدت";
+"NUE-Dx-H8c.title" = "یگانگی";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "OC0-RP-spe"; */
 "OC0-RP-spe.title" = "اشباع";
@@ -225,7 +225,7 @@
 "OqP-s8-Ltq.title" = "متان";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Ozn-KS-ZB5"; */
-"Ozn-KS-ZB5.title" = "هیچ یک";
+"Ozn-KS-ZB5.title" = "هیچکدام";
 
 /* Class = "NSTextFieldCell"; title = "Quality"; ObjectID = "P5F-ca-L8c"; */
 "P5F-ca-L8c.title" = "کیفیت";
@@ -243,7 +243,7 @@
 "Pac-P8-T19.title" = "Y";
 
 /* Class = "NSMenuItem"; title = "Ball and Stick"; ObjectID = "Q9V-K7-74d"; */
-"Q9V-K7-74d.title" = "توپ و استیک";
+"Q9V-K7-74d.title" = "توپ و چوب";
 
 /* Class = "NSTextFieldCell"; title = "𝜌"; ObjectID = "QAl-Oz-tMg"; */
 "QAl-Oz-tMg.title" = "𝜌";
@@ -264,31 +264,31 @@
 "Rjl-1D-n7b.title" = "درخشندگی";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Rwu-J1-bjK"; */
-"Rwu-J1-bjK.title" = "هیچ یک";
+"Rwu-J1-bjK.title" = "هیچکدام";
 
 /* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "SFF-hg-8Cg"; */
 "SFF-hg-8Cg.title" = "فقط میدان نیرو";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "SMT-Ir-R2J"; */
-"SMT-Ir-R2J.title" = "ارزش";
+"SMT-Ir-R2J.title" = "مقدار";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "Sdq-Z4-nnY"; */
 "Sdq-Z4-nnY.title" = "زاویه چرخش";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Sgk-qh-f3p"; */
-"Sgk-qh-f3p.title" = "شدت نور منتشر";
+"Sgk-qh-f3p.title" = "شدت نور پراکنده";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "TPc-vg-PLV"; */
-"TPc-vg-PLV.title" = "مقیاس شعاعی انتخاب";
+"TPc-vg-PLV.title" = "گزینش مقیاس شعاعی";
 
 /* Class = "NSMenuItem"; title = "Force Field Type"; ObjectID = "TZ6-3e-HHS"; */
 "TZ6-3e-HHS.title" = "نوع میدان نیرو";
 
 /* Class = "NSMenuItem"; title = "Gradient"; ObjectID = "Tlc-XL-RDG"; */
-"Tlc-XL-RDG.title" = "شیب";
+"Tlc-XL-RDG.title" = "گرادیان";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Tqo-qK-6Fc"; */
-"Tqo-qK-6Fc.title" = "هیچ یک";
+"Tqo-qK-6Fc.title" = "هیچکدام";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "UXl-KR-D8o"; */
 "UXl-KR-D8o.title" = "اشباع";
@@ -297,7 +297,7 @@
 "V0t-KV-zMh.title" = "رنگ";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "V4C-Dq-82n"; */
-"V4C-Dq-82n.title" = "گرفتن در معرض";
+"V4C-Dq-82n.title" = "نوردهی";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "VIk-Df-Zyf"; */
 "VIk-Df-Zyf.title" = "درخشندگی";
@@ -306,7 +306,7 @@
 "Vh4-fU-NL9.title" = "اشباع";
 
 /* Class = "NSTextFieldCell"; title = "Representation Style"; ObjectID = "WBt-UZ-XVV"; */
-"WBt-UZ-XVV.title" = "سبک نمایندگی";
+"WBt-UZ-XVV.title" = "شیوه نمایش";
 
 /* Class = "NSBox"; title = "Properties"; ObjectID = "WKe-o0-0cK"; */
 "WKe-o0-0cK.title" = "خواص";
@@ -342,7 +342,7 @@
 "Zjr-02-4gi.title" = "هلیوم";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "Zpi-ZT-H9N"; */
-"Zpi-ZT-H9N.title" = "گرفتن در معرض";
+"Zpi-ZT-H9N.title" = "نوردهی";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "aUf-Ct-Ubf"; */
 "aUf-Ct-Ubf.title" = "Text Cell";
@@ -351,7 +351,7 @@
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "نشان دادن اوراق قرضه";
+"ajZ-C1-kOG.title" = "کشیدن پیوندها";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
 "bBY-15-FbE.title" = "شدت نور خاص";
@@ -363,10 +363,10 @@
 "bca-zz-KOf.title" = "شدت نور خاص";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "bdI-Je-pwI"; */
-"bdI-Je-pwI.title" = "هیچ یک";
+"bdI-Je-pwI.title" = "هیچکدام";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "bdU-wM-QtZ"; */
-"bdU-wM-QtZ.title" = "گرفتن در معرض";
+"bdU-wM-QtZ.title" = "نوردهی";
 
 /* Class = "NSMenuItem"; title = "Display Name"; ObjectID = "bsZ-9F-KAn"; */
 "bsZ-9F-KAn.title" = "نمایش نام";
@@ -387,13 +387,13 @@
 "ceh-je-eNg.title" = "چرخش +90";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "con-dz-J2j"; */
-"con-dz-J2j.title" = "شدت انتخاب";
+"con-dz-J2j.title" = "گزینش شدت";
 
 /* Class = "NSMenuItem"; title = "Position"; ObjectID = "ddP-zl-i4G"; */
 "ddP-zl-i4G.title" = "موقعیت";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "dfq-2k-AIF"; */
-"dfq-2k-AIF.title" = "هیچ یک";
+"dfq-2k-AIF.title" = "هیچکدام";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "dg1-vw-fab"; */
 "dg1-vw-fab.title" = "سبک انتخاب";
@@ -402,10 +402,10 @@
 "dk2-KV-Pe3.title" = "فقط میدان نیرو";
 
 /* Class = "NSButtonCell"; title = "Draw Atoms"; ObjectID = "dmK-0a-HKm"; */
-"dmK-0a-HKm.title" = "اتم ها را نشان می دهد";
+"dmK-0a-HKm.title" = "کشیدن اتمها";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
-"e0E-bj-7fz.title" = "ارزش";
+"e0E-bj-7fz.title" = "مقدار";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
 "e5a-zk-fFj.title" = "Rasmol";
@@ -426,7 +426,7 @@
 "g6G-xC-2Lr.title" = "سطح پشتی";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "gDS-zY-6ne"; */
-"gDS-zY-6ne.title" = "شدت انتخاب";
+"gDS-zY-6ne.title" = "گزینش شدت";
 
 /* Class = "NSTextFieldCell"; title = "Atom Size Scaling"; ObjectID = "gMu-cC-hhG"; */
 "gMu-cC-hhG.title" = "مقیاس اندازه اتم";
@@ -435,7 +435,7 @@
 "hJp-8F-jyf.title" = "درخشش";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "hyu-qj-36T"; */
-"hyu-qj-36T.title" = "شدت نور منتشر";
+"hyu-qj-36T.title" = "شدت نور پراکنده";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
 "iNJ-ng-4ga.title" = "سفارش";
@@ -450,7 +450,7 @@
 "iUY-dW-y5v.title" = "شدت نور محیط";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
-"imT-16-aB9.title" = "ارزش";
+"imT-16-aB9.title" = "مقدار";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "jHe-aU-zpQ"; */
 "jHe-aU-zpQ.title" = "چرخش -90";
@@ -459,7 +459,7 @@
 "jQX-px-t8j.title" = "چرخش -90";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "jjn-ZG-OAy"; */
-"jjn-ZG-OAy.title" = "گرفتن در معرض";
+"jjn-ZG-OAy.title" = "نوردهی";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle x"; ObjectID = "kRP-v9-JWX"; */
 "kRP-v9-JWX.placeholderString" = "زاویه x";
@@ -474,13 +474,13 @@
 "l14-dN-lr4.title" = "256x256x256";
 
 /* Class = "NSTextFieldCell"; title = "Unit Cell Size Scaling"; ObjectID = "lsI-qu-rBk"; */
-"lsI-qu-rBk.title" = "مقیاس اندازه سلول";
+"lsI-qu-rBk.title" = "مقیاس اندازه سلول واحد";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "mx2-LA-CaG"; */
 "mx2-LA-CaG.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Bonds"; ObjectID = "nGx-4p-hvc"; */
-"nGx-4p-hvc.title" = "پیوندهای";
+"nGx-4p-hvc.title" = "پیوندها";
 
 /* Class = "NSButtonCell"; title = "Show Adsorption Surface"; ObjectID = "nOa-3D-Seb"; */
 "nOa-3D-Seb.title" = "سطح جذب را نمایش دهید";
@@ -498,7 +498,7 @@
 "nZL-Pd-jrp.title" = "راه راه";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "oEa-7e-zlj"; */
-"oEa-7e-zlj.title" = "شدت نور منتشر";
+"oEa-7e-zlj.title" = "شدت نور پراکنده";
 
 /* Class = "NSMenuItem"; title = "Identifier"; ObjectID = "ofQ-6q-SUf"; */
 "ofQ-6q-SUf.title" = "مشخص کننده";
@@ -510,7 +510,7 @@
 "osH-Uy-RWH.title" = "روشنایی اتم";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "qxB-3k-fDI"; */
-"qxB-3k-fDI.title" = "درست نیروی";
+"qxB-3k-fDI.title" = "میدان نیرو";
 
 /* Class = "NSTextFieldCell"; title = "𝜈"; ObjectID = "r01-Rv-5CI"; */
 "r01-Rv-5CI.title" = "𝜈";
@@ -555,7 +555,7 @@
 "vI4-zj-6Yx.title" = "Worley Noise 3D";
 
 /* Class = "NSButtonCell"; title = "Draw Unit Cell"; ObjectID = "vYr-pF-LLC"; */
-"vYr-pF-LLC.title" = "سلول واحد را نشان می دهد";
+"vYr-pF-LLC.title" = "رسم سلول واحد";
 
 /* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
 "vvr-MF-ufZ.title" = "بالا سمت راست";

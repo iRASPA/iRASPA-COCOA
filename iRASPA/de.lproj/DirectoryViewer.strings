@@ -6,10 +6,10 @@
 "2xV-5s-XJR.title" = "ist nicht";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "4FX-qV-bxY"; */
-"4FX-qV-bxY.title" = "ist weniger als";
+"4FX-qV-bxY.title" = "ist kleiner als";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "6b7-uV-FX2"; */
-"6b7-uV-FX2.title" = "ist weniger als";
+"6b7-uV-FX2.title" = "ist kleiner als";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "79u-Hq-2v5"; */
 "79u-Hq-2v5.title" = "ist";
@@ -24,10 +24,10 @@
 "AFn-dQ-4a9.title" = "ist";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "Aa3-PV-MfN"; */
-"Aa3-PV-MfN.title" = "ist weniger als";
+"Aa3-PV-MfN.title" = "ist kleiner als";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "AjT-PC-cft"; */
-"AjT-PC-cft.title" = "ist weniger als";
+"AjT-PC-cft.title" = "ist kleiner als";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "BAS-U5-cQU"; */
 "BAS-U5-cQU.title" = "ist";
@@ -42,7 +42,7 @@
 "BrN-Gl-4eW.title" = "ist kleiner oder gleich";
 
 /* Class = "NSMenuItem"; title = "Framework density"; ObjectID = "CYp-Lk-sjk"; */
-"CYp-Lk-sjk.title" = "Gerüstdichte";
+"CYp-Lk-sjk.title" = "Frameworkdichte";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "CaW-PN-akd"; */
 "CaW-PN-akd.title" = "ist größer als";
@@ -51,7 +51,7 @@
 "CgQ-4C-1zP.title" = "Geometrische Stickstoffoberfläche";
 
 /* Class = "NSMenuItem"; title = "Framework mass"; ObjectID = "Cul-r9-NEn"; */
-"Cul-r9-NEn.title" = "Rahmenmasse";
+"Cul-r9-NEn.title" = "Frameworkgewicht";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "DOl-fr-jFp"; */
 "DOl-fr-jFp.title" = "ist";
@@ -117,7 +117,7 @@
 "PCQ-aW-6zJ.title" = "ist größer oder gleich";
 
 /* Class = "NSMenuItem"; title = "Helium void fraction"; ObjectID = "Ph1-69-211"; */
-"Ph1-69-211.title" = "Heliumhohlraumfraktion";
+"Ph1-69-211.title" = "Helium Hohlraumanteil";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Pt2-gj-hYD"; */
 "Pt2-gj-hYD.title" = "Keiner";
@@ -246,7 +246,7 @@
 "lbV-FO-8zT.title" = "passt";
 
 /* Class = "NSMenuItem"; title = "Framework accessible volume"; ObjectID = "lc0-Us-BEz"; */
-"lc0-Us-BEz.title" = "Auf das Framework zugängliches Volume";
+"lc0-Us-BEz.title" = "Zugängliches Volume des Frameworks";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "nkM-Gr-sR9"; */
 "nkM-Gr-sR9.title" = "ist größer oder gleich";
@@ -255,7 +255,7 @@
 "nkO-Je-8yy.title" = "ist größer oder gleich";
 
 /* Class = "NSMenuItem"; title = "Largest diameter along path"; ObjectID = "nwU-Tm-pkO"; */
-"nwU-Tm-pkO.title" = "Größter Durchmesser entlang des Weges";
+"nwU-Tm-pkO.title" = "Größter Durchmesser entlang des Pfad";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "ogm-BP-v2k"; */
 "ogm-BP-v2k.title" = "ist größer als";
@@ -267,7 +267,7 @@
 "qY0-4E-FCC.title" = "enthält";
 
 /* Class = "NSMenuItem"; title = "of the following are true"; ObjectID = "qrN-UK-RgU"; */
-"qrN-UK-RgU.title" = "der folgenden sind wahr";
+"qrN-UK-RgU.title" = "von den Folgenden sind wahr";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "rLo-I2-9gM"; */
 "rLo-I2-9gM.title" = "ist weniger als";
@@ -297,7 +297,7 @@
 "vxq-4W-FYz.title" = "ist kleiner oder gleich";
 
 /* Class = "NSMenuItem"; title = "Any"; ObjectID = "yCO-9y-bt0"; */
-"yCO-9y-bt0.title" = "Jeder";
+"yCO-9y-bt0.title" = "Beliebig";
 
 /* Class = "NSMenuItem"; title = "Type"; ObjectID = "yFJ-FY-elM"; */
 "yFJ-FY-elM.title" = "Art";

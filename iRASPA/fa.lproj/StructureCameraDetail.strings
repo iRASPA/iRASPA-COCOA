@@ -51,7 +51,7 @@
 "8FT-Ib-RKI.title" = "150 dpi";
 
 /* Class = "NSButtonCell"; title = "Perspective"; ObjectID = "9XT-W6-7iV"; */
-"9XT-W6-7iV.title" = "چشم انداز";
+"9XT-W6-7iV.title" = "ژرفانمایی";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
 "A0b-wl-zfu.title" = "چراغ";
@@ -63,7 +63,7 @@
 "Abc-jz-2v1.title" = "300 dpi";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Ac4-9i-94c"; */
-"Ac4-9i-94c.title" = "شدت نور منتشر";
+"Ac4-9i-94c.title" = "شدت نور پراکنده";
 
 /* Class = "NSTextFieldCell"; title = "Virtual Camera Position"; ObjectID = "BVw-iu-XbK"; */
 "2oJ-c8-LXO.title" = "موقعیت دوربین مجازی";
@@ -177,7 +177,7 @@
 "bAt-Aw-Vk1.title" = "-Y";
 
 /* Class = "NSTextFieldCell"; title = "Physical Width"; ObjectID = "c0g-Es-8K7"; */
-"c0g-Es-8K7.title" = "عرض جسمی";
+"c0g-Es-8K7.title" = "عرض فیزیکی";
 
 /* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "cBz-Hl-la6"; */
 "cBz-Hl-la6.placeholderString" = "az";
@@ -219,7 +219,7 @@
 "ios-n2-EM2.placeholderString" = "cw";
 
 /* Class = "NSTextFieldCell"; title = "Physical Height"; ObjectID = "kIf-EY-uff"; */
-"kIf-EY-uff.title" = "قد جسمی";
+"kIf-EY-uff.title" = "قد فیزیکی";
 
 /* Class = "NSButtonCell"; title = "-Z"; ObjectID = "l7h-Ex-PBb"; */
 "l7h-Ex-PBb.title" = "-Z";
@@ -279,4 +279,4 @@
 "zBc-ll-o44.title" = "تصویر";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "zor-Zk-OSK"; */
-"zor-Zk-OSK.title" = "شدت نور خاص";
+"zor-Zk-OSK.title" = "شدت نور خاص"; 

@@ -33,7 +33,7 @@
 "6ax-JH-gEz.title" = "Zurücksetzen auf";
 
 /* Class = "NSBox"; title = "Edit Dimensions"; ObjectID = "6eO-AH-Xf2"; */
-"6eO-AH-Xf2.title" = "Bemaßungen bearbeiten";
+"6eO-AH-Xf2.title" = "Abmessungen bearbeiten";
 
 /* Class = "NSButtonCell"; title = "Image"; ObjectID = "76r-PN-1MB"; */
 "76r-PN-1MB.title" = "Bild";
@@ -66,7 +66,7 @@
 "Ac4-9i-94c.title" = "Diffuse Lichtintensität";
 
 /* Class = "NSTextFieldCell"; title = "Virtual Camera Position"; ObjectID = "BVw-iu-XbK"; */
-"2oJ-c8-LXO.title" = "Position Virtuellen Kamera";
+"2oJ-c8-LXO.title" = "Position virtuelle Kamera";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "DsX-mM-8X0"; */
 "DsX-mM-8X0.title" = "Glanz";
@@ -87,7 +87,7 @@
 "JiR-AU-7kF.title" = "8-bits, CMYK";
 
 /* Class = "NSButtonCell"; title = "Create Movie"; ObjectID = "Juc-g9-TL7"; */
-"Juc-g9-TL7.title" = "Film erstellen";
+"Juc-g9-TL7.title" = "Video erstellen";
 
 /* Class = "NSBox"; title = "Camera Light"; ObjectID = "Jzl-ba-QmS"; */
 "Jzl-ba-QmS.title" = "Kameralicht";
@@ -99,7 +99,7 @@
 "LQP-iH-ONP.placeholderString" = "bz";
 
 /* Class = "NSTextFieldCell"; title = "Pictures/Movies"; ObjectID = "MBE-Ci-b6w"; */
-"MBE-Ci-b6w.title" = "Bilder / Filme";
+"MBE-Ci-b6w.title" = "Bilder/Videos";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "MEZ-QI-Kgi"; */
 "MEZ-QI-Kgi.title" = "Drehen +90°";
@@ -120,7 +120,7 @@
 "Qsi-Kr-087.title" = "Bilder pro Sekunde";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "R6f-wb-uXg"; */
-"R6f-wb-uXg.title" = "Text Cell";
+"R6f-wb-uXg.title" = "Textzelle";
 
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "RnM-1Y-4q4"; */
 "RnM-1Y-4q4.title" = "Drehen -90°";
@@ -150,7 +150,7 @@
 "VDa-dN-sUv.title" = "Pixelabmessungen";
 
 /* Class = "NSTextFieldCell"; title = "Overall Luminance"; ObjectID = "VKg-ty-t0D"; */
-"VKg-ty-t0D.title" = "Gesamtleuchtdichte";
+"VKg-ty-t0D.title" = "Gesamthelligkeit";
 
 /* Class = "NSButtonCell"; title = "-X"; ObjectID = "Vlq-HR-Lxn"; */
 "Vlq-HR-Lxn.title" = "-X";
@@ -162,13 +162,13 @@
 "X0p-ze-Zzs.title" = "Radialer Gradient";
 
 /* Class = "NSTextFieldCell"; title = "To"; ObjectID = "XeU-0O-MTz"; */
-"XeU-0O-MTz.title" = "To";
+"XeU-0O-MTz.title" = "nach";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cz"; ObjectID = "Y12-m8-sOG"; */
 "Y12-m8-sOG.placeholderString" = "cz";
 
 /* Class = "NSTextFieldCell"; title = "Quality/Type"; ObjectID = "YN2-kq-iUD"; */
-"YN2-kq-iUD.title" = "Qualität / Typ";
+"YN2-kq-iUD.title" = "Qualität/Typ";
 
 /* Class = "NSButtonCell"; title = "Color"; ObjectID = "aLW-k0-vrB"; */
 "aLW-k0-vrB.title" = "Farbe";
@@ -225,7 +225,7 @@
 "l7h-Ex-PBb.title" = "-Z";
 
 /* Class = "NSButtonCell"; title = "Physical Dimensions"; ObjectID = "lDC-eo-YDn"; */
-"lDC-eo-YDn.title" = "Abmessungen";
+"lDC-eo-YDn.title" = "Physische Abmessungen";
 
 /* Class = "NSBox"; title = "Center of Scene"; ObjectID = "loi-gG-s0z"; */
 "loi-gG-s0z.title" = "Zentrum der Szene";

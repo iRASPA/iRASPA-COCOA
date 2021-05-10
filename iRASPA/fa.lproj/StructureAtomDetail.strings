@@ -51,10 +51,10 @@
 "PwS-Ps-jhn.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Export As"; ObjectID = "SBf-Vu-4GN"; */
-"SBf-Vu-4GN.title" = "صادرات به عنوان";
+"SBf-Vu-4GN.title" = "صادر به عنوان";
 
-/* Class = "NSTextFieldCell"; placeholderString = "net charge"; ObjectID = "XbY-dL-0Ls"; */
-"XbY-dL-0Ls.placeholderString" = "شارژ خالص";
+/* Class = "NSTextFieldCell"; placeholderString = "Net charge"; ObjectID = "XbY-dL-0Ls"; */
+"XbY-dL-0Ls.placeholderString" = "بار خالص";
 
 /* Class = "NSMenuItem"; title = "Visibility"; ObjectID = "bRE-uw-nCc"; */
 "bRE-uw-nCc.title" = "دید";
@@ -63,7 +63,7 @@
 "cHJ-9s-H4f.headerCell.title" = "q";
 
 /* Class = "NSMenuItem"; title = "First selected"; ObjectID = "cPa-hL-tU1"; */
-"cPa-hL-tU1.title" = "ابتدا انتخاب شد";
+"cPa-hL-tU1.title" = "ابتدا انتخاب شده";
 
 /* Class = "NSMenuItem"; title = "Symmetry"; ObjectID = "dp9-ww-pqx"; */
 "dp9-ww-pqx.title" = "تقارن";
@@ -111,7 +111,7 @@
 "j46-Tq-XrE.title" = "بدوی پیدا کنید";
 
 /* Class = "NSTextFieldCell"; title = "Net charge"; ObjectID = "k5O-nf-whc"; */
-"k5O-nf-whc.title" = "شارژ خالص";
+"k5O-nf-whc.title" = "بار خالص";
 
 /* Class = "NSTableColumn"; headerCell.title = "vis"; ObjectID = "njX-Kx-nwX"; */
 "njX-Kx-nwX.headerCell.title" = "vis";
@@ -138,7 +138,7 @@
 "tl6-9S-wf8.title" = "VASP POSCAR";
 
 /* Class = "NSMenu"; title = "Export As"; ObjectID = "to4-IQ-4W7"; */
-"to4-IQ-4W7.title" = "صادرات به عنوان";
+"to4-IQ-4W7.title" = "صادر به عنوان";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "txI-SF-Ef5"; */
 "txI-SF-Ef5.title" = "گروه اتم را اضافه کنید";
@@ -150,7 +150,7 @@
 "wMK-kB-PjB.title" = "انتخاب";
 
 /* Class = "NSMenuItem"; title = "Flatten Hierarchy"; ObjectID = "wfF-yl-c2A"; */
-"wfF-yl-c2A.title" = "سلسله مراتب مسطح";
+"wfF-yl-c2A.title" = "مسطح کردن سلسله مراتب";
 
 /* Class = "NSMenu"; title = "Visibility"; ObjectID = "yiu-Al-H1i"; */
 "yiu-Al-H1i.title" = "دید";

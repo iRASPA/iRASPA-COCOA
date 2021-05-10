@@ -12,7 +12,7 @@
 "2sE-L5-Mde.title" = "گرایش";
 
 /* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
-"39F-yr-VYx.title" = "ویژگی های سلول / جعبه محدود";
+"39F-yr-VYx.title" = "ویژگی های جعبه محصور کننده/سلول";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
 "3Fv-hH-asL.title" = "حجم منافذ قابل دسترس";
@@ -63,7 +63,7 @@
 "92b-lC-W5K.title" = "تعداد سیستم های کانال";
 
 /* Class = "NSTextFieldCell"; title = "Helium Void Fraction"; ObjectID = "9na-rU-hDF"; */
-"9na-rU-hDF.title" = "کسر خالی هلیوم";
+"9na-rU-hDF.title" = "تخلخل  تعیین شده توسط هلیوم";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "9x5-Do-xLf"; */
 "9x5-Do-xLf.title" = "ناشناس";
@@ -147,7 +147,7 @@
 "KWe-Mf-Gny.placeholderString" = "طول b";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Y"; ObjectID = "Lso-gV-DWL"; */
-"Lso-gV-DWL.placeholderString" = "اصل و نسب Y";
+"Lso-gV-DWL.placeholderString" = "مبدا Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Width Z"; ObjectID = "M3B-3E-Pj6"; */
 "M3B-3E-Pj6.placeholderString" = "عرض Z";
@@ -156,7 +156,7 @@
 "MX2-7S-v34.title" = "انانتیومورفیک";
 
 /* Class = "NSTextFieldCell"; title = "Maximum Replicas"; ObjectID = "NEE-uA-Vza"; */
-"NEE-uA-Vza.title" = "حداکثر ماکت ها";
+"NEE-uA-Vza.title" = "حداکثر تعداد نسخه های عینی";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "NtP-sh-9XR"; */
 "NtP-sh-9XR.placeholderString" = "cy";
@@ -228,7 +228,7 @@
 "Wgg-RQ-dI1.title" = "گروه لائو";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
-"X5S-a7-xCf.placeholderString" = "اصل و نسب Z";
+"X5S-a7-xCf.placeholderString" = "مبدا Z";
 
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
 "XeZ-Hb-tao.title" = "استوانه کریستال";
@@ -333,7 +333,7 @@
 "jgD-yL-2kq.title" = "نوع مواد";
 
 /* Class = "NSTextFieldCell"; title = "Largest Diameter Along a Viable Path (Dif)"; ObjectID = "jrj-nk-OqJ"; */
-"jrj-nk-OqJ.title" = "بزرگترین قطر در امتداد یک مسیر زنده (Dif)";
+"jrj-nk-OqJ.title" = "بزرگترین قطر در امتداد یک مسیر مناسب (Dif)";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "منشور چند ضلعی";
@@ -342,16 +342,16 @@
 "lLf-lt-tQX.title" = "متقارن";
 
 /* Class = "NSTextFieldCell"; title = "Number of Inaccessible Pockets"; ObjectID = "lTN-44-tVw"; */
-"lTN-44-tVw.title" = "تعداد جیبهای غیرقابل دسترسی";
+"lTN-44-tVw.title" = "تعداد پاکت های غیرقابل دسترسی";
 
 /* Class = "NSTextFieldCell"; title = "Specific Volume"; ObjectID = "leN-tT-E4L"; */
-"leN-tT-E4L.title" = "حجم مشخص";
+"leN-tT-E4L.title" = "حجم مخصوص";
 
 /* Class = "NSMenuItem"; title = "Protein"; ObjectID = "lhA-fm-5dQ"; */
 "lhA-fm-5dQ.title" = "پروتئین";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin X"; ObjectID = "mBe-hd-Fy3"; */
-"mBe-hd-Fy3.placeholderString" = "اصل و نسب X";
+"mBe-hd-Fy3.placeholderString" = "مبدا X";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "mLH-lp-rcD"; */
 "mLH-lp-rcD.title" = "0";
@@ -366,7 +366,7 @@
 "n3J-VH-Fux.title" = "دقت، درستی";
 
 /* Class = "NSTextFieldCell"; title = "Origin"; ObjectID = "nOH-gZ-CNR"; */
-"nOH-gZ-CNR.title" = "اصل و نسب";
+"nOH-gZ-CNR.title" = "مبدا";
 
 /* Class = "NSMenuItem"; title = "Helium"; ObjectID = "nos-k0-eV6"; */
 "nos-k0-eV6.title" = "هلیوم";
@@ -381,7 +381,7 @@
 "pC8-T5-EKr.title" = "[-]";
 
 /* Class = "NSTextFieldCell"; title = "Largest Overall Cavity Diameter (Di)"; ObjectID = "pMK-0S-ytH"; */
-"pMK-0S-ytH.title" = "بزرگترین قطر حفره کلی (Di)";
+"pMK-0S-ytH.title" = "قطرِ سرتاسرْ بزرگترین حفره (Di)";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "pqT-rt-W8M"; */
 "pqT-rt-W8M.placeholderString" = "cx";
@@ -408,7 +408,7 @@
 "sHe-dm-0Lo.placeholderString" = "زاویه X";
 
 /* Class = "NSTextFieldCell"; title = "Volumetric Surface Area (Nitrogen)"; ObjectID = "siG-7J-hEu"; */
-"siG-7J-hEu.title" = "سطح حجمی (نیتروژن)";
+"siG-7J-hEu.title" = "سطح ویژه حجمی تعیین شده توسط نیتروژن";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "حلال کریستال";
@@ -459,7 +459,7 @@
 "ugQ-Gv-6sx.title" = "چرخش +90";
 
 /* Class = "NSTextFieldCell"; title = "Flip"; ObjectID = "v83-YD-3LI"; */
-"v83-YD-3LI.title" = "تلنگر";
+"v83-YD-3LI.title" = "برگرداندن";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
 "vhk-8d-Ytl.title" = "خصوصیات ساختاری";

@@ -1,42 +1,42 @@
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "0rs-gb-TNq"; */
-"0rs-gb-TNq.title" = "Text Cell";
+"0rs-gb-TNq.title" = "Textzelle";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "1a6-zX-TZh"; */
-"1a6-zX-TZh.title" = "Text Cell";
+"1a6-zX-TZh.title" = "Textzelle";
 
 /* Class = "NSTableColumn"; headerCell.title = "vis"; ObjectID = "7uB-Nb-mkk"; */
 "7uB-Nb-mkk.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Type bonds"; ObjectID = "9rV-cN-bzl"; */
-"9rV-cN-bzl.title" = "Art bindungen";
+"9rV-cN-bzl.title" = "Bindungsart";
 
 /* Class = "NSTableColumn"; headerCell.title = "length"; ObjectID = "DvX-tf-DBg"; */
-"DvX-tf-DBg.headerCell.title" = "length";
+"DvX-tf-DBg.headerCell.title" = "Länge";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "EdV-9a-T5U"; */
-"EdV-9a-T5U.title" = "Text Cell";
+"EdV-9a-T5U.title" = "Textzelle";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Fvp-lB-wZd"; */
-"Fvp-lB-wZd.title" = "Text Cell";
+"Fvp-lB-wZd.title" = "Textzelle";
 
 /* Class = "NSTableColumn"; headerCell.title = "type"; ObjectID = "H3C-4S-esH"; */
-"H3C-4S-esH.headerCell.title" = "type";
+"H3C-4S-esH.headerCell.title" = "Typ";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "HM6-fh-qvs"; */
-"HM6-fh-qvs.title" = "Text Cell";
+"HM6-fh-qvs.title" = "Textzelle";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Jka-TF-hn8"; */
-"Jka-TF-hn8.title" = "Text Cell";
+"Jka-TF-hn8.title" = "Textzelle";
 
 /* Class = "NSTableColumn"; headerCell.title = "atom ids."; ObjectID = "JlI-7Q-4ku"; */
-"JlI-7Q-4ku.headerCell.title" = "atom ids.";
+"JlI-7Q-4ku.headerCell.title" = "Atom ids.";
 
 /* Class = "NSTableColumn"; headerCell.title = "el(B)"; ObjectID = "MEg-vK-jym"; */
 "MEg-vK-jym.headerCell.title" = "el(B)";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "VEA-fx-CwG"; */
-"VEA-fx-CwG.title" = "Text Cell";
+"VEA-fx-CwG.title" = "Textzelle";
 
 /* Class = "NSTableColumn"; headerCell.title = "el(A)"; ObjectID = "cgZ-aN-w1n"; */
 "cgZ-aN-w1n.headerCell.title" = "el(A)";
@@ -45,7 +45,7 @@
 "dMm-6E-Gds.headerCell.title" = "id";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "oBx-QK-c2U"; */
-"oBx-QK-c2U.title" = "Text Cell";
+"oBx-QK-c2U.title" = "Textzelle";
 
 /* Class = "NSMenuItem"; title = "Recompute Bonds"; ObjectID = "w5W-4P-qvW"; */
-"w5W-4P-qvW.title" = "Berechnen bindungen";
+"w5W-4P-qvW.title" = "Bindungen berechnen";
