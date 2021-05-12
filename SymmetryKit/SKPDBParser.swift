@@ -54,8 +54,10 @@ public final class SKPDBParser: SKParser, ProgressReporting
   let newLineChararterSet: CharacterSet
   
   var periodic: Bool = false
-  var onlyAsymmetricUnit: Bool = false
+  var onlyAsymmetricUnitMolecule: Bool = false
+  var onlyAsymmetricUnitProtein: Bool = false
   var asMolecule: Bool = false
+  var asProtein: Bool = false
   var spaceGroup: SKSpacegroup = SKSpacegroup()
   var scaleMatrixDefined: [Bool] = [false, false, false]
   var scaleMatrix: double3x3 = double3x3(1.0)
@@ -104,48 +106,58 @@ public final class SKPDBParser: SKParser, ProgressReporting
         
         if (Double(numberOfAminoAcidAtoms)/(Double)(numberOfNucleicAcidAtoms) > 0.5)
         {
-          if (periodic)
+          if (periodic && !asProtein)
           {
             scene[currentMovie][currentFrame].kind = .proteinCrystal
-            scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnit
+            scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitProtein
+            scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitProtein ? 1 : self.spaceGroup.spaceGroupSetting.number
           }
           else
           {
             scene[currentMovie][currentFrame].kind = .protein
             scene[currentMovie][currentFrame].drawUnitCell = false
+            scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
           }
+          
         }
         else
         {
           // set to Solvent if almost all atoms are "HETATM"
           if (Double(numberOfSolventAtoms)/(Double)(numberOfAtoms) > 0.9)
           {
-            if (periodic)
+            if (periodic && !asMolecule)
             {
               scene[currentMovie][currentFrame].kind = .molecularCrystal
-              scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnit
+              scene[currentMovie][currentFrame].drawUnitCell = !onlyAsymmetricUnitMolecule
+              scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
             }
             else
             {
               scene[currentMovie][currentFrame].kind = .molecule
               scene[currentMovie][currentFrame].drawUnitCell = false
+              scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
             }
           }
           else
           {
-            if (periodic)
+            if (periodic && !asMolecule)
             {
               scene[currentMovie][currentFrame].kind = .molecularCrystal
+              scene[currentMovie][currentFrame].drawUnitCell = false
+              scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnitMolecule ? 1 : self.spaceGroup.spaceGroupSetting.number
             }
             else
             {
               scene[currentMovie][currentFrame].kind = .molecule
+              scene[currentMovie][currentFrame].drawUnitCell = false
+              scene[currentMovie][currentFrame].spaceGroupHallNumber = 1
             }
           }
+          
+          
         }
         
         scene[currentMovie][currentFrame].cell = cell
-        scene[currentMovie][currentFrame].spaceGroupHallNumber = onlyAsymmetricUnit ? 1 : self.spaceGroup.spaceGroupSetting.number
         scene[currentMovie][currentFrame].displayName = self.displayName
         scene[currentMovie][currentFrame].atoms = atoms
         scene[currentMovie][currentFrame].unknownAtoms = unknownAtoms
@@ -160,11 +172,13 @@ public final class SKPDBParser: SKParser, ProgressReporting
     
   }
   
-  public init(displayName: String, string: String, windowController: NSWindowController?, onlyAsymmetricUnit: Bool, asMolecule: Bool)
+  public init(displayName: String, string: String, windowController: NSWindowController?, onlyAsymmetricUnitMolecule: Bool, onlyAsymmetricUnitProtein: Bool, asMolecule: Bool, asProtein: Bool)
   {
     self.displayName = displayName
-    self.onlyAsymmetricUnit = onlyAsymmetricUnit
+    self.onlyAsymmetricUnitMolecule = onlyAsymmetricUnitMolecule
+    self.onlyAsymmetricUnitProtein = onlyAsymmetricUnitProtein
     self.asMolecule = asMolecule
+    self.asProtein = asProtein
     self.scanner = Scanner(string: string)
     self.scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
     
@@ -218,13 +232,16 @@ public final class SKPDBParser: SKParser, ProgressReporting
           switch(shortKeyword)
           {
           // also captures "ENDMDL"
-          case "END":
+          case "ENDMDL":
             addFrameToStructure()
             currentFrame += 1
             continue
           case "TER":
-            addFrameToStructure()
-            currentMovie += 1
+            if(atoms.count > 0)
+            {
+              addFrameToStructure()
+              currentMovie += 1
+            }
             continue
           default:
             break
@@ -446,10 +463,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
               c = doubleValue
             }
             // when we have read 'CRYST1 a b c' we consider this a MolecularCrystal
-            if(!asMolecule)
-            {
-              periodic = true
-            }
+            periodic = true
             
             guard (length >= 41) else
             {
@@ -502,7 +516,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
               let spaceGroupString: String = scannedLine.substring(from: 55).trimmingCharacters(in: NSCharacterSet.whitespaces).lowercased().capitalizeFirst
               if (self.spaceGroup.number == 1)
               {
-                if let spaceGroup = SKSpacegroup(H_M: spaceGroupString), !asMolecule
+                if let spaceGroup = SKSpacegroup(H_M: spaceGroupString)
                 {
                   self.spaceGroup = spaceGroup
                 }
@@ -511,7 +525,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
             }
             let spaceGroupString: String = (scannedLine.substring(with: NSRange(location: 55, length: 11)).trimmingCharacters(in: NSCharacterSet.whitespaces).lowercased().capitalizeFirst)
             
-            if let spaceGroup = SKSpacegroup(H_M: spaceGroupString), !asMolecule
+            if let spaceGroup = SKSpacegroup(H_M: spaceGroupString)
             {
               self.spaceGroup = spaceGroup
             }
@@ -757,7 +771,10 @@ public final class SKPDBParser: SKParser, ProgressReporting
     }
     
     // add current frame in case last TER, ENDMDL, or END is missing
-    addFrameToStructure()
+    if(atoms.count > 0)
+    {
+      addFrameToStructure()
+    }
   }
   
 }

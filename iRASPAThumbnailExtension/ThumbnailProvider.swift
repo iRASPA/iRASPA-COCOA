@@ -31,15 +31,7 @@ class ThumbnailProvider: QLThumbnailProvider
     {
       let camera: RKCamera = RKCamera()
       
-      // Critical: set the selection, otherwise no frames will be drawn
-      project.setInitialSelectionIfNeeded()
-        
-      project.renderBackgroundCachedImage = project.drawGradientCGImage()
-      camera.resetPercentage = 0.95
-      camera.resetForNewBoundingBox(project.renderBoundingBox)
-        
-      camera.updateCameraForWindowResize(width: Double(maximumSize.width), height: Double(maximumSize.height))
-      camera.resetCameraDistance()
+      project.setPreviewDefaults(camera: camera, size: maximumSize)
       
       let renderer: MetalRenderer = MetalRenderer(device: device, size: maximumSize, dataSource: project, camera: camera)
       

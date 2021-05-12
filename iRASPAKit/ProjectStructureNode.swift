@@ -308,6 +308,29 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     return structures
   }
   
+  public func setPreviewDefaults(camera: RKCamera, size: CGSize)
+  {
+    // Critical: set the selection, otherwise no frames will be drawn
+    setInitialSelectionIfNeeded()
+      
+    renderBackgroundCachedImage = drawGradientCGImage()
+    camera.resetPercentage = 0.95
+    camera.resetForNewBoundingBox(renderBoundingBox)
+      
+    camera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
+    camera.resetCameraDistance()
+    
+    let defaultColorSet: SKColorSet = SKColorSet(colorScheme: SKColorSets.ColorScheme.rasmol)
+    
+    for iRASPAstructure in allIRASPAStructures
+    {
+      if iRASPAstructure.type == .protein || iRASPAstructure.type == .proteinCrystal || iRASPAstructure.type == .proteinCrystalSolvent
+      {
+        iRASPAstructure.structure.setRepresentationStyle(style: .fancy)
+        iRASPAstructure.structure.setRepresentationColorScheme(colorSet: defaultColorSet)
+      }
+    }
+  }
   
   
   public var renderMeasurementPoints: [RKInPerInstanceAttributesAtoms]

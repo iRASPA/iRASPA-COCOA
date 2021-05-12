@@ -54,15 +54,7 @@ class PreviewViewController: NSViewController, QLPreviewingController
     {
       let camera: RKCamera = RKCamera()
       
-      // Critical: set the selection, otherwise no frames will be drawn
-      project.setInitialSelectionIfNeeded()
-        
-      project.renderBackgroundCachedImage = project.drawGradientCGImage()
-      camera.resetPercentage = 0.95
-      camera.resetForNewBoundingBox(project.renderBoundingBox)
-        
-      camera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
-      camera.resetCameraDistance()
+      project.setPreviewDefaults(camera: camera, size: size)
       
       let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: project, camera: camera)
       

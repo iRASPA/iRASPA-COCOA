@@ -1739,20 +1739,8 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     var computedBonds: [SKBondNode] = []
     var totalCount: Int
     
-    // structureCell.boundingBox.widths has a shell around it, subtract (N-1) times the cell perpendicularWidths
-    let numberOfReplicas: SIMD3<Double> = SIMD3<Double>(Double(structureCell.maximumReplicaX - structureCell.minimumReplicaX ),
-                                                        Double(structureCell.maximumReplicaY - structureCell.minimumReplicaY ),
-                                                        Double(structureCell.maximumReplicaZ - structureCell.minimumReplicaZ ))
-    
-    let perpendicularWidths: SIMD3<Double>
-    if self.drawUnitCell
-    {
-      perpendicularWidths = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
-    }
-    else
-    {
-      perpendicularWidths = structureCell.boundingBox.widths - numberOfReplicas * structureCell.perpendicularWidths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
-    }
+    let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
+  
     guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
     
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
@@ -1768,15 +1756,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
       // create cell-list based on the bond-cutoff
       for i in 0..<atoms.count
       {
-        let position: SIMD3<Double>
-        if self.drawUnitCell
-        {
-          position = structureCell.unitCell * fract(structureCell.inverseUnitCell * atoms[i].position)
-        }
-        else
-        {
-          position = cell.applyUnitCellBoundaryCondition(atoms[i].position - structureCell.boundingBox.minimum)
-        }
+        let position: SIMD3<Double> = atoms[i].position - structureCell.boundingBox.minimum
         
         let icell: Int = Int((position.x) / cutoffVector.x) +
           Int((position.y) / cutoffVector.y) * numberOfCells[0] +
@@ -1801,7 +1781,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
             var i: Int = head[icell_i]
             while(i >= 0)
             {
-              let posA: SIMD3<Double> = atoms[i].position
+              let posA: SIMD3<Double> = atoms[i].position - structureCell.boundingBox.minimum
               
               // loop over neighboring cells
               for offset in offsets
@@ -1816,7 +1796,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
                 {
                   if((i < j) || (icell_i != icell_j))
                   {
-                    let posB: SIMD3<Double> = atoms[j].position
+                    let posB: SIMD3<Double> = atoms[j].position - structureCell.boundingBox.minimum
                     let separationVector: SIMD3<Double> = posA - posB
                     let periodicSeparationVector: SIMD3<Double> = structureCell.applyUnitCellBoundaryCondition(posA - posB)
                     

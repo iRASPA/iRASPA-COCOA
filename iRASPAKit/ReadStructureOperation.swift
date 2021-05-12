@@ -79,7 +79,7 @@ class ReadStructureOperation: FKOperation
     case "CIF":
       parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
     case "PDB":
-      parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+      parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
     case "XYZ":
       parser = SKXYZParser(displayName: displayName, string: string, windowController: nil)
     case "POSCAR", "CONTCAR":
