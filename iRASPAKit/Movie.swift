@@ -177,7 +177,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   private convenience init?(displayName: String, pdb data: Data)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnit: true, asMolecule: false)
+    let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     guard let movie = scene.movies.first else {return nil}

@@ -429,7 +429,7 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
     {
       let displayName: String = url.deletingPathExtension().lastPathComponent
       
-      let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: pdbString, windowController: self.windowControllers.first, onlyAsymmetricUnit: true, asMolecule: true)
+      let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: pdbString, windowController: self.windowControllers.first, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
       do
       {
         try pdbParser.startParsing()

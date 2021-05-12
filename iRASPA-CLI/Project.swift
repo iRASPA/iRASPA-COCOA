@@ -57,7 +57,7 @@ class Project
       case "cif":
         parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
       case "pdb":
-        parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit, asMolecule: asMolecule)
+        parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
         break
       case "xyz":
         parser = SKXYZParser(displayName: displayName, string: string, windowController: nil)
