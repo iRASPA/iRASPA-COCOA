@@ -118,7 +118,7 @@ class Project
     {
       let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: projectStructureNode, camera: camera)
       
-      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: imagePhysicalSizeInInches, camera: camera, imageQuality: RKImageQuality.rgb_8_bits)
+      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: imagePhysicalSizeInInches, camera: camera, imageQuality: RKImageQuality.rgb_8_bits, renderQuality: .picture)
       {
         return data
       }
