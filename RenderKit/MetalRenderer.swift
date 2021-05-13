@@ -921,7 +921,7 @@ public class MetalRenderer
   // MARK: Make Pictures
   
 
-  public func renderPictureData(device: MTLDevice, size: CGSize, camera: RKCamera, imageQuality: RKImageQuality, transparentBackground: Bool) -> Data?
+  public func renderPictureData(device: MTLDevice, size: CGSize, camera: RKCamera, imageQuality: RKImageQuality, transparentBackground: Bool, renderQuality: RKRenderQuality) -> Data?
   {
     if let _: RKRenderDataSource = renderDataSource,
        let commandQueue: MTLCommandQueue = device.makeCommandQueue(),
@@ -935,7 +935,7 @@ public class MetalRenderer
     
       self.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       
-      self.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: .picture, camera: camera, transparentBackground: transparentBackground)
+      self.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
       
       let pictureTextureDescriptor: MTLTextureDescriptor
       switch(imageQuality)
@@ -1008,9 +1008,9 @@ public class MetalRenderer
     return nil
   }
   
-  public func renderPicture(device: MTLDevice, size: CGSize, imagePhysicalSizeInInches: Double, camera: RKCamera, imageQuality: RKImageQuality, transparentBackground: Bool = false) -> Data?
+  public func renderPicture(device: MTLDevice, size: CGSize, imagePhysicalSizeInInches: Double, camera: RKCamera, imageQuality: RKImageQuality, renderQuality: RKRenderQuality, transparentBackground: Bool = false) -> Data?
   {
-    if let data: Data = self.renderPictureData(device: device, size: size, camera: camera, imageQuality: imageQuality, transparentBackground: transparentBackground)
+    if let data: Data = self.renderPictureData(device: device, size: size, camera: camera, imageQuality: imageQuality, transparentBackground: transparentBackground, renderQuality: renderQuality)
     {
       let cgImage: CGImage
       switch(imageQuality)

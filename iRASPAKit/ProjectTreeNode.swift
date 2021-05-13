@@ -274,10 +274,10 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     return nil
   }
   
-  private convenience init?(displayName: String, pdb data: Data)
+  private convenience init?(displayName: String, pdb data: Data, preview: Bool)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
+    let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true, preview: preview)
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
@@ -286,7 +286,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  private convenience init?(displayName: String, cif data: Data)
+  private convenience init?(displayName: String, cif data: Data, preview: Bool)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
@@ -298,7 +298,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  private convenience init?(displayName: String, xyz data: Data)
+  private convenience init?(displayName: String, xyz data: Data, preview: Bool)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
@@ -310,7 +310,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  private convenience init?(displayName: String, poscar data: Data)
+  private convenience init?(displayName: String, poscar data: Data, preview: Bool)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
@@ -322,7 +322,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  private convenience init?(displayName: String, xdatcar data: Data)
+  private convenience init?(displayName: String, xdatcar data: Data, preview: Bool)
   {
     guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
     let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
@@ -334,7 +334,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
     self.isEditable = true
   }
   
-  public convenience init?(url: URL)
+  public convenience init?(url: URL, preview: Bool)
   {
     guard FileManager.default.fileExists(atPath: url.path),
           let data: Data = try? Data(contentsOf: url, options: []) else {return nil}
@@ -353,15 +353,15 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       case _ where type.conforms(to: .iraspa):
         self.init(iraspa: data)
       case _ where type.conforms(to: .poscar) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
-        self.init(displayName: displayName, poscar: data)
+        self.init(displayName: displayName, poscar: data, preview: preview)
       case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
-        self.init(displayName: displayName, xdatcar: data)
+        self.init(displayName: displayName, xdatcar: data, preview: preview)
       case _ where type.conforms(to: .cif):
-        self.init(displayName: displayName, cif: data)
+        self.init(displayName: displayName, cif: data, preview: preview)
       case _ where type.conforms(to: .pdb):
-        self.init(displayName: displayName, pdb: data)
+        self.init(displayName: displayName, pdb: data, preview: preview)
       case _ where type.conforms(to: .xyz):
-        self.init(displayName: displayName, xyz: data)
+        self.init(displayName: displayName, xyz: data, preview: preview)
       default:
         return nil
       }
@@ -378,15 +378,15 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       case _ where UTTypeConformsTo(type as CFString, typeProject as CFString):
         self.init(treeNode: data)
       case _ where UTTypeConformsTo(type as CFString, typePOSCAR as CFString) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
-        self.init(displayName: displayName, poscar: data)
+        self.init(displayName: displayName, poscar: data, preview: preview)
       case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
-        self.init(displayName: displayName, xdatcar: data)
+        self.init(displayName: displayName, xdatcar: data, preview: preview)
       case _ where UTTypeConformsTo(type as CFString, typeCIF as CFString):
-        self.init(displayName: displayName, cif: data)
+        self.init(displayName: displayName, cif: data, preview: preview)
       case _ where UTTypeConformsTo(type as CFString, typePDB as CFString):
-        self.init(displayName: displayName, pdb: data)
+        self.init(displayName: displayName, pdb: data, preview: preview)
       case _ where UTTypeConformsTo(type as CFString, typeXYZ as CFString):
-        self.init(displayName: displayName, xyz: data)
+        self.init(displayName: displayName, xyz: data, preview: preview)
       default:
         return nil
       }
@@ -611,15 +611,15 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
         case _ where type.conforms(to: .iraspa):
           self.init(iraspa: data)
         case _ where type.conforms(to: .poscar) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
-          self.init(displayName: displayName, poscar: data)
+          self.init(displayName: displayName, poscar: data, preview: false)
         case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
-          self.init(displayName: displayName, xdatcar: data)
+          self.init(displayName: displayName, xdatcar: data, preview: false)
         case _ where type.conforms(to: .cif):
-          self.init(displayName: displayName, cif: data)
+          self.init(displayName: displayName, cif: data, preview: false)
         case _ where type.conforms(to: .pdb):
-          self.init(displayName: displayName, pdb: data)
+          self.init(displayName: displayName, pdb: data, preview: false)
         case _ where type.conforms(to: .xyz):
-          self.init(displayName: displayName, xyz: data)
+          self.init(displayName: displayName, xyz: data, preview: false)
         default:
           return nil
         }
@@ -634,15 +634,15 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
         case _ where UTTypeConformsTo(type as CFString, typeProject as CFString):
           self.init(treeNode: data)
         case _ where UTTypeConformsTo(type as CFString, typePOSCAR as CFString) || (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" || url.lastPathComponent.uppercased() == "CONTCAR")):
-          self.init(displayName: displayName, poscar: data)
+          self.init(displayName: displayName, poscar: data, preview: false)
         case _ where (url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "XDATCAR")):
-          self.init(displayName: displayName, xdatcar: data)
+          self.init(displayName: displayName, xdatcar: data, preview: false)
         case _ where UTTypeConformsTo(type as CFString, typeCIF as CFString):
-          self.init(displayName: displayName, cif: data)
+          self.init(displayName: displayName, cif: data, preview: false)
         case _ where UTTypeConformsTo(type as CFString, typePDB as CFString):
-          self.init(displayName: displayName, pdb: data)
+          self.init(displayName: displayName, pdb: data, preview: false)
         case _ where UTTypeConformsTo(type as CFString, typeXYZ as CFString):
-          self.init(displayName: displayName, xyz: data)
+          self.init(displayName: displayName, xyz: data, preview: false)
         default:
           return nil
         }

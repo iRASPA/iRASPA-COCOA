@@ -46,7 +46,7 @@ class PreviewViewController: NSViewController, QLPreviewingController
     var image: NSImage? = NSImage(named: "MOF")
     let size: CGSize = CGSize(width: 512, height: 512)
     
-    guard let projectTreeNode = ProjectTreeNode(url: url) else {return}
+    guard let projectTreeNode = ProjectTreeNode(url: url, preview: true) else {return}
     projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
           
     if let project: ProjectStructureNode  = projectTreeNode.representedObject.loadedProjectStructureNode,
@@ -57,8 +57,7 @@ class PreviewViewController: NSViewController, QLPreviewingController
       project.setPreviewDefaults(camera: camera, size: size)
       
       let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: project, camera: camera)
-      
-      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: project.renderImagePhysicalSizeInInches, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false)
+      if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: project.renderImagePhysicalSizeInInches, camera: camera, imageQuality: .rgb_8_bits, renderQuality: .low, transparentBackground: false)
       {
         image = NSImage(data: data)
       }

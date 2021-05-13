@@ -1473,7 +1473,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
   
   
   
-  // for period: transformed, for non-periodic: untransformed
+  // for periodic: transformed, for non-periodic: untransformed
   public override var boundingBox: SKBoundingBox
   {
     var minimum: SIMD3<Double> = SIMD3<Double>(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude, z: Double.greatestFiniteMagnitude)
@@ -1745,12 +1745,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     
     var computedBonds: [SKBondNode] = []
     
-    
-    // structureCell.boundingBox.widths has a shell around it, subtract (N-1) times the cell perpendicularWidths
-    let numberOfReplicas: SIMD3<Double> = SIMD3<Double>(Double(structureCell.maximumReplicaX - structureCell.minimumReplicaX ),
-                                                        Double(structureCell.maximumReplicaY - structureCell.minimumReplicaY ),
-                                                        Double(structureCell.maximumReplicaZ - structureCell.minimumReplicaZ ))
-    let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths - numberOfReplicas * structureCell.perpendicularWidths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
+    let perpendicularWidths: SIMD3<Double> = structureCell.boundingBox.widths + SIMD3<Double>(x: 0.1, y: 0.1, z: 0.1)
     guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
     
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
@@ -1766,13 +1761,13 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
       // create cell-list based on the bond-cutoff
       for i in 0..<atoms.count
       {
+        //get the position in the unit cell
         let position: SIMD3<Double> = structureCell.unitCell * fract(structureCell.inverseUnitCell * atoms[i].position)
         
         let icell: Int = Int((position.x) / cutoffVector.x) +
-          Int((position.y) / cutoffVector.y) * numberOfCells[0] +
-          Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
-        
-        
+                         Int((position.y) / cutoffVector.y) * numberOfCells[0] +
+                         Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
+                
         list[i] = head[icell]
         head[icell] = i
       }

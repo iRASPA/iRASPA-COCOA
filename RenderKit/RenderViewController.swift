@@ -436,7 +436,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       {
         let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera)
         
-        if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false)
+        if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera, imageQuality: .rgb_8_bits, transparentBackground: false, renderQuality: .picture)
         {
           let cgImage: CGImage
           
@@ -470,7 +470,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       {
         let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera)
         
-        if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: crystalProjectData.renderImagePhysicalSizeInInches, camera: camera, imageQuality: imageQuality)
+        if let data: Data = renderer.renderPicture(device: device, size: size, imagePhysicalSizeInInches: crystalProjectData.renderImagePhysicalSizeInInches, camera: camera, imageQuality: imageQuality, renderQuality: .picture)
         {
           return data
         }
@@ -506,14 +506,15 @@ public class RenderViewController: NSViewController, MTKViewDelegate
       let size: NSSize = NSMakeSize(CGFloat(width), CGFloat(height))
       
       let renderer: MetalRenderer = MetalRenderer(device: device, size: size, dataSource: crystalProjectData, camera: camera!)
-      let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera!, imageQuality: .rgb_8_bits, transparentBackground: false)!
-    
-      CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
-      if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)
+      if let data: Data = renderer.renderPictureData(device: device, size: size, camera: camera!, imageQuality: .rgb_8_bits, transparentBackground: false, renderQuality: .picture)
       {
-        data.copyBytes(to: destPixels, count: data.count)
+        CVPixelBufferLockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
+        if let destPixels: UnsafeMutablePointer<UInt8> = CVPixelBufferGetBaseAddress(pixelBuffer)?.assumingMemoryBound(to: UInt8.self)
+        {
+          data.copyBytes(to: destPixels, count: data.count)
+        }
+        CVPixelBufferUnlockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
       }
-      CVPixelBufferUnlockBaseAddress( pixelBuffer, CVPixelBufferLockFlags(rawValue: CVOptionFlags(0)) )
     }
   }
   
