@@ -153,13 +153,25 @@ public class MetalRenderer
     if let file: String = bundle.path(forResource: "default", ofType: "metallib"),
        let defaultLibrary = try? device.makeLibrary(filepath: file)
     {
-      self.buildPipeLines(device: device, defaultLibrary, maximumNumberOfSamples: 8)
+      var maximumNumberOfSamples: Int = 1
+      // detect the maximum MSAA
+      for i in [32,16,8,4,2,1]
+      {
+        if (device.supportsTextureSampleCount(i))
+        {
+          maximumNumberOfSamples = i
+          break
+        }
+      }
+      
+      
+      self.buildPipeLines(device: device, defaultLibrary, maximumNumberOfSamples: maximumNumberOfSamples)
       self.backgroundShader.buildPermanentTextures(device: device)
       
-      self.buildTextures(device: device, size: size, maximumNumberOfSamples: 8)
+      self.buildTextures(device: device, size: size, maximumNumberOfSamples: maximumNumberOfSamples)
       
       self.renderDataSource = dataSource
-      self.reloadData(device: device, size, maximumNumberOfSamples: 8)
+      self.reloadData(device: device, size, maximumNumberOfSamples: maximumNumberOfSamples)
       
       self.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
       
