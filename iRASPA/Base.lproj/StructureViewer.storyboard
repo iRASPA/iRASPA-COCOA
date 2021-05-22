@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="6mp-1E-jNe">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="6mp-1E-jNe">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -123,7 +123,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <segmentedControl focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nW8-NA-gWn" customClass="LogAndInterpreterSegmentedControl" customModule="iRASPA" customModuleProvider="target">
-                                            <rect key="frame" x="390.5" y="3" width="57" height="19"/>
+                                            <rect key="frame" x="391" y="3" width="57" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                             <segmentedCell key="cell" controlSize="small" borderStyle="border" focusRingType="none" alignment="left" style="texturedSquare" trackingMode="selectAny" id="quL-Z4-nO3">
                                                 <font key="font" metaFont="message" size="11"/>
@@ -170,7 +170,7 @@
                         <subviews>
                             <scrollView wantsLayer="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzn-aw-ATd">
                                 <rect key="frame" x="0.0" y="26" width="450" height="135"/>
-                                <clipView key="contentView" drawsBackground="NO" id="Egn-aB-szp">
+                                <clipView key="contentView" id="Egn-aB-szp">
                                     <rect key="frame" x="1" y="1" width="448" height="133"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -205,7 +205,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <segmentedControl focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RFU-v0-zaM" customClass="LogAndInterpreterSegmentedControl" customModule="iRASPA" customModuleProvider="target">
-                                            <rect key="frame" x="394.5" y="3" width="57" height="19"/>
+                                            <rect key="frame" x="395" y="3" width="57" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                                             <segmentedCell key="cell" controlSize="small" borderStyle="border" focusRingType="none" alignment="left" style="texturedSquare" trackingMode="selectAny" id="mQl-h9-Uop">
                                                 <font key="font" metaFont="message" size="11"/>
@@ -1223,7 +1223,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <segmentedControl horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="5IQ-fw-X7X">
-                                <rect key="frame" x="-2" y="151" width="452" height="24"/>
+                                <rect key="frame" x="-3" y="152" width="383" height="24"/>
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" style="separated" trackingMode="selectOne" id="KMJ-Zm-flM">
                                     <font key="font" metaFont="system"/>
                                     <segments>
@@ -1241,7 +1241,7 @@
                                 </connections>
                             </segmentedControl>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="lfO-NB-5q8">
-                                <rect key="frame" x="0.0" y="0.0" width="500" height="153"/>
+                                <rect key="frame" x="0.0" y="0.0" width="500" height="154"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="500" id="aaZ-M6-8vg"/>
                                 </constraints>
