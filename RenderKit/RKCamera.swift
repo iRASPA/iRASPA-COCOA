@@ -417,22 +417,6 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     }
   }
   
-  /*
-  public func resetDistanceForNewBoundingBox()
-  {
-    let transformedBoundingBoxNew: SKBoundingBox = self.boundingBox.adjustForTransformation(self.modelMatrix)
-    
-    let deltaNew: double3 = double3(fabs(transformedBoundingBoxNew.maximum.x-transformedBoundingBoxNew.minimum.x),
-                                    fabs(transformedBoundingBoxNew.maximum.y-transformedBoundingBoxNew.minimum.y),
-                                    fabs(transformedBoundingBoxNew.maximum.z-transformedBoundingBoxNew.minimum.z))
-    
-    let inverseFocalLength: Double = tan(0.5 * angleOfView)
-
-    // constant distance.z, adjust 'orthoScale' to new deltaNew.z
-    orthoScale = (distance.z - 0.5 * deltaNew.z) * inverseFocalLength
-    updateCameraForWindowResize(width: windowWidth,height: windowHeight)
-  }*/
-  
   public func resetForNewBoundingBox(_ box: SKBoundingBox)
   {
     let transformedBoundingBoxOld: SKBoundingBox = self.cameraBoundingBox.adjustForTransformation(self.modelMatrix)
@@ -507,6 +491,22 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
+  }
+  
+  public func rotateCameraAroundAxisY(angle theta: Double)
+  {
+    let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
+    
+    // change of basis: (worldRotation * trackBallRotation * worldRotation.inverse) * self.worldRotation
+    self.worldRotation = worldRotation * trackBallRotation
+  }
+  
+  public func rotateCameraAroundAxisX(angle theta: Double)
+  {
+    let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
+    
+    // change of basis: (worldRotation * trackBallRotation * worldRotation.inverse) * self.worldRotation
+    self.worldRotation = worldRotation * trackBallRotation
   }
   
   

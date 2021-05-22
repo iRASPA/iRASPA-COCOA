@@ -409,8 +409,7 @@ class MetalView: MTKView
           if let camera = strongSelf.renderCameraSource?.renderCamera
           {
             let theta: Double = -0.05 * Double.pi/180.0
-            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
-            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            camera.rotateCameraAroundAxisX(angle: theta)
             
             strongSelf.renderQuality = RKRenderQuality.low
             strongSelf.layer?.setNeedsDisplay()
@@ -440,8 +439,7 @@ class MetalView: MTKView
           if let camera = strongSelf.renderCameraSource?.renderCamera
           {
             let theta: Double = 0.05 * Double.pi/180.0
-            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(1.0,0.0,0.0))
-            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            camera.rotateCameraAroundAxisX(angle: theta)
             
             strongSelf.renderQuality = RKRenderQuality.low
             strongSelf.layer?.setNeedsDisplay()
@@ -471,8 +469,7 @@ class MetalView: MTKView
           if let camera = strongSelf.renderCameraSource?.renderCamera
           {
             let theta: Double = -0.05 * Double.pi/180.0
-            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
-            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            camera.rotateCameraAroundAxisY(angle: theta)
             
             strongSelf.renderQuality = RKRenderQuality.low
             strongSelf.layer?.setNeedsDisplay()
@@ -502,8 +499,7 @@ class MetalView: MTKView
           if let camera = strongSelf.renderCameraSource?.renderCamera
           {
             let theta: Double = 0.05 * Double.pi/180.0
-            let trackBallRotation: simd_quatd = simd_quatd(angle: theta, axis: SIMD3<Double>(0.0,1.0,0.0))
-            camera.worldRotation = simd_normalize(simd_mul(trackBallRotation, camera.worldRotation))
+            camera.rotateCameraAroundAxisY(angle: theta)
             
             strongSelf.renderQuality = RKRenderQuality.low
             strongSelf.layer?.setNeedsDisplay()
