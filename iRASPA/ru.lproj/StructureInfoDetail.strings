@@ -78,7 +78,7 @@
 "H8k-8m-eEZ.title" = "Сопряженный градиент";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "HQa-wI-SvD"; */
-"HQa-wI-SvD.title" = "Никто";
+"HQa-wI-SvD.title" = "никакой";
 
 /* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "IDD-Ef-45v"; */
 "IDD-Ef-45v.title" = "Алгоритм";
@@ -372,7 +372,7 @@
 "pWj-ey-8li.title" = "Создатель";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "qFO-wb-T6b"; */
-"qFO-wb-T6b.title" = "Никто";
+"qFO-wb-T6b.title" = "никакой";
 
 /* Class = "NSTextFieldCell"; title = "Measurement Theta"; ObjectID = "qbj-K1-xUb"; */
 "qbj-K1-xUb.title" = "Измерение Тет";

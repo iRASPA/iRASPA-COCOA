@@ -21,7 +21,7 @@
 "5vG-bx-ocx.title" = "Хрустальный цилиндр";
 
 /* Class = "NSMenuItem"; title = "Delete Selection"; ObjectID = "7fp-uc-cJb"; */
-"7fp-uc-cJb.title" = "Удалить выделение";
+"7fp-uc-cJb.title" = "Удалить выбор";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "A2b-v0-dYs"; */
 "A2b-v0-dYs.title" = "Table View Cell";
@@ -132,7 +132,7 @@
 "uN8-UC-za6.title" = "Добавить кристалл протеина";
 
 /* Class = "NSMenuItem"; title = "Save selected to cloud"; ObjectID = "w2Z-Qn-qLb"; */
-"w2Z-Qn-qLb.title" = "Сохранить выбранное в облаке";
+"w2Z-Qn-qLb.title" = "Сохранить выбор в облаке";
 
 /* Class = "NSMenuItem"; title = "Add Objects"; ObjectID = "xGp-L1-szQ"; */
 "xGp-L1-szQ.title" = "Добавить объекты";

@@ -1731,7 +1731,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            ambientLightIntensitity.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            ambientLightIntensitity.stringValue = NSLocalizedString("Mult. V.", comment: "")
           }
           
         }
@@ -1783,7 +1783,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            diffuseLightIntensitity.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            diffuseLightIntensitity.stringValue = NSLocalizedString("Mult. V.", comment: "")
           }
         }
       }
@@ -1834,7 +1834,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            specularLightIntensitity.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            specularLightIntensitity.stringValue = NSLocalizedString("Mult. V.", comment: "")
           }
         }
       }
@@ -1880,7 +1880,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
           else
           {
-            shininess.stringValue = NSLocalizedString("Multiple Values", comment: "")
+            shininess.stringValue = NSLocalizedString("Mult. V.", comment: "")
           }
         }
       }

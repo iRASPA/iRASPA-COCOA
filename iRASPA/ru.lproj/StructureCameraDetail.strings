@@ -54,7 +54,7 @@
 "9XT-W6-7iV.title" = "Перспектива";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
-"A0b-wl-zfu.title" = "Огни";
+"A0b-wl-zfu.title" = "Свет";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
 "AWE-1B-YAz.placeholderString" = "cx";
