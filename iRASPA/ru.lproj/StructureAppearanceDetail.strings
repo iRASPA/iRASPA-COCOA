@@ -18,7 +18,7 @@
 "3Ik-9O-zWy.title" = "Аргон";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "3sL-9T-b9T"; */
-"3sL-9T-b9T.title" = "Никто";
+"3sL-9T-b9T.title" = "никакой";
 
 /* Class = "NSMenuItem"; title = "Water"; ObjectID = "4Ul-Kb-Iv7"; */
 "4Ul-Kb-Iv7.title" = "Воды";
@@ -51,13 +51,13 @@
 "5pu-BI-tJR.title" = "Ячейка";
 
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
-"5tk-gG-FdV.title" = "Масштабный коэффициент облигации";
+"5tk-gG-FdV.title" = "Масштабный коэффициент связи";
 
 /* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
 "5xK-C0-rPU.title" = "Адсорбционная поверхность";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
-"6Aw-j2-ekx.title" = "Бонд Освещение";
+"6Aw-j2-ekx.title" = "Освещение связи";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "6LE-C6-Xi3"; */
 "6LE-C6-Xi3.title" = "Нижний";
@@ -87,7 +87,7 @@
 "90a-Ax-VRf.title" = "Экспозиция";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "97c-Ea-ha8"; */
-"97c-Ea-ha8.title" = "Стиль выделения";
+"97c-Ea-ha8.title" = "Стиль выбор";
 
 /* Class = "NSTextFieldCell"; title = "Primitive Properties"; ObjectID = "A1A-Jh-xnr"; */
 "A1A-Jh-xnr.title" = "Примитивные свойства";
@@ -150,7 +150,7 @@
 "Ftc-mi-NgX.title" = "Окружающая окклюзия";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "FvL-0N-TdY"; */
-"FvL-0N-TdY.title" = "значение";
+"FvL-0N-TdY.title" = "величина";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "GOQ-bY-t1V"; */
 "GOQ-bY-t1V.title" = "Z";
@@ -162,19 +162,19 @@
 "Gf0-Qp-gqQ.title" = "Полосатый";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "GfJ-48-dF4"; */
-"GfJ-48-dF4.title" = "Масштабирование выделения";
+"GfJ-48-dF4.title" = "Масштабирование выбор";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
 "H3R-9w-R7d.title" = "Оттенок";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "IIB-vI-u3a"; */
-"IIB-vI-u3a.title" = "Интенсивность отбора";
+"IIB-vI-u3a.title" = "Интенсивность выбор";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "JAw-bD-rCT"; */
 "JAw-bD-rCT.title" = "Интенсивность рассеянного света";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
-"JKn-cA-MRP.title" = "Тип облигации";
+"JKn-cA-MRP.title" = "Тип связь";
 
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "JdC-cy-4oD"; */
 "JdC-cy-4oD.title" = "Химический элемент";
@@ -195,7 +195,7 @@
 "LA8-y5-QWc.title" = "Интенсивность света";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "LSL-D7-VXo"; */
-"LSL-D7-VXo.title" = "Масштабирование выделения";
+"LSL-D7-VXo.title" = "Масштабирование выбор";
 
 /* Class = "NSTextFieldCell"; title = "Annotation"; ObjectID = "LSN-af-m9O"; */
 "LSN-af-m9O.title" = "Аннотации";
@@ -225,7 +225,7 @@
 "OqP-s8-Ltq.title" = "Метан";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Ozn-KS-ZB5"; */
-"Ozn-KS-ZB5.title" = "Никто";
+"Ozn-KS-ZB5.title" = "никакой";
 
 /* Class = "NSTextFieldCell"; title = "Quality"; ObjectID = "P5F-ca-L8c"; */
 "P5F-ca-L8c.title" = "Качество";
@@ -264,13 +264,13 @@
 "Rjl-1D-n7b.title" = "Блеск";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Rwu-J1-bjK"; */
-"Rwu-J1-bjK.title" = "None";
+"Rwu-J1-bjK.title" = "никакой";
 
 /* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "SFF-hg-8Cg"; */
 "SFF-hg-8Cg.title" = "Только силовое поле";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "SMT-Ir-R2J"; */
-"SMT-Ir-R2J.title" = "значение";
+"SMT-Ir-R2J.title" = "величина";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "Sdq-Z4-nnY"; */
 "Sdq-Z4-nnY.title" = "Угол поворота";
@@ -279,7 +279,7 @@
 "Sgk-qh-f3p.title" = "Интенсивность рассеянного света";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "TPc-vg-PLV"; */
-"TPc-vg-PLV.title" = "Масштабирование выделения";
+"TPc-vg-PLV.title" = "Масштабирование выбор";
 
 /* Class = "NSMenuItem"; title = "Force Field Type"; ObjectID = "TZ6-3e-HHS"; */
 "TZ6-3e-HHS.title" = "Тип силового поля";
@@ -288,7 +288,7 @@
 "Tlc-XL-RDG.title" = "Градиент";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Tqo-qK-6Fc"; */
-"Tqo-qK-6Fc.title" = "Никто";
+"Tqo-qK-6Fc.title" = "никакой";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "UXl-KR-D8o"; */
 "UXl-KR-D8o.title" = "насыщенность";
@@ -315,7 +315,7 @@
 "WOL-ns-wXc.title" = "Элемент";
 
 /* Class = "NSTextFieldCell"; title = "Isocontour Value"; ObjectID = "WdL-X5-IMH"; */
-"WdL-X5-IMH.title" = "Изоконтур Ценность";
+"WdL-X5-IMH.title" = "величина изоконтура";
 
 /* Class = "NSTextFieldCell"; title = "Color Set"; ObjectID = "WlB-zZ-igz"; */
 "WlB-zZ-igz.title" = "Набор цветов";
@@ -327,7 +327,7 @@
 "YAJ-aq-PPI.title" = "Закрытый";
 
 /* Class = "NSMenuItem"; title = "Uniform"; ObjectID = "YN6-b4-xiX"; */
-"YN6-b4-xiX.title" = "Униформа";
+"YN6-b4-xiX.title" = "равномерный";
 
 /* Class = "NSBox"; title = "Front surface"; ObjectID = "Yh2-SE-hS4"; */
 "Yh2-SE-hS4.title" = "Лицевая поверхность";
@@ -351,7 +351,7 @@
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "Показать облигации";
+"ajZ-C1-kOG.title" = "Показать связь";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
 "bBY-15-FbE.title" = "Интенсивность зеркального света";
@@ -363,7 +363,7 @@
 "bca-zz-KOf.title" = "Интенсивность зеркального света";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "bdI-Je-pwI"; */
-"bdI-Je-pwI.title" = "Никто";
+"bdI-Je-pwI.title" = "никакой";
 
 /* Class = "NSTextFieldCell"; title = "Exposure"; ObjectID = "bdU-wM-QtZ"; */
 "bdU-wM-QtZ.title" = "Экспозиция";
@@ -381,22 +381,22 @@
 "cTs-hC-amJ.title" = "Непрозрачность";
 
 /* Class = "NSMenuItem"; title = "Right"; ObjectID = "cVb-J3-NgY"; */
-"cVb-J3-NgY.title" = "Верно";
+"cVb-J3-NgY.title" = "направо";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "ceh-je-eNg"; */
 "ceh-je-eNg.title" = "Повернуть +90";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "con-dz-J2j"; */
-"con-dz-J2j.title" = "Интенсивность отбора";
+"con-dz-J2j.title" = "Интенсивность выбор";
 
 /* Class = "NSMenuItem"; title = "Position"; ObjectID = "ddP-zl-i4G"; */
-"ddP-zl-i4G.title" = "Должность";
+"ddP-zl-i4G.title" = "позиция";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "dfq-2k-AIF"; */
-"dfq-2k-AIF.title" = "Никто";
+"dfq-2k-AIF.title" = "никакой";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "dg1-vw-fab"; */
-"dg1-vw-fab.title" = "Стиль выделения";
+"dg1-vw-fab.title" = "Стиль выбор";
 
 /* Class = "NSMenuItem"; title = "Force Field Only"; ObjectID = "dk2-KV-Pe3"; */
 "dk2-KV-Pe3.title" = "Только силовое поле";
@@ -405,7 +405,7 @@
 "dmK-0a-HKm.title" = "Показать атомы";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
-"e0E-bj-7fz.title" = "значение";
+"e0E-bj-7fz.title" = "величина";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
 "e5a-zk-fFj.title" = "Rasmol";
@@ -426,13 +426,13 @@
 "g6G-xC-2Lr.title" = "Задняя поверхность";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "gDS-zY-6ne"; */
-"gDS-zY-6ne.title" = "Интенсивность отбора";
+"gDS-zY-6ne.title" = "Интенсивность выбор";
 
 /* Class = "NSTextFieldCell"; title = "Atom Size Scaling"; ObjectID = "gMu-cC-hhG"; */
 "gMu-cC-hhG.title" = "Масштабирование размера атома";
 
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "hJp-8F-jyf"; */
-"hJp-8F-jyf.title" = "Светиться";
+"hJp-8F-jyf.title" = "Свечение";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "hyu-qj-36T"; */
 "hyu-qj-36T.title" = "Интенсивность рассеянного света";
@@ -450,7 +450,7 @@
 "iUY-dW-y5v.title" = "Яркость окружающего света";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
-"imT-16-aB9.title" = "значение";
+"imT-16-aB9.title" = "величина";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "jHe-aU-zpQ"; */
 "jHe-aU-zpQ.title" = "Повернуть -90";
@@ -480,7 +480,7 @@
 "mx2-LA-CaG.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Bonds"; ObjectID = "nGx-4p-hvc"; */
-"nGx-4p-hvc.title" = "Облигации";
+"nGx-4p-hvc.title" = "связь";
 
 /* Class = "NSButtonCell"; title = "Show Adsorption Surface"; ObjectID = "nOa-3D-Seb"; */
 "nOa-3D-Seb.title" = "Показать адсорбционную поверхность";
@@ -504,7 +504,7 @@
 "ofQ-6q-SUf.title" = "Идентификатор";
 
 /* Class = "NSMenuItem"; title = "Charge"; ObjectID = "orw-61-fer"; */
-"orw-61-fer.title" = "Заряжать";
+"orw-61-fer.title" = "заряд";
 
 /* Class = "NSBox"; title = "Atom Lighting"; ObjectID = "osH-Uy-RWH"; */
 "osH-Uy-RWH.title" = "Атомное Освещение";
@@ -522,7 +522,7 @@
 "sNS-go-NVl.title" = "Расширенный динамический диапазон";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "sbB-IC-Nwj"; */
-"sbB-IC-Nwj.title" = "Стиль выделения";
+"sbB-IC-Nwj.title" = "Стиль выбор";
 
 /* Class = "NSButtonCell"; title = "Ambient Occlusion"; ObjectID = "sg7-lY-CcT"; */
 "sg7-lY-CcT.title" = "Окружающая окклюзия";
@@ -534,7 +534,7 @@
 "tGv-cl-rkV.title" = "Количество сторон";
 
 /* Class = "NSMenuItem"; title = "Split"; ObjectID = "tR7-cx-f3N"; */
-"tR7-cx-f3N.title" = "Расколоть";
+"tR7-cx-f3N.title" = "разделить";
 
 /* Class = "NSMenuItem"; title = "Vesta"; ObjectID = "toC-zQ-Spl"; */
 "toC-zQ-Spl.title" = "Vesta";
@@ -546,7 +546,7 @@
 "uwl-dE-KfA.title" = "Изысканный";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle z"; ObjectID = "v4w-js-bAc"; */
-"v4w-js-bAc.placeholderString" = "AngУголle z";
+"v4w-js-bAc.placeholderString" = "Угол z";
 
 /* Class = "NSTextFieldCell"; title = "Style"; ObjectID = "vDP-ra-J7r"; */
 "vDP-ra-J7r.title" = "Стиль";

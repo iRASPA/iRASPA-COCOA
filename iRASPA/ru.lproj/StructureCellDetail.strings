@@ -333,7 +333,7 @@
 "jgD-yL-2kq.title" = "Тип материала";
 
 /* Class = "NSTextFieldCell"; title = "Largest Diameter Along a Viable Path (Dif)"; ObjectID = "jrj-nk-OqJ"; */
-"jrj-nk-OqJ.title" = "Наибольший диаметр на жизнеспособном пути (Dif)";
+"jrj-nk-OqJ.title" = "Наибольший диаметр на возможном пути (Dif)";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "Полигональная призма";
