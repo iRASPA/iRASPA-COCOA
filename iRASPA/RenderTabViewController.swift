@@ -959,21 +959,29 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       let pickedObject: Int = Int(pick[3])
          
       let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
-      let selectedStructure: RKRenderStructure = structures[movieIdentifier]
       
-      for structure in crystalProjectData.renderStructures
+      if let selectedStructure: Structure = structures[movieIdentifier] as? Structure
       {
-        self.setSelectionFor(structure: structure as! Structure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
-      }
+        let numberOfReplicas: Int = selectedStructure.numberOfReplicas()
+        let nodes: [SKAtomTreeNode] = selectedStructure.atomTreeController.flattenedLeafNodes()
+        let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
+        let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
+        let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
+    
+        for structure in crystalProjectData.renderStructures
+        {
+          self.setSelectionFor(structure: structure as! Structure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
+        }
       
-      switch(objectType)
-      {
-      case 1:
-        self.setSelectionFor(structure: selectedStructure as! Structure, atomIndexSet: IndexSet(integer: pickedObject), bondIndexSet: [],  byExtendingSelection: false)
-      case 2:
-        self.setSelectionFor(structure: selectedStructure as! Structure, atomIndexSet: [], bondIndexSet: IndexSet(integer: pickedObject), byExtendingSelection: false)
-      default:
-        break
+        switch(objectType)
+        {
+        case 1:
+          self.setSelectionFor(structure: selectedStructure, atomIndexSet: IndexSet(integer: pickedAsymmetricAtom), bondIndexSet: [],  byExtendingSelection: false)
+        case 2:
+          self.setSelectionFor(structure: selectedStructure, atomIndexSet: [], bondIndexSet: IndexSet(integer: pickedObject), byExtendingSelection: false)
+        default:
+          break
+        }
       }
       
       self.reloadRenderDataSelectedAtoms()
@@ -986,33 +994,39 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let crystalProjectData: RKRenderDataSource = self.renderDataSource
     {
       let objectType: Int = Int(pick[0])
-      let structureIdentifier: Int = Int(pick[1])
+      let sceneIdentifier: Int = Int(pick[1])
       let movieIdentifier: Int = Int(pick[2])
       let pickedObject: Int = Int(pick[3])
          
-      let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
-      let structure: RKRenderStructure = structures[movieIdentifier]
+      let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(sceneIdentifier)
+      let selectedStructure: RKRenderStructure = structures[movieIdentifier]
          
-      if let structure = structure as? Structure
+      if let selectedStructure = selectedStructure as? Structure
       {
-        if structure.isVisible
+        let numberOfReplicas: Int = selectedStructure.numberOfReplicas()
+        let nodes: [SKAtomTreeNode] = selectedStructure.atomTreeController.flattenedLeafNodes()
+        let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
+        let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
+        let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
+        
+        if selectedStructure.isVisible
         {
           switch(objectType)
           {
           case 1:
-            self.toggleAtomSelectionFor(structure: structure, indexSet: IndexSet(integer: pickedObject))
+            self.toggleAtomSelectionFor(structure: selectedStructure, indexSet: IndexSet(integer: pickedAsymmetricAtom))
             self.reloadRenderDataSelectedAtoms()
             NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
           case 2:
-            let asymmetricBond: SKAsymmetricBond = structure.bondController.arrangedObjects[pickedObject]
-            let selectedAtoms: Set<SKAsymmetricAtom> = Set(structure.atomTreeController.selectedTreeNodes.map{$0.representedObject})
-            if structure.bondController.selectedObjects.contains(pickedObject) &&
+            let asymmetricBond: SKAsymmetricBond = selectedStructure.bondController.arrangedObjects[pickedAsymmetricAtom]
+            let selectedAtoms: Set<SKAsymmetricAtom> = Set(selectedStructure.atomTreeController.selectedTreeNodes.map{$0.representedObject})
+            if selectedStructure.bondController.selectedObjects.contains(pickedAsymmetricAtom) &&
               (selectedAtoms.contains(asymmetricBond.atom1) || selectedAtoms.contains(asymmetricBond.atom2))
             {
               // deselecting a selected bond while one of these atoms is selected is forbidden
               return
             }
-            self.toggleBondSelectionFor(structure: structure , indexSet: IndexSet(integer: pickedObject))
+            self.toggleBondSelectionFor(structure: selectedStructure , indexSet: IndexSet(integer: pickedAsymmetricAtom))
             self.reloadRenderDataSelectedInternalBonds()
             NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
           default:
@@ -1247,11 +1261,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         let structureIdentifier: Int = Int(pick[1])
         let movieIdentifier: Int = Int(pick[2])
-        let pickedAtom: Int = Int(pick[3])
+        let pickedObject: Int = Int(pick[3])
         
         let structures: [RKRenderStructure] = project.renderStructuresForScene(structureIdentifier)
         let structure: RKRenderStructure = structures[movieIdentifier]
-        let replicaPosition: SIMD3<Int32> = structure.cell.replicaFromIndex(pickedAtom)
+        let replicaPosition: SIMD3<Int32> = structure.cell.replicaFromIndex(pickedObject)
         
         let numberOfReplicas: Int = (structure as! Structure).numberOfReplicas()
         let nodes: [SKAtomTreeNode] = (structure as! Structure).atomTreeController.flattenedLeafNodes()
@@ -1260,7 +1274,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         
         if project.measurementTreeNodes.count < 4
         {
-          let node: SKAtomCopy = atoms[pickedAtom / numberOfReplicas]
+          let node: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
           let atomInfo = (structure, node, replicaPosition)
           project.measurementTreeNodes.append(atomInfo)
         }
@@ -1268,25 +1282,35 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         
         if project.measurementTreeNodes.count == 2
         {
-          let distance: Double = (structure as! Structure).distance(project.measurementTreeNodes[0], project.measurementTreeNodes[1])
-          LogQueue.shared.info(destination: self.windowController, message: "Distance between atoms [\(project.measurementTreeNodes[0].copy.tag), \(project.measurementTreeNodes[1].copy.tag)] is \(distance)")
+          let distance: (Double, Double?) = Structure.distance(project.measurementTreeNodes[0], project.measurementTreeNodes[1])
+          let distanceString: String = "\(distance.0)" + (distance.1 == nil ? "" : " (periodic: \(distance.1!))")
+          LogQueue.shared.info(destination: self.windowController, message: "Distance between atoms [\(project.measurementTreeNodes[0].copy.tag), \(project.measurementTreeNodes[1].copy.tag)] is \(distanceString)")
         }
         else if project.measurementTreeNodes.count == 3
         {
-            let distance1: Double = (structure as! Structure).distance(project.measurementTreeNodes[0], project.measurementTreeNodes[1])
-            let distance2: Double = (structure as! Structure).distance(project.measurementTreeNodes[1], project.measurementTreeNodes[2])
-            let bendAngle: Double = (structure as! Structure).bendAngle(project.measurementTreeNodes[0], project.measurementTreeNodes[1], project.measurementTreeNodes[2])
-          LogQueue.shared.info(destination: self.windowController, message: "Distances between atoms [\(project.measurementTreeNodes[0].copy.tag), \(project.measurementTreeNodes[1].copy.tag), \(project.measurementTreeNodes[2].copy.tag)] are \(distance1), \(distance2); Bend angle between the atoms is \(bendAngle * 180.0/Double.pi)")
+          let distance1: (Double, Double?) = Structure.distance(project.measurementTreeNodes[0], project.measurementTreeNodes[1])
+          let distanceString1: String = "\(distance1.0)" + (distance1.1 == nil ? "" : " (periodic: \(distance1.1!))")
+          let distance2: (Double, Double?) = Structure.distance(project.measurementTreeNodes[1], project.measurementTreeNodes[2])
+          let distanceString2: String = "\(distance2.0)" + (distance2.1 == nil ? "" : " (periodic: \(distance2.1!))")
+          let bendAngle: (Double, Double?) = Structure.bendAngle(project.measurementTreeNodes[0], project.measurementTreeNodes[1], project.measurementTreeNodes[2])
+          let bendAngleString: String = "\(bendAngle.0 * 180.0/Double.pi)" + (bendAngle.1 == nil ? "" : " (periodic: \(bendAngle.1! * 180.0/Double.pi))")
+          LogQueue.shared.info(destination: self.windowController, message: "Distances between atoms [\(project.measurementTreeNodes[0].copy.tag), \(project.measurementTreeNodes[1].copy.tag), \(project.measurementTreeNodes[2].copy.tag)] are [\(distanceString1), \(distanceString2)]; Bend angle between the atoms is \(bendAngleString)")
         }
         else if project.measurementTreeNodes.count == 4
         {
-          let distance1: Double = (structure as! Structure).distance(project.measurementTreeNodes[0], project.measurementTreeNodes[1])
-          let distance2: Double = (structure as! Structure).distance(project.measurementTreeNodes[1], project.measurementTreeNodes[2])
-          let distance3: Double = (structure as! Structure).distance(project.measurementTreeNodes[2], project.measurementTreeNodes[3])
-          let bendAngle1: Double = (structure as! Structure).bendAngle(project.measurementTreeNodes[0], project.measurementTreeNodes[1], project.measurementTreeNodes[2])
-          let bendAngle2: Double = (structure as! Structure).bendAngle(project.measurementTreeNodes[1], project.measurementTreeNodes[2], project.measurementTreeNodes[3])
-          let dihedralAngle: Double = (structure as! Structure).dihedralAngle(project.measurementTreeNodes[0],project.measurementTreeNodes[1], project.measurementTreeNodes[2], project.measurementTreeNodes[3])
-          LogQueue.shared.info(destination: self.windowController, message: "Distances between atoms [\(project.measurementTreeNodes[0].copy.tag), \(project.measurementTreeNodes[1].copy.tag), \(project.measurementTreeNodes[2].copy.tag), \(project.measurementTreeNodes[3].copy.tag)] are \(distance1), \(distance2) \(distance3); Bend angles between the atoms are \(bendAngle1 * 180.0/Double.pi), \(bendAngle2 * 180.0/Double.pi); Dihedral angle between the atoms is \(dihedralAngle * 180.0/Double.pi)")
+          let distance1: (Double, Double?) = Structure.distance(project.measurementTreeNodes[0], project.measurementTreeNodes[1])
+          let distanceString1: String = "\(distance1.0)" + (distance1.1 == nil ? "" : " (periodic: \(distance1.1!))")
+          let distance2: (Double, Double?) = Structure.distance(project.measurementTreeNodes[1], project.measurementTreeNodes[2])
+          let distanceString2: String = "\(distance2.0)" + (distance2.1 == nil ? "" : " (periodic: \(distance2.1!))")
+          let distance3: (Double, Double?) = Structure.distance(project.measurementTreeNodes[2], project.measurementTreeNodes[3])
+          let distanceString3: String = "\(distance3.0)" + (distance3.1 == nil ? "" : " (periodic: \(distance3.1!))")
+          let bendAngle1: (Double, Double?) = Structure.bendAngle(project.measurementTreeNodes[0], project.measurementTreeNodes[1], project.measurementTreeNodes[2])
+          let bendAngleString1: String = "\(bendAngle1.0 * 180.0/Double.pi)" + (bendAngle1.1 == nil ? "" : " (periodic: \(bendAngle1.1! * 180.0/Double.pi))")
+          let bendAngle2: (Double, Double?) = Structure.bendAngle(project.measurementTreeNodes[1], project.measurementTreeNodes[2], project.measurementTreeNodes[3])
+          let bendAngleString2: String = "\(bendAngle2.0 * 180.0/Double.pi)" + (bendAngle2.1 == nil ? "" : " (periodic: \(bendAngle2.1! * 180.0/Double.pi))")
+          let dihedralAngle: (Double, Double?) = Structure.dihedralAngle(project.measurementTreeNodes[0],project.measurementTreeNodes[1], project.measurementTreeNodes[2], project.measurementTreeNodes[3])
+          let dihedralAngleString: String = "\(dihedralAngle.0 * 180.0/Double.pi)" + (dihedralAngle.1 == nil ? "" : " (periodic: \(dihedralAngle.1! * 180.0/Double.pi))")
+          LogQueue.shared.info(destination: self.windowController, message: "Distances between atoms [\(project.measurementTreeNodes[0].copy.tag), \(project.measurementTreeNodes[1].copy.tag), \(project.measurementTreeNodes[2].copy.tag), \(project.measurementTreeNodes[3].copy.tag)] are [\(distanceString1), \(distanceString2) \(distanceString3)]; Bend angles between the atoms are [\(bendAngleString1), \(bendAngleString2)]; Dihedral angle between the atoms is \(dihedralAngleString)")
         }
         
         self.renderViewController.reloadRenderMeasurePointsData()

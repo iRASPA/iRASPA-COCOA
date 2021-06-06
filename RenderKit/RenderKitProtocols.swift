@@ -45,6 +45,10 @@ public protocol RKRenderStructure: AnyObject
   var origin: SIMD3<Double> {get}
  
   var cell: SKCell {get}
+  
+  var periodic: Bool {get}
+  func absoluteCartesianModelPosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  func absoluteCartesianScenePosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
 }
 
 public protocol RKRenderAtomSource: RKRenderStructure

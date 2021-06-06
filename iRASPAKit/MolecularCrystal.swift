@@ -172,7 +172,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
               }
               let specular: NSColor = self.atomSpecularColor
               
-              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(index))
               index = index + 1
             }
           }
@@ -1563,62 +1563,21 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     return length(self.cell.applyUnitCellBoundaryCondition(dr))
   }
   
-  override public func distance(_ atom1: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atom2: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
+  // Used in the routine to measure distances and bend/dihedral angles
+  override public func absoluteCartesianModelPosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
-    let posB: SIMD3<Double> = atom1.copy.position
-    let posA: SIMD3<Double> = atom2.copy.position
-    let dr: SIMD3<Double> = abs(cell.applyFullCellBoundaryCondition(posB - posA))
-    return length(dr)
+    let cartesianPosition: SIMD3<Double> = copy.position + self.cell.unitCell * SIMD3<Double>(x: Double(replicaPosition.x), y: Double(replicaPosition.y), z: Double(replicaPosition.z)) + self.cell.contentShift
+    return cartesianPosition
   }
   
-  public override func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
+  // Used in the routine to measure distances and bend/dihedral angles
+  override public func absoluteCartesianScenePosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
-    let posA: SIMD3<Double> = atomA.copy.position
-    let posB: SIMD3<Double> = atomB.copy.position
-    let posC: SIMD3<Double> = atomC.copy.position
-    
-    let dr1: SIMD3<Double> = cell.applyFullCellBoundaryCondition(posA - posB)
-    let dr2: SIMD3<Double> = cell.applyFullCellBoundaryCondition(posC - posB)
-    
-    let vectorAB: SIMD3<Double> = normalize(dr1)
-    let vectorBC: SIMD3<Double> = normalize(dr2)
-    
-    return acos(dot(vectorAB, vectorBC))
-  }
-  
-  public override func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
-  {
-    let posA: SIMD3<Double> = atomA.copy.position
-    let posB: SIMD3<Double> = atomB.copy.position
-    let posC: SIMD3<Double> = atomC.copy.position
-    let posD: SIMD3<Double> = atomD.copy.position
-    
-    let Dab = cell.applyFullCellBoundaryCondition(posA - posB)
-    let Dbc = normalize(cell.applyFullCellBoundaryCondition(posC - posB))
-    let Dcd = cell.applyFullCellBoundaryCondition(posD - posC)
-    
-    let dotAB = dot(Dab,Dbc)
-    let dotCD = dot(Dcd,Dbc)
-    
-    let dr = normalize(Dab - dotAB * Dbc)
-    let ds = normalize(Dcd - dotCD * Dbc)
-    
-    // compute Cos(Phi)
-    // Phi is defined in protein convention Phi(trans)=Pi
-    let cosPhi: Double = dot(dr,ds)
-    
-    let Pb: SIMD3<Double> = cross(Dbc, Dab)
-    let Pc: SIMD3<Double> = cross(Dbc, Dcd)
-    
-    let sign: Double = dot(Dbc, cross(Pb, Pc))
-    
-    let Phi: Double = sign > 0.0 ? fabs(acos(cosPhi)) : -fabs(acos(cosPhi))
-    
-    if(Phi<0.0)
-    {
-      return Phi + 2.0*Double.pi
-    }
-    return Phi
+    let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+    let cartesianPosition: SIMD3<Double> = copy.position + self.cell.unitCell * SIMD3<Double>(x: Double(replicaPosition.x), y: Double(replicaPosition.y), z: Double(replicaPosition.z)) + self.cell.contentShift
+    let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: 1.0)
+    let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + self.origin
+    return absoluteCartesianPosition
   }
   
   

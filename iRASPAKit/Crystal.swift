@@ -212,7 +212,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
               let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
               let specular: NSColor = self.atomSpecularColor
               
-              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(index))
               index = index + 1
             }
           }
@@ -1482,73 +1482,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return length(self.cell.unitCell * ds)
   }
   
-  override public func distance(_ atom1: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atom2: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
-  {
-    let atom1: SIMD3<Double> = self.cell.unitCell * (atom1.copy.position + SIMD3<Double>(atom1.replicaPosition))
-    let atom2: SIMD3<Double> = self.cell.unitCell * (atom2.copy.position + SIMD3<Double>(atom2.replicaPosition))
-    var dr: SIMD3<Double> = atom2 - atom1
-    dr = cell.applyFullCellBoundaryCondition(dr)
-    return length(dr)
-  }
-  
-  public override func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
-  {
-    let posA: SIMD3<Double> = self.cell.unitCell * (atomA.copy.position + SIMD3<Double>(atomA.replicaPosition))
-    let posB: SIMD3<Double> = self.cell.unitCell * (atomB.copy.position + SIMD3<Double>(atomB.replicaPosition))
-    let posC: SIMD3<Double> = self.cell.unitCell * (atomC.copy.position + SIMD3<Double>(atomC.replicaPosition))
-    
-    var dr1: SIMD3<Double> = posA - posB
-    dr1 = cell.applyFullCellBoundaryCondition(dr1)
-    
-    var dr2: SIMD3<Double> = posC - posB
-    dr2 = cell.applyFullCellBoundaryCondition(dr2)
-    
-    let vectorAB: SIMD3<Double> = normalize(dr1)
-    let vectorBC: SIMD3<Double> = normalize(dr2)
-    
-    return acos(dot(vectorAB, vectorBC))
-  }
-  
-  public override func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
-  {
-    let posA: SIMD3<Double> = self.cell.unitCell * (atomA.copy.position + SIMD3<Double>(atomA.replicaPosition))
-    let posB: SIMD3<Double> = self.cell.unitCell * (atomB.copy.position + SIMD3<Double>(atomB.replicaPosition))
-    let posC: SIMD3<Double> = self.cell.unitCell * (atomC.copy.position + SIMD3<Double>(atomC.replicaPosition))
-    let posD: SIMD3<Double> = self.cell.unitCell * (atomD.copy.position + SIMD3<Double>(atomD.replicaPosition))
-    
-    let dr1: SIMD3<Double> = posA - posB
-    let Dab: SIMD3<Double> = cell.applyFullCellBoundaryCondition(dr1)
-    
-    let dr2: SIMD3<Double> = posC - posB
-    let Dbc: SIMD3<Double> = cell.applyFullCellBoundaryCondition(dr2)
-    
-    let dr3: SIMD3<Double> = posD - posC
-    let Dcd: SIMD3<Double> = cell.applyFullCellBoundaryCondition(dr3)
-    
-    let dotAB = dot(Dab,Dbc)
-    let dotCD = dot(Dcd,Dbc)
-    
-    let dr = normalize(Dab - dotAB * Dbc)
-    let ds = normalize(Dcd - dotCD * Dbc)
-    
-    // compute Cos(Phi)
-    // Phi is defined in protein convention Phi(trans)=Pi
-    let cosPhi: Double = dot(dr,ds)
-    
-    let Pb: SIMD3<Double> = cross(Dbc, Dab)
-    let Pc: SIMD3<Double> = cross(Dbc, Dcd)
-    
-    let sign: Double = dot(Dbc, cross(Pb, Pc))
-    
-    let Phi: Double = sign > 0.0 ? fabs(acos(cosPhi)) : -fabs(acos(cosPhi))
-    
-    if(Phi<0.0)
-    {
-      return Phi + 2.0*Double.pi
-    }
-    return Phi
-  }
-  
   public override func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
     let fractionalPosition: SIMD3<Double> = SIMD3<Double>(position.x + Double(replicaPosition.x),position.y + Double(replicaPosition.y),position.z + Double(replicaPosition.z))
@@ -1616,6 +1549,28 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     case (true, true):
       return (pos1,pos2)
     }
+  }
+  
+  
+  // Used in the routine to measure distances and bend/dihedral angles
+  override public func absoluteCartesianModelPosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    let pos: SIMD3<Double> = SIMD3<Double>.flip(v: copy.position, flip: self.cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+    let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(replicaPosition.x), y: pos.y + Double(replicaPosition.y), z: pos.z + Double(replicaPosition.z)) + self.cell.contentShift
+    let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+    return cartesianPosition
+  }
+  
+  // Used in the routine to measure distances and bend/dihedral angles
+  override public func absoluteCartesianScenePosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+    let pos: SIMD3<Double> = SIMD3<Double>.flip(v: copy.position, flip: self.cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+    let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(replicaPosition.x), y: pos.y + Double(replicaPosition.y), z: pos.z + Double(replicaPosition.z)) + self.cell.contentShift
+    let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+    let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: 1.0)
+    let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + self.origin
+    return absoluteCartesianPosition
   }
   
 

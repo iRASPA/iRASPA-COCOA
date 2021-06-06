@@ -134,7 +134,7 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrismObj
         let diffuse: NSColor = NSColor.white
         let specular: NSColor = NSColor.white
         
-        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(index))
         index = index + 1
       }
     }
@@ -415,6 +415,24 @@ public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrismObj
     }
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)
+  }
+  
+  // MARK: Measuring distance, angle, and dihedral-angles
+  // =====================================================================
+  
+  // Used in the routine to measure distances and bend/dihedral angles
+  override public func absoluteCartesianModelPosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    return copy.position
+  }
+  
+  // Used in the routine to measure distances and bend/dihedral angles
+  override public func absoluteCartesianScenePosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+    let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: copy.position.x, y: copy.position.y, z: copy.position.z, w: 1.0)
+    let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + origin
+    return absoluteCartesianPosition
   }
   
   // MARK: -
