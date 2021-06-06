@@ -65,6 +65,16 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   public var cell: SKCell = SKCell()
   
+  public func absoluteCartesianModelPosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    return SIMD3<Double>()
+  }
+  
+  public func absoluteCartesianScenePosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    return SIMD3<Double>()
+  }
+  
   // MARK: protocol RKRenderAtomSource implementation
   // =====================================================================
   
@@ -1926,14 +1936,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     return length(dr)
   }
   
-  public func distance(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
-  {
-    let posB: SIMD3<Double> = atomA.copy.position
-    let posA: SIMD3<Double> = atomB.copy.position
-    let dr: SIMD3<Double> = abs(posB - posA)
-    return length(dr)
-  }
-  
   public func bendAngle(_ atomA: SKAtomCopy, _ atomB: SKAtomCopy, _ atomC:SKAtomCopy) -> Double
    {
      let posA: SIMD3<Double> = atomA.position
@@ -1949,31 +1951,108 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
      return acos(dot(vectorAB, vectorBC))
    }
   
-  public func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
+  public static func distance(_ atom1: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atom2: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
   {
-    let posA: SIMD3<Double> = atomA.copy.position
-    let posB: SIMD3<Double> = atomB.copy.position
-    let posC: SIMD3<Double> = atomC.copy.position
+    var periodicLength: Double? = nil
+    if(atom1.structure === atom2.structure && atom1.structure.periodic)
+    {
+      // Don't rotate, because for distances in the same structure we need to apply the periodic boundary conditions.
+      // The rotation would be the same anyway, but applyFullCellBoundaryCondition can only be applied in the unrotated frame.
+      let cartesianPosition1 = atom1.structure.absoluteCartesianModelPosition(copy: atom1.copy, replicaPosition: atom1.replicaPosition)
+      let cartesianPosition2 = atom2.structure.absoluteCartesianModelPosition(copy: atom2.copy, replicaPosition: atom2.replicaPosition)
+      periodicLength = length(atom1.structure.cell.applyFullCellBoundaryCondition(cartesianPosition2 - cartesianPosition1))
+    }
     
-    let dr1: SIMD3<Double> = posA - posB
-    let dr2: SIMD3<Double> = posC - posB
+    let absoluteCartesianPosition1 = atom1.structure.absoluteCartesianScenePosition(copy: atom1.copy, replicaPosition: atom1.replicaPosition)
+    let absoluteCartesianPosition2 = atom2.structure.absoluteCartesianScenePosition(copy: atom2.copy, replicaPosition: atom2.replicaPosition)
+        
+    return (length(absoluteCartesianPosition2 - absoluteCartesianPosition1), periodicLength)
+  }
+  
+  public static func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
+  {
+    var periodicAngle: Double? = nil
+    if((atomA.structure === atomB.structure) && (atomB.structure === atomC.structure) && atomA.structure.periodic)
+    {
+      // Don't rotate, because for distances in the same structure we need to apply the periodic boundary conditions.
+      // The rotation would be the same anyway, but applyFullCellBoundaryCondition can only be applied in the unrotated frame.
+      let cartesianPositionA: SIMD3<Double> = atomA.structure.absoluteCartesianModelPosition(copy: atomA.copy, replicaPosition: atomA.replicaPosition)
+      let cartesianPositionB: SIMD3<Double> = atomB.structure.absoluteCartesianModelPosition(copy: atomB.copy, replicaPosition: atomB.replicaPosition)
+      let cartesianPositionC: SIMD3<Double> = atomC.structure.absoluteCartesianModelPosition(copy: atomC.copy, replicaPosition: atomC.replicaPosition)
+      let dr1: SIMD3<Double> = atomA.structure.cell.applyFullCellBoundaryCondition(cartesianPositionA - cartesianPositionB)
+      let dr2: SIMD3<Double> = atomA.structure.cell.applyFullCellBoundaryCondition(cartesianPositionC - cartesianPositionB)
+      
+      let vectorAB: SIMD3<Double> = normalize(dr1)
+      let vectorBC: SIMD3<Double> = normalize(dr2)
+      
+      periodicAngle =  acos(dot(vectorAB, vectorBC))
+    }
+
+    let cartesianPositionA: SIMD3<Double> = atomA.structure.absoluteCartesianScenePosition(copy: atomA.copy, replicaPosition: atomA.replicaPosition)
+    let cartesianPositionB: SIMD3<Double> = atomB.structure.absoluteCartesianScenePosition(copy: atomB.copy, replicaPosition: atomB.replicaPosition)
+    let cartesianPositionC: SIMD3<Double> = atomC.structure.absoluteCartesianScenePosition(copy: atomC.copy, replicaPosition: atomC.replicaPosition)
+    let dr1: SIMD3<Double> = cartesianPositionA - cartesianPositionB
+    let dr2: SIMD3<Double> = cartesianPositionC - cartesianPositionB
     
     let vectorAB: SIMD3<Double> = normalize(dr1)
     let vectorBC: SIMD3<Double> = normalize(dr2)
     
-    return acos(dot(vectorAB, vectorBC))
+    return (acos(dot(vectorAB, vectorBC)), periodicAngle)
   }
   
-  public func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> Double
+  public static func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
   {
-    let posA: SIMD3<Double> = atomA.copy.position
-    let posB: SIMD3<Double> = atomB.copy.position
-    let posC: SIMD3<Double> = atomC.copy.position
-    let posD: SIMD3<Double> = atomD.copy.position
+    var periodicAngle: Double? = nil
+    if((atomA.structure === atomB.structure) && (atomB.structure === atomC.structure) && atomA.structure.periodic)
+    {
+      // Don't rotate, because for distances in the same structure we need to apply the periodic boundary conditions.
+      // The rotation would be the same anyway, but applyFullCellBoundaryCondition can only be applied in the unrotated frame.
+      let cartesianPositionA: SIMD3<Double> = atomA.structure.absoluteCartesianModelPosition(copy: atomA.copy, replicaPosition: atomA.replicaPosition)
+      let cartesianPositionB: SIMD3<Double> = atomB.structure.absoluteCartesianModelPosition(copy: atomB.copy, replicaPosition: atomB.replicaPosition)
+      let cartesianPositionC: SIMD3<Double> = atomC.structure.absoluteCartesianModelPosition(copy: atomC.copy, replicaPosition: atomC.replicaPosition)
+      let cartesianPositionD: SIMD3<Double> = atomD.structure.absoluteCartesianModelPosition(copy: atomD.copy, replicaPosition: atomD.replicaPosition)
+      let dr1: SIMD3<Double> = cartesianPositionA - cartesianPositionB
+      let dr2: SIMD3<Double> = cartesianPositionC - cartesianPositionB
+      let dr3: SIMD3<Double> = cartesianPositionD - cartesianPositionC
+      
+      let Dab: SIMD3<Double> = atomA.structure.cell.applyFullCellBoundaryCondition(dr1)
+      let Dbc: SIMD3<Double> = atomA.structure.cell.applyFullCellBoundaryCondition(dr2)
+      let Dcd: SIMD3<Double> = atomA.structure.cell.applyFullCellBoundaryCondition(dr3)
+      
+      let dotAB = dot(Dab,Dbc)
+      let dotCD = dot(Dcd,Dbc)
+      
+      let dr = normalize(Dab - dotAB * Dbc)
+      let ds = normalize(Dcd - dotCD * Dbc)
+      
+      // compute Cos(Phi)
+      // Phi is defined in protein convention Phi(trans)=Pi
+      let cosPhi: Double = dot(dr,ds)
+      
+      let Pb: SIMD3<Double> = cross(Dbc, Dab)
+      let Pc: SIMD3<Double> = cross(Dbc, Dcd)
+      
+      let sign: Double = dot(Dbc, cross(Pb, Pc))
+      
+      let Phi: Double = sign > 0.0 ? fabs(acos(cosPhi)) : -fabs(acos(cosPhi))
+      
+      if(Phi<0.0)
+      {
+        periodicAngle = Phi + 2.0*Double.pi
+      }
+      periodicAngle = Phi
+    }
     
-    let Dab = posA - posB
-    let Dbc = normalize(posC - posB)
-    let Dcd = posD - posC
+    // Don't rotate, because for distances in the same structure we need to apply the periodic boundary conditions.
+    // The rotation would be the same anyway, but applyFullCellBoundaryCondition can only be applied in the unrotated frame.
+    let cartesianPositionA: SIMD3<Double> = atomA.structure.absoluteCartesianScenePosition(copy: atomA.copy, replicaPosition: atomA.replicaPosition)
+    let cartesianPositionB: SIMD3<Double> = atomB.structure.absoluteCartesianScenePosition(copy: atomB.copy, replicaPosition: atomB.replicaPosition)
+    let cartesianPositionC: SIMD3<Double> = atomC.structure.absoluteCartesianScenePosition(copy: atomC.copy, replicaPosition: atomC.replicaPosition)
+    let cartesianPositionD: SIMD3<Double> = atomD.structure.absoluteCartesianScenePosition(copy: atomD.copy, replicaPosition: atomD.replicaPosition)
+    
+    let Dab: SIMD3<Double> = cartesianPositionA - cartesianPositionB
+    let Dbc: SIMD3<Double> = cartesianPositionC - cartesianPositionB
+    let Dcd: SIMD3<Double> = cartesianPositionD - cartesianPositionC
     
     let dotAB = dot(Dab,Dbc)
     let dotCD = dot(Dcd,Dbc)
@@ -1994,10 +2073,12 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     
     if(Phi<0.0)
     {
-      return Phi + 2.0*Double.pi
+      return (Phi + 2.0*Double.pi, periodicAngle)
     }
-    return Phi
+    
+    return (Phi, periodicAngle)
   }
+  
   
   public func computeBondsOperation(structure: Structure, windowController: NSWindowController?) -> FKOperation?
   {

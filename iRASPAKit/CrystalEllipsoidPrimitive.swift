@@ -103,6 +103,11 @@ public final class CrystalEllipsoidPrimitive: Structure, RKRenderCrystalEllipsoi
     }
   }
   
+  public override func numberOfReplicas() -> Int
+  {
+    return self.cell.numberOfReplicas
+  }
+  
   // MARK: Rendering
   // =====================================================================
    
@@ -154,7 +159,7 @@ public final class CrystalEllipsoidPrimitive: Structure, RKRenderCrystalEllipsoi
               let diffuse: NSColor = NSColor.white
               let specular: NSColor = NSColor.white
               
-              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(index))
               index = index + 1
             }
           }
@@ -468,6 +473,31 @@ public final class CrystalEllipsoidPrimitive: Structure, RKRenderCrystalEllipsoi
                                 z: max(c0.z, c1.z, c2.z, c3.z, c4.z, c5.z, c6.z, c7.z))
     
     return SKBoundingBox(minimum: minimum, maximum: maximum)
+  }
+  
+  
+  // MARK: Measuring distance, angle, and dihedral-angles
+  // =====================================================================
+  
+  // Used in the routine to measure distances and bend/dihedral angles
+  override public func absoluteCartesianModelPosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    let pos: SIMD3<Double> = SIMD3<Double>.flip(v: copy.position, flip: self.cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+    let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(replicaPosition.x), y: pos.y + Double(replicaPosition.y), z: pos.z + Double(replicaPosition.z)) + self.cell.contentShift
+    let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+    return cartesianPosition
+  }
+  
+  // Used in the routine to measure distances and bend/dihedral angles
+  override public func absoluteCartesianScenePosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  {
+    let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
+    let pos: SIMD3<Double> = SIMD3<Double>.flip(v: copy.position, flip: self.cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
+    let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: pos.x + Double(replicaPosition.x), y: pos.y + Double(replicaPosition.y), z: pos.z + Double(replicaPosition.z)) + self.cell.contentShift
+    let cartesianPosition: SIMD3<Double> = self.cell.convertToCartesian(fractionalPosition)
+    let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: 1.0)
+    let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + self.origin
+    return absoluteCartesianPosition
   }
   
   // MARK: -

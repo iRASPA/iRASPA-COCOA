@@ -1298,7 +1298,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
             view.progressIndicator?.isHidden = !movie.isLoading
             view.cancelButton?.isHidden = !movie.isLoading
           
-            if let button: NSButton = view.viewWithTag(10) as? NSButton
+            if let button: NSButton = view.viewWithTag(1) as? NSButton
             {
               button.state =  movie.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
             }
