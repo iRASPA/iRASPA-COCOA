@@ -1783,6 +1783,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       projectTreeNode.representedObject.isEdited = true
       
+      // remove the measuring nodes
+      project.measurementTreeNodes = []
+      
       var to: [iRASPAStructure] = []
       var from: [iRASPAStructure] = []
       for cellViewer in cellViewers
@@ -3035,8 +3038,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   @IBAction func applyContentShift(_ sender: NSButton)
   {
     if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+      let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
+      if let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
+      {
+        project.measurementTreeNodes = []
+      }
+      
+      for structure in cellViewer.allStructures
+      {
+        if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.applyCellContentShift()
+        {
+          self.applyCellContentShift(structure: structure, cell: state.cell, spaceGroup: state.spaceGroup, atoms: state.atoms, bonds: state.bonds)
+        }
+      }
+      
       let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
       
       for (i, result) in results.enumerated()
@@ -3045,14 +3061,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         cellViewer.allStructures[i].structureHeliumVoidFraction = result.voidFraction
       }
       
-      for structure in cellViewer.allStructures
-      {
-        //cellViewer.applyContentShift()
-        if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.applyCellContentShift()
-        {
-          self.applyCellContentShift(structure: structure, cell: state.cell, spaceGroup: state.spaceGroup, atoms: state.atoms, bonds: state.bonds)
-        }
-      }
+      
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true

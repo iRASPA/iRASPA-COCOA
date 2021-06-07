@@ -129,36 +129,35 @@ public class SKMetalFramework
       let output: [Float] = [Float](repeating: 0.0, count: NumberOfGridPoints)
       
       let correction: SIMD3<Double> = SIMD3<Double>(1.0/Double(numberOfReplicas.x), 1.0/Double(numberOfReplicas.y), 1.0/Double(numberOfReplicas.z))
-      if (totalNumberOfAtoms > 0)
+      
+      guard (totalNumberOfAtoms > 0) else { return [] }
+      
+      for i in 0..<totalNumberOfAtoms
       {
-        for i in 0..<totalNumberOfAtoms
-        {
-          let position: SIMD3<Double> = positions[i] * correction
-          let currentPotentialParameters: SIMD2<Double> = self.potentialParameters[i]
+        let position: SIMD3<Double> = positions[i] * correction
+        let currentPotentialParameters: SIMD2<Double> = self.potentialParameters[i]
           
-          // fill in the Cartesian position
-          pos[i] = SIMD4<Float>(Float(position.x), Float(position.y), Float(position.z), 0.0)
+        // fill in the Cartesian position
+        pos[i] = SIMD4<Float>(Float(position.x), Float(position.y), Float(position.z), 0.0)
           
-          // use 4 x epsilon for a probe epsilon of unity
-          parameters[i] = SIMD2<Float>(Float(4.0*sqrt(currentPotentialParameters.x * probeParameter.x)),
+        // use 4 x epsilon for a probe epsilon of unity
+        parameters[i] = SIMD2<Float>(Float(4.0*sqrt(currentPotentialParameters.x * probeParameter.x)),
                                  Float(0.5 * (currentPotentialParameters.y + probeParameter.y)))
-        }
+      }
         
-        var index: Int = 0
-        for k in 0..<sizeZ
+      var loopindex: Int = 0
+      for k in 0..<sizeZ
+      {
+        for j in 0..<sizeY
         {
-          for j in 0..<sizeY
+          // X various the fastest (contiguous in x)
+          for i in 0..<sizeX
           {
-            // X various the fastest (contiguous in x)
-            for i in 0..<sizeX
-            {
-              let position: SIMD3<Double> = correction * SIMD3<Double>(Double(i)/Double(sizeX-1),Double(j)/Double(sizeY-1),Double(k)/Double(sizeZ-1))
-              gridPos[index] = SIMD4<Float>(Float(position.x), Float(position.y), Float(position.z), Float(0.0))
-              index += 1
-            }
+            let position: SIMD3<Double> = correction * SIMD3<Double>(Double(i)/Double(sizeX-1),Double(j)/Double(sizeY-1),Double(k)/Double(sizeZ-1))
+            gridPos[loopindex] = SIMD4<Float>(Float(position.x), Float(position.y), Float(position.z), Float(0.0))
+            loopindex += 1
           }
         }
-        
       }
       
       var replicasBufferValue: [SIMD4<Float>] = [SIMD4<Float>](repeating: SIMD4<Float>(0,0,0,0), count: totalNumberOfReplicas)
