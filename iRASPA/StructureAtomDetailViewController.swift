@@ -2234,7 +2234,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       // PDB uses Cartesian coordinates
       let exportAtoms: [SKAsymmetricAtom] = state.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> SKAsymmetricAtom? in
-        atomModel.position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
+        atomModel.position = structure.absoluteCartesianModelPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
         return atomModel
       })
       
@@ -2398,7 +2398,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let structure = (self.representedObject as? iRASPAStructure)?.structure
     {
       let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-      let atoms: [(Int, SIMD3<Double>)] = asymmetricAtoms.flatMap{$0.copies}.compactMap{($0.asymmetricParentAtom.elementIdentifier,structure.CartesianPosition(for: $0.position, replicaPosition: SIMD3<Int32>()) )}
+      let atoms: [(Int, SIMD3<Double>)] = asymmetricAtoms.flatMap{$0.copies}.compactMap{($0.asymmetricParentAtom.elementIdentifier,structure.absoluteCartesianModelPosition(for: $0.position, replicaPosition: SIMD3<Int32>()) )}
       
       let stringData: String
       switch(structure)

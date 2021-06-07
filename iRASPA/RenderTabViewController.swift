@@ -2868,7 +2868,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                      
                      let exportAtoms: [SKAsymmetricAtom] = state.atoms.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> SKAsymmetricAtom? in
                        let atom = atomModel
-                       atom.position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
+                       atom.position = structure.absoluteCartesianModelPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
                        return atom
                      })
                      let exportCell: SKCell? = structure.periodic ? structure.cell : nil
@@ -3176,7 +3176,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
                      let structure = iRASPAstructure.structure
                      
                      let exportAtoms: [(elementIdentifier: Int, position: SIMD3<Double>)] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.compactMap({ (atomModel) -> (elementIdentifier: Int, position: SIMD3<Double>)? in
-                       let position = structure.CartesianPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
+                       let position = structure.absoluteCartesianModelPosition(for: atomModel.position, replicaPosition: SIMD3<Int32>())
                        return (atomModel.elementIdentifier, position)
                      })
                      

@@ -423,16 +423,16 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource
   // =====================================================================
   
   // Used in the routine to measure distances and bend/dihedral angles
-  override public func absoluteCartesianModelPosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  override public func absoluteCartesianModelPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
-    return copy.position
+    return position
   }
   
   // Used in the routine to measure distances and bend/dihedral angles
-  override public func absoluteCartesianScenePosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  override public func absoluteCartesianScenePosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
     let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-    let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: copy.position.x, y: copy.position.y, z: copy.position.z, w: 1.0)
+    let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: position.x, y: position.y, z: position.z, w: 1.0)
     let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + origin
     return absoluteCartesianPosition
   }
