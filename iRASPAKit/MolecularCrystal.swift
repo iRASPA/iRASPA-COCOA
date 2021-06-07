@@ -1564,17 +1564,17 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
   }
   
   // Used in the routine to measure distances and bend/dihedral angles
-  override public func absoluteCartesianModelPosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  override public func absoluteCartesianModelPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
-    let cartesianPosition: SIMD3<Double> = copy.position + self.cell.unitCell * SIMD3<Double>(x: Double(replicaPosition.x), y: Double(replicaPosition.y), z: Double(replicaPosition.z)) + self.cell.contentShift
+    let cartesianPosition: SIMD3<Double> = position + self.cell.unitCell * SIMD3<Double>(x: Double(replicaPosition.x), y: Double(replicaPosition.y), z: Double(replicaPosition.z)) + self.cell.contentShift
     return cartesianPosition
   }
   
   // Used in the routine to measure distances and bend/dihedral angles
-  override public func absoluteCartesianScenePosition(copy: SKAtomCopy, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
+  override public func absoluteCartesianScenePosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
     let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-    let cartesianPosition: SIMD3<Double> = copy.position + self.cell.unitCell * SIMD3<Double>(x: Double(replicaPosition.x), y: Double(replicaPosition.y), z: Double(replicaPosition.z)) + self.cell.contentShift
+    let cartesianPosition: SIMD3<Double> = position + self.cell.unitCell * SIMD3<Double>(x: Double(replicaPosition.x), y: Double(replicaPosition.y), z: Double(replicaPosition.z)) + self.cell.contentShift
     let position: SIMD4<Double> = rotationMatrix * SIMD4<Double>(x: cartesianPosition.x, y: cartesianPosition.y, z: cartesianPosition.z, w: 1.0)
     let absoluteCartesianPosition: SIMD3<Double> = SIMD3<Double>(position.x,position.y,position.z) + self.origin
     return absoluteCartesianPosition
