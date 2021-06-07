@@ -1643,9 +1643,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-      let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
+       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
       project.undoManager.setActionName(NSLocalizedString("Find and Impose Symmetry", comment: ""))
+      
+      // remove the measuring nodes
+      project.measurementTreeNodes = []
       
       if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.imposedSymmetry(colorSets: document.colorSets, forceFieldSets: document.forceFieldSets)
       {
@@ -1662,9 +1665,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-      let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
+       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
       project.undoManager.setActionName(NSLocalizedString("Flatten Hierarchy", comment: ""))
+      
+      // remove the measuring nodes
+      project.measurementTreeNodes = []
       
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.flattenedHierarchy
       self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
@@ -1678,9 +1684,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-      let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
+       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
       project.undoManager.setActionName(NSLocalizedString("Remove Symmetry", comment: ""))
+      
+      // remove the measuring nodes
+      project.measurementTreeNodes = []
       
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.removedSymmetry
       self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
@@ -1697,6 +1706,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
       project.undoManager.setActionName(NSLocalizedString("Wrap Atoms to Cell", comment: ""))
+      
+      // remove the measuring nodes
+      project.measurementTreeNodes = []
       
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.wrapAtomsToCell
       self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
@@ -1715,6 +1727,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     {
       project.undoManager.setActionName(NSLocalizedString("Find Primitive", comment: ""))
       
+      // remove the measuring nodes
+      project.measurementTreeNodes = []
+      
       if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.primitive(colorSets: document.colorSets, forceFieldSets: document.forceFieldSets)
       {
         self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
@@ -1728,9 +1743,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-      let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
+       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
     {
       project.undoManager.setActionName(NSLocalizedString("Make Super-Cell", comment: ""))
+      
+      // remove the measuring nodes
+      project.measurementTreeNodes = []
       
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.superCell
       self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)

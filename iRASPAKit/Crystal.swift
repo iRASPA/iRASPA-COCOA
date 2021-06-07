@@ -1324,8 +1324,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
             let flippedPosition: SIMD3<Double> = SIMD3<Double>.flip(v: atom.position, flip: self.cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
             let pos: SIMD3<Double> = fract(flippedPosition + self.cell.contentShift)
             let fractionalPosition: SIMD3<Double> = SIMD3<Double>(x: (pos.x + Double(k1)) / Double(dx + 1),
-                                                      y: (pos.y + Double(k2)) / Double(dy + 1),
-                                                      z: (pos.z + Double(k3)) / Double(dz + 1))
+                                                                  y: (pos.y + Double(k2)) / Double(dy + 1),
+                                                                  z: (pos.z + Double(k3)) / Double(dz + 1))
             let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(atom: atom.asymmetricParentAtom)
             newAtom.position = fractionalPosition
             
@@ -1482,6 +1482,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return length(self.cell.unitCell * ds)
   }
   
+  // avoid using
   public override func CartesianPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
     let fractionalPosition: SIMD3<Double> = SIMD3<Double>(position.x + Double(replicaPosition.x),position.y + Double(replicaPosition.y),position.z + Double(replicaPosition.z))
