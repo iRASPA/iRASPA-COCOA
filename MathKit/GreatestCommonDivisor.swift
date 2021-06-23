@@ -34,18 +34,27 @@ import Foundation
 
 extension Int
 {
-  public static func floorDivision(a: Int, b: Int) -> Int
+  public static func floorDivision(a: Int, b: Int) throws -> Int
   {
+    guard (b != 0) else {throw NumericalError.divisionByZero}
+   
     return Int(floor(Double(a) / Double(b)))
   }
   
-  public static func modulo(a: Int, b: Int) -> Int
+  public static func modulo(a: Int, b: Int) throws -> Int
   {
+    guard (b != 0) else {throw NumericalError.divisionByZero}
+    
     return a - b * Int(floor(Double(a) / Double(b)))
   }
   
-  public static func divisionModulo(a: Int, b: Int) -> (Int, Int)
+  public static func divisionModulo(a: Int, b: Int) throws -> (Int, Int)
   {
+    //guard (b != 0) else {throw NumericalError.divisionByZero}
+    if (b==0)
+    {
+      return (0,0)
+    }
     let temp: Int = Int(floor(Double(a) / Double(b)))
     return (temp, a - b * temp)
   }
@@ -68,21 +77,21 @@ extension Int
     }
   }
   
-  public static func greatestCommonDivisor(a arg1: Int, b arg2: Int) -> Int
+  public static func greatestCommonDivisor(a arg1: Int, b arg2: Int) throws -> Int
   {
     var a: Int = arg1
     var b: Int = arg2
     while b != 0
     {
       let tempa: Int = b
-      let tempb: Int = Int.modulo(a: a, b: b)
+      let tempb: Int = try Int.modulo(a: a, b: b)
       a = tempa
       b = tempb
     }
     return abs(a)
   }
   
-  public static func extendedGreatestCommonDivisor(a arg1: Int, b arg2: Int) -> (Int, Int, Int)
+  public static func extendedGreatestCommonDivisor(a arg1: Int, b arg2: Int) throws -> (Int, Int, Int)
   {
     var ai: Int = arg2   // ai stands for: a with index i
     var aim1: Int = arg1 // aim1 stands for: a with index i-1
@@ -93,7 +102,7 @@ extension Int
     if ai != 0
     {
       // compute both quotient and remainder
-      let divmod: (q: Int, r: Int) = Int.divisionModulo(a: aim1, b: ai)
+      let divmod: (q: Int, r: Int) = try Int.divisionModulo(a: aim1, b: ai)
       
       let tempaim1: Int = ai
       let tempaim2: Int = divmod.r
@@ -107,7 +116,7 @@ extension Int
       while ai != 0
       {
         // compute both quotient and remainder
-        let divmod: (q: Int, r: Int) = Int.divisionModulo(a: aim1, b: ai)
+        let divmod: (q: Int, r: Int) = try Int.divisionModulo(a: aim1, b: ai)
         let tempaim1: Int = ai
         let tempaim2: Int = divmod.r
         aim1 = tempaim1

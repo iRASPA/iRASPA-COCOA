@@ -47,7 +47,7 @@ extension SIMD3 where Scalar==Int32
   
   public var greatestCommonDivisor: Int
   {
-    return [Int(self.x), Int(self.y), Int(self.z)].reduce(Int(self.x)){Int.greatestCommonDivisor(a: $0, b: $1)}
+    return [Int(self.x), Int(self.y), Int(self.z)].reduce(Int(self.x)){(try? Int.greatestCommonDivisor(a: $0, b: $1)) ?? 1}
   }
   
   public var isZero: Bool

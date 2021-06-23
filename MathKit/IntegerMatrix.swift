@@ -94,6 +94,20 @@ public struct IntegerMatrix
     
   }
   
+  public init(matrix: RingMatrix)
+  {
+    self.numberOfColumns = matrix.columns
+    self.numberOfRows = matrix.rows
+    self.denominator = 1
+    let size: Int = numberOfColumns * numberOfRows
+    elements = [Int](repeating: 0, count: size)
+    for i in 0..<size
+    {
+      self.elements[i] = matrix.grid[i]
+    }
+    
+  }
+  
   public init(Int3x3: [int3x3], denominator: Int = 1)
   {
     self.denominator = denominator
@@ -132,18 +146,19 @@ public struct IntegerMatrix
       for column in 0..<numberOfColumns
       {
         let value: Int = self[row,column]
-        let gcd: Int = Int.greatestCommonDivisor(a: value, b: self.denominator)
-        //let gcd: Int = 1
-        if gcd != 0 && self.denominator/gcd == 1
+        if let gcd: Int = try? Int.greatestCommonDivisor(a: value, b: self.denominator)
         {
-          //let string: String = String(format: "%d",value/gcd)
-          //Swift.print("\(string) ", terminator:"")
-        }
-        else
-        {
+          if gcd != 0 && self.denominator/gcd == 1
+          {
+            //let string: String = String(format: "%d",value/gcd)
+            //Swift.print("\(string) ", terminator:"")
+          }
+          else
+          {
           
-          //let string: String = String(format: "%d/%d",value/gcd, self.denominator/gcd)
-          //Swift.print("\(string) ", terminator:"")
+            //let string: String = String(format: "%d/%d",value/gcd, self.denominator/gcd)
+            //Swift.print("\(string) ", terminator:"")
+          }
         }
 
         
@@ -194,7 +209,7 @@ public struct IntegerMatrix
     {
       return 0
     }
-    return self.elements.reduce(elements[0]){Int.greatestCommonDivisor(a: $0, b: $1)}
+    return self.elements.reduce(elements[0]){(try? Int.greatestCommonDivisor(a: $0, b: $1)) ?? 1}
   }
   
   public mutating func cleanUp()
