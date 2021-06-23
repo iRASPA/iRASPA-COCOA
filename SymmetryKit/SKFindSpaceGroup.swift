@@ -301,7 +301,7 @@ extension SKSpacegroup
   
 
   
-  public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) -> SIMD3<Double>?
+  public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) throws -> SIMD3<Double>?
   {
     var translations: int3x3 = int3x3()
     
@@ -399,9 +399,14 @@ extension SKSpacegroup
     let t2: int3x3 = changeToPrimitive * (r2 - int3x3.identity)
     let t3: int3x3 = changeToPrimitive * (r3 - int3x3.identity)
     
-    let m: IntegerMatrix = IntegerMatrix(Int3x3: [t1,t2,t3])
-    let sol:  (P: IntegerMatrix, Q: IntegerMatrix, D: IntegerMatrix) = m.SmithNormalForm()
-    let p1: IntegerMatrix = sol.Q*sol.D.DiagonalInverted().transposed()*sol.P
+    let m: RingMatrix = RingMatrix(Int3x3: [t1,t2,t3])
+    let sol:  (P: RingMatrix, Q: RingMatrix, D: RingMatrix) = try m.SmithNormalForm()
+    
+    let solD: IntegerMatrix = IntegerMatrix(matrix: sol.D)
+    let solQ: IntegerMatrix = IntegerMatrix(matrix: sol.Q)
+    let solP: IntegerMatrix = IntegerMatrix(matrix: sol.P)
+    
+    let p1: IntegerMatrix = solQ*solD.DiagonalInverted().transposed()*solP
     
     var x: IntegerMatrix = IntegerMatrix(numberOfRows: 9, numberOfColumns: 1, denominator: 12)
     for i in 0..<dataBaseSpaceGroupGenerators.count
@@ -419,11 +424,11 @@ extension SKSpacegroup
       x[3*i+2,0] = Int(translationDifference.z)
     }
     
-    let test: IntegerMatrix = sol.P * x
+    let test: IntegerMatrix = solP * x
     
-    if (sol.D[0,0] == 0 && Int.modulo(a: test[0,0], b: 12)  != 0) ||
-       (sol.D[1,1] == 0 && Int.modulo(a: test[0,1], b: 12)  != 0) ||
-       (sol.D[2,2] == 0 && Int.modulo(a: test[0,2], b: 12)  != 0)
+    if (sol.D[0,0] == 0 && test[0,0] % 12 != 0) ||
+       (sol.D[1,1] == 0 && test[0,1] % 12 != 0) ||
+       (sol.D[2,2] == 0 && test[0,2] % 12 != 0)
     {
       return nil
     }
@@ -431,7 +436,7 @@ extension SKSpacegroup
    
     for i in 3..<9
     {
-      if Int.modulo(a: test[0,i], b: 12)  != 0
+      if test[0,i] % 12 != 0
       {
         return nil
       }
@@ -446,154 +451,8 @@ extension SKSpacegroup
     return fract(changeToConventional * shiftVector)
   }
   
-  /*
-  public static func getRealOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) -> double3?
-  {
-    var translations: double3x3 = double3x3()
     
-    let dataBaseSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
-    var dataBaseSpaceGroupGenerators = SKSeitzMatrix.SeitzMatrices(generatorEncoding: dataBaseSpaceGroup.spaceGroupSetting.encodedGenerators)
-    
-    // apply change-of-basis to generators
-    for i in 0..<dataBaseSpaceGroupGenerators.count
-    {
-      dataBaseSpaceGroupGenerators[i] = changeOfBasis * dataBaseSpaceGroupGenerators[i]
-    }
-    
-    // apply change-of-basis to lattice translations
-    var spaceGroupLatticeTranslations = dataBaseSpaceGroup.spaceGroupSetting.latticeTranslations
-    for i in 0..<spaceGroupLatticeTranslations.count
-    {
-      spaceGroupLatticeTranslations[i] = changeOfBasis * spaceGroupLatticeTranslations[i]
-    }
-    
-    // apply change-of-basis to centring
-    var dataBaseSpaceGroupCentering = dataBaseSpaceGroup.spaceGroupSetting.centring
-    switch(dataBaseSpaceGroupCentering)
-    {
-    case .a_face, .b_face, .c_face:
-      if spaceGroupLatticeTranslations[1].x == 0
-      {
-        dataBaseSpaceGroupCentering = .a_face
-      }
-      if spaceGroupLatticeTranslations[1].y == 0
-      {
-        dataBaseSpaceGroupCentering = .b_face
-      }
-      if spaceGroupLatticeTranslations[1].z == 0
-      {
-        dataBaseSpaceGroupCentering = .c_face
-      }
-      break
-    default:
-      break
-    }
-    
-    // return if the centring is not equal to the spacegroup one
-    if centering != dataBaseSpaceGroupCentering
-    {
-      return nil
-    }
-    
-    // apply change-of-basis to the Seitz-matrices
-    var dataBaseSpaceGroupSeitzMatrices: [SKSeitzMatrix] =  dataBaseSpaceGroup.spaceGroupSetting.SeitzMatricesWithoutTranslation
-    for i in 0..<dataBaseSpaceGroupSeitzMatrices.count
-    {
-      dataBaseSpaceGroupSeitzMatrices[i] = changeOfBasis * dataBaseSpaceGroupSeitzMatrices[i]
-    }
-    
-    for i in 0..<dataBaseSpaceGroupGenerators.count
-    {
-      guard let index: Int = seitzMatrices.firstIndex(where: {$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}) else {return nil}
-      translations[i] = seitzMatrices[index].translation
-    }
-    
-    
-    var transformation: MKint3x3 = MKint3x3.identity
-    
-    switch(dataBaseSpaceGroupCentering)
-    {
-    case .primitive:
-      transformation = MKint3x3.identity
-    case .body:
-      transformation = SKSymmetryCell.bodyCenteredToPrimitive
-    case .face:
-      transformation = SKSymmetryCell.faceCenteredToPrimitive
-    case .a_face:
-      transformation = SKSymmetryCell.ACenteredToPrimitive
-    case .b_face:
-      transformation = SKSymmetryCell.BCenteredToPrimitive
-    case .c_face:
-      transformation = SKSymmetryCell.CCenteredToPrimitive
-    case .r:
-      transformation = SKSymmetryCell.rhombohedralToPrimitive
-    case .h:
-      transformation = SKSymmetryCell.hexagonalToPrimitive
-    default:
-      break
-    }
-    
-    let changeToPrimitive: SKChangeOfBasis = SKChangeOfBasis(rotation: transformation)
-    
-    
-    let r1: int3x3 = dataBaseSpaceGroupGenerators[0].rotation
-    let r2: int3x3 = dataBaseSpaceGroupGenerators.count > 1 ? dataBaseSpaceGroupGenerators[1].rotation : int3x3.identity
-    let r3: int3x3 = dataBaseSpaceGroupGenerators.count > 2 ? dataBaseSpaceGroupGenerators[2].rotation : int3x3.identity
-    
-    let t1: int3x3 = changeToPrimitive * (r1 - int3x3.identity)
-    let t2: int3x3 = changeToPrimitive * (r2 - int3x3.identity)
-    let t3: int3x3 = changeToPrimitive * (r3 - int3x3.identity)
-    
-    let m: IntegerMatrix = IntegerMatrix(Int3x3: [t1,t2,t3])
-    let sol:  (P: IntegerMatrix, Q: IntegerMatrix, D: IntegerMatrix) = m.SmithNormalForm()
-    let p1: IntegerMatrix = sol.Q*sol.D.DiagonalInverted().transposed()*sol.P
-    
-    var x: RealMatrix = RealMatrix(numberOfRows: 9, numberOfColumns: 1)
-    for i in 0..<dataBaseSpaceGroupGenerators.count
-    {
-      let seitzMatrix: SKSeitzMatrix? = dataBaseSpaceGroupSeitzMatrices.filter{$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}.first
-      guard seitzMatrix != nil else {return nil}
-      
-      let transPrimitive: double3 = changeToPrimitive * translations[i]
-      
-      let dataBaseTranslation: double3  = changeToPrimitive * dataBaseSpaceGroupGenerators[i].translation
-      
-      let translationDifference: double3 = (transPrimitive - dataBaseTranslation)
-      x[3*i,0] = translationDifference.x
-      x[3*i+1,0] = translationDifference.y
-      x[3*i+2,0] = translationDifference.z
-    }
-    
-    let test: RealMatrix = sol.P * x
-    
-    if (sol.D[0,0] == 0 && fabs(test[0,0])>1e-10) ||
-      (sol.D[1,1] == 0 && fabs(test[0,1])>1e-10) ||
-      (sol.D[2,2] == 0 && fabs(test[0,2])>1e-10)
-    {
-      return nil
-    }
-    
-    
-    for i in 3..<9
-    {
-      if fabs(test[0,i])>1e-10
-      {
-        return nil
-      }
-    }
-    
-    let answer: RealMatrix = p1 * x
-    
-    let changeToConventional: SKChangeOfBasis = changeOfBasis.inverse
-    let shiftVector: double3 = double3(Double(answer[0,0]),
-                                       Double(answer[0,1]),
-                                       Double(answer[0,2]))
-    return fract(changeToConventional * shiftVector)
-  }
-  */
-
-  
-  public static func matchSpaceGroup(HallNumber: Int, pointGroupNumber: Int,centering: SKSpacegroup.Centring, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) -> (origin: SIMD3<Double>, changeOfBasis: SKChangeOfBasis)?
+  public static func matchSpaceGroup(HallNumber: Int, pointGroupNumber: Int,centering: SKSpacegroup.Centring, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5)  -> (origin: SIMD3<Double>, changeOfBasis: SKChangeOfBasis)?
   {
     // bail out early if the checked space group is not of the right point-group
     if SKSpacegroup.spaceGroupData[HallNumber].pointGroupNumber != pointGroupNumber
@@ -606,14 +465,14 @@ extension SKSpacegroup
     case .none:
       break
     case .triclinic, .tetragonal, .trigonal, .hexagonal:
-      if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+      if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
         return (originShift, SKChangeOfBasis(rotation: int3x3.identity))
       }
     case .monoclinic:
       for i in 0..<6
       {
-        if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfMonoclinicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfMonoclinicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
           return (originShift, SKSpacegroup.changeOfMonoclinicCentering[i])
         }
@@ -621,13 +480,13 @@ extension SKSpacegroup
     case .orthorhombic:
       for i in 0..<6
       {
-        if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfOrthorhombicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfOrthorhombicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
           return (originShift, SKSpacegroup.changeOfOrthorhombicCentering[i])
         }
       }
     case .cubic:
-      if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+      if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
         return (originShift, SKChangeOfBasis(rotation: int3x3.identity))
       }
@@ -635,7 +494,7 @@ extension SKSpacegroup
       // special case
       if HallNumber == 501
       {
-        if let originShift: SIMD3<Double> = getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKChangeOfBasis(rotation: int3x3([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKChangeOfBasis(rotation: int3x3([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
           return (originShift, changeOfBasis: SKChangeOfBasis(rotation: int3x3([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])))
         }

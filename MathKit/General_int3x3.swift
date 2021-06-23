@@ -124,7 +124,7 @@ public struct MKint3x3: Equatable
   
   public var greatestCommonDivisor: Int
   {
-    return elements.reduce(Int(self[0,0])){Int.greatestCommonDivisor(a: $0, b: $1)}
+    return elements.reduce(Int(self[0,0])){(try? Int.greatestCommonDivisor(a: $0, b: $1)) ?? 1}
   }
   
   public var determinant: Int

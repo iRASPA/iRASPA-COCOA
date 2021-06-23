@@ -108,7 +108,6 @@
 		930DD7241E2808B700B8FE9B /* AtomSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD7191E2808B700B8FE9B /* AtomSearchField.swift */; };
 		930DD7251E2808B700B8FE9B /* AtomTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD71A1E2808B700B8FE9B /* AtomTableRowView.swift */; };
 		930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 930DD7581E280A3C00B8FE9B /* BondCylinderShader.metal */; };
-		930F71EF224CE4D7006C1201 /* RealMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F71EE224CE4D7006C1201 /* RealMatrix.swift */; };
 		931000602483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310005F2483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift */; };
 		931000642483E91E009CD836 /* PolygonalPrismSelectionShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 931000632483E91E009CD836 /* PolygonalPrismSelectionShader.metal */; };
 		9310006624840B8B009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310006524840B8B009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift */; };
@@ -165,6 +164,13 @@
 		933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */; };
 		933D6B8623CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D6B8523CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift */; };
 		933D93E51FD326CA0075AB92 /* StructureTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */; };
+		933EEF402681DDDE00067CF4 /* MathKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; };
+		933EEF492681E64100067CF4 /* FractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933EEF482681E64100067CF4 /* FractionTests.swift */; };
+		933EEF4B2681F7EF00067CF4 /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933EEF4A2681F7EF00067CF4 /* Ring.swift */; };
+		933EEF4D268203C200067CF4 /* RingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933EEF4C268203C200067CF4 /* RingTests.swift */; };
+		933EEF4F26820AC900067CF4 /* RingMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933EEF4E26820AC900067CF4 /* RingMatrix.swift */; };
+		933EEF5126820F3400067CF4 /* MatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933EEF5026820F3400067CF4 /* MatrixTests.swift */; };
+		933EEF5326821C1300067CF4 /* RingMatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933EEF5226821C1300067CF4 /* RingMatrixTests.swift */; };
 		933F4F241FB1C24D00753D08 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F4F231FB1C24D00753D08 /* Errors.swift */; };
 		933FFED2243A1E23004E337F /* PythonKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 933FFED0243A1E23004E337F /* PythonKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9340A6F12015123B00F33D1D /* NSFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9340A6F02015123B00F33D1D /* NSFont.swift */; };
@@ -233,6 +239,10 @@
 		937479531FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */; };
 		937479581FB9ED8F008C4411 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		9374795A1FB9EF2D008C4411 /* MarchingCubes3D_128x128x128.metal in Sources */ = {isa = PBXBuildFile; fileRef = 937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */; };
+		937737EB2680D7A900D47499 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
+		937737F22680D7F600D47499 /* SpaceGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937737F12680D7F600D47499 /* SpaceGroupTests.swift */; };
+		937737F42680D83000D47499 /* SpglibTestData in Resources */ = {isa = PBXBuildFile; fileRef = 937737F32680D83000D47499 /* SpglibTestData */; };
+		937737F62680E11E00D47499 /* MathKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937737F52680E11E00D47499 /* MathKitErrors.swift */; };
 		9377C4B82403C8FA0015FF35 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377C4B72403C8FA0015FF35 /* Errors.swift */; };
 		937807D721C5847000EC4466 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807D621C5847000EC4466 /* OrderedDictionary.swift */; };
 		937807D921C58E9500EC4466 /* SKConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937807D821C58E9500EC4466 /* SKConstants.swift */; };
@@ -325,12 +335,10 @@
 		938388371E26A4FC00112FBA /* MathKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		938388451E26A5CD00112FBA /* General_int3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388411E26A5CD00112FBA /* General_int3.swift */; };
 		938388461E26A5CD00112FBA /* General_int3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388421E26A5CD00112FBA /* General_int3x3.swift */; };
-		938388471E26A5CD00112FBA /* GeneralFraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388431E26A5CD00112FBA /* GeneralFraction.swift */; };
+		938388471E26A5CD00112FBA /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388431E26A5CD00112FBA /* Fraction.swift */; };
 		938388481E26A5CD00112FBA /* GreatestCommonDivisor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388441E26A5CD00112FBA /* GreatestCommonDivisor.swift */; };
-		9383884E1E26A60700112FBA /* HermiteNormalForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388491E26A60700112FBA /* HermiteNormalForm.swift */; };
 		9383884F1E26A60700112FBA /* IntegerMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383884A1E26A60700112FBA /* IntegerMatrix.swift */; };
 		938388511E26A60700112FBA /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383884C1E26A60700112FBA /* Matrix.swift */; };
-		938388521E26A60700112FBA /* SmithNormalForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383884D1E26A60700112FBA /* SmithNormalForm.swift */; };
 		9383885A1E26A64200112FBA /* int3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388531E26A64200112FBA /* int3x3.swift */; };
 		9383885B1E26A64200112FBA /* int3x9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388541E26A64200112FBA /* int3x9.swift */; };
 		9383885C1E26A64200112FBA /* int9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388551E26A64200112FBA /* int9.swift */; };
@@ -832,6 +840,13 @@
 			remoteGlobalIDString = 933FFECD243A1E23004E337F;
 			remoteInfo = PythonKit;
 		};
+		933EEF412681DDDE00067CF4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 938388201E26A4FB00112FBA;
+			remoteInfo = MathKit;
+		};
 		933FFFA3243A1ECA004E337F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 938388001E26A4A800112FBA /* Project object */;
@@ -861,6 +876,13 @@
 			remoteInfo = SimulationKit;
 		};
 		937479561FB9ED80008C4411 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 938388001E26A4A800112FBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 930DD4BE1E26AA0100B8FE9B;
+			remoteInfo = SymmetryKit;
+		};
+		937737EC2680D7A900D47499 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 938388001E26A4A800112FBA /* Project object */;
 			proxyType = 1;
@@ -1305,7 +1327,6 @@
 		930DD71A1E2808B700B8FE9B /* AtomTableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomTableRowView.swift; sourceTree = "<group>"; };
 		930DD7581E280A3C00B8FE9B /* BondCylinderShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = BondCylinderShader.metal; sourceTree = "<group>"; };
 		930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = iRASPAHelp.help; sourceTree = "<group>"; };
-		930F71EE224CE4D7006C1201 /* RealMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealMatrix.swift; sourceTree = "<group>"; };
 		9310005F2483DC9C009CD836 /* MetalEllipsoidPrimitiveSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidPrimitiveSelectionStripedShader.swift; sourceTree = "<group>"; };
 		931000632483E91E009CD836 /* PolygonalPrismSelectionShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PolygonalPrismSelectionShader.metal; sourceTree = "<group>"; };
 		9310006524840B8B009CD836 /* MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCrystalEllipsoidPrimitiveSelectionStripedShader.swift; sourceTree = "<group>"; };
@@ -1410,6 +1431,14 @@
 		933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAStructure.swift; sourceTree = "<group>"; };
 		933D6B8523CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomAndBondsChangeDataStructure.swift; sourceTree = "<group>"; };
 		933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureTableRowView.swift; sourceTree = "<group>"; };
+		933EEF3B2681DDDE00067CF4 /* MathKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		933EEF3F2681DDDE00067CF4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		933EEF482681E64100067CF4 /* FractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionTests.swift; sourceTree = "<group>"; };
+		933EEF4A2681F7EF00067CF4 /* Ring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
+		933EEF4C268203C200067CF4 /* RingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingTests.swift; sourceTree = "<group>"; };
+		933EEF4E26820AC900067CF4 /* RingMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingMatrix.swift; sourceTree = "<group>"; };
+		933EEF5026820F3400067CF4 /* MatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixTests.swift; sourceTree = "<group>"; };
+		933EEF5226821C1300067CF4 /* RingMatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingMatrixTests.swift; sourceTree = "<group>"; };
 		933F4F171FADF4D000753D08 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		933F4F231FB1C24D00753D08 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		933FFECE243A1E23004E337F /* PythonKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PythonKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1490,6 +1519,11 @@
 		9374794E1FB9EB51008C4411 /* SKBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKBoundingBox.swift; sourceTree = "<group>"; };
 		937479521FB9ECF7008C4411 /* SKMetalMarchingCubes128.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKMetalMarchingCubes128.swift; sourceTree = "<group>"; };
 		937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D_128x128x128.metal; sourceTree = "<group>"; };
+		937737E62680D7A900D47499 /* SymmetryKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SymmetryKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		937737EA2680D7A900D47499 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		937737F12680D7F600D47499 /* SpaceGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupTests.swift; sourceTree = "<group>"; };
+		937737F32680D83000D47499 /* SpglibTestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SpglibTestData; sourceTree = "<group>"; };
+		937737F52680E11E00D47499 /* MathKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathKitErrors.swift; sourceTree = "<group>"; };
 		9377C4B72403C8FA0015FF35 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		937807D621C5847000EC4466 /* OrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		937807D821C58E9500EC4466 /* SKConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKConstants.swift; sourceTree = "<group>"; };
@@ -1583,12 +1617,10 @@
 		938388241E26A4FB00112FBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		938388411E26A5CD00112FBA /* General_int3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General_int3.swift; sourceTree = "<group>"; };
 		938388421E26A5CD00112FBA /* General_int3x3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General_int3x3.swift; sourceTree = "<group>"; };
-		938388431E26A5CD00112FBA /* GeneralFraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralFraction.swift; sourceTree = "<group>"; };
+		938388431E26A5CD00112FBA /* Fraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fraction.swift; sourceTree = "<group>"; };
 		938388441E26A5CD00112FBA /* GreatestCommonDivisor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreatestCommonDivisor.swift; sourceTree = "<group>"; };
-		938388491E26A60700112FBA /* HermiteNormalForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HermiteNormalForm.swift; sourceTree = "<group>"; };
 		9383884A1E26A60700112FBA /* IntegerMatrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntegerMatrix.swift; sourceTree = "<group>"; };
 		9383884C1E26A60700112FBA /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
-		9383884D1E26A60700112FBA /* SmithNormalForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmithNormalForm.swift; sourceTree = "<group>"; };
 		938388531E26A64200112FBA /* int3x3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = int3x3.swift; sourceTree = "<group>"; };
 		938388541E26A64200112FBA /* int3x9.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = int3x9.swift; sourceTree = "<group>"; };
 		938388551E26A64200112FBA /* int9.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = int9.swift; sourceTree = "<group>"; };
@@ -2129,6 +2161,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		933EEF382681DDDE00067CF4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				933EEF402681DDDE00067CF4 /* MathKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		933FFECB243A1E23004E337F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2154,6 +2194,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		937737E32680D7A900D47499 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				937737EB2680D7A900D47499 /* SymmetryKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2756,6 +2804,18 @@
 			name = CrystalDetailTabViews;
 			sourceTree = "<group>";
 		};
+		933EEF3C2681DDDE00067CF4 /* MathKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				933EEF482681E64100067CF4 /* FractionTests.swift */,
+				933EEF4C268203C200067CF4 /* RingTests.swift */,
+				933EEF5026820F3400067CF4 /* MatrixTests.swift */,
+				933EEF5226821C1300067CF4 /* RingMatrixTests.swift */,
+				933EEF3F2681DDDE00067CF4 /* Info.plist */,
+			);
+			path = MathKitTests;
+			sourceTree = "<group>";
+		};
 		933F4F161FADF4D000753D08 /* iRASPA-CLI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2992,6 +3052,16 @@
 			name = Preferences;
 			sourceTree = "<group>";
 		};
+		937737E72680D7A900D47499 /* SymmetryKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				937737F32680D83000D47499 /* SpglibTestData */,
+				937737F12680D7F600D47499 /* SpaceGroupTests.swift */,
+				937737EA2680D7A900D47499 /* Info.plist */,
+			);
+			path = SymmetryKitTests;
+			sourceTree = "<group>";
+		};
 		938387FF1E26A4A800112FBA = {
 			isa = PBXGroup;
 			children = (
@@ -3001,7 +3071,9 @@
 				930DD5131E26B2CC00B8FE9B /* RenderKit */,
 				930DD48C1E26A80E00B8FE9B /* SimulationKit */,
 				930DD4C01E26AA0100B8FE9B /* SymmetryKit */,
+				937737E72680D7A900D47499 /* SymmetryKitTests */,
 				938388221E26A4FB00112FBA /* MathKit */,
+				933EEF3C2681DDDE00067CF4 /* MathKitTests */,
 				93BF25F01EE71DC200128CD4 /* OperationKit */,
 				934983BA1F4EAC5F007BE9C7 /* PowerSourceKit */,
 				93CE77EB1EA0EA3900D068E1 /* CatchObjectiveCExceptions */,
@@ -3037,6 +3109,8 @@
 				933FFECE243A1E23004E337F /* PythonKit.framework */,
 				93A0C4252567B20D002BC083 /* iRASPAQuickLookExtension.appex */,
 				9393439625694AA9001D7D2E /* iRASPAThumbnailExtension.appex */,
+				937737E62680D7A900D47499 /* SymmetryKitTests.xctest */,
+				933EEF3B2681DDDE00067CF4 /* MathKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3071,6 +3145,7 @@
 			isa = PBXGroup;
 			children = (
 				938388231E26A4FB00112FBA /* MathKit.h */,
+				937737F52680E11E00D47499 /* MathKitErrors.swift */,
 				938388531E26A64200112FBA /* int3x3.swift */,
 				935105541F16558B002F424C /* int4x3.swift */,
 				938388541E26A64200112FBA /* int3x9.swift */,
@@ -3092,7 +3167,8 @@
 			children = (
 				938388411E26A5CD00112FBA /* General_int3.swift */,
 				938388421E26A5CD00112FBA /* General_int3x3.swift */,
-				938388431E26A5CD00112FBA /* GeneralFraction.swift */,
+				938388431E26A5CD00112FBA /* Fraction.swift */,
+				933EEF4A2681F7EF00067CF4 /* Ring.swift */,
 				938388441E26A5CD00112FBA /* GreatestCommonDivisor.swift */,
 			);
 			name = Integers;
@@ -3101,11 +3177,9 @@
 		938388401E26A56400112FBA /* Matrix */ = {
 			isa = PBXGroup;
 			children = (
-				938388491E26A60700112FBA /* HermiteNormalForm.swift */,
 				9383884A1E26A60700112FBA /* IntegerMatrix.swift */,
-				930F71EE224CE4D7006C1201 /* RealMatrix.swift */,
+				933EEF4E26820AC900067CF4 /* RingMatrix.swift */,
 				9383884C1E26A60700112FBA /* Matrix.swift */,
-				9383884D1E26A60700112FBA /* SmithNormalForm.swift */,
 			);
 			name = Matrix;
 			sourceTree = "<group>";
@@ -3690,6 +3764,24 @@
 			productReference = 930DD60F1E26B96A00B8FE9B /* iRASPAKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		933EEF3A2681DDDE00067CF4 /* MathKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 933EEF432681DDDE00067CF4 /* Build configuration list for PBXNativeTarget "MathKitTests" */;
+			buildPhases = (
+				933EEF372681DDDE00067CF4 /* Sources */,
+				933EEF382681DDDE00067CF4 /* Frameworks */,
+				933EEF392681DDDE00067CF4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				933EEF422681DDDE00067CF4 /* PBXTargetDependency */,
+			);
+			name = MathKitTests;
+			productName = MathKitTests;
+			productReference = 933EEF3B2681DDDE00067CF4 /* MathKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		933FFECD243A1E23004E337F /* PythonKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 933FFED5243A1E23004E337F /* Build configuration list for PBXNativeTarget "PythonKit" */;
@@ -3725,6 +3817,24 @@
 			productName = PowerSourceKit;
 			productReference = 934983B91F4EAC5F007BE9C7 /* PowerSourceKit.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		937737E52680D7A900D47499 /* SymmetryKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 937737F02680D7A900D47499 /* Build configuration list for PBXNativeTarget "SymmetryKitTests" */;
+			buildPhases = (
+				937737E22680D7A900D47499 /* Sources */,
+				937737E32680D7A900D47499 /* Frameworks */,
+				937737E42680D7A900D47499 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				937737ED2680D7A900D47499 /* PBXTargetDependency */,
+			);
+			name = SymmetryKitTests;
+			productName = SymmetryKitTests;
+			productReference = 937737E62680D7A900D47499 /* SymmetryKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		938388071E26A4A800112FBA /* iRASPA */ = {
 			isa = PBXNativeTarget;
@@ -3942,7 +4052,7 @@
 		938388001E26A4A800112FBA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "David Dubbeldam";
 				TargetAttributes = {
@@ -3970,6 +4080,11 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
+					933EEF3A2681DDDE00067CF4 = {
+						CreatedOnToolsVersion = 12.5.1;
+						DevelopmentTeam = 24U2ZRZ6SC;
+						ProvisioningStyle = Automatic;
+					};
 					933FFECD243A1E23004E337F = {
 						CreatedOnToolsVersion = 11.4;
 						DevelopmentTeam = 24U2ZRZ6SC;
@@ -3978,6 +4093,11 @@
 					};
 					934983B81F4EAC5F007BE9C7 = {
 						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = 24U2ZRZ6SC;
+						ProvisioningStyle = Automatic;
+					};
+					937737E52680D7A900D47499 = {
+						CreatedOnToolsVersion = 12.5;
 						DevelopmentTeam = 24U2ZRZ6SC;
 						ProvisioningStyle = Automatic;
 					};
@@ -4089,7 +4209,9 @@
 				930DD5111E26B2CC00B8FE9B /* RenderKit */,
 				930DD48A1E26A80E00B8FE9B /* SimulationKit */,
 				930DD4BE1E26AA0100B8FE9B /* SymmetryKit */,
+				937737E52680D7A900D47499 /* SymmetryKitTests */,
 				938388201E26A4FB00112FBA /* MathKit */,
+				933EEF3A2681DDDE00067CF4 /* MathKitTests */,
 				93BF25EE1EE71DC200128CD4 /* OperationKit */,
 				93CE77E91EA0EA3900D068E1 /* CatchObjectiveCExceptions */,
 				934983B81F4EAC5F007BE9C7 /* PowerSourceKit */,
@@ -4139,6 +4261,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		933EEF392681DDDE00067CF4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		933FFECC243A1E23004E337F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4152,6 +4281,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				93793B5321DE1045004CAD9C /* LICENSE in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		937737E42680D7A900D47499 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				937737F42680D83000D47499 /* SpglibTestData in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4544,6 +4681,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		933EEF372681DDDE00067CF4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				933EEF5126820F3400067CF4 /* MatrixTests.swift in Sources */,
+				933EEF5326821C1300067CF4 /* RingMatrixTests.swift in Sources */,
+				933EEF492681E64100067CF4 /* FractionTests.swift in Sources */,
+				933EEF4D268203C200067CF4 /* RingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		933FFECA243A1E23004E337F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4558,6 +4706,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				934983C61F4EAC8B007BE9C7 /* PowerSource.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		937737E22680D7A900D47499 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				937737F22680D7F600D47499 /* SpaceGroupTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4681,17 +4837,17 @@
 				939B20611EF2CE750061DE8D /* double3x3.swift in Sources */,
 				938388451E26A5CD00112FBA /* General_int3.swift in Sources */,
 				938388461E26A5CD00112FBA /* General_int3x3.swift in Sources */,
+				933EEF4F26820AC900067CF4 /* RingMatrix.swift in Sources */,
 				9340A6F12015123B00F33D1D /* NSFont.swift in Sources */,
 				9383885B1E26A64200112FBA /* int3x9.swift in Sources */,
+				933EEF4B2681F7EF00067CF4 /* Ring.swift in Sources */,
 				939B206D1EF2CF600061DE8D /* double3.swift in Sources */,
-				930F71EF224CE4D7006C1201 /* RealMatrix.swift in Sources */,
 				93FDA72D205522F8000C4AD7 /* bool3.swift in Sources */,
 				938388481E26A5CD00112FBA /* GreatestCommonDivisor.swift in Sources */,
 				939B20691EF2CF140061DE8D /* float3x3.swift in Sources */,
 				939B205D1EF2C8370061DE8D /* simd_quatd.swift in Sources */,
 				9383885C1E26A64200112FBA /* int9.swift in Sources */,
 				9383885E1E26A64200112FBA /* int9x9.swift in Sources */,
-				938388521E26A60700112FBA /* SmithNormalForm.swift in Sources */,
 				939B205F1EF2CE670061DE8D /* double4x4.swift in Sources */,
 				939B20631EF2CE960061DE8D /* NSColor.swift in Sources */,
 				939B206B1EF2CF260061DE8D /* float4x4.swift in Sources */,
@@ -4700,10 +4856,10 @@
 				938388511E26A60700112FBA /* Matrix.swift in Sources */,
 				939B206F1EF2D0310061DE8D /* int3.swift in Sources */,
 				939B20731EF2D0920061DE8D /* Int32.swift in Sources */,
-				938388471E26A5CD00112FBA /* GeneralFraction.swift in Sources */,
+				938388471E26A5CD00112FBA /* Fraction.swift in Sources */,
 				939B20651EF2CEBE0061DE8D /* float4.swift in Sources */,
 				936DE11C21DA7F470023E7C8 /* Array.swift in Sources */,
-				9383884E1E26A60700112FBA /* HermiteNormalForm.swift in Sources */,
+				937737F62680E11E00D47499 /* MathKitErrors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4861,6 +5017,11 @@
 			target = 933FFECD243A1E23004E337F /* PythonKit */;
 			targetProxy = 9311CE062566EAC80080AFA4 /* PBXContainerItemProxy */;
 		};
+		933EEF422681DDDE00067CF4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 938388201E26A4FB00112FBA /* MathKit */;
+			targetProxy = 933EEF412681DDDE00067CF4 /* PBXContainerItemProxy */;
+		};
 		933FFFA4243A1ECA004E337F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 933FFECD243A1E23004E337F /* PythonKit */;
@@ -4885,6 +5046,11 @@
 			isa = PBXTargetDependency;
 			target = 930DD4BE1E26AA0100B8FE9B /* SymmetryKit */;
 			targetProxy = 937479561FB9ED80008C4411 /* PBXContainerItemProxy */;
+		};
+		937737ED2680D7A900D47499 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 930DD4BE1E26AA0100B8FE9B /* SymmetryKit */;
+			targetProxy = 937737EC2680D7A900D47499 /* PBXContainerItemProxy */;
 		};
 		938388351E26A4FC00112FBA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5650,6 +5816,47 @@
 			};
 			name = Release;
 		};
+		933EEF442681DDDE00067CF4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = MathKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MathKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		933EEF452681DDDE00067CF4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = MathKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.MathKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		933FFED3243A1E23004E337F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5791,6 +5998,47 @@
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		937737EE2680D7A900D47499 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = SymmetryKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.SymmetryKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		937737EF2680D7A900D47499 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = SymmetryKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.SymmetryKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -6570,6 +6818,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		933EEF432681DDDE00067CF4 /* Build configuration list for PBXNativeTarget "MathKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				933EEF442681DDDE00067CF4 /* Debug */,
+				933EEF452681DDDE00067CF4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		933FFED5243A1E23004E337F /* Build configuration list for PBXNativeTarget "PythonKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -6584,6 +6841,15 @@
 			buildConfigurations = (
 				934983C21F4EAC5F007BE9C7 /* Debug */,
 				934983C31F4EAC5F007BE9C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		937737F02680D7A900D47499 /* Build configuration list for PBXNativeTarget "SymmetryKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				937737EE2680D7A900D47499 /* Debug */,
+				937737EF2680D7A900D47499 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

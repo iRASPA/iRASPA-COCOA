@@ -39,9 +39,16 @@ struct MKint3: Equatable
   
   init(numerator: SIMD3<Int32>, denominator: Int = 1)
   {
-    let gcd: Int = Int.greatestCommonDivisor(a: numerator.greatestCommonDivisor, b: denominator)
-    self.numerator = SIMD3<Int32>(numerator.x / Int32(gcd), numerator.y / Int32(gcd), numerator.z / Int32(gcd))
-    self.denominator = denominator / gcd
+    if let gcd: Int = try? Int.greatestCommonDivisor(a: numerator.greatestCommonDivisor, b: denominator)
+    {
+      self.numerator = SIMD3<Int32>(numerator.x / Int32(gcd), numerator.y / Int32(gcd), numerator.z / Int32(gcd))
+      self.denominator = denominator / gcd
+    }
+    else
+    {
+      self.numerator = numerator
+      self.denominator = denominator
+    }
   }
   
   public var x: Fraction
