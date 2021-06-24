@@ -1,6 +1,6 @@
 
 /* Class = "NSMenuItem"; title = "Invert"; ObjectID = "1YF-gj-uzt"; */
-"1YF-gj-uzt.title" = "거꾸로 하다";
+"1YF-gj-uzt.title" = "뒤집다";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "2Be-nn-F4a"; */
 "2Be-nn-F4a.title" = "Text Cell";
@@ -15,10 +15,10 @@
 "71t-6P-hE6.title" = "CIF";
 
 /* Class = "NSMenuItem"; title = "Wrap atoms to cell"; ObjectID = "7M8-ac-pMA"; */
-"7M8-ac-pMA.title" = "원자를 세포로 감싸기";
+"7M8-ac-pMA.title" = "원자를 격자로 감싸기";
 
 /* Class = "NSTableColumn"; headerCell.title = "ff id."; ObjectID = "8Bh-oV-6t8"; */
-"8Bh-oV-6t8.headerCell.title" = "ff id.";
+"8Bh-oV-6t8.headerCell.title" = "역장 아이디.";
 
 /* Class = "NSTableColumn"; headerCell.title = "el"; ObjectID = "9Ye-dF-VRo"; */
 "9Ye-dF-VRo.headerCell.title" = "el";
@@ -30,7 +30,7 @@
 "DZz-iK-mHB.title" = "선택";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "HHk-Gx-Fpn"; */
-"HHk-Gx-Fpn.title" = "Text Cell";
+"HHk-Gx-Fpn.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "Add Atom Group"; ObjectID = "LoO-EL-ifx"; */
 "LoO-EL-ifx.title" = "원자 그룹 추가";
@@ -48,16 +48,16 @@
 "Ow5-ms-fWY.title" = "스크롤";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "PwS-Ps-jhn"; */
-"PwS-Ps-jhn.title" = "Text Cell";
+"PwS-Ps-jhn.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "Export As"; ObjectID = "SBf-Vu-4GN"; */
 "SBf-Vu-4GN.title" = "다른 이름으로 내보내기";
 
 /* Class = "NSTextFieldCell"; placeholderString = "net charge"; ObjectID = "XbY-dL-0Ls"; */
-"XbY-dL-0Ls.placeholderString" = "순 청구 금";
+"XbY-dL-0Ls.placeholderString" = "총 전하";
 
 /* Class = "NSMenuItem"; title = "Visibility"; ObjectID = "bRE-uw-nCc"; */
-"bRE-uw-nCc.title" = "시계";
+"bRE-uw-nCc.title" = "투명도";
 
 /* Class = "NSTableColumn"; headerCell.title = "q"; ObjectID = "cHJ-9s-H4f"; */
 "cHJ-9s-H4f.headerCell.title" = "q";
@@ -81,10 +81,10 @@
 "fJ5-bP-buy.title" = "PDB";
 
 /* Class = "NSMenuItem"; title = "Match selection"; ObjectID = "fMn-ZP-dZ4"; */
-"fMn-ZP-dZ4.title" = "경기 선택";
+"fMn-ZP-dZ4.title" = "선택된 것과 일치하는 것";
 
 /* Class = "NSMenuItem"; title = "Move to new Movie"; ObjectID = "fmI-pV-gCy"; */
-"fmI-pV-gCy.title" = "새 영화로 이동";
+"fmI-pV-gCy.title" = "새로운 무비로 이동";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "fya-RH-Hvh"; */
 "fya-RH-Hvh.title" = "바닥";
@@ -93,25 +93,25 @@
 "gam-Tz-1cQ.headerCell.title" = "y";
 
 /* Class = "NSMenuItem"; title = "Copy to new Movie"; ObjectID = "h1l-YI-Yex"; */
-"h1l-YI-Yex.title" = "새 영화로 복사";
+"h1l-YI-Yex.title" = "새로운 무비로 복사";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "h8W-NQ-h3a"; */
 "h8W-NQ-h3a.placeholderString" = "필터";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "hry-LW-0DM"; */
-"hry-LW-0DM.title" = "Box";
+"hry-LW-0DM.title" = "박스";
 
 /* Class = "NSTableColumn"; headerCell.title = "atom id."; ObjectID = "iBx-v6-SHn"; */
-"iBx-v6-SHn.headerCell.title" = "atom id.";
+"iBx-v6-SHn.headerCell.title" = "원자 아이디.";
 
 /* Class = "NSMenuItem"; title = "Find and Impose symmetry"; ObjectID = "j0C-ap-N1A"; */
-"j0C-ap-N1A.title" = "대칭 찾기 및 부과";
+"j0C-ap-N1A.title" = "대칭 찾기 및 적용하기";
 
 /* Class = "NSMenuItem"; title = "Find primitive"; ObjectID = "j46-Tq-XrE"; */
-"j46-Tq-XrE.title" = "기본 체 찾기";
+"j46-Tq-XrE.title" = "원시 세포  찾기";
 
 /* Class = "NSTextFieldCell"; title = "Net charge"; ObjectID = "k5O-nf-whc"; */
-"k5O-nf-whc.title" = "순 청구 금";
+"k5O-nf-whc.title" = "총 전하량";
 
 /* Class = "NSTableColumn"; headerCell.title = "vis"; ObjectID = "njX-Kx-nwX"; */
 "njX-Kx-nwX.headerCell.title" = "vis";
@@ -126,13 +126,13 @@
 "qCy-Oi-Hlq.title" = "마지막 선택";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "qJy-Jz-RI1"; */
-"qJy-Jz-RI1.title" = "Text Cell";
+"qJy-Jz-RI1.title" = "텍스트 셀";
 
 /* Class = "NSTableColumn"; headerCell.title = "z"; ObjectID = "s9s-rj-7uf"; */
 "s9s-rj-7uf.headerCell.title" = "z";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "taw-ox-fe7"; */
-"taw-ox-fe7.title" = "Text Cell";
+"taw-ox-fe7.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "VASP POSCAR"; ObjectID = "tl6-9S-wf8"; */
 "tl6-9S-wf8.title" = "VASP POSCAR";
@@ -144,7 +144,7 @@
 "txI-SF-Ef5.title" = "원자 그룹 추가";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "wAb-gF-oXG"; */
-"wAb-gF-oXG.title" = "Text Cell";
+"wAb-gF-oXG.title" = "텍스트 셀";
 
 /* Class = "NSMenu"; title = "Selection"; ObjectID = "wMK-kB-PjB"; */
 "wMK-kB-PjB.title" = "선택";
@@ -153,13 +153,13 @@
 "wfF-yl-c2A.title" = "계층 평면화";
 
 /* Class = "NSMenu"; title = "Visibility"; ObjectID = "yiu-Al-H1i"; */
-"yiu-Al-H1i.title" = "시계";
+"yiu-Al-H1i.title" = "투명도";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "ynH-ie-NeJ"; */
-"ynH-ie-NeJ.title" = "Text Cell";
+"ynH-ie-NeJ.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "Make Super-Cell"; ObjectID = "yoN-UL-IRj"; */
 "yoN-UL-IRj.title" = "슈퍼 셀 만들기";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "zgU-ei-acC"; */
-"zgU-ei-acC.title" = "Text Cell";
+"zgU-ei-acC.title" = "텍스트 셀";

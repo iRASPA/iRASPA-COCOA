@@ -9,16 +9,16 @@
 "1ov-vh-bRX.title" = "수정 타원체";
 
 /* Class = "NSBox"; title = "Orientation"; ObjectID = "2sE-L5-Mde"; */
-"2sE-L5-Mde.title" = "정위";
+"2sE-L5-Mde.title" = "방향";
 
 /* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
 "39F-yr-VYx.title" = "셀 / 경계 상자 속성";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
-"3Fv-hH-asL.title" = "접근 가능한 기공 볼륨";
+"3Fv-hH-asL.title" = "접근 가능한 기공 부피";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum X"; ObjectID = "3a2-UB-zfk"; */
-"3a2-UB-zfk.placeholderString" = "최저한의 X";
+"3a2-UB-zfk.placeholderString" = "최소 X";
 
 /* Class = "NSTextFieldCell"; title = "[-]"; ObjectID = "3yK-10-X6T"; */
 "3yK-10-X6T.title" = "[-]";
@@ -45,7 +45,7 @@
 "8D1-xf-EQg.placeholderString" = "폭 X";
 
 /* Class = "NSTextFieldCell"; title = "Shift"; ObjectID = "8JV-Fj-uoG"; */
-"8JV-Fj-uoG.title" = "시프트";
+"8JV-Fj-uoG.title" = "이동";
 
 /* Class = "NSButtonCell"; title = "b-Axis"; ObjectID = "8PJ-K5-04D"; */
 "8PJ-K5-04D.title" = "b-중심선";
@@ -63,7 +63,7 @@
 "92b-lC-W5K.title" = "채널 시스템 수";
 
 /* Class = "NSTextFieldCell"; title = "Helium Void Fraction"; ObjectID = "9na-rU-hDF"; */
-"9na-rU-hDF.title" = "헬륨 공극 분획";
+"9na-rU-hDF.title" = "헬륨 공극 분율";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "9x5-Do-xLf"; */
 "9x5-Do-xLf.title" = "알 수 없는";
@@ -84,7 +84,7 @@
 "C9m-fX-LjX.title" = "메탄";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "CSF-1Y-UQa"; */
-"CSF-1Y-UQa.title" = "Text Cell";
+"CSF-1Y-UQa.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "Cao-y3-ptB"; */
 "Cao-y3-ptB.title" = "결정";
@@ -108,7 +108,7 @@
 "Emf-RO-Pko.placeholderString" = "시프트 Z";
 
 /* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "EoT-Wn-jDW"; */
-"EoT-Wn-jDW.title" = "크세논 가스 원소";
+"EoT-Wn-jDW.title" = "제논";
 
 /* Class = "NSTextFieldCell"; title = "[cm³/g]"; ObjectID = "FKq-3b-x77"; */
 "FKq-3b-x77.title" = "[cm³/g]";
@@ -116,8 +116,8 @@
 /* Class = "NSButtonCell"; title = "Apply"; ObjectID = "Fi0-La-ItK"; */
 "Fi0-La-ItK.title" = "대다";
 
-/* Class = "NSMenuItem"; title = "Molecular Crystal Solvent"; ObjectID = "GCR-0z-KdY"; */
-"GCR-0z-KdY.title" = "분자 결정 용매";
+/* Class = "NSMenuItem"; title = "Molecular Crystal"; ObjectID = "GCR-0z-KdY"; */
+"GCR-0z-KdY.title" = "분자 결정";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
 "Geb-Or-zb5.title" = "예선";
@@ -141,13 +141,13 @@
 "KBR-dm-dts.title" = "대칭 속성";
 
 /* Class = "NSBox"; title = "Cell content"; ObjectID = "KGV-zA-HoJ"; */
-"KGV-zA-HoJ.title" = "세포 내용";
+"KGV-zA-HoJ.title" = "셀 내용";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Length b"; ObjectID = "KWe-Mf-Gny"; */
 "KWe-Mf-Gny.placeholderString" = "길이 b";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Y"; ObjectID = "Lso-gV-DWL"; */
-"Lso-gV-DWL.placeholderString" = "유래 Y";
+"Lso-gV-DWL.placeholderString" = "기원 Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Width Z"; ObjectID = "M3B-3E-Pj6"; */
 "M3B-3E-Pj6.placeholderString" = "폭 Z";
@@ -168,7 +168,7 @@
 "OU6-Uu-uVv.title" = "CY";
 
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "OfX-2V-31n"; */
-"OfX-2V-31n.title" = "음량";
+"OfX-2V-31n.title" = "부피";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Z"; ObjectID = "PV6-bk-AS4"; */
 "PV6-bk-AS4.placeholderString" = "각도 Z";
@@ -186,7 +186,7 @@
 "R4U-X2-ZJs.placeholderString" = "ay";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Volume"; ObjectID = "RAD-Mk-7MY"; */
-"RAD-Mk-7MY.placeholderString" = "음량";
+"RAD-Mk-7MY.placeholderString" = "부피";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Y"; ObjectID = "RFb-cp-hSr"; */
 "RFb-cp-hSr.placeholderString" = "최고 Y";
@@ -204,16 +204,16 @@
 "U3N-UV-Jmi.title" = "CZ";
 
 /* Class = "NSTextFieldCell"; title = "Point Group"; ObjectID = "U8h-89-HjM"; */
-"U8h-89-HjM.title" = "포인트 그룹";
+"U8h-89-HjM.title" = "결정군";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "Ukv-mk-DpD"; */
 "Ukv-mk-DpD.title" = "회전 -90";
 
 /* Class = "NSTextFieldCell"; title = "Number of elements"; ObjectID = "VGV-QG-mhd"; */
-"VGV-QG-mhd.title" = "요소 수";
+"VGV-QG-mhd.title" = "원소 수";
 
 /* Class = "NSTextFieldCell"; title = "Minimum"; ObjectID = "VPi-2B-sJL"; */
-"VPi-2B-sJL.title" = "최저한의";
+"VPi-2B-sJL.title" = "최소";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cz"; ObjectID = "VU3-db-82D"; */
 "VU3-db-82D.placeholderString" = "cz";
@@ -225,13 +225,13 @@
 "WcQ-vR-rvO.placeholderString" = "β 각도";
 
 /* Class = "NSTextFieldCell"; title = "Laue Group"; ObjectID = "Wgg-RQ-dI1"; */
-"Wgg-RQ-dI1.title" = "라우에 그룹";
+"Wgg-RQ-dI1.title" = "라우에 그룹 (Laue Group)";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
 "X5S-a7-xCf.placeholderString" = "유래 Z";
 
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
-"XeZ-Hb-tao.title" = "크리스탈 실린더";
+"XeZ-Hb-tao.title" = "결정 실린더";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
 "Y0x-AR-NvS.placeholderString" = "최고 Z";
@@ -246,7 +246,7 @@
 "ZNQ-TG-HdE.title" = "단백질 결정 용매";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Z"; ObjectID = "ZfA-8U-voh"; */
-"ZfA-8U-voh.placeholderString" = "최저한의 Z";
+"ZfA-8U-voh.placeholderString" = "최소 Z";
 
 /* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "ZnC-Km-HZJ"; */
 "ZnC-Km-HZJ.title" = "오일러 각도";
@@ -267,13 +267,13 @@
 "bTK-cR-IRN.title" = "AZ";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Shift Y"; ObjectID = "beQ-3E-uTa"; */
-"beQ-3E-uTa.placeholderString" = "시프트 Y";
+"beQ-3E-uTa.placeholderString" = "이동 Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Y"; ObjectID = "cGa-VQ-Eds"; */
 "cGa-VQ-Eds.placeholderString" = "각도 Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Shift X"; ObjectID = "cPv-Rn-zyw"; */
-"cPv-Rn-zyw.placeholderString" = "시프트 X";
+"cPv-Rn-zyw.placeholderString" = "이동 X";
 
 /* Class = "NSTextFieldCell"; title = "Restricting Pore Diameter (Df)"; ObjectID = "d4y-Ea-h9U"; */
 "d4y-Ea-h9U.title" = "기공 직경 제한 (Df)";
@@ -300,7 +300,7 @@
 "f97-S8-buy.title" = "재료 유형";
 
 /* Class = "NSTextFieldCell"; title = "Inversion"; ObjectID = "fB7-jl-oUy"; */
-"fB7-jl-oUy.title" = "전도";
+"fB7-jl-oUy.title" = "반전";
 
 /* Class = "NSTextFieldCell"; title = "Density"; ObjectID = "frH-cs-eiu"; */
 "frH-cs-eiu.title" = "밀도";
@@ -318,7 +318,7 @@
 "gay-1o-b6B.title" = "아르곤";
 
 /* Class = "NSMenuItem"; title = "Crystal Polygonal Prism"; ObjectID = "h3A-5g-irg"; */
-"h3A-5g-irg.title" = "수정 다각형 프리즘";
+"h3A-5g-irg.title" = "결정 다각형 프리즘";
 
 /* Class = "NSTextFieldCell"; title = "Mass"; ObjectID = "hGv-Sn-Ok6"; */
 "hGv-Sn-Ok6.title" = "질량";
@@ -333,7 +333,7 @@
 "jgD-yL-2kq.title" = "재료 유형";
 
 /* Class = "NSTextFieldCell"; title = "Largest Diameter Along a Viable Path (Dif)"; ObjectID = "jrj-nk-OqJ"; */
-"jrj-nk-OqJ.title" = "실행 가능한 경로를 따라 가장 큰 지름 (Dif)";
+"jrj-nk-OqJ.title" = "통과 가능한 경로를 따라 가장 큰 지름 (Dif)";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "다각형 프리즘";
@@ -345,28 +345,28 @@
 "lTN-44-tVw.title" = "접근 할 수없는 포켓의 수";
 
 /* Class = "NSTextFieldCell"; title = "Specific Volume"; ObjectID = "leN-tT-E4L"; */
-"leN-tT-E4L.title" = "특정 볼륨";
+"leN-tT-E4L.title" = "특정 부피";
 
 /* Class = "NSMenuItem"; title = "Protein"; ObjectID = "lhA-fm-5dQ"; */
 "lhA-fm-5dQ.title" = "단백질";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin X"; ObjectID = "mBe-hd-Fy3"; */
-"mBe-hd-Fy3.placeholderString" = "유래 X";
+"mBe-hd-Fy3.placeholderString" = "기원 X";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "mLH-lp-rcD"; */
 "mLH-lp-rcD.title" = "0";
 
 /* Class = "NSTextFieldCell"; title = "Space Group"; ObjectID = "mZ6-cg-pcL"; */
-"mZ6-cg-pcL.title" = "공간 그룹";
+"mZ6-cg-pcL.title" = "공간군";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Y"; ObjectID = "mhY-GY-BNd"; */
-"mhY-GY-BNd.placeholderString" = "최저한의 Y";
+"mhY-GY-BNd.placeholderString" = "최소 Y";
 
 /* Class = "NSTextFieldCell"; title = "Precision"; ObjectID = "n3J-VH-Fux"; */
-"n3J-VH-Fux.title" = "정도";
+"n3J-VH-Fux.title" = "정밀도";
 
 /* Class = "NSTextFieldCell"; title = "Origin"; ObjectID = "nOH-gZ-CNR"; */
-"nOH-gZ-CNR.title" = "유래";
+"nOH-gZ-CNR.title" = "기원";
 
 /* Class = "NSMenuItem"; title = "Helium"; ObjectID = "nos-k0-eV6"; */
 "nos-k0-eV6.title" = "헬륨";
@@ -393,7 +393,7 @@
 "qRO-nO-wHb.title" = "센터링";
 
 /* Class = "NSTextFieldCell"; title = "Schoenflies"; ObjectID = "qgW-qA-9fR"; */
-"qgW-qA-9fR.title" = "Schoenflies";
+"qgW-qA-9fR.title" = "쇤플리스 (Schoenflies)";
 
 /* Class = "NSTextFieldCell"; title = "BX"; ObjectID = "qzc-iK-Ddm"; */
 "qzc-iK-Ddm.title" = "BX";
@@ -402,7 +402,7 @@
 "rkG-hU-SdP.placeholderString" = "길이 a";
 
 /* Class = "NSTextFieldCell"; title = "Holohedry"; ObjectID = "sDc-yH-bwk"; */
-"sDc-yH-bwk.title" = "홀로 헤드 리";
+"sDc-yH-bwk.title" = "완면상 (holohedry)";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "각도 X";
@@ -411,7 +411,7 @@
 "siG-7J-hEu.title" = "체적 표면적 (질소)";
 
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
-"swk-Q8-afT.title" = "크리스탈 용매";
+"swk-Q8-afT.title" = "결정 용매";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "t15-It-Wye"; */
 "t15-It-Wye.title" = "회전 +90";
@@ -426,31 +426,31 @@
 "u9E-1I-eSn.ibShadowedObjectValues[0]" = "지정되지 않음";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[1] = "Silica"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[1]" = "Silica";
+"u9E-1I-eSn.ibShadowedObjectValues[1]" = "실리카";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[2] = "Aluminosilicate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[2]" = "Aluminosilicate";
+"u9E-1I-eSn.ibShadowedObjectValues[2]" = "규산 알루미늄";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[3] = "Aluminophosphate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[3]" = "Aluminophosphate";
+"u9E-1I-eSn.ibShadowedObjectValues[3]" = "인산 알루미늄";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[4] = "Metallophosphate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[4]" = "Metallophosphate";
+"u9E-1I-eSn.ibShadowedObjectValues[4]" = "금속 인산화물";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[5] = "Silicialuminophosphate"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[5]" = "Silicialuminophosphate";
+"u9E-1I-eSn.ibShadowedObjectValues[5]" = "실리코 알루미노 포스페이트";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[6] = "Zeolite"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[6]" = "Zeolite";
+"u9E-1I-eSn.ibShadowedObjectValues[6]" = "제올라이트";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[7] = "MOF"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[7]" = "MOF";
+"u9E-1I-eSn.ibShadowedObjectValues[7]" = "금속유기골격체 (MOF)";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[8] = "COF"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[8]" = "COF";
+"u9E-1I-eSn.ibShadowedObjectValues[8]" = "결합 유기골격 구조 (COF)";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[9] = "ZIF"; ObjectID = "u9E-1I-eSn"; */
-"u9E-1I-eSn.ibShadowedObjectValues[9]" = "ZIF";
+"u9E-1I-eSn.ibShadowedObjectValues[9]" = "제올라이트 이미다졸레이트 구조체 (ZIF)";
 
 /* Class = "NSTextFieldCell"; title = "BY"; ObjectID = "ug2-Cb-fdV"; */
 "ug2-Cb-fdV.title" = "BY";
@@ -459,13 +459,13 @@
 "ugQ-Gv-6sx.title" = "회전 +90";
 
 /* Class = "NSTextFieldCell"; title = "Flip"; ObjectID = "v83-YD-3LI"; */
-"v83-YD-3LI.title" = "튀기다";
+"v83-YD-3LI.title" = "뒤집다";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
 "vhk-8d-Ytl.title" = "구조적 속성";
 
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
-"vwN-1o-Umq.title" = "기공 시스템의 치수";
+"vwN-1o-Umq.title" = "기공 시스템의 차원수";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
 "xXh-YD-ajh.title" = "중량 표면적 (질소)";

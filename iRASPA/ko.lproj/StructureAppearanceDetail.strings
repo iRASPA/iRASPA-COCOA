@@ -9,10 +9,10 @@
 "1gP-QT-h2b.title" = "𝜈";
 
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "1ht-pW-CQ0"; */
-"1ht-pW-CQ0.title" = "불타는 듯한 빛깔";
+"1ht-pW-CQ0.title" = "훤하게";
 
 /* Class = "NSBox"; title = "Back Properties"; ObjectID = "1i4-zc-FLO"; */
-"1i4-zc-FLO.title" = "뒤로 속성";
+"1i4-zc-FLO.title" = "뒤 속성";
 
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "3Ik-9O-zWy"; */
 "3Ik-9O-zWy.title" = "아르곤";
@@ -36,7 +36,7 @@
 "51e-MD-soy.title" = "왼쪽";
 
 /* Class = "NSMenuItem"; title = "Van der Waals"; ObjectID = "543-nV-Xw2"; */
-"543-nV-Xw2.title" = "Van der Waals";
+"543-nV-Xw2.title" = "판데르 발스 (van der Waals)";
 
 /* Class = "NSTextFieldCell"; title = "Type"; ObjectID = "5Pc-9v-LWF"; */
 "5Pc-9v-LWF.title" = "유형";
@@ -48,28 +48,28 @@
 "5dw-7I-GMG.title" = "폰트";
 
 /* Class = "NSTextFieldCell"; title = "Unit cell"; ObjectID = "5pu-BI-tJR"; */
-"5pu-BI-tJR.title" = "단위 세포";
+"5pu-BI-tJR.title" = "단위 결정 구조";
 
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
-"5tk-gG-FdV.title" = "본드 스케일 팩터";
+"5tk-gG-FdV.title" = "결합 축척 비율";
 
 /* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
 "5xK-C0-rPU.title" = "흡착면";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
-"6Aw-j2-ekx.title" = "본드 조명";
+"6Aw-j2-ekx.title" = "결합 조명";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "6LE-C6-Xi3"; */
 "6LE-C6-Xi3.title" = "바닥";
 
 /* Class = "NSMenuItem"; title = "Center"; ObjectID = "6My-58-9Eo"; */
-"6My-58-9Eo.title" = "센터";
+"6My-58-9Eo.title" = "중앙";
 
 /* Class = "NSMenuItem"; title = "Licorice"; ObjectID = "6mE-0U-P7u"; */
-"6mE-0U-P7u.title" = "감초";
+"6mE-0U-P7u.title" = "Licorice";
 
 /* Class = "NSMenuItem"; title = "Force Field First"; ObjectID = "7mT-Qt-DKy"; */
-"7mT-Qt-DKy.title" = "포스 필드 우선";
+"7mT-Qt-DKy.title" = "포스필드 우선";
 
 /* Class = "NSMenuItem"; title = "Hydrogen"; ObjectID = "8Fb-07-tja"; */
 "8Fb-07-tja.title" = "수소";
@@ -78,7 +78,7 @@
 "8ga-HD-e1b.title" = "확산 광 강도";
 
 /* Class = "NSTextFieldCell"; title = "Atoms"; ObjectID = "8ht-z0-szM"; */
-"8ht-z0-szM.title" = "원자";
+"8ht-z0-szM.title" = "원자들";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "8iy-di-Ufc"; */
 "8iy-di-Ufc.title" = "주변 광 강도";
@@ -93,7 +93,7 @@
 "A1A-Jh-xnr.title" = "기본 속성";
 
 /* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "AjV-MB-P5w"; */
-"AjV-MB-P5w.title" = "CO₂";
+"AjV-MB-P5w.title" = "이산화탄소 (CO₂)";
 
 /* Class = "NSMenuItem"; title = "Striped"; ObjectID = "B19-8Y-fy7"; */
 "B19-8Y-fy7.title" = "스트라이프";
@@ -141,7 +141,7 @@
 "Eph-jb-rGr.title" = "회전 -90";
 
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "F0U-6l-67M"; */
-"F0U-6l-67M.title" = "불타는 듯한 빛깔";
+"F0U-6l-67M.title" = "훤하게";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "Fj4-J7-jzg"; */
 "Fj4-J7-jzg.title" = "반사광 강도";
@@ -174,7 +174,7 @@
 "JAw-bD-rCT.title" = "확산 광 강도";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
-"JKn-cA-MRP.title" = "본드 유형";
+"JKn-cA-MRP.title" = "결합 유형";
 
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "JdC-cy-4oD"; */
 "JdC-cy-4oD.title" = "화학 원소";
@@ -282,10 +282,10 @@
 "TPc-vg-PLV.title" = "선택 방사형 배율";
 
 /* Class = "NSMenuItem"; title = "Force Field Type"; ObjectID = "TZ6-3e-HHS"; */
-"TZ6-3e-HHS.title" = "역장 유형";
+"TZ6-3e-HHS.title" = "포스 필드 유형";
 
 /* Class = "NSMenuItem"; title = "Gradient"; ObjectID = "Tlc-XL-RDG"; */
-"Tlc-XL-RDG.title" = "구배";
+"Tlc-XL-RDG.title" = "점층";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Tqo-qK-6Fc"; */
 "Tqo-qK-6Fc.title" = "없음";
@@ -306,13 +306,13 @@
 "Vh4-fU-NL9.title" = "채도";
 
 /* Class = "NSTextFieldCell"; title = "Representation Style"; ObjectID = "WBt-UZ-XVV"; */
-"WBt-UZ-XVV.title" = "표현 스타일";
+"WBt-UZ-XVV.title" = "구현 스타일";
 
 /* Class = "NSBox"; title = "Properties"; ObjectID = "WKe-o0-0cK"; */
 "WKe-o0-0cK.title" = "속성";
 
 /* Class = "NSMenuItem"; title = "Element"; ObjectID = "WOL-ns-wXc"; */
-"WOL-ns-wXc.title" = "요소";
+"WOL-ns-wXc.title" = "원소";
 
 /* Class = "NSTextFieldCell"; title = "Isocontour Value"; ObjectID = "WdL-X5-IMH"; */
 "WdL-X5-IMH.title" = "Isocontour 값";
@@ -324,16 +324,16 @@
 "Y1s-d7-iYT.title" = "반사광 강도";
 
 /* Class = "NSButtonCell"; title = "Capped"; ObjectID = "YAJ-aq-PPI"; */
-"YAJ-aq-PPI.title" = "모자";
+"YAJ-aq-PPI.title" = "제한";
 
 /* Class = "NSMenuItem"; title = "Uniform"; ObjectID = "YN6-b4-xiX"; */
-"YN6-b4-xiX.title" = "제복";
+"YN6-b4-xiX.title" = "고르게";
 
 /* Class = "NSBox"; title = "Front surface"; ObjectID = "Yh2-SE-hS4"; */
 "Yh2-SE-hS4.title" = "전면";
 
 /* Class = "NSBox"; title = "Front Properties"; ObjectID = "YnR-7d-k8p"; */
-"YnR-7d-k8p.title" = "전면 속성";
+"YnR-7d-k8p.title" = "앞 속성";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
 "ZX7-oF-dgu.title" = "높은 동적 범위";
@@ -351,7 +351,7 @@
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "채권 표시";
+"ajZ-C1-kOG.title" = "결합들 표시";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
 "bBY-15-FbE.title" = "반사광 강도";
@@ -381,7 +381,7 @@
 "cTs-hC-amJ.title" = "불투명";
 
 /* Class = "NSMenuItem"; title = "Right"; ObjectID = "cVb-J3-NgY"; */
-"cVb-J3-NgY.title" = "권리";
+"cVb-J3-NgY.title" = "오른쪽";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "ceh-je-eNg"; */
 "ceh-je-eNg.title" = "회전 +90";
@@ -411,7 +411,7 @@
 "e5a-zk-fFj.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "주문";
+"eY8-q5-Em9.title" = "순서";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
 "ehx-ML-HSl.title" = "사물";
@@ -420,7 +420,7 @@
 "erk-nB-D85.title" = "주변 광 강도";
 
 /* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "feQ-1h-daH"; */
-"feQ-1h-daH.title" = "크세논 가스 원소";
+"feQ-1h-daH.title" = "제논";
 
 /* Class = "NSBox"; title = "Back Surface"; ObjectID = "g6G-xC-2Lr"; */
 "g6G-xC-2Lr.title" = "뒷면";
@@ -432,13 +432,13 @@
 "gMu-cC-hhG.title" = "원자 크기 조정";
 
 /* Class = "NSMenuItem"; title = "Glow"; ObjectID = "hJp-8F-jyf"; */
-"hJp-8F-jyf.title" = "불타는 듯한 빛깔";
+"hJp-8F-jyf.title" = "훤하게";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "hyu-qj-36T"; */
 "hyu-qj-36T.title" = "확산 광 강도";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
-"iNJ-ng-4ga.title" = "주문";
+"iNJ-ng-4ga.title" = "순서";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
 "iOI-Yp-RuB.title" = "식별자";
@@ -474,13 +474,13 @@
 "l14-dN-lr4.title" = "256x256x256";
 
 /* Class = "NSTextFieldCell"; title = "Unit Cell Size Scaling"; ObjectID = "lsI-qu-rBk"; */
-"lsI-qu-rBk.title" = "단위 셀 크기 조정";
+"lsI-qu-rBk.title" = "단위 격자 크기 조정";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "mx2-LA-CaG"; */
 "mx2-LA-CaG.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Bonds"; ObjectID = "nGx-4p-hvc"; */
-"nGx-4p-hvc.title" = "채권";
+"nGx-4p-hvc.title" = "결합들";
 
 /* Class = "NSButtonCell"; title = "Show Adsorption Surface"; ObjectID = "nOa-3D-Seb"; */
 "nOa-3D-Seb.title" = "흡착 표면 표시";
@@ -504,13 +504,13 @@
 "ofQ-6q-SUf.title" = "식별자";
 
 /* Class = "NSMenuItem"; title = "Charge"; ObjectID = "orw-61-fer"; */
-"orw-61-fer.title" = "요금";
+"orw-61-fer.title" = "전하";
 
 /* Class = "NSBox"; title = "Atom Lighting"; ObjectID = "osH-Uy-RWH"; */
 "osH-Uy-RWH.title" = "원자 조명";
 
 /* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "qxB-3k-fDI"; */
-"qxB-3k-fDI.title" = "역장";
+"qxB-3k-fDI.title" = "포스 필드";
 
 /* Class = "NSTextFieldCell"; title = "𝜈"; ObjectID = "r01-Rv-5CI"; */
 "r01-Rv-5CI.title" = "𝜈";
@@ -522,7 +522,7 @@
 "sNS-go-NVl.title" = "높은 동적 범위";
 
 /* Class = "NSTextFieldCell"; title = "Selection Style"; ObjectID = "sbB-IC-Nwj"; */
-"sbB-IC-Nwj.title" = "선택 스타일";
+"sbB-IC-Nwj.title" = "스타일 선택";
 
 /* Class = "NSButtonCell"; title = "Ambient Occlusion"; ObjectID = "sg7-lY-CcT"; */
 "sg7-lY-CcT.title" = "주변 폐색";
@@ -531,7 +531,7 @@
 "tB8-Qh-FEQ.title" = "Rasmol Modern";
 
 /* Class = "NSTextFieldCell"; title = "Number of Sides"; ObjectID = "tGv-cl-rkV"; */
-"tGv-cl-rkV.title" = "면 수";
+"tGv-cl-rkV.title" = "면의 갯수";
 
 /* Class = "NSMenuItem"; title = "Split"; ObjectID = "tR7-cx-f3N"; */
 "tR7-cx-f3N.title" = "스플릿";
@@ -540,10 +540,10 @@
 "toC-zQ-Spl.title" = "Vesta";
 
 /* Class = "NSMenuItem"; title = "Flat Billboard"; ObjectID = "u3h-os-pF2"; */
-"u3h-os-pF2.title" = "플랫 빌보드";
+"u3h-os-pF2.title" = "평평한 빌보드";
 
 /* Class = "NSMenuItem"; title = "Fancy"; ObjectID = "uwl-dE-KfA"; */
-"uwl-dE-KfA.title" = "공상";
+"uwl-dE-KfA.title" = "멋지게";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle z"; ObjectID = "v4w-js-bAc"; */
 "v4w-js-bAc.placeholderString" = "각도 z";

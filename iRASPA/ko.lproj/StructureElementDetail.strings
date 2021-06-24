@@ -9,7 +9,7 @@
 "8e2-Cm-y6m.title" = "공유 반경";
 
 /* Class = "NSTextFieldCell"; title = "Element"; ObjectID = "As1-ca-pPh"; */
-"As1-ca-pPh.title" = "요소";
+"As1-ca-pPh.title" = "원소";
 
 /* Class = "NSTextFieldCell"; title = "Atomic Mass"; ObjectID = "Au8-cE-UXV"; */
 "Au8-cE-UXV.title" = "원자 질량";
@@ -21,22 +21,22 @@
 "HW9-vP-rgD.title" = "사용자 정의 반경";
 
 /* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[0] = "Item 1"; ObjectID = "JMk-0p-M2g"; */
-"JMk-0p-M2g.ibShadowedObjectValues[0]" = "Item 1";
+"JMk-0p-M2g.ibShadowedObjectValues[0]" = "아이템 1";
 
 /* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[1] = "Item 2"; ObjectID = "JMk-0p-M2g"; */
-"JMk-0p-M2g.ibShadowedObjectValues[1]" = "Item 2";
+"JMk-0p-M2g.ibShadowedObjectValues[1]" = "아이템 2";
 
 /* Class = "NSComboBoxCell"; JMk-0p-M2g.ibShadowedObjectValues[2] = "Item 3"; ObjectID = "JMk-0p-M2g"; */
-"JMk-0p-M2g.ibShadowedObjectValues[2]" = "Item 3";
+"JMk-0p-M2g.ibShadowedObjectValues[2]" = "아이템 3";
 
 /* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[0] = "Item 1"; ObjectID = "MPA-12-IGt"; */
-"MPA-12-IGt.ibShadowedObjectValues[0]" = "Item 1";
+"MPA-12-IGt.ibShadowedObjectValues[0]" = "아이템 1";
 
 /* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[1] = "Item 2"; ObjectID = "MPA-12-IGt"; */
-"MPA-12-IGt.ibShadowedObjectValues[1]" = "Item 2";
+"MPA-12-IGt.ibShadowedObjectValues[1]" = "아이템 2";
 
 /* Class = "NSComboBoxCell"; MPA-12-IGt.ibShadowedObjectValues[2] = "Item 3"; ObjectID = "MPA-12-IGt"; */
-"MPA-12-IGt.ibShadowedObjectValues[2]" = "Item 3";
+"MPA-12-IGt.ibShadowedObjectValues[2]" = "아이템 3";
 
 /* Class = "NSMenuItem"; title = "Insert new type"; ObjectID = "OfD-wL-UX4"; */
 "OfD-wL-UX4.title" = "새 유형 삽입";
@@ -72,7 +72,7 @@
 "d0R-zc-cge.title" = "원자 반경";
 
 /* Class = "NSTextFieldCell"; title = "Triple Bond Covalent Radius"; ObjectID = "dAx-rW-eh4"; */
-"dAx-rW-eh4.title" = "삼중 결합 공유 반경";
+"dAx-rW-eh4.title" = "삼중 공유 결합 반경";
 
 /* Class = "NSTextFieldCell"; title = "Å"; ObjectID = "ed7-vv-cRQ"; */
 "ed7-vv-cRQ.title" = "Å";
@@ -90,7 +90,7 @@
 "nb3-UI-e9y.title" = "가능한 산화 상태";
 
 /* Class = "NSTextFieldCell"; title = "Van der Waals Radius"; ObjectID = "prv-DF-MqL"; */
-"prv-DF-MqL.title" = "반 데르 발스 반경";
+"prv-DF-MqL.title" = "판데르발스 반경";
 
 /* Class = "NSTextFieldCell"; title = "Carbon"; ObjectID = "rF4-Eu-aR8"; */
 "rF4-Eu-aR8.title" = "탄소";

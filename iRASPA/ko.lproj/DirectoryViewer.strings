@@ -1,6 +1,6 @@
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "2Tn-ME-kQY"; */
-"2Tn-ME-kQY.title" = "보다 크거나 같음";
+"2Tn-ME-kQY.title" = "보다 크거나 같다";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "2xV-5s-XJR"; */
 "2xV-5s-XJR.title" = "아니다";
@@ -36,22 +36,22 @@
 "BAq-UZ-KqW.title" = "아니다";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "BeK-rc-N2x"; */
-"BeK-rc-N2x.title" = "보다 작거나 같";
+"BeK-rc-N2x.title" = "보다 작거나 같다.";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "BrN-Gl-4eW"; */
-"BrN-Gl-4eW.title" = "보다 작거나 같";
+"BrN-Gl-4eW.title" = "보다 작거나 같다";
 
 /* Class = "NSMenuItem"; title = "Framework density"; ObjectID = "CYp-Lk-sjk"; */
-"CYp-Lk-sjk.title" = "프레임 워크 밀도";
+"CYp-Lk-sjk.title" = "구조체 밀도";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "CaW-PN-akd"; */
 "CaW-PN-akd.title" = "보다 큼";
 
 /* Class = "NSMenuItem"; title = "Geometric nitrogen surface area"; ObjectID = "CgQ-4C-1zP"; */
-"CgQ-4C-1zP.title" = "기하학적 질소 표면적";
+"CgQ-4C-1zP.title" = "질소 프로브를 활용한 기하학 기반 표면적";
 
 /* Class = "NSMenuItem"; title = "Framework mass"; ObjectID = "Cul-r9-NEn"; */
-"Cul-r9-NEn.title" = "프레임 워크 질량";
+"Cul-r9-NEn.title" = "구조체 질량";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "DOl-fr-jFp"; */
 "DOl-fr-jFp.title" = "이다";
@@ -105,7 +105,7 @@
 "NFS-dV-S3m.title" = "이다";
 
 /* Class = "NSMenuItem"; title = "Volumetric nitrogen surface area"; ObjectID = "OJi-AT-Kw8"; */
-"OJi-AT-Kw8.title" = "체적 질소 표면적";
+"OJi-AT-Kw8.title" = "질소 프로브를 활용한 단위 부피당 표면적";
 
 /* Class = "NSMenuItem"; title = "Dimensionality"; ObjectID = "OhS-R4-lBt"; */
 "OhS-R4-lBt.title" = "차원";
@@ -129,7 +129,7 @@
 "QAT-BU-IHn.title" = "이다";
 
 /* Class = "NSMenuItem"; title = "Largest cavity diameter"; ObjectID = "QZV-BO-K2P"; */
-"QZV-BO-K2P.title" = "최대 캐비티 직경";
+"QZV-BO-K2P.title" = "최대 공극 직경";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "QjQ-JG-tdg"; */
 "QjQ-JG-tdg.title" = "보다 큼";
@@ -195,7 +195,7 @@
 "cRo-CA-Ium.title" = "아니다";
 
 /* Class = "NSMenuItem"; title = "Framework specific volume"; ObjectID = "cSF-kJ-biE"; */
-"cSF-kJ-biE.title" = "프레임 워크 특정 볼륨";
+"cSF-kJ-biE.title" = "구조체 단위 볼륨";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "dOd-mh-hCL"; */
 "dOd-mh-hCL.title" = "보다 큼";
@@ -237,16 +237,16 @@
 "jzb-Dx-hPf.title" = "보다 큼";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "kVA-aZ-dPx"; */
-"kVA-aZ-dPx.title" = "Box";
+"kVA-aZ-dPx.title" = "박스";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "lVF-n6-d3v"; */
 "lVF-n6-d3v.title" = "보다 작다";
 
 /* Class = "NSMenuItem"; title = "matches"; ObjectID = "lbV-FO-8zT"; */
-"lbV-FO-8zT.title" = "성냥";
+"lbV-FO-8zT.title" = "일치하는";
 
 /* Class = "NSMenuItem"; title = "Framework accessible volume"; ObjectID = "lc0-Us-BEz"; */
-"lc0-Us-BEz.title" = "프레임 워크 액세스 가능 볼륨";
+"lc0-Us-BEz.title" = "접근가능한 구조체의 부피";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "nkM-Gr-sR9"; */
 "nkM-Gr-sR9.title" = "보다 크거나 같음";
@@ -255,7 +255,7 @@
 "nkO-Je-8yy.title" = "보다 크거나 같음";
 
 /* Class = "NSMenuItem"; title = "Largest diameter along path"; ObjectID = "nwU-Tm-pkO"; */
-"nwU-Tm-pkO.title" = "경로를 따라 가장 큰 지름";
+"nwU-Tm-pkO.title" = "경로 따라 가장 큰 지름";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "ogm-BP-v2k"; */
 "ogm-BP-v2k.title" = "보다 큼";
