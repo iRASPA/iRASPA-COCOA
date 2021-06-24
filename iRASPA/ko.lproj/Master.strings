@@ -48,7 +48,7 @@
 "NQW-mX-NqP.placeholderString" = "필터";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "NtS-cJ-UOq"; */
-"NtS-cJ-UOq.title" = "Box";
+"NtS-cJ-UOq.title" = "박스";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "O1x-dW-EEr"; */
 "O1x-dW-EEr.title" = "Text Cell";
@@ -60,7 +60,7 @@
 "OOb-3Y-cOg.title" = "분자 결정 추가";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "PBb-Do-JMr"; */
-"PBb-Do-JMr.title" = "Box";
+"PBb-Do-JMr.title" = "박스";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
 "PS8-Ne-mbi.ibShadowedToolTips[0]" = "프로젝트 네비게이터를 표시합니다.";
@@ -72,7 +72,7 @@
 "PS8-Ne-mbi.ibShadowedToolTips[2]" = "프레임 탐색기를 표시합니다.";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
-"QFA-05-Kql.title" = "Box";
+"QFA-05-Kql.title" = "박스";
 
 /* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
 "RMC-nN-w7D.title" = "단백질 추가";
@@ -90,16 +90,16 @@
 "TAX-Oq-9O2.title" = "타원체";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
-"Toa-8e-8sy.title" = "Box";
+"Toa-8e-8sy.title" = "박스";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
-"VoW-P5-q6k.title" = "Box";
+"VoW-P5-q6k.title" = "박스";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
-"Ypv-d2-rqY.title" = "Text Cell";
+"Ypv-d2-rqY.title" = "문자 셀";
 
 /* Class = "NSMenuItem"; title = "Load from Cloud/make editable"; ObjectID = "buF-AA-E4m"; */
-"buF-AA-E4m.title" = "클라우드에서로드 / 편집 가능하게 만들기";
+"buF-AA-E4m.title" = "클라우드에서 불러오기 / 편집 가능하게 만들기";
 
 /* Class = "NSMenu"; title = "Add Objects"; ObjectID = "d98-LF-qMp"; */
 "d98-LF-qMp.title" = "개체 추가";
@@ -110,8 +110,8 @@
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
 "eMF-nr-fbD.title" = "다각형 프리즘";
 
-/* Class = "NSMenuItem"; title = "Save CoREMOF Database"; ObjectID = "guV-7k-U3c"; */
-"guV-7k-U3c.title" = "CoREMOF 데이터베이스 저장";
+/* Class = "NSMenuItem"; title = "Save CoRE-MOF Database"; ObjectID = "guV-7k-U3c"; */
+"guV-7k-U3c.title" = "CoRE-MOF 데이터베이스 저장";
 
 /* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "muR-Z9-sae"; */
 "muR-Z9-sae.title" = "분자 추가";

@@ -9,13 +9,13 @@
 "0ro-vd-hvU.title" = "+Z";
 
 /* Class = "NSTextFieldCell"; title = "Angle of View"; ObjectID = "1zS-f8-iGq"; */
-"1zS-f8-iGq.title" = "화각";
+"1zS-f8-iGq.title" = "보이는 각도";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "3AB-fJ-slY"; */
 "3AB-fJ-slY.title" = "회전 +90°";
 
 /* Class = "NSButtonCell"; title = "Cm"; ObjectID = "3pH-Uc-D8j"; */
-"3pH-Uc-D8j.title" = "Cm";
+"3pH-Uc-D8j.title" = "센티미터";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "57t-sa-bti"; */
 "57t-sa-bti.title" = "회전 각도";
@@ -33,10 +33,10 @@
 "6ax-JH-gEz.title" = "재설정";
 
 /* Class = "NSBox"; title = "Edit Dimensions"; ObjectID = "6eO-AH-Xf2"; */
-"6eO-AH-Xf2.title" = "치수 편집";
+"6eO-AH-Xf2.title" = "크기 편집";
 
 /* Class = "NSButtonCell"; title = "Image"; ObjectID = "76r-PN-1MB"; */
-"76r-PN-1MB.title" = "영상";
+"76r-PN-1MB.title" = "이미지";
 
 /* Class = "NSMenuItem"; title = "8-bits, RGB"; ObjectID = "7II-ou-nrF"; */
 "7II-ou-nrF.title" = "8 비트, RGB";
@@ -45,7 +45,7 @@
 "7OD-5b-Be8.title" = "카메라 재설정";
 
 /* Class = "NSTabViewItem"; label = "Image"; ObjectID = "7Xu-ua-Aaa"; */
-"7Xu-ua-Aaa.label" = "영상";
+"7Xu-ua-Aaa.label" = "이미지";
 
 /* Class = "NSMenuItem"; title = "150 dpi"; ObjectID = "8FT-Ib-RKI"; */
 "8FT-Ib-RKI.title" = "150 dpi";
@@ -54,7 +54,7 @@
 "9XT-W6-7iV.title" = "원근법";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
-"A0b-wl-zfu.title" = "불빛";
+"A0b-wl-zfu.title" = "광원들";
 
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
 "AWE-1B-YAz.placeholderString" = "cx";
@@ -81,16 +81,16 @@
 "G71-xR-yVF.title" = "회전 +90°";
 
 /* Class = "NSButtonCell"; title = "Linear Gradient"; ObjectID = "I7e-iR-yaY"; */
-"I7e-iR-yaY.title" = "선형 그라디언트";
+"I7e-iR-yaY.title" = "선형 구배 (gradient)";
 
 /* Class = "NSMenuItem"; title = "8-bits, CMYK"; ObjectID = "JiR-AU-7kF"; */
 "JiR-AU-7kF.title" = "8 비트, CMYK";
 
 /* Class = "NSButtonCell"; title = "Create Movie"; ObjectID = "Juc-g9-TL7"; */
-"Juc-g9-TL7.title" = "영화 만들기";
+"Juc-g9-TL7.title" = "무비 만들기";
 
 /* Class = "NSBox"; title = "Camera Light"; ObjectID = "Jzl-ba-QmS"; */
-"Jzl-ba-QmS.title" = "카메라 라이트";
+"Jzl-ba-QmS.title" = "카메라 광원";
 
 /* Class = "NSTextFieldCell"; title = "From"; ObjectID = "Kzo-ya-Jtv"; */
 "Kzo-ya-Jtv.title" = "에서";
@@ -99,13 +99,13 @@
 "LQP-iH-ONP.placeholderString" = "bz";
 
 /* Class = "NSTextFieldCell"; title = "Pictures/Movies"; ObjectID = "MBE-Ci-b6w"; */
-"MBE-Ci-b6w.title" = "사진 / 영화";
+"MBE-Ci-b6w.title" = "사진 / 무비";
 
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "MEZ-QI-Kgi"; */
 "MEZ-QI-Kgi.title" = "회전 +90°";
 
 /* Class = "NSTabViewItem"; label = "Radial Gradient"; ObjectID = "NfR-n9-0Kg"; */
-"NfR-n9-0Kg.label" = "방사형 그라데이션";
+"NfR-n9-0Kg.label" = "방사형 구배 (gradient)";
 
 /* Class = "NSMenuItem"; title = "72 dpi"; ObjectID = "OgY-Mc-Pa0"; */
 "OgY-Mc-Pa0.title" = "72 dpi";
@@ -150,7 +150,7 @@
 "VDa-dN-sUv.title" = "픽셀 치수";
 
 /* Class = "NSTextFieldCell"; title = "Overall Luminance"; ObjectID = "VKg-ty-t0D"; */
-"VKg-ty-t0D.title" = "전체 휘도";
+"VKg-ty-t0D.title" = "전체 밝기";
 
 /* Class = "NSButtonCell"; title = "-X"; ObjectID = "Vlq-HR-Lxn"; */
 "Vlq-HR-Lxn.title" = "-X";
@@ -159,7 +159,7 @@
 "WFD-2H-apd.placeholderString" = "bx";
 
 /* Class = "NSButtonCell"; title = "Radial Gradient"; ObjectID = "X0p-ze-Zzs"; */
-"X0p-ze-Zzs.title" = "방사형 그라데이션";
+"X0p-ze-Zzs.title" = "방사형 구배 (gradient)";
 
 /* Class = "NSTextFieldCell"; title = "To"; ObjectID = "XeU-0O-MTz"; */
 "XeU-0O-MTz.title" = "에";
@@ -195,7 +195,7 @@
 "dor-ov-Wkd.title" = "배경";
 
 /* Class = "NSTabViewItem"; label = "Linear Gradient"; ObjectID = "enh-gY-DeN"; */
-"enh-gY-DeN.label" = "선형 그라디언트";
+"enh-gY-DeN.label" = "선형 구배 (gradient)";
 
 /* Class = "NSBox"; title = "Projection"; ObjectID = "fM1-LC-a88"; */
 "fM1-LC-a88.title" = "투사";
@@ -231,7 +231,7 @@
 "loi-gG-s0z.title" = "장면의 중심";
 
 /* Class = "NSBox"; title = "View Matrix"; ObjectID = "lws-F1-am6"; */
-"lws-F1-am6.title" = "매트릭스보기";
+"lws-F1-am6.title" = "매트릭스 보기";
 
 /* Class = "NSMenuItem"; title = "600 dpi"; ObjectID = "mfB-Ok-4s0"; */
 "mfB-Ok-4s0.title" = "600 dpi";
@@ -276,7 +276,7 @@
 "yHr-tp-pfy.title" = "선택";
 
 /* Class = "NSTextFieldCell"; title = "Image"; ObjectID = "zBc-ll-o44"; */
-"zBc-ll-o44.title" = "영상";
+"zBc-ll-o44.title" = "이미지";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "zor-Zk-OSK"; */
 "zor-Zk-OSK.title" = "반사광 강도";

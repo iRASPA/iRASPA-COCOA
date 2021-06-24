@@ -9,7 +9,7 @@
 "KMJ-Zm-flM.ibShadowedLabels[0]" = "카메라";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[1] = "Elements"; ObjectID = "KMJ-Zm-flM"; */
-"KMJ-Zm-flM.ibShadowedLabels[1]" = "집단";
+"KMJ-Zm-flM.ibShadowedLabels[1]" = "원소들";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[2] = "Info"; ObjectID = "KMJ-Zm-flM"; */
 "KMJ-Zm-flM.ibShadowedLabels[2]" = "정보";
@@ -30,7 +30,7 @@
 "Xel-Em-yJ8.label" = "Tab";
 
 /* Class = "NSTabViewItem"; label = "Item 2"; ObjectID = "hLV-ao-VrN"; */
-"hLV-ao-VrN.label" = "Item 2";
+"hLV-ao-VrN.label" = "아이템 2";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "w1T-pF-1Dy"; */
-"w1T-pF-1Dy.title" = "Box";
+"w1T-pF-1Dy.title" = "박스";
