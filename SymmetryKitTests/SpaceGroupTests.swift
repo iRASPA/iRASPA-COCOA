@@ -1307,13 +1307,13 @@ class SpaceGroupTests: XCTestCase
     }
   }
 
+  
   /*
-  // Test-cases assembled in Spglib by Atsushi Togo (https://github.com/spglib/spglib)
   func testFindVirtualSpaceGroupFail()
   {
     let testData: [String: Int] =
     [
-      "SpglibTestData/virtual_structure/POSCAR-230-230-conv-62" : 230
+      "SpglibTestData/virtual_structure/POSCAR-89-222-12" : 89
     ]
     
     let bundle = Bundle(for: type(of: self))
@@ -1325,8 +1325,9 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition, $0.type)}
           print(reader.atoms.count)
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {

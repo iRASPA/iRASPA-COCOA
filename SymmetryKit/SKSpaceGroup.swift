@@ -256,7 +256,7 @@ public struct SKSpacegroup
   }
   
   
-  public var searchGenerators: [SKSeitzMatrix]
+  public var searchGenerators: [SKSeitzIntegerMatrix]
   {
     let symmetryOperationsSet: SKSymmetryOperationSet = SKSymmetryOperationSet(spaceGroupSetting: self.spaceGroupSetting, centroSymmetric: false)
     
@@ -265,11 +265,11 @@ public struct SKSpacegroup
 
     if let generatorSet: (required: [SKRotationMatrix], optional: [SKRotationMatrix]) = SKRotationMatrix.generators[holedry]
     {
-      var generatorList: [SKSeitzMatrix] = []
+      var generatorList: [SKSeitzIntegerMatrix] = []
         
       for generator in generatorSet.required
       {
-        let requiredRotationMatrices: [SKSeitzMatrix] = symmetryOperationsSet.operations.filter{$0.rotation.proper == generator}
+        let requiredRotationMatrices: [SKSeitzIntegerMatrix] = symmetryOperationsSet.operations.filter{$0.rotation.proper == generator}
         if requiredRotationMatrices.isEmpty
         {
           continue
@@ -278,7 +278,7 @@ public struct SKSpacegroup
         
         for generator in generatorSet.optional
         {
-          let foundRotationMatrices: [SKSeitzMatrix] = symmetryOperationsSet.operations.filter{$0.rotation.proper == generator}
+          let foundRotationMatrices: [SKSeitzIntegerMatrix] = symmetryOperationsSet.operations.filter{$0.rotation.proper == generator}
           if !foundRotationMatrices.isEmpty
           {
             generatorList.append(foundRotationMatrices.first!)
@@ -296,7 +296,7 @@ public struct SKSpacegroup
         if centroSymmetric
         {
           let symmetryOperationsSet: SKSymmetryOperationSet = SKSymmetryOperationSet(spaceGroupSetting: self.spaceGroupSetting, centroSymmetric: true)
-          let inversionMatrices: [SKSeitzMatrix] = symmetryOperationsSet.operations.filter{$0.rotation == SKRotationMatrix.inversionIdentity}
+          let inversionMatrices: [SKSeitzIntegerMatrix] = symmetryOperationsSet.operations.filter{$0.rotation == SKRotationMatrix.inversionIdentity}
           if !inversionMatrices.isEmpty
           {
             generatorList.append(inversionMatrices.first!)

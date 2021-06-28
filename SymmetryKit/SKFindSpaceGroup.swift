@@ -77,10 +77,10 @@ extension SKSpacegroup
     let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minIndex}
     
     // search for a primitive cell based on the positions of the atoms
-    let primitiveUnitCell: double3x3 = SKSymmetryCell.findPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
+    let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
     
     //let primitiveCell: SKCell = SKCell(unitCell: primitiveUnitCell)
-    let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell)
+    guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell) else {return nil}
     let DelaunayCell: SKSymmetryCell = SKSymmetryCell(unitCell: DelaunayUnitCell)
     //let NiggliCell: (cell: SKCell, changeOfBasis: int3x3) = DelaunayCell.computeReducedNiggliCellAndChangeOfBasisMatrix!
     
@@ -165,17 +165,10 @@ extension SKSpacegroup
     let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
     
     // search for a primitive cell based on the positions of the atoms
-    let primitiveUnitCell: double3x3 = SKSymmetryCell.findPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
-    
-    //debugPrint("primitiveUnitCell: \(primitiveUnitCell)")
-    
-    //Swift.print("primitiveUnitCell: \(primitiveUnitCell)")
-    
+    let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
+  
     // convert the unit cell to a reduced Delaunay cell
-    let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision)
-    
- 
-    //Swift.print("DelaunayUnitCell: \(DelaunayUnitCell)")
+    guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else {return nil}
     
     // find the rotational symmetry of the reduced Delaunay cell
     let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
@@ -284,7 +277,7 @@ extension SKSpacegroup
   /// - returns: the symmetry operations, i.e. a list of (integer rotation matrix, translation vector)
   public static func findSpaceGroupSymmetry(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], latticeSymmetries: SKPointSymmetrySet, symmetryPrecision: Double = 1e-4) -> SKSymmetryOperationSet
   {
-    var spaceGroupSymmetries: [SKSeitzMatrix] = []
+    var spaceGroupSymmetries: [SKSeitzIntegerMatrix] = []
     
     for rotationMatrix in latticeSymmetries.rotations
     {
@@ -292,7 +285,7 @@ extension SKSpacegroup
       
       for translation in translations
       {
-        spaceGroupSymmetries.append(SKSeitzMatrix(rotation: rotationMatrix, translation: translation))
+        spaceGroupSymmetries.append(SKSeitzIntegerMatrix(rotation: rotationMatrix, translation: translation))
       }
     }
     return SKSymmetryOperationSet(operations: spaceGroupSymmetries)
@@ -301,13 +294,13 @@ extension SKSpacegroup
   
 
   
-  public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) throws -> SIMD3<Double>?
+  public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKChangeOfBasis, seitzMatrices: [SKSeitzIntegerMatrix], symmetryPrecision: Double = 1e-5) throws -> SIMD3<Double>?
   {
     var translations: int3x3 = int3x3()
     
     
     let dataBaseSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
-    var dataBaseSpaceGroupGenerators = SKSeitzMatrix.SeitzMatrices(generatorEncoding: dataBaseSpaceGroup.spaceGroupSetting.encodedGenerators)
+    var dataBaseSpaceGroupGenerators = SKSeitzIntegerMatrix.SeitzMatrices(generatorEncoding: dataBaseSpaceGroup.spaceGroupSetting.encodedGenerators)
     
     // apply change-of-basis to generators
     for i in 0..<dataBaseSpaceGroupGenerators.count
@@ -351,7 +344,7 @@ extension SKSpacegroup
     }
     
     // apply change-of-basis to the Seitz-matrices
-    var dataBaseSpaceGroupSeitzMatrices: [SKSeitzMatrix] =  dataBaseSpaceGroup.spaceGroupSetting.SeitzMatricesWithoutTranslation
+    var dataBaseSpaceGroupSeitzMatrices: [SKSeitzIntegerMatrix] =  dataBaseSpaceGroup.spaceGroupSetting.SeitzMatricesWithoutTranslation
     for i in 0..<dataBaseSpaceGroupSeitzMatrices.count
     {
       dataBaseSpaceGroupSeitzMatrices[i] = changeOfBasis * dataBaseSpaceGroupSeitzMatrices[i]
@@ -399,6 +392,7 @@ extension SKSpacegroup
     let t2: int3x3 = changeToPrimitive * (r2 - int3x3.identity)
     let t3: int3x3 = changeToPrimitive * (r3 - int3x3.identity)
     
+    // m is a 9x3 matrix
     let m: RingMatrix = RingMatrix(Int3x3: [t1,t2,t3])
     let sol:  (P: RingMatrix, Q: RingMatrix, D: RingMatrix) = try m.SmithNormalForm()
     
@@ -411,7 +405,7 @@ extension SKSpacegroup
     var x: IntegerMatrix = IntegerMatrix(numberOfRows: 9, numberOfColumns: 1, denominator: 12)
     for i in 0..<dataBaseSpaceGroupGenerators.count
     {
-      let seitzMatrix: SKSeitzMatrix? = dataBaseSpaceGroupSeitzMatrices.filter{$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}.first
+      let seitzMatrix: SKSeitzIntegerMatrix? = dataBaseSpaceGroupSeitzMatrices.filter{$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}.first
       guard seitzMatrix != nil else {return nil}
       
       let transPrimitive: SIMD3<Int32> = changeToPrimitive * translations[i]
@@ -452,7 +446,7 @@ extension SKSpacegroup
   }
   
     
-  public static func matchSpaceGroup(HallNumber: Int, pointGroupNumber: Int,centering: SKSpacegroup.Centring, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5)  -> (origin: SIMD3<Double>, changeOfBasis: SKChangeOfBasis)?
+  public static func matchSpaceGroup(HallNumber: Int, pointGroupNumber: Int,centering: SKSpacegroup.Centring, seitzMatrices: [SKSeitzIntegerMatrix], symmetryPrecision: Double = 1e-5)  -> (origin: SIMD3<Double>, changeOfBasis: SKChangeOfBasis)?
   {
     // bail out early if the checked space group is not of the right point-group
     if SKSpacegroup.spaceGroupData[HallNumber].pointGroupNumber != pointGroupNumber

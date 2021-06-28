@@ -517,10 +517,19 @@ public extension SKRotationMatrix
   /// - parameter unitCell: unit cell of the lattice
   ///
   /// - returns: the symmetry elements, i.e. a list of integer rotation matrices
+  ///
+  /// The metric tensor is computed as Gij = ai · aj = h^T h, where h^T is the transpose of h and h = ( a1 , a2 , a3 ) , the transformation matrix between Cartesian and lattice coordinates, i,e, the unit cell.
+  /// Lebedev et al.(2006) introduced the idea of simply enumerating all 3x3 matrices with elements {-1,0,1} and determinant of 1 or -1.
+  /// W is a distance-preserving transformation called (linear) isometry or orthogonal transformation describing a proper or improper rotation.
+  /// Determinant det(W) = +/- 1, and thus each isometry is reversible. A reversal of W, that is rotation in the opposite direction, is equivalent to transposition, since W^-1= W^T.
+  /// W transforms the lattice basis A' = A W or M' =  W^T M W
+  /// 10.1107/s2053273315001096
+  /// Le Page, Y. (1982). J. Appl. Cryst. 15, 255-259.
+  /// Lebedev, A.A., Vagin, A.A. & Murshudov, G.N. (2006). Acta Cryst. D62, 83-95.
   static func findLatticeSymmetry(unitCell min_lattice: double3x3, symmetryPrecision: Double = 1e-4) -> SKPointSymmetrySet
   {
     var pointSymmetries: Set<SKRotationMatrix> = Set<SKRotationMatrix>(minimumCapacity: 192)
-    let metric_orig: double3x3 = min_lattice.transpose * min_lattice
+    let latticeMetricMatrix: double3x3 = min_lattice.transpose * min_lattice
     
     let latticeAxes: [SIMD3<Int32>] = [
       SIMD3<Int32>( 1, 1, 1),
@@ -559,14 +568,19 @@ public extension SKRotationMatrix
         for thirdAxis in latticeAxes
         {
           let axes: SKRotationMatrix = SKRotationMatrix([firstAxis, secondAxis, thirdAxis])
+          let determinant: Int = axes.determinant
           
           // if the determinant is 1 or -1 we have a (proper) rotation  (6960 proper rotations)
-          if (axes.determinant == 1 || axes.determinant == -1)
+          if (determinant == 1 || determinant == -1)
           {
-            let lattice: double3x3 = min_lattice * double3x3(int3x3: axes)
-            let metric: double3x3 = lattice.transpose * lattice
+            let transformationMatrix: double3x3 = double3x3(int3x3: axes)
+            // the inverse of a rotation matrix is its transpose, so we use the transpose here
+            let inverseTransformationMatrix: double3x3 = transformationMatrix.transpose
             
-            if (SKSymmetryCell.isIdentityMetric(metric_rotated: metric, metric_orig: metric_orig, symmetryPrecision: symmetryPrecision, angleSymmetryPrecision: -1.0))
+            // Apply a change of basis on the latticeMetricMatrix using the rotation matrix
+            let transformedLatticeMetricMatrix: double3x3 = inverseTransformationMatrix * latticeMetricMatrix * transformationMatrix
+            
+            if (SKSymmetryCell.isIdentityMetric(transformedMetricMatrix: transformedLatticeMetricMatrix, metricMatrix: latticeMetricMatrix, symmetryPrecision: symmetryPrecision, angleSymmetryPrecision: -1.0))
             {
               pointSymmetries.insert(axes)
             }

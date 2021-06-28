@@ -35,10 +35,10 @@ import MathKit
 
 public struct SKSymmetryOperationSet
 {
-  public var operations: [SKSeitzMatrix]
+  public var operations: [SKSeitzIntegerMatrix]
   public var centring: SKSpacegroup.Centring
   
-  public init(operations: [SKSeitzMatrix])
+  public init(operations: [SKSeitzIntegerMatrix])
   {
     self.operations = operations
     self.centring = .primitive
@@ -87,7 +87,7 @@ public struct SKSymmetryOperationSet
       let y: UInt8 = encoding[3 * i + 1]
       let z: UInt8 = encoding[3 * i + 2]
       
-      operations.append( SKSeitzMatrix(encoding: (x,y,z)) )
+      operations.append( SKSeitzIntegerMatrix(encoding: (x,y,z)) )
     }
   }
   
@@ -104,7 +104,7 @@ public struct SKSymmetryOperationSet
       let y: UInt8 = spaceGroupSetting.encodedSeitz[3 * i + 1]
       let z: UInt8 = spaceGroupSetting.encodedSeitz[3 * i + 2]
       
-      let seitz:SKSeitzMatrix = SKSeitzMatrix(encoding: (x,y,z))
+      let seitz:SKSeitzIntegerMatrix = SKSeitzIntegerMatrix(encoding: (x,y,z))
       
       operations.append(seitz)
     }
@@ -117,19 +117,19 @@ public struct SKSymmetryOperationSet
         let y: UInt8 = spaceGroupSetting.encodedSeitz[3 * i + 1]
         let z: UInt8 = spaceGroupSetting.encodedSeitz[3 * i + 2]
         
-        let seitz:SKSeitzMatrix = SKSeitzMatrix(encoding: (x,y,z))
+        let seitz:SKSeitzIntegerMatrix = SKSeitzIntegerMatrix(encoding: (x,y,z))
         
         let translation: SIMD3<Int32> = seitz.translation + seitz.rotation * spaceGroupSetting.inversionCenter
         
-        operations.append(SKSeitzMatrix(rotation: -seitz.rotation, translation: translation))
+        operations.append(SKSeitzIntegerMatrix(rotation: -seitz.rotation, translation: translation))
       }
     }
   }
   
    
-  init(generators: [SKSeitzMatrix])
+  init(generators: [SKSeitzIntegerMatrix])
   {
-    var expandedGroup: [SKSeitzMatrix] = []
+    var expandedGroup: [SKSeitzIntegerMatrix] = []
     
     var count: Int = 0
     
@@ -137,7 +137,7 @@ public struct SKSymmetryOperationSet
     {
       var i: Int = expandedGroup.count
       var j: Int = 0
-      var element: SKSeitzMatrix = k
+      var element: SKSeitzIntegerMatrix = k
       while (true)
       {
         count = count + 1
@@ -171,7 +171,7 @@ public struct SKSymmetryOperationSet
   
   public func changedBasis(to changeOfBasis: SKChangeOfBasis) -> SKSymmetryOperationSet
   {
-    var newSet: [SKSeitzMatrix] = []
+    var newSet: [SKSeitzIntegerMatrix] = []
     for seitzMatrix in self.operations
     {
       newSet.append(changeOfBasis * seitzMatrix)
@@ -217,13 +217,13 @@ public struct SKSymmetryOperationSet
       multiplier = 1
       shift = [SIMD3<Int32>(0,0,0)]
     }
-    var symmetry: [SKSeitzMatrix] = []
+    var symmetry: [SKSeitzIntegerMatrix] = []
     
     for seitzMatrix in operations
     {
       for i in 0..<multiplier
       {
-        symmetry.append(SKSeitzMatrix(rotation: seitzMatrix.rotation, translation: seitzMatrix.translation + shift[i]))
+        symmetry.append(SKSeitzIntegerMatrix(rotation: seitzMatrix.rotation, translation: seitzMatrix.translation + shift[i]))
       }
     }
     
@@ -242,7 +242,7 @@ public struct SKSymmetryOperationSet
     // for each unique rotation, get the translation differences
     for rotatationMatrix in rotationMatrices
     {
-      let match: [SKSeitzMatrix] = operations.filter{$0.rotation == rotatationMatrix}
+      let match: [SKSeitzIntegerMatrix] = operations.filter{$0.rotation == rotatationMatrix}
       for i in 0..<match.count
       {
         for j in i..<match.count

@@ -158,7 +158,7 @@ public struct SKPointGroup
   /// - parameter SeitzMatrices: the symmetry elements
   ///
   /// - returns: an orthogonal axes system
-  public func constructAxes(usingSeitzMatrices SeitzMatrices: [SKSeitzMatrix]) -> int3x3?
+  public func constructAxes(usingSeitzMatrices SeitzMatrices: [SKSeitzIntegerMatrix]) -> int3x3?
   {
     switch(self.laue)
     {
@@ -500,11 +500,9 @@ public struct SKPointGroup
 
   public static func findPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> SKPointGroup?
   {
-    // FIX!!!
-    let primitiveUnitCell: double3x3 = SKSymmetryCell.findPrimitiveCell(reducedAtoms: atoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
-    let primitiveDelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision)
+    let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: atoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
+    guard let primitiveDelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else { return nil}
     let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
-    //let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, anglePrecision: 3.0)
                                                                                      
     let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell)
     // FIX!!!
