@@ -455,117 +455,74 @@ public struct SKSymmetryCell: CustomStringConvertible
   }
   
   
-  
-  private static func DelaunayReduceBasis(extendedBasis: inout double4x3, symmetryPrecision: Double = 1e-5) -> Bool
-  {
-    
-    for i in 0..<4
-    {
-      for j in i+1..<4
-      {
-        let dotProduct: Double = dot(extendedBasis[i], extendedBasis[j])
-        if (dotProduct > symmetryPrecision)
-        {
-          for k in 0..<4
-          {
-            if !(k == i || k == j)
-            {
-              extendedBasis[k] = extendedBasis[k] + extendedBasis[i]
-            }
-          }
-          
-          extendedBasis[i] = -extendedBasis[i]
-          return false
-        }
-      }
-    }
-    
-    return true
-  }
-  
-  private static func getDelaunayShortestVectors(extendedBasis: double4x3, symmetryPrecision: Double = 1e-5) -> double3x3
-  {
-    var b: [SIMD3<Double>] = [SIMD3<Double>](repeatElement(SIMD3<Double>(), count: 7))
-    
-    
-    // Search in the set {b1, b2, b3, b4, b1+b2, b2+b3, b3+b1}
-    for i in 0..<4
-    {
-      b[i] = extendedBasis[i]
-    }
-    
-    b[4] = extendedBasis[0] + extendedBasis[1]
-    b[5] = extendedBasis[1] + extendedBasis[2]
-    b[6] = extendedBasis[2] + extendedBasis[0]
-    
-    // sort the vectors
-    b.sort(by: {length_squared($0) < length_squared($1)})
-    
-    for i in 2..<7
-    {
-      
-      let tmpMatrix: double3x3 = double3x3([b[0], b[1], b[i]])
-      let volume: Double = tmpMatrix.determinant
-      
-      if (abs(volume) > symmetryPrecision)
-      {
-        return (volume > 0) ? tmpMatrix: -tmpMatrix
-      }
-    }
-    
-    return double3x3()
-  }
-  
-  
   /// Compute the Delaunay reduced cell
   ///
   /// - parameter unitCell:          the original unit cell
   /// - parameter symmetryPrecision: the precision of the cell
   ///
   /// - returns: the Delaunay cell
-  public static func computeDelaunayReducedCell(unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> double3x3
+  ///
+  ///   We start with a lattice basis (b_i) 1≤ i ≤ n (n=2,3). This basis is extended by a factor b_n+1 = -(b_1 + ... + b_n )
+  ///   All scalar products  b_i . b_k (1 ≤ i < k ≤ n+1) are considered. The reduction is performed by mnimizing the sum: sum = b_1^2 + ... + b_n+1^2.
+  ///   It can be shown that this sum can be reduced as long as one of the scalar products is still positive.
+  ///   If e.g. the scalar product b_1 . b_2 is still positive, a transformation can be performed such that the sum sum' of the transformed b_i^2 is smaller than sum:
+  ///   b_1' = -b_1
+  ///   b_2' = b_2
+  ///   b_3' = b_1 + b_3
+  ///   b_4' = b+1 + b_4
+  ///
+  ///   If all the scalar products are less than or equal to zero, the three shortest vectors forming the reduced basis are contained in the set
+  ///   V = {b_1, b_2, b_3, b_4, b_1 + b_2, b_2 + b_3, b_3 + b_1}
+  ///   which corresponds to the maximal set of faces of the Dirichlet domain (14 faces).
+  ///
+  ///   Reference: International Tables for Crystallography, Vol.A: Space Group Symmetry, page 747
+  public static func computeDelaunayReducedCell(unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> double3x3?
   {
-    let additionalBasisVector: SIMD3<Double> = SIMD3<Double>(-unitCell[0][0] - unitCell[1][0] - unitCell[2][0],
-                                                 -unitCell[0][1] - unitCell[1][1] - unitCell[2][1],
-                                                 -unitCell[0][2] - unitCell[1][2] - unitCell[2][2])
+    let additionalBasisVector: SIMD3<Double> =  -(unitCell[0] + unitCell[1] + unitCell[2])
     var extendedBasis: double4x3 = double4x3([unitCell[0],unitCell[1],unitCell[2],additionalBasisVector])
     
-    while(true) { if DelaunayReduceBasis(extendedBasis: &extendedBasis) {break}}
-    
-    let basis: double3x3 = getDelaunayShortestVectors(extendedBasis: extendedBasis)
-    
-    return basis
-  }
-  
-  
-  private static func DelaunayReduceBasis2D(extendedBasis: inout double3x3, symmetryPrecision: Double = 1e-5) -> Bool
-  {
-    var dotProduct: Double
-    
-    for i in 0..<3
+    var somePositive: Bool = false
+    repeat
     {
-      for j in (i + 1)..<3
+      somePositive = false
+      // (i,j) in (0,1), (0,2), (0,3), (1,2), (1,3), (2,3); k,l denote the other two vectors
+      for (i,j,k,l) in [(0,1,2,3), (0,2,1,3), (0,3,1,2), (1,2,0,3), (1,3,0,2), (2,3,0,1)]
       {
-        dotProduct = dot(extendedBasis[i], extendedBasis[j])
-        
-        if (dotProduct > symmetryPrecision)
+        if (dot(extendedBasis[i], extendedBasis[j]) > symmetryPrecision)
         {
-          for k in 0..<3
-          {
-            if (!(k == i || k == j))
-            {
-              extendedBasis[k] = extendedBasis[k] + 2.0 * extendedBasis[i]
-              break;
-            }
-          }
-          
+          extendedBasis[k] += extendedBasis[i]
+          extendedBasis[l] += extendedBasis[i]
+       
           extendedBasis[i] = -extendedBasis[i]
-          return false
+          
+          // start over (until all dotproducts are negative or zero)
+          somePositive = true
+          break
         }
       }
+    }while(somePositive)
+    
+    // Search in the array {b1, b2, b3, b4, b1+b2, b2+b3, b3+b1}, sorted by length
+    let b: [SIMD3<Double>] = [extendedBasis[0], extendedBasis[1], extendedBasis[2], extendedBasis[3],
+                              extendedBasis[0] + extendedBasis[1], extendedBasis[1] + extendedBasis[2],
+                              extendedBasis[2] + extendedBasis[0]].sorted(by: {length_squared($0) < length_squared($1)})
+    
+    // take the first two vectors, combined with a vector that has a non-zero, positive volume
+    for i in 2..<7
+    {
+      let trialUnitCell: double3x3 = double3x3([b[0], b[1], b[i]])
+      let volume: Double = trialUnitCell.determinant
+      
+      if (abs(volume) > symmetryPrecision)
+      {
+        return (volume > 0) ? trialUnitCell: -trialUnitCell
+      }
     }
-    return true
+    
+    return nil
   }
+  
+  
   
   public static func computeDelaunayReducedCell2D(unitCell: double3x3, uniqueAxis: Int, symmetryPrecision: Double = 1e-5) -> double3x3?
   {
@@ -583,19 +540,36 @@ public struct SKSymmetryCell: CustomStringConvertible
       }
     }
     
-    var extendedBasis: double3x3 = double3x3([lattice2D[0],lattice2D[1],-lattice2D[0] - lattice2D[1]])
+    var extendedBasis: double3x3 = double3x3([lattice2D[0], lattice2D[1], -(lattice2D[0] + lattice2D[1])])
     
-    while(true) { if DelaunayReduceBasis2D(extendedBasis: &extendedBasis) {break}}
+    var somePositive: Bool = false
+    repeat
+    {
+      somePositive = false
+      // (i,j) in (0,1), (0,2), (1,2); k denote the other two vectors
+      for (i,j,k) in [(0,1,2), (0,2,3), (1,2,3)]
+      {
+        if (dot(extendedBasis[i], extendedBasis[j]) > symmetryPrecision)
+        {
+          extendedBasis[k] += 2.0 * extendedBasis[i]
+       
+          extendedBasis[i] = -extendedBasis[i]
+          
+          // start over (until all dotproducts are negative or zero)
+          somePositive = true
+          break
+        }
+      }
+    }while(somePositive)
     
     
-    // Search in the set {b1, b2, b3, b4, b1+b2, b2+b3, b3+b1}
-    var b: [SIMD3<Double>] = [extendedBasis[0],extendedBasis[1],extendedBasis[2],extendedBasis[0]+extendedBasis[1]]
-    
-    b.sort(by: {length_squared($0) < length_squared($1)})
+    // Search in the set {b1, b2, b3, b1+b2}
+    let b: [SIMD3<Double>] = [extendedBasis[0], extendedBasis[1], extendedBasis[2],
+                              extendedBasis[0]+extendedBasis[1]].sorted(by: {length_squared($0) < length_squared($1)})
     
     for i in 1..<4
     {
-      let tmpmat: double3x3 = double3x3([b[0],unique_vec, b[i]])
+      let tmpmat: double3x3 = double3x3([b[0], unique_vec, b[i]])
       
       if (fabs(tmpmat.determinant) > symmetryPrecision)
       {
@@ -909,9 +883,6 @@ public struct SKSymmetryCell: CustomStringConvertible
   
   public static func trim(atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], from: double3x3, to: double3x3, symmetryPrecision: Double = 1e-5) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
   {
-    // compute the reduction in volume
-    //let ratio: Int = abs(Int(rint(from.determinant / to.determinant)))
-    
     // The change-of-basis matrix C_{old->new} that transforms coordinates in the first (old) setting to coordinates in the second (new) settings
     // is then obtained as the product: C_{old->new} = C_{new}^{-1} C_{old}
     let changeOfBasis: double3x3 = to.inverse * from
@@ -990,7 +961,24 @@ public struct SKSymmetryCell: CustomStringConvertible
     return true
   }
   
-  public static func findPrimitiveCell(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> double3x3
+  /// Computes the smallest primitive cell
+  ///
+  /// - parameter reducedAtoms:        the atoms of the type that occurs least
+  /// - parameter atoms:               the atoms
+  /// - parameter unitCell:            the unit cell
+  /// - parameter symmetryPrecision:   the precision of the search (default: 1e-5)
+  ///
+  /// - returns: the computed smallest primitive cell
+  ///
+  ///   Hannemann et al., 1998: Starting from each atom i of the con®guration, difference vectors dij to atoms j (j > i) of the same type are calculated (in principle, the category `type' could include the electronic and magnetic states of the atom, if known).
+  ///   Only those difference vectors whose coordinates relative to the basis B do not exceed 12 need to be considered [note that this restriction is analogous to the minimum image convention]
+  ///   Next, each difference vector dij is added to the position vectors al of the other atoms belonging to the con®g- uration. If all resulting vectors ax = al +/- dij are elements of the set of vectors representing the atoms of the configuration,
+  ///   a translation has been found and it is added to the set T of possible translations. Of course, the vectors representing the basis B are also included in the set T. In the next step, test cells are generated by choosing all possible triplets
+  ///   of vectors from the set T. If such a triplet is linearly independent and the volume of the spanned parallelepiped does not exceed the volume of the simulation cell, the test cell is acceptable, in principle. In order to avoid degenerate
+  ///   cells, one usually excludes cells with angles smaller than 5 degrees or larger than 175 degrees. Finally, one of the cells with the smallest volume is chosen as the representative primitive cell.
+  ///   Note that this choice may result in unconventional cell constants and the cell needs to be reduced.
+  ///   10.1107/s0021889898008735
+  public static func findSmallestPrimitiveCell(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> double3x3
   {
     var translationVectors: [SIMD3<Double>] = []
     
@@ -1002,7 +990,7 @@ public struct SKSymmetryCell: CustomStringConvertible
       {
         let vec: SIMD3<Double> = reducedAtoms[i].fractionalPosition - origin
         
-        if SKSymmetryCell.isOverlapAllAtoms(translationVector: vec, rotationMatrix: int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)]), atoms: atoms, symmetryPrecision: symmetryPrecision)
+        if SKSymmetryCell.testSymmetry(of: vec, and: int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)]), on: atoms, with: symmetryPrecision)
         {
           translationVectors.append(vec)
         }
@@ -1012,11 +1000,6 @@ public struct SKSymmetryCell: CustomStringConvertible
     }
     
     let size: Int = translationVectors.count
-    
-    if (size == 3)
-    {
-      return unitCell
-    }
     
     var smallestCell: double3x3 = unitCell
     let initialVolume: Double = unitCell.determinant
@@ -1050,71 +1033,6 @@ public struct SKSymmetryCell: CustomStringConvertible
     return smallestCell
   }
   
-  /*
-   public static func findPrimitiveCell(atoms: [(fractionalPosition: double3, type: Int)], unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> double3x3
-   {
-   var translationVectors: [double3] = []
-   //let unitCell: double3x3 = double3x3(unitCellVectors)
-   
-   if (atoms.count>0)
-   {
-   let origin: double3 = atoms[0].fractionalPosition
-   
-   for i in 1..<atoms.count
-   {
-   let vec: double3 = atoms[i].fractionalPosition - origin
-   
-   if SKCell.isOverlapAllAtoms(translationVector: vec, rotationMatrix: int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)]), atoms: atoms, symmetryPrecision: symmetryPrecision)
-   {
-   translationVectors.append(vec)
-   }
-   }
-   
-   translationVectors += [double3(1,0,0),double3(0,1,0),double3(0,0,1)]
-   }
-   
-   let size: Int = translationVectors.count
-   
-   if (size == 3)
-   {
-   return unitCell
-   }
-   
-   var smallestCell: double3x3 = unitCell
-   let initialVolume: Double = unitCell.determinant
-   var minimumVolume: Double = initialVolume
-   
-   
-   for i in 0..<size
-   {
-   for j in i+1..<size
-   {
-   for k in j+1..<size
-   {
-   let tmpv1: double3 = unitCell * translationVectors[i]
-   let tmpv2: double3 = unitCell * translationVectors[j]
-   let tmpv3: double3 = unitCell * translationVectors[k]
-   let cell: double3x3 = double3x3([tmpv1,tmpv2,tmpv3])
-   let volume: Double = abs(cell.determinant)
-   
-   
-   if((volume>symmetryPrecision) && (volume<minimumVolume))
-   {
-   minimumVolume=volume
-   smallestCell = double3x3([tmpv1,tmpv2,tmpv3])
-   if Int(rint(initialVolume/volume)) == size - 2
-   {
-   let relativeLattice: double3x3 = double3x3([translationVectors[i],translationVectors[j],translationVectors[k]])
-   return unitCell * double3x3(int3x3(relativeLattice.inverse)).inverse
-   }
-   }
-   }
-   }
-   }
-   return smallestCell
-   }
-   */
-  
   /// Computes translation vectors for symmetry operations
   ///
   /// - parameter fractionalPositions: the fractional positions of the atomic configuration
@@ -1133,7 +1051,7 @@ public struct SKSymmetryCell: CustomStringConvertible
       {
         let vec: SIMD3<Double> = reducedAtoms[i].fractionalPosition - origin
         
-        if SKSymmetryCell.isOverlapAllAtoms(translationVector: vec, rotationMatrix: rotationMatrix, atoms: atoms, symmetryPrecision: symmetryPrecision)
+        if SKSymmetryCell.testSymmetry(of: vec, and: rotationMatrix, on: atoms, with: symmetryPrecision)
         {
           translationVectors.append(vec)
         }
@@ -1142,34 +1060,32 @@ public struct SKSymmetryCell: CustomStringConvertible
     return translationVectors
   }
   
-  /// Determines overlap given a translation vector and rotation matrix for the atomic configuration.
+  /// Determines  whether a translation vector and rotation matrix is a symmetry element for the given atomic configuration.
   ///
   /// - parameter translationVector:   the translation vector
   /// - parameter rotationMatrix:      the rotation matrix
   /// - parameter fractionalPositions: the fractional positions of the atoms
   /// - parameter symmetryPrecision:   the precision of the search (default: 1e-5)
+  /// - returns: whether the rotation+translation is a symmetry operation for the system or not
   ///
-  /// - returns: whether the translation+rotations result symmetry element in overlap for all atoms or not
-  private static func isOverlapAllAtoms(translationVector: SIMD3<Double>, rotationMatrix: SKRotationMatrix, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double) -> Bool
+  /// - A symmetry operation, after applying the rotation and then translation on any atom, should lead to an overlap with another atom.
+  ///   For each atom, we loop over all atoms. If no overlaps are found, the total result is false. As soon as an overlap is found, we can stop the current loop and continue with the next atom to check.
+  private static func testSymmetry(of translationVector: SIMD3<Double>, and rotationMatrix: SKRotationMatrix, on atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], with precision: Double) -> Bool
   {
-    let precision: Double = symmetryPrecision * symmetryPrecision
+    let squared_precision: Double = precision * precision
     
     for i in 0..<atoms.count
     {
-      let pos_rot: SIMD3<Double> = double3x3(int3x3: rotationMatrix) * atoms[i].fractionalPosition + translationVector
+      let rotatedAndTranslatedPosition: SIMD3<Double> = rotationMatrix * atoms[i].fractionalPosition + translationVector
       
       var isFound: Bool = false
       for j in 0..<atoms.count
       {
         if atoms[i].type == atoms[j].type
         {
-          var dr: SIMD3<Double> = abs(pos_rot - atoms[j].fractionalPosition)
+          var dr: SIMD3<Double> = rotatedAndTranslatedPosition - atoms[j].fractionalPosition
           dr -= floor(dr + SIMD3<Double>(0.5,0.5,0.5))
-          //var dr: double3 = pos_rot - fractionalPositions[j]
-          //dr.x -= Double(dr.x<0.0 ? Int(dr.x-0.5) : Int(dr.x+0.5))
-          //dr.y -= Double(dr.y<0.0 ? Int(dr.y-0.5) : Int(dr.y+0.5))
-          //dr.z -= Double(dr.z<0.0 ? Int(dr.z-0.5) : Int(dr.z+0.5))
-          if (length_squared(dr) < precision)
+          if (length_squared(dr) < squared_precision)
           {
             isFound = true
             break
@@ -1177,7 +1093,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         }
       }
       
-      // if no translation is found then we can immediately return 'false'
+      // if no overlap is found then we can immediately return 'false'
       if(!isFound)
       {
         return false
@@ -1198,15 +1114,15 @@ public struct SKSymmetryCell: CustomStringConvertible
   }
   
   
-  static func isIdentityMetric(metric_rotated: double3x3, metric_orig: double3x3, symmetryPrecision: Double, angleSymmetryPrecision: Double) -> Bool
+  static func isIdentityMetric(transformedMetricMatrix: double3x3, metricMatrix: double3x3, symmetryPrecision: Double, angleSymmetryPrecision: Double) -> Bool
   {
     let angleTolerance: Double = -1.0
-    let length_orig: SIMD3<Double> =  SIMD3<Double>(sqrt(metric_orig[0,0]), sqrt(metric_orig[1,1]), sqrt(metric_orig[2,2]))
-    let length_rot: SIMD3<Double> =  SIMD3<Double>(sqrt(metric_rotated[0,0]), sqrt(metric_rotated[1,1]), sqrt(metric_rotated[2,2]))
+    let LengthMetricMatrix: SIMD3<Double> =  SIMD3<Double>(sqrt(metricMatrix[0,0]), sqrt(metricMatrix[1,1]), sqrt(metricMatrix[2,2]))
+    let LengthTransformedMetric: SIMD3<Double> =  SIMD3<Double>(sqrt(transformedMetricMatrix[0,0]), sqrt(transformedMetricMatrix[1,1]), sqrt(transformedMetricMatrix[2,2]))
     
     for i in 0..<3
     {
-      if abs(length_orig[i] - length_rot[i]) > symmetryPrecision
+      if abs(LengthMetricMatrix[i] - LengthTransformedMetric[i]) > symmetryPrecision
       {
         return false
       }
@@ -1214,9 +1130,9 @@ public struct SKSymmetryCell: CustomStringConvertible
     
     if (angleSymmetryPrecision > 0)
     {
-      if (abs(getAngle(metric: metric_orig, i: 0, j: 1) - getAngle(metric: metric_rotated, i: 0, j: 1)) > angleTolerance) {return false}
-      if (abs(getAngle(metric: metric_orig, i: 0, j: 2) - getAngle(metric: metric_rotated, i: 0, j: 2)) > angleTolerance) {return false}
-      if (abs(getAngle(metric: metric_orig, i: 1, j: 2) - getAngle(metric: metric_rotated, i: 1, j: 2)) > angleTolerance) {return false}
+      if (abs(getAngle(metric: metricMatrix, i: 0, j: 1) - getAngle(metric: transformedMetricMatrix, i: 0, j: 1)) > angleTolerance) {return false}
+      if (abs(getAngle(metric: metricMatrix, i: 0, j: 2) - getAngle(metric: transformedMetricMatrix, i: 0, j: 2)) > angleTolerance) {return false}
+      if (abs(getAngle(metric: metricMatrix, i: 1, j: 2) - getAngle(metric: transformedMetricMatrix, i: 1, j: 2)) > angleTolerance) {return false}
       
     }
     else
@@ -1231,11 +1147,11 @@ public struct SKSymmetryCell: CustomStringConvertible
         let j: Int = element.0
         let k: Int = element.1
         
-        let cos1: Double = metric_orig[j][k] / length_orig[j] / length_orig[k]
-        let cos2: Double = metric_rotated[j][k] / length_rot[j] / length_rot[k]
+        let cos1: Double = metricMatrix[j][k] / LengthMetricMatrix[j] / LengthMetricMatrix[k]
+        let cos2: Double = transformedMetricMatrix[j][k] / LengthTransformedMetric[j] / LengthTransformedMetric[k]
         let x: Double = cos1 * cos2 + sqrt(1.0 - cos1 * cos1) * sqrt(1.0 - cos2 * cos2)
         let sin_dtheta2: Double = 1.0 - x * x
-        let length_ave2: Double = (length_orig[j] + length_rot[j]) * (length_orig[k] + length_rot[k])
+        let length_ave2: Double = (LengthMetricMatrix[j] + LengthTransformedMetric[j]) * (LengthMetricMatrix[k] + LengthTransformedMetric[k])
         if (sin_dtheta2 > 1e-12)
         {
           if (sin_dtheta2 * length_ave2 * 0.25 > symmetryPrecision * symmetryPrecision)
@@ -1255,6 +1171,4 @@ public struct SKSymmetryCell: CustomStringConvertible
     let length_j: Double = 1.0/sqrt(metric[j][j])
     return (acos(metric[i][j]) * length_i * length_j) * 180.0/Double.pi
   }
-  
-  
 }

@@ -98,7 +98,7 @@ public struct SKSpaceGroupSetting
     let m: Int = self.encodedSeitz.count/3
     let size: Int = centrosymmetric ? 2 * m : m
     let translationVectors: [SIMD3<Int32>] = self.latticeTranslations
-    var matrices: [SKSeitzMatrix] = [SKSeitzMatrix](repeating: SKSeitzMatrix(), count: size * translationVectors.count)
+    var matrices: [SKSeitzIntegerMatrix] = [SKSeitzIntegerMatrix](repeating: SKSeitzIntegerMatrix(), count: size * translationVectors.count)
     
     
     for i in 0..<m
@@ -107,7 +107,7 @@ public struct SKSpaceGroupSetting
       let y: UInt8 = self.encodedSeitz[3 * i + 1]
       let z: UInt8 = self.encodedSeitz[3 * i + 2]
       
-      matrices[i] = SKSeitzMatrix(encoding: (x,y,z))
+      matrices[i] = SKSeitzIntegerMatrix(encoding: (x,y,z))
     }
     
     if (centrosymmetric)
@@ -118,10 +118,10 @@ public struct SKSpaceGroupSetting
         let y: UInt8 = self.encodedSeitz[3 * i + 1]
         let z: UInt8 = self.encodedSeitz[3 * i + 2]
         
-        let seitz:SKSeitzMatrix = SKSeitzMatrix(encoding: (x,y,z))
+        let seitz:SKSeitzIntegerMatrix = SKSeitzIntegerMatrix(encoding: (x,y,z))
         
         let translation: SIMD3<Int32> = seitz.translation + seitz.rotation * self.inversionCenter
-        matrices[m+i] = SKSeitzMatrix(rotation: -seitz.rotation, translation: translation)
+        matrices[m+i] = SKSeitzIntegerMatrix(rotation: -seitz.rotation, translation: translation)
       }
     }
     
@@ -138,14 +138,14 @@ public struct SKSpaceGroupSetting
     return SKSymmetryOperationSet(operations: matrices)
   }
 
-  public var SeitzMatricesWithoutTranslation: [SKSeitzMatrix]
+  public var SeitzMatricesWithoutTranslation: [SKSeitzIntegerMatrix]
   {
     assert(self.encodedSeitz.count % 3 == 0, "Found: \(self.encodedSeitz.count) \(self.spaceGroupNumber) encoding: \(self.encodedSeitz)")
     
     let centrosymmetric: Bool = SKPointGroup.pointGroupData[self.pointGroupNumber].centrosymmetric
     let m: Int = self.encodedSeitz.count/3
     let size: Int = centrosymmetric ? 2 * m : m
-    var matrices: [SKSeitzMatrix] = [SKSeitzMatrix](repeating: SKSeitzMatrix(), count: size)
+    var matrices: [SKSeitzIntegerMatrix] = [SKSeitzIntegerMatrix](repeating: SKSeitzIntegerMatrix(), count: size)
     
     for i in 0..<m
     {
@@ -153,7 +153,7 @@ public struct SKSpaceGroupSetting
       let y: UInt8 = self.encodedSeitz[3 * i + 1]
       let z: UInt8 = self.encodedSeitz[3 * i + 2]
       
-      matrices[i] = SKSeitzMatrix(encoding: (x,y,z))
+      matrices[i] = SKSeitzIntegerMatrix(encoding: (x,y,z))
     }
     
     if (centrosymmetric)
@@ -164,10 +164,10 @@ public struct SKSpaceGroupSetting
         let y: UInt8 = self.encodedSeitz[3 * i + 1]
         let z: UInt8 = self.encodedSeitz[3 * i + 2]
         
-        let seitz:SKSeitzMatrix = SKSeitzMatrix(encoding: (x,y,z))
+        let seitz:SKSeitzIntegerMatrix = SKSeitzIntegerMatrix(encoding: (x,y,z))
         
         let translation: SIMD3<Int32> = seitz.translation + seitz.rotation * self.inversionCenter
-        matrices[m+i] = SKSeitzMatrix(rotation: -seitz.rotation, translation: translation)
+        matrices[m+i] = SKSeitzIntegerMatrix(rotation: -seitz.rotation, translation: translation)
       }
     }
     

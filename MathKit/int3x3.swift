@@ -115,8 +115,8 @@ public struct int3x3: Equatable
   public mutating func cleaunUp()
   {
     let gcd: Int32 = [self[0,0],self[1,0],self[2,0],
-                    self[0,1],self[1,1],self[2,1],
-                    self[0,2],self[1,2],self[2,2]].reduce(self[0,0]){Int32.greatestCommonDivisor(a: $0, b: $1)}
+                      self[0,1],self[1,1],self[2,1],
+                      self[0,2],self[1,2],self[2,2]].reduce(self[0,0]){Int32.greatestCommonDivisor(a: $0, b: $1)}
    
     self.denominator = self.denominator / Int(gcd)
     self[0,0] /= gcd
@@ -622,8 +622,8 @@ public struct int3x3: Equatable
   public static func * (left: int3x3, right: SIMD3<Double>) -> SIMD3<Double>
   {
     return SIMD3<Double>(x: Double(left[0,0]) * right.x + Double(left[1,0]) * right.y + Double(left[2,0]) * right.z,
-                   y: Double(left[0,1]) * right.x + Double(left[1,1]) * right.y + Double(left[2,1]) * right.z,
-                   z: Double(left[0,2]) * right.x + Double(left[1,2]) * right.y + Double(left[2,2]) * right.z)
+                         y: Double(left[0,1]) * right.x + Double(left[1,1]) * right.y + Double(left[2,1]) * right.z,
+                         z: Double(left[0,2]) * right.x + Double(left[1,2]) * right.y + Double(left[2,2]) * right.z)
   }
   
   
