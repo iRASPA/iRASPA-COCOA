@@ -94,7 +94,13 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
   public init(rotation: SKRotationMatrix, translation: SIMD3<Int32>)
   {
     self.rotation = rotation
-    self.rotation.cleaunUp()
+    self.translation = translation.modulo(12)
+
+  }
+  
+  public init(rotation: int3x3, translation: SIMD3<Int32>)
+  {
+    self.rotation = SKRotationMatrix(int3x3: rotation)
     self.translation = translation.modulo(12)
 
   }
@@ -102,7 +108,6 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
   public init(rotation: SKRotationMatrix, translation: SIMD3<Double>)
   {
     self.rotation = rotation
-    self.rotation.cleaunUp()
     self.translation = SIMD3<Int32>(((Int32(rint(translation.x * 12.0)) % 12 + 12) % 12),
                                    ((Int32(rint(translation.y * 12.0)) % 12 + 12) % 12),
                                    ((Int32(rint(translation.z * 12.0)) % 12 + 12) % 12))
@@ -157,6 +162,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
     return self.intrinsicPart - self.translation
   }
   
+  /*
   public var fixedPoint: SIMD3<Double>
   {
     var free: [Int] = [0,0,0]
@@ -168,7 +174,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
     let s: SIMD3<Double> = t * SIMD3<Double>(Double(locationPart.x)/12.0,Double(locationPart.y)/12.0, Double(locationPart.z)/12.0)
     let sol: SIMD3<Double> = rowEchelonMatrix.rowEchelonFormBackSubstitutionRosetta(t: s, freeVars: free)
     return sol
-  }
+  }*/
   
   public var symmetryType: SymmetryType
   {
@@ -265,7 +271,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
   /// Inverse of the matrix if it exists, otherwise the contents of the resulting matrix are undefined.
   public var inverse: SKSeitzIntegerMatrix
   {
-    let inverseRotation: SKRotationMatrix = self.rotation.inverse
+    let inverseRotation: SKRotationMatrix = self.rotation.transpose
     let inverseTranslation: SIMD3<Int32> = 0 &- (inverseRotation * translation)
     return SKSeitzIntegerMatrix(rotation: inverseRotation, translation: inverseTranslation)
   }
@@ -496,7 +502,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
     
     for (index, seitzMatrix) in seitzMatrices.enumerated()
     {
-      let primitive_sym_rot_d3: double3x3 = double3x3(seitzMatrix.rotation)
+      let primitive_sym_rot_d3: double3x3 = double3x3(rotationMatrix: seitzMatrix.rotation)
       
       // transform the symmetry operation in the primitive basis (W_O, w_o) to symmetry operations in the standard basis (W_S, w_S)
       // (W_S, w_S) = (C, c) * (W_O, w_o) * (C. c)^-1

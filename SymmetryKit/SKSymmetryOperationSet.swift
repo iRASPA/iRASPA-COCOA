@@ -167,8 +167,6 @@ public struct SKSymmetryOperationSet
     return Set(self.operations.map{$0.rotation})
   }
   
-  
-  
   public func changedBasis(to changeOfBasis: SKChangeOfBasis) -> SKSymmetryOperationSet
   {
     var newSet: [SKSeitzIntegerMatrix] = []
@@ -268,7 +266,7 @@ public struct SKSymmetryOperationSet
       let pos: SIMD3<Double> = operation.rotation * position + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
       if SKSymmetryCell.isOverlap(a: pos, b: position, lattice: lattice, symmetryPrecision: symmetryPrecision)
       {
-        sumRotation += double3x3(operation.rotation)
+        sumRotation += double3x3(rotationMatrix: operation.rotation)
         sumTranslation += SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0) -
                           SIMD3<Double>(rint(pos.x - position.x), rint(pos.y - position.y), rint(pos.z - position.z))
         count += 1

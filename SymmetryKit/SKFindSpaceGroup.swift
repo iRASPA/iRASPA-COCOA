@@ -219,7 +219,8 @@ extension SKSpacegroup
         {
           return nil
         }
-        preliminaryInverseM = int3x3(inverseP.inverse * computedDelaunayReducedCell2D!)
+        let y: double3x3 = inverseP.inverse * computedDelaunayReducedCell2D!
+        preliminaryInverseM = int3x3(y)
       default:
         preliminaryInverseM = inverseMprime
       }
@@ -237,7 +238,8 @@ extension SKSpacegroup
       
       // transform the symmetries (rotation and translation) from the primtive cell to the conventional cell
       // the centering is used to add the additional translations
-      let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(to: SKChangeOfBasis(rotation: MKint3x3(inverseM))).addingCenteringOperations(centering: centering)
+      let sc: SKChangeOfBasis =  SKChangeOfBasis(rotation: MKint3x3(inverseM))
+      let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(to: sc).addingCenteringOperations(centering: centering)
       
       
       for spaceGroupNumber in 1...230
@@ -384,16 +386,16 @@ extension SKSpacegroup
     let changeToPrimitive: SKChangeOfBasis = SKChangeOfBasis(rotation: transformation)
 
     
-    let r1: int3x3 = dataBaseSpaceGroupGenerators[0].rotation
-    let r2: int3x3 = dataBaseSpaceGroupGenerators.count > 1 ? dataBaseSpaceGroupGenerators[1].rotation : int3x3.identity
-    let r3: int3x3 = dataBaseSpaceGroupGenerators.count > 2 ? dataBaseSpaceGroupGenerators[2].rotation : int3x3.identity
+    let r1: SKRotationMatrix = dataBaseSpaceGroupGenerators[0].rotation
+    let r2: SKRotationMatrix = dataBaseSpaceGroupGenerators.count > 1 ? dataBaseSpaceGroupGenerators[1].rotation : SKRotationMatrix.identity
+    let r3: SKRotationMatrix = dataBaseSpaceGroupGenerators.count > 2 ? dataBaseSpaceGroupGenerators[2].rotation : SKRotationMatrix.identity
     
-    let t1: int3x3 = changeToPrimitive * (r1 - int3x3.identity)
-    let t2: int3x3 = changeToPrimitive * (r2 - int3x3.identity)
-    let t3: int3x3 = changeToPrimitive * (r3 - int3x3.identity)
+    let t1: SKRotationMatrix = changeToPrimitive * (r1 - SKRotationMatrix.identity)
+    let t2: SKRotationMatrix = changeToPrimitive * (r2 - SKRotationMatrix.identity)
+    let t3: SKRotationMatrix = changeToPrimitive * (r3 - SKRotationMatrix.identity)
     
     // m is a 9x3 matrix
-    let m: RingMatrix = RingMatrix(Int3x3: [t1,t2,t3])
+    let m: RingMatrix = RingMatrix(Int3x3: [t1.int3x3,t2.int3x3,t3.int3x3])
     let sol:  (P: RingMatrix, Q: RingMatrix, D: RingMatrix) = try m.SmithNormalForm()
     
     let solD: IntegerMatrix = IntegerMatrix(matrix: sol.D)
@@ -459,9 +461,9 @@ extension SKSpacegroup
     case .none:
       break
     case .triclinic, .tetragonal, .trigonal, .hexagonal:
-      if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+      if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: SKRotationMatrix.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
-        return (originShift, SKChangeOfBasis(rotation: int3x3.identity))
+        return (originShift, SKChangeOfBasis(rotation: SKRotationMatrix.identity))
       }
     case .monoclinic:
       for i in 0..<6
@@ -480,17 +482,17 @@ extension SKSpacegroup
         }
       }
     case .cubic:
-      if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: int3x3.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+      if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKChangeOfBasis(rotation: SKRotationMatrix.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
-        return (originShift, SKChangeOfBasis(rotation: int3x3.identity))
+        return (originShift, SKChangeOfBasis(rotation: SKRotationMatrix.identity))
       }
       
       // special case
       if HallNumber == 501
       {
-        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKChangeOfBasis(rotation: int3x3([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
-          return (originShift, changeOfBasis: SKChangeOfBasis(rotation: int3x3([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])))
+          return (originShift, changeOfBasis: SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])))
         }
       }
     }

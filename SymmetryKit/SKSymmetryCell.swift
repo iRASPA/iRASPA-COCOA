@@ -990,7 +990,7 @@ public struct SKSymmetryCell: CustomStringConvertible
       {
         let vec: SIMD3<Double> = reducedAtoms[i].fractionalPosition - origin
         
-        if SKSymmetryCell.testSymmetry(of: vec, and: int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)]), on: atoms, with: symmetryPrecision)
+        if SKSymmetryCell.testSymmetry(of: vec, and: SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)]), on: atoms, with: symmetryPrecision)
         {
           translationVectors.append(vec)
         }
@@ -1045,7 +1045,7 @@ public struct SKSymmetryCell: CustomStringConvertible
     var translationVectors: [SIMD3<Double>] = []
     if reducedAtoms.count>0
     {
-      let origin: SIMD3<Double> = double3x3(int3x3: rotationMatrix) * reducedAtoms[0].fractionalPosition
+      let origin: SIMD3<Double> = double3x3(rotationMatrix: rotationMatrix) * reducedAtoms[0].fractionalPosition
       
       for i in 0..<reducedAtoms.count
       {

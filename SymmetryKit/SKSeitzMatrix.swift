@@ -23,7 +23,6 @@ public struct SKSeitzMatrix
   public init(rotation: SKRotationMatrix, translation: SIMD3<Double>)
   {
     self.rotation = rotation
-    //self.rotation.cleaunUp()
     self.translation = translation
   }
   
