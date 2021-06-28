@@ -74,6 +74,20 @@ public struct int3x3: Equatable
     self.denominator = denominator
   }
   
+  public init(_ m: double3x3)
+  {
+    let c1: SIMD3<Int32> = SIMD3<Int32>(Int32(rint(m[0].x)),
+                        Int32(rint(m[0].y)),
+                        Int32(rint(m[0].z)))
+    let c2: SIMD3<Int32> = SIMD3<Int32>(Int32(rint(m[1].x)),
+                        Int32(rint(m[1].y)),
+                        Int32(rint(m[1].z)))
+    let c3: SIMD3<Int32> = SIMD3<Int32>(Int32(rint(m[2].x)),
+                        Int32(rint(m[2].y)),
+                        Int32(rint(m[2].z)))
+    self.init([c1,c2,c3])
+  }
+  
   public static var identity: int3x3
   {
     return int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
