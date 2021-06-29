@@ -58,10 +58,6 @@ public extension double3x3
   }
 }
 
-
-//public typealias SKRotationMatrix = int3x3
-
-
 public struct SKRotationMatrix
 {
   var elements: [SIMD3<Int32>]
@@ -160,7 +156,7 @@ public struct SKRotationMatrix
     self.init([c1,c2,c3])
   }
   
-  init(_ m: double3x3)
+  public init(_ m: double3x3)
   {
     let c1: SIMD3<Int32> = SIMD3<Int32>(Int32(rint(m[0].x)),
                         Int32(rint(m[0].y)),
@@ -198,6 +194,13 @@ public struct SKRotationMatrix
   {
     self.elements = [int3x3[0], int3x3[1], int3x3[2]]
   }
+  
+  public init(_ m: SKTransformationMatrix)
+  {
+    self.elements = [m[0], m[1], m[2]]
+    assert(abs(self.determinant) == 1, "determinant should be 1 or -1")
+  }
+  
   
   /// Access to individual elements.
   public subscript(column: Int, row: Int) -> Int32
@@ -303,12 +306,9 @@ public struct SKRotationMatrix
   
   public var transpose: SKRotationMatrix
   {
-    get
-    {
-      return SKRotationMatrix([SIMD3<Int32>(self[0,0],self[1,0],self[2,0]),
-                     SIMD3<Int32>(self[0,1],self[1,1],self[2,1]),
-                     SIMD3<Int32>(self[0,2],self[1,2],self[2,2])])
-    }
+    return SKRotationMatrix([SIMD3<Int32>(self[0,0],self[1,0],self[2,0]),
+                             SIMD3<Int32>(self[0,1],self[1,1],self[2,1]),
+                             SIMD3<Int32>(self[0,2],self[1,2],self[2,2])])
   }
   
   public var isZero: Bool
@@ -327,6 +327,11 @@ public struct SKRotationMatrix
     let temp2: Int32 = (self[1,2] * self[2,0] - self[1,0] * self[2,2])
     let temp3: Int32 = (self[1,0] * self[2,1] - self[1,1] * self[2,0])
     return Int((self[0,0] * temp1) + (self[0,1] * temp2) + (self[0,2] * temp3))
+  }
+  
+  public var greatestCommonDivisor: Int32
+  {
+    return [self[0,0],self[0,1],self[0,2], self[1,0],self[1,1],self[1,2], self[2,0],self[2,1],self[2,2]].reduce(0){(try? Int32.greatestCommonDivisor(a: $0, b: $1)) ?? 1}
   }
   
   func positiveSenseOfRotation(rotationAxis: SIMD3<Int32>) -> Bool
@@ -446,23 +451,21 @@ public struct SKRotationMatrix
   // These rotation matrices are semi-orthogonal and do have an inverse.
   
   /// Inverse of the matrix if the determinant = 1 or -1, otherwise the contents of the resulting matrix are undefined.
-  /*
   public var inverse: SKRotationMatrix
   {
     let determinant: Int = self.determinant
     
-    let c1: int3 = SIMD3<Int32>(-self[1][2] * self[2][1] + self[1][1] * self[2][2], self[0][2] * self[2][1] - self[0][1] * self[2][2], -self[0][2] * self[1][1] + self[0][1] * self[1][2])
-    let c2: int3 = SIMD3<Int32>(self[1][2] * self[2][0] - self[1][0] * self[2][2], -self[0][2] * self[2][0] + self[0][0] * self[2][2], self[0][2] * self[1][0] - self[0][0] * self[1][2])
-    let c3: int3 = SIMD3<Int32>(-self[1][1] * self[2][0] + self[1][0] * self[2][1], self[0][1] * self[2][0] - self[0][0] * self[2][1], -self[0][1] * self[1][0] + self[0][0] * self[1][1])
+    let c1: SIMD3<Int32> = SIMD3<Int32>(-self[1][2] * self[2][1] + self[1][1] * self[2][2], self[0][2] * self[2][1] - self[0][1] * self[2][2], -self[0][2] * self[1][1] + self[0][1] * self[1][2])
+    let c2: SIMD3<Int32> = SIMD3<Int32>(self[1][2] * self[2][0] - self[1][0] * self[2][2], -self[0][2] * self[2][0] + self[0][0] * self[2][2], self[0][2] * self[1][0] - self[0][0] * self[1][2])
+    let c3: SIMD3<Int32> = SIMD3<Int32>(-self[1][1] * self[2][0] + self[1][0] * self[2][1], self[0][1] * self[2][0] - self[0][0] * self[2][1], -self[0][1] * self[1][0] + self[0][0] * self[1][1])
     
      switch(determinant)
     {
-      case -1: return SKRotationMatrix([-c1,-c2,-c3])
+      case -1: return -SKRotationMatrix([c1, c2, c3])
       case 1: return SKRotationMatrix([c1,c2,c3])
       default: return SKRotationMatrix()
     }
   }
-  */
   
   static var inversion: SKRotationMatrix = SKRotationMatrix(scalar: -1)
   
@@ -990,6 +993,20 @@ extension SKRotationMatrix
                                  Double(left[0,1]) * right[2,0] + Double(left[1,1]) * right[2,1] + Double(left[2,1]) * right[2,2],
                                  Double(left[0,2]) * right[2,0] + Double(left[1,2]) * right[2,1] + Double(left[2,2]) * right[2,2])
     return double3x3([temp1, temp2, temp3])
+  }
+  
+  public static func *(left: double3x3, right: SKRotationMatrix) -> double3x3
+  {
+    let term1: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[0,0]) + left[1,0] * Double(right[0,1]) + left[2,0] * Double(right[0,2]),
+                                 left[0,1] * Double(right[0,0]) + left[1,1] * Double(right[0,1]) + left[2,1] * Double(right[0,2]),
+                                 left[0,2] * Double(right[0,0]) + left[1,2] * Double(right[0,1]) + left[2,2] * Double(right[0,2]))
+    let term2: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[1,0]) + left[1,0] * Double(right[1,1]) + left[2,0] * Double(right[1,2]),
+                                 left[0,1] * Double(right[1,0]) + left[1,1] * Double(right[1,1]) + left[2,1] * Double(right[1,2]),
+                                 left[0,2] * Double(right[1,0]) + left[1,2] * Double(right[1,1]) + left[2,2] * Double(right[1,2]))
+    let term3: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[2,0]) + left[1,0] * Double(right[2,1]) + left[2,0] * Double(right[2,2]),
+                                 left[0,1] * Double(right[2,0]) + left[1,1] * Double(right[2,1]) + left[2,1] * Double(right[2,2]),
+                                 left[0,2] * Double(right[2,0]) + left[1,2] * Double(right[2,1]) + left[2,2] * Double(right[2,2]))
+    return double3x3([term1, term2, term3])
   }
   
   public static func * (left: SKRotationMatrix, right: SIMD3<Int32>) -> SIMD3<Int32>

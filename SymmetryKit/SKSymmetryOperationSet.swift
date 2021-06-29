@@ -167,61 +167,57 @@ public struct SKSymmetryOperationSet
     return Set(self.operations.map{$0.rotation})
   }
   
-  public func changedBasis(to changeOfBasis: SKChangeOfBasis) -> SKSymmetryOperationSet
+  
+  // the transformationMatrix does not have a translational part
+  public func changedBasis(transformationMatrix: SKTransformationMatrix) -> SKSymmetryOperationSet
   {
     var newSet: [SKSeitzIntegerMatrix] = []
+    
     for seitzMatrix in self.operations
     {
-      newSet.append(changeOfBasis * seitzMatrix)
+      let inverseTransformation = transformationMatrix.inverse
+      let rotation: SKTransformationMatrix = inverseTransformation * seitzMatrix.rotation * transformationMatrix / Int(transformationMatrix.determinant)
+      let translation: SIMD3<Int32> = inverseTransformation * seitzMatrix.translation
+      let transformedSeitzMatrix: SKSeitzIntegerMatrix = SKSeitzIntegerMatrix(rotation: SKRotationMatrix(rotation), translation: translation / Int32(transformationMatrix.determinant))
+      newSet.append(transformedSeitzMatrix)
     }
     return SKSymmetryOperationSet(operations: newSet)
   }
   
   public func addingCenteringOperations(centering: SKSpacegroup.Centring) -> SKSymmetryOperationSet
   {
-    var shift: [SIMD3<Int32>] = []
+    let shifts: [SIMD3<Int32>]
     
-    var multiplier: Int = 1
     switch(centering)
     {
     case .none, .primitive:
-      multiplier = 1
-      shift = [SIMD3<Int32>(0,0,0)]
+      shifts = [SIMD3<Int32>(0,0,0)]
     case .face:
-      multiplier = 4
-      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6),SIMD3<Int32>(6,0,6),SIMD3<Int32>(6,6,0)]
+      shifts = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6),SIMD3<Int32>(6,0,6),SIMD3<Int32>(6,6,0)]
     case .r:
-      multiplier = 3
-      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(8,4,4),SIMD3<Int32>(4,8,8)]
+      shifts = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(8,4,4),SIMD3<Int32>(4,8,8)]
     case .h:
-      multiplier = 3
-      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(8,4,0),SIMD3<Int32>(0,8,4)]
+      shifts = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(8,4,0),SIMD3<Int32>(0,8,4)]
     case .d:
-      multiplier = 3
-      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(4,4,4),SIMD3<Int32>(8,8,8)]
+      shifts = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(4,4,4),SIMD3<Int32>(8,8,8)]
     case .body:
-      multiplier = 2
-      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,6)]
+      shifts = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,6)]
     case .a_face:
-      multiplier = 2
-      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6)]
+      shifts = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,6,6)]
     case .b_face:
-      multiplier = 2
-      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,0,6)]
+      shifts = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,0,6)]
     case .c_face:
-      multiplier = 2
-      shift = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,0)]
+      shifts = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(6,6,0)]
     default:
-      multiplier = 1
-      shift = [SIMD3<Int32>(0,0,0)]
+      shifts = [SIMD3<Int32>(0,0,0)]
     }
     var symmetry: [SKSeitzIntegerMatrix] = []
     
     for seitzMatrix in operations
     {
-      for i in 0..<multiplier
+      for shift in shifts
       {
-        symmetry.append(SKSeitzIntegerMatrix(rotation: seitzMatrix.rotation, translation: seitzMatrix.translation + shift[i]))
+        symmetry.append(SKSeitzIntegerMatrix(rotation: seitzMatrix.rotation, translation: seitzMatrix.translation + shift))
       }
     }
     

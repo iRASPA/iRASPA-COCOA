@@ -62,6 +62,12 @@ public struct MKint3x3: Equatable
     self.denominator = denominator
   }
   
+  public init(_ m: [SIMD3<Int32>])
+  {
+    self.numerator = m
+    self.denominator = 1
+  }
+  
   
   public static var identity: MKint3x3
   {

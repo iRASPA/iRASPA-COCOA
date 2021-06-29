@@ -181,7 +181,6 @@ extension SKSpacegroup
     // the point group of the lattice cannot be lower than the point group of the crystal
     let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
     
-    
     // create the point symmetry set
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
     
@@ -191,7 +190,7 @@ extension SKSpacegroup
       // the transformation matrix inverse M' is given by the axes (Theorem T.2.10 in Boisen & Gibbs 1990)
       // M transforms the set of symmetry operations in the primitive setting (G_P) to the set of symmetry operations a convenient standard setting (G_M)
       // inverseP transforms the set of symmetry operations in the convenient standard (G_M) to the set of symmetry operations in the primitive setting (G_P)
-      let inverseMprime: int3x3 = pointGroup.constructAxes(usingSeitzMatrices: spaceGroupSymmetries.operations)!
+      let inverseMprime: SKTransformationMatrix = pointGroup.constructAxes(usingSeitzMatrices: spaceGroupSymmetries.operations)!
       
       // inverse of 'P' are the p1,p2,p3 vectors that form the basis of the primitive cell
       // P transforms the set of symmetry operations in the orginal setting (G_O) to the set of symmetry operations in the primitive setting (G_P)
@@ -200,12 +199,12 @@ extension SKSpacegroup
       
       
       // adjustment of (M',0) to (M,0) for certain combination of Laue and centring types
-      var preliminaryInverseM: int3x3 = inverseMprime
+      var preliminaryInverseM: SKTransformationMatrix = inverseMprime
       switch(pointGroup.laue)
       {
       case .laue_1:
         // change the basis to Niggli cell
-        let symmetryCell: (cell: SKSymmetryCell, changeOfBasis: int3x3)? =  SKSymmetryCell(unitCell: inverseP * inverseMprime).computeReducedNiggliCellAndChangeOfBasisMatrix
+        let symmetryCell: (cell: SKSymmetryCell, changeOfBasis: SKTransformationMatrix)? =  SKSymmetryCell(unitCell: inverseP * inverseMprime).computeReducedNiggliCellAndChangeOfBasisMatrix
         if symmetryCell == nil
         {
           return nil
@@ -219,14 +218,13 @@ extension SKSpacegroup
         {
           return nil
         }
-        let y: double3x3 = inverseP.inverse * computedDelaunayReducedCell2D!
-        preliminaryInverseM = int3x3(y)
+        preliminaryInverseM = SKTransformationMatrix(inverseP.inverse * computedDelaunayReducedCell2D!)
       default:
         preliminaryInverseM = inverseMprime
       }
       
       var centering: SKSpacegroup.Centring = pointGroup.computeCentering(of: preliminaryInverseM)
-      let inverseM: int3x3 = preliminaryInverseM * pointGroup.computeBasisCorrection(of: preliminaryInverseM, withCentering: &centering)
+      let inverseM: SKTransformationMatrix = preliminaryInverseM * pointGroup.computeBasisCorrection(of: preliminaryInverseM, withCentering: &centering)
       
       // (C,0) = (M,0).(P,0) = (P,0)^(-1).(M,0)^(-1)
       
@@ -238,9 +236,7 @@ extension SKSpacegroup
       
       // transform the symmetries (rotation and translation) from the primtive cell to the conventional cell
       // the centering is used to add the additional translations
-      let sc: SKChangeOfBasis =  SKChangeOfBasis(rotation: MKint3x3(inverseM))
-      let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(to: sc).addingCenteringOperations(centering: centering)
-      
+      let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(transformationMatrix: inverseM).addingCenteringOperations(centering: centering)
       
       for spaceGroupNumber in 1...230
       {

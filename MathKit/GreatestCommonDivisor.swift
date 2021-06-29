@@ -91,6 +91,8 @@ extension Int
     return abs(a)
   }
   
+  
+  
   public static func extendedGreatestCommonDivisor(a arg1: Int, b arg2: Int) throws -> (Int, Int, Int)
   {
     var ai: Int = arg2   // ai stands for: a with index i

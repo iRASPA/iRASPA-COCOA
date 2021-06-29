@@ -754,7 +754,7 @@ public struct SKSymmetryCell: CustomStringConvertible
     return SKSymmetryCell(a: sqrt(A), b: sqrt(B), c: sqrt(C), alpha: acos(xi/(2.0*sqrt(B)*sqrt(C))) * 180.0/Double.pi, beta: acos(eta/(2.0*sqrt(A)*sqrt(C))) * 180.0/Double.pi, gamma: acos(zeta/(2.0*sqrt(A)*sqrt(B))) * 180.0/Double.pi)
   }
   
-  public var computeReducedNiggliCellAndChangeOfBasisMatrix: (cell: SKSymmetryCell, changeOfBasis: int3x3)?
+  public var computeReducedNiggliCellAndChangeOfBasisMatrix: (cell: SKSymmetryCell, changeOfBasis: SKTransformationMatrix)?
   {
     var counter: Int = 0
     
@@ -766,7 +766,7 @@ public struct SKSymmetryCell: CustomStringConvertible
     var eta: Double = (2.0*a*c*cos(beta))
     var zeta: Double = (2.0*a*b*cos(gamma))
     
-    var changeOfBasisMatrix: int3x3 = int3x3.identity
+    var changeOfBasisMatrix: SKTransformationMatrix = SKTransformationMatrix.identity
     
     algorithmStart: do
     {
@@ -779,7 +779,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         // Swap x, y and ensures proper sign of determinant
         swap(&A,&B)
         swap(&xi,&eta)
-        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)])
+        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)])
       }
       
       // step 2
@@ -788,7 +788,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         // Swap y, z and ensures proper sign of determinant
         swap(&B,&C)
         swap(&eta,&zeta)
-        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])
+        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])
         continue algorithmStart
       }
       
@@ -802,7 +802,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         xi = abs(xi)
         eta = abs(eta)
         zeta = abs(zeta)
-        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
+        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
       }
       else // step 4:
       {
@@ -822,7 +822,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         eta = -abs(eta)
         zeta = -abs(zeta)
         
-        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
+        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
       }
       
       // step 5
@@ -831,7 +831,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         C = B + C - xi * sign(xi)
         eta = eta - zeta * sign(xi)
         xi = xi -  2 * B * sign(xi)
-        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,-Int32(sign(xi)),1)])
+        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,-Int32(sign(xi)),1)])
         continue algorithmStart
       }
       
@@ -841,7 +841,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         C = A + C - eta * sign(eta)
         xi = xi - zeta * sign(eta)
         eta = eta - 2*A * sign(eta)
-        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-Int32(sign(eta)),0,1)])
+        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-Int32(sign(eta)),0,1)])
         continue algorithmStart
       }
       
@@ -851,7 +851,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         B = A + B - zeta * sign(zeta)
         xi = xi - eta * sign(zeta)
         zeta = zeta - 2*A * sign(zeta)
-        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(-Int32(sign(zeta)),1,0),SIMD3<Int32>(0,0,1)])
+        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(-Int32(sign(zeta)),1,0),SIMD3<Int32>(0,0,1)])
         continue algorithmStart
       }
       
@@ -861,7 +861,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         C = A + B + C + xi + eta + zeta
         xi = 2*B + xi + zeta
         eta =  2*A + eta + zeta
-        changeOfBasisMatrix *= int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,1,1)])
+        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,1,1)])
         continue algorithmStart
       }
     }
