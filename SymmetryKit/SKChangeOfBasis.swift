@@ -41,9 +41,9 @@ import simd
 
 public struct SKChangeOfBasis
 {
-  private var changeOfBasis : MKint3x3
-  private var translation: SIMD3<Int32> = SIMD3<Int32>()
-  private var inverseChangeOfBasis : MKint3x3
+  public var changeOfBasis : MKint3x3
+  public var translation: SIMD3<Int32> = SIMD3<Int32>()
+  public var inverseChangeOfBasis : MKint3x3
   
   
   public init(rotation: MKint3x3)
@@ -52,8 +52,8 @@ public struct SKChangeOfBasis
     self.translation = SIMD3<Int32>(0,0,0)
     self.inverseChangeOfBasis = self.changeOfBasis.inverse
     
-    //self.changeOfBasis.cleaunUp()
-    //self.inverseChangeOfBasis.cleaunUp()
+    self.changeOfBasis.cleaunUp()
+    self.inverseChangeOfBasis.cleaunUp()
   }
   
   public init(rotation: SKRotationMatrix)
@@ -62,8 +62,8 @@ public struct SKChangeOfBasis
     self.translation = SIMD3<Int32>(0,0,0)
     self.inverseChangeOfBasis = self.changeOfBasis.inverse
     
-    //self.changeOfBasis.cleaunUp()
-    //self.inverseChangeOfBasis.cleaunUp()
+    self.changeOfBasis.cleaunUp()
+    self.inverseChangeOfBasis.cleaunUp()
   }
   
   public init(changeOfBasis: MKint3x3, inverseChangeOfBasis: MKint3x3)

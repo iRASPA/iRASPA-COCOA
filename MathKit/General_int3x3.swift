@@ -121,6 +121,13 @@ public struct MKint3x3: Equatable
                    SIMD3<Int32>(self[2][0] / Int32(normalize), self[2][1] / Int32(normalize), self[2][2] / Int32(normalize))])
   }
   
+  public var Int3x3b: int3x3
+  {
+    return int3x3([SIMD3<Int32>(self[0][0], self[0][1], self[0][2]),
+                   SIMD3<Int32>(self[1][0], self[1][1], self[1][2]),
+                   SIMD3<Int32>(self[2][0], self[2][1], self[2][2])])
+  }
+  
   public var elements: [Int]
   {
     return [Int(numerator[0].x), Int(numerator[0].y), Int(numerator[0].z),

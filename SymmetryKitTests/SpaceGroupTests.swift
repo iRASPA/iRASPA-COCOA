@@ -1307,13 +1307,11 @@ class SpaceGroupTests: XCTestCase
     }
   }
 
-  
-  /*
   func testFindVirtualSpaceGroupFail()
   {
     let testData: [String: Int] =
     [
-      "SpglibTestData/virtual_structure/POSCAR-89-222-12" : 89
+      "SpglibTestData/cubic/POSCAR-220-2" : 220
     ]
     
     let bundle = Bundle(for: type(of: self))
@@ -1326,7 +1324,7 @@ class SpaceGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition, $0.type)}
-          print(reader.atoms.count)
+          //print(reader.atoms.count)
           let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
@@ -1336,5 +1334,5 @@ class SpaceGroupTests: XCTestCase
         }
       }
     }
-  }*/
+  }
 }

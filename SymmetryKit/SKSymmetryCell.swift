@@ -146,7 +146,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   public static let primitiveToRhombohedral: int3x3 = int3x3([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 0, 1,-1), SIMD3<Int32>( 1, 1, 1)])  // P -> R
   
   public static let hexagonalToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>( 2,1, 0), SIMD3<Int32>(-1, 1, 0), SIMD3<Int32>( 0, 0, 1)], denominator: 3)  // H -> P
-  public static let primitiveToHexagonal: int3x3 = int3x3([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 1, 2, 0), SIMD3<Int32>( 0, 0, 1)])  // P -> H
+  public static let primitiveToHexagonal: int3x3 = int3x3([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 1, 2, 0), SIMD3<Int32>( 0, 0, 3)])  // P -> H
   
   
   public static let rhombohedralHexagonalToObverse: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,-1.0/3.0,-1.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,-2.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,1.0/3.0)])   // Rh -> Robv
