@@ -202,6 +202,7 @@
 		9350696626863EF50071B4CC /* SKSeitzMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9350696526863EF50071B4CC /* SKSeitzMatrix.swift */; };
 		93506968268646170071B4CC /* GreatestCommonDivisor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93506967268646170071B4CC /* GreatestCommonDivisor.swift */; };
 		9350696A268A49C10071B4CC /* SKRotationalChangeOfBasis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93506969268A49C10071B4CC /* SKRotationalChangeOfBasis.swift */; };
+		93506970268B71580071B4CC /* SKIntegerChangeOfBasis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9350696F268B71580071B4CC /* SKIntegerChangeOfBasis.swift */; };
 		935105551F16558B002F424C /* int4x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935105541F16558B002F424C /* int4x3.swift */; };
 		9354FE4A1F45A6A400155DC3 /* CartesianNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354FE491F45A6A400155DC3 /* CartesianNumberFormatter.swift */; };
 		9356D04C1F921BA90063A349 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
@@ -1497,6 +1498,7 @@
 		9350696526863EF50071B4CC /* SKSeitzMatrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSeitzMatrix.swift; sourceTree = "<group>"; };
 		93506967268646170071B4CC /* GreatestCommonDivisor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreatestCommonDivisor.swift; sourceTree = "<group>"; };
 		93506969268A49C10071B4CC /* SKRotationalChangeOfBasis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKRotationalChangeOfBasis.swift; sourceTree = "<group>"; };
+		9350696F268B71580071B4CC /* SKIntegerChangeOfBasis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKIntegerChangeOfBasis.swift; sourceTree = "<group>"; };
 		935105541F16558B002F424C /* int4x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = int4x3.swift; sourceTree = "<group>"; };
 		9354FE491F45A6A400155DC3 /* CartesianNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartesianNumberFormatter.swift; sourceTree = "<group>"; };
 		9357FA33262B244300F42F47 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Preferences.strings; sourceTree = "<group>"; };
@@ -2410,6 +2412,7 @@
 				93B777331FA47AB700A5DF86 /* SKColorSet.swift */,
 				93B777351FA47AD300A5DF86 /* SKColorSets.swift */,
 				930DD4DD1E26AA5200B8FE9B /* SKChangeOfBasis.swift */,
+				9350696F268B71580071B4CC /* SKIntegerChangeOfBasis.swift */,
 				93506969268A49C10071B4CC /* SKRotationalChangeOfBasis.swift */,
 				930DD4DF1E26AA5200B8FE9B /* SKPointGroup.swift */,
 				930DD4E01E26AA5200B8FE9B /* SKRotationMatrix.swift */,
@@ -4491,6 +4494,7 @@
 				93EAABAA1ED978E200FE61D8 /* SKParser.swift in Sources */,
 				93B56CD2202F1D8D0044057C /* SKmmCIFWriter.swift in Sources */,
 				9374794F1FB9EB51008C4411 /* SKBoundingBox.swift in Sources */,
+				93506970268B71580071B4CC /* SKIntegerChangeOfBasis.swift in Sources */,
 				930DD4E91E26AA5200B8FE9B /* SKPointGroup.swift in Sources */,
 				93F3A58F218738C4008E41A2 /* SKBondSetController.swift in Sources */,
 				930DD4E71E26AA5200B8FE9B /* SKChangeOfBasis.swift in Sources */,

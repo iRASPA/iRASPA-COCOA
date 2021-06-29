@@ -296,7 +296,6 @@ extension SKSpacegroup
   {
     var translations: int3x3 = int3x3()
     
-    
     let dataBaseSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
     var dataBaseSpaceGroupGenerators = SKSeitzIntegerMatrix.SeitzMatrices(generatorEncoding: dataBaseSpaceGroup.spaceGroupSetting.encodedGenerators)
     
@@ -354,41 +353,39 @@ extension SKSpacegroup
       translations[i] = seitzMatrices[index].translation
     }
     
-    
-    var transformation: MKint3x3 = MKint3x3.identity
-    
+    var transformation: SKTransformationMatrix = SKTransformationMatrix.identity
     switch(dataBaseSpaceGroupCentering)
     {
     case .primitive:
-      transformation = MKint3x3.identity
+      transformation = SKTransformationMatrix.identity
     case .body:
-      transformation = SKSymmetryCell.bodyCenteredToPrimitive
+      transformation = SKTransformationMatrix.primitiveToBodyCentered
     case .face:
-      transformation = SKSymmetryCell.faceCenteredToPrimitive
+      transformation = SKTransformationMatrix.primitiveToFaceCentered
     case .a_face:
-      transformation = SKSymmetryCell.ACenteredToPrimitive
+      transformation = SKTransformationMatrix.primitiveToACentered
     case .b_face:
-      transformation = SKSymmetryCell.BCenteredToPrimitive
+      transformation = SKTransformationMatrix.primitiveToBCentered
     case .c_face:
-      transformation = SKSymmetryCell.CCenteredToPrimitive
+      transformation = SKTransformationMatrix.primitiveToCCentered
     case .r:
-      transformation = SKSymmetryCell.rhombohedralToPrimitive
+      transformation = SKTransformationMatrix.primitiveToRhombohedral
     case .h:
-      transformation = SKSymmetryCell.hexagonalToPrimitive
+      transformation = SKTransformationMatrix.primitiveToHexagonal
     default:
       break
     }
     
-    let changeToPrimitive: SKChangeOfBasis = SKChangeOfBasis(rotation: transformation)
+    let changeToPrimitive: SKIntegerChangeOfBasis = SKIntegerChangeOfBasis(inversionTransformation: transformation)
 
-    
     let r1: SKRotationMatrix = dataBaseSpaceGroupGenerators[0].rotation
     let r2: SKRotationMatrix = dataBaseSpaceGroupGenerators.count > 1 ? dataBaseSpaceGroupGenerators[1].rotation : SKRotationMatrix.identity
     let r3: SKRotationMatrix = dataBaseSpaceGroupGenerators.count > 2 ? dataBaseSpaceGroupGenerators[2].rotation : SKRotationMatrix.identity
     
-    let t1: SKRotationMatrix = changeToPrimitive * (r1 - SKRotationMatrix.identity)
-    let t2: SKRotationMatrix = changeToPrimitive * (r2 - SKRotationMatrix.identity)
-    let t3: SKRotationMatrix = changeToPrimitive * (r3 - SKRotationMatrix.identity)
+    let t1: SKTransformationMatrix = changeToPrimitive * SKTransformationMatrix(r1 - SKRotationMatrix.identity)
+    let t2: SKTransformationMatrix = changeToPrimitive * SKTransformationMatrix(r2 - SKRotationMatrix.identity)
+    let t3: SKTransformationMatrix = changeToPrimitive * SKTransformationMatrix(r3 - SKRotationMatrix.identity)
+
     
     // m is a 9x3 matrix
     let m: RingMatrix = RingMatrix(Int3x3: [t1.int3x3,t2.int3x3,t3.int3x3])

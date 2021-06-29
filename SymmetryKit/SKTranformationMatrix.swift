@@ -43,15 +43,28 @@ public struct SKTransformationMatrix
   public static let identity: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
   public static let inversionIdentity: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(0,0,-1)])
   
+  public static let primitiveToPrimitive: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])  // P -> P
+  public static let primitiveToBodyCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(0,1,1), SIMD3<Int32>(1,0,1), SIMD3<Int32>(1,1,0)])  // P -> I
+  public static let primitiveToFaceCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,1,1), SIMD3<Int32>(1,-1,1), SIMD3<Int32>(1,1,-1)])  // P -> F
+  public static let primitiveToACentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,0,0), SIMD3<Int32>(0,-1,1), SIMD3<Int32>(0,1,1)])  // P -> A
+  public static let primitiveToBCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,0,1), SIMD3<Int32>(0,-1,0), SIMD3<Int32>(1,0,1)])  // P -> B
+  public static let primitiveToCCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1, 1,0), SIMD3<Int32>(1,-1,0), SIMD3<Int32>(0,0,-1)])  // P -> C
+  public static let primitiveToRhombohedral: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 0, 1,-1), SIMD3<Int32>( 1, 1, 1)])  // P -> R
+  public static let primitiveToHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 1, 2, 0), SIMD3<Int32>( 0, 0, 3)])  // P -> H
+  
   public init()
   {
     self.elements = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)]
   }
   
-  
   init(_ m: [SIMD3<Int32>])
   {
     self.elements = m
+  }
+  
+  init(_ m: SKRotationMatrix)
+  {
+    self.elements = m.elements
   }
   
   public init(_ m: double3x3)
