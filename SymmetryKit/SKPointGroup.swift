@@ -158,19 +158,19 @@ public struct SKPointGroup
   /// - parameter SeitzMatrices: the symmetry elements
   ///
   /// - returns: an orthogonal axes system
-  public func constructAxes(usingSeitzMatrices SeitzMatrices: [SKSeitzIntegerMatrix]) -> int3x3?
+  public func constructAxes(usingSeitzMatrices SeitzMatrices: [SKSeitzIntegerMatrix]) -> SKTransformationMatrix?
   {
     switch(self.laue)
     {
     case .laue_1:
-      return int3x3([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
+      return SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
     case .laue_2m:
       // look for all proper rotation matrices of the wanted rotation type
       let properRotationMatrices: [SKRotationMatrix] = SeitzMatrices.map{$0.rotation.proper}.filter{$0.type.rawValue == 2}
       
       if let properRotationmatrix: SKRotationMatrix = properRotationMatrices.first
       {
-        var axes: int3x3 = int3x3()
+        var axes: SKTransformationMatrix = SKTransformationMatrix()
         
         // set the rotation axis as the first axis
         axes[1] = properRotationmatrix.rotationAxis
@@ -189,7 +189,7 @@ public struct SKPointGroup
           
           if axes.determinant < 0
           {
-            return int3x3([axes[0],axes[1],axes[2]])
+            return SKTransformationMatrix([axes[0],axes[1],axes[2]])
           }
           return axes
         }
@@ -208,11 +208,11 @@ public struct SKPointGroup
         
         if uniqueAxis.count >= 3
         {
-          let axes: int3x3 = int3x3([uniqueAxis[0],uniqueAxis[1],uniqueAxis[2]])
+          let axes: SKTransformationMatrix = SKTransformationMatrix([uniqueAxis[0],uniqueAxis[1],uniqueAxis[2]])
           
           if axes.determinant < 0
           {
-            return int3x3([axes[0],axes[2],axes[1]])
+            return SKTransformationMatrix([axes[0],axes[2],axes[1]])
           }
           return axes
         }
@@ -224,7 +224,7 @@ public struct SKPointGroup
         let properRotationMatrices: [SKRotationMatrix] = SeitzMatrices.map{$0.rotation.proper}.filter{$0.type.rawValue == rotationalTypeForBasis}
         if let properRotationmatrix: SKRotationMatrix = properRotationMatrices.first
         {
-          var axes: int3x3 = int3x3()
+          var axes: SKTransformationMatrix = SKTransformationMatrix()
           
           // set the rotation axis as the first axis
           axes[2] = properRotationmatrix.rotationAxis
@@ -247,7 +247,7 @@ public struct SKPointGroup
               {
                 if axes.determinant < 0
                 {
-                  return int3x3([axes[1],axes[0],axes[2]])
+                  return SKTransformationMatrix([axes[1],axes[0],axes[2]])
                 }
                 return axes
               }
@@ -262,7 +262,7 @@ public struct SKPointGroup
               {
                 if axes.determinant < 0
                 {
-                  return int3x3([axes[1],axes[0],axes[2]])
+                  return SKTransformationMatrix([axes[1],axes[0],axes[2]])
                 }
                 return axes
               }
@@ -321,9 +321,9 @@ public struct SKPointGroup
     fatalError()
   }
 
-  public func computeCentering(of basis: int3x3) -> SKSpacegroup.Centring
+  public func computeCentering(of basis: SKTransformationMatrix) -> SKSpacegroup.Centring
   {
-    let det: Int = abs(basis.determinant)
+    let det: Int32 = abs(basis.determinant)
     
     // the absolute value of the determinant gives the scale factor by which volume is multiplied under the associated linear transformation,
     // while its sign indicates whether the transformation preserves orientation
@@ -382,9 +382,9 @@ public struct SKPointGroup
     }
   }
   
-  public func computeBasisCorrection( of basis: int3x3, withCentering centering: inout SKSpacegroup.Centring) ->  int3x3
+  public func computeBasisCorrection( of basis: SKTransformationMatrix, withCentering centering: inout SKSpacegroup.Centring) ->  SKTransformationMatrix
   {
-    let det: Int = abs(basis.determinant)
+    let det: Int32 = abs(basis.determinant)
     let lau: SKPointGroup.Laue = self.laue
     
     // the absolute value of the determinant gives the scale factor by which volume is multiplied under the associated linear transformation,
@@ -399,7 +399,7 @@ public struct SKPointGroup
     switch (det)
     {
     case 1:
-      return int3x3.identity
+      return SKTransformationMatrix.identity
     case 2:
       // a “standard” conventional cell is always C-centred and a′ < b′ regardless of symmetry
       switch (centering)
@@ -408,31 +408,31 @@ public struct SKPointGroup
         // Tranformation monoclinic A-centring to C-centring (preserving b-axis)
         // Axes a and c are swapped, to keep the same handiness b (to keep Beta obtuse) is made negative
         centering = .c_face
-        return int3x3([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // monoclinic a to c
+        return SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // monoclinic a to c
       case .a_face where lau != .laue_2m:
         centering = .c_face
-        return int3x3([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])  // a to c
+        return SKTransformationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])  // a to c
       case .b_face:
         centering = .c_face
-        return int3x3([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])    // b to c
+        return SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])    // b to c
       case .body where lau == .laue_2m:
         centering = .c_face
-        return int3x3([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)]) // monoclinic i to c
+        return SKTransformationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)]) // monoclinic i to c
       default:
-        return int3x3.identity
+        return SKTransformationMatrix.identity
       }
     case 3:
-      let m: MKint3x3 = (MKint3x3([SIMD3<Int32>(0,-1,1),SIMD3<Int32>(1,0,-1),SIMD3<Int32>(1,1,1)]) * MKint3x3(basis.inverse))
+      let m: MKint3x3 = (MKint3x3([SIMD3<Int32>(0,-1,1),SIMD3<Int32>(1,0,-1),SIMD3<Int32>(1,1,1)]) * MKint3x3(basis.int3x3.inverse))
       if m.greatestCommonDivisor == 3
       {
         // reverse detected -> change to obverse
-        return int3x3([SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, 1)])
+        return SKTransformationMatrix([SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, 1)])
       }
-      return int3x3.identity
+      return SKTransformationMatrix.identity
     case 4:
-      return int3x3.identity
+      return SKTransformationMatrix.identity
     default:
-      return int3x3.identity
+      return SKTransformationMatrix.identity
     }
   }
 
