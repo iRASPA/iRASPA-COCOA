@@ -179,7 +179,7 @@ extension SKSpacegroup
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
-    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
+    let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
     
     // create the point symmetry set
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
@@ -236,7 +236,7 @@ extension SKSpacegroup
       
       // transform the symmetries (rotation and translation) from the primtive cell to the conventional cell
       // the centering is used to add the additional translations
-      let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(transformationMatrix: inverseM).addingCenteringOperations(centering: centering)
+      let symmetryInConventionalCell: SKIntegerSymmetryOperationSet = spaceGroupSymmetries.changedBasis(transformationMatrix: inverseM).addingCenteringOperations(centering: centering)
       
       for spaceGroupNumber in 1...230
       {
@@ -247,7 +247,7 @@ extension SKSpacegroup
           
           let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: hall)
 
-          let spaceGroupSymmetries: SKSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
+          let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
           let transform: double3x3 = changedlattice.inverse * DelaunayUnitCell
           var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type, -1)}
@@ -273,7 +273,7 @@ extension SKSpacegroup
   /// - parameter symmetryPrecision: the precision of the search (default: 1e-5)
   ///
   /// - returns: the symmetry operations, i.e. a list of (integer rotation matrix, translation vector)
-  public static func findSpaceGroupSymmetry(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], latticeSymmetries: SKPointSymmetrySet, symmetryPrecision: Double = 1e-4) -> SKSymmetryOperationSet
+  public static func findSpaceGroupSymmetry(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], latticeSymmetries: SKPointSymmetrySet, symmetryPrecision: Double = 1e-4) -> SKIntegerSymmetryOperationSet
   {
     var spaceGroupSymmetries: [SKSeitzIntegerMatrix] = []
     
@@ -286,7 +286,7 @@ extension SKSpacegroup
         spaceGroupSymmetries.append(SKSeitzIntegerMatrix(rotation: rotationMatrix, translation: translation))
       }
     }
-    return SKSymmetryOperationSet(operations: spaceGroupSymmetries)
+    return SKIntegerSymmetryOperationSet(operations: spaceGroupSymmetries)
   }
   
   
