@@ -258,7 +258,7 @@ public struct SKSpacegroup
   
   public var searchGenerators: [SKSeitzIntegerMatrix]
   {
-    let symmetryOperationsSet: SKSymmetryOperationSet = SKSymmetryOperationSet(spaceGroupSetting: self.spaceGroupSetting, centroSymmetric: false)
+    let symmetryOperationsSet: SKIntegerSymmetryOperationSet = SKIntegerSymmetryOperationSet(spaceGroupSetting: self.spaceGroupSetting, centroSymmetric: false)
     
     let holedry: SKPointGroup.Holohedry = self.spaceGroupSetting.pointGroup.holohedry
     
@@ -295,7 +295,7 @@ public struct SKSpacegroup
         
         if centroSymmetric
         {
-          let symmetryOperationsSet: SKSymmetryOperationSet = SKSymmetryOperationSet(spaceGroupSetting: self.spaceGroupSetting, centroSymmetric: true)
+          let symmetryOperationsSet: SKIntegerSymmetryOperationSet = SKIntegerSymmetryOperationSet(spaceGroupSetting: self.spaceGroupSetting, centroSymmetric: true)
           let inversionMatrices: [SKSeitzIntegerMatrix] = symmetryOperationsSet.operations.filter{$0.rotation == SKRotationMatrix.inversionIdentity}
           if !inversionMatrices.isEmpty
           {

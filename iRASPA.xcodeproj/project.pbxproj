@@ -41,7 +41,7 @@
 		930DD4EA1E26AA5200B8FE9B /* SKRotationMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4E01E26AA5200B8FE9B /* SKRotationMatrix.swift */; };
 		930DD4EB1E26AA5200B8FE9B /* SKSeitzIntegerMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4E11E26AA5200B8FE9B /* SKSeitzIntegerMatrix.swift */; };
 		930DD4EC1E26AA5200B8FE9B /* SKSpaceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4E21E26AA5200B8FE9B /* SKSpaceGroup.swift */; };
-		930DD4ED1E26AA5200B8FE9B /* SKSymmetryOperationSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4E31E26AA5200B8FE9B /* SKSymmetryOperationSet.swift */; };
+		930DD4ED1E26AA5200B8FE9B /* SKIntegerSymmetryOperationSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4E31E26AA5200B8FE9B /* SKIntegerSymmetryOperationSet.swift */; };
 		930DD4EE1E26AA5200B8FE9B /* SKTranformationMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4E41E26AA5200B8FE9B /* SKTranformationMatrix.swift */; };
 		930DD4EF1E26AA5200B8FE9B /* SKVASPReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4E51E26AA5200B8FE9B /* SKVASPReader.swift */; };
 		930DD50C1E26AC0D00B8FE9B /* MathKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; };
@@ -679,6 +679,7 @@
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
 		93DA9EE523DEFE4600FB4E51 /* SimulationKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */; };
 		93DE92D1207E2BB00084D303 /* NSPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */; };
+		93E37F96268C754300AD5DA3 /* SKSymmetryOperationSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E37F95268C754300AD5DA3 /* SKSymmetryOperationSet.swift */; };
 		93E7594B21DBC056009B9C5C /* iRASPADocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */; };
 		93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */; };
 		93E92DF321F6359600A0DBE6 /* MetalBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DF221F6359600A0DBE6 /* MetalBondCylinderGeometry.swift */; };
@@ -1268,7 +1269,7 @@
 		930DD4E01E26AA5200B8FE9B /* SKRotationMatrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKRotationMatrix.swift; sourceTree = "<group>"; };
 		930DD4E11E26AA5200B8FE9B /* SKSeitzIntegerMatrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSeitzIntegerMatrix.swift; sourceTree = "<group>"; };
 		930DD4E21E26AA5200B8FE9B /* SKSpaceGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSpaceGroup.swift; sourceTree = "<group>"; };
-		930DD4E31E26AA5200B8FE9B /* SKSymmetryOperationSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSymmetryOperationSet.swift; sourceTree = "<group>"; };
+		930DD4E31E26AA5200B8FE9B /* SKIntegerSymmetryOperationSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKIntegerSymmetryOperationSet.swift; sourceTree = "<group>"; };
 		930DD4E41E26AA5200B8FE9B /* SKTranformationMatrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTranformationMatrix.swift; sourceTree = "<group>"; };
 		930DD4E51E26AA5200B8FE9B /* SKVASPReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKVASPReader.swift; sourceTree = "<group>"; };
 		930DD5121E26B2CC00B8FE9B /* RenderKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RenderKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2064,6 +2065,7 @@
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationKitErrors.swift; sourceTree = "<group>"; };
 		93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPasteboardItem.swift; sourceTree = "<group>"; };
+		93E37F95268C754300AD5DA3 /* SKSymmetryOperationSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSymmetryOperationSet.swift; sourceTree = "<group>"; };
 		93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPADocumentController.swift; sourceTree = "<group>"; };
 		93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalEllipsoidShader.swift; sourceTree = "<group>"; };
@@ -2422,7 +2424,8 @@
 				930DD4E21E26AA5200B8FE9B /* SKSpaceGroup.swift */,
 				933700C91EDC610800DD5961 /* SKSpaceGroupSetting.swift */,
 				930DD4DE1E26AA5200B8FE9B /* SKFindSpaceGroup.swift */,
-				930DD4E31E26AA5200B8FE9B /* SKSymmetryOperationSet.swift */,
+				930DD4E31E26AA5200B8FE9B /* SKIntegerSymmetryOperationSet.swift */,
+				93E37F95268C754300AD5DA3 /* SKSymmetryOperationSet.swift */,
 				930DD4E51E26AA5200B8FE9B /* SKVASPReader.swift */,
 				937807D621C5847000EC4466 /* OrderedDictionary.swift */,
 				93F1E7F9202449E30050ECAC /* Writers */,
@@ -4466,6 +4469,7 @@
 				93C5E24223F1A264002BA929 /* SKAsymmetricBond.swift in Sources */,
 				930DD4E81E26AA5200B8FE9B /* SKFindSpaceGroup.swift in Sources */,
 				93FDA72F20554DDB000C4AD7 /* SKVASPWriter.swift in Sources */,
+				93E37F96268C754300AD5DA3 /* SKSymmetryOperationSet.swift in Sources */,
 				93F1E7FF20244A220050ECAC /* SKXYZWriter.swift in Sources */,
 				93F1E7FB20244A060050ECAC /* SKCIFWriter.swift in Sources */,
 				93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */,
@@ -4489,7 +4493,7 @@
 				9350696626863EF50071B4CC /* SKSeitzMatrix.swift in Sources */,
 				93EAABAF1EDACDEE00FE61D8 /* SKPDBParser.swift in Sources */,
 				93F3A593218739D9008E41A2 /* SKAtomTreeNode.swift in Sources */,
-				930DD4ED1E26AA5200B8FE9B /* SKSymmetryOperationSet.swift in Sources */,
+				930DD4ED1E26AA5200B8FE9B /* SKIntegerSymmetryOperationSet.swift in Sources */,
 				930DD4EC1E26AA5200B8FE9B /* SKSpaceGroup.swift in Sources */,
 				93EAABAA1ED978E200FE61D8 /* SKParser.swift in Sources */,
 				93B56CD2202F1D8D0044057C /* SKmmCIFWriter.swift in Sources */,

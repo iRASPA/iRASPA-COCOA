@@ -506,7 +506,7 @@ public struct SKPointGroup
                                                                                      
     let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell)
     // FIX!!!
-    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
+    let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
     
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
     return SKPointGroup(pointSymmetry: pointSymmetry)

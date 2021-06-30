@@ -90,7 +90,7 @@ public struct SKSpaceGroupSetting
   }
   
   
-  public var fullSeitzMatrices: SKSymmetryOperationSet
+  public var fullSeitzMatrices: SKIntegerSymmetryOperationSet
   {
     assert(self.encodedSeitz.count % 3 == 0, "Found: \(self.encodedSeitz.count) \(self.spaceGroupNumber) encoding: \(self.encodedSeitz)")
     
@@ -135,7 +135,7 @@ public struct SKSpaceGroupSetting
       }
     }
     
-    return SKSymmetryOperationSet(operations: matrices)
+    return SKIntegerSymmetryOperationSet(operations: matrices)
   }
 
   public var SeitzMatricesWithoutTranslation: [SKSeitzIntegerMatrix]

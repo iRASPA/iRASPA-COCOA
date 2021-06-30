@@ -113,6 +113,14 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
                                    ((Int32(rint(translation.z * 12.0)) % 12 + 12) % 12))
   }
   
+  public init(SeitzMatrx: SKSeitzMatrix)
+  {
+    self.rotation = SeitzMatrx.rotation
+    self.translation = SIMD3<Int32>(((Int32(rint(SeitzMatrx.translation.x * 12.0)) % 12 + 12) % 12),
+                                    ((Int32(rint(SeitzMatrx.translation.y * 12.0)) % 12 + 12) % 12),
+                                    ((Int32(rint(SeitzMatrx.translation.z * 12.0)) % 12 + 12) % 12))
+  }
+  
   public init(encoding: (UInt8, UInt8, UInt8))
   {
     let referenceValue: UInt8 = UTF8Char(ascii: "0")
