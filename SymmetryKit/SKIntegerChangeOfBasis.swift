@@ -40,6 +40,11 @@ public struct SKIntegerChangeOfBasis
     return left.inverseChangeOfBasis * right / Int32(left.inverseChangeOfBasisDeterminant)
   }
   
+  public static func * (left: SKIntegerChangeOfBasis, right: SIMD3<Double>) -> SIMD3<Double>
+  {
+    return (left.inverseChangeOfBasis * right) / Double(left.inverseChangeOfBasisDeterminant)
+  }
+  
   public static func ==(left: SKIntegerChangeOfBasis, right: SKChangeOfBasis) -> Bool
   {
     return left.changeOfBasis.int3x3 == right.changeOfBasis.Int3x3b &&

@@ -158,7 +158,7 @@ public struct SKPointGroup
   /// - parameter SeitzMatrices: the symmetry elements
   ///
   /// - returns: an orthogonal axes system
-  public func constructAxes(usingSeitzMatrices SeitzMatrices: [SKSeitzIntegerMatrix]) -> SKTransformationMatrix?
+  public func constructAxes(usingSeitzMatrices SeitzMatrices: [SKSeitzMatrix]) -> SKTransformationMatrix?
   {
     switch(self.laue)
     {
@@ -505,8 +505,8 @@ public struct SKPointGroup
     let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
                                                                                      
     let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell)
-    // FIX!!!
-    let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
+    
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
     
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
     return SKPointGroup(pointSymmetry: pointSymmetry)

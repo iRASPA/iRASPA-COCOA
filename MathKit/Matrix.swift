@@ -25,6 +25,7 @@
 
 import Foundation
 import Accelerate
+import simd
 
 public struct Matrix {
   public let rows: Int
@@ -1383,4 +1384,90 @@ extension Matrix {
   public func std(_ range: CountableClosedRange<Int>) -> Matrix{
     return std(CountableRange(range))
   }
+}
+
+extension Matrix
+{
+  /* Multiplies two matrices, or a matrix with a vector. */
+  public static func <*> (lhs: RingMatrix, rhs: Matrix) -> Matrix
+  {
+    precondition(lhs.columns == rhs.rows, "Cannot multiply \(lhs.rows)×\(lhs.columns) matrix and \(rhs.rows)×\(rhs.columns) matrix")
+
+    var results = Matrix(rows: lhs.rows, columns: rhs.columns, repeatedValue: 0)
+    for i in 0..<lhs.rows
+    {
+      for j in 0..<rhs.columns
+      {
+        var v: Double = 0.0
+        for k in 0..<lhs.columns
+        {
+          v += Double(lhs[i,k]) * rhs[k,j]
+        }
+        results[i,j] = v
+      }
+    }
+    return results
+  }
+  
+  /* Multiplies two matrices, or a matrix with a vector. */
+  public static func <*> (lhs: IntegerMatrix, rhs: Matrix) -> Matrix
+  {
+    precondition(lhs.numberOfColumns == rhs.rows, "Cannot multiply \(lhs.numberOfRows)×\(lhs.numberOfColumns) matrix and \(rhs.rows)×\(rhs.columns) matrix")
+
+    var results = Matrix(rows: lhs.numberOfRows, columns: rhs.columns, repeatedValue: 0)
+    for i in 0..<lhs.numberOfRows
+    {
+      for j in 0..<rhs.columns
+      {
+        var v: Double = 0.0
+        for k in 0..<lhs.numberOfColumns
+        {
+          v += Double(lhs[i,k]) * rhs[k,j]
+        }
+        results[i,j] = v
+      }
+    }
+    return results
+  }
+  
+  public static func <*> (lhs: Matrix, rhs: IntegerMatrix) -> Matrix
+  {
+    precondition(lhs.columns == rhs.numberOfRows, "Cannot multiply \(lhs.rows)×\(lhs.columns) matrix and \(rhs.numberOfRows)×\(rhs.numberOfColumns) matrix")
+
+    var results = Matrix(rows: lhs.rows, columns: rhs.numberOfColumns, repeatedValue: 0)
+    for i in 0..<lhs.rows
+    {
+      for j in 0..<rhs.numberOfColumns
+      {
+        var v: Double = 0.0
+        for k in 0..<lhs.columns
+        {
+          v += lhs[i,k] * Double(rhs[k,j])
+        }
+        results[i,j] = v
+      }
+    }
+    return results
+  }
+  
+  public static func <*> (lhs: Matrix, rhs: RingMatrix) -> Matrix
+  {
+    precondition(lhs.columns == rhs.rows, "Cannot multiply \(lhs.rows)×\(lhs.columns) matrix and \(rhs.rows)×\(rhs.columns) matrix")
+
+    var results = Matrix(rows: lhs.rows, columns: rhs.columns, repeatedValue: 0)
+    for i in 0..<lhs.rows
+    {
+      for j in 0..<rhs.columns
+      {
+        var v: Double = 0.0
+        for k in 0..<lhs.columns
+        {
+          v += lhs[i,k] * Double(rhs[k,j])
+        }
+        results[i,j] = v
+      }
+    }
+    return results
+  }
+  
 }

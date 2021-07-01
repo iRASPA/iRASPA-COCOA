@@ -340,6 +340,7 @@ public struct IntegerMatrix
     {
       if ( result[i,i] != 0)
       {
+        assert(result.denominator.isMultiple(of: self[i,i]))
         result[i,i] = result.denominator / self[i,i]
       }
       else
