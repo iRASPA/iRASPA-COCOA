@@ -29,7 +29,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -85,7 +88,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -234,7 +240,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -406,7 +415,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -484,7 +496,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -560,7 +575,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -650,7 +668,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -992,7 +1013,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -1016,7 +1040,7 @@ class SpaceGroupTests: XCTestCase
         "SpglibTestData/zeolites/ATS.cif" : (15, 13.1483, 21.5771, 5.1639, 90, 91.84, 90),
         "SpglibTestData/zeolites/ATS-primitive.cif" : (15, 13.1483, 21.5771, 5.1639, 90, 91.84, 90),
         "SpglibTestData/zeolites/BEA.cif" : (91, 12.661, 12.661, 26.406, 90, 90, 90),
-        "SpglibTestData/zeolites/BOG.cif" : (74, 20.236, 23.798, 12.798, 90, 90, 90),
+        "SpglibTestData/zeolites/BOG.cif" : (74, 23.798, 20.236, 12.798, 90, 90, 90),
         "SpglibTestData/zeolites/BOG-primitive.cif" : (74, 20.236, 23.798, 12.798, 90, 90, 90),
         "SpglibTestData/zeolites/CFI.cif" : (74, 5.021, 13.695, 25.497, 90, 90, 90),
         "SpglibTestData/zeolites/CFI-primitive.cif" : (74, 5.021, 13.695, 25.497, 90, 90, 90),
@@ -1094,7 +1118,9 @@ class SpaceGroupTests: XCTestCase
         if let frame: SKStructure = parser.scene.first?.first,
            let unitCell = frame.cell?.unitCell
         {
-          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position, $0.elementIdentifier)}
+          //let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let origin: SIMD3<Double> = SIMD3<Double>(0.0,0.0,0.0)
+          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position + origin, $0.elementIdentifier)}
           
           let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: 1e-3)
           
@@ -1147,7 +1173,8 @@ class SpaceGroupTests: XCTestCase
         if let frame: SKStructure = parser.scene.first?.first,
            let unitCell = frame.cell?.unitCell
         {
-          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position, $0.elementIdentifier)}
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position + origin, $0.elementIdentifier)}
           
           let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: 1e-4)
           
@@ -1221,7 +1248,8 @@ class SpaceGroupTests: XCTestCase
         if let frame: SKStructure = parser.scene.first?.first,
            let unitCell = frame.cell?.unitCell
         {
-          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position, $0.elementIdentifier)}
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position + origin, $0.elementIdentifier)}
           
           let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: 1e-4)
           
@@ -1287,7 +1315,8 @@ class SpaceGroupTests: XCTestCase
         if let frame: SKStructure = parser.scene.first?.first,
            let unitCell = frame.cell?.unitCell
         {
-          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position, $0.elementIdentifier)}
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position + origin, $0.elementIdentifier)}
           
           let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: 1e-3)
           
@@ -1307,11 +1336,13 @@ class SpaceGroupTests: XCTestCase
     }
   }
 
+  /*
   func testFindVirtualSpaceGroupFail()
   {
     let testData: [String: Int] =
     [
-      "SpglibTestData/cubic/POSCAR-220-2" : 220
+      "SpglibTestData/orthorhombic/POSCAR-043" : 43,
+      "SpglibTestData/orthorhombic/POSCAR-043-2" : 43
     ]
     
     let bundle = Bundle(for: type(of: self))
@@ -1323,9 +1354,10 @@ class SpaceGroupTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition, $0.type)}
-          //print(reader.atoms.count)
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
+          let origin: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-3)
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
@@ -1335,4 +1367,48 @@ class SpaceGroupTests: XCTestCase
       }
     }
   }
+  
+  func testFAU()
+  {
+    let testData: [String: (spaceGroup: Int, a: Double, b: Double, c: Double, alpha: Double, beta: Double, gamma: Double)] =
+      [
+        //"SpglibTestData/zeolites/FAU-primitive.cif" : (227, 24.2576, 24.2576, 24.2576, 90, 90, 90),
+        "SpglibTestData/mofs/MIL-47.cif" : (62, 6.8179, 16.143, 13.939, 90, 90, 90),
+    ]
+    
+    let bundle = Bundle(for: type(of: self))
+    
+    for (fileName, reference) in testData
+    {
+      if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
+      {
+        let contentString = try! String(contentsOf: url, encoding: String.Encoding.utf8)
+        let parser: SKCIFParser = SKCIFParser(displayName: String(describing: url), string: contentString, windowController: nil)
+        try! parser.startParsing()
+        
+        if let frame: SKStructure = parser.scene.first?.first,
+           let unitCell = frame.cell?.unitCell
+        {
+          //let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0))
+          let origin: SIMD3<Double> = SIMD3<Double>(0.028,0.0,0.0)
+          let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = frame.atoms.map{($0.position + origin, $0.elementIdentifier)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: 1e-4)
+          
+          XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
+          if let spacegroup = spacegroup
+          {
+            print("origin: ", spacegroup.origin)
+            XCTAssertEqual(SKSpacegroup.spaceGroupData[spacegroup.hall].spaceGroupNumber, reference.spaceGroup, "Wrong space group found for \(fileName)")
+            XCTAssertEqual(spacegroup.cell.a, reference.a, accuracy: 1e-4, "Wrong a found for \(fileName)")
+            XCTAssertEqual(spacegroup.cell.b, reference.b, accuracy: 1e-4, "Wrong b found for \(fileName)")
+            XCTAssertEqual(spacegroup.cell.c, reference.c, accuracy: 1e-4, "Wrong c found for \(fileName)")
+            XCTAssertEqual(spacegroup.cell.alpha * 180.0 / Double.pi, reference.alpha, accuracy: 1e-3, "Wrong alpha-angle found for \(fileName)")
+            XCTAssertEqual(spacegroup.cell.beta * 180.0 / Double.pi, reference.beta, accuracy: 1e-3, "Wrong beta-angle found for \(fileName)")
+            XCTAssertEqual(spacegroup.cell.gamma * 180.0 / Double.pi, reference.gamma, accuracy: 1e-3, "Wrong gamma-angle found for \(fileName)")
+          }
+        }
+      }
+    }
+  }*/
 }

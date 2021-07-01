@@ -47,25 +47,25 @@ public struct SKSymmetryOperationSet
     switch(centering)
     {
     case .none, .primitive:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0)]
+      shifts = [SIMD3<Double>(0,0,0)]
     case .face:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.5,0.5),SIMD3<Double>(0.5,0,0.5),SIMD3<Double>(0.5,0.5,0.0)]
+      shifts = [SIMD3<Double>(0,0,0),SIMD3<Double>(0,0.5,0.5),SIMD3<Double>(0.5,0,0.5),SIMD3<Double>(0.5,0.5,0)]
     case .r:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(1.0/3.0,2.0/3.0,2.0/3.0)]
+      shifts = [SIMD3<Double>(0,0,0),SIMD3<Double>(8.0/12.0,4.0/12.0,4.0/12.0),SIMD3<Double>(4.0/12.0,8.0/12.0,8.0/12.0)]
     case .h:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(2.0/3.0,1.0/3.0,0),SIMD3<Double>(0,2.0/3.0,1.0/3.0)]
+      shifts = [SIMD3<Double>(0,0,0),SIMD3<Double>(8.0/12.0,4.0/12.0,0),SIMD3<Double>(0,8.0/12.0,4.0/12.0)]
     case .d:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(1.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(2.0/3.0,2.0/3.0,2.0/3.0)]
+      shifts = [SIMD3<Double>(0,0,0),SIMD3<Double>(4.0/12.0,4.0/12.0,4.0/12.0),SIMD3<Double>(8.0/12.0,8.0/12.0,8.0/12.0)]
     case .body:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.5,0.5,0.5)]
+      shifts = [SIMD3<Double>(0,0,0),SIMD3<Double>(0.5,0.5,0.5)]
     case .a_face:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.0,0.5,0.5)]
+      shifts = [SIMD3<Double>(0,0,0),SIMD3<Double>(0,0.5,0.5)]
     case .b_face:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.5,0.0,0.5)]
+      shifts = [SIMD3<Double>(0,0,0),SIMD3<Double>(0.5,0,0.5)]
     case .c_face:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0),SIMD3<Double>(0.5,0.5,0.0)]
+      shifts = [SIMD3<Double>(0,0,0),SIMD3<Double>(0.5,0.5,0)]
     default:
-      shifts = [SIMD3<Double>(0.0,0.0,0.0)]
+      shifts = [SIMD3<Double>(0,0,0)]
     }
     var symmetry: [SKSeitzMatrix] = []
     
@@ -79,6 +79,7 @@ public struct SKSymmetryOperationSet
     
     return SKSymmetryOperationSet(operations: symmetry)
   }
+  
 }
 
 
