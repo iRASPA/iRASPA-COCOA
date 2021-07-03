@@ -28,6 +28,15 @@ public struct SKIntegerChangeOfBasis
     self.inverseChangeOfBasis = inversionTransformation
     self.changeOfBasis = inversionTransformation.inverse
     self.changeOfBasisDeterminant = inversionTransformation.determinant
+    self.inverseChangeOfBasisDeterminant = 1
+  }
+  
+  init(inverse: SKIntegerChangeOfBasis)
+  {
+    self.changeOfBasis = inverse.inverseChangeOfBasis
+    self.changeOfBasisDeterminant = inverse.inverseChangeOfBasisDeterminant
+    self.inverseChangeOfBasis = inverse.changeOfBasis
+    self.inverseChangeOfBasisDeterminant = inverse.changeOfBasisDeterminant
   }
   
   public static func * (left: SKIntegerChangeOfBasis, right: SKTransformationMatrix) -> SKTransformationMatrix
@@ -51,5 +60,7 @@ public struct SKIntegerChangeOfBasis
       left.inverseChangeOfBasis.int3x3 == right.inverseChangeOfBasis.Int3x3b &&
       left.changeOfBasisDeterminant == right.inverseChangeOfBasis.denominator * right.changeOfBasis.denominator
   }
+  
+ 
   
 }
