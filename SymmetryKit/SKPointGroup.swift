@@ -38,7 +38,7 @@ import MathKit
 
 public struct SKPointGroup
 {
-  private var table: RotationalOccuranceTable = RotationalOccuranceTable()
+  private var table: RotationalOccuranceTable = RotationalOccuranceTable.pointGroup0
   
   public var number: Int = 0
   public var symbol: String = ""
@@ -106,7 +106,7 @@ public struct SKPointGroup
   // initalize the point-group from a set of rotations
   public init?(pointSymmetry: SKPointSymmetrySet)
   {
-    var table: RotationalOccuranceTable = RotationalOccuranceTable()
+    var table: RotationalOccuranceTable = RotationalOccuranceTable.pointGroup0
     
     let rotationMatrices: Set<SKRotationMatrix > = pointSymmetry.rotations
     
@@ -516,43 +516,88 @@ public struct SKPointGroup
 
   public static let pointGroupData: [SKPointGroup] =
     [
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), number: 0, symbol: "",       schoenflies: "",    holohedry: .none,         laue: .none,       centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 0, 0, 0, 0), number: 1, symbol: "1",      schoenflies: "C1",  holohedry: .triclinic,    laue: .laue_1,     centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 1, 1, 0, 0, 0, 0), number: 2, symbol: "-1",     schoenflies: "Ci",  holohedry: .triclinic,    laue: .laue_1,     centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 1, 0, 0, 0), number: 3, symbol: "2",      schoenflies: "C2",  holohedry: .monoclinic,   laue: .laue_2m,    centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 1, 0, 1, 0, 0, 0, 0), number: 4, symbol: "m",      schoenflies: "Cs",  holohedry: .monoclinic,   laue: .laue_2m,    centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 1, 1, 1, 1, 0, 0, 0), number: 5, symbol: "2/m",    schoenflies: "C2h", holohedry: .monoclinic,   laue: .laue_2m,    centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 3, 0, 0, 0), number: 6, symbol: "222",    schoenflies: "D2",  holohedry: .orthorhombic, laue: .laue_mmm,   centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 2, 0, 1, 1, 0, 0, 0), number: 7, symbol: "mm2",    schoenflies: "C2v", holohedry: .orthorhombic, laue: .laue_mmm,   centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 3, 1, 1, 3, 0, 0, 0), number: 8, symbol: "mmm",    schoenflies: "D2h", holohedry: .orthorhombic, laue: .laue_mmm,   centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 1, 0, 2, 0), number: 9, symbol: "4",      schoenflies: "C4",  holohedry: .tetragonal,   laue: .laue_4m,    centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 2, 0, 0, 0, 1, 1, 0, 0, 0), number: 10, symbol: "-4",    schoenflies: "S4",  holohedry: .tetragonal,   laue: .laue_4m,    centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 2, 0, 1, 1, 1, 1, 0, 2, 0), number: 11, symbol: "4/m",   schoenflies: "C4h", holohedry: .tetragonal,   laue: .laue_4m,    centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 5, 0, 2, 0), number: 12, symbol: "422",   schoenflies: "D4",  holohedry: .tetragonal,   laue: .laue_4mmm,  centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 4, 0, 1, 1, 0, 2, 0), number: 13, symbol: "4mm",   schoenflies: "C4v", holohedry: .tetragonal,   laue: .laue_4mmm,  centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 2, 0, 2, 0, 1, 3, 0, 0, 0), number: 14, symbol: "-42m",  schoenflies: "D2d", holohedry: .tetragonal,   laue: .laue_4mmm,  centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 2, 0, 5, 1, 1, 5, 0, 2, 0), number: 15, symbol: "4/mmm", schoenflies: "D4h", holohedry: .tetragonal,   laue: .laue_4mmm,  centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 0, 2, 0, 0), number: 16, symbol: "3",     schoenflies: "C3",  holohedry: .trigonal,     laue: .laue_3,     centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 2, 0, 1, 1, 0, 2, 0, 0), number: 17, symbol: "-3",    schoenflies: "C3i", holohedry: .trigonal,     laue: .laue_3,     centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 3, 2, 0, 0), number: 18, symbol: "32",    schoenflies: "D3",  holohedry: .trigonal,     laue: .laue_3m,    centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 3, 0, 1, 0, 2, 0, 0), number: 19, symbol: "3m",    schoenflies: "C3v", holohedry: .trigonal,     laue: .laue_3m,    centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 2, 3, 1, 1, 3, 2, 0, 0), number: 20, symbol: "-3m",   schoenflies: "D3d", holohedry: .trigonal,     laue: .laue_3m,    centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 1, 2, 0, 2), number: 21, symbol: "6",     schoenflies: "C6",  holohedry: .hexagonal,    laue: .laue_6m,    centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(2, 0, 0, 1, 0, 1, 0, 2, 0, 0), number: 22, symbol: "-6",    schoenflies: "C3h", holohedry: .hexagonal,    laue: .laue_6m,    centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(2, 0, 2, 1, 1, 1, 1, 2, 0, 2), number: 23, symbol: "6/m",   schoenflies: "C6h", holohedry: .hexagonal,    laue: .laue_6m,    centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 7, 2, 0, 2), number: 24, symbol: "622",   schoenflies: "D6",  holohedry: .hexagonal,    laue: .laue_6mmm,  centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 6, 0, 1, 1, 2, 0, 2), number: 25, symbol: "6mm",   schoenflies: "C6v", holohedry: .hexagonal,    laue: .laue_6mmm,  centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(2, 0, 0, 4, 0, 1, 3, 2, 0, 0), number: 26, symbol: "-6m",   schoenflies: "D3h", holohedry: .hexagonal,    laue: .laue_6mmm,  centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(2, 0, 2, 7, 1, 1, 7, 2, 0, 2), number: 27, symbol: "6/mmm", schoenflies: "D6h", holohedry: .hexagonal,    laue: .laue_6mmm,  centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 3, 8, 0, 0), number: 28, symbol: "23",    schoenflies: "T",   holohedry: .cubic,        laue: .laue_m3,    centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 8, 3, 1, 1, 3, 8, 0, 0), number: 29, symbol: "m-3",   schoenflies: "Th",  holohedry: .cubic,        laue: .laue_m3,    centrosymmetric: true,  enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 9, 8, 6, 0), number: 30, symbol: "432",   schoenflies: "O",   holohedry: .cubic,        laue: .laue_m3m,   centrosymmetric: false, enantiomorphic: true),
-      SKPointGroup(table: RotationalOccuranceTable(0, 6, 0, 6, 0, 1, 3, 8, 0, 0), number: 31, symbol: "-43m",  schoenflies: "Td",  holohedry: .cubic,        laue: .laue_m3m,   centrosymmetric: false, enantiomorphic: false),
-      SKPointGroup(table: RotationalOccuranceTable(0, 6, 8, 9, 1, 1, 9, 8, 6, 0), number: 32, symbol: "m-3m",  schoenflies: "Oh",  holohedry: .cubic,        laue: .laue_m3m,   centrosymmetric: true,  enantiomorphic: false)
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup0, number: 0, symbol: "",       schoenflies: "",    holohedry: .none,         laue: .none,       centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup1, number: 1, symbol: "1",      schoenflies: "C1",  holohedry: .triclinic,    laue: .laue_1,     centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup2, number: 2, symbol: "-1",     schoenflies: "Ci",  holohedry: .triclinic,    laue: .laue_1,     centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup3, number: 3, symbol: "2",      schoenflies: "C2",  holohedry: .monoclinic,   laue: .laue_2m,    centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup4, number: 4, symbol: "m",      schoenflies: "Cs",  holohedry: .monoclinic,   laue: .laue_2m,    centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup5, number: 5, symbol: "2/m",    schoenflies: "C2h", holohedry: .monoclinic,   laue: .laue_2m,    centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup6, number: 6, symbol: "222",    schoenflies: "D2",  holohedry: .orthorhombic, laue: .laue_mmm,   centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup7, number: 7, symbol: "mm2",    schoenflies: "C2v", holohedry: .orthorhombic, laue: .laue_mmm,   centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup8, number: 8, symbol: "mmm",    schoenflies: "D2h", holohedry: .orthorhombic, laue: .laue_mmm,   centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup9, number: 9, symbol: "4",      schoenflies: "C4",  holohedry: .tetragonal,   laue: .laue_4m,    centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup10, number: 10, symbol: "-4",    schoenflies: "S4",  holohedry: .tetragonal,   laue: .laue_4m,    centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup11, number: 11, symbol: "4/m",   schoenflies: "C4h", holohedry: .tetragonal,   laue: .laue_4m,    centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup12, number: 12, symbol: "422",   schoenflies: "D4",  holohedry: .tetragonal,   laue: .laue_4mmm,  centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup13, number: 13, symbol: "4mm",   schoenflies: "C4v", holohedry: .tetragonal,   laue: .laue_4mmm,  centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup14, number: 14, symbol: "-42m",  schoenflies: "D2d", holohedry: .tetragonal,   laue: .laue_4mmm,  centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup15, number: 15, symbol: "4/mmm", schoenflies: "D4h", holohedry: .tetragonal,   laue: .laue_4mmm,  centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup16, number: 16, symbol: "3",     schoenflies: "C3",  holohedry: .trigonal,     laue: .laue_3,     centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup17, number: 17, symbol: "-3",    schoenflies: "C3i", holohedry: .trigonal,     laue: .laue_3,     centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup18, number: 18, symbol: "32",    schoenflies: "D3",  holohedry: .trigonal,     laue: .laue_3m,    centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup19, number: 19, symbol: "3m",    schoenflies: "C3v", holohedry: .trigonal,     laue: .laue_3m,    centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup20, number: 20, symbol: "-3m",   schoenflies: "D3d", holohedry: .trigonal,     laue: .laue_3m,    centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup21, number: 21, symbol: "6",     schoenflies: "C6",  holohedry: .hexagonal,    laue: .laue_6m,    centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup22, number: 22, symbol: "-6",    schoenflies: "C3h", holohedry: .hexagonal,    laue: .laue_6m,    centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup23, number: 23, symbol: "6/m",   schoenflies: "C6h", holohedry: .hexagonal,    laue: .laue_6m,    centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup24, number: 24, symbol: "622",   schoenflies: "D6",  holohedry: .hexagonal,    laue: .laue_6mmm,  centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup25, number: 25, symbol: "6mm",   schoenflies: "C6v", holohedry: .hexagonal,    laue: .laue_6mmm,  centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup26, number: 26, symbol: "-6m",   schoenflies: "D3h", holohedry: .hexagonal,    laue: .laue_6mmm,  centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup27, number: 27, symbol: "6/mmm", schoenflies: "D6h", holohedry: .hexagonal,    laue: .laue_6mmm,  centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup28, number: 28, symbol: "23",    schoenflies: "T",   holohedry: .cubic,        laue: .laue_m3,    centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup29, number: 29, symbol: "m-3",   schoenflies: "Th",  holohedry: .cubic,        laue: .laue_m3,    centrosymmetric: true,  enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup30, number: 30, symbol: "432",   schoenflies: "O",   holohedry: .cubic,        laue: .laue_m3m,   centrosymmetric: false, enantiomorphic: true),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup31, number: 31, symbol: "-43m",  schoenflies: "Td",  holohedry: .cubic,        laue: .laue_m3m,   centrosymmetric: false, enantiomorphic: false),
+      SKPointGroup(table: RotationalOccuranceTable.pointGroup32, number: 32, symbol: "m-3m",  schoenflies: "Oh",  holohedry: .cubic,        laue: .laue_m3m,   centrosymmetric: true,  enantiomorphic: false)
   ]
 }
 
-private struct RotationalOccuranceTable: Equatable
+/// Table 4 from Grosse-Kunstleve, "Algorithms for deriving crystallographic space-group information", Acta Cryst. (1999). A55, 383--395
+/// Table 6 from Atsushi Togo and Isao Tanaka, "Spglib: a software library for crystal symmetry search", https://arxiv.org/pdf/1808.01590.pdf
+///
+///                                           Numbers of W per rotation type
+///                  Pointgroup  Laue class   -6  -4  -3  -2  -1  1  2  3  4  6
+///  --------------------------------------------------------------------------
+///  triclinic        1           -1           0   0   0   0   0  1  0  0  0  0
+///                  -1           -1           0   0   0   0   1  1  0  0  0  0
+///  --------------------------------------------------------------------------
+///  monoclinic      2            2/m          0   0   0   0   0  1  1  0  0  0
+///                  m            2/m          0   0   0   1   0  1  0  0  0  0
+///                  2/m          2/m          0   0   0   1   1  1  1  0  0  0
+///  --------------------------------------------------------------------------
+///  orthorhombic    222          mmm          0   0   0   0   0  1  3  0  0  0
+///                  mm2          mmm          0   0   0   2   0  1  1  0  0  0
+///                  mmm          mmm          0   0   0   3   1  1  3  0  0  0
+///  --------------------------------------------------------------------------
+///  tetragonal       4           4/m          0   0   0   0   0  1  1  0  2  0
+///                  -4           4/m          0   2   0   0   0  1  1  0  0  0
+///                   4/m         4/m          0   2   0   1   1  1  1  0  2  0
+///                   422         4/mmm        0   0   0   0   0  1  5  0  2  0
+///                   4mm         4/mmm        0   0   0   4   0  1  1  0  2  0
+///                  -42m         4/mmm        0   2   0   2   0  1  3  0  0  0
+///                   4/mmmm      4/mmm        0   2   0   5   1  1  5  0  2  0
+///  --------------------------------------------------------------------------
+///  trigonal         3           -3m          0   0   0   0   0  1  0  2  0  2
+///                  -3           -3m          0   0   2   0   1  1  0  2  0  0
+///                   32          -3m          0   0   0   0   0  1  3  2  0  0
+///                   3m          -3m          0   0   0   3   0  1  0  2  0  0
+///                  -3m          -3m          0   0   2   3   1  1  3  2  0  0
+///  --------------------------------------------------------------------------
+///  hexagonal        6            6/m         0   0   0   0   0  1  1  2  0  2
+///                  -6            6/m         2   0   0   1   0  1  0  2  0  0
+///                   6/m          6/m         2   0   2   1   1  1  1  2  0  2
+///                   622          6/mmm       0   0   0   0   0  1  7  2  0  2
+///                   6mm          6/mmm       0   0   0   6   0  1  1  2  0  2
+///                  -62m          6/mmm       2   0   0   4   0  1  3  2  0  0
+///                   6/mmmm       6/mmm       2   0   2   7   1  1  7  2  0  2
+///  --------------------------------------------------------------------------
+///  cubic            23           m-3         0   0   0   0   0  1  3  8  0  0
+///                   m-3          m-3         0   0   8   3   1  1  3  8  0  0
+///                   432          m-3m        0   0   0   0   0  1  9  8  6  0
+///                  -43m          m-3m        0   6   0   6   0  1  3  8  0  0
+///                   m-3m         m-3m        0   6   8   9   1  1  9  8  6  0
+///
+public struct RotationalOccuranceTable: Equatable
 {
   var occurance: [SKRotationMatrix.rotationType: Int] =
     [SKRotationMatrix.rotationType.axis_6m: 0,
@@ -566,10 +611,39 @@ private struct RotationalOccuranceTable: Equatable
      SKRotationMatrix.rotationType.axis_4: 0,
      SKRotationMatrix.rotationType.axis_6: 0]
   
-  init()
-  {
-    
-  }
+  static let pointGroup0: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+  static let pointGroup1: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
+  static let pointGroup2: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 1, 1, 0, 0, 0, 0)
+  static let pointGroup3: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 1, 0, 0, 0)
+  static let pointGroup4: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 1, 0, 1, 0, 0, 0, 0)
+  static let pointGroup5: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 1, 1, 1, 1, 0, 0, 0)
+  static let pointGroup6: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 3, 0, 0, 0)
+  static let pointGroup7: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 2, 0, 1, 1, 0, 0, 0)
+  static let pointGroup8: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 3, 1, 1, 3, 0, 0, 0)
+  static let pointGroup9: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 1, 0, 2, 0)
+  static let pointGroup10: RotationalOccuranceTable = RotationalOccuranceTable(0, 2, 0, 0, 0, 1, 1, 0, 0, 0)
+  static let pointGroup11: RotationalOccuranceTable = RotationalOccuranceTable(0, 2, 0, 1, 1, 1, 1, 0, 2, 0)
+  static let pointGroup12: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 5, 0, 2, 0)
+  static let pointGroup13: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 4, 0, 1, 1, 0, 2, 0)
+  static let pointGroup14: RotationalOccuranceTable = RotationalOccuranceTable(0, 2, 0, 2, 0, 1, 3, 0, 0, 0)
+  static let pointGroup15: RotationalOccuranceTable = RotationalOccuranceTable(0, 2, 0, 5, 1, 1, 5, 0, 2, 0)
+  static let pointGroup16: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 0, 2, 0, 0)
+  static let pointGroup17: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 2, 0, 1, 1, 0, 2, 0, 0)
+  static let pointGroup18: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 3, 2, 0, 0)
+  static let pointGroup19: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 3, 0, 1, 0, 2, 0, 0)
+  static let pointGroup20: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 2, 3, 1, 1, 3, 2, 0, 0)
+  static let pointGroup21: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 1, 2, 0, 2)
+  static let pointGroup22: RotationalOccuranceTable = RotationalOccuranceTable(2, 0, 0, 1, 0, 1, 0, 2, 0, 0)
+  static let pointGroup23: RotationalOccuranceTable = RotationalOccuranceTable(2, 0, 2, 1, 1, 1, 1, 2, 0, 2)
+  static let pointGroup24: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 7, 2, 0, 2)
+  static let pointGroup25: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 6, 0, 1, 1, 2, 0, 2)
+  static let pointGroup26: RotationalOccuranceTable = RotationalOccuranceTable(2, 0, 0, 4, 0, 1, 3, 2, 0, 0)
+  static let pointGroup27: RotationalOccuranceTable = RotationalOccuranceTable(2, 0, 2, 7, 1, 1, 7, 2, 0, 2)
+  static let pointGroup28: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 3, 8, 0, 0)
+  static let pointGroup29: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 8, 3, 1, 1, 3, 8, 0, 0)
+  static let pointGroup30: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 9, 8, 6, 0)
+  static let pointGroup31: RotationalOccuranceTable = RotationalOccuranceTable(0, 6, 0, 6, 0, 1, 3, 8, 0, 0)
+  static let pointGroup32: RotationalOccuranceTable = RotationalOccuranceTable(0, 6, 8, 9, 1, 1, 9, 8, 6, 0)
   
   init(_ axis_6m: Int, _ axis_4m: Int, _ axis_3m: Int, _ axis_2m: Int, _ axis_1m: Int, _ axis_1: Int, _ axis_2: Int, _ axis_3: Int, _ axis_4: Int, _ axis_6: Int)
   {
@@ -583,29 +657,6 @@ private struct RotationalOccuranceTable: Equatable
     occurance[SKRotationMatrix.rotationType.axis_3] = axis_3
     occurance[SKRotationMatrix.rotationType.axis_4] = axis_4
     occurance[SKRotationMatrix.rotationType.axis_6] = axis_6
-  }
-  
-  public static func ==(left: RotationalOccuranceTable, right: RotationalOccuranceTable) -> Bool
-  {
-    
-    if left.occurance.count != right.occurance.count { return false }
-    
-    for (key, lhsub) in left.occurance
-    {
-      if let rhsub = right.occurance[key]
-      {
-        if lhsub != rhsub
-        {
-          return false
-        }
-      }
-      else
-      {
-        return false
-      }
-    }
-    return true
-    
   }
 }
 
