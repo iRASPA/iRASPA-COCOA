@@ -355,27 +355,27 @@ public struct SKSpacegroup
   
   
   // Table 2 from R. W. Grosse-Kunstleve, Acta Cryst. (1999). A55, 383-395
-  public static let changeOfMonoclinicCentering: [SKChangeOfBasis] =
+  public static let changeOfMonoclinicCentering: [SKRotationalChangeOfBasis] =
   [
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])), //  1 : I
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)])), //  2 : R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>(-1, 0,-1)])), //  3 : R3.R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 1, 0, 0)])), //  4 : R2
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 0, 0, 1)])), //  5 : R2.R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>(-1, 0,-1)])), //  6 : R2.R3.R3
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])), //  1 : I
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)])), //  2 : R3
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>(-1, 0,-1)])), //  3 : R3.R3
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 1, 0, 0)])), //  4 : R2
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 0, 0, 1)])), //  5 : R2.R3
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>(-1, 0,-1)])), //  6 : R2.R3.R3
 
   ]
   
   
   // Table 2 from R. W. Grosse-Kunstleve, Acta Cryst. (1999). A55, 383-395
-  public static let changeOfOrthorhombicCentering: [SKChangeOfBasis] =
+  public static let changeOfOrthorhombicCentering: [SKRotationalChangeOfBasis] =
   [
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])), // 1 : I
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0)])), // 2 : R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0)])), // 3 : R3.R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1)])), // 4 : R2
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1), SIMD3<Int32>( 0, 1, 0)])), // 5 : R2.R3
-    SKChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)]))  // 6 : R2.R3.R3
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])), // 1 : I
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0)])), // 2 : R3
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0)])), // 3 : R3.R3
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1)])), // 4 : R2
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1), SIMD3<Int32>( 0, 1, 0)])), // 5 : R2.R3
+    SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)]))  // 6 : R2.R3.R3
   ]
   
   public static var HallSymbols: [String]

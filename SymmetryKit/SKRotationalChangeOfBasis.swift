@@ -8,6 +8,7 @@
 
 import Foundation
 import MathKit
+import simd
 
 public struct SKRotationalChangeOfBasis
 {
@@ -31,19 +32,32 @@ public struct SKRotationalChangeOfBasis
     return SKRotationalChangeOfBasis(changeOfBasis: inverseChangeOfBasis, inverseChangeOfBasis: changeOfBasis)
   }
   
-  
-  /*
   public static func * (left: SKRotationalChangeOfBasis, right: SKSeitzIntegerMatrix) -> SKSeitzIntegerMatrix
   {
-    let rotation: MKint3x3 = left.inverseChangeOfBasis * MKint3x3(right.rotation.int3x3) * left.changeOfBasis
-    let translation: SIMD3<Int32> = (left.inverseChangeOfBasis * right.translation - (rotation - MKint3x3.identity) * left.translation)
-    return SKSeitzIntegerMatrix(rotation: rotation.Int3x3, translation: translation / Int32(left.inverseChangeOfBasis.denominator))
+    let rotation: SKRotationMatrix = left.inverseChangeOfBasis * right.rotation * left.changeOfBasis
+    let translation: SIMD3<Int32> = left.inverseChangeOfBasis * right.translation
+    return SKSeitzIntegerMatrix(rotation: rotation, translation: translation)
+  }
+  
+  
+  public static func * (left: SKRotationalChangeOfBasis, right: SIMD3<Double>) -> SIMD3<Double>
+  {
+    return left.inverseChangeOfBasis * right
   }
   
   public static func * (left: double3x3, right: SKRotationalChangeOfBasis) -> double3x3
   {
     return left * right.inverseChangeOfBasis
   }
+  
+  public static func * (left: SKRotationalChangeOfBasis, right: SIMD3<Int32>) -> SIMD3<Int32>
+  {
+    return left.inverseChangeOfBasis * right
+  }
+  
+  /*
+ 
+ 
   
   public static func * (left: SKRotationalChangeOfBasis, right: SKRotationMatrix) -> SKRotationMatrix
   {
@@ -55,9 +69,6 @@ public struct SKRotationalChangeOfBasis
     return (left.inverseChangeOfBasis * right) / Double(left.inverseChangeOfBasis.denominator)
   }
   
-  public static func * (left: SKRotationalChangeOfBasis, right: SIMD3<Int32>) -> SIMD3<Int32>
-  {
-    return left.inverseChangeOfBasis * right / Int32(left.inverseChangeOfBasis.denominator)
-  }*/
+ */
 }
 
