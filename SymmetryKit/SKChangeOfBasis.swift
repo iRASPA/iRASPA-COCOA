@@ -72,7 +72,7 @@ public struct SKChangeOfBasis
     self.inverseChangeOfBasis = inverseChangeOfBasis
   }
   
-  var inverse: SKChangeOfBasis
+  public var inverse: SKChangeOfBasis
   {
     return SKChangeOfBasis(changeOfBasis: inverseChangeOfBasis, inverseChangeOfBasis: changeOfBasis)
   }

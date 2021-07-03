@@ -249,6 +249,9 @@ extension SKSpacegroup
 
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
+          
+          
+          
           let transform: double3x3 = changedlattice.inverse * DelaunayUnitCell
           var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type, -1)}
           let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: changedlattice, symmetryPrecision: symmetryPrecision)
@@ -599,6 +602,8 @@ extension SKSpacegroup
     // The system M * cp = b (mod Z) can be solved by computing the Smith normal form D = PMQ.
     // b is the translation difference, cp the origin shift
     // D is a matrix in diagonal form with diagonal entries d1, . . . , dn.
+    // P is square, 9x9, invertible matrix
+    // Q is square, 3x3, invertible matrix
     let sol:  (P: RingMatrix, Q: RingMatrix, D: RingMatrix) = try m.SmithNormalForm()
     
     var b: Matrix = Matrix(rows: 9, columns: 1, repeatedValue: 0.0)
@@ -617,36 +622,50 @@ extension SKSpacegroup
       b[3*i+2,0] = translationDifference.z
     }
     
+    // v (9x1) =  P (9x9) x b (9,1)
     let v: Matrix = sol.P <*> b
     
     // The system P * b = v, v = [v1,...,vn] has solutions(mod Z) if and only if vi==0 whenever di=0
     if (sol.D[0,0] == 0 && abs(v[0,0] - rint(v[0,0])) > symmetryPrecision) ||
-        (sol.D[1,1] == 0 && abs(v[0,1] - rint(v[0,1])) > symmetryPrecision) ||
-        (sol.D[2,2] == 0 && abs(v[0,2] - rint(v[0,2])) > symmetryPrecision)
+       (sol.D[1,1] == 0 && abs(v[1,0] - rint(v[1,0])) > symmetryPrecision) ||
+       (sol.D[2,2] == 0 && abs(v[2,0] - rint(v[2,0])) > symmetryPrecision)
     {
       return nil
     }
     for i in 3..<9
     {
-      if abs(v[0,i] - rint(v[0,i])) > symmetryPrecision
+      if abs(v[i,0] - rint(v[i,0])) > symmetryPrecision
       {
         return nil
       }
     }
     
-    var x: Matrix = Matrix(rows: 1, columns: 3, repeatedValue: 0.0)
+    var Dinv: Matrix = Matrix(rows: 3, columns: 9, repeatedValue: 0.0)
     for i in 0..<3
     {
       if (sol.D[i,i] != 0)
       {
-        x[i] = v[i] / Double(sol.D[i,i])
+        Dinv[i,i] = 1.0 / Double(sol.D[i,i])
       }
     }
-    let cp: Matrix = x <*> sol.Q
-    let shiftVector: SIMD3<Double> = fract(SIMD3<Double>(cp[0,0], cp[0,1], cp[0,2]))
     
-    let changeToConventional: SKChangeOfBasis = changeOfBasis.inverse
-    return fract(changeToConventional * shiftVector)
+    var bm: Matrix = Matrix(rows: 9, columns: 1, repeatedValue: 0.0)
+    bm[0,0] = b[0]
+    bm[1,0] = b[1]
+    bm[2,0] = b[2]
+    bm[3,0] = b[3]
+    bm[4,0] = b[4]
+    bm[5,0] = b[5]
+    bm[6,0] = b[6]
+    bm[7,0] = b[7]
+    bm[8,0] = b[8]
+    
+    // sol.Q (3x3), T (3x9), sol.P (9x9), bm (9x1) -> (3x1)
+    let cp: Matrix = (sol.Q <*> Dinv <*> sol.P) <*> bm
+    
+    let originShift: SIMD3<Double> = fract(SIMD3<Double>(cp[0], cp[1], cp[2]))
+    let basis: SKIntegerChangeOfBasis = SKIntegerChangeOfBasis(inverse: changeToPrimitive)
+    return fract(changeOfBasis.inverse * (basis * originShift))
   }
   
     
