@@ -39,7 +39,6 @@ public struct SKRotationalChangeOfBasis
     return SKSeitzIntegerMatrix(rotation: rotation, translation: translation)
   }
   
-  
   public static func * (left: SKRotationalChangeOfBasis, right: SIMD3<Double>) -> SIMD3<Double>
   {
     return left.inverseChangeOfBasis * right
@@ -54,21 +53,5 @@ public struct SKRotationalChangeOfBasis
   {
     return left.inverseChangeOfBasis * right
   }
-  
-  /*
- 
- 
-  
-  public static func * (left: SKRotationalChangeOfBasis, right: SKRotationMatrix) -> SKRotationMatrix
-  {
-    return SKRotationMatrix(int3x3: (left.inverseChangeOfBasis * MKint3x3(right.int3x3) * left.changeOfBasis).Int3x3)
-  }
-  
-  public static func * (left: SKRotationalChangeOfBasis, right: SIMD3<Double>) -> SIMD3<Double>
-  {
-    return (left.inverseChangeOfBasis * right) / Double(left.inverseChangeOfBasis.denominator)
-  }
-  
- */
 }
 

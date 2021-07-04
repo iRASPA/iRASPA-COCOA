@@ -331,7 +331,7 @@ public struct SKRotationMatrix
   
   public var greatestCommonDivisor: Int32
   {
-    return [self[0,0],self[0,1],self[0,2], self[1,0],self[1,1],self[1,2], self[2,0],self[2,1],self[2,2]].reduce(0){(try? Int32.greatestCommonDivisor(a: $0, b: $1)) ?? 1}
+    return [self[0,0],self[0,1],self[0,2], self[1,0],self[1,1],self[1,2], self[2,0],self[2,1],self[2,2]].reduce(0){(Int32.greatestCommonDivisor(a: $0, b: $1))}
   }
   
   func positiveSenseOfRotation(rotationAxis: SIMD3<Int32>) -> Bool
