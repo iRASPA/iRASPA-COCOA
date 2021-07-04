@@ -105,37 +105,33 @@ extension SKSpacegroup
     if let spaceGroupData: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: symmetryPrecision)
     {
       let centring: Centring = SKSpacegroup(HallNumber: spaceGroupData.hall).spaceGroupSetting.centring
-      
-      // based on the centering, convert conventional cell to primitive using conventionally used transformation matrices
-      // Taken from: Table 2.C.1, page 141, Fundamentals of Crystallography, 2nd edition, C. Giacovazzo et al. 2002
-      // Tranformation matrices M, conventionally used to generate centered from primitive lattices, and vice versa, accoording to: A' = M A
 
-      var transformation: MKint3x3 = MKint3x3.identity
+      let transformation: double3x3
       switch(centring)
       {
       case .primitive:
-        transformation = MKint3x3.identity
+        transformation = double3x3(rotationMatrix: SKTransformationMatrix.identity)
       case .body:
-        transformation = SKSymmetryCell.bodyCenteredToPrimitive
+        transformation = SKTransformationMatrix.bodyCenteredToPrimitive
       case .face:
-        transformation = SKSymmetryCell.faceCenteredToPrimitive
+        transformation = SKTransformationMatrix.faceCenteredToPrimitive
       case .a_face:
-        transformation = SKSymmetryCell.ACenteredToPrimitive
+        transformation = SKTransformationMatrix.ACenteredToPrimitive
       case .b_face:
-        transformation = SKSymmetryCell.BCenteredToPrimitive
+        transformation = SKTransformationMatrix.BCenteredToPrimitive
       case .c_face:
-        transformation = SKSymmetryCell.CCenteredToPrimitive
+        transformation = SKTransformationMatrix.CCenteredToPrimitive
       case .r:
-        transformation = SKSymmetryCell.rhombohedralToPrimitive
+        transformation = SKTransformationMatrix.rhombohedralToPrimitive
       case .h:
-        transformation = SKSymmetryCell.hexagonalToPrimitive
+        transformation = SKTransformationMatrix.hexagonalToPrimitive
       default:
-        break
+        transformation = double3x3(rotationMatrix: SKTransformationMatrix.identity)
       }
       
       let primitiveUnitCell: double3x3 = spaceGroupData.cell.unitCell * transformation
       let cell: SKSymmetryCell = SKSymmetryCell(unitCell: primitiveUnitCell)
-      
+            
       let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: spaceGroupData.atoms, from: spaceGroupData.cell.unitCell, to: primitiveUnitCell)
       
       return (cell: cell, primitiveAtoms: positionInPrimitiveCell)

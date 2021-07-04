@@ -122,39 +122,6 @@ public struct SKSymmetryCell: CustomStringConvertible
   public var beta: Double
   public var gamma: Double
   
-  // Taken from: Table 2.C.1, page 141, Fundamentals of Crystallography, 2nd edition, C. Giacovazzo et al. 2002
-  // Tranformation matrices M, conventionally used to generate centered from primitive lattices, and vice versa, accoording to: A' = M A
-  
-  public static let primitiveToPrimitive: int3x3 = int3x3([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])  // P -> P
-  
-  public static let bodyCenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(-1,1,1), SIMD3<Int32>(1,-1,1), SIMD3<Int32>(1,1,-1)], denominator: 2)  // I -> P
-  public static let primitiveToBodyCentered: int3x3 = int3x3([SIMD3<Int32>(0,1,1), SIMD3<Int32>(1,0,1), SIMD3<Int32>(1,1,0)])  // P -> I
-  
-  public static let faceCenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(0,1,1), SIMD3<Int32>(1,0,1), SIMD3<Int32>(1,1,0)], denominator: 2)   // F -> P
-  public static let primitiveToFaceCentered: int3x3 = int3x3([SIMD3<Int32>(-1,1,1), SIMD3<Int32>(1,-1,1), SIMD3<Int32>(1,1,-1)])  // P -> F
-  
-  public static let ACenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(-2,0,0), SIMD3<Int32>(0,-1,1), SIMD3<Int32>(0,1,1)], denominator: 2)   // A -> P
-  public static let primitiveToACentered: int3x3 = int3x3([SIMD3<Int32>(-1,0,0), SIMD3<Int32>(0,-1,1), SIMD3<Int32>(0,1,1)])  // P -> A
-  
-  public static let BCenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(-1,0,1), SIMD3<Int32>(0,-2,0), SIMD3<Int32>(1,0,1)], denominator: 2)   // B -> P
-  public static let primitiveToBCentered: int3x3 = int3x3([SIMD3<Int32>(-1,0,1), SIMD3<Int32>(0,-1,0), SIMD3<Int32>(1,0,1)])  // P -> B
-  
-  public static let CCenteredToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(1,1,0), SIMD3<Int32>(1,-1,0), SIMD3<Int32>(0,0,-2)], denominator: 2)   // C -> P
-  public static let primitiveToCCentered: int3x3 = int3x3([SIMD3<Int32>(1, 1,0), SIMD3<Int32>(1,-1,0), SIMD3<Int32>(0,0,-1)])  // P -> C
-  
-  public static let rhombohedralToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>(2,1,1), SIMD3<Int32>(-1, 1, 1), SIMD3<Int32>(-1,-2, 1)], denominator: 3)  // R -> P
-  public static let primitiveToRhombohedral: int3x3 = int3x3([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 0, 1,-1), SIMD3<Int32>( 1, 1, 1)])  // P -> R
-  
-  public static let hexagonalToPrimitive: MKint3x3 = MKint3x3([SIMD3<Int32>( 2,1, 0), SIMD3<Int32>(-1, 1, 0), SIMD3<Int32>( 0, 0, 1)], denominator: 3)  // H -> P
-  public static let primitiveToHexagonal: int3x3 = int3x3([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 1, 2, 0), SIMD3<Int32>( 0, 0, 3)])  // P -> H
-  
-  
-  public static let rhombohedralHexagonalToObverse: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,-1.0/3.0,-1.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,-2.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,1.0/3.0)])   // Rh -> Robv
-  public static let rhombohedralObverseHexagonal: int3x3 = int3x3([SIMD3<Int32>(1,0,1), SIMD3<Int32>(-1,1,1), SIMD3<Int32>(0,-1,1)])  // Robv -> Rh
-  
-  public static let rhombohedralHexagonalToReverse: int3x3 = int3x3([SIMD3<Int32>(1,1,-2),SIMD3<Int32>(-1,0,1),SIMD3<Int32>(1,1,-1)])   // Rh -> Rrev
-  public static let rhombohedralReverseToHexagonal: int3x3 = int3x3([SIMD3<Int32>(-1,-1,1), SIMD3<Int32>(0,1,1), SIMD3<Int32>(-1,0,1)])  // Rrev -> Rh
-  
   var epsilon: Double
   {
     get

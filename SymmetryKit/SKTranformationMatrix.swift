@@ -36,12 +36,14 @@ import simd
 public struct SKTransformationMatrix
 {
   var elements: [SIMD3<Int32>]
-  
-  // S.R. Hall, "Space-group notation with an explicit origin", Acta. Cryst. A, 37, 517-525, 981
-  
+    
   public static let zero: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)])
   public static let identity: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
   public static let inversionIdentity: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(0,0,-1)])
+  
+  // based on the centering, convert conventional cell to primitive using conventionally used transformation matrices
+  // Taken from: Table 2.C.1, page 141, Fundamentals of Crystallography, 2nd edition, C. Giacovazzo et al. 2002
+  // Tranformation matrices M, conventionally used to generate centered from primitive lattices, and vice versa, accoording to: A' = M A
   
   public static let primitiveToPrimitive: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])  // P -> P
   public static let primitiveToBodyCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(0,1,1), SIMD3<Int32>(1,0,1), SIMD3<Int32>(1,1,0)])  // P -> I
@@ -51,6 +53,18 @@ public struct SKTransformationMatrix
   public static let primitiveToCCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1, 1,0), SIMD3<Int32>(1,-1,0), SIMD3<Int32>(0,0,-1)])  // P -> C
   public static let primitiveToRhombohedral: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 0, 1,-1), SIMD3<Int32>( 1, 1, 1)])  // P -> R
   public static let primitiveToHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 1, 2, 0), SIMD3<Int32>( 0, 0, 3)])  // P -> H
+  public static let rhombohedralObverseHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1,0,1), SIMD3<Int32>(-1,1,1), SIMD3<Int32>(0,-1,1)])  // Robv -> Rh
+  public static let rhombohedralHexagonalToReverse: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1,1,-2),SIMD3<Int32>(-1,0,1),SIMD3<Int32>(1,1,-1)])   // Rh -> Rrev
+  public static let rhombohedralReverseToHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,-1,1), SIMD3<Int32>(0,1,1), SIMD3<Int32>(-1,0,1)])  // Rrev -> Rh
+  
+  public static let bodyCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(-0.5,0.5,0.5), SIMD3<Double>(0.5,-0.5,0.5), SIMD3<Double>(0.5,0.5,-0.5)])  // I -> P
+  public static let faceCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(0,0.5,0.5), SIMD3<Double>(0.5,0,0.5), SIMD3<Double>(0.5,0.5,0)])   // F -> P
+  public static let ACenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(-1.0,0,0), SIMD3<Double>(0,-0.5,0.5), SIMD3<Double>(0,0.5,0.5)])   // A -> P
+  public static let BCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(-0.5,0,0.5), SIMD3<Double>(0,-1.0,0), SIMD3<Double>(0.5,0,0.5)])   // B -> P
+  public static let CCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(0.5,0.5,0), SIMD3<Double>(0.5,-0.5,0), SIMD3<Double>(0,0,-1.0)])   // C -> P
+  public static let rhombohedralToPrimitive: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0), SIMD3<Double>(-1.0/3.0, 1.0/3.0, 1.0/3.0), SIMD3<Double>(-1.0/3.0,-2.0/3.0, 1.0/3.0)])  // R -> P
+  public static let hexagonalToPrimitive: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0, 0), SIMD3<Double>(-1.0/3.0, 1.0/3.0, 0), SIMD3<Double>( 0, 0, 1.0/3.0)])  // H -> P
+  public static let rhombohedralHexagonalToObverse: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,-1.0/3.0,-1.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,-2.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,1.0/3.0)])   // Rh -> Robv
   
   public init()
   {
@@ -137,6 +151,21 @@ public struct SKTransformationMatrix
     return result
   }
 
+}
+
+public extension double3x3
+{
+  init(inverseTransformationMatrix m: SKTransformationMatrix)
+  {
+    let det: Double = Double(m.determinant)
+    let a: SKTransformationMatrix = m.inverse
+    let col1 = a[0]
+    let col2 = a[1]
+    let col3 = a[2]
+    self.init([SIMD3<Double>(x: Double(col1.x) / det, y: Double(col1.y) / det,z: Double(col1.z) / det),
+               SIMD3<Double>(x: Double(col2.x) / det, y: Double(col2.y) / det,z: Double(col2.z) / det),
+               SIMD3<Double>(x: Double(col3.x) / det, y: Double(col3.y) / det,z: Double(col3.z) / det)])
+  }
 }
 
 public extension double3x3

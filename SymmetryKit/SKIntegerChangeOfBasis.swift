@@ -18,10 +18,10 @@ import simd
 
 public struct SKIntegerChangeOfBasis
 {
-  private var changeOfBasis : SKTransformationMatrix
-  private var inverseChangeOfBasis : SKTransformationMatrix
-  private var changeOfBasisDeterminant: Int32 = 1
-  private var inverseChangeOfBasisDeterminant: Int32 = 1
+  public var changeOfBasis : SKTransformationMatrix
+  public var inverseChangeOfBasis : SKTransformationMatrix
+  public var changeOfBasisDeterminant: Int32 = 1
+  public var inverseChangeOfBasisDeterminant: Int32 = 1
   
   public init(inversionTransformation: SKTransformationMatrix)
   {
@@ -42,6 +42,11 @@ public struct SKIntegerChangeOfBasis
   public static func * (left: SKIntegerChangeOfBasis, right: SKTransformationMatrix) -> SKTransformationMatrix
   {
     return left.inverseChangeOfBasis * right * left.changeOfBasis / Int(left.inverseChangeOfBasisDeterminant * left.changeOfBasisDeterminant)
+  }
+  
+  public static func * (left: SKIntegerChangeOfBasis, right: double3x3) -> double3x3
+  {
+    return (left.inverseChangeOfBasis * right * left.changeOfBasis) / Double(left.inverseChangeOfBasisDeterminant * left.changeOfBasisDeterminant)
   }
   
   public static func * (left: SKIntegerChangeOfBasis, right: SIMD3<Int32>) -> SIMD3<Int32>
