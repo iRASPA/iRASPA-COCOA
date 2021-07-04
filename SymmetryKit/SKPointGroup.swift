@@ -158,15 +158,16 @@ public struct SKPointGroup
   /// - parameter SeitzMatrices: the symmetry elements
   ///
   /// - returns: an orthogonal axes system
-  public func constructAxes(usingSeitzMatrices SeitzMatrices: [SKSeitzMatrix]) -> SKTransformationMatrix?
+  ///
+  public func constructAxes(using properRotations: [SKRotationMatrix]) -> SKTransformationMatrix
   {
     switch(self.laue)
     {
     case .laue_1:
-      return SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
+      return SKTransformationMatrix.identity
     case .laue_2m:
-      // look for all proper rotation matrices of the wanted rotation type
-      let properRotationMatrices: [SKRotationMatrix] = SeitzMatrices.map{$0.rotation.proper}.filter{$0.type.rawValue == 2}
+      // look for all proper rotation matrices of rotation type 2
+      let properRotationMatrices: [SKRotationMatrix] = properRotations.filter{$0.type.rawValue == 2}
       
       if let properRotationmatrix: SKRotationMatrix = properRotationMatrices.first
       {
@@ -199,7 +200,7 @@ public struct SKPointGroup
       if let rotationalTypeForBasis: Int = self.rotationTypeForBasis[self.laue]
       {
         // look for all proper rotation matrices of the wanted rotation type and take their rotation axes (use a set to avoid duplicates)
-        let allAxes: Set<SIMD3<Int32>> = Set(SeitzMatrices.map{$0.rotation.proper}.filter{$0.type.rawValue == rotationalTypeForBasis}.map{$0.rotationAxis})
+        let allAxes: Set<SIMD3<Int32>> = Set(properRotations.filter{$0.type.rawValue == rotationalTypeForBasis}.map{$0.rotationAxis})
         
         
         // outside access to 'allPossibleRotationAxes' FIX or CHECK
@@ -221,7 +222,7 @@ public struct SKPointGroup
       if let rotationalTypeForBasis: Int = self.rotationTypeForBasis[self.laue]
       {
         // look for all proper rotation matrices of the wanted rotation type
-        let properRotationMatrices: [SKRotationMatrix] = SeitzMatrices.map{$0.rotation.proper}.filter{$0.type.rawValue == rotationalTypeForBasis}
+        let properRotationMatrices: [SKRotationMatrix] = properRotations.filter{$0.type.rawValue == rotationalTypeForBasis}
         if let properRotationmatrix: SKRotationMatrix = properRotationMatrices.first
         {
           var axes: SKTransformationMatrix = SKTransformationMatrix()
@@ -270,10 +271,10 @@ public struct SKPointGroup
           }
         }
       }
-    default:
-      return nil
+    case .none:
+      break
     }
-    return nil
+    return SKTransformationMatrix.identity
   }
   
   private static func getBaseCentering(transformMatrix: int3x3) -> SKSpacegroup.Centring
@@ -321,10 +322,9 @@ public struct SKPointGroup
     fatalError()
   }
 
+  /// Table 3 of spglib lists the conditions to determine the centring types
   public func computeCentering(of basis: SKTransformationMatrix) -> SKSpacegroup.Centring
   {
-    let det: Int32 = abs(basis.determinant)
-    
     // the absolute value of the determinant gives the scale factor by which volume is multiplied under the associated linear transformation,
     // while its sign indicates whether the transformation preserves orientation
     
@@ -334,7 +334,7 @@ public struct SKPointGroup
     // 3: rhombohedrally centred, hexagonally centred
     // 4: all-face centred
     
-    switch (det)
+    switch (abs(basis.determinant))
     {
     case 1:
       return .primitive
@@ -342,6 +342,7 @@ public struct SKPointGroup
       // detect a-center
       for i in 0..<3
       {
+        // if (1,0,0) is found, then 'a' is detected
         if (abs(basis[0,i]) == 1 && basis[1,i] == 0 && basis[2,i] == 0)
         {
           return .a_face
@@ -351,6 +352,7 @@ public struct SKPointGroup
       // detect b-center
       for i in 0..<3
       {
+        // if (0,1,0) is found, then 'b' is detected
         if (basis[0,i] == 0 && abs(basis[1,i]) == 1 && basis[2,i] == 0)
         {
           return .b_face
@@ -360,6 +362,7 @@ public struct SKPointGroup
       // detect c-center
       for i in 0..<3
       {
+        // if (0,0,1) is found, then 'b' is detected
         if (basis[0,i] == 0 && basis[1,i] == 0 && abs(basis[2,i]) == 1)
         {
           return .c_face
@@ -382,6 +385,8 @@ public struct SKPointGroup
     }
   }
   
+  /// Grosse-Kunstleve: adjustment of (Mc, 0) to (M, 0): computing of a correction matrix Mc.
+  /// Spglib: For the convenience in the following steps, the basis vectors are further transformed to have a specific cen- tring type by multiplying a correction matrix M with M′ for the Laue classes of 2/m and mmm and and the rhombohedral system.
   public func computeBasisCorrection( of basis: SKTransformationMatrix, withCentering centering: inout SKSpacegroup.Centring) ->  SKTransformationMatrix
   {
     let det: Int32 = abs(basis.determinant)
@@ -438,65 +443,7 @@ public struct SKPointGroup
 
 
   
-  public func computeCenteringAndBasisCorrection(of basis: int3x3) -> (centring: SKSpacegroup.Centring, correctionMatrix: double3x3)
-  {
-    let det: Int = abs(basis.determinant)
-    let lau: SKPointGroup.Laue = self.laue
-    
-    // the absolute value of the determinant gives the scale factor by which volume is multiplied under the associated linear transformation,
-    // while its sign indicates whether the transformation preserves orientation
-    
-    // Number of lattice points per cell (1.2.1 in Hahn 2005 fifth ed.)
-    // 1: primitive centred
-    // 2: C-face centred, B-face centred, A-face centred, body-centred
-    // 3: rhombohedrally centred, hexagonally centred
-    // 4: all-face centred
-    
-    switch (det)
-    {
-    case 1:
-      return (.primitive, double3x3(1.0))
-    case 2:
-      let centering: SKSpacegroup.Centring = SKPointGroup.getBaseCentering(transformMatrix: basis)
-     
-      // a “standard” conventional cell is always C-centred and a′ < b′ regardless of symmetry
-      switch (centering)
-      {
-      case .a_face where lau == .laue_2m:
-        // Tranformation monoclinic A-centring to C-centring (preserving b-axis)
-        // Axes a and c are swapped, to keep the same handiness b (to keep Beta obtuse) is made negative
-        return (.c_face, double3x3([SIMD3<Double>(0,0,1),SIMD3<Double>(0,-1,0),SIMD3<Double>(1,0,0)])) // monoclinic a to c
-      case .a_face where lau != .laue_2m:
-        return (.c_face, double3x3([SIMD3<Double>(0,1,0),SIMD3<Double>(0,0,1),SIMD3<Double>(1,0,0)]))  // a to c
-      case .b_face:
-        return (.c_face, double3x3([SIMD3<Double>(0,0,1),SIMD3<Double>(1,0,0),SIMD3<Double>(0,1,0)]))    // b to c
-      case .body where lau == .laue_2m:
-        return (.c_face, double3x3([SIMD3<Double>(1,0,1),SIMD3<Double>(0, 1,0),SIMD3<Double>(-1,0,0)])) // monoclinic i to c
-      default:
-        return (centering, double3x3(1.0))
-      }
-    case 3:
-      // hP (a=b) but not hR (a=b=c)
-      // determinant = 1/3
-      let trans_corr_mat: double3x3 = basis * double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,-2.0/3.0,1.0/3.0)])  // rhombo_obverse
-      if trans_corr_mat.isInteger(precision: 0.1)
-      {
-        return (.r, double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,-2.0/3.0,1.0/3.0)]))
-      }
-      let trans_corr_mat2: double3x3 = basis * double3x3([SIMD3<Double>(1.0/3.0,2.0/3.0,1.0/3.0),SIMD3<Double>(-2.0/3.0,-1.0/3.0,1.0/3.0),SIMD3<Double>( 1.0/3.0,-1.0/3.0,1.0/3.0)])  // rhombo_reverse
-      if trans_corr_mat2.isInteger(precision: 0.1)
-      {
-        return (.r, double3x3([SIMD3<Double>(1.0/3.0,2.0/3.0,1.0/3.0),SIMD3<Double>(-2.0/3.0,-1.0/3.0,1.0/3.0),SIMD3<Double>( 1.0/3.0,-1.0/3.0,1.0/3.0)]))
-      }
-      
-      return (.r, basis * double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,1.0/3.0,1.0/3.0),SIMD3<Double>(-1.0/3.0,-2.0/3.0,1.0/3.0)]))
-    case 4:
-      return (.face, double3x3(1.0))
-    default:
-      fatalError()
-    }
-  }
-  
+ 
 
   public static func findPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> SKPointGroup?
   {

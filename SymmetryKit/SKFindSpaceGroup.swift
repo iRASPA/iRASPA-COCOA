@@ -187,70 +187,52 @@ extension SKSpacegroup
     // get the point group from the point symmetry set
     if let pointGroup: SKPointGroup = SKPointGroup(pointSymmetry: pointSymmetry)
     {
-      // the transformation matrix inverse M' is given by the axes (Theorem T.2.10 in Boisen & Gibbs 1990)
-      // M transforms the set of symmetry operations in the primitive setting (G_P) to the set of symmetry operations a convenient standard setting (G_M)
-      // inverseP transforms the set of symmetry operations in the convenient standard (G_M) to the set of symmetry operations in the primitive setting (G_P)
-      let inverseMprime: SKTransformationMatrix = pointGroup.constructAxes(usingSeitzMatrices: spaceGroupSymmetries.operations)!
-      
-      // inverse of 'P' are the p1,p2,p3 vectors that form the basis of the primitive cell
-      // P transforms the set of symmetry operations in the orginal setting (G_O) to the set of symmetry operations in the primitive setting (G_P)
-      // inverseP transforms the set of symmetry operations in the primitive setting (G_P) to the set of symmetry operations in the orginal setting (G_O)
-      let inverseP: double3x3 = DelaunayUnitCell
-      
+      // Use the axes directions of the Laue group-specific symmetry as a new basis
+      var Mprime: SKTransformationMatrix = pointGroup.constructAxes(using: spaceGroupSymmetries.operations.map{$0.rotation.proper})
       
       // adjustment of (M',0) to (M,0) for certain combination of Laue and centring types
-      var preliminaryInverseM: SKTransformationMatrix = inverseMprime
       switch(pointGroup.laue)
       {
       case .laue_1:
         // change the basis to Niggli cell
-        let symmetryCell: (cell: SKSymmetryCell, changeOfBasis: SKTransformationMatrix)? =  SKSymmetryCell(unitCell: inverseP * inverseMprime).computeReducedNiggliCellAndChangeOfBasisMatrix
+        let symmetryCell: (cell: SKSymmetryCell, changeOfBasis: SKTransformationMatrix)? =  SKSymmetryCell(unitCell: DelaunayUnitCell * Mprime).computeReducedNiggliCellAndChangeOfBasisMatrix
         if symmetryCell == nil
         {
           return nil
         }
-        preliminaryInverseM = symmetryCell!.changeOfBasis
+        Mprime = symmetryCell!.changeOfBasis
       case .laue_2m:
         // Change the basis for this monoclinic centrosymmetric point group using Delaunay reduction in 2D (algorithm of Atsushi Togo used)
         // The unique axis is chosen as b, choose shortest a, c lattice vectors (|a| < |c|)
-        let computedDelaunayReducedCell2D: double3x3? = SKSymmetryCell.computeDelaunayReducedCell2D(unitCell: inverseP * inverseMprime, uniqueAxis: 1)
+        let computedDelaunayReducedCell2D: double3x3? = SKSymmetryCell.computeDelaunayReducedCell2D(unitCell: DelaunayUnitCell * Mprime, uniqueAxis: 1)
         if computedDelaunayReducedCell2D == nil
         {
           return nil
         }
-        preliminaryInverseM = SKTransformationMatrix(inverseP.inverse * computedDelaunayReducedCell2D!)
+        Mprime = SKTransformationMatrix(DelaunayUnitCell.inverse * computedDelaunayReducedCell2D!)
       default:
-        preliminaryInverseM = inverseMprime
+        break
       }
       
-      var centering: SKSpacegroup.Centring = pointGroup.computeCentering(of: preliminaryInverseM)
-      let inverseM: SKTransformationMatrix = preliminaryInverseM * pointGroup.computeBasisCorrection(of: preliminaryInverseM, withCentering: &centering)
-      
-      // (C,0) = (M,0).(P,0) = (P,0)^(-1).(M,0)^(-1)
-      
-      //  C = lattice * changeOfBasis
-      let C: double3x3 = inverseP * inverseM
-      
-      let lattice: double3x3 = C
-      
+      var centering: SKSpacegroup.Centring = pointGroup.computeCentering(of: Mprime)
+      let M: SKTransformationMatrix = pointGroup.computeBasisCorrection(of: Mprime, withCentering: &centering)
+            
+      let primitiveLattice: double3x3 = DelaunayUnitCell * Mprime * M
       
       // transform the symmetries (rotation and translation) from the primtive cell to the conventional cell
       // the centering is used to add the additional translations
-      let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(transformationMatrix: inverseM).addingCenteringOperations(centering: centering)
+      let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(transformationMatrix: Mprime * M).addingCenteringOperations(centering: centering)
       
       for spaceGroupNumber in 1...230
       {
-        let hall: Int = spaceGroupHallData[spaceGroupNumber]!.first!
-        if let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: hall, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
+        if let hall: Int = spaceGroupHallData[spaceGroupNumber]?.first,
+           let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: hall, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
         {
-          let changedlattice: double3x3 = lattice * value.changeOfBasis
+          let changedlattice: double3x3 = primitiveLattice * value.changeOfBasis
           
           let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: hall)
 
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
-          
-          
-          
           
           let transform: double3x3 = changedlattice.inverse * DelaunayUnitCell
           var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type, -1)}
@@ -263,7 +245,6 @@ extension SKSpacegroup
           return (hall, value.origin, cell2, value.changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
         }
       }
-      
     }
     return nil
   }
@@ -294,210 +275,6 @@ extension SKSpacegroup
   }
   
   
-/*
-
-  public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) throws -> SIMD3<Double>?
-  {
-    var translations: int3x3 = int3x3()
-    var translationsnew: double3x3 = double3x3()
-    
-    let dataBaseSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
-    var dataBaseSpaceGroupGenerators = SKSeitzIntegerMatrix.SeitzMatrices(generatorEncoding: dataBaseSpaceGroup.spaceGroupSetting.encodedGenerators)
-    
-    // apply change-of-basis to generators
-    for i in 0..<dataBaseSpaceGroupGenerators.count
-    {
-      dataBaseSpaceGroupGenerators[i] = changeOfBasis * dataBaseSpaceGroupGenerators[i]
-    }
-    
-    // apply change-of-basis to lattice translations
-    var spaceGroupLatticeTranslations = dataBaseSpaceGroup.spaceGroupSetting.latticeTranslations
-    for i in 0..<spaceGroupLatticeTranslations.count
-    {
-      spaceGroupLatticeTranslations[i] = changeOfBasis * spaceGroupLatticeTranslations[i]
-    }
-    
-    // apply change-of-basis to centring
-    var dataBaseSpaceGroupCentering = dataBaseSpaceGroup.spaceGroupSetting.centring
-    switch(dataBaseSpaceGroupCentering)
-    {
-    case .a_face, .b_face, .c_face:
-      if spaceGroupLatticeTranslations[1].x == 0
-      {
-        dataBaseSpaceGroupCentering = .a_face
-      }
-      if spaceGroupLatticeTranslations[1].y == 0
-      {
-        dataBaseSpaceGroupCentering = .b_face
-      }
-      if spaceGroupLatticeTranslations[1].z == 0
-      {
-        dataBaseSpaceGroupCentering = .c_face
-      }
-      break
-    default:
-      break
-    }
-
-    // return if the centring is not equal to the spacegroup one
-    if centering != dataBaseSpaceGroupCentering
-    {
-      return nil
-    }
-    
-    // apply change-of-basis to the Seitz-matrices
-    var dataBaseSpaceGroupSeitzMatrices: [SKSeitzIntegerMatrix] =  dataBaseSpaceGroup.spaceGroupSetting.SeitzMatricesWithoutTranslation
-    for i in 0..<dataBaseSpaceGroupSeitzMatrices.count
-    {
-      dataBaseSpaceGroupSeitzMatrices[i] = changeOfBasis * dataBaseSpaceGroupSeitzMatrices[i]
-    }
-    
-    for i in 0..<dataBaseSpaceGroupGenerators.count
-    {
-      guard let index: Int = seitzMatrices.firstIndex(where: {$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}) else {return nil}
-      translations[i] = SKSeitzIntegerMatrix(SeitzMatrx: seitzMatrices[index]).translation
-      translationsnew[i] = seitzMatrices[index].translation
-    }
-    
-    var transformation: SKTransformationMatrix = SKTransformationMatrix.identity
-    switch(dataBaseSpaceGroupCentering)
-    {
-    case .primitive:
-      transformation = SKTransformationMatrix.identity
-    case .body:
-      transformation = SKTransformationMatrix.primitiveToBodyCentered
-    case .face:
-      transformation = SKTransformationMatrix.primitiveToFaceCentered
-    case .a_face:
-      transformation = SKTransformationMatrix.primitiveToACentered
-    case .b_face:
-      transformation = SKTransformationMatrix.primitiveToBCentered
-    case .c_face:
-      transformation = SKTransformationMatrix.primitiveToCCentered
-    case .r:
-      transformation = SKTransformationMatrix.primitiveToRhombohedral
-    case .h:
-      transformation = SKTransformationMatrix.primitiveToHexagonal
-    default:
-      break
-    }
-    
-    let changeToPrimitive: SKIntegerChangeOfBasis = SKIntegerChangeOfBasis(inversionTransformation: transformation)
-
-    let r1: SKRotationMatrix = dataBaseSpaceGroupGenerators[0].rotation
-    let r2: SKRotationMatrix = dataBaseSpaceGroupGenerators.count > 1 ? dataBaseSpaceGroupGenerators[1].rotation : SKRotationMatrix.identity
-    let r3: SKRotationMatrix = dataBaseSpaceGroupGenerators.count > 2 ? dataBaseSpaceGroupGenerators[2].rotation : SKRotationMatrix.identity
-    
-    let t1: SKTransformationMatrix = changeToPrimitive * SKTransformationMatrix(r1 - SKRotationMatrix.identity)
-    let t2: SKTransformationMatrix = changeToPrimitive * SKTransformationMatrix(r2 - SKRotationMatrix.identity)
-    let t3: SKTransformationMatrix = changeToPrimitive * SKTransformationMatrix(r3 - SKRotationMatrix.identity)
-
-    
-    // m is a 9x3 matrix
-    let m: RingMatrix = RingMatrix(Int3x3: [t1.int3x3,t2.int3x3,t3.int3x3])
-    let sol:  (P: RingMatrix, Q: RingMatrix, D: RingMatrix) = try m.SmithNormalForm()
-    
-    let solD: IntegerMatrix = IntegerMatrix(matrix: sol.D)
-    let solQ: IntegerMatrix = IntegerMatrix(matrix: sol.Q)
-    let solP: IntegerMatrix = IntegerMatrix(matrix: sol.P)
-    
-    let p1: IntegerMatrix = solQ*solD.DiagonalInverted().transposed()*solP
-    
-    
-    // new
-    
-    var xnew: Matrix = Matrix(rows: 9, columns: 1, repeatedValue: 0.0)
-    for i in 0..<dataBaseSpaceGroupGenerators.count
-    {
-      let seitzMatrix: SKSeitzIntegerMatrix? = dataBaseSpaceGroupSeitzMatrices.filter{$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}.first
-      guard seitzMatrix != nil else {return nil}
-      
-      let transPrimitive: SIMD3<Double> = changeToPrimitive * translationsnew[i]
-      
-      let dataBaseTranslation: SIMD3<Int32>  = changeToPrimitive * dataBaseSpaceGroupGenerators[i].translation
-      
-      let translationDifference: SIMD3<Double> = fract(transPrimitive - SIMD3<Double>(dataBaseTranslation) / 12.0)
-      xnew[3*i,0] = translationDifference.x
-      xnew[3*i+1,0] = translationDifference.y
-      xnew[3*i+2,0] = translationDifference.z
-    }
-    
-    let testnew: Matrix = solP <*> xnew
-    
-    
-    if (sol.D[0,0] == 0 && abs(testnew[0,0] - rint(testnew[0,0])) > symmetryPrecision) ||
-       (sol.D[1,1] == 0 && abs(testnew[0,1] - rint(testnew[0,1])) > symmetryPrecision) ||
-       (sol.D[2,2] == 0 && abs(testnew[0,2] - rint(testnew[0,2])) > symmetryPrecision)
-    {
-      return nil
-    }
-    
-    // new
-    
-    var x: IntegerMatrix = IntegerMatrix(numberOfRows: 9, numberOfColumns: 1, denominator: 12)
-    for i in 0..<dataBaseSpaceGroupGenerators.count
-    {
-      let seitzMatrix: SKSeitzIntegerMatrix? = dataBaseSpaceGroupSeitzMatrices.filter{$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}.first
-      guard seitzMatrix != nil else {return nil}
-      
-      let transPrimitive: SIMD3<Int32> = changeToPrimitive * translations[i]
-      
-      let dataBaseTranslation: SIMD3<Int32>  = changeToPrimitive * dataBaseSpaceGroupGenerators[i].translation
-      
-      let translationDifference: SIMD3<Int32> = (transPrimitive - dataBaseTranslation).modulo(12)
-      x[3*i,0] = Int(translationDifference.x)
-      x[3*i+1,0] = Int(translationDifference.y)
-      x[3*i+2,0] = Int(translationDifference.z)
-    }
-    
-    let test: IntegerMatrix = solP * x
-    
-    //print(abs(testnew[0,0] - floor(testnew[0,0])),abs(testnew[0,1] - floor(testnew[0,1])),abs(testnew[0,2] - floor(testnew[0,2])),
-    //      Double(test[0,0] % 12)/12.0, Double(test[0,1] % 12)/12.0, Double(test[0,2] % 12)/12.0)
-    
-    if (sol.D[0,0] == 0 && test[0,0] % 12 != 0) ||
-       (sol.D[1,1] == 0 && test[0,1] % 12 != 0) ||
-       (sol.D[2,2] == 0 && test[0,2] % 12 != 0)
-    {
-      //return nil
-    }
-    
-    if(HallNumber == 292)
-    {
-      //print(test)
-      //print(testnew)
-    }
-    
-    
-    for i in 3..<9
-    {
-      if abs(testnew[0,i] - rint(testnew[0,i])) > symmetryPrecision
-      {
-        return nil
-      }
-    }
-    
-   /*
-    for i in 3..<9
-    {
-      print(abs(testnew[0,i] - rint(testnew[0,i])), Double(test[0,i] % 12)/12.0)
-      if test[0,i] % 12 != 0
-      {
-        return nil
-      }
-    }*/
-    
-    let answer: IntegerMatrix = p1 * x
-    
-    let changeToConventional: SKChangeOfBasis = changeOfBasis.inverse
-    let shiftVector: SIMD3<Double> = SIMD3<Double>(Double(answer[0,0])/Double(answer.denominator),
-                                       Double(answer[0,1])/Double(answer.denominator),
-                                       Double(answer[0,2])/Double(answer.denominator))
-    print(fract(changeToConventional * shiftVector))
-    return fract(changeToConventional * shiftVector)
-  }
-  */
- 
   
   public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKRotationalChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-5) throws -> SIMD3<Double>?
   {
@@ -648,20 +425,9 @@ extension SKSpacegroup
         Dinv[i,i] = 1.0 / Double(sol.D[i,i])
       }
     }
-    
-    var bm: Matrix = Matrix(rows: 9, columns: 1, repeatedValue: 0.0)
-    bm[0,0] = b[0]
-    bm[1,0] = b[1]
-    bm[2,0] = b[2]
-    bm[3,0] = b[3]
-    bm[4,0] = b[4]
-    bm[5,0] = b[5]
-    bm[6,0] = b[6]
-    bm[7,0] = b[7]
-    bm[8,0] = b[8]
-    
+
     // sol.Q (3x3), T (3x9), sol.P (9x9), bm (9x1) -> (3x1)
-    let cp: Matrix = (sol.Q <*> Dinv <*> sol.P) <*> bm
+    let cp: Matrix = (sol.Q <*> Dinv <*> sol.P) <*> b
     
     let originShift: SIMD3<Double> = fract(SIMD3<Double>(cp[0], cp[1], cp[2]))
     let basis: SKIntegerChangeOfBasis = SKIntegerChangeOfBasis(inverse: changeToPrimitive)
@@ -708,7 +474,7 @@ extension SKSpacegroup
         return (originShift, SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity))
       }
       
-      // special case
+      // Gross-Kunstleve: special case Pa-3 (205) hallSymbol 501
       if HallNumber == 501
       {
         if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
