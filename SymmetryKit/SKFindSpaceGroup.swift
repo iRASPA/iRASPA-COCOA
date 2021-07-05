@@ -221,12 +221,12 @@ extension SKSpacegroup
       
       for spaceGroupNumber in 1...230
       {
-        if let hall: Int = spaceGroupHallData[spaceGroupNumber]?.first,
-           let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: hall, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
+        if let HallNumber: Int = spaceGroupHallData[spaceGroupNumber]?.first,
+           let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: HallNumber, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
         {
           let changedlattice: double3x3 = primitiveLattice * value.changeOfBasis
           
-          let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: hall)
+          let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
 
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
@@ -238,7 +238,33 @@ extension SKSpacegroup
           let cell: SKSymmetryCell = SKSymmetryCell(unitCell: changedlattice)
           let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
           
-          return (hall, value.origin, cell2, value.changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
+          return (HallNumber, value.origin, cell2, value.changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
+        }
+      }
+      
+      // special cases
+      // Gross-Kunstleve: special case Pa-3 (205) hallSymbol 501
+      for spaceGroupNumber in [205]
+      {
+        if let HallNumber: Int = spaceGroupHallData[spaceGroupNumber]?.first,
+           let origin: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])), seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
+        {
+          let changeOfBasis: SKRotationalChangeOfBasis = SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]))
+          
+          let changedlattice: double3x3 = primitiveLattice * changeOfBasis
+          
+          let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
+
+          let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
+          
+          let transform: double3x3 = changedlattice.inverse * DelaunayUnitCell
+          var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + origin),$0.type, -1)}
+          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: changedlattice, symmetryPrecision: symmetryPrecision)
+          
+          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: changedlattice)
+          let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
+          
+          return (HallNumber, origin, cell2, changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
         }
       }
     }
@@ -468,15 +494,6 @@ extension SKSpacegroup
       if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
         return (originShift, SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity))
-      }
-      
-      // Gross-Kunstleve: special case Pa-3 (205) hallSymbol 501
-      if HallNumber == 501
-      {
-        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: .primitive, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
-        {
-          return (originShift, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])))
-        }
       }
     }
     

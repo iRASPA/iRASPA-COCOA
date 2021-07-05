@@ -609,7 +609,7 @@ class SpaceGroupTests: XCTestCase
       "SpglibTestData/cubic/POSCAR-205" :205,
       "SpglibTestData/cubic/POSCAR-205-3" : 205,
       "SpglibTestData/cubic/POSCAR-206" : 206,
-      //"SpglibTestData/cubic/POSCAR-206-2" : 206,
+      "SpglibTestData/cubic/POSCAR-206-2" : 206,
       "SpglibTestData/cubic/POSCAR-207" : 207,
       "SpglibTestData/cubic/POSCAR-208" : 208,
       "SpglibTestData/cubic/POSCAR-208-2" : 208, // 221 if type is ignored
@@ -977,7 +977,7 @@ class SpaceGroupTests: XCTestCase
       "SpglibTestData/virtual_structure/POSCAR-201-224-02" : 201,
       "SpglibTestData/virtual_structure/POSCAR-205-230-conv-08" : 205,
       "SpglibTestData/virtual_structure/POSCAR-206-230-conv-02" : 206,
-      //"SpglibTestData/virtual_structure/POSCAR-206-230-prim-02" : 206,
+      "SpglibTestData/virtual_structure/POSCAR-206-230-prim-02" : 206,
       "SpglibTestData/virtual_structure/POSCAR-207-221-04" : 207,
       "SpglibTestData/virtual_structure/POSCAR-207-222-04" : 207,
       "SpglibTestData/virtual_structure/POSCAR-208-223-04" : 208,
@@ -1305,6 +1305,40 @@ class SpaceGroupTests: XCTestCase
           if let spacegroup = spacegroup
           {
             XCTAssertEqual(SKSpacegroup.spaceGroupData[spacegroup.hall].spaceGroupNumber, reference.spaceGroup, "Wrong space group found for \(fileName)")
+          }
+        }
+      }
+    }
+  }
+  
+  func testFindCubicSpaceGroup2()
+  {
+    let testData: [String: Int] =
+    [
+      "SpglibTestData/virtual_structure/POSCAR-205-230-conv-08" : 205,
+      "SpglibTestData/virtual_structure/POSCAR-206-230-conv-02" : 206,
+      "SpglibTestData/virtual_structure/POSCAR-206-230-prim-02" : 206,
+    ]
+    
+    let bundle = Bundle(for: type(of: self))
+    
+    for (fileName, referenceSpaceGroupValue) in testData
+    {
+      if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
+      {
+        let reader: SKVASPReader = SKVASPReader(URL: url)
+        if let unitCell = reader.unitCell
+        {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          //let origin: SIMD3<Double> = SIMD3<Double>(-0.03656861041424826, 0.08268703815440653, -0.012468896311284158)
+          //print(origin)
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: unitCell, atoms: translatedAtoms, symmetryPrecision: 1e-5)
+          XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
+          if let spacegroup = spacegroup
+          {
+            XCTAssertEqual(SKSpacegroup.spaceGroupData[spacegroup.hall].spaceGroupNumber, referenceSpaceGroupValue, "Wrong space group found for \(fileName)")
           }
         }
       }
