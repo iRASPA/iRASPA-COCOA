@@ -175,8 +175,8 @@ extension SKSpacegroup
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
-    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
-    
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: DelaunayUnitCell, reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
+        
     // create the point symmetry set
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
     
@@ -234,7 +234,6 @@ extension SKSpacegroup
           var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type, -1)}
           let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: changedlattice, symmetryPrecision: symmetryPrecision)
           
-          
           let cell: SKSymmetryCell = SKSymmetryCell(unitCell: changedlattice)
           let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
           
@@ -279,17 +278,16 @@ extension SKSpacegroup
   /// - parameter symmetryPrecision: the precision of the search (default: 1e-5)
   ///
   /// - returns: the symmetry operations, i.e. a list of (integer rotation matrix, translation vector)
-  public static func findSpaceGroupSymmetry(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], latticeSymmetries: SKPointSymmetrySet, symmetryPrecision: Double = 1e-4) -> SKSymmetryOperationSet
+  public static func findSpaceGroupSymmetry(unitCell: double3x3, reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], latticeSymmetries: SKPointSymmetrySet, symmetryPrecision: Double = 1e-4) -> SKSymmetryOperationSet
   {
     var spaceGroupSymmetries: [SKSeitzMatrix] = []
     
     for rotationMatrix in latticeSymmetries.rotations
     {
-      let translations: [SIMD3<Double>] = SKSymmetryCell.primitiveTranslationVectors(reducedAtoms: reducedAtoms, atoms: atoms, rotationMatrix: rotationMatrix, symmetryPrecision: symmetryPrecision)
-      
+      let translations: [SIMD3<Double>] = SKSymmetryCell.primitiveTranslationVectors(unitCell: unitCell, reducedAtoms: reducedAtoms, atoms: atoms, rotationMatrix: rotationMatrix, symmetryPrecision: symmetryPrecision)
+            
       for translation in translations
       {
-        //let optimizedTranslation: SIMD3<Double> = SIMD3<Double>(rint(translation.x*12.0)/12.0, rint(translation.y*12.0)/12.0, rint(translation.z*12.0)/12.0)
         spaceGroupSymmetries.append(SKSeitzMatrix(rotation: rotationMatrix, translation: translation))
       }
     }

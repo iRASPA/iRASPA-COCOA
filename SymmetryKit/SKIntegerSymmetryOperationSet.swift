@@ -175,7 +175,7 @@ public struct SKIntegerSymmetryOperationSet
     
     for seitzMatrix in self.operations
     {
-      let inverseTransformation = transformationMatrix.inverse
+      let inverseTransformation = transformationMatrix.inverseTimesDeterminant
       let rotation: SKTransformationMatrix = inverseTransformation * seitzMatrix.rotation * transformationMatrix / Int(transformationMatrix.determinant)
       let translation: SIMD3<Int32> = inverseTransformation * seitzMatrix.translation
       let transformedSeitzMatrix: SKSeitzIntegerMatrix = SKSeitzIntegerMatrix(rotation: SKRotationMatrix(rotation), translation: translation / Int32(transformationMatrix.determinant))

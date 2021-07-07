@@ -135,7 +135,7 @@ public struct SKTransformationMatrix
   }
   
   // inverse times the determinant
-  public var inverse: SKTransformationMatrix
+  public var inverseTimesDeterminant: SKTransformationMatrix
   {
     var result: SKTransformationMatrix = SKTransformationMatrix()
     result[0,0] = self[1,1] * self[2,2] - self[2,1] * self[1,2]
@@ -158,7 +158,7 @@ public extension double3x3
   init(inverseTransformationMatrix m: SKTransformationMatrix)
   {
     let det: Double = Double(m.determinant)
-    let a: SKTransformationMatrix = m.inverse
+    let a: SKTransformationMatrix = m.inverseTimesDeterminant
     let col1 = a[0]
     let col2 = a[1]
     let col3 = a[2]
