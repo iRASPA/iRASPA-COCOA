@@ -133,8 +133,20 @@ public struct SKPointGroup
     }
   }
   
-  // Lookup-table used for the construction of a basis (Table 5 in the article)
-  // (R.W. Grosse-Kunstleve, "Algorithms for deriving crystallographic space-group information", Acta Cryst. A55, 383-395, 1999)
+  /// The look-up table used for the construction of M'
+  ///    Laue group           n_e           |N|
+  ///    -1                          1                1
+  ///     2/m                     1                2
+  ///     mmm                  3                2, 2, 2
+  ///     4/m                     1                4
+  ///     4/mmm               2                4, 2
+  ///    -3                          1                3
+  ///    -3m                       2                3, 2
+  ///     6/m                     1                3
+  ///     6/mmm               2                3, 2
+  ///     m-3                     2                3, 2
+  ///     m-3m                  2                3, 4
+  /// Ref: R.W. Grosse-Kunstleve, "Algorithms for deriving crystallographic space-group information", Acta Cryst. A55, 383-395, 1999
   private let rotationTypeForBasis: [Laue: Int] =
   [
     .laue_1: 0,
@@ -150,15 +162,34 @@ public struct SKPointGroup
     .laue_m3m: 4
   ]
 
-  /// construct a basis system for the particular point-group using the Laue group
+  /// Constructs a basis system for the particular point-group using the Laue group
   ///
-  /// Note : The basic idea for the construction of a basis is to use the axes directions of the Laue group-specific symmetry as a new basis.
-  ///        (R.W. Grosse-Kunstleve, "Algorithms for deriving crystallographic space-group information", Acta Cryst. A55, 383-395, 1999)
-  ///
-  /// - parameter SeitzMatrices: the symmetry elements
+  /// - parameter properRotations: the proper rotation matrices of the symmetry elements
   ///
   /// - returns: an orthogonal axes system
   ///
+  /// M is constructed from the three axis directions (ex,ey,ez):
+  ///     | e_x,1 e_y,1 e_z,1 |
+  /// M' =  | e_x,2 e_y,2 e_z,2 |
+  ///     | e_x,3 e_y,3 e_z,3 |
+  /// with det(M') > 0.
+  /// The basic idea for the construction of (M', 0) is to use the axes' directions of Laue-group-specific symmetry operations as a new basis.
+  ///
+  ///
+  /// The look-up table used for the construction of M'
+  ///    Laue group           n_e           |N|
+  ///    -1                          1                1
+  ///     2/m                     1                2
+  ///     mmm                  3                2, 2, 2
+  ///     4/m                     1                4
+  ///     4/mmm               2                4, 2
+  ///    -3                          1                3
+  ///    -3m                       2                3, 2
+  ///     6/m                     1                3
+  ///     6/mmm               2                3, 2
+  ///     m-3                     2                3, 2
+  ///     m-3m                  2                3, 4
+  /// Ref: R.W. Grosse-Kunstleve, "Algorithms for deriving crystallographic space-group information", Acta Cryst. A55, 383-395, 1999
   public func constructAxes(using properRotations: [SKRotationMatrix]) -> SKTransformationMatrix
   {
     switch(self.laue)
@@ -166,7 +197,7 @@ public struct SKPointGroup
     case .laue_1:
       return SKTransformationMatrix.identity
     case .laue_2m:
-      // look for all proper rotation matrices of rotation type 2
+      // Look for all proper rotation matrices of rotation type 2
       let properRotationMatrices: [SKRotationMatrix] = properRotations.filter{$0.type.rawValue == 2}
       
       if let properRotationmatrix: SKRotationMatrix = properRotationMatrices.first
@@ -201,15 +232,13 @@ public struct SKPointGroup
       {
         // look for all proper rotation matrices of the wanted rotation type and take their rotation axes (use a set to avoid duplicates)
         let allAxes: Set<SIMD3<Int32>> = Set(properRotations.filter{$0.type.rawValue == rotationalTypeForBasis}.map{$0.rotationAxis})
-        
-        
-        // outside access to 'allPossibleRotationAxes' FIX or CHECK
+                
         let uniqueAxis: [SIMD3<Int32>] = Array(Set(allAxes)).sorted{SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $0)! < SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $1)!}
         //let uniqueAxis: [int3] = allAxes.sorted{length_squared($0) < length_squared($1)}
         
         if uniqueAxis.count >= 3
         {
-          let axes: SKTransformationMatrix = SKTransformationMatrix([uniqueAxis[0],uniqueAxis[1],uniqueAxis[2]])
+          let axes: SKTransformationMatrix = SKTransformationMatrix([uniqueAxis[0], uniqueAxis[1], uniqueAxis[2]])
           
           if axes.determinant < 0
           {
@@ -453,7 +482,7 @@ public struct SKPointGroup
                                                                                      
     let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell)
     
-    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: unitCell, reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
     
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
     return SKPointGroup(pointSymmetry: pointSymmetry)

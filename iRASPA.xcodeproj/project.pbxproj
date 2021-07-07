@@ -495,6 +495,12 @@
 		93BF30C31FB3707B00FFCCB0 /* iRASPA-CLI.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = 93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */; };
 		93C5E24223F1A264002BA929 /* SKAsymmetricBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */; };
+		93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */; };
+		93C71B782694682A00F67DEE /* SpaceGroupDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B772694682A00F67DEE /* SpaceGroupDebug.swift */; };
+		93C71B7C2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B7B2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift */; };
+		93C71B7E2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B7D2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift */; };
+		93C71B802695DFBD00F67DEE /* SpaceGroupCOFsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B7F2695DFBD00F67DEE /* SpaceGroupCOFsTest.swift */; };
+		93C71B822695E00000F67DEE /* SpaceGroupZIFsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */; };
 		93CD2A9E256BF56700E26C20 /* Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CD2A9D256BF56700E26C20 /* Python.swift */; };
 		93CD2ACC256BF72B00E26C20 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8425680A10004D900E /* libbz2.a */; };
 		93CD2ACE256BF72B00E26C20 /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8625680A11004D900E /* libformw.a */; };
@@ -1882,6 +1888,12 @@
 		93BF30BA1FB3704500FFCCB0 /* iRASPA-CLI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iRASPA-CLI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyingProtocol.swift; sourceTree = "<group>"; };
 		93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricBond.swift; sourceTree = "<group>"; };
+		93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupChangeOfBasistests.swift; sourceTree = "<group>"; };
+		93C71B772694682A00F67DEE /* SpaceGroupDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupDebug.swift; sourceTree = "<group>"; };
+		93C71B7B2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupZeolitesTest.swift; sourceTree = "<group>"; };
+		93C71B7D2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupMOFsTest.swift; sourceTree = "<group>"; };
+		93C71B7F2695DFBD00F67DEE /* SpaceGroupCOFsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupCOFsTest.swift; sourceTree = "<group>"; };
+		93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupZIFsTest.swift; sourceTree = "<group>"; };
 		93CD2A9D256BF56700E26C20 /* Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Python.swift; sourceTree = "<group>"; };
 		93CD2B70256C180500E26C20 /* pycapsule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pycapsule.h; sourceTree = "<group>"; };
 		93CD2B71256C180500E26C20 /* methodobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = methodobject.h; sourceTree = "<group>"; };
@@ -3094,7 +3106,13 @@
 			children = (
 				937737F32680D83000D47499 /* SpglibTestData */,
 				937737F12680D7F600D47499 /* SpaceGroupTests.swift */,
+				93C71B7B2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift */,
+				93C71B7D2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift */,
+				93C71B7F2695DFBD00F67DEE /* SpaceGroupCOFsTest.swift */,
+				93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */,
+				93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */,
 				933D79C026905E290023EB94 /* SpaceGroupUnitCellTests.swift */,
+				93C71B772694682A00F67DEE /* SpaceGroupDebug.swift */,
 				937737EA2680D7A900D47499 /* Info.plist */,
 			);
 			path = SymmetryKitTests;
@@ -4757,8 +4775,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93C71B822695E00000F67DEE /* SpaceGroupZIFsTest.swift in Sources */,
+				93C71B782694682A00F67DEE /* SpaceGroupDebug.swift in Sources */,
+				93C71B802695DFBD00F67DEE /* SpaceGroupCOFsTest.swift in Sources */,
+				93C71B7E2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift in Sources */,
+				93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */,
 				933D79C126905E290023EB94 /* SpaceGroupUnitCellTests.swift in Sources */,
 				937737F22680D7F600D47499 /* SpaceGroupTests.swift in Sources */,
+				93C71B7C2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

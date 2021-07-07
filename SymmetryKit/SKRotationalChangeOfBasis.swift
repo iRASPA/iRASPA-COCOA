@@ -12,8 +12,8 @@ import simd
 
 public struct SKRotationalChangeOfBasis
 {
-  private var changeOfBasis : SKRotationMatrix
-  private var inverseChangeOfBasis : SKRotationMatrix
+  public var changeOfBasis : SKRotationMatrix
+  public var inverseChangeOfBasis : SKRotationMatrix
   
   public init(rotation: SKRotationMatrix)
   {

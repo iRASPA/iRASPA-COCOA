@@ -201,7 +201,7 @@ class SpaceGroupUnitCellTests: XCTestCase
         "SpglibTestData/mofs/PCN-61-primitive.cif" : (225, 42.7958, 42.7958, 42.7958, 90, 90, 90),
         "SpglibTestData/mofs/PCN-60.cif" : (225, 42.8434, 42.8434, 42.8434, 90, 90, 90),
         "SpglibTestData/mofs/PCN-60-primitive.cif" : (225, 42.8434, 42.8434, 42.8434, 90, 90, 90),
-        "SpglibTestData/mofs/MIL-100.cif" : (1, 51.5521, 51.5521, 51.5521, 120, 120, 90),
+        "SpglibTestData/mofs/MIL-100.cif" : (1, 72.9057, 72.9057, 72.9057, 90, 90, 90),
         "SpglibTestData/mofs/MIL-100-primitive.cif" : (1, 51.5521, 51.5521, 51.5521, 90, 120, 120),
         "SpglibTestData/mofs/MOF-70.cif" : (14, 9.9617, 17.9914, 11.5149, 90, 134.877, 90),
         "SpglibTestData/mofs/MOF-70-primitive.cif" : (14, 9.9617, 17.9914, 11.5149, 90, 134.877, 90),      // MS: beta=137.354, c=14.3453 (wrong)

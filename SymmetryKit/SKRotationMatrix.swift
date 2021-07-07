@@ -404,13 +404,15 @@ public struct SKRotationMatrix
   
   /// Computes a list of integer-vectors that are orthogonal to the rotation axis for a given rotation matrix
   ///
-  /// Note : Theorem TA4.1 in Boisen en Gibbs (1990) states that a vector x is in the plane perpendicular to the axis direction 'e' of a proper rotation matrix 'W_p'
-  ///         with rotational order 'n' if and onlt if S.x=0 where S = W_p + W_p^2 + ... + W_p^n
-  ///        (R.W. Grosse-Kunstleve, "Algorithms for deriving crystallographic space-group information", Acta Cryst. A55, 383-395, 1999)
-  ///
   /// - parameter rotationOrder: the rotation order
   ///
   /// - returns: a list of perpendicular eigenvectors
+  ///
+  /// Note : Theorem TA4.1 in Boisen en Gibbs (1990) states that a vector x is in the plane perpendicular to the axis direction 'e' of a proper rotation matrix 'W_p'
+  /// with rotational order 'n' if and only if S.x=0 where S = W_p + W_p^2 + ... + W_p^n
+  /// Ref: R.W. Grosse-Kunstleve, "Algorithms for deriving crystallographic space-group information", Acta Cryst. A55, 383-395, 1999
+  ///
+  /// The algorithm of Atsushi Togo is used: a search over all possible rotation axes.
   func orthogonalToAxisDirection(rotationOrder: Int) -> [SIMD3<Int32>]
   {
     var orthoAxes: [SIMD3<Int32>] = []
@@ -538,7 +540,6 @@ public struct SKRotationMatrix
     //if self.isIdentity { return nil}
     
     var result: [SIMD3<Int32>] = []
-    
     
     // rotation axis is the eigenvector with eigenvalue lambda==1
     for i in 0..<SKRotationMatrix.allPossibleRotationAxes.count
@@ -685,83 +686,6 @@ public struct SKRotationMatrix
   // convention: e3 is positive, if e3=0, then e2 is positive. If e3=e2=0 then e1 is chosen as positive
   static let allPossibleRotationAxes: [SIMD3<Int32>] =
   [
-    /*
-    SIMD3<Int32>( 1, 0, 0),
-    SIMD3<Int32>( 0, 1, 0),
-    SIMD3<Int32>( 0, 0, 1),
-    SIMD3<Int32>( 0, 1, 1),
-    SIMD3<Int32>( 1, 0, 1),
-    SIMD3<Int32>( 1, 1, 0),
-    SIMD3<Int32>( 0, 1,-1),
-    SIMD3<Int32>(-1, 0, 1),
-    SIMD3<Int32>( 1,-1, 0),
-    SIMD3<Int32>( 1, 1, 1), /* 10 */
-    SIMD3<Int32>(-1, 1, 1),
-    SIMD3<Int32>( 1,-1, 1),
-    SIMD3<Int32>( 1, 1,-1),
-    SIMD3<Int32>( 0, 1, 2),
-    SIMD3<Int32>( 2, 0, 1),
-    SIMD3<Int32>( 1, 2, 0),
-    SIMD3<Int32>( 0, 2, 1),
-    SIMD3<Int32>( 1, 0, 2),
-    SIMD3<Int32>( 2, 1, 0),
-    SIMD3<Int32>( 0,-1, 2), /* 20 */
-    SIMD3<Int32>( 2, 0,-1),
-    SIMD3<Int32>(-1, 2, 0),
-    SIMD3<Int32>( 0,-2, 1),
-    SIMD3<Int32>( 1, 0,-2),
-    SIMD3<Int32>(-2, 1, 0),
-    SIMD3<Int32>( 2, 1, 1),
-    SIMD3<Int32>( 1, 2, 1),
-    SIMD3<Int32>( 1, 1, 2),
-    SIMD3<Int32>( 2,-1,-1),
-    SIMD3<Int32>(-1, 2,-1), /* 30 */
-    SIMD3<Int32>(-1,-1, 2),
-    SIMD3<Int32>( 2, 1,-1),
-    SIMD3<Int32>(-1, 2, 1),
-    SIMD3<Int32>( 1,-1, 2),
-    SIMD3<Int32>( 2,-1, 1), /* 35 */
-    SIMD3<Int32>( 1, 2,-1),
-    SIMD3<Int32>(-1, 1, 2),
-    SIMD3<Int32>( 3, 1, 2),
-    SIMD3<Int32>( 2, 3, 1),
-    SIMD3<Int32>( 1, 2, 3), /* 40 */
-    SIMD3<Int32>( 3, 2, 1),
-    SIMD3<Int32>( 1, 3, 2),
-    SIMD3<Int32>( 2, 1, 3),
-    SIMD3<Int32>( 3,-1, 2),
-    SIMD3<Int32>( 2, 3,-1), /* 45 */
-    SIMD3<Int32>(-1, 2, 3),
-    SIMD3<Int32>( 3,-2, 1),
-    SIMD3<Int32>( 1, 3,-2),
-    SIMD3<Int32>(-2, 1, 3),
-    SIMD3<Int32>( 3,-1,-2), /* 50 */
-    SIMD3<Int32>(-2, 3,-1),
-    SIMD3<Int32>(-1,-2, 3),
-    SIMD3<Int32>( 3,-2,-1),
-    SIMD3<Int32>(-1, 3,-2),
-    SIMD3<Int32>(-2,-1, 3), /* 55 */
-    SIMD3<Int32>( 3, 1,-2),
-    SIMD3<Int32>(-2, 3, 1),
-    SIMD3<Int32>( 1,-2, 3),
-    SIMD3<Int32>( 3, 2,-1),
-    SIMD3<Int32>(-1, 3, 2), /* 60 */
-    SIMD3<Int32>( 2,-1, 3),
-    SIMD3<Int32>( 1, 1, 3),
-    SIMD3<Int32>(-1, 1, 3),
-    SIMD3<Int32>( 1,-1, 3),
-    SIMD3<Int32>(-1,-1, 3), /* 65 */
-    SIMD3<Int32>( 1, 3, 1),
-    SIMD3<Int32>(-1, 3, 1),
-    SIMD3<Int32>( 1, 3,-1),
-    SIMD3<Int32>(-1, 3,-1),
-    SIMD3<Int32>( 3, 1, 1), /* 70 */
-    SIMD3<Int32>( 3, 1,-1),
-    SIMD3<Int32>( 3,-1, 1),
-    SIMD3<Int32>( 3,-1,-1)
-*/
-    
-    
     SIMD3<Int32>( 1, 0, 0),
     SIMD3<Int32>( 0, 1, 0),
     SIMD3<Int32>( 0, 0, 1),
@@ -835,7 +759,6 @@ public struct SKRotationMatrix
     SIMD3<Int32>(-3,-1, 1),
     SIMD3<Int32>( 3,-1, 1),
     SIMD3<Int32>(-3, 1, 1)
-
   ]
   
   // 81 2-fold symmetry operations possible for reduced cells:
@@ -1016,15 +939,12 @@ extension SKRotationMatrix
                 z: left[0,2] * right.x + left[1,2] * right.y + left[2,2] * right.z)
   }
   
-
-  
   public static func * (left: SKRotationMatrix, right: SIMD3<Double>) -> SIMD3<Double>
   {
     return SIMD3<Double>(x: Double(left[0,0]) * right.x + Double(left[1,0]) * right.y + Double(left[2,0]) * right.z,
                          y: Double(left[0,1]) * right.x + Double(left[1,1]) * right.y + Double(left[2,1]) * right.z,
                          z: Double(left[0,2]) * right.x + Double(left[1,2]) * right.y + Double(left[2,2]) * right.z)
   }
-  
   
   static public func + (left: SKRotationMatrix, right: SKRotationMatrix) -> SKRotationMatrix
   {
@@ -1045,7 +965,6 @@ extension SKRotationMatrix
     return SKRotationMatrix([SIMD3<Int32>(-left[0,0], -left[0,1], -left[0,2]),
                    SIMD3<Int32>(-left[1,0], -left[1,1], -left[1,2]),
                    SIMD3<Int32>(-left[2,0], -left[2,1], -left[2,2])])
-    
   }
   
   public static func / (left: SKRotationMatrix, right: Int) -> SKRotationMatrix
@@ -1053,7 +972,6 @@ extension SKRotationMatrix
     return SKRotationMatrix([SIMD3<Int32>(left[0,0] / Int32(right), left[0,1] / Int32(right), left[0,2] / Int32(right)),
                    SIMD3<Int32>(left[1,0] / Int32(right), left[1,1] / Int32(right), left[1,2] / Int32(right)),
                    SIMD3<Int32>(left[2,0] / Int32(right), left[2,1] / Int32(right), left[2,2] / Int32(right))])
-    
   }
 }
 
