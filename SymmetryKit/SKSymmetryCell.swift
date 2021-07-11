@@ -122,14 +122,8 @@ public struct SKSymmetryCell: CustomStringConvertible
   public var beta: Double
   public var gamma: Double
   
-  var epsilon: Double
-  {
-    get
-    {
-      return 1.0e-5
-      //return pow(volume,1.0/3.0) * 1.0e-5
-    }
-  }
+  static let epsilon: Double = 1.0e-5
+  
   
   public var description: String
   {
@@ -325,32 +319,32 @@ public struct SKSymmetryCell: CustomStringConvertible
     
   }
   
-  func isSmallerThen(x: Double, y: Double) -> Bool
+  static func isSmallerThen(x: Double, y: Double) -> Bool
   {
     return x < (y - epsilon)
   }
   
-  func isLargerThen(x: Double, y: Double) -> Bool
+  static func isLargerThen(x: Double, y: Double) -> Bool
   {
     return isSmallerThen(x: y, y: x)
   }
   
-  func isSmallerEqualThen(x: Double, y: Double) -> Bool
+  static func isSmallerEqualThen(x: Double, y: Double) -> Bool
   {
     return !(y < (x - epsilon))
   }
   
-  func isLargerEqualThen(x: Double, y: Double) -> Bool
+  static func isLargerEqualThen(x: Double, y: Double) -> Bool
   {
     return !(x < (y - epsilon))
   }
   
-  func isEqualTo(x: Double, y: Double) -> Bool
+  static func  isEqualTo(x: Double, y: Double) -> Bool
   {
     return !((x < (y - epsilon)) || (y < (x - epsilon)))
   }
   
-  func isLargerThenZeroXiEtaZeta(x xi: Double, y eta: Double, z zeta: Double) -> Bool
+  static func isLargerThenZeroXiEtaZeta(x xi: Double, y eta: Double, z zeta: Double) -> Bool
   {
     var n_positive: Int = 0
     var n_zero: Int = 0
@@ -422,6 +416,153 @@ public struct SKSymmetryCell: CustomStringConvertible
   }
   
   
+  /// Ref: I. Krivy, B. Gruber,  "A Unified Algorithm for Determining the Reduced (Niggli) Cell",  Acta Cryst. (1976). A32, 297
+  ///    R. W. Grosse-Kunstleve, N. K. Sauter and P. D. Adams, "Numerically stable algorithms for the computation of reduced unit cells", Acta Cryst. (2004). A60, 1-6
+  public static func computeReducedNiggliCellAndChangeOfBasisMatrix(unitCell: double3x3) -> double3x3?
+  {
+    var counter: Int = 0
+    
+    var rotatedUnitCell: double3x3 = unitCell
+    let metricMatrix: double3x3 = unitCell.transpose * unitCell
+    
+    // step 0:
+    var A: Double = metricMatrix[0,0]
+    var B: Double = metricMatrix[1,1]
+    var C: Double = metricMatrix[2,2]
+    var xi: Double = metricMatrix[1,2] + metricMatrix[2,1]
+    var eta: Double = metricMatrix[0,2] + metricMatrix[2,0]
+    var zeta: Double = metricMatrix[0,1] + metricMatrix[1,0]
+        
+    algorithmStart: do
+    {
+      counter = counter + 1
+      if(counter>10000) {return nil}
+      
+      // step 1
+      if(SKSymmetryCell.isLargerThen(x: A,y: B)||(SKSymmetryCell.isEqualTo(x: A, y: B)&&(SKSymmetryCell.isLargerThen(x: abs(xi), y: abs(eta)))))
+      {
+        let matrixC = SKRotationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)])
+        assert(matrixC.determinant == 1)
+        rotatedUnitCell = rotatedUnitCell * matrixC
+        
+        // Swap x, y and ensures proper sign of determinant
+        swap(&A,&B)
+        swap(&xi,&eta)
+        
+      }
+      
+      // step 2
+      if(SKSymmetryCell.isLargerThen(x: B,y: C)||(SKSymmetryCell.isEqualTo(x: B, y: C)&&(SKSymmetryCell.isLargerThen(x: abs(eta), y: abs(zeta)))))
+      {
+        let matrixC = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])
+        assert(matrixC.determinant == 1)
+        rotatedUnitCell = rotatedUnitCell * matrixC
+        
+        // Swap y, z and ensures proper sign of determinant
+        swap(&B,&C)
+        swap(&eta,&zeta)
+        
+        continue algorithmStart
+      }
+      
+      // step 3
+      if(SKSymmetryCell.isLargerThenZeroXiEtaZeta(x: xi, y: eta, z: zeta))
+      {
+        var f: [Int32] = [1,1,1]
+        if (SKSymmetryCell.isSmallerThen(x: xi, y: 0.0)) {f[0] = -1}
+        if (SKSymmetryCell.isSmallerThen(x: eta, y: 0.0)) {f[1] = -1}
+        if (SKSymmetryCell.isSmallerThen(x: zeta, y: 0.0)) {f[2] = -1}
+       
+        let matrixC = SKRotationMatrix([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
+        assert(matrixC.determinant == 1)
+        rotatedUnitCell = rotatedUnitCell * matrixC
+        
+        xi = abs(xi)
+        eta = abs(eta)
+        zeta = abs(zeta)
+      }
+      else // step 4:
+      {
+        var p: Int = -1
+        var f: [Int32] = [1,1,1]
+        if (SKSymmetryCell.isLargerThen(x: xi, y: 0.0)) {f[0] = -1}
+        else if (!SKSymmetryCell.isSmallerThen(x: xi, y: 0.0)) {p=0}
+        if (SKSymmetryCell.isLargerThen(x: eta, y: 0.0)) {f[1] = -1}
+        else if (!SKSymmetryCell.isSmallerThen(x: eta, y: 0.0)) {p=1}
+        if (SKSymmetryCell.isLargerThen(x: zeta, y: 0.0)) {f[2] = -1}
+        else if (!SKSymmetryCell.isSmallerThen(x: zeta, y: 0.0)) {p=2}
+        if (f[0]*f[1]*f[2] < 0)
+        {
+          f[p] = -1
+        }
+        let matrixC = SKRotationMatrix([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
+        assert(matrixC.determinant == 1)
+        rotatedUnitCell = rotatedUnitCell * matrixC
+        
+        xi = -abs(xi)
+        eta = -abs(eta)
+        zeta = -abs(zeta)
+      }
+      
+      // step 5
+      if((SKSymmetryCell.isLargerThen(x: abs(xi), y: B))||(SKSymmetryCell.isEqualTo(x: xi, y: B)&&isSmallerThen(x: 2.0*eta, y: zeta))||(SKSymmetryCell.isEqualTo(x: xi, y: -B)&&isSmallerThen(x: zeta, y: 0)))
+      {
+        let matrixC = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,-Int32(sign(xi)),1)])
+        assert(matrixC.determinant == 1)
+        rotatedUnitCell = rotatedUnitCell * matrixC
+        
+        C = B + C - xi * sign(xi)
+        eta = eta - zeta * sign(xi)
+        xi = xi -  2.0 * B * sign(xi)
+        
+        continue algorithmStart
+      }
+      
+      // step 6
+      if((SKSymmetryCell.isLargerThen(x: abs(eta), y: A))||(SKSymmetryCell.isEqualTo(x: eta, y: A)&&isSmallerThen(x: 2.0*xi, y: zeta))||(SKSymmetryCell.isEqualTo(x: eta, y: -A)&&SKSymmetryCell.isSmallerThen(x: zeta, y: 0.0)))
+      {
+        let matrixC = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-Int32(sign(eta)),0,1)])
+        assert(matrixC.determinant == 1)
+        rotatedUnitCell = rotatedUnitCell * matrixC
+        
+        C = A + C - eta * sign(eta)
+        xi = xi - zeta * sign(eta)
+        eta = eta - 2.0*A * sign(eta)
+        continue algorithmStart
+      }
+      
+      // step7
+      if((SKSymmetryCell.isLargerThen(x: abs(zeta), y: A))||(SKSymmetryCell.isEqualTo(x: zeta, y: A)&&SKSymmetryCell.isSmallerThen(x: 2.0*xi, y: eta))||(SKSymmetryCell.isEqualTo(x: zeta, y: -A)&&SKSymmetryCell.isSmallerThen(x: eta, y: 0.0)))
+      {
+        let matrixC = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(-Int32(sign(zeta)),1,0),SIMD3<Int32>(0,0,1)])
+        assert(matrixC.determinant == 1)
+        rotatedUnitCell = rotatedUnitCell * matrixC
+        
+        B = A + B - zeta * sign(zeta)
+        xi = xi - eta * sign(zeta)
+        zeta = zeta - 2.0*A * sign(zeta)
+        
+        continue algorithmStart
+      }
+      
+      // step 8
+      if(SKSymmetryCell.isSmallerThen(x: xi+eta+zeta+A+B, y: 0.0)||(SKSymmetryCell.isEqualTo(x: xi+eta+zeta+A+B, y: 0.0)&&SKSymmetryCell.isLargerThen(x: 2.0*(A+eta)+zeta, y: 0.0)))
+      {
+        let matrixC = SKRotationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,1,1)])
+        assert(matrixC.determinant == 1)
+        rotatedUnitCell = rotatedUnitCell * matrixC
+        
+        C = A + B + C + xi + eta + zeta
+        xi = 2.0*B + xi + zeta
+        eta =  2.0*A + eta + zeta
+        
+        continue algorithmStart
+      }
+    }
+        
+    return rotatedUnitCell
+  }
+  
   /// Compute the Delaunay reduced cell
   ///
   /// - parameter unitCell:          the original unit cell
@@ -469,10 +610,10 @@ public struct SKSymmetryCell: CustomStringConvertible
       }
     }while(somePositive)
     
-    // Search in the array {b1, b2, b3, b4, b1+b2, b2+b3, b3+b1}, sorted by length
+    // Search in the array {b1, b2, b3, b4, b1+b2, b2+b3, b3+b1}, sorted by length (using a small epsilon to amke sure they are really different)
     let b: [SIMD3<Double>] = [extendedBasis[0], extendedBasis[1], extendedBasis[2], extendedBasis[3],
                               extendedBasis[0] + extendedBasis[1], extendedBasis[1] + extendedBasis[2],
-                              extendedBasis[2] + extendedBasis[0]].sorted(by: {length_squared($0) < length_squared($1)})
+                              extendedBasis[2] + extendedBasis[0]].sorted(by: {length_squared($0) + 1e-10 < (length_squared($1) )})
     
     // take the first two vectors, combined with a vector that has a non-zero, positive volume
     for i in 2..<7
@@ -488,8 +629,6 @@ public struct SKSymmetryCell: CustomStringConvertible
     
     return nil
   }
-  
-  
   
   public static func computeDelaunayReducedCell2D(unitCell: double3x3, uniqueAxis: Int, symmetryPrecision: Double = 1e-5) -> double3x3?
   {
@@ -514,7 +653,7 @@ public struct SKSymmetryCell: CustomStringConvertible
     {
       somePositive = false
       // (i,j) in (0,1), (0,2), (1,2); k denote the other two vectors
-      for (i,j,k) in [(0,1,2), (0,2,3), (1,2,3)]
+      for (i,j,k) in [(0,1,2), (0,2,1), (1,2,0)]
       {
         if (dot(extendedBasis[i], extendedBasis[j]) > symmetryPrecision)
         {
@@ -532,7 +671,7 @@ public struct SKSymmetryCell: CustomStringConvertible
     
     // Search in the set {b1, b2, b3, b1+b2}
     let b: [SIMD3<Double>] = [extendedBasis[0], extendedBasis[1], extendedBasis[2],
-                              extendedBasis[0]+extendedBasis[1]].sorted(by: {length_squared($0) < length_squared($1)})
+                              extendedBasis[0]+extendedBasis[1]].sorted(by: {length_squared($0) + 1e-10 < length_squared($1)})
     
     for i in 1..<4
     {
@@ -600,7 +739,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   // to get the cell-lengths and angles one can use:
   // a'=sqrt(A)            b'=sqrt(B)              c'=sqrt(C)
   // cos alpha'=xi/2b'c'   cos beta'=eta/2a'c'     cos gamma'=zeta/2a'c'
-  // Algorithm: "A unified algorithm for determining the reduced (Niggli) cell", I. Krivy and B. Gruber, Acta Cryst., A 32, 297-298, 1976
+  /// Ref: I. Krivy, B. Gruber,  "A Unified Algorithm for Determining the Reduced (Niggli) Cell",  Acta Cryst. (1976). A32, 297-298
   public var computeReducedNiggliCell: SKSymmetryCell?
   {
     var counter: Int = 0
@@ -619,14 +758,14 @@ public struct SKSymmetryCell: CustomStringConvertible
       if(counter>10000) {return nil}
       
       // step 1
-      if(isLargerThen(x: A,y: B)||(isEqualTo(x: A, y: B)&&(isLargerThen(x: abs(xi), y: abs(eta)))))
+      if(SKSymmetryCell.isLargerThen(x: A,y: B)||(SKSymmetryCell.isEqualTo(x: A, y: B)&&(SKSymmetryCell.isLargerThen(x: abs(xi), y: abs(eta)))))
       {
         swap(&A,&B)
         swap(&xi,&eta)
       }
       
       // step 2
-      if(isLargerThen(x: B,y: C)||(isEqualTo(x: B, y: C)&&(isLargerThen(x: abs(eta), y: abs(zeta)))))
+      if(SKSymmetryCell.isLargerThen(x: B,y: C)||(SKSymmetryCell.isEqualTo(x: B, y: C)&&(SKSymmetryCell.isLargerThen(x: abs(eta), y: abs(zeta)))))
       {
         swap(&B,&C)
         swap(&eta,&zeta)
@@ -634,7 +773,7 @@ public struct SKSymmetryCell: CustomStringConvertible
       }
       
       // step 3
-      if(isLargerThenZeroXiEtaZeta(x: xi, y: eta, z: zeta))
+      if(SKSymmetryCell.isLargerThenZeroXiEtaZeta(x: xi, y: eta, z: zeta))
       {
         xi = abs(xi)
         eta = abs(eta)
@@ -648,9 +787,9 @@ public struct SKSymmetryCell: CustomStringConvertible
       }
       
       // step 5
-      if((isLargerThen(x: abs(xi), y: B)) ||
-        (isEqualTo(x: xi, y: B) && isSmallerThen(x: eta + eta, y: zeta)) ||
-        (isEqualTo(x: xi, y: -B) && isSmallerThen(x: zeta, y: 0)))
+      if((SKSymmetryCell.isLargerThen(x: abs(xi), y: B)) ||
+          (SKSymmetryCell.isEqualTo(x: xi, y: B) && SKSymmetryCell.isSmallerThen(x: eta + eta, y: zeta)) ||
+          (SKSymmetryCell.isEqualTo(x: xi, y: -B) && SKSymmetryCell.isSmallerThen(x: zeta, y: 0)))
       {
         if (xi > 0)
         {
@@ -668,9 +807,9 @@ public struct SKSymmetryCell: CustomStringConvertible
       }
       
       // step 6
-      if((isLargerThen(x: abs(eta), y: A)) ||
-        (isEqualTo(x: eta, y: A) && isSmallerThen(x: xi + xi, y: zeta)) ||
-        (isEqualTo(x: eta, y: -A) && isSmallerThen(x: zeta, y: 0)))
+      if((SKSymmetryCell.isLargerThen(x: abs(eta), y: A)) ||
+          (SKSymmetryCell.isEqualTo(x: eta, y: A) && SKSymmetryCell.isSmallerThen(x: xi + xi, y: zeta)) ||
+          (SKSymmetryCell.isEqualTo(x: eta, y: -A) && SKSymmetryCell.isSmallerThen(x: zeta, y: 0)))
       {
         if (eta > 0)
         {
@@ -688,9 +827,9 @@ public struct SKSymmetryCell: CustomStringConvertible
       }
       
       // step7
-      if((isLargerThen(x: abs(zeta), y: A)) ||
-        (isEqualTo(x: zeta, y: A) && isSmallerThen(x: xi + xi, y: eta)) ||
-        (isEqualTo(x: zeta, y: -A) && isSmallerThen(x: eta, y: 0)))
+      if((SKSymmetryCell.isLargerThen(x: abs(zeta), y: A)) ||
+          (SKSymmetryCell.isEqualTo(x: zeta, y: A) && SKSymmetryCell.isSmallerThen(x: xi + xi, y: eta)) ||
+          (SKSymmetryCell.isEqualTo(x: zeta, y: -A) && SKSymmetryCell.isSmallerThen(x: eta, y: 0)))
       {
         if (zeta > 0)
         {
@@ -708,8 +847,8 @@ public struct SKSymmetryCell: CustomStringConvertible
       }
       
       // step 8
-      if(isSmallerThen(x: xi+eta+zeta+A+B, y: 0) ||
-        (isEqualTo(x: xi+eta+zeta+A+B, y: 0) && isLargerThen(x: A+A+eta+eta+zeta, y: 0)))
+      if(SKSymmetryCell.isSmallerThen(x: xi+eta+zeta+A+B, y: 0) ||
+          (SKSymmetryCell.isEqualTo(x: xi+eta+zeta+A+B, y: 0) && SKSymmetryCell.isLargerThen(x: A+A+eta+eta+zeta, y: 0)))
       {
         C += A + B + xi + eta + zeta
         xi += B + B + zeta
@@ -718,9 +857,13 @@ public struct SKSymmetryCell: CustomStringConvertible
       }
     }
     
+    print(A,B,C,xi,eta,zeta)
+    
     return SKSymmetryCell(a: sqrt(A), b: sqrt(B), c: sqrt(C), alpha: acos(xi/(2.0*sqrt(B)*sqrt(C))) * 180.0/Double.pi, beta: acos(eta/(2.0*sqrt(A)*sqrt(C))) * 180.0/Double.pi, gamma: acos(zeta/(2.0*sqrt(A)*sqrt(B))) * 180.0/Double.pi)
   }
   
+  /// Ref: I. Krivy, B. Gruber,  "A Unified Algorithm for Determining the Reduced (Niggli) Cell",  Acta Cryst. (1976). A32, 297-298
+  ///    R. W. Grosse-Kunstleve, N. K. Sauter and P. D. Adams, "Numerically stable algorithms for the computation of reduced unit cells", Acta Cryst. (2004). A60, 1-6
   public var computeReducedNiggliCellAndChangeOfBasisMatrix: (cell: SKSymmetryCell, changeOfBasis: SKTransformationMatrix)?
   {
     var counter: Int = 0
@@ -732,7 +875,7 @@ public struct SKSymmetryCell: CustomStringConvertible
     var xi: Double = (2.0*b*c*cos(alpha))
     var eta: Double = (2.0*a*c*cos(beta))
     var zeta: Double = (2.0*a*b*cos(gamma))
-    
+        
     var changeOfBasisMatrix: SKTransformationMatrix = SKTransformationMatrix.identity
     
     algorithmStart: do
@@ -741,98 +884,126 @@ public struct SKSymmetryCell: CustomStringConvertible
       if(counter>10000) {return nil}
       
       // step 1
-      if(isLargerThen(x: A,y: B)||(isEqualTo(x: A, y: B)&&(isLargerThen(x: abs(xi), y: abs(eta)))))
+      if(SKSymmetryCell.isLargerThen(x: A,y: B)||(SKSymmetryCell.isEqualTo(x: A, y: B)&&(SKSymmetryCell.isLargerThen(x: abs(xi), y: abs(eta)))))
       {
+        let matrixC = SKTransformationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)])
+        assert(matrixC.determinant == 1)
+        changeOfBasisMatrix *= matrixC
+        
         // Swap x, y and ensures proper sign of determinant
         swap(&A,&B)
         swap(&xi,&eta)
-        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)])
       }
       
       // step 2
-      if(isLargerThen(x: B,y: C)||(isEqualTo(x: B, y: C)&&(isLargerThen(x: abs(eta), y: abs(zeta)))))
+      if(SKSymmetryCell.isLargerThen(x: B,y: C)||(SKSymmetryCell.isEqualTo(x: B, y: C)&&(SKSymmetryCell.isLargerThen(x: abs(eta), y: abs(zeta)))))
       {
+        let matrixC = SKTransformationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])
+        assert(matrixC.determinant == 1)
+        changeOfBasisMatrix *= matrixC
+        
         // Swap y, z and ensures proper sign of determinant
         swap(&B,&C)
         swap(&eta,&zeta)
-        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])
+        
         continue algorithmStart
       }
       
       // step 3
-      if(isLargerThenZeroXiEtaZeta(x: xi, y: eta, z: zeta))
+      if(SKSymmetryCell.isLargerThenZeroXiEtaZeta(x: xi, y: eta, z: zeta))
       {
         var f: [Int32] = [1,1,1]
-        if (isSmallerThen(x: xi, y: 0.0)) {f[0] = -1}
-        if (isSmallerThen(x: eta, y: 0.0)) {f[1] = -1}
-        if (isSmallerThen(x: zeta, y: 0.0)) {f[2] = -1}
+        if (SKSymmetryCell.isSmallerThen(x: xi, y: 0.0)) {f[0] = -1}
+        if (SKSymmetryCell.isSmallerThen(x: eta, y: 0.0)) {f[1] = -1}
+        if (SKSymmetryCell.isSmallerThen(x: zeta, y: 0.0)) {f[2] = -1}
+        let matrixC = SKTransformationMatrix([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
+        assert(matrixC.determinant == 1)
+        changeOfBasisMatrix *= matrixC
+        
         xi = abs(xi)
         eta = abs(eta)
         zeta = abs(zeta)
-        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
       }
       else // step 4:
       {
         var p: Int = -1
         var f: [Int32] = [1,1,1]
-        if (isLargerThen(x: xi, y: 0.0)) {f[0] = -1}
-        else if (!isSmallerThen(x: xi, y: 0.0)) {p=0}
-        if (isLargerThen(x: eta, y: 0.0)) {f[1] = -1}
-        else if (!isSmallerThen(x: eta, y: 0.0)) {p=1}
-        if (isLargerThen(x: zeta, y: 0.0)) {f[2] = -1}
-        else if (!isSmallerThen(x: zeta, y: 0.0)) {p=2}
+        if (SKSymmetryCell.isLargerThen(x: xi, y: 0.0)) {f[0] = -1}
+        else if (!SKSymmetryCell.isSmallerThen(x: xi, y: 0.0)) {p=0}
+        if (SKSymmetryCell.isLargerThen(x: eta, y: 0.0)) {f[1] = -1}
+        else if (!SKSymmetryCell.isSmallerThen(x: eta, y: 0.0)) {p=1}
+        if (SKSymmetryCell.isLargerThen(x: zeta, y: 0.0)) {f[2] = -1}
+        else if (!SKSymmetryCell.isSmallerThen(x: zeta, y: 0.0)) {p=2}
         if (f[0]*f[1]*f[2] < 0)
         {
           f[p] = -1
         }
+        let matrixC = SKTransformationMatrix([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
+        assert(matrixC.determinant == 1)
+        changeOfBasisMatrix *= matrixC
+        
         xi = -abs(xi)
         eta = -abs(eta)
         zeta = -abs(zeta)
-        
-        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(f[0],0,0),SIMD3<Int32>(0,f[1],0),SIMD3<Int32>(0,0,f[2])])
       }
       
       // step 5
-      if((isLargerThen(x: abs(xi), y: B))||(isEqualTo(x: xi, y: B)&&isSmallerThen(x: 2*eta, y: zeta))||(isEqualTo(x: xi, y: -B)&&isSmallerThen(x: zeta, y: 0)))
+      if((SKSymmetryCell.isLargerThen(x: abs(xi), y: B))||(SKSymmetryCell.isEqualTo(x: xi, y: B)&&SKSymmetryCell.isSmallerThen(x: 2.0*eta, y: zeta))||(SKSymmetryCell.isEqualTo(x: xi, y: -B)&&SKSymmetryCell.isSmallerThen(x: zeta, y: 0)))
       {
+        let matrixC = SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,-Int32(sign(xi)),1)])
+        assert(matrixC.determinant == 1)
+        changeOfBasisMatrix *= matrixC
+        
         C = B + C - xi * sign(xi)
         eta = eta - zeta * sign(xi)
-        xi = xi -  2 * B * sign(xi)
-        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,-Int32(sign(xi)),1)])
+        xi = xi -  2.0 * B * sign(xi)
+        
         continue algorithmStart
       }
       
       // step 6
-      if((isLargerThen(x: abs(eta), y: A))||(isEqualTo(x: eta, y: A)&&isSmallerThen(x: 2*xi, y: zeta))||(isEqualTo(x: eta, y: -A)&&isSmallerThen(x: zeta, y: 0)))
+      if((SKSymmetryCell.isLargerThen(x: abs(eta), y: A))||(SKSymmetryCell.isEqualTo(x: eta, y: A)&&SKSymmetryCell.isSmallerThen(x: 2.0*xi, y: zeta))||(SKSymmetryCell.isEqualTo(x: eta, y: -A)&&SKSymmetryCell.isSmallerThen(x: zeta, y: 0.0)))
       {
+        let matrixC = SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-Int32(sign(eta)),0,1)])
+        assert(matrixC.determinant == 1)
+        changeOfBasisMatrix *= matrixC
+        
         C = A + C - eta * sign(eta)
         xi = xi - zeta * sign(eta)
-        eta = eta - 2*A * sign(eta)
-        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-Int32(sign(eta)),0,1)])
+        eta = eta - 2.0*A * sign(eta)
+        
         continue algorithmStart
       }
       
       // step7
-      if((isLargerThen(x: abs(zeta), y: A))||(isEqualTo(x: zeta, y: A)&&isSmallerThen(x: 2*xi, y: eta))||(isEqualTo(x: zeta, y: -A)&&isSmallerThen(x: eta, y: 0)))
+      if((SKSymmetryCell.isLargerThen(x: abs(zeta), y: A))||(SKSymmetryCell.isEqualTo(x: zeta, y: A)&&SKSymmetryCell.isSmallerThen(x: 2.0*xi, y: eta))||(SKSymmetryCell.isEqualTo(x: zeta, y: -A)&&SKSymmetryCell.isSmallerThen(x: eta, y: 0.0)))
       {
+        let matrixC = SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(-Int32(sign(zeta)),1,0),SIMD3<Int32>(0,0,1)])
+        assert(matrixC.determinant == 1)
+        changeOfBasisMatrix *= matrixC
+        
         B = A + B - zeta * sign(zeta)
         xi = xi - eta * sign(zeta)
-        zeta = zeta - 2*A * sign(zeta)
-        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(-Int32(sign(zeta)),1,0),SIMD3<Int32>(0,0,1)])
+        zeta = zeta - 2.0*A * sign(zeta)
+        
         continue algorithmStart
       }
       
       // step 8
-      if(isSmallerThen(x: xi+eta+zeta+A+B, y: 0)||(isEqualTo(x: xi+eta+zeta+A+B, y: 0)&&isLargerThen(x: 2*(A+eta)+zeta, y: 0)))
+      if(SKSymmetryCell.isSmallerThen(x: xi+eta+zeta+A+B, y: 0.0)||(SKSymmetryCell.isEqualTo(x: xi+eta+zeta+A+B, y: 0.0)&&SKSymmetryCell.isLargerThen(x: 2.0*(A+eta)+zeta, y: 0.0)))
       {
+        let matrixC = SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,1,1)])
+        assert(matrixC.determinant == 1)
+        changeOfBasisMatrix *= matrixC
+        
         C = A + B + C + xi + eta + zeta
-        xi = 2*B + xi + zeta
-        eta =  2*A + eta + zeta
-        changeOfBasisMatrix *= SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,1,1)])
+        xi = 2.0*B + xi + zeta
+        eta =  2.0*A + eta + zeta
+        
         continue algorithmStart
       }
     }
-    
+        
     let cell: SKSymmetryCell = SKSymmetryCell(a: sqrt(A), b: sqrt(B), c: sqrt(C), alpha: acos(xi/(2.0*sqrt(B)*sqrt(C))) * 180.0/Double.pi, beta: acos(eta/(2.0*sqrt(A)*sqrt(C))) * 180.0/Double.pi, gamma: acos(zeta/(2.0*sqrt(A)*sqrt(B))) * 180.0/Double.pi)
     
     
@@ -898,33 +1069,33 @@ public struct SKSymmetryCell: CustomStringConvertible
     let g5: Double = 2.0*a*c*cos(beta)
     let g6: Double = 2.0*a*b*cos(gamma)
     
-    if(isSmallerThen(x: g1, y: g2) &&
-      isSmallerThen(x: g2, y: g3) &&
-      isSmallerThen(x: abs(g4), y: g2) &&
-      isSmallerThen(x: abs(g5), y: g1) &&
-      isSmallerThen(x: abs(g6), y: g1) &&
-      ((isLargerThen(x: g4, y: 0) && isLargerThen(x: g5, y: 0) && isLargerThen(x: g6, y: 0)) ||
-        (isSmallerEqualThen(x: g4, y: 0) && isSmallerEqualThen(x: g5, y: 0) && isSmallerEqualThen(x: g6, y: 0)))) {return true}
+    if(SKSymmetryCell.isSmallerThen(x: g1, y: g2) &&
+        SKSymmetryCell.isSmallerThen(x: g2, y: g3) &&
+        SKSymmetryCell.isSmallerThen(x: abs(g4), y: g2) &&
+        SKSymmetryCell.isSmallerThen(x: abs(g5), y: g1) &&
+        SKSymmetryCell.isSmallerThen(x: abs(g6), y: g1) &&
+        ((SKSymmetryCell.isLargerThen(x: g4, y: 0) && SKSymmetryCell.isLargerThen(x: g5, y: 0) && SKSymmetryCell.isLargerThen(x: g6, y: 0)) ||
+          (SKSymmetryCell.isSmallerEqualThen(x: g4, y: 0) && SKSymmetryCell.isSmallerEqualThen(x: g5, y: 0) && SKSymmetryCell.isSmallerEqualThen(x: g6, y: 0)))) {return true}
     
     
-    if(!(isSmallerEqualThen(x: 0, y: g1)&&isSmallerEqualThen(x: g1, y: g2)&&isSmallerEqualThen(x: g2, y: g3))) {return false} // require 0<=g1<=g2<=g3
-    if(isEqualTo(x:g1, y: g2)) {if(!(isSmallerEqualThen(x: abs(g4), y: abs(g5)))) {return false}} // if g1=g2, then require |g4|<=|g5|
-    if(isEqualTo(x:g2, y: g3)) {if(!(isSmallerEqualThen(x: abs(g5), y: abs(g6)))) {return false}} // if g2=g3, then require |g5|<=|g6|
-    if(!((isLargerThen(x: g4, y: 0)&&isLargerThen(x: g5, y: 0)&&isLargerThen(x: g6, y: 0)) ||
-      (isSmallerEqualThen(x: g4, y: 0)&&isSmallerEqualThen(x: g5, y: 0)&&isSmallerEqualThen(x: g6, y: 0)))) {return false} // {g4,g5,g6}>0 || <g4,g5,g6}<=0)
+    if(!(SKSymmetryCell.isSmallerEqualThen(x: 0, y: g1)&&SKSymmetryCell.isSmallerEqualThen(x: g1, y: g2)&&SKSymmetryCell.isSmallerEqualThen(x: g2, y: g3))) {return false} // require 0<=g1<=g2<=g3
+    if(SKSymmetryCell.isEqualTo(x:g1, y: g2)) {if(!(SKSymmetryCell.isSmallerEqualThen(x: abs(g4), y: abs(g5)))) {return false}} // if g1=g2, then require |g4|<=|g5|
+    if(SKSymmetryCell.isEqualTo(x:g2, y: g3)) {if(!(SKSymmetryCell.isSmallerEqualThen(x: abs(g5), y: abs(g6)))) {return false}} // if g2=g3, then require |g5|<=|g6|
+    if(!((SKSymmetryCell.isLargerThen(x: g4, y: 0)&&SKSymmetryCell.isLargerThen(x: g5, y: 0)&&SKSymmetryCell.isLargerThen(x: g6, y: 0)) ||
+          (SKSymmetryCell.isSmallerEqualThen(x: g4, y: 0)&&SKSymmetryCell.isSmallerEqualThen(x: g5, y: 0)&&SKSymmetryCell.isSmallerEqualThen(x: g6, y: 0)))) {return false} // {g4,g5,g6}>0 || <g4,g5,g6}<=0)
     
-    if(!(isSmallerEqualThen(x: abs(g4), y: g2))) {return false} // require |g4|<=g2
-    if(!(isSmallerEqualThen(x: abs(g5), y: g1))) {return false} // require |g5|<=g1
-    if(!(isSmallerEqualThen(x: abs(g6), y: g1))) {return false} // require |g6|<=g1
-    if(!(isSmallerEqualThen(x: g3, y: g1+g2+g3+g4+g5+g6))) {return false} // require g3<=g1+g2+g3+g4+g5+g6
+    if(!(SKSymmetryCell.isSmallerEqualThen(x: abs(g4), y: g2))) {return false} // require |g4|<=g2
+    if(!(SKSymmetryCell.isSmallerEqualThen(x: abs(g5), y: g1))) {return false} // require |g5|<=g1
+    if(!(SKSymmetryCell.isSmallerEqualThen(x: abs(g6), y: g1))) {return false} // require |g6|<=g1
+    if(!(SKSymmetryCell.isSmallerEqualThen(x: g3, y: g1+g2+g3+g4+g5+g6))) {return false} // require g3<=g1+g2+g3+g4+g5+g6
     
-    if(isEqualTo(x:g4, y: g2)) {if(!isSmallerEqualThen(x: g6, y: 2.0*g5)) {return false}} // if(g4=g2) then require g6<=2*g5
-    if(isEqualTo(x:g5, y: g1)) {if(!isSmallerEqualThen(x: g6, y: 2.0*g4)) {return false}} // if(g5=g1) then require g6<=2*g4
-    if(isEqualTo(x:g6, y: g1)) {if(!isSmallerEqualThen(x: g5, y: 2.0*g4)) {return false}} // if(g6=g1) then require g5<=2*g4
-    if(isEqualTo(x:g4, y: -g2)) {if(!isEqualTo(x:g6, y: 0)) {return false}} // if(g4=-g2) then require g6=0
-    if(isEqualTo(x:g5, y: -g1)) {if(!isEqualTo(x:g6, y: 0)) {return false}} // if(g5=-g1) then require g6=0
-    if(isEqualTo(x:g6, y: -g1)) {if(!isEqualTo(x:g5, y: 0)) {return false}} // if(g6=-g1) then require g6=0
-    if(isEqualTo(x:g3, y: (g1+g2+g3+g4+g5+g6))) {if (!(isSmallerEqualThen(x: 2*g1+2*g5+g6, y: 0))) {return false}} // if g3=g1+g2+g3+g4+g5+g6 then require 2*g1+2*g5+g6<=0
+    if(SKSymmetryCell.isEqualTo(x:g4, y: g2)) {if(!SKSymmetryCell.isSmallerEqualThen(x: g6, y: 2.0*g5)) {return false}} // if(g4=g2) then require g6<=2*g5
+    if(SKSymmetryCell.isEqualTo(x:g5, y: g1)) {if(!SKSymmetryCell.isSmallerEqualThen(x: g6, y: 2.0*g4)) {return false}} // if(g5=g1) then require g6<=2*g4
+    if(SKSymmetryCell.isEqualTo(x:g6, y: g1)) {if(!SKSymmetryCell.isSmallerEqualThen(x: g5, y: 2.0*g4)) {return false}} // if(g6=g1) then require g5<=2*g4
+    if(SKSymmetryCell.isEqualTo(x:g4, y: -g2)) {if(!SKSymmetryCell.isEqualTo(x:g6, y: 0)) {return false}} // if(g4=-g2) then require g6=0
+    if(SKSymmetryCell.isEqualTo(x:g5, y: -g1)) {if(!SKSymmetryCell.isEqualTo(x:g6, y: 0)) {return false}} // if(g5=-g1) then require g6=0
+    if(SKSymmetryCell.isEqualTo(x:g6, y: -g1)) {if(!SKSymmetryCell.isEqualTo(x:g5, y: 0)) {return false}} // if(g6=-g1) then require g6=0
+    if(SKSymmetryCell.isEqualTo(x:g3, y: (g1+g2+g3+g4+g5+g6))) {if (!(SKSymmetryCell.isSmallerEqualThen(x: 2*g1+2*g5+g6, y: 0))) {return false}} // if g3=g1+g2+g3+g4+g5+g6 then require 2*g1+2*g5+g6<=0
     return true
   }
   
@@ -959,18 +1130,29 @@ public struct SKSymmetryCell: CustomStringConvertible
         
         if SKSymmetryCell.testTranslationalSymmetry(of: vec, on: atoms, and: unitCell, with: symmetryPrecision)
         {
-          translationVectors.append(vec)
+          var a: SIMD3<Double> = SIMD3<Double>(vec.x-rint(vec.x), vec.y-rint(vec.y), vec.z-rint(vec.z))
+          if (a.x < 0.0 - 1e-10) {a.x += 1.0}
+          if (a.y < 0.0 - 1e-10) {a.y += 1.0}
+          if (a.z < 0.0 - 1e-10) {a.z += 1.0}
+          translationVectors.append(a)
         }
       }
-            
+           
       translationVectors += [SIMD3<Double>(1,0,0),SIMD3<Double>(0,1,0),SIMD3<Double>(0,0,1)]
     }
-        
+    
     let size: Int = translationVectors.count
     
     var smallestCell: double3x3 = unitCell
     let initialVolume: Double = unitCell.determinant
     var minimumVolume: Double = initialVolume
+    
+    /*
+    if(size == 1)
+    {
+      let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: smallestCell, symmetryPrecision: symmetryPrecision)
+      return DelaunayUnitCell!
+    }*/
     
     for i in 0..<size
     {
@@ -988,12 +1170,13 @@ public struct SKSymmetryCell: CustomStringConvertible
           {
             minimumVolume=volume
             smallestCell = double3x3([tmpv1,tmpv2,tmpv3])
+            
                
             // initialVolume/volume is nearly integer
             if Int(rint(initialVolume/volume)) == size - 2
             {
               let relativeLattice: double3x3 = double3x3([translationVectors[i],translationVectors[j],translationVectors[k]])
-              
+             
               // inverse is nearly integer
               return unitCell * double3x3(int3x3(relativeLattice.inverse)).inverse
             }

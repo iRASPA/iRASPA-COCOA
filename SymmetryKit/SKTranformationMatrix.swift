@@ -151,6 +151,12 @@ public struct SKTransformationMatrix
     return result
   }
 
+  public var transpose: SKTransformationMatrix
+  {
+    return SKTransformationMatrix([SIMD3<Int32>(self[0,0],self[1,0],self[2,0]),
+                                   SIMD3<Int32>(self[0,1],self[1,1],self[2,1]),
+                                   SIMD3<Int32>(self[0,2],self[1,2],self[2,2])])
+  }
 }
 
 public extension double3x3
