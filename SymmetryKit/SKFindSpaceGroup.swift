@@ -224,20 +224,21 @@ extension SKSpacegroup
         if let HallNumber: Int = spaceGroupHallData[spaceGroupNumber]?.first,
            let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: HallNumber, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
         {
-          let changedlattice: double3x3 = primitiveLattice * value.changeOfBasis
+          let conventionalBravaisLattice: double3x3 = primitiveLattice * value.changeOfBasis.inverseRotationMatrix
           
           let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
 
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
-          let transform: double3x3 = changedlattice.inverse * DelaunayUnitCell
+          let transform: double3x3 = (conventionalBravaisLattice.inverse * DelaunayUnitCell)
           var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type, -1)}
-          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: changedlattice, symmetryPrecision: symmetryPrecision)
+          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
           
-          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: changedlattice)
+          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice)          
+          
           let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
           
-          return (HallNumber, value.origin, cell2, value.changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
+          return (HallNumber, value.origin, cell, value.changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
         }
       }
       
@@ -250,17 +251,17 @@ extension SKSpacegroup
         {
           let changeOfBasis: SKRotationalChangeOfBasis = SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(0,0, 1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]))
           
-          let changedlattice: double3x3 = primitiveLattice * changeOfBasis
+          let conventionalBravaisLattice: double3x3 = primitiveLattice * changeOfBasis.inverseRotationMatrix
           
           let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
 
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
-          let transform: double3x3 = changedlattice.inverse * DelaunayUnitCell
+          let transform: double3x3 = conventionalBravaisLattice.inverse * DelaunayUnitCell
           var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + origin),$0.type, -1)}
-          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: changedlattice, symmetryPrecision: symmetryPrecision)
+          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
           
-          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: changedlattice)
+          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice)
           let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
           
           return (HallNumber, origin, cell2, changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
@@ -473,25 +474,25 @@ extension SKSpacegroup
         return (originShift, SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity))
       }
     case .monoclinic:
-      for i in 0..<6
+      for changeOfMonoclinicCentering in SKRotationalChangeOfBasis.changeOfMonoclinicCentering
       {
-        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfMonoclinicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: changeOfMonoclinicCentering, seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
-          return (originShift, SKSpacegroup.changeOfMonoclinicCentering[i])
+          return (originShift, changeOfMonoclinicCentering)
         }
       }
     case .orthorhombic:
-      for i in 0..<6
+      for changeOfOrthorhombicCentering in SKRotationalChangeOfBasis.changeOfOrthorhombicCentering
       {
-        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKSpacegroup.changeOfOrthorhombicCentering[i], seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
+        if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: changeOfOrthorhombicCentering, seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
-          return (originShift, SKSpacegroup.changeOfOrthorhombicCentering[i])
+          return (originShift, changeOfOrthorhombicCentering)
         }
       }
     case .cubic:
       if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
-        return (originShift, SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity))
+        return (originShift, SKRotationalChangeOfBasis.identity)
       }
     }
     
