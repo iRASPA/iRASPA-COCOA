@@ -71,9 +71,14 @@ public struct SKTransformationMatrix
     self.elements = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)]
   }
   
-  init(_ m: [SIMD3<Int32>])
+  public init(_ m: [SIMD3<Int32>])
   {
     self.elements = m
+  }
+  
+  public init(_ x: SIMD3<Int32>, _ y: SIMD3<Int32>, _ z: SIMD3<Int32>)
+  {
+    self.elements = [x,y,z]
   }
   
   init(_ m: SKRotationMatrix)
