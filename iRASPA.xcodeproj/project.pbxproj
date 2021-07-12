@@ -502,6 +502,8 @@
 		93C71B822695E00000F67DEE /* SpaceGroupZIFsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */; };
 		93C71B8426986DBF00F67DEE /* DelaunayReductionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B8326986DBF00F67DEE /* DelaunayReductionTests.swift */; };
 		93C71B8626999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */; };
+		93C71B88269C3D4900F67DEE /* ConstructedBasisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */; };
+		93C71B8A269C4BAC00F67DEE /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B89269C4BAC00F67DEE /* OrderedSet.swift */; };
 		93CD2A9E256BF56700E26C20 /* Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CD2A9D256BF56700E26C20 /* Python.swift */; };
 		93CD2ACC256BF72B00E26C20 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8425680A10004D900E /* libbz2.a */; };
 		93CD2ACE256BF72B00E26C20 /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8625680A11004D900E /* libformw.a */; };
@@ -1896,6 +1898,8 @@
 		93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupZIFsTest.swift; sourceTree = "<group>"; };
 		93C71B8326986DBF00F67DEE /* DelaunayReductionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelaunayReductionTests.swift; sourceTree = "<group>"; };
 		93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveUnitCellSearchTests.swift; sourceTree = "<group>"; };
+		93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructedBasisTests.swift; sourceTree = "<group>"; };
+		93C71B89269C4BAC00F67DEE /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		93CD2A9D256BF56700E26C20 /* Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Python.swift; sourceTree = "<group>"; };
 		93CD2B70256C180500E26C20 /* pycapsule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pycapsule.h; sourceTree = "<group>"; };
 		93CD2B71256C180500E26C20 /* methodobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = methodobject.h; sourceTree = "<group>"; };
@@ -3116,6 +3120,7 @@
 				933D79C026905E290023EB94 /* SpaceGroupUnitCellTests.swift */,
 				93C71B8326986DBF00F67DEE /* DelaunayReductionTests.swift */,
 				93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */,
+				93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */,
 				937737EA2680D7A900D47499 /* Info.plist */,
 			);
 			path = SymmetryKitTests;
@@ -3212,6 +3217,7 @@
 				93FDA72C205522F8000C4AD7 /* bool3.swift */,
 				938388561E26A64200112FBA /* int9x3.swift */,
 				938388571E26A64200112FBA /* int9x9.swift */,
+				93C71B89269C4BAC00F67DEE /* OrderedSet.swift */,
 				939B205B1EF2C81A0061DE8D /* Extensions */,
 				9383883F1E26A54D00112FBA /* Integers */,
 				938388401E26A56400112FBA /* Matrix */,
@@ -4779,6 +4785,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93C71B822695E00000F67DEE /* SpaceGroupZIFsTest.swift in Sources */,
+				93C71B88269C3D4900F67DEE /* ConstructedBasisTests.swift in Sources */,
 				93C71B802695DFBD00F67DEE /* SpaceGroupCOFsTest.swift in Sources */,
 				93C71B8426986DBF00F67DEE /* DelaunayReductionTests.swift in Sources */,
 				93C71B7E2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift in Sources */,
@@ -4911,6 +4918,7 @@
 				938388451E26A5CD00112FBA /* General_int3.swift in Sources */,
 				938388461E26A5CD00112FBA /* General_int3x3.swift in Sources */,
 				933EEF4F26820AC900067CF4 /* RingMatrix.swift in Sources */,
+				93C71B8A269C4BAC00F67DEE /* OrderedSet.swift in Sources */,
 				9340A6F12015123B00F33D1D /* NSFont.swift in Sources */,
 				9383885B1E26A64200112FBA /* int3x9.swift in Sources */,
 				933EEF4B2681F7EF00067CF4 /* Ring.swift in Sources */,

@@ -167,7 +167,7 @@ extension SKSpacegroup
     guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else {return nil}
     
     // find the rotational symmetry of the reduced Delaunay cell
-    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(primitiveUnitCell: primitiveUnitCell, unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
     let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
@@ -238,7 +238,7 @@ extension SKSpacegroup
           
           let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
           
-          return (HallNumber, value.origin, cell, value.changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
+          return (HallNumber, value.origin, cell2, value.changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
         }
       }
       
@@ -271,6 +271,56 @@ extension SKSpacegroup
     return nil
   }
   
+  public static func SKTestConstructBasis(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> SKTransformationMatrix?
+  {
+    var histogram:[Int:Int] = [:]
+    
+    for atom in atoms
+    {
+      histogram[atom.type] = (histogram[atom.type] ?? 0) + 1
+    }
+    
+    // Find least occurent element
+    let minType: Int = histogram.min{a, b in a.value < b.value}!.key
+    
+    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    
+    // search for a primitive cell based on the positions of the atoms
+    let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
+  
+    // convert the unit cell to a reduced Delaunay cell
+    guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else {return nil}
+    
+    // find the rotational symmetry of the reduced Delaunay cell
+    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(primitiveUnitCell: primitiveUnitCell, unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+    
+    // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
+    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.filter{$0.type == minType}
+    
+    // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
+    // the point group of the lattice cannot be lower than the point group of the crystal
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: DelaunayUnitCell, reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
+        
+    // create the point symmetry set
+    let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
+    
+    // get the point group from the point symmetry set
+    if let pointGroup: SKPointGroup = SKPointGroup(pointSymmetry: pointSymmetry)
+    {
+      // Use the axes directions of the Laue group-specific symmetry as a new basis
+      var Mprime: SKTransformationMatrix = pointGroup.constructAxes(using: spaceGroupSymmetries.operations.map{$0.rotation.proper})
+      
+      return Mprime
+      
+      // transform the symmetries (rotation and translation) from the primtive cell to the conventional cell
+      // the centering is used to add the additional translations
+      //let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(transformationMatrix: Mprime * M).addingCenteringOperations(centering: centering)
+      
+    }
+    return nil
+  }
+  
   
   /// Find the symmetry elements of the atomic configuration
   ///
@@ -285,8 +335,9 @@ extension SKSpacegroup
     
     for rotationMatrix in latticeSymmetries.rotations
     {
+      
       let translations: [SIMD3<Double>] = SKSymmetryCell.primitiveTranslationVectors(unitCell: unitCell, reducedAtoms: reducedAtoms, atoms: atoms, rotationMatrix: rotationMatrix, symmetryPrecision: symmetryPrecision)
-            
+     
       for translation in translations
       {
         spaceGroupSymmetries.append(SKSeitzMatrix(rotation: rotationMatrix, translation: translation))

@@ -108,8 +108,8 @@ public struct SKPointGroup
   {
     var table: RotationalOccuranceTable = RotationalOccuranceTable.pointGroup0
     
-    let rotationMatrices: Set<SKRotationMatrix > = pointSymmetry.rotations
-    
+    let rotationMatrices: OrderedSet<SKRotationMatrix > = pointSymmetry.rotations
+        
     for rotation in rotationMatrices
     {
       if let occurance: Int = table.occurance[rotation.type]
@@ -206,22 +206,23 @@ public struct SKPointGroup
         
         // set the rotation axis as the first axis
         axes[1] = properRotationmatrix.rotationAxis
+       
         
         // possible candidates for the second axis are vectors that are orthogonal to the axes of rotation
         var orthogonalAxes: [SIMD3<Int32>] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: 2)
         
         // the second axis is the shortest orthogonal axis
-        axes[0] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <  length_squared($1) ? $0 : $1})
+        axes[0] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <=  length_squared($1) ? $0 : $1})
         
         if let index: Int = orthogonalAxes.firstIndex(of: axes[0])
         {
           orthogonalAxes.remove(at: index)
           
-          axes[2] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <  length_squared($1) ? $0 : $1})
+          axes[2] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <=  length_squared($1) ? $0 : $1})
           
           if axes.determinant < 0
           {
-            return SKTransformationMatrix([axes[0],axes[1],axes[2]])
+            return SKTransformationMatrix([axes[2],axes[1],axes[0]])
           }
           return axes
         }
@@ -252,6 +253,7 @@ public struct SKPointGroup
       {
         // look for all proper rotation matrices of the wanted rotation type
         let properRotationMatrices: [SKRotationMatrix] = properRotations.filter{$0.type.rawValue == rotationalTypeForBasis}
+        
         if let properRotationmatrix: SKRotationMatrix = properRotationMatrices.first
         {
           var axes: SKTransformationMatrix = SKTransformationMatrix()
@@ -265,13 +267,13 @@ public struct SKPointGroup
           for orthogonalAxis in orthogonalAxes
           {
             axes[0] = orthogonalAxis
-
+            
             let axisVector: SIMD3<Int32> =  properRotationmatrix * orthogonalAxis
             
             if SKRotationMatrix.allPossibleRotationAxes.contains(axisVector)
             {
               axes[1] = axisVector
-              
+
               // to avoid F-center choice det=4
               if abs(int3x3([axes[0],axes[1],axes[2]]).determinant) < 4
               {
@@ -286,7 +288,7 @@ public struct SKPointGroup
             if SKRotationMatrix.allPossibleRotationAxes.contains(0 &- axisVector)
             {
               axes[1] = axisVector
-
+                            
               // to avoid F-center choice det=4
               if abs(int3x3([axes[0],axes[1],axes[2]]).determinant) < 4
               {
@@ -478,7 +480,7 @@ public struct SKPointGroup
   {
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: atoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
     guard let primitiveDelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else { return nil}
-    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(primitiveUnitCell: primitiveUnitCell, unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
                                                                                      
     let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell)
     

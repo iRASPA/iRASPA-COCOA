@@ -8,6 +8,7 @@
 
 import Foundation
 import simd
+import MathKit
 
 public struct SKSymmetryOperationSet
 {
@@ -19,9 +20,9 @@ public struct SKSymmetryOperationSet
     self.operations = operations
   }
   
-  public var rotations: Set<SKRotationMatrix>
+  public var rotations: OrderedSet<SKRotationMatrix>
   {
-    return Set(self.operations.map{$0.rotation})
+    return OrderedSet(sequence: self.operations.map{$0.rotation})
   }
   
   // the transformationMatrix does not have a translational part

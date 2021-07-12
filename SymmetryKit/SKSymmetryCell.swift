@@ -228,7 +228,6 @@ public struct SKSymmetryCell: CustomStringConvertible
     var lattice: double3x3 = double3x3(diagonal: SIMD3<Double>(0,0,0))
     
     let holohedry: SKPointGroup.Holohedry = spaceGroup.spaceGroupSetting.pointGroup.holohedry
-    //Swift.print("holohedry \(holohedry) \(centering)")
     
     switch(holohedry)
     {
@@ -856,9 +855,7 @@ public struct SKSymmetryCell: CustomStringConvertible
         continue algorithmStart
       }
     }
-    
-    print(A,B,C,xi,eta,zeta)
-    
+        
     return SKSymmetryCell(a: sqrt(A), b: sqrt(B), c: sqrt(C), alpha: acos(xi/(2.0*sqrt(B)*sqrt(C))) * 180.0/Double.pi, beta: acos(eta/(2.0*sqrt(A)*sqrt(C))) * 180.0/Double.pi, gamma: acos(zeta/(2.0*sqrt(A)*sqrt(B))) * 180.0/Double.pi)
   }
   

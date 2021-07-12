@@ -33,15 +33,14 @@ import Cocoa
 import MathKit
 import simd
 
-
 public struct SKPointSymmetrySet
 {
-  public var rotations: Set< SKRotationMatrix > = Set()
+  public var rotations: OrderedSet< SKRotationMatrix > = OrderedSet()
   
-  public init(rotations: Set<SKRotationMatrix>)
+  public init(rotations: OrderedSet<SKRotationMatrix>)
   {
     self.rotations = rotations
-  }  
+  }
 }
 
 
@@ -428,7 +427,7 @@ public struct SKRotationMatrix
     }
    
     for rotationAxes in SKRotationMatrix.allPossibleRotationAxes
-    {
+    {      
       if sumRot * rotationAxes == SIMD3<Int32>(0,0,0)
       {
         orthoAxes.append(rotationAxes)
@@ -556,7 +555,7 @@ public struct SKRotationMatrix
   // Determining the lattice symmetry is equivalent to determining the Bravais type.
   static func findLatticeSymmetry(unitCell min_lattice: double3x3, anglePrecision: Double = 3.0) -> SKPointSymmetrySet
   {
-    var pointSymmetries: Set<SKRotationMatrix> = []
+    var pointSymmetries: OrderedSet<SKRotationMatrix> = []
     
     let min_cos_delta: Double = min(cos(anglePrecision * Double.pi/180.0), 1.0 - Double.ulpOfOne)
     
@@ -572,12 +571,12 @@ public struct SKRotationMatrix
       let cos_delta: Double = numerator / denominator
       if (cos_delta >= min_cos_delta)
       {
-        pointSymmetries.insert(twoFoldSymmetryOperation.rotationMatrix)
+        pointSymmetries.append(twoFoldSymmetryOperation.rotationMatrix)
       }
     }
     
     // add inversion center
-    pointSymmetries.insert(SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(0,0,-1)]))
+    pointSymmetries.append(SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(0,0,-1)]))
     
     var i = twoFoldSymmetryOperations.startIndex
     while i != twoFoldSymmetryOperations.endIndex
@@ -586,7 +585,7 @@ public struct SKRotationMatrix
       {
         for symmetryOperation in pointSymmetries
         {
-          pointSymmetries.insert(symmetryOperation * pointSymmetry)
+          pointSymmetries.append(symmetryOperation * pointSymmetry)
         }
       }
       
@@ -613,12 +612,10 @@ public struct SKRotationMatrix
   /// 10.1107/s2053273315001096
   /// Le Page, Y. (1982). J. Appl. Cryst. 15, 255-259.
   /// Lebedev, A.A., Vagin, A.A. & Murshudov, G.N. (2006). Acta Cryst. D62, 83-95.
-  static func findLatticeSymmetry(unitCell min_lattice: double3x3, symmetryPrecision: Double = 1e-4) -> SKPointSymmetrySet
+  static func findLatticeSymmetry(primitiveUnitCell: double3x3, unitCell cell_lattice: double3x3, symmetryPrecision: Double = 1e-4) -> SKPointSymmetrySet
   {
-    var pointSymmetries: Set<SKRotationMatrix> = Set<SKRotationMatrix>(minimumCapacity: 192)
-    let latticeMetricMatrix: double3x3 = min_lattice.transpose * min_lattice
-    
     let latticeAxes: [SIMD3<Int32>] = [
+      /*
       SIMD3<Int32>( 1, 1, 1),
       SIMD3<Int32>( 1, 1, 0),
       SIMD3<Int32>( 1, 1,-1),
@@ -644,15 +641,48 @@ public struct SKRotationMatrix
       SIMD3<Int32>(-1, 0,-1),
       SIMD3<Int32>(-1,-1, 1),
       SIMD3<Int32>(-1,-1, 0),
-      SIMD3<Int32>(-1,-1,-1),
+      SIMD3<Int32>(-1,-1,-1),*/
+      
+      SIMD3<Int32>( 1, 0, 0),
+      SIMD3<Int32>( 0, 1, 0),
+      SIMD3<Int32>( 0, 0, 1),
+      SIMD3<Int32>(-1, 0, 0),
+      SIMD3<Int32>( 0,-1, 0), /* 5 */
+      SIMD3<Int32>( 0, 0,-1),
+      SIMD3<Int32>( 0, 1, 1),
+      SIMD3<Int32>( 1, 0, 1),
+      SIMD3<Int32>( 1, 1, 0),
+      SIMD3<Int32>( 0,-1,-1), /* 10 */
+      SIMD3<Int32>(-1, 0,-1),
+      SIMD3<Int32>(-1,-1, 0),
+      SIMD3<Int32>( 0, 1,-1),
+      SIMD3<Int32>(-1, 0, 1),
+      SIMD3<Int32>( 1,-1, 0), /* 15 */
+      SIMD3<Int32>( 0,-1, 1),
+      SIMD3<Int32>( 1, 0,-1),
+      SIMD3<Int32>(-1, 1, 0),
+      SIMD3<Int32>( 1, 1, 1),
+      SIMD3<Int32>(-1,-1,-1), /* 20 */
+      SIMD3<Int32>(-1, 1, 1),
+      SIMD3<Int32>( 1,-1, 1),
+      SIMD3<Int32>( 1, 1,-1),
+      SIMD3<Int32>( 1,-1,-1),
+      SIMD3<Int32>(-1, 1,-1), /* 25 */
+      SIMD3<Int32>(-1,-1, 1)
     ]
-
+    
+    var pointSymmetries: OrderedSet<SKRotationMatrix> = OrderedSet<SKRotationMatrix>()
+    
+    let min_lattice: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: cell_lattice)!
+    
+    let latticeMetricMatrix: double3x3 = min_lattice.transpose * min_lattice
+    
     // uses a stored list of all possible lattice vectors and loop over all possible permutations
-    for firstAxis in latticeAxes
+    for (index_i, firstAxis) in latticeAxes.enumerated()
     {
-      for secondAxis in latticeAxes
+      for (index_j, secondAxis) in latticeAxes.enumerated()
       {
-        for thirdAxis in latticeAxes
+        for (index_k, thirdAxis) in latticeAxes.enumerated()
         {
           let axes: SKRotationMatrix = SKRotationMatrix([firstAxis, secondAxis, thirdAxis])
           let determinant: Int = axes.determinant
@@ -662,21 +692,42 @@ public struct SKRotationMatrix
           {
             let transformationMatrix: double3x3 = double3x3(rotationMatrix: axes)
             // the inverse of a rotation matrix is its transpose, so we use the transpose here
-            let inverseTransformationMatrix: double3x3 = transformationMatrix.transpose
+            let newLattice: double3x3 = min_lattice * transformationMatrix
+            let transformedLatticeMetricMatrix: double3x3 = newLattice.transpose * newLattice
             
             // Apply a change of basis on the latticeMetricMatrix using the rotation matrix
-            let transformedLatticeMetricMatrix: double3x3 = inverseTransformationMatrix * latticeMetricMatrix * transformationMatrix
+            //let transformedLatticeMetricMatrix: double3x3 = inverseTransformationMatrix * latticeMetricMatrix * transformationMatrix
             
             if (SKSymmetryCell.isIdentityMetric(transformedMetricMatrix: transformedLatticeMetricMatrix, metricMatrix: latticeMetricMatrix, symmetryPrecision: symmetryPrecision, angleSymmetryPrecision: -1.0))
             {
-              pointSymmetries.insert(axes)
+              if (!pointSymmetries.contains(axes))
+              {
+                pointSymmetries.append(axes)
+              }
             }
           }
         }
       }
     }
     
-    return SKPointSymmetrySet(rotations: pointSymmetries)
+    let newLattice = cell_lattice
+    
+    let original_lattice = min_lattice
+    
+    let trans: double3x3 = (original_lattice.inverse * newLattice)
+      
+    
+    var newpointSymmetries: OrderedSet<SKRotationMatrix> = OrderedSet<SKRotationMatrix>()
+    for pointSymmetry in pointSymmetries
+    {
+      let mat = SKRotationMatrix(trans.inverse * double3x3(rotationMatrix: pointSymmetry) * trans)
+      if (!newpointSymmetries.contains(mat))
+      {
+        newpointSymmetries.append(mat)
+      }
+    }
+    
+    return SKPointSymmetrySet(rotations: newpointSymmetries)
   }
 
   
@@ -692,9 +743,84 @@ public struct SKRotationMatrix
     SIMD3<Int32>( 0, 1, 1),
     SIMD3<Int32>( 1, 0, 1),
     SIMD3<Int32>( 1, 1, 0),
-    SIMD3<Int32>( 0,-1, 1),
+    SIMD3<Int32>( 0, 1,-1),
     SIMD3<Int32>(-1, 0, 1),
-    SIMD3<Int32>(-1, 1, 0),
+    SIMD3<Int32>( 1,-1, 0),
+    SIMD3<Int32>( 1, 1, 1), /* 10 */
+    SIMD3<Int32>(-1, 1, 1),
+    SIMD3<Int32>( 1,-1, 1),
+    SIMD3<Int32>( 1, 1,-1),
+    SIMD3<Int32>( 0, 1, 2),
+    SIMD3<Int32>( 2, 0, 1),
+    SIMD3<Int32>( 1, 2, 0),
+    SIMD3<Int32>( 0, 2, 1),
+    SIMD3<Int32>( 1, 0, 2),
+    SIMD3<Int32>( 2, 1, 0),
+    SIMD3<Int32>( 0,-1, 2), /* 20 */
+    SIMD3<Int32>( 2, 0,-1),
+    SIMD3<Int32>(-1, 2, 0),
+    SIMD3<Int32>( 0,-2, 1),
+    SIMD3<Int32>( 1, 0,-2),
+    SIMD3<Int32>(-2, 1, 0),
+    SIMD3<Int32>( 2, 1, 1),
+    SIMD3<Int32>( 1, 2, 1),
+    SIMD3<Int32>( 1, 1, 2),
+    SIMD3<Int32>( 2,-1,-1),
+    SIMD3<Int32>(-1, 2,-1), /* 30 */
+    SIMD3<Int32>(-1,-1, 2),
+    SIMD3<Int32>( 2, 1,-1),
+    SIMD3<Int32>(-1, 2, 1),
+    SIMD3<Int32>( 1,-1, 2),
+    SIMD3<Int32>( 2,-1, 1), /* 35 */
+    SIMD3<Int32>( 1, 2,-1),
+    SIMD3<Int32>(-1, 1, 2),
+    SIMD3<Int32>( 3, 1, 2),
+    SIMD3<Int32>( 2, 3, 1),
+    SIMD3<Int32>( 1, 2, 3), /* 40 */
+    SIMD3<Int32>( 3, 2, 1),
+    SIMD3<Int32>( 1, 3, 2),
+    SIMD3<Int32>( 2, 1, 3),
+    SIMD3<Int32>( 3,-1, 2),
+    SIMD3<Int32>( 2, 3,-1), /* 45 */
+    SIMD3<Int32>(-1, 2, 3),
+    SIMD3<Int32>( 3,-2, 1),
+    SIMD3<Int32>( 1, 3,-2),
+    SIMD3<Int32>(-2, 1, 3),
+    SIMD3<Int32>( 3,-1,-2), /* 50 */
+    SIMD3<Int32>(-2, 3,-1),
+    SIMD3<Int32>(-1,-2, 3),
+    SIMD3<Int32>( 3,-2,-1),
+    SIMD3<Int32>(-1, 3,-2),
+    SIMD3<Int32>(-2,-1, 3), /* 55 */
+    SIMD3<Int32>( 3, 1,-2),
+    SIMD3<Int32>(-2, 3, 1),
+    SIMD3<Int32>( 1,-2, 3),
+    SIMD3<Int32>( 3, 2,-1),
+    SIMD3<Int32>(-1, 3, 2), /* 60 */
+    SIMD3<Int32>( 2,-1, 3),
+    SIMD3<Int32>( 1, 1, 3),
+    SIMD3<Int32>(-1, 1, 3),
+    SIMD3<Int32>( 1,-1, 3),
+    SIMD3<Int32>(-1,-1, 3), /* 65 */
+    SIMD3<Int32>( 1, 3, 1),
+    SIMD3<Int32>(-1, 3, 1),
+    SIMD3<Int32>( 1, 3,-1),
+    SIMD3<Int32>(-1, 3,-1),
+    SIMD3<Int32>( 3, 1, 1), /* 70 */
+    SIMD3<Int32>( 3, 1,-1),
+    SIMD3<Int32>( 3,-1, 1),
+    SIMD3<Int32>( 3,-1,-1)
+    
+    /*
+    SIMD3<Int32>( 1, 0, 0),
+    SIMD3<Int32>( 0, 1, 0),
+    SIMD3<Int32>( 0, 0, 1),
+    SIMD3<Int32>( 0, 1, 1),
+    SIMD3<Int32>( 1, 0, 1),
+    SIMD3<Int32>( 1, 1, 0),
+    SIMD3<Int32>( 0, 1,-1),
+    SIMD3<Int32>(-1, 0, 1),
+    SIMD3<Int32>( 1,-1, 0),
     SIMD3<Int32>( 1, 1, 1), /* 10 */
     SIMD3<Int32>(-1, 1, 1),
     SIMD3<Int32>( 1,-1, 1),
@@ -759,6 +885,8 @@ public struct SKRotationMatrix
     SIMD3<Int32>(-3,-1, 1),
     SIMD3<Int32>( 3,-1, 1),
     SIMD3<Int32>(-3, 1, 1)
+    */
+    
   ]
   
   // 81 2-fold symmetry operations possible for reduced cells:
