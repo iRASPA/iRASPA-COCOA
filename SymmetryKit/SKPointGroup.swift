@@ -270,25 +270,10 @@ public struct SKPointGroup
             
             let axisVector: SIMD3<Int32> =  properRotationmatrix * orthogonalAxis
             
-            if SKRotationMatrix.allPossibleRotationAxes.contains(axisVector)
+            if SKRotationMatrix.allPossibleRotationAxes.contains(axisVector) || SKRotationMatrix.allPossibleRotationAxes.contains(0 &- axisVector)
             {
               axes[1] = axisVector
 
-              // to avoid F-center choice det=4
-              if abs(int3x3([axes[0],axes[1],axes[2]]).determinant) < 4
-              {
-                if axes.determinant < 0
-                {
-                  return SKTransformationMatrix([axes[1],axes[0],axes[2]])
-                }
-                return axes
-              }
-            }
-            
-            if SKRotationMatrix.allPossibleRotationAxes.contains(0 &- axisVector)
-            {
-              axes[1] = axisVector
-                            
               // to avoid F-center choice det=4
               if abs(int3x3([axes[0],axes[1],axes[2]]).determinant) < 4
               {
@@ -354,6 +339,7 @@ public struct SKPointGroup
   }
 
   /// Table 3 of spglib lists the conditions to determine the centring types
+  /// "spacegroup.c" line 2075 of 2312
   public func computeCentering(of basis: SKTransformationMatrix) -> SKSpacegroup.Centring
   {
     // the absolute value of the determinant gives the scale factor by which volume is multiplied under the associated linear transformation,
@@ -416,8 +402,13 @@ public struct SKPointGroup
     }
   }
   
-  /// Grosse-Kunstleve: adjustment of (Mc, 0) to (M, 0): computing of a correction matrix Mc.
-  /// Spglib: For the convenience in the following steps, the basis vectors are further transformed to have a specific cen- tring type by multiplying a correction matrix M with M′ for the Laue classes of 2/m and mmm and and the rhombohedral system.
+  /// For the convenience in the following steps, the basis vectors are further transformed to have a specific cen- tring type by multiplying a correction matrix M with M′ for the Laue classes of 2/m and mmm and and the rhombohedral system.
+  /// For the Laue class 2/m, the basis vectors with the I, A, and B centring types are transformed to those with the C centring type.
+  /// For the Laue class mmm, those with the A, and B centring types are transformed to those with the C centring type.
+  /// For the rhombohedral system, a rhombohedrally-centred hexagonal cell is obtained by M' in either the obverse or reverse setting.
+  ///     This is transformed to the primitive rhombohedral cell by Mobv if it is the obverse setting or by Mrev if it is the reverse setting.
+  ///     Only one of M′Mobv or M′Mrev has to be an integer matrix, which is chosen as the transformation matrix.
+  ///     By this, it is known whether the rhombohedrally-centred hexagonal cell obtained by M′ is in the obverse or reverse setting.
   public func computeBasisCorrection( of basis: SKTransformationMatrix, withCentering centering: inout SKSpacegroup.Centring) ->  SKTransformationMatrix
   {
     let det: Int32 = abs(basis.determinant)
@@ -435,7 +426,7 @@ public struct SKPointGroup
     switch (det)
     {
     case 1:
-      return SKTransformationMatrix.identity
+      return basis * SKTransformationMatrix.identity
     case 2:
       // a “standard” conventional cell is always C-centred and a′ < b′ regardless of symmetry
       switch (centering)
@@ -444,31 +435,99 @@ public struct SKPointGroup
         // Tranformation monoclinic A-centring to C-centring (preserving b-axis)
         // Axes a and c are swapped, to keep the same handiness b (to keep Beta obtuse) is made negative
         centering = .c_face
-        return SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // monoclinic a to c
+        return basis * SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // monoclinic a to c
       case .a_face where lau != .laue_2m:
         centering = .c_face
-        return SKTransformationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])  // a to c
+        return basis * SKTransformationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])  // a to c
       case .b_face:
         centering = .c_face
-        return SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])    // b to c
+        return basis * SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])    // b to c
       case .body where lau == .laue_2m:
         centering = .c_face
-        return SKTransformationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)]) // monoclinic i to c
+        return basis * SKTransformationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)]) // monoclinic i to c
       default:
-        return SKTransformationMatrix.identity
+        return basis * SKTransformationMatrix.identity
       }
     case 3:
       let m: MKint3x3 = (MKint3x3([SIMD3<Int32>(0,-1,1),SIMD3<Int32>(1,0,-1),SIMD3<Int32>(1,1,1)]) * MKint3x3(basis.int3x3.inverse))
       if m.greatestCommonDivisor == 3
       {
         // reverse detected -> change to obverse
-        return SKTransformationMatrix([SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, 1)])
+        return basis * SKTransformationMatrix([SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, 1)])
       }
-      return SKTransformationMatrix.identity
+      return basis * SKTransformationMatrix.identity
     case 4:
-      return SKTransformationMatrix.identity
+      return basis * SKTransformationMatrix.identity
     default:
-      return SKTransformationMatrix.identity
+      return basis * SKTransformationMatrix.identity
+    }
+  }
+
+
+  
+  /// Grosse-Kunstleve: adjustment of (Mc, 0) to (M, 0): computing of a correction matrix Mc.
+  /// Spglib: For the convenience in the following steps, the basis vectors are further transformed to have a specific centring type by multiplying a correction matrix M with M′ for the Laue classes of 2/m and mmm and and the rhombohedral system.
+  public func computeBasisCorrectionNew( of basis: SKTransformationMatrix, withCentering centering: inout SKSpacegroup.Centring) ->  SKTransformationMatrix
+  {
+    let det: Int32 = abs(basis.determinant)
+    let lau: SKPointGroup.Laue = self.laue
+    
+    // the absolute value of the determinant gives the scale factor by which volume is multiplied under the associated linear transformation,
+    // while its sign indicates whether the transformation preserves orientation
+    
+    // Number of lattice points per cell (1.2.1 in Hahn 2005 fifth ed.)
+    // 1: primitive centred (including R-centered description with ‘rhombohedral axes’)
+    // 2: C-face centred, B-face centred, A-face centred, body-centred
+    // 3: Rhombohedrally centred (description with ‘hexagonal axes’), Hexagonally centred
+    // 4: all-face centred
+
+    switch (det)
+    {
+    case 1:
+      return basis * SKTransformationMatrix.identity
+    case 2:
+      // a “standard” conventional cell is always C-centred and a′ < b′ regardless of symmetry
+      switch (centering)
+      {
+      case .a_face where lau == .laue_2m:
+        // Tranformation monoclinic A-centring to C-centring (preserving b-axis)
+        // Axes a and c are swapped, to keep the same handiness b (to keep Beta obtuse) is made negative
+        centering = .c_face
+        return basis * SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // monoclinic a to c
+      case .a_face where lau != .laue_2m:
+        centering = .c_face
+        return basis * SKTransformationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])  // a to c
+      case .b_face:
+        centering = .c_face
+        return basis * SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])    // b to c
+      case .body where lau == .laue_2m:
+        centering = .c_face
+        return basis * SKTransformationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)]) // monoclinic i to c
+      default:
+        return basis * SKTransformationMatrix.identity
+      }
+    case 3:
+      // "spacegroup.c" line 1024 of 2312
+      centering = .r
+      
+      let trial = basis * SKTransformationMatrix.rhombohedralToPrimitive
+      //public static let rhombohedralToPrimitive: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0), SIMD3<Double>(-1.0/3.0, 1.0/3.0, 1.0/3.0), SIMD3<Double>(-1.0/3.0,-2.0/3.0, 1.0/3.0)]) 
+      if trial.isInteger(precision: 1e-5)
+      {
+        return SKTransformationMatrix(trial)
+      }
+      // public static let rhombohedralReverseToPrimitive: double3x3 = double3x3([SIMD3<Double>(1.0/3.0,2.0/3.0,1.0/3.0), SIMD3<Double>(-2.0/3.0, -1.0/3.0, 1.0/3.0), SIMD3<Double>(1.0/3.0,-1.0/3.0, 1.0/3.0)])
+      let trial2 = basis * SKTransformationMatrix.rhombohedralReverseToPrimitive
+      if trial2.isInteger(precision: 1e-5)
+      {
+        return SKTransformationMatrix(trial2)
+      }
+      return basis * SKTransformationMatrix.identity
+    case 4:
+      centering = .face
+      return basis * SKTransformationMatrix.identity
+    default:
+      return basis * SKTransformationMatrix.identity
     }
   }
 

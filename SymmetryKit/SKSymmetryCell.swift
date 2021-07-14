@@ -1144,13 +1144,6 @@ public struct SKSymmetryCell: CustomStringConvertible
     let initialVolume: Double = unitCell.determinant
     var minimumVolume: Double = initialVolume
     
-    /*
-    if(size == 1)
-    {
-      let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: smallestCell, symmetryPrecision: symmetryPrecision)
-      return DelaunayUnitCell!
-    }*/
-    
     for i in 0..<size
     {
       for j in i+1..<size

@@ -96,11 +96,12 @@ public struct SKSpacegroup
     case none = 0
     case primitive = 1 // primitive (multiplicity: 1)
     case body = 2      // body centred (multiplicity: 2)
-    case a_face = 3    // A-face centred (multiplicity: 2)
-    case b_face = 4    // B-face centred (multiplicity: 2)
-    case c_face = 5    // C-face centred (multiplicity: 2)
-    case face = 6      // All-face centred (multiplicity: 4)
+    case face = 3      // All-face centred (multiplicity: 4)
+    case a_face = 4    // A-face centred (multiplicity: 2)
+    case b_face = 5    // B-face centred (multiplicity: 2)
+    case c_face = 6    // C-face centred (multiplicity: 2)
     case base = 7      // I,A,B,C
+    
     case r = 8         // Rhombohedrally centred (hexagonal axes, multiplicity: 3) or Primitive (rhombohedral axes, multiplicity: 1)
     case h = 9         // Hexagonally centred (multiplicity: 3)
     case d = 10        // Rhombohedrally centred (multiplicity: 3)

@@ -705,7 +705,10 @@ public class MetalRenderer
         }
       }
       
-      isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride * isosurfaceUniforms.count, options:.storageModeManaged)
+      if(!isosurfaceUniforms.isEmpty)
+      {
+        isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride * isosurfaceUniforms.count, options:.storageModeManaged)
+      }
     }
   }
 

@@ -19,7 +19,8 @@ class PrimitiveUnitCellSearchTests: XCTestCase
   {
     let testData: [String: double3x3] =
     [
-      :
+      "SpglibTestData/triclinic/POSCAR-001" : double3x3([4.9159976868, 0.0000000000, 0.0000000000],[2.4574988436, 4.2582449067, 0.0000000000], [0.0000000000, 0.0000000000, 5.4069974558]),
+      "SpglibTestData/triclinic/POSCAR-002" : double3x3([-5.5089974078, -0.0000000000, -0.0000000000],[1.7074361851, -2.5382443466, -6.0543179877], [2.3104709548, -6.6161727417, -0.0000000000])
     ]
       
     let bundle = Bundle(for: type(of: self))
