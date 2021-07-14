@@ -1,8 +1,8 @@
 //
-//  ConstructedBasisTests.swift
+//  ConstructedUpdatedBasisCorrectionTests.swift
 //  SymmetryKitTests
 //
-//  Created by David Dubbeldam on 12/07/2021.
+//  Created by David Dubbeldam on 13/07/2021.
 //  Copyright © 2021 David Dubbeldam. All rights reserved.
 //
 
@@ -10,22 +10,21 @@ import XCTest
 @testable import SymmetryKit
 import simd
 
-class ConstructedBasisTests: XCTestCase
+class ConstructedUpdatedBasisAfterCorrectionTests: XCTestCase
 {
   let precision: Double = 1e-5
   
-  
-  func testConstructedBasisTriclinicSpaceGroup()
+  func testUpdatedBasisTriclinicSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
-      "SpglibTestData/triclinic/POSCAR-001" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/triclinic/POSCAR-002" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1])
+      "SpglibTestData/triclinic/POSCAR-001" : SKTransformationMatrix([1, 0, 0],[0, -1, 0], [0, 0, -1]),
+      "SpglibTestData/triclinic/POSCAR-002" : SKTransformationMatrix([1, 0, 0],[0, -1, 0], [0, 0, -1])
     ]
       
     let bundle = Bundle(for: type(of: self))
       
-    for (fileName, referencePrimitiveUnitCell) in testData
+    for (fileName, referenceCorrectionMatrix) in testData
     {
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
@@ -33,65 +32,65 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let correctionMatrix: SKTransformationMatrix? = SKSpacegroup.SKTestBasisCorrection(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
+          XCTAssertNotNil(correctionMatrix, "DelaunayUnitCell \(fileName) not found")
+          if let correctionMatrix = correctionMatrix
           {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[0][0], referenceCorrectionMatrix[0][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][1], referenceCorrectionMatrix[0][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][2], referenceCorrectionMatrix[0][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[1][0], referenceCorrectionMatrix[1][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][1], referenceCorrectionMatrix[1][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][2], referenceCorrectionMatrix[1][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[2][0], referenceCorrectionMatrix[2][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][1], referenceCorrectionMatrix[2][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][2], referenceCorrectionMatrix[2][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
           }
         }
       }
     }
   }
   
-  func testConstructedBasisMonoclinicSpaceGroup()
+  func testUpdatedBasisMonoclinicSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
-      "SpglibTestData/data/monoclinic/POSCAR-003" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-004" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-004-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-005" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [1, 2, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-005-2" : SKTransformationMatrix([0, 1, -1],[0, 1, 1], [1, 0, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-006" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/data/monoclinic/POSCAR-006-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-007" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-007-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-008" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
-      "SpglibTestData/data/monoclinic/POSCAR-008-2" : SKTransformationMatrix([1, 0, 1],[1, 1, 0], [0, 1, 1]),
-      "SpglibTestData/data/monoclinic/POSCAR-009" : SKTransformationMatrix([1, 1, 1],[1, 0, 0], [0, 1, -1]),
-      "SpglibTestData/data/monoclinic/POSCAR-009-2" : SKTransformationMatrix([0, 1, 0],[1, 1, 2], [1, 0, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-010" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-010-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-011" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-011-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-012" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-012-2" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-012-3" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-013" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-013-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-013-3" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-014" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/data/monoclinic/POSCAR-014-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/data/monoclinic/POSCAR-015" : SKTransformationMatrix([1, 0, 0],[-1, 2, 0], [0, 0, 1]),
-      "SpglibTestData/data/monoclinic/POSCAR-015-2" : SKTransformationMatrix([1, 0, 0],[-1, 2, 0], [0, 0, 1]),
-      "SpglibTestData/data/monoclinic/POSCAR-015-3" : SKTransformationMatrix([1, 0, 0],[0, 1, -1], [0, 1, 1])
+      "SpglibTestData/monoclinic/POSCAR-003" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-004" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-004-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-005" : SKTransformationMatrix([-1, -2, 0],[-1, 0, 0], [-0, 0, -1]),
+      "SpglibTestData/monoclinic/POSCAR-005-2" : SKTransformationMatrix([0, -1, 1],[0, -1, -1], [1, 0, 0]),
+      "SpglibTestData/monoclinic/POSCAR-006" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-006-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-007" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-007-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-008" : SKTransformationMatrix([-1, 1, 0],[-1, -1, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-008-2" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 1, 1]),
+      "SpglibTestData/monoclinic/POSCAR-009" : SKTransformationMatrix([1, 2, 0],[1, 0, 0], [-1, -1, -1]),
+      "SpglibTestData/monoclinic/POSCAR-009-2" : SKTransformationMatrix([1, 1, 0],[-1, -1, -2], [-1, 0, 0]),
+      "SpglibTestData/monoclinic/POSCAR-010" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-010-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-011" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-011-2" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-012" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-012-2" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-012-3" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-013" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-013-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-013-3" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-014" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-014-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-015" : SKTransformationMatrix([1, 0, 0],[-1, 2, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-015-2" : SKTransformationMatrix([1, 0, 0],[-1, 2, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-015-3" : SKTransformationMatrix([0, 1, 1],[0, -1, 1], [1, 0, 0])
     ]
       
     let bundle = Bundle(for: type(of: self))
       
-    for (fileName, referencePrimitiveUnitCell) in testData
+    for (fileName, referenceCorrectionMatrix) in testData
     {
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
@@ -99,29 +98,29 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let correctionMatrix: SKTransformationMatrix? = SKSpacegroup.SKTestBasisCorrection(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
+          XCTAssertNotNil(correctionMatrix, "DelaunayUnitCell \(fileName) not found")
+          if let correctionMatrix = correctionMatrix
           {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[0][0], referenceCorrectionMatrix[0][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][1], referenceCorrectionMatrix[0][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][2], referenceCorrectionMatrix[0][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[1][0], referenceCorrectionMatrix[1][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][1], referenceCorrectionMatrix[1][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][2], referenceCorrectionMatrix[1][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[2][0], referenceCorrectionMatrix[2][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][1], referenceCorrectionMatrix[2][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][2], referenceCorrectionMatrix[2][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
           }
         }
       }
     }
   }
   
-  func testConstructedBasisOrthorhombicSpaceGroup()
+  func testUpdatedBasisOrthorhombicSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -132,8 +131,8 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/orthorhombic/POSCAR-018-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-019" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-019-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-020" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-021" : SKTransformationMatrix([1, 0, 0],[0, 1, -1], [0, 1, 1]),
+      "SpglibTestData/orthorhombic/POSCAR-020" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/orthorhombic/POSCAR-021" : SKTransformationMatrix([0, 1, -1],[0, 1, 1], [1, 0, 0]),
       "SpglibTestData/orthorhombic/POSCAR-021-2" : SKTransformationMatrix([1, 0, 0],[1, 0, -2], [0, 1, 0]),
       "SpglibTestData/orthorhombic/POSCAR-022" : SKTransformationMatrix([1, 0, 0],[1, 0, -2], [1, 2, 0]),
       "SpglibTestData/orthorhombic/POSCAR-023" : SKTransformationMatrix([0, 1, 1],[1, 0, 1], [1, 1, 0]),
@@ -161,20 +160,20 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/orthorhombic/POSCAR-033-3" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-034" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-034-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-035" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [1, 0, 2]),
-      "SpglibTestData/orthorhombic/POSCAR-035-2" : SKTransformationMatrix([1, 0, 0],[0, 1, -1], [0, 1, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-036" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [1, 0, 2]),
-      "SpglibTestData/orthorhombic/POSCAR-036-2" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-037" : SKTransformationMatrix([1, 0, 0],[0, 1, -1], [0, 1, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-037-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, -1, 2]),
-      "SpglibTestData/orthorhombic/POSCAR-038" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [1, 0, 2]),
-      "SpglibTestData/orthorhombic/POSCAR-038-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 1, 2]),
-      "SpglibTestData/orthorhombic/POSCAR-039" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 1, 2]),
+      "SpglibTestData/orthorhombic/POSCAR-035" : SKTransformationMatrix([1, 0, 2],[1, 0, 0], [0, 1, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-035-2" : SKTransformationMatrix([0, 1, -1],[0, 1, 1], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-036" : SKTransformationMatrix([1, 0, 2],[1, 0, 0], [0, 1, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-036-2" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/orthorhombic/POSCAR-037" : SKTransformationMatrix([0, 1, -1],[0, 1, 1], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-037-2" : SKTransformationMatrix([0, 1, 0],[0, -1, 2], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-038" : SKTransformationMatrix([1, 0, 2],[1, 0, 0], [0, 1, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-038-2" : SKTransformationMatrix([0, 1, 0],[0, 1, 2], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-039" : SKTransformationMatrix([0, 1, 0],[0, 1, 2], [1, 0, 0]),
       "SpglibTestData/orthorhombic/POSCAR-039-2" : SKTransformationMatrix([1, 0, 0],[1, 2, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-040" : SKTransformationMatrix([1, 0, 0],[1, 2, 0], [0, 0, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-040-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 1, 2]),
-      "SpglibTestData/orthorhombic/POSCAR-041" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-041-2" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-040-2" : SKTransformationMatrix([0, 1, 0],[0, 1, 2], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-041" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/orthorhombic/POSCAR-041-2" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-042" : SKTransformationMatrix([1, 1, 0],[1, 1, 2], [1, -1, 0]),
       "SpglibTestData/orthorhombic/POSCAR-043" : SKTransformationMatrix([1, 1, 0],[1, 1, 2], [1, -1, 0]),
       "SpglibTestData/orthorhombic/POSCAR-043-2" : SKTransformationMatrix([1, 1, 0],[1, 1, 2], [1, -1, 0]),
@@ -219,22 +218,22 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/orthorhombic/POSCAR-061-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-062" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-062-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-063" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-063" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-063-2" : SKTransformationMatrix([1, 0, 0],[-1, 2, 0], [0, 0, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-063-3" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-063-3" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-064" : SKTransformationMatrix([1, 0, 0],[1, 0, -2], [0, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-064-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, -1, 2]),
-      "SpglibTestData/orthorhombic/POSCAR-064-3" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-065" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-065-2" : SKTransformationMatrix([1, 0, 0],[0, 1, -1], [0, 1, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-065-3" : SKTransformationMatrix([1, 0, 0],[0, 1, -1], [0, 1, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-066" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-066-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, -1, 2]),
-      "SpglibTestData/orthorhombic/POSCAR-067" : SKTransformationMatrix([1, 0, 0],[0, 1, -1], [0, 1, 1]),
-      "SpglibTestData/orthorhombic/POSCAR-067-2" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-067-3" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-064-2" : SKTransformationMatrix([0, 1, 0],[0, -1, 2], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-064-3" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/orthorhombic/POSCAR-065" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/orthorhombic/POSCAR-065-2" : SKTransformationMatrix([0, 1, -1],[0, 1, 1], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-065-3" : SKTransformationMatrix([0, 1, -1],[0, 1, 1], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-066" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/orthorhombic/POSCAR-066-2" : SKTransformationMatrix([0, 1, 0],[0, -1, 2], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-067" : SKTransformationMatrix([0, 1, -1],[0, 1, 1], [1, 0, 0]),
+      "SpglibTestData/orthorhombic/POSCAR-067-2" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/orthorhombic/POSCAR-067-3" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
       "SpglibTestData/orthorhombic/POSCAR-068" : SKTransformationMatrix([1, 0, 0],[1, 0, -2], [0, 1, 0]),
-      "SpglibTestData/orthorhombic/POSCAR-068-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, -1, 2]),
+      "SpglibTestData/orthorhombic/POSCAR-068-2" : SKTransformationMatrix([0, 1, 0],[0, -1, 2], [1, 0, 0]),
       "SpglibTestData/orthorhombic/POSCAR-069" : SKTransformationMatrix([1, 1, 0],[1, 1, 2], [1, -1, 0]),
       "SpglibTestData/orthorhombic/POSCAR-069-2" : SKTransformationMatrix([1, 0, 0],[1, 0, -2], [1, 2, 0]),
       "SpglibTestData/orthorhombic/POSCAR-070" : SKTransformationMatrix([1, 1, 0],[1, 1, 2], [1, -1, 0]),
@@ -251,7 +250,7 @@ class ConstructedBasisTests: XCTestCase
       
     let bundle = Bundle(for: type(of: self))
       
-    for (fileName, referencePrimitiveUnitCell) in testData
+    for (fileName, referenceCorrectionMatrix) in testData
     {
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
@@ -259,29 +258,29 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let correctionMatrix: SKTransformationMatrix? = SKSpacegroup.SKTestBasisCorrection(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
+          XCTAssertNotNil(correctionMatrix, "DelaunayUnitCell \(fileName) not found")
+          if let correctionMatrix = correctionMatrix
           {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[0][0], referenceCorrectionMatrix[0][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][1], referenceCorrectionMatrix[0][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][2], referenceCorrectionMatrix[0][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[1][0], referenceCorrectionMatrix[1][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][1], referenceCorrectionMatrix[1][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][2], referenceCorrectionMatrix[1][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[2][0], referenceCorrectionMatrix[2][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][1], referenceCorrectionMatrix[2][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][2], referenceCorrectionMatrix[2][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
           }
         }
       }
     }
   }
   
-  func testConstructedBasisTetragonalSpaceGroup()
+  func testUpdatedBasisTetragonalSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -434,7 +433,7 @@ class ConstructedBasisTests: XCTestCase
       
     let bundle = Bundle(for: type(of: self))
       
-    for (fileName, referencePrimitiveUnitCell) in testData
+    for (fileName, referenceCorrectionMatrix) in testData
     {
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
@@ -442,29 +441,29 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let correctionMatrix: SKTransformationMatrix? = SKSpacegroup.SKTestBasisCorrection(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
+          XCTAssertNotNil(correctionMatrix, "DelaunayUnitCell \(fileName) not found")
+          if let correctionMatrix = correctionMatrix
           {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[0][0], referenceCorrectionMatrix[0][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][1], referenceCorrectionMatrix[0][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][2], referenceCorrectionMatrix[0][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[1][0], referenceCorrectionMatrix[1][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][1], referenceCorrectionMatrix[1][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][2], referenceCorrectionMatrix[1][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[2][0], referenceCorrectionMatrix[2][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][1], referenceCorrectionMatrix[2][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][2], referenceCorrectionMatrix[2][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
           }
         }
       }
     }
   }
   
-  func testConstructedBasisTrigonalSpaceGroup()
+  func testUpdatedBasisTrigonalSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -474,12 +473,12 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/trigonal/POSCAR-144-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-145" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-145-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/trigonal/POSCAR-146" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/trigonal/POSCAR-146-2" : SKTransformationMatrix([1, 0, -1],[0, 1, 1], [1, -1, 1]),
+      "SpglibTestData/trigonal/POSCAR-146" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/trigonal/POSCAR-146-2" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
       "SpglibTestData/trigonal/POSCAR-147" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
       "SpglibTestData/trigonal/POSCAR-147-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/trigonal/POSCAR-148" : SKTransformationMatrix([0, 1, 1],[-1, -1, 0], [1, -1, 1]),
-      "SpglibTestData/trigonal/POSCAR-148-2" : SKTransformationMatrix([0, 1, -1],[1, 1, 2], [1, 0, 0]),
+      "SpglibTestData/trigonal/POSCAR-148" : SKTransformationMatrix([0, 0, 1],[0, -1, 0], [1, 0, 0]),
+      "SpglibTestData/trigonal/POSCAR-148-2" : SKTransformationMatrix([1, 1, 1],[0, -1, 0], [0, 0, -1]),
       "SpglibTestData/trigonal/POSCAR-149" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-149-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-150" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
@@ -492,8 +491,8 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/trigonal/POSCAR-154" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-154-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
       "SpglibTestData/trigonal/POSCAR-154-3" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/trigonal/POSCAR-155" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/trigonal/POSCAR-155-2" : SKTransformationMatrix([1, 0, -1],[0, 1, 1], [1, -1, 1]),
+      "SpglibTestData/trigonal/POSCAR-155" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/trigonal/POSCAR-155-2" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
       "SpglibTestData/trigonal/POSCAR-156" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-156-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-157" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
@@ -502,10 +501,10 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/trigonal/POSCAR-158-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
       "SpglibTestData/trigonal/POSCAR-159" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-159-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/trigonal/POSCAR-160" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/trigonal/POSCAR-160-2" : SKTransformationMatrix([1, 0, -1],[0, 1, 1], [1, -1, 1]),
-      "SpglibTestData/trigonal/POSCAR-161" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [2, 1, 3]),
-      "SpglibTestData/trigonal/POSCAR-161-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [2, 1, 3]),
+      "SpglibTestData/trigonal/POSCAR-160" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/trigonal/POSCAR-160-2" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
+      "SpglibTestData/trigonal/POSCAR-161" : SKTransformationMatrix([1, 1, 1],[0, 0, 1], [1, 0, 1]),
+      "SpglibTestData/trigonal/POSCAR-161-2" : SKTransformationMatrix([1, 1, 1],[0, 0, 1], [1, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-162" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-162-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
       "SpglibTestData/trigonal/POSCAR-163" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
@@ -514,16 +513,16 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/trigonal/POSCAR-164-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
       "SpglibTestData/trigonal/POSCAR-165" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/trigonal/POSCAR-165-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/trigonal/POSCAR-166" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [2, 1, 3]),
-      "SpglibTestData/trigonal/POSCAR-166-2" : SKTransformationMatrix([0, 1, 1],[-1, -1, 0], [1, -1, 1]),
-      "SpglibTestData/trigonal/POSCAR-167" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [2, 1, 3]),
-      "SpglibTestData/trigonal/POSCAR-167-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [2, 1, 3]),
-      "SpglibTestData/trigonal/POSCAR-167-3" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [2, 1, 3])
+      "SpglibTestData/trigonal/POSCAR-166" : SKTransformationMatrix([1, 1, 1],[0, 0, 1], [1, 0, 1]),
+      "SpglibTestData/trigonal/POSCAR-166-2" : SKTransformationMatrix([0, 0, 1],[0, -1, 0], [1, 0, 0]),
+      "SpglibTestData/trigonal/POSCAR-167" : SKTransformationMatrix([1, 1, 1],[0, 0, 1], [1, 0, 1]),
+      "SpglibTestData/trigonal/POSCAR-167-2" : SKTransformationMatrix([1, 1, 1],[0, 0, 1], [1, 0, 1]),
+      "SpglibTestData/trigonal/POSCAR-167-3" : SKTransformationMatrix([1, 1, 1],[0, 0, 1], [1, 0, 1])
     ]
       
     let bundle = Bundle(for: type(of: self))
       
-    for (fileName, referencePrimitiveUnitCell) in testData
+    for (fileName, referenceCorrectionMatrix) in testData
     {
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
@@ -531,29 +530,29 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let correctionMatrix: SKTransformationMatrix? = SKSpacegroup.SKTestBasisCorrection(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
+          XCTAssertNotNil(correctionMatrix, "DelaunayUnitCell \(fileName) not found")
+          if let correctionMatrix = correctionMatrix
           {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[0][0], referenceCorrectionMatrix[0][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][1], referenceCorrectionMatrix[0][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][2], referenceCorrectionMatrix[0][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[1][0], referenceCorrectionMatrix[1][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][1], referenceCorrectionMatrix[1][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][2], referenceCorrectionMatrix[1][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[2][0], referenceCorrectionMatrix[2][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][1], referenceCorrectionMatrix[2][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][2], referenceCorrectionMatrix[2][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
           }
         }
       }
     }
   }
   
-  func testConstructedBasisHexagonalSpaceGroup()
+  func testUpdatedBasisHexagonalSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -610,7 +609,7 @@ class ConstructedBasisTests: XCTestCase
       
     let bundle = Bundle(for: type(of: self))
       
-    for (fileName, referencePrimitiveUnitCell) in testData
+    for (fileName, referenceCorrectionMatrix) in testData
     {
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
@@ -618,30 +617,29 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let correctionMatrix: SKTransformationMatrix? = SKSpacegroup.SKTestBasisCorrection(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
+          XCTAssertNotNil(correctionMatrix, "DelaunayUnitCell \(fileName) not found")
+          if let correctionMatrix = correctionMatrix
           {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[0][0], referenceCorrectionMatrix[0][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][1], referenceCorrectionMatrix[0][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][2], referenceCorrectionMatrix[0][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[1][0], referenceCorrectionMatrix[1][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][1], referenceCorrectionMatrix[1][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][2], referenceCorrectionMatrix[1][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[2][0], referenceCorrectionMatrix[2][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][1], referenceCorrectionMatrix[2][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][2], referenceCorrectionMatrix[2][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
           }
         }
       }
     }
   }
   
-  
-  func testConstructedBasisCubicSpaceGroup()
+  func testUpdatedBasisCubicSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -712,7 +710,7 @@ class ConstructedBasisTests: XCTestCase
       
     let bundle = Bundle(for: type(of: self))
       
-    for (fileName, referencePrimitiveUnitCell) in testData
+    for (fileName, referenceCorrectionMatrix) in testData
     {
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
@@ -720,29 +718,30 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let correctionMatrix: SKTransformationMatrix? = SKSpacegroup.SKTestBasisCorrection(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
+          XCTAssertNotNil(correctionMatrix, "DelaunayUnitCell \(fileName) not found")
+          if let correctionMatrix = correctionMatrix
           {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[0][0], referenceCorrectionMatrix[0][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][1], referenceCorrectionMatrix[0][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][2], referenceCorrectionMatrix[0][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[1][0], referenceCorrectionMatrix[1][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][1], referenceCorrectionMatrix[1][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][2], referenceCorrectionMatrix[1][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[2][0], referenceCorrectionMatrix[2][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][1], referenceCorrectionMatrix[2][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][2], referenceCorrectionMatrix[2][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
           }
         }
       }
     }
   }
   
-  func testBasisVirtualSpaceGroup()
+  
+  func testUpdatedBasisVirtualSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -750,7 +749,7 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/virtual_structure/POSCAR-1-222-33" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-1-223-33" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-1-224-33" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-1-227-73" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-1-227-73" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 1, 1]),
       "SpglibTestData/virtual_structure/POSCAR-1-227-93" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-1-227-99" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-1-230-conv-56" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
@@ -758,7 +757,7 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/virtual_structure/POSCAR-1-bcc-33" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-10-221-18" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-10-223-18" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-10-227-50" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-10-227-50" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-102-224-13" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
       "SpglibTestData/virtual_structure/POSCAR-104-222-13" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
       "SpglibTestData/virtual_structure/POSCAR-105-223-13" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
@@ -779,9 +778,9 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/virtual_structure/POSCAR-117-230-conv-33" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
       "SpglibTestData/virtual_structure/POSCAR-118-222-14" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
       "SpglibTestData/virtual_structure/POSCAR-118-224-14" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-12-221-19" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-12-224-19" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-12-227-21" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [1, 2, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-12-221-19" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-12-224-19" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-12-227-21" : SKTransformationMatrix([-1, -2, 0],[-1, 0, 0], [-0, 0, -1]),
       "SpglibTestData/virtual_structure/POSCAR-12-227-83" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-120-230-conv-16" : SKTransformationMatrix([1, 1, 0],[0, 1, 1], [1, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-120-230-prim-14" : SKTransformationMatrix([-1, -1, 0],[1, 0, 1], [0, 1, 1]),
@@ -796,69 +795,69 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/virtual_structure/POSCAR-131-223-05" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-134-224-05" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-14-227-47" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-14-227-51" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-14-227-51" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-14-230-conv-45" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-142-230-conv-05" : SKTransformationMatrix([-1, -1, 0],[1, 0, 1], [0, 1, 1]),
       "SpglibTestData/virtual_structure/POSCAR-142-230-prim-05" : SKTransformationMatrix([1, 1, 0],[0, 1, 1], [1, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-146-221-27" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-146-222-27" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-146-223-27" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-146-224-27" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-146-227-92" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-146-230-conv-36" : SKTransformationMatrix([0, 1, -1],[1, 1, 2], [1, 0, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-146-230-conv-55" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-146-230-prim-27" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-146-bcc-27" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-148-221-15" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-148-222-15" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-148-223-15" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-148-224-15" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-148-227-70" : SKTransformationMatrix([1, 0, -1],[0, 1, 1], [1, -1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-148-230-conv-17" : SKTransformationMatrix([0, 1, -1],[1, 1, 2], [1, 0, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-148-230-conv-37" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-148-230-prim-15" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-148-bcc-15" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-15-222-19" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-15-223-19" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-15-230-conv-21" : SKTransformationMatrix([0, 1, 1],[1, 0, 1], [1, 1, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-15-230-conv-22" : SKTransformationMatrix([1, 0, 0],[0, 1, -1], [0, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-15-230-prim-18" : SKTransformationMatrix([1, 1, 0],[0, 1, 1], [1, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-15-230-prim-19" : SKTransformationMatrix([1, 0, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-15-bcc-18" : SKTransformationMatrix([1, 1, 0],[0, 1, 1], [1, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-15-bcc-19" : SKTransformationMatrix([1, 0, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-155-221-17" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-155-222-17" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-155-223-17" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-155-224-17" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-155-227-72" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-155-230-conv-19" : SKTransformationMatrix([0, 1, -1],[1, 1, 2], [1, 0, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-155-230-conv-38" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-155-230-prim-17" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-155-bcc-17" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-146-221-27" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-146-222-27" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-146-223-27" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-146-224-27" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-146-227-92" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-146-230-conv-36" : SKTransformationMatrix([1, 1, 1],[0, -1, 0], [0, 0, -1]),
+      "SpglibTestData/virtual_structure/POSCAR-146-230-conv-55" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-146-230-prim-27" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-146-bcc-27" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-148-221-15" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-148-222-15" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-148-223-15" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-148-224-15" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-148-227-70" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-148-230-conv-17" : SKTransformationMatrix([1, 1, 1],[0, -1, 0], [0, 0, -1]),
+      "SpglibTestData/virtual_structure/POSCAR-148-230-conv-37" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-148-230-prim-15" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-148-bcc-15" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-15-222-19" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-15-223-19" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-15-230-conv-21" : SKTransformationMatrix([1, 2, 1],[1, 0, 1], [0, -1, -1]),
+      "SpglibTestData/virtual_structure/POSCAR-15-230-conv-22" : SKTransformationMatrix([0, -1, -1],[0, -1, 1], [-1, -0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-15-230-prim-18" : SKTransformationMatrix([2, 1, 1],[0, 1, 1], [-1, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-15-230-prim-19" : SKTransformationMatrix([1, 0, 1],[1, 2, 1], [-1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-15-bcc-18" : SKTransformationMatrix([2, 1, 1],[0, 1, 1], [-1, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-15-bcc-19" : SKTransformationMatrix([1, 0, 1],[1, 2, 1], [-1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-155-221-17" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-155-222-17" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-155-223-17" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-155-224-17" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-155-227-72" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-155-230-conv-19" : SKTransformationMatrix([1, 1, 1],[0, -1, 0], [0, 0, -1]),
+      "SpglibTestData/virtual_structure/POSCAR-155-230-conv-38" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-155-230-prim-17" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-155-bcc-17" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
       "SpglibTestData/virtual_structure/POSCAR-16-221-20" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-16-222-20" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-16-223-20" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-16-224-20" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-16-227-84" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-160-221-16" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-160-224-16" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-160-227-16" : SKTransformationMatrix([0, 1, 1],[1, 0, 0], [1, 2, -1]),
-      "SpglibTestData/virtual_structure/POSCAR-160-227-71" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-160-fcc" : SKTransformationMatrix([-1, -1, -1],[0, 0, 1], [-1, 2, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-161-222-16" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-161-223-16" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-161-230-conv-18" : SKTransformationMatrix([0, 1, -1],[1, 1, 2], [1, 0, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-161-230-prim-16" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-161-bcc-16" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-166-221-06" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-166-224-06" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-166-227-06" : SKTransformationMatrix([0, 1, 1],[1, 0, 0], [1, 2, -1]),
-      "SpglibTestData/virtual_structure/POSCAR-166-227-38" : SKTransformationMatrix([1, 0, -1],[0, 1, 1], [1, -1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-167-222-06" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-167-223-06" : SKTransformationMatrix([0, 1, -1],[-1, 0, 1], [1, 1, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-167-230-conv-06" : SKTransformationMatrix([0, 1, -1],[1, 1, 2], [1, 0, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-167-230-prim-06" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-167-bcc-6" : SKTransformationMatrix([1, -1, 0],[1, 2, 1], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-160-221-16" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-160-224-16" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-160-227-16" : SKTransformationMatrix([1, 1, 0],[0, 0, -1], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-160-227-71" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-160-fcc" : SKTransformationMatrix([-1, 0, 0],[0, 1, 1], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-161-222-16" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-161-223-16" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-161-230-conv-18" : SKTransformationMatrix([1, 1, 1],[0, -1, 0], [0, 0, -1]),
+      "SpglibTestData/virtual_structure/POSCAR-161-230-prim-16" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-161-bcc-16" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-166-221-06" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-166-224-06" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-166-227-06" : SKTransformationMatrix([1, 1, 0],[0, 0, -1], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-166-227-38" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-167-222-06" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-167-223-06" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-167-230-conv-06" : SKTransformationMatrix([1, 1, 1],[0, -1, 0], [0, 0, -1]),
+      "SpglibTestData/virtual_structure/POSCAR-167-230-prim-06" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-167-bcc-6" : SKTransformationMatrix([1, 1, 1],[-1, 0, 0], [0, -1, 0]),
       "SpglibTestData/virtual_structure/POSCAR-17-227-60" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-17-227-85" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-17-230-conv-46" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
@@ -878,16 +877,16 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/virtual_structure/POSCAR-2-222-28" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-2-223-28" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-2-224-28" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-2-227-41" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-2-227-41" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 1, 1]),
       "SpglibTestData/virtual_structure/POSCAR-2-227-74" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-2-227-94" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-2-230-conv-39" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-2-230-conv-57" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-2-230-prim-28" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-2-bcc-28" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-20-227-53" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/virtual_structure/POSCAR-20-227-90" : SKTransformationMatrix([0, 1, 0],[-1, 0, 1], [1, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-20-230-conv-53" : SKTransformationMatrix([0, 1, 0],[-1, 0, 1], [1, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-20-227-53" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-20-227-90" : SKTransformationMatrix([-1, 0, 1],[1, 0, 1], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-20-230-conv-53" : SKTransformationMatrix([-1, 0, 1],[1, 0, 1], [0, 1, 0]),
       "SpglibTestData/virtual_structure/POSCAR-200-221-02" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-200-223-02" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-201-222-02" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
@@ -899,11 +898,11 @@ class ConstructedBasisTests: XCTestCase
       "SpglibTestData/virtual_structure/POSCAR-207-222-04" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-208-223-04" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-208-224-04" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-21-221-23" : SKTransformationMatrix([0, 1, 0],[-1, 0, 1], [1, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-21-222-23" : SKTransformationMatrix([0, 1, 0],[-1, 0, 1], [1, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-21-223-23" : SKTransformationMatrix([0, 1, 0],[-1, 0, 1], [1, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-21-224-23" : SKTransformationMatrix([0, 1, 0],[-1, 0, 1], [1, 0, 1]),
-      "SpglibTestData/virtual_structure/POSCAR-21-230-conv-49" : SKTransformationMatrix([0, 1, 0],[-1, 0, 1], [1, 0, 1]),
+      "SpglibTestData/virtual_structure/POSCAR-21-221-23" : SKTransformationMatrix([-1, 0, 1],[1, 0, 1], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-21-222-23" : SKTransformationMatrix([-1, 0, 1],[1, 0, 1], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-21-223-23" : SKTransformationMatrix([-1, 0, 1],[1, 0, 1], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-21-224-23" : SKTransformationMatrix([-1, 0, 1],[1, 0, 1], [0, 1, 0]),
+      "SpglibTestData/virtual_structure/POSCAR-21-230-conv-49" : SKTransformationMatrix([-1, 0, 1],[1, 0, 1], [0, 1, 0]),
       "SpglibTestData/virtual_structure/POSCAR-212-227-19" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-213-230-conv-09" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/virtual_structure/POSCAR-214-230-conv-04" : SKTransformationMatrix([0, 1, 1],[1, 0, 1], [1, 1, 0]),
@@ -928,7 +927,7 @@ class ConstructedBasisTests: XCTestCase
       
     let bundle = Bundle(for: type(of: self))
       
-    for (fileName, referencePrimitiveUnitCell) in testData
+    for (fileName, referenceCorrectionMatrix) in testData
     {
       if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
       {
@@ -936,62 +935,22 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let correctionMatrix: SKTransformationMatrix? = SKSpacegroup.SKTestBasisCorrection(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
+          XCTAssertNotNil(correctionMatrix, "DelaunayUnitCell \(fileName) not found")
+          if let correctionMatrix = correctionMatrix
           {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[0][0], referenceCorrectionMatrix[0][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][1], referenceCorrectionMatrix[0][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[0][2], referenceCorrectionMatrix[0][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[1][0], referenceCorrectionMatrix[1][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][1], referenceCorrectionMatrix[1][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[1][2], referenceCorrectionMatrix[1][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
         
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-          }
-        }
-      }
-    }
-  }
-  
-  
-  func testFindTriclinicPrimitive2()
-  {
-    let testData: [String: SKTransformationMatrix] =
-    [
-      "SpglibTestData/trigonal/POSCAR-154-3" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1])
-    ]
-      
-    let bundle = Bundle(for: type(of: self))
-      
-    for (fileName, referencePrimitiveUnitCell) in testData
-    {
-      if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
-      {
-        let reader: SKVASPReader = SKVASPReader(URL: url)
-        if let unitCell = reader.unitCell
-        {
-          // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
-          
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
-          {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-        
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-        
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+            XCTAssertEqual(correctionMatrix[2][0], referenceCorrectionMatrix[2][0], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][1], referenceCorrectionMatrix[2][1], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
+            XCTAssertEqual(correctionMatrix[2][2], referenceCorrectionMatrix[2][2], "Wrong correction matrix found for \(fileName): \(correctionMatrix) should be \(referenceCorrectionMatrix)")
           }
         }
       }

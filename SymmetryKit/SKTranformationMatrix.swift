@@ -63,8 +63,14 @@ public struct SKTransformationMatrix
   public static let BCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(-0.5,0,0.5), SIMD3<Double>(0,-1.0,0), SIMD3<Double>(0.5,0,0.5)])   // B -> P
   public static let CCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(0.5,0.5,0), SIMD3<Double>(0.5,-0.5,0), SIMD3<Double>(0,0,-1.0)])   // C -> P
   public static let rhombohedralToPrimitive: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0), SIMD3<Double>(-1.0/3.0, 1.0/3.0, 1.0/3.0), SIMD3<Double>(-1.0/3.0,-2.0/3.0, 1.0/3.0)])  // R -> P
+  // CHECK
+  public static let rhombohedralReverseToPrimitive: double3x3 = double3x3([SIMD3<Double>(1.0/3.0,2.0/3.0,1.0/3.0), SIMD3<Double>(-2.0/3.0, -1.0/3.0, 1.0/3.0), SIMD3<Double>(1.0/3.0,-1.0/3.0, 1.0/3.0)])  // R -> P
+  
   public static let hexagonalToPrimitive: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0, 0), SIMD3<Double>(-1.0/3.0, 1.0/3.0, 0), SIMD3<Double>( 0, 0, 1.0/3.0)])  // H -> P
   public static let rhombohedralHexagonalToObverse: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,-1.0/3.0,-1.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,-2.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,1.0/3.0)])   // Rh -> Robv
+  
+  
+  
   
   public init()
   {

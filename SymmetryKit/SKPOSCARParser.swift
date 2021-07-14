@@ -103,7 +103,6 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
       progress.completedUnitCount += 1
     }
     
-    
     // skip commentline
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
@@ -164,7 +163,7 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
     
     cell = SKCell(unitCell: double3x3(a, b, c))
     var atoms: [SKAsymmetricAtom] = []
-    
+        
     if scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),
       let elements: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}),
       scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine),

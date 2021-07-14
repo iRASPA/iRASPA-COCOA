@@ -678,11 +678,11 @@ public struct SKRotationMatrix
     let latticeMetricMatrix: double3x3 = min_lattice.transpose * min_lattice
     
     // uses a stored list of all possible lattice vectors and loop over all possible permutations
-    for (index_i, firstAxis) in latticeAxes.enumerated()
+    for firstAxis in latticeAxes
     {
-      for (index_j, secondAxis) in latticeAxes.enumerated()
+      for secondAxis in latticeAxes
       {
-        for (index_k, thirdAxis) in latticeAxes.enumerated()
+        for thirdAxis in latticeAxes
         {
           let axes: SKRotationMatrix = SKRotationMatrix([firstAxis, secondAxis, thirdAxis])
           let determinant: Int = axes.determinant
