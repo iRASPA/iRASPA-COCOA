@@ -389,8 +389,8 @@
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[1] = "Angewandte Chemie Int. Ed."; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[1]" = "Angewandte Chemie Int. Ed.";
 
-/* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[2] = "Journal of the Physical Chemstry"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
+/* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[2] = "Journal of the Physical Chemistry"; ObjectID = "sRA-iw-pcK"; */
+"sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemistry";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Free"; ObjectID = "sah-qX-FWQ"; */
 "sah-qX-FWQ.title" = "Ângulos fixos; Alteração do comprimento da borda isotrópica";

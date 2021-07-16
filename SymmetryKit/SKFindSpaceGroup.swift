@@ -102,7 +102,7 @@ extension SKSpacegroup
   
   public static func SKFindPrimitive(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])?
   {
-    if let spaceGroupData: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: symmetryPrecision)
+    if let spaceGroupData: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: double3x3, rotationMatrix: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, symmetryPrecision: symmetryPrecision)
     {
       let centring: Centring = SKSpacegroup(HallNumber: spaceGroupData.hall).spaceGroupSetting.centring
 
@@ -146,7 +146,8 @@ extension SKSpacegroup
   /// - parameter symmetryPrecision:   the precision of the symmetry determination
   ///
   /// - returns: a tuple of the Hall-space group number, the origin, the lattice, and the change-of-basis.
-  public static func SKFindSpaceGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])?
+  /// The transformation matrix can be a non-integer matrix if the structure has a centring.
+  public static func SKFindSpaceGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: double3x3, rotationMatrix: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])?
   {
     var histogram:[Int:Int] = [:]
     
@@ -215,11 +216,6 @@ extension SKSpacegroup
             
       let primitiveLattice: double3x3 = DelaunayUnitCell * correctedBasis
       
-      //print("DelaunayUnitCell")
-      //print(DelaunayUnitCell)
-      //print("corrected")
-      //print(primitiveLattice)
-      
       // transform the symmetries (rotation and translation) from the primtive cell to the conventional cell
       // the centering is used to add the additional translations
       let symmetryInConventionalCell: SKSymmetryOperationSet = spaceGroupSymmetries.changedBasis(transformationMatrix: correctedBasis).addingCenteringOperations(centering: centering)
@@ -230,6 +226,8 @@ extension SKSpacegroup
            let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: HallNumber, lattice: primitiveLattice, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
         {
           let conventionalBravaisLattice: double3x3 = primitiveLattice * value.changeOfBasis.inverseRotationMatrix
+          
+          let transformationMatrix: double3x3 = conventionalBravaisLattice.inverse * unitCell
           
           let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
 
@@ -243,7 +241,13 @@ extension SKSpacegroup
           
           let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
           
-          return (HallNumber, value.origin, cell2, value.changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
+          
+          let rotationMatrix: double3x3 = conventionalBravaisLattice * cell2.unitCell.inverse
+        
+          // must be a rigid rotation
+          assert((rotationMatrix.determinant-1.0)<1e-5)
+          
+          return (HallNumber, value.origin, cell2, value.changeOfBasis, transformationMatrix, rotationMatrix, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
         }
       }
       
@@ -258,6 +262,8 @@ extension SKSpacegroup
           
           let conventionalBravaisLattice: double3x3 = primitiveLattice * changeOfBasis.inverseRotationMatrix
           
+          let transformationMatrix: double3x3 = conventionalBravaisLattice.inverse * unitCell
+          
           let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
 
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
@@ -267,9 +273,15 @@ extension SKSpacegroup
           let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(atoms: &atoms, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
           
           let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice)
+          
           let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
           
-          return (HallNumber, origin, cell2, changeOfBasis, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
+          let rotationMatrix: double3x3 = conventionalBravaisLattice * cell2.unitCell.inverse
+          
+          // must be a rigid rotation
+          assert((rotationMatrix.determinant-1.0)<1e-5)
+          
+          return (HallNumber, origin, cell2, changeOfBasis, transformationMatrix, rotationMatrix, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
         }
       }
     }
@@ -743,37 +755,51 @@ extension SKSpacegroup
       {
         if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: changeOfMonoclinicCentering, seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
+          let conventionalBravaisLatticeA: double3x3 = lattice * changeOfMonoclinicCentering.inverseRotationMatrix
+          let cellA: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLatticeA)
+          //print("Solution:", cellA.unitCell, cellA)
+          
           solutions.append((originShift, changeOfMonoclinicCentering))
         }
       }
-      return solutions.first
-      
-      /*
-      for solution in solutions
-      {
-        let conventionalBravaisLattice: double3x3 = lattice * solution.1.inverseRotationMatrix
-        let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice)
-        print("lattice a b c alpha beta gamma: ", conventionalBravaisLattice, cell.a, cell.b, cell.c,  cell.alpha * 180.0 / Double.pi, cell.beta  * 180.0 / Double.pi , cell.gamma * 180.0 / Double.pi)
-        
-        print("cell: ", cell.unitCell)
-      }
-      print("hall ", HallNumber, solutions.count)
       return solutions.sorted(by: { a, b in
         let conventionalBravaisLatticeA: double3x3 = lattice * a.1.inverseRotationMatrix
         let cellA: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLatticeA)
         let conventionalBravaisLatticeB: double3x3 = lattice * b.1.inverseRotationMatrix
         let cellB: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLatticeB)
-        return cellA.beta < cellB.beta
+        
+        return (cellA.a + cellA.c) < (cellB.a + cellB.c)
+        /*
+        if [18,39,72,81,90].contains(HallNumber)
+        {
+          return (cellA.a, cellA.c, cellA.beta) < (cellB.a, cellB.c, cellB.beta)
+         
+        }
+        else
+        {
+          return ((cellA.a < cellA.c) ? 1.0 : 0.0, cellA.a, cellB.c) < ((cellB.a < cellB.c) ? 1.0 : 0.0, cellB.a, cellB.c)
+          
+        }*/
       }).first
- */
     case .orthorhombic:
+      // try six orthorhombic orientations
+      var solutions: [(SIMD3<Double>, SKRotationalChangeOfBasis)] = []
       for changeOfOrthorhombicCentering in SKRotationalChangeOfBasis.changeOfOrthorhombicCentering
       {
         if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: changeOfOrthorhombicCentering, seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
         {
-          return (originShift, changeOfOrthorhombicCentering)
+          solutions.append((originShift, changeOfOrthorhombicCentering))
         }
       }
+      
+      // return the solution that is most like a<b<c
+      return solutions.sorted(by: { a, b in
+        let conventionalBravaisLatticeA: double3x3 = lattice * a.1.inverseRotationMatrix
+        let cellA: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLatticeA)
+        let conventionalBravaisLatticeB: double3x3 = lattice * b.1.inverseRotationMatrix
+        let cellB: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLatticeB)
+        return (cellA.a, cellA.b) < (cellB.a, cellB.b)
+      }).first
     case .cubic:
       if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
