@@ -1,0 +1,68 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Chiavennite 
+#
+# Reference : 
+#   Tazzoli, V., Domeneghetti, M.C., Mazzi, F. and Cannillo, E.
+#   Eur. J. Mineral., 7, 1339-1344, (1995)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Chiavennite
+_chemical_name_systematic 'Chiavennite'
+
+_cell_length_a      8.729
+_cell_length_b      31.326
+_cell_length_c      4.903 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P n a b'
+_symmetry_space_group_name_H-M   'P n a b'
+_symmetry_space_group_name_Hall  '-P 2bc 2n'
+_space_group.IT_number  60 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+CA  Ca  0.25  0.08789  0  1.45  1
+MN  Mn  0  0  0  1.2  1
+SI1  Si  0.25  0.00131  0.5  0.98  1
+SI2  Si  0.58376  0.23216  0.10475  1.46  1
+SI3  Si  0.14247  -0.13511  0.2436  1.53  1
+BE1  Be  -0.00037  0.05722  -0.42986  0.69  1
+O1  O  0.13917  -0.02785  0.31336  1.22  1
+O2  O  0.1517  0.03243  -0.29572  1.21  1
+O3  O  0.04143  0.23906  0.13475  3.23  1
+O4  O  0.25  -0.24779  0  2.25  1
+O5  O  0.25  -0.11875  0  6.1  1
+O6  O  0.25  -0.13872  0.5  0.28  1
+O7  O  0.07997  -0.18239  0.17734  2.7  1
+O8  O  0.00055  -0.10438  0.2705  1.63  1
+OH  O1-(OH)  0.01254  0.05814  0.24296  1.63  1
+H2O  O2-(H2O)  0.15815  0.14739  0.26022  2.93  1
+
+# End of data for Chiavennite
+
+
+			
+	

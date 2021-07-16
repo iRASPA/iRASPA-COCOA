@@ -879,7 +879,7 @@ extension CellViewer
     }
     set(newValue)
     {
-      self.allStructures.forEach{$0.cell.precision = newValue ?? 1e-5}
+      self.allStructures.forEach{$0.cell.precision = newValue ?? 1e-2}
     }
   }
 }
@@ -1774,7 +1774,7 @@ extension Array where Iterator.Element == CellViewer
     }
     set(newValue)
     {
-      self.allStructures.forEach{$0.cell.precision = newValue ?? 1e-5}
+      self.allStructures.forEach{$0.cell.precision = newValue ?? 1e-2}
     }
   }
 }

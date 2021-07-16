@@ -1,0 +1,72 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Offretite 
+#
+# Reference : 
+#   Alberti, A., Cruciani, G., Galli, E. and Vezzalini, G.
+#   Zeolites, 17, 457-461, (1996)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Offretite
+_chemical_name_systematic 'Offretite'
+
+_cell_length_a      13.331
+_cell_length_b      13.331
+_cell_length_c      7.593 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -6 m 2'
+_symmetry_space_group_name_H-M   'P -6 m 2'
+_symmetry_space_group_name_Hall  'P -6 2'
+_space_group.IT_number  187 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.0007  0.2334  0.2089  0.92  0.7
+Si2  Si  0.0923  0.4236  0.5  0.71  0.7
+Al1  Al  0.0007  0.2334  0.2089  0.92  0.3
+Al2  Al  0.0923  0.4236  0.5  0.71  0.3
+O1  O  0.0243  0.3486  0.3213  2.21  1
+O2  O  0.0961  0.9039  0.2558  1.72  1
+O3  O  0.8738  0.1262  0.2603  2.5  1
+O4  O  0.0103  0.2718  0  2.46  1
+O5  O  0.2286  0.7714  0.5  2.38  1
+O6  O  0.457  0.543  0.5  2.01  1
+K1  K  0  0  0.5  2.37  1
+Mg1  Mg  0.3333  0.6667  0  1.62  1
+Ca1  Ca  0.6667  0.3333  0.3947  2.25  0.32
+Ca2  Ca  0.6667  0.3333  0.2812  6.61  0.34
+O7  O  0.3333  0.6667  0.2676  2.1  1
+O8  O  0.2446  0.7554  0  3.86  0.38
+O9  O  0.167  0.5266  0  5.97  0.48
+O10  O  0.7635  0.2365  0.5  6.43  1
+O11  O  -0.4369  0.4369  0.1881  10.2  1
+O12  O  0.231  0.231  0  2.6  0.17
+
+# End of data for Offretite
+
+
+			
+	

@@ -1,0 +1,73 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Weinebeneite 
+#
+# Reference : 
+#   Walter, F.
+#   Eur. J. Mineral., 4, 1275-1283, (1992)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Weinebeneite
+_chemical_name_systematic 'Weinebeneite'
+
+_cell_length_a      11.897
+_cell_length_b      9.707
+_cell_length_c      9.633 
+_cell_angle_alpha   90 
+_cell_angle_beta    95.76 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 c 1'
+_symmetry_space_group_name_H-M   'C 1 c 1'
+_symmetry_space_group_name_Hall  'C -2yc'
+_space_group.IT_number  9 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ca  Ca  0.1124  0.0853  0.3718  1.32  1
+Be1  Be  -0.3006  0.8817  0.1613  0.65  1
+Be2  Be  -0.1925  0.3821  0.346  0.78  1
+Be3  Be  0.0014  0.5184  0.2517  0.66  1
+P1  P  0.2785  0.0985  0.1409  0.54  1
+P2  P  -0.278  0.0992  0.3606  0.71  1
+O1  O  -0.0939  0.6163  0.165  0.87  1
+O2  O  0.215  0.7795  0.6971  0.97  1
+O3  O  0.2388  0.9725  0.2213  0.71  1
+O4  O  0.2431  0.923  0.4847  0.89  1
+O5  O  0.2853  0.7213  0.3029  1.02  1
+O6  O  0.2573  0.5836  0.5177  0.91  1
+O7  O  0.0943  0.621  0.3323  1.25  1
+O8  O  0.2597  0.4676  0.2905  0.99  1
+OH9  O1-(OH)  0.0638  0.4212  0.1442  1.08  1
+OH10  O1-(OH)  -0.0622  0.4263  0.3603  1.04  1
+H2O1  O2-(H2O)  -0.5254  0.6453  0.1881  1.85  1
+H2O2  O2-(H2O)  0.4918  0.3807  0.378  2.2  1
+H2O3  O2-(H2O)  0.4905  0.3629  0.0437  2.09  1
+H2O41  O2-(H2O)  0.225  0.7474  0.0035  2.19  0.55
+H2O42  O2-(H2O)  0.195  0.7323  0.0061  1.74  0.45
+
+# End of data for Weinebeneite
+
+
+			
+	

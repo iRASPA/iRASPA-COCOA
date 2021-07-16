@@ -1,0 +1,82 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Thomsonite 
+#
+# Reference : 
+#   Pluth, J.J., Smith, J.V. and Kvick, &Aring;.
+#   Zeolites, 5, 74-80, (1985)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Thomsonite
+_chemical_name_systematic 'Thomsonite'
+
+_cell_length_a      13.088
+_cell_length_b      13.052
+_cell_length_c      13.229 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P n c n'
+_symmetry_space_group_name_H-M   'P n c n'
+_symmetry_space_group_name_Hall  '-P 2ab 2n'
+_space_group.IT_number  52 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.0582  0.5036  0.36141  1.22  0.5
+CA1  Ca  0.0582  0.5036  0.36141  1.22  0.5
+CA2  Ca  0.49939  0.47837  0.49952  1.34  0.9
+SR2  Sr  0.49939  0.47837  0.49952  1.34  0.1
+SI1  Si  0.25  0.25  0.6885  0.51  1
+SI2  Si  0.11291  0.69558  0.50065  0.51  1
+SI3  Si  0.3082  0.38501  0.37805  0.49  1
+AL1  Al  0.25  0.75  0.69049  0.48  1
+AL2  Al  0.11939  0.30543  0.49655  0.5  1
+AL3  Al  0.30947  0.62405  0.38045  0.51  1
+O1  O  0.16863  0.31051  0.61839  0.97  1
+O2  O  0.15818  0.69179  0.61444  0.95  1
+O3  O  0.31248  0.33136  0.75655  0.97  1
+O4  O  0.31152  0.65725  0.76318  0.98  1
+O5  O  0.00216  0.63793  0.50143  0.74  1
+O6  O  0.1838  0.6298  0.42414  1.02  1
+O7  O  0.19038  0.38476  0.41668  1  1
+O8  O  0.10438  0.81313  0.46106  0.94  1
+O9  O  0.11829  0.18031  0.45256  1.03  1
+O10  O  0.35586  0.49928  0.38346  0.72  1
+O20  O  0.12597  0.50192  0.18859  2.09  1
+O21  O  0.39173  0.4976  0.63937  2.19  1
+O22  O  0  0.64972  0.75  2.37  1
+O23  O  0  0.34436  0.75  2.19  1
+H1  H  0.15914  0.43727  0.66171  2.71  1
+H2  H  0.15747  0.55922  0.66161  2.95  1
+H3  H  0.37012  0.438  0.67748  3.1  1
+H4  H  0.37158  0.55535  0.68126  3.1  1
+H5  H  0.04695  0.69037  0.71194  3.65  1
+H6  H  0.05008  0.30291  0.71828  4.19  1
+
+# End of data for Thomsonite
+
+
+			
+	

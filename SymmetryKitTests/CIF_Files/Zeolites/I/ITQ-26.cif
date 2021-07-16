@@ -1,0 +1,77 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ITQ-26 
+#
+# Reference : 
+#   Dorset, D.L., Strohmaier, K.G., Kliewer, C.E., Corma, A., D&iacute;az-Caba&ntilde;as, M.J., Rey, F. and Gilmore, C.J.
+#   Chem. Mater., 20, 5325-5331, (2008)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ITQ-26
+_chemical_name_systematic 'ITQ-26'
+
+_cell_length_a      26.7769
+_cell_length_b      26.7769
+_cell_length_c      13.2505 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 4/m m m'
+_symmetry_space_group_name_H-M   'I 4/m m m'
+_symmetry_space_group_name_Hall  '-I 4 2'
+_space_group.IT_number  139 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ge1  Ge  0.0586  0.3209  0.1176  2  0.32
+Si2  Si  0.0586  0.3209  0.1176  2  0.68
+Ge3  Ge  0.0584  0.2043  0.1179  2  0.32
+Si4  Si  0.0584  0.2043  0.1179  2  0.68
+Ge5  Ge  0.0582  0.0582  0.3825  2  0.32
+Si6  Si  0.0582  0.0582  0.3825  2  0.68
+Si7  Si  0.105  0.105  0.1891  2  1
+Si8  Si  0.0884  0.4116  0.25  2  1
+Si9  Si  0.0574  0.0574  0  2  1
+Si10  Si  0  0.4427  0.3837  2  1
+O11  O  0.0629  0.341  0  2  1
+O12  O  0  0.3194  0.155  2  1
+O13  O  0.0791  0.2625  0.1238  2  1
+O14  O  0.0876  0.3568  0.1983  2  1
+O15  O  0.0948  0.1645  0.1785  2  1
+O16  O  0.0571  0.1849  0  2  1
+O17  O  0  0.202  0.1599  2  1
+O18  O  0.0726  0.0726  0.5  2  1
+O19  O  0  0.0718  0.3565  2  1
+O20  O  0.0924  0.0924  0.3049  2  1
+O21  O  0.0755  0.0755  0.1059  2  1
+O22  O  0.0845  0.4517  0.1624  2  1
+O23  O  0  0.0711  0  2  1
+O24  O  0  0.5  0.3529  2  1
+O25  O  0  0.429  0.5  2  1
+
+# End of data for ITQ-26
+
+
+			
+	

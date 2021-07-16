@@ -1,0 +1,65 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Chiral Sodium Zincophosphate, P6&lt;sub&gt;1&lt;/sub&gt;22 
+#
+# Reference : 
+#   Harrison, W.T.A., Gier, T.E., Stucky, G.D., Broach, R.W. and Bedard, R.A.
+#   Chem. Mater., 8, 145-151, (1996)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Chiral_Sodium_Zincophosphate_P6<sub>1</sub>22
+_chemical_name_systematic 'Chiral Sodium Zincophosphate, P6<sub>1</sub>22'
+
+_cell_length_a      10.4797
+_cell_length_b      10.4797
+_cell_length_c      15.089 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 61 2 2'
+_symmetry_space_group_name_H-M   'P 61 2 2'
+_symmetry_space_group_name_Hall  'P 61 2 (0 0 -1)'
+_space_group.IT_number  178 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Zn1  Zn  0.8414  0.6827  0.25  1.44  1
+Zn2  Zn  0.5071  0.4929  0.41667  1.56  1
+P1  P  0.8324  0.5912  0.4409  1.6  1
+O1  O  0.805  0.5403  0.3439  1.82  1
+O2  O  1.0485  0.8019  0.2185  2.01  1
+O3  O  0.689  0.571  0.4808  2.59  1
+O4  O  0.873  0.489  0.491  2.46  1
+Na1  Na  0.668  0.336  0.25  2.92  0.53
+Na2  Na  0.602  0.336  0.235  2.92  0.24
+O5  O  0.07  0.033  0.08333  2.92  0.1
+O6  O  0.41  0.302  0.161  2.92  0.29
+O7  O  0.076  0  0  2.92  0.24
+O8  O  0.425  0.247  0.117  2.92  0.3
+
+# End of data for Chiral_Sodium_Zincophosphate_P6<sub>1</sub>22
+
+
+			
+	

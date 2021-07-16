@@ -1,0 +1,76 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Levyne 
+#
+# Reference : 
+#   Merlino, S., Galli, E. and Alberti, A.
+#   Tschermaks Min. Petr. Mitt., 22, 117-129, (1975)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Levyne
+_chemical_name_systematic 'Levyne'
+
+_cell_length_a      13.338
+_cell_length_b      13.338
+_cell_length_c      23.014 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'R -3 m'
+_symmetry_space_group_name_H-M   'R -3 m'
+_symmetry_space_group_name_Hall  '-R 3 2"'
+_space_group.IT_number  166 
+_space_group.IT_coordinate_system_code  'H'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA2  Na  0  0  0.2782  3.4  0.12
+NA3  Na  0  0  0.4095  9.4  0.12
+NA4  Na  0  0  0.4498  0.7  0.06
+NA5  Na  0  0  0.5  0.7  0.12
+K2  K  0  0  0.2782  3.4  0.06
+K3  K  0  0  0.4095  9.4  0.06
+CA1  Ca  0  0  0.1389  3.48  1
+CA2  Ca  0  0  0.2782  3.4  0.12
+CA3  Ca  0  0  0.4095  9.4  0.12
+CA4  Ca  0  0  0.4498  0.7  0.06
+SI1  Si  0.0001  0.2322  0.0697  1.39  0.65
+SI2  Si  0.2396  0  0.5  1.32  0.65
+AL1  Al  0.0001  0.2322  0.0697  1.39  0.35
+AL2  Al  0.2396  0  0.5  1.32  0.35
+O1  O  0.0339  0.3493  0.1079  2.72  1
+O2  O  0.092  -0.092  0.0827  2.98  1
+O3  O  0.1275  -0.1275  -0.091  3.45  1
+O4  O  0.2643  0  0  3.83  1
+O5  O  0.2219  -0.2219  0.1793  2.98  1
+H2O1  O2-(H2O)  0.2567  -0.2567  -0.1241  4.8  1
+H2O2  O2-(H2O)  0.1222  -0.1222  0.2852  8  0.74
+H2O3  O2-(H2O)  0.2547  -0.2547  0.0187  6.5  0.54
+H2O4  O2-(H2O)  0.5429  -0.5429  -0.0445  5.7  0.28
+
+# End of data for Levyne
+
+
+			
+	

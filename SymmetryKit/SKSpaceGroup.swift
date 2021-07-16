@@ -81,10 +81,6 @@ extension String
 
 
 
-
-
-
-
 public struct SKSpacegroup
 {
   public var spaceGroupSetting: SKSpaceGroupSetting
@@ -326,8 +322,6 @@ public struct SKSpacegroup
   }
   
   
-   
-  
   public static func listOfTranslationVectors(_ setting: SKSpaceGroupSetting) -> [SIMD3<Int32>]
   {
     let index = setting.Hall.index(setting.Hall.startIndex, offsetBy: 1)
@@ -352,6 +346,138 @@ public struct SKSpacegroup
       return [SIMD3<Int32>(0,0,0)]
     }
   }
+  
+  public func expand(atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
+  {
+    var expandedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = []
+    expandedAtoms.reserveCapacity(atoms.count * 192)
+    
+    for atom in atoms
+    {
+      let images: [SIMD3<Double>] = self.listOfSymmetricPositions(atom.fractionalPosition)
+    
+      for image in images
+      {
+        let symmetryAtom: (SIMD3<Double>, Int) = (fract(image), atom.type)
+        expandedAtoms.append(symmetryAtom)
+      }
+    }
+    return expandedAtoms
+  }
+  
+  public func duplicatesRemoved(unitCell: double3x3, atoms2: [(fractionalPosition: SIMD3<Double>, type: Int)]) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
+  {
+    let cutoff: Double = 3.0
+    let offsets: [[Int]] = [[0,0,0],[1,0,0],[1,1,0],[0,1,0],[-1,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1],[-1,1,1],[-1,0,1],[-1,-1,1],[0,-1,1],[1,-1,1]]
+    
+    let structureCell: SKCell = SKCell(unitCell: unitCell)
+    let perpendicularWidths: SIMD3<Double> = structureCell.perpendicularWidths
+    guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
+        
+    let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
+    let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
+    
+    var extendedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, copy: Bool)] = atoms2.map{($0.fractionalPosition, $0.type, false)}
+    
+    if (numberOfCells[0]>=3 && numberOfCells[1]>=3 && numberOfCells[2]>=3)
+    {
+      let epsilon: Double = 1e-4
+      let cutoffVector: SIMD3<Double> = SIMD3<Double>(x: epsilon+perpendicularWidths.x/Double(numberOfCells[0]), y: epsilon+perpendicularWidths.y/Double(numberOfCells[1]), z: epsilon+perpendicularWidths.z/Double(numberOfCells[2]))
+      
+      var head: [Int] = [Int](repeating: -1, count: totalNumberOfCells)
+      var list: [Int] = [Int](repeating: -1, count: extendedAtoms.count)
+      
+      // create cell-list based on the bond-cutoff
+      for i in 0..<extendedAtoms.count
+      {
+        extendedAtoms[i].copy  = true
+        
+        let position: SIMD3<Double> = perpendicularWidths * fract(extendedAtoms[i].fractionalPosition)
+        
+        let icell: Int = Int((position.x) / cutoffVector.x) +
+          Int((position.y) / cutoffVector.y) * numberOfCells[0] +
+          Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
+        
+        list[i] = head[icell]
+        head[icell] = i
+      }
+            
+      for k1 in 0..<numberOfCells[0]
+      {
+        for k2 in 0..<numberOfCells[1]
+        {
+          for k3 in 0..<numberOfCells[2]
+          {
+            let icell_i: Int = k1 + k2 * numberOfCells[0] + k3 * numberOfCells[1] * numberOfCells[0]
+            
+            var i: Int = head[icell_i]
+            while(i >= 0)
+            {
+              let posA: SIMD3<Double> = structureCell.convertToCartesian(extendedAtoms[i].fractionalPosition)
+              
+              // loop over neighboring cells
+              for offset in offsets
+              {
+                let off: [Int] = [(k1 + offset[0]+numberOfCells[0]) % numberOfCells[0],
+                                  (k2 + offset[1]+numberOfCells[1]) % numberOfCells[1],
+                                  (k3 + offset[2]+numberOfCells[2]) % numberOfCells[2]]
+                let icell_j: Int = off[0] + off[1] * numberOfCells[0] + off[2] * numberOfCells[1] * numberOfCells[0]
+                
+                var j: Int = head[icell_j]
+                while(j >= 0)
+                {
+                  if((i < j) || (icell_i != icell_j))
+                  {
+                    let posB: SIMD3<Double> = structureCell.convertToCartesian(extendedAtoms[j].fractionalPosition)
+                    let separationVector: SIMD3<Double> = posA - posB
+                    let periodicSeparationVector: SIMD3<Double> = structureCell.applyUnitCellBoundaryCondition(separationVector)
+                                        
+                    let distance: Double = length(periodicSeparationVector)
+                   
+                    // Type atom as 'Double'
+                    if (distance < 0.1)
+                    {
+                      extendedAtoms[i].copy = false
+                    }
+                  }
+                  j=list[j]
+                }
+              }
+              i=list[i]
+            }
+          }
+        }
+      }
+    }
+    else
+    {
+      for i in 0..<extendedAtoms.count
+      {
+        extendedAtoms[i].copy = true
+        
+        let posA: SIMD3<Double> = structureCell.convertToCartesian(extendedAtoms[i].fractionalPosition)
+        
+        for j in i+1..<extendedAtoms.count
+        {
+          let posB: SIMD3<Double> = structureCell.convertToCartesian(extendedAtoms[j].fractionalPosition)
+          
+          let separationVector: SIMD3<Double> = posA - posB
+          let periodicSeparationVector: SIMD3<Double> = structureCell.applyUnitCellBoundaryCondition(separationVector)
+          let distance: Double = length(periodicSeparationVector)
+         
+          // Type atom as 'Double'
+          if (distance < 0.1)
+          {
+            extendedAtoms[i].copy = false
+          }
+        }
+        
+      }
+    }
+    
+    return extendedAtoms.filter{$0.copy}.map{($0.fractionalPosition, $0.type)}
+  }
+  
   
   
   public static var HallSymbols: [String]

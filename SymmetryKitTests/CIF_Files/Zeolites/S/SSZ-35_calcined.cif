@@ -1,0 +1,76 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for SSZ-35, calcined 
+#
+# Reference : 
+#   
+#   , , , ()
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_SSZ-35_calcined
+_chemical_name_systematic 'SSZ-35, calcined'
+
+_cell_length_a      11.4114
+_cell_length_b      11.5268
+_cell_length_c      7.377 
+_cell_angle_alpha   94.661 
+_cell_angle_beta    96.206 
+_cell_angle_gamma   104.892
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -1'
+_symmetry_space_group_name_H-M   'P -1'
+_symmetry_space_group_name_Hall  '-P 1'
+_space_group.IT_number  2 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.36019  0.3563  0.61106  1.04  1
+Si2  Si  0.41221  0.42852  0.21918  1.49  1
+Si3  Si  0.14209  0.64205  0.40966  1.72  1
+Si4  Si  0.36181  0.85678  0.57148  2.06  1
+Si5  Si  0.13396  0.44151  0.67151  1.52  1
+Si6  Si  0.23859  0.56731  0.04636  1.77  1
+Si7  Si  0.46001  0.75796  0.92351  2.31  1
+Si8  Si  0.55968  0.87468  0.30376  1.76  1
+O1  O  0.36502  0.37709  0.40067  1.87  1
+O2  O  0.23168  0.36461  0.67114  0.89  1
+O3  O  0.47018  0.4577  0.73017  3.15  1
+O4  O  0.37472  0.2251  0.64375  2.07  1
+O5  O  0.30673  0.47043  0.10734  2.6  1
+O6  O  0.4489  0.32523  0.09908  2.49  1
+O7  O  0.22725  0.77005  0.5079  1.84  1
+O8  O  0.16588  0.54074  0.5323  2.01  1
+O9  O  0.17639  0.61558  0.20899  2.46  1
+O10  O  0.00178  0.64477  0.39598  1.13  1
+O11  O  0.43707  0.85788  0.39827  3.01  1
+O12  O  0.35217  0.99191  0.62479  1.61  1
+O13  O  0.43055  0.81119  0.73707  2.31  1
+O14  O  0.13629  0.50548  0.87315  1.2  1
+O15  O  0.33382  0.67945  0.9804  2.47  1
+O16  O  0.52218  0.86584  0.08546  1.83  1
+
+# End of data for SSZ-35_calcined
+
+
+			
+	

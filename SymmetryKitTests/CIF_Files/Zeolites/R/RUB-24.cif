@@ -1,0 +1,59 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for RUB-24 
+#
+# Reference : 
+#   Marler, B., Str&ouml;ter, N. and Gies, H.
+#   Microporous Mesoporous Mat., 83, 201-211, (2005)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_RUB-24
+_chemical_name_systematic 'RUB-24'
+
+_cell_length_a      7.6677
+_cell_length_b      7.6677
+_cell_length_c      27.0625 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 41/a m d'
+_symmetry_space_group_name_H-M   'I 41/a m d'
+_symmetry_space_group_name_Hall  '-I 4bd 2'
+_space_group.IT_number  141 
+_space_group.IT_coordinate_system_code  '2'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.3052  0.0552  0.125  1.7  1
+Si2  Si  0  0.5452  0.0561  1.7  1
+O1  O  0.1784  0.0173  0.0811  2.9  1
+O2  O  0  0.0244  0.3979  2.9  1
+O3  O  0  0.75  0.0594  2.9  1
+O4  O  0  0.5  0  2.9  1
+
+# End of data for RUB-24
+
+
+			
+	

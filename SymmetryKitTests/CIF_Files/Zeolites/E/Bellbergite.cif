@@ -1,0 +1,70 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Bellbergite 
+#
+# Reference : 
+#   R&uuml;dinger, B., Tillmanns, E. and Hentschel, G.
+#   Miner. Petrol., 48, 147-152, (1993)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Bellbergite
+_chemical_name_systematic 'Bellbergite'
+
+_cell_length_a      13.244
+_cell_length_b      13.244
+_cell_length_c      15.988 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 63/m m c'
+_symmetry_space_group_name_H-M   'P 63/m m c'
+_symmetry_space_group_name_Hall  '-P 6c 2c'
+_space_group.IT_number  194 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+K1  K  0.105  0.21  0.25  5  0.3333
+Ca1  Ca  0  0  0  0.5  1
+Ca2  Ca  0.33333  0.66667  0.13  6.9  1
+Sr1  Sr  0.33333  0.66667  0.9119  2.4  0.5
+Si1  Si  0.4215  0.3313  0.1538  1.09  0.5125
+Si2  Si  0.2476  0  0  0.36  0.5125
+Al1  Al  0.4215  0.3313  0.1538  1.09  0.4875
+Al2  Al  0.2476  0  0  0.36  0.4875
+O1  O  0.1127  0.225  0.003  0.5  1
+O2  O  0.6818  0  0.9158  1.2  1
+O3  O  0.958  0.327  0.25  2.1  1
+O4  O  0.2295  0.459  0.864  1.6  1
+O5  O  0.459  0.918  0.862  1.8  1
+H2O1  O2-(H2O)  0.33333  0.66667  0.75  5  1
+H2O2  O2-(H2O)  0.413  0.826  0.25  3.5  1
+H2O3  O2-(H2O)  0.587  0.174  0.965  3  0.5
+H2O4  O2-(H2O)  0.218  0.436  0.159  3.6  1
+H2O5  O2-(H2O)  0  0  0.643  1.4  1
+
+# End of data for Bellbergite
+
+
+			
+	

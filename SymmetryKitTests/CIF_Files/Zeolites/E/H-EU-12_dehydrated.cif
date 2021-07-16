@@ -1,0 +1,72 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for H-EU-12, dehydrated 
+#
+# Reference : 
+#   Bea, J., Cho, J., Lee, J.H., Seo, S.M. and Hong, S.B.
+#   Angew. Chem. Int. Ed., 55, 7369-7373, (2016)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_H-EU-12_dehydrated
+_chemical_name_systematic 'H-EU-12, dehydrated'
+
+_cell_length_a      7.4695
+_cell_length_b      28.8741
+_cell_length_c      17.9156 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C m c m'
+_symmetry_space_group_name_H-M   'C m c m'
+_symmetry_space_group_name_Hall  '-C 2c 2'
+_space_group.IT_number  63 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.70657  0.45451  0.16337  2.93  1
+Si2  Si  0.795  0.26269  0.08465  2.93  1
+Si3  Si  0.70596  0.36556  0.06515  2.93  1
+Si4  Si  0.5  0.11744  0.05767  2.93  1
+Si5  Si  0.5  0.20449  0.16297  2.93  1
+Si6  Si  0.5  0.01321  0.08576  2.93  1
+O1  O  0.76  0.31678  0.09884  3.82  1
+O2  O  0.17663  0.49383  0.12485  3.82  1
+O3  O  0.67558  0.23323  0.141  3.82  1
+O4  O  0.67629  0.1235  0.00794  3.82  1
+O5  O  0.74805  0.40524  0.12581  3.82  1
+O6  O  0.5  0.06802  0.09687  3.82  1
+O7  O  0.5  0.15608  0.12095  3.82  1
+O8  O  1  0.25123  0.10276  3.82  1
+O9  O  0.5  0.4672  0.15612  3.82  1
+O10  O  0.5  0.36635  0.04191  3.82  1
+O11  O  0.5  0.19536  0.25  3.82  1
+O12  O  0.7622  0.45156  0.25  3.82  1
+O13  O  0.75  0.25  0  3.82  1
+O14  O  0.5  0  0  3.82  1
+
+# End of data for H-EU-12_dehydrated
+
+
+			
+	

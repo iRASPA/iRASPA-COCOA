@@ -1,0 +1,83 @@
+data_SSZ-55_as-synthesized
+
+_chemical_formula_structural        '|(C15N1F1)1.04|[Si22.9B1.1O48]'
+_chemical_formula_sum               'Si 22.87 B 1.13 O 62 C 19.60 F 1.04 N 1.04'
+_cell_formula_units_Z               1
+
+_cell_length_a 12.92118(7)
+_cell_length_b 21.2154(3)
+_cell_length_c 5.09122(4)
+_cell_angle_alpha 90
+_cell_angle_beta 90
+_cell_angle_gamma 90
+_cell_volume 1395.64(2)
+
+_symmetry_space_group_name_H-M      C2221
+_symmetry_Int_Tables_number         20
+_symmetry_cell_setting              orthorhombic
+
+_diffrn_ambient_temperature       295                          
+_diffrn_measurement_device_type   'synchrotron'                     
+
+_pd_meas_number_of_points         13333                                     
+_pd_meas_2theta_range_min         2.000                   
+_pd_meas_2theta_range_max        50.000                   
+_pd_meas_2theta_range_inc         0.004
+_pd_meas_wavelength               0.77492(1)     
+
+_pd_proc_ls_prof_R_factor         0.148
+_pd_proc_ls_prof_wR_factor        0.150         
+_pd_proc_ls_prof_wR_expected      0.001         
+
+_refine_ls_number_parameters         93
+_refine_ls_number_restraints         38
+
+loop_
+	_symmetry_equiv_pos_as_xyz
+	 'x, y, z '
+	 '-x, y, -z+1/2 '
+	 'x, -y, -z '
+	 '-x, -y, z+1/2 '
+	 'x+1/2, y+1/2, z '
+	 '-x+1/2, y+1/2, -z+1/2 '
+	 'x+1/2, -y+1/2, -z '
+	 '-x+1/2, -y+1/2, z+1/2 '
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_symmetry_multiplicity
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+_atom_site_B_iso_or_equiv
+Si1  Si 8 0.11549(9)  0.24166(6)  0.2085(2)  0.859(4)  1.54(2)
+Si1  B  8 0.11549(9)  0.24166(6)  0.2085(2)  0.141(4)  1.54(2)
+Si2  Si 8 0.38003(9)  0.45963(6)  0.2504(3)  1         1.54(2)
+Si3  Si 8 0.30944(9)  0.32397(6)  0.2092(2)  1         1.54(2)
+O2   O  4 0.5         0.43958(14) 0.25       1         2.22(5)
+O1   O  4 0           0.26676(15) 0.25       1         2.22(5)
+O3   O  8 0.30937(16) 0.39835(7)  0.2569(5)  1         2.22(5)
+O4   O  8 0.19281(12) 0.29962(9)  0.2285(5)  1         2.22(5)
+O5   O  8 0.12254(16) 0.21068(10) 0.9230(3)  1         2.22(5)
+O6   O  4 0.3567(2)   0.5         0          1         2.22(5)
+O7   O  8 0.14513(17) 0.19065(10) 0.4252(3)  1         2.22(5)
+O8   O  4 0.3560(3)   0.5         0.5        1         2.22(5)
+C11  C  8 0.93719(18) 0.58745(14) 0.1319(6)  0.1956(3) 3
+N12  N  8 1.03210(10) 0.56306(6)  0.2538(3)  0.1304(2) 3
+C13  C  8 1.0531(3)   0.49927(10) 0.1549(6)  0.1956(3) 3
+C14  C  8 1.11923(18) 0.60452(13) 0.1894(7)  0.1956(3) 3
+C15  C  8 1.01887(19) 0.56088(8)  0.5402(3)  0.1734(3) 3
+C16  C  8 1.02053(9)  0.49733(6)  0.6863(2)  0.1304(2) 3
+C17  C  8 1.02940(11) 0.51057(8)  0.9818(3)  0.1304(2) 3
+C18  C  8 1.13049(14) 0.50382(8)  1.1080(5)  0.1512(3) 3
+C19  C  8 1.17184(14) 0.55686(8)  1.2325(5)  0.1512(3) 3
+C110 C  8 1.11393(13) 0.61228(7)  1.2406(7)  0.1512(3) 3
+C111 C  8 1.00694(10) 0.60921(6)  1.2010(5)  0.1304(2) 3
+F112 F  8 0.9453(2)   0.66211(11) 1.2481(10) 0.1304(2) 3
+C113 C  8 0.96330(12) 0.55497(9)  1.0908(5)  0.1512(3) 3
+C114 C  8 0.91896(13) 0.46301(8)  0.6373(6)  0.1734(3) 3
+C115 C  8 0.95109(13) 0.39644(8)  0.5515(8)  0.1734(3) 3
+C116 C  8 1.07139(13) 0.39387(8)  0.5338(13) 0.1734(3) 3
+C117 C  8 1.11453(13) 0.45977(8)  0.6013(6)  0.1734(3) 3

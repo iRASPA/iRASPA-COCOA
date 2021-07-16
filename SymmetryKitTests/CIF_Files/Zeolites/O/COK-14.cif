@@ -1,0 +1,86 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for COK-14 
+#
+# Reference : 
+#   Verheyen, E., Joos, L., Van Havebergh, K., Breynaert, E., Kasian, N., Gobechiya, E., Houthoofd, K., Martineau, C., Hinterstein, M., Taulelle, F., Van Speybroeck, V., Waroquier, M., Bals, S., Van Tendeloo, G., Kirschhock, C.E.A. and Martens, J.A.
+#   Nature Mater., 11, 1059-1064, (2012)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_COK-14
+_chemical_name_systematic 'COK-14'
+
+_cell_length_a      24.1319
+_cell_length_b      13.7918
+_cell_length_c      12.2977 
+_cell_angle_alpha   90 
+_cell_angle_beta    109.6 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/m 1'
+_symmetry_space_group_name_H-M   'C 1 2/m 1'
+_symmetry_space_group_name_Hall  '-C 2y'
+_space_group.IT_number  12 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si3  Si  0.3016  0.7914  0.2446  0.79  1
+Si4  Si  0.3131  0.7914  0.5034  7.34  1
+Si5  Si  0.3252  0.7955  0.873  2.13  1
+Si6  Si  0.3707  0.6846  0.1016  3.71  1
+Si7  Si  0.384  0.7052  0.734  2.05  1
+Si8  Si  0.2694  0  0.8014  5.21  1
+Si9  Si  0.2208  0.5  0.821  2.21  1
+Si10  Si  0.3187  0.5  0.6964  0.39  1
+Si11  Si  0.2222  0.5  0.4547  0.32  1
+Si12  Si  0.299  0.5  0.0577  2.84  1
+Si13  Si  0.00003  0.8868  0.125  6.4  1
+O1  O  0.3174  0.9033  0.2284  3.32  1
+O2  O  0.3399  0.7215  0.1924  7.11  1
+O3  O  0.3216  0.7695  0.3811  2.53  1
+O4  O  0.2319  0.7702  0.1901  3  1
+O5  O  0.3147  0.9064  0.529  6.95  1
+O6  O  0.25  0.75  0.5  4.82  1
+O7  O  0.3651  0.7327  0.5984  1.5  1
+O8  O  0.3616  0.7687  0.0054  4.58  1
+O9  O  0.3052  0.9075  0.8716  5.45  1
+O10  O  0.3695  0.7931  0.7999  10.03  1
+O11  O  0.3333  0.5933  0.0319  4.18  1
+O13  O  0.3577  0.5974  0.7352  3.63  1
+O14  O  0.2047  0  0.8134  3.16  1
+O15  O  0.2667  0  0.668  6.16  1
+O16  O  0.2347  0.5  0.9591  1.66  1
+O17  O  0.2756  0.5  0.7732  7.11  1
+O18  O  0.285  0.5  0.5584  4.03  1
+O19  O  0.0456  0.8136  0.2152  1.03  1
+Oa  O  0.9377  0.8535  0.134  0.39  1
+Ob  O  0  0.127  0  7.03  1
+Oc  O  0.0103  0  0.1618  2.21  1
+O36  O  -0.0303  -0.246  0.594  1.97  0.08
+O41  O  -0.075  0.5  0.583  1.97  0.163
+
+# End of data for COK-14
+
+
+			
+	

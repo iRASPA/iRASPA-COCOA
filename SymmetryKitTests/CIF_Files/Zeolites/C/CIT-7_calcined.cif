@@ -1,0 +1,82 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for CIT-7, calcined 
+#
+# Reference : 
+#   Schmidt, J.E., Xie, D., Rea, T. and Davis, M.E.
+#   Chem. Sci., 6, 1728-1734, (2015)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_CIT-7_calcined
+_chemical_name_systematic 'CIT-7, calcined'
+
+_cell_length_a      13.0187
+_cell_length_b      11.2063
+_cell_length_c      9.3758 
+_cell_angle_alpha   92.82 
+_cell_angle_beta    107.2 
+_cell_angle_gamma   103.26
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -1'
+_symmetry_space_group_name_H-M   'P -1'
+_symmetry_space_group_name_Hall  '-P 1'
+_space_group.IT_number  2 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+O1  O  0.2236  0.5059  0.0497  1.07  1
+O2  O  0.3564  0.4201  0.2714  1.07  1
+O3  O  0.324  0.6411  0.3146  1.07  1
+O4  O  0.1662  0.4463  0.286  1.07  1
+O5  O  0.3703  0.6646  0.9715  1.07  1
+O6  O  0.1691  0.5937  0.7893  1.07  1
+O7  O  0.2986  0.4377  0.8372  1.07  1
+O8  O  0.3411  0.2514  0.7003  1.07  1
+O9  O  0.4275  0.4816  0.665  1.07  1
+O10  O  0.2112  0.3738  0.5487  1.07  1
+O11  O  0.1312  0.5669  0.4991  1.07  1
+O12  O  1.0012  0.3462  0.3897  1.07  1
+O13  O  0.3314  0.0139  0.6712  1.07  1
+O14  O  0.5093  0.1725  0.6611  1.07  1
+O15  O  0.4571  0.1536  0.9168  1.07  1
+O16  O  0.4093  0.8471  0.8129  1.07  1
+O17  O  0.2014  0.7903  0.6425  1.07  1
+O18  O  0.3636  0.8314  0.5162  1.07  1
+O19  O  0.4693  0.3106  0.1474  1.07  1
+O20  O  0.4992  0.3135  0.4408  1.07  1
+Si1  Si  0.268  0.5033  0.2286  0.8  1
+Si2  Si  0.2646  0.5496  0.9108  0.8  1
+Si3  Si  0.321  0.3874  0.6886  0.8  1
+Si4  Si  0.1261  0.4313  0.4305  0.8  1
+Si5  Si  0.4105  0.1493  0.7367  0.8  1
+Si6  Si  0.3255  0.8692  0.6586  0.8  1
+Si7  Si  0.1261  0.6529  0.6366  0.8  1
+Si8  Si  0.4754  0.3911  0.2987  0.8  1
+Si9  Si  0.4638  0.762  0.9296  0.8  1
+Si10  Si  0.4203  0.7469  0.4335  0.8  1
+
+# End of data for CIT-7_calcined
+
+
+			
+	

@@ -1,0 +1,70 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Nu-6(2) 
+#
+# Reference : 
+#   Zanardi, S., Alberti, A., Cruciani, G., Corma, A., Forn&eacute;s, V. and Brunelli, M.
+#   Angew. Chem. Int. Ed., 43, 4933-4937, (2004)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Nu-6(2)
+_chemical_name_systematic 'Nu-6(2)'
+
+_cell_length_a      17.2569
+_cell_length_b      4.9881
+_cell_length_c      13.8482 
+_cell_angle_alpha   90 
+_cell_angle_beta    106.091 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 21/a 1'
+_symmetry_space_group_name_H-M   'P 1 21/a 1'
+_symmetry_space_group_name_Hall  '-P 2yab'
+_space_group.IT_number  14 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+SI1  Si  0.3286  0.2344  0.3038  0.0134  1
+SI2  Si  0.5921  0.7965  0.2688  0.0134  1
+SI3  Si  0.3093  0.6423  0.0109  0.0134  1
+SI4  Si  0.3501  0.729  -0.1906  0.0134  1
+SI5  Si  0.4068  0.7245  0.2323  0.0134  1
+SI6  Si  0.6973  0.952  0.4901  0.0134  1
+O1  O  0.3737  0.6247  0.1175  0.0163  1
+O2  O  0.3852  0.4824  0.2984  0.0163  1
+O3  O  0.6402  0.8547  0.3845  0.0163  1
+O4  O  0.722  0.2636  0.4952  0.0163  1
+O5  O  0.3612  0.7092  -0.0688  0.0163  1
+O6  O  0.5013  0.7259  0.2598  0.0163  1
+O7  O  0.4167  0.9246  -0.2075  0.0163  1
+O8  O  0.2481  0.885  0.0176  0.0163  1
+O9  O  0.3639  -0.0105  0.2527  0.0163  1
+O10  O  0.3462  0.1404  0.4236  0.0163  1
+O11  O  0.3639  0.4331  -0.2289  0.0163  1
+O12  O  0.2392  0.315  0.2504  0.0163  1
+
+# End of data for Nu-6(2)
+
+
+			
+	

@@ -1,0 +1,93 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for FOS-5 (Beta polymorph C) 
+#
+# Reference : 
+#   Conradsson, T., Dadachov, M.S. and Zou, X.D.
+#   Microporous Mesoporous Mat., 41, 183-191, (2000)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_FOS-5_(Beta_polymorph_C)
+_chemical_name_systematic 'FOS-5 (Beta polymorph C)'
+
+_cell_length_a      25.99
+_cell_length_b      25.99
+_cell_length_c      27.271 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 41/a m d'
+_symmetry_space_group_name_H-M   'I 41/a m d'
+_symmetry_space_group_name_Hall  '-I 4bd 2'
+_space_group.IT_number  141 
+_space_group.IT_coordinate_system_code  '2'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ge1  Ge  0.0608  0.56726  0.05003  1.96  1
+Ge2  Ge  0.18313  0.3111  0.20106  1.88  1
+Ge3  Ge  0.06127  0.44742  0.06418  2.05  1
+Ge4  Ge  0.1621  0.4121  0.375  1.91  1
+Ge5  Ge  0.19686  0.31144  0.31554  1.83  1
+Ge6  Ge  0.15531  0.40669  0.13668  2.07  1
+Ge7  Ge  0.24081  0.44472  0.05716  2.19  1
+Ge8  Ge  0.23811  0.56364  0.05594  2.04  1
+Ge9  Ge  0.14778  0.60222  0.125  2.26  1
+O1  O  0.1421  0.3476  0.1649  2.76  1
+O2  O  0.1627  0.3166  0.2633  2.76  1
+O3  O  0.0969  0.6114  0.0847  2.45  1
+O4  O  0.0659  0.589  -0.0098  3.32  1
+O5  O  0.194  0.25  0.3408  2.84  1
+O6  O  0.2176  0.417  0.0022  2.53  1
+O7  O  0.0887  0.5068  0.0612  3.55  1
+O8  O  0.1724  0.25  0.1777  3.08  1
+O9  O  0  0.446  0.0902  3.32  1
+O10  O  0.1662  0.4485  0.1853  2.61  1
+O11  O  0.203  0.6086  0.0914  2.61  1
+O12  O  0.0962  0.4136  0.1091  3.08  1
+O13  O  0.2426  0.3379  0.1914  3.47  1
+O14  O  0.2072  0.4018  0.0983  2.84  1
+O15  O  0  0.5746  0.0741  3.47  1
+O16  O  0.1798  0.4446  0.3217  3  1
+O17  O  0.1684  0.3471  0.3625  2.68  1
+O18  O  0.2162  0.5038  0.0776  2.68  1
+N1  N  0.2478  0.25  0.0039  6.63  1
+C1  C  0.236  0.297  0.034  1.34  1
+C2  C  0.269  0.25  -0.047  2.05  1
+N2  N  0.1476  0.25  0.009  8.29  1
+C3  C  0.176  0.25  -0.037  40.3  1
+C4  C  0.162  0.302  0.028  16.6  1
+N3  N  0.3519  0.25  0.002  9.79  1
+C5  C  0.34  0.303  0.024  22.9  1
+C6  C  0.361  0.25  -0.05  15  1
+OW1  O2-(H2O)  0  0.5  0  2.53  1
+OW2  O2-(H2O)  0.25  0.25  0.25  2.61  1
+OW3  O2-(H2O)  0.2769  0.5  0  4.97  1
+OW4  O2-(H2O)  0  0.25  -0.125  19.7  1
+
+# End of data for FOS-5_(Beta_polymorph_C)
+
+
+			
+	

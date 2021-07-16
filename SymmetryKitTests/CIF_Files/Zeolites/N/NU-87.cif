@@ -1,0 +1,108 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for NU-87 
+#
+# Reference : 
+#   Shannon, M.D., Casci, J.L., Cox, P.A. and Andrews, S.J.
+#   Nature, 353, 417-420, (1991)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_NU-87
+_chemical_name_systematic 'NU-87'
+
+_cell_length_a      14.324
+_cell_length_b      22.376
+_cell_length_c      25.092 
+_cell_angle_alpha   90 
+_cell_angle_beta    151.515 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 21/c 1'
+_symmetry_space_group_name_H-M   'P 1 21/c 1'
+_symmetry_space_group_name_Hall  '-P 2ybc'
+_space_group.IT_number  14 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.64  0.1717  0.324  0  1
+Si2  Si  0.473  0.197  0.738  0  1
+Si3  Si  0.028  0.2218  0.5  0  1
+Si4  Si  0.228  0.001  0.178  0  1
+Si5  Si  0.226  0.0039  0.048  0  1
+Si6  Si  0.412  0.128  0.108  0  1
+Si7  Si  0.421  0.12  0.308  0  1
+Si8  Si  0.666  0.1299  0.737  0  1
+Si9  Si  0.654  0.1237  0.924  0  1
+Si10  Si  0.606  0.1816  0.496  0  1
+Si11  Si  0.604  0.1838  0.109  0  1
+Si12  Si  0.456  0.1822  0.536  0  1
+Si13  Si  0.451  0.1837  0.917  0  1
+Si14  Si  0.035  0.1941  0.1  0  1
+Si15  Si  0.038  0.2969  0.406  0  1
+Si16  Si  0.033  0.2154  0.307  0  1
+Si17  Si  0.031  0.2175  0.697  0  1
+O1  O  0.242  0.009  0.121  0  1
+O2  O  0.55  0.2367  0.284  0  1
+O3  O  0.87  0.1734  0.434  0  1
+O4  O  0.242  0.194  0.614  0  1
+O5  O  0.588  0.133  0.349  0  1
+O6  O  0.553  0.141  0.228  0  1
+O7  O  0.579  0.168  0.741  0  1
+O8  O  0.533  0.159  0.818  0  1
+O9  O  0.002  0.2773  0.526  0  1
+O10  O  -0.006  0.2429  0.423  0  1
+O11  O  0.001  0.003  0.083  0  1
+O12  O  0.35  0.0523  0.269  0  1
+O13  O  0.318  0.0626  0.066  0  1
+O14  O  0.675  0.0611  0.757  0  1
+O15  O  0.651  0.053  0.911  0  1
+O16  O  0.24  0.163  0.206  0  1
+O17  O  0.244  0.1761  0.023  0  1
+O18  O  0.88  0.152  0.833  0  1
+O19  O  0.873  0.146  1.031  0  1
+O20  O  0.508  0.133  0.409  0  1
+O21  O  0.535  0.134  0.116  0  1
+O22  O  0.533  0.137  0.619  0  1
+O23  O  0.563  0.138  0.935  0  1
+O24  O  0.521  0.2479  0.44  0  1
+O25  O  0.526  0.2499  0.587  0  1
+O26  O  0.555  0.163  0.531  0  1
+O27  O  0.509  0.167  0.006  0  1
+O28  O  0.838  0.178  0.605  0  1
+O29  O  0.837  0.18  0.221  0  1
+O30  O  0.223  0.176  0.414  0  1
+O31  O  0.219  0.176  0.793  0  1
+O32  O  0.026  0.2544  0.64  0  1
+O33  O  0.037  0.2734  0.345  0  1
+O34  O  0.036  0.236  0.248  0  1
+H2O1  O2-(H2O)  0.233  0.037  0.568  0  1
+H2O2  O2-(H2O)  0.39  0.016  0.917  0  1
+H2O3  O2-(H2O)  0.08  0.044  0.268  0  1
+H2O4  O2-(H2O)  -0.03  0.037  0.313  0  1
+H2O5  O2-(H2O)  0.01  0.065  0.61  0  1
+
+# End of data for NU-87
+
+
+			
+	

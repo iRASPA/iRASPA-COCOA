@@ -1,0 +1,72 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Gismondine 
+#
+# Reference : 
+#   Fischer, K. and Schramm, V.
+#   Adv. Chem. Ser. , 101, 250-258, (1971)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Gismondine
+_chemical_name_systematic 'Gismondine'
+
+_cell_length_a      9.843
+_cell_length_b      10.023
+_cell_length_c      10.616 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   92.417
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 1 21/a'
+_symmetry_space_group_name_H-M   'P 1 1 21/a'
+_symmetry_space_group_name_Hall  '-P 2ac'
+_space_group.IT_number  14 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+CA  Ca  0.3537  0.7192  0.0764  1.39  0.92
+SI1  Si  0.18142  0.4147  0.11288  0.55  1
+SI2  Si  0.16038  0.9082  0.87012  0.48  1
+SI3  Si  0.16921  0.09656  0.11329  0.32  0.2
+AL1  Al  0.16921  0.09656  0.11329  0.32  0.8
+AL2  Al  0.149  0.59053  0.8669  0.52  1
+O1  O  0.9996  0.0787  0.1562  1.74  1
+O2  O  0.2125  0.2624  0.0763  1.85  1
+O3  O  0.0254  0.4361  0.1485  0.99  1
+O4  O  0.3037  0.245  0.4027  1.48  1
+O5  O  0.2136  0.9994  0.9861  0.85  1
+O6  O  0.2595  0.0449  0.2437  0.82  1
+O7  O  0.2777  0.4645  0.2288  0.91  1
+O8  O  0.2253  0.5107  0.9944  1.21  1
+H2O1  O2-(H2O)  0.5023  0.2596  0.1048  2.22  0.88
+H2O2  O2-(H2O)  0.541  0.5914  0.1262  3.62  1
+H2O3  O2-(H2O)  0.502  0.9113  0.1174  2.13  0.95
+H2O4  O2-(H2O)  0.2306  0.7732  0.2369  7.72  0.61
+H2O5  O2-(H2O)  0.4028  0.7407  0.318  4.11  0.48
+H2O6  O2-(H2O)  0.1326  0.762  0.1794  17.25  0.4
+
+# End of data for Gismondine
+
+
+			
+	

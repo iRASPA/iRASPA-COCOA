@@ -1,0 +1,68 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for UZM-5 
+#
+# Reference : 
+#   Blackwell, C.S., Broach, R.W., Gatter, M.G., Holmgren, J.S., Jan, D.-Y., Lewis, G.J., Mezza, B.J., Mezza, T.M., Miller, M.A., Moscoso, J.G., Patton, R.L., Rohde, L.M., Schoonover, M.W., Sinkler, W., Wilson, B.A. and Wilson, S.T.
+#   Angew. Chem. Int. Ed., 42, 1737-1740, (2003)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_UZM-5
+_chemical_name_systematic 'UZM-5'
+
+_cell_length_a      12.151
+_cell_length_b      12.151
+_cell_length_c      28.172 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 4/m m m'
+_symmetry_space_group_name_H-M   'I 4/m m m'
+_symmetry_space_group_name_Hall  '-I 4 2'
+_space_group.IT_number  139 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.1796  0  0.0552  4.8  0.875
+Si2  Si  0.3781  0.2005  0.2006  4.8  0.875
+Si3  Si  0.3748  0  0.1341  4.8  0.875
+Al1  Al  0.1796  0  0.0552  4.8  0.125
+Al2  Al  0.3781  0.2005  0.2006  4.8  0.125
+Al3  Al  0.3748  0  0.1341  4.8  0.125
+O1  O  0.2965  0  0.0876  3.8  1
+O2  O  0.2095  0  0  3.8  1
+O3  O  0.106  0.106  0.0665  3.8  1
+O4  O  0.3525  0.1475  0.25  3.8  1
+O5  O  0.3576  0.1116  0.1606  3.8  1
+O6  O  0.5  0.2561  0.204  3.8  1
+O7  O  0.3153  0.3153  0.1911  3.8  1
+O8  O  0.5  0  0.1122  3.8  1
+K1  K  0.5  0.5  0.1937  4  0.76
+K2  K  0.5  0  0  4  0.54
+
+# End of data for UZM-5
+
+
+			
+	

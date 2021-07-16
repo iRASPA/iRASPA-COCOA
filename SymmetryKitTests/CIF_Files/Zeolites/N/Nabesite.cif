@@ -1,0 +1,81 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Nabesite 
+#
+# Reference : 
+#   Petersen, O.V., Giester, G., Brandst&auml;tter, F. and Niedermayr, G.
+#   Can. Mineral., 40, 173-181, (2002)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Nabesite
+_chemical_name_systematic 'Nabesite'
+
+_cell_length_a      9.748
+_cell_length_b      10.133
+_cell_length_c      11.954 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 21 21 21'
+_symmetry_space_group_name_H-M   'P 21 21 21'
+_symmetry_space_group_name_Hall  'P 2ac 2ab'
+_space_group.IT_number  19 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Na1  Na  0.02823  0.1966  0.81506  2.27  1
+Na2  Na  0.37372  0.25369  0.73922  3.52  1
+Be  Be  0.24232  0.26224  0.25678  0.66  1
+Si1  Si  0.08393  0.35478  0.06419  0.59  1
+Si2  Si  0.39961  0.36283  0.44722  0.6  1
+Si3  Si  0.29128  0.14866  0.03408  0.66  1
+Si4  Si  0.20023  0.14856  0.47842  0.61  1
+O1  O  0.1193  0.34407  0.19374  0.96  1
+O2  O  0.12092  0.49694  0.01041  1.35  1
+O3  O  -0.07946  0.32732  0.04934  1.13  1
+O4  O  0.16731  0.24433  -0.00928  0.88  1
+O5  O  0.34741  0.36353  0.32118  0.95  1
+O6  O  0.56197  0.32609  0.44915  1.26  1
+O7  O  0.3158  0.25353  0.52237  0.89  1
+O8  O  0.32791  0.1782  0.16101  1.02  1
+O9  O  0.24094  -0.0034  0.01423  1.08  1
+O10  O  0.17608  0.15933  0.34733  1.17  1
+OW1  O2-(H2O)  0.22056  0.07549  0.76168  2.18  1
+OW2  O2-(H2O)  0.16099  0.3752  0.73814  2.49  1
+OW3  O2-(H2O)  -0.05881  0.0208  0.94934  2.99  1
+OW4  O2-(H2O)  0.47439  0.44438  0.80888  3.11  1
+H1  H  0.249  0.009  0.807  5.21  1
+H2  H  0.209  0.049  0.689  5.29  1
+H3  H  0.171  0.442  0.759  3.55  1
+H4  H  0.095  0.383  0.699  4.65  1
+H5  H  -0.077  0.029  1.0225  3.71  1
+H6  H  0.034  0.011  0.959  8.05  1
+H7  H  0.446  0.527  0.788  5.84  1
+H8  H  0.554  0.404  0.765  5.92  1
+
+# End of data for Nabesite
+
+
+			
+	

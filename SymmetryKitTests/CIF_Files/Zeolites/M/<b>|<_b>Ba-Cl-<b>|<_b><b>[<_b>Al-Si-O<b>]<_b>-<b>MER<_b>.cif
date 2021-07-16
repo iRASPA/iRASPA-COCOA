@@ -1,0 +1,62 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for <b>|</b>Ba-Cl-<b>|</b><b>[</b>Al-Si-O<b>]</b>-<b>MER</b> 
+#
+# Reference : 
+#   Solov’eva, L.P., Borisov, S.V. and Bakakin, V.V.
+#   Sov. Phys. Crystallogr., 16, 1035-1038, (1972)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_<b>|</b>Ba-Cl-<b>|</b><b>[</b>Al-Si-O<b>]</b>-<b>MER</b>
+_chemical_name_systematic '<b>|</b>Ba-Cl-<b>|</b><b>[</b>Al-Si-O<b>]</b>-<b>MER</b>'
+
+_cell_length_a      14.194
+_cell_length_b      14.194
+_cell_length_c      9.234 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 4/m m m'
+_symmetry_space_group_name_H-M   'I 4/m m m'
+_symmetry_space_group_name_Hall  '-I 4 2'
+_space_group.IT_number  139 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+BA1  Ba  0.1816  0.5  0.5  5  1
+BA2  Ba  0.5  0.5  0.288  14.5  1
+CL1  Cl  0.375  0.375  0.5  5.1  1
+O2-  O2-  0  0.5  0.25  4.8  1
+SI1  Si  0.2386  0.3917  0.157  2.2  0.6667
+AL1  Al  0.2386  0.3917  0.157  2.2  0.3333
+O1  O  0.193  0.39  0  3.6  1
+O2  O  0.35  0.35  0.156  4.6  1
+O3  O  0.158  0.342  0.25  7  1
+O4  O  0.257  0.5  0.213  3.3  1
+
+# End of data for <b>|</b>Ba-Cl-<b>|</b><b>[</b>Al-Si-O<b>]</b>-<b>MER</b>
+
+
+			
+	

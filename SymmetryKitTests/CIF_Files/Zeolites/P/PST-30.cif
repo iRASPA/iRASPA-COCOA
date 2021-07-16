@@ -1,0 +1,71 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for PST-30 
+#
+# Reference : 
+#   Jo, D. and Hong, S.B.
+#   Angew. Chem. Int. Ed., 58, 13845-13848, (2019)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_PST-30
+_chemical_name_systematic 'PST-30'
+
+_cell_length_a      7.1348
+_cell_length_b      9.1207
+_cell_length_c      9.1051 
+_cell_angle_alpha   84.28 
+_cell_angle_beta    83.35 
+_cell_angle_gamma   87.83
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P-1'
+_symmetry_space_group_name_H-M   'P-1'
+_symmetry_space_group_name_Hall  ''
+_space_group.IT_number   
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.6502  0.3462  0.1505  1.81  1
+Si2  Si  0.2394  0.3913  0.0903  1.81  1
+Si3  Si  0.0388  0.8254  0.0153  1.81  1
+Si4  Si  0.0467  0.6211  0.3026  1.81  1
+Si5  Si  0.2894  0.5522  0.5513  1.81  1
+O1  O  0.7101  0.3438  0.3157  2.62  1
+O2  O  0.7072  0.5021  0.059  2.62  1
+O3  O  0.758  0.2137  0.0692  2.62  1
+O4  O  0.1138  0.4831  0.2098  2.62  1
+O5  O  0.1217  0.2551  0.0542  2.62  1
+O6  O  0.0338  0.7674  0.1895  2.62  1
+O7  O  0.1593  0.4115  0.6087  2.62  1
+O8  O  0.197  0.6432  0.4158  2.62  1
+O9  O  0.4272  0.3285  0.1584  2.62  1
+O10  O  0  0  0  2.62  1
+O11  O  0.5  0.5  0.5  2.62  1
+Ow1  O  0.4763  0.9257  0.2286  6.3  0.572
+Ow2  O  0.0894  0.0481  0.4235  6.3  0.416
+Ow3  O  0.3467  0.001  0.5332  6.3  0.554
+
+# End of data for PST-30
+
+
+			
+	

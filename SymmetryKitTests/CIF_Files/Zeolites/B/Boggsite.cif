@@ -1,0 +1,90 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Boggsite 
+#
+# Reference : 
+#   Pluth, J.J. and Smith, J.V.
+#   Am. Mineral., 75, 501-507, (1990)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Boggsite
+_chemical_name_systematic 'Boggsite'
+
+_cell_length_a      20.236
+_cell_length_b      23.798
+_cell_length_c      12.798 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I m m a'
+_symmetry_space_group_name_H-M   'I m m a'
+_symmetry_space_group_name_Hall  '-I 2b 2'
+_space_group.IT_number  74 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+SI1  Si  0.18881  0.1855  0.6719  1.38  0.81
+SI2  Si  0.19006  0.02407  0.3297  1.54  0.81
+SI3  Si  0.07689  0.18517  0.8357  1.29  0.81
+SI4  Si  0.07768  0.0221  0.1643  1.41  0.81
+SI5  Si  0.22108  0.083  0.5378  1.35  0.81
+SI6  Si  0.1227  0.08371  0.9656  1.35  0.81
+AL1  Al  0.18881  0.1855  0.6719  1.38  0.19
+AL2  Al  0.19006  0.02407  0.3297  1.54  0.19
+AL3  Al  0.07689  0.18517  0.8357  1.29  0.19
+AL4  Al  0.07768  0.0221  0.1643  1.41  0.19
+AL5  Al  0.22108  0.083  0.5378  1.35  0.19
+AL6  Al  0.1227  0.08371  0.9656  1.35  0.19
+O1  O  0.1882  0.25  0.6291  2.37  1
+O2  O  0.1194  0.1707  0.7322  2.67  1
+O3  O  0.195  0.1456  0.5679  2.76  1
+O4  O  0.19  0.0702  0.4236  2.85  1
+O5  O  0.1194  0.0319  0.2722  2.85  1
+O6  O  0.0893  0.25  0.8731  2.22  1
+O7  O  0  0.1738  0.8043  2.46  1
+O8  O  0  0.0263  0.1968  3.15  1
+O9  O  0.1944  0.0379  0.6204  4.26  1
+O10  O  0.0978  0.1464  0.9327  3.09  1
+O11  O  0.0959  0.0725  0.0813  3.48  1
+O12  O  0.2007  0.08  0.9682  5.61  1
+O13  O  0.0949  0.0395  0.8847  3.63  1
+O14  O  0.25  0.1755  0.75  3.15  1
+O15  O  0.25  -0.0375  0.75  3.39  1
+H2O1  O2-(H2O)  0  0.1735  0.136  55.26  1.85
+H2O2  O2-(H2O)  0.1936  0.1701  0.203  37.89  1.35
+H2O3  O2-(H2O)  0.193  0.25  0.057  19.74  0.92
+H2O4  O2-(H2O)  0.1074  0.1754  0.372  33.96  1.16
+H2O5  O2-(H2O)  0  0.175  0.57  113.7  3.2
+H2O6  O2-(H2O)  0  0.0284  0.429  26.07  0.91
+H2O7  O2-(H2O)  0.0562  0.1147  0.41  19.74  0.63
+H2O8  O2-(H2O)  0.0431  0.0812  0.626  21.33  0.77
+H2O9  O2-(H2O)  0.149  0.25  0.237  14.22  0.5
+H2O10  O2-(H2O)  0.106  0.25  0.086  15  0.61
+H2O11  O2-(H2O)  0.206  0.25  0.401  34.74  1.32
+
+# End of data for Boggsite
+
+
+			
+	

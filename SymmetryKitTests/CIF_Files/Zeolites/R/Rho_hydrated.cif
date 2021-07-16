@@ -1,0 +1,63 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Rho, hydrated 
+#
+# Reference : 
+#   McCusker, L.B. and Baerlocher, Ch.
+#   Proc. 6th Int. Zeolite Conf., , pp. 812-822, (1984)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Rho_hydrated
+_chemical_name_systematic 'Rho, hydrated'
+
+_cell_length_a      15.031
+_cell_length_b      15.031
+_cell_length_c      15.031 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I m -3 m'
+_symmetry_space_group_name_H-M   'I m -3 m'
+_symmetry_space_group_name_Hall  '-I 4 2 3'
+_space_group.IT_number  229 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.2768  0.2768  0.2768  6.3  0.18
+CS1  Cs  0  0  0.3554  0.3  0.26
+SI1  Si  0.25  0.1042  0.3958  3.2  0.749
+AL1  Al  0.25  0.1042  0.3958  3.2  0.251
+O1  O  0.2107  0  0.3834  5.6  1
+O2  O  0.1652  0.1652  0.3654  5.6  1
+H2O1  O2-(H2O)  0.0749  0.2096  0.2096  5.5  0.204
+H2O2  O2-(H2O)  0.0542  0.0542  0.2756  15  0.504
+H2O3  O2-(H2O)  0.0636  0.118  0.1735  15  0.305
+H2O4  O2-(H2O)  0  0  0.4295  15  0.717
+H2O5  O2-(H2O)  0  0  0  15  0.7
+
+# End of data for Rho_hydrated
+
+
+			
+	

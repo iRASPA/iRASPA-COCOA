@@ -1,0 +1,69 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for AlPO-11, calcined 
+#
+# Reference : 
+#   Richardson Jr., J.W., Pluth, J.J. and Smith, J.V.
+#   Acta Crystallogr., B44, 367-373, (1988)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_AlPO-11_calcined
+_chemical_name_systematic 'AlPO-11, calcined'
+
+_cell_length_a      13.5336
+_cell_length_b      18.4821
+_cell_length_c      8.3703 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I b m 2'
+_symmetry_space_group_name_H-M   'I b m 2'
+_symmetry_space_group_name_Hall  'I 2 -2b'
+_space_group.IT_number  46 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+AL1  Al  0.134  0.035  -0.199  2.76  1
+AL2  Al  0.949  0.102  0.317  3.54  1
+AL3  Al  0.85  0.25  -0.185  1.89  1
+P1  P  0.143  0.025  0.182  2.76  1
+P2  P  0.953  0.104  -0.306  3.54  1
+P3  P  0.857  0.25  0.185  1.89  1
+O1  O  0.143  0.039  0  12.15  1
+O2  O  0.945  0.105  0.517  6.09  1
+O3  O  0.86  0.25  0.024  9.72  1
+O4  O  0.242  0.068  0.243  5.04  1
+O5  O  0.068  0.088  0.252  5.37  1
+O51  O  0.057  0.091  -0.257  5.37  1
+O6  O  0.118  0.955  0.232  8.52  1
+O61  O  0.125  0.954  -0.264  8.52  1
+O7  O  0.913  0.179  0.232  8.76  1
+O71  O  0.909  0.177  -0.263  8.76  1
+O8  O  0.762  0.25  0.234  7.02  1
+
+# End of data for AlPO-11_calcined
+
+
+			
+	

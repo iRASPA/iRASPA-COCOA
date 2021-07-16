@@ -1,0 +1,66 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Garronite 
+#
+# Reference : 
+#   Artioli, G.
+#   Am. Mineral., 77, 189-196, (1992)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Garronite
+_chemical_name_systematic 'Garronite'
+
+_cell_length_a      9.9266
+_cell_length_b      9.9266
+_cell_length_c      10.3031 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I -4 m 2'
+_symmetry_space_group_name_H-M   'I -4 m 2'
+_symmetry_space_group_name_Hall  'I -4 -2'
+_space_group.IT_number  119 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0  0.281  0.223  6.32  0.1
+CA1  Ca  0  0.352  0.094  8.69  0.197
+CA2  Ca  0  0.238  0.107  8.69  0.155
+SI1  Si  0.1607  0.1607  0.5  3.08  0.65
+SI2  Si  0.3421  0.1579  0.25  4.03  0.65
+AL1  Al  0.1607  0.1607  0.5  3.08  0.35
+AL2  Al  0.3421  0.1579  0.25  4.03  0.35
+O11  O  0.1746  0  0.5351  2.68  1
+O12  O  0.3078  0  0.2192  2.53  1
+O2  O  0.2922  0.2488  0.1244  6.71  1
+H2O1  O2-(H2O)  0  0  0.159  9.24  1
+H2O21  O2-(H2O)  0.105  0.395  0.25  2.05  0.14
+H2O22  O2-(H2O)  0.161  0.433  0.234  2.05  0.24
+H2O3  O2-(H2O)  0  0.173  0.981  16.58  0.39
+
+# End of data for Garronite
+
+
+			
+	

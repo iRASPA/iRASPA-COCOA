@@ -1,0 +1,90 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for SSZ-58 
+#
+# Reference : 
+#   Burton, A., Elomari, S., Medrud, R.C., Chan, I.Y., Chen, C.-Y., Bull, L.M. and Vittoratos, E.S.
+#   J. Am. Chem. Soc., 125, 1633-1642, (2003)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_SSZ-58
+_chemical_name_systematic 'SSZ-58'
+
+_cell_length_a      25.1118
+_cell_length_b      12.4976
+_cell_length_c      12.8598 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P m m a'
+_symmetry_space_group_name_H-M   'P m m a'
+_symmetry_space_group_name_Hall  '-P 2a 2a'
+_space_group.IT_number  51 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.1345  0.1917  0.3447  1.88  1
+Si2  Si  0.153  0.1237  0.1137  1.88  1
+Si3  Si  0.0786  0.1952  0.741  1.88  1
+Si4  Si  0.1535  0.3784  0.6816  1.88  1
+Si5  Si  0.1887  0  0.4586  1.88  1
+Si6  Si  0.1499  0  0.6907  1.88  1
+Si7  Si  0.0195  0.1245  0.3833  1.88  1
+Si8  Si  0.1889  0.378  0.4545  1.88  1
+Si9  Si  0.25  0.1943  0.9882  1.88  1
+Si10  Si  0.25  0  0.8389  1.88  1
+Si11  Si  0.0582  0.1264  0.9634  1.88  1
+Si12  Si  0.25  0.376  0.8283  1.88  1
+O1  O  0.1638  0.1056  0.4152  3  1
+O2  O  0.0746  0.1842  0.3747  3  1
+O3  O  0.1534  0.311  0.3771  3  1
+O4  O  0.1463  0.1729  0.2272  3  1
+O5  O  0.2006  0.1842  0.064  3  1
+O6  O  0.1647  0  0.1211  3  1
+O7  O  0.1  0.147  0.0543  3  1
+O8  O  0.0749  0.1916  0.8617  3  1
+O9  O  0.0227  0.1767  0.6889  3  1
+O10  O  0.1193  0.1077  0.7007  3  1
+O11  O  0.1028  0.3124  0.7089  3  1
+O12  O  0.1343  0.5  0.6846  3  1
+O13  O  0.1753  0.3484  0.5709  3  1
+O14  O  0.1975  0.3467  0.7636  3  1
+O15  O  0.1792  0  0.581  3  1
+O16  O  0.25  0  0.4275  3  1
+O17  O  0.1997  0  0.7679  3  1
+O18  O  0  0.1429  0.5  3  1
+O19  O  0.0214  0  0.3626  3  1
+O20  O  0.25  0.3498  0.4374  3  1
+O21  O  0.1764  0.5  0.4277  3  1
+O22  O  0.25  0.3077  0.9318  3  1
+O23  O  0.25  0.1051  0.9037  3  1
+O24  O  0  0.1621  0  3  1
+O25  O  0.0586  0  0.931  3  1
+O26  O  0.25  0.5  0.8618  3  1
+
+# End of data for SSZ-58
+
+
+			
+	

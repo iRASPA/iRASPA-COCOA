@@ -1,0 +1,87 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ITQ-49, calcined 
+#
+# Reference : 
+#    Hernandez-Rodriguez, M., Jorda, J. L., Rey, F. and Corma, A.
+#   J. Am. Chem. Soc., 134, 13232-13235, (2012)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ITQ-49_calcined
+_chemical_name_systematic 'ITQ-49, calcined'
+
+_cell_length_a      19.6002
+_cell_length_b      18.3262
+_cell_length_c      16.5329 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I m m m'
+_symmetry_space_group_name_H-M   'I m m m'
+_symmetry_space_group_name_Hall  '-I 2 2'
+_space_group.IT_number  71 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.23459  0.1205  0.1779  6.4  0.797
+Ge1  Ge  0.23459  0.1205  0.1779  6.4  0.203
+Si2  Si  0.16434  0.38  0.1754  6.4  0.759
+Ge2  Ge  0.16434  0.38  0.1754  6.4  0.241
+Si3  Si  0  0.1411  0.0904  6.4  0.862
+Ge3  Ge  0  0.1411  0.0904  6.4  0.138
+Si4  Si  0.1374  0.2322  0.0951  6.4  0.924
+Ge4  Ge  0.1374  0.2322  0.0951  6.4  0.076
+Si5  Si  0.081  0.5  0.2561  6.4  0.839
+Ge5  Ge  0.081  0.5  0.2561  6.4  0.161
+Si6  Si  0.2451  0  0.406  6.4  0.66
+Ge6  Ge  0.2451  0  0.406  6.4  0.34
+Si7  Si  0.1475  0  0.2605  6.4  0.77
+Ge7  Ge  0.1475  0  0.2605  6.4  0.23
+Si8  Si  0.1838  0.5  0.4076  6.4  0.877
+Ge8  Ge  0.1838  0.5  0.4076  6.4  0.123
+Si9  Si  0  0  0.2063  6.4  0.928
+Ge9  Ge  0  0  0.2063  6.4  0.072
+O1  O  0.2893  0.145  0.2476  5.9  1
+O2  O  0.1712  0.0731  0.2131  5.9  1
+O3  O  0.2016  0.194  0.1379  5.9  1
+O4  O  0.2683  0.0714  0.1063  5.9  1
+O5  O  0.0984  0.4288  0.2018  5.9  1
+O6  O  0.2111  0.4257  0.1115  5.9  1
+O7  O  0.1268  0.3141  0.1269  5.9  1
+O8  O  0  0.1078  0  5.9  1
+O9  O  0.0678  0.1881  0.1091  5.9  1
+O10  O  0  0.0706  0.1493  5.9  1
+O11  O  0.1524  0.2347  0  5.9  1
+O12  O  0.1212  0.5  0.3425  5.9  1
+O13  O  0  0.5  0.2735  5.9  1
+O14  O  0.1741  0  0.3536  5.9  1
+O15  O  0.2191  0  0.5  5.9  1
+O16  O  0.0651  0  0.2647  5.9  1
+O17  O  0.1555  0.5  0.5  5.9  1
+
+# End of data for ITQ-49_calcined
+
+
+			
+	

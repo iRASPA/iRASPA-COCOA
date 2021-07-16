@@ -1,0 +1,70 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Nonasil, as-made 
+#
+# Reference : 
+#   Marler, B., Dehnbostel, N., Eulert, H.-H., Gies, H. and Liebau, F.
+#   J. Incl. Phenom., 4, 339-349, (1986)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Nonasil_as-made
+_chemical_name_systematic 'Nonasil, as-made'
+
+_cell_length_a      22.232
+_cell_length_b      15.058
+_cell_length_c      13.627 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'F m m m'
+_symmetry_space_group_name_H-M   'F m m m'
+_symmetry_space_group_name_Hall  '-F 2 2'
+_space_group.IT_number  69 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+SI1  Si  0.3745  0.1635  0.3103  1.66  1
+SI2  Si  0.2798  0.5  0.5  2.05  1
+SI3  Si  0.295  0.327  0  2.84  1
+SI4  Si  0.5  0.1051  0.6156  0.32  1
+SI5  Si  0.3173  0.5  0.2831  2.29  1
+O1  O  0.3356  0.3282  0.9056  5.13  1
+O2  O  0.4427  0.1462  0.3374  1.97  1
+O3  O  0.352  0.405  0.2525  10.11  1
+O4  O  0.2702  0.4329  0  12.79  1
+O5  O  0.3197  0.5  0.5937  3.4  1
+O6  O  0.3667  0.25  0.25  17.13  1
+O7  O  0  0  0.1392  2.05  1
+O8  O  0.5  0.1155  0.5  0.39  1
+O9  O  0.25  0  0.25  1.82  1
+O10  O  0.25  0.25  0  9.95  1
+C1  C  0.5  0.4489  0.57  19.11  1
+C2  C  0.4659  0.3547  0.5  10.11  1
+C3  C  0  0  0.5  32.37  1
+
+# End of data for Nonasil_as-made
+
+
+			
+	

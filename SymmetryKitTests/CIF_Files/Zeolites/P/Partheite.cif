@@ -1,0 +1,68 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Partheite 
+#
+# Reference : 
+#   Engel, N. and Yvon, K.
+#   Z. Kristallogr., 169, 165-175, (1984)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Partheite
+_chemical_name_systematic 'Partheite'
+
+_cell_length_a      21.555
+_cell_length_b      8.761
+_cell_length_c      9.304 
+_cell_angle_alpha   90 
+_cell_angle_beta    91.55 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/c 1'
+_symmetry_space_group_name_H-M   'C 1 2/c 1'
+_symmetry_space_group_name_Hall  '-C 2yc'
+_space_group.IT_number  15 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+CA  Ca  0.35586  0.1991  0.0444  0.93  1
+SI1  Si  0.06729  0.1832  0.2896  0.53  1
+SI2  Si  0.23983  0.0077  0.4621  0.46  1
+AL1  Al  0.1161  0.0844  0.6006  0.56  1
+AL2  Al  0.1999  0.3162  0.2858  0.51  1
+O1  O  0.0695  0.0181  0.2162  0.73  1
+O2  O  0.0725  0.1719  0.4626  0.84  1
+O3  O  0.1222  0.2883  0.2295  0.89  1
+O4  O  0.1722  0.0363  0.025  0.86  1
+O5  O  0.2081  0.4669  0.4096  0.71  1
+O6  O  0.2345  0.155  0.3605  0.84  1
+O7  O  0.234  0.3599  0.1221  0.76  1
+O8  O  0  0.2632  0.25  0.63  1
+OH  O1-(OH)  0.3523  0.2673  0.2918  1.11  1
+H2O1  O2-(H2O)  0.0712  0.505  0.0159  2.62  1
+H2O2  O2-(H2O)  0.4541  0.307  0.08  1.72  1
+
+# End of data for Partheite
+
+
+			
+	

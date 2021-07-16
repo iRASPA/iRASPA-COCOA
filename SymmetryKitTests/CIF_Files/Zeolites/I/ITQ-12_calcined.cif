@@ -1,0 +1,63 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ITQ-12, calcined 
+#
+# Reference : 
+#   Yang, X.B., Camblor, M.A., Lee, Y., Liu, H.M. and Olson, D.H.
+#   J. Am. Chem. Soc., 126, 10403-10409, (2004)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ITQ-12_calcined
+_chemical_name_systematic 'ITQ-12, calcined'
+
+_cell_length_a      10.3359
+_cell_length_b      15.0175
+_cell_length_c      8.8638 
+_cell_angle_alpha   90 
+_cell_angle_beta    105.35 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/m 1'
+_symmetry_space_group_name_H-M   'C 1 2/m 1'
+_symmetry_space_group_name_Hall  '-C 2y'
+_space_group.IT_number  12 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.6486  0.2442  0.1082  0.726  1
+Si2  Si  0.6957  0.3997  0.6684  0.726  1
+Si3  Si  0.6  0.39893  0.3085  0.726  1
+O4  O  0.5  0.221  0  1.11  1
+O5  O  0.8072  0.3381  0.7758  1.11  1
+O6  O  0.6205  0.5  0.2672  1.11  1
+O7  O  0.6569  0.3365  0.1964  1.11  1
+O8  O  0.4417  0.3801  0.2808  1.11  1
+O9  O  0.6797  0.3767  0.4863  1.11  1
+O10  O  0.75  0.25  0  1.11  1
+O11  O  0.7394  0.5  0.7134  1.11  1
+
+# End of data for ITQ-12_calcined
+
+
+			
+	

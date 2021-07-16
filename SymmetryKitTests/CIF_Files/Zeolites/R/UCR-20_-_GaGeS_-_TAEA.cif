@@ -1,0 +1,57 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for UCR-20 - GaGeS - TAEA 
+#
+# Reference : 
+#   Zheng, N., Bu, X., Wang, B. and Feng, P.
+#   Science, 298, 2366-2369, (2002)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_UCR-20_-_GaGeS_-_TAEA
+_chemical_name_systematic 'UCR-20 - GaGeS - TAEA'
+
+_cell_length_a      20.9352
+_cell_length_b      20.9352
+_cell_length_c      20.9352 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I -4 3 m'
+_symmetry_space_group_name_H-M   'I -4 3 m'
+_symmetry_space_group_name_Hall  'I -4 2 3'
+_space_group.IT_number  217 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ga1  Ga  0.06653  0.1905  0.44781  2.84  1
+S2  S  0.13182  0.13182  0.385  3.29  1
+S3  S  0.01392  0.24862  0.37401  3.49  1
+S4  S  0  0.1242  0.5  3.61  1
+N1  N  -0.059  0.059  0.059  7.58  2.57
+
+# End of data for UCR-20_-_GaGeS_-_TAEA
+
+
+			
+	

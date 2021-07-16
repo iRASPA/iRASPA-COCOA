@@ -1,0 +1,76 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Phillipsite 
+#
+# Reference : 
+#   Rinaldi, R., Pluth, J.J. and Smith, J.V.
+#   Acta Crystallogr., B30, 2426-2433, (1974)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Phillipsite
+_chemical_name_systematic 'Phillipsite'
+
+_cell_length_a      9.865
+_cell_length_b      14.3
+_cell_length_c      8.668 
+_cell_angle_alpha   90 
+_cell_angle_beta    124.2 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 21/m 1'
+_symmetry_space_group_name_H-M   'P 1 21/m 1'
+_symmetry_space_group_name_Hall  '-P 2yb'
+_space_group.IT_number  11 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+K1  K  0.848  0.25  0.2076  2.4  1
+CA  Ca  0.608  0.6262  0.4401  2.14  0.412
+SI1  Si  0.7362  0.0248  0.2805  1.08  0.669
+SI2  Si  0.4206  0.1409  0.0019  1.06  0.669
+SI3  Si  0.0604  0.0078  0.2844  1.11  0.669
+SI4  Si  0.1204  0.1396  0.0421  1.14  0.669
+AL1  Al  0.7362  0.0248  0.2805  1.08  0.331
+AL2  Al  0.4206  0.1409  0.0019  1.06  0.331
+AL3  Al  0.0604  0.0078  0.2844  1.11  0.331
+AL4  Al  0.1204  0.1396  0.0421  1.14  0.331
+O1  O  0.1335  0.0976  0.2289  2.04  1
+O2  O  0.6445  0.5766  0.1878  1.94  1
+O3  O  0.61  0.113  0.1728  1.89  1
+O4  O  0.0254  0.9154  0.1494  1.85  1
+O5  O  0.8957  0.044  0.2713  2.06  1
+O6  O  0.3022  0.3738  0.0783  2.32  1
+O7  O  0.7872  0.4795  0.4982  1.9  1
+O8  O  0.5814  0.75  0.0616  1.94  1
+O9  O  0.0665  0.25  0.0196  2.12  1
+H2O1  O2-(H2O)  0.7551  0.75  0.4733  7.8  1
+H2O2  O2-(H2O)  0.1552  0.75  0.4382  7.3  1
+H2O3  O2-(H2O)  0.3208  0.8525  0.174  8.8  1
+H2O4  O2-(H2O)  0.5085  0.25  0.4384  18.7  1
+H2O5  O2-(H2O)  0.5  0.5  0.5  16.6  1
+
+# End of data for Phillipsite
+
+
+			
+	

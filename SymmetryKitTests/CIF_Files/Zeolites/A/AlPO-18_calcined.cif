@@ -1,0 +1,70 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for AlPO-18, calcined 
+#
+# Reference : 
+#   Simmen, A., McCusker, L.B., Baerlocher, Ch. and Meier, W.M.
+#   Zeolites, 11, 654-661, (1991)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_AlPO-18_calcined
+_chemical_name_systematic 'AlPO-18, calcined'
+
+_cell_length_a      13.7114
+_cell_length_b      12.7315
+_cell_length_c      18.5706 
+_cell_angle_alpha   90 
+_cell_angle_beta    90.01 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/c 1'
+_symmetry_space_group_name_H-M   'C 1 2/c 1'
+_symmetry_space_group_name_Hall  '-C 2yc'
+_space_group.IT_number  15 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+AL1  Al  0.88997  0.95872  0.16598  0.75  1
+AL2  Al  0.88129  0.22661  0.93877  0.96  1
+AL3  Al  0.22953  0.09687  0.04922  1.42  1
+P1  P  0.77251  0.09559  0.05384  1.42  1
+P2  P  0.10981  0.23135  0.93763  0.96  1
+P3  P  0.11634  0.96983  0.16394  0.75  1
+O1  O  0.17723  0.05318  0.12913  0.72  1
+O2  O  0.14278  0.16702  0.00209  0.72  1
+O3  O  0.00371  0.25884  0.94574  0.72  1
+O4  O  0.84714  0.16747  0.02039  0.72  1
+O5  O  0.81686  0.04552  0.12009  0.72  1
+O6  O  0.01022  0.99732  0.15632  0.72  1
+O7  O  0.13601  0.8626  0.1323  0.72  1
+O8  O  0.33199  0.16953  0.06981  0.72  1
+O9  O  0.85795  0.96546  0.25665  0.72  1
+O10  O  0.81531  0.33988  0.92509  0.72  1
+O11  O  0.12779  0.16274  0.8723  0.72  1
+O12  O  0.26213  -0.01281  0.99849  0.72  1
+
+# End of data for AlPO-18_calcined
+
+
+			
+	

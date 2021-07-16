@@ -1,0 +1,59 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Analcime 
+#
+# Reference : 
+#   Ferraris, G., Jones, D.W. and Yerkess, J.
+#   Z. Kristallogr., 135, 240-252, (1972)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Analcime
+_chemical_name_systematic 'Analcime'
+
+_cell_length_a      13.73
+_cell_length_b      13.73
+_cell_length_c      13.73 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I a -3 d'
+_symmetry_space_group_name_H-M   'I a -3 d'
+_symmetry_space_group_name_Hall  '-I 4bd 2c 3'
+_space_group.IT_number  230 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.125  0  0.25  0.32  0.6667
+SI1  Si  0.66208  -0.41208  0.125  0.14  0.6667
+AL1  Al  0.66208  -0.41208  0.125  0.14  0.3333
+O1  O  0.10428  0.1344  0.71932  0.29  1
+H1  H  0.0791  0.0791  0.0791  1.05  0.25
+H2  H  0.1402  0.1006  0.0548  0.83  0.25
+O2  O  0.125  0.125  0.125  0.69  1
+
+# End of data for Analcime
+
+
+			
+	

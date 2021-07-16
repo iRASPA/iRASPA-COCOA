@@ -1,0 +1,62 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ACP-1 
+#
+# Reference : 
+#   Feng, P., Bu, X. and Stucky, G.D.
+#   Nature, 388, 735-741, (1997)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ACP-1
+_chemical_name_systematic 'ACP-1'
+
+_cell_length_a      10.24
+_cell_length_b      10.24
+_cell_length_c      9.652 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I -4 2 m'
+_symmetry_space_group_name_H-M   'I -4 2 m'
+_symmetry_space_group_name_Hall  'I -4 2'
+_space_group.IT_number  121 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Co1  Co  0.6332  0.3668  0.1316  3.79  0.89
+Al1  Al  0.6332  0.3668  0.1316  3.79  0.11
+P1  P  0.6647  0.3353  0.8092  4.34  1
+O1  O  0.6999  0.3001  0.9553  5.37  1
+O2  O  0.4818  0.3036  0.2179  6  1
+O3  O  0.7417  0.2583  0.7049  11.2  1
+N1  N  0.5  0.1847  0.5  4.03  1
+C1  C  0.5017  0.0444  0.568  3  0.5
+O10  O  0.5  0.5  0  4.82  0.5
+O20  O  0.5  0.5  0.5  8.37  0.5
+
+# End of data for ACP-1
+
+
+			
+	

@@ -1,0 +1,65 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Nitridophosphate-1 
+#
+# Reference : 
+#   Correll, S., Oeckler, O., Stock, N. and Schnick, W.
+#   Angew. Chem. Int. Ed., 42, 3549-3552, (2003)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Nitridophosphate-1
+_chemical_name_systematic 'Nitridophosphate-1'
+
+_cell_length_a      4.753
+_cell_length_b      14.208
+_cell_length_c      8.203 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P n a 21'
+_symmetry_space_group_name_H-M   'P n a 21'
+_symmetry_space_group_name_Hall  'P 2c -2n'
+_space_group.IT_number  33 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+P1  P  0.8233  0.4357  0.1421  0.91  1
+P2  P  0.6749  0.5033  -0.1774  0.89  1
+P3  P  0.7917  0.3092  -0.123  1.01  1
+N1  N  0.7703  0.5199  0.0041  1.26  1
+N2  N  0.707  0.3971  -0.2369  1.11  1
+N3  N  0.7442  0.3325  0.0672  1.03  1
+N4  N  0.35  0.5398  -0.1923  1.03  1
+N5  N  0.6184  0.2153  -0.1677  0.95  1
+N6  N  0.1515  0.4292  0.1987  1.11  1
+Cl1  Cl  0.989  0.251  0.441  12.5  0.64
+Li1  Li  0.833  0.145  0.623  2.61  0.54
+Li2  Li  0.181  0.602  0.008  2.61  0.5
+Li3  Li  0.862  0.203  0.2  2.61  0.43
+
+# End of data for Nitridophosphate-1
+
+
+			
+	

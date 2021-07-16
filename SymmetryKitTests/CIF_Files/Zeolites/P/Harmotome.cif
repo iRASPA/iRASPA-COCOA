@@ -1,0 +1,77 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Harmotome 
+#
+# Reference : 
+#   Rinaldi, R., Pluth, J.J. and Smith, J.V.
+#   Acta Crystallogr., B30, 2426-2433, (1974)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Harmotome
+_chemical_name_systematic 'Harmotome'
+
+_cell_length_a      9.879
+_cell_length_b      14.139
+_cell_length_c      8.693 
+_cell_angle_alpha   90 
+_cell_angle_beta    124.81 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 21/m 1'
+_symmetry_space_group_name_H-M   'P 1 21/m 1'
+_symmetry_space_group_name_Hall  '-P 2yb'
+_space_group.IT_number  11 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+BA  Ba  0.8629  0.25  0.19441  1.79  1
+CA  Ca  0.5869  0.6286  0.4799  0  0.15
+SI1  Si  0.7367  0.0248  0.284  0.82  0.75
+SI2  Si  0.4214  0.141  0.0136  0.77  0.75
+SI3  Si  0.0577  0.0075  0.2898  0.78  0.75
+SI4  Si  0.1216  0.139  0.0375  0.85  0.75
+AL1  Al  0.7367  0.0248  0.284  0.82  0.25
+AL2  Al  0.4214  0.141  0.0136  0.77  0.25
+AL3  Al  0.0577  0.0075  0.2898  0.78  0.25
+AL4  Al  0.1216  0.139  0.0375  0.85  0.25
+O1  O  0.1042  0.0896  0.1958  2.45  1
+O2  O  0.647  0.5726  0.1679  1.8  1
+O3  O  0.6163  0.1186  0.1792  1.58  1
+O4  O  0.005  0.9083  0.1711  2.05  1
+O5  O  0.9057  0.0515  0.2955  1.47  1
+O6  O  0.3137  0.3709  0.1017  1.84  1
+O7  O  0.7808  0.4856  0.4976  1.68  1
+O8  O  0.5885  0.75  0.0573  1.76  1
+O9  O  0.0661  0.25  0.0256  1.99  1
+H2O1  O2-(H2O)  0.8004  0.75  0.4889  5.5  1
+H2O2  O2-(H2O)  0.1148  0.75  0.4593  4.8  1
+H2O3  O2-(H2O)  0.3027  0.8628  0.1324  5.8  1
+H2O4  O2-(H2O)  0.4611  0.75  0.5134  47  1
+H2O5  O2-(H2O)  0.5  0.5  0.5  35  1
+            
+
+# End of data for Harmotome
+
+
+			
+	

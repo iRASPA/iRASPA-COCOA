@@ -1,0 +1,66 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Tiptopite 
+#
+# Reference : 
+#   Peacor, D.R., Rouse, R.C. and Ahn, J.-H.
+#   Am. Mineral., 72, 816-820, (1987)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Tiptopite
+_chemical_name_systematic 'Tiptopite'
+
+_cell_length_a      11.655
+_cell_length_b      11.655
+_cell_length_c      4.692 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 63'
+_symmetry_space_group_name_H-M   'P 63'
+_symmetry_space_group_name_Hall  'P 6c'
+_space_group.IT_number  173 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+LI  Li  0.2207  0.1137  0.7486  2.32  0.483
+NA  Na  0.2207  0.1137  0.7486  2.32  0.283
+K  K  0.3333  0.6667  0.253  2.04  1
+CA  Ca  0.2207  0.1137  0.7486  2.32  0.1167
+BE  Be  0.338  0.418  0.746  0.63  1
+P1  P  0.0851  0.4167  0.75  0.5  1
+O1  O  0.1902  0.3843  0.6518  0.97  1
+O2  O  0.1378  0.5647  0.7027  0.75  1
+O3  O  0.0547  0.3801  0.0688  0.95  1
+O4  O  0.3302  0.3747  0.0862  0.65  1
+O5  O  0  0  0.253  2.67  1
+O6  O  0.064  0.13  0.378  1.58  0.25
+O7  O  0.066  0.13  0.097  1.58  0.25
+O8  O  0.168  0.322  0.236  1.58  0.17
+
+# End of data for Tiptopite
+
+
+			
+	

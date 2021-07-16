@@ -1,0 +1,71 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Scolecite 
+#
+# Reference : 
+#   Smith, J.V., Pluth, J.J., Artioli, G. and Ross, F.K.
+#   Proc. 6th Int. Zeolite Conf., , pp. 842-850, (1984)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Scolecite
+_chemical_name_systematic 'Scolecite'
+
+_cell_length_a      6.5222
+_cell_length_b      18.9678
+_cell_length_c      9.8398 
+_cell_angle_alpha   90 
+_cell_angle_beta    109.972 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 c 1'
+_symmetry_space_group_name_H-M   'C 1 c 1'
+_symmetry_space_group_name_Hall  'C -2yc'
+_space_group.IT_number  9 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+CA1  Ca  0.16217  0.14321  0.05204  0.76  1
+SI1  Si  0.5  0.37057  0  0.44  1
+SI2  Si  0.22996  0.33185  0.20022  0.43  1
+SI3  Si  0.54002  0.08259  0.33102  0.42  1
+AL1  Al  0.93441  0.46209  0.09971  0.45  1
+AL2  Al  0.35577  0.21663  0.43387  0.43  1
+O1  O  0.5425  0.03146  0.4608  0.85  1
+O2  O  0.4471  0.04597  0.1174  0.66  1
+O3  O  0.3834  0.15127  0.3157  0.77  1
+O4  O  0.1153  0.19942  0.4684  0.79  1
+O5  O  0.3536  0.29954  0.3584  0.63  1
+O6  O  0.0863  0.27133  0.0907  0.8  1
+O7  O  0.4143  0.3586  0.1343  0.91  1
+O8  O  0.0764  0.39545  0.215  0.89  1
+O9  O  0.7889  0.11007  0.3566  0.82  1
+O10  O  0.6603  0.43692  0.0339  0.92  1
+H2O1  O2-(H2O)  0.8906  0.0803  0.1082  2.22  1
+H2O2  O2-(H2O)  0.908  0.3263  0.4407  2.33  1
+H2O3  O2-(H2O)  0.5787  0.4454  0.3742  1.81  1
+
+# End of data for Scolecite
+
+
+			
+	

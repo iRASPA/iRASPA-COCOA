@@ -1,0 +1,73 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ITQ-40, partially calcined 
+#
+# Reference : 
+#   Corma, A., D&iacute;az-Caba&ntilde;as, M.J., Rey, F., Afeworki, M., Dorset, D.L., Soled, S.L., Strohmaier, K.G.
+#   Proc. Natl. Acad. Sci., 107, 13997-14002, (2010)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ITQ-40_partially_calcined
+_chemical_name_systematic 'ITQ-40, partially calcined'
+
+_cell_length_a      16.469
+_cell_length_b      16.469
+_cell_length_c      32.192 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 63/m m c'
+_symmetry_space_group_name_H-M   'P 63/m m c'
+_symmetry_space_group_name_Hall  '-P 6c 2c'
+_space_group.IT_number  194 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.4716  0.3314  0.0335  3.55  0.574
+Ge1  Ge  0.4716  0.3314  0.0335  3.55  0.426
+Si2  Si  0.366  0.4363  0.0628  3.55  0.574
+Ge2  Ge  0.366  0.4363  0.0628  3.55  0.426
+Si3  Si  0.2266  0.4531  0.1208  3.55  0.574
+Ge3  Ge  0.2266  0.4531  0.1208  3.55  0.426
+Si4  Si  0.2728  0.5456  0.2045  3.55  0.574
+Ge4  Ge  0.2728  0.5456  0.2045  3.55  0.426
+Si5  Si  0.33333  0.66667  0.0788  3.55  0.574
+Ge5  Ge  0.33333  0.66667  0.0788  3.55  0.426
+O1  O  0.466  0.2329  0.0514  14.13  1
+O2  O  0.5818  0.4182  0.0415  14.13  1
+O3  O  0.45  0.3237  0.9823  14.13  1
+O4  O  0.405  0.3594  0.0624  14.13  1
+O5  O  0.2907  0.4087  0.1022  14.13  1
+O6  O  0.4624  0.5376  0.0753  14.13  1
+O7  O  0.227  0.4539  0.1724  14.13  1
+O8  O  0.2809  0.5618  0.1019  14.13  1
+O9  O  0.2449  0.4899  0.25  14.13  1
+O10  O  0.2219  0.611  0.2001  14.13  1
+O11  O  0.33333  0.66667  0.0286  14.13  1
+
+# End of data for ITQ-40_partially_calcined
+
+
+			
+	

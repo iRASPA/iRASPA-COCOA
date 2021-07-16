@@ -1,0 +1,58 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Mg-BCTT 
+#
+# Reference : 
+#   Dollase, W.A. and Ross, C.R.
+#   Am. Mineral., 78, 627-632, (1993)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Mg-BCTT
+_chemical_name_systematic 'Mg-BCTT'
+
+_cell_length_a      8.957
+_cell_length_b      8.957
+_cell_length_c      5.281 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 4 m m'
+_symmetry_space_group_name_H-M   'I 4 m m'
+_symmetry_space_group_name_Hall  'I 4 -2'
+_space_group.IT_number  107 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.1805  0.1805  0  0.79  0.715
+Mg1  Mg  0.1805  0.1805  0  0.79  0.285
+O1  O  0.2144  0  0.0695  1.58  1
+O2  O  0.2889  0.2889  0.1914  1.58  1
+K1  K  0  0.5  0.296  2.37  0.64
+K2  K  0  0  0.4979  2.37  1
+
+# End of data for Mg-BCTT
+
+
+			
+	

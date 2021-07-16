@@ -1,0 +1,74 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Mg-STA-7 
+#
+# Reference : 
+#   Wright, P.A., Maple, M.J., Slawin, A.M.Z., Patinec, V., Aitken, R.A., Welsh, S. and Cox, P.A.
+#   J. Chem. Soc., Dalton Trans., , 1243-1248, (2000)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Mg-STA-7
+_chemical_name_systematic 'Mg-STA-7'
+
+_cell_length_a      18.7732
+_cell_length_b      18.7732
+_cell_length_c      9.4537 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 4/n'
+_symmetry_space_group_name_H-M   'P 4/n'
+_symmetry_space_group_name_Hall  '-P 4a'
+_space_group.IT_number  85 
+_space_group.IT_coordinate_system_code  '2'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Al1  Al  0.06412  0.66568  0.0809  2.04  0.8
+Al2  Al  0.95577  0.83599  0.8422  2.13  0.8
+Al3  Al  0.9493  0.43481  0.3358  1.99  0.8
+Mg1  Mg  0.06412  0.66568  0.0809  2.04  0.2
+Mg2  Mg  0.95577  0.83599  0.8422  2.13  0.2
+Mg3  Mg  0.9493  0.43481  0.3358  1.99  0.2
+P1  P  0.06413  0.55768  0.3363  2.12  1
+P2  P  0.94979  0.66685  0.8378  2.12  1
+P3  P  0.06624  0.8342  0.0942  2.15  1
+O1  O  0.0574  0.6243  0.2463  3.78  1
+O2  O  0.0754  0.5807  0.4878  3.73  1
+O3  O  0.1273  0.5128  0.2903  3.67  1
+O4  O  0.995  0.5162  0.3239  3.8  1
+O5  O  0.9849  0.6567  0.9811  3.6  1
+O6  O  0.9974  0.6359  0.7225  3.6  1
+O7  O  0.8779  0.6292  0.8402  3.9  1
+O8  O  0.9376  0.7442  0.8068  4.1  1
+O9  O  0.9979  0.8449  0.0127  3.88  1
+O10  O  0.1297  0.863  0.0146  3.62  1
+O11  O  0.0599  0.8703  0.2363  4.14  1
+O12  O  0.0795  0.7556  0.1207  3.97  1
+
+# End of data for Mg-STA-7
+
+
+			
+	

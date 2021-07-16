@@ -1,0 +1,64 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for UZM-25 calcined 
+#
+# Reference : 
+#   Knight, L.M., Miller, M.A., Koster, S.C., Gatter, M.G., Benin, A.I., Willis, R.R., Lewis, G.J. and Broach, R.W.
+#   Stud. Surf. Sci. Catal., 170A, 338-346, (2007)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_UZM-25_calcined
+_chemical_name_systematic 'UZM-25 calcined'
+
+_cell_length_a      7.385
+_cell_length_b      18.4453
+_cell_length_c      13.795 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C m c m'
+_symmetry_space_group_name_H-M   'C m c m'
+_symmetry_space_group_name_Hall  '-C 2c 2'
+_space_group.IT_number  63 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.2054  0.1776  0.4503  3.77  1
+Si2  Si  0  0.4204  0.4613  3.69  1
+Si3  Si  0.2921  0.2382  0.25  5.19  1
+Si4  Si  0  0.3631  0.25  5.29  1
+O1  O  0  0.1571  0.467  5.68  1
+O2  O  0.2456  0.1865  0.3393  7.5  1
+O3  O  0.3249  0.117  0.4971  6.71  1
+O4  O  0  0.5  0.5  7.5  1
+O5  O  0.1731  0.3123  0.25  6.95  1
+O6  O  0.5  0.2599  0.25  5.61  1
+O7  O  0  0.4151  0.3447  5.68  1
+O8  O  0.25  0.25  0.5  9.63  1
+
+# End of data for UZM-25_calcined
+
+
+			
+	

@@ -1,0 +1,66 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for RUB-13 
+#
+# Reference : 
+#   Vortmann, S., Marler, B., Gies, H. and Daniels, P.
+#   Microporous Materials, 4, 111-121, (1995)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_RUB-13
+_chemical_name_systematic 'RUB-13'
+
+_cell_length_a      9.659
+_cell_length_b      20.461
+_cell_length_c      9.831 
+_cell_angle_alpha   90 
+_cell_angle_beta    96.58 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/m 1'
+_symmetry_space_group_name_H-M   'C 1 2/m 1'
+_symmetry_space_group_name_Hall  '-C 2y'
+_space_group.IT_number  12 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+T1  Si  -0.00071  0.32074  0.34243  0.96  0.969
+T2  Si  0.40984  0.07574  0.12008  1.21  0.969
+T3  Si  0.25048  0.26603  0.21513  1.37  0.969
+T4  Si  0.15487  0.15272  0.01508  1.69  0.969
+O1  O  0  0.34053  0.5  1.76  1
+O2  O  0  0.12655  0  1.94  1
+O3  O  0.151  0.29265  0.3211  2.07  1
+O4  O  0.16628  0.21447  0.11538  2.59  1
+O5  O  0.25098  0.09473  0.07707  2.22  1
+O6  O  0.31018  0.32663  0.12877  2.43  1
+O7  O  -0.11737  0.26658  0.30066  2.6  1
+O8  O  0.42048  0  0.15383  2.3  1
+O9  O  -0.03047  0.38601  0.25539  2.53  1
+O10  O  0.5  0.09471  0  2.68  1
+
+# End of data for RUB-13
+
+
+			
+	

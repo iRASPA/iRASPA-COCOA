@@ -1,0 +1,80 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for AlPO-16, as-made  
+#
+# Reference : 
+#   Bennett, J.M. and Kirchner, R.M.
+#   Zeolites, 11, 502-506, (1991)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_AlPO-16_as-made_
+_chemical_name_systematic 'AlPO-16, as-made '
+
+_cell_length_a      13.3832
+_cell_length_b      13.3832
+_cell_length_c      13.3832 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'F 2 3'
+_symmetry_space_group_name_H-M   'F 2 3'
+_symmetry_space_group_name_Hall  'F 2 2 3'
+_space_group.IT_number  196 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+AL1  Al  0.1186  0.1186  0.1186  6.4  1
+P1  P  -0.1116  0.1116  0.1116  5.2  1
+P2  P  0.25  0.25  0.25  4.4  1
+AL2  Al  -0.25  0.25  0.25  2.5  1
+O1  O  -0.0078  0.1285  0.1495  3  1
+O2  O  0.1915  0.1915  0.1915  5  1
+O3  O  -0.1704  0.1704  0.1704  8  1
+N1  N  0.056  0.4329  0.0424  6  0.0833
+C1  C  0.0056  0.3916  -0.0462  6  0.0833
+C2  C  -0.0601  0.468  -0.0973  6  0.0833
+C3  C  0.1159  0.5193  0.0103  6  0.0833
+C4  C  0.0529  0.5988  -0.0393  6  0.0833
+C5  C  -0.0214  0.4689  0.1118  6  0.0833
+C6  C  -0.0878  0.5472  0.0646  6  0.0833
+C7  C  -0.0552  0.5662  -0.0418  6  0.0833
+H11  H  0.0566  0.3668  -0.0939  7  0.0833
+H12  H  -0.0351  0.3331  -0.0261  7  0.0833
+H21  H  -0.0382  0.4774  -0.1673  7  0.0833
+H22  H  -0.13  0.4437  -0.0995  7  0.0833
+H31  H  0.1506  0.5481  0.0691  7  0.0833
+H32  H  0.1686  0.4965  -0.0364  7  0.0833
+H41  H  0.0592  0.6627  -0.0025  7  0.0833
+H42  H  0.0772  0.611  -0.1081  7  0.0833
+H51  H  -0.0626  0.4116  0.1344  7  0.0833
+H52  H  0.0122  0.497  0.1722  7  0.0833
+H61  H  -0.1583  0.5246  0.0658  7  0.0833
+H62  H  -0.0845  0.6099  0.1036  7  0.0833
+H7  H  -0.0978  0.6173  -0.0741  7  0.0833
+
+# End of data for AlPO-16_as-made_
+
+
+			
+	

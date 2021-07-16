@@ -1,0 +1,82 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Deca-Dodecasil 3R, as-made 
+#
+# Reference : 
+#   Gies, H.
+#   Z. Kristallogr., 175, 93-104, (1986)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Deca-Dodecasil_3R_as-made
+_chemical_name_systematic 'Deca-Dodecasil 3R, as-made'
+
+_cell_length_a      13.86
+_cell_length_b      13.86
+_cell_length_c      40.891 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'R -3 m'
+_symmetry_space_group_name_H-M   'R -3 m'
+_symmetry_space_group_name_Hall  '-R 3 2"'
+_space_group.IT_number  166 
+_space_group.IT_coordinate_system_code  'H'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+SI1  Si  0.7267  0.0511  0.07  0.76  1
+SI2  Si  0.1264  0.2527  0.1095  0.76  1
+SI3  Si  0.202  0.4039  0.1711  0.2  1
+SI4  Si  0.1227  0.2454  0.2325  0.6  1
+SI5  Si  0.2256  0  0  0.82  1
+SI6  Si  0  0  0.2039  1.53  1
+SI7  Si  0  0  0.128  0.87  1
+O1  O  0.3576  0.3881  0.6358  2.37  1
+O2  O  0.2792  0.3749  0.5768  1.45  1
+O3  O  0.4067  0.2954  0.5889  1.96  1
+O4  O  0.2277  0.4554  0.6589  3.76  1
+O5  O  0.1767  0.3534  0.7447  2.24  1
+O6  O  0.3233  0.1616  0.5391  3.01  1
+O7  O  0.5401  0.27  0.5494  3.7  1
+O8  O  0.2713  0.5426  0.5529  2.49  1
+O9  O  0.178  0.3561  0.523  3.33  1
+O10  O  0.187  0  0.5  1.65  1
+O11  O  0  0  0.1661  4.47  1
+C512  C  0.5  0  0.5  15.112  1
+N1  N  0  0  0.4455  40.908  0.9
+C1  C  0  0  0.4095  37.228  0.9
+C2  C  0.0596  0.1192  0.3954  14.915  0.9
+C3  C  0.0596  0.1192  0.3577  28.274  0.9
+C4  C  0.1192  0.0596  0.3438  14.654  0.9
+N11  N  0  0  0.2815  15.728  0.1
+C11  C  0  0  0.3175  23.237  0.1
+C21  C  0.0596  0.1192  0.3317  8.598  0.1
+C31  C  0.0596  0.1192  0.3694  4.461  0.1
+C41  C  0.1192  0.0596  0.3833  15.404  0.1
+
+# End of data for Deca-Dodecasil_3R_as-made
+
+
+			
+	

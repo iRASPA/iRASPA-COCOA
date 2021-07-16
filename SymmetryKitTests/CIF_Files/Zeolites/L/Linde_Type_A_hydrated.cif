@@ -1,0 +1,66 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Linde Type A, hydrated 
+#
+# Reference : 
+#   Gramlich, V. and Meier, W.M.
+#   Z. Kristallogr., 133, 134-149 , (1971)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Linde_Type_A_hydrated
+_chemical_name_systematic 'Linde Type A, hydrated'
+
+_cell_length_a      24.61
+_cell_length_b      24.61
+_cell_length_c      24.61 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'F m -3 c'
+_symmetry_space_group_name_H-M   'F m -3 c'
+_symmetry_space_group_name_Hall  '-F 4c 2 3'
+_space_group.IT_number  226 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.1064  0.1064  0.1064  7.74  1
+SI1  Si  0  0.0929  0.1844  1.16  1
+AL1  Al  0  0.1864  0.0902  1  1
+O1  O  0  0.1116  0.2473  2.55  1
+O2  O  0  0.1463  0.1476  2.08  1
+O3  O  0.0538  0.0583  0.1704  2.45  1
+O4  O  0.02  0.03  0.064  25  0.115
+O5  O  0.03  0.02  0.064  25  0.115
+O6  O  0.1598  0.1598  0.1598  18.16  0.91
+O7  O  0.1155  0.167  0.262  33.43  0.325
+O8  O  0.167  0.1155  0.262  33.43  0.325
+O9  O  0.041  0.21  0.235  34.74  0.22
+O10  O  0.21  0.041  0.235  34.74  0.22
+O11  O  0.25  0.25  0.25  61.59  1.88
+
+# End of data for Linde_Type_A_hydrated
+
+
+			
+	

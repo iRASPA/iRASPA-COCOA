@@ -1,0 +1,97 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Afghanite 
+#
+# Reference : 
+#   Pobedimskaya, E.A., Rastsvetaeva, R.K., Terent&#8217;eva, L.E. and Sapozhnikov, A.N.
+#   Dokl. Akad. Nauk SSSR, 320, 882-886, (1991)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Afghanite
+_chemical_name_systematic 'Afghanite'
+
+_cell_length_a      12.761
+_cell_length_b      12.761
+_cell_length_c      21.416 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 63 m c'
+_symmetry_space_group_name_H-M   'P 63 m c'
+_symmetry_space_group_name_Hall  'P 6c -2c'
+_space_group.IT_number  186 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Na1  Na  0.216  -0.216  0.375  2.3  0.9
+Na2  Na  0.2238  -0.2238  0.1346  3.05  0.66
+Na3  Na  0.4707  0.5293  0.2482  2.59  0.85
+Na4  Na  0.4907  -0.4907  0.0064  2.92  0.83
+Na5  Na  0.4034  0.2017  0.6157  2.84  0.33
+Na6  Na  0.34  0.17  0.89  2.48  0.1
+Ca1  Ca  0.3333  0.6667  0.6226  1.47  1
+Ca2  Ca  0.3333  0.6667  0.8663  2.25  1
+Ca3  Ca  0  0  0.2594  0.88  1
+Ca4  Ca  0  0  0.0079  1.01  1
+Ca5  Ca  0.5162  0.0325  -0.0015  0.36  0.16
+Ca6  Ca  0.5051  0.0101  0.7422  0.87  0.14
+Si1  Si  0.2586  0.0061  0.502  0.59  0.5
+Si2  Si  0.0746  0.41  0.8758  1.2  0.5
+Si3  Si  0.0001  0.2572  0.2517  0.73  0.5
+Si4  Si  0.077  0.4091  0.6281  0.56  0.5
+Al1  Al  0.2586  0.0061  0.502  0.59  0.5
+Al2  Al  0.0746  0.41  0.8758  1.2  0.5
+Al3  Al  0.0001  0.2572  0.2517  0.73  0.5
+Al4  Al  0.077  0.4091  0.6281  0.56  0.5
+O1  O  0.3332  0.3169  0.6838  1.94  1
+O2  O  0.3481  0.3434  0.8107  0.5  1
+O3  O  0.1186  -0.1186  0.7533  1.89  1
+O4  O  0.3286  0.3309  0.4326  1.78  1
+O5  O  0.3453  0.3363  0.0586  1.79  1
+O6  O  0.1184  -0.1184  0.0009  0.13  1
+O7  O  0.1101  -0.1101  0.4935  4.05  1
+O8  O  0.1132  -0.1132  0.2445  1.22  1
+O9  O  0.449  -0.449  0.6177  1.19  1
+O10  O  0.4589  -0.4589  0.8715  1.51  1
+O11  O  0.212  -0.212  0.6247  1.97  1
+O12  O  0.2222  -0.2222  0.8677  0.88  1
+S1  S  0.3333  0.6667  0.2507  2.63  0.9
+S2  S  0.3333  0.6667  0.4598  2.23  1
+S3  S  0.3333  0.6667  0.0359  2.17  0.75
+O13  O  0.3333  0.6667  0.9688  3.67  1
+O15  O  0.6116  -0.6116  -0.0661  4.33  1
+O17  O  0.561  0.281  0.719  2.24  0.27
+O18  O  0.545  0.272  0.78  2.77  0.33
+O19  O  0.603  0.206  0.551  2.29  0.41
+O20  O  0.613  0.227  0.802  4.59  0.33
+Cl  Cl  0  0  0.1257  3.1  1
+O21  O  0.636  0.272  0.0163  3.45  0.33
+H2O14  O2-(H2O)  0.3333  0.6667  0.7474  3.31  1
+H2O16  O2-(H2O)  0  0  0.3766  5.89  1
+
+# End of data for Afghanite
+
+
+			
+	

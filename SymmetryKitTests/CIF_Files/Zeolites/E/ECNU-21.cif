@@ -1,0 +1,66 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ECNU-21 
+#
+# Reference : 
+#   Liu, X., Mao, W., Jiang, J., Lu, X., Peng, M., Xu, H., Han, L., Che, S. and Wu, P. 
+#   Chem. Eur. J., 25, 4520-4529, (2019)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ECNU-21
+_chemical_name_systematic 'ECNU-21'
+
+_cell_length_a      13.7419
+_cell_length_b      17.166
+_cell_length_c      5.0296 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 2 2 2'
+_symmetry_space_group_name_H-M   'C 2 2 2'
+_symmetry_space_group_name_Hall  'C 2 2'
+_space_group.IT_number  21 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ge1  Ge  0.208  0.334  0.979  3.3  0.019
+Si1  Si  0.208  0.334  0.979  3.3  0.981
+Ge2  Ge  0.2016  0.0908  0.47  3.3  0.032
+Si2  Si  0.2016  0.0908  0.47  3.3  0.968
+Si3  Si  0  0.1701  0.5  3.3  1
+Ge4  Ge  0  0.2824  0  3.3  0.07
+Si4  Si  0  0.2824  0  3.3  0.93
+O01  O  0.2349  0.3639  0.687  2.5  1
+O02  O  0.2444  0.1086  0.185  2.5  1
+O03  O  0.0938  0.3364  0.029  2.5  1
+O04  O  0.25  0.25  0.038  2.5  1
+O05  O  0.011  0.2262  0.751  2.5  1
+O06  O  0.2064  0  0.5  2.5  1
+O07  O  0.0924  0.115  0.477  2.5  1
+
+# End of data for ECNU-21
+
+
+			
+	

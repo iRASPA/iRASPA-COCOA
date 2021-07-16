@@ -1,0 +1,74 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ZSM-57, siliceous 
+#
+# Reference : 
+#   Schlenker, J.L., Higgins, J.B. and Valyocsik, E.W.
+#   Zeolites, 10, 293-296, (1990)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ZSM-57_siliceous
+_chemical_name_systematic 'ZSM-57, siliceous'
+
+_cell_length_a      7.451
+_cell_length_b      14.1711
+_cell_length_c      18.767 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I m m 2'
+_symmetry_space_group_name_H-M   'I m m 2'
+_symmetry_space_group_name_Hall  'I 2 -2'
+_space_group.IT_number  44 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+SI1  Si  0  0  0  0  1
+SI2  Si  0  0.2043  0.9486  0  1
+SI3  Si  0  0.6998  0.7986  0  1
+SI4  Si  0.2941  0  0.1176  0  1
+SI5  Si  0.2057  0.1963  0.1848  0  1
+SI6  Si  0.2939  0.7017  0.0427  0  1
+SI7  Si  0  0.5  0.8668  0  1
+SI8  Si  0.2945  0.5  0.9848  0  1
+O1  O  0  0.0915  0.9503  0  1
+O2  O  0.1754  0  0.0473  0  1
+O3  O  0  0.2369  0.8678  0  1
+O4  O  0.1755  0.2405  0.9876  0  1
+O5  O  0.8255  0.7253  0.7524  0  1
+O6  O  0  0.5912  0.8173  0  1
+O7  O  0.5  0  0.0946  0  1
+O8  O  0.2531  0.0916  0.1632  0  1
+O9  O  0  0.2031  0.2079  0  1
+O10  O  0.2441  0.2688  0.1221  0  1
+O11  O  0.5  0.7234  0.0276  0  1
+O12  O  0.5  0.5  0.9611  0  1
+O13  O  0.1748  0.5  0.9149  0  1
+O14  O  0.257  0.5917  0.0319  0  1
+
+# End of data for ZSM-57_siliceous
+
+
+			
+	

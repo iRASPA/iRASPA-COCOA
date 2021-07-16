@@ -10,7 +10,7 @@ import XCTest
 @testable import SymmetryKit
 import simd
 
-class SpaceGroupTests: XCTestCase
+class SpaceGroupSpglibTests: XCTestCase
 {
   let precision: Double = 1e-5
   
