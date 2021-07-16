@@ -1,0 +1,79 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for RUB-10, siliceous 
+#
+# Reference : 
+#   Gies, H. and Rius, J.
+#   Z. Kristallogr., 210, 475-480, (1995)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_RUB-10_siliceous
+_chemical_name_systematic 'RUB-10, siliceous'
+
+_cell_length_a      13.112
+_cell_length_b      12.903
+_cell_length_c      12.407 
+_cell_angle_alpha   90 
+_cell_angle_beta    113.5 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 21/a 1'
+_symmetry_space_group_name_H-M   'P 1 21/a 1'
+_symmetry_space_group_name_Hall  '-P 2yab'
+_space_group.IT_number  14 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.3003  0.1257  0.1207  0.01  1
+Si2  Si  0.2975  0.121  0.3594  0.01  1
+Si3  Si  0.0627  0.1268  0.3183  0.01  1
+Si4  Si  0.9222  0.1899  0.0622  0.01  1
+Si5  Si  0.0007  0.2581  0.4892  0.01  1
+Si6  Si  0.2992  0.889  0.1088  0.01  1
+Si7  Si  0.2864  0.8847  0.3504  0.01  1
+Si8  Si  0.0468  0.8885  0.334  0.01  1
+Si9  Si  0.9254  0.8006  0.0773  0.01  1
+O1  O  0.1789  0.1393  0.0177  0.01  1
+O2  O  0.341  0.0078  0.1248  0.01  1
+O3  O  0.3869  0.1999  0.0963  0.01  1
+O4  O  0.296  0.1544  0.2447  0.01  1
+O5  O  0.193  0.1528  0.3686  0.01  1
+O6  O  0.3934  0.1688  0.4555  0.01  1
+O7  O  0.3082  0.007  0.3699  0.01  1
+O8  O  0.0446  0.011  0.3542  0.01  1
+O9  O  0.0011  0.2062  0.372  0.01  1
+O10  O  0.0111  0.1359  0.1779  0.01  1
+O11  O  0.9756  0.2048  0.9673  0.01  1
+O12  O  0.8142  0.118  0.0063  0.01  1
+O13  O  0.1123  0.3247  0.5507  0.01  1
+O14  O  0.9967  0.1694  0.578  0.01  1
+O15  O  0.2787  0.8539  0.2222  0.01  1
+O16  O  0.3906  0.8156  0.0936  0.01  1
+O17  O  0.1721  0.8541  0.3608  0.01  1
+O18  O  0.9673  0.8607  0.2007  0.01  1
+
+# End of data for RUB-10_siliceous
+
+
+			
+	

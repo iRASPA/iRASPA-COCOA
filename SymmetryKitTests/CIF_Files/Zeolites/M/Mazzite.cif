@@ -1,0 +1,74 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Mazzite 
+#
+# Reference : 
+#   Galli, E.
+#   Rend. Soc. Ital. Mineral. Petrol., 31, 599-612, (1975)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Mazzite
+_chemical_name_systematic 'Mazzite'
+
+_cell_length_a      18.392
+_cell_length_b      18.392
+_cell_length_c      7.646 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 63/m m c'
+_symmetry_space_group_name_H-M   'P 63/m m c'
+_symmetry_space_group_name_Hall  '-P 6c 2c'
+_space_group.IT_number  194 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.5  0  0  4.61  0.05
+K1  K  0.5  0  0  4.61  0.42
+MG1  Mg  0.3333  0.6667  -0.25  2.71  1
+CA1  Ca  0.5  0  0  4.61  0.03
+CA2  Ca  0  0  0.072  23.2  0.22
+SI1  Si  0.1584  0.4902  0.25  1.05  0.73
+SI2  Si  0.3536  0.0933  0.0444  1.05  0.73
+AL1  Al  0.1584  0.4902  0.25  1.05  0.27
+AL2  Al  0.3536  0.0933  0.0444  1.05  0.27
+O1  O  0.2589  0.5178  0.25  2.38  1
+O2  O  0.4249  0.8498  0.25  1.9  1
+O3  O  0.3822  0.1004  0.25  2.14  1
+O4  O  0.4352  0.1114  -0.0721  2.27  1
+O5  O  0.1614  0.3228  -0.0016  1.96  1
+O6  O  0.2741  0  0  2.37  1
+H2O1  O2-(H2O)  0.467  0.934  0.661  6.4  0.5
+H2O2  O2-(H2O)  0.3333  0.6667  0.016  4.3  1
+H2O3  O2-(H2O)  0.271  0.542  -0.25  5.4  0.44
+H2O4  O2-(H2O)  0.566  0.355  0.25  6.9  0.44
+H2O5  O2-(H2O)  0.028  0.148  0.03  7.7  0.23
+H2O6  O2-(H2O)  0.088  0.176  0.25  21.8  0.89
+H2O7  O2-(H2O)  0.076  0.152  -0.25  31.2  0.45
+
+# End of data for Mazzite
+
+
+			
+	

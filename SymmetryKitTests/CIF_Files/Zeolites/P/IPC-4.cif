@@ -1,0 +1,107 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for IPC-4 
+#
+# Reference : 
+#   Roth, W.J., Nachtigall, P., Morris, R.E., Wheatley, P.S., Seymour, V.R., Ashbrook, S.E., Chlubna, P., Grajciar, L., Polozij, M., Zukal, A., Shvets, O. and Cejka, J.
+#   Nature Chemistry, , 628-633, (2013)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_IPC-4
+_chemical_name_systematic 'IPC-4'
+
+_cell_length_a      20.114
+_cell_length_b      13.956
+_cell_length_c      12.351 
+_cell_angle_alpha   90 
+_cell_angle_beta    114.8 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 m 1'
+_symmetry_space_group_name_H-M   'C 1 m 1'
+_symmetry_space_group_name_Hall  'C -2y'
+_space_group.IT_number  8 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.4804  0.8046  0.3859  3.24  1
+Si2  Si  0.0761  0.1988  0.8576  3.24  1
+Si3  Si  0.8481  0.798  0.8542  3.24  1
+Si4  Si  0.8406  0.8001  0.5996  3.24  1
+Si5  Si  0.8265  0.7945  0.2418  3.24  1
+Si6  Si  0.7599  0.7042  0.9811  3.24  1
+Si7  Si  0.7471  0.6928  0.3717  3.24  1
+Si8  Si  0.4789  0.8073  0.6312  3.24  1
+Si9  Si  0.5012  0.795  0.0076  3.24  1
+Si10  Si  0.565  0.3004  0.2579  3.24  1
+Si11  Si  0.4523  0  0.9413  3.24  1
+Si12  Si  0.8795  0  0.3199  3.24  1
+Si13  Si  0.3978  0.5  0.9357  3.24  1
+Si14  Si  0.4988  0.5  0.8139  3.24  1
+Si15  Si  0.3651  0.5  0.5609  3.24  1
+Si16  Si  0.4826  0.5  0.2031  3.24  1
+Si17  Si  0.9326  0.5  0.3243  3.24  1
+Si18  Si  0.8275  0.5  0.433  3.24  1
+Si19  Si  0.9153  0.5  0.6768  3.24  1
+Si20  Si  0.8365  0.5  0.0556  3.24  1
+O1  O  0.4812  0.9077  0.3316  3.71  1
+O2  O  0.5499  0.766  0.7443  3.71  1
+O3  O  0.4218  0.7513  0.9485  3.71  1
+O4  O  0.4168  0.7278  0.6008  3.71  1
+O5  O  0.0485  0.093  0.8259  3.71  1
+O6  O  0.0379  0.2377  0.3571  3.71  1
+O7  O  0.0374  0.2723  0.1489  3.71  1
+O8  O  1.0021  0.4063  -0.0174  3.71  1
+O9  O  0.0313  0.0943  0.2145  3.71  1
+O10  O  0.0496  0.2401  0.9522  3.71  1
+O11  O  0.9574  0.4064  0.6662  3.71  1
+O12  O  1.0016  0.315  0.5226  3.71  1
+O13  O  0.8498  0.9082  0.8763  3.71  1
+O14  O  0.7805  0.5923  0.3652  3.71  1
+O15  O  0.7831  0.7507  0.8831  3.71  1
+O16  O  0.7935  0.7612  0.1033  3.71  1
+O17  O  0.6687  0.7024  0.9246  3.71  1
+O18  O  0.6555  0.6913  0.3166  3.71  1
+O19  O  0.8361  0.9071  0.2511  3.71  1
+O20  O  0.7872  0.5943  0.0047  3.71  1
+O21  O  0.7676  0.7677  0.2932  3.71  1
+O22  O  0.8183  0.9067  0.5565  3.71  1
+O23  O  0.8393  0.7784  0.7246  3.71  1
+O24  O  0.7792  0.7291  0.5055  3.71  1
+O25  O  0.9006  0.7406  0.3178  3.71  1
+O26  O  0.9159  0  0.0751  3.71  1
+O27  O  0.9557  0  0.3078  3.71  1
+O28  O  0.4705  0.5  0.9158  3.71  1
+O29  O  0.4341  0.5  0.6858  3.71  1
+O30  O  0.9074  0.5  0.8003  3.71  1
+O31  O  0.8661  0.5  0.1955  3.71  1
+O32  O  0.8992  0.5  1.0086  3.71  1
+O33  O  0.9043  0.5  0.426  3.71  1
+O34  O  0.8366  0.5  0.5673  3.71  1
+O35  O  0.8904  0  0.4544  3.71  1
+
+# End of data for IPC-4
+
+
+			
+	

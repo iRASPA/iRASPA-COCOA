@@ -1,0 +1,66 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for AlPO-5, as-made 
+#
+# Reference : 
+#   Qiu, S., Pang, W., Kessler, H. and Guth, J.L.
+#   Zeolites, 9, 440-444, (1989)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_AlPO-5_as-made
+_chemical_name_systematic 'AlPO-5, as-made'
+
+_cell_length_a      13.74
+_cell_length_b      13.74
+_cell_length_c      8.474 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 6 c c'
+_symmetry_space_group_name_H-M   'P 6 c c'
+_symmetry_space_group_name_Hall  'P 6 -2c'
+_space_group.IT_number  184 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+P1  P  0.4529  0.3281  0.053  2.25  1
+AL1  Al  0.4571  0.3382  0.425  1.89  1
+O1  O  0.4214  0.209  0.008  4.18  1
+O2  O  0.455  0.3299  0.251  5.33  1
+O3  O  0.3658  0.3597  0.004  4.11  1
+O4  O  0.5742  0.4175  0.007  5.03  1
+C1  C  0.104  0.041  0.666  3.95  0.1667
+C2  C  0.125  0.979  0.75  3.95  0.1667
+C3  C  0.104  0.979  0.416  3.95  0.1667
+C4  C  0  0.895  0.5  3.95  0.1667
+C5  C  0.041  0.895  0.359  3.95  0.1667
+C6  C  0.082  0.957  0.221  3.95  0.1667
+N1  N  0  0  0.543  3.95  0.5
+F1  F  0.5  0.5  0.317  3.95  0.1667
+
+# End of data for AlPO-5_as-made
+
+
+			
+	

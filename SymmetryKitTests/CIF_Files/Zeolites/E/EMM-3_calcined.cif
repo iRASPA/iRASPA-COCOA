@@ -1,0 +1,77 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for EMM-3, calcined 
+#
+# Reference : 
+#   Afeworki, M., Dorset, D.L., Kennedy, G.J. and Strohmaier, K.G.
+#   Chem. Mater., 18, 1697-1704, (2006)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_EMM-3_calcined
+_chemical_name_systematic 'EMM-3, calcined'
+
+_cell_length_a      10.3132
+_cell_length_b      12.6975
+_cell_length_c      21.866 
+_cell_angle_alpha   89.656 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 2/m 1 1'
+_symmetry_space_group_name_H-M   'I 2/m 1 1'
+_symmetry_space_group_name_Hall  '-I 2x'
+_space_group.IT_number  12 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Al1  Al  0.2247  0.3744  0.1119  0.94  1
+Al2  Al  0  0.5563  0.65436  0.94  1
+Al3  Al  0  0.8722  0.79486  0.94  1
+Al4  Al  0  0.8762  0.43411  0.94  1
+Al5  Al  0.219  0.5  0.5  0.94  1
+P6  P  0.7784  0.1322  0.11182  0.94  1
+P7  P  0  0.6216  0.79177  0.94  1
+P8  P  0  0.6292  0.4322  0.94  1
+P9  P  0  0.9457  0.66029  0.94  1
+P10  P  0.7767  0  0.5  0.94  1
+O11  O  0  0.5584  0.73316  0.87  1
+O12  O  0  0.7391  0.7734  0.87  1
+O13  O  0  0.5766  0.3683  0.87  1
+O14  O  0  0.7454  0.4179  0.87  1
+O15  O  0.195  0.755  0.91026  0.87  1
+O16  O  0  0.952  0.72943  0.87  1
+O17  O  0  0.943  0.3667  0.87  1
+O18  O  0.1984  0.4528  0.05108  0.87  1
+O19  O  0.1196  0.4071  0.17172  0.87  1
+O20  O  0.3813  0.3856  0.13894  0.87  1
+O21  O  0.8785  0.4039  0.53492  0.87  1
+O22  O  0.8097  0.0611  0.057  0.87  1
+O23  O  0.8573  0.1001  0.16663  0.87  1
+O24  O  0.6346  0.1171  0.1242  0.87  1
+O25  O  0.1348  0.0904  0.523  0.87  1
+
+# End of data for EMM-3_calcined
+
+
+			
+	

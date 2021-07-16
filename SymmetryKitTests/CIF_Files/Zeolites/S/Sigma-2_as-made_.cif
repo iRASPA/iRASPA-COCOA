@@ -1,0 +1,70 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Sigma-2, as-made  
+#
+# Reference : 
+#   McCusker, L.B.
+#   J. Appl. Crystallogr., 21, 305-310, (1988)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Sigma-2_as-made_
+_chemical_name_systematic 'Sigma-2, as-made '
+
+_cell_length_a      10.2387
+_cell_length_b      10.2387
+_cell_length_c      34.3829 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 41/a m d'
+_symmetry_space_group_name_H-M   'I 41/a m d'
+_symmetry_space_group_name_Hall  '-I 4bd 2'
+_space_group.IT_number  141 
+_space_group.IT_coordinate_system_code  '2'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+SI1  Si  0.2843  0.25  0.1182  0.08  1
+SI2  Si  0.2811  0  0  0.16  1
+SI3  Si  0.1539  0.25  0.0349  0.08  1
+SI4  Si  0.151  0.25  0.1954  0.24  1
+O1  O  0  0.25  0.2072  1.03  1
+O2  O  0.2165  0.1201  0.2131  1.03  1
+O3  O  0.2297  0.25  0.0754  0.32  1
+O4  O  0.1689  0.25  0.1493  0.55  1
+O5  O  0  0.25  0.043  1.5  1
+O6  O  0.1913  0.1219  0.01  0.63  1
+O7  O  0.3729  0.1229  0.125  1.66  1
+C1  C  0.124  -0.126  0.125  7.9  0.3
+C2  C  0  -0.25  0.073  7.9  0.3
+C3  C  0  -0.126  0.099  7.9  0.3
+C4  C  0  -0.003  0.103  7.9  0.46
+C5  C  0.115  -0.151  0.086  7.9  0.53
+C6  C  0  -0.077  0.145  7.9  0.47
+
+# End of data for Sigma-2_as-made_
+
+
+			
+	

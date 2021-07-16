@@ -1,0 +1,65 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ITQ-50, calcined 
+#
+# Reference : 
+#   Jorda, J.L., Rey, F., Sastre, G., Valencia, S., Palomino, M., Corma, A., Segura, A., Errandonea, D., Lacomba, R., Manjon, F.J., Gomis, O., Kleppe, A.K., Jephcoat, A.P., Amboage, M. and Rodriguez-Velamazan, J.A.
+#   Angew. Chem. Int. Ed., 52, 10458-10462, (2013)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ITQ-50_calcined
+_chemical_name_systematic 'ITQ-50, calcined'
+
+_cell_length_a      15.3448
+_cell_length_b      15.3448
+_cell_length_c      11.8118 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 4/m b m'
+_symmetry_space_group_name_H-M   'P 4/m b m'
+_symmetry_space_group_name_Hall  '-P 4 2ab'
+_space_group.IT_number  127 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.09347  0.73141  0.1864  3.9  1
+Si2  Si  0.0284  0.32358  0  3.9  1
+Si3  Si  0.1684  0.1855  0  3.9  1
+Si4  Si  0.02832  0.86009  0.3699  3.9  1
+O1  O  0.1304  0.8108  0.1114  2.9  1
+O2  O  0.0459  0.7743  0.2952  2.9  1
+O3  O  0.1759  0.6759  0.23  2.9  1
+O4  O  0.0293  0.669  0.1137  2.9  1
+O5  O  0.0718  0.2273  0  2.9  1
+O6  O  0.1072  0.3928  0  2.9  1
+O7  O  0.2318  0.2682  0  2.9  1
+O8  O  0.0999  0.9337  0.3471  2.9  1
+O9  O  0.0348  0.8313  0.5  2.9  1
+
+# End of data for ITQ-50_calcined
+
+
+			
+	

@@ -1,0 +1,91 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for PUK-9 
+#
+# Reference : 
+#   Su, J., Wang, Y., Wang, Z. and Lin, J.
+#   J. Am. Chem. Soc., 131, 6080-6081, (2009)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_PUK-9
+_chemical_name_systematic 'PUK-9'
+
+_cell_length_a      15.578
+_cell_length_b      9.1704
+_cell_length_c      19.993 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P b c n'
+_symmetry_space_group_name_H-M   'P b c n'
+_symmetry_space_group_name_Hall  '-P 2n 2ab'
+_space_group.IT_number  60 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ge1  Ge  0.63216  0.79958  0.64727  1.41  0.78
+Ge2  Ge  0.49375  0.58373  0.59932  1.34  0.78
+Ge3  Ge  0.21865  0.40739  0.41086  1.63  0.78
+Ge4  Ge  0.36915  0.61943  0.47471  1.5  0.78
+Ge5  Ge  0.5  0.67442  0.75  1.35  0.78
+Al1  Al  0.63216  0.79958  0.64727  1.41  0.22
+Al2  Al  0.49375  0.58373  0.59932  1.34  0.22
+Al3  Al  0.21865  0.40739  0.41086  1.63  0.22
+Al4  Al  0.36915  0.61943  0.47471  1.5  0.22
+Al5  Al  0.5  0.67442  0.75  1.35  0.22
+O1  O  0.5591  0.7352  0.5875  2.08  1
+O2  O  0.3962  0.604  0.558  2.5  1
+O3  O  0.2804  0.5082  0.4643  2.45  1
+O4  O  0.2748  0.3028  0.3541  2.76  1
+O5  O  0.5855  0.7846  0.7261  2.57  1
+O6  O  0.4695  0.5644  0.6829  2.25  1
+O7  O  0.4568  0.5751  0.4258  2.57  1
+O8  O  0.6506  0.9833  0.6357  2.85  1
+O9  O  0.1552  0.3005  0.4619  2.9  1
+N1  N  0.6234  0.8917  0.3784  6.32  1
+C1  C  0.6539  0.7749  0.4168  12.6  1
+H1A  H  0.6063  0.7219  0.4351  19  1
+H1B  H  0.689  0.8116  0.4525  19  1
+H1C  H  0.6875  0.7113  0.3891  19  1
+C2  C  0.5659  0.8447  0.3274  19  1
+H2A  H  0.534  0.9265  0.3093  22.8  1
+H2B  H  0.5256  0.7734  0.3447  22.8  1
+C3  C  0.5763  0.987  0.4207  33.2  1
+H3A  H  0.5281  0.9352  0.4393  49.9  1
+H3B  H  0.5561  1.0685  0.3953  49.9  1
+H3C  H  0.6126  1.0202  0.4563  49.9  1
+C4  C  0.695  0.964  0.351  24.1  1
+H4A  H  0.6759  1.046  0.3249  36.2  1
+H4B  H  0.7264  0.8982  0.3228  36.2  1
+H4C  H  0.7316  0.9979  0.3864  36.2  1
+C5  C  0.626  0.774  0.2715  32.4  1
+H5A  H  0.5914  0.7375  0.2355  48.6  1
+H5B  H  0.6583  0.695  0.2907  48.6  1
+H5C  H  0.665  0.8464  0.2547  48.6  1
+
+# End of data for PUK-9
+
+
+			
+	

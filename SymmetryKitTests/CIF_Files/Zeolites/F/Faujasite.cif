@@ -1,0 +1,63 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Faujasite 
+#
+# Reference : 
+#   Baur, W.H.
+#   Am. Mineral., 49, 697-704, (1964)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Faujasite
+_chemical_name_systematic 'Faujasite'
+
+_cell_length_a      24.74
+_cell_length_b      24.74
+_cell_length_c      24.74 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'F d -3 m'
+_symmetry_space_group_name_H-M   'F d -3 m'
+_symmetry_space_group_name_Hall  '-F 4vw 2vw 3'
+_space_group.IT_number  227 
+_space_group.IT_coordinate_system_code  '2'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.0699  0.0699  0.0699  2.6  0.162
+CA1  Ca  0.0699  0.0699  0.0699  2.6  0.078
+SI1  Si  0.12544  0.94655  0.03626  1.2  0.7
+AL1  Al  0.12544  0.94655  0.03626  1.2  0.3
+O1  O  0.1742  0.1742  0.968  2.8  1
+O2  O  0.1773  0.1773  0.3232  2.5  1
+O3  O  0.2527  0.2527  0.1435  2.5  1
+O4  O  0.1053  0.8947  0  2.8  1
+H2O1  O2-(H2O)  0.1673  0.1673  0.1673  3.2  0.42
+H2O2  O2-(H2O)  0.272  0.272  0.272  3.9  0.42
+
+# End of data for Faujasite
+
+
+			
+	

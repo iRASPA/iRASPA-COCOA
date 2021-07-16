@@ -1,0 +1,65 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Chabazite 
+#
+# Reference : 
+#   Calligaris, M., Nardin, G. and Randaccio, L.
+#   Zeolites, 3, 205-208, (1983)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Chabazite
+_chemical_name_systematic 'Chabazite'
+
+_cell_length_a      9.459
+_cell_length_b      9.459
+_cell_length_c      9.459 
+_cell_angle_alpha   94.07 
+_cell_angle_beta    94.07 
+_cell_angle_gamma   94.07
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'R -3 m'
+_symmetry_space_group_name_H-M   'R -3 m'
+_symmetry_space_group_name_Hall  '-P 3* 2'
+_space_group.IT_number  166 
+_space_group.IT_coordinate_system_code  'R'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+K1  K  0.2222  0.2222  0.2222  2.075  0.97
+K2  K  0.5611  0.5611  0.2506  9.017  0.15
+K3  K  0.5255  0.5255  0.1064  9.96  0.22
+SI1  Si  0.1033  0.3331  0.8743  0.89  0.68
+AL1  Al  0.1033  0.3331  0.8743  0.89  0.32
+O1  O  0.2665  -0.2665  0  2.375  1
+O2  O  0.1506  -0.1506  0.5  2.076  1
+O3  O  0.2503  0.2503  0.893  2.216  1
+O4  O  0.0204  0.0204  0.3193  2.213  1
+H2O1  O2-(H2O)  0  0.5  0.5  12.633  0.61
+H2O2  O2-(H2O)  0.7387  0.7387  0.4784  8.133  0.77
+H2O3  O2-(H2O)  0.4469  0.4469  0.226  12.633  0.13
+
+# End of data for Chabazite
+
+
+			
+	

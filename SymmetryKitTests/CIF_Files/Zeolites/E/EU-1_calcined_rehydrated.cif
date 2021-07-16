@@ -1,0 +1,89 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for EU-1, calcined, rehydrated 
+#
+# Reference : 
+#   Briscoe, N.A., Johnson, D.W., Shannon, M.D., Kokotailo, G.T. and McCusker, L.B.
+#   Zeolites, 8, 74-76, (1988)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_EU-1_calcined_rehydrated
+_chemical_name_systematic 'EU-1, calcined, rehydrated'
+
+_cell_length_a      13.695
+_cell_length_b      22.326
+_cell_length_c      20.178 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C m m a'
+_symmetry_space_group_name_H-M   'C m m a'
+_symmetry_space_group_name_Hall  '-C 2b 2'
+_space_group.IT_number  67 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.115  0.25  0.123  1.184  1
+Si2  Si  0.187  0.3703  0.063  1.184  1
+Si3  Si  0.289  0.4315  0.185  1.184  1
+Si4  Si  0  0.448  0.053  1.184  1
+Si5  Si  0  0.528  0.181  1.184  1
+Si6  Si  0.117  0.25  0.277  1.184  1
+Si7  Si  0.191  0.3739  0.308  1.184  1
+Si8  Si  0.287  0.4302  0.431  1.184  1
+Si9  Si  0  0.45  0.308  1.184  1
+Si10  Si  0  0.534  0.432  1.184  1
+O1  O  0  0.25  0.113  2.369  1
+O2  O  0.158  0.3068  0.089  2.369  1
+O3  O  0.139  0.25  0.199  2.369  1
+O4  O  0.25  0.363  0  2.369  1
+O5  O  0.245  0.405  0.118  2.369  1
+O6  O  0.094  0.407  0.044  2.369  1
+O7  O  0.25  0.5  0.196  2.369  1
+O8  O  0.405  0.431  0.176  2.369  1
+O9  O  0.26  0.389  0.246  2.369  1
+O10  O  0  0.5  0  2.369  1
+O11  O  0  0.477  0.126  2.369  1
+O12  O  0  0.497  0.251  2.369  1
+O13  O  0  0.25  0.289  2.369  1
+O14  O  0.164  0.3065  0.309  2.369  1
+O15  O  0.094  0.409  0.303  2.369  1
+O16  O  0.244  0.391  0.374  2.369  1
+O17  O  0.25  0.5  0.424  2.369  1
+O18  O  0.25  0.403  0.5  2.369  1
+O19  O  0.404  0.425  0.427  2.369  1
+O20  O  0  0.485  0.376  2.369  1
+O21  O  0  0.5  0.5  2.369  1
+O51  O  0.25  0.2  0.5  3.948  1.01
+O52  O  0.4  0.25  0.382  3.948  1.27
+O53  O  0.5  0.125  0.067  3.948  0.53
+O54  O  0.5  0.186  0.298  3.948  0.68
+O55  O  0.5  0.202  0.176  3.948  0.63
+O56  O  0  0.183  0.45  3.948  0.4
+
+# End of data for EU-1_calcined_rehydrated
+
+
+			
+	

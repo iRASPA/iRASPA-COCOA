@@ -1,0 +1,81 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for UCSB-6GaCo 
+#
+# Reference : 
+#   
+#   , , , ()
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_UCSB-6GaCo
+_chemical_name_systematic 'UCSB-6GaCo'
+
+_cell_length_a      17.8356
+_cell_length_b      17.8356
+_cell_length_c      27.1816 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -3 1 c'
+_symmetry_space_group_name_H-M   'P -3 1 c'
+_symmetry_space_group_name_Hall  '-P 3 2c'
+_space_group.IT_number  163 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ga1  Ga  -0.1059  0.2593  0.5978  3.1  1
+Ga2  Ga  -0.3132  -0.0696  0.5392  2.8  1
+Co3  Co  -0.3324  0.1607  0.6925  1.8  1
+Co4  Co  0.1597  0.4754  0.4858  2.3  1
+P1  P  0.0636  0.3015  0.549  2  1
+P2  P  -0.2758  0.0833  0.6104  2.4  1
+P3  P  0.3445  0.4963  0.489  2.4  1
+P4  P  -0.1572  0.3339  0.6866  2.2  1
+O1  O  -0.1815  0.1465  0.6031  8.5  1
+O2  O  -0.0993  0.3059  0.6604  3.7  1
+O3  O  -0.3021  0.0832  0.6645  5.4  1
+O4  O  -0.444  0.1312  0.6708  3.9  1
+O5  O  0.1005  0.3966  0.5389  3.5  1
+O6  O  0.0043  0.2744  0.594  2.9  1
+O7  O  -0.2905  -0.0069  0.5983  3.8  1
+O8  O  0.284  0.5324  0.4864  4.2  1
+O9  O  0.3446  0.4533  0.44  3.4  1
+O10  O  -0.2789  -0.1458  0.5616  3.9  1
+O11  O  -0.3289  0.1432  0.7592  4.6  1
+O12  O  0.1071  0.4363  0.4219  4  1
+O13  O  -0.2515  0.276  0.6719  4  1
+O14  O  0.1302  0.5642  0.5001  3.5  1
+O15  O  0.3173  0.4293  0.5305  4.3  1
+O16  O  -0.2357  0.0127  0.4954  4  1
+N1  N  -0.3333  0.3333  0.5967  4.3  1
+N2  N  0.0266  0.5103  0.5912  4.4  1
+C3  C  0.0863  0.5395  0.6361  10.9  1
+C4  C  0.3333  0.6667  0.577  17.5  1
+O17  O  -0.1496  0.1913  0.5275  10.3  1
+
+# End of data for UCSB-6GaCo
+
+
+			
+	

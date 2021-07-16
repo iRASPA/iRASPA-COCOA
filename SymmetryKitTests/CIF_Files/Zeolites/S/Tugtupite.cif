@@ -1,0 +1,60 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Tugtupite 
+#
+# Reference : 
+#   Hassan, I. and Grundy, H.D.
+#   Can. Mineral., 29, 385-390, (1991)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Tugtupite
+_chemical_name_systematic 'Tugtupite'
+
+_cell_length_a      8.64
+_cell_length_b      8.64
+_cell_length_c      8.873 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I -4'
+_symmetry_space_group_name_H-M   'I -4'
+_symmetry_space_group_name_Hall  'I -4'
+_space_group.IT_number  82 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.1563  0.1972  0.1818  1.48  1
+CL1  Cl  0  0  0  1.85  1
+SI1  Si  0.0127  0.2533  0.4958  0.58  1
+AL1  Al  0  0.5  0.75  0.6  1
+BE1  Be  0  0.5  0.25  0.77  1
+O1  O  0.1504  0.1343  0.4417  0.97  1
+O2  O  0.3472  0.0385  0.6488  0.94  1
+O3  O  0.4256  0.1486  0.1377  0.95  1
+
+# End of data for Tugtupite
+
+
+			
+	

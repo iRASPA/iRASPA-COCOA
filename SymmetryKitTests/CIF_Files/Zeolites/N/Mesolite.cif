@@ -1,0 +1,89 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Mesolite 
+#
+# Reference : 
+#   Artioli, G., Smith, J.V. and Pluth, J.J.
+#   Acta Crystallogr., C42, 937-942, (1986)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Mesolite
+_chemical_name_systematic 'Mesolite'
+
+_cell_length_a      18.4049
+_cell_length_b      56.655
+_cell_length_c      6.5443 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'F d d 2'
+_symmetry_space_group_name_H-M   'F d d 2'
+_symmetry_space_group_name_Hall  'F 2 -2d'
+_space_group.IT_number  43 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA  Na  0.96736  0.76089  0.63172  1.48  1
+CA  Ca  0.22807  0.82737  0.88068  0.91  1
+SI1  Si  0.75  0.75  0  0.55  1
+SI2  Si  0.15499  0.76432  0.8721  0.48  1
+SI3  Si  0.90188  0.81979  0.6504  0.5  1
+SI4  Si  0.08794  0.84688  0.65213  0.52  1
+SI5  Si  0.00435  0.8318  0.2774  0.53  1
+AL1  Al  0.78689  0.78025  0.6131  0.5  1
+AL2  Al  0.0363  0.80211  0.89287  0.52  1
+AL3  Al  0.95155  0.86233  0.89294  0.51  1
+O1  O  0.76818  0.77289  0.86482  1.03  1
+O2  O  0.02298  0.808  0.15228  0.98  1
+O3  O  0.98498  0.85319  0.12809  1.18  1
+O4  O  0.82365  0.80837  0.59682  0.7  1
+O5  O  0.07262  0.77385  0.86425  0.72  1
+O6  O  0.16644  0.85935  0.67096  0.83  1
+O7  O  0.84335  0.75866  0.51529  1  1
+O8  O  0.09631  0.82339  0.79447  0.93  1
+O9  O  0.88933  0.84183  0.80185  0.98  1
+O10  O  0.95568  0.80062  0.75319  1.06  1
+O11  O  0.20947  0.78462  0.9595  0.86  1
+O12  O  0.02193  0.86358  0.71805  1  1
+O13  O  0.93735  0.82799  0.43383  1.09  1
+O14  O  0.1802  0.75695  0.64166  1.06  1
+O15  O  0.07638  0.83892  0.41273  0.99  1
+H11  H  0.045  0.7813  0.322  0.7  1
+H12  H  0.0881  0.7679  0.42  0.9  1
+H21  H  0.7773  0.8037  0.018  1  1
+H22  H  0.8085  0.8232  0.004  2.7  1
+H31  H  0.2274  0.856  0.247  2.1  1
+H32  H  0.1685  0.8438  0.26  1.2  1
+H41  H  0.8072  0.8702  0.387  0.6  1
+H42  H  0.8615  0.8525  0.359  2  1
+O21  O  0.05347  0.76839  0.37684  1.67  1
+O22  O  0.78167  0.81598  0.07685  2.83  1
+O23  O  0.20069  0.8482  0.18338  2.46  1
+O24  O  0.81793  0.85687  0.36556  2.05  1
+
+# End of data for Mesolite
+
+
+			
+	

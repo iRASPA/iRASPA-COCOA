@@ -1,0 +1,90 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for RUB-17 
+#
+# Reference : 
+#   R&ouml;hrig, C. and Gies, H.
+#   Angew. Chem. Int. Ed., 34, 63-65, (1995)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_RUB-17
+_chemical_name_systematic 'RUB-17'
+
+_cell_length_a      7.238
+_cell_length_b      40.56
+_cell_length_c      7.308 
+_cell_angle_alpha   90 
+_cell_angle_beta    91.8 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 m 1'
+_symmetry_space_group_name_H-M   'C 1 m 1'
+_symmetry_space_group_name_Hall  'C -2y'
+_space_group.IT_number  8 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  -0.141  0  0.224  1.97  1
+NA2  Na  -0.164  0  0.795  1.97  1
+NA3  Na  -0.002  0.2469  0.84  1.97  1
+NA4  Na  0.05  0.1309  0.574  1.97  1
+K  K  0.063  0.3865  0.442  1.97  1
+SI1  Si  0.317  0.0382  0.308  0.79  1
+SI2  Si  0.299  0.0379  0.72  0.79  1
+SI3  Si  0.572  0.0671  0.017  0.79  1
+SI4  Si  -0.195  0.1277  -0.024  0.79  1
+SI5  Si  0.755  0.1991  0.096  0.79  1
+SI6  Si  0.038  0.2185  0.397  0.79  1
+SI7  Si  0.467  0.2105  0.388  0.79  1
+ZN1  Zn  0  0.0605  0  0.79  1
+ZN2  Zn  0.7484  0.1832  0.6786  0.79  1
+O1  O  0.377  0  0.298  1.18  1
+O2  O  0.317  0.052  0.515  1.18  1
+O3  O  0.111  0.0427  0.224  1.18  1
+O4  O  0.467  0.0603  0.205  1.18  1
+O5  O  0.365  0  0.735  1.18  1
+O6  O  0.086  0.042  0.773  1.18  1
+O7  O  0.433  0.0609  0.844  1.18  1
+O8  O  0.7478  0.043  0.004  1.18  1
+O9  O  -0.002  0.1084  0.01  1.18  1
+O10  O  0.626  0.1058  0.022  1.18  1
+O11  O  -0.203  0.1599  0.106  1.18  1
+O12  O  0.784  0.1378  0.762  1.18  1
+O13  O  0.737  0.2124  0.888  1.18  1
+O14  O  -0.079  0.2182  0.204  1.18  1
+O15  O  0.561  0.2066  0.192  1.18  1
+O16  O  -0.029  0.1919  0.544  1.18  1
+O17  O  0.521  0.1815  0.53  1.18  1
+O18  O  0.247  0.2091  0.346  1.18  1
+O19  O  0.023  0.2549  0.485  1.18  1
+H2O1  O2-(H2O)  -0.1  0.0753  0.501  4.74  1.15
+H2O2  O2-(H2O)  0.257  0.2093  0.898  4.74  1.15
+H2O3  O2-(H2O)  0.299  0.1398  0.775  4.74  1.15
+H2O4  O2-(H2O)  0.21  0.1324  0.293  4.74  1.15
+H2O5  O2-(H2O)  0.746  0  0.487  4.74  1.15
+
+# End of data for RUB-17
+
+
+			
+	

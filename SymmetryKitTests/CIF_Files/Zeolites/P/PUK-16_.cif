@@ -1,0 +1,85 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for PUK-16  
+#
+# Reference : 
+#   Hua, W., Chen, H., Yu, Z.-B., Zou, X., Lin, J. and Sun, J.
+#   Angew. Chem. Int. Ed., 53, 5868-5871, (2014)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_PUK-16_
+_chemical_name_systematic 'PUK-16 '
+
+_cell_length_a      19.0592
+_cell_length_b      19.0592
+_cell_length_c      11.6968 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 42/m n m'
+_symmetry_space_group_name_H-M   'P 42/m n m'
+_symmetry_space_group_name_Hall  '-P 4n 2n'
+_space_group.IT_number  136 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.0584  0.0584  0.1316  2.66  0.944
+Ge1  Ge  0.0584  0.0584  0.1316  2.66  0.056
+Si2  Si  0.1983  0.0162  0.2655  2.66  0.823
+Ge2  Ge  0.1983  0.0162  0.2655  2.66  0.177
+Si3  Si  0.1174  0.0003  0.5  2.66  0.854
+Ge3  Ge  0.1174  0.0003  0.5  2.66  0.146
+Si4  Si  0.2638  0.1464  0.3708  2.66  0.452
+Ge4  Ge  0.2638  0.1464  0.3708  2.66  0.548
+Si5  Si  0.3782  0.2633  0.3655  2.66  0.193
+Ge5  Ge  0.3782  0.2633  0.3655  2.66  0.807
+O1  O  0  0  0.1511  2.87  1
+O2  O  0.0743  0.0743  0  2.87  1
+O3  O  0.1316  0.0334  0.1856  2.87  1
+O4  O  0.2446  -0.0494  0.2203  2.87  1
+O5  O  0.1688  -0.0047  0.3901  2.87  1
+O6  O  0.0679  -0.0679  0.5  2.87  1
+O7  O  0.0718  0.0718  0.5  2.87  1
+O8  O  0.2546  0.0797  0.278  2.87  1
+O9  O  0.1848  0.1848  0.375  2.87  1
+O10  O  0.2843  0.1137  0.5  2.87  1
+O11  O  0.3224  0.2009  0.3133  2.87  1
+O12  O  0.3468  0.3468  0.3496  2.87  1
+O13  O  0.4064  0.2429  0.5  2.87  1
+F  F  0.2612  0.2612  0.5  20  1
+C1  C  0.6118  -0.1052  0.0591  19.96  0.5
+C2  C  0.5972  -0.0326  0.064  19.96  0.583
+C3  C  0.5348  -0.0089  0.1176  19.96  0.583
+C4  C  0.502  -0.1285  0.1608  19.96  0.583
+C5  C  0.564  -0.1535  0.1078  19.96  0.583
+C6  C  0.6949  -0.207  0.0069  19.96  0.75
+C7  C  0.7298  -0.0792  -0.0397  19.96  0.75
+N1  N  0.4882  -0.0569  0.1651  19.96  0.5
+N2  N  0.6772  -0.1308  0.0033  19.96  0.5
+
+# End of data for PUK-16_
+
+
+			
+	

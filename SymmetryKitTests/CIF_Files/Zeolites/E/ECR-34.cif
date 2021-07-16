@@ -1,0 +1,72 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ECR-34 
+#
+# Reference : 
+#   Strohmaier, K. G. and Vaughan, D.E.W.
+#   J. Am. Chem. Soc., 125, 16035-16039, (2003)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ECR-34
+_chemical_name_systematic 'ECR-34'
+
+_cell_length_a      21.03
+_cell_length_b      21.03
+_cell_length_c      8.53 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 63 m c'
+_symmetry_space_group_name_H-M   'P 63 m c'
+_symmetry_space_group_name_Hall  'P 6c -2c'
+_space_group.IT_number  186 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.745051  0.105905  0.016454  1.36  0.76
+Si2  Si  0.667197  0.184656  0.15102  1.36  0.76
+Si3  Si  0.641642  0.972046  0.228717  1.36  0.76
+Si4  Si  0.614316  0.073991  0.442533  1.36  0.76
+Ga1  Ga  0.745051  0.105905  0.016454  1.36  0.24
+Ga2  Ga  0.667197  0.184656  0.15102  1.36  0.24
+Ga3  Ga  0.641642  0.972046  0.228717  1.36  0.24
+Ga4  Ga  0.614316  0.073991  0.442533  1.36  0.24
+O1  O  0.744666  0.073572  0.837685  1.62  1
+O2  O  0.83057  0.16943  0.062038  1.62  1
+O3  O  0.690915  0.142401  0.014308  1.62  1
+O4  O  0.715897  0.04216  0.156056  1.62  1
+O5  O  0.725315  0.274653  0.146153  1.62  1
+O6  O  0.58388  0.167856  0.098776  1.62  1
+O7  O  0.662541  0.147879  0.329352  1.62  1
+O8  O  0.584426  0.915693  0.092594  1.62  1
+O9  O  0.595002  -0.00019  0.338508  1.62  1
+O10  O  0.534151  0.068391  0.491326  1.62  1
+K1  K  0.544904  0.455098  0.848571  6.5  0.616313
+K2  K  0.384429  0.192215  0.539995  9.72  0.863687
+
+# End of data for ECR-34
+
+
+			
+	

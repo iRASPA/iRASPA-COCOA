@@ -1,0 +1,71 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Offretite 
+#
+# Reference : 
+#   Gard, J.A. and Tait, J.M.
+#   Acta Crystallogr., B28, 825-834, (1972)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Offretite
+_chemical_name_systematic 'Offretite'
+
+_cell_length_a      13.291
+_cell_length_b      13.291
+_cell_length_c      7.582 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -6 m 2'
+_symmetry_space_group_name_H-M   'P -6 m 2'
+_symmetry_space_group_name_Hall  'P -6 2'
+_space_group.IT_number  187 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+K1  K  0  0  0.5  2.2  1
+MG  Mg  0.33333  0.66667  0  1.8  0.82
+CA1  Ca  0.66667  0.33333  0.377  3.3  0.39
+CA2  Ca  0  0  0.13  4  0.07
+SI1  Si  0.0027  0.2342  0.2085  0.88  1
+SI2  Si  0.093  0.4251  0.5  0.68  1
+O1  O  0.029  0.351  0.329  2.29  1
+O2  O  0.101  0.202  0.257  2.2  1
+O3  O  0.255  0.127  0.293  3.3  1
+O4  O  0.012  0.267  0  1.5  1
+O5  O  0.23  0.46  0.5  1.5  1
+O6  O  0.075  0.537  0.5  2  1
+H2O1  O2-(H2O)  0.33333  0.66667  0.261  1.7  0.9
+H2O2  O2-(H2O)  0.243  0.486  0  1.7  0.34
+H2O3  O2-(H2O)  0.16  0.52  0  2.6  0.14
+H2O4  O2-(H2O)  0.485  0.242  0.5  4  0.58
+H2O5  O2-(H2O)  0.562  0.438  0.172  4.7  0.47
+H2O6  O2-(H2O)  0.53  0.35  0  3  0.17
+H2O7  O2-(H2O)  0.66667  0.33333  0.24  1.6  0.3
+
+# End of data for Offretite
+
+
+			
+	

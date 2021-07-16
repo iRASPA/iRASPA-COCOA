@@ -1,0 +1,67 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for CoAPO-50, as-made 
+#
+# Reference : 
+#   
+#   , , , ()
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_CoAPO-50_as-made
+_chemical_name_systematic 'CoAPO-50, as-made'
+
+_cell_length_a      12.7468
+_cell_length_b      12.7468
+_cell_length_c      9.0153 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -3'
+_symmetry_space_group_name_H-M   'P -3'
+_symmetry_space_group_name_Hall  '-P 3'
+_space_group.IT_number  147 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+AL2  Al  0.85585  0.32535  0.40999  0.09  1
+CO1  Co  0.33333  0.66667  0.18423  0.24  1
+P1  P  0.66667  0.33333  0.19314  0.23  1
+P2  P  0.32138  0.86415  0.38454  0.23  1
+O31  O  0.85934  0.44164  0.5244  0.29  1
+O32  O  0.3976  0.20587  0.52481  0.39  1
+O11  O  0.54705  0.23176  0.25047  0.45  1
+O12  O  0.20298  0.50794  0.24269  0.36  1
+O14  O  0.33333  0.66667  -0.02687  0.36  1
+O2  O  0.3566  0.99417  0.35229  0.44  1
+C1  C  0.40093  0.40351  0.07477  8.9  1
+C11  C  0.21931  0.21598  0.20291  10.03  1
+C2  C  0.46509  0.00622  0.04137  14.41  1
+C21  C  0.34138  0.32934  0.23073  17.57  1
+N1  N  0.28549  0.01616  0.90866  20.45  1
+
+# End of data for CoAPO-50_as-made
+
+
+			
+	

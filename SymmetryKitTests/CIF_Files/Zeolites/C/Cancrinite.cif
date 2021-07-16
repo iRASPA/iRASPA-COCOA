@@ -1,0 +1,63 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Cancrinite 
+#
+# Reference : 
+#   Smolin, Y.I., Shepelev, Y.F., Butikova, I.K. and Kobyakov, I.B.
+#   Kristallografiya, 26, 63-66, (1981)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Cancrinite
+_chemical_name_systematic 'Cancrinite'
+
+_cell_length_a      12.635
+_cell_length_b      12.635
+_cell_length_c      5.115 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 63'
+_symmetry_space_group_name_H-M   'P 63'
+_symmetry_space_group_name_Hall  'P 6c'
+_space_group.IT_number  173 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.6667  0.3333  0.1354  1.86  1
+NA2  Na  0.1254  0.2521  0.2943  1.21  1
+SI1  Si  0.33  0.4115  0.75  0.32  1
+AL1  Al  0.0772  0.4121  0.75  0.27  1
+O1  O  0.2019  0.4035  0.6586  0.56  1
+O2  O  0.1157  0.5619  0.7248  0.74  1
+O3  O  0.0329  0.3526  0.0588  0.69  1
+O4  O  0.3161  0.3582  0.0486  0.72  1
+C1  C  0  0  0.173  3.27  0.595
+O5  O  0.1179  0.0603  0.173  1.57  0.6
+H2O1  O2-(H2O)  0.378  0.701  0.179  5.28  0.333
+
+# End of data for Cancrinite
+
+
+			
+	

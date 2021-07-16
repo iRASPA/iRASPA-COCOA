@@ -1,0 +1,72 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for PST-21 
+#
+# Reference : 
+#   Jo, D., Park, G.T., Shin, J. and Hong, S.B.
+#   Angew. Chem. Int. Ed., 57, 2199-2203, (2018)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_PST-21
+_chemical_name_systematic 'PST-21'
+
+_cell_length_a      9.1017
+_cell_length_b      11.7322
+_cell_length_c      10.9595 
+_cell_angle_alpha   90 
+_cell_angle_beta    93.2282 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 21/c 1'
+_symmetry_space_group_name_H-M   'P 1 21/c 1'
+_symmetry_space_group_name_Hall  '-P 2ybc'
+_space_group.IT_number  14 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.1615  0.403  0.2228  2.14  1
+Si2  Si  0.0853  0.8288  0.4682  2.14  1
+Si3  Si  0.1441  0.1651  0.3245  2.14  1
+Si4  Si  0.3236  0.4872  0.0038  2.14  1
+Si5  Si  0.0459  0.582  0.391  2.14  1
+O1  O  0.1576  0.5164  0.3057  2.9  1
+O2  O  0.0041  0.3849  0.1487  2.9  1
+O3  O  0.2007  0.2949  0.3105  2.9  1
+O4  O  0.2891  0.4203  0.1277  2.9  1
+O5  O  0.7571  0.3905  0.005  2.9  1
+O6  O  0.0037  0.1604  0.4084  2.9  1
+O7  O  0.1247  0.6969  0.4428  2.9  1
+O8  O  0.2758  0.0878  0.3845  2.9  1
+O9  O  0.102  0.1136  0.1902  2.9  1
+O10  O  0.5  0  0.5  2.9  1
+O11  O  0  0  0  2.9  1
+Ow1  O  0.515  0.179  0.1657  4.66  0.421
+Ow2  O  0.7637  0.2554  0.3149  4.66  0.388
+Ow3  O  0.435  1.0352  0.0689  4.66  0.411
+Ow4  O  0.4428  0.8559  0.1602  4.66  0.5
+
+# End of data for PST-21
+
+
+			
+	

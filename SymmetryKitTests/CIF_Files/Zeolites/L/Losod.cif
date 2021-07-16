@@ -1,0 +1,71 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Losod 
+#
+# Reference : 
+#   Schicker, P.
+#   Ph.D. Thesis, ETH, Zurich, Switzerland, , , (1988)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Losod
+_chemical_name_systematic 'Losod'
+
+_cell_length_a      12.906
+_cell_length_b      12.906
+_cell_length_c      10.541 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 63 m c'
+_symmetry_space_group_name_H-M   'P 63 m c'
+_symmetry_space_group_name_Hall  'P 6c -2c'
+_space_group.IT_number  186 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.897  0.449  -0.018  11.2  0.98
+NA2  Na  0.846  0.1539  -0.24  5.5  0.73
+NA3  Na  0  0  -0.45  0  0.52
+NA4  Na  0.6667  0.3333  -0.66  1.5  0.6
+SI1  Si  0.25  -0.002  0  1.5  0.5
+AL1  Al  0.25  -0.002  0  1.5  0.5
+SI2  Si  0.414  0.084  0.248  1.9  0.5
+AL2  Al  0.414  0.084  0.248  1.9  0.5
+O1  O  0.22  0.11  -0.006  4.4  1
+O2  O  0.358  0.025  0.102  2.1  1
+O3  O  0.4581  0.229  0.257  5.8  1
+O4  O  0.529  0.058  0.267  4.1  1
+O5  O  0.125  -0.125  0.035  14.3  1
+O6  O  0.312  0.007  0.354  3.5  1
+H2O1  O2-(H2O)  0.749  0.251  -0.22  12.9  0.87
+H2O2  O2-(H2O)  0.774  0.387  -0.442  13.7  0.88
+H2O3  O2-(H2O)  0  0  -0.61  0.5  0.53
+H2O4  O2-(H2O)  0  0  -0.24  0  0.52
+H2O5  O2-(H2O)  0.6667  0.3333  0.06  11.5  0.86
+
+# End of data for Losod
+
+
+			
+	

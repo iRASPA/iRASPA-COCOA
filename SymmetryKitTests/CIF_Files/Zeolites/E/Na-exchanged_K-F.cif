@@ -1,0 +1,65 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Na-exchanged K-F 
+#
+# Reference : 
+#   Baerlocher, Ch. and Barrer, R.M.
+#   Z. Kristallogr., 140, 10-26, (1974)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Na-exchanged_K-F
+_chemical_name_systematic 'Na-exchanged K-F'
+
+_cell_length_a      10.056
+_cell_length_b      10.056
+_cell_length_c      6.68 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -4 21 m'
+_symmetry_space_group_name_H-M   'P -4 21 m'
+_symmetry_space_group_name_Hall  'P -4 2ab'
+_space_group.IT_number  113 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.242  0.258  -0.059  1.9  0.78
+NA21  Na  -0.101  0.399  0.324  2.6  0.92
+NA22  Na  0  0.5  0.325  0.4  0.6
+SI1  Si  0  0  0  4.5  0.5
+SI2  Si  0.127  0.134  0.375  1  0.5
+AL1  Al  0  0  0  4.5  0.5
+AL2  Al  0.127  0.134  0.375  1  0.5
+O1  O  0.099  0.093  0.133  2.7  1
+O2  O  -0.018  0.184  0.466  3.7  1
+O3  O  0.24  0.26  0.389  0.9  1
+H2O4  O2-(H2O)  0.147  0.353  -0.272  1.7  0.5
+H2O5  O2-(H2O)  0.112  0.387  -0.054  1.8  0.52
+H2O6  O2-(H2O)  0  0.5  -0.181  1.8  0.36
+
+# End of data for Na-exchanged_K-F
+
+
+			
+	

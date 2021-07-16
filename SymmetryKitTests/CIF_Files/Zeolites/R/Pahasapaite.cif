@@ -1,0 +1,67 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Pahasapaite 
+#
+# Reference : 
+#   Rouse, R.C., Peacor, D.R. and Merlino, S.
+#   Am. Mineral., 74, 1195-1202, (1989)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Pahasapaite
+_chemical_name_systematic 'Pahasapaite'
+
+_cell_length_a      13.781
+_cell_length_b      13.781
+_cell_length_c      13.781 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 2 3'
+_symmetry_space_group_name_H-M   'I 2 3'
+_symmetry_space_group_name_Hall  'I 2 2 3'
+_space_group.IT_number  197 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+LI  Li  0.3013  0.3013  0.3013  1.89  1
+LI  Li  0.3013  0.3013  0.3013  1.89  1
+NA  Na  0.3615  0.0357  0.0301  3.66  0.008
+K1  K  0.3615  0.0357  0.0301  3.66  0.05
+CA  Ca  0.3615  0.0357  0.0301  3.66  0.229
+BE  Be  0.4207  0.121  0.2675  0.76  1
+P1  P  0.2771  0.124  0.4224  0.71  1
+O1  O  0.2246  0.2178  0.3914  0.95  1
+O2  O  0.3781  0.1245  0.3766  1.16  1
+O3  O  0.3791  0.0329  0.2041  1.18  1
+O4  O  0.216  0.0383  0.3889  1.16  1
+H2O1  O2-(H2O)  0.3851  0.3851  0.3851  3.08  1
+H2O2  O2-(H2O)  0.4768  0  0  1.68  0.5
+H2O3  O2-(H2O)  0.2171  0.1095  0.0714  4  0.5
+H2O4  O2-(H2O)  0.2459  0.0765  0.0504  6.58  0.5
+
+# End of data for Pahasapaite
+
+
+			
+	

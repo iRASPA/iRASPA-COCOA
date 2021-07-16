@@ -1,0 +1,96 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for YNU-5 
+#
+# Reference : 
+#   Nakazawa, N., Ikeda, T., Hiyoshi, N., Yoshida, Y., Han, Q., Inagaki, S. and Kubota, Y.
+#   J. Am. Chem. Soc., 139, 7989-7997, (2017)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_YNU-5
+_chemical_name_systematic 'YNU-5'
+
+_cell_length_a      18.106
+_cell_length_b      31.736
+_cell_length_c      12.576 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C m m m'
+_symmetry_space_group_name_H-M   'C m m m'
+_symmetry_space_group_name_Hall  '-C 2 2'
+_space_group.IT_number  65 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.1942  0.0474  0.5  2.34  0.9
+Si2  Si  0.4149  0.2386  0.3771  2.34  0.9
+Si3  Si  0.1425  0.1754  0.3011  2.34  0.9
+Si4  Si  0.4135  0  0.3751  2.34  0.9
+Si5  Si  0.0873  0.1226  0.5  2.34  0.9
+Si6  Si  0.2047  0.0493  0.1247  2.34  0.9
+Si7  Si  0.9157  0.1154  0.1261  2.34  0.9
+Si8  Si  0.305  0.0702  0.3151  2.34  0.9
+Si9  Si  0.3022  0.1629  0.3736  2.34  0.9
+Al1  Al  0.1942  0.0474  0.5  2.34  0.1
+Al2  Al  0.4149  0.2386  0.3771  2.34  0.1
+Al3  Al  0.1425  0.1754  0.3011  2.34  0.1
+Al4  Al  0.4135  0  0.3751  2.34  0.1
+Al5  Al  0.0873  0.1226  0.5  2.34  0.1
+Al6  Al  0.2047  0.0493  0.1247  2.34  0.1
+Al7  Al  0.9157  0.1154  0.1261  2.34  0.1
+Al8  Al  0.305  0.0702  0.3151  2.34  0.1
+Al9  Al  0.3022  0.1629  0.3736  2.34  0.1
+O1  O  0.3686  0.197  0.6507  3.2  1
+O2  O  0  0.1067  0.1559  3.2  1
+O3  O  0.5  0  0.349  3.2  1
+O4  O  0.0943  0.2478  0.5  3.2  1
+O5  O  0.5  0.2287  0.3488  3.2  1
+O6  O  0.8822  0.1537  0.1923  3.2  1
+O7  O  0.241  0.0562  0.3947  3.2  1
+O8  O  0.2303  0.1778  0.6907  3.2  1
+O9  O  0.6019  0  0.5  3.2  1
+O10  O  0.192  0  0.8473  3.2  1
+O11  O  0.9083  0.1256  0  3.2  1
+O12  O  0.7732  0.0554  0  3.2  1
+O13  O  0.1102  0.2221  0.3069  3.2  1
+O14  O  0.8708  0.0737  0.1546  3.2  1
+O15  O  0.2849  0.1588  0.5  3.2  1
+O16  O  0.6231  0.0416  0.3274  3.2  1
+O17  O  0.7254  0.0655  0.1967  3.2  1
+O18  O  0.6698  0.1179  0.3345  3.2  1
+O19  O  0.1076  0.1482  0.3949  3.2  1
+O20  O  0.1655  0  0.5  3.2  1
+O21  O  0.8772  0.0767  0.5  3.2  1
+O22  O  0  0.1164  0.5  3.2  1
+K1  K  0.5  0.1103  0.675  10  0.4481
+K2  K  0.5  0.5  0.7176  10  0.6798
+WO1  O2-(H2O)  0.25  0.25  0.22  3  0.071
+WO2  O2-(H2O)  0.5  0.5  0.05  3  0.038
+
+# End of data for YNU-5
+
+
+			
+	

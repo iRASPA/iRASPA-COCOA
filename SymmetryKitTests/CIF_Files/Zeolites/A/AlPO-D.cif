@@ -1,0 +1,76 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for AlPO-D 
+#
+# Reference : 
+#   Keller, E.B., Meier, W.M. and Kirchner, R.M.
+#   Solid State Ionics, 43, 93-102, (1990)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_AlPO-D
+_chemical_name_systematic 'AlPO-D'
+
+_cell_length_a      19.187
+_cell_length_b      8.576
+_cell_length_c      9.804 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P c a 21'
+_symmetry_space_group_name_H-M   'P c a 21'
+_symmetry_space_group_name_Hall  'P 2c -2ac'
+_space_group.IT_number  29 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+AL11  Al  0.531  0.065  0.133  9.1  1
+AL12  Al  0.572  0.574  0.385  4  1
+AL21  Al  0.721  0.074  0.32  0.2  1
+AL22  Al  0.681  0.572  0.026  0.8  1
+P11  P  0.574  -0.031  0.421  6.9  1
+P12  P  0.529  0.473  0.107  2.5  1
+P21  P  0.68  -0.051  0.04  0.8  1
+P22  P  0.724  0.453  0.298  0.2  1
+O11  O  0.645  0.035  0.406  1.3  1
+O12  O  0.593  0.526  0.031  0  1
+O21  O  0.531  0.284  0.13  8.7  1
+O22  O  0.584  0.784  0.418  4  1
+O31  O  0.54  0.017  0.553  6.4  1
+O32  O  0.469  0.518  0.019  0.8  1
+O41  O  0.532  0.018  0.302  5.1  1
+O42  O  0.524  0.557  0.238  0.8  1
+O51  O  0.691  0.773  0.06  4  1
+O52  O  0.734  0.278  0.32  8  1
+O61  O  0.601  -0.015  0.045  0.7  1
+O62  O  0.655  0.498  0.361  9.4  1
+O71  O  0.716  0.025  0.154  0.8  1
+O72  O  0.724  0.478  0.15  0.8  1
+O81  O  0.789  -0.01  0.405  0.8  1
+O82  O  0.719  0.539  0.869  6.2  1
+
+# End of data for AlPO-D
+
+
+			
+	

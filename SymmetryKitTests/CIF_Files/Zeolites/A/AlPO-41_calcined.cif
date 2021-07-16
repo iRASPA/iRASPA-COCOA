@@ -1,0 +1,82 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for AlPO-41, calcined 
+#
+# Reference : 
+#   Kirchner, R.M. and Bennett, J.M.
+#   Zeolites, 14, 523-528, (1994)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_AlPO-41_calcined
+_chemical_name_systematic 'AlPO-41, calcined'
+
+_cell_length_a      9.7179
+_cell_length_b      13.7915
+_cell_length_c      8.3591 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   110.6
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 1 21'
+_symmetry_space_group_name_H-M   'P 1 1 21'
+_symmetry_space_group_name_Hall  'P 2c'
+_space_group.IT_number  4 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Al1  Al  0.562  0.122  0.638  1.97  1
+Al2  Al  0.852  0.278  0.124  1.97  1
+Al3  Al  0.725  0.443  0.627  1.97  1
+Al4  Al  0.826  0.666  0.142  1.97  1
+Al5  Al  0.58  0.743  0.672  1.97  1
+P1  P  0.548  0.096  0.022  1.97  1
+P2  P  0.859  0.284  0.499  1.97  1
+P3  P  0.713  0.44  0.008  1.97  1
+P4  P  0.828  0.671  0.518  1.97  1
+P5  P  0.561  0.716  0.016  1.97  1
+O1  O  0.449  0.138  0.146  3  1
+O2  O  0.543  0.127  0.839  3  1
+O3  O  0.708  0.156  0.042  3  1
+O4  O  0.518  0.976  0.048  3  1
+O5  O  0.835  0.385  0.548  3  1
+O6  O  -0.006  0.294  0.559  3  1
+O7  O  0.743  0.158  0.549  3  1
+O8  O  0.855  0.258  0.313  3  1
+O9  O  0.825  0.393  0.057  3  1
+O10  O  0.752  0.551  0.11  3  1
+O11  O  0.545  0.342  0.019  3  1
+O12  O  0.751  0.448  0.827  3  1
+O13  O  0.754  0.745  0.62  3  1
+O14  O  0.775  0.554  0.572  3  1
+O15  O  0.801  0.683  0.327  3  1
+O16  O  -0.022  0.73  0.555  3  1
+O17  O  0.744  0.742  0.061  3  1
+O18  O  0.534  0.679  0.834  3  1
+O19  O  0.546  0.806  0.089  3  1
+O20  O  0.464  0.605  0.089  3  1
+
+# End of data for AlPO-41_calcined
+
+
+			
+	

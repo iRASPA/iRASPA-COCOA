@@ -1,0 +1,80 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for EMM-37, as-made 
+#
+# Reference : 
+#   Kapaca, E., Burton, A., Terefenko, E., Vroman, H., Weston, S. C., Kochersperger, M., Afeworki, M., Paur, C., Koziol, L., Ravikovitch, P., Xu, H., Zou, X., Willhammar, T.
+#   Inorg. Chem., 58, 12854-12858, (2019)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_EMM-37_as-made
+_chemical_name_systematic 'EMM-37, as-made'
+
+_cell_length_a      8.8317
+_cell_length_b      9.6344
+_cell_length_c      10.6525 
+_cell_angle_alpha   104.41 
+_cell_angle_beta    99.8 
+_cell_angle_gamma   99.5
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -1'
+_symmetry_space_group_name_H-M   'P -1'
+_symmetry_space_group_name_Hall  '-P 1'
+_space_group.IT_number  2 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.5228  0.2686  0.1408  0.93  1
+Si2  Si  0.5564  0.4216  -0.1934  0.93  1
+Si3  Si  0.5707  0.0531  0.3217  0.93  1
+Si4  Si  0.3154  -0.1888  0.3683  0.93  1
+Si5  Si  0.3084  0.1845  -0.1433  0.93  1
+Si6  Si  0.0019  -0.2948  0.1565  0.93  1
+Si7  Si  0.8037  0.3985  0.0399  0.93  1
+O1  O  0.5129  0.1663  0.2347  1.15  1
+O2  O  0.6911  0.4507  -0.0655  1.15  1
+O3  O  0.4067  -0.0566  0.3261  1.15  1
+O4  O  0.3947  0.3211  -0.1864  1.15  1
+O5  O  0.3947  0.1858  0.0033  1.15  1
+O6  O  0.1331  -0.2241  0.2964  1.15  1
+O7  O  0.4703  0.4182  0.2112  1.15  1
+O8  O  0.6947  0.3015  0.1158  1.15  1
+O9  O  0.1221  0.195  -0.1541  1.15  1
+O10  O  0.6651  0.1379  0.4729  1.15  1
+O11  O  0.6885  -0.0339  0.245  1.15  1
+O12  O  0.3936  -0.3344  0.3266  1.15  1
+O13  O  0.9208  0.5417  0.1545  1.15  1
+O14  O  0.9088  0.2961  -0.0335  1.15  1
+C1  C  0.0331  0.4343  0.4812  11.6  1
+C2  C  0.228  0.4695  0.5444  11.6  1
+C3  C  0.2804  0.3482  0.4352  11.6  1
+C4  C  0.1201  0.2234  0.3577  11.6  1
+C5  C  -0.0254  0.3125  0.3426  11.6  1
+C6  C  0.0804  0.1127  0.4375  11.6  1
+C7  C  0.1262  0.1533  0.2078  11.6  1
+
+# End of data for EMM-37_as-made
+
+
+			
+	

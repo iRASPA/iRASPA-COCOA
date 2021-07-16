@@ -1,0 +1,74 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ITQ-27 
+#
+# Reference : 
+#   Dorset, D.L., Kennedy, G.J., Strohmaier, K.G., D&iacute;az-Caba&ntilde;as, M.J., Rey, F. and Corma, A.
+#   J. Am. Chem. Soc., 128, 8862-8867, (2006)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ITQ-27
+_chemical_name_systematic 'ITQ-27'
+
+_cell_length_a      27.7508
+_cell_length_b      25.2969
+_cell_length_c      13.7923 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'F m m m'
+_symmetry_space_group_name_H-M   'F m m m'
+_symmetry_space_group_name_Hall  '-F 2 2'
+_space_group.IT_number  69 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.1478  0.0995  0.1968  1.184355  1
+Si2  Si  0.3033  0  0.2101  1.184355  1
+Si3  Si  0.0544  0.0656  0.1128  1.184355  1
+Si4  Si  0.28  0.1959  0  1.184355  1
+Si5  Si  0.3068  0.1934  0.2129  1.184355  1
+Si6  Si  0.205  0.1011  0  1.184355  1
+Si7  Si  0.2704  0  0  1.184355  1
+O1  O  0.0908  0.0951  0.1828  2.526624  1
+O2  O  0.1725  0.1027  0.0948  2.526624  1
+O3  O  0.1533  0.1539  0.2514  2.526624  1
+O4  O  0.1693  0.0519  0.2551  2.526624  1
+O5  O  0.25  0  0.25  2.526624  1
+O6  O  0.304  0  0.0946  2.526624  1
+O7  O  0.0574  0  0.1204  2.526624  1
+O8  O  0.0634  0.0831  0  2.526624  1
+O9  O  0  0.084  0.1428  2.526624  1
+O10  O  0.3126  0.193  0.9034  2.526624  1
+O11  O  0.2428  0.1483  0  2.526624  1
+O12  O  0.25  0.25  0  2.526624  1
+O13  O  0.25  0.1846  0.25  2.526624  1
+O14  O  0.3264  0.25  0.25  2.526624  1
+O15  O  0.2362  0.0501  0  2.526624  1
+
+# End of data for ITQ-27
+
+
+			
+	

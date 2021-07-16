@@ -1,0 +1,67 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for MCM-70 
+#
+# Reference : 
+#   Xie, D., McCusker, L.B., Barlocher, Ch., Gibson, L., Burton, A.W. and Hwang, S.-J.
+#   J. Phys. Chem. C, 113, 9845-9850, (2009)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_MCM-70
+_chemical_name_systematic 'MCM-70'
+
+_cell_length_a      13.3167
+_cell_length_b      4.6604
+_cell_length_c      8.7 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P m n 21'
+_symmetry_space_group_name_H-M   'P m n 21'
+_symmetry_space_group_name_Hall  'P 2ac -2'
+_space_group.IT_number  31 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.2051  0.6366  0.3318  1.11  1
+Si2  Si  0.2977  0.1346  0.1726  1.11  1
+Si3  Si  0.5  0.5817  -0.084  1.11  1
+B4  B  0  0.918  0.603  1.11  1
+O1  O  0.0944  0.512  0.315  0.71  1
+O2  O  0.2135  0.896  0.208  0.71  1
+O3  O  0.5  0.923  -0.043  0.71  1
+O4  O  0.2886  0.407  0.294  0.71  1
+O5  O  0.2733  0.251  0  0.71  1
+O6  O  0.4101  0.007  0.194  0.71  1
+O7  O  0.5  0.402  0.07  0.71  1
+K1  K  0  0.477  -0.107  4.26  0.58
+K2  K  0  0.045  0.112  4.26  0.42
+Ow2  O  0  0.477  -0.107  4.26  0.42
+Ow1  O  0  0.045  0.112  4.26  0.58
+
+# End of data for MCM-70
+
+
+			
+	

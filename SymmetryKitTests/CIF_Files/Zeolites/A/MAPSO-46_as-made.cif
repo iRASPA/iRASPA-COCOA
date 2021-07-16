@@ -1,0 +1,89 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for MAPSO-46, as-made 
+#
+# Reference : 
+#   Bennett, J.M. and Marcus, B.K.
+#   Stud. Surf. Sci. Catal., 37, 269-279, (1988)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_MAPSO-46_as-made
+_chemical_name_systematic 'MAPSO-46, as-made'
+
+_cell_length_a      13.2251
+_cell_length_b      13.2251
+_cell_length_c      26.8922 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 3 c 1'
+_symmetry_space_group_name_H-M   'P 3 c 1'
+_symmetry_space_group_name_Hall  'P 3 -2"c'
+_space_group.IT_number  158 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+AL1  Al  0  0  0.06457  1.55  1
+AL2  Al  0.46967  0.31584  0.13168  2.55  1
+AL3  Al  0.19875  0.96524  0.18925  1.04  1
+AL4  Al  0.46726  0.11576  0.30775  1.42  1
+AL5  Al  0.19352  0.1729  0.36246  1.46  1
+AL6  Al  0.66667  0.33333  0.4395  1.39  1
+P1  P  0.66667  0.33333  0.06039  1.22  1
+P2  P  0.19862  0.18082  0.13165  1.62  1
+P3  P  0.46965  0.10767  0.1905  1.02  1
+P4  P  0.20093  0.96592  0.30722  1.73  1
+P5  P  0.4696  0.31962  0.36555  1.16  1
+P6  P  0  0  0.43771  1.6  1
+O12  O  0.9846  0.1174  0.5852  1.75  1
+O16  O  0  0  0.9957  2.49  1
+O21  O  0.6875  0.2336  0.0819  1.36  1
+O22  O  0.735  0.0649  0.116  1.02  1
+O231  O  0.9192  0.4727  0.1661  2.29  1
+O23  O  0.7826  0.2713  0.1759  1.91  1
+O32  O  0.1515  0.2587  0.1616  2.65  1
+O321  O  0.191  0.0927  0.1748  1.96  1
+O33  O  0.3389  0.9936  0.1796  2.58  1
+O34  O  0.1638  0.2199  0.7555  3.21  1
+O43  O  0.8976  0.5052  0.7477  1.74  1
+O44  O  0.3218  0.0036  0.3158  1.95  1
+O45  O  0.5189  0.4365  0.3483  1.15  1
+O451  O  0.4884  0.2442  0.3316  2.85  1
+O54  O  0.1405  0.2616  0.3398  1.76  1
+O541  O  0.1867  0.0777  0.3187  2.29  1
+O55  O  0.7279  0.075  0.3741  2.09  1
+O56  O  0.9997  0.8889  0.4222  2.66  1
+O61  O  0.6666  0.3333  0.0081  2.85  1
+O65  O  0.7979  0.4676  0.4151  2.54  1
+C1  C  0.2968  0.1621  0.5117  4  1
+C11  C  0.0527  0.3242  0.4726  4  1
+C21  C  0.3242  0.4316  0.9472  4  1
+C2  C  0.9726  0.7011  0.5117  4  1
+N1  N  0.3242  0.08  0.4863  4  1
+
+# End of data for MAPSO-46_as-made
+
+
+			
+	

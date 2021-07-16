@@ -1,0 +1,71 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for MCM-35, calcined 
+#
+# Reference : 
+#   Barrett, P.A., Diaz-Cabanas, M.-J. and Camblor, M.A.
+#   Chem. Mater., 11, 2919-2927, (1999)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_MCM-35_calcined
+_chemical_name_systematic 'MCM-35, calcined'
+
+_cell_length_a      9.5
+_cell_length_b      30.7096
+_cell_length_c      7.3133 
+_cell_angle_alpha   90 
+_cell_angle_beta    91.7113 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/m 1'
+_symmetry_space_group_name_H-M   'C 1 2/m 1'
+_symmetry_space_group_name_Hall  '-C 2y'
+_space_group.IT_number  12 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0  0.08356  0  0.41  1
+Si2  Si  0.191  0.15359  -0.1667  1.25  1
+Si3  Si  -0.0048  0.22858  -0.2913  0.29  1
+Si4  Si  -0.1271  0.04862  -0.371  0.73  1
+Si5  Si  -0.3049  0.19803  -0.1822  0.47  1
+Si6  Si  -0.3391  0.12303  -0.4749  0.24  1
+O1  O  -0.0756  0.05227  -0.1609  1.62  1
+O2  O  -0.5  0.10684  -0.5  1.62  1
+O3  O  0  0.23506  -0.5  1.62  1
+O4  O  0  0.06345  -0.5  1.62  1
+O5  O  0.2923  0.17606  -0.0075  1.62  1
+O6  O  -0.2593  0.08102  -0.4062  1.62  1
+O7  O  0.0624  0.269  -0.1981  1.62  1
+O8  O  0.1281  0.11111  -0.0804  1.62  1
+O9  O  -0.2807  0.13899  -0.6705  1.62  1
+O10  O  0.0798  0.18695  -0.2331  1.62  1
+O11  O  -0.1766  0  -0.4029  1.62  1
+O12  O  -0.1646  0.22635  -0.223  1.62  1
+O13  O  -0.3268  0.16144  -0.3269  1.62  1
+
+# End of data for MCM-35_calcined
+
+
+			
+	

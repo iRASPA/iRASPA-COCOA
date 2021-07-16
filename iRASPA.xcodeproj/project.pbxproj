@@ -133,6 +133,8 @@
 		93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159FDD1F54235200D8700E /* SKXYZParser.swift */; };
 		9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */; };
 		931BE3D6269F586B00587034 /* TransformationMatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */; };
+		931BE3D926A18ECB00587034 /* CIF_Files in Resources */ = {isa = PBXBuildFile; fileRef = 931BE3D826A18ECB00587034 /* CIF_Files */; };
+		931BE3DB26A1900600587034 /* SpaceGroupCIFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931BE3DA26A1900600587034 /* SpaceGroupCIFTests.swift */; };
 		932137D41F2B533800DAEBDF /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932137D31F2B533800DAEBDF /* Errors.swift */; };
 		93260AE41E2A46350066EC08 /* iRASPADocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AE31E2A46350066EC08 /* iRASPADocument.swift */; };
 		93260AEC1E2A63D70066EC08 /* iRASPAWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AEB1E2A63D70066EC08 /* iRASPAWindowController.swift */; };
@@ -246,7 +248,7 @@
 		937479581FB9ED8F008C4411 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		9374795A1FB9EF2D008C4411 /* MarchingCubes3D_128x128x128.metal in Sources */ = {isa = PBXBuildFile; fileRef = 937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */; };
 		937737EB2680D7A900D47499 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
-		937737F22680D7F600D47499 /* SpaceGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937737F12680D7F600D47499 /* SpaceGroupTests.swift */; };
+		937737F22680D7F600D47499 /* SpaceGroupSpglibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937737F12680D7F600D47499 /* SpaceGroupSpglibTests.swift */; };
 		937737F42680D83000D47499 /* SpglibTestData in Resources */ = {isa = PBXBuildFile; fileRef = 937737F32680D83000D47499 /* SpglibTestData */; };
 		937737F62680E11E00D47499 /* MathKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937737F52680E11E00D47499 /* MathKitErrors.swift */; };
 		9377C4B82403C8FA0015FF35 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377C4B72403C8FA0015FF35 /* Errors.swift */; };
@@ -1407,6 +1409,8 @@
 		9317AA03265E2E89006689ED /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9317AA04265E2E92006689ED /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationMatrixTests.swift; sourceTree = "<group>"; };
+		931BE3D826A18ECB00587034 /* CIF_Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CIF_Files; sourceTree = "<group>"; };
+		931BE3DA26A1900600587034 /* SpaceGroupCIFTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupCIFTests.swift; sourceTree = "<group>"; };
 		932137D31F2B533800DAEBDF /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		9321596426468BED0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureCameraDetail.strings; sourceTree = "<group>"; };
 		9321596626468D670004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -1566,7 +1570,7 @@
 		937479591FB9EF2C008C4411 /* MarchingCubes3D_128x128x128.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MarchingCubes3D_128x128x128.metal; sourceTree = "<group>"; };
 		937737E62680D7A900D47499 /* SymmetryKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SymmetryKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		937737EA2680D7A900D47499 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		937737F12680D7F600D47499 /* SpaceGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupTests.swift; sourceTree = "<group>"; };
+		937737F12680D7F600D47499 /* SpaceGroupSpglibTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupSpglibTests.swift; sourceTree = "<group>"; };
 		937737F32680D83000D47499 /* SpglibTestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SpglibTestData; sourceTree = "<group>"; };
 		937737F52680E11E00D47499 /* MathKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathKitErrors.swift; sourceTree = "<group>"; };
 		9377C4B72403C8FA0015FF35 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -3138,8 +3142,10 @@
 		937737E72680D7A900D47499 /* SymmetryKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				931BE3D826A18ECB00587034 /* CIF_Files */,
 				937737F32680D83000D47499 /* SpglibTestData */,
-				937737F12680D7F600D47499 /* SpaceGroupTests.swift */,
+				937737F12680D7F600D47499 /* SpaceGroupSpglibTests.swift */,
+				931BE3DA26A1900600587034 /* SpaceGroupCIFTests.swift */,
 				93C71B7B2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift */,
 				93C71B7D2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift */,
 				93C71B7F2695DFBD00F67DEE /* SpaceGroupCOFsTest.swift */,
@@ -4388,6 +4394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				937737F42680D83000D47499 /* SpglibTestData in Resources */,
+				931BE3D926A18ECB00587034 /* CIF_Files in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4823,10 +4830,11 @@
 				93C71B802695DFBD00F67DEE /* SpaceGroupCOFsTest.swift in Sources */,
 				93C71B8426986DBF00F67DEE /* DelaunayReductionTests.swift in Sources */,
 				93C71B8C269D88CB00F67DEE /* ConstructedUpdatedBasisTests.swift in Sources */,
+				931BE3DB26A1900600587034 /* SpaceGroupCIFTests.swift in Sources */,
 				93C71B7E2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift in Sources */,
 				93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */,
 				933D79C126905E290023EB94 /* ConventionalCellTests.swift in Sources */,
-				937737F22680D7F600D47499 /* SpaceGroupTests.swift in Sources */,
+				937737F22680D7F600D47499 /* SpaceGroupSpglibTests.swift in Sources */,
 				93D16746269D951D0084F804 /* ConstructedUpdatedBasisAfterCorrectionTests.swift in Sources */,
 				931BE3D6269F586B00587034 /* TransformationMatrixTests.swift in Sources */,
 				93C71B7C2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift in Sources */,

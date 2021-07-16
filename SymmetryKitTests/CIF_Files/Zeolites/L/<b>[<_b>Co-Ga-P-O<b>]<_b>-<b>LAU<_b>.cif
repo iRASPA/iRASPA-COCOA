@@ -1,0 +1,85 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for <b>[</b>Co-Ga-P-O<b>]</b>-<b>LAU</b> 
+#
+# Reference : 
+#   Chippindale, A.M. and Walton, R.I.
+#   Chem. Commun., , 2453-2454, (1994)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_<b>[</b>Co-Ga-P-O<b>]</b>-<b>LAU</b>
+_chemical_name_systematic '<b>[</b>Co-Ga-P-O<b>]</b>-<b>LAU</b>'
+
+_cell_length_a      15.058
+_cell_length_b      13.197
+_cell_length_c      15.273 
+_cell_angle_alpha   90 
+_cell_angle_beta    112.2 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/c 1'
+_symmetry_space_group_name_H-M   'C 1 2/c 1'
+_symmetry_space_group_name_Hall  '-C 2yc'
+_space_group.IT_number  15 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+GA1  Ga  0.56738  0.10568  0.65382  2.07  0.6667
+CO1  Co  0.56738  0.10568  0.65382  2.07  0.3333
+GA2  Ga  0.73158  -0.12692  0.5773  2.04  0.6667
+CO2  Co  0.73158  -0.12692  0.5773  2.04  0.3333
+GA3  Ga  0.63532  0.19004  0.36767  2.1  0.6667
+CO3  Co  0.63532  0.19004  0.36767  2.1  0.3333
+P1  P  0.5716  -0.1306  0.6573  2.17  1
+P2  P  0.7317  0.1144  0.5759  2.1  1
+P3  P  0.6368  0.1869  0.8647  2.2  1
+O1  O  0.627  -0.1711  0.6002  3.61  1
+O2  O  0.7156  0.1423  0.9528  2.53  1
+O3  O  0.5295  -0.0264  0.6227  3.46  1
+O4  O  0.7126  0.1169  0.4706  3.28  1
+O5  O  0.7572  0.0068  0.6151  2.48  1
+O6  O  0.8178  0.1799  0.6299  3.25  1
+O7  O  0.4905  -0.2056  0.6435  2.68  1
+O8  O  0.6349  0.1218  0.7831  3.3  1
+O9  O  0.6598  0.2974  0.8514  3.2  1
+O10  O  0.6379  -0.1243  0.7616  3.44  1
+O11  O  0.4594  0.1869  0.6233  3.38  1
+O12  O  0.6437  0.1546  0.5907  3.41  1
+C1  C  0.17  0.0043  0.139  5.7  1
+N1  N  0.124  -0.08  0.144  9.07  1
+C2  C  0.124  0.096  0.13  7.49  1
+C3  C  0.031  0.1  0.123  7.94  1
+C4  C  -0.012  0.01  0.135  10.94  1
+C5  C  0.035  -0.081  0.144  8.69  1
+H11  H  0.2373  0.0011  0.1413  6.47  1
+H111  H  0.1579  -0.1462  0.1486  9.19  1
+H21  H  0.1594  0.16  0.129  8.35  1
+H31  H  -0.0055  0.1653  0.1099  7.82  1
+H41  H  -0.0774  0.0124  0.137  11.99  1
+H51  H  0.0042  -0.146  0.1501  9.69  1
+
+# End of data for <b>[</b>Co-Ga-P-O<b>]</b>-<b>LAU</b>
+
+
+			
+	

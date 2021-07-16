@@ -1,0 +1,86 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ITQ-34 
+#
+# Reference : 
+#   Corma, A., D&iacute;az-Caba&ntilde;as, M.J., Jorda, J.L., Rey, F., Sastre, G., and Strohmaier, K.G
+#   J. Am. Chem. Soc., 130, 16482, (2008)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ITQ-34
+_chemical_name_systematic 'ITQ-34'
+
+_cell_length_a      11.5086
+_cell_length_b      22.173
+_cell_length_c      25.2558 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C m c m'
+_symmetry_space_group_name_H-M   'C m c m'
+_symmetry_space_group_name_Hall  '-C 2c 2'
+_space_group.IT_number  63 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.21633  0.11982  0.15385  5  1
+Si2  Si  0.24625  0.13282  0.65553  5  1
+Si3  Si  0.13351  0.24762  0.18893  5  1
+Si4  Si  0.136  0.43127  0.56281  5  0.723
+Ge4  Ge  0.136  0.43127  0.56281  5  0.277
+Si5  Si  0.1364  0.42914  0.06084  5  0.736
+Ge5  Ge  0.1364  0.42914  0.06084  5  0.264
+Si6  Si  0.13544  0.4212  0.75  5  1
+Si7  Si  0.13557  0.43816  0.25  5  0.908
+Ge7  Ge  0.13557  0.43816  0.25  5  0.092
+Si8  Si  0  0.04629  0.18852  5  0.903
+Ge8  Ge  0  0.04629  0.18852  5  0.097
+Si9  Si  0  0.09311  0.68856  5  0.928
+Ge9  Ge  0  0.09311  0.68856  5  0.072
+O1  O  0.3147  0.1127  0.1986  5.6  1
+O2  O  0.1147  0.0703  0.1581  5.6  1
+O3  O  0.2712  0.1126  0.0956  5.6  1
+O4  O  0.1582  0.1855  0.1579  5.6  1
+O5  O  0.2782  0.1169  0.595  5.6  1
+O6  O  0.3106  0.0874  0.6952  5.6  1
+O7  O  0.1073  0.1257  0.659  5.6  1
+O8  O  0.2785  0.20226  0.6663  5.6  1
+O9  O  0.168  0.237  0.25  5.6  1
+O10  O  0  0.2676  0.1804  5.6  1
+O11  O  0  0.4132  0.5767  5.6  1
+O12  O  0.1672  0.50145  0.579  5.6  1
+O13  O  0.1774  0.4165  0.5011  5.6  1
+O14  O  0  0.4094  0.0729  5.6  1
+O15  O  0  0.4046  0.75  5.6  1
+O16  O  0.17  0.49131  0.75  5.6  1
+O17  O  0  0.4194  0.25  5.6  1
+O18  O  0  0.97663  0.1742  5.6  1
+O19  O  0  0.0655  0.25  5.6  1
+O20  O  0  0.1107  0.75  5.6  1
+
+# End of data for ITQ-34
+
+
+			
+	

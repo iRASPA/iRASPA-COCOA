@@ -1,0 +1,62 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for SAPO-31, as-made 
+#
+# Reference : 
+#   Baur, W.H., Joswig, W., Kassner, D. and Kornatowski, J.
+#   Acta Crystallogr., B50, 290-294, (1994)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_SAPO-31_as-made
+_chemical_name_systematic 'SAPO-31, as-made'
+
+_cell_length_a      20.839
+_cell_length_b      20.839
+_cell_length_c      5.041 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'R -3'
+_symmetry_space_group_name_H-M   'R -3'
+_symmetry_space_group_name_Hall  '-R 3'
+_space_group.IT_number  148 
+_space_group.IT_coordinate_system_code  'H'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Al  Al  0.61736  0.08455  0.0381  1.89  0.984
+P  P  0.47126  0.08774  0.1138  1.31  0.926
+O1  O  0.55134  0.10711  0.1317  3  1
+O2  O  0.4239  0.00893  0.0133  3.32  1
+O3  O  0.44586  0.09533  0.388  3.32  1
+O4  O  0.46468  0.14061  0.9208  3.32  1
+C1  C  0.046  0.013  0.111  15.79  0.46
+C2  C  0.064  0.029  0.388  15.79  0.25
+C3  C  0  0  0.3  15.79  0.33
+
+# End of data for SAPO-31_as-made
+
+
+			
+	

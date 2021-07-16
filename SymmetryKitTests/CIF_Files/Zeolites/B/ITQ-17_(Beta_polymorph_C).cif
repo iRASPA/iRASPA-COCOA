@@ -1,0 +1,65 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ITQ-17 (Beta polymorph C) 
+#
+# Reference : 
+#   Corma, A., Navarro, M.T., Rey, F., Rius, J. and Valencia, S.
+#   Angew. Chem. Int. Ed., 40, 2277-2280, (2001)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ITQ-17_(Beta_polymorph_C)
+_chemical_name_systematic 'ITQ-17 (Beta polymorph C)'
+
+_cell_length_a      12.823
+_cell_length_b      12.823
+_cell_length_c      13.345 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 42/m m c'
+_symmetry_space_group_name_H-M   'P 42/m m c'
+_symmetry_space_group_name_Hall  '-P 4c 2'
+_space_group.IT_number  131 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.3777  0.1259  0.1143  2.4  0.54
+Ge1  Ge  0.3777  0.1259  0.1143  2.4  0.46
+Si2  Si  0.1915  0.1915  0.25  2.4  0.72
+Ge2  Ge  0.1915  0.1915  0.25  2.4  0.28
+Si3  Si  0  0.1229  0.116  2.4  0.77
+Ge3  Ge  0  0.1229  0.116  2.4  0.23
+O1  O  0  0  0.1303  2.4  1
+O2  O  0.0994  0.1764  0.1705  2.4  1
+O3  O  0.3486  0  0.1278  2.4  1
+O4  O  0.5  0.1481  0.1555  2.4  1
+O5  O  0.301  0.1772  0.1954  2.4  1
+O6  O  0.3543  0.1583  0  2.4  1
+O7  O  0  0.1635  0  2.4  1
+
+# End of data for ITQ-17_(Beta_polymorph_C)
+
+
+			
+	

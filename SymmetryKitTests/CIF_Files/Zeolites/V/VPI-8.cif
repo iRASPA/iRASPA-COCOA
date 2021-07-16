@@ -1,0 +1,66 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for VPI-8 
+#
+# Reference : 
+#   Freyhardt, C.C., Lobo, R.F., Khodabandeh, S., Lewis, J.E., Tsapatsis, M., Yoshikawa, M., Camblor, M.A., Pan, M., Helmkamp, M.M., Zones, S.I. and Davis, M.E.
+#   J. Am. Chem. Soc., 118, 7299-7310, (1996)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_VPI-8
+_chemical_name_systematic 'VPI-8'
+
+_cell_length_a      13.045
+_cell_length_b      13.045
+_cell_length_c      5.034 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -4'
+_symmetry_space_group_name_H-M   'P -4'
+_symmetry_space_group_name_Hall  'P -4'
+_space_group.IT_number  81 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+SI1  Si  0  0  0.5  1.03  1
+SI2  Si  0.1991  0.0485  0.7568  1.03  1
+SI3  Si  0.8341  0.283  0.7444  1.03  1
+SI4  Si  0.6512  0.1468  0.763  1.03  1
+SI5  Si  0.5182  0.12278  0.2656  1.03  1
+O34  O  0.7159  0.2492  0.7089  1.97  1
+O32  O  0.8867  0.2442  0.0133  1.97  1
+O35  O  0.8253  0.4062  0.748  1.97  1
+O24  O  0.7243  0.0464  0.7842  1.97  1
+O55  O  0.5  0  0.243  1.97  1
+O12  O  0.0746  0.0195  0.7489  1.97  1
+O54  O  0.5575  0.1441  0.5614  1.97  1
+O45  O  0.5998  0.1581  0.0521  1.97  1
+O23  O  0.9048  0.234  0.5175  1.97  1
+
+# End of data for VPI-8
+
+
+			
+	

@@ -1,0 +1,62 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Octadecasil, as-made 
+#
+# Reference : 
+#   Caullet, P., Guth, J.L., Hazm, J., Lamblin, J.M. and Gies, H.
+#   Eur. J. Solid State Inorg. Chem., 28, 345-361, (1991)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Octadecasil_as-made
+_chemical_name_systematic 'Octadecasil, as-made'
+
+_cell_length_a      9.194
+_cell_length_b      9.194
+_cell_length_c      13.396 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 4/m'
+_symmetry_space_group_name_H-M   'I 4/m'
+_symmetry_space_group_name_Hall  '-I 4'
+_space_group.IT_number  87 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.2303  0.0387  0.1137  0.61  1
+Si2  Si  0.5  0  0.25  0.47  1
+O1  O  0.3724  0.0659  0.1817  0.96  1
+O2  O  0.3308  0.6201  0.3583  1.27  1
+O3  O  0.2883  0.0502  0  1.36  1
+C1  C  0.05  0.14  0.5  11.91  0.151
+C2  C  0.13  0.06  0.41  14.5  0.184
+C3  C  0  0.07  0.37  3.87  0.049
+C4  C  0.14  0.13  0.16  6.15  0.078
+F  F  0  0  0  2.91  0.037
+
+# End of data for Octadecasil_as-made
+
+
+			
+	

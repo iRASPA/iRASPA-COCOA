@@ -1,0 +1,74 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ZSM-11, calcined 
+#
+# Reference : 
+#   Fyfe, C.A., Gies, H., Kokotailo, G.T., Pasztor, C., Strobl, H. and Cox, D.E.
+#   J. Am. Chem. Soc., 111, 2470-2474, (1989)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ZSM-11_calcined
+_chemical_name_systematic 'ZSM-11, calcined'
+
+_cell_length_a      20.067
+_cell_length_b      20.067
+_cell_length_c      13.411 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I -4 m 2'
+_symmetry_space_group_name_H-M   'I -4 m 2'
+_symmetry_space_group_name_Hall  'I -4 -2'
+_space_group.IT_number  119 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+SI1  Si  0.0777  0.0777  0  0.34  1
+SI2  Si  0.1212  0.186  0.1451  1.64  1
+SI3  Si  0.0775  0.2219  0.3569  1.29  1
+SI4  Si  0.2801  0.1882  0.1403  0.39  1
+SI5  Si  0.3053  0.0768  -0.0079  0.28  1
+SI6  Si  0.1938  0.1938  0.5  1.1  1
+SI7  Si  0.0761  0.3819  0.3589  0.01  1
+O1  O  0.0873  0  0.0279  3.3  1
+O2  O  0.1067  0.1179  0.0975  2.83  1
+O3  O  0.0926  0.1856  0.255  1.71  1
+O4  O  0.2018  0.1993  0.1506  1.79  1
+O5  O  0.3309  0.1186  0.0889  1.62  1
+O6  O  0.3003  0  0.0247  0.77  1
+O7  O  0.3095  0.1905  0.25  3.27  1
+O8  O  0.1204  0.1931  0.4478  0.24  1
+O9  O  0.2511  0.1927  0.4252  1.43  1
+O10  O  0.0905  0.301  0.3497  1.16  1
+O11  O  0  0.209  0.3875  3.49  1
+O12  O  0  0.396  0.3871  0.01  1
+O13  O  0.0926  0.2437  0.09  1.59  1
+O14  O  0.1295  0.4078  0.4348  0.03  1
+O15  O  0.0875  0.4125  0.25  0.01  1
+
+# End of data for ZSM-11_calcined
+
+
+			
+	

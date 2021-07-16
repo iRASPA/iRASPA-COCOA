@@ -1,0 +1,69 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for UCSB-15GaGe 
+#
+# Reference : 
+#   
+#   , , , ()
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_UCSB-15GaGe
+_chemical_name_systematic 'UCSB-15GaGe'
+
+_cell_length_a      7.7308
+_cell_length_b      13.375
+_cell_length_c      14.6126 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P n m a'
+_symmetry_space_group_name_H-M   'P n m a'
+_symmetry_space_group_name_Hall  '-P 2ac 2n'
+_space_group.IT_number  62 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ge1  Ge  0.0619  0.6295  0.6768  1.03  1
+Ge2  Ge  0.6694  0.5624  0.6214  1.1  1
+Ge3  Ge  0.3276  0.6264  0.5109  0.95  0.5
+Ga1  Ga  0.3276  0.6264  0.5109  0.95  0.5
+O1  O  0.5511  0.6219  0.5346  1.66  1
+O2  O  0.0571  0.5551  0.7753  1.89  1
+O3  O  -0.142  0.6335  0.6272  2.21  1
+O4  O  0.205  0.5744  0.6008  1.97  1
+O5  O  0.2849  0.5621  0.4078  1.82  1
+O6  O  0.1303  0.75  0.7056  1.66  1
+O7  O  0.2599  0.75  0.4856  1.66  1
+C1  C  0.3745  0.6574  0.1171  2.84  1
+C2  C  0.2268  0.6588  0.1867  2.84  1
+N1  N  0.4809  0.75  0.1363  2.29  0.5
+N2  N  0.1179  0.75  0.1764  3.08  0.5
+N3  N  0.3444  0.75  0.0515  2.37  0.5
+N4  N  0.2542  0.75  0.244  5.21  0.5
+
+# End of data for UCSB-15GaGe
+
+
+			
+	

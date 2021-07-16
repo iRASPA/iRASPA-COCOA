@@ -1,0 +1,67 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Edingtonite 
+#
+# Reference : 
+#   Kvick, &Aring;. and Smith J.V.
+#   J. Chem. Phys., 79, 2356-2362, (1983)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Edingtonite
+_chemical_name_systematic 'Edingtonite'
+
+_cell_length_a      9.537
+_cell_length_b      9.651
+_cell_length_c      6.509 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 21 21 2'
+_symmetry_space_group_name_H-M   'P 21 21 2'
+_symmetry_space_group_name_Hall  'P 2 2ab'
+_space_group.IT_number  18 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+BA  Ba  0.5  0  0.63117  1.24  0.974
+SI1  Si  0  0  0.01365  0.55  1
+SI2  Si  -0.17568  0.09407  0.38762  0.57  1
+AL1  Al  0.09245  0.17139  0.62657  0.42  1
+O1  O  0.17414  0.33126  0.63273  0.68  1
+O2  O  -0.05301  0.19639  0.46728  0.67  1
+O3  O  0.19836  0.03763  0.53741  0.78  1
+O4  O  0.03649  0.13362  0.87695  1.16  1
+O5  O  -0.13505  0.03586  0.15743  1.03  1
+H1  H  0.13081  0.26044  0.0562  3.03  0.844
+H2  H  0.23738  0.36941  0.06351  6.97  0.844
+O6  O  0.17627  0.32248  0.14994  1.73  0.844
+H3  H  0.30048  0.08839  0.04942  6.68  0.909
+H4  H  0.41511  0.2044  0.03767  4.22  0.909
+O7  O  0.37851  0.122  -0.02375  3.2  0.909
+
+# End of data for Edingtonite
+
+
+			
+	

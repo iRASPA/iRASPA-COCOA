@@ -1,0 +1,58 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Bicchulite 
+#
+# Reference : 
+#   Sahl, K. and Chatterjee, N.D.
+#   Z. Kristallogr., 146, 35-41, (1977)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Bicchulite
+_chemical_name_systematic 'Bicchulite'
+
+_cell_length_a      8.825
+_cell_length_b      8.825
+_cell_length_c      8.825 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I -4 3 m'
+_symmetry_space_group_name_H-M   'I -4 3 m'
+_symmetry_space_group_name_Hall  'I -4 2 3'
+_space_group.IT_number  217 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+CA  Ca  0.1434  0.1434  0.1434  0.75  1
+SI  Si  0.25  0.5  0  0.49  0.3333
+AL  Al  0.25  0.5  0  0.49  0.6667
+O  O  0.1407  0.1407  0.422  0.94  1
+OH  O1-(OH)  0.3845  0.3845  0.3845  0.93  1
+H  H  0.328  0.328  0.328  1  1
+
+# End of data for Bicchulite
+
+
+			
+	

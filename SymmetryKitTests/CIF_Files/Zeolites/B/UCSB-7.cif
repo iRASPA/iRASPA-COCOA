@@ -1,0 +1,58 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for UCSB-7 
+#
+# Reference : 
+#   
+#   , , , ()
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_UCSB-7
+_chemical_name_systematic 'UCSB-7'
+
+_cell_length_a      18.5356
+_cell_length_b      18.5356
+_cell_length_c      18.5356 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I a -3 d'
+_symmetry_space_group_name_H-M   'I a -3 d'
+_symmetry_space_group_name_Hall  '-I 4bd 2c 3'
+_space_group.IT_number  230 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ge  Ge  0.2571  0.3484  0.1135  0.95  0.75
+Ga  Ga  0.2571  0.3484  0.1135  0.95  0.25
+O1  O  0.1768  0.3347  0.063  1.5  1
+O2  O  0.2996  0.2629  0.1174  1.66  1
+C1  C  0.2032  0.125  0.0468  7.5  1
+N1  N  0.25  0.079  0  8.68  0.5
+
+# End of data for UCSB-7
+
+
+			
+	

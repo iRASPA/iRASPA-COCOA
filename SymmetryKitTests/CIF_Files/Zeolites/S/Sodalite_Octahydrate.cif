@@ -1,0 +1,57 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Sodalite Octahydrate 
+#
+# Reference : 
+#   Felsche, J., Luger, S. and Baerlocher, Ch.
+#   Zeolites, 6, 367-372, (1986)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Sodalite_Octahydrate
+_chemical_name_systematic 'Sodalite Octahydrate'
+
+_cell_length_a      8.848
+_cell_length_b      8.848
+_cell_length_c      8.848 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -4 3 n'
+_symmetry_space_group_name_H-M   'P -4 3 n'
+_symmetry_space_group_name_Hall  'P -4n 2 3'
+_space_group.IT_number  218 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA  Na  0.1504  0.1504  0.1504  3.71  0.75
+SI1  Si  0.25  0  0.5  0.79  1
+AL1  Al  0.25  0.5  0  1.18  1
+O1  O  0.1366  0.4338  0.149  1.5  1
+H2O  O2-(H2O)  0.3753  0.3753  0.3753  3.08  1
+
+# End of data for Sodalite_Octahydrate
+
+
+			
+	

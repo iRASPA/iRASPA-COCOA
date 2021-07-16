@@ -1,0 +1,86 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Merlinoite 
+#
+# Reference : 
+#   Galli, E., Gottardi, G. and Pongiluppi, D.
+#   N. Jb. Miner. Mh., , 1-9, (1979)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Merlinoite
+_chemical_name_systematic 'Merlinoite'
+
+_cell_length_a      14.116
+_cell_length_b      14.229
+_cell_length_c      9.946 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I m m m'
+_symmetry_space_group_name_H-M   'I m m m'
+_symmetry_space_group_name_Hall  '-I 2 2'
+_space_group.IT_number  71 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA3  Na  0.5  0.5  0.275  12  0.054
+NA4  Na  0.39  0.363  0  12  0.022
+NA5  Na  0.333  0.38  0  12  0.036
+K1  K  0.156  0.5  0  3.8  0.419
+K2  K  0.5  0.192  0  3.8  0.419
+K3  K  0.5  0.5  0.275  12  0.09
+K4  K  0.39  0.363  0  12  0.136
+K5  K  0.333  0.38  0  12  0.06
+CA3  Ca  0.5  0.5  0.275  12  0.147
+CA4  Ca  0.39  0.363  0  12  0.059
+CA5  Ca  0.333  0.38  0  12  0.098
+BA1  Ba  0.156  0.5  0  3.8  0.041
+BA2  Ba  0.5  0.192  0  3.8  0.041
+BA3  Ba  0.5  0.5  0.275  12  0.009
+BA4  Ba  0.39  0.363  0  12  0.004
+BA5  Ba  0.333  0.38  0  12  0.006
+SI1  Si  0.1097  0.2473  0.1563  1  0.71
+SI2  Si  0.2816  0.1102  0.1596  1  0.71
+AL1  Al  0.1097  0.2473  0.1563  1  0.29
+AL2  Al  0.2816  0.1102  0.1596  1  0.29
+O1  O  0.1235  0.283  0  1.8  1
+O2  O  0.3089  0.1177  0  1.5  1
+O3  O  0  0.2155  0.1839  1.8  1
+O4  O  0.2767  0  0.2096  1.9  1
+O5  O  0.1765  0.1568  0.1924  2.3  1
+O6  O  0.3661  0.1638  0.2454  2.6  1
+H2O1  O2-(H2O)  0.5  0  0  6.8  1
+H2O2  O2-(H2O)  0  0.5  0.158  4.9  1
+H2O3  O2-(H2O)  0.385  0.5  0.159  9.8  0.6
+H2O4  O2-(H2O)  0.5  0.5  0  3.7  0.2
+H2O5  O2-(H2O)  0.459  0.274  0  5.8  0.2
+H2O6  O2-(H2O)  0.251  0.464  0  3.6  0.21
+H2O7  O2-(H2O)  0.446  0.42  0.062  11.2  0.2
+H2O8  O2-(H2O)  0.443  0.5  0.5  12  0.44
+
+# End of data for Merlinoite
+
+
+			
+	

@@ -1,0 +1,60 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Linde Type A, dehydrated 
+#
+# Reference : 
+#   Pluth, J.J. and Smith, J.V.
+#   J. Am. Chem. Soc., 102, 4704-4708, (1980)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Linde_Type_A_dehydrated
+_chemical_name_systematic 'Linde Type A, dehydrated'
+
+_cell_length_a      24.555
+_cell_length_b      24.555
+_cell_length_c      24.555 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'F m -3 c'
+_symmetry_space_group_name_H-M   'F m -3 c'
+_symmetry_space_group_name_Hall  '-F 4c 2 3'
+_space_group.IT_number  226 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0.0996  0.0996  0.0996  3.79  0.972
+NA2  Na  0  0.2165  0.2111  6.35  0.242
+NA3  Na  0.25  0.106  0.106  4.34  0.066
+SI1  Si  0  0.09316  0.18499  1.89  1
+AL1  Al  0  0.18715  0.09042  1.98  1
+O1  O  0  0.11367  0.24663  3.17  1
+O2  O  0  0.14459  0.14591  3.68  1
+O3  O  0.05379  0.05865  0.17152  2.98  1
+
+# End of data for Linde_Type_A_dehydrated
+
+
+			
+	

@@ -1,0 +1,62 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for MAPO-36, calcined 
+#
+# Reference : 
+#   Smith, J.V., Pluth, J.J. and Andries, K.J.
+#   Zeolites, 13, 166-169, (1993)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_MAPO-36_calcined
+_chemical_name_systematic 'MAPO-36, calcined'
+
+_cell_length_a      13.1483
+_cell_length_b      21.5771
+_cell_length_c      5.1639 
+_cell_angle_alpha   90 
+_cell_angle_beta    91.84 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/c 1'
+_symmetry_space_group_name_H-M   'C 1 2/c 1'
+_symmetry_space_group_name_Hall  '-C 2yc'
+_space_group.IT_number  15 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+T1  Si  0.619  0.041  0.767  0.92  1
+T2  Si  0.314  0.174  0.768  0.92  1
+T3  Si  0.617  0.243  0.223  0.92  1
+O1  O  0.69  0.101  0.773  1.237  1
+O2  O  0.5  0.048  0.75  1.237  1
+O3  O  0.622  0.212  0.934  1.237  1
+O4  O  0.354  0.189  0.069  1.237  1
+O5  O  0.5  0.265  0.25  1.237  1
+O6  O  0.645  0.001  0.022  1.237  1
+O7  O  0.811  0.195  0.748  1.237  1
+
+# End of data for MAPO-36_calcined
+
+
+			
+	

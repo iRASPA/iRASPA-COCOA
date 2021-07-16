@@ -1,0 +1,71 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for AlPO-8 
+#
+# Reference : 
+#   Richardson Jr., J.W. and Vogt, E.T.C.
+#   Zeolites, 12, 13-19, (1992)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_AlPO-8
+_chemical_name_systematic 'AlPO-8'
+
+_cell_length_a      33.29
+_cell_length_b      14.7036
+_cell_length_c      8.3863 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C m c m'
+_symmetry_space_group_name_H-M   'C m c m'
+_symmetry_space_group_name_Hall  '-C 2c 2'
+_space_group.IT_number  63 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+T11  Si  0.1904  0.416  0.066  0.01  1
+T12  Si  0  0.132  -0.028  12.4  1
+T21  Si  0.0878  0.094  0.055  0.01  1
+T22  Si  0.274  0.404  -0.061  0.01  1
+T23  Si  0.1573  0.226  -0.071  0.01  1
+O11  O  0.1767  0.5  0  0.3  1
+O12  O  0  0  0  12.8  1
+O21  O  0.1772  0.402  0.25  0.01  1
+O22  O  0  0.127  -0.25  12.5  1
+O31  O  0.0456  0.133  0.018  2  1
+O32  O  0.2317  0.394  0.02  3  1
+O33  O  0.158  0.324  0.031  3  1
+O41  O  0.1993  0.175  0.017  3  1
+O42  O  0.0906  0  0  3  1
+O51  O  0.0847  0.096  0.25  6.6  1
+O52  O  0.259  0.378  -0.25  6.6  1
+O53  O  0.1444  0.232  -0.25  6.6  1
+O61  O  0.1154  0.174  0.002  3  1
+O62  O  0.2865  0.5  0  3  1
+
+# End of data for AlPO-8
+
+
+			
+	

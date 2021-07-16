@@ -1,0 +1,74 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Na-X, hydrated 
+#
+# Reference : 
+#   Olson, D.H.
+#   J. Phys. Chem., 74, 2758-2764, (1970)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Na-X_hydrated
+_chemical_name_systematic 'Na-X, hydrated'
+
+_cell_length_a      25.028
+_cell_length_b      25.028
+_cell_length_c      25.028 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'F d -3'
+_symmetry_space_group_name_H-M   'F d -3'
+_symmetry_space_group_name_Hall  '-F 2uv 2vw 3'
+_space_group.IT_number  203 
+_space_group.IT_coordinate_system_code  '2'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+NA1  Na  0  0  0  2.53  0.54
+NA2  Na  0.06  0.06  0.06  0.5  0.24
+NA3  Na  0.23  0.23  0.23  0.5  0.39
+NA4  Na  0.238  0.238  0.238  0.5  0.36
+SI1  Si  -0.05291  0.12457  0.03509  1.16  1
+SI2  Si  -0.05352  0.03671  0.12309  1.04  0.08
+AL2  Al  -0.05352  0.03671  0.12309  1.04  0.92
+O1  O  -0.1099  0.0002  0.1054  2.2  1
+O2  O  -0.0025  -0.0041  0.1445  1.76  1
+O3  O  -0.0321  0.073  0.068  2.18  1
+O4  O  -0.0706  0.0772  0.1761  2.11  1
+H2O1  O2-(H2O)  0.074  0.074  0.074  0.61  0.36
+H2O2  O2-(H2O)  0.093  0.086  0.176  1.66  0.27
+H2O3  O2-(H2O)  0.245  0.245  0.245  0.87  0.24
+H2O4  O2-(H2O)  0.281  0.298  0.275  0.95  0.13
+H2O5  O2-(H2O)  0.353  0.345  0.186  3.58  0.31
+H2O6  O2-(H2O)  0.239  0.24  0.392  3.58  0.29
+H2O7  O2-(H2O)  0.174  0.204  0.422  1.55  0.18
+H2O8  O2-(H2O)  0.212  0.387  0.288  2.82  0.17
+H2O9  O2-(H2O)  0.312  0.381  0.2  1.92  0.1
+H2O10  O2-(H2O)  0.258  0.412  0.204  2.42  0.14
+
+# End of data for Na-X_hydrated
+
+
+			
+	

@@ -1,0 +1,73 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ZSM-10 
+#
+# Reference : 
+#   Dorset, D.L.
+#   Z. Kristallogr., 221, 260-265, (2006)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ZSM-10
+_chemical_name_systematic 'ZSM-10'
+
+_cell_length_a      31.39
+_cell_length_b      31.39
+_cell_length_c      7.5147 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 6/m m m'
+_symmetry_space_group_name_H-M   'P 6/m m m'
+_symmetry_space_group_name_Hall  '-P 6 2'
+_space_group.IT_number  191 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.2049  0.1516  0.5  1.42  1
+Si2  Si  0.2869  0.1951  0.2096  1.42  1
+Si3  Si  0.3827  0.2885  0.2127  1.42  1
+Si4  Si  0.4245  0.3702  0.5  1.42  1
+Si5  Si  0.5205  0.372  0.5  1.42  1
+Si6  Si  0.4804  0.2898  0.212  1.42  1
+O7  O  0.1559  0.1559  0.5  1.97  1
+O8  O  0.1868  0.0934  0.5  1.97  1
+O9  O  0.2372  0.1781  0.3244  1.97  1
+O10  O  0.3005  0.1503  0.224  1.97  1
+O11  O  0.2779  0.2025  0  1.97  1
+O12  O  0.3307  0.2454  0.2885  1.97  1
+O13  O  0.3802  0.297  0  1.97  1
+O14  O  0.3976  0.3384  0.3235  1.97  1
+O15  O  0.4325  0.2725  0.2536  1.97  1
+O16  O  0.4184  0.4184  0.5  1.97  1
+O17  O  0.4823  0.3866  0.5  1.97  1
+O18  O  0.5793  0.4207  0.5  1.97  1
+O19  O  0.5176  0.3386  0.3254  1.97  1
+O20  O  0.489  0.2445  0.2621  1.97  1
+O21  O  0.4903  0.3015  0  1.97  1
+
+# End of data for ZSM-10
+
+
+			
+	

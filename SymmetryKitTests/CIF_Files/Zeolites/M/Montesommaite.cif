@@ -1,0 +1,60 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for Montesommaite 
+#
+# Reference : 
+#   Rouse, R.C., Dunn, P.J., Grice, J.D., Schlenker, J.L. and Higgins, J.B.
+#   Am. Mineral., 75, 1415-1420, (1990)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_Montesommaite
+_chemical_name_systematic 'Montesommaite'
+
+_cell_length_a      7.141
+_cell_length_b      7.141
+_cell_length_c      17.307 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 41/a m d'
+_symmetry_space_group_name_H-M   'I 41/a m d'
+_symmetry_space_group_name_Hall  '-I 4bd 2'
+_space_group.IT_number  141 
+_space_group.IT_coordinate_system_code  '2'
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+K1  K  0  0  0.5  1.97  0.53
+SI  Si  0  0.463  0.09  0.39  0.706
+AL  Al  0  0.463  0.09  0.39  0.294
+O1  O  0  0.25  0.116  1.18  1
+O2  O  0.186  0.436  0.875  1.18  1
+O3  O  0  0  0  1.18  1
+H2O1  O2-(H2O)  0  0.25  0.342  1.18  0.5
+
+# End of data for Montesommaite
+
+
+			
+	

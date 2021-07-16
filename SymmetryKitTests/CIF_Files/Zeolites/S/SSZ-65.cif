@@ -1,0 +1,68 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for SSZ-65 
+#
+# Reference : 
+#   Elomari, S., Burton, A.W., Ong, K., Pradhan, A.R. and Chan, I.Y.
+#   Chem. Mater., 19, 5485-5492, (2007)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_SSZ-65
+_chemical_name_systematic 'SSZ-65'
+
+_cell_length_a      16.8009
+_cell_length_b      16.8009
+_cell_length_c      12.6154 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 6/m'
+_symmetry_space_group_name_H-M   'P 6/m'
+_symmetry_space_group_name_Hall  '-P 6'
+_space_group.IT_number  175 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.3017  -0.0029  0.2005  0.07  1
+Si2  Si  0.1826  -0.0079  0.3786  0.07  1
+Si3  Si  0.1791  -0.0118  0  0.07  1
+Si4  Si  0.4991  0.3539  0.1264  0.07  1
+Si5  Si  0.4785  0.1606  0.1241  0.07  1
+O1  O  0.3848  0.0967  0.1852  0.07  1
+O2  O  0.3385  0.9271  0.1868  0.07  1
+O3  O  0.2542  -0.0157  0.3083  0.07  1
+O4  O  0.2314  -0.0193  0.1004  0.07  1
+O5  O  0.1782  0.084  0.3564  0.07  1
+O6  O  0.21  -0.0149  0.5  0.07  1
+O7  O  0.1715  0.0789  0  0.07  1
+O8  O  0.4972  0.3657  0  0.07  1
+O9  O  0.4592  0.1421  0  0.07  1
+O10  O  0.5589  0.1456  0.1694  0.07  1
+O11  O  0.5053  0.2645  0.1516  0.07  1
+
+# End of data for SSZ-65
+
+
+			
+	

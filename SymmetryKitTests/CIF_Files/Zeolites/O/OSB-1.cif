@@ -1,0 +1,70 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for OSB-1 
+#
+# Reference : 
+#   Kongshaug, K.O., Fjellv&aring;g, H., Lillerud, K.P., Gier, T.E., Stucky, G.D. and Cheetham, A.K.
+#   private communication, , , (0)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_OSB-1
+_chemical_name_systematic 'OSB-1'
+
+_cell_length_a      10.0928
+_cell_length_b      10.0928
+_cell_length_c      7.6264 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 32'
+_symmetry_space_group_name_H-M   'P 32'
+_symmetry_space_group_name_Hall  'P 32'
+_space_group.IT_number  145 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.5818  0.2893  0.7241  1.03  0.58
+Be1  Be  0.5818  0.2893  0.7241  1.03  0.42
+Si2  Si  0.2899  0.5811  0.0599  0.71  0.53
+Be2  Be  0.2899  0.5811  0.0599  0.71  0.47
+Si3  Si  0.0007  0.4976  0.2277  1.03  0.73
+Be3  Be  0.0007  0.4976  0.2277  1.03  0.28
+O1  O  0.68  0.371  0.554  1.58  1
+O2  O  0.312  0.691  0.882  2.45  1
+O3  O  0.465  0.107  0.681  1.66  1
+O4  O  0.349  0.456  0.018  2.21  1
+O5  O  0.107  0.464  0.102  1.97  1
+O6  O  0.469  0.356  0.772  1.74  1
+K11  K  0.005  0.462  0.72  3.95  0.44
+K12  K  -0.006  0.527  0.718  4.5  0.56
+K2  K  0.185  0.075  0.714  20.53  0.79
+H2O1  O2-(H2O)  0.115  0.171  0.051  9.24  1
+H2O2  O2-(H2O)  0.136  0.327  0.584  15  1
+H2O3  O2-(H2O)  -0.138  0.189  -0.079  14.21  1
+
+# End of data for OSB-1
+
+
+			
+	

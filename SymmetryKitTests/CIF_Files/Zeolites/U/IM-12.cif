@@ -1,0 +1,88 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for IM-12 
+#
+# Reference : 
+#   Paillaud, J.-L., Harbuzaru, B., Patarin, J. and Bats, N.
+#   Science, 304, 990-992, (2004)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_IM-12
+_chemical_name_systematic 'IM-12'
+
+_cell_length_a      29.8004
+_cell_length_b      13.9926
+_cell_length_c      12.3926 
+_cell_angle_alpha   90 
+_cell_angle_beta    105.185 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C 1 2/m 1'
+_symmetry_space_group_name_H-M   'C 1 2/m 1'
+_symmetry_space_group_name_Hall  '-C 2y'
+_space_group.IT_number  12 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ge1  Ge  0.4474  0.6144  0.8253  3  0.77
+Ge2  Ge  0.4408  0.6125  1.0867  2.2  0.753
+Si1  Si  0.2676  1  0.7912  3.9  1
+Si2  Si  0.2291  0.5  0.8244  3.9  1
+Si3  Si  0.3052  0.5  0.6799  3.9  1
+Si4  Si  0.2284  0.5  0.4591  3.9  1
+Si5  Si  0.2951  0.7974  1.2393  3.9  1
+Si6  Si  0.2972  0.7965  0.4923  3.9  1
+Si7  Si  0.3044  0.7988  0.8584  3.9  1
+Si8  Si  0.3468  0.6978  1.0903  3.9  1
+Si9  Si  0.3561  0.6997  0.6986  3.9  1
+Si10  Si  0.2955  0.5  1.0606  3.9  1
+O1  O  0.3011  0.9045  1.2108  6  1
+O2  O  0.3369  0.5951  0.709  6  1
+O3  O  0.2385  0.5  0.3398  6  1
+O4  O  0.2482  0.5  0.96  6  1
+O5  O  0.4285  0.6159  0.9437  6  1
+O6  O  0.3307  0.7319  1.1994  6  1
+O7  O  0.329  0.7749  0.9903  6  1
+O8  O  0.4373  0.5  1.139  6  1
+O9  O  0.5036  0.649  0.834  6  0.5
+O9'  O  0.5032  0.667  0.865  6  0.5
+O10  O  0.4466  0.5  0.771  6  1
+O11  O  0.4027  0.6876  1.1289  6  1
+O12  O  0.2821  0.5  1.1811  6  1
+O13  O  0.4127  0.6952  0.7273  6  1
+O14  O  0.297  0.9096  0.8436  6  1
+O15  O  0.25  0.75  0.5  6  1
+O16  O  0.3254  0.5943  1.0516  6  1
+O17  O  0.3368  0.7686  0.7804  6  1
+O18  O  0.2694  0.5  0.7591  6  1
+O19  O  0.3001  0.906  0.5276  6  1
+O20  O  0.2786  0.5  0.5463  6  1
+O21  O  0.3055  0.784  0.3718  6  1
+O22  O  0.3361  0.7339  0.5701  6  1
+O23  O  0.2558  0.7398  0.8219  6  1
+
+# End of data for IM-12
+
+
+			
+	

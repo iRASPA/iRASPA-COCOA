@@ -1,0 +1,77 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for SSZ-44, calcined 
+#
+# Reference : 
+#   Wagner, P., Zones, S.I., Davis, M.E. and Medrud, R.C.
+#   Angew. Chem. Int. Ed., 38, 1269-1272, (1999)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_SSZ-44_calcined
+_chemical_name_systematic 'SSZ-44, calcined'
+
+_cell_length_a      11.4853
+_cell_length_b      21.9458
+_cell_length_c      7.3881 
+_cell_angle_alpha   90 
+_cell_angle_beta    94.702 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 21/m 1'
+_symmetry_space_group_name_H-M   'P 1 21/m 1'
+_symmetry_space_group_name_Hall  '-P 2yb'
+_space_group.IT_number  11 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.27227  0.97791  0.93601  0.01  1
+Si2  Si  0.13548  0.6293  0.10193  0.01  1
+Si3  Si  0.23886  0.67904  0.47825  1.12  1
+Si4  Si  0.39323  0.5689  0.59794  0.15  1
+Si5  Si  0.03652  0.68184  0.74254  1.27  1
+Si6  Si  0.05149  0.04087  0.76211  0.91  1
+Si7  Si  0.11053  0.06798  0.36508  0.01  1
+Si8  Si  0.35948  0.02838  0.29204  0.31  1
+O1  O  0.22578  0.91806  0.02742  0.87  1
+O2  O  0.32885  0.96241  0.75474  2.61  1
+O3  O  0.36382  0.01059  0.08089  2.88  1
+O4  O  0.16115  0.02349  0.89856  1.28  1
+O5  O  0.02146  0.59436  0.15514  0.01  1
+O6  O  0.19913  0.6636  0.27348  0.77  1
+O7  O  0.09682  0.67737  0.94529  3.58  1
+O8  O  0.27877  0.75  0.49498  1.01  1
+O9  O  0.34544  0.63729  0.55819  2.04  1
+O10  O  0.13244  0.66902  0.60239  1.72  1
+O11  O  0.36967  0.53179  0.41218  0.69  1
+O12  O  0.53084  0.57271  0.65389  1.53  1
+O13  O  0.93509  0.63319  0.70903  2.04  1
+O14  O  0.98407  0.75  0.71105  2.39  1
+O15  O  0.96479  0.98471  0.7338  1.16  1
+O16  O  0.09791  0.06329  0.57827  0.69  1
+O17  O  0.24371  0.06267  0.32726  2.88  1
+
+# End of data for SSZ-44_calcined
+
+
+			
+	

@@ -1,0 +1,63 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for ASU-7 
+#
+# Reference : 
+#   Li, H. and Yaghi, O.M.
+#   J. Am. Chem. Soc., 120, 10569-10570, (1998)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_ASU-7
+_chemical_name_systematic 'ASU-7'
+
+_cell_length_a      8.7795
+_cell_length_b      8.7795
+_cell_length_c      14.4696 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 4/m c c'
+_symmetry_space_group_name_H-M   'P 4/m c c'
+_symmetry_space_group_name_Hall  '-P 4 2c'
+_space_group.IT_number  124 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Ge1  Ge  0  0.5  0.25  0.71  1
+Ge2  Ge  0.2565  0.4239  0.1086  0.71  1
+O1  O  0.1043  0.3755  0.181  0.95  1
+O20  O  0.201  0.3595  0  1.11  0.5
+O21  O  0.1764  0.4393  0  0.95  0.5
+O30  O  0.3257  0.5936  0.1557  1.18  0.5
+O31  O  0.3793  0.2692  0.1194  0.95  0.5
+H2O1  O2-(H2O)  0.5  0.5  0  2.53  1
+C1  C  0  0  0.1258  6.63  0.5
+C2  C  -0.0333  0.0537  0.208  7.42  0.125
+N1  N  -0.0333  0.0537  0.208  7.42  0.125
+
+# End of data for ASU-7
+
+
+			
+	

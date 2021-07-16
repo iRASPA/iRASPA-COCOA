@@ -49,7 +49,7 @@ public struct SKCell: BinaryDecodable, BinaryEncodable
   public var contentShift: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
   public var contentFlip: Bool3 = Bool3(false,false,false)
   
-  public var precision: Double = 1e-4
+  public var precision: Double = 1e-2
   
   public var enclosingBoundingBox: SKBoundingBox
   {

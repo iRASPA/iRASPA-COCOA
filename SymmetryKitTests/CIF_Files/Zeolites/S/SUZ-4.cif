@@ -1,0 +1,67 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for SUZ-4 
+#
+# Reference : 
+#   Strohmaier, K.G., Afeworki, M. and Dorset, D.L.
+#   Z. Kristallogr., 221, 689-698, (2006)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_SUZ-4
+_chemical_name_systematic 'SUZ-4'
+
+_cell_length_a      18.8064
+_cell_length_b      14.2298
+_cell_length_c      7.4548 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'C m m m'
+_symmetry_space_group_name_H-M   'C m m m'
+_symmetry_space_group_name_Hall  '-C 2 2'
+_space_group.IT_number  65 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.0818  0.1976  0.2926  1.026  1
+Si2  Si  0.1463  0  0.2905  1.026  1
+Si3  Si  0.2677  0  0  1.026  1
+Si4  Si  0.1726  0.2974  0  1.026  1
+O1  O  0  0.2209  0.2449  1.816  1
+O2  O  0.0995  0.0916  0.2387  1.816  1
+O3  O  0.2195  0  0.1796  1.816  1
+O4  O  0.25  0.25  0  1.816  1
+O5  O  0.3196  0.0906  0  1.816  1
+O6  O  0.1309  0.2683  0.1811  1.816  1
+O7  O  0.1677  0  0.5  1.816  1
+O8  O  0.0992  0.2173  0.5  1.816  1
+K1  K  0  0  0  4.5  1
+K2  K  0.25  0.25  0.5  37.18  0.191
+K3  K  0.2151  0.4015  0.5  1.973  0.137
+
+# End of data for SUZ-4
+
+
+			
+	

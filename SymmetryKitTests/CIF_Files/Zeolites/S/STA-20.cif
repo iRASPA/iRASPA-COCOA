@@ -1,0 +1,73 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for STA-20 
+#
+# Reference : 
+#   Turrina, A., Garcia, R., Watts, A.E., Greer, H.F., Bradley, J., Zhou, W., Cox, P.A., Shannon, M.D., Mayoral, A., Casci, J.L. and Wright, P.A.
+#   Chem. Mater., 29, 2180-2190, (2017)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_STA-20
+_chemical_name_systematic 'STA-20'
+
+_cell_length_a      13.15497
+_cell_length_b      13.15497
+_cell_length_c      30.5833 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   120
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P -3 1 c'
+_symmetry_space_group_name_H-M   'P -3 1 c'
+_symmetry_space_group_name_Hall  '-P 3 2c'
+_space_group.IT_number  163 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+P1  P  0.23862  0.23032  0.05157  0.46  0.95
+Si1  Si  0.23862  0.23032  0.05157  0.46  0.05
+P2  P  0.23733  0.23589  0.20008  0.46  0.95
+Si2  Si  0.23733  0.23589  0.20008  0.46  0.05
+P3  P  0.66699  0.57353  0.62448  0.46  0.95
+Si3  Si  0.66699  0.57353  0.62448  0.46  0.05
+Al1  Al  0.3319  0.419  0.12439  0.46  1
+Al2  Al  0.2361  1.002  0.19875  0.46  1
+Al3  Al  0.2317  0.992  0.05009  0.46  1
+O1  O  0.3207  0.3343  0.07975  0.75  1
+O2  O  0.3185  0.3409  0.1716  0.75  1
+O3  O  0.6769  0.6414  0.5824  0.75  1
+O4  O  0.6767  0.6491  0.66494  0.75  1
+O5  O  0.2745  0.2646  0.0042  0.75  1
+O6  O  0.1139  0.2003  0.0593  0.75  1
+O7  O  0.2213  0.4542  0.1231  0.75  1
+O8  O  0.1088  0.2002  0.1936  0.75  1
+O9  O  0.2504  0.126  0.06392  0.75  1
+O10  O  0.2499  0.1348  0.1842  0.75  1
+O11  O  0.46628  0.5452  0.12401  0.75  1
+O12  O  0.2781  0.2685  0.24729  0.75  1
+
+# End of data for STA-20
+
+
+			
+	

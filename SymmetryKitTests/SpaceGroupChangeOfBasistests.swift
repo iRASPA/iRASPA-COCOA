@@ -37,6 +37,8 @@ class SpaceGroupChangeOfBasistests: XCTestCase
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup
           {
+            print("changeOfBasis ", double3x3(rotationMatrix: spacegroup.changeOfBasis.inverseRotationMatrix).inverse)
+            print("changeOfBais ", spacegroup.transformationMatrix)
             XCTAssertEqual(SKSpacegroup.spaceGroupData[spacegroup.hall].spaceGroupNumber, referenceSpaceGroupValue, "Wrong space group found for \(fileName)")
             //print(spacegroup.changeOfBasis)
           }

@@ -1,0 +1,73 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for SSZ-48, calcined 
+#
+# Reference : 
+#   Wagner, P., Terasaki, O., Ritsch, S., Nery, J.G., Zones, S.I., Davis, M.E. and Hiraga, K.
+#   J. Phys. Chem. B, 103, 8245-8250, (1999)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_SSZ-48_calcined
+_chemical_name_systematic 'SSZ-48, calcined'
+
+_cell_length_a      11.1527
+_cell_length_b      5.002
+_cell_length_c      13.667 
+_cell_angle_alpha   90 
+_cell_angle_beta    100.633 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'P 1 21</sub 1'
+_symmetry_space_group_name_H-M   'P 1 21</sub 1'
+_symmetry_space_group_name_Hall  ''
+_space_group.IT_number   
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+Si1  Si  0.2558  0.3385  0.1869  1.5  1
+Si2  Si  0.3963  0.3355  0.3874  5.05  1
+Si3  Si  0.4323  0.3363  0.6058  7.5  1
+Si4  Si  0.6337  0.338  0.8955  0.32  1
+Si5  Si  0.3516  0.4094  0.7996  0.32  1
+Si6  Si  0.7451  0.4067  0.1181  0.24  1
+Si7  Si  0.9952  0.3947  0.0657  1.11  1
+O1  O  0.282  0.3816  0.3036  3.55  1
+O2  O  0.3294  0.5403  0.1315  0.16  1
+O3  O  0.1138  0.3692  0.1504  0.08  1
+O4  O  0.2936  0.0386  0.162  1.89  1
+O5  O  0.3565  0.3572  0.4942  0.95  1
+O6  O  0.4574  1.0463  0.3752  9.95  1
+O7  O  0.502  0.5462  0.3807  3.47  1
+O8  O  0.343  0.3596  0.6825  5.76  1
+O9  O  0.4891  0.3747  0.8557  0.16  1
+O10  O  0.6629  0.3845  0.0099  0.16  1
+O11  O  0.2652  0.2098  0.8435  5.76  1
+O12  O  0.3071  0.7112  0.8097  4.26  1
+O13  O  0.8812  0.341  0.1139  0.16  1
+O14  O  0.0061  0.1947  0.9774  6.47  1
+
+# End of data for SSZ-48_calcined
+
+
+			
+	

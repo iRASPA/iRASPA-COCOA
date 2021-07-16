@@ -1,0 +1,68 @@
+
+
+
+
+ 
+#*********************************************************************************
+#
+# Crystallographic Information File for MAPO-39 
+#
+# Reference : 
+#   Baur, W.H., Joswig, W., Kassner, D., Bieniok, A., Finger, G. and Kornatowski, J.
+#   Z. Kristallogr., 214, 154-159, (1999)
+#
+#
+# CIF downloaded from the IZA-SC Database of Zeolite Structures
+# Ch. Baerlocher and L.B. McCusker,
+# Database of Zeolite Structures: http://www.iza-structure.org/databases/ 
+#
+#**********************************************************************************
+
+
+data_MAPO-39
+_chemical_name_systematic 'MAPO-39'
+
+_cell_length_a      13.2088
+_cell_length_b      13.2088
+_cell_length_c      5.2771 
+_cell_angle_alpha   90 
+_cell_angle_beta    90 
+_cell_angle_gamma   90
+_cell_formula_units_Z   1
+
+_space_group.name_H-M_ref   'I 4/m'
+_symmetry_space_group_name_H-M   'I 4/m'
+_symmetry_space_group_name_Hall  '-I 4'
+_space_group.IT_number  87 
+
+ 
+ loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_B_iso_or_equiv
+_atom_site_occupancy
+P1  P  0.21631  0.38206  0  2.4  0.898
+P2  P  0.1226  0.4167  0  1.2  0.04
+Al1  Al  0.37846  0.20842  0  2.5  0.4495
+Al3+1  Al3+  0.37846  0.20842  0  2.5  0.4495
+Al2  Al  0.4104  0.1156  0  1.6  0.02
+Al2+1  Al3+  0.4104  0.1156  0  1.6  0.02
+O1-1  O1-  0.31508  0.32477  0  4.6  0.959
+O1-2  O1-  0.15488  0.35625  0.2302  6.8  1.008
+O1-3  O1-  0.2418  0.49346  0  4.9  0.926
+O1-31  O1-  0.187  0.511  0  3.3  0.04
+O1-32  O1-  0.517  0.19  0  3.3  0.04
+O1-41  O1-  0.015  0.445  0  3.3  0.04
+C1  C  0.5  0.5  0.743  4.3  0.37
+C2  C  0.449  0.522  0.5  45.8  0.82
+C3  C  0.4857  0.513  0  23.7  0.259
+C4  C  0.4676  0.0389  0  10.5  0.381
+
+# End of data for MAPO-39
+
+
+			
+	
