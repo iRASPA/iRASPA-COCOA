@@ -615,34 +615,6 @@ public struct SKRotationMatrix
   static func findLatticeSymmetry(primitiveUnitCell: double3x3, unitCell cell_lattice: double3x3, symmetryPrecision: Double = 1e-4) -> SKPointSymmetrySet
   {
     let latticeAxes: [SIMD3<Int32>] = [
-      /*
-      SIMD3<Int32>( 1, 1, 1),
-      SIMD3<Int32>( 1, 1, 0),
-      SIMD3<Int32>( 1, 1,-1),
-      SIMD3<Int32>( 1, 0, 1),
-      SIMD3<Int32>( 1, 0, 0),
-      SIMD3<Int32>( 1, 0,-1),
-      SIMD3<Int32>( 1,-1, 1),
-      SIMD3<Int32>( 1,-1, 0),
-      SIMD3<Int32>( 1,-1,-1),
-      SIMD3<Int32>( 0, 1, 1),
-      SIMD3<Int32>( 0, 1, 0),
-      SIMD3<Int32>( 0, 1,-1),
-      SIMD3<Int32>( 0, 0, 1),
-      SIMD3<Int32>( 0, 0,-1),
-      SIMD3<Int32>( 0,-1, 1),
-      SIMD3<Int32>( 0,-1, 0),
-      SIMD3<Int32>( 0,-1,-1),
-      SIMD3<Int32>(-1, 1, 1),
-      SIMD3<Int32>(-1, 1, 0),
-      SIMD3<Int32>(-1, 1,-1),
-      SIMD3<Int32>(-1, 0, 1),
-      SIMD3<Int32>(-1, 0, 0),
-      SIMD3<Int32>(-1, 0,-1),
-      SIMD3<Int32>(-1,-1, 1),
-      SIMD3<Int32>(-1,-1, 0),
-      SIMD3<Int32>(-1,-1,-1),*/
-      
       SIMD3<Int32>( 1, 0, 0),
       SIMD3<Int32>( 0, 1, 0),
       SIMD3<Int32>( 0, 0, 1),
@@ -677,6 +649,7 @@ public struct SKRotationMatrix
     
     let latticeMetricMatrix: double3x3 = min_lattice.transpose * min_lattice
     
+    var count = 0
     // uses a stored list of all possible lattice vectors and loop over all possible permutations
     for firstAxis in latticeAxes
     {
@@ -690,21 +663,18 @@ public struct SKRotationMatrix
           // if the determinant is 1 or -1 we have a (proper) rotation  (6960 proper rotations)
           if (determinant == 1 || determinant == -1)
           {
+            count = count + 1
             let transformationMatrix: double3x3 = double3x3(rotationMatrix: axes)
+            
             // the inverse of a rotation matrix is its transpose, so we use the transpose here
             let newLattice: double3x3 = min_lattice * transformationMatrix
             let transformedLatticeMetricMatrix: double3x3 = newLattice.transpose * newLattice
             
-            // Apply a change of basis on the latticeMetricMatrix using the rotation matrix
-            //let transformedLatticeMetricMatrix: double3x3 = inverseTransformationMatrix * latticeMetricMatrix * transformationMatrix
-            
             if (SKSymmetryCell.isIdentityMetric(transformedMetricMatrix: transformedLatticeMetricMatrix, metricMatrix: latticeMetricMatrix, symmetryPrecision: symmetryPrecision, angleSymmetryPrecision: -1.0))
             {
-              if (!pointSymmetries.contains(axes))
-              {
-                pointSymmetries.append(axes)
-              }
+              pointSymmetries.append(axes)
             }
+           
           }
         }
       }
