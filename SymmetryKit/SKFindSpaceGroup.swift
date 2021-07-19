@@ -159,7 +159,8 @@ extension SKSpacegroup
     // Find least occurent element
     let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    //let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    let reducedAtoms = atoms
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
@@ -172,7 +173,7 @@ extension SKSpacegroup
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
     let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
-    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.filter{$0.type == minType}
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
@@ -288,7 +289,7 @@ extension SKSpacegroup
     return nil
   }
   
-  public static func SKTestConstructBasis(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> SKTransformationMatrix?
+  public static func SKTestPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> Int?
   {
     var histogram:[Int:Int] = [:]
     
@@ -300,7 +301,8 @@ extension SKSpacegroup
     // Find least occurent element
     let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    //let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    let reducedAtoms = atoms
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
@@ -313,11 +315,50 @@ extension SKSpacegroup
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
     let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
-    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.filter{$0.type == minType}
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
-    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: DelaunayUnitCell, reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: DelaunayUnitCell, reducedAtoms: positionInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
+        
+    // create the point symmetry set
+    let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
+    
+    // get the point group from the point symmetry set
+    return SKPointGroup(pointSymmetry: pointSymmetry)?.number
+  }
+  
+  public static func SKTestConstructBasis(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> SKTransformationMatrix?
+  {
+    var histogram:[Int:Int] = [:]
+    
+    for atom in atoms
+    {
+      histogram[atom.type] = (histogram[atom.type] ?? 0) + 1
+    }
+    
+    // Find least occurent element
+    let minType: Int = histogram.min{a, b in a.value < b.value}!.key
+    
+    //let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    let reducedAtoms = atoms
+    
+    // search for a primitive cell based on the positions of the atoms
+    let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
+  
+    // convert the unit cell to a reduced Delaunay cell
+    guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else {return nil}
+    
+    // find the rotational symmetry of the reduced Delaunay cell
+    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(primitiveUnitCell: primitiveUnitCell, unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+    
+    // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
+    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell
+    
+    // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
+    // the point group of the lattice cannot be lower than the point group of the crystal
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: DelaunayUnitCell, reducedAtoms: positionInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, symmetryPrecision: symmetryPrecision)
         
     // create the point symmetry set
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
@@ -333,6 +374,7 @@ extension SKSpacegroup
     return nil
   }
   
+  
   public static func SKTestConstructUpdatedBasis(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-5) -> SKTransformationMatrix?
   {
     var histogram:[Int:Int] = [:]
@@ -345,7 +387,8 @@ extension SKSpacegroup
     // Find least occurent element
     let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    //let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    let reducedAtoms = atoms
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
@@ -358,7 +401,7 @@ extension SKSpacegroup
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
     let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
-    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.filter{$0.type == minType}
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
@@ -415,7 +458,8 @@ extension SKSpacegroup
     // Find least occurent element
     let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    //let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    let reducedAtoms = atoms
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
@@ -428,7 +472,7 @@ extension SKSpacegroup
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
     let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell)
-    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.filter{$0.type == minType}
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
@@ -486,7 +530,8 @@ extension SKSpacegroup
     // Find least occurent element
     let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    //let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minType}
+    let reducedAtoms = atoms
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, symmetryPrecision: symmetryPrecision)
@@ -560,8 +605,7 @@ extension SKSpacegroup
     
     for rotationMatrix in latticeSymmetries.rotations
     {
-      
-      let translations: [SIMD3<Double>] = SKSymmetryCell.primitiveTranslationVectors(unitCell: unitCell, reducedAtoms: reducedAtoms, atoms: atoms, rotationMatrix: rotationMatrix, symmetryPrecision: symmetryPrecision)
+      let translations: [SIMD3<Double>] = SKSymmetryCell.primitiveTranslationVectors(unitCell: unitCell, reducedAtoms: atoms, atoms: atoms, rotationMatrix: rotationMatrix, symmetryPrecision: symmetryPrecision)
      
       for translation in translations
       {

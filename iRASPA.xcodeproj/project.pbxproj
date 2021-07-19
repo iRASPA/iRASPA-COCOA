@@ -134,7 +134,6 @@
 		9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */; };
 		931BE3D6269F586B00587034 /* TransformationMatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */; };
 		931BE3D926A18ECB00587034 /* CIF_Files in Resources */ = {isa = PBXBuildFile; fileRef = 931BE3D826A18ECB00587034 /* CIF_Files */; };
-		931BE3DB26A1900600587034 /* SpaceGroupCIFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931BE3DA26A1900600587034 /* SpaceGroupCIFTests.swift */; };
 		932137D41F2B533800DAEBDF /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932137D31F2B533800DAEBDF /* Errors.swift */; };
 		93260AE41E2A46350066EC08 /* iRASPADocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AE31E2A46350066EC08 /* iRASPADocument.swift */; };
 		93260AEC1E2A63D70066EC08 /* iRASPAWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93260AEB1E2A63D70066EC08 /* iRASPAWindowController.swift */; };
@@ -507,7 +506,7 @@
 		93C71B8626999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */; };
 		93C71B88269C3D4900F67DEE /* ConstructedBasisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */; };
 		93C71B8A269C4BAC00F67DEE /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B89269C4BAC00F67DEE /* OrderedSet.swift */; };
-		93C71B8C269D88CB00F67DEE /* ConstructedUpdatedBasisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisTests.swift */; };
+		93C71B8C269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift */; };
 		93CD2A9E256BF56700E26C20 /* Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CD2A9D256BF56700E26C20 /* Python.swift */; };
 		93CD2ACC256BF72B00E26C20 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8425680A10004D900E /* libbz2.a */; };
 		93CD2ACE256BF72B00E26C20 /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8625680A11004D900E /* libformw.a */; };
@@ -695,6 +694,8 @@
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
 		93DA9EE523DEFE4600FB4E51 /* SimulationKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */; };
 		93DE92D1207E2BB00084D303 /* NSPasteboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */; };
+		93E20F8326A5C59100473702 /* FindPointGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8226A5C59100473702 /* FindPointGroupTests.swift */; };
+		93E20F8526A5F3B200473702 /* SpaceGroupCIFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */; };
 		93E37F96268C754300AD5DA3 /* SKSymmetryOperationSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E37F95268C754300AD5DA3 /* SKSymmetryOperationSet.swift */; };
 		93E7594B21DBC056009B9C5C /* iRASPADocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */; };
 		93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E92DEE21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift */; };
@@ -1410,7 +1411,6 @@
 		9317AA04265E2E92006689ED /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationMatrixTests.swift; sourceTree = "<group>"; };
 		931BE3D826A18ECB00587034 /* CIF_Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CIF_Files; sourceTree = "<group>"; };
-		931BE3DA26A1900600587034 /* SpaceGroupCIFTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupCIFTests.swift; sourceTree = "<group>"; };
 		932137D31F2B533800DAEBDF /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		9321596426468BED0004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/StructureCameraDetail.strings; sourceTree = "<group>"; };
 		9321596626468D670004F241 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -1909,7 +1909,7 @@
 		93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveUnitCellSearchTests.swift; sourceTree = "<group>"; };
 		93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructedBasisTests.swift; sourceTree = "<group>"; };
 		93C71B89269C4BAC00F67DEE /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
-		93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructedUpdatedBasisTests.swift; sourceTree = "<group>"; };
+		93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructedUpdatedBasisCorrectionMatrixTests.swift; sourceTree = "<group>"; };
 		93CD2A9D256BF56700E26C20 /* Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Python.swift; sourceTree = "<group>"; };
 		93CD2B70256C180500E26C20 /* pycapsule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pycapsule.h; sourceTree = "<group>"; };
 		93CD2B71256C180500E26C20 /* methodobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = methodobject.h; sourceTree = "<group>"; };
@@ -2117,6 +2117,8 @@
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA9EE423DEFE4600FB4E51 /* SimulationKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationKitErrors.swift; sourceTree = "<group>"; };
 		93DE92D0207E2BB00084D303 /* NSPasteboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSPasteboardItem.swift; sourceTree = "<group>"; };
+		93E20F8226A5C59100473702 /* FindPointGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPointGroupTests.swift; sourceTree = "<group>"; };
+		93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupCIFTests.swift; sourceTree = "<group>"; };
 		93E37F95268C754300AD5DA3 /* SKSymmetryOperationSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSymmetryOperationSet.swift; sourceTree = "<group>"; };
 		93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		93E7594A21DBC056009B9C5C /* iRASPADocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPADocumentController.swift; sourceTree = "<group>"; };
@@ -3144,21 +3146,22 @@
 			children = (
 				931BE3D826A18ECB00587034 /* CIF_Files */,
 				937737F32680D83000D47499 /* SpglibTestData */,
+				93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */,
+				93E20F8226A5C59100473702 /* FindPointGroupTests.swift */,
+				93D16747269D98E90084F804 /* SpaceGroupCenteringTests.swift */,
+				93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */,
+				93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift */,
+				93D16745269D951D0084F804 /* ConstructedUpdatedBasisAfterCorrectionTests.swift */,
+				933D79C026905E290023EB94 /* ConventionalCellTests.swift */,
 				937737F12680D7F600D47499 /* SpaceGroupSpglibTests.swift */,
-				931BE3DA26A1900600587034 /* SpaceGroupCIFTests.swift */,
+				93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */,
 				93C71B7B2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift */,
 				93C71B7D2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift */,
 				93C71B7F2695DFBD00F67DEE /* SpaceGroupCOFsTest.swift */,
 				93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */,
 				93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */,
-				933D79C026905E290023EB94 /* ConventionalCellTests.swift */,
 				931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */,
 				93C71B8326986DBF00F67DEE /* DelaunayReductionTests.swift */,
-				93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */,
-				93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */,
-				93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisTests.swift */,
-				93D16745269D951D0084F804 /* ConstructedUpdatedBasisAfterCorrectionTests.swift */,
-				93D16747269D98E90084F804 /* SpaceGroupCenteringTests.swift */,
 				937737EA2680D7A900D47499 /* Info.plist */,
 			);
 			path = SymmetryKitTests;
@@ -4824,13 +4827,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93E20F8326A5C59100473702 /* FindPointGroupTests.swift in Sources */,
+				93E20F8526A5F3B200473702 /* SpaceGroupCIFTests.swift in Sources */,
 				93D16748269D98E90084F804 /* SpaceGroupCenteringTests.swift in Sources */,
 				93C71B822695E00000F67DEE /* SpaceGroupZIFsTest.swift in Sources */,
 				93C71B88269C3D4900F67DEE /* ConstructedBasisTests.swift in Sources */,
 				93C71B802695DFBD00F67DEE /* SpaceGroupCOFsTest.swift in Sources */,
 				93C71B8426986DBF00F67DEE /* DelaunayReductionTests.swift in Sources */,
-				93C71B8C269D88CB00F67DEE /* ConstructedUpdatedBasisTests.swift in Sources */,
-				931BE3DB26A1900600587034 /* SpaceGroupCIFTests.swift in Sources */,
+				93C71B8C269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift in Sources */,
 				93C71B7E2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift in Sources */,
 				93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */,
 				933D79C126905E290023EB94 /* ConventionalCellTests.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  ConstructedBasisTests.swift
+//  ConstructedUpdatedBasisTests.swift
 //  SymmetryKitTests
 //
 //  Created by David Dubbeldam on 12/07/2021.
@@ -10,17 +10,17 @@ import XCTest
 @testable import SymmetryKit
 import simd
 
-class ConstructedBasisTests: XCTestCase
+class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
 {
   let precision: Double = 1e-5
   
   
-  func testConstructedBasisTriclinicSpaceGroup()
+  func testConstructedUpdatedBasisTriclinicSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
-      "SpglibTestData/triclinic/POSCAR-001" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/triclinic/POSCAR-002" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1])
+      "SpglibTestData/triclinic/POSCAR-001" : SKTransformationMatrix([1, 0, 0],[0, -1, 0], [0, 0, -1]),
+      "SpglibTestData/triclinic/POSCAR-002" : SKTransformationMatrix([1, 0, 0],[0, -1, 0], [0, 0, -1])
     ]
       
     let bundle = Bundle(for: type(of: self))
@@ -33,7 +33,7 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -55,34 +55,34 @@ class ConstructedBasisTests: XCTestCase
     }
   }
   
-  func testConstructedBasisMonoclinicSpaceGroup()
+  func testConstructedUpdatedBasisMonoclinicSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
-      "SpglibTestData/monoclinic/POSCAR-003" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-004" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/monoclinic/POSCAR-004-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-005" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [1, 2, 0]),
-      "SpglibTestData/monoclinic/POSCAR-005-2" : SKTransformationMatrix([0, 1, -1],[0, 1, 1], [1, 0, 0]),
+      "SpglibTestData/monoclinic/POSCAR-003" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-004" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-004-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-005" : SKTransformationMatrix([0, 0, 1],[-1, 0, 0], [-1, -2, -1]),
+      "SpglibTestData/monoclinic/POSCAR-005-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 1], [0, -1, 1]),
       "SpglibTestData/monoclinic/POSCAR-006" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
-      "SpglibTestData/monoclinic/POSCAR-006-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-007" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/monoclinic/POSCAR-007-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-008" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 0, 1]),
-      "SpglibTestData/monoclinic/POSCAR-008-2" : SKTransformationMatrix([1, 0, 1],[1, 1, 0], [0, 1, 1]),
+      "SpglibTestData/monoclinic/POSCAR-006-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-007" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-007-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-008" : SKTransformationMatrix([0, 0, 1],[1, 1, 0], [-1, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-008-2" : SKTransformationMatrix([1, -1, 0],[1, 1, 0], [0, 1, 1]),
       "SpglibTestData/monoclinic/POSCAR-009" : SKTransformationMatrix([1, 1, 1],[1, 0, 0], [0, 1, -1]),
-      "SpglibTestData/monoclinic/POSCAR-009-2" : SKTransformationMatrix([0, 1, 0],[1, 1, 2], [1, 0, 0]),
-      "SpglibTestData/monoclinic/POSCAR-010" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-010-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-011" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-011-2" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/monoclinic/POSCAR-012" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-012-2" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-009-2" : SKTransformationMatrix([1, 0, 0],[-1, -1, -2], [0, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-010" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-010-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-011" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-011-2" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-012" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-012-2" : SKTransformationMatrix([1, 1, 0],[-1, 1, 0], [0, 0, 1]),
       "SpglibTestData/monoclinic/POSCAR-012-3" : SKTransformationMatrix([0, 0, 1],[1, -1, 0], [1, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-013" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
-      "SpglibTestData/monoclinic/POSCAR-013-2" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-013-3" : SKTransformationMatrix([0, 0, 1],[1, 0, 0], [0, 1, 0]),
-      "SpglibTestData/monoclinic/POSCAR-014" : SKTransformationMatrix([0, 1, 0],[0, 0, 1], [1, 0, 0]),
+      "SpglibTestData/monoclinic/POSCAR-013" : SKTransformationMatrix([1, 0, 0],[0, 0, -1], [0, 1, 0]),
+      "SpglibTestData/monoclinic/POSCAR-013-2" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-013-3" : SKTransformationMatrix([0, 1, 0],[-1, 0, 0], [0, 0, 1]),
+      "SpglibTestData/monoclinic/POSCAR-014" : SKTransformationMatrix([1, 0, 0],[0, 0, 1], [0, -1, 0]),
       "SpglibTestData/monoclinic/POSCAR-014-2" : SKTransformationMatrix([1, 0, 0],[0, 1, 0], [0, 0, 1]),
       "SpglibTestData/monoclinic/POSCAR-015" : SKTransformationMatrix([1, 0, 0],[-1, 2, 0], [0, 0, 1]),
       "SpglibTestData/monoclinic/POSCAR-015-2" : SKTransformationMatrix([1, 0, 0],[-1, 2, 0], [0, 0, 1]),
@@ -99,7 +99,7 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -121,7 +121,7 @@ class ConstructedBasisTests: XCTestCase
     }
   }
   
-  func testConstructedBasisOrthorhombicSpaceGroup()
+  func testConstructedUpdatedBasisOrthorhombicSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -259,7 +259,7 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -281,7 +281,7 @@ class ConstructedBasisTests: XCTestCase
     }
   }
   
-  func testConstructedBasisTetragonalSpaceGroup()
+  func testConstructedUpdatedBasisTetragonalSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -442,7 +442,7 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -464,7 +464,7 @@ class ConstructedBasisTests: XCTestCase
     }
   }
   
-  func testConstructedBasisTrigonalSpaceGroup()
+  func testConstructedUpdatedBasisTrigonalSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -531,7 +531,7 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -553,7 +553,7 @@ class ConstructedBasisTests: XCTestCase
     }
   }
   
-  func testConstructedBasisHexagonalSpaceGroup()
+  func testConstructedUpdatedBasisHexagonalSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -618,7 +618,7 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -640,8 +640,7 @@ class ConstructedBasisTests: XCTestCase
     }
   }
   
-  
-  func testConstructedBasisCubicSpaceGroup()
+  func testConstructedUpdatedBasisCubicSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -720,7 +719,7 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -742,7 +741,11 @@ class ConstructedBasisTests: XCTestCase
     }
   }
   
-  func testBasisVirtualSpaceGroup()
+ 
+ 
+ 
+  
+  func testUpdatedBasisVirtualSpaceGroup()
   {
     let testData: [String: SKTransformationMatrix] =
     [
@@ -1073,48 +1076,8 @@ class ConstructedBasisTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
                    
-          XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
-          if let primitiveUnitCell = basis
-          {
-            XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-        
-            XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-        
-            XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-            XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
-          }
-        }
-      }
-    }
-  }
-  
-  
-  func testFindTriclinicPrimitive2()
-  {
-    let testData: [String: SKTransformationMatrix] =
-    [
-      "SpglibTestData/tetragonal/POSCAR-134-2" : SKTransformationMatrix([0, 1, 1],[1, 0, 1], [1, 1, 0])
-    ]
-      
-    let bundle = Bundle(for: type(of: self))
-      
-    for (fileName, referencePrimitiveUnitCell) in testData
-    {
-      if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
-      {
-        let reader: SKVASPReader = SKVASPReader(URL: url)
-        if let unitCell = reader.unitCell
-        {
-          // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
-          
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
           {

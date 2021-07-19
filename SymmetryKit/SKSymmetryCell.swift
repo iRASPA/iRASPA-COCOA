@@ -1031,7 +1031,7 @@ public struct SKSymmetryCell: CustomStringConvertible
       overlapTable[i] = i
       for j in 0..<trimmedAtoms.count
       {
-        if SKSymmetryCell.distanceSquared(a: trimmedAtoms[i].fractionalPosition, b: trimmedAtoms[j].fractionalPosition) < symmetryPrecision
+        if SKSymmetryCell.distanceSquared(a: trimmedAtoms[i].fractionalPosition, b: trimmedAtoms[j].fractionalPosition) < symmetryPrecision * symmetryPrecision
         {
           if overlapTable[j] == j
           {
@@ -1188,13 +1188,14 @@ public struct SKSymmetryCell: CustomStringConvertible
   public static func primitiveTranslationVectors(unitCell: double3x3, reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)],atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], rotationMatrix: SKRotationMatrix, symmetryPrecision: Double) -> [SIMD3<Double>]
   {
     var translationVectors: [SIMD3<Double>] = []
-    if reducedAtoms.count>0
+    
+    if atoms.count>0
     {
-      let origin: SIMD3<Double> = rotationMatrix * reducedAtoms[0].fractionalPosition
+      let origin: SIMD3<Double> = rotationMatrix * atoms[0].fractionalPosition
       
-      for i in 0..<reducedAtoms.count
+      for i in 0..<atoms.count
       {
-        let vec: SIMD3<Double> = reducedAtoms[i].fractionalPosition - origin
+        let vec: SIMD3<Double> = atoms[i].fractionalPosition - origin
         
         if SKSymmetryCell.testSymmetry(of: vec, and: rotationMatrix, on: atoms, and: unitCell, with: symmetryPrecision)
         {
@@ -1224,19 +1225,21 @@ public struct SKSymmetryCell: CustomStringConvertible
       var isFound: Bool = false
       for j in 0..<atoms.count
       {
-        if atoms[i].type == atoms[j].type
-        {
+        //if atoms[i].type == atoms[j].type
+        //{
           var dr: SIMD3<Double> = rotatedAndTranslatedPosition - atoms[j].fractionalPosition
           dr.x -= rint(dr.x)
           dr.y -= rint(dr.y)
           dr.z -= rint(dr.z)
           if (length_squared(unitCell * dr) < precision * precision)
+          //if (length_squared(dr) < precision)
           {
             isFound = true
             break
           }
-        }
+        //}
       }
+      
       
       // if no overlap is found then we can immediately return 'false'
       if(!isFound)
@@ -1258,8 +1261,8 @@ public struct SKSymmetryCell: CustomStringConvertible
       var isFound: Bool = false
       for j in 0..<atoms.count
       {
-        if atoms[i].type == atoms[j].type
-        {
+        //if atoms[i].type == atoms[j].type
+        //{
           var dr: SIMD3<Double> = translatedPosition - atoms[j].fractionalPosition
           dr.x -= rint(dr.x)
           dr.y -= rint(dr.y)
@@ -1269,7 +1272,7 @@ public struct SKSymmetryCell: CustomStringConvertible
             isFound = true
             break
           }
-        }
+       // }
       }
       
       // if no overlap is found then we can immediately return 'false'
@@ -1296,9 +1299,8 @@ public struct SKSymmetryCell: CustomStringConvertible
   }
   
   
-  static func isIdentityMetric(transformedMetricMatrix: double3x3, metricMatrix: double3x3, symmetryPrecision: Double, angleSymmetryPrecision: Double) -> Bool
+  static func isIdentityMetric(transformedMetricMatrix: double3x3, metricMatrix: double3x3, symmetryPrecision: Double, angleSymmetryPrecision: Double = -1.0) -> Bool
   {
-    let angleTolerance: Double = -1.0
     let LengthMetricMatrix: SIMD3<Double> =  SIMD3<Double>(sqrt(metricMatrix[0,0]), sqrt(metricMatrix[1,1]), sqrt(metricMatrix[2,2]))
     let LengthTransformedMetric: SIMD3<Double> =  SIMD3<Double>(sqrt(transformedMetricMatrix[0,0]), sqrt(transformedMetricMatrix[1,1]), sqrt(transformedMetricMatrix[2,2]))
     
@@ -1312,9 +1314,9 @@ public struct SKSymmetryCell: CustomStringConvertible
     
     if (angleSymmetryPrecision > 0)
     {
-      if (abs(getAngle(metric: metricMatrix, i: 0, j: 1) - getAngle(metric: transformedMetricMatrix, i: 0, j: 1)) > angleTolerance) {return false}
-      if (abs(getAngle(metric: metricMatrix, i: 0, j: 2) - getAngle(metric: transformedMetricMatrix, i: 0, j: 2)) > angleTolerance) {return false}
-      if (abs(getAngle(metric: metricMatrix, i: 1, j: 2) - getAngle(metric: transformedMetricMatrix, i: 1, j: 2)) > angleTolerance) {return false}
+      if (abs(getAngle(metric: metricMatrix, i: 0, j: 1) - getAngle(metric: transformedMetricMatrix, i: 0, j: 1)) > angleSymmetryPrecision) {return false}
+      if (abs(getAngle(metric: metricMatrix, i: 0, j: 2) - getAngle(metric: transformedMetricMatrix, i: 0, j: 2)) > angleSymmetryPrecision) {return false}
+      if (abs(getAngle(metric: metricMatrix, i: 1, j: 2) - getAngle(metric: transformedMetricMatrix, i: 1, j: 2)) > angleSymmetryPrecision) {return false}
       
     }
     else
@@ -1324,33 +1326,29 @@ public struct SKSymmetryCell: CustomStringConvertible
       /*        = arccos(c1c2 + sqrt((1-c1^2)(1-c2^2))) */
       /* sin(dtheta) = sin(arccos(x)) = sqrt(1 - x^2) */
       
-      for (_, element) in [(0,1),(0,2),(1,2)].enumerated()
+      for (j,k) in [(0,1),(0,2),(1,2)]
       {
-        let j: Int = element.0
-        let k: Int = element.1
-        
         let cos1: Double = metricMatrix[j][k] / LengthMetricMatrix[j] / LengthMetricMatrix[k]
         let cos2: Double = transformedMetricMatrix[j][k] / LengthTransformedMetric[j] / LengthTransformedMetric[k]
         let x: Double = cos1 * cos2 + sqrt(1.0 - cos1 * cos1) * sqrt(1.0 - cos2 * cos2)
         let sin_dtheta2: Double = 1.0 - x * x
-        let length_ave2: Double = (LengthMetricMatrix[j] + LengthTransformedMetric[j]) * (LengthMetricMatrix[k] + LengthTransformedMetric[k])
+        let length_ave2: Double = (LengthMetricMatrix[j] + LengthTransformedMetric[j]) * (LengthMetricMatrix[k] + LengthTransformedMetric[k]) / 4.0
         if (sin_dtheta2 > 1e-12)
         {
-          if (sin_dtheta2 * length_ave2 * 0.25 > symmetryPrecision * symmetryPrecision)
+          if (sin_dtheta2 * length_ave2 > symmetryPrecision * symmetryPrecision)
           {
             return false
           }
         }
       }
     }
-    
     return true
   }
   
   static func getAngle(metric: double3x3, i: Int, j: Int) -> Double
   {
-    let length_i: Double = 1.0/sqrt(metric[i][i])
-    let length_j: Double = 1.0/sqrt(metric[j][j])
-    return (acos(metric[i][j]) * length_i * length_j) * 180.0/Double.pi
+    let length_i: Double = sqrt(metric[i][i])
+    let length_j: Double = sqrt(metric[j][j])
+    return acos(metric[i][j] / length_i / length_j) / Double.pi * 180.0
   }
 }
