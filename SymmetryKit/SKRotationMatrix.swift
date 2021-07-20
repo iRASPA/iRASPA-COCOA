@@ -612,7 +612,7 @@ public struct SKRotationMatrix
   /// 10.1107/s2053273315001096
   /// Le Page, Y. (1982). J. Appl. Cryst. 15, 255-259.
   /// Lebedev, A.A., Vagin, A.A. & Murshudov, G.N. (2006). Acta Cryst. D62, 83-95.
-  static func findLatticeSymmetry(primitiveUnitCell: double3x3, unitCell cell_lattice: double3x3, symmetryPrecision: Double = 1e-4) -> SKPointSymmetrySet
+  static func findLatticeSymmetry(primitiveUnitCell: double3x3, unitCell cell_lattice: double3x3, symmetryPrecision: Double = 1e-2) -> SKPointSymmetrySet
   {
     let latticeAxes: [SIMD3<Int32>] = [
       SIMD3<Int32>( 1, 0, 0),
