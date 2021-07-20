@@ -252,7 +252,7 @@ public struct SKIntegerSymmetryOperationSet
   // Use site-symmetry to determine symmetrized location of an atom
   // R. W. Grosse-Kunstleve and P. D. Adams, Acta Cryst. (2002). A58, 60-65
   
-  func symmetrizedPosition(position: SIMD3<Double>, lattice: double3x3, symmetryPrecision: Double = 1e-5) -> SIMD3<Double>
+  func symmetrizedPosition(position: SIMD3<Double>, lattice: double3x3, symmetryPrecision: Double = 1e-2) -> SIMD3<Double>
   {
     var sumRotation: double3x3 = double3x3(0)
     var sumTranslation: SIMD3<Double> = SIMD3<Double>(0,0,0)
@@ -277,7 +277,7 @@ public struct SKIntegerSymmetryOperationSet
     return symmetrizedPosition
   }
   
-  public func setEquivalentAtoms(positions: inout [SIMD3<Double>], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], i: Int, numberOfIndependentAtoms: Int, independentAtomIndices: inout [Int], lattice: double3x3, symmetryPrecision: Double = 1e-5) -> Bool
+  public func setEquivalentAtoms(positions: inout [SIMD3<Double>], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], i: Int, numberOfIndependentAtoms: Int, independentAtomIndices: inout [Int], lattice: double3x3, symmetryPrecision: Double = 1e-2) -> Bool
   {
     for j in 0..<numberOfIndependentAtoms
     {
@@ -296,7 +296,7 @@ public struct SKIntegerSymmetryOperationSet
   }
   
   
-  public func asymmetricAtoms(atoms: inout [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)],  lattice: double3x3, symmetryPrecision: Double = 1e-5) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
+  public func asymmetricAtoms(atoms: inout [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)],  lattice: double3x3, symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
   {
     var asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = [(atoms[0].fractionalPosition, atoms[0].type)]
     atoms[0].asymmetricType = 0

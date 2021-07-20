@@ -33,7 +33,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -99,7 +99,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -259,7 +259,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -442,7 +442,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -531,7 +531,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -618,7 +618,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -719,7 +719,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -1076,7 +1076,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis

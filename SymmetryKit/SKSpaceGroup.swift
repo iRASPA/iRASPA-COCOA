@@ -347,7 +347,7 @@ public struct SKSpacegroup
     }
   }
   
-  public func expand(atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], unitCell: double3x3, symmetryPrecision: Double = 1e-5) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
+  public func expand(atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], unitCell: double3x3, symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
   {
     var expandedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = []
     expandedAtoms.reserveCapacity(atoms.count * 192)
