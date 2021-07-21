@@ -57,6 +57,13 @@ public struct SKTransformationMatrix
   public static let rhombohedralHexagonalToReverse: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1,1,-2),SIMD3<Int32>(-1,0,1),SIMD3<Int32>(1,1,-1)])   // Rh -> Rrev
   public static let rhombohedralReverseToHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,-1,1), SIMD3<Int32>(0,1,1), SIMD3<Int32>(-1,0,1)])  // Rrev -> Rh
   
+  
+  public static let monoclinicAtoC = SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])
+  public static let AtoC = SKTransformationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])
+  public static let monoclinicItoC = SKTransformationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)])
+  public static let BtoC = SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])
+  public static let primitiveRhombohedralToTripleHexagonalCell_R2 = SKTransformationMatrix([SIMD3<Int32>(0,-1,1),SIMD3<Int32>(1,0,-1),SIMD3<Int32>(1,1,1)])
+  
   public static let bodyCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(-0.5,0.5,0.5), SIMD3<Double>(0.5,-0.5,0.5), SIMD3<Double>(0.5,0.5,-0.5)])  // I -> P
   public static let faceCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(0,0.5,0.5), SIMD3<Double>(0.5,0,0.5), SIMD3<Double>(0.5,0.5,0)])   // F -> P
   public static let ACenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(-1.0,0,0), SIMD3<Double>(0,-0.5,0.5), SIMD3<Double>(0,0.5,0.5)])   // A -> P
@@ -160,6 +167,13 @@ public struct SKTransformationMatrix
     result[2,2] = self[0,0] * self[1,1] - self[1,0] * self[0,1]
     
     return result
+  }
+  
+  public var greatestCommonDivisor: Int32
+  {
+    return [self[0,0],self[1,0],self[2,0],
+            self[0,1],self[1,1],self[2,1],
+            self[0,2],self[1,2],self[2,2]].reduce(0){Int32.greatestCommonDivisor(a: $0, b: $1)}
   }
 
   public var transpose: SKTransformationMatrix

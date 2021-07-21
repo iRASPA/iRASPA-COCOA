@@ -426,7 +426,7 @@ public struct SKPointGroup
     switch (det)
     {
     case 1:
-      return basis * SKTransformationMatrix.identity
+      return basis
     case 2:
       // a “standard” conventional cell is always C-centred and a′ < b′ regardless of symmetry
       switch (centering)
@@ -435,31 +435,31 @@ public struct SKPointGroup
         // Tranformation monoclinic A-centring to C-centring (preserving b-axis)
         // Axes a and c are swapped, to keep the same handiness b (to keep Beta obtuse) is made negative
         centering = .c_face
-        return basis * SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // monoclinic a to c
+        return basis * SKTransformationMatrix.monoclinicAtoC
       case .a_face where lau != .laue_2m:
         centering = .c_face
-        return basis * SKTransformationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])  // a to c
+        return basis * SKTransformationMatrix.AtoC
       case .b_face:
         centering = .c_face
-        return basis * SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])    // b to c
+        return basis * SKTransformationMatrix.BtoC
       case .body where lau == .laue_2m:
         centering = .c_face
-        return basis * SKTransformationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)]) // monoclinic i to c
+        return basis * SKTransformationMatrix.monoclinicItoC
       default:
-        return basis * SKTransformationMatrix.identity
+        return basis
       }
     case 3:
-      let m: MKint3x3 = (MKint3x3([SIMD3<Int32>(0,-1,1),SIMD3<Int32>(1,0,-1),SIMD3<Int32>(1,1,1)]) * MKint3x3(basis.int3x3.inverse))
+      let m: SKTransformationMatrix = SKTransformationMatrix.primitiveRhombohedralToTripleHexagonalCell_R2 * basis.inverseTimesDeterminant
       if m.greatestCommonDivisor == 3
       {
-        // reverse detected -> change to obverse
+        // all elements divisable by 3: reverse detected -> change to obverse
         return basis * SKTransformationMatrix([SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, 0, 1)])
       }
-      return basis * SKTransformationMatrix.identity
+      return basis
     case 4:
-      return basis * SKTransformationMatrix.identity
+      return basis
     default:
-      return basis * SKTransformationMatrix.identity
+      return basis
     }
   }
 
