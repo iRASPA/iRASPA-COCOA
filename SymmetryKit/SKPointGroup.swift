@@ -464,22 +464,27 @@ public struct SKPointGroup
   }
 
 
-  public static func findPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], allowOverlappingAtomTypes: Bool, symmetryPrecision: Double = 1e-2) -> SKPointGroup?
+  public static func findPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> SKPointGroup?
   {
-    let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: atoms, atoms: atoms, unitCell: unitCell, allowOverlappingAtomTypes: allowOverlappingAtomTypes, symmetryPrecision: symmetryPrecision)
+    let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: atoms, atoms: atoms, unitCell: unitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     guard let primitiveDelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else { return nil}
-    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(primitiveUnitCell: primitiveUnitCell, unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
                                                                                      
-    let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell, allowOverlappingAtomTypes: allowOverlappingAtomTypes, symmetryPrecision: symmetryPrecision)
+    let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     
-    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: unitCell, reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, allowOverlappingAtomTypes: allowOverlappingAtomTypes, symmetryPrecision: symmetryPrecision)
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: unitCell, reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
     return SKPointGroup(pointSymmetry: pointSymmetry)
   }
   
 
-
+  /// • Triclinic: 1, 1
+  /// • Monoclinic: 2, 2=m, 2/m
+  /// • Orthorhombic: 222, 2mm, 2/m2/m2/m (=mmm)
+  /// • Tetragonal: 4, 4, 4/m, 42m, 422 4mm 4/m2/m2/m • Trigonal: 3, 3m, 32, 3, 32/m
+  /// • Hexagonal: 6, 6, 6/m, 6m2, 622, 6mm, 6/m2/m2/m
+  /// • Cubic: 23, 2/m3, 432, 43m, 4/m32/m
   public static let pointGroupData: [SKPointGroup] =
     [
       SKPointGroup(table: RotationalOccuranceTable.pointGroup0, number: 0, symbol: "",       schoenflies: "",    holohedry: .none,         laue: .none,       centrosymmetric: false, enantiomorphic: false),

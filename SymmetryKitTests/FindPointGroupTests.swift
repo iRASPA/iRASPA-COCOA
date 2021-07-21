@@ -36,7 +36,7 @@ class FindPointGroupTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -95,7 +95,7 @@ class FindPointGroupTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -248,7 +248,7 @@ class FindPointGroupTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -424,7 +424,7 @@ class FindPointGroupTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -507,7 +507,7 @@ class FindPointGroupTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -587,7 +587,7 @@ class FindPointGroupTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -603,69 +603,69 @@ class FindPointGroupTests: XCTestCase
   {
     let testData: [String: Int] =
       [
-        "SpglibTestData/cubic/poscar-195" : 28,
-        "SpglibTestData/cubic/poscar-195-2" : 28,
-        "SpglibTestData/cubic/poscar-196" : 28,
-        "SpglibTestData/cubic/poscar-196-2" : 28,
-        "SpglibTestData/cubic/poscar-197" : 28,
-        "SpglibTestData/cubic/poscar-197-2" : 28,
-        "SpglibTestData/cubic/poscar-198" : 28,
-        "SpglibTestData/cubic/poscar-198-2" : 28,
-        "SpglibTestData/cubic/poscar-199" : 28,
-        "SpglibTestData/cubic/poscar-199-2" : 28,
-        "SpglibTestData/cubic/poscar-200" : 29,
-        "SpglibTestData/cubic/poscar-200-2" : 29,
-        "SpglibTestData/cubic/poscar-205" : 29,
-        "SpglibTestData/cubic/poscar-205-3" : 29,
-        "SpglibTestData/cubic/poscar-206" : 29,
-        "SpglibTestData/cubic/poscar-206-2" : 29,
-        "SpglibTestData/cubic/poscar-207" : 30,
-        "SpglibTestData/cubic/poscar-208" : 30,
-        "SpglibTestData/cubic/poscar-208-2" : 32,
-        "SpglibTestData/cubic/poscar-209" : 30,
-        "SpglibTestData/cubic/poscar-210" : 30,
-        "SpglibTestData/cubic/poscar-210-2" : 30,
-        "SpglibTestData/cubic/poscar-211" : 30,
-        "SpglibTestData/cubic/poscar-212" : 30,
-        "SpglibTestData/cubic/poscar-212-2" : 30,
-        "SpglibTestData/cubic/poscar-213" : 30,
-        "SpglibTestData/cubic/poscar-213-2" : 30,
-        "SpglibTestData/cubic/poscar-214" : 30,
-        "SpglibTestData/cubic/poscar-214-2" : 30,
-        "SpglibTestData/cubic/poscar-215" : 31,
-        "SpglibTestData/cubic/poscar-215-2" : 31,
-        "SpglibTestData/cubic/poscar-216" : 32,
-        "SpglibTestData/cubic/poscar-216-2" : 31,
-        "SpglibTestData/cubic/poscar-217" : 31,
-        "SpglibTestData/cubic/poscar-217-2" : 31,
-        "SpglibTestData/cubic/poscar-218" : 31,
-        "SpglibTestData/cubic/poscar-218-2" : 31,
-        "SpglibTestData/cubic/poscar-219" : 31,
-        "SpglibTestData/cubic/poscar-219-2" : 31,
-        "SpglibTestData/cubic/poscar-220" : 31,
-        "SpglibTestData/cubic/poscar-220-2" : 31,
-        "SpglibTestData/cubic/poscar-221" : 32,
-        "SpglibTestData/cubic/poscar-221-2" : 32,
-        "SpglibTestData/cubic/poscar-222" : 32,
-        "SpglibTestData/cubic/poscar-222-2" : 32,
-        "SpglibTestData/cubic/poscar-223" : 32,
-        "SpglibTestData/cubic/poscar-223-2" : 32,
-        "SpglibTestData/cubic/poscar-224" : 32,
-        "SpglibTestData/cubic/poscar-224-2" : 32,
-        "SpglibTestData/cubic/poscar-225" : 32,
-        "SpglibTestData/cubic/poscar-225-2" : 32,
-        "SpglibTestData/cubic/poscar-226" : 32,
-        "SpglibTestData/cubic/poscar-226-2" : 32,
-        "SpglibTestData/cubic/poscar-227" : 32,
-        "SpglibTestData/cubic/poscar-227-2" : 32,
-        "SpglibTestData/cubic/poscar-228" : 32,
-        "SpglibTestData/cubic/poscar-228-2" : 32,
-        "SpglibTestData/cubic/poscar-229" : 32,
-        "SpglibTestData/cubic/poscar-229-2" : 32,
-        "SpglibTestData/cubic/poscar-230" : 32,
-        "SpglibTestData/cubic/poscar-230-2" : 32,
-        "SpglibTestData/cubic/poscar-230-3" : 32,
-        "SpglibTestData/cubic/poscar-230-4" : 32
+        "SpglibTestData/cubic/POSCAR-195" : 28,
+        "SpglibTestData/cubic/POSCAR-195-2" : 28,
+        "SpglibTestData/cubic/POSCAR-196" : 28,
+        "SpglibTestData/cubic/POSCAR-196-2" : 28,
+        "SpglibTestData/cubic/POSCAR-197" : 28,
+        "SpglibTestData/cubic/POSCAR-197-2" : 28,
+        "SpglibTestData/cubic/POSCAR-198" : 28,
+        "SpglibTestData/cubic/POSCAR-198-2" : 28,
+        "SpglibTestData/cubic/POSCAR-199" : 28,
+        "SpglibTestData/cubic/POSCAR-199-2" : 28,
+        "SpglibTestData/cubic/POSCAR-200" : 29,
+        "SpglibTestData/cubic/POSCAR-200-2" : 29,
+        "SpglibTestData/cubic/POSCAR-205" : 29,
+        "SpglibTestData/cubic/POSCAR-205-3" : 29,
+        "SpglibTestData/cubic/POSCAR-206" : 29,
+        "SpglibTestData/cubic/POSCAR-206-2" : 29,
+        "SpglibTestData/cubic/POSCAR-207" : 30,
+        "SpglibTestData/cubic/POSCAR-208" : 30,
+        "SpglibTestData/cubic/POSCAR-208-2" : 32,
+        "SpglibTestData/cubic/POSCAR-209" : 30,
+        "SpglibTestData/cubic/POSCAR-210" : 30,
+        "SpglibTestData/cubic/POSCAR-210-2" : 30,
+        "SpglibTestData/cubic/POSCAR-211" : 30,
+        "SpglibTestData/cubic/POSCAR-212" : 30,
+        "SpglibTestData/cubic/POSCAR-212-2" : 30,
+        "SpglibTestData/cubic/POSCAR-213" : 30,
+        "SpglibTestData/cubic/POSCAR-213-2" : 30,
+        "SpglibTestData/cubic/POSCAR-214" : 30,
+        "SpglibTestData/cubic/POSCAR-214-2" : 30,
+        "SpglibTestData/cubic/POSCAR-215" : 31,
+        "SpglibTestData/cubic/POSCAR-215-2" : 31,
+        "SpglibTestData/cubic/POSCAR-216" : 32,
+        "SpglibTestData/cubic/POSCAR-216-2" : 31,
+        "SpglibTestData/cubic/POSCAR-217" : 31,
+        "SpglibTestData/cubic/POSCAR-217-2" : 31,
+        "SpglibTestData/cubic/POSCAR-218" : 31,
+        "SpglibTestData/cubic/POSCAR-218-2" : 31,
+        "SpglibTestData/cubic/POSCAR-219" : 31,
+        "SpglibTestData/cubic/POSCAR-219-2" : 31,
+        "SpglibTestData/cubic/POSCAR-220" : 31,
+        "SpglibTestData/cubic/POSCAR-220-2" : 31,
+        "SpglibTestData/cubic/POSCAR-221" : 32,
+        "SpglibTestData/cubic/POSCAR-221-2" : 32,
+        "SpglibTestData/cubic/POSCAR-222" : 32,
+        "SpglibTestData/cubic/POSCAR-222-2" : 32,
+        "SpglibTestData/cubic/POSCAR-223" : 32,
+        "SpglibTestData/cubic/POSCAR-223-2" : 32,
+        "SpglibTestData/cubic/POSCAR-224" : 32,
+        "SpglibTestData/cubic/POSCAR-224-2" : 32,
+        "SpglibTestData/cubic/POSCAR-225" : 32,
+        "SpglibTestData/cubic/POSCAR-225-2" : 32,
+        "SpglibTestData/cubic/POSCAR-226" : 32,
+        "SpglibTestData/cubic/POSCAR-226-2" : 32,
+        "SpglibTestData/cubic/POSCAR-227" : 32,
+        "SpglibTestData/cubic/POSCAR-227-2" : 32,
+        "SpglibTestData/cubic/POSCAR-228" : 32,
+        "SpglibTestData/cubic/POSCAR-228-2" : 32,
+        "SpglibTestData/cubic/POSCAR-229" : 32,
+        "SpglibTestData/cubic/POSCAR-229-2" : 32,
+        "SpglibTestData/cubic/POSCAR-230" : 32,
+        "SpglibTestData/cubic/POSCAR-230-2" : 32,
+        "SpglibTestData/cubic/POSCAR-230-3" : 32,
+        "SpglibTestData/cubic/POSCAR-230-4" : 32
       ]
     
     let bundle = Bundle(for: type(of: self))
@@ -681,7 +681,7 @@ class FindPointGroupTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -1027,7 +1027,7 @@ class FindPointGroupTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -1061,7 +1061,7 @@ class FindPointGroupTests: XCTestCase
           //let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {

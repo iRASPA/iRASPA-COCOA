@@ -32,7 +32,7 @@ class SpaceGroupCenteringTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(centering, "centering \(fileName) not found")
           if let centering = centering
@@ -88,7 +88,7 @@ class SpaceGroupCenteringTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(centering, "centering \(fileName) not found")
           if let centering = centering
@@ -238,7 +238,7 @@ class SpaceGroupCenteringTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(centering, "centering \(fileName) not found")
           if let centering = centering
@@ -411,7 +411,7 @@ class SpaceGroupCenteringTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(centering, "centering \(fileName) not found")
           if let centering = centering
@@ -490,7 +490,7 @@ class SpaceGroupCenteringTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(centering, "centering \(fileName) not found")
           if let centering = centering
@@ -567,7 +567,7 @@ class SpaceGroupCenteringTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(centering, "centering \(fileName) not found")
           if let centering = centering
@@ -659,7 +659,7 @@ class SpaceGroupCenteringTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(centering, "centering \(fileName) not found")
           if let centering = centering
@@ -1002,7 +1002,7 @@ class SpaceGroupCenteringTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowOverlappingAtomTypes: true, symmetryPrecision: precision)
+          let centering: SKSpacegroup.Centring? = SKSpacegroup.SKFindSpaceGroupCentering(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(centering, "centering \(fileName) not found")
           if let centering = centering
