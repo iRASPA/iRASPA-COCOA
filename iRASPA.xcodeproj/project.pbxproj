@@ -35,7 +35,6 @@
 		930DD4D41E26AA0200B8FE9B /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		930DD4D51E26AA0200B8FE9B /* SymmetryKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		930DD4E61E26AA5200B8FE9B /* SKCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4DC1E26AA5200B8FE9B /* SKCell.swift */; };
-		930DD4E71E26AA5200B8FE9B /* SKChangeOfBasis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4DD1E26AA5200B8FE9B /* SKChangeOfBasis.swift */; };
 		930DD4E81E26AA5200B8FE9B /* SKFindSpaceGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4DE1E26AA5200B8FE9B /* SKFindSpaceGroup.swift */; };
 		930DD4E91E26AA5200B8FE9B /* SKPointGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4DF1E26AA5200B8FE9B /* SKPointGroup.swift */; };
 		930DD4EA1E26AA5200B8FE9B /* SKRotationMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930DD4E01E26AA5200B8FE9B /* SKRotationMatrix.swift */; };
@@ -340,8 +339,6 @@
 		938388331E26A4FC00112FBA /* MathKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 938388231E26A4FB00112FBA /* MathKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		938388361E26A4FC00112FBA /* MathKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; };
 		938388371E26A4FC00112FBA /* MathKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 938388211E26A4FB00112FBA /* MathKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		938388451E26A5CD00112FBA /* General_int3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388411E26A5CD00112FBA /* General_int3.swift */; };
-		938388461E26A5CD00112FBA /* General_int3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388421E26A5CD00112FBA /* General_int3x3.swift */; };
 		938388471E26A5CD00112FBA /* Fraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388431E26A5CD00112FBA /* Fraction.swift */; };
 		938388481E26A5CD00112FBA /* GreatestCommonDivisor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938388441E26A5CD00112FBA /* GreatestCommonDivisor.swift */; };
 		9383884F1E26A60700112FBA /* IntegerMatrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383884A1E26A60700112FBA /* IntegerMatrix.swift */; };
@@ -1283,7 +1280,6 @@
 		930DD4C11E26AA0100B8FE9B /* SymmetryKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SymmetryKit.h; sourceTree = "<group>"; };
 		930DD4C21E26AA0100B8FE9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		930DD4DC1E26AA5200B8FE9B /* SKCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKCell.swift; sourceTree = "<group>"; };
-		930DD4DD1E26AA5200B8FE9B /* SKChangeOfBasis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKChangeOfBasis.swift; sourceTree = "<group>"; };
 		930DD4DE1E26AA5200B8FE9B /* SKFindSpaceGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKFindSpaceGroup.swift; sourceTree = "<group>"; };
 		930DD4DF1E26AA5200B8FE9B /* SKPointGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKPointGroup.swift; sourceTree = "<group>"; };
 		930DD4E01E26AA5200B8FE9B /* SKRotationMatrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKRotationMatrix.swift; sourceTree = "<group>"; };
@@ -1667,8 +1663,6 @@
 		938388211E26A4FB00112FBA /* MathKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MathKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		938388231E26A4FB00112FBA /* MathKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathKit.h; sourceTree = "<group>"; };
 		938388241E26A4FB00112FBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		938388411E26A5CD00112FBA /* General_int3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General_int3.swift; sourceTree = "<group>"; };
-		938388421E26A5CD00112FBA /* General_int3x3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General_int3x3.swift; sourceTree = "<group>"; };
 		938388431E26A5CD00112FBA /* Fraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fraction.swift; sourceTree = "<group>"; };
 		938388441E26A5CD00112FBA /* GreatestCommonDivisor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GreatestCommonDivisor.swift; sourceTree = "<group>"; };
 		9383884A1E26A60700112FBA /* IntegerMatrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntegerMatrix.swift; sourceTree = "<group>"; };
@@ -2473,7 +2467,6 @@
 				93EAABAC1ED9847700FE61D8 /* SKElement.swift */,
 				93B777331FA47AB700A5DF86 /* SKColorSet.swift */,
 				93B777351FA47AD300A5DF86 /* SKColorSets.swift */,
-				930DD4DD1E26AA5200B8FE9B /* SKChangeOfBasis.swift */,
 				9350696F268B71580071B4CC /* SKIntegerChangeOfBasis.swift */,
 				93506969268A49C10071B4CC /* SKRotationalChangeOfBasis.swift */,
 				930DD4DF1E26AA5200B8FE9B /* SKPointGroup.swift */,
@@ -3280,8 +3273,6 @@
 		9383883F1E26A54D00112FBA /* Integers */ = {
 			isa = PBXGroup;
 			children = (
-				938388411E26A5CD00112FBA /* General_int3.swift */,
-				938388421E26A5CD00112FBA /* General_int3x3.swift */,
 				938388431E26A5CD00112FBA /* Fraction.swift */,
 				933EEF4A2681F7EF00067CF4 /* Ring.swift */,
 				938388441E26A5CD00112FBA /* GreatestCommonDivisor.swift */,
@@ -4583,7 +4574,6 @@
 				93506970268B71580071B4CC /* SKIntegerChangeOfBasis.swift in Sources */,
 				930DD4E91E26AA5200B8FE9B /* SKPointGroup.swift in Sources */,
 				93F3A58F218738C4008E41A2 /* SKBondSetController.swift in Sources */,
-				930DD4E71E26AA5200B8FE9B /* SKChangeOfBasis.swift in Sources */,
 				93B777341FA47AB700A5DF86 /* SKColorSet.swift in Sources */,
 				9350696A268A49C10071B4CC /* SKRotationalChangeOfBasis.swift in Sources */,
 				93EAABA81ED9787D00FE61D8 /* SKCIFParser.swift in Sources */,
@@ -4976,8 +4966,6 @@
 				9383885A1E26A64200112FBA /* int3x3.swift in Sources */,
 				935105551F16558B002F424C /* int4x3.swift in Sources */,
 				939B20611EF2CE750061DE8D /* double3x3.swift in Sources */,
-				938388451E26A5CD00112FBA /* General_int3.swift in Sources */,
-				938388461E26A5CD00112FBA /* General_int3x3.swift in Sources */,
 				933EEF4F26820AC900067CF4 /* RingMatrix.swift in Sources */,
 				93C71B8A269C4BAC00F67DEE /* OrderedSet.swift in Sources */,
 				9340A6F12015123B00F33D1D /* NSFont.swift in Sources */,

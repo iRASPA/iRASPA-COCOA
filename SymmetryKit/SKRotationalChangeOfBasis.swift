@@ -28,50 +28,9 @@ public struct SKRotationalChangeOfBasis
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 1, 0, 0)])), //  4 : R2          c, -b,    a
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>(-1, 0,-1)])), //  5 : R2.R3       a, -b, -a-c
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 0, 0, 1)])), //  6 : R2.R3.R3 -a-c, -b,    c
-    
-   /*
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>( 0, 0, 1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>( 0,-1, 0 ), SIMD3<Int32>( 1, 0, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0, 1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>( 0,-1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>( 1, 0, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0,-1, 0 ), SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0, 0, 1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0, 1 ), SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>(-1, 0, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0,-1 ), SIMD3<Int32>( 0,-1, 0 ), SIMD3<Int32>( 0, 0,-1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1,-1 ), SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0, 0,-1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1,-1, 0 ), SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>(-1, 0, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1,-1, 0 ), SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>( 0,-1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 1 ), SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0, 1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>( 1, 0,-1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0,-1, 0 ), SIMD3<Int32>(-1, 0, 1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0,-1, 0 ), SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0,-1, 1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>( 1, 1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>(-1, 1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0,-1,-1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0,-1, 0 ), SIMD3<Int32>( 0, 0,-1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>( 1, 0, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0,-1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>( 0,-1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>(-1, 0, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0, 0, 1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1 ), SIMD3<Int32>( 0,-1, 0 ), SIMD3<Int32>(-1, 0, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 1 ), SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>( 0, 0, 1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0,-1,-1 ), SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0, 0,-1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1,-1, 0 ), SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>( 1, 0, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1,-1, 0 ), SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>( 0,-1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0,-1, 1 ), SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0,-1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1 ), SIMD3<Int32>( 0,-1, 0 ), SIMD3<Int32>( 1, 0, 1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>(-1, 0,-1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0, 1, 1 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0 ), SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>(-1, 1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0 ), SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>( 1, 1, 0 )])),
-SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0,-1 ), SIMD3<Int32>(-1, 0, 0 ), SIMD3<Int32>( 0, 1,-1 )]))
- */
   ]
   
  
-  
-  
   // Table 2 from R. W. Grosse-Kunstleve, Acta Cryst. (1999). A55, 383-395
   public static let changeOfOrthorhombicCentering: [SKRotationalChangeOfBasis] =
   [

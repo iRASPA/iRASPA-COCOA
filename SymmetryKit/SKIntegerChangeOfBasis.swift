@@ -58,14 +58,4 @@ public struct SKIntegerChangeOfBasis
   {
     return (left.inverseChangeOfBasis * right) / Double(left.inverseChangeOfBasisDeterminant)
   }
-  
-  public static func ==(left: SKIntegerChangeOfBasis, right: SKChangeOfBasis) -> Bool
-  {
-    return left.changeOfBasis.int3x3 == right.changeOfBasis.Int3x3b &&
-      left.inverseChangeOfBasis.int3x3 == right.inverseChangeOfBasis.Int3x3b &&
-      left.changeOfBasisDeterminant == right.inverseChangeOfBasis.denominator * right.changeOfBasis.denominator
-  }
-  
- 
-  
 }
