@@ -45,7 +45,7 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -126,7 +126,7 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -300,7 +300,7 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -497,7 +497,7 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -600,7 +600,7 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -701,7 +701,7 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -817,7 +817,7 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -1047,7 +1047,7 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           

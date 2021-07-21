@@ -44,7 +44,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -103,7 +103,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -256,7 +256,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -432,7 +432,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -515,7 +515,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -595,7 +595,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -689,7 +689,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -1035,7 +1035,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: precision)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {
@@ -1070,7 +1070,7 @@ class FindPointGroupNoPartialOccupanciesTests: XCTestCase
           //let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
           let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition , $0.type)}
           
-          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowOverlappingAtomTypes: false, symmetryPrecision: 1e-5)
+          let pointGroupNumber: Int? = SKSpacegroup.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: 1e-5)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
           if let pointGroupNumber = pointGroupNumber
           {

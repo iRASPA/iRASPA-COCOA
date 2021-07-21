@@ -612,44 +612,41 @@ public struct SKRotationMatrix
   /// 10.1107/s2053273315001096
   /// Le Page, Y. (1982). J. Appl. Cryst. 15, 255-259.
   /// Lebedev, A.A., Vagin, A.A. & Murshudov, G.N. (2006). Acta Cryst. D62, 83-95.
-  static func findLatticeSymmetry(primitiveUnitCell: double3x3, unitCell cell_lattice: double3x3, symmetryPrecision: Double = 1e-2) -> SKPointSymmetrySet
+  static func findLatticeSymmetry(unitCell reducedLattice: double3x3, symmetryPrecision: Double = 1e-2) -> SKPointSymmetrySet
   {
     let latticeAxes: [SIMD3<Int32>] = [
       SIMD3<Int32>( 1, 0, 0),
       SIMD3<Int32>( 0, 1, 0),
       SIMD3<Int32>( 0, 0, 1),
       SIMD3<Int32>(-1, 0, 0),
-      SIMD3<Int32>( 0,-1, 0), /* 5 */
+      SIMD3<Int32>( 0,-1, 0),
       SIMD3<Int32>( 0, 0,-1),
       SIMD3<Int32>( 0, 1, 1),
       SIMD3<Int32>( 1, 0, 1),
       SIMD3<Int32>( 1, 1, 0),
-      SIMD3<Int32>( 0,-1,-1), /* 10 */
+      SIMD3<Int32>( 0,-1,-1),
       SIMD3<Int32>(-1, 0,-1),
       SIMD3<Int32>(-1,-1, 0),
       SIMD3<Int32>( 0, 1,-1),
       SIMD3<Int32>(-1, 0, 1),
-      SIMD3<Int32>( 1,-1, 0), /* 15 */
+      SIMD3<Int32>( 1,-1, 0),
       SIMD3<Int32>( 0,-1, 1),
       SIMD3<Int32>( 1, 0,-1),
       SIMD3<Int32>(-1, 1, 0),
       SIMD3<Int32>( 1, 1, 1),
-      SIMD3<Int32>(-1,-1,-1), /* 20 */
+      SIMD3<Int32>(-1,-1,-1),
       SIMD3<Int32>(-1, 1, 1),
       SIMD3<Int32>( 1,-1, 1),
       SIMD3<Int32>( 1, 1,-1),
       SIMD3<Int32>( 1,-1,-1),
-      SIMD3<Int32>(-1, 1,-1), /* 25 */
+      SIMD3<Int32>(-1, 1,-1),
       SIMD3<Int32>(-1,-1, 1)
     ]
     
     var pointSymmetries: OrderedSet<SKRotationMatrix> = OrderedSet<SKRotationMatrix>()
     
-    let min_lattice: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: cell_lattice)!
+    let latticeMetricMatrix: double3x3 = reducedLattice.transpose * reducedLattice
     
-    let latticeMetricMatrix: double3x3 = min_lattice.transpose * min_lattice
-    
-    var count = 0
     // uses a stored list of all possible lattice vectors and loop over all possible permutations
     for firstAxis in latticeAxes
     {
@@ -663,34 +660,26 @@ public struct SKRotationMatrix
           // if the determinant is 1 or -1 we have a (proper) rotation  (6960 proper rotations)
           if (determinant == 1 || determinant == -1)
           {
-            count = count + 1
             let transformationMatrix: double3x3 = double3x3(rotationMatrix: axes)
             
             // the inverse of a rotation matrix is its transpose, so we use the transpose here
-            let newLattice: double3x3 = min_lattice * transformationMatrix
+            let newLattice: double3x3 = reducedLattice * transformationMatrix
             let transformedLatticeMetricMatrix: double3x3 = newLattice.transpose * newLattice
             
-            if (SKSymmetryCell.isIdentityMetric(transformedMetricMatrix: transformedLatticeMetricMatrix, metricMatrix: latticeMetricMatrix, symmetryPrecision: symmetryPrecision, angleSymmetryPrecision: -1.0))
+            if (SKSymmetryCell.checkMetricSimilarity(transformedMetricMatrix: transformedLatticeMetricMatrix, metricMatrix: latticeMetricMatrix, symmetryPrecision: symmetryPrecision))
             {
               pointSymmetries.append(axes)
             }
-           
           }
         }
       }
     }
-    
-    let newLattice = cell_lattice
-    
-    let original_lattice = min_lattice
-    
-    let trans: double3x3 = (original_lattice.inverse * newLattice)
-      
-    
+          
+    let transform: double3x3 = (reducedLattice.inverse * reducedLattice)
     var newpointSymmetries: OrderedSet<SKRotationMatrix> = OrderedSet<SKRotationMatrix>()
     for pointSymmetry in pointSymmetries
     {
-      let mat = SKRotationMatrix(trans.inverse * double3x3(rotationMatrix: pointSymmetry) * trans)
+      let mat = SKRotationMatrix(transform.inverse * double3x3(rotationMatrix: pointSymmetry) * transform)
       if (!newpointSymmetries.contains(mat))
       {
         newpointSymmetries.append(mat)
