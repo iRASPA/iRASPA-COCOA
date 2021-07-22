@@ -1,12 +1,12 @@
 
 /* Class = "NSMenuItem"; title = "Invert"; ObjectID = "1YF-gj-uzt"; */
-"1YF-gj-uzt.title" = "뒤집다";
+"1YF-gj-uzt.title" = "반전";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "2Be-nn-F4a"; */
-"2Be-nn-F4a.title" = "Text Cell";
+"2Be-nn-F4a.title" = "텍스트 셀";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "2NZ-GO-iX3"; */
-"2NZ-GO-iX3.title" = "Text Cell";
+"2NZ-GO-iX3.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "Remove symmetry"; ObjectID = "3ev-cg-Wwc"; */
 "3ev-cg-Wwc.title" = "대칭 제거";
@@ -15,7 +15,7 @@
 "71t-6P-hE6.title" = "CIF";
 
 /* Class = "NSMenuItem"; title = "Wrap atoms to cell"; ObjectID = "7M8-ac-pMA"; */
-"7M8-ac-pMA.title" = "원자를 격자로 감싸기";
+"7M8-ac-pMA.title" = "원자를 셀로 감싸기";
 
 /* Class = "NSTableColumn"; headerCell.title = "ff id."; ObjectID = "8Bh-oV-6t8"; */
 "8Bh-oV-6t8.headerCell.title" = "역장 아이디.";
@@ -81,13 +81,13 @@
 "fJ5-bP-buy.title" = "PDB";
 
 /* Class = "NSMenuItem"; title = "Match selection"; ObjectID = "fMn-ZP-dZ4"; */
-"fMn-ZP-dZ4.title" = "선택된 것과 일치하는 것";
+"fMn-ZP-dZ4.title" = "선택된 것 찾기";
 
 /* Class = "NSMenuItem"; title = "Move to new Movie"; ObjectID = "fmI-pV-gCy"; */
 "fmI-pV-gCy.title" = "새로운 무비로 이동";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "fya-RH-Hvh"; */
-"fya-RH-Hvh.title" = "바닥";
+"fya-RH-Hvh.title" = "하단";
 
 /* Class = "NSTableColumn"; headerCell.title = "y"; ObjectID = "gam-Tz-1cQ"; */
 "gam-Tz-1cQ.headerCell.title" = "y";
@@ -99,7 +99,7 @@
 "h8W-NQ-h3a.placeholderString" = "필터";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "hry-LW-0DM"; */
-"hry-LW-0DM.title" = "박스";
+"hry-LW-0DM.title" = "상자";
 
 /* Class = "NSTableColumn"; headerCell.title = "atom id."; ObjectID = "iBx-v6-SHn"; */
 "iBx-v6-SHn.headerCell.title" = "원자 아이디.";
@@ -117,7 +117,7 @@
 "njX-Kx-nwX.headerCell.title" = "vis";
 
 /* Class = "NSMenuItem"; title = "Invert"; ObjectID = "oGN-yG-mfe"; */
-"oGN-yG-mfe.title" = "거꾸로 하다";
+"oGN-yG-mfe.title" = "반전";
 
 /* Class = "NSTableColumn"; headerCell.title = "x"; ObjectID = "ohE-dV-Fg7"; */
 "ohE-dV-Fg7.headerCell.title" = "x";

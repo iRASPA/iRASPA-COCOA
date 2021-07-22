@@ -120,7 +120,7 @@
 "Ph1-69-211.title" = "헬륨 공극 분율";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "Pt2-gj-hYD"; */
-"Pt2-gj-hYD.title" = "None";
+"Pt2-gj-hYD.title" = "없음";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "PwB-qr-PSc"; */
 "PwB-qr-PSc.title" = "보다 크거나 같음";
@@ -138,7 +138,7 @@
 "Rh7-Pd-qYE.title" = "보다 크거나 같음";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "RmR-Fs-GOf"; */
-"RmR-Fs-GOf.title" = "Box";
+"RmR-Fs-GOf.title" = "상자";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "SfX-iX-SBy"; */
 "SfX-iX-SBy.title" = "보다 작거나 같";
