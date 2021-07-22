@@ -14,6 +14,76 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
 {
   let precision: Double = 1e-5
   
+  public static func SKTestConstructUpdatedBasis(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> SKTransformationMatrix?
+  {
+    var histogram:[Int:Int] = [:]
+    
+    for atom in atoms
+    {
+      histogram[atom.type] = (histogram[atom.type] ?? 0) + 1
+    }
+    
+    // Find least occurent element
+    let minType: Int = histogram.min{a, b in a.value < b.value}!.key
+    
+    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = allowPartialOccupancies ? atoms : atoms.filter{$0.type == minType}
+    
+    // search for a primitive cell based on the positions of the atoms
+    let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+  
+    // convert the unit cell to a reduced Delaunay cell
+    guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else {return nil}
+    
+    // find the rotational symmetry of the reduced Delaunay cell
+    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+    
+    // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
+    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = allowPartialOccupancies ? positionInDelaunayCell : positionInDelaunayCell.filter{$0.type == minType}
+    
+    // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
+    // the point group of the lattice cannot be lower than the point group of the crystal
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: DelaunayUnitCell, reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+        
+    // create the point symmetry set
+    let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
+    
+    // get the point group from the point symmetry set
+    if let pointGroup: SKPointGroup = SKPointGroup(pointSymmetry: pointSymmetry)
+    {
+      // Use the axes directions of the Laue group-specific symmetry as a new basis
+      var Mprime: SKTransformationMatrix = pointGroup.constructAxes(using: spaceGroupSymmetries.operations.map{$0.rotation.proper})
+      
+      // adjustment of (M',0) to (M,0) for certain combination of Laue and centring types
+      switch(pointGroup.laue)
+      {
+      case .laue_1:
+        // change the basis to Niggli cell
+        let symmetryCell: (cell: SKSymmetryCell, changeOfBasis: SKTransformationMatrix)? =  SKSymmetryCell(unitCell: DelaunayUnitCell * Mprime).computeReducedNiggliCellAndChangeOfBasisMatrix
+        if symmetryCell == nil
+        {
+          return nil
+        }
+        Mprime = symmetryCell!.changeOfBasis
+      case .laue_2m:
+        // Change the basis for this monoclinic centrosymmetric point group using Delaunay reduction in 2D (algorithm of Atsushi Togo used)
+        // The unique axis is chosen as b, choose shortest a, c lattice vectors (|a| < |c|)
+        let computedDelaunayReducedCell2D: double3x3? = SKSymmetryCell.computeDelaunayReducedCell2D(unitCell: DelaunayUnitCell * Mprime, symmetryPrecision: symmetryPrecision)
+        if computedDelaunayReducedCell2D == nil
+        {
+          return nil
+        }
+        Mprime = SKTransformationMatrix(DelaunayUnitCell.inverse * computedDelaunayReducedCell2D!)
+      default:
+        break
+      }
+      
+      return Mprime
+      
+    }
+    return nil
+  }
+  
   
   func testConstructedUpdatedBasisTriclinicSpaceGroup()
   {
@@ -33,7 +103,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = ConstructedUpdatedBasisCorrectionMatrixTests.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -99,7 +169,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = ConstructedUpdatedBasisCorrectionMatrixTests.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -259,7 +329,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = ConstructedUpdatedBasisCorrectionMatrixTests.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -442,7 +512,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = ConstructedUpdatedBasisCorrectionMatrixTests.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -531,7 +601,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = ConstructedUpdatedBasisCorrectionMatrixTests.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -618,7 +688,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = ConstructedUpdatedBasisCorrectionMatrixTests.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -719,7 +789,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = ConstructedUpdatedBasisCorrectionMatrixTests.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
@@ -1076,7 +1146,7 @@ class ConstructedUpdatedBasisCorrectionMatrixTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           // search for a primitive cell based on the positions of the atoms
-          let basis: SKTransformationMatrix? = SKSpacegroup.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let basis: SKTransformationMatrix? = ConstructedUpdatedBasisCorrectionMatrixTests.SKTestConstructUpdatedBasis(unitCell: unitCell, atoms: reader.atoms, allowPartialOccupancies: true, symmetryPrecision: precision)
                    
           XCTAssertNotNil(basis, "DelaunayUnitCell \(fileName) not found")
           if let primitiveUnitCell = basis
