@@ -54,7 +54,7 @@
 "RN5-9P-5zL.title" = "C";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Rhd-q6-XIy"; */
-"Rhd-q6-XIy.title" = "Text Cell";
+"Rhd-q6-XIy.title" = "텍스트 셀";
 
 /* Class = "NSTextFieldCell"; title = "Atom Visibility"; ObjectID = "V2o-qv-t9c"; */
 "V2o-qv-t9c.title" = "원자 가시성";
@@ -78,7 +78,7 @@
 "ed7-vv-cRQ.title" = "Å";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "exg-Lr-h93"; */
-"exg-Lr-h93.title" = "Box";
+"exg-Lr-h93.title" = "상자";
 
 /* Class = "NSTextFieldCell"; title = "Epsilon"; ObjectID = "fcz-SI-vXv"; */
 "fcz-SI-vXv.title" = "엡실론";

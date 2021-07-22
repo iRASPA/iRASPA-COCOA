@@ -66,7 +66,7 @@
 "FkD-oS-zpo.title" = "아이템 2";
 
 /* Class = "NSMenuItem"; title = "Experimental"; ObjectID = "G2E-hb-9HS"; */
-"G2E-hb-9HS.title" = "실험적";
+"G2E-hb-9HS.title" = "실험";
 
 /* Class = "NSTextFieldCell"; placeholderString = "max"; ObjectID = "GOg-L9-MUC"; */
 "GOg-L9-MUC.placeholderString" = "최대";
@@ -75,7 +75,7 @@
 "GbD-Bi-g8J.placeholderString" = "알 수 없음";
 
 /* Class = "NSMenuItem"; title = "Conjugate Gradient"; ObjectID = "H8k-8m-eEZ"; */
-"H8k-8m-eEZ.title" = "켤레 기울기 (Conjugate Gradient)";
+"H8k-8m-eEZ.title" = "켤레 기울기";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "HQa-wI-SvD"; */
 "HQa-wI-SvD.title" = "없음";
@@ -84,7 +84,7 @@
 "IDD-Ef-45v.title" = "알고리즘";
 
 /* Class = "NSMenuItem"; title = "Baker's Algorithm"; ObjectID = "JIL-cM-jP3"; */
-"JIL-cM-jP3.title" = "베이커 알고리즘 (Baker's Algorithm)";
+"JIL-cM-jP3.title" = "베이커 알고리즘";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Last name"; ObjectID = "JJr-Hi-ZjS"; */
 "JJr-Hi-ZjS.placeholderString" = "성";
@@ -114,10 +114,10 @@
 "M4G-j9-ni3.title" = "방사선 유형";
 
 /* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "담금질 기법 (simulated annealing)";
+"MCu-aJ-XRY.title" = "담금질 기법";
 
 /* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
-"MYm-ia-kRD.title" = "심플렉스 (simplex)";
+"MYm-ia-kRD.title" = "심플렉스";
 
 /* Class = "NSTextFieldCell"; title = "Eigenvalues"; ObjectID = "Mz0-GD-bP9"; */
 "Mz0-GD-bP9.title" = "고유 값";
@@ -273,7 +273,7 @@
 "d8y-By-uMu.title" = "ORCID ID";
 
 /* Class = "NSTextFieldCell"; title = "Chemical Name Systematic"; ObjectID = "df5-Wf-bLj"; */
-"df5-Wf-bLj.title" = "화학명 체계적";
+"df5-Wf-bLj.title" = "화학명 체계";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0000-0000-0000-0000"; ObjectID = "eA1-Nk-SW5"; */
 "eA1-Nk-SW5.placeholderString" = "0000-0000-0000-0000";
@@ -309,7 +309,7 @@
 "j7h-V3-vWj.title" = "파스칼";
 
 /* Class = "NSMenuItem"; title = "Quasi-Newton"; ObjectID = "jIx-ec-cc5"; */
-"jIx-ec-cc5.title" = "Quasi-Newton";
+"jIx-ec-cc5.title" = "준-뉴턴";
 
 /* Class = "NSMenuItem"; title = "Celsius"; ObjectID = "jxw-bd-YgS"; */
 "jxw-bd-YgS.title" = "섭씨";
@@ -389,8 +389,8 @@
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[1] = "Angewandte Chemie Int. Ed."; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[1]" = "Angewandte Chemie Int. Ed.";
 
-/* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[2] = "Journal of the Physical Chemistry"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemistry";
+/* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[2] = "Journal of the Physical Chemstry"; ObjectID = "sRA-iw-pcK"; */
+"sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemstry";
 
 /* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Change"; ObjectID = "sah-qX-FWQ"; */
 "sah-qX-FWQ.title" = "고정 각도; 등방성 가장자리 길이 변경";

@@ -29,7 +29,7 @@
 "Change Positions" = "위치 변경";
 "Python Console Ready\n" = "파이썬 콘솔 준비\n";
 "Change Material Type" = "재료 유형 변경";
-"Change Space Group" = "군론 (space group) 변경";
+"Change Space Group" = "공간군 변경";
 "Reset Camera Distance" = "카메라 거리 재설정";
 "Reset Camera To" = "카메라 재설정";
 "Show Bounding Box" = "경계 상자 표시";

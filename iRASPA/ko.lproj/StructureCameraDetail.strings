@@ -51,7 +51,7 @@
 "8FT-Ib-RKI.title" = "150 dpi";
 
 /* Class = "NSButtonCell"; title = "Perspective"; ObjectID = "9XT-W6-7iV"; */
-"9XT-W6-7iV.title" = "원근법";
+"9XT-W6-7iV.title" = "원근";
 
 /* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
 "A0b-wl-zfu.title" = "광원들";
@@ -81,7 +81,7 @@
 "G71-xR-yVF.title" = "회전 +90°";
 
 /* Class = "NSButtonCell"; title = "Linear Gradient"; ObjectID = "I7e-iR-yaY"; */
-"I7e-iR-yaY.title" = "선형 구배 (gradient)";
+"I7e-iR-yaY.title" = "선형 구배";
 
 /* Class = "NSMenuItem"; title = "8-bits, CMYK"; ObjectID = "JiR-AU-7kF"; */
 "JiR-AU-7kF.title" = "8 비트, CMYK";
@@ -105,7 +105,7 @@
 "MEZ-QI-Kgi.title" = "회전 +90°";
 
 /* Class = "NSTabViewItem"; label = "Radial Gradient"; ObjectID = "NfR-n9-0Kg"; */
-"NfR-n9-0Kg.label" = "방사형 구배 (gradient)";
+"NfR-n9-0Kg.label" = "방사형 구배";
 
 /* Class = "NSMenuItem"; title = "72 dpi"; ObjectID = "OgY-Mc-Pa0"; */
 "OgY-Mc-Pa0.title" = "72 dpi";
@@ -159,7 +159,7 @@
 "WFD-2H-apd.placeholderString" = "bx";
 
 /* Class = "NSButtonCell"; title = "Radial Gradient"; ObjectID = "X0p-ze-Zzs"; */
-"X0p-ze-Zzs.title" = "방사형 구배 (gradient)";
+"X0p-ze-Zzs.title" = "방사형 구배";
 
 /* Class = "NSTextFieldCell"; title = "To"; ObjectID = "XeU-0O-MTz"; */
 "XeU-0O-MTz.title" = "에";
@@ -195,7 +195,7 @@
 "dor-ov-Wkd.title" = "배경";
 
 /* Class = "NSTabViewItem"; label = "Linear Gradient"; ObjectID = "enh-gY-DeN"; */
-"enh-gY-DeN.label" = "선형 구배 (gradient)";
+"enh-gY-DeN.label" = "선형 구배";
 
 /* Class = "NSBox"; title = "Projection"; ObjectID = "fM1-LC-a88"; */
 "fM1-LC-a88.title" = "투사";
@@ -231,7 +231,7 @@
 "loi-gG-s0z.title" = "장면의 중심";
 
 /* Class = "NSBox"; title = "View Matrix"; ObjectID = "lws-F1-am6"; */
-"lws-F1-am6.title" = "매트릭스 보기";
+"lws-F1-am6.title" = "행렬 보기";
 
 /* Class = "NSMenuItem"; title = "600 dpi"; ObjectID = "mfB-Ok-4s0"; */
 "mfB-Ok-4s0.title" = "600 dpi";

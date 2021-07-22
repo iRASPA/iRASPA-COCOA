@@ -33,7 +33,7 @@
 "4wy-F5-Ju4.title" = "수소";
 
 /* Class = "NSTextFieldCell"; title = "Transform Content"; ObjectID = "7SE-t2-fqM"; */
-"7SE-t2-fqM.title" = "콘텐츠 변환";
+"7SE-t2-fqM.title" = "내용 변환";
 
 /* Class = "NSTextFieldCell"; title = "[cm³/g]"; ObjectID = "7tH-M9-iSB"; */
 "7tH-M9-iSB.title" = "[cm³/g]";
@@ -66,7 +66,7 @@
 "9na-rU-hDF.title" = "헬륨 공극 분율";
 
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "9x5-Do-xLf"; */
-"9x5-Do-xLf.title" = "알 수 없는";
+"9x5-Do-xLf.title" = "모름";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "AGj-no-ne0"; */
 "AGj-no-ne0.title" = "회전 -90";
@@ -114,7 +114,7 @@
 "FKq-3b-x77.title" = "[cm³/g]";
 
 /* Class = "NSButtonCell"; title = "Apply"; ObjectID = "Fi0-La-ItK"; */
-"Fi0-La-ItK.title" = "대다";
+"Fi0-La-ItK.title" = "적용";
 
 /* Class = "NSMenuItem"; title = "Molecular Crystal"; ObjectID = "GCR-0z-KdY"; */
 "GCR-0z-KdY.title" = "분자 결정";
@@ -219,16 +219,16 @@
 "VU3-db-82D.placeholderString" = "cz";
 
 /* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "W6l-2i-ujZ"; */
-"W6l-2i-ujZ.title" = "CO₂";
+"W6l-2i-ujZ.title" = "이산화탄소";
 
 /* Class = "NSTextFieldCell"; placeholderString = "β Angle"; ObjectID = "WcQ-vR-rvO"; */
 "WcQ-vR-rvO.placeholderString" = "β 각도";
 
 /* Class = "NSTextFieldCell"; title = "Laue Group"; ObjectID = "Wgg-RQ-dI1"; */
-"Wgg-RQ-dI1.title" = "라우에 그룹 (Laue Group)";
+"Wgg-RQ-dI1.title" = "라우에 그룹";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
-"X5S-a7-xCf.placeholderString" = "유래 Z";
+"X5S-a7-xCf.placeholderString" = "기원 Z";
 
 /* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
 "XeZ-Hb-tao.title" = "결정 실린더";
@@ -297,7 +297,7 @@
 "f5k-y5-5L1.placeholderString" = "by";
 
 /* Class = "NSTextFieldCell"; title = "Material Type"; ObjectID = "f97-S8-buy"; */
-"f97-S8-buy.title" = "재료 유형";
+"f97-S8-buy.title" = "소재 유형";
 
 /* Class = "NSTextFieldCell"; title = "Inversion"; ObjectID = "fB7-jl-oUy"; */
 "fB7-jl-oUy.title" = "반전";
@@ -330,7 +330,7 @@
 "jHJ-5h-ehN.placeholderString" = "α 각도";
 
 /* Class = "NSTextFieldCell"; title = "Material Type"; ObjectID = "jgD-yL-2kq"; */
-"jgD-yL-2kq.title" = "재료 유형";
+"jgD-yL-2kq.title" = "소재 유형";
 
 /* Class = "NSTextFieldCell"; title = "Largest Diameter Along a Viable Path (Dif)"; ObjectID = "jrj-nk-OqJ"; */
 "jrj-nk-OqJ.title" = "통과 가능한 경로를 따라 가장 큰 지름 (Dif)";
@@ -342,7 +342,7 @@
 "lLf-lt-tQX.title" = "중심 대칭";
 
 /* Class = "NSTextFieldCell"; title = "Number of Inaccessible Pockets"; ObjectID = "lTN-44-tVw"; */
-"lTN-44-tVw.title" = "접근 할 수없는 포켓의 수";
+"lTN-44-tVw.title" = "접근 할 수 없는 포켓의 수";
 
 /* Class = "NSTextFieldCell"; title = "Specific Volume"; ObjectID = "leN-tT-E4L"; */
 "leN-tT-E4L.title" = "특정 부피";
@@ -390,10 +390,10 @@
 "q87-Wf-RMj.title" = "AX";
 
 /* Class = "NSTextFieldCell"; title = "Centering"; ObjectID = "qRO-nO-wHb"; */
-"qRO-nO-wHb.title" = "센터링";
+"qRO-nO-wHb.title" = "중앙화";
 
 /* Class = "NSTextFieldCell"; title = "Schoenflies"; ObjectID = "qgW-qA-9fR"; */
-"qgW-qA-9fR.title" = "쇤플리스 (Schoenflies)";
+"qgW-qA-9fR.title" = "쇤플리스";
 
 /* Class = "NSTextFieldCell"; title = "BX"; ObjectID = "qzc-iK-Ddm"; */
 "qzc-iK-Ddm.title" = "BX";
@@ -402,7 +402,7 @@
 "rkG-hU-SdP.placeholderString" = "길이 a";
 
 /* Class = "NSTextFieldCell"; title = "Holohedry"; ObjectID = "sDc-yH-bwk"; */
-"sDc-yH-bwk.title" = "완면상 (holohedry)";
+"sDc-yH-bwk.title" = "완면상";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle X"; ObjectID = "sHe-dm-0Lo"; */
 "sHe-dm-0Lo.placeholderString" = "각도 X";
@@ -417,7 +417,7 @@
 "t15-It-Wye.title" = "회전 +90";
 
 /* Class = "NSBox"; title = "Box Matrix (Read Only)"; ObjectID = "tF3-vm-zpF"; */
-"tF3-vm-zpF.title" = "박스 매트릭스 (읽기 전용)";
+"tF3-vm-zpF.title" = "상자 행렬 (읽기 전용)";
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "tKR-57-3vF"; */
 "tKR-57-3vF.title" = "0";
@@ -459,10 +459,10 @@
 "ugQ-Gv-6sx.title" = "회전 +90";
 
 /* Class = "NSTextFieldCell"; title = "Flip"; ObjectID = "v83-YD-3LI"; */
-"v83-YD-3LI.title" = "뒤집다";
+"v83-YD-3LI.title" = "엎침";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
-"vhk-8d-Ytl.title" = "구조적 속성";
+"vhk-8d-Ytl.title" = "구조 속성";
 
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
 "vwN-1o-Umq.title" = "기공 시스템의 차원수";

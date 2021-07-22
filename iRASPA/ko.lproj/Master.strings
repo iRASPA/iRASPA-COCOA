@@ -3,7 +3,7 @@
 "17P-ML-bef.title" = "구조 프로젝트 추가";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "1Xb-ls-pt9"; */
-"1Xb-ls-pt9.title" = "Text Cell";
+"1Xb-ls-pt9.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "Compute properties for selection"; ObjectID = "2Jt-NB-sPl"; */
 "2Jt-NB-sPl.title" = "선택 속성 계산";
@@ -24,19 +24,19 @@
 "7fp-uc-cJb.title" = "선택 삭제";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "A2b-v0-dYs"; */
-"A2b-v0-dYs.title" = "Table View Cell";
+"A2b-v0-dYs.title" = "표 셀 보기";
 
 /* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "DOk-0m-owF"; */
 "DOk-0m-owF.title" = "분자 결정 추가";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "Dl8-Oq-8Mi"; */
-"Dl8-Oq-8Mi.title" = "Table View Cell";
+"Dl8-Oq-8Mi.title" = "표 셀 보기";
 
 /* Class = "NSMenuItem"; title = "Add Group project"; ObjectID = "Fyj-yE-B9G"; */
 "Fyj-yE-B9G.title" = "그룹 프로젝트 추가";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "J49-HP-IXW"; */
-"J49-HP-IXW.title" = "Table View Cell";
+"J49-HP-IXW.title" = "표 셀 보기";
 
 /* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "JDc-Lg-RBz"; */
 "JDc-Lg-RBz.title" = "단백질 결정 추가";
@@ -48,10 +48,10 @@
 "NQW-mX-NqP.placeholderString" = "필터";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "NtS-cJ-UOq"; */
-"NtS-cJ-UOq.title" = "박스";
+"NtS-cJ-UOq.title" = "상자";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "O1x-dW-EEr"; */
-"O1x-dW-EEr.title" = "Text Cell";
+"O1x-dW-EEr.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "Save CoRE MOF DDEC Database"; ObjectID = "O3V-w8-TnC"; */
 "O3V-w8-TnC.title" = "CoRE MOF DDEC 데이터베이스 저장";
@@ -60,7 +60,7 @@
 "OOb-3Y-cOg.title" = "분자 결정 추가";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "PBb-Do-JMr"; */
-"PBb-Do-JMr.title" = "박스";
+"PBb-Do-JMr.title" = "상자";
 
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
 "PS8-Ne-mbi.ibShadowedToolTips[0]" = "프로젝트 네비게이터를 표시합니다.";
@@ -72,7 +72,7 @@
 "PS8-Ne-mbi.ibShadowedToolTips[2]" = "프레임 탐색기를 표시합니다.";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
-"QFA-05-Kql.title" = "박스";
+"QFA-05-Kql.title" = "상자";
 
 /* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
 "RMC-nN-w7D.title" = "단백질 추가";
@@ -90,10 +90,10 @@
 "TAX-Oq-9O2.title" = "타원체";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
-"Toa-8e-8sy.title" = "박스";
+"Toa-8e-8sy.title" = "상자";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
-"VoW-P5-q6k.title" = "박스";
+"VoW-P5-q6k.title" = "상자";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
 "Ypv-d2-rqY.title" = "문자 셀";
@@ -120,13 +120,13 @@
 "pCe-xU-zfX.title" = "단백질 추가";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "rpD-Za-uPb"; */
-"rpD-Za-uPb.title" = "Table View Cell";
+"rpD-Za-uPb.title" = "표 셀 보기";
 
 /* Class = "NSMenuItem"; title = "Add Structure Project"; ObjectID = "rwA-at-3T8"; */
 "rwA-at-3T8.title" = "구조 프로젝트 추가";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "sxb-xU-PUp"; */
-"sxb-xU-PUp.title" = "Table View Cell";
+"sxb-xU-PUp.title" = "표 셀 보기";
 
 /* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "uN8-UC-za6"; */
 "uN8-UC-za6.title" = "단백질 결정 추가";

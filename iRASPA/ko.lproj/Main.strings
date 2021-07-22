@@ -12,16 +12,16 @@
 "1b7-l0-nxx.title" = "찾기";
 
 /* Class = "NSMenuItem"; title = "Lower"; ObjectID = "1tx-W0-xDw"; */
-"1tx-W0-xDw.title" = "보다 낮은";
+"1tx-W0-xDw.title" = "내리기";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "2fK-ne-Lfp"; */
 "2fK-ne-Lfp.title" = "박스";
 
 /* Class = "NSMenuItem"; title = "Raise"; ObjectID = "2h7-ER-AoG"; */
-"2h7-ER-AoG.title" = "올리다";
+"2h7-ER-AoG.title" = "올리기";
 
 /* Class = "NSMenuItem"; title = "Transformations"; ObjectID = "2oI-Rn-ZJC"; */
-"2oI-Rn-ZJC.title" = "변형";
+"2oI-Rn-ZJC.title" = "바꾸기";
 
 /* Class = "NSMenuItem"; title = "3:1"; ObjectID = "3GP-Eu-vtX"; */
 "3GP-Eu-vtX.title" = "3:1";
@@ -39,7 +39,7 @@
 "3x3-A1-D5u.title" = "박스";
 
 /* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
-"46P-cB-AYj.title" = "죄다";
+"46P-cB-AYj.title" = "좁게";
 
 /* Class = "NSMenuItem"; title = "Find"; ObjectID = "4EN-yA-p0u"; */
 "4EN-yA-p0u.title" = "찾기";
@@ -129,7 +129,7 @@
 "GUa-eO-cwY.title" = "기본값 사용";
 
 /* Class = "NSMenuItem"; title = "Font"; ObjectID = "Gi5-1S-RQB"; */
-"Gi5-1S-RQB.title" = "폰트";
+"Gi5-1S-RQB.title" = "글꼴";
 
 /* Class = "NSMenu"; title = "New"; ObjectID = "Gkc-Nb-nPC"; */
 "Gkc-Nb-nPC.title" = "새로운";
@@ -138,7 +138,7 @@
 "H1b-Si-o9J.title" = "쓰기 방향";
 
 /* Class = "NSMenuItem"; title = "View"; ObjectID = "H8h-7b-M4v"; */
-"H8h-7b-M4v.title" = "전망";
+"H8h-7b-M4v.title" = "보기";
 
 /* Class = "NSMenuItem"; title = "Molecular crystal"; ObjectID = "H8o-f4-o3W"; */
 "H8o-f4-o3W.title" = "분자 결정";
@@ -156,13 +156,13 @@
 "I0S-gh-46l.title" = "아래 첨자";
 
 /* Class = "NSMenuItem"; title = "Open…"; ObjectID = "IAo-SY-fd9"; */
-"IAo-SY-fd9.title" = "열다…";
+"IAo-SY-fd9.title" = "열기…";
 
 /* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "IsF-P6-kfc"; */
 "IsF-P6-kfc.title" = "결정";
 
 /* Class = "NSMenuItem"; title = "Justify"; ObjectID = "J5U-5w-g23"; */
-"J5U-5w-g23.title" = "옳게하다";
+"J5U-5w-g23.title" = "양쪽 맞춤";
 
 /* Class = "NSMenuItem"; title = "Use None"; ObjectID = "J7y-lM-qPV"; */
 "J7y-lM-qPV.title" = "없음 사용";
@@ -231,7 +231,7 @@
 "Oyz-dy-DGm.title" = "말하기 중지";
 
 /* Class = "NSMenuItem"; title = "Bigger"; ObjectID = "Ptp-SP-VEL"; */
-"Ptp-SP-VEL.title" = "더 크게";
+"Ptp-SP-VEL.title" = "크게";
 
 /* Class = "NSMenuItem"; title = "Show Fonts"; ObjectID = "Q5e-8K-NDq"; */
 "Q5e-8K-NDq.title" = "글꼴 표시";
@@ -264,7 +264,7 @@
 "UEZ-Bs-lqG.title" = "대문자화";
 
 /* Class = "NSMenuItem"; title = "Center"; ObjectID = "VIY-Ag-zcb"; */
-"VIY-Ag-zcb.title" = "중앙";
+"VIY-Ag-zcb.title" = "가운데 맞춤";
 
 /* Class = "NSMenuItem"; title = "Invert selection"; ObjectID = "VNS-yB-1c3"; */
 "VNS-yB-1c3.title" = "반전 선택";
@@ -273,7 +273,7 @@
 "Vdr-fp-XzO.title" = "다른 것들 숨기기";
 
 /* Class = "NSMenuItem"; title = "Italic"; ObjectID = "Vjx-xi-njq"; */
-"Vjx-xi-njq.title" = "이탤릭체";
+"Vjx-xi-njq.title" = "기울임꼴";
 
 /* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
 "W48-6f-4Dl.title" = "편집";
@@ -315,7 +315,7 @@
 "ZM1-6Q-yy1.title" = "왼쪽 정렬";
 
 /* Class = "NSMenuItem"; title = "Paragraph"; ObjectID = "ZvO-Gk-QUH"; */
-"ZvO-Gk-QUH.title" = "절";
+"ZvO-Gk-QUH.title" = "단락";
 
 /* Class = "NSMenuItem"; title = "Print…"; ObjectID = "aTl-1u-JFS"; */
 "aTl-1u-JFS.title" = "인쇄…";
@@ -393,7 +393,7 @@
 "ijk-EB-dga.title" = "기준";
 
 /* Class = "NSMenuItem"; title = "Kern"; ObjectID = "jBQ-r6-VK2"; */
-"jBQ-r6-VK2.title" = "장식 꼬리";
+"jBQ-r6-VK2.title" = "문자간격";
 
 /* Class = "NSMenuItem"; title = "2.39:1"; ObjectID = "jF0-uJ-F9d"; */
 "jF0-uJ-F9d.title" = "2.39:1";
@@ -402,7 +402,7 @@
 "jFq-tB-4Kx.title" = "\t오른쪽에서 왼쪽으로";
 
 /* Class = "NSMenuItem"; title = "Format"; ObjectID = "jxT-CU-nIS"; */
-"jxT-CU-nIS.title" = "형식";
+"jxT-CU-nIS.title" = "포맷";
 
 /* Class = "NSMenuItem"; title = "Show Sidebar"; ObjectID = "kIP-vf-haE"; */
 "kIP-vf-haE.title" = "사이드 바 표시";
@@ -414,16 +414,16 @@
 "mum-mQ-dln.title" = "1.85:1";
 
 /* Class = "NSMenuItem"; title = "Ligatures"; ObjectID = "o6e-r0-MWq"; */
-"o6e-r0-MWq.title" = "합자 (ligatures)";
+"o6e-r0-MWq.title" = "합자";
 
 /* Class = "NSMenu"; title = "Open Recent"; ObjectID = "oas-Oc-fiZ"; */
 "oas-Oc-fiZ.title" = "최근 열기";
 
 /* Class = "NSMenuItem"; title = "Loosen"; ObjectID = "ogc-rX-tC1"; */
-"ogc-rX-tC1.title" = "늦추다";
+"ogc-rX-tC1.title" = "넓게";
 
 /* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
-"pa3-QI-u2k.title" = "지우다";
+"pa3-QI-u2k.title" = "지우기";
 
 /* Class = "NSMenuItem"; title = "Save…"; ObjectID = "pxx-59-PXV"; */
 "pxx-59-PXV.title" = "저장…";
@@ -480,7 +480,7 @@
 "vmV-6d-7jI.title" = "대문자 만들기";
 
 /* Class = "NSMenu"; title = "Ligatures"; ObjectID = "w0m-vy-SC9"; */
-"w0m-vy-SC9.title" = "합자 (Ligatures)";
+"w0m-vy-SC9.title" = "합자";
 
 /* Class = "NSMenuItem"; title = "Align Right"; ObjectID = "wb2-vD-lq4"; */
 "wb2-vD-lq4.title" = "오른쪽 정렬";
@@ -492,7 +492,7 @@
 "xQD-1f-W4t.title" = "모두 사용";
 
 /* Class = "NSMenuItem"; title = "Speech"; ObjectID = "xrE-MZ-jX0"; */
-"xrE-MZ-jX0.title" = "말하다";
+"xrE-MZ-jX0.title" = "음성";
 
 /* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
 "z6F-FW-3nz.title" = "대체 표시";
