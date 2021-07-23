@@ -44,19 +44,18 @@ public struct SKTransformationMatrix
   // based on the centering, convert conventional cell to primitive using conventionally used transformation matrices
   // Taken from: Table 2.C.1, page 141, Fundamentals of Crystallography, 2nd edition, C. Giacovazzo et al. 2002
   // Tranformation matrices M, conventionally used to generate centered from primitive lattices, and vice versa, accoording to: A' = M A
-  
-  public static let primitiveToPrimitive: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])  // P -> P
-  public static let primitiveToBodyCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(0,1,1), SIMD3<Int32>(1,0,1), SIMD3<Int32>(1,1,0)])  // P -> I
-  public static let primitiveToFaceCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,1,1), SIMD3<Int32>(1,-1,1), SIMD3<Int32>(1,1,-1)])  // P -> F
-  public static let primitiveToACentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,0,0), SIMD3<Int32>(0,-1,1), SIMD3<Int32>(0,1,1)])  // P -> A
-  public static let primitiveToBCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,0,1), SIMD3<Int32>(0,-1,0), SIMD3<Int32>(1,0,1)])  // P -> B
-  public static let primitiveToCCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1, 1,0), SIMD3<Int32>(1,-1,0), SIMD3<Int32>(0,0,-1)])  // P -> C
-  public static let primitiveToRhombohedral: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 0, 1,-1), SIMD3<Int32>( 1, 1, 1)])  // P -> R
-  public static let primitiveToHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 1, 2, 0), SIMD3<Int32>( 0, 0, 3)])  // P -> H
-  public static let rhombohedralObverseHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1,0,1), SIMD3<Int32>(-1,1,1), SIMD3<Int32>(0,-1,1)])  // Robv -> Rh
-  public static let rhombohedralHexagonalToReverse: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1,1,-2),SIMD3<Int32>(-1,0,1),SIMD3<Int32>(1,1,-1)])   // Rh -> Rrev
-  public static let rhombohedralReverseToHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1,-1,1), SIMD3<Int32>(0,1,1), SIMD3<Int32>(-1,0,1)])  // Rrev -> Rh
-  
+    
+  public static let primitiveToPrimitive: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])           // P -> P
+  public static let primitiveToBodyCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(0, 1, 1), SIMD3<Int32>(1, 0, 1), SIMD3<Int32>(1, 1, 0)])           // P -> I
+  public static let primitiveToFaceCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1, 1, 1), SIMD3<Int32>(1, -1, 1), SIMD3<Int32>(1, 1, -1)])        // P -> F
+  public static let primitiveToACentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0, -1, 1), SIMD3<Int32>(0, 1, 1)])            // P -> A
+  public static let primitiveToBCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1, 0, 1), SIMD3<Int32>(0, -1, 0), SIMD3<Int32>(1, 0, 1)])            // P -> B
+  public static let primitiveToCCentered: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1, 1, 0), SIMD3<Int32>(1, -1, 0), SIMD3<Int32>(0, 0, -1)])            // P -> C
+  public static let primitiveToRhombohedral: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1, -1, 0), SIMD3<Int32>( 0, 1,-1), SIMD3<Int32>( 1, 1, 1)])       // P -> R
+  public static let primitiveToHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>( 1, -1, 0), SIMD3<Int32>( 1, 2, 0), SIMD3<Int32>( 0, 0, 3)])          // P -> H
+  public static let rhombohedralObverseHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1, 0, 1), SIMD3<Int32>(-1, 1, 1), SIMD3<Int32>(0, -1, 1)])    // Robv -> Rh
+  public static let rhombohedralHexagonalToReverse: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1, 1, -2),SIMD3<Int32>(-1, 0, 1),SIMD3<Int32>(1, 1, -1)])   // Rh -> Rrev
+  public static let rhombohedralReverseToHexagonal: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(-1, -1, 1), SIMD3<Int32>(0, 1, 1), SIMD3<Int32>(-1, 0, 1)]) // Rrev -> Rh
   
   public static let monoclinicAtoC = SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])
   public static let AtoC = SKTransformationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])

@@ -46,13 +46,13 @@ import MathKit
 // unique axis b (cell choice 1) for space groups within the monoclinic system.
 // obverse triple hexagonal unit cell for R space groups.
 // the origin choice two - inversion center at (0,0,0) - for the centrosymmetric space groups for which there are two origin choices, within the orthorhombic, tetragonal and cubic systems.
-// orthorhombic: |a| < |b| < |c|;this implies the use of A-, B-and C-centrings in the case of one-face centred cells.
+// orthorhombic: |a| < |b| < |c|; this implies the use of A-, B-and C-centrings in the case of one-face centred cells.
 // monoclinic: |a| <= |c| <= |a + c|; a, c, a + c being shortest in the net perpendicular to b.
 
 
 extension SKSpacegroup
 {
-  /// Find the space group of a list of fractional atom positions and a given unitcell
+  /// Find the space group of a list of fractional atom positions/types and a given unitcell
   ///
   /// - parameter unitCell:                the unitcell
   /// - parameter fractionalPositions:     the fractional position and type of the atoms
