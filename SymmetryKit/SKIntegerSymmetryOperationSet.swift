@@ -296,7 +296,7 @@ public struct SKIntegerSymmetryOperationSet
   }
   
   
-  public func asymmetricAtoms(atoms: inout [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)],  lattice: double3x3, symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
+  public func asymmetricAtoms(HallNumber: Int, atoms: inout [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)],  lattice: double3x3, symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
   {
     var asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = [(atoms[0].fractionalPosition, atoms[0].type)]
     atoms[0].asymmetricType = 0
@@ -322,19 +322,51 @@ public struct SKIntegerSymmetryOperationSet
         
         if atoms[i].asymmetricType == -1
         {
-        for j in 0..<asymmetricAtoms.count
-        {
-          for operation in operations
+          for j in 0..<asymmetricAtoms.count
           {
-            let position: SIMD3<Double> = operation.rotation * atoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
-            if !SKSymmetryCell.isOverlap(a: position, b: asymmetricAtoms[j].fractionalPosition, lattice: lattice, symmetryPrecision: symmetryPrecision)
+            for operation in operations
             {
-              asymmetricAtoms.append((atoms[i].fractionalPosition, atoms[i].type))
-              atoms[i].asymmetricType = asymmetricAtoms.count - 1
-              continue loop
+              let position: SIMD3<Double> = operation.rotation * atoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
+              if !SKSymmetryCell.isOverlap(a: position, b: asymmetricAtoms[j].fractionalPosition, lattice: lattice, symmetryPrecision: symmetryPrecision)
+              {
+                asymmetricAtoms.append((atoms[i].fractionalPosition, atoms[i].type))
+                atoms[i].asymmetricType = asymmetricAtoms.count - 1
+                continue loop
+              }
             }
           }
         }
+      }
+    }
+    
+    for i in 0..<asymmetricAtoms.count
+    {
+      var found: Bool = false
+      for operation in operations
+      {
+        let position: SIMD3<Double> = operation.rotation * asymmetricAtoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
+        
+        // if directly inside the asymmetric unit cell, overwrite the position and break
+        if SKAsymmetricUnit.isInsideAsymmetricUnitCell(number: HallNumber, point: position, precision: 0.0)
+        {
+          asymmetricAtoms[i].fractionalPosition = fract(position)
+          found = true
+          break
+        }
+      }
+      
+      // if directly inside the asymmetric unit cell including a small epsilon, overwrite the position and break
+      if(!found)
+      {
+        for operation in operations
+        {
+          let position: SIMD3<Double> = operation.rotation * asymmetricAtoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
+        
+          if SKAsymmetricUnit.isInsideAsymmetricUnitCell(number: HallNumber, point: position, precision: symmetryPrecision)
+          {
+            asymmetricAtoms[i].fractionalPosition = fract(position)
+            break
+          }
         }
       }
     }
