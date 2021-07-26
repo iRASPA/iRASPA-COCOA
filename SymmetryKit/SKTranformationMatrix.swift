@@ -79,8 +79,6 @@ public struct SKTransformationMatrix
     
   
   
-  
-  
   public init()
   {
     self.elements = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)]
