@@ -67,7 +67,7 @@ public struct SKRotationMatrix
   static let identity: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])
   static let inversionIdentity: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>(0,-1,0), SIMD3<Int32>( 0, 0,-1)])
   
-  // rotations for principle axes
+  // rotations for principle axes a
   static let r_2_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 0, 0,-1)])
   static let r_2i_100: SKRotationMatrix = r_2_100
   static let r_3_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0,-1,-1)])
@@ -77,6 +77,7 @@ public struct SKRotationMatrix
   static let r_6_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 1), SIMD3<Int32>( 0,-1, 0)])
   static let r_6i_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1), SIMD3<Int32>( 0, 1, 1)])
   
+  // rotations for principle axes b
   static let r_2_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1, 0, 0),SIMD3<Int32>(0, 1, 0),SIMD3<Int32>(0, 0,-1)])
   static let r_2i_010: SKRotationMatrix = r_2_010
   static let r_3_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)])
@@ -86,6 +87,7 @@ public struct SKRotationMatrix
   static let r_6_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,1,0),SIMD3<Int32>(1,0,1)])
   static let r_6i_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0,1,0),SIMD3<Int32>(-1,0,0)])
 
+  // rotations for principle axes c
   static let r_2_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1, 0, 0), SIMD3<Int32>( 0,-1, 0), SIMD3<Int32>( 0, 0, 1)])
   static let r_2i_001: SKRotationMatrix = r_2_001
   static let r_3_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(-1,-1,0),SIMD3<Int32>(0,0,1)])
@@ -95,28 +97,48 @@ public struct SKRotationMatrix
   static let r_6_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(1,1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,1)])
   static let r_6i_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,1,0),SIMD3<Int32>(0,0,1)])
   
+  // rotation axis: a+b+c
   static let r_3_111: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0)])
   static let r_3i_111: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0)])
   
-  static let r_2prime_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])   // b-c
+  // rotation axis: b-c
+  static let r_2prime_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0)])
   static let r_2iprime_100: SKRotationMatrix = r_2prime_100
-  static let r_2doubleprime_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,1,0)]) // b+c
+  
+  // rotation axis: b+c
+  static let r_2doubleprime_100: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,1,0)])
   static let r_2idoubleprime_100: SKRotationMatrix = r_2doubleprime_100
   
-  static let r_2prime_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0)]) // a-c
+  // rotation axis: a-c
+  static let r_2prime_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,-1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0)])
   static let r_2iprime_010: SKRotationMatrix = r_2prime_010
-  static let r_2doubleprime_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)]) // a+c
+  
+  // rotation axis: a+c
+  static let r_2doubleprime_010: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(0,-1,0),SIMD3<Int32>(1,0,0)])
   static let r_2idoubleprime_010: SKRotationMatrix = r_2doubleprime_010
   
-  static let r_2prime_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)]) // a-b
+  // rotation axis: a-b
+  static let r_2prime_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>(0,-1,0),SIMD3<Int32>(-1,0,0),SIMD3<Int32>(0,0,-1)])
   static let r_2iprime_001: SKRotationMatrix = r_2prime_001
-  static let r_2doubleprime_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1)]) // a+b
+  
+  // rotation axis: a+b
+  static let r_2doubleprime_001: SKRotationMatrix = SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1)])
   static let r_2idoubleprime_001: SKRotationMatrix = r_2doubleprime_001
   
-  public static let monoclinicB1toC2 = SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>(-1,-1, 0)])
-  public static let monoclinicB1toC3 = SKRotationMatrix([SIMD3<Int32>(-1,-1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0, 1, 0)])
+  public static let monoclinicB1toA1 = SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0)])
   public static let monoclinicB1toA2 = SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0,-1,-1)])
   public static let monoclinicB1toA3 = SKRotationMatrix([SIMD3<Int32>( 0,-1,-1), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0, 1)])
+  public static let monoclinicB1toB2 = SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>(-1, 0,-1)])
+  public static let monoclinicB1toB3 = SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)])
+  public static let monoclinicB1toC1 = SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0)])
+  public static let monoclinicB1toC2 = SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>(-1,-1, 0)])
+  public static let monoclinicB1toC3 = SKRotationMatrix([SIMD3<Int32>(-1,-1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0, 1, 0)])
+  
+  public static let orthorhombicCABtoABC = SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0)])
+  public static let orthorhombicBCAtoABC = SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0)])
+  public static let orthorhombicBAmCtoABC = SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0,-1)])
+  public static let orthorhombicAmCBtoABC = SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0,-1, 0)])
+  public static let orthorhombicmCBAtoABC = SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>(-1, 0, 0)])
   
   static let generators: [SKPointGroup.Holohedry : (required: [SKRotationMatrix], optional: [SKRotationMatrix]) ]  =
   [
