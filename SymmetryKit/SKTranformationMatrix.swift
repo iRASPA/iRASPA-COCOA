@@ -36,6 +36,7 @@ import simd
 public struct SKTransformationMatrix
 {
   var elements: [SIMD3<Int32>]
+  var translation: SIMD3<Int32>
     
   public static let zero: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)])
   public static let identity: SKTransformationMatrix = SKTransformationMatrix([SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1)])
@@ -61,7 +62,8 @@ public struct SKTransformationMatrix
   public static let AtoC = SKTransformationMatrix([SIMD3<Int32>(0,1,0),SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0)])
   public static let monoclinicItoC = SKTransformationMatrix([SIMD3<Int32>(1,0,1),SIMD3<Int32>(0, 1,0),SIMD3<Int32>(-1,0,0)])
   public static let BtoC = SKTransformationMatrix([SIMD3<Int32>(0,0,1),SIMD3<Int32>(1,0,0),SIMD3<Int32>(0,1,0)])
-  public static let primitiveRhombohedralToTripleHexagonalCell_R2 = SKTransformationMatrix([SIMD3<Int32>(0,-1,1),SIMD3<Int32>(1,0,-1),SIMD3<Int32>(1,1,1)])
+  public static let primitiveRhombohedralToTripleHexagonalCell_R2 = SKTransformationMatrix([SIMD3<Int32>( 0,-1, 1), SIMD3<Int32>( 1, 0,-1), SIMD3<Int32>( 1, 1, 1)])
+  public static let primitiveRhombohedralToTripleHexagonalCell_R1_Obverse = SKTransformationMatrix([SIMD3<Int32>( 1,-1, 0), SIMD3<Int32>( 0, 1,-1), SIMD3<Int32>( 1, 1, 1)])
   
   public static let bodyCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(-0.5,0.5,0.5), SIMD3<Double>(0.5,-0.5,0.5), SIMD3<Double>(0.5,0.5,-0.5)])  // I -> P
   public static let faceCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(0,0.5,0.5), SIMD3<Double>(0.5,0,0.5), SIMD3<Double>(0.5,0.5,0)])   // F -> P
@@ -74,6 +76,7 @@ public struct SKTransformationMatrix
   
   public static let hexagonalToPrimitive: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0, 0), SIMD3<Double>(-1.0/3.0, 1.0/3.0, 0), SIMD3<Double>( 0, 0, 1.0/3.0)])  // H -> P
   public static let rhombohedralHexagonalToObverse: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,-1.0/3.0,-1.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,-2.0/3.0),SIMD3<Double>(1.0/3.0,1.0/3.0,1.0/3.0)])   // Rh -> Robv
+    
   
   
   
@@ -81,21 +84,25 @@ public struct SKTransformationMatrix
   public init()
   {
     self.elements = [SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0),SIMD3<Int32>(0,0,0)]
+    self.translation = SIMD3<Int32>(0,0,0)
   }
   
-  public init(_ m: [SIMD3<Int32>])
+  public init(_ m: [SIMD3<Int32>], _ translation: SIMD3<Int32> = SIMD3<Int32>(0,0,0))
   {
     self.elements = m
+    self.translation = translation
   }
   
   public init(_ x: SIMD3<Int32>, _ y: SIMD3<Int32>, _ z: SIMD3<Int32>)
   {
     self.elements = [x,y,z]
+    self.translation = SIMD3<Int32>(0,0,0)
   }
   
-  init(_ m: SKRotationMatrix)
+  init(_ m: SKRotationMatrix, _ translation: SIMD3<Int32> = SIMD3<Int32>(0,0,0))
   {
     self.elements = m.elements
+    self.translation = translation
   }
   
   public init(_ m: double3x3)
