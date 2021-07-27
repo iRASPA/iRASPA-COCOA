@@ -347,7 +347,8 @@ public struct SKIntegerSymmetryOperationSet
         let position: SIMD3<Double> = operation.rotation * asymmetricAtoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
         
         // if directly inside the asymmetric unit cell, overwrite the position and break
-        if SKAsymmetricUnit.isInsideAsymmetricUnitCell(number: HallNumber, point: position, precision: 0.0)
+        //if SKAsymmetricUnit.isInsideAsymmetricUnitCell(number: HallNumber, point: position, precision: 0.0)
+        if SKSpacegroup.init(HallNumber: HallNumber).spaceGroupSetting.asymmetricUnit.contains(position)
         {
           asymmetricAtoms[i].fractionalPosition = fract(position)
           found = true
@@ -362,7 +363,8 @@ public struct SKIntegerSymmetryOperationSet
         {
           let position: SIMD3<Double> = operation.rotation * asymmetricAtoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/12.0, Double(operation.translation.y)/12.0, Double(operation.translation.z)/12.0)
         
-          if SKAsymmetricUnit.isInsideAsymmetricUnitCell(number: HallNumber, point: position, precision: symmetryPrecision)
+          //if SKAsymmetricUnit.isInsideAsymmetricUnitCell(number: HallNumber, point: position, precision: symmetryPrecision)
+          if SKSpacegroup.init(HallNumber: HallNumber).spaceGroupSetting.asymmetricUnit.contains(position)
           {
             asymmetricAtoms[i].fractionalPosition = fract(position)
             break
