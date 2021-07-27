@@ -1,33 +1,33 @@
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "2Tn-ME-kQY"; */
-"2Tn-ME-kQY.title" = "é maior que ou igual a";
+"2Tn-ME-kQY.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "2xV-5s-XJR"; */
 "2xV-5s-XJR.title" = "não é";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "4FX-qV-bxY"; */
-"4FX-qV-bxY.title" = "é menos do que";
+"4FX-qV-bxY.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "6b7-uV-FX2"; */
-"6b7-uV-FX2.title" = "é menos do que";
+"6b7-uV-FX2.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "79u-Hq-2v5"; */
 "79u-Hq-2v5.title" = "é";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "8W4-WW-B49"; */
-"8W4-WW-B49.title" = "é menos do que";
+"8W4-WW-B49.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "9bW-rC-NrC"; */
-"9bW-rC-NrC.title" = "é melhor que";
+"9bW-rC-NrC.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "AFn-dQ-4a9"; */
 "AFn-dQ-4a9.title" = "é";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "Aa3-PV-MfN"; */
-"Aa3-PV-MfN.title" = "é menos do que";
+"Aa3-PV-MfN.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "AjT-PC-cft"; */
-"AjT-PC-cft.title" = "é menos do que";
+"AjT-PC-cft.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "BAS-U5-cQU"; */
 "BAS-U5-cQU.title" = "é";
@@ -36,16 +36,16 @@
 "BAq-UZ-KqW.title" = "não é";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "BeK-rc-N2x"; */
-"BeK-rc-N2x.title" = "é menor ou igual a";
+"BeK-rc-N2x.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "BrN-Gl-4eW"; */
-"BrN-Gl-4eW.title" = "é menor ou igual a";
+"BrN-Gl-4eW.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "Framework density"; ObjectID = "CYp-Lk-sjk"; */
 "CYp-Lk-sjk.title" = "Densidade da estrutura";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "CaW-PN-akd"; */
-"CaW-PN-akd.title" = "é melhor que";
+"CaW-PN-akd.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "Geometric nitrogen surface area"; ObjectID = "CgQ-4C-1zP"; */
 "CgQ-4C-1zP.title" = "Área de superfície geométrica de nitrogênio";
@@ -60,13 +60,13 @@
 "E9f-nk-YdH.title" = "não é";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "FSQ-WS-Nhl"; */
-"FSQ-WS-Nhl.title" = "é maior que ou igual a";
+"FSQ-WS-Nhl.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "Restricting pore diameter"; ObjectID = "FYh-ov-QWw"; */
 "FYh-ov-QWw.title" = "Restringindo o diâmetro do poro";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "Fa6-lm-0Z8"; */
-"Fa6-lm-0Z8.title" = "é menor ou igual a";
+"Fa6-lm-0Z8.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "Number of channels"; ObjectID = "FjZ-6F-9uB"; */
 "FjZ-6F-9uB.title" = "Número de canais";
@@ -78,25 +78,25 @@
 "GVE-CZ-118.title" = "é";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "H5f-mi-88H"; */
-"H5f-mi-88H.title" = "é maior que ou igual a";
+"H5f-mi-88H.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "Hnq-zE-nb8"; */
-"Hnq-zE-nb8.title" = "é menor ou igual a";
+"Hnq-zE-nb8.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "IMT-eq-VAb"; */
-"IMT-eq-VAb.title" = "é melhor que";
+"IMT-eq-VAb.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "JzK-le-5Mg"; */
 "JzK-le-5Mg.title" = "não é";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "KTy-hP-7Fv"; */
-"KTy-hP-7Fv.title" = "é menos do que";
+"KTy-hP-7Fv.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "LGU-5X-Bsh"; */
 "LGU-5X-Bsh.title" = "não é";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "LTp-AU-H7t"; */
-"LTp-AU-H7t.title" = "é menor ou igual a";
+"LTp-AU-H7t.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "Number of pockets"; ObjectID = "LXA-xg-YSr"; */
 "LXA-xg-YSr.title" = "Número de bolsos";
@@ -111,10 +111,10 @@
 "OhS-R4-lBt.title" = "Dimensionalidade";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "OxO-48-E7H"; */
-"OxO-48-E7H.title" = "é menor ou igual a";
+"OxO-48-E7H.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "PCQ-aW-6zJ"; */
-"PCQ-aW-6zJ.title" = "é maior que ou igual a";
+"PCQ-aW-6zJ.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "Helium void fraction"; ObjectID = "Ph1-69-211"; */
 "Ph1-69-211.title" = "Fração de vazio de hélio";
@@ -123,7 +123,7 @@
 "Pt2-gj-hYD.title" = "Nenhum";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "PwB-qr-PSc"; */
-"PwB-qr-PSc.title" = "é maior que ou igual a";
+"PwB-qr-PSc.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "QAT-BU-IHn"; */
 "QAT-BU-IHn.title" = "é";
@@ -132,43 +132,43 @@
 "QZV-BO-K2P.title" = "Maior diâmetro da cavidade";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "QjQ-JG-tdg"; */
-"QjQ-JG-tdg.title" = "é melhor que";
+"QjQ-JG-tdg.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "Rh7-Pd-qYE"; */
-"Rh7-Pd-qYE.title" = "é maior que ou igual a";
+"Rh7-Pd-qYE.title" = "é maior do que ou igual a";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "RmR-Fs-GOf"; */
-"RmR-Fs-GOf.title" = "Box";
+"RmR-Fs-GOf.title" = "Caixa";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "SfX-iX-SBy"; */
-"SfX-iX-SBy.title" = "é menor ou igual a";
+"SfX-iX-SBy.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "SuK-Dy-eFn"; */
-"SuK-Dy-eFn.title" = "é maior que ou igual a";
+"SuK-Dy-eFn.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "Tw0-TX-Ezb"; */
-"Tw0-TX-Ezb.title" = "é menor ou igual a";
+"Tw0-TX-Ezb.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "V8f-WR-1Ts"; */
-"V8f-WR-1Ts.title" = "é maior que ou igual a";
+"V8f-WR-1Ts.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "VVf-Rk-1YK"; */
 "VVf-Rk-1YK.title" = "não é";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "W2w-Gi-ZTx"; */
-"W2w-Gi-ZTx.title" = "é maior que ou igual a";
+"W2w-Gi-ZTx.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "WIt-N4-BpW"; */
-"WIt-N4-BpW.title" = "é menos do que";
+"WIt-N4-BpW.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "XGz-8U-R4b"; */
-"XGz-8U-R4b.title" = "é maior que ou igual a";
+"XGz-8U-R4b.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "YCX-qE-A2b"; */
-"YCX-qE-A2b.title" = "é menos do que";
+"YCX-qE-A2b.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is like"; ObjectID = "Ya6-2L-tyr"; */
-"Ya6-2L-tyr.title" = "is like";
+"Ya6-2L-tyr.title" = "é semelhante";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "ZI5-nF-Kbn"; */
 "ZI5-nF-Kbn.title" = "é";
@@ -177,19 +177,19 @@
 "aEs-cT-Qwx.title" = "é";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "aP4-eo-cM5"; */
-"aP4-eo-cM5.title" = "é menor ou igual a";
+"aP4-eo-cM5.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "aXl-DS-SHQ"; */
 "aXl-DS-SHQ.title" = "não é";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "bX1-Lu-QzN"; */
-"bX1-Lu-QzN.title" = "é maior que ou igual a";
+"bX1-Lu-QzN.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "bfc-LA-dLY"; */
-"bfc-LA-dLY.title" = "é menos do que";
+"bfc-LA-dLY.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "bvg-95-Snc"; */
-"bvg-95-Snc.title" = "é menor ou igual a";
+"bvg-95-Snc.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "cRo-CA-Ium"; */
 "cRo-CA-Ium.title" = "não é";
@@ -198,13 +198,13 @@
 "cSF-kJ-biE.title" = "Volume específico da estrutura";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "dOd-mh-hCL"; */
-"dOd-mh-hCL.title" = "é melhor que";
+"dOd-mh-hCL.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is"; ObjectID = "dVU-hN-AKq"; */
 "dVU-hN-AKq.title" = "é";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "g4T-WC-bhk"; */
-"g4T-WC-bhk.title" = "é menos do que";
+"g4T-WC-bhk.title" = "é menor do que";
 
 /* Class = "NSTextFieldCell"; title = "Number of Items"; ObjectID = "gRs-oY-ROY"; */
 "gRs-oY-ROY.title" = "Número de ítens";
@@ -213,7 +213,7 @@
 "ggX-BU-UR6.title" = "não é";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "gwp-3g-rrz"; */
-"gwp-3g-rrz.title" = "é melhor que";
+"gwp-3g-rrz.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "hBj-Zf-Tpg"; */
 "hBj-Zf-Tpg.title" = "não é";
@@ -225,40 +225,40 @@
 "i8m-4u-Ibt.title" = "é";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "iJg-7o-0HS"; */
-"iJg-7o-0HS.title" = "é melhor que";
+"iJg-7o-0HS.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "jBM-sX-zgS"; */
-"jBM-sX-zgS.title" = "é melhor que";
+"jBM-sX-zgS.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "jlR-DC-ew1"; */
-"jlR-DC-ew1.title" = "é melhor que";
+"jlR-DC-ew1.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "jzb-Dx-hPf"; */
-"jzb-Dx-hPf.title" = "é melhor que";
+"jzb-Dx-hPf.title" = "é maior do que";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "kVA-aZ-dPx"; */
-"kVA-aZ-dPx.title" = "Box";
+"kVA-aZ-dPx.title" = "Caixa";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "lVF-n6-d3v"; */
-"lVF-n6-d3v.title" = "é menos do que";
+"lVF-n6-d3v.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "matches"; ObjectID = "lbV-FO-8zT"; */
-"lbV-FO-8zT.title" = "fósforos";
+"lbV-FO-8zT.title" = "iguala";
 
 /* Class = "NSMenuItem"; title = "Framework accessible volume"; ObjectID = "lc0-Us-BEz"; */
-"lc0-Us-BEz.title" = "Volume acessível do framework";
+"lc0-Us-BEz.title" = "Volume acessível da estrutura";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "nkM-Gr-sR9"; */
-"nkM-Gr-sR9.title" = "é maior que ou igual a";
+"nkM-Gr-sR9.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is greater than or equal to"; ObjectID = "nkO-Je-8yy"; */
-"nkO-Je-8yy.title" = "é maior que ou igual a";
+"nkO-Je-8yy.title" = "é maior do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "Largest diameter along path"; ObjectID = "nwU-Tm-pkO"; */
 "nwU-Tm-pkO.title" = "Maior diâmetro ao longo do caminho";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "ogm-BP-v2k"; */
-"ogm-BP-v2k.title" = "é melhor que";
+"ogm-BP-v2k.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "ovn-Lb-dhy"; */
 "ovn-Lb-dhy.title" = "não é";
@@ -270,19 +270,19 @@
 "qrN-UK-RgU.title" = "dos seguintes são verdadeiros";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "rLo-I2-9gM"; */
-"rLo-I2-9gM.title" = "é menos do que";
+"rLo-I2-9gM.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "sPH-7j-RUW"; */
-"sPH-7j-RUW.title" = "é melhor que";
+"sPH-7j-RUW.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is less than"; ObjectID = "sXW-Wz-2qR"; */
-"sXW-Wz-2qR.title" = "é menos do que";
+"sXW-Wz-2qR.title" = "é menor do que";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "sby-8F-af2"; */
-"sby-8F-af2.title" = "é menor ou igual a";
+"sby-8F-af2.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "tfM-vX-PEZ"; */
-"tfM-vX-PEZ.title" = "é menor ou igual a";
+"tfM-vX-PEZ.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "is not"; ObjectID = "uf8-cQ-lc0"; */
 "uf8-cQ-lc0.title" = "não é";
@@ -291,10 +291,10 @@
 "uqJ-Tq-f5H.title" = "é";
 
 /* Class = "NSMenuItem"; title = "is greater than"; ObjectID = "v8P-y7-wJw"; */
-"v8P-y7-wJw.title" = "é melhor que";
+"v8P-y7-wJw.title" = "é maior do que";
 
 /* Class = "NSMenuItem"; title = "is less than or equal to"; ObjectID = "vxq-4W-FYz"; */
-"vxq-4W-FYz.title" = "é menor ou igual a";
+"vxq-4W-FYz.title" = "é menor do que ou igual a";
 
 /* Class = "NSMenuItem"; title = "Any"; ObjectID = "yCO-9y-bt0"; */
 "yCO-9y-bt0.title" = "Algum";

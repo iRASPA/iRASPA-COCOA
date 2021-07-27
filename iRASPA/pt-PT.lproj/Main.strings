@@ -3,7 +3,7 @@
 "1O8-LR-tZG.title" = "Elipsóide";
 
 /* Class = "NSMenuItem"; title = "Customize Toolbar…"; ObjectID = "1UK-8n-QPP"; */
-"1UK-8n-QPP.title" = "Barra de Ferramentas Personalizada…";
+"1UK-8n-QPP.title" = "Personalizar a Barra de Ferramentas …";
 
 /* Class = "NSMenuItem"; title = "iRASPA"; ObjectID = "1Xt-HY-uBw"; */
 "1Xt-HY-uBw.title" = "iRASPA";
@@ -15,7 +15,7 @@
 "1tx-W0-xDw.title" = "Diminuir";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "2fK-ne-Lfp"; */
-"2fK-ne-Lfp.title" = "Box";
+"2fK-ne-Lfp.title" = "Caixa";
 
 /* Class = "NSMenuItem"; title = "Raise"; ObjectID = "2h7-ER-AoG"; */
 "2h7-ER-AoG.title" = "Levantar";
@@ -36,7 +36,7 @@
 "3rS-ZA-NoH.title" = "Fala";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "3x3-A1-D5u"; */
-"3x3-A1-D5u.title" = "Box";
+"3x3-A1-D5u.title" = "Caixa";
 
 /* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
 "46P-cB-AYj.title" = "Apertar";
@@ -48,13 +48,13 @@
 "4J7-dP-txa.title" = "Entrar em tela cheia";
 
 /* Class = "NSMenuItem"; title = "Quit iRASPA"; ObjectID = "4sb-4s-VLi"; */
-"4sb-4s-VLi.title" = "Saia do iRASPA";
+"4sb-4s-VLi.title" = "Sair do iRASPA";
 
 /* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
 "5QF-Oa-p0T.title" = "Editar";
 
 /* Class = "NSMenuItem"; title = "Copy Style"; ObjectID = "5Vv-lz-BsD"; */
-"5Vv-lz-BsD.title" = "Estilo de cópia";
+"5Vv-lz-BsD.title" = "Copiar o Estilo";
 
 /* Class = "NSMenuItem"; title = "About iRASPA"; ObjectID = "5kV-Vb-QxS"; */
 "5kV-Vb-QxS.title" = "Sobre iRASPA";
@@ -93,10 +93,10 @@
 "CFt-im-cWe.title" = "Molécula";
 
 /* Class = "NSMenuItem"; title = "Close"; ObjectID = "DVo-aG-piG"; */
-"DVo-aG-piG.title" = "Perto";
+"DVo-aG-piG.title" = "Fechar";
 
 /* Class = "NSMenuItem"; title = "Spelling and Grammar"; ObjectID = "Dv1-io-Yv7"; */
-"Dv1-io-Yv7.title" = "Pronúncia e gramática";
+"Dv1-io-Yv7.title" = "Ortografia e gramática";
 
 /* Class = "NSMenuItem"; title = "Import"; ObjectID = "EH2-Bo-SW5"; */
 "EH2-Bo-SW5.title" = "Importar";
@@ -129,7 +129,7 @@
 "GUa-eO-cwY.title" = "Use o padrão";
 
 /* Class = "NSMenuItem"; title = "Font"; ObjectID = "Gi5-1S-RQB"; */
-"Gi5-1S-RQB.title" = "Fonte";
+"Gi5-1S-RQB.title" = "Tipo de Letra";
 
 /* Class = "NSMenu"; title = "New"; ObjectID = "Gkc-Nb-nPC"; */
 "Gkc-Nb-nPC.title" = "Novo";
@@ -171,7 +171,7 @@
 "JWT-Cn-v6t.title" = "21:9";
 
 /* Class = "NSMenuItem"; title = "Project group"; ObjectID = "JkK-8X-2kf"; */
-"JkK-8X-2kf.title" = "Grupo de Projeto";
+"JkK-8X-2kf.title" = "Grupo de Projetos";
 
 /* Class = "NSMenuItem"; title = "Aspect ratio"; ObjectID = "JtX-r6-bas"; */
 "JtX-r6-bas.title" = "Proporção da tela";
@@ -186,7 +186,7 @@
 "Khj-N3-fhm.ibShadowedToolTips[0]" = "Oculte ou mostre o Navegador";
 
 /* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[1] = "Hide or show the Log/Python consoles"; ObjectID = "Khj-N3-fhm"; */
-"Khj-N3-fhm.ibShadowedToolTips[1]" = "Ocultar ou mostrar os consoles Log / Python";
+"Khj-N3-fhm.ibShadowedToolTips[1]" = "Ocultar ou mostrar as consolas Log / Python";
 
 /* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[2] = "Hide or show the Utility area"; ObjectID = "Khj-N3-fhm"; */
 "Khj-N3-fhm.ibShadowedToolTips[2]" = "Ocultar ou mostrar a área de utilitários";
@@ -267,7 +267,7 @@
 "VIY-Ag-zcb.title" = "Centro";
 
 /* Class = "NSMenuItem"; title = "Invert selection"; ObjectID = "VNS-yB-1c3"; */
-"VNS-yB-1c3.title" = "Seleção invertida";
+"VNS-yB-1c3.title" = "Inverter a Seleção";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
 "Vdr-fp-XzO.title" = "Esconder os Outros";
@@ -324,7 +324,7 @@
 "aUF-d1-5bR.title" = "Janela";
 
 /* Class = "NSMenu"; title = "Font"; ObjectID = "aXa-aM-Jaq"; */
-"aXa-aM-Jaq.title" = "Fonte";
+"aXa-aM-Jaq.title" = "Tipo de Letra";
 
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "agt-UL-0e3"; */
 "agt-UL-0e3.title" = "Use o padrão";
@@ -345,7 +345,7 @@
 "cDB-IK-hbR.title" = "Não use nenhum";
 
 /* Class = "NSMenuItem"; title = "Atom group"; ObjectID = "cMR-OP-H7e"; */
-"cMR-OP-H7e.title" = "Grupo Atom";
+"cMR-OP-H7e.title" = "Grupo de Átomos";
 
 /* Class = "NSMenuItem"; title = "16:9"; ObjectID = "cfR-kj-UKf"; */
 "cfR-kj-UKf.title" = "16:9";
@@ -423,7 +423,7 @@
 "ogc-rX-tC1.title" = "Afrouxar";
 
 /* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
-"pa3-QI-u2k.title" = "Excluir";
+"pa3-QI-u2k.title" = "Apagar";
 
 /* Class = "NSMenuItem"; title = "Save…"; ObjectID = "pxx-59-PXV"; */
 "pxx-59-PXV.title" = "Salve…";

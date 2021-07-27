@@ -117,10 +117,10 @@
 "P2r-W6-ODo.placeholderString" = "w1";
 
 /* Class = "NSTextFieldCell"; title = "Frames per Second"; ObjectID = "Qsi-Kr-087"; */
-"Qsi-Kr-087.title" = "Quadros por segundo";
+"Qsi-Kr-087.title" = "Fotograma por segundo";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "R6f-wb-uXg"; */
-"R6f-wb-uXg.title" = "Text Cell";
+"R6f-wb-uXg.title" = "Célula de Texto";
 
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "RnM-1Y-4q4"; */
 "RnM-1Y-4q4.title" = "Girar -90°";
@@ -204,7 +204,7 @@
 "fU4-qD-Ex2.title" = "Redefinir direção";
 
 /* Class = "NSTextFieldCell"; title = "Roundness"; ObjectID = "fXK-FR-6i0"; */
-"fXK-FR-6i0.title" = "Redondeza";
+"fXK-FR-6i0.title" = "Redondez";
 
 /* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "fwm-RT-44D"; */
 "fwm-RT-44D.title" = "Intensidade de luz ambiente";

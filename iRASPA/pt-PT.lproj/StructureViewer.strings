@@ -3,7 +3,7 @@
 "0Aa-TO-Uin.label" = "Item 1";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "8jm-NB-F14"; */
-"8jm-NB-F14.title" = "Box";
+"8jm-NB-F14.title" = "Caixa";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[0] = "Camera"; ObjectID = "KMJ-Zm-flM"; */
 "KMJ-Zm-flM.ibShadowedLabels[0]" = "Câmera";
@@ -33,4 +33,4 @@
 "hLV-ao-VrN.label" = "Item 2";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "w1T-pF-1Dy"; */
-"w1T-pF-1Dy.title" = "Box";
+"w1T-pF-1Dy.title" = "Caixa";
