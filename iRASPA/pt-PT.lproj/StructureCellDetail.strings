@@ -12,7 +12,7 @@
 "2sE-L5-Mde.title" = "Orientação";
 
 /* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
-"39F-yr-VYx.title" = "Propriedades da célula / caixa delimitadora";
+"39F-yr-VYx.title" = "Propriedades da célula/caixa delimitadora";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
 "3Fv-hH-asL.title" = "Volume de poros acessível";
@@ -84,7 +84,7 @@
 "C9m-fX-LjX.title" = "Metano";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "CSF-1Y-UQa"; */
-"CSF-1Y-UQa.title" = "Text Cell";
+"CSF-1Y-UQa.title" = "Célula de Texto";
 
 /* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "Cao-y3-ptB"; */
 "Cao-y3-ptB.title" = "Cristal";
@@ -116,8 +116,8 @@
 /* Class = "NSButtonCell"; title = "Apply"; ObjectID = "Fi0-La-ItK"; */
 "Fi0-La-ItK.title" = "Aplicar";
 
-/* Class = "NSMenuItem"; title = "Molecular Crystal Solvent"; ObjectID = "GCR-0z-KdY"; */
-"GCR-0z-KdY.title" = "Solvente de Cristal Molecular Solvent";
+/* Class = "NSMenuItem"; title = "Molecular Crystal"; ObjectID = "GCR-0z-KdY"; */
+"GCR-0z-KdY.title" = "Cristal Molecular";
 
 /* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
 "Geb-Or-zb5.title" = "Qualificador";
@@ -225,7 +225,7 @@
 "WcQ-vR-rvO.placeholderString" = "β Ângulo";
 
 /* Class = "NSTextFieldCell"; title = "Laue Group"; ObjectID = "Wgg-RQ-dI1"; */
-"Wgg-RQ-dI1.title" = "Grupo Laue";
+"Wgg-RQ-dI1.title" = "Grupo de Laue";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
 "X5S-a7-xCf.placeholderString" = "Origem Z";
@@ -276,10 +276,10 @@
 "cPv-Rn-zyw.placeholderString" = "Mudança X";
 
 /* Class = "NSTextFieldCell"; title = "Restricting Pore Diameter (Df)"; ObjectID = "d4y-Ea-h9U"; */
-"d4y-Ea-h9U.title" = "Diâmetro de poro de restrição (Df)";
+"d4y-Ea-h9U.title" = "Restringindo o Diâmetro de poro (Df)";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "dIk-F3-XKu"; */
-"dIk-F3-XKu.title" = "Rotation Ângulo";
+"dIk-F3-XKu.title" = "Ângulo de rotação";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ɣ Angle"; ObjectID = "dre-c1-hTc"; */
 "dre-c1-hTc.placeholderString" = "ɣ Ângulo";
@@ -333,7 +333,7 @@
 "jgD-yL-2kq.title" = "Tipos de Material";
 
 /* Class = "NSTextFieldCell"; title = "Largest Diameter Along a Viable Path (Dif)"; ObjectID = "jrj-nk-OqJ"; */
-"jrj-nk-OqJ.title" = "Maior diâmetro ao longo de um caminho viáve (Dif)";
+"jrj-nk-OqJ.title" = "Maior diâmetro ao longo de um caminho viável (Dif)";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "Prisma poligonal";
@@ -357,7 +357,7 @@
 "mLH-lp-rcD.title" = "0";
 
 /* Class = "NSTextFieldCell"; title = "Space Group"; ObjectID = "mZ6-cg-pcL"; */
-"mZ6-cg-pcL.title" = "Grupo Espaço";
+"mZ6-cg-pcL.title" = "Grupo de Espaço";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Y"; ObjectID = "mhY-GY-BNd"; */
 "mhY-GY-BNd.placeholderString" = "Mínimo Y";

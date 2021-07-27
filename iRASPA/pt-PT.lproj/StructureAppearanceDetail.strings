@@ -3,7 +3,7 @@
 "126-Ob-v2F.title" = "Girar +90";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "1Ms-wb-ECb"; */
-"1Ms-wb-ECb.title" = "Intensidade de luz especula";
+"1Ms-wb-ECb.title" = "Intensidade de luz especular";
 
 /* Class = "NSTextFieldCell"; title = "𝜈"; ObjectID = "1gP-QT-h2b"; */
 "1gP-QT-h2b.title" = "𝜈";
@@ -12,10 +12,10 @@
 "1ht-pW-CQ0.title" = "Brilho";
 
 /* Class = "NSBox"; title = "Back Properties"; ObjectID = "1i4-zc-FLO"; */
-"1i4-zc-FLO.title" = "Voltar Propriedades";
+"1i4-zc-FLO.title" = "Propriedades da superfície traseira";
 
 /* Class = "NSMenuItem"; title = "Argon"; ObjectID = "3Ik-9O-zWy"; */
-"3Ik-9O-zWy.title" = "Argônio";
+"3Ik-9O-zWy.title" = "Árgon";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "3sL-9T-b9T"; */
 "3sL-9T-b9T.title" = "Nenhum";
@@ -36,31 +36,31 @@
 "51e-MD-soy.title" = "Esquerdo";
 
 /* Class = "NSMenuItem"; title = "Van der Waals"; ObjectID = "543-nV-Xw2"; */
-"543-nV-Xw2.title" = "Van der Waals";
+"543-nV-Xw2.title" = "van der Waals";
 
 /* Class = "NSTextFieldCell"; title = "Type"; ObjectID = "5Pc-9v-LWF"; */
-"5Pc-9v-LWF.title" = "Modelo";
+"5Pc-9v-LWF.title" = "Tipo";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "5Sp-Jr-Fld"; */
 "5Sp-Jr-Fld.title" = "Identificador";
 
 /* Class = "NSTextFieldCell"; title = "Font"; ObjectID = "5dw-7I-GMG"; */
-"5dw-7I-GMG.title" = "Fonte";
+"5dw-7I-GMG.title" = "Tipo de letra";
 
 /* Class = "NSTextFieldCell"; title = "Unit cell"; ObjectID = "5pu-BI-tJR"; */
 "5pu-BI-tJR.title" = "Célula unitária";
 
 /* Class = "NSTextFieldCell"; title = "Bond Scale Factor"; ObjectID = "5tk-gG-FdV"; */
-"5tk-gG-FdV.title" = "Fator de escala de títulos";
+"5tk-gG-FdV.title" = "Fator de escala das ligações";
 
 /* Class = "NSTextFieldCell"; title = "Adsorption Surface"; ObjectID = "5xK-C0-rPU"; */
 "5xK-C0-rPU.title" = "Superfície de Adsorção";
 
 /* Class = "NSBox"; title = "Bond Lighting"; ObjectID = "6Aw-j2-ekx"; */
-"6Aw-j2-ekx.title" = "Iluminação de ligação";
+"6Aw-j2-ekx.title" = "Iluminação das ligações";
 
 /* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "6LE-C6-Xi3"; */
-"6LE-C6-Xi3.title" = "Inferior";
+"6LE-C6-Xi3.title" = "Em Baixo";
 
 /* Class = "NSMenuItem"; title = "Center"; ObjectID = "6My-58-9Eo"; */
 "6My-58-9Eo.title" = "Centro";
@@ -69,7 +69,7 @@
 "6mE-0U-P7u.title" = "Alcaçuz";
 
 /* Class = "NSMenuItem"; title = "Force Field First"; ObjectID = "7mT-Qt-DKy"; */
-"7mT-Qt-DKy.title" = "Campo de força primeiro";
+"7mT-Qt-DKy.title" = "Primeiro Campo de força";
 
 /* Class = "NSMenuItem"; title = "Hydrogen"; ObjectID = "8Fb-07-tja"; */
 "8Fb-07-tja.title" = "Hidrogênio";
@@ -90,7 +90,7 @@
 "97c-Ea-ha8.title" = "Estilo de Seleção";
 
 /* Class = "NSTextFieldCell"; title = "Primitive Properties"; ObjectID = "A1A-Jh-xnr"; */
-"A1A-Jh-xnr.title" = "Propriedades primitivas";
+"A1A-Jh-xnr.title" = "Propriedades da primitiva";
 
 /* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "AjV-MB-P5w"; */
 "AjV-MB-P5w.title" = "CO₂";
@@ -162,19 +162,19 @@
 "Gf0-Qp-gqQ.title" = "Listrado";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "GfJ-48-dF4"; */
-"GfJ-48-dF4.title" = "Escala Radial de Seleção";
+"GfJ-48-dF4.title" = "Dimensionamento Radial da Seleção";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "H3R-9w-R7d"; */
 "H3R-9w-R7d.title" = "Matiz";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "IIB-vI-u3a"; */
-"IIB-vI-u3a.title" = "Intensidade de Seleção";
+"IIB-vI-u3a.title" = "Intensidade da Seleção";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "JAw-bD-rCT"; */
 "JAw-bD-rCT.title" = "Intensidade de luz difusa";
 
 /* Class = "NSTextFieldCell"; title = "Bond Type"; ObjectID = "JKn-cA-MRP"; */
-"JKn-cA-MRP.title" = "Tipo de Bond";
+"JKn-cA-MRP.title" = "Tipo de Ligação";
 
 /* Class = "NSMenuItem"; title = "Chemical Element"; ObjectID = "JdC-cy-4oD"; */
 "JdC-cy-4oD.title" = "Elemento químico";
@@ -183,7 +183,7 @@
 "Jmg-H4-WAg.title" = "𝜌";
 
 /* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "JuP-Bk-71g"; */
-"JuP-Bk-71g.title" = "Azoto";
+"JuP-Bk-71g.title" = "Nitrogénio";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "KZZ-4u-w8e"; */
 "KZZ-4u-w8e.title" = "Brilho";
@@ -195,7 +195,7 @@
 "LA8-y5-QWc.title" = "Intensidade da luz";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "LSL-D7-VXo"; */
-"LSL-D7-VXo.title" = "Escala Radial de Seleção";
+"LSL-D7-VXo.title" = "Dimensionamento Radial da Seleção";
 
 /* Class = "NSTextFieldCell"; title = "Annotation"; ObjectID = "LSN-af-m9O"; */
 "LSN-af-m9O.title" = "Anotação";
@@ -234,7 +234,7 @@
 "P9I-KW-dUL.title" = "Parâmetros de estilo";
 
 /* Class = "NSMenuItem"; title = "Top"; ObjectID = "PE4-MK-cmU"; */
-"PE4-MK-cmU.title" = "Principal";
+"PE4-MK-cmU.title" = "Em Cima";
 
 /* Class = "NSTextFieldCell"; title = "Style Parameters"; ObjectID = "PG2-24-2KF"; */
 "PG2-24-2KF.title" = "Parâmetros de estilo";
@@ -255,10 +255,10 @@
 "R0Z-ra-sDa.title" = "128x128x128";
 
 /* Class = "NSMenuItem"; title = "Top-Left"; ObjectID = "R4G-mG-N7c"; */
-"R4G-mG-N7c.title" = "Cima-Esquerda";
+"R4G-mG-N7c.title" = "Em Cima-Esquerda";
 
 /* Class = "NSMenuItem"; title = "Bottom-Right"; ObjectID = "RUW-tq-w6V"; */
-"RUW-tq-w6V.title" = "Canto inferior direito";
+"RUW-tq-w6V.title" = "Em Baixo-Direita";
 
 /* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "Rjl-1D-n7b"; */
 "Rjl-1D-n7b.title" = "Brilho";
@@ -270,7 +270,7 @@
 "SFF-hg-8Cg.title" = "Força Campo Apenas";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "SMT-Ir-R2J"; */
-"SMT-Ir-R2J.title" = "valor";
+"SMT-Ir-R2J.title" = "Valor";
 
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "Sdq-Z4-nnY"; */
 "Sdq-Z4-nnY.title" = "Ângulo de rotação";
@@ -279,7 +279,7 @@
 "Sgk-qh-f3p.title" = "Intensidade de luz difusa";
 
 /* Class = "NSTextFieldCell"; title = "Selection Radial Scaling"; ObjectID = "TPc-vg-PLV"; */
-"TPc-vg-PLV.title" = "Escala Radial de Seleção";
+"TPc-vg-PLV.title" = "Dimensionamento Radial da Seleção";
 
 /* Class = "NSMenuItem"; title = "Force Field Type"; ObjectID = "TZ6-3e-HHS"; */
 "TZ6-3e-HHS.title" = "Tipo de campo de forç";
@@ -291,7 +291,7 @@
 "Tqo-qK-6Fc.title" = "Nenhum";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "UXl-KR-D8o"; */
-"UXl-KR-D8o.title" = "saturação";
+"UXl-KR-D8o.title" = "Saturação";
 
 /* Class = "NSTextFieldCell"; title = "Hue"; ObjectID = "V0t-KV-zMh"; */
 "V0t-KV-zMh.title" = "Matiz";
@@ -303,7 +303,7 @@
 "VIk-Df-Zyf.title" = "Brilho";
 
 /* Class = "NSTextFieldCell"; title = "Saturation"; ObjectID = "Vh4-fU-NL9"; */
-"Vh4-fU-NL9.title" = "saturação";
+"Vh4-fU-NL9.title" = "Saturação";
 
 /* Class = "NSTextFieldCell"; title = "Representation Style"; ObjectID = "WBt-UZ-XVV"; */
 "WBt-UZ-XVV.title" = "Estilo de Representação";
@@ -315,7 +315,7 @@
 "WOL-ns-wXc.title" = "Elemento";
 
 /* Class = "NSTextFieldCell"; title = "Isocontour Value"; ObjectID = "WdL-X5-IMH"; */
-"WdL-X5-IMH.title" = "Valor Isocontour";
+"WdL-X5-IMH.title" = "Valor da Isosuperfície";
 
 /* Class = "NSTextFieldCell"; title = "Color Set"; ObjectID = "WlB-zZ-igz"; */
 "WlB-zZ-igz.title" = "Conjunto de Cores";
@@ -333,7 +333,7 @@
 "Yh2-SE-hS4.title" = "Superfície frontal";
 
 /* Class = "NSBox"; title = "Front Properties"; ObjectID = "YnR-7d-k8p"; */
-"YnR-7d-k8p.title" = "Propriedades da frente";
+"YnR-7d-k8p.title" = "Propriedades da superfície frontal";
 
 /* Class = "NSButtonCell"; title = "High Dynamic Range"; ObjectID = "ZX7-oF-dgu"; */
 "ZX7-oF-dgu.title" = "Dinâmica de alto alcance";
@@ -345,13 +345,13 @@
 "Zpi-ZT-H9N.title" = "Exposição";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "aUf-Ct-Ubf"; */
-"aUf-Ct-Ubf.title" = "Text Cell";
+"aUf-Ct-Ubf.title" = "Célula de Texto";
 
 /* Class = "NSTextFieldCell"; title = "𝜌"; ObjectID = "aeb-iy-ZTT"; */
 "aeb-iy-ZTT.title" = "𝜌";
 
 /* Class = "NSButtonCell"; title = "Draw Bonds"; ObjectID = "ajZ-C1-kOG"; */
-"ajZ-C1-kOG.title" = "Mostrar títulos";
+"ajZ-C1-kOG.title" = "Mostrar Ligações";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bBY-15-FbE"; */
 "bBY-15-FbE.title" = "Intensidade de luz especula";
@@ -360,7 +360,7 @@
 "bXw-93-Dat.title" = "Brilho";
 
 /* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "bca-zz-KOf"; */
-"bca-zz-KOf.title" = "Intensidade de luz especula";
+"bca-zz-KOf.title" = "Intensidade de luz especular";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "bdI-Je-pwI"; */
 "bdI-Je-pwI.title" = "Nenhum";
@@ -381,13 +381,13 @@
 "cTs-hC-amJ.title" = "Opacidade";
 
 /* Class = "NSMenuItem"; title = "Right"; ObjectID = "cVb-J3-NgY"; */
-"cVb-J3-NgY.title" = "Certo";
+"cVb-J3-NgY.title" = "Direita";
 
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "ceh-je-eNg"; */
 "ceh-je-eNg.title" = "Girar +90";
 
 /* Class = "NSTextFieldCell"; title = "Selection Intensity"; ObjectID = "con-dz-J2j"; */
-"con-dz-J2j.title" = "Intensidade de Seleçã";
+"con-dz-J2j.title" = "Intensidade de Seleção";
 
 /* Class = "NSMenuItem"; title = "Position"; ObjectID = "ddP-zl-i4G"; */
 "ddP-zl-i4G.title" = "Posição";
@@ -405,13 +405,13 @@
 "dmK-0a-HKm.title" = "Mostrar átomos";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "e0E-bj-7fz"; */
-"e0E-bj-7fz.title" = "valor";
+"e0E-bj-7fz.title" = "Valor";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "e5a-zk-fFj"; */
 "e5a-zk-fFj.title" = "Rasmol";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "eY8-q5-Em9"; */
-"eY8-q5-Em9.title" = "Pedido";
+"eY8-q5-Em9.title" = "Ordenar";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "ehx-ML-HSl"; */
 "ehx-ML-HSl.title" = "Objetos";
@@ -438,7 +438,7 @@
 "hyu-qj-36T.title" = "Intensidade de luz difusa";
 
 /* Class = "NSTextFieldCell"; title = "Order"; ObjectID = "iNJ-ng-4ga"; */
-"iNJ-ng-4ga.title" = "Pedido";
+"iNJ-ng-4ga.title" = "Ordenar";
 
 /* Class = "NSMenuItem"; title = "Identifer"; ObjectID = "iOI-Yp-RuB"; */
 "iOI-Yp-RuB.title" = "Identificador";
@@ -450,7 +450,7 @@
 "iUY-dW-y5v.title" = "Intensidade de luz ambient";
 
 /* Class = "NSTextFieldCell"; title = "Value"; ObjectID = "imT-16-aB9"; */
-"imT-16-aB9.title" = "valor";
+"imT-16-aB9.title" = "Valor";
 
 /* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "jHe-aU-zpQ"; */
 "jHe-aU-zpQ.title" = "Girar -90";
@@ -474,7 +474,7 @@
 "l14-dN-lr4.title" = "256x256x256";
 
 /* Class = "NSTextFieldCell"; title = "Unit Cell Size Scaling"; ObjectID = "lsI-qu-rBk"; */
-"lsI-qu-rBk.title" = "Escala do tamanho da célula unitária";
+"lsI-qu-rBk.title" = "Dimensionamento do tamanho da célula unitária";
 
 /* Class = "NSMenuItem"; title = "Rasmol"; ObjectID = "mx2-LA-CaG"; */
 "mx2-LA-CaG.title" = "Rasmol";
@@ -492,7 +492,7 @@
 "nUw-Lz-pBk.title" = "Intensidade de luz especula";
 
 /* Class = "NSMenuItem"; title = "Bottom-Left"; ObjectID = "nV6-NG-mmZ"; */
-"nV6-NG-mmZ.title" = "Inferior esquerdo";
+"nV6-NG-mmZ.title" = "Em Baixo-Esquerda";
 
 /* Class = "NSMenuItem"; title = "Striped"; ObjectID = "nZL-Pd-jrp"; */
 "nZL-Pd-jrp.title" = "Listrado";
@@ -558,7 +558,7 @@
 "vYr-pF-LLC.title" = "Mostrar célula unitária";
 
 /* Class = "NSMenuItem"; title = "Top-Right"; ObjectID = "vvr-MF-ufZ"; */
-"vvr-MF-ufZ.title" = "Canto superior direito";
+"vvr-MF-ufZ.title" = "Em Cima-Direita";
 
 /* Class = "NSTextFieldCell"; title = "Opacity"; ObjectID = "wEC-gm-GXl"; */
 "wEC-gm-GXl.title" = "Opacidade";
