@@ -438,7 +438,7 @@ extension SKSpacegroup
       
       let dataBaseTranslation: SIMD3<Int32>  = changeToPrimitive * dataBaseSpaceGroupGenerators[i].translation
       
-      let translationDifference: SIMD3<Double> = fract(transPrimitive - SIMD3<Double>(dataBaseTranslation) / 12.0)
+      let translationDifference: SIMD3<Double> = fract(transPrimitive - SIMD3<Double>(dataBaseTranslation) / 24.0)
       b[3*i,0] = translationDifference.x
       b[3*i+1,0] = translationDifference.y
       b[3*i+2,0] = translationDifference.z

@@ -32,7 +32,7 @@ public struct SKSymmetryOperationSet
     
     for seitzMatrix in self.operations
     {
-      let inverseTransformation = transformationMatrix.inverseTimesDeterminant
+      let inverseTransformation = transformationMatrix.adjugate
       let rotation: SKTransformationMatrix = inverseTransformation * seitzMatrix.rotation * transformationMatrix / Int(transformationMatrix.determinant)
       let translation: SIMD3<Double> = inverseTransformation * seitzMatrix.translation
       let transformedSeitzMatrix: SKSeitzMatrix = SKSeitzMatrix(rotation: SKRotationMatrix(rotation), translation: translation / Double(transformationMatrix.determinant))

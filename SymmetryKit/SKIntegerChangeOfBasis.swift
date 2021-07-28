@@ -26,7 +26,7 @@ public struct SKIntegerChangeOfBasis
   public init(inversionTransformation: SKTransformationMatrix)
   {
     self.inverseChangeOfBasis = inversionTransformation
-    self.changeOfBasis = inversionTransformation.inverseTimesDeterminant
+    self.changeOfBasis = inversionTransformation.adjugate
     self.changeOfBasisDeterminant = inversionTransformation.determinant
     self.inverseChangeOfBasisDeterminant = 1
   }

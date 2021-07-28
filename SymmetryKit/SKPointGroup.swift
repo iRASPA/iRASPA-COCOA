@@ -449,7 +449,7 @@ public struct SKPointGroup
         return basis
       }
     case 3:
-      let m: SKTransformationMatrix = SKTransformationMatrix.primitiveRhombohedralToTripleHexagonalCell_R2 * basis.inverseTimesDeterminant
+      let m: SKTransformationMatrix = SKTransformationMatrix.primitiveRhombohedralToTripleHexagonalCell_R2 * basis.adjugate
       if m.greatestCommonDivisor == 3
       {
         // all elements divisable by 3: reverse detected -> change to obverse
