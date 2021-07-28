@@ -156,8 +156,8 @@ public struct SKTransformationMatrix
     return (self[0,0] * temp1) + (self[0,1] * temp2) + (self[0,2] * temp3)
   }
   
-  // inverse times the determinant
-  public var inverseTimesDeterminant: SKTransformationMatrix
+  // the adjugate or classical adjoint of a square matrix is the transpose of its cofactor matrix
+  public var adjugate: SKTransformationMatrix
   {
     var result: SKTransformationMatrix = SKTransformationMatrix()
     result[0,0] = self[1,1] * self[2,2] - self[2,1] * self[1,2]
@@ -193,7 +193,7 @@ public extension double3x3
   init(inverseTransformationMatrix m: SKTransformationMatrix)
   {
     let det: Double = Double(m.determinant)
-    let a: SKTransformationMatrix = m.inverseTimesDeterminant
+    let a: SKTransformationMatrix = m.adjugate
     let col1 = a[0]
     let col2 = a[1]
     let col3 = a[2]

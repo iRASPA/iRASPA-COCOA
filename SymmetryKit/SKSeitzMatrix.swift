@@ -17,7 +17,7 @@ public struct SKSeitzMatrix
   public init(rotation: SKRotationMatrix, translation: SIMD3<Int32>)
   {
     self.rotation = rotation
-    self.translation = SIMD3<Double>(Double(translation.x % 12) / 12.0, Double(translation.y % 12) / 12.0, Double(translation.z % 12) / 12.0)
+    self.translation = SIMD3<Double>(Double(translation.x % 24) / 24.0, Double(translation.y % 24) / 24.0, Double(translation.z % 24) / 24.0)
   }
   
   public init(rotation: SKRotationMatrix, translation: SIMD3<Double>)
@@ -28,9 +28,9 @@ public struct SKSeitzMatrix
   
   public static func * (left: SKSeitzMatrix, right: SIMD3<Double>) -> SIMD3<Double>
   {
-    return SIMD3<Double>(x: Double(left.rotation[0][0]) * right.x + Double(left.rotation[1][0]) * right.y + Double(left.rotation[2][0]) * right.z + Double(left.translation.x)/12.0,
-                         y: Double(left.rotation[0][1]) * right.x + Double(left.rotation[1][1]) * right.y + Double(left.rotation[2][1]) * right.z + Double(left.translation.y)/12.0,
-                         z: Double(left.rotation[0][2]) * right.x + Double(left.rotation[1][2]) * right.y + Double(left.rotation[2][2]) * right.z + Double(left.translation.z)/12.0)
+    return SIMD3<Double>(x: Double(left.rotation[0][0]) * right.x + Double(left.rotation[1][0]) * right.y + Double(left.rotation[2][0]) * right.z + Double(left.translation.x)/24.0,
+                         y: Double(left.rotation[0][1]) * right.x + Double(left.rotation[1][1]) * right.y + Double(left.rotation[2][1]) * right.z + Double(left.translation.y)/24.0,
+                         z: Double(left.rotation[0][2]) * right.x + Double(left.rotation[1][2]) * right.y + Double(left.rotation[2][2]) * right.z + Double(left.translation.z)/24.0)
   }
   
   // (A1 | t1)(A2 | t2) = (A1A2 | t1 + A1t2)

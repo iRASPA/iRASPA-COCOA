@@ -65,7 +65,7 @@ import MathKit
 public struct SKSeitzIntegerMatrix: Equatable, Hashable
 {
   var rotation: SKRotationMatrix
-  var translation: SIMD3<Int32>  // denominator = 12
+  var translation: SIMD3<Int32>  // denominator = 24
   
   static let rotationStringX: [Int: String] = [-1:"-x", 0:"", 1: "x"]
   static let rotationStringY: [Int: String] = [-1:"-y", 0:"", 1: "y"]
@@ -94,31 +94,31 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
   public init(rotation: SKRotationMatrix, translation: SIMD3<Int32>)
   {
     self.rotation = rotation
-    self.translation = translation.modulo(12)
+    self.translation = translation.modulo(24)
 
   }
   
   public init(rotation: int3x3, translation: SIMD3<Int32>)
   {
     self.rotation = SKRotationMatrix(int3x3: rotation)
-    self.translation = translation.modulo(12)
+    self.translation = translation.modulo(24)
 
   }
   
   public init(rotation: SKRotationMatrix, translation: SIMD3<Double>)
   {
     self.rotation = rotation
-    self.translation = SIMD3<Int32>(((Int32(rint(translation.x * 12.0)) % 12 + 12) % 12),
-                                   ((Int32(rint(translation.y * 12.0)) % 12 + 12) % 12),
-                                   ((Int32(rint(translation.z * 12.0)) % 12 + 12) % 12))
+    self.translation = SIMD3<Int32>(((Int32(rint(translation.x * 24.0)) % 24 + 24) % 24),
+                                    ((Int32(rint(translation.y * 24.0)) % 24 + 24) % 24),
+                                    ((Int32(rint(translation.z * 24.0)) % 24 + 24) % 24))
   }
   
   public init(SeitzMatrx: SKSeitzMatrix)
   {
     self.rotation = SeitzMatrx.rotation
-    self.translation = SIMD3<Int32>(((Int32(rint(SeitzMatrx.translation.x * 12.0)) % 12 + 12) % 12),
-                                    ((Int32(rint(SeitzMatrx.translation.y * 12.0)) % 12 + 12) % 12),
-                                    ((Int32(rint(SeitzMatrx.translation.z * 12.0)) % 12 + 12) % 12))
+    self.translation = SIMD3<Int32>(((Int32(rint(SeitzMatrx.translation.x * 24.0)) % 24 + 24) % 24),
+                                    ((Int32(rint(SeitzMatrx.translation.y * 24.0)) % 24 + 24) % 24),
+                                    ((Int32(rint(SeitzMatrx.translation.z * 24.0)) % 24 + 24) % 24))
   }
   
   public init(encoding: (UInt8, UInt8, UInt8))
@@ -179,7 +179,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
     let rowEchelonMatrix: int3x3 = m.rowEchelonFormRosetta(t: &t, freeVars: &free)
     
     let locationPart: SIMD3<Int32> = self.locationPart
-    let s: SIMD3<Double> = t * SIMD3<Double>(Double(locationPart.x)/12.0,Double(locationPart.y)/12.0, Double(locationPart.z)/12.0)
+    let s: SIMD3<Double> = t * SIMD3<Double>(Double(locationPart.x)/24.0,Double(locationPart.y)/24.0, Double(locationPart.z)/24.0)
     let sol: SIMD3<Double> = rowEchelonMatrix.rowEchelonFormBackSubstitutionRosetta(t: s, freeVars: free)
     return sol
   }*/
@@ -255,7 +255,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
     hasher.combine(self.rotation[2,1])
     hasher.combine(self.rotation[2,2])
     
-    let normalizedTranslation: SIMD3<Int32> = self.translation.modulo(12)
+    let normalizedTranslation: SIMD3<Int32> = self.translation.modulo(24)
     hasher.combine(normalizedTranslation.x)
     hasher.combine(normalizedTranslation.y)
     hasher.combine(normalizedTranslation.z)
@@ -272,7 +272,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
            (lhs.rotation[2][0] == rhs.rotation[2][0]) &&
            (lhs.rotation[2][1] == rhs.rotation[2][1]) &&
            (lhs.rotation[2][2] == rhs.rotation[2][2]) &&
-           ((lhs.translation.modulo(12)) == (rhs.translation.modulo(12)))
+           ((lhs.translation.modulo(24)) == (rhs.translation.modulo(24)))
   }
   
   
@@ -356,9 +356,9 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
 
   public static func * (left: SKSeitzIntegerMatrix, right: SIMD3<Double>) -> SIMD3<Double>
   {
-    return SIMD3<Double>(x: Double(left.rotation[0][0]) * right.x + Double(left.rotation[1][0]) * right.y + Double(left.rotation[2][0]) * right.z + Double(left.translation.x)/12.0,
-                         y: Double(left.rotation[0][1]) * right.x + Double(left.rotation[1][1]) * right.y + Double(left.rotation[2][1]) * right.z + Double(left.translation.y)/12.0,
-                         z: Double(left.rotation[0][2]) * right.x + Double(left.rotation[1][2]) * right.y + Double(left.rotation[2][2]) * right.z + Double(left.translation.z)/12.0)
+    return SIMD3<Double>(x: Double(left.rotation[0][0]) * right.x + Double(left.rotation[1][0]) * right.y + Double(left.rotation[2][0]) * right.z + Double(left.translation.x)/24.0,
+                         y: Double(left.rotation[0][1]) * right.x + Double(left.rotation[1][1]) * right.y + Double(left.rotation[2][1]) * right.z + Double(left.translation.y)/24.0,
+                         z: Double(left.rotation[0][2]) * right.x + Double(left.rotation[1][2]) * right.y + Double(left.rotation[2][2]) * right.z + Double(left.translation.z)/24.0)
   }
   
   // (A1 | t1)(A2 | t2) = (A1A2 | t1 + A1t2)
@@ -447,44 +447,44 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
     SKOneThirdSeitzMatrix(text: "-z"      , encoding: "5",  r1: 0, r2: 0, r3:-1,  t: 0),
     SKOneThirdSeitzMatrix(text: "x-y"     , encoding: "6",  r1: 1, r2:-1, r3: 0,  t: 0),
     SKOneThirdSeitzMatrix(text: "-x+y"    , encoding: "7",  r1:-1, r2: 1, r3: 0,  t: 0),
-    SKOneThirdSeitzMatrix(text: "x+1/2"   , encoding: "8",  r1: 1, r2: 0, r3: 0,  t: 6),
-    SKOneThirdSeitzMatrix(text: "x+1/3"   , encoding: "9",  r1: 1, r2: 0, r3: 0,  t: 4),
-    SKOneThirdSeitzMatrix(text: "x+1/4"   , encoding: ":",  r1: 1, r2: 0, r3: 0,  t: 3),
-    SKOneThirdSeitzMatrix(text: "x+2/3"   , encoding: ";",  r1: 1, r2: 0, r3: 0,  t: 8),
-    SKOneThirdSeitzMatrix(text: "x+3/4"   , encoding: "<",  r1: 1, r2: 0, r3: 0,  t: 9),
-    SKOneThirdSeitzMatrix(text: "y+1/2"   , encoding: "=",  r1: 0, r2: 1, r3: 0,  t: 6),
-    SKOneThirdSeitzMatrix(text: "y+1/3"   , encoding: ">",  r1: 0, r2: 1, r3: 0,  t: 4),
-    SKOneThirdSeitzMatrix(text: "y+1/4"   , encoding: "?",  r1: 0, r2: 1, r3: 0,  t: 3),
-    SKOneThirdSeitzMatrix(text: "y+2/3"   , encoding: "@",  r1: 0, r2: 1, r3: 0,  t: 8),
-    SKOneThirdSeitzMatrix(text: "y+3/4"   , encoding: "A",  r1: 0, r2: 1, r3: 0,  t: 9),
-    SKOneThirdSeitzMatrix(text: "z+1/2"   , encoding: "B",  r1: 0, r2: 0, r3: 1,  t: 6),
-    SKOneThirdSeitzMatrix(text: "z+1/3"   , encoding: "C",  r1: 0, r2: 0, r3: 1,  t: 4),
-    SKOneThirdSeitzMatrix(text: "z+1/4"   , encoding: "D",  r1: 0, r2: 0, r3: 1,  t: 3),
-    SKOneThirdSeitzMatrix(text: "z+1/6"   , encoding: "E",  r1: 0, r2: 0, r3: 1,  t: 2),
-    SKOneThirdSeitzMatrix(text: "z+2/3"   , encoding: "F",  r1: 0, r2: 0, r3: 1,  t: 8),
-    SKOneThirdSeitzMatrix(text: "z+3/4"   , encoding: "G",  r1: 0, r2: 0, r3: 1,  t: 9),
-    SKOneThirdSeitzMatrix(text: "z+5/6"   , encoding: "H",  r1: 0, r2: 0, r3: 1,  t:10),
-    SKOneThirdSeitzMatrix(text: "-x+1/2"  , encoding: "I",  r1:-1, r2: 0, r3: 0,  t: 6),
-    SKOneThirdSeitzMatrix(text: "-x+1/3"  , encoding: "J",  r1:-1, r2: 0, r3: 0,  t: 4),
-    SKOneThirdSeitzMatrix(text: "-x+1/4"  , encoding: "K",  r1:-1, r2: 0, r3: 0,  t: 3),
-    SKOneThirdSeitzMatrix(text: "-x+2/3"  , encoding: "L",  r1:-1, r2: 0, r3: 0,  t: 8),
-    SKOneThirdSeitzMatrix(text: "-x+3/4"  , encoding: "M",  r1:-1, r2: 0, r3: 0,  t: 9),
-    SKOneThirdSeitzMatrix(text: "-y+1/2"  , encoding: "N",  r1: 0, r2:-1, r3: 0,  t: 6),
-    SKOneThirdSeitzMatrix(text: "-y+1/3"  , encoding: "O",  r1: 0, r2:-1, r3: 0,  t: 4),
-    SKOneThirdSeitzMatrix(text: "-y+1/4"  , encoding: "P",  r1: 0, r2:-1, r3: 0,  t: 3),
-    SKOneThirdSeitzMatrix(text: "-y+2/3"  , encoding: "Q",  r1: 0, r2:-1, r3: 0,  t: 8),
-    SKOneThirdSeitzMatrix(text: "-y+3/4"  , encoding: "R",  r1: 0, r2:-1, r3: 0,  t: 9),
-    SKOneThirdSeitzMatrix(text: "-z+1/2"  , encoding: "S",  r1: 0, r2: 0, r3:-1,  t: 6),
-    SKOneThirdSeitzMatrix(text: "-z+1/3"  , encoding: "T",  r1: 0, r2: 0, r3:-1,  t: 4),
-    SKOneThirdSeitzMatrix(text: "-z+1/4"  , encoding: "U",  r1: 0, r2: 0, r3:-1,  t: 3),
-    SKOneThirdSeitzMatrix(text: "-z+1/6"  , encoding: "V",  r1: 0, r2: 0, r3:-1,  t: 2),
-    SKOneThirdSeitzMatrix(text: "-z+2/3"  , encoding: "W",  r1: 0, r2: 0, r3:-1,  t: 8),
-    SKOneThirdSeitzMatrix(text: "-z+3/4"  , encoding: "X",  r1: 0, r2: 0, r3:-1,  t: 9),
-    SKOneThirdSeitzMatrix(text: "-z+5/6"  , encoding: "Y",  r1: 0, r2: 0, r3:-1,  t:10),
-    SKOneThirdSeitzMatrix(text: "x-y+1/3" , encoding: "Z",  r1: 1, r2:-1, r3: 0,  t: 4),
-    SKOneThirdSeitzMatrix(text: "x-y+2/3" , encoding: "[",  r1: 1, r2:-1, r3: 0,  t: 8),
-    SKOneThirdSeitzMatrix(text: "-x+y+1/3", encoding: "\\", r1:-1, r2: 1, r3: 0,  t: 4),
-    SKOneThirdSeitzMatrix(text: "-x+y+2/3", encoding: "]",  r1:-1, r2: 1, r3: 0,  t: 8),
+    SKOneThirdSeitzMatrix(text: "x+1/2"   , encoding: "8",  r1: 1, r2: 0, r3: 0,  t:12),
+    SKOneThirdSeitzMatrix(text: "x+1/3"   , encoding: "9",  r1: 1, r2: 0, r3: 0,  t: 8),
+    SKOneThirdSeitzMatrix(text: "x+1/4"   , encoding: ":",  r1: 1, r2: 0, r3: 0,  t: 6),
+    SKOneThirdSeitzMatrix(text: "x+2/3"   , encoding: ";",  r1: 1, r2: 0, r3: 0,  t:16),
+    SKOneThirdSeitzMatrix(text: "x+3/4"   , encoding: "<",  r1: 1, r2: 0, r3: 0,  t:18),
+    SKOneThirdSeitzMatrix(text: "y+1/2"   , encoding: "=",  r1: 0, r2: 1, r3: 0,  t:12),
+    SKOneThirdSeitzMatrix(text: "y+1/3"   , encoding: ">",  r1: 0, r2: 1, r3: 0,  t: 8),
+    SKOneThirdSeitzMatrix(text: "y+1/4"   , encoding: "?",  r1: 0, r2: 1, r3: 0,  t: 6),
+    SKOneThirdSeitzMatrix(text: "y+2/3"   , encoding: "@",  r1: 0, r2: 1, r3: 0,  t:16),
+    SKOneThirdSeitzMatrix(text: "y+3/4"   , encoding: "A",  r1: 0, r2: 1, r3: 0,  t:18),
+    SKOneThirdSeitzMatrix(text: "z+1/2"   , encoding: "B",  r1: 0, r2: 0, r3: 1,  t:12),
+    SKOneThirdSeitzMatrix(text: "z+1/3"   , encoding: "C",  r1: 0, r2: 0, r3: 1,  t: 8),
+    SKOneThirdSeitzMatrix(text: "z+1/4"   , encoding: "D",  r1: 0, r2: 0, r3: 1,  t: 6),
+    SKOneThirdSeitzMatrix(text: "z+1/6"   , encoding: "E",  r1: 0, r2: 0, r3: 1,  t: 4),
+    SKOneThirdSeitzMatrix(text: "z+2/3"   , encoding: "F",  r1: 0, r2: 0, r3: 1,  t:16),
+    SKOneThirdSeitzMatrix(text: "z+3/4"   , encoding: "G",  r1: 0, r2: 0, r3: 1,  t:18),
+    SKOneThirdSeitzMatrix(text: "z+5/6"   , encoding: "H",  r1: 0, r2: 0, r3: 1,  t:20),
+    SKOneThirdSeitzMatrix(text: "-x+1/2"  , encoding: "I",  r1:-1, r2: 0, r3: 0,  t:12),
+    SKOneThirdSeitzMatrix(text: "-x+1/3"  , encoding: "J",  r1:-1, r2: 0, r3: 0,  t: 8),
+    SKOneThirdSeitzMatrix(text: "-x+1/4"  , encoding: "K",  r1:-1, r2: 0, r3: 0,  t: 6),
+    SKOneThirdSeitzMatrix(text: "-x+2/3"  , encoding: "L",  r1:-1, r2: 0, r3: 0,  t:16),
+    SKOneThirdSeitzMatrix(text: "-x+3/4"  , encoding: "M",  r1:-1, r2: 0, r3: 0,  t:18),
+    SKOneThirdSeitzMatrix(text: "-y+1/2"  , encoding: "N",  r1: 0, r2:-1, r3: 0,  t:12),
+    SKOneThirdSeitzMatrix(text: "-y+1/3"  , encoding: "O",  r1: 0, r2:-1, r3: 0,  t: 8),
+    SKOneThirdSeitzMatrix(text: "-y+1/4"  , encoding: "P",  r1: 0, r2:-1, r3: 0,  t: 6),
+    SKOneThirdSeitzMatrix(text: "-y+2/3"  , encoding: "Q",  r1: 0, r2:-1, r3: 0,  t:16),
+    SKOneThirdSeitzMatrix(text: "-y+3/4"  , encoding: "R",  r1: 0, r2:-1, r3: 0,  t:18),
+    SKOneThirdSeitzMatrix(text: "-z+1/2"  , encoding: "S",  r1: 0, r2: 0, r3:-1,  t:12),
+    SKOneThirdSeitzMatrix(text: "-z+1/3"  , encoding: "T",  r1: 0, r2: 0, r3:-1,  t: 8),
+    SKOneThirdSeitzMatrix(text: "-z+1/4"  , encoding: "U",  r1: 0, r2: 0, r3:-1,  t: 6),
+    SKOneThirdSeitzMatrix(text: "-z+1/6"  , encoding: "V",  r1: 0, r2: 0, r3:-1,  t: 4),
+    SKOneThirdSeitzMatrix(text: "-z+2/3"  , encoding: "W",  r1: 0, r2: 0, r3:-1,  t:16),
+    SKOneThirdSeitzMatrix(text: "-z+3/4"  , encoding: "X",  r1: 0, r2: 0, r3:-1,  t:18),
+    SKOneThirdSeitzMatrix(text: "-z+5/6"  , encoding: "Y",  r1: 0, r2: 0, r3:-1,  t:20),
+    SKOneThirdSeitzMatrix(text: "x-y+1/3" , encoding: "Z",  r1: 1, r2:-1, r3: 0,  t: 8),
+    SKOneThirdSeitzMatrix(text: "x-y+2/3" , encoding: "[",  r1: 1, r2:-1, r3: 0,  t:16),
+    SKOneThirdSeitzMatrix(text: "-x+y+1/3", encoding: "\\", r1:-1, r2: 1, r3: 0,  t: 8),
+    SKOneThirdSeitzMatrix(text: "-x+y+2/3", encoding: "]",  r1:-1, r2: 1, r3: 0,  t:16),
   ]
   
   
@@ -543,7 +543,7 @@ public struct SKSeitzIntegerMatrix: Equatable, Hashable
       
      
       // translation in conventional cell: S = C_{S,O}^-1 * P_O
-      let translation: SIMD3<Double> = transformationMatrix.inverse * SIMD3<Double>(Double(seitzMatrix.translation.x)/12.0, Double(seitzMatrix.translation.y)/12.0, Double(seitzMatrix.translation.z)/12.0)
+      let translation: SIMD3<Double> = transformationMatrix.inverse * SIMD3<Double>(Double(seitzMatrix.translation.x)/24.0, Double(seitzMatrix.translation.y)/24.0, Double(seitzMatrix.translation.z)/24.0)
       
       
       symmetry[index] = SKSeitzIntegerMatrix(rotation: SKRotationMatrix(rotation), translation: translation)

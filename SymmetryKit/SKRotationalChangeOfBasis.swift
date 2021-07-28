@@ -21,7 +21,6 @@ public struct SKRotationalChangeOfBasis
   public static let changeOfMonoclinicCentering: [SKRotationalChangeOfBasis] =
   [
     // Note: multiples matches are possible
-    
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])), //  1 : I           a,  b,    c
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>(-1, 0,-1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 1, 0, 0)])), //  2 : R3       -a-c,  b,    a
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>(-1, 0,-1)])), //  3 : R3.R3       c,  b, -a-c
@@ -34,6 +33,7 @@ public struct SKRotationalChangeOfBasis
   // Table 2 from R. W. Grosse-Kunstleve, Acta Cryst. (1999). A55, 383-395
   public static let changeOfOrthorhombicCentering: [SKRotationalChangeOfBasis] =
   [
+    // Note: multiples matches are possible
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1)])), // 1 : I           a,  b,  c
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 1, 0), SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0)])), // 2 : R3          b,  c,  a
     SKRotationalChangeOfBasis(rotation: SKRotationMatrix([SIMD3<Int32>( 0, 0, 1), SIMD3<Int32>( 1, 0, 0), SIMD3<Int32>( 0, 1, 0)])), // 3 : R3.R3       c,  a,  b

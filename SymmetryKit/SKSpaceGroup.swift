@@ -1118,12 +1118,12 @@ public struct SKSpacegroup
   public static func InversionCenterString(HallNumber: Int) -> String
   {
     let vector: SIMD3<Int32> = spaceGroupData[HallNumber].inversionCenter
-    let gcdx: Int32 = Int32.greatestCommonDivisor(a: vector.x,b: 12)
-    let gcdy: Int32 = Int32.greatestCommonDivisor(a: vector.y,b: 12)
-    let gcdz: Int32 = Int32.greatestCommonDivisor(a: vector.z,b: 12)
-    let x: String = vector.x == 0 ? "0" : "\(vector.x/gcdx)/\(12/gcdx)"
-    let y: String = vector.y == 0 ? "0" : "\(vector.y/gcdy)/\(12/gcdy)"
-    let z: String = vector.z == 0 ? "0" : "\(vector.z/gcdz)/\(12/gcdz)"
+    let gcdx: Int32 = Int32.greatestCommonDivisor(a: vector.x,b: 24)
+    let gcdy: Int32 = Int32.greatestCommonDivisor(a: vector.y,b: 24)
+    let gcdz: Int32 = Int32.greatestCommonDivisor(a: vector.z,b: 24)
+    let x: String = vector.x == 0 ? "0" : "\(vector.x/gcdx)/\(24/gcdx)"
+    let y: String = vector.y == 0 ? "0" : "\(vector.y/gcdy)/\(24/gcdy)"
+    let z: String = vector.z == 0 ? "0" : "\(vector.z/gcdz)/\(24/gcdz)"
     return  "(" + x + "," + y + "," + z + ")"
   }
   
@@ -1224,12 +1224,12 @@ public struct SKSpacegroup
     for i in 0..<spaceGroupData[HallNumber].latticeTranslations.count
     {
       let vector: SIMD3<Int32> = spaceGroupData[HallNumber].latticeTranslations[i]
-      let gcdx: Int32 = Int32.greatestCommonDivisor(a: vector.x,b: 12)
-      let gcdy: Int32 = Int32.greatestCommonDivisor(a: vector.y,b: 12)
-      let gcdz: Int32 = Int32.greatestCommonDivisor(a: vector.z,b: 12)
-      let x: String = vector.x == 0 ? "0" : "\(vector.x/gcdx)/\(12/gcdx)"
-      let y: String = vector.y == 0 ? "0" : "\(vector.y/gcdy)/\(12/gcdy)"
-      let z: String = vector.z == 0 ? "0" : "\(vector.z/gcdz)/\(12/gcdz)"
+      let gcdx: Int32 = Int32.greatestCommonDivisor(a: vector.x,b: 24)
+      let gcdy: Int32 = Int32.greatestCommonDivisor(a: vector.y,b: 24)
+      let gcdz: Int32 = Int32.greatestCommonDivisor(a: vector.z,b: 24)
+      let x: String = vector.x == 0 ? "0" : "\(vector.x/gcdx)/\(24/gcdx)"
+      let y: String = vector.y == 0 ? "0" : "\(vector.y/gcdy)/\(24/gcdy)"
+      let z: String = vector.z == 0 ? "0" : "\(vector.z/gcdz)/\(24/gcdz)"
       latticeTranslationStrings[i] = "(" + x + "," + y + "," + z + ")"
     }
     return latticeTranslationStrings
