@@ -176,9 +176,9 @@ public struct SKIntegerSymmetryOperationSet
     for seitzMatrix in self.operations
     {
       let inverseTransformation = transformationMatrix.adjugate
-      let rotation: SKTransformationMatrix = inverseTransformation * seitzMatrix.rotation * transformationMatrix / Int(transformationMatrix.determinant)
-      let translation: SIMD3<Int32> = inverseTransformation * seitzMatrix.translation
-      let transformedSeitzMatrix: SKSeitzIntegerMatrix = SKSeitzIntegerMatrix(rotation: SKRotationMatrix(rotation), translation: translation / Int32(transformationMatrix.determinant))
+      let rotation: int3x3 = inverseTransformation.int3x3 * seitzMatrix.rotation.int3x3 * transformationMatrix.int3x3 / Int(transformationMatrix.determinant)
+      let translation: SIMD3<Int32> = inverseTransformation.int3x3 * seitzMatrix.translation
+      let transformedSeitzMatrix: SKSeitzIntegerMatrix = SKSeitzIntegerMatrix(rotation: SKRotationMatrix(int3x3: rotation), translation: translation / Int32(transformationMatrix.determinant))
       newSet.append(transformedSeitzMatrix)
     }
     return SKIntegerSymmetryOperationSet(operations: newSet)

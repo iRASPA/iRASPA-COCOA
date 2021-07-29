@@ -33,9 +33,9 @@ public struct SKSymmetryOperationSet
     for seitzMatrix in self.operations
     {
       let inverseTransformation = transformationMatrix.adjugate
-      let rotation: SKTransformationMatrix = inverseTransformation * seitzMatrix.rotation * transformationMatrix / Int(transformationMatrix.determinant)
-      let translation: SIMD3<Double> = inverseTransformation * seitzMatrix.translation
-      let transformedSeitzMatrix: SKSeitzMatrix = SKSeitzMatrix(rotation: SKRotationMatrix(rotation), translation: translation / Double(transformationMatrix.determinant))
+      let rotation: int3x3 = inverseTransformation.int3x3 * seitzMatrix.rotation.int3x3 * transformationMatrix.int3x3 / Int(transformationMatrix.determinant)
+      let translation: SIMD3<Double> = inverseTransformation.int3x3 * seitzMatrix.translation
+      let transformedSeitzMatrix: SKSeitzMatrix = SKSeitzMatrix(rotation: SKRotationMatrix(int3x3: rotation), translation: translation / Double(transformationMatrix.determinant))
       newSet.append(transformedSeitzMatrix)
     }
     return SKSymmetryOperationSet(operations: newSet)

@@ -216,7 +216,7 @@ extension SKSpacegroup
       switch(centring)
       {
       case .primitive:
-        transformation = double3x3(rotationMatrix: SKTransformationMatrix.identity)
+        transformation = double3x3(1.0)
       case .body:
         transformation = SKTransformationMatrix.bodyCenteredToPrimitive
       case .face:
@@ -232,7 +232,7 @@ extension SKSpacegroup
       case .h:
         transformation = SKTransformationMatrix.hexagonalToPrimitive
       default:
-        transformation = double3x3(rotationMatrix: SKTransformationMatrix.identity)
+        transformation = double3x3(1.0)
       }
       
       let primitiveUnitCell: double3x3 = spaceGroupData.cell.unitCell * transformation

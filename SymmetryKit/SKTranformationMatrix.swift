@@ -71,6 +71,7 @@ public struct SKTransformationMatrix
   public static let BCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(-0.5,0,0.5), SIMD3<Double>(0,-1.0,0), SIMD3<Double>(0.5,0,0.5)])   // B -> P
   public static let CCenteredToPrimitive: double3x3 = double3x3([SIMD3<Double>(0.5,0.5,0), SIMD3<Double>(0.5,-0.5,0), SIMD3<Double>(0,0,-1.0)])   // C -> P
   public static let rhombohedralToPrimitive: double3x3 = double3x3([SIMD3<Double>(2.0/3.0,1.0/3.0,1.0/3.0), SIMD3<Double>(-1.0/3.0, 1.0/3.0, 1.0/3.0), SIMD3<Double>(-1.0/3.0,-2.0/3.0, 1.0/3.0)])  // R -> P
+  
   // CHECK
   public static let rhombohedralReverseToPrimitive: double3x3 = double3x3([SIMD3<Double>(1.0/3.0,2.0/3.0,1.0/3.0), SIMD3<Double>(-2.0/3.0, -1.0/3.0, 1.0/3.0), SIMD3<Double>(1.0/3.0,-1.0/3.0, 1.0/3.0)])  // R -> P
   
@@ -100,6 +101,12 @@ public struct SKTransformationMatrix
   init(_ m: SKRotationMatrix, _ translation: SIMD3<Int32> = SIMD3<Int32>(0,0,0))
   {
     self.elements = m.elements
+    self.translation = translation
+  }
+  
+  init(_ m: int3x3, _ translation: SIMD3<Int32> = SIMD3<Int32>(0,0,0))
+  {
+    self.elements = [m[0], m[1], m[2]]
     self.translation = translation
   }
   
@@ -188,34 +195,6 @@ public struct SKTransformationMatrix
   }
 }
 
-public extension double3x3
-{
-  init(inverseTransformationMatrix m: SKTransformationMatrix)
-  {
-    let det: Double = Double(m.determinant)
-    let a: SKTransformationMatrix = m.adjugate
-    let col1 = a[0]
-    let col2 = a[1]
-    let col3 = a[2]
-    self.init([SIMD3<Double>(x: Double(col1.x) / det, y: Double(col1.y) / det,z: Double(col1.z) / det),
-               SIMD3<Double>(x: Double(col2.x) / det, y: Double(col2.y) / det,z: Double(col2.z) / det),
-               SIMD3<Double>(x: Double(col3.x) / det, y: Double(col3.y) / det,z: Double(col3.z) / det)])
-  }
-}
-
-public extension double3x3
-{
-  init(rotationMatrix a: SKTransformationMatrix)
-  {
-    let col1 = a[0]
-    let col2 = a[1]
-    let col3 = a[2]
-    self.init([SIMD3<Double>(x: Double(col1.x), y: Double(col1.y),z: Double(col1.z)),
-               SIMD3<Double>(x: Double(col2.x), y: Double(col2.y),z: Double(col2.z)),
-               SIMD3<Double>(x: Double(col3.x), y: Double(col3.y),z: Double(col3.z))])
-  }
-}
-
 extension SKTransformationMatrix: Hashable
 {
   public func hash(into hasher: inout Hasher)
@@ -229,6 +208,9 @@ extension SKTransformationMatrix: Hashable
     hasher.combine(self[2,0])
     hasher.combine(self[2,1])
     hasher.combine(self[2,2])
+    hasher.combine(self.translation.x % 24)
+    hasher.combine(self.translation.y % 24)
+    hasher.combine(self.translation.z % 24)
   }
 }
 
@@ -238,116 +220,26 @@ extension SKTransformationMatrix
   {
     return (left[0,0] == right[0,0]) && (left[0,1] == right[0,1]) && (left[0,2] == right[0,2]) &&
            (left[1,0] == right[1,0]) && (left[1,1] == right[1,1]) && (left[1,2] == right[1,2]) &&
-           (left[2,0] == right[2,0]) && (left[2,1] == right[2,1]) && (left[2,2] == right[2,2])
+           (left[2,0] == right[2,0]) && (left[2,1] == right[2,1]) && (left[2,2] == right[2,2]) &&
+           (left.translation.x % 24 == right.translation.x % 24) &&
+           (left.translation.y % 24 == right.translation.y % 24) &&
+           (left.translation.z % 24 == right.translation.z % 24)
   }
   
   public static func * (left: SKTransformationMatrix, right: SKTransformationMatrix) -> SKTransformationMatrix
   {
-    return SKTransformationMatrix([ SIMD3<Int32>(left[0,0] * right[0,0] + left[1,0] * right[0,1] + left[2,0] * right[0,2],
-                        left[0,1] * right[0,0] + left[1,1] * right[0,1] + left[2,1] * right[0,2],
-                        left[0,2] * right[0,0] + left[1,2] * right[0,1] + left[2,2] * right[0,2]),
-                    SIMD3<Int32>(left[0,0] * right[1,0] + left[1,0] * right[1,1] + left[2,0] * right[1,2],
-                        left[0,1] * right[1,0] + left[1,1] * right[1,1] + left[2,1] * right[1,2],
-                        left[0,2] * right[1,0] + left[1,2] * right[1,1] + left[2,2] * right[1,2]),
-                    SIMD3<Int32>(left[0,0] * right[2,0] + left[1,0] * right[2,1] + left[2,0] * right[2,2],
-                        left[0,1] * right[2,0] + left[1,1] * right[2,1] + left[2,1] * right[2,2],
-                        left[0,2] * right[2,0] + left[1,2] * right[2,1] + left[2,2] * right[2,2])])
-  }
-  
-  public static func * (left: SKTransformationMatrix, right: SKRotationMatrix) -> SKTransformationMatrix
-  {
-    return SKTransformationMatrix([ SIMD3<Int32>(left[0,0] * right[0,0] + left[1,0] * right[0,1] + left[2,0] * right[0,2],
-                        left[0,1] * right[0,0] + left[1,1] * right[0,1] + left[2,1] * right[0,2],
-                        left[0,2] * right[0,0] + left[1,2] * right[0,1] + left[2,2] * right[0,2]),
-                    SIMD3<Int32>(left[0,0] * right[1,0] + left[1,0] * right[1,1] + left[2,0] * right[1,2],
-                        left[0,1] * right[1,0] + left[1,1] * right[1,1] + left[2,1] * right[1,2],
-                        left[0,2] * right[1,0] + left[1,2] * right[1,1] + left[2,2] * right[1,2]),
-                    SIMD3<Int32>(left[0,0] * right[2,0] + left[1,0] * right[2,1] + left[2,0] * right[2,2],
-                        left[0,1] * right[2,0] + left[1,1] * right[2,1] + left[2,1] * right[2,2],
-                        left[0,2] * right[2,0] + left[1,2] * right[2,1] + left[2,2] * right[2,2])])
-  }
-  
-  public static func * (left: SKRotationMatrix, right: SKTransformationMatrix) -> SKTransformationMatrix
-  {
-    return SKTransformationMatrix([ SIMD3<Int32>(left[0,0] * right[0,0] + left[1,0] * right[0,1] + left[2,0] * right[0,2],
-                        left[0,1] * right[0,0] + left[1,1] * right[0,1] + left[2,1] * right[0,2],
-                        left[0,2] * right[0,0] + left[1,2] * right[0,1] + left[2,2] * right[0,2]),
-                    SIMD3<Int32>(left[0,0] * right[1,0] + left[1,0] * right[1,1] + left[2,0] * right[1,2],
-                        left[0,1] * right[1,0] + left[1,1] * right[1,1] + left[2,1] * right[1,2],
-                        left[0,2] * right[1,0] + left[1,2] * right[1,1] + left[2,2] * right[1,2]),
-                    SIMD3<Int32>(left[0,0] * right[2,0] + left[1,0] * right[2,1] + left[2,0] * right[2,2],
-                        left[0,1] * right[2,0] + left[1,1] * right[2,1] + left[2,1] * right[2,2],
-                        left[0,2] * right[2,0] + left[1,2] * right[2,1] + left[2,2] * right[2,2])])
+    return SKTransformationMatrix(left.int3x3 * right.int3x3,
+                                  left.int3x3 * right.translation + left.translation)
   }
   
   public static func *= (left: inout SKTransformationMatrix, right: SKTransformationMatrix)
   {
     left = left * right
   }
-  
-  public static func * (left: SKTransformationMatrix, right: double3x3) -> double3x3
-  {
-    let temp1: SIMD3<Double> = SIMD3<Double>(Double(left[0,0]) * right[0,0] + Double(left[1,0]) * right[0,1] + Double(left[2,0]) * right[0,2],
-                                 Double(left[0,1]) * right[0,0] + Double(left[1,1]) * right[0,1] + Double(left[2,1]) * right[0,2],
-                                 Double(left[0,2]) * right[0,0] + Double(left[1,2]) * right[0,1] + Double(left[2,2]) * right[0,2])
-    let temp2: SIMD3<Double> = SIMD3<Double>(Double(left[0,0]) * right[1,0] + Double(left[1,0]) * right[1,1] + Double(left[2,0]) * right[1,2],
-                                 Double(left[0,1]) * right[1,0] + Double(left[1,1]) * right[1,1] + Double(left[2,1]) * right[1,2],
-                                 Double(left[0,2]) * right[1,0] + Double(left[1,2]) * right[1,1] + Double(left[2,2]) * right[1,2])
-    let temp3: SIMD3<Double> = SIMD3<Double>(Double(left[0,0]) * right[2,0] + Double(left[1,0]) * right[2,1] + Double(left[2,0]) * right[2,2],
-                                 Double(left[0,1]) * right[2,0] + Double(left[1,1]) * right[2,1] + Double(left[2,1]) * right[2,2],
-                                 Double(left[0,2]) * right[2,0] + Double(left[1,2]) * right[2,1] + Double(left[2,2]) * right[2,2])
-    return double3x3([temp1, temp2, temp3])
-  }
-  
+
   public static func *(left: double3x3, right: SKTransformationMatrix) -> double3x3
   {
-    let term1: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[0,0]) + left[1,0] * Double(right[0,1]) + left[2,0] * Double(right[0,2]),
-                                 left[0,1] * Double(right[0,0]) + left[1,1] * Double(right[0,1]) + left[2,1] * Double(right[0,2]),
-                                 left[0,2] * Double(right[0,0]) + left[1,2] * Double(right[0,1]) + left[2,2] * Double(right[0,2]))
-    let term2: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[1,0]) + left[1,0] * Double(right[1,1]) + left[2,0] * Double(right[1,2]),
-                                 left[0,1] * Double(right[1,0]) + left[1,1] * Double(right[1,1]) + left[2,1] * Double(right[1,2]),
-                                 left[0,2] * Double(right[1,0]) + left[1,2] * Double(right[1,1]) + left[2,2] * Double(right[1,2]))
-    let term3: SIMD3<Double> = SIMD3<Double>(left[0,0] * Double(right[2,0]) + left[1,0] * Double(right[2,1]) + left[2,0] * Double(right[2,2]),
-                                 left[0,1] * Double(right[2,0]) + left[1,1] * Double(right[2,1]) + left[2,1] * Double(right[2,2]),
-                                 left[0,2] * Double(right[2,0]) + left[1,2] * Double(right[2,1]) + left[2,2] * Double(right[2,2]))
-    return double3x3([term1, term2, term3])
-  }
-  
-  public static func * (left: SKTransformationMatrix, right: SIMD3<Int32>) -> SIMD3<Int32>
-  {
-    return SIMD3<Int32>(x: left[0,0] * right.x + left[1,0] * right.y + left[2,0] * right.z,
-                y: left[0,1] * right.x + left[1,1] * right.y + left[2,1] * right.z,
-                z: left[0,2] * right.x + left[1,2] * right.y + left[2,2] * right.z)
-  }
-  
-
-  public static func * (left: SKTransformationMatrix, right: SIMD3<Double>) -> SIMD3<Double>
-  {
-    return SIMD3<Double>(x: Double(left[0,0]) * right.x + Double(left[1,0]) * right.y + Double(left[2,0]) * right.z,
-                         y: Double(left[0,1]) * right.x + Double(left[1,1]) * right.y + Double(left[2,1]) * right.z,
-                         z: Double(left[0,2]) * right.x + Double(left[1,2]) * right.y + Double(left[2,2]) * right.z)
-  }  
-  
-  static public func + (left: SKTransformationMatrix, right: SKTransformationMatrix) -> SKTransformationMatrix
-  {
-    return SKTransformationMatrix([SIMD3<Int32>(x: left[0,0] + right[0,0], y: left[0,1] + right[0,1], z: left[0,2] + right[0,2]),
-                   SIMD3<Int32>(x: left[1,0] + right[1,0], y: left[1,1] + right[1,1], z: left[1,2] + right[1,2]),
-                   SIMD3<Int32>(x: left[2,0] + right[2,0], y: left[2,1] + right[2,1], z: left[2,2] + right[2,2])])
-  }
-  
-  static public func - (left: SKTransformationMatrix, right: SKTransformationMatrix) -> SKTransformationMatrix
-  {
-    return SKTransformationMatrix([SIMD3<Int32>(x: left[0,0] - right[0,0], y: left[0,1] - right[0,1], z: left[0,2] - right[0,2]),
-                   SIMD3<Int32>(x: left[1,0] - right[1,0], y: left[1,1] - right[1,1], z: left[1,2] - right[1,2]),
-                   SIMD3<Int32>(x: left[2,0] - right[2,0], y: left[2,1] - right[2,1], z: left[2,2] - right[2,2])])
-  }
-  
-  public static prefix func - (left: SKTransformationMatrix) -> SKTransformationMatrix
-  {
-    return SKTransformationMatrix([SIMD3<Int32>(-left[0,0], -left[0,1], -left[0,2]),
-                                   SIMD3<Int32>(-left[1,0], -left[1,1], -left[1,2]),
-                                   SIMD3<Int32>(-left[2,0], -left[2,1], -left[2,2])])
-    
+    return left * right.int3x3
   }
   
   public static func / (left: SKTransformationMatrix, right: Int) -> SKTransformationMatrix
@@ -362,8 +254,8 @@ extension SKTransformationMatrix
     assert(left[2,1].isMultiple(of: Int32(right)))
     assert(left[2,2].isMultiple(of: Int32(right)))
     return SKTransformationMatrix([SIMD3<Int32>(left[0,0] / Int32(right), left[0,1] / Int32(right), left[0,2] / Int32(right)),
-                   SIMD3<Int32>(left[1,0] / Int32(right), left[1,1] / Int32(right), left[1,2] / Int32(right)),
-                   SIMD3<Int32>(left[2,0] / Int32(right), left[2,1] / Int32(right), left[2,2] / Int32(right))])
+                                   SIMD3<Int32>(left[1,0] / Int32(right), left[1,1] / Int32(right), left[1,2] / Int32(right)),
+                                   SIMD3<Int32>(left[2,0] / Int32(right), left[2,1] / Int32(right), left[2,2] / Int32(right))])
     
   }
 }
