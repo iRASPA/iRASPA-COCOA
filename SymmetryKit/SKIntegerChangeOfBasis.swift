@@ -46,16 +46,16 @@ public struct SKIntegerChangeOfBasis
   
   public static func * (left: SKIntegerChangeOfBasis, right: double3x3) -> double3x3
   {
-    return (left.inverseChangeOfBasis * right * left.changeOfBasis) / Double(left.inverseChangeOfBasisDeterminant * left.changeOfBasisDeterminant)
+    return (left.inverseChangeOfBasis.int3x3 * right * left.changeOfBasis.int3x3) / Double(left.inverseChangeOfBasisDeterminant * left.changeOfBasisDeterminant)
   }
   
   public static func * (left: SKIntegerChangeOfBasis, right: SIMD3<Int32>) -> SIMD3<Int32>
   {
-    return left.inverseChangeOfBasis * right / Int32(left.inverseChangeOfBasisDeterminant)
+    return left.inverseChangeOfBasis.int3x3 * right / Int32(left.inverseChangeOfBasisDeterminant)
   }
   
   public static func * (left: SKIntegerChangeOfBasis, right: SIMD3<Double>) -> SIMD3<Double>
   {
-    return (left.inverseChangeOfBasis * right) / Double(left.inverseChangeOfBasisDeterminant)
+    return (left.inverseChangeOfBasis.int3x3 * right) / Double(left.inverseChangeOfBasisDeterminant)
   }
 }
