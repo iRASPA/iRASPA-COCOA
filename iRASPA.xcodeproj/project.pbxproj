@@ -159,6 +159,7 @@
 		9338251825716A6600BD7AC6 /* libpython3.10.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9338251725716A6600BD7AC6 /* libpython3.10.a */; };
 		933A8F28218CD2100073C653 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E3E0A31EAB8D8D00BC5652 /* Accelerate.framework */; };
 		933A8F2A218CD4AD0073C653 /* DataCompression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933A8F29218CD4AD0073C653 /* DataCompression.swift */; };
+		933BA4D526B29463005CD8AD /* SKPointSymmetrySet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933BA4D426B29463005CD8AD /* SKPointSymmetrySet.swift */; };
 		933CAA2B207253E300F74729 /* MovieTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CAA2A207253E300F74729 /* MovieTableCellView.swift */; };
 		933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */; };
 		933CFE171F14B47700BC9DCA /* iRASPAProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE161F14B47700BC9DCA /* iRASPAProject.swift */; };
@@ -495,14 +496,8 @@
 		93C5E24023EEB1D8002BA929 /* CopyingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */; };
 		93C5E24223F1A264002BA929 /* SKAsymmetricBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */; };
 		93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */; };
-		93C71B7C2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B7B2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift */; };
-		93C71B7E2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B7D2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift */; };
-		93C71B802695DFBD00F67DEE /* SpaceGroupCOFsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B7F2695DFBD00F67DEE /* SpaceGroupCOFsTest.swift */; };
-		93C71B822695E00000F67DEE /* SpaceGroupZIFsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */; };
 		93C71B8626999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */; };
-		93C71B88269C3D4900F67DEE /* ConstructedBasisTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */; };
 		93C71B8A269C4BAC00F67DEE /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B89269C4BAC00F67DEE /* OrderedSet.swift */; };
-		93C71B8C269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift */; };
 		93CD2A9E256BF56700E26C20 /* Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CD2A9D256BF56700E26C20 /* Python.swift */; };
 		93CD2ACC256BF72B00E26C20 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8425680A10004D900E /* libbz2.a */; };
 		93CD2ACE256BF72B00E26C20 /* libformw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CDAA8625680A11004D900E /* libformw.a */; };
@@ -681,8 +676,6 @@
 		93CE77F71EA0EA7100D068E1 /* ObjectiveCException.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CE77F61EA0EA7100D068E1 /* ObjectiveCException.m */; };
 		93CE77F91EA0ECBC00D068E1 /* ObjectiveCException.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77F81EA0EA7F00D068E1 /* ObjectiveCException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CEEFBE1F42193700EAF673 /* DirectoryMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */; };
-		93D16746269D951D0084F804 /* ConstructedUpdatedBasisAfterCorrectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D16745269D951D0084F804 /* ConstructedUpdatedBasisAfterCorrectionTests.swift */; };
-		93D16748269D98E90084F804 /* SpaceGroupCenteringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D16747269D98E90084F804 /* SpaceGroupCenteringTests.swift */; };
 		93D1B52E1F45ECD300D0F932 /* NSPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D1B52D1F45ECD300D0F932 /* NSPageView.swift */; };
 		93D397AA260F2C700010BDDC /* ActionCALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D397A9260F2C700010BDDC /* ActionCALayer.swift */; };
 		93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */; };
@@ -1449,6 +1442,7 @@
 		933700C91EDC610800DD5961 /* SKSpaceGroupSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKSpaceGroupSetting.swift; sourceTree = "<group>"; };
 		9338251725716A6600BD7AC6 /* libpython3.10.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpython3.10.a; sourceTree = "<group>"; };
 		933A8F29218CD4AD0073C653 /* DataCompression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCompression.swift; sourceTree = "<group>"; };
+		933BA4D426B29463005CD8AD /* SKPointSymmetrySet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPointSymmetrySet.swift; sourceTree = "<group>"; };
 		933CAA2A207253E300F74729 /* MovieTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableCellView.swift; sourceTree = "<group>"; };
 		933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedPropertiesLayer.swift; sourceTree = "<group>"; };
 		933CFE161F14B47700BC9DCA /* iRASPAProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProject.swift; sourceTree = "<group>"; };
@@ -1899,14 +1893,8 @@
 		93C5E23F23EEB1D8002BA929 /* CopyingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyingProtocol.swift; sourceTree = "<group>"; };
 		93C5E24123F1A264002BA929 /* SKAsymmetricBond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricBond.swift; sourceTree = "<group>"; };
 		93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupChangeOfBasistests.swift; sourceTree = "<group>"; };
-		93C71B7B2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupZeolitesTest.swift; sourceTree = "<group>"; };
-		93C71B7D2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupMOFsTest.swift; sourceTree = "<group>"; };
-		93C71B7F2695DFBD00F67DEE /* SpaceGroupCOFsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupCOFsTest.swift; sourceTree = "<group>"; };
-		93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupZIFsTest.swift; sourceTree = "<group>"; };
 		93C71B8526999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveUnitCellSearchTests.swift; sourceTree = "<group>"; };
-		93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructedBasisTests.swift; sourceTree = "<group>"; };
 		93C71B89269C4BAC00F67DEE /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
-		93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructedUpdatedBasisCorrectionMatrixTests.swift; sourceTree = "<group>"; };
 		93CD2A9D256BF56700E26C20 /* Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Python.swift; sourceTree = "<group>"; };
 		93CD2B70256C180500E26C20 /* pycapsule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pycapsule.h; sourceTree = "<group>"; };
 		93CD2B71256C180500E26C20 /* methodobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = methodobject.h; sourceTree = "<group>"; };
@@ -2085,8 +2073,6 @@
 		93CE77F61EA0EA7100D068E1 /* ObjectiveCException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveCException.m; sourceTree = "<group>"; };
 		93CE77F81EA0EA7F00D068E1 /* ObjectiveCException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveCException.h; sourceTree = "<group>"; };
 		93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryMasterViewController.swift; sourceTree = "<group>"; };
-		93D16745269D951D0084F804 /* ConstructedUpdatedBasisAfterCorrectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructedUpdatedBasisAfterCorrectionTests.swift; sourceTree = "<group>"; };
-		93D16747269D98E90084F804 /* SpaceGroupCenteringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupCenteringTests.swift; sourceTree = "<group>"; };
 		93D16749269EED5C0084F804 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/AboutWindow.strings"; sourceTree = "<group>"; };
 		93D1674A269EED5C0084F804 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Preferences.strings"; sourceTree = "<group>"; };
 		93D1674B269EED5C0084F804 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -2472,6 +2458,7 @@
 				9350696F268B71580071B4CC /* SKIntegerChangeOfBasis.swift */,
 				93506969268A49C10071B4CC /* SKRotationalChangeOfBasis.swift */,
 				930DD4DF1E26AA5200B8FE9B /* SKPointGroup.swift */,
+				933BA4D426B29463005CD8AD /* SKPointSymmetrySet.swift */,
 				930DD4E01E26AA5200B8FE9B /* SKRotationMatrix.swift */,
 				930DD4E41E26AA5200B8FE9B /* SKTranformationMatrix.swift */,
 				930DD4E11E26AA5200B8FE9B /* SKSeitzIntegerMatrix.swift */,
@@ -3153,18 +3140,10 @@
 				93E20F8826A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift */,
 				93E20F8226A5C59100473702 /* FindPointGroupTests.swift */,
 				93E20F8C26A6F44C00473702 /* FindPointGroupNoPartialOccupanciesTests.swift */,
-				93D16747269D98E90084F804 /* SpaceGroupCenteringTests.swift */,
-				93C71B87269C3D4900F67DEE /* ConstructedBasisTests.swift */,
-				93C71B8B269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift */,
-				93D16745269D951D0084F804 /* ConstructedUpdatedBasisAfterCorrectionTests.swift */,
 				933D79C026905E290023EB94 /* ConventionalCellTests.swift */,
 				937737F12680D7F600D47499 /* SpaceGroupSpglibTests.swift */,
 				93E20F8A26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift */,
 				93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */,
-				93C71B7B2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift */,
-				93C71B7D2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift */,
-				93C71B7F2695DFBD00F67DEE /* SpaceGroupCOFsTest.swift */,
-				93C71B812695E00000F67DEE /* SpaceGroupZIFsTest.swift */,
 				93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */,
 				931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */,
 				937737EA2680D7A900D47499 /* Info.plist */,
@@ -4568,6 +4547,7 @@
 				93F3A59521873A0E008E41A2 /* SKAtomNode.swift in Sources */,
 				9350696626863EF50071B4CC /* SKSeitzMatrix.swift in Sources */,
 				93EAABAF1EDACDEE00FE61D8 /* SKPDBParser.swift in Sources */,
+				933BA4D526B29463005CD8AD /* SKPointSymmetrySet.swift in Sources */,
 				93F3A593218739D9008E41A2 /* SKAtomTreeNode.swift in Sources */,
 				93E20F9126A99A5800473702 /* SKAsymmetricUnit.swift in Sources */,
 				930DD4ED1E26AA5200B8FE9B /* SKIntegerSymmetryOperationSet.swift in Sources */,
@@ -4832,20 +4812,12 @@
 			files = (
 				93E20F8326A5C59100473702 /* FindPointGroupTests.swift in Sources */,
 				93E20F8526A5F3B200473702 /* SpaceGroupCIFTests.swift in Sources */,
-				93D16748269D98E90084F804 /* SpaceGroupCenteringTests.swift in Sources */,
-				93C71B822695E00000F67DEE /* SpaceGroupZIFsTest.swift in Sources */,
-				93C71B88269C3D4900F67DEE /* ConstructedBasisTests.swift in Sources */,
-				93C71B802695DFBD00F67DEE /* SpaceGroupCOFsTest.swift in Sources */,
-				93C71B8C269D88CB00F67DEE /* ConstructedUpdatedBasisCorrectionMatrixTests.swift in Sources */,
-				93C71B7E2695DFAD00F67DEE /* SpaceGroupMOFsTest.swift in Sources */,
 				93E20F8926A6D2C900473702 /* PrimitiveUnitCellSearchNoPartialOccupanciesTests.swift in Sources */,
 				93C71B762694544400F67DEE /* SpaceGroupChangeOfBasistests.swift in Sources */,
 				933D79C126905E290023EB94 /* ConventionalCellTests.swift in Sources */,
 				93E20F8726A603F000473702 /* DelaunayReductionTests.swift in Sources */,
 				937737F22680D7F600D47499 /* SpaceGroupSpglibTests.swift in Sources */,
-				93D16746269D951D0084F804 /* ConstructedUpdatedBasisAfterCorrectionTests.swift in Sources */,
 				931BE3D6269F586B00587034 /* TransformationMatrixTests.swift in Sources */,
-				93C71B7C2695DF9900F67DEE /* SpaceGroupZeolitesTest.swift in Sources */,
 				93E20F8B26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift in Sources */,
 				93E20F8D26A6F44D00473702 /* FindPointGroupNoPartialOccupanciesTests.swift in Sources */,
 				93C71B8626999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift in Sources */,
