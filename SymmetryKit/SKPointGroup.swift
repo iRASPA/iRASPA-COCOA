@@ -205,24 +205,24 @@ public struct SKPointGroup
         var axes: SKTransformationMatrix = SKTransformationMatrix()
         
         // set the rotation axis as the first axis
-        axes[1] = properRotationmatrix.rotationAxis
+        axes.int3x3[1] = properRotationmatrix.rotationAxis
        
         
         // possible candidates for the second axis are vectors that are orthogonal to the axes of rotation
         var orthogonalAxes: [SIMD3<Int32>] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: 2)
         
         // the second axis is the shortest orthogonal axis
-        axes[0] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <=  length_squared($1) ? $0 : $1})
+        axes.int3x3[0] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <=  length_squared($1) ? $0 : $1})
         
-        if let index: Int = orthogonalAxes.firstIndex(of: axes[0])
+        if let index: Int = orthogonalAxes.firstIndex(of: axes.int3x3[0])
         {
           orthogonalAxes.remove(at: index)
           
-          axes[2] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <=  length_squared($1) ? $0 : $1})
+          axes.int3x3[2] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <=  length_squared($1) ? $0 : $1})
           
           if axes.determinant < 0
           {
-            return SKTransformationMatrix([axes[2],axes[1],axes[0]])
+            return SKTransformationMatrix([axes.int3x3[2],axes.int3x3[1],axes.int3x3[0]])
           }
           return axes
         }
@@ -243,7 +243,7 @@ public struct SKPointGroup
           
           if axes.determinant < 0
           {
-            return SKTransformationMatrix([axes[0],axes[2],axes[1]])
+            return SKTransformationMatrix([axes.int3x3[0],axes.int3x3[2],axes.int3x3[1]])
           }
           return axes
         }
@@ -259,27 +259,27 @@ public struct SKPointGroup
           var axes: SKTransformationMatrix = SKTransformationMatrix()
           
           // set the rotation axis as the first axis
-          axes[2] = properRotationmatrix.rotationAxis
+          axes.int3x3[2] = properRotationmatrix.rotationAxis
           
           // possible candidates for the second axis are vectors that are orthogonal to the axes of rotation
           let orthogonalAxes: [SIMD3<Int32>] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: rotationalTypeForBasis)
           
           for orthogonalAxis in orthogonalAxes
           {
-            axes[0] = orthogonalAxis
+            axes.int3x3[0] = orthogonalAxis
             
             let axisVector: SIMD3<Int32> =  properRotationmatrix * orthogonalAxis
             
             if SKRotationMatrix.allPossibleRotationAxes.contains(axisVector) || SKRotationMatrix.allPossibleRotationAxes.contains(0 &- axisVector)
             {
-              axes[1] = axisVector
+              axes.int3x3[1] = axisVector
 
               // to avoid F-center choice det=4
-              if abs(int3x3([axes[0],axes[1],axes[2]]).determinant) < 4
+              if abs(int3x3([axes.int3x3[0],axes.int3x3[1],axes.int3x3[2]]).determinant) < 4
               {
                 if axes.determinant < 0
                 {
-                  return SKTransformationMatrix([axes[1],axes[0],axes[2]])
+                  return SKTransformationMatrix([axes.int3x3[1],axes.int3x3[0],axes.int3x3[2]])
                 }
                 return axes
               }
@@ -360,7 +360,7 @@ public struct SKPointGroup
       for i in 0..<3
       {
         // if (1,0,0) is found, then 'a' is detected
-        if (abs(basis[0,i]) == 1 && basis[1,i] == 0 && basis[2,i] == 0)
+        if (abs(basis.int3x3[0,i]) == 1 && basis.int3x3[1,i] == 0 && basis.int3x3[2,i] == 0)
         {
           return .a_face
         }
@@ -370,7 +370,7 @@ public struct SKPointGroup
       for i in 0..<3
       {
         // if (0,1,0) is found, then 'b' is detected
-        if (basis[0,i] == 0 && abs(basis[1,i]) == 1 && basis[2,i] == 0)
+        if (basis.int3x3[0,i] == 0 && abs(basis.int3x3[1,i]) == 1 && basis.int3x3[2,i] == 0)
         {
           return .b_face
         }
@@ -380,14 +380,14 @@ public struct SKPointGroup
       for i in 0..<3
       {
         // if (0,0,1) is found, then 'b' is detected
-        if (basis[0,i] == 0 && basis[1,i] == 0 && abs(basis[2,i]) == 1)
+        if (basis.int3x3[0,i] == 0 && basis.int3x3[1,i] == 0 && abs(basis.int3x3[2,i]) == 1)
         {
           return .c_face
         }
       }
       
       // detect body-center
-      let sum: Int32 = abs(basis[0,0]) + abs(basis[1,0]) + abs(basis[2,0])
+      let sum: Int32 = abs(basis.int3x3[0,0]) + abs(basis.int3x3[1,0]) + abs(basis.int3x3[2,0])
       if  sum == Int32(2)
       {
         return .body
