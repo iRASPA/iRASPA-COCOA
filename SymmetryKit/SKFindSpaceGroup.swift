@@ -150,21 +150,21 @@ extension SKSpacegroup
 
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
-          let transform: double3x3 = (conventionalBravaisLattice.inverse * DelaunayUnitCell)
-          var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type, -1)}
-          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: &atoms, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
+          let transform: double3x3 = conventionalBravaisLattice.inverse * DelaunayUnitCell
+          let atomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type)}
           
-          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice)
+          let symmetrizedAtomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.symmetrize(lattice: conventionalBravaisLattice, atoms: atomsInConventionalCell, symmetryPrecision: symmetryPrecision)
           
-          let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
+          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: symmetrizedAtomsInConventionalCell, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
           
+          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice).idealized(spaceGroup: spaceGroup)
           
-          let rotationMatrix: double3x3 = conventionalBravaisLattice * cell2.unitCell.inverse
+          let rotationMatrix: double3x3 = conventionalBravaisLattice * cell.unitCell.inverse
         
           // must be a rigid rotation
           assert((rotationMatrix.determinant-1.0)<1e-5)
           
-          return (HallNumber, value.origin, cell2, value.changeOfBasis, transformationMatrix, rotationMatrix, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
+          return (HallNumber, value.origin, cell, value.changeOfBasis, transformationMatrix, rotationMatrix, symmetrizedAtomsInConventionalCell, asymmetricAtoms)
         }
       }
       
@@ -186,19 +186,20 @@ extension SKSpacegroup
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
           let transform: double3x3 = conventionalBravaisLattice.inverse * DelaunayUnitCell
-          var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + origin),$0.type, -1)}
-          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: &atoms, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
+          let atomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + origin),$0.type)}
           
-          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice)
+          let symmetrizedAtomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.symmetrize(lattice: conventionalBravaisLattice, atoms: atomsInConventionalCell, symmetryPrecision: symmetryPrecision)
           
-          let cell2: SKSymmetryCell = SKSymmetryCell(unitCell: cell.conventionalUnitCell(spaceGroup: spaceGroup))
+          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: symmetrizedAtomsInConventionalCell, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
           
-          let rotationMatrix: double3x3 = conventionalBravaisLattice * cell2.unitCell.inverse
+          let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice).idealized(spaceGroup: spaceGroup)
+                    
+          let rotationMatrix: double3x3 = conventionalBravaisLattice * cell.unitCell.inverse
           
           // must be a rigid rotation
           assert((rotationMatrix.determinant-1.0)<1e-5)
           
-          return (HallNumber, origin, cell2, changeOfBasis, transformationMatrix, rotationMatrix, atoms.map{($0.fractionalPosition,$0.type)}, asymmetricAtoms)
+          return (HallNumber, origin, cell, changeOfBasis, transformationMatrix, rotationMatrix, symmetrizedAtomsInConventionalCell, asymmetricAtoms)
         }
       }
     }
@@ -308,8 +309,6 @@ extension SKSpacegroup
     for rotationMatrix in latticeSymmetries.rotations
     {
       let translations: [SIMD3<Double>] = SKSymmetryCell.primitiveTranslationVectors(unitCell: unitCell, reducedAtoms: reducedAtoms, atoms: atoms, rotationMatrix: rotationMatrix, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
-       //print("translations")
-      //print(translations)
       
       for translation in translations
       {

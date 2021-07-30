@@ -45,9 +45,9 @@ extension SIMD3 where Scalar==Int32
     return SIMD3<Int32>(Int32.modulo(a: self.x, b: Int32(b)), Int32.modulo(a: self.y, b: Int32(b)), Int32.modulo(a: self.z, b: Int32(b)))
   }
   
-  public var greatestCommonDivisor: Int
+  public var greatestCommonDivisor: Int32
   {
-    return [Int(self.x), Int(self.y), Int(self.z)].reduce(Int(self.x)){(try? Int.greatestCommonDivisor(a: $0, b: $1)) ?? 1}
+    return [self.x, self.y, self.z].reduce(self.x){Int32.greatestCommonDivisor(a: $0, b: $1)}
   }
   
   public var isZero: Bool
@@ -71,14 +71,13 @@ extension SIMD3 where Scalar==Int32
     return SIMD3<Int32>(left.x - right.x, left.y - right.y, left.z - right.z)
   }
   
-  /*
-  public static func /(left: int3, m: Int32) -> int3
+  public static func /(left: SIMD3<Int32>, m: Int32) -> SIMD3<Int32>
   {
     assert(m != 0)
     assert(m != 0)
     assert(m != 0)
-    return int3(left.x / m, left.y / m, left.z / m)
-  }*/
+    return SIMD3<Int32>(left.x / m, left.y / m, left.z / m)
+  }
   
   public static func *(left: SIMD3<Int32>, m: Int32) -> SIMD3<Int32>
   {
@@ -89,17 +88,15 @@ extension SIMD3 where Scalar==Int32
   {
     return SIMD3<Int32>(m * right.x, m * right.y, m * right.z)
   }
-  
-  /*
-  public static func ==(left: int3, right: int3) -> Bool
-  {
-    return (left.x == right.x) && (left.y == right.y) && (left.z == right.z)
-  }*/
-  
-  
 }
 
-
+extension SIMD3 where Scalar==Int32
+{
+  public static func ==(left: SIMD3<Int32>, right: SIMD3<Int32>) -> Bool
+  {
+    return (left.x == right.x) && (left.y == right.y) && (left.z == right.z)
+  }
+}
 
 public func length_squared(_ v: SIMD3<Int32>) -> Int
 {

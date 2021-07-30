@@ -934,6 +934,11 @@ extension SKRotationMatrix
     return SKRotationMatrix(int3x3: left.int3x3 + right.int3x3)
   }
   
+  public static func += (left: inout SKRotationMatrix, right: SKRotationMatrix)
+  {
+    left = left + right
+  }
+  
   static public func - (left: SKRotationMatrix, right: SKRotationMatrix) -> SKRotationMatrix
   {
     return SKRotationMatrix(int3x3: left.int3x3 - right.int3x3)

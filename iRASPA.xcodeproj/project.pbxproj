@@ -237,6 +237,7 @@
 		93682C3C1F2729A00041F436 /* iRASPALoadDatabases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */; };
 		936DE11C21DA7F470023E7C8 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936DE11B21DA7F470023E7C8 /* Array.swift */; };
 		936E236D1F17C998007F6230 /* DeleteAllRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E236C1F17C998007F6230 /* DeleteAllRecordsOperation.swift */; };
+		936E776826B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */; };
 		937337731EB3238900E0655F /* DocumentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937337721EB3238900E0655F /* DocumentData.swift */; };
 		9373377B1EB5D60800E0655F /* ProjectProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9373377A1EB5D60800E0655F /* ProjectProgressIndicator.swift */; };
 		9373377D1EB5FFF900E0655F /* ImportCloudProjectOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9373377C1EB5FFF900E0655F /* ImportCloudProjectOperation.swift */; };
@@ -1554,6 +1555,7 @@
 		93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPALoadDatabases.swift; sourceTree = "<group>"; };
 		936DE11B21DA7F470023E7C8 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		936E236C1F17C998007F6230 /* DeleteAllRecordsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAllRecordsOperation.swift; sourceTree = "<group>"; };
+		936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupIZAZeoliteTests.swift; sourceTree = "<group>"; };
 		937337721EB3238900E0655F /* DocumentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentData.swift; sourceTree = "<group>"; };
 		9373377A1EB5D60800E0655F /* ProjectProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectProgressIndicator.swift; sourceTree = "<group>"; };
 		9373377C1EB5FFF900E0655F /* ImportCloudProjectOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportCloudProjectOperation.swift; sourceTree = "<group>"; };
@@ -2451,10 +2453,10 @@
 				93F3A58E218738C4008E41A2 /* SKBondSetController.swift */,
 				930DD4DC1E26AA5200B8FE9B /* SKCell.swift */,
 				9374794E1FB9EB51008C4411 /* SKBoundingBox.swift */,
-				9374794C1FB9EAFC008C4411 /* SKSymmetryCell.swift */,
 				93EAABAC1ED9847700FE61D8 /* SKElement.swift */,
 				93B777331FA47AB700A5DF86 /* SKColorSet.swift */,
 				93B777351FA47AD300A5DF86 /* SKColorSets.swift */,
+				9374794C1FB9EAFC008C4411 /* SKSymmetryCell.swift */,
 				9350696F268B71580071B4CC /* SKIntegerChangeOfBasis.swift */,
 				93506969268A49C10071B4CC /* SKRotationalChangeOfBasis.swift */,
 				930DD4DF1E26AA5200B8FE9B /* SKPointGroup.swift */,
@@ -3144,6 +3146,7 @@
 				937737F12680D7F600D47499 /* SpaceGroupSpglibTests.swift */,
 				93E20F8A26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift */,
 				93E20F8426A5F3B200473702 /* SpaceGroupCIFTests.swift */,
+				936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */,
 				93C71B752694544400F67DEE /* SpaceGroupChangeOfBasistests.swift */,
 				931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */,
 				937737EA2680D7A900D47499 /* Info.plist */,
@@ -4820,6 +4823,7 @@
 				931BE3D6269F586B00587034 /* TransformationMatrixTests.swift in Sources */,
 				93E20F8B26A6E22F00473702 /* SpaceGroupSpglibNoPartialOccupanciesTests.swift in Sources */,
 				93E20F8D26A6F44D00473702 /* FindPointGroupNoPartialOccupanciesTests.swift in Sources */,
+				936E776826B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift in Sources */,
 				93C71B8626999A7A00F67DEE /* PrimitiveUnitCellSearchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
