@@ -294,9 +294,44 @@ public struct SKIntegerSymmetryOperationSet
     return false
   }
   
-  
-  public func asymmetricAtoms(HallNumber: Int, atoms: inout [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)],  lattice: double3x3, symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
+  public func symmetrize(lattice: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
   {
+    var symmetrizedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = []
+    symmetrizedAtoms.reserveCapacity(atoms.count)
+    
+    for i in 0..<atoms.count
+    {
+      var averageRotation: SKRotationMatrix = SKRotationMatrix(0)
+      var averageTranslation: SIMD3<Double> = SIMD3<Double>(0,0,0)
+      var count: Int = 0
+      
+      for operation in operations
+      {
+        let translation: SIMD3<Double> = SIMD3<Double>(Double(operation.translation.x)/24.0, Double(operation.translation.y)/24.0, Double(operation.translation.z)/24.0)
+        let position: SIMD3<Double> = operation.rotation * atoms[i].fractionalPosition + translation
+       
+        if SKSymmetryCell.isOverlap(a: position, b: atoms[i].fractionalPosition, lattice: lattice, symmetryPrecision: symmetryPrecision)
+        {
+          averageRotation += operation.rotation
+          averageTranslation += translation - rint(position - atoms[i].fractionalPosition)
+          count = count + 1
+        }
+      }
+      
+      let averagedRotation: double3x3 = double3x3(rotationMatrix: averageRotation) / Double(count)
+      let averagedTranslation: SIMD3<Double> = SIMD3<Double>(Double(averageTranslation.x), Double(averageTranslation.y), Double(averageTranslation.z)) / Double(count)
+      
+      let symmetrizedAtom: (fractionalPosition: SIMD3<Double>, type: Int) = (averagedRotation * atoms[i].fractionalPosition + averagedTranslation, type: atoms[i].type)
+      symmetrizedAtoms.append(symmetrizedAtom)
+    }
+    
+    return symmetrizedAtoms
+  }
+  
+  public func asymmetricAtoms(HallNumber: Int, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)],  lattice: double3x3, symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
+  {
+    var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, asymmetricType: Int)] = atoms.map{($0.fractionalPosition, $0.type, -1)}
+    
     var asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = [(atoms[0].fractionalPosition, atoms[0].type)]
     atoms[0].asymmetricType = 0
     
@@ -346,7 +381,8 @@ public struct SKIntegerSymmetryOperationSet
         let position: SIMD3<Double> = operation.rotation * asymmetricAtoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/24.0, Double(operation.translation.y)/24.0, Double(operation.translation.z)/24.0)
         
         // if directly inside the asymmetric unit cell, overwrite the position and break
-        //if SKAsymmetricUnit.isInsideAsymmetricUnitCell(number: HallNumber, point: position, precision: 0.0)
+        let spaceGroupNumber = SKSpacegroup.spaceGroupData[HallNumber].spaceGroupNumber
+        //if SKAsymmetricUnit.isInsideIUCAsymmetricUnitCell(number: spaceGroupNumber, point: position, precision: 0.0)
         if SKSpacegroup.init(HallNumber: HallNumber).spaceGroupSetting.asymmetricUnit.contains(position)
         {
           asymmetricAtoms[i].fractionalPosition = fract(position)
@@ -362,7 +398,8 @@ public struct SKIntegerSymmetryOperationSet
         {
           let position: SIMD3<Double> = operation.rotation * asymmetricAtoms[i].fractionalPosition + SIMD3<Double>(Double(operation.translation.x)/24.0, Double(operation.translation.y)/24.0, Double(operation.translation.z)/24.0)
         
-          //if SKAsymmetricUnit.isInsideAsymmetricUnitCell(number: HallNumber, point: position, precision: symmetryPrecision)
+          let spaceGroupNumber = SKSpacegroup.spaceGroupData[HallNumber].spaceGroupNumber
+          //if SKAsymmetricUnit.isInsideIUCAsymmetricUnitCell(number: spaceGroupNumber, point: position, precision: symmetryPrecision)
           if SKSpacegroup.init(HallNumber: HallNumber).spaceGroupSetting.asymmetricUnit.contains(position)
           {
             asymmetricAtoms[i].fractionalPosition = fract(position)

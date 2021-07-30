@@ -132,3 +132,8 @@ extension SIMD3 where Scalar==Double
     return vprime1 + vrpime2 + vprime3
   }
 }
+
+public func rint(_ v: SIMD3<Double>) -> SIMD3<Double>
+{
+  return SIMD3<Double>(rint(v.x), rint(v.y), rint(v.z))
+}

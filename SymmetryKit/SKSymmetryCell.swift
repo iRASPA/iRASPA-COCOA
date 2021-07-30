@@ -184,44 +184,44 @@ public struct SKSymmetryCell: CustomStringConvertible
     return double3x3([v1, v2, v3])
   }
   
-  public func conventionalUnitCell(spaceGroup: SKSpacegroup) -> double3x3
+  public func idealized(spaceGroup: SKSpacegroup) -> SKSymmetryCell
   {
     let holohedry: SKPointGroup.Holohedry = spaceGroup.spaceGroupSetting.pointGroup.holohedry
-    
     switch(holohedry)
     {
     case .none:
-      return double3x3()
+      return self
     case .triclinic:
       let cg: Double = cos(gamma)
       let cb: Double = cos(beta)
       let ca: Double = cos(alpha)
       let sg: Double = sin(gamma)
       let temp: Double = c * sqrt(1.0 - ca * ca - cb * cb - cg * cg + 2.0 * ca * cb * cg) / sg
-      return double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(b * cg,b * sg,0.0),SIMD3<Double>(c * cb,c * (ca - cb * cg) / sg, temp)])
+      return SKSymmetryCell(unitCell: double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(b * cg,b * sg,0.0),SIMD3<Double>(c * cb,c * (ca - cb * cg) / sg, temp)]))
     case .monoclinic:
-      return double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(0.0,b,0.0),SIMD3<Double>(c * cos(beta),0.0,c * sin(beta))])
+      return SKSymmetryCell(unitCell: double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(0.0,b,0.0),SIMD3<Double>(c * cos(beta),0.0,c * sin(beta))]))
     case .orthorhombic:
-      return double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(0.0,b,0.0),SIMD3<Double>(0.0,0.0,c)])
+      return SKSymmetryCell(unitCell: double3x3([SIMD3<Double>(a,0.0,0.0),SIMD3<Double>(0.0,b,0.0),SIMD3<Double>(0.0,0.0,c)]))
     case .tetragonal:
-      return double3x3([SIMD3<Double>(0.5*(a+b),0.0,0.0),SIMD3<Double>(0.0,0.5*(a+b),0.0),SIMD3<Double>(0.0,0.0,c)])
+      return SKSymmetryCell(unitCell: double3x3([SIMD3<Double>(0.5*(a+b),0.0,0.0),SIMD3<Double>(0.0,0.5*(a+b),0.0),SIMD3<Double>(0.0,0.0,c)]))
     case .trigonal where spaceGroup.spaceGroupSetting.qualifier == "R":
       let avg: Double = (a+b+c)/3.0
       let angle: Double = acos((cos(gamma) + cos(beta) + cos(alpha)) / 3.0)
       // Reference, https://homepage.univie.ac.at/michael.leitner/lattice/struk/rgr.html
       let ahex: Double = 2.0 * avg * sin(0.5 * angle)
       let chex: Double = (a+b+c)/3.0 * sqrt(3.0 * (1.0 + 2.0 * cos(angle)))
-      return  double3x3([SIMD3<Double>(ahex / 2,-ahex / (2 * sqrt(3)),chex / 3),SIMD3<Double>(0.0,ahex / sqrt(3),chex / 3),SIMD3<Double>(-ahex / 2,-ahex / (2 * sqrt(3)),chex / 3)])
+      return  SKSymmetryCell(unitCell: double3x3([SIMD3<Double>(ahex / 2.0,-ahex / (2.0 * sqrt(3.0)),chex / 3.0),SIMD3<Double>(0.0,ahex / sqrt(3.0),chex / 3.0),SIMD3<Double>(-ahex / 2.0,-ahex / (2.0 * sqrt(3.0)),chex / 3.0)]))
     case .trigonal where spaceGroup.spaceGroupSetting.qualifier != "R", .hexagonal:
-      return double3x3([SIMD3<Double>(0.5*(a+b),0.0,0.0),SIMD3<Double>(-(a+b)/4.0,(a+b)/4.0*sqrt(3.0),0.0),SIMD3<Double>(0.0,0.0,c)])
+      return SKSymmetryCell(unitCell: double3x3([SIMD3<Double>(0.5*(a+b),0.0,0.0),SIMD3<Double>(-(a+b)/4.0,(a+b)/4.0*sqrt(3.0),0.0),SIMD3<Double>(0.0,0.0,c)]))
     case .cubic:
       let edge: Double = (a + b + c)/3.0
-      return double3x3([SIMD3<Double>(edge,0.0,0.0),SIMD3<Double>(0.0,edge,0.0),SIMD3<Double>(0.0,0.0,edge)])
+      return SKSymmetryCell(unitCell: double3x3([SIMD3<Double>(edge,0.0,0.0),SIMD3<Double>(0.0,edge,0.0),SIMD3<Double>(0.0,0.0,edge)]))
     default:
-      return double3x3()
+      return SKSymmetryCell(unitCell: double3x3())
     }
   }
   
+ 
   public static func TransformToConventionalUnitCell(unitCell: double3x3, spaceGroup: SKSpacegroup) -> double3x3
   {
     let metric: double3x3 = unitCell.transpose * unitCell
