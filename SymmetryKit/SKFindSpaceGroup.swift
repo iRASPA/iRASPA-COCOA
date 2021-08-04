@@ -64,7 +64,7 @@ extension SKSpacegroup
   ///
   /// The transformation matrix can be a non-integer matrix if the structure has a centring.
   
-  public static func SKFindSpaceGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: double3x3, rotationMatrix: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])?
+  public static func SKFindSpaceGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: double3x3, rotationMatrix: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)])?
   {
     var histogram:[Int:Int] = [:]
     
@@ -76,7 +76,7 @@ extension SKSpacegroup
     // Find least occurent element
     let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = allowPartialOccupancies ? atoms : atoms.filter{$0.type == minType}
+    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? atoms : atoms.filter{$0.type == minType}
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
@@ -88,8 +88,8 @@ extension SKSpacegroup
     let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
-    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
-    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = allowPartialOccupancies ? positionInDelaunayCell : positionInDelaunayCell.filter{$0.type == minType}
+    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? positionInDelaunayCell : positionInDelaunayCell.filter{$0.type == minType}
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
@@ -140,7 +140,8 @@ extension SKSpacegroup
       for spaceGroupNumber in 1...230
       {
         if let HallNumber: Int = spaceGroupHallData[spaceGroupNumber]?.first,
-           let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: HallNumber, lattice: primitiveLattice, pointGroupNumber: pointGroup.number,centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
+           SKSpacegroup.spaceGroupData[HallNumber].pointGroupNumber == pointGroup.number,
+           let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: HallNumber, lattice: primitiveLattice, centering: centering, seitzMatrices: Array(symmetryInConventionalCell.operations), symmetryPrecision: symmetryPrecision)
         {
           let conventionalBravaisLattice: double3x3 = primitiveLattice * value.changeOfBasis.inverseRotationMatrix
           
@@ -151,11 +152,11 @@ extension SKSpacegroup
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
           let transform: double3x3 = conventionalBravaisLattice.inverse * DelaunayUnitCell
-          let atomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type)}
+          let atomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type,$0.occupancy)}
           
-          let symmetrizedAtomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.symmetrize(lattice: conventionalBravaisLattice, atoms: atomsInConventionalCell, symmetryPrecision: symmetryPrecision)
+          let symmetrizedAtomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = spaceGroupSymmetries.symmetrize(lattice: conventionalBravaisLattice, atoms: atomsInConventionalCell, symmetryPrecision: symmetryPrecision)
           
-          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: symmetrizedAtomsInConventionalCell, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
+          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: symmetrizedAtomsInConventionalCell, lattice: conventionalBravaisLattice, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
           
           let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice).idealized(spaceGroup: spaceGroup)
           
@@ -186,11 +187,11 @@ extension SKSpacegroup
           let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
           
           let transform: double3x3 = conventionalBravaisLattice.inverse * DelaunayUnitCell
-          let atomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + origin),$0.type)}
+          let atomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = positionInDelaunayCell.map{(fract(transform*($0.fractionalPosition) + origin),$0.type,$0.occupancy)}
           
-          let symmetrizedAtomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.symmetrize(lattice: conventionalBravaisLattice, atoms: atomsInConventionalCell, symmetryPrecision: symmetryPrecision)
+          let symmetrizedAtomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = spaceGroupSymmetries.symmetrize(lattice: conventionalBravaisLattice, atoms: atomsInConventionalCell, symmetryPrecision: symmetryPrecision)
           
-          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: symmetrizedAtomsInConventionalCell, lattice: conventionalBravaisLattice, symmetryPrecision: symmetryPrecision)
+          let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: symmetrizedAtomsInConventionalCell, lattice: conventionalBravaisLattice, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
           
           let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice).idealized(spaceGroup: spaceGroup)
                     
@@ -207,9 +208,9 @@ extension SKSpacegroup
   }
   
   
-  public static func SKFindPrimitive(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])?
+  public static func SKFindPrimitive(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)])?
   {
-    if let spaceGroupData: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: double3x3, rotationMatrix: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+    if let spaceGroupData: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: double3x3, rotationMatrix: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)]) = SKFindSpaceGroup(unitCell: unitCell, atoms: atoms, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     {
       let centring: Centring = SKSpacegroup(HallNumber: spaceGroupData.hall).spaceGroupSetting.centring
 
@@ -239,59 +240,73 @@ extension SKSpacegroup
       let primitiveUnitCell: double3x3 = spaceGroupData.cell.unitCell * transformation
       let cell: SKSymmetryCell = SKSymmetryCell(unitCell: primitiveUnitCell)
             
-      let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: spaceGroupData.atoms, from: spaceGroupData.cell.unitCell, to: primitiveUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+      let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = SKSymmetryCell.trim(atoms: spaceGroupData.atoms, from: spaceGroupData.cell.unitCell, to: primitiveUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
       
       return (cell: cell, primitiveAtoms: positionInPrimitiveCell)
     }
     return nil
   }
   
-  // TODO
-  public static func findNiggli(unitCell: double3x3, atoms unIndexedAtoms: [(fractionalPosition: SIMD3<Double>, type: String)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: String)])?
+  public static func SKFindNiggli(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> (HallNumber: Int, cell: SKSymmetryCell, asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)])?
   {
-    var histogram:[String:Int] = [:]
+    var histogram:[Int:Int] = [:]
     
-    for atom in unIndexedAtoms
+    for atom in atoms
     {
       histogram[atom.type] = (histogram[atom.type] ?? 0) + 1
     }
     
-    var indexForAtom:[String:Int] = [:]
-    var atomForIndex:[Int:String] = [:]
-    for (index, element) in histogram.enumerated()
-    {
-      indexForAtom[element.key] = index
-      atomForIndex[index] = element.key
-    }
-    
     // Find least occurent element
-    let minType: String = indexForAtom.min{a, b in a.value < b.value}!.key
-    let minIndex: Int = indexForAtom[minType]!
+    let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    // convert: [(0.1,0.2,0.3: "Si"), (0.4,0.5,0.6: "O"),...] to [(0.1,0.2,0.3: 0), (0.4,0.5,0.6: 1),...]
-    let atoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = unIndexedAtoms.map{($0.fractionalPosition, indexForAtom[$0.type]!)}
-    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.filter{$0.type == minIndex}
+    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? atoms : atoms.filter{$0.type == minType}
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
-    
-    //let primitiveCell: SKCell = SKCell(unitCell: primitiveUnitCell)
-    guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell) else {return nil}
-    let DelaunayCell: SKSymmetryCell = SKSymmetryCell(unitCell: DelaunayUnitCell)
-    //let NiggliCell: (cell: SKCell, changeOfBasis: int3x3) = DelaunayCell.computeReducedNiggliCellAndChangeOfBasisMatrix!
-    
-    
+  
+    // convert the unit cell to a reduced Delaunay cell
+    guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else {return nil}
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
-    let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     
-    // When a transformation matrix with det(P ) > 1 is specified, a dialog box appears to ask you whether or not you want to search for additional sites lying in the resultant unit cell
-    // If det(P) < 1, the same position may result from two or more sites
+    // convert the reduced Delaunay cell to a reduced Niggli cell
+    guard let NiggliSymmetryCell: (cell: SKSymmetryCell, changeOfBasis: SKTransformationMatrix) =  SKSymmetryCell(unitCell: DelaunayUnitCell).computeReducedNiggliCellAndChangeOfBasisMatrix else {return nil}
+    let NiggliUnitCell: double3x3 = NiggliSymmetryCell.cell.unitCell
+    let positionInNiggliCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = positionInDelaunayCell.map{(fract(NiggliSymmetryCell.changeOfBasis.int3x3.inverse * $0.fractionalPosition), $0.type, $0.occupancy)}
+    let reducedPositionsInNiggliCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? positionInNiggliCell : positionInNiggliCell.filter{$0.type == minType}
     
-    //let changedlattice: double3x3 = DelaunayUnitCell * NiggliCell.changeOfBasis
-    //let transform: double3x3 = unitCell.inverse * NiggliCell.cell.unitCell
+    // find the rotational symmetry of the reduced Delaunay cell
+    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: NiggliUnitCell, symmetryPrecision: symmetryPrecision)
+        
+    // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
+    // the point group of the lattice cannot be lower than the point group of the crystal
+    let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: NiggliUnitCell, reducedAtoms: reducedPositionsInNiggliCell, atoms: positionInNiggliCell, latticeSymmetries: latticeSymmetries, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     
-    return (cell: DelaunayCell, primitiveAtoms: positionInPrimitiveCell.map{(fract($0.fractionalPosition), atomForIndex[$0.type]!)})
+    for spaceGroupNumber in (1...230).reversed()
+    {
+      if let HallNumber: Int = spaceGroupHallData[spaceGroupNumber]?.first,
+         let value: (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis) = SKSpacegroup.matchSpaceGroup(HallNumber: HallNumber, lattice: NiggliUnitCell, centering: .primitive, seitzMatrices: Array(spaceGroupSymmetries.operations), symmetryPrecision: symmetryPrecision)
+      {
+        let conventionalBravaisLattice: double3x3 = NiggliUnitCell * value.changeOfBasis.inverseRotationMatrix
+          
+        let spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
+
+        let spaceGroupSymmetries: SKIntegerSymmetryOperationSet = spaceGroup.spaceGroupSetting.fullSeitzMatrices
+          
+        let transform: double3x3 = conventionalBravaisLattice.inverse * NiggliUnitCell
+        let atomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = positionInNiggliCell.map{(fract(transform*($0.fractionalPosition) + value.origin),$0.type,$0.occupancy)}
+          
+        let symmetrizedAtomsInConventionalCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = spaceGroupSymmetries.symmetrize(lattice: conventionalBravaisLattice, atoms: atomsInConventionalCell, symmetryPrecision: symmetryPrecision)
+          
+        let asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = spaceGroupSymmetries.asymmetricAtoms(HallNumber: HallNumber, atoms: symmetrizedAtomsInConventionalCell, lattice: conventionalBravaisLattice, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+          
+        let cell: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLattice).idealized(spaceGroup: spaceGroup)
+        
+        return (HallNumber, cell, asymmetricAtoms)
+      }
+    }
+    return nil
   }
   
   
@@ -302,7 +317,7 @@ extension SKSpacegroup
   /// - parameter symmetryPrecision: the precision of the search (default: 1e-2)
   ///
   /// - returns: the symmetry operations, i.e. a list of (integer rotation matrix, translation vector)
-  public static func findSpaceGroupSymmetry(unitCell: double3x3, reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], latticeSymmetries: SKPointSymmetrySet, allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> SKSymmetryOperationSet
+  public static func findSpaceGroupSymmetry(unitCell: double3x3, reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], latticeSymmetries: SKPointSymmetrySet, allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> SKSymmetryOperationSet
   {
     var spaceGroupSymmetries: [SKSeitzMatrix] = []
     
@@ -479,14 +494,9 @@ extension SKSpacegroup
   }
   
     
-  public static func matchSpaceGroup(HallNumber: Int, lattice: double3x3, pointGroupNumber: Int, centering: SKSpacegroup.Centring, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-2)  -> (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis)?
+  public static func matchSpaceGroup(HallNumber: Int, lattice: double3x3, centering: SKSpacegroup.Centring, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-2)  -> (origin: SIMD3<Double>, changeOfBasis: SKRotationalChangeOfBasis)?
   {
-    // bail out early if the checked space group is not of the right point-group
-    if SKSpacegroup.spaceGroupData[HallNumber].pointGroupNumber != pointGroupNumber
-    {
-      return nil
-    }
-    
+    let pointGroupNumber = SKSpacegroup.spaceGroupData[HallNumber].pointGroupNumber
     switch(SKPointGroup.pointGroupData[pointGroupNumber].holohedry)
     {
     case .none:

@@ -41,7 +41,10 @@ class SpaceGroupStructureTests: XCTestCase
           let expandedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSpacegroup(HallNumber: referenceSpaceGroupHallNumber).expand(atoms: atoms, unitCell: referenceUnitCell, symmetryPrecision: precision)
           let symmetryRemovedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSpacegroup.init(HallNumber: referenceSpaceGroupHallNumber).duplicatesRemoved(unitCell: referenceUnitCell, atoms2: expandedAtoms)
           
-          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: double3x3, rotationMatrix: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: referenceUnitCell, atoms: symmetryRemovedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = symmetryRemovedAtoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
+          let spacegroup: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: double3x3, rotationMatrix: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)])? = SKSpacegroup.SKFindSpaceGroup(unitCell: referenceUnitCell, atoms: translatedAtoms, allowPartialOccupancies: false, symmetryPrecision: precision)
           
           XCTAssertNotNil(spacegroup, "space group \(fileName) not found")
           if let spacegroup = spacegroup

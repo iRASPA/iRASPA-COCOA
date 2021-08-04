@@ -47,7 +47,7 @@ public final class CrystalCylinderPrimitive: Structure, RKRenderCrystalCylinderO
     let color: NSColor = NSColor.yellow
     let drawRadius: Double = 5.0
     let bondDistanceCriteria: Double = 0.0
-    let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+    let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
     self.expandSymmetry(asymmetricAtom: asymmetricAtom)
     let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
     atomTreeController.insertNode(atomTreeNode, inItem: nil, atIndex: 0)
@@ -134,14 +134,13 @@ public final class CrystalCylinderPrimitive: Structure, RKRenderCrystalCylinderO
     
     index = 0
     
-    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    for asymetricAtom in asymmetricAtoms
     {
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
       for copy in copies
       {
         let pos: SIMD3<Double> = copy.position
-        copy.asymmetricIndex = asymetricIndex
         
         for k1 in minimumReplicaX...maximumReplicaX
         {
@@ -195,14 +194,13 @@ public final class CrystalCylinderPrimitive: Structure, RKRenderCrystalCylinderO
     
     index = 0
     
-    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    for asymetricAtom in asymmetricAtoms
     {
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
       for copy in copies
       {
         let pos: SIMD3<Double> = copy.position
-        copy.asymmetricIndex = asymetricIndex
         
         for k1 in minimumReplicaX...maximumReplicaX
         {
@@ -221,7 +219,7 @@ public final class CrystalCylinderPrimitive: Structure, RKRenderCrystalCylinderO
               let diffuse: NSColor = NSColor.white
               let specular: NSColor = NSColor.white
               
-              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+              data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(copy.asymmetricIndex))
               index = index + 1
             }
           }

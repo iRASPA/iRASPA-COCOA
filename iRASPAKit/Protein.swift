@@ -116,7 +116,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     index = 0
     
-    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    for asymetricAtom in asymmetricAtoms
     {
       let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
       let typeIsVisible: Bool = atomType?.isVisible ?? true
@@ -126,7 +126,6 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
       for copy in copies
       {
         let cartesianPosition: SIMD3<Double> = copy.position + self.cell.contentShift
-        copy.asymmetricIndex = asymetricIndex
         
         //let w: Double = (atom.isVisible && atom.isVisibleEnabled) && !atomNode.isGroup ? 1.0 : -1.0
         let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
@@ -153,7 +152,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     index = 0
-    for (asymmetricIndex, asymmetricBond) in bondController.arrangedObjects.enumerated()
+    for (asymmetricBondIndex, asymmetricBond) in bondController.arrangedObjects.enumerated()
     {
       for bond in asymmetricBond.copies
       {
@@ -187,7 +186,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
                                                          color1: SIMD4<Float>(color: color1),
                                                          color2: SIMD4<Float>(color: color2),
                                                          scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2),
-                                                         tag: UInt32(asymmetricIndex),
+                                                         tag: UInt32(asymmetricBondIndex),
                                                          type: UInt32(asymmetricBond.bondType.rawValue))
           index = index + 1
         }
@@ -254,7 +253,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects[self.bondController.selectedObjects]
-    for (asymmetricIndex, asymmetricBond) in selectedAsymmetricBonds.enumerated()
+    for (asymmetricBondIndex, asymmetricBond) in selectedAsymmetricBonds.enumerated()
     {
       for bond in asymmetricBond.copies
       {
@@ -288,7 +287,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
                                                          color1: SIMD4<Float>(color: color1),
                                                          color2: SIMD4<Float>(color: color2),
                                                          scale: SIMD4<Float>(x: drawRadius1, y: 1.0, z: drawRadius2, w: drawRadius1/drawRadius2),
-                                                         tag: UInt32(asymmetricIndex),
+                                                         tag: UInt32(asymmetricBondIndex),
                                                          type: UInt32(asymmetricBond.bondType.rawValue)))
         }
       }
@@ -337,7 +336,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var data: IndexSet = IndexSet()
     
-    for (asymmetricIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
+    for (asymmetricBondIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
     {
       let asymmetricAtom1: SKAsymmetricAtom =  asymmetricBond.atom1
       let asymmetricAtom2: SKAsymmetricAtom =  asymmetricBond.atom2
@@ -353,7 +352,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
         
         if filter(absoluteCartesianPosition) && isVisible
         {
-          data.insert(asymmetricIndex)
+          data.insert(asymmetricBondIndex)
         }
       }
     }
@@ -740,7 +739,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
 
   
   
-  public override var crystallographicPositions: [(SIMD3<Double>, Int)]
+  public override var crystallographicPositions: [(SIMD3<Double>, Int, Double)]
   {
     return []
   }

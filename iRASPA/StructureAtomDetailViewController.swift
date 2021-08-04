@@ -58,6 +58,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   private var draggedNodes: [Any] = []
  
   var fractionalFormatter: FractionalNumberFormatter = FractionalNumberFormatter()
+  var occupancyFormatter: OccupancyNumberFormatter = OccupancyNumberFormatter()
   var cartesianFormatter: CartesianNumberFormatter = CartesianNumberFormatter()
   var chargeFormatter: ChargeNumberFormatter = ChargeNumberFormatter()
   var fullPrecisionNumberFormatter: FullPrecisionNumberFormatter = FullPrecisionNumberFormatter()
@@ -75,8 +76,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
     // add viewMaxXMargin: necessary to avoid LAYOUT_CONSTRAINTS_NOT_SATISFIABLE during swiping
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
-    
-    
+        
     self.atomOutlineView?.registerForDraggedTypes([NSPasteboardTypeAtomTreeNode])
     
     self.atomOutlineView?.setDraggingSourceOperationMask(.every, forLocal: true)
@@ -97,7 +97,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         {
           switch(identifier)
           {
-          case "atomNameColumn", "atomElementColumn", "atomUniqueForceFieldIdentifierColumn", "atomPositionXColumn", "atomPositionYColumn", "atomPositionZColumn", "atomChargeColumn":
+          case "atomNameColumn", "atomElementColumn", "atomUniqueForceFieldIdentifierColumn", "atomOccupancyColumn","atomPositionXColumn", "atomPositionYColumn", "atomPositionZColumn", "atomChargeColumn":
             self.atomOutlineView?.editColumn(clickedColumn, row: clickedRow, with: nil, select: false)
           default:
             break
@@ -231,12 +231,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   }
   
   
-  
+  /*
   
   // MARK: NSOutlineView notifications for expanding/collapsing items
   // =====================================================================
   
-  /*
+  
   func outlineViewItemDidExpand(_ notification:Notification)
   {
     let dictionary: AnyObject  = notification.userInfo?["NSObject"] as AnyObject
@@ -381,6 +381,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomName"), owner: self) as? NSTableCellView
           view?.textField?.stringValue = atomNode.displayName
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
+          view?.toolTip = NSLocalizedString("copies", comment: "copies") + " (\(atomNode.numberOfCopies)), " + NSLocalizedString("duplicates", comment: "duplicates")  + " (\(atomNode.numberOfDuplicates))"
         case NSUserInterfaceItemIdentifier(rawValue: "atomElementColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomElement"), owner: self) as? NSTableCellView
          
@@ -413,6 +414,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           {
             view?.textField?.isEditable = false
           }
+        case NSUserInterfaceItemIdentifier(rawValue: "atomOccupancyColumn"):
+          view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomOccupancy"), owner: self) as? NSTableCellView
+          view?.textField?.doubleValue=atomNode.occupancy
+          view?.textField?.formatter = occupancyFormatter
+          view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
         case NSUserInterfaceItemIdentifier(rawValue: "atomPositionXColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomPositionX"), owner: self) as? NSTableCellView
           view?.textField?.doubleValue=atomNode.position.x
@@ -641,7 +647,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let drawRadius: Double = structure.drawRadius(elementId: 6)
       let bondDistanceCriteria: Double = document.forceFieldSets[structure.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
       
-      atomGroupNode = SKAsymmetricAtom(displayName: displayName, elementId: 6, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+      atomGroupNode = SKAsymmetricAtom(displayName: displayName, elementId: 6, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
       atomGroupNode.displayName = "New group"
       atomGroupNode.symmetryType = .container
       structure.expandSymmetry(asymmetricAtom: atomGroupNode)
@@ -696,7 +702,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let color: NSColor = document.colorSets[structure.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
       let drawRadius: Double = structure.drawRadius(elementId: element)
       let bondDistanceCriteria: Double = document.forceFieldSets[structure.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
-      let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  element, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+      let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  element, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
       structure.expandSymmetry(asymmetricAtom: asymmetricAtom)
       let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
       
@@ -1731,6 +1737,27 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       project.measurementTreeNodes = []
       
       if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.primitive(colorSets: document.colorSets, forceFieldSets: document.forceFieldSets)
+      {
+        self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
+      }
+      outlineView.window?.makeFirstResponder(atomOutlineView)
+    }
+  }
+  
+  @IBAction func FindNiggli(_ sender: NSMenuItem)
+  {
+    if let document: iRASPADocument = self.windowController?.currentDocument,
+       let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
+       let outlineView: AtomOutlineView = self.atomOutlineView,
+      let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAStructure)?.structure as? SpaceGroupProtocol
+    {
+      project.undoManager.setActionName(NSLocalizedString("Find Niggli", comment: ""))
+      
+      // remove the measuring nodes
+      project.measurementTreeNodes = []
+      
+      if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = crystal.Niggli(colorSets: document.colorSets, forceFieldSets: document.forceFieldSets)
       {
         self.setStructureState(cell: state.cell, spaceGroup: state.spaceGroup, atomTreeController: state.atoms, bondController: state.bonds)
       }
@@ -2829,6 +2856,68 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
     {
       setForceFieldType(node, to: uniqueForceFieldName)
+    }
+  }
+  
+  func setAtomOccupancy(_ atomTreeNode: SKAtomTreeNode, to newValue: Double)
+  {
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
+    {
+      let atom = atomTreeNode.representedObject
+      let oldOccupancy: Double = atom.occupancy
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.setAtomOccupancy(atomTreeNode, to: oldOccupancy)})
+      
+      if project.undoManager.isUndoing
+      {
+        project.undoManager.setActionName(NSLocalizedString("Change Atom Occupancy", comment: ""))
+      }
+      atom.occupancy = newValue
+      
+      structure.expandSymmetry(asymmetricAtom: atom)
+      
+      // reload item in the outlineView
+      if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
+      {
+        // work around bug that causes 'reloadItem' to not do anything
+        if let column: Int = self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomPositionXColumn"))
+        {
+          self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: column))
+        }
+      }
+      
+      structure.reComputeBoundingBox()
+      
+      structure.bondController.selectedObjects = []
+      structure.reComputeBonds()
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.reloadData()
+      
+      project.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changedOccupancy(_ sender: NSTextField)
+  {
+    if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
+       let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
+       let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
+    {
+      let atom = node.representedObject
+      // make sure we can convert it to a number
+      if let _: NSNumber = fullPrecisionNumberFormatter.number(from: sender.stringValue)
+      {
+        // but use the full precision from the textField
+        setAtomOccupancy(node, to: sender.doubleValue)
+      }
+      else
+      {
+        // reset value if the input is not correct
+        sender.doubleValue = atom.position.x
+      }
     }
   }
   

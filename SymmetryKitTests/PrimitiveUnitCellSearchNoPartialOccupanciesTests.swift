@@ -33,6 +33,9 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           var histogram:[Int:Int] = [:]
+          
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
                     
           for atom in reader.atoms
           {
@@ -42,10 +45,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           // Find least occurent element
           let minType: Int = histogram.min{a, b in a.value < b.value}!.key
           
-          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
+          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = translatedAtoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -114,6 +117,9 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           var histogram:[Int:Int] = [:]
+          
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
                     
           for atom in reader.atoms
           {
@@ -123,10 +129,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           // Find least occurent element
           let minType: Int = histogram.min{a, b in a.value < b.value}!.key
           
-          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
+          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = translatedAtoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -288,6 +294,9 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           var histogram:[Int:Int] = [:]
+          
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
                     
           for atom in reader.atoms
           {
@@ -297,10 +306,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           // Find least occurent element
           let minType: Int = histogram.min{a, b in a.value < b.value}!.key
           
-          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
+          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = translatedAtoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -485,6 +494,9 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           var histogram:[Int:Int] = [:]
+          
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
                     
           for atom in reader.atoms
           {
@@ -494,10 +506,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           // Find least occurent element
           let minType: Int = histogram.min{a, b in a.value < b.value}!.key
           
-          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
+          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = translatedAtoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -588,6 +600,9 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           var histogram:[Int:Int] = [:]
+          
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
                     
           for atom in reader.atoms
           {
@@ -597,10 +612,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           // Find least occurent element
           let minType: Int = histogram.min{a, b in a.value < b.value}!.key
           
-          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
+          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = translatedAtoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -689,6 +704,9 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           var histogram:[Int:Int] = [:]
+          
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
                     
           for atom in reader.atoms
           {
@@ -698,10 +716,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           // Find least occurent element
           let minType: Int = histogram.min{a, b in a.value < b.value}!.key
           
-          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
+          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = translatedAtoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -803,8 +821,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
-          print("atoms: \(reader.atoms.count)")
           var histogram:[Int:Int] = [:]
+          
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
                     
           for atom in reader.atoms
           {
@@ -814,10 +834,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           // Find least occurent element
           let minType: Int = histogram.min{a, b in a.value < b.value}!.key
           
-          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
+          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = translatedAtoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -1035,6 +1055,9 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           var histogram:[Int:Int] = [:]
+          
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
                     
           for atom in reader.atoms
           {
@@ -1044,10 +1067,10 @@ class PrimitiveUnitCellSearchNoPartialOccupanciesTests: XCTestCase
           // Find least occurent element
           let minType: Int = histogram.min{a, b in a.value < b.value}!.key
           
-          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.filter{$0.type == minType}
+          let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = translatedAtoms.filter{$0.type == minType}
           
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: false, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           

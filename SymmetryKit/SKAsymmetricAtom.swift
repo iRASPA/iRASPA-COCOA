@@ -40,7 +40,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
   private static var classVersionNumber: Int = 2
 
   public var displayName: String = "Default"
-  public var asymmetricIndex: Int = 0
+  public var asymmetricIndex2: Int = 0
   public var position: SIMD3<Double> = SIMD3<Double>(0,0,0)
   public var charge: Double = 0
   
@@ -78,7 +78,10 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
   public var fractional: Bool = false
   public var solvent: Bool = false
   
+  // Dynamically updated data
   public var displacement: SIMD3<Double> = SIMD3<Double>()
+  public var numberOfCopies: Int = 0
+  public var numberOfDuplicates: Int = 0
   
   // the crystallographic copies of the atom
   public var copies: [SKAtomCopy] = []
@@ -101,7 +104,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
     case octahedral = 7
   }
   
-  public init(displayName: String, elementId: Int, uniqueForceFieldName: String, position: SIMD3<Double>, charge: Double, color: NSColor, drawRadius: Double, bondDistanceCriteria: Double)
+  public init(displayName: String, elementId: Int, uniqueForceFieldName: String, position: SIMD3<Double>, charge: Double, color: NSColor, drawRadius: Double, bondDistanceCriteria: Double, occupancy: Double)
   {
     self.elementIdentifier = elementId
     self.displayName = displayName
@@ -111,6 +114,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
     self.color = color
     self.drawRadius = drawRadius
     self.bondDistanceCriteria = bondDistanceCriteria
+    self.occupancy = occupancy
     self.hybridization = .untyped
   }
   
@@ -296,7 +300,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
   public func binaryEncode(to encoder: BinaryEncoder)
   {
     encoder.encode(SKAsymmetricAtom.classVersionNumber)
-    encoder.encode(asymmetricIndex)
+    encoder.encode(asymmetricIndex2)
     encoder.encode(displayName)
     encoder.encode(position)
     encoder.encode(charge)
@@ -342,7 +346,7 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
       throw BinaryDecodableError.invalidArchiveVersion
     }
     
-    asymmetricIndex = try decoder.decode(Int.self)
+    asymmetricIndex2 = try decoder.decode(Int.self)
     displayName = try decoder.decode(String.self)
     position = try decoder.decode(SIMD3<Double>.self)
     charge = try decoder.decode(Double.self)
@@ -388,82 +392,4 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
       copy.asymmetricParentAtom = self
     }
   }
-}
-
-public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying, Hashable
-{
-  private static var classVersionNumber: Int = 1
-  
-  public var position: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
-  
-  // list of bonds the atom is involved in
-  //public var bonds: Set<SKBondNode> = []
-  
-  public var tag: Int = 0
-  public var type: AtomCopyType = .copy
-  
-  public weak var asymmetricParentAtom: SKAsymmetricAtom!
-  public var asymmetricIndex: Int = 0 // index for the renderer
-  
-  public var valence: Int = 0
-  
-  public func hash(into hasher: inout Hasher)
-  {
-    ObjectIdentifier(self).hash(into: &hasher)
-  }
-  
-  public enum AtomCopyType: Int
-  {
-    case copy = 2
-    case duplicate = 3
-  }
-  
-  public init(asymmetricParentAtom: SKAsymmetricAtom, position: SIMD3<Double>)
-  {
-    self.position = position
-    self.asymmetricParentAtom = asymmetricParentAtom
-  }
-  
-  required public init(original: SKAtomCopy)
-  {
-    self.position = original.position
-    self.tag = original.tag
-    self.type = original.type
-    self.asymmetricIndex = original.asymmetricIndex
-  }
-  
-  public static func == (lhs: SKAtomCopy, rhs: SKAtomCopy) -> Bool
-  {
-    return fabs(lhs.position.x - rhs.position.x)<0.01 && fabs(lhs.position.y - rhs.position.y)<0.01 && fabs(lhs.position.z - rhs.position.z)<0.01
-  }
-  
-  // MARK: -
-  // MARK: Binary Encodable support
-  
-  public func binaryEncode(to encoder: BinaryEncoder)
-  {
-    encoder.encode(SKAtomCopy.classVersionNumber)
-    encoder.encode(self.position)
-    encoder.encode(self.type.rawValue)
-    encoder.encode(self.tag)
-    encoder.encode(self.asymmetricIndex)
-  }
-  
-  // MARK: -
-  // MARK: Binary Decodable support
-  
-  public required init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let readVersionNumber: Int = try decoder.decode(Int.self)
-    if readVersionNumber > SKAtomCopy.classVersionNumber
-    {
-      throw BinaryDecodableError.invalidArchiveVersion
-    }
-    self.position = try decoder.decode(SIMD3<Double>.self)
-    guard let type = try AtomCopyType(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
-    self.type = type
-    self.tag = try decoder.decode(Int.self)
-    self.asymmetricIndex = try decoder.decode(Int.self)
-  }
-  
 }

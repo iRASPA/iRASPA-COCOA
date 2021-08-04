@@ -569,7 +569,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
       {
         if let chemicalSymbol: String = dictionary["_atom_site_type_symbol"]?.lowercased().capitalizeFirst
         {
-          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
           
           if let label: String = dictionary["_atom_site_label"]
           {
@@ -605,6 +605,14 @@ public final class SKCIFParser: SKParser, ProgressReporting
             atom.charge = charge
           }
           
+          var occupancy: Double = 1.0
+          if let occupancyString: String = dictionary["_atom_site_occupancy"]
+          {
+            occupancy = NSString(string: occupancyString).doubleValue
+            atom.occupancy = occupancy
+          }
+          
+          
           if let atomicNumber: Int = SKElement.atomData[chemicalSymbol]?["atomicNumber"] as? Int
           {
             atom.elementIdentifier = atomicNumber
@@ -626,7 +634,7 @@ public final class SKCIFParser: SKParser, ProgressReporting
         }
         else if let chemicalSymbol: String = dictionary["_atom_site.type_symbol"]?.lowercased().capitalizeFirst
         {
-          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+          let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
           
           if let label: String = dictionary["_atom_site.id"]
           {

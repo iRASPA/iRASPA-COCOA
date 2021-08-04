@@ -960,7 +960,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
          
       let structures: [RKRenderStructure] = crystalProjectData.renderStructuresForScene(structureIdentifier)
       
-      if let selectedStructure: Structure = structures[movieIdentifier] as? Structure
+      if movieIdentifier>=0, movieIdentifier < structures.count,
+         let selectedStructure: Structure = structures[movieIdentifier] as? Structure
       {
         let numberOfReplicas: Int = selectedStructure.numberOfReplicas()
         let nodes: [SKAtomTreeNode] = selectedStructure.atomTreeController.flattenedLeafNodes()

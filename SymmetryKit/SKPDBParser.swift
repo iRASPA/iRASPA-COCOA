@@ -564,7 +564,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
               break
             }
             
-            let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+            let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
             
             let atomSerialNumberString: String = scannedLine.substring(with: NSRange(location: 6, length: 5))
             if let integerValue: Int = Int(atomSerialNumberString)

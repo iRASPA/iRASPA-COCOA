@@ -70,7 +70,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
   
   public init()
   {
-    let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+    let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
     self.hiddenRootNode = SKAtomTreeNode(representedObject: atom)
     for child in hiddenRootNode.childNodes
     {
@@ -89,7 +89,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
   
   public init(nodes: [SKAtomTreeNode])
   {
-    let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0)
+    let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "new", elementId: 0, uniqueForceFieldName: "C", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0.0, color: NSColor.black, drawRadius: 1.0, bondDistanceCriteria: 1.0, occupancy: 1.0)
     self.hiddenRootNode = SKAtomTreeNode(representedObject: atom)
     hiddenRootNode.childNodes = []
     
@@ -276,6 +276,7 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
     
   }
   
+  ///
   public func tag()
   {
     // probably can be done a lot faster by using the tree-structure and recursion
@@ -288,15 +289,20 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
     
     let asymmetricAtoms: [SKAsymmetricAtom] = self.flattenedLeafNodes().compactMap{$0.representedObject}
     
-    for i in 0..<asymmetricAtoms.count
+    var tag = 0
+    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
     {
-      asymmetricAtoms[i].tag = i
-    }
-    
-    let atomList: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}
-    for i in 0..<atomList.count
-    {
-      atomList[i].tag = i
+      asymetricAtom.tag = asymetricIndex
+            
+      asymetricAtom.numberOfCopies = asymetricAtom.copies.filter{$0.type == .copy}.count
+      asymetricAtom.numberOfDuplicates = asymetricAtom.copies.count - asymetricAtom.numberOfCopies
+      
+      for copy in asymetricAtom.copies
+      {
+        copy.tag = tag
+        copy.asymmetricIndex = asymetricIndex
+        tag += 1
+      }
     }
   }
   
@@ -307,8 +313,6 @@ public class SKAtomTreeController: BinaryDecodable, BinaryEncodable
   {
     self.selectedTreeNodes = Set()
   }
-  
-  
   
   public func removeSelection()
   {
