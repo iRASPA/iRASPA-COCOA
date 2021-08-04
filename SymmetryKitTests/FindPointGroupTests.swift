@@ -14,7 +14,7 @@ class FindPointGroupTests: XCTestCase
 {
   let precision: Double = 1e-5
   
-  public static func SKTestPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> Int?
+  public static func SKTestPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> Int?
   {
     var histogram:[Int:Int] = [:]
     
@@ -26,7 +26,7 @@ class FindPointGroupTests: XCTestCase
     // Find least occurent element
     let minType: Int = histogram.min{a, b in a.value < b.value}!.key
     
-    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = allowPartialOccupancies ? atoms : atoms.filter{$0.type == minType}
+    let reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? atoms : atoms.filter{$0.type == minType}
     
     // search for a primitive cell based on the positions of the atoms
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reducedAtoms, atoms: atoms, unitCell: unitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
@@ -38,8 +38,8 @@ class FindPointGroupTests: XCTestCase
     let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
-    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
-    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = allowPartialOccupancies ? positionInDelaunayCell : positionInDelaunayCell.filter{$0.type == minType}
+    let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+    let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? positionInDelaunayCell : positionInDelaunayCell.filter{$0.type == minType}
     
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
@@ -73,7 +73,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
@@ -132,7 +132,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
@@ -285,7 +285,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
@@ -461,7 +461,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
@@ -544,7 +544,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
@@ -624,7 +624,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
@@ -718,7 +718,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
@@ -1064,7 +1064,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")
@@ -1098,7 +1098,7 @@ class FindPointGroupTests: XCTestCase
         if let unitCell = reader.unitCell
         {
           //let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
-          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = reader.atoms.map{($0.fractionalPosition, $0.type)}
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition, $0.type, 1.0)}
           
           let pointGroupNumber: Int? = FindPointGroupTests.SKTestPointGroup(unitCell: unitCell, atoms: translatedAtoms, allowPartialOccupancies: true, symmetryPrecision: precision)
           XCTAssertNotNil(pointGroupNumber, "space group \(fileName) not found")

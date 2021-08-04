@@ -2782,7 +2782,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     asymmetricAtom.copies = [newAtom]
   }
   
-  public var crystallographicPositions: [(SIMD3<Double>, Int)]
+  public var crystallographicPositions: [(SIMD3<Double>, Int, Double)]
   {
     return []
   }

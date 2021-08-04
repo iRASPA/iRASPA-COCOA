@@ -32,8 +32,11 @@ class PrimitiveUnitCellSearchTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reader.atoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -101,8 +104,11 @@ class PrimitiveUnitCellSearchTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reader.atoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -263,8 +269,11 @@ class PrimitiveUnitCellSearchTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reader.atoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -448,8 +457,11 @@ class PrimitiveUnitCellSearchTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reader.atoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -539,8 +551,11 @@ class PrimitiveUnitCellSearchTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reader.atoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -628,8 +643,11 @@ class PrimitiveUnitCellSearchTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reader.atoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -731,8 +749,11 @@ class PrimitiveUnitCellSearchTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reader.atoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           
@@ -1086,8 +1107,11 @@ class PrimitiveUnitCellSearchTests: XCTestCase
         let reader: SKVASPReader = SKVASPReader(URL: url)
         if let unitCell = reader.unitCell
         {
+          let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+          let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+          
           // search for a primitive cell based on the positions of the atoms
-          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: reader.atoms, atoms: reader.atoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+          let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
          
           let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
           

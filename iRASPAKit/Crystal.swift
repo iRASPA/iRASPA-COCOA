@@ -183,7 +183,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     
     index = 0
     
-    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    for asymetricAtom in asymmetricAtoms
     {
       let atomType: SKForceFieldType? = forceFieldSet?[asymetricAtom.uniqueForceFieldName]
       let typeIsVisible: Bool = atomType?.isVisible ?? true
@@ -193,7 +193,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       for copy in copies
       {
         let pos: SIMD3<Double> = SIMD3<Double>.flip(v: copy.position, flip: cell.contentFlip, boundary: SIMD3<Double>(1.0,1.0,1.0))
-        copy.asymmetricIndex = asymetricIndex
       
         for k1 in minimumReplicaX...maximumReplicaX
         {
@@ -207,7 +206,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
               let w: Double = (typeIsVisible && copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
               let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
             
-              let radius: Double = copy.asymmetricParentAtom.drawRadius * copy.asymmetricParentAtom.occupancy
+              let radius: Double = copy.asymmetricParentAtom.drawRadius // * copy.asymmetricParentAtom.occupancy
               let ambient: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
               let diffuse: NSColor = copy.asymmetricParentAtom?.color ?? NSColor.white
               let specular: NSColor = self.atomSpecularColor
@@ -493,14 +492,13 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     
-    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    for asymetricAtom in asymmetricAtoms
     {
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
       for copy in copies
       {
         let pos: SIMD3<Double> = copy.position
-        copy.asymmetricIndex = asymetricIndex
         
         for k1 in minimumReplicaX...maximumReplicaX
         {
@@ -601,7 +599,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
               let w: Double = (typeIsVisible && asymetricAtom.isVisible && asymetricAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
               let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: Float(w))
               
-              let radius: Double = asymetricAtom.drawRadius * asymetricAtom.occupancy
+              let radius: Double = asymetricAtom.drawRadius //* asymetricAtom.occupancy
               let ambient: NSColor = asymetricAtom.color
               let diffuse: NSColor = asymetricAtom.color 
               let specular: NSColor = self.atomSpecularColor
@@ -979,17 +977,17 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     }
   }
   
-  public override var crystallographicPositions: [(SIMD3<Double>, Int)]
+  public override var crystallographicPositions: [(SIMD3<Double>, Int, Double)]
   {
     // only use leaf-nodes
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
     let atoms: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy && $0.asymmetricParentAtom.symmetryType != .container}
      
-    var data: [(SIMD3<Double>, Int)] = [(SIMD3<Double>,Int)](repeating: (SIMD3<Double>(),0), count: atoms.count)
+    var data: [(SIMD3<Double>, Int, Double)] = [(SIMD3<Double>, Int, Double)](repeating: (SIMD3<Double>(), 0, 0), count: atoms.count)
      
     for (index, atom) in atoms.enumerated()
     {
-      data[index] = (fract(atom.position), atom.asymmetricParentAtom.elementIdentifier)
+      data[index] = (fract(atom.position), atom.asymmetricParentAtom.elementIdentifier, atom.asymmetricParentAtom.occupancy)
     }
     return data
   }
@@ -1061,7 +1059,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       let copies: [SKAtomCopy] = atom.copies.filter{$0.type == .copy}
       for copy in copies
       {
-        let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: atom.displayName, elementId: atom.elementIdentifier, uniqueForceFieldName: atom.uniqueForceFieldName, position: copy.position, charge: atom.charge, color: atom.color, drawRadius: atom.drawRadius, bondDistanceCriteria: atom.bondDistanceCriteria)
+        let newAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: atom.displayName, elementId: atom.elementIdentifier, uniqueForceFieldName: atom.uniqueForceFieldName, position: copy.position, charge: atom.charge, color: atom.color, drawRadius: atom.drawRadius, bondDistanceCriteria: atom.bondDistanceCriteria, occupancy: atom.occupancy)
         newAtom.symmetryType = .asymmetric
         copy.asymmetricParentAtom = newAtom
         newAtom.copies = [copy]
@@ -1126,7 +1124,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public func primitive(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
-    if let primitive: (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKSpacegroup.SKFindPrimitive(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, allowPartialOccupancies: false, symmetryPrecision: cell.precision)
+    if let primitive: (cell: SKSymmetryCell, primitiveAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)]) = SKSpacegroup.SKFindPrimitive(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, allowPartialOccupancies: false, symmetryPrecision: cell.precision)
     {
       let primitiveCell = SKCell(a: primitive.cell.a, b: primitive.cell.b, c: primitive.cell.c, alpha: primitive.cell.alpha, beta: primitive.cell.beta, gamma: primitive.cell.gamma)
       
@@ -1141,13 +1139,58 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
         let drawRadius: Double = self.drawRadius(elementId: asymmetricAtom.type)
         let bondDistanceCriteria: Double = forceFieldSets[self.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
         
-        let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId: asymmetricAtom.type, uniqueForceFieldName: displayName, position: asymmetricAtom.fractionalPosition, charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+        let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId: asymmetricAtom.type, uniqueForceFieldName: displayName, position: asymmetricAtom.fractionalPosition, charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: asymmetricAtom.occupancy)
         atom.symmetryType = .asymmetric
         let node = SKAtomTreeNode(representedObject: atom)
         
         let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: atom, position: fract(atom.position))
         newAtom.type = .copy
         atom.copies.append(newAtom)
+        
+        primitiveAtoms.appendNode(node, atArrangedObjectIndexPath: [])
+      }
+
+      let atomList: [SKAtomCopy] = primitiveAtoms.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
+      
+      let bonds: [SKBondNode] = self.computeBonds(cell: primitiveCell, atomList: atomList)
+      let primitiveBonds: SKBondSetController = SKBondSetController(arrangedObjects: bonds)
+      
+      primitiveAtoms.tag()
+      primitiveBonds.tag()
+      
+      return (cell: primitiveCell, spaceGroup: primitiveSpaceGroup, atoms: primitiveAtoms, bonds: primitiveBonds)
+    }
+    
+    return nil
+  }
+  
+  public func Niggli(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
+  {
+    if let primitive: (HallNumber: Int, cell: SKSymmetryCell, asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)]) = SKSpacegroup.SKFindNiggli(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, allowPartialOccupancies: false, symmetryPrecision: cell.precision)
+    {
+      let primitiveCell = SKCell(a: primitive.cell.a, b: primitive.cell.b, c: primitive.cell.c, alpha: primitive.cell.alpha, beta: primitive.cell.beta, gamma: primitive.cell.gamma)
+      
+      let primitiveSpaceGroup = SKSpacegroup(HallNumber: primitive.HallNumber)
+      let primitiveAtoms = SKAtomTreeController()
+      primitiveAtoms.selectedTreeNodes = []
+      
+      for asymmetricAtom in primitive.asymmetricAtoms
+      {
+        let displayName: String = PredefinedElements.sharedInstance.elementSet[asymmetricAtom.type].chemicalSymbol
+        let color: NSColor = colorSets[self.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
+        let drawRadius: Double = self.drawRadius(elementId: asymmetricAtom.type)
+        let bondDistanceCriteria: Double = forceFieldSets[self.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
+        let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId: asymmetricAtom.type, uniqueForceFieldName: displayName, position: asymmetricAtom.fractionalPosition, charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: asymmetricAtom.occupancy)
+        atom.symmetryType = .asymmetric
+        let node = SKAtomTreeNode(representedObject: atom)
+        
+        let images: [SIMD3<Double>] = primitiveSpaceGroup.listOfSymmetricPositions(atom.position)
+        for image in images
+        {
+          let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: atom, position: fract(image))
+          newAtom.type = .copy
+          atom.copies.append(newAtom)
+        }
         
         primitiveAtoms.appendNode(node, atArrangedObjectIndexPath: [])
       }
@@ -1182,20 +1225,22 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public func imposedSymmetry(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
   {
-    if let symmetry: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: simd_double3x3, rotationMatrix: simd_double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)]) = SKSpacegroup.SKFindSpaceGroup(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, allowPartialOccupancies: false, symmetryPrecision: cell.precision)
+    let atomNodes: [SKAtomTreeNode] = self.atomTreeController.flattenedLeafNodes().filter{$0.representedObject.symmetryType == .asymmetric}
+    let allowPartialOccupancies: Bool = !atomNodes.filter{$0.representedObject.occupancy < 1.0}.isEmpty
+    
+    if let symmetry: (hall: Int, origin: SIMD3<Double>, cell: SKSymmetryCell, changeOfBasis: SKRotationalChangeOfBasis, transformationMatrix: simd_double3x3, rotationMatrix: simd_double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)]) = SKSpacegroup.SKFindSpaceGroup(unitCell: self.cell.unitCell, atoms: self.crystallographicPositions, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: cell.precision)
     {
       let cellWithSymmetry = SKCell(a: symmetry.cell.a, b: symmetry.cell.b, c: symmetry.cell.c, alpha: symmetry.cell.alpha, beta: symmetry.cell.beta, gamma: symmetry.cell.gamma)
       let spaceGroupWithSymmetry = SKSpacegroup(HallNumber: symmetry.hall)
       let atomsWithSymmetry = SKAtomTreeController()
      
-      
       for asymmetricAtom in symmetry.asymmetricAtoms
       {
         let displayName: String = PredefinedElements.sharedInstance.elementSet[asymmetricAtom.type].chemicalSymbol
         let color: NSColor = colorSets[self.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
         let drawRadius: Double = self.drawRadius(elementId: asymmetricAtom.type)
         let bondDistanceCriteria: Double = forceFieldSets[self.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
-        let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId: asymmetricAtom.type, uniqueForceFieldName: displayName, position: asymmetricAtom.fractionalPosition, charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+        let atom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId: asymmetricAtom.type, uniqueForceFieldName: displayName, position: asymmetricAtom.fractionalPosition, charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: asymmetricAtom.occupancy)
         atom.symmetryType = .asymmetric
         let node = SKAtomTreeNode(representedObject: atom)
         
@@ -1667,7 +1712,10 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
            // Type atom as 'Double'
            if (bondLength < 0.1)
            {
-             subsetAtoms[i].type = .duplicate
+             if(subsetAtoms[i].asymmetricParentAtom.elementIdentifier != subsetAtoms[j].asymmetricParentAtom.elementIdentifier)
+             {
+               subsetAtoms[i].type = .duplicate
+             }
            }
            else if (bondLength < 0.8)
            {
@@ -1830,7 +1878,10 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
           // Type atom as 'Double'
           if (bondLength < 0.1)
           {
-            atoms[i].type = .duplicate
+            if(atoms[i].asymmetricIndex != atoms[j].asymmetricIndex)
+            {
+              atoms[i].type = .duplicate
+            }
           }
           else if (length(separationVector) > bondCriteria )
           {
@@ -1860,7 +1911,10 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
           // Type atom as 'Double'
           if (bondLength < 0.1)
           {
-            atoms[i].type = .duplicate
+            if(atoms[i].asymmetricIndex != atomList[j].asymmetricIndex)
+            {
+              atoms[i].type = .duplicate
+            }
           }
           else if (bondLength < 0.8)
           {
@@ -1911,15 +1965,12 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let cutoff: Double = 3.0
     let offsets: [[Int]] = [[0,0,0],[1,0,0],[1,1,0],[0,1,0],[-1,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1],[-1,1,1],[-1,0,1],[-1,-1,1],[0,-1,1],[1,-1,1]]
     
-    
     var computedBonds: [SKBondNode] = []
     var totalCount: Int
     
     let perpendicularWidths: SIMD3<Double> = structureCell.perpendicularWidths
     guard perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 && perpendicularWidths.x > 0.0001 else {return []}
-    
-    //atoms.forEach{ $0.bonds.removeAll()}
-    
+        
     let numberOfCells: [Int] = [Int(perpendicularWidths.x/cutoff),Int(perpendicularWidths.y/cutoff),Int(perpendicularWidths.z/cutoff)]
     let totalNumberOfCells: Int = numberOfCells[0] * numberOfCells[1] * numberOfCells[2]
     
@@ -1939,8 +1990,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
         let position: SIMD3<Double> = perpendicularWidths * fract(atoms[i].position)
         
         let icell: Int = Int((position.x) / cutoffVector.x) +
-          Int((position.y) / cutoffVector.y) * numberOfCells[0] +
-          Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
+                   Int((position.y) / cutoffVector.y) * numberOfCells[0] +
+                   Int((position.z) / cutoffVector.z) * numberOfCells[1] * numberOfCells[0]
         
         list[i] = head[icell]
         head[icell] = i
@@ -1989,7 +2040,11 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
                       // Type atom as 'Double'
                       if (bondLength < 0.1)
                       {
-                        atoms[i].type = .duplicate
+                        if(!(atoms[i].asymmetricParentAtom.occupancy < 1.0 || atoms[j].asymmetricParentAtom.occupancy < 1.0) || (atoms[i].asymmetricIndex == atoms[j].asymmetricIndex))
+                        //if(atoms[i].asymmetricParentAtom.elementIdentifier == atoms[j].asymmetricParentAtom.elementIdentifier)
+                        {
+                          atoms[i].type = .duplicate
+                        }
                       }
                       else if (length(separationVector) > bondCriteria)
                       {
@@ -2049,7 +2104,13 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
             // Type atom as 'Double'
             if (bondLength < 0.1)
             {
-              atoms[i].type = .duplicate
+              //if(atoms[i].asymmetricIndex != atoms[j].asymmetricIndex)
+              //if(atoms[i].asymmetricParentAtom.elementIdentifier == atoms[j].asymmetricParentAtom.elementIdentifier)
+              //if(!(atoms[i].asymmetricParentAtom.occupancy < 1.0 || atoms[j].asymmetricParentAtom.occupancy < 1.0))
+              if(!(atoms[i].asymmetricParentAtom.occupancy < 1.0 || atoms[j].asymmetricParentAtom.occupancy < 1.0) || (atoms[i].asymmetricIndex == atoms[j].asymmetricIndex))
+              {
+                atoms[i].type = .duplicate
+              }
             }
             else if (length(separationVector) > bondCriteria )
             {

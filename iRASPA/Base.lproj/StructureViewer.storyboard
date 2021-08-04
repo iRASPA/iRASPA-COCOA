@@ -1219,7 +1219,7 @@
             <objects>
                 <viewController id="TWR-Zb-1BZ" customClass="StructureDetailViewController" customModule="iRASPA" customModuleProvider="target" sceneMemberID="viewController">
                     <stackView key="view" distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="Afh-Xs-RAp">
-                        <rect key="frame" x="0.0" y="0.0" width="500" height="174"/>
+                        <rect key="frame" x="0.0" y="0.0" width="530" height="174"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <segmentedControl horizontalHuggingPriority="260" verticalHuggingPriority="750" horizontalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="5IQ-fw-X7X">
@@ -1241,9 +1241,9 @@
                                 </connections>
                             </segmentedControl>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="lfO-NB-5q8">
-                                <rect key="frame" x="0.0" y="0.0" width="500" height="154"/>
+                                <rect key="frame" x="0.0" y="0.0" width="530" height="154"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="500" id="aaZ-M6-8vg"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="530" id="aaZ-M6-8vg"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="g8v-Is-YFx" kind="embed" id="1mR-za-D2C"/>
@@ -1287,7 +1287,7 @@
                         <tabViewItem id="6KP-vi-k9m"/>
                     </tabViewItems>
                     <tabView key="tabView" wantsLayer="YES" misplaced="YES" type="noTabsNoBorder" id="rzD-1c-wKY">
-                        <rect key="frame" x="0.0" y="0.0" width="500" height="750"/>
+                        <rect key="frame" x="0.0" y="0.0" width="520" height="750"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <font key="font" metaFont="system"/>
                         <connections>

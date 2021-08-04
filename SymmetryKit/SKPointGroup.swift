@@ -464,13 +464,13 @@ public struct SKPointGroup
   }
 
 
-  public static func findPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> SKPointGroup?
+  public static func findPointGroup(unitCell: double3x3, atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> SKPointGroup?
   {
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: atoms, atoms: atoms, unitCell: unitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     guard let primitiveDelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else { return nil}
     let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
                                                                                      
-    let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
+    let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     
     let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: unitCell, reducedAtoms: positionInPrimitiveCell, atoms: positionInPrimitiveCell, latticeSymmetries: latticeSymmetries, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     

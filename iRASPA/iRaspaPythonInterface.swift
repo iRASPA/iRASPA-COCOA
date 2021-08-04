@@ -37,7 +37,7 @@ import SymmetryKit
 struct SKAsymmetricAtomPythonObject
 {
   var ob_base: PyObject = PyObject()
-  var asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "atom", elementId: 0, uniqueForceFieldName: "ff", position: SIMD3<Double>(1.0,2.0,3.0), charge: 0.0, color: NSColor.red, drawRadius: 1.0, bondDistanceCriteria: 1.5)
+  var asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "atom", elementId: 0, uniqueForceFieldName: "ff", position: SIMD3<Double>(1.0,2.0,3.0), charge: 0.0, color: NSColor.red, drawRadius: 1.0, bondDistanceCriteria: 1.5, occupancy: 1.0)
 }
 
 let moduleName: UnsafeMutablePointer<Int8>! = strdup("iraspa")
@@ -45,7 +45,7 @@ let moduleName: UnsafeMutablePointer<Int8>! = strdup("iraspa")
 var initAtomPyCFunction : initproc = { (this: UnsafeMutablePointer<PyObject>?, _ args: UnsafeMutablePointer<PyObject>?, _ : UnsafeMutablePointer<PyObject>?) -> Int32 in
     
   this?.withMemoryRebound(to: SKAsymmetricAtomPythonObject.self, capacity: 1, { (p: UnsafeMutablePointer<SKAsymmetricAtomPythonObject>)  in
-    p.pointee.asymmetricAtom = SKAsymmetricAtom(displayName: "atom", elementId: 0, uniqueForceFieldName: "ff", position: SIMD3<Double>(1.0,2.0,3.0), charge: 0.0, color: NSColor.red, drawRadius: 1.0, bondDistanceCriteria: 1.5)
+    p.pointee.asymmetricAtom = SKAsymmetricAtom(displayName: "atom", elementId: 0, uniqueForceFieldName: "ff", position: SIMD3<Double>(1.0,2.0,3.0), charge: 0.0, color: NSColor.red, drawRadius: 1.0, bondDistanceCriteria: 1.5, occupancy: 1.0)
   })
     
   return 0

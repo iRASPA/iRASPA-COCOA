@@ -1042,22 +1042,22 @@ public struct SKSymmetryCell: CustomStringConvertible
   }
   
   
-  public static func trim(atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], from: double3x3, to: double3x3, allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int)]
+  public static func trim(atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], from: double3x3, to: double3x3, allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)]
   {
     // The change-of-basis matrix C_{old->new} that transforms coordinates in the first (old) setting to coordinates in the second (new) settings
     // is then obtained as the product: C_{old->new} = C_{new}^{-1} C_{old}
     let changeOfBasis: double3x3 = to.inverse * from
-    
-    let trimmedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)] = atoms.map{(changeOfBasis * $0.fractionalPosition, $0.type)}
+        
+    let trimmedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = atoms.map{(fract(changeOfBasis * $0.fractionalPosition), $0.type, $0.occupancy)}
     var overlapTable: [Int] = [Int](repeating: -1, count: trimmedAtoms.count)
     
-    var result: [(fractionalPosition: SIMD3<Double>, type: Int)] = []
+    var result: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = []
     for i in 0..<trimmedAtoms.count
     {
       overlapTable[i] = i
       for j in 0..<trimmedAtoms.count
       {
-        if allowPartialOccupancies || trimmedAtoms[i].type == trimmedAtoms[j].type
+        if trimmedAtoms[i].type == trimmedAtoms[j].type
         {
           var dr: SIMD3<Double> = abs(trimmedAtoms[i].fractionalPosition - trimmedAtoms[j].fractionalPosition)
           dr.x -= rint(dr.x)
@@ -1104,7 +1104,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   ///   cells, one usually excludes cells with angles smaller than 5 degrees or larger than 175 degrees. Finally, one of the cells with the smallest volume is chosen as the representative primitive cell.
   ///   Note that this choice may result in unconventional cell constants and the cell needs to be reduced.
   ///   10.1107/s0021889898008735
-  public static func findSmallestPrimitiveCell(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], unitCell: double3x3, allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> double3x3
+  public static func findSmallestPrimitiveCell(reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], unitCell: double3x3, allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> double3x3
   {
     var translationVectors: [SIMD3<Double>] = []
     
@@ -1175,7 +1175,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   /// - parameter symmetryPrecision:   the precision of the search (default: 1e-2)
   ///
   /// - returns: the list of translation vectors, including (0,0,0)
-  public static func primitiveTranslationVectors(unitCell: double3x3, reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int)],atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], rotationMatrix: SKRotationMatrix, allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> [SIMD3<Double>]
+  public static func primitiveTranslationVectors(unitCell: double3x3, reducedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)],atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], rotationMatrix: SKRotationMatrix, allowPartialOccupancies: Bool, symmetryPrecision: Double = 1e-2) -> [SIMD3<Double>]
   {
     var translationVectors: [SIMD3<Double>] = []
     
@@ -1206,7 +1206,7 @@ public struct SKSymmetryCell: CustomStringConvertible
   ///
   /// - A symmetry operation, after applying the rotation and then translation on any atom, should lead to an overlap with another atom.
   ///   For each atom, we loop over all atoms. If no overlaps are found, the total result is false. As soon as an overlap is found, we can stop the current loop and continue with the next atom to check.
-  private static func testSymmetry(of translationVector: SIMD3<Double>, and rotationMatrix: SKRotationMatrix, on atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], and unitCell: double3x3, allowPartialOccupancies: Bool, with precision: Double = 1e-2) -> Bool
+  private static func testSymmetry(of translationVector: SIMD3<Double>, and rotationMatrix: SKRotationMatrix, on atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], and unitCell: double3x3, allowPartialOccupancies: Bool, with precision: Double = 1e-2) -> Bool
   {    
     for i in 0..<atoms.count
     {
@@ -1238,7 +1238,7 @@ public struct SKSymmetryCell: CustomStringConvertible
     return true
   }
   
-  private static func testTranslationalSymmetry(of translationVector: SIMD3<Double>, on atoms: [(fractionalPosition: SIMD3<Double>, type: Int)], and unitCell: double3x3, allowPartialOccupancies: Bool, with precision: Double) -> Bool
+  private static func testTranslationalSymmetry(of translationVector: SIMD3<Double>, on atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)], and unitCell: double3x3, allowPartialOccupancies: Bool, with precision: Double) -> Bool
   {
     let squared_precision: Double = precision * precision
     

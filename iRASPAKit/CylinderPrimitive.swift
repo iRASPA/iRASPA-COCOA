@@ -47,7 +47,7 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource
     let color: NSColor = NSColor.yellow
     let drawRadius: Double = 5.0
     let bondDistanceCriteria: Double = 0.0
-    let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
+    let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
     self.expandSymmetry(asymmetricAtom: asymmetricAtom)
     let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
     atomTreeController.insertNode(atomTreeNode, inItem: nil, atIndex: 0)
@@ -118,14 +118,13 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource
     
     index = 0
     
-    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    for asymetricAtom in asymmetricAtoms
     {
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
       for copy in copies
       {
         let pos: SIMD3<Double> = copy.position
-        copy.asymmetricIndex = asymetricIndex
         
         let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
         let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: Float(w))
@@ -157,14 +156,13 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource
     
     index = 0
     
-    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    for asymetricAtom in asymmetricAtoms
     {
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
       for copy in copies
       {
         let pos: SIMD3<Double> = copy.position
-        copy.asymmetricIndex = asymetricIndex
         
         let w: Double = (copy.asymmetricParentAtom.isVisible && copy.asymmetricParentAtom.isVisibleEnabled && asymetricAtom.symmetryType != .container) ? 1.0 : -1.0
         let atomPosition: SIMD4<Float> = SIMD4<Float>(x: Float(pos.x), y: Float(pos.y), z: Float(pos.z), w: Float(w))
@@ -174,7 +172,7 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource
         let diffuse: NSColor = NSColor.white
         let specular: NSColor = NSColor.white
         
-        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(asymetricIndex))
+        data[index] = RKInPerInstanceAttributesAtoms(position: atomPosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(radius), tag: UInt32(copy.asymmetricIndex))
         index = index + 1
       }
     }
@@ -387,14 +385,13 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource
     var maximum: SIMD3<Double> = SIMD3<Double>(x: -Double.greatestFiniteMagnitude, y: -Double.greatestFiniteMagnitude, z: -Double.greatestFiniteMagnitude)
     
     
-    for (asymetricIndex, asymetricAtom) in asymmetricAtoms.enumerated()
+    for asymetricAtom in asymmetricAtoms
     {
       let copies: [SKAtomCopy] = asymetricAtom.copies.filter{$0.type == .copy}
       
       for copy in copies
       {
         let pos: SIMD3<Double> = copy.position
-        copy.asymmetricIndex = asymetricIndex
         
         for vertex in cylinderVertices
         {

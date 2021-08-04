@@ -153,7 +153,7 @@ public final class SKBondNode: Hashable, Equatable, CustomStringConvertible, Bin
   // MARK: -
   // MARK: Binary Decodable support
   
-  internal static let uninitializedAsymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "uninitialized", elementId: 0, uniqueForceFieldName: "", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0, color: NSColor.black, drawRadius: 0.0, bondDistanceCriteria: 0.0)
+  internal static let uninitializedAsymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: "uninitialized", elementId: 0, uniqueForceFieldName: "", position: SIMD3<Double>(0.0,0.0,0.0), charge: 0, color: NSColor.black, drawRadius: 0.0, bondDistanceCriteria: 0.0, occupancy: 1.0)
   internal static let uninitializedAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: uninitializedAsymmetricAtom, position: SIMD3<Double>(0.0,0.0,0.0))
   
   public init(fromBinary decoder: BinaryDecoder) throws
