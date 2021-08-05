@@ -236,6 +236,8 @@
 		936411DC2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */; };
 		93682C3C1F2729A00041F436 /* iRASPALoadDatabases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */; };
 		936AF6DB26B985B600E91649 /* SKAsymmetricAtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DA26B985B600E91649 /* SKAsymmetricAtom.swift */; };
+		936AF6DD26BC082000E91649 /* MetalCappedConeGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DC26BC082000E91649 /* MetalCappedConeGeometry.swift */; };
+		936AF6DF26BC2B6700E91649 /* MetalCapsuleGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DE26BC2B6700E91649 /* MetalCapsuleGeometry.swift */; };
 		936DE11C21DA7F470023E7C8 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936DE11B21DA7F470023E7C8 /* Array.swift */; };
 		936E236D1F17C998007F6230 /* DeleteAllRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E236C1F17C998007F6230 /* DeleteAllRecordsOperation.swift */; };
 		936E776826B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */; };
@@ -1555,6 +1557,8 @@
 		936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedTripleBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		93682C3B1F2729A00041F436 /* iRASPALoadDatabases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPALoadDatabases.swift; sourceTree = "<group>"; };
 		936AF6DA26B985B600E91649 /* SKAsymmetricAtom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricAtom.swift; sourceTree = "<group>"; };
+		936AF6DC26BC082000E91649 /* MetalCappedConeGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedConeGeometry.swift; sourceTree = "<group>"; };
+		936AF6DE26BC2B6700E91649 /* MetalCapsuleGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCapsuleGeometry.swift; sourceTree = "<group>"; };
 		936DE11B21DA7F470023E7C8 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		936E236C1F17C998007F6230 /* DeleteAllRecordsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAllRecordsOperation.swift; sourceTree = "<group>"; };
 		936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupIZAZeoliteTests.swift; sourceTree = "<group>"; };
@@ -2519,6 +2523,8 @@
 				930DD5EE1E26B65C00B8FE9B /* MetalCylinderGeometry.swift */,
 				936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */,
 				9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */,
+				936AF6DC26BC082000E91649 /* MetalCappedConeGeometry.swift */,
+				936AF6DE26BC2B6700E91649 /* MetalCapsuleGeometry.swift */,
 				93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */,
 				936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */,
 				936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */,
@@ -4588,6 +4594,7 @@
 				93793B2F21D94462004CAD9C /* RKInPerInstanceAttributesText.swift in Sources */,
 				93793AEB21C7B7EA004CAD9C /* MetalExternalBondShader.swift in Sources */,
 				936411DA2421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift in Sources */,
+				936AF6DD26BC082000E91649 /* MetalCappedConeGeometry.swift in Sources */,
 				932BEABA23F8593E006CA16F /* RenderKitEnums.swift in Sources */,
 				93793B3F21D9459D004CAD9C /* RKLightUniforms.swift in Sources */,
 				93584CDB2001200B005F01A7 /* Noise4D.metal in Sources */,
@@ -4653,6 +4660,7 @@
 				93584CCB1FFFC916005F01A7 /* AtomSelectionShaders.metal in Sources */,
 				932B989F2425335300033AA7 /* MetalExternalBondSelectionWorleyNoise3DShader.swift in Sources */,
 				93584CD720011FC6005F01A7 /* Noise2D.metal in Sources */,
+				936AF6DF26BC2B6700E91649 /* MetalCapsuleGeometry.swift in Sources */,
 				93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */,
 				930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */,
 				931000742484EACB009CD836 /* MetalCylinderPrimitiveSelectionWorleyNoise3DShader.swift in Sources */,
