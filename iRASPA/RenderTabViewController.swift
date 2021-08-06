@@ -963,20 +963,20 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       if movieIdentifier>=0, movieIdentifier < structures.count,
          let selectedStructure: Structure = structures[movieIdentifier] as? Structure
       {
-        let numberOfReplicas: Int = selectedStructure.numberOfReplicas()
-        let nodes: [SKAtomTreeNode] = selectedStructure.atomTreeController.flattenedLeafNodes()
-        let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
-        let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
-        let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
-    
         for structure in crystalProjectData.renderStructures
         {
           self.setSelectionFor(structure: structure as! Structure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
         }
       
+        let numberOfReplicas: Int = selectedStructure.numberOfReplicas()
+        let nodes: [SKAtomTreeNode] = selectedStructure.atomTreeController.flattenedLeafNodes()
+        let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
+        
         switch(objectType)
         {
         case 1:
+          let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
+          let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
           self.setSelectionFor(structure: selectedStructure, atomIndexSet: IndexSet(integer: pickedAsymmetricAtom), bondIndexSet: [],  byExtendingSelection: false)
         case 2:
           self.setSelectionFor(structure: selectedStructure, atomIndexSet: [], bondIndexSet: IndexSet(integer: pickedObject), byExtendingSelection: false)
@@ -1943,7 +1943,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         }
       default:
         if (tracking == .mouseClickWithoutKeyModifiers)
-        {
+        {          
           let pick: [Int32] = pickPoint(point)
           setObjectToSelection(pick)
         }

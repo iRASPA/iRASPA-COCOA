@@ -164,6 +164,7 @@ class MetalPickingShader
     let colorAttachment: MTLRenderPassColorAttachmentDescriptor = renderPassDescriptor.colorAttachments[0]
     colorAttachment.texture = texture
     colorAttachment.loadAction = MTLLoadAction.clear
+    colorAttachment.clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0)
     colorAttachment.storeAction = MTLStoreAction.store
     let depthAttachment: MTLRenderPassDepthAttachmentDescriptor = renderPassDescriptor.depthAttachment
     depthAttachment.texture = depthTexture
