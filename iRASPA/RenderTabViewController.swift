@@ -963,17 +963,17 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       if movieIdentifier>=0, movieIdentifier < structures.count,
          let selectedStructure: Structure = structures[movieIdentifier] as? Structure
       {
-        for structure in crystalProjectData.renderStructures
-        {
-          self.setSelectionFor(structure: structure as! Structure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
-        }
-      
         let numberOfReplicas: Int = selectedStructure.numberOfReplicas()
         let nodes: [SKAtomTreeNode] = selectedStructure.atomTreeController.flattenedLeafNodes()
         let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
         
         switch(objectType)
         {
+        case 0:
+          for structure in crystalProjectData.renderStructures
+          {
+            self.setSelectionFor(structure: structure as! Structure, atomIndexSet: [], bondIndexSet: [], byExtendingSelection: false)
+          }
         case 1:
           let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
           let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
@@ -1007,18 +1007,20 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         let numberOfReplicas: Int = selectedStructure.numberOfReplicas()
         let nodes: [SKAtomTreeNode] = selectedStructure.atomTreeController.flattenedLeafNodes()
         let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
-        let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
-        let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
-        
+       
         if selectedStructure.isVisible
         {
           switch(objectType)
           {
           case 1:
+            let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
+            let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
             self.toggleAtomSelectionFor(structure: selectedStructure, indexSet: IndexSet(integer: pickedAsymmetricAtom))
             self.reloadRenderDataSelectedAtoms()
             NotificationCenter.default.post(name: Notification.Name(NotificationStrings.RendererSelectionDidChangeNotification), object: windowController)
           case 2:
+            let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
+            let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
             let asymmetricBond: SKAsymmetricBond = selectedStructure.bondController.arrangedObjects[pickedAsymmetricAtom]
             let selectedAtoms: Set<SKAsymmetricAtom> = Set(selectedStructure.atomTreeController.selectedTreeNodes.map{$0.representedObject})
             if selectedStructure.bondController.selectedObjects.contains(pickedAsymmetricAtom) &&
@@ -1943,7 +1945,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         }
       default:
         if (tracking == .mouseClickWithoutKeyModifiers)
-        {          
+        {
           let pick: [Int32] = pickPoint(point)
           setObjectToSelection(pick)
         }
