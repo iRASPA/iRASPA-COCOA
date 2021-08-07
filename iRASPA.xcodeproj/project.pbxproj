@@ -238,6 +238,7 @@
 		936AF6DB26B985B600E91649 /* SKAsymmetricAtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DA26B985B600E91649 /* SKAsymmetricAtom.swift */; };
 		936AF6DD26BC082000E91649 /* MetalCappedConeGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DC26BC082000E91649 /* MetalCappedConeGeometry.swift */; };
 		936AF6DF26BC2B6700E91649 /* MetalCapsuleGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6DE26BC2B6700E91649 /* MetalCapsuleGeometry.swift */; };
+		936AF6E126BE9AFE00E91649 /* MetalArrowGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AF6E026BE9AFE00E91649 /* MetalArrowGeometry.swift */; };
 		936DE11C21DA7F470023E7C8 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936DE11B21DA7F470023E7C8 /* Array.swift */; };
 		936E236D1F17C998007F6230 /* DeleteAllRecordsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E236C1F17C998007F6230 /* DeleteAllRecordsOperation.swift */; };
 		936E776826B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */; };
@@ -1559,6 +1560,7 @@
 		936AF6DA26B985B600E91649 /* SKAsymmetricAtom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKAsymmetricAtom.swift; sourceTree = "<group>"; };
 		936AF6DC26BC082000E91649 /* MetalCappedConeGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedConeGeometry.swift; sourceTree = "<group>"; };
 		936AF6DE26BC2B6700E91649 /* MetalCapsuleGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCapsuleGeometry.swift; sourceTree = "<group>"; };
+		936AF6E026BE9AFE00E91649 /* MetalArrowGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalArrowGeometry.swift; sourceTree = "<group>"; };
 		936DE11B21DA7F470023E7C8 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		936E236C1F17C998007F6230 /* DeleteAllRecordsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAllRecordsOperation.swift; sourceTree = "<group>"; };
 		936E776726B3FA550031D5A8 /* SpaceGroupIZAZeoliteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupIZAZeoliteTests.swift; sourceTree = "<group>"; };
@@ -2524,6 +2526,7 @@
 				936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */,
 				9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */,
 				936AF6DC26BC082000E91649 /* MetalCappedConeGeometry.swift */,
+				936AF6E026BE9AFE00E91649 /* MetalArrowGeometry.swift */,
 				936AF6DE26BC2B6700E91649 /* MetalCapsuleGeometry.swift */,
 				93E92DF421F635A800A0DBE6 /* MetalCappedSingleBondCylinderGeometry.swift */,
 				936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */,
@@ -4656,6 +4659,7 @@
 				9310006E24842979009CD836 /* MetalPolygonalPrismPrimitiveSelectionStripedShader.swift in Sources */,
 				930DD5441E26B38D00B8FE9B /* RKMovieCreator.swift in Sources */,
 				93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */,
+				936AF6E126BE9AFE00E91649 /* MetalArrowGeometry.swift in Sources */,
 				93793B3B21D94551004CAD9C /* RKIsosurfaceUniforms.swift in Sources */,
 				93584CCB1FFFC916005F01A7 /* AtomSelectionShaders.metal in Sources */,
 				932B989F2425335300033AA7 /* MetalExternalBondSelectionWorleyNoise3DShader.swift in Sources */,
