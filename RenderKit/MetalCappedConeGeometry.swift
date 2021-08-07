@@ -33,187 +33,127 @@ import Foundation
 import Metal
 import simd
 
-// Paul Bourke
-// http://paulbourke.net/geometry/circlesphere/opengl.c
-/*
- void CreateCone(XYZ p1,XYZ p2,double r1,double r2,int m,
-    double theta1,double theta2)
- {
-    int i,j;
-    double theta;
-    XYZ n,p,q,perp;
 
-    /* Normal pointing from p1 to p2 */
-    n.x = p1.x - p2.x;
-    n.y = p1.y - p2.y;
-    n.z = p1.z - p2.z;
-
-    /*
-       Create two perpendicular vectors perp and q
-       on the plane of the disk
-    */
-    perp = n;
-    if (n.x == 0 && n.z == 0)
-       perp.x += 1;
-    else
-       perp.y += 1;
-    CROSSPROD(perp,n,q);
-    CROSSPROD(n,q,perp);
-    Normalise(&perp);
-    Normalise(&q);
-
-    glBegin(GL_QUAD_STRIP);
-    for (i=0;i<=m;i++) {
-       theta = theta1 + i * (theta2 - theta1) / m;
-
-       n.x = cos(theta) * perp.x + sin(theta) * q.x;
-       n.y = cos(theta) * perp.y + sin(theta) * q.y;
-       n.z = cos(theta) * perp.z + sin(theta) * q.z;
-       Normalise(&n);
-
-       p.x = p2.x + r2 * n.x;
-       p.y = p2.y + r2 * n.y;
-       p.z = p2.z + r2 * n.z;
-       glNormal3f(n.x,n.y,n.z);
-       glTexCoord2f(i/(double)m,1.0);
-       glVertex3f(p.x,p.y,p.z);
-
-       p.x = p1.x + r1 * n.x;
-       p.y = p1.y + r1 * n.y;
-       p.z = p1.z + r1 * n.z;
-       glNormal3f(n.x,n.y,n.z);
-       glTexCoord2f(i/(double)m,0.0);
-       glVertex3f(p.x,p.y,p.z);
-    }
-    glEnd();
- }
-
- */
-
+/// Geometry data for a capped cone
+/// - note:
+/// The orientation (0,1,0) is along the y-axis.
+/// Draw using 'drawIndexedPrimitives' with type '.triangle' and setCullMode(MTLCullMode.back).
+/// More information:
+///
+/// Paul Bourke: http://paulbourke.net/geometry/circlesphere/opengl.c
+///
+/// Song Ho Ahn: http://www.songho.ca/opengl/gl_cylinder.html
+///
+/// Texture coordinates untested
 public class MetalCappedConeGeometry
 {
-  var slices: Int
-  public var numberOfIndices: Int
   public var numberOfVertexes: Int
-  
   public var vertices: [RKVertex]
+  
+  public var numberOfIndices: Int
   public var indices: [UInt16]
   
   public convenience init()
   {
-    self.init(r: 1.0, s: 21)
+    self.init(height: 1.0, topRadius: 0.1, baseRadius: 0.5, sectorCount: 41, stackCount: 3)
   }
   
-  public init(r: Double, s: Int)
+  /// Geometry data for a capped cone
+  ///
+  /// - parameter height:        the height of the cone
+  /// - parameter topRadius:     the top radius of the cone
+  /// - parameter baseRadius:    the base radius of the cone
+  /// - parameter sectorCount:   the number of sectors
+  /// - parameter stackCount:    the number of stacks
+  public init(height: Double, topRadius: Double, baseRadius: Double, sectorCount: Int, stackCount: Int)
   {
-    slices = s
-    numberOfVertexes = 4 * slices + 2
-    numberOfIndices = 12 * slices
+    vertices = []
+    indices = []
+   
+    let sectorStep: Double = 2.0 * Double.pi / Double(sectorCount)
+
+    let angleY: Double = atan2(baseRadius - topRadius, height)
+    let nx: Double = cos(angleY)
+    let ny: Double = sin(angleY)
+    let nz: Double = 0
     
-    vertices = [RKVertex](repeating: RKVertex(), count: numberOfVertexes)
-    indices = [UInt16](repeating: UInt16(), count: numberOfIndices)
-    
-    let delta: Double = 2.0 * Double.pi / Double(slices)
-    
-    var index: Int = 0
-    for i in 0..<slices
+    // side vertices
+    for i in 0...stackCount
     {
-      let cosTheta: Double = cos(delta * Double(i))
-      let sinTheta: Double = sin(delta * Double(i))
-      
-      let position2: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: 1.0, z: Float(r * sinTheta), w: 0.0)
-      let normal2: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      vertices[index] = RKVertex(position: position2, normal: normal2, st: SIMD2<Float>())
-      index = index + 1
-      
-      let position1: SIMD4<Float> = SIMD4<Float>(x: Float(r * cosTheta), y: -1.0, z: Float(r * sinTheta), w: 0.0)
-      let normal1: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 0.0, z: Float(sinTheta), w: 0.0)
-      vertices[index] = RKVertex(position: position1, normal: normal1, st: SIMD2<Float>())
-      index = index + 1
-      
-      
+      let z: Double = -(height * 0.5) + Double(i) / Double(stackCount) * height
+      let radius: Double = baseRadius + Double(i) / Double(stackCount) * (topRadius - baseRadius)
+      let t: Double = 1.0 - Double(i) / Double(stackCount)
+
+      for j in 0...sectorCount
+      {
+        let sectorAngle: Double = Double(j) * sectorStep
+        
+        let position: SIMD4<Float> = SIMD4<Float>(x: cos(sectorAngle) * radius, y: -z, z: sin(sectorAngle) * radius, w: 0.0)
+        let normal: SIMD4<Float> = SIMD4<Float>(x: cos(sectorAngle)*nx - sin(sectorAngle)*nz, y: -ny, z: sin(sectorAngle)*nx + cos(sectorAngle)*nz, w: 0.0)
+        let st: SIMD2<Float> = SIMD2<Float>(Float(j) / Float(sectorCount), Float(t))
+        vertices.append(RKVertex(position: position, normal: normal, st: st))
+      }
     }
     
-    // first cap
-    // ==========================================================================
-    
-    let position_cap1: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
-    let normal_cap1: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
-    vertices[index] = RKVertex(position: position_cap1, normal: normal_cap1, st: SIMD2<Float>())
-    let ref_cap_1: Int = index;
-    index = index + 1
-    
-    
-    for i in 0..<slices
+    // bottom cap vertices
+    let ref_cap_1: Int = vertices.count
+    vertices.append(RKVertex(position: SIMD4<Float>(x: 0.0, y: -height * 0.5, z: 0.0, w: 0.0), normal: SIMD4<Float>(x: 0.0, y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>(0.5,0.5)))
+    for  i in 0..<sectorCount
     {
-      let cosTheta: Double = r * cos(delta * Double(i))
-      let sinTheta: Double = r * sin(delta * Double(i))
-      let position_cap1: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: -1.0, z: Float(sinTheta), w: 0.0)
-      let normal_cap1: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
-      vertices[index] = RKVertex(position: position_cap1, normal: normal_cap1, st: SIMD2<Float>())
-      index = index + 1
+      let sectorAngle: Double = Double(i) * sectorStep
+      let position: SIMD4<Float> = SIMD4<Float>(x: cos(sectorAngle) * topRadius, y: -height * 0.5, z: sin(sectorAngle) * topRadius, w: 0.0)
+      let normal: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: -1.0, z: 0.0, w: 0.0)
+      let st: SIMD2<Float> = SIMD2<Float>(Float(position.x * 0.5 + 0.5), Float(position.z * 0.5 + 0.5))
+      vertices.append(RKVertex(position: position, normal: normal, st: st))
     }
     
-    // second cap
-    // ==========================================================================
-    
-    let position_cap2: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-    let normal_cap2: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-    vertices[index] = RKVertex(position: position_cap2, normal: normal_cap2, st: SIMD2<Float>())
-    let ref_cap_2: Int = index;
-    index = index + 1
-    
-    for i in 0..<slices
+    // top cap vertices
+    let ref_cap_2: Int = vertices.count
+    vertices.append(RKVertex(position: SIMD4<Float>(x: 0.0, y: height * 0.5, z: 0.0, w: 0.0), normal: SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>(0.5,0.5)))
+    for  i in 0..<sectorCount
     {
-      let cosTheta: Double = r * cos(delta * Double(i))
-      let sinTheta: Double = r * sin(delta * Double(i))
-      let position_cap2: SIMD4<Float> = SIMD4<Float>(x: Float(cosTheta), y: 1.0, z: Float(sinTheta), w: 0.0)
-      let normal_cap2: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
-      vertices[index] = RKVertex(position: position_cap2, normal: normal_cap2, st: SIMD2<Float>())
-      index = index + 1
+      let sectorAngle: Double = Double(i) * sectorStep
+      let position: SIMD4<Float> = SIMD4<Float>(x: cos(sectorAngle) * baseRadius, y: height * 0.5, z: sin(sectorAngle) * baseRadius, w: 0.0)
+      let normal: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 1.0, z: 0.0, w: 0.0)
+      let st: SIMD2<Float> = SIMD2<Float>(Float(-position.x * 0.5 + 0.5), Float(position.z * 0.5 + 0.5))
+      vertices.append(RKVertex(position: position, normal: normal, st: st))
     }
     
-    index = 0
-    for i in 0..<slices
+    // side indices
+    for  i in 0..<stackCount
     {
-      indices[index]=UInt16((2 * i) % (2 * slices))
-      index = index + 1
-      indices[index]=UInt16((2 * i + 1) % (2 * slices))
-      index = index + 1
-      indices[index]=UInt16((2 * i + 2) % (2 * slices))
-      index = index + 1
-      indices[index]=UInt16((2 * i + 2) % (2 * slices))
-      index = index + 1
-      indices[index]=UInt16((2 * i + 1) % (2 * slices))
-      index = index + 1
-      indices[index]=UInt16((2 * i + 3) % (2 * slices))
-      index = index + 1
+      let k1: Int = i * (sectorCount + 1)
+      let k2: Int = k1 + sectorCount + 1
+
+      for j in 0..<sectorCount
+      {
+        indices.append(UInt16(k1 + j))
+        indices.append(UInt16(k2 + j))
+        indices.append(UInt16(k1 + j + 1))
+        
+        indices.append(UInt16(k2 + j))
+        indices.append(UInt16(k2 + j + 1))
+        indices.append(UInt16(k1 + j + 1))
+      }
     }
     
-    // first cap
-    // ==========================================================================
-    
-    for i in 0..<slices
+    // bottom cap indices
+    for  i in 0..<sectorCount
     {
-      indices[index]=UInt16(ref_cap_1)
-      index = index + 1
-      indices[index]=UInt16(ref_cap_1 + 1 + ((i + 1) % slices))
-      index = index + 1
-      indices[index]=UInt16(ref_cap_1 + 1 + ((i) % slices))
-      index = index + 1
+      indices.append(UInt16(ref_cap_1))
+      indices.append(UInt16(ref_cap_1 + 1 + (i+1) % sectorCount))
+      indices.append(UInt16(ref_cap_1 + 1 + i % sectorCount))
     }
     
-    // second cap
-    // ==========================================================================
-    
-    for i in 0..<slices
+    // top cap indices
+    for  i in 0..<sectorCount
     {
-      indices[index]=UInt16(ref_cap_2)
-      index = index + 1
-      indices[index]=UInt16(ref_cap_2 + 1 + ((i) % slices))
-      index = index + 1
-      indices[index]=UInt16(ref_cap_2 + 1 + ((i + 1) % slices))
-      index = index + 1
+      indices.append(UInt16(ref_cap_2))
+      indices.append(UInt16(ref_cap_2 + 1 + i % sectorCount))
+      indices.append(UInt16(ref_cap_2 + 1 + (i+1) % sectorCount))
     }
+    
+    numberOfVertexes = vertices.count
+    numberOfIndices = indices.count
   }
 }

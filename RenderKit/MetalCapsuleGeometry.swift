@@ -9,11 +9,15 @@
 import Foundation
 import simd
 
-// Paul Borke
-// http://paulbourke.net/geometry/spherical/capsule.c
-
-// works with MTLCullMode.back
-// draw with indexed triangles
+/// Geometry data for a capsule
+/// - note:
+/// The orientation (0,1,0) is along the y-axis.
+/// Draw using 'drawIndexedPrimitives' with type '.triangle' and setCullMode(MTLCullMode.back).
+/// More information:
+///
+/// Paul Borke: http://paulbourke.net/geometry/spherical/capsule.c
+///
+/// Texture coordinates untested
 public class MetalCapsuleGeometry
 {
   public var numberOfVertexes: Int
@@ -24,10 +28,15 @@ public class MetalCapsuleGeometry
   
   public convenience init()
   {
-    self.init(radius: 1.0, height:  2.0, slices: 32)
+    self.init(radius: 1.0, height:  2.0, slices: 42)
   }
   
-  public init(radius: Double = 1.0, height: Double = 2.0, slices: Int = 32)
+  /// Geometry data for a capsule
+  ///
+  /// - parameter radius:  the radius of the capsule
+  /// - parameter height:  the height of the capsule
+  /// - parameter slices:  the number of slices
+  public init(radius: Double = 1.0, height: Double = 2.0, slices: Int = 42)
   {
     numberOfVertexes = (slices + 1) * (slices/2 + 2)
     vertices = []
@@ -35,52 +44,52 @@ public class MetalCapsuleGeometry
     
     for j in 0...slices/4
     {
-      // top cap
+      // bottom side
       for i in 0...slices
       {
         let theta: Double = Double(i) * 2.0 * Double.pi / Double(slices);
         let phi: Double = -0.5*Double.pi + Double.pi * Double(j) / (Double(slices)/2)
         
-        let pos: SIMD3<Double> = SIMD3<Double>(x: radius * cos(phi) * cos(theta), y: radius * cos(phi) * sin(theta), z: radius * sin(phi))
+        let pos: SIMD3<Double> = SIMD3<Double>(x: radius * cos(phi) * cos(theta), y: radius * sin(phi), z: radius * cos(phi) * sin(theta))
         let length: Double = length(pos)
-        let position: SIMD4<Float> = SIMD4<Float>(x: pos.x, y: pos.y, z: pos.z - height/2.0, w: 0.0)
+        let position: SIMD4<Float> = SIMD4<Float>(x: pos.x, y: pos.y - 0.5 * height, z:  pos.z, w: 0.0)
         let normal: SIMD4<Float> = SIMD4<Float>(x: pos.x/length, y: pos.y/length, z: pos.z/length, w: 0.0)
         
         var st: SIMD2<Float> = SIMD2<Float>()
-        st.x = atan2(position.y,position.x) / (2.0 * Float.pi);
-        if (st.x < 0)
+        st.x = atan2(position.z,position.x) / (2.0 * Float.pi);
+        if (st.x < 0.0)
         {
-          st.x = 1 + st.x;
+          st.x = 1.0 + st.x;
         }
-        st.y = 0.5 + atan2(position.z,sqrt(position.x*position.x+position.y*position.y)) / Float.pi
+        st.y = 0.5 + atan2(position.y,sqrt(position.x*position.x+position.z*position.z)) / Float.pi
         vertices.append(RKVertex(position: position, normal: normal, st: st))
       }
     }
+    
+    // top side
     for j in slices/4...slices/2
     {
-      // bottom cap
       for i in 0...slices
       {
         let theta: Double = Double(i) * 2.0 * Double.pi / Double(slices)
         let phi: Double = -0.5*Double.pi + Double.pi * Double(j) / (Double(slices)/2)
         
-        let pos: SIMD3<Double> = SIMD3<Double>(x: radius * cos(phi) * cos(theta), y: radius * cos(phi) * sin(theta), z: radius * sin(phi))
+        let pos: SIMD3<Double> = SIMD3<Double>(x: radius * cos(phi) * cos(theta), y: radius * sin(phi), z: radius * cos(phi) * sin(theta))
         let length: Double = length(pos)
-        let position: SIMD4<Float> = SIMD4<Float>(x: pos.x, y: pos.y, z: pos.z + height/2.0, w: 0.0)
+        let position: SIMD4<Float> = SIMD4<Float>(x: pos.x, y: pos.y + 0.5 * height, z: pos.z , w: 0.0)
         let normal: SIMD4<Float> = SIMD4<Float>(x: pos.x/length, y: pos.y/length, z: pos.z/length, w: 0.0)
         
         var st: SIMD2<Float> = SIMD2<Float>()
-        st.x = atan2(position.y,position.x) / (2.0 * Float.pi);
-        if (st.x < 0)
+        st.x = atan2(position.z,position.x) / (2.0 * Float.pi);
+        if (st.x < 0.0)
         {
-          st.x = 1 + st.x;
+          st.x = 1.0 + st.x;
         }
-        st.y = 0.5 + atan2(position.z,sqrt(position.x*position.x+position.y*position.y)) / Float.pi;
+        st.y = 0.5 + atan2(position.y,sqrt(position.x*position.x+position.z*position.z)) / Float.pi;
         vertices.append(RKVertex(position: position, normal: normal, st: SIMD2<Float>()))
       }
     }
   
-    // (slices + 1) * (slices/2 + 2)
     for j in 0...slices/2
     {
       for i in 0...slices
@@ -90,11 +99,13 @@ public class MetalCapsuleGeometry
         let  i3 = (j+1) * (slices+1) + (i + 1)
         let  i4 = (j+1) * (slices+1) + i     
         indices.append(UInt16(i1))
-        indices.append(UInt16(i3))
         indices.append(UInt16(i2))
-        indices.append(UInt16(i1))
-        indices.append(UInt16(i4))
         indices.append(UInt16(i3))
+        
+        indices.append(UInt16(i1))
+        indices.append(UInt16(i3))
+        indices.append(UInt16(i4))
+        
       }
     }
    
