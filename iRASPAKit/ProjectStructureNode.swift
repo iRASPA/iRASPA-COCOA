@@ -38,7 +38,7 @@ import SymmetryKit
 
 public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource
 {
-  private static var classVersionNumber: Int = 2
+  private static var classVersionNumber: Int = 3
   
   public var sceneList: SceneList = SceneList()
   public var renderLights: [RKRenderLight] = [RKRenderLight(),RKRenderLight(),RKRenderLight(),RKRenderLight()]
@@ -88,6 +88,9 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   public var numberOfFramesPerSecond: Int = 15
   
   public var renderCamera: RKCamera?
+  
+  public var showAxes: Bool = true
+  public var renderAxes: RKGlobalAxes = RKGlobalAxes()
   
   public var ImageDotsPerInchValue: Double
   {
@@ -477,6 +480,8 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     
     encoder.encode(self.renderCamera ?? RKCamera())
     
+    encoder.encode(self.renderAxes)
+    
     encoder.encode(self.sceneList)
     
     super.binaryEncode(to: encoder)
@@ -542,6 +547,12 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     self.numberOfFramesPerSecond = try decoder.decode(Int.self)
     
     self.renderCamera = try decoder.decode(RKCamera.self)
+    
+    if readVersionNumber >= 3 // introduced in version 3
+    {
+      self.renderAxes = try decoder.decode(RKGlobalAxes.self)
+    }
+    
     self.sceneList = try decoder.decode(SceneList.self)
     
     try super.init(fromBinary: decoder)

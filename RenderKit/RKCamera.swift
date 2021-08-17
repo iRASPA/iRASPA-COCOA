@@ -96,6 +96,8 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
   
   public var viewMatrix: double4x4 = double4x4()
   
+  
+  
   private var cameraBoundingBox: SKBoundingBox
   {
     // use at least 5,5,5 as the minimum-size
@@ -103,21 +105,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     let width: SIMD3<Double> = max(SIMD3<Double>(5.0,5.0,5.0),boundingBox.maximum - boundingBox.minimum)
     return SKBoundingBox(center: center, width: width)
   }
-  
-  public var projectionMatrix: double4x4
-  {
-    get
-    {
-      switch(frustrumType)
-      {
-      case .orthographic:
-        return glFrustumfOrthographic(left: left, right: right,  bottom: bottom,  top: top,  near: zNear, far: zFar)
-      case .perspective:
-        return glFrustumfPerspective(left: left, right: right, bottom: bottom, top: top, near: zNear, far: zFar)
-      }
-    }
-  }
-  
+
   
   // The "camera" or viewpoint is at (0., 0., 0.) in eye space. When you turn this into a vector [0 0 0 1] and multiply it by the inverse of the ModelView matrix, the resulting vector is the object-space location of the camera.
   public var position: SIMD3<Double>
@@ -211,6 +199,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     self.rotationDelta = camera.rotationDelta
     
     self.viewMatrix = camera.viewMatrix
+    //self.axesViewMatrix = camera.axesViewMatrix
   }
   
   public var EulerAngles: SIMD3<Double>
@@ -225,10 +214,45 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
   
   public var modelViewMatrix: double4x4
   {
+    // first rotate the actors, and then construct the modelView-matrix
+    return viewMatrix*double4x4(transformation: double4x4(simd_quatd: trackBallRotation * worldRotation * referenceDirection), aroundPoint: centerOfRotation)
+  }
+  
+  public var projectionMatrix: double4x4
+  {
     get
     {
-      // first rotate the actors, and then construct the modelView-matrix
-      return viewMatrix*double4x4(transformation: double4x4(simd_quatd: trackBallRotation * worldRotation * referenceDirection), aroundPoint: centerOfRotation)
+      switch(frustrumType)
+      {
+      case .orthographic:
+        return glFrustumfOrthographic(left: left, right: right,  bottom: bottom,  top: top,  near: zNear, far: zFar)
+      case .perspective:
+        return glFrustumfPerspective(left: left, right: right, bottom: bottom, top: top, near: zNear, far: zFar)
+      }
+    }
+  }
+  
+  public var axesViewMatrix: double4x4
+  {
+    return RKCamera.GluLookAt(eye: SIMD3<Double>(x: 0.0, y: 0.0, z: distance.z), center: SIMD3<Double>(x: -0.5*panning.x, y: -0.5*panning.y, z: centerOfScene.z), up: SIMD3<Double>(x: 0, y: 1, z:0))
+  }
+  
+  public var axesModelViewMatrix: double4x4
+  {
+    // first rotate the actors, and then construct the modelView-matrix
+    return axesViewMatrix*double4x4(transformation: double4x4(simd_quatd: trackBallRotation * worldRotation * referenceDirection), aroundPoint: SIMD3<Double>(0,0,0))
+  }
+  
+  
+  public func axesProjectionMatrix(axesSize: Double) -> double4x4
+  {
+    switch(frustrumType)
+    {
+    case .orthographic:
+      return glFrustumfOrthographic(left: -axesSize, right: axesSize,  bottom: -axesSize,  top: axesSize,  near: zNear, far: zFar)
+    case .perspective:
+      let scale = axesSize * zNear / distance.z
+      return glFrustumfPerspective(left: -scale, right: scale, bottom: -scale, top: scale, near: zNear, far: zFar)
     }
   }
 
@@ -251,7 +275,6 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
         
     viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
-
   }
   
   public func increaseDistance(_ deltaDistance: Double)
@@ -262,17 +285,17 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     delta.y = fabs(transformedBoundingBox.maximum.y-transformedBoundingBox.minimum.y)
     delta.z = fabs(transformedBoundingBox.maximum.z-transformedBoundingBox.minimum.z)
     let focalLength: Double = 1.0 / tan(0.5 * angleOfView)
-    
+        
     switch(self.frustrumType)
     {
     case .orthographic:
-      if ((orthoScale - 0.25 * deltaDistance) * focalLength > 0.0)
+      if ((orthoScale - 0.25 * deltaDistance) * focalLength > 0.0  || deltaDistance < 0)
       {
         orthoScale -= 0.25 * deltaDistance
         distance.z = orthoScale * focalLength + 0.5 * delta.z
       }
     case .perspective:
-      if (distance.z - 0.25 * deltaDistance > 0.0)
+      if (distance.z - 0.25 * deltaDistance > 0.0 || deltaDistance < 0)
       {
         distance.z -= 0.25 * deltaDistance
         orthoScale = (distance.z - 0.5 * delta.z) * tan(0.5 * angleOfView)
@@ -282,6 +305,7 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     eye = centerOfScene + distance + panning
       
     viewMatrix = RKCamera.GluLookAt(eye: eye + trucking, center: centerOfScene + trucking, up: SIMD3<Double>(x: 0.0, y: 1.0, z: 0.0))
+   
     updateCameraForWindowResize(width: windowWidth,height: windowHeight)
   }
   
@@ -305,8 +329,9 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     angleOfView = newAngle
     orthoScale = (distance.z - 0.5 * delta.z) * tan(0.5 * angleOfView)
     
-    zNear = max(1.0, position.z - length_squared(delta))
-    zFar = position.z + length_squared(delta)
+    zNear = max(1.0, distance.z - max(delta.x, delta.y, delta.z))
+    zFar = distance.z + 2.0*delta.z
+    
     let inverseFocalPoint: Double = tan(angleOfView * 0.5)
     if (aspectRatio > boundingBoxAspectRatio)
     {
@@ -353,17 +378,17 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
     let transformedBoundingBox: SKBoundingBox = self.cameraBoundingBox.adjustForTransformation(self.modelMatrix)
     
     let delta: SIMD3<Double> = SIMD3<Double>(fabs(transformedBoundingBox.maximum.x-transformedBoundingBox.minimum.x),
-                                 fabs(transformedBoundingBox.maximum.y-transformedBoundingBox.minimum.y),
-                                 fabs(transformedBoundingBox.maximum.z-transformedBoundingBox.minimum.z))
+                                             fabs(transformedBoundingBox.maximum.y-transformedBoundingBox.minimum.y),
+                                             fabs(transformedBoundingBox.maximum.z-transformedBoundingBox.minimum.z))
     
     let inverseFocalPoint: Double = tan(angleOfView * 0.5)
     let focalPoint: Double = 1.0 / inverseFocalPoint
     
-    distance.z = max(orthoScale * focalPoint + 0.5 * delta.z, 0.25)
+    distance.z = max(orthoScale * focalPoint + 0.5 * delta.z, 1.0)
     
-    zNear = max(1.0, position.z - length_squared(delta))
-    zFar = position.z + length_squared(delta)
-    
+    zNear = max(1.0, distance.z - max(delta.x, delta.y, delta.z))
+    zFar = distance.z + 2.0*delta.z
+        
     // halfHeight  half of frustum height at znear  znear∗tan(fov/2)
     // halfWidth   half of frustum width at znear   halfHeight×aspect
     // depth       depth of view frustum            zfar−znear
@@ -395,10 +420,10 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
                                  fabs(transformedBoundingBox.maximum.z-transformedBoundingBox.minimum.z))
     
     let inverseFocalPoint: Double = tan(angleOfView * 0.5)
-    orthoScale = max(distance.z - 0.5 * delta.z, 0.25) * inverseFocalPoint
+    orthoScale = max(distance.z - 0.5 * delta.z, 1.0) * inverseFocalPoint
     
-    zNear = max(1.0, position.z - length_squared(delta))
-    zFar = position.z + length_squared(delta)
+    zNear = max(1.0, distance.z - max(delta.x, delta.y, delta.z))
+    zFar = distance.z + 2.0*delta.z
     
     if (aspectRatio > boundingBoxAspectRatio)
     {

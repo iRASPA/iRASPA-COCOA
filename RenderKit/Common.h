@@ -53,6 +53,15 @@ typedef struct
 typedef struct
 {
   float4 position;
+  float4 normal;
+  float4 color;
+  float2 st;
+  float2 pad;
+} InPrimitivePerVertex;
+
+typedef struct
+{
+  float4 position;
   float4 ambient;
   float4 diffuse;
   float4 specular;
@@ -107,6 +116,19 @@ struct AtomSphereVertexShaderOut
   float clippingDistance5;
 };
 
+struct AxesVertexShaderOut
+{
+  float4 position [[position]];
+  float4 ambient;
+  float4 diffuse;
+  float4 specular;
+  
+  float3 N;
+  float3 Model_N;
+  float3 L;
+  float3 V;
+};
+
 struct PrimitiveVertexShaderOut
 {
   float4 position [[position]];
@@ -145,9 +167,15 @@ typedef struct
   float4x4 viewMatrix;
   float4x4 mvpMatrix;
   float4x4 shadowMatrix;
+  
   float4x4 projectionMatrixInverse;
   float4x4 viewMatrixInverse;
   float4x4 normalMatrix;
+  
+  float4x4 axesProjectionMatrix;
+  float4x4 axesViewMatrix;
+  float4x4 axesMvpMatrix;
+  float4x4 padMatrix;
   
   int numberOfMultiSamplePoints;
   float bloomLevel;
@@ -158,6 +186,8 @@ typedef struct
   float4 padVector3;
   float4 padVector4;
 } FrameUniforms;
+
+
 
 
 typedef struct
@@ -357,6 +387,19 @@ typedef struct
 {
   Light lights[4];
 } LightUniforms;
+
+
+typedef struct
+{
+  float4 axesBackgroundColor;
+  float4 textColor[3];
+  float4 textDisplacement[3];
+  int axesBackGroundStyle;
+  float axesScale;
+  float centerScale;
+  float textOffset;
+  float textScale[4];
+} GlobalAxesUniforms;
 
 float mod289(float x);
 float2 mod289(float2 x);

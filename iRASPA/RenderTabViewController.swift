@@ -123,6 +123,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   }
   
   var cameraBoundingBoxMenuItem: NSMenuItem? = nil
+  var cameraAxesMenuItem: NSMenuItem? = nil
   
   
   // MARK: View lifecyle
@@ -138,12 +139,12 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
    
     self.view.menu = NSMenu(title: "test")
     self.view.menu?.insertItem(withTitle: NSLocalizedString("Reset Camera Distance", comment: ""), action: #selector(resetCamera), keyEquivalent: "", at: 0)
-    let camerProjectionMenuItem = NSMenuItem(title: NSLocalizedString("Reset Camera Distance", comment: ""), action: nil, keyEquivalent: "")
+    let cameraProjectionMenuItem = NSMenuItem(title: NSLocalizedString("Camera Projection", comment: ""), action: nil, keyEquivalent: "")
     
     let resetMenuItem = NSMenuItem(title: NSLocalizedString("Reset Camera To", comment: ""), action: nil, keyEquivalent: "")
     self.view.menu?.insertItem(resetMenuItem, at: 1)
     
-    self.view.menu?.insertItem(camerProjectionMenuItem, at: 2)
+    self.view.menu?.insertItem(cameraProjectionMenuItem, at: 2)
    
     cameraBoundingBoxMenuItem = NSMenuItem(title: NSLocalizedString("Show Bounding Box", comment: ""), action: #selector(toggleBoundingBox), keyEquivalent: "")
     cameraBoundingBoxMenuItem?.state = .off
@@ -161,7 +162,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     let projectionMenu: NSMenu = NSMenu(title: NSLocalizedString("Camera Projection", comment: ""))
     projectionMenu.insertItem(withTitle: NSLocalizedString("Orthographic", comment: ""), action: #selector(setCameraToOrthographic), keyEquivalent: "", at: 0)
     projectionMenu.insertItem(withTitle: NSLocalizedString("Perspective", comment: ""), action: #selector(setCameraToPerspective), keyEquivalent: "", at: 1)
-    camerProjectionMenuItem.submenu = projectionMenu
+    cameraProjectionMenuItem.submenu = projectionMenu
     
     let resetMenu: NSMenu = NSMenu(title: NSLocalizedString("Camera Reset To Direction", comment: ""))
     resetMenu.insertItem(withTitle: NSLocalizedString("Z-Direction", comment: ""), action: #selector(resetCameraToZ), keyEquivalent: "", at: 0)
@@ -177,12 +178,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     exportMenu.insertItem(withTitle: NSLocalizedString("VASP POSCAR", comment: ""), action: #selector(exportToVASP), keyEquivalent: "", at: 4)
     exportMenuItem.submenu = exportMenu
     
-/*
-    for tabViewItem in self.tabViewItems
-    {
-      (tabViewItem.viewController as? RenderViewController)?.selectionDelegate = self
-    }
-*/
+
     self.selectedTabViewItemIndex = preferedRenderer
     
     aspectRationConstraint_1_to_1 = NSLayoutConstraint(item: self.view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.view, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1.0, constant: 1.0)
@@ -429,6 +425,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
     {
       renderController.reloadData()
+    }
+  }
+  
+  @objc func reloadGlobalAxesSystem()
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    {
+      renderController.reloadGlobalAxesSystem()
     }
   }
   
@@ -1710,15 +1716,19 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         let structure: RKRenderStructure = structures[movieIdentifier]
         
         
-        if let structure = structure as? Structure
+        if let structure = structure as? Structure,
+           structure.isVisible,
+           structure.drawAtoms
         {
           let numberOfReplicas: Int = structure.numberOfReplicas()
           let nodes: [SKAtomTreeNode] = structure.atomTreeController.flattenedLeafNodes()
           let atoms: [SKAtomCopy] = nodes.compactMap{$0.representedObject}.flatMap{$0.copies}.filter{$0.type == .copy}
           
           let atom: SKAtomCopy = atoms[pickedAtom / numberOfReplicas]
-          
-          return "structure: \(structure.displayName), atom: \(atom.asymmetricIndex) (\(atom.asymmetricParentAtom.displayName)), position: \(atom.position.x), \(atom.position.y), \(atom.position.z)"
+          if atom.asymmetricParentAtom.isVisible
+          {
+            return "structure: \(structure.displayName), atom: \(atom.asymmetricIndex) (\(atom.asymmetricParentAtom.displayName)), position: \(atom.position.x), \(atom.position.y), \(atom.position.z)"
+          }
         }
       }
     }

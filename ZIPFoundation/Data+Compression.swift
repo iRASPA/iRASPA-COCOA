@@ -136,7 +136,7 @@ extension Data {
         return try self.process(operation: COMPRESSION_STREAM_ENCODE, size: size, bufferSize: bufferSize,
                                 provider: provider, consumer: consumer)
         #else
-        return try self.encode(size: size, bufferSize: bufferSize, provider: provider, consumer: consumer)
+        return try self.encode(sizeScreenFraction: sizeScreenFraction, bufferSize: bufferSize, provider: provider, consumer: consumer)
         #endif
     }
 
@@ -230,9 +230,9 @@ private extension compression_stream {
 import CZlib
 
 extension Data {
-    static func encode(size: Int, bufferSize: Int, provider: Provider, consumer: Consumer) throws -> CRC32 {
+    static func encode(sizeScreenFraction: Int, bufferSize: Int, provider: Provider, consumer: Consumer) throws -> CRC32 {
         var stream = z_stream()
-        let streamSize = Int32(MemoryLayout<z_stream>.size)
+        let streamSize = Int32(MemoryLayout<z_stream>.sizeScreenFraction)
         var result = deflateInit2_(&stream, Z_DEFAULT_COMPRESSION,
                                    Z_DEFLATED, -MAX_WBITS, 9, Z_DEFAULT_STRATEGY, ZLIB_VERSION, streamSize)
         defer { deflateEnd(&stream) }
@@ -241,7 +241,7 @@ extension Data {
         var position = 0
         var zipCRC32 = CRC32(0)
         repeat {
-            let readSize = Swift.min((size - position), bufferSize)
+            let readSize = Swift.min((sizeScreenFraction - position), bufferSize)
             var inputChunk = try provider(position, readSize)
             zipCRC32 = inputChunk.crc32(checksum: zipCRC32)
             stream.avail_in = UInt32(inputChunk.count)
@@ -249,7 +249,7 @@ extension Data {
                 if let baseAddress = rawBufferPointer.baseAddress {
                     let pointer = baseAddress.assumingMemoryBound(to: UInt8.self)
                     stream.next_in = pointer
-                    flush = position + bufferSize >= size ? Z_FINISH : Z_NO_FLUSH
+                    flush = position + bufferSize >= sizeScreenFraction ? Z_FINISH : Z_NO_FLUSH
                 } else if rawBufferPointer.count > 0 {
                     throw CompressionError.corruptedData
                 } else {
@@ -280,7 +280,7 @@ extension Data {
 
     static func decode(bufferSize: Int, skipCRC32: Bool, provider: Provider, consumer: Consumer) throws -> CRC32 {
         var stream = z_stream()
-        let streamSize = Int32(MemoryLayout<z_stream>.size)
+        let streamSize = Int32(MemoryLayout<z_stream>.sizeScreenFraction)
         var result = inflateInit2_(&stream, -MAX_WBITS, ZLIB_VERSION, streamSize)
         defer { inflateEnd(&stream) }
         guard result == Z_OK else { throw CompressionError.invalidStream }

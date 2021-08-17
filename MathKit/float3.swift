@@ -30,19 +30,23 @@
  *************************************************************************************************************/
 
 import Foundation
-import Metal
 import simd
 
-public class MetalQuadGeometry
+extension SIMD3 where Scalar==Float
 {
-  public var vertices: [RKVertex] = [RKVertex(position: SIMD4<Float>(x: -1.0, y: -1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
-                                 RKVertex(position: SIMD4<Float>(x: -1.0, y:  1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
-                                 RKVertex(position: SIMD4<Float>(x:  1.0, y: -1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
-                                 RKVertex(position: SIMD4<Float>(x:  1.0, y:  1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>())]
-  public var indices: [UInt16] = [0, 1, 2, 3]
-    
-
-  public init()
+  public init(value: Double)
   {
+    self.init(x: Float(value), y: Float(value), z: Float(value))
+  }
+  public init(x: Double, y: Double, z: Double)
+  {
+    self.init(x: Float(x), y: Float(y), z: Float(z))
+    
   }
 }
+
+
+
+
+
+

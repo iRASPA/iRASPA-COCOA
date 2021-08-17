@@ -168,7 +168,7 @@ public class MetalBackgroundShader
     let sceneMSAAdepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderPassDescriptor.depthAttachment
     sceneMSAAdepthAttachment.texture = sceneDepthTexture
     sceneMSAAdepthAttachment.loadAction = MTLLoadAction.clear
-    sceneMSAAdepthAttachment.storeAction = MTLStoreAction.store
+    sceneMSAAdepthAttachment.storeAction = MTLStoreAction.store  // TODO: check whether it could be dontCare
     sceneMSAAdepthAttachment.clearDepth = 1.0
     
     let sceneMSAAstencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderPassDescriptor.stencilAttachment
