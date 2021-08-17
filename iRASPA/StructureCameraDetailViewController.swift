@@ -54,6 +54,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   let cameraSelectionCell: OutlineViewItem = OutlineViewItem("CameraSelectionCell")
   
+  let cameraAxesCell: OutlineViewItem = OutlineViewItem("CameraAxesCell")
+  let cameraAxesBackgroundCell: OutlineViewItem = OutlineViewItem("CameraAxesBackgroundCell")
+  let cameraAxesTextCell: OutlineViewItem = OutlineViewItem("CameraAxesTextCell")
+  
   let cameraLightsCell: OutlineViewItem = OutlineViewItem("CameraLightsCell")
   
   let cameraPictureCell: OutlineViewItem = OutlineViewItem("CameraPictureCell")
@@ -97,12 +101,12 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     
     let cameraItem: OutlineViewItem = OutlineViewItem(title: "CameraGroup", children: [cameraOrientationCell, cameraRotationCell, cameraViewMatrixCell, cameraVirtualPositionCell])
     let cameraSelectionItem: OutlineViewItem = OutlineViewItem(title: "CameraSelectionGroup", children: [cameraSelectionCell])
+    let cameraAxesItem: OutlineViewItem = OutlineViewItem(title: "CameraAxesGroup", children: [cameraAxesCell, cameraAxesBackgroundCell, cameraAxesTextCell])
     let cameraLightsItem: OutlineViewItem = OutlineViewItem(title: "CameraLightsGroup", children: [cameraLightsCell])
     let cameraPictureItem: OutlineViewItem = OutlineViewItem(title: "CameraPictureGroup", children: [cameraPictureCell, cameraPictureDimensionsCell, cameraMovieCell])
     let cameraBackgroundItem: OutlineViewItem = OutlineViewItem(title: "CameraBackgroundGroup",children: [cameraBackgroundCell])
 
-    
-    self.cameraOutlineView?.items = [cameraItem, cameraSelectionItem, cameraLightsItem, cameraPictureItem, cameraBackgroundItem]
+    self.cameraOutlineView?.items = [cameraItem, cameraSelectionItem, cameraAxesItem, cameraLightsItem, cameraPictureItem, cameraBackgroundItem]
   }
   
   override func viewWillAppear()
@@ -136,19 +140,13 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: CameraNotificationStrings.didChangeNotification), object: windowController)
   }
   
-  
-  
   func reloadData()
   {
     self.cameraOutlineView?.reloadData()
   }
   
-  
-  
   // MARK: NSTableView Delegate Methods
   // =====================================================================
-  
-  
   
   func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool
   {
@@ -181,6 +179,7 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     {
       setPropertiesCameraTableCells(on: view, identifier: string)
       setPropertiesSelectionTableCells(on: view, identifier: string)
+      setPropertiesAxesTableCells(on: view, identifier: string)
       setPropertiesLightsTableCells(on: view, identifier: string)
       setPropertiesExportMediaTableCells(on: view, identifier: string)
       setPropertiesBackgroundTableCells(on: view, identifier: string)
@@ -493,14 +492,163 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     }
   }
   
+  func setPropertiesAxesTableCells(on view: NSTableCellView, identifier: String)
+  {
+    switch(identifier)
+    {
+      case "CameraAxesCell":
+        if let popUpbuttonPositionType: NSPopUpButton = view.viewWithTag(1) as? NSPopUpButton
+        {
+          popUpbuttonPositionType.isEnabled = false
+          if let project = representedObject as? ProjectStructureNode
+          {
+            popUpbuttonPositionType.isEnabled = true
+            popUpbuttonPositionType.selectItem(at: project.renderAxes.position.rawValue)
+          }
+        }
+        
+        if let popUpbuttonStyleType: NSPopUpButton = view.viewWithTag(3) as? NSPopUpButton
+        {
+          popUpbuttonStyleType.isEnabled = false
+          if let project = representedObject as? ProjectStructureNode
+          {
+            popUpbuttonStyleType.isEnabled = true
+            popUpbuttonStyleType.selectItem(at: project.renderAxes.style.rawValue)
+          }
+        }
+        
+        if let textFieldAxesSize: NSTextField = view.viewWithTag(3) as? NSTextField
+        {
+          textFieldAxesSize.isEnabled = false
+          if let project = representedObject as? ProjectStructureNode
+          {
+            textFieldAxesSize.isEnabled = true
+            textFieldAxesSize.doubleValue = 100.0 * project.renderAxes.sizeScreenFraction
+          }
+        }
+        
+        if let textFieldAxesBorderOffset: NSTextField = view.viewWithTag(4) as? NSTextField
+        {
+          textFieldAxesBorderOffset.isEnabled = false
+          if let project = representedObject as? ProjectStructureNode
+          {
+            textFieldAxesBorderOffset.isEnabled = true
+            textFieldAxesBorderOffset.doubleValue = 100.0 * project.renderAxes.borderOffsetScreenFraction
+          }
+        }
+    case "CameraAxesBackgroundCell":
+      if let popupBackgroundType: NSPopUpButton = view.viewWithTag(1) as? NSPopUpButton,
+         let colorWellBackground: NSColorWell = view.viewWithTag(2) as? NSColorWell,
+         let textFieldAdditionalSize: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        popupBackgroundType.isEnabled = false
+        colorWellBackground.isEnabled = false
+        textFieldAdditionalSize.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          popupBackgroundType.isEnabled = true
+          colorWellBackground.isEnabled = true
+          textFieldAdditionalSize.isEnabled = true
+          popupBackgroundType.selectItem(at: project.renderAxes.axesBackgroundStyle.rawValue)
+          colorWellBackground.color = project.renderAxes.axesBackgroundColor
+          textFieldAdditionalSize.doubleValue = project.renderAxes.axesBackgroundAdditionalSize
+        }
+      }
+    case "CameraAxesTextCell":
+      if let textFieldScaleX: NSTextField = view.viewWithTag(1) as? NSTextField,
+         let textFieldScaleY: NSTextField = view.viewWithTag(2) as? NSTextField,
+         let textFieldScaleZ: NSTextField = view.viewWithTag(3) as? NSTextField
+      {
+        textFieldScaleX.isEnabled = false
+        textFieldScaleY.isEnabled = false
+        textFieldScaleZ.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          textFieldScaleX.isEnabled = true
+          textFieldScaleY.isEnabled = true
+          textFieldScaleZ.isEnabled = true
+          textFieldScaleX.doubleValue = project.renderAxes.textScale.x
+          textFieldScaleY.doubleValue = project.renderAxes.textScale.y
+          textFieldScaleZ.doubleValue = project.renderAxes.textScale.z
+        }
+      }
+      if let textFieldOffsetX: NSTextField = view.viewWithTag(4) as? NSTextField,
+         let textFieldOffsetY: NSTextField = view.viewWithTag(5) as? NSTextField,
+         let textFieldOffsetZ: NSTextField = view.viewWithTag(6) as? NSTextField,
+         let colorWell: NSColorWell = view.viewWithTag(7) as? NSColorWell
+      {
+        textFieldOffsetX.isEnabled = false
+        textFieldOffsetY.isEnabled = false
+        textFieldOffsetZ.isEnabled = false
+        colorWell.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          textFieldOffsetX.isEnabled = true
+          textFieldOffsetY.isEnabled = true
+          textFieldOffsetZ.isEnabled = true
+          colorWell.isEnabled = true
+          textFieldOffsetX.doubleValue = project.renderAxes.textDisplacementX.x
+          textFieldOffsetY.doubleValue = project.renderAxes.textDisplacementX.y
+          textFieldOffsetZ.doubleValue = project.renderAxes.textDisplacementX.z
+          colorWell.color = project.renderAxes.textColorX
+        }
+      }
+      if let textFieldOffsetX: NSTextField = view.viewWithTag(8) as? NSTextField,
+         let textFieldOffsetY: NSTextField = view.viewWithTag(9) as? NSTextField,
+         let textFieldOffsetZ: NSTextField = view.viewWithTag(10) as? NSTextField,
+         let colorWell: NSColorWell = view.viewWithTag(11) as? NSColorWell
+      {
+        textFieldOffsetX.isEnabled = false
+        textFieldOffsetY.isEnabled = false
+        textFieldOffsetZ.isEnabled = false
+        colorWell.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          textFieldOffsetX.isEnabled = true
+          textFieldOffsetY.isEnabled = true
+          textFieldOffsetZ.isEnabled = true
+          colorWell.isEnabled = true
+          textFieldOffsetX.doubleValue = project.renderAxes.textDisplacementY.x
+          textFieldOffsetY.doubleValue = project.renderAxes.textDisplacementY.y
+          textFieldOffsetZ.doubleValue = project.renderAxes.textDisplacementY.z
+          colorWell.color = project.renderAxes.textColorY
+        }
+      }
+      if let textFieldOffsetX: NSTextField = view.viewWithTag(12) as? NSTextField,
+         let textFieldOffsetY: NSTextField = view.viewWithTag(13) as? NSTextField,
+         let textFieldOffsetZ: NSTextField = view.viewWithTag(14) as? NSTextField,
+         let colorWell: NSColorWell = view.viewWithTag(15) as? NSColorWell
+      {
+        textFieldOffsetX.isEnabled = false
+        textFieldOffsetY.isEnabled = false
+        textFieldOffsetZ.isEnabled = false
+        colorWell.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          textFieldOffsetX.isEnabled = true
+          textFieldOffsetY.isEnabled = true
+          textFieldOffsetZ.isEnabled = true
+          colorWell.isEnabled = true
+          textFieldOffsetX.doubleValue = project.renderAxes.textDisplacementZ.x
+          textFieldOffsetY.doubleValue = project.renderAxes.textDisplacementZ.y
+          textFieldOffsetZ.doubleValue = project.renderAxes.textDisplacementZ.z
+          colorWell.color = project.renderAxes.textColorZ
+        }
+      }
+      break
+      default:
+        break
+    }
+  }
+  
   func setPropertiesLightsTableCells(on view: NSTableCellView, identifier: String)
   {
     switch(identifier)
     {
     case "CameraLightsCell":
       if let ambientLightIntensitity: NSTextField = view.viewWithTag(1) as? NSTextField,
-        let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(2) as? NSSlider,
-        let ambientColor: NSColorWell = view.viewWithTag(3) as? NSColorWell
+         let sliderAmbientLightIntensitity: NSSlider = view.viewWithTag(2) as? NSSlider,
+         let ambientColor: NSColorWell = view.viewWithTag(3) as? NSColorWell
       {
         ambientLightIntensitity.isEnabled = false
         sliderAmbientLightIntensitity.isEnabled = false
@@ -1265,6 +1413,621 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
     }
   }
+  
+  // MARK: Global axes
+  // =====================================================================
+  
+  @IBAction func changeAxesPosition(_ sender: NSPopUpButton)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode,
+       let position: RKGlobalAxes.Position = RKGlobalAxes.Position(rawValue: sender.indexOfSelectedItem)
+    {
+      crystalProject.renderAxes.position = position
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAxesStyle(_ sender: NSPopUpButton)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode,
+       let style: RKGlobalAxes.Style = RKGlobalAxes.Style(rawValue: sender.indexOfSelectedItem)
+    {
+      crystalProject.renderAxes.setStyle(style: style)
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAxesSize(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.sizeScreenFraction = sender.doubleValue / 100.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAxesBorderOffset(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.borderOffsetScreenFraction = sender.doubleValue / 100.0
+    
+      self.updateOutlineView(identifiers: [self.cameraAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAxesBackgroundStyle(_ sender: NSPopUpButton)
+  {
+    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystals.renderAxes.axesBackgroundStyle = RKGlobalAxes.BackgroundStyle(rawValue: sender.indexOfSelectedItem)!
+     
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func setAxesBackgroundColor(_ sender: NSColorWell)
+  {
+    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystals.renderAxes.axesBackgroundColor = sender.color
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeBackgroundAdditionalSize(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.axesBackgroundAdditionalSize = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesBackgroundCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperBackgroundAdditionalSize(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.axesBackgroundAdditionalSize += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesBackgroundCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextScalingAxesX(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textScale.x = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextScalingAxesX(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textScale.x += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextScalingAxesY(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textScale.y = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextScalingAxesY(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textScale.y += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextScalingAxesZ(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textScale.z = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextScalingAxesZ(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textScale.z += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetXAxesX(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementX.x = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetXAxesX(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementX.x += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetXAxesY(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementX.y = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetXAxesY(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementX.y += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetXAxesZ(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementX.z = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetXAxesZ(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementX.z += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetYAxesX(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementY.x = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetYAxesX(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementY.x += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetYAxesY(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementY.y = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetYAxesY(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementY.y += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetYAxesZ(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementY.z = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetYAxesZ(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementY.z += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetZAxesX(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementZ.x = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetZAxesX(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementZ.x += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetZAxesY(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementZ.y = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetZAxesY(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementZ.y += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeTextOffsetZAxesZ(_ sender: NSTextField)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementZ.z = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperTextOffsetZAxesZ(_ sender: NSStepper)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystalProject.renderAxes.textDisplacementZ.z += sender.doubleValue
+      sender.doubleValue = 0.0
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+            
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func setAxesTextColorX(_ sender: NSColorWell)
+  {
+    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystals.renderAxes.textColorX = sender.color
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func setAxesTextColorY(_ sender: NSColorWell)
+  {
+    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystals.renderAxes.textColorY = sender.color
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func setAxesTextColorZ(_ sender: NSColorWell)
+  {
+    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    {
+      crystals.renderAxes.textColorZ = sender.color
+      
+      self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadGlobalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
   
   // MARK: Global light
   // =====================================================================

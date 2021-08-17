@@ -47,6 +47,9 @@ public class MetalRenderer
 {
   public var backgroundShader: MetalBackgroundShader = MetalBackgroundShader()
   
+  var globalAxesSystemShader: MetalGlobalAxesSystemShader = MetalGlobalAxesSystemShader()
+  var localAxesSystemShader: MetalLocalAxesSystemShader = MetalLocalAxesSystemShader()
+  
   var atomShader: MetalAtomShader = MetalAtomShader()
   var atomOrthographicImposterShader: MetalAtomOrthographicImposterShader = MetalAtomOrthographicImposterShader()
   var atomPerspectiveImposterShader: MetalAtomPerspectiveImposterShader = MetalAtomPerspectiveImposterShader()
@@ -137,6 +140,7 @@ public class MetalRenderer
   var structureUniformBuffers: MTLBuffer! = nil
   var isosurfaceUniformBuffers: MTLBuffer! = nil
   var lightUniformBuffers: MTLBuffer! = nil
+  var globalAxesUniformBuffers: MTLBuffer! = nil
   
   public weak var renderDataSource: RKRenderDataSource?
   
@@ -178,13 +182,19 @@ public class MetalRenderer
       self.buildLightUniforms(device: device)
       self.buildStructureUniforms(device: device)
       self.buildIsosurfaceUniforms(device: device)
-      
+      self.buildGlobalAxesUniforms(device: device)
     }
   }
   
   func setDataSources(renderDataSource: RKRenderDataSource, renderStructures: [[RKRenderStructure]])
   {
     backgroundShader.renderDataSource = renderDataSource
+    
+    globalAxesSystemShader.renderDataSource = renderDataSource
+    globalAxesSystemShader.renderStructures = renderStructures
+    
+    localAxesSystemShader.renderDataSource = renderDataSource
+    localAxesSystemShader.renderStructures = renderStructures
     
     atomShader.renderDataSource = renderDataSource
     atomShader.renderStructures = renderStructures
@@ -359,6 +369,9 @@ public class MetalRenderer
     rebuildSelectionInstanceBuffers(device: device)
     
     buildStructureUniforms(device: device)
+    buildGlobalAxesUniforms(device: device)
+    buildIsosurfaceUniforms(device: device)
+    buildLightUniforms(device: device)
   }
   
   public func reloadRenderData(device: MTLDevice)
@@ -415,6 +428,13 @@ public class MetalRenderer
     measurementOrthographicImposterShader.buildVertexBuffers(device: device)
     measurementPerspectiveImposterShader.buildVertexBuffers(device: device)
   }
+  
+  public func reloadGlobalAxesSystem(device: MTLDevice)
+  {
+    globalAxesSystemShader.buildVertexBuffers(device: device)
+    
+    buildGlobalAxesUniforms(device: device)
+  }
 
   // MARK: Build pipelines
   // =====================================================================
@@ -436,6 +456,9 @@ public class MetalRenderer
     
     
     backgroundShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    
+    globalAxesSystemShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    localAxesSystemShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     atomShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomOrthographicImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -553,6 +576,9 @@ public class MetalRenderer
     assert(Thread.isMainThread)
     
     backgroundShader.buildVertexBuffers(device: device)
+    
+    globalAxesSystemShader.buildVertexBuffers(device: device)
+    localAxesSystemShader.buildVertexBuffers(device: device)
     
     atomShader.buildVertexBuffers(device: device)
     atomOrthographicImposterShader.buildVertexBuffers(device: device)
@@ -681,10 +707,6 @@ public class MetalRenderer
       }
       
       structureUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structureUniforms.count,1), options:.storageModeManaged)
-      isosurfaceUniformBuffers = device.makeBuffer(bytes: isosurfaceUniforms, length: MemoryLayout<RKIsosurfaceUniforms>.stride * max(isosurfaceUniforms.count,1), options:.storageModeManaged)
-      
-      var lightUniforms: RKLightUniforms = RKLightUniforms(project: project)
-      lightUniformBuffers = device.makeBuffer(bytes: &lightUniforms.lights, length: 4 * MemoryLayout<RKLight>.stride, options:.storageModeManaged)
     }
   }
   
@@ -721,19 +743,32 @@ public class MetalRenderer
       lightUniformBuffers = device.makeBuffer(bytes: &lightUniforms.lights, length: 4 * MemoryLayout<RKLight>.stride, options:.storageModeManaged)
     }
   }
+  
+  public func buildGlobalAxesUniforms(device: MTLDevice)
+  {
+    if let project: RKRenderDataSource = renderDataSource
+    {
+      var globalAxesUniforms: RKGlobalAxesUniforms = RKGlobalAxesUniforms(project: project)
+      globalAxesUniformBuffers = device.makeBuffer(bytes: &globalAxesUniforms, length: MemoryLayout<RKGlobalAxesUniforms>.stride, options:.storageModeManaged)
+    }
+  }
 
   public func transformUniforms(maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat, camera: RKCamera?) -> RKTransformationUniforms
   {
-    if let camera: RKCamera = camera
+    if let project: RKRenderDataSource = renderDataSource,
+       let camera: RKCamera = camera
     {
       let projectionMatrix = camera.projectionMatrix
       let viewMatrix = camera.modelViewMatrix
+      let totalAxesSize: Double = project.renderAxes.totalAxesSize
+      let axesProjectionMatrix = camera.axesProjectionMatrix(axesSize: totalAxesSize)
+      let axesViewMatrix = camera.axesModelViewMatrix
       
-      return RKTransformationUniforms(projectionMatrix: projectionMatrix, viewMatrix: viewMatrix, bloomLevel: camera.bloomLevel, bloomPulse: camera.bloomPulse, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
+      return RKTransformationUniforms(projectionMatrix: projectionMatrix, viewMatrix: viewMatrix, axesProjectionMatrix: axesProjectionMatrix, axesViewMatrix: axesViewMatrix, bloomLevel: camera.bloomLevel, bloomPulse: camera.bloomPulse, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
     }
     else
     {
-      return RKTransformationUniforms(projectionMatrix: double4x4(), viewMatrix: double4x4(), bloomLevel: 1.0, bloomPulse: 1.0, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
+      return RKTransformationUniforms(projectionMatrix: double4x4(), viewMatrix: double4x4(), axesProjectionMatrix: double4x4(), axesViewMatrix: double4x4(), bloomLevel: 1.0, bloomPulse: 1.0, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
     }
   }
   
@@ -752,6 +787,10 @@ public class MetalRenderer
     backgroundShader.renderBackgroundWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, transparentBackground: transparentBackground)
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+    
+  
+    
+    //self.localAxesSystemShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     
     
     switch(renderQuality)
@@ -859,6 +898,9 @@ public class MetalRenderer
       self.crystalCylinderPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCrystalCylinderShader: metalCrystalCylinderShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       self.polygonalPrismPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalPolygonalPrismShader: metalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       self.crystalPolygonalPrismPrimitiveSelectionWorleyNoise3DShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, metalCrystalPolygonalPrismShader: metalCrystalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+      
+   
+      self.globalAxesSystemShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, lightUniformBuffers: lightUniformBuffers, globalAxesUniformBuffers: globalAxesUniformBuffers, fontTexture: textShader.fontTextures["Helvetica"], size: size)
     }
     
     commandEncoder.endEncoding()
@@ -917,13 +959,15 @@ public class MetalRenderer
       
       polygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalPolygonalPrismShader: metalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       crystalPolygonalPrismPrimitiveSelectionGlowShader.renderWithEncoder(commandEncoder, renderPassDescriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor, metalCrystalPolygonalPrismShader: metalCrystalPolygonalPrismShader, frameUniformBuffer: frameUniformBuffer,  structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-      
+     
       commandEncoder.endEncoding()
     }
     
     blurHorizontalShader.renderWithEncoder(commandBuffer, renderPassDescriptor: blurHorizontalShader.blurHorizontalRenderPassDescriptor, texture: atomSelectionGlowShader.atomSelectionGlowResolveTexture, frameUniformBuffer: frameUniformBuffer, size: size)
     
     blurVerticalShader.renderWithEncoder(commandBuffer, renderPassDescriptor: blurVerticalShader.blurVerticalRenderPassDescriptor, texture: blurHorizontalShader.blurHorizontalTexture, frameUniformBuffer: frameUniformBuffer, size: size)
+    
+   
   }
   
   func drawOnScreen(commandBuffer: MTLCommandBuffer, renderPass: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize)

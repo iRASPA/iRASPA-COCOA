@@ -51,6 +51,11 @@ public struct RKTransformationUniforms
   public var viewMatrixInverse: float4x4 = float4x4()
   public var normalMatrix: float4x4 = float4x4()
   
+  public var axesProjectionMatrix: float4x4 = float4x4()
+  public var axesViewMatrix: float4x4 = float4x4()
+  public var axesMvpMatrix: float4x4 = float4x4()
+  public var padMatrix: float4x4 = float4x4()
+  
   // moved 'numberOfMultiSamplePoints' to here (for downsampling when no structures are present)
   public var numberOfMultiSamplePoints: Int32 = 8;
   public var bloomLevel: Float = 1.0
@@ -65,7 +70,7 @@ public struct RKTransformationUniforms
     
   }
   
-  public init(projectionMatrix: double4x4, viewMatrix: double4x4, bloomLevel: Double, bloomPulse: Double, maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat)
+  public init(projectionMatrix: double4x4, viewMatrix: double4x4, axesProjectionMatrix: double4x4, axesViewMatrix: double4x4, bloomLevel: Double, bloomPulse: Double, maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat)
   {
     let OpenGLToMetalMatrix:double4x4 = double4x4([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.5, 0.0], [0.0, 0.0, 0.5, 1.0]])
     let mvpMatrix: double4x4 = OpenGLToMetalMatrix * projectionMatrix * viewMatrix
@@ -73,6 +78,10 @@ public struct RKTransformationUniforms
     self.viewMatrix = float4x4(Double4x4: viewMatrix)
     self.mvpMatrix = float4x4(Double4x4: mvpMatrix)
     self.shadowMatrix = float4x4(Double4x4: mvpMatrix)
+    
+    self.axesProjectionMatrix = float4x4(Double4x4: OpenGLToMetalMatrix * axesProjectionMatrix)
+    self.axesViewMatrix = float4x4(Double4x4: axesViewMatrix)
+    self.axesMvpMatrix = float4x4(Double4x4: OpenGLToMetalMatrix * axesProjectionMatrix * axesViewMatrix)
     
     self.projectionMatrixInverse = float4x4(Double4x4: (OpenGLToMetalMatrix * projectionMatrix).inverse)
     self.viewMatrixInverse = float4x4(Double4x4: viewMatrix.inverse)

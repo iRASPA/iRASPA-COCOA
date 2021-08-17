@@ -34,46 +34,58 @@
 using namespace metal;
 
 
-vertex AtomSphereImposterVertexShaderOut textVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+struct GlobalAxesVertexShaderOut
+{
+  float4 position [[position]];
+  float4 eye_position;
+  float4 instancePosition [[ flat ]];
+  float2 texcoords;
+  float4 sphere_radius [[ flat ]];
+  int instanceId [[ flat ]];
+};
+
+vertex GlobalAxesVertexShaderOut globalAxesTextVertexShader(const device InPerVertex *vertices [[buffer(0)]],
                                           const device InPerInstanceTextAttributes *instanceData [[buffer(1)]],
                                           constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                          constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                          constant LightUniforms& lightUniforms [[buffer(4)]],
+                                          constant GlobalAxesUniforms& axesUniforms [[buffer(3)]],
                                           uint vid [[vertex_id]],
                                           uint iid [[instance_id]])
 {
-  AtomSphereImposterVertexShaderOut outVert;
-  float4 pos2 = frameUniforms.viewMatrix * structureUniforms.modelMatrix * instanceData[iid].position;
+  GlobalAxesVertexShaderOut outVert;
+  float scale = axesUniforms.axesScale + 2.0*axesUniforms.centerScale + axesUniforms.textOffset + axesUniforms.textScale[iid];
+  float4 instancePosition = float4(instanceData[iid].position.xyz * scale, 1.0);
+  float4 pos2 = frameUniforms.axesViewMatrix * instancePosition;
   
   outVert.eye_position = pos2;
-  outVert.sphere_radius = structureUniforms.atomScaleFactor * instanceData[iid].scale;
+  outVert.sphere_radius = 2.0*axesUniforms.textScale[iid];
   
-  pos2.x += structureUniforms.atomAnnotationTextScaling * instanceData[iid].vertexPosition[vid/2];
-  pos2.y -= structureUniforms.atomAnnotationTextScaling * instanceData[iid].vertexPosition[vid%2 + 2];
+  pos2.x += 2.0*axesUniforms.textScale[iid] * instanceData[iid].vertexPosition[vid/2];
+  pos2.y -= 2.0*axesUniforms.textScale[iid] * instanceData[iid].vertexPosition[vid%2 + 2];
   
-  pos2.xy += structureUniforms.atomAnnotationTextDisplacement.xy;
+  pos2.xy += axesUniforms.textDisplacement[iid].xy;
   
-  outVert.position = frameUniforms.projectionMatrix * pos2;
+  outVert.position = frameUniforms.axesProjectionMatrix * pos2;
   outVert.texcoords.x = instanceData[iid].st[vid/2];
   outVert.texcoords.y = instanceData[iid].st[vid%2 + 2];
+  outVert.instanceId = iid;
   
   return outVert;
 }
 
-fragment FragOutput textFragmentShader(AtomSphereImposterVertexShaderOut vert [[stage_in]],
-                                       constant FrameUniforms& frameUniforms [[buffer(1)]],
-                                       constant StructureUniforms& structureUniforms [[buffer(2)]],
-                              sampler samplr [[sampler(0)]],
-                              texture2d<float, access::sample> texture [[texture(0)]])
+fragment FragOutput globalAxesTextFragmentShader(GlobalAxesVertexShaderOut vert [[stage_in]],
+                                       constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                       constant GlobalAxesUniforms& axesUniforms [[buffer(1)]],
+                                       sampler samplr [[sampler(0)]],
+                                       texture2d<float, access::sample> texture [[texture(0)]])
 {
   FragOutput output;
   
   float4 pos = vert.eye_position;
-  pos.z += vert.sphere_radius.z + structureUniforms.atomAnnotationTextDisplacement.z;
-  pos = frameUniforms.projectionMatrix * pos;
+  pos.z += vert.sphere_radius.z + axesUniforms.textDisplacement[vert.instanceId].z;
+  pos = frameUniforms.axesProjectionMatrix * pos;
   output.depth = (pos.z / pos.w);
   
-  float4 color = structureUniforms.atomAnnotationTextColor;
+  float4 color = axesUniforms.textColor[vert.instanceId];
   // Outline of glyph is the isocontour with value 50%
   float edgeDistance = 0.5;
   // Sample the signed-distance field to find distance from this fragment to the glyph outline
@@ -83,8 +95,5 @@ fragment FragOutput textFragmentShader(AtomSphereImposterVertexShaderOut vert [[
   // Smooth the glyph edge by interpolating across the boundary in a band with the width determined above
   float insideness = smoothstep(edgeDistance - edgeWidth, edgeDistance + edgeWidth, sampleDistance);
   output.albedo = float4(color.r * insideness, color.g * insideness, color.b * insideness, insideness);
-  
   return output;
 }
-
-

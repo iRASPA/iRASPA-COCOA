@@ -323,4 +323,7 @@ public protocol RKRenderDataSource: AnyObject
   var showBoundingBox: Bool {get set}
   var renderBoundingBoxSpheres: [RKInPerInstanceAttributesAtoms] {get}
   var renderBoundingBoxCylinders: [RKInPerInstanceAttributesBonds] {get}
+  
+  var showAxes: Bool {get}
+  var renderAxes: RKGlobalAxes {get}
 }

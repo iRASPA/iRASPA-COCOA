@@ -33,12 +33,14 @@ import Foundation
 import Metal
 import simd
 
-public class MetalQuadGeometry
+
+/// Uses:  to clear the depthbuffer (i.e. the global axes) so that it draws in front of everything else.
+public class MetalBackPlaneGeometry
 {
-  public var vertices: [RKVertex] = [RKVertex(position: SIMD4<Float>(x: -1.0, y: -1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
-                                 RKVertex(position: SIMD4<Float>(x: -1.0, y:  1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
-                                 RKVertex(position: SIMD4<Float>(x:  1.0, y: -1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
-                                 RKVertex(position: SIMD4<Float>(x:  1.0, y:  1.0, z: 0.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>())]
+  public var vertices: [RKVertex] = [RKVertex(position: SIMD4<Float>(x: -1.0, y: -1.0, z: 1.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
+                                     RKVertex(position: SIMD4<Float>(x: -1.0, y:  1.0, z: 1.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
+                                     RKVertex(position: SIMD4<Float>(x:  1.0, y: -1.0, z: 1.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>()),
+                                     RKVertex(position: SIMD4<Float>(x:  1.0, y:  1.0, z: 1.0, w: 1.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 1.0), st: SIMD2<Float>())]
   public var indices: [UInt16] = [0, 1, 2, 3]
     
 

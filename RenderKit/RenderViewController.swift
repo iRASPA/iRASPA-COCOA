@@ -316,6 +316,16 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     }
   }
   
+  public func reloadGlobalAxesSystem()
+  {
+    if let device = self.device,
+       let view: MetalView = self.view as? MetalView
+    {
+      renderer.reloadGlobalAxesSystem(device: device)
+      view.layer?.setNeedsDisplay()
+    }
+  }
+  
   public func reloadBackgroundImage()
   {
     if let device = self.device

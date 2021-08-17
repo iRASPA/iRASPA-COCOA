@@ -38,55 +38,58 @@ public class MetalCubeGeometry
   
   public var indices: [UInt16] =
     [
-      0,  1,  2,  3,  3,      // Face 0 - triangle strip ( v0,  v1,  v2,  v3)
-      4,  4,  5,  6,  7,  7,  // Face 1 - triangle strip ( v4,  v5,  v6,  v7)
-      8,  8,  9, 10, 11, 11,  // Face 2 - triangle strip ( v8,  v9, v10, v11)
-      12, 12, 13, 14, 15, 15, // Face 3 - triangle strip (v12, v13, v14, v15)
-      16, 16, 17, 18, 19, 19, // Face 4 - triangle strip (v16, v17, v18, v19)
-      20, 20, 21, 22, 23      // Face 5 - triangle strip (v20, v21, v22, v23)
+       0,  1,  2,  2,  1,  3, // Face 0 - triangle strip ( v0,  v1,  v2,  v3)
+       4,  5,  6,  6,  5,  7, // Face 1 - triangle strip ( v4,  v5,  v6,  v7)
+       8,  9, 10, 10,  9, 11, // Face 2 - triangle strip ( v8,  v9, v10, v11)
+      12, 13, 14, 14, 13, 15, // Face 3 - triangle strip (v12, v13, v14, v15)
+      16, 17, 18, 18, 17, 19, // Face 4 - triangle strip (v16, v17, v18, v19)
+      20, 21, 22, 22, 21, 23  // Face 5 - triangle strip (v20, v21, v22, v23)
   ]
   
-  public var vertices: [RKVertex] =
-    [
-      // face 0 (front)
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: 1.0, w: 0.0), st: SIMD2<Float>()),
-      
-      // face 1 (right)
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      
-      // face 2 (back)
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -1.0, w: 0.0), st: SIMD2<Float>()),
-      
-      // face 3 (left)
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: -1.0 , y: 0.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      
-      // face 4 (bottom)
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: -1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      
-      // face 5 (top)
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: -1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: 1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>()),
-      RKVertex(position: SIMD4<Float>(x: 1.0 , y: 1.0, z: -1.0, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 1.0, z: 0.0, w: 0.0), st: SIMD2<Float>())
-  ]
+  public var vertices: [RKPrimitiveVertex] = []
   
-  
-  public init()
+  public convenience init()
   {
+    self.init(size: 1.0, color: SIMD4<Float>(x: 0.7, y: 0.7, z: 0.7, w: 1.0))
+  }
+  
+  public init(size: Double, color: SIMD4<Float>)
+  {
+    let halfSize: Double = size
+    // face 0 (front)
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: -halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: halfSize, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: halfSize, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: -halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: halfSize, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: halfSize, w: 0.0), color: color, st: SIMD2<Float>()))
+    
+    // face 1 (right)
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: -halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: halfSize , y: 0.0, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: halfSize , y: 0.0, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: -halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: halfSize , y: 0.0, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: halfSize , y: 0.0, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    
+    // face 2 (back)
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: -halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -halfSize, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -halfSize, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: -halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -halfSize, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: 0.0, z: -halfSize, w: 0.0), color: color, st: SIMD2<Float>()))
+    
+    // face 3 (left)
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: -halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: -halfSize , y: 0.0, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: -halfSize , y: 0.0, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: -halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: -halfSize , y: 0.0, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: -halfSize , y: 0.0, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    
+    // face 4 (bottom)
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: -halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -halfSize, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: -halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -halfSize, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: -halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -halfSize, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: -halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: -halfSize, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    
+    // face 5 (top)
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: halfSize, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: -halfSize , y: halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: halfSize, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: halfSize, z: halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: halfSize, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
+    vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: halfSize , y: halfSize, z: -halfSize, w: 0.0), normal: SIMD4<Float>(x: 0.0 , y: halfSize, z: 0.0, w: 0.0), color: color, st: SIMD2<Float>()))
   }
 }

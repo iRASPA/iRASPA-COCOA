@@ -159,8 +159,7 @@ public class RKFontAtlas
       let maxy = y.max()
     {
       let center = 0.5*SIMD2<Float>(maxx+minx,maxy+miny)
-      //let center = float2(Float(NSMidX(boundingRect) + lineOriginArray[0].x),
-      //                    Float(NSMidY(boundingRect) + lineOriginArray[0].y))
+     
       for i in 0..<frameGlyphCount
       {
         vertices[i].vertexCoordinatesData.x -= center.x
