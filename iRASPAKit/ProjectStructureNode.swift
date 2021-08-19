@@ -89,7 +89,6 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public var renderCamera: RKCamera?
   
-  public var showAxes: Bool = true
   public var renderAxes: RKGlobalAxes = RKGlobalAxes()
   
   public var ImageDotsPerInchValue: Double
