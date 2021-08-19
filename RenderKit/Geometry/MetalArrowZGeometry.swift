@@ -134,23 +134,23 @@ public class MetalArrowZGeometry
     let ref_cap_3: Int = vertices.count
     if(tipVisibility)
     {
-      vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: 0.0, y: 0.0, z: offset + arrowHeight, w: 0.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 0.0), color:   tipColor, st: SIMD2<Float>(0.5,0.5)))
+      vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: 0.0, y: 0.0, z: offset + arrowHeight, w: 0.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: -1.0, w: 0.0), color:   tipColor, st: SIMD2<Float>(0.5,0.5)))
       for  i in 0..<sectorCount
       {
         let sectorAngle: Double = Double(i) * sectorStep + 0.25 * Double.pi
         let position: SIMD4<Float> = SIMD4<Float>(x: cos(sectorAngle) * tipRadius / aspectRatio, y: sin(sectorAngle) * tipRadius, z: offset + arrowHeight, w: 0.0)
-        let normal: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 0.0)
+        let normal: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: -1.0, w: 0.0)
         vertices.append(RKPrimitiveVertex(position: position, normal: normal, color: tipColor, st: SIMD2<Float>()))
       }
     }
     else
     {
-      vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: 0.0, y: 0.0, z: offset + arrowHeight, w: 0.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: -1.0, w: 0.0), color:   tipColor, st: SIMD2<Float>(0.5,0.5)))
+      vertices.append(RKPrimitiveVertex(position: SIMD4<Float>(x: 0.0, y: 0.0, z: offset + arrowHeight, w: 0.0), normal: SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 0.0), color:   tipColor, st: SIMD2<Float>(0.5,0.5)))
       for  i in 0..<sectorCount
       {
         let sectorAngle: Double = Double(i) * sectorStep + 0.25 * Double.pi
         let position: SIMD4<Float> = SIMD4<Float>(x: cos(sectorAngle) * arrowRadius / aspectRatio, y: sin(sectorAngle) * arrowRadius, z: offset + arrowHeight, w: 0.0)
-        let normal: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: -1.0, w: 0.0)
+        let normal: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 1.0, w: 0.0)
         vertices.append(RKPrimitiveVertex(position: position, normal: normal, color: tipColor, st: SIMD2<Float>()))
       }
     }
