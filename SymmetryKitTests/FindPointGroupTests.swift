@@ -35,8 +35,8 @@ class FindPointGroupTests: XCTestCase
     guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else {return nil}
     
     // find the rotational symmetry of the reduced Delaunay cell
-    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
-    
+    let latticeSymmetries: SKPointSymmetrySet = SKSymmetryCell.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+        
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
     let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     let reducedPositionsInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? positionInDelaunayCell : positionInDelaunayCell.filter{$0.type == minType}
@@ -44,7 +44,7 @@ class FindPointGroupTests: XCTestCase
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
     let spaceGroupSymmetries: SKSymmetryOperationSet = SKSpacegroup.findSpaceGroupSymmetry(unitCell: DelaunayUnitCell, reducedAtoms: reducedPositionsInDelaunayCell, atoms: positionInDelaunayCell, latticeSymmetries: latticeSymmetries, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
-    
+        
     // create the point symmetry set
     let pointSymmetry: SKPointSymmetrySet = SKPointSymmetrySet(rotations: spaceGroupSymmetries.rotations)
     
@@ -1082,9 +1082,7 @@ class FindPointGroupTests: XCTestCase
   {
     let testData: [String: Int] =
       [
-        "SpglibTestData/tetragonal/POSCAR-100-2" : 13,
-        "SpglibTestData/tetragonal/POSCAR-111" : 14,
-        "SpglibTestData/tetragonal/POSCAR-125-2" : 15,
+        "SpglibTestData/orthorhombic/POSCAR-047-2" : 8
       ]
     
     let bundle = Bundle(for: type(of: self))

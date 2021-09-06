@@ -85,7 +85,7 @@ extension SKSpacegroup
     guard let DelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else {return nil}
     
     // find the rotational symmetry of the reduced Delaunay cell
-    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+    let latticeSymmetries: SKPointSymmetrySet = SKSymmetryCell.findLatticeSymmetry(unitCell: DelaunayUnitCell, symmetryPrecision: symmetryPrecision)
     
     // adjust the input positions to the reduced Delaunay cell (possibly trimming it, reducing the number of atoms)
     let positionInDelaunayCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: DelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
@@ -277,7 +277,7 @@ extension SKSpacegroup
     let reducedPositionsInNiggliCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = allowPartialOccupancies ? positionInNiggliCell : positionInNiggliCell.filter{$0.type == minType}
     
     // find the rotational symmetry of the reduced Delaunay cell
-    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: NiggliUnitCell, symmetryPrecision: symmetryPrecision)
+    let latticeSymmetries: SKPointSymmetrySet = SKSymmetryCell.findLatticeSymmetry(unitCell: NiggliUnitCell, symmetryPrecision: symmetryPrecision)
         
     // find the rotational and translational symmetries for the atoms in the reduced Delaunay cell (based on the symmetries of the lattice, omtting the ones that are not compatible)
     // the point group of the lattice cannot be lower than the point group of the crystal
@@ -337,7 +337,6 @@ extension SKSpacegroup
   
   public static func getOriginShift(HallNumber: Int, centering: SKSpacegroup.Centring, changeOfBasis: SKRotationalChangeOfBasis, seitzMatrices: [SKSeitzMatrix], symmetryPrecision: Double = 1e-2) throws -> SIMD3<Double>?
   {
-    var translations: int3x3 = int3x3()
     var translationsnew: double3x3 = double3x3()
     
     let dataBaseSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: HallNumber)
@@ -394,7 +393,6 @@ extension SKSpacegroup
     for i in 0..<dataBaseSpaceGroupGenerators.count
     {
       guard let index: Int = seitzMatrices.firstIndex(where: {$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}) else {return nil}
-      translations[i] = SKSeitzIntegerMatrix(SeitzMatrx: seitzMatrices[index]).translation
       translationsnew[i] = seitzMatrices[index].translation
     }
     
@@ -445,8 +443,8 @@ extension SKSpacegroup
     var b: Matrix = Matrix(rows: 9, columns: 1, repeatedValue: 0.0)
     for i in 0..<dataBaseSpaceGroupGenerators.count
     {
-      let seitzMatrix: SKSeitzIntegerMatrix? = dataBaseSpaceGroupSeitzMatrices.filter{$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}.first
-      guard seitzMatrix != nil else {return nil}
+      //let seitzMatrix: SKSeitzIntegerMatrix? = dataBaseSpaceGroupSeitzMatrices.filter{$0.rotation == dataBaseSpaceGroupGenerators[i].rotation}.first
+      //guard seitzMatrix != nil else {return nil}
       
       let transPrimitive: SIMD3<Double> = changeToPrimitive * translationsnew[i]
       
@@ -501,7 +499,7 @@ extension SKSpacegroup
     {
     case .none:
       break
-    case .triclinic, .tetragonal, .trigonal, .hexagonal:
+    case .triclinic, .tetragonal, .trigonal, .hexagonal, .cubic:
       if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
       {
         return (originShift, SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity))
@@ -557,11 +555,6 @@ extension SKSpacegroup
         let cellB: SKSymmetryCell = SKSymmetryCell(unitCell: conventionalBravaisLatticeB)
         return (cellA.a, cellA.b) < (cellB.a, cellB.b)
       }).first
-    case .cubic:
-      if let originShift: SIMD3<Double> = try? getOriginShift(HallNumber: HallNumber, centering: centering, changeOfBasis: SKRotationalChangeOfBasis(rotation: SKRotationMatrix.identity), seitzMatrices: seitzMatrices, symmetryPrecision: symmetryPrecision)
-      {
-        return (originShift, SKRotationalChangeOfBasis.identity)
-      }
     }
     
     return nil

@@ -180,7 +180,7 @@ public struct SKSpaceGroupSetting
   // TRICLINIC GROUPS
   // ================
   
-  static let spaceGroupHall1 = SKSpaceGroupSetting(number:   1, spaceGroupNumber:   1, order:   1, ext: 0, qualifier:     "abc", HM:        "P 1", Hall: " P 1", inversionAtOrigin: false, symmorphicity: .symmorphic, standard: true,  centring: .primitive, latticeTranslations: [SIMD3<Int32>(0,0,0)], pointGroupNumber:  1, schoenflies: ""      , generators: "", encoding: "012", asymmetricUnit: SKAsymmetricUnit(a: (0,49), b: (0,49), c: (0,49)), transformationMatrix: SKTransformationMatrix.identity)
+  static let spaceGroupHall1 = SKSpaceGroupSetting(number:   1, spaceGroupNumber:   1, order:   1, ext: 0, qualifier:     "abc", HM:        "P 1", Hall: " P 1", inversionAtOrigin: false, symmorphicity: .symmorphic, standard: true,  centring: .primitive, latticeTranslations: [SIMD3<Int32>(0,0,0)], pointGroupNumber:  1, schoenflies: ""      , generators: "012", encoding: "012", asymmetricUnit: SKAsymmetricUnit(a: (0,49), b: (0,49), c: (0,49)), transformationMatrix: SKTransformationMatrix.identity)
   
    static let spaceGroupHall2 = SKSpaceGroupSetting(number:   2, spaceGroupNumber:   2, order:   2, ext: 0, qualifier:     "abc", HM:       "P -1", Hall: "-P 1", inversionAtOrigin: false, symmorphicity: .symmorphic, standard: true,  centring: .primitive, latticeTranslations: [SIMD3<Int32>(0,0,0)], pointGroupNumber:  2, schoenflies: "C1^1"  , generators: "012345", encoding: "012", asymmetricUnit: SKAsymmetricUnit(a: (0,49), b: (0,24), c: (0,49)), transformationMatrix: SKTransformationMatrix.identity)
   

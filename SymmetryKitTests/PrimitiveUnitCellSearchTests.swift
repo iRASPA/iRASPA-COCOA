@@ -1134,4 +1134,49 @@ class PrimitiveUnitCellSearchTests: XCTestCase
       }
     }
   }
+
+func testFindVirtualSpaceGroupDebug()
+{
+  let testData: [String: double3x3] =
+  [
+    "SpglibTestData/virtual_structure/POSCAR-1-227-93" : double3x3([4.1200000000, -4.1200000000, 0.0000000000],[-4.1200000000, -0.0000000000, -4.1200000000], [4.1200000000, 4.1200000000, 0.0000000000]),
+    
+  ]
+    
+  let bundle = Bundle(for: type(of: self))
+    
+  for (fileName, referencePrimitiveUnitCell) in testData
+  {
+    if let url: URL = bundle.url(forResource: fileName, withExtension: nil)
+    {
+      let reader: SKVASPReader = SKVASPReader(URL: url)
+      if let unitCell = reader.unitCell
+      {
+        let origin: SIMD3<Double> = SIMD3<Double>(Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1), Double.random(in: -0.1..<0.1))
+        let translatedAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = reader.atoms.map{($0.fractionalPosition + origin, $0.type, 1.0)}
+                
+        // search for a primitive cell based on the positions of the atoms
+        let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: translatedAtoms, atoms: translatedAtoms, unitCell: unitCell, allowPartialOccupancies: true, symmetryPrecision: precision)
+       
+        let DelaunayUnitCell: double3x3? = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: precision)
+        
+        XCTAssertNotNil(DelaunayUnitCell, "DelaunayUnitCell \(fileName) not found")
+        if let primitiveUnitCell = DelaunayUnitCell
+        {
+          XCTAssertEqual(primitiveUnitCell[0][0], referencePrimitiveUnitCell[0][0], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+          XCTAssertEqual(primitiveUnitCell[0][1], referencePrimitiveUnitCell[0][1], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+          XCTAssertEqual(primitiveUnitCell[0][2], referencePrimitiveUnitCell[0][2], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+      
+          XCTAssertEqual(primitiveUnitCell[1][0], referencePrimitiveUnitCell[1][0], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+          XCTAssertEqual(primitiveUnitCell[1][1], referencePrimitiveUnitCell[1][1], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+          XCTAssertEqual(primitiveUnitCell[1][2], referencePrimitiveUnitCell[1][2], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+      
+          XCTAssertEqual(primitiveUnitCell[2][0], referencePrimitiveUnitCell[2][0], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+          XCTAssertEqual(primitiveUnitCell[2][1], referencePrimitiveUnitCell[2][1], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+          XCTAssertEqual(primitiveUnitCell[2][2], referencePrimitiveUnitCell[2][2], accuracy: precision, "Wrong primitiveCell found for \(fileName): \(primitiveUnitCell) should be \(referencePrimitiveUnitCell)")
+        }
+      }
+    }
+  }
+}
 }
