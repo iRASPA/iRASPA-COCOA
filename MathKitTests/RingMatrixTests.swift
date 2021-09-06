@@ -554,6 +554,31 @@ class RingMatrixTests: XCTestCase
     assertEqual(hnf.A, A)
   }
   
+  func testHermitianNormalForm7() throws
+  {
+    let m: RingMatrix = RingMatrix([[4,-2,-1], [2, 4, 3], [-5, 2, 0]])
+    let A: RingMatrix = RingMatrix([[1, 0, 1], [0, 2, 5], [0, 0, 9]])
+    let U: RingMatrix = RingMatrix([[-1, 0, -1], [-5, 0, -4], [-12, -1, -10]])
+    
+    let hnf: (U: RingMatrix, A: RingMatrix, rp: [Int]) = try m.HermiteNormalForm()
+    assertEqual(hnf.U <*> m, hnf.A)
+    assertEqual(hnf.U, U)
+    assertEqual(hnf.A, A)
+  }
+  
+  func testHermitianNormalForm8() throws
+  {
+    let m: RingMatrix = RingMatrix([[6,-9,-7], [-3, -2, -2], [-7, -2, -9]])
+    let A: RingMatrix = RingMatrix([[1, 0, 66], [0, 1, 159], [0, 0, 257]])
+    let U: RingMatrix = RingMatrix([[-2, 19, -10], [-5, 46, -24], [-8, 75, -39]])
+    
+    let hnf: (U: RingMatrix, A: RingMatrix, rp: [Int]) = try m.HermiteNormalForm()
+    assertEqual(hnf.U <*> m, hnf.A)
+    assertEqual(hnf.U, U)
+    assertEqual(hnf.A, A)
+    debugPrint(hnf)
+  }
+  
   func testHermitianNormalFormGeneral() throws
   {
     for _ in 1...1000

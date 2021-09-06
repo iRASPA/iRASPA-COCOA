@@ -20,6 +20,7 @@ public struct SKSymmetryOperationSet
     self.operations = operations
   }
   
+  // FIX: make the SKSymmetryOperationSet a real set
   public var rotations: OrderedSet<SKRotationMatrix>
   {
     return OrderedSet(sequence: self.operations.map{$0.rotation})

@@ -198,7 +198,7 @@ public struct SKPointGroup
       return SKTransformationMatrix.identity
     case .laue_2m:
       // Look for all proper rotation matrices of rotation type 2
-      let properRotationMatrices: [SKRotationMatrix] = properRotations.filter{$0.type.rawValue == 2}
+      let properRotationMatrices: [SKRotationMatrix] = properRotations.filter{$0.type == SKRotationMatrix.RotationType.axis_2}
       
       if let properRotationmatrix: SKRotationMatrix = properRotationMatrices.first
       {
@@ -209,23 +209,16 @@ public struct SKPointGroup
        
         
         // possible candidates for the second axis are vectors that are orthogonal to the axes of rotation
-        var orthogonalAxes: [SIMD3<Int32>] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: 2)
+        let orthogonalAxes: [SIMD3<Int32>] = properRotationmatrix.orthogonalToAxisDirection(rotationOrder: 2).sorted {length_squared($0) <=  length_squared($1)}
         
         // the second axis is the shortest orthogonal axis
-        axes.int3x3[0] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <=  length_squared($1) ? $0 : $1})
-        
-        if let index: Int = orthogonalAxes.firstIndex(of: axes.int3x3[0])
+        axes.int3x3[0] = orthogonalAxes[0]
+        axes.int3x3[2] = orthogonalAxes[1]
+        if axes.determinant < 0
         {
-          orthogonalAxes.remove(at: index)
-          
-          axes.int3x3[2] = orthogonalAxes.reduce(orthogonalAxes[0], { length_squared($0) <=  length_squared($1) ? $0 : $1})
-          
-          if axes.determinant < 0
-          {
-            return SKTransformationMatrix([axes.int3x3[2],axes.int3x3[1],axes.int3x3[0]])
-          }
-          return axes
+          return SKTransformationMatrix([axes.int3x3[2],axes.int3x3[1],axes.int3x3[0]])
         }
+        return axes
       }
     case .laue_mmm, .laue_m3, .laue_m3m:
       // The vectors are immediately available for these cases.
@@ -234,8 +227,8 @@ public struct SKPointGroup
         // look for all proper rotation matrices of the wanted rotation type and take their rotation axes (use a set to avoid duplicates)
         let allAxes: Set<SIMD3<Int32>> = Set(properRotations.filter{$0.type.rawValue == rotationalTypeForBasis}.map{$0.rotationAxis})
                 
-        let uniqueAxis: [SIMD3<Int32>] = Array(Set(allAxes)).sorted{SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $0)! < SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $1)!}
-        //let uniqueAxis: [int3] = allAxes.sorted{length_squared($0) < length_squared($1)}
+        //let uniqueAxis: [SIMD3<Int32>] = Array(Set(allAxes)).sorted{SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $0)! < SKRotationMatrix.allPossibleRotationAxes.firstIndex(of: $1)!}
+        let uniqueAxis: [SIMD3<Int32>] = allAxes.sorted{length_squared($0) < length_squared($1)}
         
         if uniqueAxis.count >= 3
         {
@@ -402,7 +395,7 @@ public struct SKPointGroup
     }
   }
   
-  /// For the convenience in the following steps, the basis vectors are further transformed to have a specific cen- tring type by multiplying a correction matrix M with M′ for the Laue classes of 2/m and mmm and and the rhombohedral system.
+  /// For the convenience in the following steps, the basis vectors are further transformed to have a specific centring type by multiplying a correction matrix M with M′ for the Laue classes of 2/m and mmm and and the rhombohedral system.
   /// For the Laue class 2/m, the basis vectors with the I, A, and B centring types are transformed to those with the C centring type.
   /// For the Laue class mmm, those with the A, and B centring types are transformed to those with the C centring type.
   /// For the rhombohedral system, a rhombohedrally-centred hexagonal cell is obtained by M' in either the obverse or reverse setting.
@@ -468,7 +461,7 @@ public struct SKPointGroup
   {
     let primitiveUnitCell: double3x3 = SKSymmetryCell.findSmallestPrimitiveCell(reducedAtoms: atoms, atoms: atoms, unitCell: unitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     guard let primitiveDelaunayUnitCell: double3x3 = SKSymmetryCell.computeDelaunayReducedCell(unitCell: primitiveUnitCell, symmetryPrecision: symmetryPrecision) else { return nil}
-    let latticeSymmetries: SKPointSymmetrySet = SKRotationMatrix.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
+    let latticeSymmetries: SKPointSymmetrySet = SKSymmetryCell.findLatticeSymmetry(unitCell: primitiveDelaunayUnitCell, symmetryPrecision: symmetryPrecision)
                                                                                      
     let positionInPrimitiveCell: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = SKSymmetryCell.trim(atoms: atoms, from: unitCell, to: primitiveDelaunayUnitCell, allowPartialOccupancies: allowPartialOccupancies, symmetryPrecision: symmetryPrecision)
     
@@ -570,17 +563,17 @@ public struct SKPointGroup
 ///
 public struct RotationalOccuranceTable: Equatable
 {
-  var occurance: [SKRotationMatrix.rotationType: Int] =
-    [SKRotationMatrix.rotationType.axis_6m: 0,
-     SKRotationMatrix.rotationType.axis_4m: 0,
-     SKRotationMatrix.rotationType.axis_3m: 0,
-     SKRotationMatrix.rotationType.axis_2m: 0,
-     SKRotationMatrix.rotationType.axis_1m: 0,
-     SKRotationMatrix.rotationType.axis_1: 0,
-     SKRotationMatrix.rotationType.axis_2: 0,
-     SKRotationMatrix.rotationType.axis_3: 0,
-     SKRotationMatrix.rotationType.axis_4: 0,
-     SKRotationMatrix.rotationType.axis_6: 0]
+  var occurance: [SKRotationMatrix.RotationType: Int] =
+    [SKRotationMatrix.RotationType.axis_6m: 0,
+     SKRotationMatrix.RotationType.axis_4m: 0,
+     SKRotationMatrix.RotationType.axis_3m: 0,
+     SKRotationMatrix.RotationType.axis_2m: 0,
+     SKRotationMatrix.RotationType.axis_1m: 0,
+     SKRotationMatrix.RotationType.axis_1: 0,
+     SKRotationMatrix.RotationType.axis_2: 0,
+     SKRotationMatrix.RotationType.axis_3: 0,
+     SKRotationMatrix.RotationType.axis_4: 0,
+     SKRotationMatrix.RotationType.axis_6: 0]
   
   static let pointGroup0: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
   static let pointGroup1: RotationalOccuranceTable = RotationalOccuranceTable(0, 0, 0, 0, 0, 1, 0, 0, 0, 0)
@@ -618,16 +611,16 @@ public struct RotationalOccuranceTable: Equatable
   
   init(_ axis_6m: Int, _ axis_4m: Int, _ axis_3m: Int, _ axis_2m: Int, _ axis_1m: Int, _ axis_1: Int, _ axis_2: Int, _ axis_3: Int, _ axis_4: Int, _ axis_6: Int)
   {
-    occurance[SKRotationMatrix.rotationType.axis_6m] = axis_6m
-    occurance[SKRotationMatrix.rotationType.axis_4m] = axis_4m
-    occurance[SKRotationMatrix.rotationType.axis_3m] = axis_3m
-    occurance[SKRotationMatrix.rotationType.axis_2m] = axis_2m
-    occurance[SKRotationMatrix.rotationType.axis_1m] = axis_1m
-    occurance[SKRotationMatrix.rotationType.axis_1] = axis_1
-    occurance[SKRotationMatrix.rotationType.axis_2] = axis_2
-    occurance[SKRotationMatrix.rotationType.axis_3] = axis_3
-    occurance[SKRotationMatrix.rotationType.axis_4] = axis_4
-    occurance[SKRotationMatrix.rotationType.axis_6] = axis_6
+    occurance[SKRotationMatrix.RotationType.axis_6m] = axis_6m
+    occurance[SKRotationMatrix.RotationType.axis_4m] = axis_4m
+    occurance[SKRotationMatrix.RotationType.axis_3m] = axis_3m
+    occurance[SKRotationMatrix.RotationType.axis_2m] = axis_2m
+    occurance[SKRotationMatrix.RotationType.axis_1m] = axis_1m
+    occurance[SKRotationMatrix.RotationType.axis_1] = axis_1
+    occurance[SKRotationMatrix.RotationType.axis_2] = axis_2
+    occurance[SKRotationMatrix.RotationType.axis_3] = axis_3
+    occurance[SKRotationMatrix.RotationType.axis_4] = axis_4
+    occurance[SKRotationMatrix.RotationType.axis_6] = axis_6
   }
 }
 

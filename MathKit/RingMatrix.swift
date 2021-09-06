@@ -623,9 +623,7 @@ public func * (lhs: RingMatrix, rhs: RingMatrix) -> RingMatrix
 extension RingMatrix
 {
   public func submatrix(startRow: Int, startColumn: Int, numberOfRows: Int, numberOfColumns: Int) -> RingMatrix
-  {
-    // return Submatrix(self.__matrix, self.__row_start + row, self.__col_start + col, rows, cols)
-    
+  {    
     var matrix: RingMatrix = RingMatrix(rows: numberOfRows, columns: numberOfColumns, repeatedValue: 0)
     for i in 0..<numberOfRows
     {
@@ -693,13 +691,13 @@ extension RingMatrix
           CC[r, i] = columnReduction.C[r, i]
         }
         // Update QQ to QQ * C^{-1}
-        for j in (r + 1)..<columnReduction.C.columns
+        for l in (r + 1)..<columnReduction.C.columns
         {
-          if columnReduction.C[r, j] != 0
+          if columnReduction.C[r, l] != 0
           {
             for i in 0..<QQ.rows
             {
-              QQ[i, j] -= columnReduction.C[r, j] * QQ[i, r]
+              QQ[i, l] -= columnReduction.C[r, l] * QQ[i, r]
             }
           }
         }
@@ -719,9 +717,9 @@ extension RingMatrix
         {
           if i != r - 1 && i != r
           {
-            for j in 0..<QQ.columns
+            for l in 0..<QQ.columns
             {
-              QQ[i, j] = QQ[i, j] + columnReduction.Q[i, r - 1] * QQ[r - 1, j] + columnReduction.Q[i, r] * QQ[r, j]
+              QQ[i, l] = QQ[i, l] + columnReduction.Q[i, r - 1] * QQ[r - 1, l] + columnReduction.Q[i, r] * QQ[r, l]
             }
           }
         }
@@ -729,12 +727,12 @@ extension RingMatrix
         let b = columnReduction.Q[r - 1, r    ]
         let c = columnReduction.Q[r,     r - 1]
         let d = columnReduction.Q[r,     r    ]
-        for j in 0..<QQ.columns
+        for l in 0..<QQ.columns
         {
-          let temp1: Int = a * QQ[r - 1, j] + b * QQ[r, j]
-          let temp2: Int = c * QQ[r - 1, j] + d * QQ[r, j]
-          QQ[r - 1, j] = temp1
-          QQ[r, j] = temp2
+          let temp1: Int = a * QQ[r - 1, l] + b * QQ[r, l]
+          let temp2: Int = c * QQ[r - 1, l] + d * QQ[r, l]
+          QQ[r - 1, l] = temp1
+          QQ[r, l] = temp2
         }
       }
     }
@@ -800,7 +798,7 @@ extension RingMatrix
       {
         let extendedGCD: (gi: Int, xi: Int, yi: Int) = Ring.extendedGreatestCommonDivisor(a: bi[i], b: Nfact[i])
         xi[i] = extendedGCD.xi
-        if 1 < extendedGCD.gi && extendedGCD.gi < Nfact[i]
+        if (1 < extendedGCD.gi) && (extendedGCD.gi < Nfact[i])
         {
           return Array(Nfact[0..<i]) + Array([extendedGCD.gi, Nfact[i] / extendedGCD.gi]) + Array(Nfact[i+1..<t])
         }
