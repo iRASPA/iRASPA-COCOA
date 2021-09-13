@@ -332,8 +332,7 @@ public struct SKIntegerSymmetryOperationSet
   {
     var atoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double, asymmetricType: Int)] = atoms.map{($0.fractionalPosition, $0.type, $0.occupancy, -1)}
         
-    var asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = [(atoms[0].fractionalPosition, atoms[0].type, atoms[0].occupancy)]
-    atoms[0].asymmetricType = 0
+    var asymmetricAtoms: [(fractionalPosition: SIMD3<Double>, type: Int, occupancy: Double)] = []
     
     // loop over all atoms
     loop: for i in 0..<atoms.count
