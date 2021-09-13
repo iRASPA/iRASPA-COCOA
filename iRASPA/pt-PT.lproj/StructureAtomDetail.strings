@@ -54,7 +54,7 @@
 "SBf-Vu-4GN.title" = "Exportar como";
 
 /* Class = "NSTextFieldCell"; placeholderString = "net charge"; ObjectID = "XbY-dL-0Ls"; */
-"XbY-dL-0Ls.placeholderString" = "carga líquida";
+"XbY-dL-0Ls.placeholderString" = "Carga líquida";
 
 /* Class = "NSMenuItem"; title = "Visibility"; ObjectID = "bRE-uw-nCc"; */
 "bRE-uw-nCc.title" = "Visibilidade";
