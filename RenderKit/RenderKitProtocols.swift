@@ -292,6 +292,10 @@ public protocol RKRenderPolygonalPrismObjectsSource: RKRenderObjectSource
   var renderSelectedPolygonalPrismObjects: [RKInPerInstanceAttributesAtoms] {get}
 }
 
+public protocol RKRenderLocalAxesSource
+{
+  var renderLocalAxis: RKLocalAxes {get}
+}
 
 public protocol RKRenderCameraSource: AnyObject
 {

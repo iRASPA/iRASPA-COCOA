@@ -428,6 +428,16 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
   }
   
+  @objc func reloadLocalAxesSystem()
+  {
+    let selectedTabViewIndex: Int = self.selectedTabViewItemIndex
+    let tabViewItem: NSTabViewItem = self.tabViewItems[selectedTabViewIndex]
+    if let renderController: RenderViewController = tabViewItem.viewController as? RenderViewController
+    {
+      renderController.reloadLocalAxesSystem()
+    }
+  }
+  
   @objc func reloadGlobalAxesSystem()
   {
     let selectedTabViewIndex: Int = self.selectedTabViewItemIndex

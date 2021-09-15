@@ -39,7 +39,7 @@ import OperationKit
 import MathKit
 import LogViewKit
 
-public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
+public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
 {
   private static var classVersionNumber: Int = 1
   

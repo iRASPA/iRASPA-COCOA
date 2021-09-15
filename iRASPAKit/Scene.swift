@@ -39,7 +39,7 @@ import MathKit
 import simd
 
 // An Movie is a list of Movie's. It is a set of actors that each contain a list of frames for that actor
-public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
+public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
 {
   // a Scene has a surface for the whole scene
   // all movies in the scene add to the scene potential energy surface

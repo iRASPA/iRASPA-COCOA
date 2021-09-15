@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrismObjectsSource
+public final class PolygonalPrismPrimitive: Structure, RKRenderPolygonalPrismObjectsSource, RKRenderLocalAxesSource
 {
   private static var classVersionNumber: Int = 1
   

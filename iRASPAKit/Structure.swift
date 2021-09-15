@@ -47,9 +47,9 @@ fileprivate func ==~ (left: Double, right: Double) -> Bool
 
 public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
-public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceStructure, BinaryDecodable, BinaryEncodable, Cloning
+public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceStructure,  BinaryDecodable, BinaryEncodable, Cloning
 {
-  private static var classVersionNumber: Int = 7
+  private static var classVersionNumber: Int = 8
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   public var bondController: SKBondSetController = SKBondSetController()
@@ -251,6 +251,11 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var unitCellScaleFactor: Double = 1.0
   public var unitCellDiffuseColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
   public var unitCellDiffuseIntensity: Double = 1.0
+  
+  // MARK: protocol RKRenderStructure implementation
+  // =====================================================================
+  
+  public var renderLocalAxis: RKLocalAxes = RKLocalAxes()
    
   // MARK: protocol RKRenderAdsorptionSurfaceSource implementation
   // =====================================================================
@@ -3327,6 +3332,9 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     encoder.encode(self.unitCellDiffuseColor)
     encoder.encode(self.unitCellDiffuseIntensity)
     
+    // local axes
+    encoder.encode(self.renderLocalAxis)
+    
     // adsorption surface
     encoder.encode(self.drawAdsorptionSurface)
     encoder.encode(self.adsorptionSurfaceOpacity)
@@ -3648,6 +3656,12 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.unitCellScaleFactor = try decoder.decode(Double.self)
     self.unitCellDiffuseColor = try decoder.decode(NSColor.self)
     self.unitCellDiffuseIntensity = try decoder.decode(Double.self)
+    
+    // local axes
+    if readVersionNumber >= 8 // introduced in version 8
+    {
+      self.renderLocalAxis = try decoder.decode(RKLocalAxes.self)
+    }
     
     // adsorption surface
     self.drawAdsorptionSurface = try decoder.decode(Bool.self)

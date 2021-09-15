@@ -98,6 +98,12 @@ public struct SKBoundingBox: BinaryDecodable, BinaryEncodable
     return minimum + (maximum - minimum) * 0.5
   }
   
+  public var shortestEdge: Double
+  {
+    let edgeLengths: SIMD3<Double> = maximum - minimum
+    return min(edgeLengths.x, edgeLengths.y, edgeLengths.z)
+  }
+  
   public var boundingSphereRadius: Double
   {
     let coords: [SIMD3<Double>] =

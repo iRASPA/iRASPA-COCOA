@@ -39,7 +39,7 @@ import SimulationKit
 import LogViewKit
 import OperationKit
 
-public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource
+public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource
 {
   private static var classVersionNumber: Int = 1
   

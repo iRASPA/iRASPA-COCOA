@@ -34,16 +34,14 @@
 using namespace metal;
 
 vertex AxesVertexShaderOut LocalAxesSystemVertexShader(const device InPrimitivePerVertex *vertices [[buffer(0)]],
-                                              const device InPerInstanceAttributes *positions [[buffer(1)]],
-                                              constant FrameUniforms& frameUniforms [[buffer(2)]],
-                                              constant StructureUniforms& structureUniforms [[buffer(3)]],
-                                              constant LightUniforms& lightUniforms [[buffer(4)]],
+                                              constant FrameUniforms& frameUniforms [[buffer(1)]],
+                                              constant StructureUniforms& structureUniforms [[buffer(2)]],
+                                              constant LightUniforms& lightUniforms [[buffer(3)]],
                                               uint vid [[vertex_id]])
 {
   AxesVertexShaderOut vert;
   
-  float4 scale = float4(1,1,1,1);
-  float4 pos =  scale * vertices[vid].position + float4(0.0,0.0,0.0,1.0);
+  float4 pos = vertices[vid].position + structureUniforms.localAxesPosition;
   
   
   vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * vertices[vid].normal).xyz;
@@ -67,9 +65,9 @@ vertex AxesVertexShaderOut LocalAxesSystemVertexShader(const device InPrimitiveP
 }
 
 fragment float4 LocalAxesSystemFragmentShader(AxesVertexShaderOut vert [[stage_in]],
-                                         constant StructureUniforms& structureUniforms [[buffer(0)]],
-                                         constant FrameUniforms& frameUniforms [[buffer(1)]],
-                                         constant LightUniforms& lightUniforms [[buffer(2)]])
+                                              constant FrameUniforms& frameUniforms [[buffer(0)]],
+                                              constant StructureUniforms& structureUniforms [[buffer(1)]],
+                                              constant LightUniforms& lightUniforms [[buffer(2)]])
 {
   // Normalize the incoming N, L and V vectors
   float3 N = normalize(vert.N);

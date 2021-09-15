@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class EllipsoidPrimitive: Structure, RKRenderEllipsoidObjectsSource
+public final class EllipsoidPrimitive: Structure, RKRenderEllipsoidObjectsSource, RKRenderLocalAxesSource
 {  
   private static var classVersionNumber: Int = 1
   

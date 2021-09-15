@@ -94,6 +94,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   let unitCellScalingCell: OutlineViewItem = OutlineViewItem("UnitCellScalingCell")
   
+  let localAxesCell: OutlineViewItem = OutlineViewItem("LocalAxesCell")
+  
   let adsorptionPropertiesCell: OutlineViewItem = OutlineViewItem("AdsorptionPropertiesCell")
   let adsorptionHSVCell: OutlineViewItem = OutlineViewItem("AdsorptionHSVCell")
   let adsorptionFrontSurfaceCell: OutlineViewItem = OutlineViewItem("AdsorptionFrontSurfaceCell")
@@ -142,11 +144,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     let atomsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AtomsVisualAppearanceGroup", children: [atomsRepresentationStyleCell, atomsSelectionCell, atomsScalingCell, atomsHDRCell, atomsLightingCell])
     let bondsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "BondsVisualAppearanceGroup", children: [bondsScalingCell, bondsSelectionCell, bondsHDRCell, bondsLightingCell])
     let unitCellVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "UnitCellVisualAppearanceGroup", children: [unitCellScalingCell])
+    let localAxesAppearanceItem: OutlineViewItem = OutlineViewItem(title: "LocalAxesVisualAppearanceGroup", children: [localAxesCell])
     let adsorptionVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AdsorptionVisualAppearanceGroup", children: [adsorptionPropertiesCell, adsorptionHSVCell, adsorptionFrontSurfaceCell, adsorptionBackSurfaceCell])
     let annotationVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AnnotationVisualAppearanceGroup", children: [annotationVisualAppearanceCell])
     
     
-    self.appearanceOutlineView?.items = [primitiveVisualAppearanceItem, atomsVisualAppearanceItem, bondsVisualAppearanceItem, unitCellVisualAppearanceItem, adsorptionVisualAppearanceItem, annotationVisualAppearanceItem]
+    self.appearanceOutlineView?.items = [primitiveVisualAppearanceItem, atomsVisualAppearanceItem, bondsVisualAppearanceItem, unitCellVisualAppearanceItem, localAxesAppearanceItem, adsorptionVisualAppearanceItem, annotationVisualAppearanceItem]
     
   }
   
@@ -240,6 +243,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       setPropertiesAtomTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesBondTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesUnitCellTableCells(on: view, identifier: string, enabled: enabled)
+      setPropertiesLocalAxesTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesAdsorptionTableCells(on: view, identifier: string, enabled: enabled)
       setPropertiesAnnotationTableCells(on: view, identifier: string, enabled: enabled)
       
@@ -1234,7 +1238,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             popUpbuttonRepresentationType.setTitle(NSLocalizedString("Multiple Values", comment: ""))
           }
         }
-        
       }
       
       // Representation style
@@ -2406,7 +2409,6 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           }
         }
       }
-    
     default:
       break
     }
@@ -2507,6 +2509,184 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           if let renderUnitCellDiffuseColor: NSColor = representedStructure.renderUnitCellDiffuseColor
           {
             unitCellColor.color = renderUnitCellDiffuseColor
+          }
+        }
+      }
+    default:
+      break
+    }
+  }
+  
+  
+  func setPropertiesLocalAxesTableCells(on view: NSTableCellView, identifier: String, enabled: Bool)
+  {
+    switch(identifier)
+    {
+    case "LocalAxesCell":
+      if let popUpbuttonPosition: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
+      {
+        popUpbuttonPosition.isEditable = false
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          popUpbuttonPosition.isEditable = enabled
+          
+          if let rawValue = representedStructure.renderLocalAxesPosition?.rawValue
+          {
+            popUpbuttonPosition.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpbuttonPosition.selectItem(at: rawValue)
+          }
+          else
+          {
+            popUpbuttonPosition.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+      if let popUpbuttonStyle: iRASPAPopUpButton = view.viewWithTag(2) as? iRASPAPopUpButton
+      {
+        popUpbuttonStyle.isEditable = false
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          popUpbuttonStyle.isEditable = enabled
+          
+          if let rawValue = representedStructure.renderLocalAxesStyle?.rawValue
+          {
+            popUpbuttonStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpbuttonStyle.selectItem(at: rawValue)
+          }
+          else
+          {
+            popUpbuttonStyle.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+      if let popUpbuttonScalingType: iRASPAPopUpButton = view.viewWithTag(3) as? iRASPAPopUpButton
+      {
+        popUpbuttonScalingType.isEditable = false
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          popUpbuttonScalingType.isEditable = enabled
+          
+          if let rawValue = representedStructure.renderLocalAxesScalingType?.rawValue
+          {
+            popUpbuttonScalingType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
+            popUpbuttonScalingType.selectItem(at: rawValue)
+          }
+          else
+          {
+            popUpbuttonScalingType.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+          }
+        }
+      }
+      if let textFieldLength: NSTextField = view.viewWithTag(4) as? NSTextField
+      {
+        textFieldLength.isEditable = false
+        textFieldLength.stringValue = ""
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          textFieldLength.isEditable = enabled
+          if let value = representedStructure.renderLocalAxesLength
+          {
+            textFieldLength.doubleValue = value
+          }
+          else
+          {
+            textFieldLength.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let sliderLength: NSSlider = view.viewWithTag(5) as? NSSlider
+      {
+        sliderLength.isEnabled = false
+        sliderLength.minValue = 0.0
+        sliderLength.maxValue = 10.0
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          sliderLength.isEnabled = enabled
+          if let renderLengthFactor: Double = representedStructure.renderLocalAxesLength
+          {
+            sliderLength.doubleValue = renderLengthFactor
+          }
+        }
+      }
+      if let textFieldWidth: NSTextField = view.viewWithTag(6) as? NSTextField
+      {
+        textFieldWidth.isEditable = false
+        textFieldWidth.stringValue = ""
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          textFieldWidth.isEditable = enabled
+          if let value = representedStructure.renderLocalAxesWidth
+          {
+            textFieldWidth.doubleValue = value
+          }
+          else
+          {
+            textFieldWidth.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let sliderWidth: NSSlider = view.viewWithTag(7) as? NSSlider
+      {
+        sliderWidth.isEnabled = false
+        sliderWidth.minValue = 0.0
+        sliderWidth.maxValue = 2.0
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          sliderWidth.isEnabled = enabled
+          if let renderWidthFactor: Double = representedStructure.renderLocalAxesWidth
+          {
+            sliderWidth.doubleValue = renderWidthFactor
+          }
+        }
+      }
+      if let textFieldOffsetX: NSTextField = view.viewWithTag(8) as? NSTextField
+      {
+        textFieldOffsetX.isEditable = false
+        textFieldOffsetX.stringValue = ""
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          textFieldOffsetX.isEditable = enabled
+          if let value = representedStructure.renderLocalAxesOffsetX
+          {
+            textFieldOffsetX.doubleValue = value
+          }
+          else
+          {
+            textFieldOffsetX.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldOffsetY: NSTextField = view.viewWithTag(9) as? NSTextField
+      {
+        textFieldOffsetY.isEditable = false
+        textFieldOffsetY.stringValue = ""
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          textFieldOffsetY.isEditable = enabled
+          if let value = representedStructure.renderLocalAxesOffsetY
+          {
+            textFieldOffsetY.doubleValue = value
+          }
+          else
+          {
+            textFieldOffsetY.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let textFieldOffsetZ: NSTextField = view.viewWithTag(10) as? NSTextField
+      {
+        textFieldOffsetZ.isEditable = false
+        textFieldOffsetZ.stringValue = ""
+        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        {
+          textFieldOffsetZ.isEditable = enabled
+          if let value = representedStructure.renderLocalAxesOffsetZ
+          {
+            textFieldOffsetZ.doubleValue = value
+          }
+          else
+          {
+            textFieldOffsetZ.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
         }
       }
@@ -6644,10 +6824,250 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   }
   
   
-  // MARK: adsorption surface
+  // MARK: local axes actions
   // =====================================================================
   
- 
+  @IBAction func changeLocalAxesPosition(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesPosition = RKLocalAxes.Position(rawValue: sender.indexOfSelectedItem)!
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeLocalAxesStyle(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesStyle = RKLocalAxes.Style(rawValue: sender.indexOfSelectedItem)!
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeLocalAxesScalingStyle(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesScalingType = RKLocalAxes.ScalingType(rawValue: sender.indexOfSelectedItem)!
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeLocalAxisLengthTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesLength  = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeLocalAxesLengthSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesLength = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeLocalAxisWidthTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesWidth  = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeLocalAxesWidthSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesWidth = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  @IBAction func changeLocalAxisOffsetXTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesOffsetX  = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeLocalAxisOffsetYTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesOffsetY  = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeLocalAxisOffsetZTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    {
+      representedStructure.renderLocalAxesOffsetZ  = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func updateStepperLocalAxisOffsetX(_ sender: NSStepper)
+  {
+    let deltaValue: Double = sender.doubleValue
+    
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      var structure: [LocalAxesVisualAppearanceViewer] = self.representedObject as? [LocalAxesVisualAppearanceViewer],
+      let renderTextOffsetX: Double = structure.renderLocalAxesOffsetX
+    {
+      let newValue: Double = renderTextOffsetX + deltaValue * 0.5
+      structure.renderLocalAxesOffsetX = newValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+    
+    sender.doubleValue = 0
+  }
+  
+  @IBAction func updateStepperLocalAxisOffsetY(_ sender: NSStepper)
+  {
+    let deltaValue: Double = sender.doubleValue
+    
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      var structure: [LocalAxesVisualAppearanceViewer] = self.representedObject as? [LocalAxesVisualAppearanceViewer],
+      let renderTextOffsetY: Double = structure.renderLocalAxesOffsetY
+    {
+      let newValue: Double = renderTextOffsetY + deltaValue * 0.5
+      structure.renderLocalAxesOffsetY = newValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+    
+    sender.doubleValue = 0
+  }
+  
+  @IBAction func updateStepperLocalAxisOffsetZ(_ sender: NSStepper)
+  {
+    let deltaValue: Double = sender.doubleValue
+    
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+      var structure: [LocalAxesVisualAppearanceViewer] = self.representedObject as? [LocalAxesVisualAppearanceViewer],
+      let renderTextOffsetZ: Double = structure.renderLocalAxesOffsetZ
+    {
+      let newValue: Double = renderTextOffsetZ + deltaValue * 0.5
+      structure.renderLocalAxesOffsetZ = newValue
+      
+      self.updateOutlineView(identifiers: [self.localAxesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+    
+    sender.doubleValue = 0
+  }
+  
+  // MARK: adsorption surface
+  // =====================================================================
   
   @IBAction func toggleAdsorptionSurface(_ sender: NSButton)
   {

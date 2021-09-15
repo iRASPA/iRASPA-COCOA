@@ -48,7 +48,7 @@ public class MetalRenderer
   public var backgroundShader: MetalBackgroundShader = MetalBackgroundShader()
   
   var globalAxesSystemShader: MetalGlobalAxesSystemShader = MetalGlobalAxesSystemShader()
-  var localAxesSystemShader: MetalLocalAxesSystemShader = MetalLocalAxesSystemShader()
+  var localAxesShader: MetalLocalAxesShader = MetalLocalAxesShader()
   
   var atomShader: MetalAtomShader = MetalAtomShader()
   var atomOrthographicImposterShader: MetalAtomOrthographicImposterShader = MetalAtomOrthographicImposterShader()
@@ -193,8 +193,8 @@ public class MetalRenderer
     globalAxesSystemShader.renderDataSource = renderDataSource
     globalAxesSystemShader.renderStructures = renderStructures
     
-    localAxesSystemShader.renderDataSource = renderDataSource
-    localAxesSystemShader.renderStructures = renderStructures
+    localAxesShader.renderDataSource = renderDataSource
+    localAxesShader.renderStructures = renderStructures
     
     atomShader.renderDataSource = renderDataSource
     atomShader.renderStructures = renderStructures
@@ -435,6 +435,11 @@ public class MetalRenderer
     
     buildGlobalAxesUniforms(device: device)
   }
+  
+  public func reloadLocalAxesSystem(device: MTLDevice)
+  {
+    localAxesShader.buildVertexBuffers(device: device)    
+  }
 
   // MARK: Build pipelines
   // =====================================================================
@@ -458,7 +463,7 @@ public class MetalRenderer
     backgroundShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     globalAxesSystemShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
-    localAxesSystemShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    localAxesShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     atomShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     atomOrthographicImposterShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -578,7 +583,7 @@ public class MetalRenderer
     backgroundShader.buildVertexBuffers(device: device)
     
     globalAxesSystemShader.buildVertexBuffers(device: device)
-    localAxesSystemShader.buildVertexBuffers(device: device)
+    localAxesShader.buildVertexBuffers(device: device)
     
     atomShader.buildVertexBuffers(device: device)
     atomOrthographicImposterShader.buildVertexBuffers(device: device)
@@ -790,7 +795,7 @@ public class MetalRenderer
     
   
     
-    //self.localAxesSystemShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
+    self.localAxesShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
     
     switch(renderQuality)

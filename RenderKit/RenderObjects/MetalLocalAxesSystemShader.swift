@@ -30,40 +30,22 @@
  *************************************************************************************************************/
 
 
-import Foundation
 
-class MetalLocalAxesSystemShader
+import Foundation
+import SymmetryKit
+import simd
+
+class MetalLocalAxesShader
 {
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderStructure]] = [[]]
   
   var pipeLine: MTLRenderPipelineState! = nil
-  var indexBuffer: MTLBuffer! = nil
-  var vertexBuffer: MTLBuffer! = nil
-  var instanceBuffer: [[MTLBuffer?]] = [[]]
-  var samplerState: MTLSamplerState! = nil
+  var indexBuffer: [[MTLBuffer?]] = [[]]
+  var vertexBuffer: [[MTLBuffer?]] = [[]]
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
-    let pSamplerDescriptor:MTLSamplerDescriptor? = MTLSamplerDescriptor();
-    
-    if let sampler = pSamplerDescriptor
-    {
-      sampler.minFilter             = MTLSamplerMinMagFilter.linear
-      sampler.magFilter             = MTLSamplerMinMagFilter.linear
-      sampler.maxAnisotropy         = 1
-      sampler.sAddressMode          = MTLSamplerAddressMode.clampToEdge
-      sampler.tAddressMode          = MTLSamplerAddressMode.clampToEdge
-      sampler.normalizedCoordinates = true
-      sampler.lodMinClamp           = 0
-      sampler.lodMaxClamp           = Float.greatestFiniteMagnitude
-    }
-    else
-    {
-      print(">> ERROR: Failed creating a sampler descriptor!")
-    }
-    samplerState = device.makeSamplerState(descriptor: pSamplerDescriptor!)
-    
     let pipelineDescriptor: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.rgba16Float
     pipelineDescriptor.vertexFunction = library.makeFunction(name: "LocalAxesSystemVertexShader")!
@@ -73,60 +55,125 @@ class MetalLocalAxesSystemShader
     pipelineDescriptor.fragmentFunction = library.makeFunction(name: "LocalAxesSystemFragmentShader")!
     pipelineDescriptor.vertexDescriptor = vertexDescriptor
     
-    
     do
     {
       self.pipeLine = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
     }
     catch
     {
-      fatalError("Error occurred when creating render pipeline state \(error) \(device)")
+      fatalError("Error occurred when creating render pipeline state \(error)")
     }
   }
   
   public func buildVertexBuffers(device: MTLDevice)
   {
-    let sphere: MetalAxesSystemDefaultGeometry = MetalAxesSystemDefaultGeometry(center: .cube, centerRadius: 5.0*0.125, centerColor: SIMD4<Float>(1.0,1.0,0.0,1.0), arrowHeight: 5.0*2.0/3.0, arrowRadius: 5.0*1.0/12.0, arrowColorX: SIMD4<Float>(1.0,0.0,0.0,1.0), arrowColorY: SIMD4<Float>(0.0,1.0,0.0,1.0), arrowColorZ: SIMD4<Float>(0.0,0.0,1.0,1.0), tipHeight: 5.0*1.0/3.0, tipRadius: 5.0*1.0/6.0, tipColorX: SIMD4<Float>(1.0,0.0,0.0,1.0), tipColorY: SIMD4<Float>(0.0,1.0,0.0,1.0), tipColorZ: SIMD4<Float>(0.0,0.0,1.0,1.0), tipVisibility: true, aspectRatio: 1.0, sectorCount: 41)
-    
-    vertexBuffer = device.makeBuffer(bytes: sphere.vertices, length:MemoryLayout<RKPrimitiveVertex>.stride * sphere.vertices.count, options:.storageModeManaged)
-    indexBuffer = device.makeBuffer(bytes: sphere.indices, length:MemoryLayout<UInt16>.stride * sphere.indices.count, options:.storageModeManaged)
-  }
-  
-  
-  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, ambientOcclusionTextures: [[MTLTexture]], size: CGSize)
-  {
-    commandEncoder.setCullMode(MTLCullMode.back)
-      
-    commandEncoder.setRenderPipelineState(pipeLine)
-    commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-    commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 2)
-    commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 3)
-    commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 4)
-    commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 0)
-    commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 1)
-    commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
-    commandEncoder.setFragmentSamplerState(samplerState, index: 0)
-        
-    var index = 0
-    for i in 0..<self.renderStructures.count
+    if let _: RKRenderDataSource = renderDataSource
     {
-      let structures: [RKRenderStructure] = self.renderStructures[i]
-          
-      for (j,structure) in structures.enumerated()
+      vertexBuffer = []
+      indexBuffer = []
+      for i in 0..<self.renderStructures.count
       {
-        if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource
+        let structures: [RKRenderStructure] = renderStructures[i]
+        var vertexBufferArray: [MTLBuffer?] = [MTLBuffer?]()
+        var indexBufferArray: [MTLBuffer?] = [MTLBuffer?]()
+        
+        if structures.isEmpty
         {
-          if structure.isVisible
-          {
-            commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 1)
-            commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 3)
-            commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 0)
-            commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
-          }
+          vertexBufferArray.append(nil)
+          indexBufferArray.append(nil)
         }
-        index = index + 1
+        else
+        {
+          for structure in structures
+          {
+            let boundingBox: SKBoundingBox = structure.cell.boundingBox
+            let unitCell: double3x3 = structure.cell.unitCell
+            
+            let axesGeometry: MetalAxesSystemDefaultGeometry
+            if let structure = structure as? RKRenderLocalAxesSource
+            {
+              var length: Double = structure.renderLocalAxis.length
+              let width: Double = structure.renderLocalAxis.width
+              
+              switch(structure.renderLocalAxis.scalingType)
+              {
+              case RKLocalAxes.ScalingType.absolute:
+                break
+              case RKLocalAxes.ScalingType.relative:
+                length = boundingBox.shortestEdge * length / 100.0
+              }
+              
+              switch(structure.renderLocalAxis.style)
+              {
+              case RKLocalAxes.Style.default:
+                axesGeometry = MetalAxesSystemDefaultGeometry(center: RKGlobalAxes.CenterType.cube, centerRadius: width, centerColor: SIMD4<Float>(1.0,1.0,1.0,1.0), arrowHeight: length, arrowRadius: width, arrowColorX: SIMD4<Float>(1.0,0.4,0.7,1.0), arrowColorY: SIMD4<Float>(0.7,1.0,0.4,1.0), arrowColorZ: SIMD4<Float>(0.4,0.7,1.0,1.0), tipHeight: 1.0, tipRadius: 0.0, tipColorX: SIMD4<Float>(1.0,0.4,0.7,1.0), tipColorY: SIMD4<Float>(0.7,1.0,0.4,1.0), tipColorZ: SIMD4<Float>(0.4,0.7,1.0,1.0), tipVisibility: false, aspectRatio: 1.0, sectorCount: 4)
+              case RKLocalAxes.Style.defaultRGB:
+                axesGeometry = MetalAxesSystemDefaultGeometry(center: RKGlobalAxes.CenterType.cube, centerRadius: width, centerColor: SIMD4<Float>(1.0,1.0,1.0,1.0), arrowHeight: length, arrowRadius: width, arrowColorX: SIMD4<Float>(1.0,0.0,0.0,1.0), arrowColorY: SIMD4<Float>(0.0,1.0,0.0,1.0), arrowColorZ: SIMD4<Float>(0.0,0.0,1.0,1.0), tipHeight: 1.0, tipRadius: 0.0, tipColorX: SIMD4<Float>(1.0,0.0,0.0,1.0), tipColorY: SIMD4<Float>(0.0,1.0,0.0,1.0), tipColorZ: SIMD4<Float>(0.0,0.0,1.0,1.0), tipVisibility: false, aspectRatio: 1.0, sectorCount: 4)
+              case RKLocalAxes.Style.cylinder:
+                axesGeometry = MetalAxesSystemDefaultGeometry(center: RKGlobalAxes.CenterType.cube, centerRadius: width, centerColor: SIMD4<Float>(1.0,1.0,1.0,1.0), arrowHeight: length, arrowRadius: width, arrowColorX: SIMD4<Float>(1.0,0.4,0.7,1.0), arrowColorY: SIMD4<Float>(0.7,1.0,0.4,1.0), arrowColorZ: SIMD4<Float>(0.4,0.7,1.0,1.0), tipHeight: 1.0, tipRadius: 0.0, tipColorX: SIMD4<Float>(1.0,0.4,0.7,1.0), tipColorY: SIMD4<Float>(0.7,1.0,0.4,1.0), tipColorZ: SIMD4<Float>(0.4,0.7,1.0,1.0), tipVisibility: false, aspectRatio: 1.0, sectorCount: 41)
+              case RKLocalAxes.Style.cylinderRGB:
+                axesGeometry = MetalAxesSystemDefaultGeometry(center: RKGlobalAxes.CenterType.cube, centerRadius: width, centerColor: SIMD4<Float>(1.0,1.0,1.0,1.0), arrowHeight: length, arrowRadius: width, arrowColorX: SIMD4<Float>(1.0,0.0,0.0,1.0), arrowColorY: SIMD4<Float>(0.0,1.0,0.0,1.0), arrowColorZ: SIMD4<Float>(0.0,0.0,1.0,1.0), tipHeight: 1.0, tipRadius: 0.0, tipColorX: SIMD4<Float>(1.0,0.0,0.0,1.0), tipColorY: SIMD4<Float>(0.0,1.0,0.0,1.0), tipColorZ: SIMD4<Float>(0.0,0.0,1.0,1.0), tipVisibility: false, aspectRatio: 1.0, sectorCount: 41)
+              }
+              vertexBufferArray.append(device.makeBuffer(bytes: axesGeometry.vertices, length:MemoryLayout<RKPrimitiveVertex>.stride * axesGeometry.vertices.count, options:.storageModeManaged))
+              indexBufferArray.append(device.makeBuffer(bytes: axesGeometry.indices, length:MemoryLayout<UInt16>.stride * axesGeometry.indices.count, options:.storageModeManaged))
+            }
+          }
+          vertexBuffer.append(vertexBufferArray)
+          indexBuffer.append(indexBufferArray)
+        }
       }
     }
   }
+  
+  public func renderWithEncoder(_ commandEncoder: MTLRenderCommandEncoder, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, structureUniformBuffers: MTLBuffer?, lightUniformBuffers: MTLBuffer?, size: CGSize)
+  {
+    
+      commandEncoder.setRenderPipelineState(pipeLine)
+      commandEncoder.setCullMode(MTLCullMode.back)
+      commandEncoder.setVertexBuffer(frameUniformBuffer, offset: 0, index: 1)
+      commandEncoder.setVertexBuffer(structureUniformBuffers, offset: 0, index: 2)
+      commandEncoder.setVertexBuffer(lightUniformBuffers, offset: 0, index: 3)
+      commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
+      commandEncoder.setFragmentBuffer(structureUniformBuffers, offset: 0, index: 1)
+      commandEncoder.setFragmentBuffer(lightUniformBuffers, offset: 0, index: 2)
+      
+      var index: Int = 0
+      for i in 0..<self.renderStructures.count
+      {
+        let structures: [RKRenderStructure] = self.renderStructures[i]
+        
+        for (j,structure) in structures.enumerated()
+        {
+          if let vertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
+             let indexBuffer = self.metalBuffer(indexBuffer, sceneIndex: i, movieIndex: j)
+          {
+            if (structure.isVisible)
+            {
+              if let structure = structure as? RKRenderLocalAxesSource,
+                 structure.renderLocalAxis.position != RKLocalAxes.Position.none
+              {
+                commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+                commandEncoder.setVertexBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 2)
+                commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
+                commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
+              }
+            }
+          }
+          index = index + 1
+        }
+      }
+      
+  }
+  
+  func metalBuffer(_ buffer: [[MTLBuffer?]], sceneIndex: Int, movieIndex: Int) -> MTLBuffer?
+  {
+    if sceneIndex < buffer.count
+    {
+      if movieIndex < buffer[sceneIndex].count
+      {
+        return buffer[sceneIndex][movieIndex]
+      }
+    }
+    return nil
+  }
 }
-

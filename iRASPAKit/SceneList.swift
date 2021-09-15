@@ -38,7 +38,7 @@ import simd
 
 
 // A scene contains a list of Movies: FKArrayController<Scene>
-public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {  
   private static var classVersionNumber: Int = 1
   public var displayName : String = ""

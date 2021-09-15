@@ -319,9 +319,12 @@ typedef struct
   float primitiveValue = 1.0;
   float pad9;
   
-  float4x4 pad10;
-  float4x4 pad11;
-  float4x4 pad12;
+  float4 localAxesPosition;
+  float4 pad10;
+  float4 pad11;
+  float4 pad12;
+  float4x4 pad13;
+  float4x4 pad14;
 } StructureUniforms;
 
 typedef struct

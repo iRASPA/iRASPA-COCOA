@@ -46,7 +46,7 @@ fileprivate let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
 
 public let NSPasteboardTypeMovie: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Movie")
 
-public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
   public var displayName : String = ""
