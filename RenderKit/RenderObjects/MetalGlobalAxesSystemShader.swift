@@ -250,7 +250,7 @@ class MetalGlobalAxesSystemShader
       commandEncoder.setVertexBuffer(globalAxesUniformBuffers, offset: 0, index: 1)
       commandEncoder.setFragmentBuffer(frameUniformBuffer, offset: 0, index: 0)
       commandEncoder.setFragmentBuffer(globalAxesUniformBuffers, offset: 0, index: 1)
-      commandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4, instanceCount: 3)
+      commandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
       
       commandEncoder.setRenderPipelineState(axesPipeLine)
       commandEncoder.setDepthStencilState(depthState)
@@ -278,8 +278,6 @@ class MetalGlobalAxesSystemShader
       commandEncoder.setFragmentBuffer(globalAxesUniformBuffers, offset: 0, index: 1)
       
       commandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4, instanceCount: 3)
-      
-     
       
       commandEncoder.setViewport(MTLViewport(originX: 0, originY: 0, width: Double(size.width), height: Double(size.height), znear: 0, zfar: 1))
       

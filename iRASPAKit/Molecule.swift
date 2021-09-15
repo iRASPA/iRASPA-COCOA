@@ -39,7 +39,7 @@ import SimulationKit
 import OperationKit
 import BinaryCodable
 
-public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource
+public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource
 {
   private static var classVersionNumber: Int = 1
   

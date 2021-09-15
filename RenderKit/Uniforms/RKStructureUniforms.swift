@@ -156,9 +156,12 @@ public struct RKStructureUniforms
   public var primitiveValue: Float = 1.0;
   public var pad9: Float = 0.0;
 
-  public var pad10: float4x4 = float4x4(Double4x4: double4x4(1.0))
-  public var pad11: float4x4 = float4x4(Double4x4: double4x4(1.0))
-  public var pad12: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  public var localAxisPosition: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var pad10: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var pad11: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var pad12: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var pad13: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  public var pad14: float4x4 = float4x4(Double4x4: double4x4(1.0))
   
   public init()
   {
@@ -318,6 +321,27 @@ public struct RKStructureUniforms
     clipPlaneFront = -SIMD4<Float>(x: u_plane0.x, y: u_plane0.y, z: u_plane0.z, w: -dot(u_plane0,corner2))
     clipPlaneTop = -SIMD4<Float>(x: u_plane1.x, y: u_plane1.y, z: u_plane1.z, w: -dot(u_plane1,corner2))
     clipPlaneRight = -SIMD4<Float>(x: u_plane2.x, y: u_plane2.y, z: u_plane2.z, w: -dot(u_plane2,corner2))
+    
+    if let structure: RKRenderLocalAxesSource = structure as? RKRenderLocalAxesSource
+    {
+      let offset: SIMD3<Double> = structure.renderLocalAxis.offset
+      let displacement = SIMD4<Float>(Float(offset.x),Float(offset.y),Float(offset.z),0.0);
+
+      switch(structure.renderLocalAxis.position)
+      {
+      case RKLocalAxes.Position.none:
+        localAxisPosition = SIMD4<Float>(0.0,0.0,0.0,1.0) + displacement
+      case RKLocalAxes.Position.origin:
+        localAxisPosition = SIMD4<Float>(0.0,0.0,0.0,1.0) + displacement
+      case RKLocalAxes.Position.center:
+        let pos = box * SIMD3<Double>(0.5,0.5,0.5)
+        localAxisPosition = SIMD4<Float>(Float(pos.x),Float(pos.y),Float(pos.z),1.0)  + displacement
+      case RKLocalAxes.Position.originBoundingBox:
+        localAxisPosition = SIMD4<Float>(Float(boundingBox.minimum.x),Float(boundingBox.minimum.y),Float(boundingBox.minimum.z),1.0) + displacement
+      case RKLocalAxes.Position.centerBoundingBox:
+        localAxisPosition = SIMD4<Float>(Float(centerOfRotation.x), Float(centerOfRotation.y), Float(centerOfRotation.z), 1.0) + displacement
+      }
+    }
   }
   
   public init(sceneIdentifier: Int, movieIdentifier: Int, structure: RKRenderStructure, inverseModelMatrix: double4x4)

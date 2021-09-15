@@ -231,6 +231,8 @@
 		935F34621E5E11B6005C0EE1 /* LogAndInterpreterSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935F34611E5E11B5005C0EE1 /* LogAndInterpreterSegmentedControl.swift */; };
 		93604A6A1F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93604A691F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift */; };
 		93604A6E1F4EFCBB0053ADE2 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93604A6D1F4EFCBB0053ADE2 /* Preferences.swift */; };
+		9362837F26EF6614005BF5C3 /* RKLocalAxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9362837E26EF6614005BF5C3 /* RKLocalAxes.swift */; };
+		9362838126F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9362838026F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift */; };
 		936411D82421452E00BAFE9C /* MetalDoubleCylinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */; };
 		936411DA2421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */; };
 		936411DC2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */; };
@@ -1572,6 +1574,8 @@
 		935F34611E5E11B5005C0EE1 /* LogAndInterpreterSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAndInterpreterSegmentedControl.swift; sourceTree = "<group>"; };
 		93604A691F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPreferenceViewController.swift; sourceTree = "<group>"; };
 		93604A6D1F4EFCBB0053ADE2 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		9362837E26EF6614005BF5C3 /* RKLocalAxes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKLocalAxes.swift; sourceTree = "<group>"; };
+		9362838026F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAxesVisualAppearanceViewer.swift; sourceTree = "<group>"; };
 		936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalDoubleCylinder.swift; sourceTree = "<group>"; };
 		936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedDoubleBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedTripleBondCylinderGeometry.swift; sourceTree = "<group>"; };
@@ -2547,6 +2551,7 @@
 				937807DA21C5945100EC4466 /* RKTrackBall.swift */,
 				930DD5371E26B38D00B8FE9B /* RKCamera.swift */,
 				93F7511526C3D458005796C4 /* RKGlobalAxes.swift */,
+				9362837E26EF6614005BF5C3 /* RKLocalAxes.swift */,
 				930DD5391E26B38D00B8FE9B /* RKRenderLight.swift */,
 				930DD53A1E26B38D00B8FE9B /* RKMovieCreator.swift */,
 				934A853A200A063700737BEB /* RKFontAtlas.swift */,
@@ -2593,6 +2598,7 @@
 				938F96C02203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift */,
 				938F96BE2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift */,
 				93EACCBF22061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift */,
+				9362838026F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -4756,6 +4762,7 @@
 				9310006E24842979009CD836 /* MetalPolygonalPrismPrimitiveSelectionStripedShader.swift in Sources */,
 				936AF6F126BFDAC200E91649 /* MetalNSphereGeometry.swift in Sources */,
 				930DD5441E26B38D00B8FE9B /* RKMovieCreator.swift in Sources */,
+				9362837F26EF6614005BF5C3 /* RKLocalAxes.swift in Sources */,
 				93E92DEF21F5BC6300A0DBE6 /* MetalEllipsoidShader.swift in Sources */,
 				936AF6E126BE9AFE00E91649 /* MetalArrowYGeometry.swift in Sources */,
 				93793B3B21D94551004CAD9C /* RKIsosurfaceUniforms.swift in Sources */,
@@ -4853,6 +4860,7 @@
 				930DD6461E26BA5D00B8FE9B /* Crystal.swift in Sources */,
 				93B07D321EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				930DD65F1E26BAD400B8FE9B /* ProjectVaspNode.swift in Sources */,
+				9362838126F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift in Sources */,
 				930DD6491E26BA5D00B8FE9B /* Protein.swift in Sources */,
 				930DD65B1E26BAAD00B8FE9B /* ProjectNode.swift in Sources */,
 				93A31C9F1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift in Sources */,

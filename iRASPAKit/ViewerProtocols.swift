@@ -301,6 +301,18 @@ public protocol UnitCellVisualAppearanceViewer: StructureViewer
   var renderUnitCellDiffuseIntensity: Double? {get set}
 }
 
+public protocol LocalAxesVisualAppearanceViewer: StructureViewer
+{
+  var renderLocalAxesPosition: RKLocalAxes.Position? {get set}
+  var renderLocalAxesStyle: RKLocalAxes.Style? {get set}
+  var renderLocalAxesScalingType: RKLocalAxes.ScalingType? {get set}
+  var renderLocalAxesLength: Double? {get set}
+  var renderLocalAxesWidth: Double? {get set}
+  var renderLocalAxesOffsetX: Double? {get set}
+  var renderLocalAxesOffsetY: Double? {get set}
+  var renderLocalAxesOffsetZ: Double? {get set}
+}
+
 public protocol AdsorptionSurfaceVisualAppearanceViewer: StructureViewer
 {
   var renderCanDrawAdsorptionSurface: Bool {get}

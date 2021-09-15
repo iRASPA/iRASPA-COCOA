@@ -38,7 +38,7 @@ import LogViewKit
 import SimulationKit
 import OperationKit
 
-public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
+public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
 {
   private static var classVersionNumber: Int = 1
 
