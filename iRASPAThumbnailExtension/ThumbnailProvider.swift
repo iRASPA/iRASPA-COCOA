@@ -27,7 +27,8 @@ class ThumbnailProvider: QLThumbnailProvider
     projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
           
     if let project: ProjectStructureNode  = projectTreeNode.representedObject.loadedProjectStructureNode,
-       let device = MTLCreateSystemDefaultDevice()
+       let device = MTLCreateSystemDefaultDevice(),
+       project.sceneList.totalNumberOfAtoms < 5000
     {
       let camera: RKCamera = RKCamera()
       
