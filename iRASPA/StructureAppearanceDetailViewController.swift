@@ -6069,9 +6069,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeBondColorMode(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer],
+       let renderBondColorMode = RKBondColorMode(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderBondColorMode = RKBondColorMode(rawValue: sender.indexOfSelectedItem)!
+      representedStructure.renderBondColorMode = renderBondColorMode
       
       representedStructure.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
@@ -6830,9 +6831,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeLocalAxesPosition(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer],
+       let position: RKLocalAxes.Position = RKLocalAxes.Position(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderLocalAxesPosition = RKLocalAxes.Position(rawValue: sender.indexOfSelectedItem)!
+      representedStructure.renderLocalAxesPosition = position
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6846,9 +6848,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeLocalAxesStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer],
+       let presentationStyle: RKLocalAxes.Style = RKLocalAxes.Style(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderLocalAxesStyle = RKLocalAxes.Style(rawValue: sender.indexOfSelectedItem)!
+      representedStructure.renderLocalAxesStyle = presentationStyle
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6862,9 +6865,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeLocalAxesScalingStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer],
+       let scalingsType: RKLocalAxes.ScalingType = RKLocalAxes.ScalingType(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderLocalAxesScalingType = RKLocalAxes.ScalingType(rawValue: sender.indexOfSelectedItem)!
+      representedStructure.renderLocalAxesScalingType = scalingsType
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7091,10 +7095,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAdsorptionSurfaceProbeMolecule(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer],
+       let adsorptionSurfaceProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderAdsorptionSurfaceProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)!
-      
+      representedStructure.renderAdsorptionSurfaceProbeMolecule = adsorptionSurfaceProbeMolecule
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: representedStructure.selectedFrames)
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7898,9 +7902,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAtomTextAnnotationStyle(_ sender: iRASPAPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
+      let renderTextType = RKTextType(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderTextType = RKTextType(rawValue: sender.indexOfSelectedItem)!
+      representedStructure.renderTextType = renderTextType
       
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
@@ -7987,9 +7992,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAtomTextAnnotationAlignment(_ sender: iRASPAPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
+      let renderTextAlignment = RKTextAlignment(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderTextAlignment = RKTextAlignment(rawValue: sender.indexOfSelectedItem)!
+      representedStructure.renderTextAlignment = renderTextAlignment
       
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       

@@ -161,7 +161,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         view?.textField?.isEditable = false
       case NSUserInterfaceItemIdentifier(rawValue: "bondFixedAtomColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "fixedAtomsInBondRow"), owner: self) as? NSTableCellView
-        if let segmentedControl: NSLabelSegmentedControl = view!.viewWithTag(11) as? NSLabelSegmentedControl
+        if let segmentedControl: NSLabelSegmentedControl = view?.viewWithTag(11) as? NSLabelSegmentedControl
         {
           segmentedControl.label = NSString(string: String(asymmetricBond.atom1.tag))
           segmentedControl.setSelected(asymmetricBond.atom1.isFixed.x, forSegment: 0)
@@ -170,7 +170,7 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
           segmentedControl.isEnabled = proxyProject.isEnabled
         }
         
-        if let segmentedControl: NSLabelSegmentedControl = view!.viewWithTag(12) as? NSLabelSegmentedControl
+        if let segmentedControl: NSLabelSegmentedControl = view?.viewWithTag(12) as? NSLabelSegmentedControl
         {
           segmentedControl.label = NSString(string: String(asymmetricBond.atom2.tag))
           segmentedControl.setSelected(asymmetricBond.atom2.isFixed.x, forSegment: 0)
@@ -180,17 +180,19 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
         }
       case  NSUserInterfaceItemIdentifier(rawValue: "bondTypeColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondTypeRow"), owner: self) as? NSTableCellView
-        let popUp: NSPopUpButton = view!.viewWithTag(13) as! NSPopUpButton
-        popUp.selectItem(at: asymmetricBond.bondType.rawValue)
-        let element1: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom1.elementIdentifier]
-        let element2: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom2.elementIdentifier]
-        let maxCoordination: Int = min(element1.maximumUFFCoordination, element2.maximumUFFCoordination)
-        popUp.autoenablesItems = false
-        popUp.itemArray[0].isEnabled = true   // single
-        popUp.itemArray[1].isEnabled = maxCoordination >= 2 ? true : false   // double
-        popUp.itemArray[2].isEnabled = maxCoordination >= 2 ? true : false   // partial double
-        popUp.itemArray[3].isEnabled = maxCoordination >= 3 ? true : false   // triple
-        popUp.isEnabled = proxyProject.isEnabled
+        if let popUp: NSPopUpButton = view?.viewWithTag(13) as? NSPopUpButton
+        {
+          popUp.selectItem(at: asymmetricBond.bondType.rawValue)
+          let element1: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom1.elementIdentifier]
+          let element2: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom2.elementIdentifier]
+          let maxCoordination: Int = min(element1.maximumUFFCoordination, element2.maximumUFFCoordination)
+          popUp.autoenablesItems = false
+          popUp.itemArray[0].isEnabled = true   // single
+          popUp.itemArray[1].isEnabled = maxCoordination >= 2 ? true : false   // double
+          popUp.itemArray[2].isEnabled = maxCoordination >= 2 ? true : false   // partial double
+          popUp.itemArray[3].isEnabled = maxCoordination >= 3 ? true : false   // triple
+          popUp.isEnabled = proxyProject.isEnabled
+        }
       case NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomColumn"):
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondFirstAtomRow"), owner: self) as? NSTableCellView
         let element: SKElement = PredefinedElements.sharedInstance.elementSet[asymmetricBond.atom1.elementIdentifier]
@@ -209,9 +211,11 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
       case NSUserInterfaceItemIdentifier(rawValue: "bondLengthSliderColumn"):
         let allFixed: Bool = asymmetricBond.atom1.isFixed.x && asymmetricBond.atom1.isFixed.y && asymmetricBond.atom1.isFixed.z &&                          asymmetricBond.atom2.isFixed.x && asymmetricBond.atom2.isFixed.y && asymmetricBond.atom2.isFixed.z
         view = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "bondLengthSliderRow"), owner: self) as? NSTableCellView
-        let slider: NSSlider = view!.viewWithTag(11) as! NSSlider
-        slider.doubleValue = bondLength
-        slider.isEnabled = proxyProject.isEnabled && !allFixed
+        if let slider: NSSlider = view?.viewWithTag(11) as? NSSlider
+        {
+          slider.doubleValue = bondLength
+          slider.isEnabled = proxyProject.isEnabled && !allFixed
+        }
       default:
         view = nil
       }
@@ -263,7 +267,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure,
-       let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.bondTableView?.row(for: superView), row >= 0
     {
       self.bondTableView?.window?.makeFirstResponder(self.bondTableView)
       
@@ -287,7 +292,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure,
-       let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.bondTableView?.row(for: superView), row >= 0
     {
       self.bondTableView?.window?.makeFirstResponder(bondTableView)
       let asymmetricAtom: SKAsymmetricAtom = structure.bondController.arrangedObjects[row].atom2
@@ -311,11 +317,13 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure,
-       let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.bondTableView?.row(for: superView), row >= 0,
+       let bondType = SKAsymmetricBond .SKBondType(rawValue: sender.indexOfSelectedItem)
     {
       self.windowController?.window?.makeFirstResponder(self.bondTableView)
       
-      structure.bondController.arrangedObjects[row].bondType = SKAsymmetricBond .SKBondType(rawValue: sender.indexOfSelectedItem)!
+      structure.bondController.arrangedObjects[row].bondType = bondType
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
     }
@@ -386,7 +394,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure,
-       let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0,
+       let superView = sender.superview,
+       let row: Int = self.bondTableView?.row(for: superView), row >= 0,
        let nf: NumberFormatter = sender.formatter as?  NumberFormatter,
        let number: NSNumber = nf.number(from: sender.stringValue)
     {
@@ -420,7 +429,8 @@ class StructureBondDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure,
-       let row: Int = self.bondTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.bondTableView?.row(for: superView), row >= 0
     {
       self.windowController?.window?.makeFirstResponder(self.bondTableView)
       
