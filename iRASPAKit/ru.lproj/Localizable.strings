@@ -1,13 +1,39 @@
-"GALLERY" = "ГАЛЕРЕЯ";
-"Gallery" = "Галерея";
-"LOCAL PROJECTS" = "МЕСТНЫЕ ПРОЕКТЫ";
-"Local Projects" = "Локальные проекты";
-"ICLOUD PUBLIC" = "ОБЩЕСТВЕННЫЙ ICLOUD";
-"iCloud Public" = "общедоступный iCloud";
+/* (No Comment) */
 "Could Not Determine Status of iCloud Account" = "Не удалось определить статус учетной записи iCloud";
-"iCloud Account Available" = "Доступна учетная запись iCloud";
+
+/* (No Comment) */
+"Gallery" = "Галерея";
+
+/* (No Comment) */
+"GALLERY" = "ГАЛЕРЕЯ";
+
+/* (No Comment) */
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "Ошибка аутентификации учетной записи iCloud: включите iCloud и iCloud-drive";
+
+/* (No Comment) */
+"iCloud Account Available" = "Доступна учетная запись iCloud";
+
+/* (No Comment) */
 "iCloud Account Restricted" = "учетная запись iCloud ограничена";
-"iCloud Public Discoverability Granted" = "Предоставляется общедоступная возможность обнаружения iCloud. Вы доступны для обнаружения (по вашему адресу электронной почты) другим пользователям приложения. Вы можете изменить это в приложении настроек, iCloud, iCloud Drive, найти по электронной почте.";
+
+/* (No Comment) */
+"iCloud Public" = "общедоступный iCloud";
+
+/* (No Comment) */
+"ICLOUD PUBLIC" = "ОБЩЕСТВЕННЫЙ ICLOUD";
+
+/* (No Comment) */
 "iCloud Public Discoverability Denied" = "Общедоступность iCloud запрещена. Вы не можете узнать (через свой адрес электронной почты) другим пользователям приложения. Вы можете изменить это в приложении настроек, iCloud, iCloud Drive, найти по электронной почте.";
+
+/* (No Comment) */
+"iCloud Public Discoverability Granted" = "Предоставляется общедоступная возможность обнаружения iCloud. Вы доступны для обнаружения (по вашему адресу электронной почты) другим пользователям приложения. Вы можете изменить это в приложении настроек, iCloud, iCloud Drive, найти по электронной почте.";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Неверная версия архива (обновите до последней версии iRASPA).";
+
+/* (No Comment) */
+"Local Projects" = "Локальные проекты";
+
+/* (No Comment) */
+"LOCAL PROJECTS" = "МЕСТНЫЕ ПРОЕКТЫ";
+

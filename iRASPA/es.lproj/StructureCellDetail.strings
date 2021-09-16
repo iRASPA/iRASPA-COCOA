@@ -1,4 +1,3 @@
-
 /* Class = "NSTextFieldCell"; placeholderString = "bz"; ObjectID = "0mz-pu-d5l"; */
 "0mz-pu-d5l.placeholderString" = "bz";
 
@@ -11,23 +10,20 @@
 /* Class = "NSBox"; title = "Orientation"; ObjectID = "2sE-L5-Mde"; */
 "2sE-L5-Mde.title" = "Orientación";
 
-/* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
-"39F-yr-VYx.title" = "Propiedades de celda / Recuadro";
+/* Class = "NSTextFieldCell"; placeholderString = "Minimum X"; ObjectID = "3a2-UB-zfk"; */
+"3a2-UB-zfk.placeholderString" = "Mínimo X";
 
 /* Class = "NSTextFieldCell"; title = "Accessible Pore Volume"; ObjectID = "3Fv-hH-asL"; */
 "3Fv-hH-asL.title" = "Volumen de poro accesible";
 
-/* Class = "NSTextFieldCell"; placeholderString = "Minimum X"; ObjectID = "3a2-UB-zfk"; */
-"3a2-UB-zfk.placeholderString" = "Mínimo X";
-
 /* Class = "NSTextFieldCell"; title = "[-]"; ObjectID = "3yK-10-X6T"; */
 "3yK-10-X6T.title" = "[-]";
 
-/* Class = "NSTextFieldCell"; placeholderString = "Width Y"; ObjectID = "4Kr-Kc-oKG"; */
-"4Kr-Kc-oKG.placeholderString" = "Anchura Y";
-
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "4bY-pw-mB9"; */
 "4bY-pw-mB9.title" = "0";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Width Y"; ObjectID = "4Kr-Kc-oKG"; */
+"4Kr-Kc-oKG.placeholderString" = "Anchura Y";
 
 /* Class = "NSMenuItem"; title = "Hydrogen"; ObjectID = "4wy-F5-Ju4"; */
 "4wy-F5-Ju4.title" = "Hidrógeno";
@@ -44,23 +40,20 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Width X"; ObjectID = "8D1-xf-EQg"; */
 "8D1-xf-EQg.placeholderString" = "Anchura X";
 
+/* Class = "NSMenuItem"; title = "Structure"; ObjectID = "8hB-ex-Y7U"; */
+"8hB-ex-Y7U.title" = "Estructura";
+
 /* Class = "NSTextFieldCell"; title = "Shift"; ObjectID = "8JV-Fj-uoG"; */
 "8JV-Fj-uoG.title" = "Cambiar";
 
 /* Class = "NSButtonCell"; title = "b-Axis"; ObjectID = "8PJ-K5-04D"; */
 "8PJ-K5-04D.title" = "Eje b";
 
-/* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "8Y3-Ix-I3M"; */
-"8Y3-Ix-I3M.title" = "Girar +90";
-
-/* Class = "NSMenuItem"; title = "Structure"; ObjectID = "8hB-ex-Y7U"; */
-"8hB-ex-Y7U.title" = "Estructura";
-
 /* Class = "NSTextFieldCell"; title = "[-]"; ObjectID = "8pV-IL-oyJ"; */
 "8pV-IL-oyJ.title" = "[-]";
 
-/* Class = "NSTextFieldCell"; title = "Number of Channel Systems"; ObjectID = "92b-lC-W5K"; */
-"92b-lC-W5K.title" = "Número de sistemas de canales";
+/* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "8Y3-Ix-I3M"; */
+"8Y3-Ix-I3M.title" = "Girar +90";
 
 /* Class = "NSTextFieldCell"; title = "Helium Void Fraction"; ObjectID = "9na-rU-hDF"; */
 "9na-rU-hDF.title" = "Helium void fraction";
@@ -68,194 +61,23 @@
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "9x5-Do-xLf"; */
 "9x5-Do-xLf.title" = "Desconocido";
 
-/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "AGj-no-ne0"; */
-"AGj-no-ne0.title" = "Girar -90";
+/* Class = "NSTextFieldCell"; title = "Cell/Bounding-Box Properties"; ObjectID = "39F-yr-VYx"; */
+"39F-yr-VYx.title" = "Propiedades de celda / Recuadro";
 
-/* Class = "NSTextFieldCell"; title = "ɣ"; ObjectID = "AeQ-3d-ynD"; */
-"AeQ-3d-ynD.title" = "ɣ";
+/* Class = "NSTextFieldCell"; title = "Number of Channel Systems"; ObjectID = "92b-lC-W5K"; */
+"92b-lC-W5K.title" = "Número de sistemas de canales";
 
-/* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bj5-6C-Yn3"; */
-"Bj5-6C-Yn3.title" = "Nitrógeno";
-
-/* Class = "NSBox"; title = "Channel Information"; ObjectID = "Bsc-yB-qAX"; */
-"Bsc-yB-qAX.title" = "Información del canal";
-
-/* Class = "NSMenuItem"; title = "Methane"; ObjectID = "C9m-fX-LjX"; */
-"C9m-fX-LjX.title" = "Metano";
-
-/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "CSF-1Y-UQa"; */
-"CSF-1Y-UQa.title" = "Text Cell";
-
-/* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "Cao-y3-ptB"; */
-"Cao-y3-ptB.title" = "Cristal";
-
-/* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "CcD-DW-aQM"; */
-"CcD-DW-aQM.title" = "[Å]";
-
-/* Class = "NSTextFieldCell"; title = "Maximum"; ObjectID = "DCo-vl-STs"; */
-"DCo-vl-STs.title" = "Máximo";
-
-/* Class = "NSTextFieldCell"; title = "AY"; ObjectID = "DMt-1o-jxX"; */
-"DMt-1o-jxX.title" = "AY";
-
-/* Class = "NSTextFieldCell"; title = "Symmorphicity"; ObjectID = "Dhg-S1-rrN"; */
-"Dhg-S1-rrN.title" = "Simmorfismo";
-
-/* Class = "NSButtonCell"; title = "c-Axis"; ObjectID = "ESl-70-xbH"; */
-"ESl-70-xbH.title" = "c-Eje";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Shift Z"; ObjectID = "Emf-RO-Pko"; */
-"Emf-RO-Pko.placeholderString" = "Cambiar Z";
-
-/* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "EoT-Wn-jDW"; */
-"EoT-Wn-jDW.title" = "Xenón";
-
-/* Class = "NSTextFieldCell"; title = "[cm³/g]"; ObjectID = "FKq-3b-x77"; */
-"FKq-3b-x77.title" = "[cm³/g]";
-
-/* Class = "NSButtonCell"; title = "Apply"; ObjectID = "Fi0-La-ItK"; */
-"Fi0-La-ItK.title" = "Solicitar";
-
-/* Class = "NSMenuItem"; title = "Molecular Crystal Solvent"; ObjectID = "GCR-0z-KdY"; */
-"GCR-0z-KdY.title" = "Disolvente de Cristal molecular";
-
-/* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
-"Geb-Or-zb5.title" = "Calificatorio";
-
-/* Class = "NSTextFieldCell"; title = "[m²/cm³]"; ObjectID = "GpO-nT-2ds"; */
-"GpO-nT-2ds.title" = "[m²/cm³]";
-
-/* Class = "NSBox"; title = "Bounding Box (Read Only)"; ObjectID = "Hgj-ha-Kto"; */
-"Hgj-ha-Kto.title" = "Recuadro (solo lectura)";
-
-/* Class = "NSTextFieldCell"; title = "0"; ObjectID = "JAA-9x-5kf"; */
-"JAA-9x-5kf.title" = "0";
-
-/* Class = "NSMenuItem"; title = "Water"; ObjectID = "Jpa-hZ-wcV"; */
-"Jpa-hZ-wcV.title" = "Agua";
-
-/* Class = "NSTextFieldCell"; title = "Minimum Replicas"; ObjectID = "JtJ-tY-Q48"; */
-"JtJ-tY-Q48.title" = "Mínimo número de réplicas";
-
-/* Class = "NSTextFieldCell"; title = "Symmetry Properties"; ObjectID = "KBR-dm-dts"; */
-"KBR-dm-dts.title" = "Propiedades de simetría";
-
-/* Class = "NSBox"; title = "Cell content"; ObjectID = "KGV-zA-HoJ"; */
-"KGV-zA-HoJ.title" = "Contenido de la celda";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Length b"; ObjectID = "KWe-Mf-Gny"; */
-"KWe-Mf-Gny.placeholderString" = "Longitud b";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Origin Y"; ObjectID = "Lso-gV-DWL"; */
-"Lso-gV-DWL.placeholderString" = "Origen Y";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Width Z"; ObjectID = "M3B-3E-Pj6"; */
-"M3B-3E-Pj6.placeholderString" = "Anchura Z";
-
-/* Class = "NSTextFieldCell"; title = "Enantiomorphic"; ObjectID = "MX2-7S-v34"; */
-"MX2-7S-v34.title" = "Enantiomórfico";
-
-/* Class = "NSTextFieldCell"; title = "Maximum Replicas"; ObjectID = "NEE-uA-Vza"; */
-"NEE-uA-Vza.title" = "Máximo número de réplicas";
-
-/* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "NtP-sh-9XR"; */
-"NtP-sh-9XR.placeholderString" = "cy";
-
-/* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
-"OFQ-fA-vGT.title" = "Molécula de prueba";
-
-/* Class = "NSTextFieldCell"; title = "CY"; ObjectID = "OU6-Uu-uVv"; */
-"OU6-Uu-uVv.title" = "CY";
-
-/* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "OfX-2V-31n"; */
-"OfX-2V-31n.title" = "Volumen";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Angle Z"; ObjectID = "PV6-bk-AS4"; */
-"PV6-bk-AS4.placeholderString" = "Ángulo Z";
-
-/* Class = "NSTextFieldCell"; title = "Perpendicular Widths"; ObjectID = "Pwp-AP-cUV"; */
-"Pwp-AP-cUV.title" = "Anchuras perpendiculares";
-
-/* Class = "NSTextFieldCell"; title = "C"; ObjectID = "Q8Z-NZ-LUj"; */
-"Q8Z-NZ-LUj.title" = "C";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Length c"; ObjectID = "QHx-PC-pGJ"; */
-"QHx-PC-pGJ.placeholderString" = "Longitud c";
-
-/* Class = "NSTextFieldCell"; placeholderString = "ay"; ObjectID = "R4U-X2-ZJs"; */
-"R4U-X2-ZJs.placeholderString" = "ay";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Volume"; ObjectID = "RAD-Mk-7MY"; */
-"RAD-Mk-7MY.placeholderString" = "Volumen";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Maximum Y"; ObjectID = "RFb-cp-hSr"; */
-"RFb-cp-hSr.placeholderString" = "Máximo Y";
-
-/* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "Rb3-t0-5yA"; */
-"Rb3-t0-5yA.placeholderString" = "az";
-
-/* Class = "NSTextFieldCell"; title = "BZ"; ObjectID = "RpE-4F-UFL"; */
-"RpE-4F-UFL.title" = "BZ";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Maximum X"; ObjectID = "SYu-kq-Pn4"; */
-"SYu-kq-Pn4.placeholderString" = "Máximo X";
-
-/* Class = "NSTextFieldCell"; title = "CZ"; ObjectID = "U3N-UV-Jmi"; */
-"U3N-UV-Jmi.title" = "CZ";
-
-/* Class = "NSTextFieldCell"; title = "Point Group"; ObjectID = "U8h-89-HjM"; */
-"U8h-89-HjM.title" = "Grupo de puntos";
-
-/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "Ukv-mk-DpD"; */
-"Ukv-mk-DpD.title" = "Girar -90";
-
-/* Class = "NSTextFieldCell"; title = "Number of elements"; ObjectID = "VGV-QG-mhd"; */
-"VGV-QG-mhd.title" = "Numero de elementos";
-
-/* Class = "NSTextFieldCell"; title = "Minimum"; ObjectID = "VPi-2B-sJL"; */
-"VPi-2B-sJL.title" = "Mínimo";
-
-/* Class = "NSTextFieldCell"; placeholderString = "cz"; ObjectID = "VU3-db-82D"; */
-"VU3-db-82D.placeholderString" = "cz";
-
-/* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "W6l-2i-ujZ"; */
-"W6l-2i-ujZ.title" = "CO₂";
-
-/* Class = "NSTextFieldCell"; placeholderString = "β Angle"; ObjectID = "WcQ-vR-rvO"; */
-"WcQ-vR-rvO.placeholderString" = "β Ángulo";
-
-/* Class = "NSTextFieldCell"; title = "Laue Group"; ObjectID = "Wgg-RQ-dI1"; */
-"Wgg-RQ-dI1.title" = "Grupo Laue";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
-"X5S-a7-xCf.placeholderString" = "Origen Z";
-
-/* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
-"XeZ-Hb-tao.title" = "Cilindro de cristal";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
-"Y0x-AR-NvS.placeholderString" = "Máximo Z";
-
-/* Class = "NSTextFieldCell"; title = "0"; ObjectID = "Y4c-N8-Uvu"; */
-"Y4c-N8-Uvu.title" = "0";
-
-/* Class = "NSTextFieldCell"; title = "A"; ObjectID = "YTE-5c-osk"; */
-"YTE-5c-osk.title" = "A";
-
-/* Class = "NSMenuItem"; title = "Protein Crystal Solvent"; ObjectID = "ZNQ-TG-HdE"; */
-"ZNQ-TG-HdE.title" = "Disolvente de cristal de proteínas";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Minimum Z"; ObjectID = "ZfA-8U-voh"; */
-"ZfA-8U-voh.placeholderString" = "Mínimo Z";
-
-/* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "ZnC-Km-HZJ"; */
-"ZnC-Km-HZJ.title" = "Ángulos de Euler";
+/* Class = "NSTextFieldCell"; title = "CX"; ObjectID = "abl-im-dvl"; */
+"abl-im-dvl.title" = "CX";
 
 /* Class = "NSTextFieldCell"; title = "[m²/g]"; ObjectID = "aCG-eP-d5V"; */
 "aCG-eP-d5V.title" = "[m²/g]";
 
-/* Class = "NSTextFieldCell"; title = "CX"; ObjectID = "abl-im-dvl"; */
-"abl-im-dvl.title" = "CX";
+/* Class = "NSTextFieldCell"; title = "ɣ"; ObjectID = "AeQ-3d-ynD"; */
+"AeQ-3d-ynD.title" = "ɣ";
+
+/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "AGj-no-ne0"; */
+"AGj-no-ne0.title" = "Girar -90";
 
 /* Class = "NSTextFieldCell"; title = "B"; ObjectID = "axn-lz-p51"; */
 "axn-lz-p51.title" = "B";
@@ -263,11 +85,26 @@
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "b6A-6m-fKp"; */
 "b6A-6m-fKp.title" = "Cilindro";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Shift Y"; ObjectID = "beQ-3E-uTa"; */
+"beQ-3E-uTa.placeholderString" = "Cambiar Y";
+
+/* Class = "NSMenuItem"; title = "Nitrogen"; ObjectID = "Bj5-6C-Yn3"; */
+"Bj5-6C-Yn3.title" = "Nitrógeno";
+
+/* Class = "NSBox"; title = "Channel Information"; ObjectID = "Bsc-yB-qAX"; */
+"Bsc-yB-qAX.title" = "Información del canal";
+
 /* Class = "NSTextFieldCell"; title = "AZ"; ObjectID = "bTK-cR-IRN"; */
 "bTK-cR-IRN.title" = "AZ";
 
-/* Class = "NSTextFieldCell"; placeholderString = "Shift Y"; ObjectID = "beQ-3E-uTa"; */
-"beQ-3E-uTa.placeholderString" = "Cambiar Y";
+/* Class = "NSMenuItem"; title = "Methane"; ObjectID = "C9m-fX-LjX"; */
+"C9m-fX-LjX.title" = "Metano";
+
+/* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "Cao-y3-ptB"; */
+"Cao-y3-ptB.title" = "Cristal";
+
+/* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "CcD-DW-aQM"; */
+"CcD-DW-aQM.title" = "[Å]";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Angle Y"; ObjectID = "cGa-VQ-Eds"; */
 "cGa-VQ-Eds.placeholderString" = "Ángulo Y";
@@ -275,17 +112,38 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Shift X"; ObjectID = "cPv-Rn-zyw"; */
 "cPv-Rn-zyw.placeholderString" = "Cambiar X";
 
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "CSF-1Y-UQa"; */
+"CSF-1Y-UQa.title" = "Text Cell";
+
 /* Class = "NSTextFieldCell"; title = "Restricting Pore Diameter (Df)"; ObjectID = "d4y-Ea-h9U"; */
 "d4y-Ea-h9U.title" = "Restricción del diámetro de poro (Df)";
 
+/* Class = "NSTextFieldCell"; title = "Maximum"; ObjectID = "DCo-vl-STs"; */
+"DCo-vl-STs.title" = "Máximo";
+
+/* Class = "NSTextFieldCell"; title = "Symmorphicity"; ObjectID = "Dhg-S1-rrN"; */
+"Dhg-S1-rrN.title" = "Simmorfismo";
+
 /* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "dIk-F3-XKu"; */
 "dIk-F3-XKu.title" = "Ángulo de rotación";
+
+/* Class = "NSTextFieldCell"; title = "AY"; ObjectID = "DMt-1o-jxX"; */
+"DMt-1o-jxX.title" = "AY";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ɣ Angle"; ObjectID = "dre-c1-hTc"; */
 "dre-c1-hTc.placeholderString" = "ɣ Ángulo";
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "dsn-Pq-Tq1"; */
 "dsn-Pq-Tq1.title" = "[Å]";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Shift Z"; ObjectID = "Emf-RO-Pko"; */
+"Emf-RO-Pko.placeholderString" = "Cambiar Z";
+
+/* Class = "NSMenuItem"; title = "Xenon"; ObjectID = "EoT-Wn-jDW"; */
+"EoT-Wn-jDW.title" = "Xenón";
+
+/* Class = "NSButtonCell"; title = "c-Axis"; ObjectID = "ESl-70-xbH"; */
+"ESl-70-xbH.title" = "c-Eje";
 
 /* Class = "NSTextFieldCell"; title = "[kg/m³]"; ObjectID = "ewU-xG-8Qg"; */
 "ewU-xG-8Qg.title" = "[kg/m³]";
@@ -302,23 +160,41 @@
 /* Class = "NSTextFieldCell"; title = "Inversion"; ObjectID = "fB7-jl-oUy"; */
 "fB7-jl-oUy.title" = "Inversión";
 
+/* Class = "NSButtonCell"; title = "Apply"; ObjectID = "Fi0-La-ItK"; */
+"Fi0-La-ItK.title" = "Solicitar";
+
+/* Class = "NSTextFieldCell"; title = "[cm³/g]"; ObjectID = "FKq-3b-x77"; */
+"FKq-3b-x77.title" = "[cm³/g]";
+
 /* Class = "NSTextFieldCell"; title = "Density"; ObjectID = "frH-cs-eiu"; */
 "frH-cs-eiu.title" = "Densidad";
 
 /* Class = "NSTextFieldCell"; placeholderString = "bx"; ObjectID = "fyC-NT-WE4"; */
 "fyC-NT-WE4.placeholderString" = "bx";
 
+/* Class = "NSMenuItem"; title = "Argon"; ObjectID = "gay-1o-b6B"; */
+"gay-1o-b6B.title" = "Argón";
+
 /* Class = "NSTextFieldCell"; title = "[g/mol]"; ObjectID = "gBf-y0-O3M"; */
 "gBf-y0-O3M.title" = "[g/mol]";
+
+/* Class = "NSMenuItem"; title = "Molecular Crystal"; ObjectID = "GCR-0z-KdY"; */
+"GCR-0z-KdY.title" = "Disolvente de Cristal molecular";
+
+/* Class = "NSTextFieldCell"; title = "Qualifier"; ObjectID = "Geb-Or-zb5"; */
+"Geb-Or-zb5.title" = "Calificatorio";
+
+/* Class = "NSTextFieldCell"; title = "[m²/cm³]"; ObjectID = "GpO-nT-2ds"; */
+"GpO-nT-2ds.title" = "[m²/cm³]";
 
 /* Class = "NSMenuItem"; title = "Molecule"; ObjectID = "gTm-Bg-d2W"; */
 "gTm-Bg-d2W.title" = "Molécula";
 
-/* Class = "NSMenuItem"; title = "Argon"; ObjectID = "gay-1o-b6B"; */
-"gay-1o-b6B.title" = "Argón";
-
 /* Class = "NSMenuItem"; title = "Crystal Polygonal Prism"; ObjectID = "h3A-5g-irg"; */
 "h3A-5g-irg.title" = "Prisma poligonal de cristal";
+
+/* Class = "NSBox"; title = "Bounding Box (Read Only)"; ObjectID = "Hgj-ha-Kto"; */
+"Hgj-ha-Kto.title" = "Recuadro (solo lectura)";
 
 /* Class = "NSTextFieldCell"; title = "Mass"; ObjectID = "hGv-Sn-Ok6"; */
 "hGv-Sn-Ok6.title" = "Masa";
@@ -326,23 +202,35 @@
 /* Class = "NSTextFieldCell"; placeholderString = "ax"; ObjectID = "hx7-iu-woV"; */
 "hx7-iu-woV.placeholderString" = "ax";
 
-/* Class = "NSTextFieldCell"; placeholderString = "α Angle"; ObjectID = "jHJ-5h-ehN"; */
-"jHJ-5h-ehN.placeholderString" = "α Ángulo";
+/* Class = "NSTextFieldCell"; title = "0"; ObjectID = "JAA-9x-5kf"; */
+"JAA-9x-5kf.title" = "0";
 
 /* Class = "NSTextFieldCell"; title = "Material Type"; ObjectID = "jgD-yL-2kq"; */
 "jgD-yL-2kq.title" = "tipo de material";
 
+/* Class = "NSTextFieldCell"; placeholderString = "α Angle"; ObjectID = "jHJ-5h-ehN"; */
+"jHJ-5h-ehN.placeholderString" = "α Ángulo";
+
+/* Class = "NSMenuItem"; title = "Water"; ObjectID = "Jpa-hZ-wcV"; */
+"Jpa-hZ-wcV.title" = "Agua";
+
 /* Class = "NSTextFieldCell"; title = "Largest Diameter Along a Viable Path (Dif)"; ObjectID = "jrj-nk-OqJ"; */
 "jrj-nk-OqJ.title" = "Diámetro más grande a lo largo de un camino viable (Dif)";
+
+/* Class = "NSTextFieldCell"; title = "Minimum Replicas"; ObjectID = "JtJ-tY-Q48"; */
+"JtJ-tY-Q48.title" = "Mínimo número de réplicas";
 
 /* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "kAw-YZ-ELT"; */
 "kAw-YZ-ELT.title" = "Prisma poligonal";
 
-/* Class = "NSTextFieldCell"; title = "Centrosymmetric"; ObjectID = "lLf-lt-tQX"; */
-"lLf-lt-tQX.title" = "Centrosimétrico";
+/* Class = "NSTextFieldCell"; title = "Symmetry Properties"; ObjectID = "KBR-dm-dts"; */
+"KBR-dm-dts.title" = "Propiedades de simetría";
 
-/* Class = "NSTextFieldCell"; title = "Number of Inaccessible Pockets"; ObjectID = "lTN-44-tVw"; */
-"lTN-44-tVw.title" = "Número de bolsillos inaccesibles";
+/* Class = "NSBox"; title = "Cell content"; ObjectID = "KGV-zA-HoJ"; */
+"KGV-zA-HoJ.title" = "Contenido de la celda";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Length b"; ObjectID = "KWe-Mf-Gny"; */
+"KWe-Mf-Gny.placeholderString" = "Longitud b";
 
 /* Class = "NSTextFieldCell"; title = "Specific Volume"; ObjectID = "leN-tT-E4L"; */
 "leN-tT-E4L.title" = "Volumen específico";
@@ -350,20 +238,38 @@
 /* Class = "NSMenuItem"; title = "Protein"; ObjectID = "lhA-fm-5dQ"; */
 "lhA-fm-5dQ.title" = "Proteína";
 
+/* Class = "NSTextFieldCell"; title = "Centrosymmetric"; ObjectID = "lLf-lt-tQX"; */
+"lLf-lt-tQX.title" = "Centrosimétrico";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Origin Y"; ObjectID = "Lso-gV-DWL"; */
+"Lso-gV-DWL.placeholderString" = "Origen Y";
+
+/* Class = "NSTextFieldCell"; title = "Number of Inaccessible Pockets"; ObjectID = "lTN-44-tVw"; */
+"lTN-44-tVw.title" = "Número de bolsillos inaccesibles";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Width Z"; ObjectID = "M3B-3E-Pj6"; */
+"M3B-3E-Pj6.placeholderString" = "Anchura Z";
+
 /* Class = "NSTextFieldCell"; placeholderString = "Origin X"; ObjectID = "mBe-hd-Fy3"; */
 "mBe-hd-Fy3.placeholderString" = "Origen X";
-
-/* Class = "NSTextFieldCell"; title = "0"; ObjectID = "mLH-lp-rcD"; */
-"mLH-lp-rcD.title" = "0";
-
-/* Class = "NSTextFieldCell"; title = "Space Group"; ObjectID = "mZ6-cg-pcL"; */
-"mZ6-cg-pcL.title" = "Grupo espacial";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Minimum Y"; ObjectID = "mhY-GY-BNd"; */
 "mhY-GY-BNd.placeholderString" = "Mínimo Y";
 
+/* Class = "NSTextFieldCell"; title = "0"; ObjectID = "mLH-lp-rcD"; */
+"mLH-lp-rcD.title" = "0";
+
+/* Class = "NSTextFieldCell"; title = "Enantiomorphic"; ObjectID = "MX2-7S-v34"; */
+"MX2-7S-v34.title" = "Enantiomórfico";
+
+/* Class = "NSTextFieldCell"; title = "Space Group"; ObjectID = "mZ6-cg-pcL"; */
+"mZ6-cg-pcL.title" = "Grupo espacial";
+
 /* Class = "NSTextFieldCell"; title = "Precision"; ObjectID = "n3J-VH-Fux"; */
 "n3J-VH-Fux.title" = "Precisión";
+
+/* Class = "NSTextFieldCell"; title = "Maximum Replicas"; ObjectID = "NEE-uA-Vza"; */
+"NEE-uA-Vza.title" = "Máximo número de réplicas";
 
 /* Class = "NSTextFieldCell"; title = "Origin"; ObjectID = "nOH-gZ-CNR"; */
 "nOH-gZ-CNR.title" = "Origen";
@@ -374,8 +280,20 @@
 /* Class = "NSTextFieldCell"; title = "[-]"; ObjectID = "nrz-4U-Tdb"; */
 "nrz-4U-Tdb.title" = "[-]";
 
+/* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "NtP-sh-9XR"; */
+"NtP-sh-9XR.placeholderString" = "cy";
+
 /* Class = "NSTextFieldCell"; title = "β"; ObjectID = "o5e-Ej-avz"; */
 "o5e-Ej-avz.title" = "β";
+
+/* Class = "NSTextFieldCell"; title = "Probe Molecule"; ObjectID = "OFQ-fA-vGT"; */
+"OFQ-fA-vGT.title" = "Molécula de prueba";
+
+/* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "OfX-2V-31n"; */
+"OfX-2V-31n.title" = "Volumen";
+
+/* Class = "NSTextFieldCell"; title = "CY"; ObjectID = "OU6-Uu-uVv"; */
+"OU6-Uu-uVv.title" = "CY";
 
 /* Class = "NSTextFieldCell"; title = "[-]"; ObjectID = "pC8-T5-EKr"; */
 "pC8-T5-EKr.title" = "[-]";
@@ -386,20 +304,47 @@
 /* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "pqT-rt-W8M"; */
 "pqT-rt-W8M.placeholderString" = "cx";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Angle Z"; ObjectID = "PV6-bk-AS4"; */
+"PV6-bk-AS4.placeholderString" = "Ángulo Z";
+
+/* Class = "NSTextFieldCell"; title = "Perpendicular Widths"; ObjectID = "Pwp-AP-cUV"; */
+"Pwp-AP-cUV.title" = "Anchuras perpendiculares";
+
+/* Class = "NSTextFieldCell"; title = "C"; ObjectID = "Q8Z-NZ-LUj"; */
+"Q8Z-NZ-LUj.title" = "C";
+
 /* Class = "NSTextFieldCell"; title = "AX"; ObjectID = "q87-Wf-RMj"; */
 "q87-Wf-RMj.title" = "AX";
-
-/* Class = "NSTextFieldCell"; title = "Centering"; ObjectID = "qRO-nO-wHb"; */
-"qRO-nO-wHb.title" = "Centrado";
 
 /* Class = "NSTextFieldCell"; title = "Schoenflies"; ObjectID = "qgW-qA-9fR"; */
 "qgW-qA-9fR.title" = "Schoenflies";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Length c"; ObjectID = "QHx-PC-pGJ"; */
+"QHx-PC-pGJ.placeholderString" = "Longitud c";
+
+/* Class = "NSTextFieldCell"; title = "Centering"; ObjectID = "qRO-nO-wHb"; */
+"qRO-nO-wHb.title" = "Centrado";
+
 /* Class = "NSTextFieldCell"; title = "BX"; ObjectID = "qzc-iK-Ddm"; */
 "qzc-iK-Ddm.title" = "BX";
 
+/* Class = "NSTextFieldCell"; placeholderString = "ay"; ObjectID = "R4U-X2-ZJs"; */
+"R4U-X2-ZJs.placeholderString" = "ay";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Volume"; ObjectID = "RAD-Mk-7MY"; */
+"RAD-Mk-7MY.placeholderString" = "Volumen";
+
+/* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "Rb3-t0-5yA"; */
+"Rb3-t0-5yA.placeholderString" = "az";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Maximum Y"; ObjectID = "RFb-cp-hSr"; */
+"RFb-cp-hSr.placeholderString" = "Máximo Y";
+
 /* Class = "NSTextFieldCell"; placeholderString = "Length a"; ObjectID = "rkG-hU-SdP"; */
 "rkG-hU-SdP.placeholderString" = "Longitud a";
+
+/* Class = "NSTextFieldCell"; title = "BZ"; ObjectID = "RpE-4F-UFL"; */
+"RpE-4F-UFL.title" = "BZ";
 
 /* Class = "NSTextFieldCell"; title = "Holohedry"; ObjectID = "sDc-yH-bwk"; */
 "sDc-yH-bwk.title" = "Holohedry";
@@ -413,6 +358,9 @@
 /* Class = "NSMenuItem"; title = "Crystal Solvent"; ObjectID = "swk-Q8-afT"; */
 "swk-Q8-afT.title" = "Disolvente cristal";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Maximum X"; ObjectID = "SYu-kq-Pn4"; */
+"SYu-kq-Pn4.placeholderString" = "Máximo X";
+
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "t15-It-Wye"; */
 "t15-It-Wye.title" = "Girar +90";
 
@@ -421,6 +369,12 @@
 
 /* Class = "NSTextFieldCell"; title = "0"; ObjectID = "tKR-57-3vF"; */
 "tKR-57-3vF.title" = "0";
+
+/* Class = "NSTextFieldCell"; title = "CZ"; ObjectID = "U3N-UV-Jmi"; */
+"U3N-UV-Jmi.title" = "CZ";
+
+/* Class = "NSTextFieldCell"; title = "Point Group"; ObjectID = "U8h-89-HjM"; */
+"U8h-89-HjM.title" = "Grupo de puntos";
 
 /* Class = "NSComboBoxCell"; u9E-1I-eSn.ibShadowedObjectValues[0] = "Unspecified"; ObjectID = "u9E-1I-eSn"; */
 "u9E-1I-eSn.ibShadowedObjectValues[0]" = "Sin especificar";
@@ -458,20 +412,53 @@
 /* Class = "NSButtonCell"; title = "Rotate +90"; ObjectID = "ugQ-Gv-6sx"; */
 "ugQ-Gv-6sx.title" = "Girar +90";
 
+/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "Ukv-mk-DpD"; */
+"Ukv-mk-DpD.title" = "Girar -90";
+
 /* Class = "NSTextFieldCell"; title = "Flip"; ObjectID = "v83-YD-3LI"; */
 "v83-YD-3LI.title" = "Dar la vuelta";
+
+/* Class = "NSTextFieldCell"; title = "Number of elements"; ObjectID = "VGV-QG-mhd"; */
+"VGV-QG-mhd.title" = "Numero de elementos";
 
 /* Class = "NSTextFieldCell"; title = "Structural Properties"; ObjectID = "vhk-8d-Ytl"; */
 "vhk-8d-Ytl.title" = "Propiedades estructurales";
 
+/* Class = "NSTextFieldCell"; title = "Minimum"; ObjectID = "VPi-2B-sJL"; */
+"VPi-2B-sJL.title" = "Mínimo";
+
+/* Class = "NSTextFieldCell"; placeholderString = "cz"; ObjectID = "VU3-db-82D"; */
+"VU3-db-82D.placeholderString" = "cz";
+
 /* Class = "NSTextFieldCell"; title = "Dimensionality of Pore System"; ObjectID = "vwN-1o-Umq"; */
 "vwN-1o-Umq.title" = "Dimensionalidad del sistema de poros";
+
+/* Class = "NSMenuItem"; title = "CO₂"; ObjectID = "W6l-2i-ujZ"; */
+"W6l-2i-ujZ.title" = "CO₂";
+
+/* Class = "NSTextFieldCell"; placeholderString = "β Angle"; ObjectID = "WcQ-vR-rvO"; */
+"WcQ-vR-rvO.placeholderString" = "β Ángulo";
+
+/* Class = "NSTextFieldCell"; title = "Laue Group"; ObjectID = "Wgg-RQ-dI1"; */
+"Wgg-RQ-dI1.title" = "Grupo Laue";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Origin Z"; ObjectID = "X5S-a7-xCf"; */
+"X5S-a7-xCf.placeholderString" = "Origen Z";
+
+/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
+"xax-w6-E1h.title" = "Girar -90";
+
+/* Class = "NSMenuItem"; title = "Crystal Cylinder"; ObjectID = "XeZ-Hb-tao"; */
+"XeZ-Hb-tao.title" = "Cilindro de cristal";
 
 /* Class = "NSTextFieldCell"; title = "Gravimetric Surface Area (Nitrogen)"; ObjectID = "xXh-YD-ajh"; */
 "xXh-YD-ajh.title" = "Área superficial gravimétrica (nitrógeno)";
 
-/* Class = "NSButtonCell"; title = "Rotate -90"; ObjectID = "xax-w6-E1h"; */
-"xax-w6-E1h.title" = "Girar -90";
+/* Class = "NSTextFieldCell"; placeholderString = "Maximum Z"; ObjectID = "Y0x-AR-NvS"; */
+"Y0x-AR-NvS.placeholderString" = "Máximo Z";
+
+/* Class = "NSTextFieldCell"; title = "0"; ObjectID = "Y4c-N8-Uvu"; */
+"Y4c-N8-Uvu.title" = "0";
 
 /* Class = "NSTextFieldCell"; title = "[Å]"; ObjectID = "yRg-Kb-OOc"; */
 "yRg-Kb-OOc.title" = "[Å]";
@@ -479,11 +466,24 @@
 /* Class = "NSMenuItem"; title = "Protein Crystal"; ObjectID = "ysY-oC-Tbz"; */
 "ysY-oC-Tbz.title" = "Cristal de proteína";
 
+/* Class = "NSTextFieldCell"; title = "A"; ObjectID = "YTE-5c-osk"; */
+"YTE-5c-osk.title" = "A";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Minimum Z"; ObjectID = "ZfA-8U-voh"; */
+"ZfA-8U-voh.placeholderString" = "Mínimo Z";
+
 /* Class = "NSButtonCell"; title = "a-Axis"; ObjectID = "zJX-PM-KMU"; */
 "zJX-PM-KMU.title" = "a-Eje";
+
+/* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "ZnC-Km-HZJ"; */
+"ZnC-Km-HZJ.title" = "Ángulos de Euler";
+
+/* Class = "NSMenuItem"; title = "Protein Crystal Solvent"; ObjectID = "ZNQ-TG-HdE"; */
+"ZNQ-TG-HdE.title" = "Disolvente de cristal de proteínas";
 
 /* Class = "NSMenuItem"; title = "Molecular Crystal"; ObjectID = "zPm-ut-b1f"; */
 "zPm-ut-b1f.title" = "Cristal molecular";
 
 /* Class = "NSMenuItem"; title = "Krypton"; ObjectID = "zSC-HO-4oc"; */
 "zSC-HO-4oc.title" = "Criptón";
+

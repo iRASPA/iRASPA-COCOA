@@ -1,5 +1,15 @@
-"Log console ready" = "Консоль журнала готова";
-"Info" = "Информация";
-"Verbose" = "Подробный";
-"Warning" = "Предупреждение";
+/* (No Comment) */
 "Error" = "Ошибка";
+
+/* (No Comment) */
+"Info" = "Информация";
+
+/* (No Comment) */
+"Log console ready" = "Консоль журнала готова";
+
+/* (No Comment) */
+"Verbose" = "Подробный";
+
+/* (No Comment) */
+"Warning" = "Предупреждение";
+

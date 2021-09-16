@@ -1,15 +1,8 @@
-
-/* Class = "NSMenuItem"; title = "Add Structure project"; ObjectID = "17P-ML-bef"; */
-"17P-ML-bef.title" = "구조 프로젝트 추가";
-
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "1Xb-ls-pt9"; */
 "1Xb-ls-pt9.title" = "텍스트 셀";
 
 /* Class = "NSMenuItem"; title = "Compute properties for selection"; ObjectID = "2Jt-NB-sPl"; */
 "2Jt-NB-sPl.title" = "선택 속성 계산";
-
-/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "39L-RF-she"; */
-"39L-RF-she.title" = "분자 추가";
 
 /* Class = "NSMenuItem"; title = "Save IZA Database"; ObjectID = "4Wl-iP-Pbc"; */
 "4Wl-iP-Pbc.title" = "IZA 데이터베이스 저장";
@@ -23,17 +16,38 @@
 /* Class = "NSMenuItem"; title = "Delete Selection"; ObjectID = "7fp-uc-cJb"; */
 "7fp-uc-cJb.title" = "선택 삭제";
 
+/* Class = "NSMenuItem"; title = "Add Structure project"; ObjectID = "17P-ML-bef"; */
+"17P-ML-bef.title" = "구조 프로젝트 추가";
+
+/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "39L-RF-she"; */
+"39L-RF-she.title" = "분자 추가";
+
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "A2b-v0-dYs"; */
 "A2b-v0-dYs.title" = "표 셀 보기";
 
-/* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "DOk-0m-owF"; */
-"DOk-0m-owF.title" = "분자 결정 추가";
+/* Class = "NSMenuItem"; title = "Load from Cloud/make editable"; ObjectID = "buF-AA-E4m"; */
+"buF-AA-E4m.title" = "클라우드에서 불러오기 / 편집 가능하게 만들기";
+
+/* Class = "NSMenu"; title = "Add Objects"; ObjectID = "d98-LF-qMp"; */
+"d98-LF-qMp.title" = "개체 추가";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "Dl8-Oq-8Mi"; */
 "Dl8-Oq-8Mi.title" = "표 셀 보기";
 
+/* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "DOk-0m-owF"; */
+"DOk-0m-owF.title" = "분자 결정 추가";
+
+/* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "dYh-5W-YT9"; */
+"dYh-5W-YT9.title" = "크리스탈 추가";
+
+/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
+"eMF-nr-fbD.title" = "다각형 프리즘";
+
 /* Class = "NSMenuItem"; title = "Add Group project"; ObjectID = "Fyj-yE-B9G"; */
 "Fyj-yE-B9G.title" = "그룹 프로젝트 추가";
+
+/* Class = "NSMenuItem"; title = "Save CoREMOF Database"; ObjectID = "guV-7k-U3c"; */
+"guV-7k-U3c.title" = "CoRE-MOF 데이터베이스 저장";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "J49-HP-IXW"; */
 "J49-HP-IXW.title" = "표 셀 보기";
@@ -43,6 +57,9 @@
 
 /* Class = "NSMenuItem"; title = "Add Project group"; ObjectID = "K8j-Rb-vrc"; */
 "K8j-Rb-vrc.title" = "프로젝트 그룹 추가";
+
+/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "muR-Z9-sae"; */
+"muR-Z9-sae.title" = "분자 추가";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "NQW-mX-NqP"; */
 "NQW-mX-NqP.placeholderString" = "필터";
@@ -62,6 +79,9 @@
 /* Class = "NSBox"; title = "Box"; ObjectID = "PBb-Do-JMr"; */
 "PBb-Do-JMr.title" = "상자";
 
+/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "pCe-xU-zfX"; */
+"pCe-xU-zfX.title" = "단백질 추가";
+
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
 "PS8-Ne-mbi.ibShadowedToolTips[0]" = "프로젝트 네비게이터를 표시합니다.";
 
@@ -74,50 +94,14 @@
 /* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
 "QFA-05-Kql.title" = "상자";
 
-/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
-"RMC-nN-w7D.title" = "단백질 추가";
-
-/* Class = "NSMenuItem"; title = "Crystal polygonal prism"; ObjectID = "RXK-7F-kYl"; */
-"RXK-7F-kYl.title" = "크리스탈 다각형 프리즘";
-
 /* Class = "NSMenuItem"; title = "Crystal ellipsoid"; ObjectID = "RaT-FZ-Ofn"; */
 "RaT-FZ-Ofn.title" = "수정 타원체";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "Rj0-p0-TFM"; */
 "Rj0-p0-TFM.title" = "실린더";
 
-/* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "TAX-Oq-9O2"; */
-"TAX-Oq-9O2.title" = "타원체";
-
-/* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
-"Toa-8e-8sy.title" = "상자";
-
-/* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
-"VoW-P5-q6k.title" = "상자";
-
-/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
-"Ypv-d2-rqY.title" = "문자 셀";
-
-/* Class = "NSMenuItem"; title = "Load from Cloud/make editable"; ObjectID = "buF-AA-E4m"; */
-"buF-AA-E4m.title" = "클라우드에서 불러오기 / 편집 가능하게 만들기";
-
-/* Class = "NSMenu"; title = "Add Objects"; ObjectID = "d98-LF-qMp"; */
-"d98-LF-qMp.title" = "개체 추가";
-
-/* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "dYh-5W-YT9"; */
-"dYh-5W-YT9.title" = "크리스탈 추가";
-
-/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
-"eMF-nr-fbD.title" = "다각형 프리즘";
-
-/* Class = "NSMenuItem"; title = "Save CoRE-MOF Database"; ObjectID = "guV-7k-U3c"; */
-"guV-7k-U3c.title" = "CoRE-MOF 데이터베이스 저장";
-
-/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "muR-Z9-sae"; */
-"muR-Z9-sae.title" = "분자 추가";
-
-/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "pCe-xU-zfX"; */
-"pCe-xU-zfX.title" = "단백질 추가";
+/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
+"RMC-nN-w7D.title" = "단백질 추가";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "rpD-Za-uPb"; */
 "rpD-Za-uPb.title" = "표 셀 보기";
@@ -125,11 +109,23 @@
 /* Class = "NSMenuItem"; title = "Add Structure Project"; ObjectID = "rwA-at-3T8"; */
 "rwA-at-3T8.title" = "구조 프로젝트 추가";
 
+/* Class = "NSMenuItem"; title = "Crystal polygonal prism"; ObjectID = "RXK-7F-kYl"; */
+"RXK-7F-kYl.title" = "크리스탈 다각형 프리즘";
+
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "sxb-xU-PUp"; */
 "sxb-xU-PUp.title" = "표 셀 보기";
 
+/* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "TAX-Oq-9O2"; */
+"TAX-Oq-9O2.title" = "타원체";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
+"Toa-8e-8sy.title" = "상자";
+
 /* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "uN8-UC-za6"; */
 "uN8-UC-za6.title" = "단백질 결정 추가";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
+"VoW-P5-q6k.title" = "상자";
 
 /* Class = "NSMenuItem"; title = "Save selected to cloud"; ObjectID = "w2Z-Qn-qLb"; */
 "w2Z-Qn-qLb.title" = "선택한 항목을 클라우드에 저장";
@@ -139,3 +135,7 @@
 
 /* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "xX5-m0-Lkz"; */
 "xX5-m0-Lkz.title" = "크리스탈 추가";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
+"Ypv-d2-rqY.title" = "문자 셀";
+

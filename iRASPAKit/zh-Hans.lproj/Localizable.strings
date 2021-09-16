@@ -1,14 +1,39 @@
-"GALLERY" = "画廊";
-"Gallery" = "画廊";
-"LOCAL PROJECTS" = "本地项目";
-"Local Projects" = "本地项目";
-"ICLOUD PUBLIC" = "iCloud 公共账号";
-"iCloud Public" = "iCloud 公共账号";
+/* (No Comment) */
 "Could Not Determine Status of iCloud Account" = "无法确定iCloud帐户的状态";
-"iCloud Account Available" = "可用的iCloud帐户";
+
+/* (No Comment) */
+"Gallery" = "画廊";
+
+/* (No Comment) */
+"GALLERY" = "画廊";
+
+/* (No Comment) */
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "iCloud帐户身份验证错误：启用iCloud和iCloud驱动器";
+
+/* (No Comment) */
+"iCloud Account Available" = "可用的iCloud帐户";
+
+/* (No Comment) */
 "iCloud Account Restricted" = "iCloud帐户受限制";
+
+/* (No Comment) */
+"iCloud Public" = "iCloud 公共账号";
+
+/* (No Comment) */
+"ICLOUD PUBLIC" = "iCloud 公共账号";
+
+/* (No Comment) */
+"iCloud Public Discoverability Denied" = "\niCloud的公共可发现性已被拒绝。您无法（通过您的电子邮件地址）与该应用程序的其他用户区分开。您可以在设置应用程序，iCloud，iCloud驱动器，通过电子邮件发现中更改此设置";
+
+/* (No Comment) */
 "iCloud Public Discoverability Granted" = "iCloud公共可发现性已被授予。您可以通过应用程序的其他用户发现您（通过您的电子邮件地址）。您可以在设置应用程序，iCloud，iCloud驱动器，通过电子邮件发现中更改此设置";
-"iCloud Public Discoverability Denied" = "
-iCloud的公共可发现性已被拒绝。您无法（通过您的电子邮件地址）与该应用程序的其他用户区分开。您可以在设置应用程序，iCloud，iCloud驱动器，通过电子邮件发现中更改此设置";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "无效的存档版本（升级到最新的iRASPA版本）。";
+
+/* (No Comment) */
+"Local Projects" = "本地项目";
+
+/* (No Comment) */
+"LOCAL PROJECTS" = "本地项目";
+

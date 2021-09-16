@@ -1,119 +1,357 @@
-"Hydrogen" = "هیدروژن";
-"Helium" = "هلیم";
-"Lithium" = "لیتیم";
-"Beryllium" = "بریلیوم";
-"Boron" = "بور";
-"Carbon" = "کربن";
-"Nitrogen" = "نیتروژن";
-"Oxygen" = "اکسیژن";
-"Fluorine" = "فلوئور";
-"Neon" = "نئون";
-"Sodium" = "سدیم";
-"Magnesium" = "منیزیم";
-"Aluminum" = "آلومینیم";
-"Silicon" = "سیلیکون";
-"Phosphorus" = "فسفر";
-"Sulfur" = "گوگرد";
-"Chlorine" = "کلر";
-"Argon" = "آرگون";
-"Potassium" = "پتاسیم";
-"Calcium" = "کلسیم";
-"Scandium" = "اسکاندیم";
-"Titanium" = "تیتانیم";
-"Vanadium" = "وانادیم";
-"Chromium" = "کروم";
-"Manganese" = "منگنز";
-"Iron" = "آهن";
-"Cobalt" = "کبالت";
-"Nickel" = "نیکل";
-"Copper" = "مس";
-"Zinc" = "روی";
-"Gallium" = "گالیم";
-"Germanium" = "ژرمانیم";
-"Arsenic" = "آرسنیک";
-"Selenium" = "سلنیم";
-"Bromine" = "برم";
-"Krypton" = "کریپتون";
-"Rubidium" = "روبیدیم";
-"Strontium" = "استرونسیم";
-"Yttrium" = "ایتریم";
-"Zirconium" = "زیرکونیم";
-"Niobium" = "نیوبیم";
-"Molybdenum" = "مولیبدن";
-"Technetium" = "تکنسیم";
-"Ruthenium" = "رادنیم";
-"Rhodium" = "رودیم";
-"Palladium" = "پالادیم";
-"Silver" = "نقره";
-"Cadmium" = "کادمیم";
-"Indium" = "ایندیم";
-"Tin" = "قلع";
-"Antimony" = "آنتیموان";
-"Tellurium" = "تلوریم";
-"Iodine" = "ید";
-"Xenon" = "زنون";
-"Cesium" = "سزیم";
-"Barium" = "باریم";
-"Lanthanum" = "لانتان";
-"Cerium" = "سریم";
-"Praseodymium" = "پرازئودیمیم";
-"Neodymium" = "نئودیمیم";
-"Promethium" = "پرومتیم";
-"Samarium" = "ساماریم";
-"Europium" = "یوروپیم";
-"Gadolinium" = "گادولینیم";
-"Terbium" = "تربیم";
-"Dysprosium" = "دیسپروزیم";
-"Holmium" = "هولمیم";
-"Erbium" = "اربیم";
-"Thulium" = "تولیم";
-"Ytterbium" = "ایتربیم";
-"Lutetium" = "لوتتیم";
-"Hafnium" = "هافنیم";
-"Tantalum" = "تانتالوم";
-"Tungsten" = "تنگستن";
-"Rhenium" = "رنیم";
-"Osmium" = "اوسمیم";
-"Iridium" = "ایریدیم";
-"Platinum" = "پلاتین";
-"Gold" = "طلا";
-"Mercury" = "جیوه";
-"Thallium" = "تالیم";
-"Lead" = "سرب";
-"Bismuth" = "بیسموت";
-"Polonium" = "پولونیم";
-"Astatine" = "آستاتین";
-"Radon" = "رادون";
-"Francium" = "فرانسیم";
-"Radium" = "رادیم";
+/* (No Comment) */
 "Actinium" = "آکتینیم";
-"Thorium" = "توریم";
-"Protactinium" = "پروتاکتینیم";
-"Uranium" = "اورانیم";
-"Neptunium" = "نپتونیم";
-"Plutonium" = "پلوتونیم";
+
+/* (No Comment) */
+"Aluminum" = "آلومینیم";
+
+/* (No Comment) */
 "Americium" = "امریسیم";
-"Curium" = "کوریم";
+
+/* (No Comment) */
+"Antimony" = "آنتیموان";
+
+/* (No Comment) */
+"Argon" = "آرگون";
+
+/* (No Comment) */
+"Arsenic" = "آرسنیک";
+
+/* (No Comment) */
+"Astatine" = "آستاتین";
+
+/* (No Comment) */
+"Barium" = "باریم";
+
+/* (No Comment) */
 "Berkelium" = "برکلیم";
-"Californium" = "کالیفورنیم";
-"Einsteinium" = "اینشتینیم";
-"Fermium" = "فرمیم";
-"Mendelevium" = "مندلیفیم";
-"Nobelium" = "نوبلیم";
-"Lawrencium" = "لاورنسیم";
-"Rutherfordium" = "رادرفوردیم";
-"Dubnium" = "دابنیم";
-"Seaborgium" = "سیبورگیم";
+
+/* (No Comment) */
+"Beryllium" = "بریلیوم";
+
+/* (No Comment) */
+"Bismuth" = "بیسموت";
+
+/* (No Comment) */
 "Bohrium" = "بوریم";
-"Hassium" = "هاسیم";
-"Meitnerium" = "مایتنریم";
-"Darmstadtium" = "دارمشتاتیم";
-"Roentgenium" = "رونتگنیوم";
+
+/* (No Comment) */
+"Boron" = "بور";
+
+/* (No Comment) */
+"Bromine" = "برم";
+
+/* (No Comment) */
+"Cadmium" = "کادمیم";
+
+/* (No Comment) */
+"Calcium" = "کلسیم";
+
+/* (No Comment) */
+"Californium" = "کالیفورنیم";
+
+/* (No Comment) */
+"Carbon" = "کربن";
+
+/* (No Comment) */
+"Cerium" = "سریم";
+
+/* (No Comment) */
+"Cesium" = "سزیم";
+
+/* (No Comment) */
+"Chlorine" = "کلر";
+
+/* (No Comment) */
+"Chromium" = "کروم";
+
+/* (No Comment) */
+"Cobalt" = "کبالت";
+
+/* (No Comment) */
 "Copernicium" = "کوپرنیسیم";
-"Nihonium" = "نیهونیم";
+
+/* (No Comment) */
+"Copper" = "مس";
+
+/* (No Comment) */
+"Curium" = "کوریم";
+
+/* (No Comment) */
+"Darmstadtium" = "دارمشتاتیم";
+
+/* (No Comment) */
+"Dubnium" = "دابنیم";
+
+/* (No Comment) */
+"Dysprosium" = "دیسپروزیم";
+
+/* (No Comment) */
+"Einsteinium" = "اینشتینیم";
+
+/* (No Comment) */
+"Erbium" = "اربیم";
+
+/* (No Comment) */
+"Europium" = "یوروپیم";
+
+/* (No Comment) */
+"Fermium" = "فرمیم";
+
+/* (No Comment) */
 "Flerovium" = "فلروویوم";
-"Moscovium" = "مسکوویم";
-"Livermorium" = "لیورموریوم";
-"Tennessine" = "تنسین";
-"Oganesson" = "اوگانسون";
+
+/* (No Comment) */
+"Fluorine" = "فلوئور";
+
+/* (No Comment) */
+"Francium" = "فرانسیم";
+
+/* (No Comment) */
+"Gadolinium" = "گادولینیم";
+
+/* (No Comment) */
+"Gallium" = "گالیم";
+
+/* (No Comment) */
+"Germanium" = "ژرمانیم";
+
+/* (No Comment) */
+"Gold" = "طلا";
+
+/* (No Comment) */
+"Hafnium" = "هافنیم";
+
+/* (No Comment) */
+"Hassium" = "هاسیم";
+
+/* (No Comment) */
+"Helium" = "هلیم";
+
+/* (No Comment) */
+"Holmium" = "هولمیم";
+
+/* (No Comment) */
+"Hydrogen" = "هیدروژن";
+
+/* (No Comment) */
+"Indium" = "ایندیم";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "به جدیدترین نسخه iRASPA ارتقا دهید";
+
+/* (No Comment) */
+"Iodine" = "ید";
+
+/* (No Comment) */
+"Iridium" = "ایریدیم";
+
+/* (No Comment) */
+"Iron" = "آهن";
+
+/* (No Comment) */
+"Krypton" = "کریپتون";
+
+/* (No Comment) */
+"Lanthanum" = "لانتان";
+
+/* (No Comment) */
+"Lawrencium" = "لاورنسیم";
+
+/* (No Comment) */
+"Lead" = "سرب";
+
+/* (No Comment) */
+"Lithium" = "لیتیم";
+
+/* (No Comment) */
+"Livermorium" = "لیورموریوم";
+
+/* (No Comment) */
+"Lutetium" = "لوتتیم";
+
+/* (No Comment) */
+"Magnesium" = "منیزیم";
+
+/* (No Comment) */
+"Manganese" = "منگنز";
+
+/* (No Comment) */
+"Meitnerium" = "مایتنریم";
+
+/* (No Comment) */
+"Mendelevium" = "مندلیفیم";
+
+/* (No Comment) */
+"Mercury" = "جیوه";
+
+/* (No Comment) */
+"Molybdenum" = "مولیبدن";
+
+/* (No Comment) */
+"Moscovium" = "مسکوویم";
+
+/* (No Comment) */
+"Neodymium" = "نئودیمیم";
+
+/* (No Comment) */
+"Neon" = "نئون";
+
+/* (No Comment) */
+"Neptunium" = "نپتونیم";
+
+/* (No Comment) */
+"Nickel" = "نیکل";
+
+/* (No Comment) */
+"Nihonium" = "نیهونیم";
+
+/* (No Comment) */
+"Niobium" = "نیوبیم";
+
+/* (No Comment) */
+"Nitrogen" = "نیتروژن";
+
+/* (No Comment) */
+"Nobelium" = "نوبلیم";
+
+/* (No Comment) */
+"Oganesson" = "اوگانسون";
+
+/* (No Comment) */
+"Osmium" = "اوسمیم";
+
+/* (No Comment) */
+"Oxygen" = "اکسیژن";
+
+/* (No Comment) */
+"Palladium" = "پالادیم";
+
+/* (No Comment) */
+"Phosphorus" = "فسفر";
+
+/* (No Comment) */
+"Platinum" = "پلاتین";
+
+/* (No Comment) */
+"Plutonium" = "پلوتونیم";
+
+/* (No Comment) */
+"Polonium" = "پولونیم";
+
+/* (No Comment) */
+"Potassium" = "پتاسیم";
+
+/* (No Comment) */
+"Praseodymium" = "پرازئودیمیم";
+
+/* (No Comment) */
+"Promethium" = "پرومتیم";
+
+/* (No Comment) */
+"Protactinium" = "پروتاکتینیم";
+
+/* (No Comment) */
+"Radium" = "رادیم";
+
+/* (No Comment) */
+"Radon" = "رادون";
+
+/* (No Comment) */
+"Rhenium" = "رنیم";
+
+/* (No Comment) */
+"Rhodium" = "رودیم";
+
+/* (No Comment) */
+"Roentgenium" = "رونتگنیوم";
+
+/* (No Comment) */
+"Rubidium" = "روبیدیم";
+
+/* (No Comment) */
+"Ruthenium" = "رادنیم";
+
+/* (No Comment) */
+"Rutherfordium" = "رادرفوردیم";
+
+/* (No Comment) */
+"Samarium" = "ساماریم";
+
+/* (No Comment) */
+"Scandium" = "اسکاندیم";
+
+/* (No Comment) */
+"Seaborgium" = "سیبورگیم";
+
+/* (No Comment) */
+"Selenium" = "سلنیم";
+
+/* (No Comment) */
+"Silicon" = "سیلیکون";
+
+/* (No Comment) */
+"Silver" = "نقره";
+
+/* (No Comment) */
+"Sodium" = "سدیم";
+
+/* (No Comment) */
+"Strontium" = "استرونسیم";
+
+/* (No Comment) */
+"Sulfur" = "گوگرد";
+
+/* (No Comment) */
+"Tantalum" = "تانتالوم";
+
+/* (No Comment) */
+"Technetium" = "تکنسیم";
+
+/* (No Comment) */
+"Tellurium" = "تلوریم";
+
+/* (No Comment) */
+"Tennessine" = "تنسین";
+
+/* (No Comment) */
+"Terbium" = "تربیم";
+
+/* (No Comment) */
+"Thallium" = "تالیم";
+
+/* (No Comment) */
+"Thorium" = "توریم";
+
+/* (No Comment) */
+"Thulium" = "تولیم";
+
+/* (No Comment) */
+"Tin" = "قلع";
+
+/* (No Comment) */
+"Titanium" = "تیتانیم";
+
+/* (No Comment) */
+"Tungsten" = "تنگستن";
+
+/* (No Comment) */
+"Uranium" = "اورانیم";
+
+/* (No Comment) */
+"Vanadium" = "وانادیم";
+
+/* (No Comment) */
+"Xenon" = "زنون";
+
+/* (No Comment) */
+"Ytterbium" = "ایتربیم";
+
+/* (No Comment) */
+"Yttrium" = "ایتریم";
+
+/* (No Comment) */
+"Zinc" = "روی";
+
+/* (No Comment) */
+"Zirconium" = "زیرکونیم";
+

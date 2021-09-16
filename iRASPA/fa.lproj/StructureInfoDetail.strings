@@ -1,186 +1,74 @@
+/* Class = "NSTextFieldCell"; placeholderString = "min"; ObjectID = "1EI-2k-Qt7"; */
+"1EI-2k-Qt7.placeholderString" = "min";
 
-/* Class = "NSMenuItem"; title = "All positive"; ObjectID = "07j-yA-XWL"; */
-"07j-yA-XWL.title" = "همه مثبت هستند";
+/* Class = "NSTextFieldCell"; placeholderString = "l_min"; ObjectID = "03X-Mt-rBb"; */
+"03X-Mt-rBb.placeholderString" = "l_min";
 
-/* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
-"43t-f2-d0i.placeholderString" = "نام موسسه";
-
-/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "444-5s-8Su"; */
-"444-5s-8Su.placeholderString" = "ناشناس";
-
-/* Class = "NSComboBoxCell"; 444-5s-8Su.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "444-5s-8Su"; */
-"444-5s-8Su.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
+/* Class = "NSTabViewItem"; label = "CreationTabView"; ObjectID = "3xu-w1-ont"; */
+"3xu-w1-ont.label" = "CreationTabView";
 
 /* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "4EP-SI-3P9"; */
 "4EP-SI-3P9.title" = "Item 1";
 
-/* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "4I2-J0-a1F"; */
-"4I2-J0-a1F.title" = "ناشناس";
-
 /* Class = "NSTextFieldCell"; title = "Affiliation"; ObjectID = "4KL-dd-ODO"; */
 "4KL-dd-ODO.title" = "وابستگی";
+
+/* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "4Ng-AT-JKi"; */
+"4Ng-AT-JKi.title" = "بسته نرم افزاری";
+
+/* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "4nI-Qe-06D"; */
+"4nI-Qe-06D.title" = "ساده";
 
 /* Class = "NSTextFieldCell"; title = "DOI"; ObjectID = "4z1-VY-1Pd"; */
 "4z1-VY-1Pd.title" = "DOI";
 
+/* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "5yf-6i-XzW"; */
+"5yf-6i-XzW.title" = "تعدادی مقادیر منفی به طور قابل ملاحظه";
+
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "6KC-hH-6j8"; */
 "6KC-hH-6j8.placeholderString" = "ناشناس";
 
-/* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "7Ft-CF-yt2"; */
-"7Ft-CF-yt2.title" = "میدان نیرو";
+/* Class = "NSMenuItem"; title = "Newton-Raphson"; ObjectID = "6LJ-MR-T4B"; */
+"6LJ-MR-T4B.title" = "Newton-Raphson";
 
-/* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "8lJ-Qe-9Bj"; */
-"8lJ-Qe-9Bj.title" = "ناشناس";
+/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "6RQ-en-IYk"; */
+"6RQ-en-IYk.placeholderString" = "ناشناس";
 
-/* Class = "NSMenuItem"; title = "Many Negative Eigenvalues"; ObjectID = "ANg-Kl-3lM"; */
-"ANg-Kl-3lM.title" = "تعداد بسیاری مقادیر ویژه منفی";
+/* Class = "NSComboBoxCell"; 7oW-NP-lDx.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "7oW-NP-lDx"; */
+"7oW-NP-lDx.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
 
-/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "ASc-zU-QqD"; */
-"ASc-zU-QqD.placeholderString" = "ناشناس";
+/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "7oW-NP-lDx"; */
+"7oW-NP-lDx.placeholderString" = "ناشناس";
 
-/* Class = "NSMenuItem"; title = "Some Small Negative Values"; ObjectID = "C5C-Je-5WX"; */
-"C5C-Je-5WX.title" = "تعدادی مقادیر منفی";
+/* Class = "NSTextFieldCell"; title = "Goodness-of-fit on F²"; ObjectID = "9BR-Cy-JQv"; */
+"9BR-Cy-JQv.title" = "F²نیکویی برازش در";
 
-/* Class = "NSTextFieldCell"; placeholderString = "City"; ObjectID = "Cvy-Hd-HUC"; */
-"Cvy-Hd-HUC.placeholderString" = "شهر";
+/* Class = "NSComboBoxCell"; 9X6-XE-cJJ.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "9X6-XE-cJJ"; */
+"9X6-XE-cJJ.ibShadowedObjectValues[0]" = "Experimental";
 
-/* Class = "NSMenuItem"; title = "Bar"; ObjectID = "DBX-tl-g65"; */
-"DBX-tl-g65.title" = "Bar";
+/* Class = "NSComboBoxCell"; 9X6-XE-cJJ.ibShadowedObjectValues[1] = "Gaussian"; ObjectID = "9X6-XE-cJJ"; */
+"9X6-XE-cJJ.ibShadowedObjectValues[1]" = "Gaussian";
 
-/* Class = "NSTextFieldCell"; placeholderString = "k_max"; ObjectID = "DQs-oL-hqO"; */
-"DQs-oL-hqO.placeholderString" = "k_max";
+/* Class = "NSComboBoxCell"; 9X6-XE-cJJ.ibShadowedObjectValues[2] = "VASP"; ObjectID = "9X6-XE-cJJ"; */
+"9X6-XE-cJJ.ibShadowedObjectValues[2]" = "VASP";
 
-/* Class = "NSTextFieldCell"; title = "Researcher ID"; ObjectID = "DXa-ef-f0b"; */
-"DXa-ef-f0b.title" = "Researcher ID";
+/* Class = "NSComboBoxCell"; 9X6-XE-cJJ.ibShadowedObjectValues[3] = "Spartan"; ObjectID = "9X6-XE-cJJ"; */
+"9X6-XE-cJJ.ibShadowedObjectValues[3]" = "Spartan";
 
-/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "EMw-Fn-YYe"; */
-"EMw-Fn-YYe.placeholderString" = "ناشناس";
+/* Class = "NSComboBoxCell"; 9X6-XE-cJJ.ibShadowedObjectValues[4] = "CP2K"; ObjectID = "9X6-XE-cJJ"; */
+"9X6-XE-cJJ.ibShadowedObjectValues[4]" = "CP2K";
 
-/* Class = "NSMenuItem"; title = "Fixed Volume; Shape Free"; ObjectID = "Etd-c0-eiU"; */
-"Etd-c0-eiU.title" = "حجم ثابت تغییر شکل";
+/* Class = "NSComboBoxCell"; 9X6-XE-cJJ.ibShadowedObjectValues[5] = "Classical"; ObjectID = "9X6-XE-cJJ"; */
+"9X6-XE-cJJ.ibShadowedObjectValues[5]" = "Classical";
 
-/* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "FgA-hr-Zjg"; */
-"FgA-hr-Zjg.title" = "جزئیات";
+/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "9X6-XE-cJJ"; */
+"9X6-XE-cJJ.placeholderString" = "ناشناس";
 
-/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "FkD-oS-zpo"; */
-"FkD-oS-zpo.title" = "Item 2";
+/* Class = "NSTextFieldCell"; placeholderString = "Institute name"; ObjectID = "43t-f2-d0i"; */
+"43t-f2-d0i.placeholderString" = "نام موسسه";
 
-/* Class = "NSMenuItem"; title = "Experimental"; ObjectID = "G2E-hb-9HS"; */
-"G2E-hb-9HS.title" = "تجربی";
-
-/* Class = "NSTextFieldCell"; placeholderString = "max"; ObjectID = "GOg-L9-MUC"; */
-"GOg-L9-MUC.placeholderString" = "max";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "GbD-Bi-g8J"; */
-"GbD-Bi-g8J.placeholderString" = "ناشناس";
-
-/* Class = "NSMenuItem"; title = "Conjugate Gradient"; ObjectID = "H8k-8m-eEZ"; */
-"H8k-8m-eEZ.title" = "گرادیان مزدوج";
-
-/* Class = "NSMenuItem"; title = "None"; ObjectID = "HQa-wI-SvD"; */
-"HQa-wI-SvD.title" = "هیچ یک";
-
-/* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "IDD-Ef-45v"; */
-"IDD-Ef-45v.title" = "الگوریتم";
-
-/* Class = "NSMenuItem"; title = "Baker's Algorithm"; ObjectID = "JIL-cM-jP3"; */
-"JIL-cM-jP3.title" = "Baker's Algorithm";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Last name"; ObjectID = "JJr-Hi-ZjS"; */
-"JJr-Hi-ZjS.placeholderString" = "نام خانوادگی";
-
-/* Class = "NSTextFieldCell"; title = "Limits"; ObjectID = "Jff-Rs-w9O"; */
-"Jff-Rs-w9O.title" = "محدودیت ها";
-
-/* Class = "NSBox"; title = "Unit Cell"; ObjectID = "KEX-co-NaZ"; */
-"KEX-co-NaZ.title" = "سلول واحد را";
-
-/* Class = "NSTextFieldCell"; placeholderString = "h_min"; ObjectID = "KRx-ka-ed4"; */
-"KRx-ka-ed4.placeholderString" = "h_min";
-
-/* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Kyz-vh-wLM"; */
-"Kyz-vh-wLM.title" = "اطلاعات میدان نیرو";
-
-/* Class = "NSTextFieldCell"; title = "Chemical Information"; ObjectID = "L9b-nA-LZg"; */
-"L9b-nA-LZg.title" = "اطلاعات شیمیایی";
-
-/* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "LRn-Q5-NIv"; */
-"LRn-Q5-NIv.title" = "الگوریتم";
-
-/* Class = "NSTabViewItem"; label = "View"; ObjectID = "Lsj-0L-zLx"; */
-"Lsj-0L-zLx.label" = "چشم انداز";
-
-/* Class = "NSTextFieldCell"; title = "Radiation Type"; ObjectID = "M4G-j9-ni3"; */
-"M4G-j9-ni3.title" = "نوع تابش";
-
-/* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "MCu-aJ-XRY"; */
-"MCu-aJ-XRY.title" = "بازپخت شبیه سازی شده";
-
-/* Class = "NSMenuItem"; title = "Simplex"; ObjectID = "MYm-ia-kRD"; */
-"MYm-ia-kRD.title" = "ساده";
-
-/* Class = "NSTextFieldCell"; title = "Eigenvalues"; ObjectID = "Mz0-GD-bP9"; */
-"Mz0-GD-bP9.title" = "مقادیر ویژه";
-
-/* Class = "NSTextFieldCell"; title = "Article Authors"; ObjectID = "NEs-Kg-SVJ"; */
-"NEs-Kg-SVJ.title" = "نویسندگان مقاله";
-
-/* Class = "NSTextFieldCell"; title = "Chemical Formula Sum"; ObjectID = "Niu-c7-eAz"; */
-"Niu-c7-eAz.title" = "مجموع فرمول شیمیایی";
-
-/* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "OEK-pW-ejo"; */
-"OEK-pW-ejo.title" = "بسته نرم افزاری";
-
-/* Class = "NSTextFieldCell"; placeholderString = "l_min"; ObjectID = "P5f-Dc-mAR"; */
-"P5f-Dc-mAR.placeholderString" = "l_min";
-
-/* Class = "NSTextFieldCell"; title = "Chemical Formula Moiety"; ObjectID = "QLD-HG-16U"; */
-"QLD-HG-16U.title" = "فرمول شیمیایی پاره‌ مولکول";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "Qbd-YO-NWQ"; */
-"Qbd-YO-NWQ.placeholderString" = "ناشناس";
-
-/* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "R5l-j2-8rL"; */
-"R5l-j2-8rL.title" = "اطلاعات میدان نیرو";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
-"USD-gk-tal.placeholderString" = "ناشناس";
-
-/* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "UdZ-E6-hGm"; */
-"UdZ-E6-hGm.title" = "میدان نیرو";
-
-/* Class = "NSTextFieldCell"; title = "Software"; ObjectID = "VSi-Bz-b4f"; */
-"VSi-Bz-b4f.title" = "نرم افزار";
-
-/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "VW9-bX-xkL"; */
-"VW9-bX-xkL.placeholderString" = "ناشناس";
-
-/* Class = "NSComboBoxCell"; VW9-bX-xkL.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "VW9-bX-xkL"; */
-"VW9-bX-xkL.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
-
-/* Class = "NSTextFieldCell"; placeholderString = "First name"; ObjectID = "Vtz-4v-Kmv"; */
-"Vtz-4v-Kmv.placeholderString" = "نام کوچک";
-
-/* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "Vvv-Ri-fwX"; */
-"Vvv-Ri-fwX.title" = "عدد";
-
-/* Class = "NSTextFieldCell"; title = "R Indices (All Data)"; ObjectID = "WBA-sr-NKP"; */
-"WBA-sr-NKP.title" = "شاخص های R (همه داده ها)";
-
-/* Class = "NSTextFieldCell"; title = "Article Title"; ObjectID = "Wih-6z-Wmy"; */
-"Wih-6z-Wmy.title" = "عنوان مقاله";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "X0T-Gc-sil"; */
-"X0T-Gc-sil.placeholderString" = "ناشناس";
-
-/* Class = "NSTextFieldCell"; title = "Radiation Wavelength"; ObjectID = "Xx6-F7-2Db"; */
-"Xx6-F7-2Db.title" = "طول موج تابشی";
-
-/* Class = "NSTextFieldCell"; title = "Journal Title"; ObjectID = "Zmo-LS-hfO"; */
-"Zmo-LS-hfO.title" = "عنوان ژورنال";
-
-/* Class = "NSMenuItem"; title = "Kelvin"; ObjectID = "Zqh-RB-jIF"; */
-"Zqh-RB-jIF.title" = "کلوین";
+/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "221-69-NrG"; */
+"221-69-NrG.placeholderString" = "ناشناس";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "a8y-Dh-rHh"; */
 "a8y-Dh-rHh.title" = "Text Cell";
@@ -191,89 +79,104 @@
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "au5-Fr-4P5"; */
 "au5-Fr-4P5.placeholderString" = "ناشناس";
 
-/* Class = "NSMenuItem"; title = "Genetic Algorithm"; ObjectID = "b6n-Qn-6ik"; */
-"b6n-Qn-6ik.title" = "الگوریتم ژنتیک";
-
-/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.placeholderString" = "ناشناس";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[0]" = "تجربی";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[1] = "Ab initio"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[1]" = "Ab initio";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[2] = "VASP"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[2]" = "VASP";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[3] = "Gaussian"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[3]" = "Gaussian";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[4] = "Spartan"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[4]" = "Spartan";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[5] = "CP2K"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[5]" = "CP2K";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[6] = "DMOL3"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[6]" = "DMOL3";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[7] = "TURBOMOLE"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[7]" = "TURBOMOLE";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[8] = "SIESTA"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[8]" = "SIESTA";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[9] = "NWCHEM"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[9]" = "NWCHEM";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[10] = "ORCA"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[10]" = "ORCA";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[11] = "ADF"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[11]" = "ADF";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[12] = "WIEN2K"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[12]" = "WIEN2K";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[13] = "Classical"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[13]" = "Classical";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[14] = "RASPA"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[14]" = "RASPA";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[15] = "Materials Studio"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[15]" = "Materials Studio";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[16] = "GULP"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[16]" = "GULP";
-
-/* Class = "NSComboBoxCell"; b8q-Dr-Dt5.ibShadowedObjectValues[17] = "Openbabel"; ObjectID = "b8q-Dr-Dt5"; */
-"b8q-Dr-Dt5.ibShadowedObjectValues[17]" = "Openbabel";
+/* Class = "NSBox"; title = "Box"; ObjectID = "aY2-91-wEf"; */
+"aY2-91-wEf.title" = "Box";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "bgc-3c-w1h"; */
 "bgc-3c-w1h.placeholderString" = "ناشناس";
 
-/* Class = "NSTextFieldCell"; title = "Final R indices [I>2sigma(I)]"; ObjectID = "bw9-xG-XoD"; */
-"bw9-xG-XoD.title" = "شاخص های نهایی R [I>2sigma(I)]";
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[0]" = "Experimental";
 
-/* Class = "NSBox"; title = "Atomic Positions"; ObjectID = "cgg-LX-ohN"; */
-"cgg-LX-ohN.title" = "موقعیت های اتمی";
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[1] = "Ab initio"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[1]" = "Ab initio";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[2] = "VASP"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[2]" = "VASP";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[3] = "Gaussian"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[3]" = "Gaussian";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[4] = "Spartan"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[4]" = "Spartan";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[5] = "CP2K"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[5]" = "CP2K";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[6] = "DMOL3"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[6]" = "DMOL3";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[7] = "TURBOMOLE"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[7]" = "TURBOMOLE";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[8] = "SIESTA"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[8]" = "SIESTA";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[9] = "NWCHEM"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[9]" = "NWCHEM";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[10] = "ORCA"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[10]" = "ORCA";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[11] = "ADF"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[11]" = "ADF";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[12] = "WIEN2K"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[12]" = "WIEN2K";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[13] = "Classical"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[13]" = "Classical";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[14] = "RASPA"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[14]" = "RASPA";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[15] = "Materials Studio"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[15]" = "Materials Studio";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[16] = "GULP"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[16]" = "GULP";
+
+/* Class = "NSComboBoxCell"; biS-G5-vQl.ibShadowedObjectValues[17] = "Openbabel"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.ibShadowedObjectValues[17]" = "Openbabel";
+
+/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "biS-G5-vQl"; */
+"biS-G5-vQl.placeholderString" = "ناشناس";
 
 /* Class = "NSTextFieldCell"; placeholderString = "A-0000-0000"; ObjectID = "ciB-v0-3ow"; */
 "ciB-v0-3ow.placeholderString" = "A-0000-0000";
 
+/* Class = "NSTextFieldCell"; placeholderString = "City"; ObjectID = "Cvy-Hd-HUC"; */
+"Cvy-Hd-HUC.placeholderString" = "شهر";
+
 /* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "cw1-G3-6lk"; */
 "cw1-G3-6lk.title" = "Item 3";
-
-/* Class = "NSTabViewItem"; label = "CreationTabView"; ObjectID = "d7Y-ez-Ze7"; */
-"d7Y-ez-Ze7.label" = "CreationTabView";
 
 /* Class = "NSTextFieldCell"; title = "ORCHID ID"; ObjectID = "d8y-By-uMu"; */
 "d8y-By-uMu.title" = "ORCHID ID";
 
+/* Class = "NSMenuItem"; title = "Quasi-Newton"; ObjectID = "dbH-cK-y49"; */
+"dbH-cK-y49.title" = "Quasi-Newton";
+
+/* Class = "NSMenuItem"; title = "Bar"; ObjectID = "DBX-tl-g65"; */
+"DBX-tl-g65.title" = "Bar";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "DCc-jI-zfq"; */
+"DCc-jI-zfq.placeholderString" = "ناشناس";
+
+/* Class = "NSTextFieldCell"; title = "Measurement Theta"; ObjectID = "ddE-i5-l3h"; */
+"ddE-i5-l3h.title" = "اندازه گیری تتا";
+
 /* Class = "NSTextFieldCell"; title = "Chemical Name Systematic"; ObjectID = "df5-Wf-bLj"; */
 "df5-Wf-bLj.title" = "نام شیمیایی سیستماتیک";
+
+/* Class = "NSTextFieldCell"; title = "R Indices (All Data)"; ObjectID = "dgL-Bg-yvQ"; */
+"dgL-Bg-yvQ.title" = "شاخص های R (همه داده ها)";
+
+/* Class = "NSTextFieldCell"; title = "Researcher ID"; ObjectID = "DXa-ef-f0b"; */
+"DXa-ef-f0b.title" = "Researcher ID";
+
+/* Class = "NSMenuItem"; title = "All positive"; ObjectID = "Dzv-LE-c1a"; */
+"Dzv-LE-c1a.title" = "همه مثبت هستند";
 
 /* Class = "NSTextFieldCell"; placeholderString = "0000-0000-0000-0000"; ObjectID = "eA1-Nk-SW5"; */
 "eA1-Nk-SW5.placeholderString" = "0000-0000-0000-0000";
@@ -281,35 +184,134 @@
 /* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "eef-6i-4me"; */
 "eef-6i-4me.title" = "ناشناس";
 
+/* Class = "NSMenuItem"; title = "Baker's Algorithm"; ObjectID = "EeV-Sc-s0o"; */
+"EeV-Sc-s0o.title" = "Baker's Algorithm";
+
+/* Class = "NSTextFieldCell"; title = "Radiation Type"; ObjectID = "eJA-vO-S79"; */
+"eJA-vO-S79.title" = "نوع تابش";
+
+/* Class = "NSTextFieldCell"; title = "Eigenvalues"; ObjectID = "EmO-GR-hHy"; */
+"EmO-GR-hHy.title" = "مقادیر ویژه";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "EMw-Fn-YYe"; */
+"EMw-Fn-YYe.placeholderString" = "ناشناس";
+
+/* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Free"; ObjectID = "eps-ZJ-UgP"; */
+"eps-ZJ-UgP.title" = "طول سلول و لبه تغییر می کند";
+
+/* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "Esp-OO-HCO"; */
+"Esp-OO-HCO.title" = "الگوریتم";
+
+/* Class = "NSBox"; title = "Limits"; ObjectID = "EVy-SZ-J7S"; */
+"EVy-SZ-J7S.title" = "محدودیت ها";
+
+/* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "Ewa-Yk-qOm"; */
+"Ewa-Yk-qOm.title" = "ناشناس";
+
 /* Class = "NSTextFieldCell"; placeholderString = "Faculty"; ObjectID = "fCm-83-aYg"; */
 "fCm-83-aYg.placeholderString" = "دانشکده";
 
-/* Class = "NSTextFieldCell"; placeholderString = "h_max"; ObjectID = "fRC-r2-uGt"; */
-"fRC-r2-uGt.placeholderString" = "h_max";
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "FkD-oS-zpo"; */
+"FkD-oS-zpo.title" = "Item 2";
+
+/* Class = "NSTextFieldCell"; title = "Final R indices [I>2sigma(I)]"; ObjectID = "fsp-xw-xmd"; */
+"fsp-xw-xmd.title" = "شاخص های نهایی R [I>2sigma(I)]";
+
+/* Class = "NSMenuItem"; title = "Experimental"; ObjectID = "G2E-hb-9HS"; */
+"G2E-hb-9HS.title" = "تجربی";
+
+/* Class = "NSTextFieldCell"; placeholderString = "h_max"; ObjectID = "Gb3-1D-UHs"; */
+"Gb3-1D-UHs.placeholderString" = "h_max";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "GDv-lm-RhS"; */
+"GDv-lm-RhS.title" = "هیچ یک";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "GHo-Yq-YzL"; */
+"GHo-Yq-YzL.title" = "هیچ یک";
+
+/* Class = "NSComboBoxCell"; GQk-wd-o0m.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "GQk-wd-o0m"; */
+"GQk-wd-o0m.ibShadowedObjectValues[0]" = "Ab Initio";
+
+/* Class = "NSComboBoxCell"; GQk-wd-o0m.ibShadowedObjectValues[1] = "UFF"; ObjectID = "GQk-wd-o0m"; */
+"GQk-wd-o0m.ibShadowedObjectValues[1]" = "UFF";
+
+/* Class = "NSComboBoxCell"; GQk-wd-o0m.ibShadowedObjectValues[2] = "DREIDING"; ObjectID = "GQk-wd-o0m"; */
+"GQk-wd-o0m.ibShadowedObjectValues[2]" = "DREIDING";
+
+/* Class = "NSComboBoxCell"; GQk-wd-o0m.ibShadowedObjectValues[3] = "UFF"; ObjectID = "GQk-wd-o0m"; */
+"GQk-wd-o0m.ibShadowedObjectValues[3]" = "UFF";
+
+/* Class = "NSComboBoxCell"; GQk-wd-o0m.ibShadowedObjectValues[4] = "MM3"; ObjectID = "GQk-wd-o0m"; */
+"GQk-wd-o0m.ibShadowedObjectValues[4]" = "MM3";
+
+/* Class = "NSComboBoxCell"; GQk-wd-o0m.ibShadowedObjectValues[5] = "MM4"; ObjectID = "GQk-wd-o0m"; */
+"GQk-wd-o0m.ibShadowedObjectValues[5]" = "MM4";
+
+/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "GQk-wd-o0m"; */
+"GQk-wd-o0m.placeholderString" = "ناشناس";
+
+/* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "GWI-aE-6sx"; */
+"GWI-aE-6sx.title" = "بسته نرم افزاری";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "Hex-pc-6JF"; */
+"Hex-pc-6JF.title" = "Box";
 
 /* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "hJX-yG-tEQ"; */
 "hJX-yG-tEQ.title" = "تاریخ";
 
-/* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "hf1-Cm-G3M"; */
-"hf1-Cm-G3M.title" = "ناشناس";
+/* Class = "NSComboBoxCell"; hmF-Yw-k2z.ibShadowedObjectValues[0] = "PBE, 600 ev cutoff, Gamma point only"; ObjectID = "hmF-Yw-k2z"; */
+"hmF-Yw-k2z.ibShadowedObjectValues[0]" = "PBE, 600 ev cutoff, Gamma point only";
+
+/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "hmF-Yw-k2z"; */
+"hmF-Yw-k2z.placeholderString" = "ناشناس";
+
+/* Class = "NSMenuItem"; title = "Steepest Descent"; ObjectID = "HqF-MI-q1X"; */
+"HqF-MI-q1X.title" = "تندترین نزول";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "hx2-K2-gHI"; */
 "hx2-K2-gHI.placeholderString" = "ناشناس";
 
+/* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "Imo-Uz-SnC"; */
+"Imo-Uz-SnC.title" = "میدان نیرو";
+
+/* Class = "NSTextFieldCell"; placeholderString = "l_max"; ObjectID = "iqQ-yx-5Q5"; */
+"iqQ-yx-5Q5.placeholderString" = "l_max";
+
+/* Class = "NSMenuItem"; title = "Genetic Algorithm"; ObjectID = "IVG-Ra-tlh"; */
+"IVG-Ra-tlh.title" = "الگوریتم ژنتیک";
+
 /* Class = "NSMenuItem"; title = "Simulation"; ObjectID = "iWi-p0-Jvt"; */
 "iWi-p0-Jvt.title" = "شبیه سازی";
-
-/* Class = "NSTextFieldCell"; placeholderString = "k_min"; ObjectID = "ikt-1W-AxJ"; */
-"ikt-1W-AxJ.placeholderString" = "k_min";
-
-/* Class = "NSTextFieldCell"; placeholderString = "l_max"; ObjectID = "ioC-pe-oXb"; */
-"ioC-pe-oXb.placeholderString" = "l_max";
 
 /* Class = "NSMenuItem"; title = "Pascal"; ObjectID = "j7h-V3-vWj"; */
 "j7h-V3-vWj.title" = "Pascal";
 
-/* Class = "NSMenuItem"; title = "Quasi-Newton"; ObjectID = "jIx-ec-cc5"; */
-"jIx-ec-cc5.title" = "Quasi-Newton";
+/* Class = "NSComboBoxCell"; jcF-Mm-5Zt.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "jcF-Mm-5Zt"; */
+"jcF-Mm-5Zt.ibShadowedObjectValues[0]" = "Ab Initio";
+
+/* Class = "NSComboBoxCell"; jcF-Mm-5Zt.ibShadowedObjectValues[1] = "UFF"; ObjectID = "jcF-Mm-5Zt"; */
+"jcF-Mm-5Zt.ibShadowedObjectValues[1]" = "UFF";
+
+/* Class = "NSComboBoxCell"; jcF-Mm-5Zt.ibShadowedObjectValues[2] = "DREIDING"; ObjectID = "jcF-Mm-5Zt"; */
+"jcF-Mm-5Zt.ibShadowedObjectValues[2]" = "DREIDING";
+
+/* Class = "NSComboBoxCell"; jcF-Mm-5Zt.ibShadowedObjectValues[3] = "UFF"; ObjectID = "jcF-Mm-5Zt"; */
+"jcF-Mm-5Zt.ibShadowedObjectValues[3]" = "UFF";
+
+/* Class = "NSComboBoxCell"; jcF-Mm-5Zt.ibShadowedObjectValues[4] = "MM3"; ObjectID = "jcF-Mm-5Zt"; */
+"jcF-Mm-5Zt.ibShadowedObjectValues[4]" = "MM3";
+
+/* Class = "NSComboBoxCell"; jcF-Mm-5Zt.ibShadowedObjectValues[5] = "MM4"; ObjectID = "jcF-Mm-5Zt"; */
+"jcF-Mm-5Zt.ibShadowedObjectValues[5]" = "MM4";
+
+/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "jcF-Mm-5Zt"; */
+"jcF-Mm-5Zt.placeholderString" = "ناشناس";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Last name"; ObjectID = "JJr-Hi-ZjS"; */
+"JJr-Hi-ZjS.placeholderString" = "نام خانوادگی";
+
+/* Class = "NSMenuItem"; title = "Fixed Volume; Shape Free"; ObjectID = "JoI-2K-fsY"; */
+"JoI-2K-fsY.title" = "حجم ثابت تغییر شکل";
 
 /* Class = "NSMenuItem"; title = "Celsius"; ObjectID = "jxw-bd-YgS"; */
 "jxw-bd-YgS.title" = "سانتیگراد";
@@ -317,71 +319,86 @@
 /* Class = "NSTextFieldCell"; title = "Volume"; ObjectID = "k9a-VC-uKW"; */
 "k9a-VC-uKW.title" = "جلد";
 
-/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.placeholderString" = "ناشناس";
+/* Class = "NSTextFieldCell"; title = "Chemical Information"; ObjectID = "L9b-nA-LZg"; */
+"L9b-nA-LZg.title" = "اطلاعات شیمیایی";
 
-/* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[0]" = "Ab Initio";
-
-/* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[1] = "UFF"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[1]" = "UFF";
-
-/* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[2] = "DREIDING"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[2]" = "DREIDING";
-
-/* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[3] = "UFF"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[3]" = "UFF";
-
-/* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[4] = "MM3"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[4]" = "MM3";
-
-/* Class = "NSComboBoxCell"; kf2-0x-3Vl.ibShadowedObjectValues[5] = "MM4"; ObjectID = "kf2-0x-3Vl"; */
-"kf2-0x-3Vl.ibShadowedObjectValues[5]" = "MM4";
-
-/* Class = "NSTextFieldCell"; placeholderString = "min"; ObjectID = "kzO-x9-s2F"; */
-"kzO-x9-s2F.placeholderString" = "min";
-
-/* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "lIz-1D-3Ai"; */
-"lIz-1D-3Ai.title" = "سلول واحد را ریلکس کنید";
+/* Class = "NSTextFieldCell"; placeholderString = "max"; ObjectID = "LHm-fO-Yns"; */
+"LHm-fO-Yns.placeholderString" = "max";
 
 /* Class = "NSTextFieldCell"; title = "Pressure"; ObjectID = "lKv-hk-525"; */
 "lKv-hk-525.title" = "فشار";
 
-/* Class = "NSMenuItem"; title = "Fixed Cell"; ObjectID = "lh2-7H-hGC"; */
-"lh2-7H-hGC.title" = "سلول ثابت";
-
 /* Class = "NSTextFieldCell"; title = "Method"; ObjectID = "m81-kt-8rG"; */
 "m81-kt-8rG.title" = "روش";
+
+/* Class = "NSTextFieldCell"; title = "Software"; ObjectID = "mdQ-lc-ifa"; */
+"mdQ-lc-ifa.title" = "نرم افزار";
 
 /* Class = "NSTextFieldCell"; title = "Temperature"; ObjectID = "mR9-kH-oL9"; */
 "mR9-kH-oL9.title" = "درجه حرارت";
 
+/* Class = "NSTextFieldCell"; title = "Article Authors"; ObjectID = "NEs-Kg-SVJ"; */
+"NEs-Kg-SVJ.title" = "نویسندگان مقاله";
+
+/* Class = "NSTextFieldCell"; title = "Chemical Formula Sum"; ObjectID = "Niu-c7-eAz"; */
+"Niu-c7-eAz.title" = "مجموع فرمول شیمیایی";
+
 /* Class = "NSTextFieldCell"; placeholderString = "University or Company name"; ObjectID = "nZ6-yf-S1l"; */
 "nZ6-yf-S1l.placeholderString" = "نام دانشگاه یا شرکت";
 
-/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "nb3-dm-cDY"; */
-"nb3-dm-cDY.placeholderString" = "ناشناس";
+/* Class = "NSMenuItem"; title = "Simulated Annealing"; ObjectID = "o1c-fD-g8g"; */
+"o1c-fD-g8g.title" = "بازپخت شبیه سازی شده";
 
-/* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "oND-jh-tZA"; */
-"oND-jh-tZA.title" = "بارهای اتمی";
+/* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Free"; ObjectID = "Ogf-5Q-jdE"; */
+"Ogf-5Q-jdE.title" = "زاویه ثابت ناهمسانگرد تغییر طول لبه";
+
+/* Class = "NSTextFieldCell"; placeholderString = "k_max"; ObjectID = "OLm-Jc-5wU"; */
+"OLm-Jc-5wU.placeholderString" = "k_max";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "op5-xC-KeD"; */
+"op5-xC-KeD.placeholderString" = "ناشناس";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "pD1-Es-0pE"; */
 "pD1-Es-0pE.placeholderString" = "ناشناس";
 
+/* Class = "NSBox"; title = "Atomic Charges"; ObjectID = "PGK-l5-Qkj"; */
+"PGK-l5-Qkj.title" = "بارهای اتمی";
+
 /* Class = "NSTextFieldCell"; title = "Creator"; ObjectID = "pWj-ey-8li"; */
 "pWj-ey-8li.title" = "ایجاد کننده";
 
-/* Class = "NSMenuItem"; title = "None"; ObjectID = "qFO-wb-T6b"; */
-"qFO-wb-T6b.title" = "هیچ یک";
+/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "Qbd-YO-NWQ"; */
+"Qbd-YO-NWQ.placeholderString" = "ناشناس";
 
-/* Class = "NSTextFieldCell"; title = "Measurement Theta"; ObjectID = "qbj-K1-xUb"; */
-"qbj-K1-xUb.title" = "اندازه گیری تتا";
+/* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Free"; ObjectID = "qhm-u6-gh7"; */
+"qhm-u6-gh7.title" = "زاویه ثابت ایزوتروپیک تغییر طول لبه";
 
-/* Class = "NSTextFieldCell"; title = "Goodness-of-fit on F²"; ObjectID = "qmj-e3-XI9"; */
-"qmj-e3-XI9.title" = "F²نیکویی برازش در";
+/* Class = "NSTextFieldCell"; title = "Relax Unit Cell"; ObjectID = "QkR-tF-sDd"; */
+"QkR-tF-sDd.title" = "سلول واحد را ریلکس کنید";
 
-/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "sRA-iw-pcK"; */
-"sRA-iw-pcK.placeholderString" = "ناشناس";
+/* Class = "NSTextFieldCell"; title = "Chemical Formula Moiety"; ObjectID = "QLD-HG-16U"; */
+"QLD-HG-16U.title" = "فرمول شیمیایی پاره‌ مولکول";
+
+/* Class = "NSTextFieldCell"; placeholderString = "h_min"; ObjectID = "qRW-9l-b0K"; */
+"qRW-9l-b0K.placeholderString" = "h_min";
+
+/* Class = "NSTextFieldCell"; title = "Number of Reflections"; ObjectID = "RkK-zR-qus"; */
+"RkK-zR-qus.title" = "تعداد بازتاب ها";
+
+/* Class = "NSTextFieldCell"; title = "Algorithm"; ObjectID = "s0t-Ku-pbd"; */
+"s0t-Ku-pbd.title" = "الگوریتم";
+
+/* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
+"seM-pw-mPI.title" = "کد پایگاه داده";
+
+/* Class = "NSTextFieldCell"; title = "Radiation Wavelength"; ObjectID = "sjY-5W-1ia"; */
+"sjY-5W-1ia.title" = "طول موج تابشی";
+
+/* Class = "NSTextFieldCell"; placeholderString = "k_min"; ObjectID = "snM-Dp-GJo"; */
+"snM-Dp-GJo.placeholderString" = "k_min";
+
+/* Class = "NSBox"; title = "Atomic Positions"; ObjectID = "Son-7O-AlT"; */
+"Son-7O-AlT.title" = "موقعیت های اتمی";
 
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[0] = "Journal of the American Chemical Society"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[0]" = "Journal of the American Chemical Society";
@@ -392,134 +409,123 @@
 /* Class = "NSComboBoxCell"; sRA-iw-pcK.ibShadowedObjectValues[2] = "Journal of the Physical Chemistry"; ObjectID = "sRA-iw-pcK"; */
 "sRA-iw-pcK.ibShadowedObjectValues[2]" = "Journal of the Physical Chemistry";
 
-/* Class = "NSMenuItem"; title = "Fixed Angles; Isotropic Edge-Length Free"; ObjectID = "sah-qX-FWQ"; */
-"sah-qX-FWQ.title" = "زاویه ثابت ایزوتروپیک تغییر طول لبه";
-
-/* Class = "NSTextFieldCell"; title = "Database Codes"; ObjectID = "seM-pw-mPI"; */
-"seM-pw-mPI.title" = "کد پایگاه داده";
-
-/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.placeholderString" = "ناشناس";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[0] = "REPEAT"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[0]" = "REPEAT";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[1] = "CHELPG"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[1]" = "CHELPG";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[2] = "CHELP"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[2]" = "CHELP";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[3] = "RESP"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[3]" = "RESP";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[4] = "Mulliken"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[4]" = "Mulliken";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[5] = "Merz-Kollman"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[5]" = "Merz-Kollman";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[6] = "Hirshfeld"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[6]" = "Hirshfeld";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[7] = "Natural Bond Orbital"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[7]" = "Natural Bond Orbital";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[8] = "Qeq - Rappe and Goddard 1991"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[8]" = "Qeq - Rappe and Goddard 1991";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[9] = "Qeq - Rick, Stuart, Berne 1994"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[9]" = "Qeq - Rick, Stuart, Berne 1994";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[10] = "Qeq - York and Yang 1996"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[10]" = "Qeq - York and Yang 1996";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[11] = "Qeq - Itskoqitz and Berkowitz 1997"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[11]" = "Qeq - Itskoqitz and Berkowitz 1997";
-
-/* Class = "NSComboBoxCell"; tBE-VU-7Q1.ibShadowedObjectValues[12] = "Qeq - Wilmer, Kim, Snurr 2012"; ObjectID = "tBE-VU-7Q1"; */
-"tBE-VU-7Q1.ibShadowedObjectValues[12]" = "Qeq - Wilmer, Kim, Snurr 2012";
+/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "sRA-iw-pcK"; */
+"sRA-iw-pcK.placeholderString" = "ناشناس";
 
 /* Class = "NSTextFieldCell"; title = "Citation"; ObjectID = "tC6-Zq-7Lv"; */
 "tC6-Zq-7Lv.title" = "استناد";
 
-/* Class = "NSMenuItem"; title = "Steepest Descent"; ObjectID = "tWh-do-MeZ"; */
-"tWh-do-MeZ.title" = "تندترین نزول";
+/* Class = "NSMenuItem"; title = "Some Small Negative Values"; ObjectID = "tyP-Vv-1d5"; */
+"tyP-Vv-1d5.title" = "تعدادی مقادیر منفی";
 
-/* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "uMx-Zh-Bqv"; */
-"uMx-Zh-Bqv.title" = "تاریخ";
-
-/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "uRa-2J-GGz"; */
-"uRa-2J-GGz.placeholderString" = "ناشناس";
+/* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "u64-Fo-eXr"; */
+"u64-Fo-eXr.title" = "اطلاعات میدان نیرو";
 
 /* Class = "NSTextFieldCell"; title = "Author"; ObjectID = "uaM-oQ-eaJ"; */
 "uaM-oQ-eaJ.title" = "نویسنده";
 
-/* Class = "NSMenuItem"; title = "Fixed Angles; Anisotropic Edge-Length Free"; ObjectID = "ucW-XP-BfZ"; */
-"ucW-XP-BfZ.title" = "زاویه ثابت ناهمسانگرد تغییر طول لبه";
+/* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "uMx-Zh-Bqv"; */
+"uMx-Zh-Bqv.title" = "تاریخ";
 
-/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.placeholderString" = "ناشناس";
+/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "USD-gk-tal"; */
+"USD-gk-tal.placeholderString" = "ناشناس";
 
-/* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[0] = "Ab Initio"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[0]" = "Ab Initio";
+/* Class = "NSTextFieldCell"; title = "Force Field"; ObjectID = "UvU-ph-d5r"; */
+"UvU-ph-d5r.title" = "میدان نیرو";
 
-/* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[1] = "UFF"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[1]" = "UFF";
+/* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "UWS-ti-zFx"; */
+"UWS-ti-zFx.title" = "ناشناس";
 
-/* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[2] = "DREIDING"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[2]" = "DREIDING";
+/* Class = "NSMenuItem"; title = "Many Negative Eigenvalues"; ObjectID = "vk0-JJ-2lk"; */
+"vk0-JJ-2lk.title" = "تعداد بسیاری مقادیر ویژه منفی";
 
-/* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[3] = "UFF"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[3]" = "UFF";
+/* Class = "NSTabViewItem"; label = "View"; ObjectID = "Vtx-C5-41P"; */
+"Vtx-C5-41P.label" = "چشم انداز";
 
-/* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[4] = "MM3"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[4]" = "MM3";
+/* Class = "NSTextFieldCell"; placeholderString = "First name"; ObjectID = "Vtz-4v-Kmv"; */
+"Vtz-4v-Kmv.placeholderString" = "نام کوچک";
 
-/* Class = "NSComboBoxCell"; urK-zQ-9a7.ibShadowedObjectValues[5] = "MM4"; ObjectID = "urK-zQ-9a7"; */
-"urK-zQ-9a7.ibShadowedObjectValues[5]" = "MM4";
+/* Class = "NSTextFieldCell"; title = "Number"; ObjectID = "Vvv-Ri-fwX"; */
+"Vvv-Ri-fwX.title" = "عدد";
 
-/* Class = "NSMenuItem"; title = "Some Signficantly Negative Values"; ObjectID = "utU-RL-9NT"; */
-"utU-RL-9NT.title" = "تعدادی مقادیر منفی به طور قابل ملاحظه";
+/* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "w9t-gx-eJk"; */
+"w9t-gx-eJk.placeholderString" = "ناشناس";
+
+/* Class = "NSTextFieldCell"; title = "Article Title"; ObjectID = "Wih-6z-Wmy"; */
+"Wih-6z-Wmy.title" = "عنوان مقاله";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Unknown"; ObjectID = "wMv-kw-520"; */
 "wMv-kw-520.placeholderString" = "ناشناس";
 
-/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.placeholderString" = "ناشناس";
+/* Class = "NSMenuItem"; title = "Unknown"; ObjectID = "wNv-HE-che"; */
+"wNv-HE-che.title" = "ناشناس";
 
-/* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[0] = "Experimental"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[0]" = "تجربی";
+/* Class = "NSTextFieldCell"; title = "Force Field Details"; ObjectID = "Wvt-Um-0xR"; */
+"Wvt-Um-0xR.title" = "اطلاعات میدان نیرو";
 
-/* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[1] = "Gaussian"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[1]" = "Gaussian";
-
-/* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[2] = "VASP"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[2]" = "VASP";
-
-/* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[3] = "Spartan"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[3]" = "Spartan";
-
-/* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[4] = "CP2K"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[4]" = "CP2K";
-
-/* Class = "NSComboBoxCell"; wrO-uI-kgr.ibShadowedObjectValues[5] = "Classical"; ObjectID = "wrO-uI-kgr"; */
-"wrO-uI-kgr.ibShadowedObjectValues[5]" = "کلاسیک";
-
-/* Class = "NSMenuItem"; title = "Newton-Raphson"; ObjectID = "xEm-NF-Owh"; */
-"xEm-NF-Owh.title" = "Newton-Raphson";
+/* Class = "NSMenuItem"; title = "Conjugate Gradient"; ObjectID = "x3N-gx-KIt"; */
+"x3N-gx-KIt.title" = "گرادیان مزدوج";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Middle Name"; ObjectID = "yR3-PF-JAn"; */
 "yR3-PF-JAn.placeholderString" = "نام میانی";
 
-/* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles and Edge-Lengths Free"; ObjectID = "ylL-90-vOx"; */
-"ylL-90-vOx.title" = "ثابت-𝝱 و 𝝲-زاویه و طول لبه رایگان است";
+/* Class = "NSMenuItem"; title = "Fixed 𝝰- 𝝱; and 𝝲-Angles; Edge-Lengths Free"; ObjectID = "Yy9-sy-Mqe"; */
+"Yy9-sy-Mqe.title" = "ثابت-𝝱 و 𝝲-زاویه و طول لبه رایگان است";
 
-/* Class = "NSTextFieldCell"; title = "Number of Reflections"; ObjectID = "z73-uc-ODJ"; */
-"z73-uc-ODJ.title" = "تعداد بازتاب ها";
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[0] = "REPEAT"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[0]" = "REPEAT";
 
-/* Class = "NSTextFieldCell"; title = "Software Package"; ObjectID = "zKZ-Xu-F5z"; */
-"zKZ-Xu-F5z.title" = "بسته نرم افزاری";
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[1] = "CHELPG"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[1]" = "CHELPG";
 
-/* Class = "NSMenuItem"; title = "Cell and Edge-Lengths Free"; ObjectID = "zUt-yS-ax8"; */
-"zUt-yS-ax8.title" = "طول سلول و لبه تغییر می کند";
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[2] = "CHELP"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[2]" = "CHELP";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[3] = "RESP"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[3]" = "RESP";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[4] = "Mulliken"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[4]" = "Mulliken";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[5] = "Merz-Kollman"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[5]" = "Merz-Kollman";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[6] = "Hirshfeld"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[6]" = "Hirshfeld";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[7] = "Natural Bond Orbital"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[7]" = "Natural Bond Orbital";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[8] = "Qeq - Rappe and Goddard 1991"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[8]" = "Qeq - Rappe and Goddard 1991";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[9] = "Qeq - Rick, Stuart, Berne 1994"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[9]" = "Qeq - Rick, Stuart, Berne 1994";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[10] = "Qeq - York and Yang 1996"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[10]" = "Qeq - York and Yang 1996";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[11] = "Qeq - Itskoqitz and Berkowitz 1997"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[11]" = "Qeq - Itskoqitz and Berkowitz 1997";
+
+/* Class = "NSComboBoxCell"; Zb8-MY-0wt.ibShadowedObjectValues[12] = "Qeq - Wilmer, Kim, Snurr 2012"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.ibShadowedObjectValues[12]" = "Qeq - Wilmer, Kim, Snurr 2012";
+
+/* Class = "NSComboBoxCell"; placeholderString = "Unknown"; ObjectID = "Zb8-MY-0wt"; */
+"Zb8-MY-0wt.placeholderString" = "ناشناس";
+
+/* Class = "NSBox"; title = "Unit Cell"; ObjectID = "zGd-Xf-ayX"; */
+"zGd-Xf-ayX.title" = "سلول واحد را";
+
+/* Class = "NSTextFieldCell"; title = "Journal Title"; ObjectID = "Zmo-LS-hfO"; */
+"Zmo-LS-hfO.title" = "عنوان ژورنال";
+
+/* Class = "NSMenuItem"; title = "Kelvin"; ObjectID = "Zqh-RB-jIF"; */
+"Zqh-RB-jIF.title" = "کلوین";
+
+/* Class = "NSTextFieldCell"; title = "Details"; ObjectID = "zv1-mr-Jil"; */
+"zv1-mr-Jil.title" = "جزئیات";
+
+/* Class = "NSMenuItem"; title = "Fixed Cell"; ObjectID = "zXD-3t-bEj"; */
+"zXD-3t-bEj.title" = "سلول ثابت";
+

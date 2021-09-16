@@ -1,0 +1,9 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "iRASPAThumbnailExtension";
+
+/* Bundle name */
+"CFBundleName" = "iRASPAThumbnailExtension";
+
+/* Copyright (human-readable) */
+"NSHumanReadableCopyright" = "Copyright © 2020 David Dubbeldam. All rights reserved.";
+

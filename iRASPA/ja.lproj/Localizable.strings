@@ -1,79 +1,264 @@
-"Saving to Archive (%@)" = "アーカイブに保存 (%@)";
-"Document Read (%@)" = "ドキュメントを読み込む (%@)";
-"Autosaving...." = "自動保存....";
-"Rotate (%@)" = "回転する (%@)";
-"Loading (%@)" = "読み込み中 (%@)";
-"Select a Top-Level Directory" = "トップレベルディレクトリを選択する";
-"Remove Permission" = "許可を削除する";
-"Could Not Read Main Database File" = "メインデータベースファイルを読み取ることができませんでした";
-"Invalid File Format" = "無効なファイル形式";
-"Gallery-File Not Found" = "ギャラリーファイルが見つかりません";
-"Cannot Initialize from Data" = "データから初期化できません";
-"Add Projects" = "プロジェクトを追加する";
-"Remove Projects" = "プロジェクトを削除する";
-"Reorder Projects" = "プロジェクトの並べ替え";
-"Change Project Selection" = "プロジェクトの選択を変更する";
-"Change Project Name" = "プロジェクト名の変更";
-"Insert Selection" = "選択の挿入";
-"Delete Selection" = "選択の削除";
-"Add Movies" = "動画を追加する";
-"Add Scenes" = "シーンを追加";
-"Change Movie Name" = "動画名を変更する";
-"Change Scene Name" = "シーン名を変更する";
-"Reorder Movies" = "動画を並べ替える";
-"Clear Selection" = "選択のクリア";
-"Toggle Atom Selection" = "原子選択の切り替え";
-"Toggle Bond Selection" = "結合選択の切り替え";
-"Delete Atoms" = "原子を削除する";
-"Insert Atoms" = "原子を挿入する";
-"Change Positions" = "位置を変更する";
-"Python Console Ready\n" = "Pythonコンソール準備完了\n";
-"Change Material Type" = "マテリアルタイプの変更";
-"Change Space Group" = "空間群の変更";
-"Reset Camera Distance" = "カメラの距離をリセット";
-"Reset Camera To" = "カメラをリセット";
-"Show Bounding Box" = "バウンディングボックスを表示";
-"Export To" = "エクスポート";
-"Compute AO High-Quality" = "AO高品質の計算";
-"Camera Projection" = "カメラプロジェクション";
-"Orthographic" = "正投影法";
-"Perspective" = "透視図法";
-"Z-Direction" = "Z方向";
-"Y-Direction" = "Y方向";
-"X-Direction" = "X方向";
-"PDB" = "PDB";
-"mmCIF" = "mmCIF";
-"CIF" = "CIF";
-"XYZ" = "XYZ";
-"VASP POSCAR" = "VASP POSCAR";
+/* (No Comment) */
 "Add Atom-Group" = "原子グループを追加";
+
+/* Add frame */
+"Add frame(s)" = "フレームを追加する";
+
+/* (No Comment) */
+"Add Movies" = "動画を追加する";
+
+/* (No Comment) */
+"Add Projects" = "プロジェクトを追加する";
+
+/* (No Comment) */
+"Add Scenes" = "シーンを追加";
+
+/* (No Comment) */
 "Adding New Atom" = "新しい原子の追加";
-"Reorder Atoms" = "原子を並べ替える";
-"Change Atom Selection" = "原子選択の変更";
-"Delete Atoms" = "原子を削除する";
-"Insert Atoms" = "原子を挿入する";
-"Find and Impose Symmetry" = "対称性を見つけて課す";
-"Flatten Hierarchy" = "階層を平坦化する";
-"Remove Symmetry" = "対称性を削除する";
-"Wrap Atoms to Cell" = "全原子をユニットセルに入れ込む";
-"Find Primitive" = "プリミティブを見つける";
-"Make Super-Cell" = "スーパーセルを作る";
-"Invert Selection" = "選択を反転";
-"Change Fix Atom" = "固定された原子の変更";
-"Change Atom Name" = "原子名を変更する";
-"Change Atom Element" = "原子要素を変更する";
-"Change Atom Force Field Type" = "原子の力場タイプの変更";
-"Change Atom X-Position" = "原子のX位置を変更する";
-"Change Atom Y-Position" = "原子のY位置を変更する";
-"Change Atom Z-Position" = "原子のZ位置を変更する";
+
+/* (No Comment) */
+"Autosaving...." = "自動保存....";
+
+/* (No Comment) */
+"Camera Projection" = "カメラプロジェクション";
+
+/* No comment provided by engineer. */
+"Camera Reset To Direction" = "カメラが方向にリセットされました";
+
+/* (No Comment) */
+"Cannot Initialize from Data" = "データから初期化できません";
+
+/* (No Comment) */
 "Change Atom Charge" = "原子の電荷を変更する";
-"Change Bond-Length" = "結合長の変更";
-"Recompute Bonds" = "結合を再計算する";
-"Delete Bonds" = "結合を削除する";
-"Insert Bonds" = "結合の挿入";
+
+/* (No Comment) */
+"Change Atom Element" = "原子要素を変更する";
+
+/* (No Comment) */
+"Change Atom Force Field Type" = "原子の力場タイプの変更";
+
+/* Change atom name */
+"Change Atom Name" = "原子名を変更する";
+
+/* No comment provided by engineer. */
+"Change Atom Occupancy" = "電荷原子の占有";
+
+/* (No Comment) */
+"Change Atom Selection" = "原子選択の変更";
+
+/* (No Comment) */
+"Change Atom X-Position" = "原子のX位置を変更する";
+
+/* (No Comment) */
+"Change Atom Y-Position" = "原子のY位置を変更する";
+
+/* No comment provided by engineer. */
+"Change Atom Z-position" = "原子のZ位置を変更する";
+
+/* (No Comment) */
+"Change Atom Z-Position" = "原子のZ位置を変更する";
+
+/* (No Comment) */
 "Change Bond Selection" = "結合選択の変更";
+
+/* (No Comment) */
+"Change Bond-Length" = "結合長の変更";
+
+/* (No Comment) */
+"Change Fix Atom" = "固定された原子の変更";
+
+/* Change frame name */
+"Change frame name" = "フレーム名を変更する";
+
+/* (No Comment) */
+"Change Material Type" = "マテリアルタイプの変更";
+
+/* (No Comment) */
+"Change Movie Name" = "動画名を変更する";
+
+/* (No Comment) */
+"Change Positions" = "位置を変更する";
+
+/* (No Comment) */
+"Change Project Name" = "プロジェクト名の変更";
+
+/* (No Comment) */
+"Change Project Selection" = "プロジェクトの選択を変更する";
+
+/* (No Comment) */
+"Change Scene Name" = "シーン名を変更する";
+
+/* No comment provided by engineer. */
+"Change Selection" = "選択を変更する";
+
+/* (No Comment) */
+"Change Space Group" = "空間群の変更";
+
+/* (No Comment) */
+"CIF" = "CIF";
+
+/* (No Comment) */
+"Clear Selection" = "選択のクリア";
+
+/* (No Comment) */
+"Compute AO High-Quality" = "AO高品質の計算";
+
+/* copies */
+"copies" = "コピー";
+
+/* (No Comment) */
+"Could Not Read Main Database File" = "メインデータベースファイルを読み取ることができませんでした";
+
+/* (No Comment) */
+"Delete Atoms" = "原子を削除する";
+
+/* (No Comment) */
+"Delete Bonds" = "結合を削除する";
+
+/* Delete selection */
+"Delete selection" = "選択の削除";
+
+/* (No Comment) */
+"Delete Selection" = "選択の削除";
+
+/* (No Comment) */
+"Document Read (%@)" = "ドキュメントを読み込む (%@)";
+
+/* duplicates */
+"duplicates" = "重複";
+
+/* (No Comment) */
+"Export To" = "エクスポート";
+
+/* (No Comment) */
+"Find and Impose Symmetry" = "対称性を見つけて課す";
+
+/* No comment provided by engineer. */
+"Find Niggli" = "Niggliを探す";
+
+/* (No Comment) */
+"Find Primitive" = "プリミティブを見つける";
+
+/* (No Comment) */
+"Flatten Hierarchy" = "階層を平坦化する";
+
+/* (No Comment) */
+"Gallery-File Not Found" = "ギャラリーファイルが見つかりません";
+
+/* (No Comment) */
+"Insert Atoms" = "原子を挿入する";
+
+/* (No Comment) */
+"Insert Bonds" = "結合の挿入";
+
+/* Insert selection */
+"Insert selection" = "選択の挿入";
+
+/* (No Comment) */
+"Insert Selection" = "選択の挿入";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "無効なアーカイブバージョン（最新版のiRASPAにアップグレードしてください）";
-"Multiple Values" = "複数の値";
-"Mult. Val." = "複数の値";
-"Mult. V." = "複数の値";
+
+/* (No Comment) */
+"Invalid File Format" = "無効なファイル形式";
+
+/* (No Comment) */
+"Invert Selection" = "選択を反転";
+
+/* (No Comment) */
+"Loading (%@)" = "読み込み中 (%@)";
+
+/* (No Comment) */
 "M.V." = "複数の値";
+
+/* (No Comment) */
+"Make Super-Cell" = "スーパーセルを作る";
+
+/* (No Comment) */
+"mmCIF" = "mmCIF";
+
+/* (No Comment) */
+"Mult. V." = "複数の値";
+
+/* (No Comment) */
+"Mult. Val." = "複数の値";
+
+/* (No Comment) */
+"Multiple Values" = "複数の値";
+
+/* (No Comment) */
+"Orthographic" = "正投影法";
+
+/* (No Comment) */
+"PDB" = "PDB";
+
+/* (No Comment) */
+"Perspective" = "透視図法";
+
+/* (No Comment) */
+"Recompute Bonds" = "結合を再計算する";
+
+/* (No Comment) */
+"Remove Permission" = "許可を削除する";
+
+/* (No Comment) */
+"Remove Projects" = "プロジェクトを削除する";
+
+/* (No Comment) */
+"Remove Symmetry" = "対称性を削除する";
+
+/* (No Comment) */
+"Reorder Atoms" = "原子を並べ替える";
+
+/* Reorder frames */
+"Reorder frames" = "フレームを並べ替える";
+
+/* (No Comment) */
+"Reorder Movies" = "動画を並べ替える";
+
+/* (No Comment) */
+"Reorder Projects" = "プロジェクトの並べ替え";
+
+/* (No Comment) */
+"Reset Camera Distance" = "カメラの距離をリセット";
+
+/* (No Comment) */
+"Reset Camera To" = "カメラをリセット";
+
+/* (No Comment) */
+"Rotate (%@)" = "回転する (%@)";
+
+/* (No Comment) */
+"Saving to Archive (%@)" = "アーカイブに保存 (%@)";
+
+/* (No Comment) */
+"Select a Top-Level Directory" = "トップレベルディレクトリを選択する";
+
+/* (No Comment) */
+"Show Bounding Box" = "バウンディングボックスを表示";
+
+/* (No Comment) */
+"Toggle Atom Selection" = "原子選択の切り替え";
+
+/* (No Comment) */
+"Toggle Bond Selection" = "結合選択の切り替え";
+
+/* (No Comment) */
+"VASP POSCAR" = "VASP POSCAR";
+
+/* (No Comment) */
+"Wrap Atoms to Cell" = "全原子をユニットセルに入れ込む";
+
+/* (No Comment) */
+"X-Direction" = "X方向";
+
+/* (No Comment) */
+"XYZ" = "XYZ";
+
+/* (No Comment) */
+"Y-Direction" = "Y方向";
+
+/* (No Comment) */
+"Z-Direction" = "Z方向";
+

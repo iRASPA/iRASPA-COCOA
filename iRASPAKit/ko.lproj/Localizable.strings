@@ -1,13 +1,39 @@
-"GALLERY" = "갤러리";
-"Gallery" = "갤러리";
-"LOCAL PROJECTS" = "지역 프로젝트";
-"Local Projects" = "지역 프로젝트";
-"ICLOUD PUBLIC" = "ICLOUD 공개";
-"iCloud Public" = "iCloud 공개";
+/* (No Comment) */
 "Could Not Determine Status of iCloud Account" = "iCloud 계정의 상태를 확인할 수 없습니다";
-"iCloud Account Available" = "사용 가능한 iCloud 계정";
+
+/* (No Comment) */
+"Gallery" = "갤러리";
+
+/* (No Comment) */
+"GALLERY" = "갤러리";
+
+/* (No Comment) */
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "iCloud 계정 인증 오류 : iCloud 및 iCloud 드라이브 활성화";
+
+/* (No Comment) */
+"iCloud Account Available" = "사용 가능한 iCloud 계정";
+
+/* (No Comment) */
 "iCloud Account Restricted" = "Cloud 계정이 제한됨";
-"iCloud Public Discoverability Granted" = "iCloud 공개 검색 가능성이 부여되었습니다. 앱의 다른 사용자가 이메일 주소를 통해 검색 할 수 있습니다. 설정 앱, iCloud, iCloud 드라이브에서 변경할 수 있으며 이메일로 검색 할 수 있습니다.";
+
+/* (No Comment) */
+"iCloud Public" = "iCloud 공개";
+
+/* (No Comment) */
+"ICLOUD PUBLIC" = "ICLOUD 공개";
+
+/* (No Comment) */
 "iCloud Public Discoverability Denied" = "iCloud 공개 검색 가능성이 거부되었습니다. 귀하의 이메일 주소가 다른 앱 사용자에게 공개 되지 않습니다. 설정 앱, iCloud, iCloud 드라이브에서 변경할 수 있으며 이메일로 검색 할 수 있습니다.";
+
+/* (No Comment) */
+"iCloud Public Discoverability Granted" = "iCloud 공개 검색 가능성이 부여되었습니다. 앱의 다른 사용자가 이메일 주소를 통해 검색 할 수 있습니다. 설정 앱, iCloud, iCloud 드라이브에서 변경할 수 있으며 이메일로 검색 할 수 있습니다.";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "유효하지 않은 아카이브 버전 (최신 iRASPA 버전으로 업그레이드).";
+
+/* (No Comment) */
+"Local Projects" = "지역 프로젝트";
+
+/* (No Comment) */
+"LOCAL PROJECTS" = "지역 프로젝트";
+

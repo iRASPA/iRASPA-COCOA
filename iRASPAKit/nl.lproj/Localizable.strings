@@ -1,13 +1,39 @@
-"GALLERY" = "GALLERIJ";
-"Gallery" = "Gallerij";
-"LOCAL PROJECTS" = "LOKALE PROJECTEN";
-"Local Projects" = "Lokale projecten";
-"ICLOUD PUBLIC" = "ICLOUD OPENBAAR";
-"iCloud Public" = "iCloud openbaar";
+/* (No Comment) */
 "Could Not Determine Status of iCloud Account" = "Kan status van iCloud-account niet bepalen";
-"iCloud Account Available" = "iCloud-account beschikbaar";
+
+/* (No Comment) */
+"Gallery" = "Gallerij";
+
+/* (No Comment) */
+"GALLERY" = "GALLERIJ";
+
+/* (No Comment) */
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "Verificatiefout iCloud-account: schakel iCloud en iCloud-drive in";
+
+/* (No Comment) */
+"iCloud Account Available" = "iCloud-account beschikbaar";
+
+/* (No Comment) */
 "iCloud Account Restricted" = "iCloud-account beperkt";
-"iCloud Public Discoverability Granted" = "Openbare vindbaarheid van iCloud is verleend. U bent vindbaar (via uw e-mailadres) voor andere gebruikers van de app. U kunt dit wijzigen in de instellingen-app, iCloud, iCloud-schijf, ontdek via e-mail.";
+
+/* (No Comment) */
+"iCloud Public" = "iCloud openbaar";
+
+/* (No Comment) */
+"ICLOUD PUBLIC" = "ICLOUD OPENBAAR";
+
+/* (No Comment) */
 "iCloud Public Discoverability Denied" = "Openbare vindbaarheid van iCloud is geweigerd. U bent niet te vinden (via uw e-mailadres) voor andere gebruikers van de app. U kunt dit wijzigen in de instellingen-app, iCloud, iCloud-schijf, ontdek via e-mail.";
+
+/* (No Comment) */
+"iCloud Public Discoverability Granted" = "Openbare vindbaarheid van iCloud is verleend. U bent vindbaar (via uw e-mailadres) voor andere gebruikers van de app. U kunt dit wijzigen in de instellingen-app, iCloud, iCloud-schijf, ontdek via e-mail.";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Ongeldige archiefversie (upgrade naar de nieuwste iRASPA-versie).";
+
+/* (No Comment) */
+"Local Projects" = "Lokale projecten";
+
+/* (No Comment) */
+"LOCAL PROJECTS" = "LOKALE PROJECTEN";
+

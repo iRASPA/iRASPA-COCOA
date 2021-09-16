@@ -1,79 +1,264 @@
-"Saving to Archive (%@)" = "Guardar en archivo (%@)";
-"Document Read (%@)" = "Lectura de documento (%@)";
-"Autosaving...." = "Autoguardado....";
-"Rotate (%@)" = "Girar (%@)";
-"Loading (%@)" = "Cargando (%@)";
-"Select a Top-Level Directory" = "Seleccione un directorio de nivel superior";
-"Remove Permission" = "Quitar permiso";
-"Could Not Read Main Database File" = "No se pudo leer el archivo de la base de datos principal";
-"Invalid File Format" = "Formato de archivo inválido";
-"Gallery-File Not Found" = "Archivo de la galería no encontrado";
-"Cannot Initialize from Data" = "No se puede inicializar a partir de datos";
-"Add Projects" = "Agregar proyectos";
-"Remove Projects" = "Eliminar proyectos";
-"Reorder Projects" = "Reordenar proyectos";
-"Change Project Selection" = "Cambiar la selección del proyecto";
-"Change Project Name" = "Cambiar el nombre del proyecto";
-"Insert Selection" = "Insertar selección";
-"Delete Selection" = "Eliminar selección";
-"Add Movies" = "Agregar películas";
-"Add Scenes" = "Agregar escenas";
-"Change Movie Name" = "Cambiar el nombre de la película";
-"Change Scene Name" = "Cambiar el nombre de la escena";
-"Reorder Movies" = "Reordenar películas";
-"Clear Selection" = "Limpiar Selección";
-"Toggle Atom Selection" = "Alternar selección de átomo";
-"Toggle Bond Selection" = "Alternar selección de enlaces";
-"Delete Atoms" = "Eliminar átomos";
-"Insert Atoms" = "Insertar átomos";
-"Change Positions" = "Cambiar posiciones";
-"Python Console Ready\n" = "Consola Python lista\n";
-"Change Material Type" = "Cambiar tipo de material";
-"Change Space Group" = "Cambiar grupo de espacio";
-"Reset Camera Distance" = "Restablecer la distancia de la cámara";
-"Reset Camera To" = "Restablecer cámara a";
-"Show Bounding Box" = "Mostrar Recuadro";
-"Export To" = "Exportar a";
-"Compute AO High-Quality" = "Calcular AO de alta calidad";
-"Camera Projection" = "Proyección de la cámara";
-"Orthographic" = "Ortográfico";
-"Perspective" = "Perspectiva";
-"Z-Direction" = "Dirección Z";
-"Y-Direction" = "Dirección Y";
-"X-Direction" = "Dirección X";
-"PDB" = "PDB";
-"mmCIF" = "mmCIF";
-"CIF" = "CIF";
-"XYZ" = "XYZ";
-"VASP POSCAR" = "VASP POSCAR";
+/* (No Comment) */
 "Add Atom-Group" = "Agregar grupo de átomos";
+
+/* Add frame */
+"Add frame(s)" = "Agregar marcos";
+
+/* (No Comment) */
+"Add Movies" = "Agregar películas";
+
+/* (No Comment) */
+"Add Projects" = "Agregar proyectos";
+
+/* (No Comment) */
+"Add Scenes" = "Agregar escenas";
+
+/* (No Comment) */
 "Adding New Atom" = "Agregar nuevo átomo";
-"Reorder Atoms" = "Reordenar átomos";
-"Change Atom Selection" = "Cambiar selección de átomo";
-"Delete Atoms" = "Eliminar átomos";
-"Insert Atoms" = "Insertar átomos";
-"Find and Impose Symmetry" = "Encontrar e imponer simetría";
-"Flatten Hierarchy" = "Aplanar jerarquía";
-"Remove Symmetry" = "Eliminar simetría";
-"Wrap Atoms to Cell" = "Marca los átomos en la celda";
-"Find Primitive" = "Encontrar primitivo";
-"Make Super-Cell" = "Hacer supercelda";
-"Invert Selection" = "Invertir selección";
-"Change Fix Atom" = "Cambiar el átomo fijo";
-"Change Atom Name" = "Cambiar el nombre del átomo";
-"Change Atom Element" = "Cambiar elemento de átomo";
-"Change Atom Force Field Type" = "Cambiar el tipo de campo de fuerza del atómo";
-"Change Atom X-Position" = "Cambiar la posición X del átomo";
-"Change Atom Y-Position" = "Cambiar la posición Y del átomo";
-"Change Atom Z-Position" = "Cambiar la posición Z del átomo";
+
+/* (No Comment) */
+"Autosaving...." = "Autoguardado....";
+
+/* (No Comment) */
+"Camera Projection" = "Proyección de la cámara";
+
+/* No comment provided by engineer. */
+"Camera Reset To Direction" = "Cámara restablecida a la dirección";
+
+/* (No Comment) */
+"Cannot Initialize from Data" = "No se puede inicializar a partir de datos";
+
+/* (No Comment) */
 "Change Atom Charge" = "Cambiar carga de átomo";
-"Change Bond-Length" = "Cambiar la longitud del enlace";
-"Recompute Bonds" = "Recalcular enlaces";
-"Delete Bonds" = "Eliminar enlaces";
-"Insert Bonds" = "Insertar enlaces";
+
+/* (No Comment) */
+"Change Atom Element" = "Cambiar elemento de átomo";
+
+/* (No Comment) */
+"Change Atom Force Field Type" = "Cambiar el tipo de campo de fuerza del atómo";
+
+/* Change atom name */
+"Change Atom Name" = "Cambiar el nombre del átomo";
+
+/* No comment provided by engineer. */
+"Change Atom Occupancy" = "Cambiar la ocupación del átomo";
+
+/* (No Comment) */
+"Change Atom Selection" = "Cambiar selección de átomo";
+
+/* (No Comment) */
+"Change Atom X-Position" = "Cambiar la posición X del átomo";
+
+/* (No Comment) */
+"Change Atom Y-Position" = "Cambiar la posición Y del átomo";
+
+/* No comment provided by engineer. */
+"Change Atom Z-position" = "Cambiar la posición Z del átomo";
+
+/* (No Comment) */
+"Change Atom Z-Position" = "Cambiar la posición Z del átomo";
+
+/* (No Comment) */
 "Change Bond Selection" = "Cambiar selección de enlaces";
+
+/* (No Comment) */
+"Change Bond-Length" = "Cambiar la longitud del enlace";
+
+/* (No Comment) */
+"Change Fix Atom" = "Cambiar el átomo fijo";
+
+/* Change frame name */
+"Change frame name" = "Cambiar el nombre del marco";
+
+/* (No Comment) */
+"Change Material Type" = "Cambiar tipo de material";
+
+/* (No Comment) */
+"Change Movie Name" = "Cambiar el nombre de la película";
+
+/* (No Comment) */
+"Change Positions" = "Cambiar posiciones";
+
+/* (No Comment) */
+"Change Project Name" = "Cambiar el nombre del proyecto";
+
+/* (No Comment) */
+"Change Project Selection" = "Cambiar la selección del proyecto";
+
+/* (No Comment) */
+"Change Scene Name" = "Cambiar el nombre de la escena";
+
+/* No comment provided by engineer. */
+"Change Selection" = "Cambiar selección";
+
+/* (No Comment) */
+"Change Space Group" = "Cambiar grupo de espacio";
+
+/* (No Comment) */
+"CIF" = "CIF";
+
+/* (No Comment) */
+"Clear Selection" = "Limpiar Selección";
+
+/* (No Comment) */
+"Compute AO High-Quality" = "Calcular AO de alta calidad";
+
+/* copies */
+"copies" = "Copias";
+
+/* (No Comment) */
+"Could Not Read Main Database File" = "No se pudo leer el archivo de la base de datos principal";
+
+/* (No Comment) */
+"Delete Atoms" = "Eliminar átomos";
+
+/* (No Comment) */
+"Delete Bonds" = "Eliminar enlaces";
+
+/* Delete selection */
+"Delete selection" = "Eliminar selección";
+
+/* (No Comment) */
+"Delete Selection" = "Eliminar selección";
+
+/* (No Comment) */
+"Document Read (%@)" = "Lectura de documento (%@)";
+
+/* duplicates */
+"duplicates" = "Duplicados";
+
+/* (No Comment) */
+"Export To" = "Exportar a";
+
+/* (No Comment) */
+"Find and Impose Symmetry" = "Encontrar e imponer simetría";
+
+/* No comment provided by engineer. */
+"Find Niggli" = "Encuentra a Niggli";
+
+/* (No Comment) */
+"Find Primitive" = "Encontrar primitivo";
+
+/* (No Comment) */
+"Flatten Hierarchy" = "Aplanar jerarquía";
+
+/* (No Comment) */
+"Gallery-File Not Found" = "Archivo de la galería no encontrado";
+
+/* (No Comment) */
+"Insert Atoms" = "Insertar átomos";
+
+/* (No Comment) */
+"Insert Bonds" = "Insertar enlaces";
+
+/* Insert selection */
+"Insert selection" = "Insertar selección";
+
+/* (No Comment) */
+"Insert Selection" = "Insertar selección";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Versión de archivo no válida (actualice a la última versión de iRASPA)";
-"Multiple Values" = "Varios valores";
-"Mult. Val." = "Varios Val.";
-"Mult. V." = "Var. Val.";
+
+/* (No Comment) */
+"Invalid File Format" = "Formato de archivo inválido";
+
+/* (No Comment) */
+"Invert Selection" = "Invertir selección";
+
+/* (No Comment) */
+"Loading (%@)" = "Cargando (%@)";
+
+/* (No Comment) */
 "M.V." = "V.V.";
+
+/* (No Comment) */
+"Make Super-Cell" = "Hacer supercelda";
+
+/* (No Comment) */
+"mmCIF" = "mmCIF";
+
+/* (No Comment) */
+"Mult. V." = "Var. Val.";
+
+/* (No Comment) */
+"Mult. Val." = "Varios Val.";
+
+/* (No Comment) */
+"Multiple Values" = "Varios valores";
+
+/* (No Comment) */
+"Orthographic" = "Ortográfico";
+
+/* (No Comment) */
+"PDB" = "PDB";
+
+/* (No Comment) */
+"Perspective" = "Perspectiva";
+
+/* (No Comment) */
+"Recompute Bonds" = "Recalcular enlaces";
+
+/* (No Comment) */
+"Remove Permission" = "Quitar permiso";
+
+/* (No Comment) */
+"Remove Projects" = "Eliminar proyectos";
+
+/* (No Comment) */
+"Remove Symmetry" = "Eliminar simetría";
+
+/* (No Comment) */
+"Reorder Atoms" = "Reordenar átomos";
+
+/* Reorder frames */
+"Reorder frames" = "Reordenar marcos";
+
+/* (No Comment) */
+"Reorder Movies" = "Reordenar películas";
+
+/* (No Comment) */
+"Reorder Projects" = "Reordenar proyectos";
+
+/* (No Comment) */
+"Reset Camera Distance" = "Restablecer la distancia de la cámara";
+
+/* (No Comment) */
+"Reset Camera To" = "Restablecer cámara a";
+
+/* (No Comment) */
+"Rotate (%@)" = "Girar (%@)";
+
+/* (No Comment) */
+"Saving to Archive (%@)" = "Guardar en archivo (%@)";
+
+/* (No Comment) */
+"Select a Top-Level Directory" = "Seleccione un directorio de nivel superior";
+
+/* (No Comment) */
+"Show Bounding Box" = "Mostrar Recuadro";
+
+/* (No Comment) */
+"Toggle Atom Selection" = "Alternar selección de átomo";
+
+/* (No Comment) */
+"Toggle Bond Selection" = "Alternar selección de enlaces";
+
+/* (No Comment) */
+"VASP POSCAR" = "VASP POSCAR";
+
+/* (No Comment) */
+"Wrap Atoms to Cell" = "Marca los átomos en la celda";
+
+/* (No Comment) */
+"X-Direction" = "Dirección X";
+
+/* (No Comment) */
+"XYZ" = "XYZ";
+
+/* (No Comment) */
+"Y-Direction" = "Dirección Y";
+
+/* (No Comment) */
+"Z-Direction" = "Dirección Z";
+

@@ -1,30 +1,14 @@
+/* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
+"dAK-62-iur.title" = "عمومی";
+
+/* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
+"dQ7-i1-ieW.title" = "تنظیمات عمومی";
 
 /* Class = "NSBox"; title = "Read permission for"; ObjectID = "DrV-v1-Dd6"; */
 "DrV-v1-Dd6.title" = "اجازه را بخوانید برای";
 
 /* Class = "NSViewController"; title = "Command-line"; ObjectID = "ErL-rs-pho"; */
 "ErL-rs-pho.title" = "خط فرمان";
-
-/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
-"KqL-r5-hBW.title" = "اجازه نوشتن برای";
-
-/* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
-"LKB-pQ-lE8.title" = "تنظیمات انیمیشن";
-
-/* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
-"N3b-Db-pad.title" = "ترجیحات";
-
-/* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
-"RvG-Ag-1yO.title" = "همیشه روشن";
-
-/* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
-"V1Y-Hh-Pro.title" = "انتخاب";
-
-/* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
-"dAK-62-iur.title" = "عمومی";
-
-/* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
-"dQ7-i1-ieW.title" = "تنظیمات عمومی";
 
 /* Class = "NSViewController"; title = "Animations"; ObjectID = "eTl-7O-cbU"; */
 "eTl-7O-cbU.title" = "تصاوير متحرك";
@@ -38,14 +22,30 @@
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
 "kfw-MK-t7S.placeholderString" = "یک فایل سیستم را به این قسمت بکشید یا برای تنظیم مسیر کلیک کنید";
 
+/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
+"KqL-r5-hBW.title" = "اجازه نوشتن برای";
+
 /* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
 "lDy-gc-II8.title" = "اولویت ها";
+
+/* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
+"LKB-pQ-lE8.title" = "تنظیمات انیمیشن";
 
 /* Class = "NSMenuItem"; title = "When connected to power source"; ObjectID = "miP-5k-r8f"; */
 "miP-5k-r8f.title" = "وقتی به منبع نیرو وصل شد";
 
+/* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
+"N3b-Db-pad.title" = "ترجیحات";
+
 /* Class = "NSButtonCell"; title = "Autosaving"; ObjectID = "n57-Vp-DI4"; */
 "n57-Vp-DI4.title" = "ذخیره خودکار";
 
+/* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
+"RvG-Ag-1yO.title" = "همیشه روشن";
+
+/* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
+"V1Y-Hh-Pro.title" = "انتخاب";
+
 /* Class = "NSButtonCell"; title = "Show tooltip in renderer"; ObjectID = "zSD-B6-1hO"; */
 "zSD-B6-1hO.title" = "نمایش راهنمای ابزار در ارائه دهنده";
+

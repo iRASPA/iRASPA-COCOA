@@ -1,119 +1,357 @@
-"Hydrogen" = "수소";
-"Helium" = "헬륨";
-"Lithium" = "리튬";
-"Beryllium" = "베릴륨";
-"Boron" = "붕소";
-"Carbon" = "탄소";
-"Nitrogen" = "질소";
-"Oxygen" = "산소";
-"Fluorine" = "플루오린";
-"Neon" = "네온";
-"Sodium" = "소듐";
-"Magnesium" = "마그네슘";
-"Aluminum" = "알루미늄";
-"Silicon" = "규소";
-"Phosphorus" = "인";
-"Sulfur" = "황";
-"Chlorine" = "염소";
-"Argon" = "아르곤";
-"Potassium" = "포타슘";
-"Calcium" = "칼슘";
-"Scandium" = "스칸듐";
-"Titanium" = "타이타늄";
-"Vanadium" = "바나듐";
-"Chromium" = "크로뮴";
-"Manganese" = "망가니즈";
-"Iron" = "철";
-"Cobalt" = "코발트";
-"Nickel" = "니켈";
-"Copper" = "구리";
-"Zinc" = "아연";
-"Gallium" = "갈륨";
-"Germanium" = "저마늄";
-"Arsenic" = "비소";
-"Selenium" = "셀레늄";
-"Bromine" = "브로민";
-"Krypton" = "크립톤";
-"Rubidium" = "루비듐";
-"Strontium" = "스트론튬";
-"Yttrium" = "이트륨";
-"Zirconium" = "지르코늄";
-"Niobium" = "나이오븀";
-"Molybdenum" = "몰리브데넘";
-"Technetium" = "테크네튬";
-"Ruthenium" = "루테늄";
-"Rhodium" = "로듐";
-"Palladium" = "팔라듐";
-"Silver" = "은";
-"Cadmium" = "카드뮴";
-"Indium" = "인듐";
-"Tin" = "주석";
-"Antimony" = "안티모니";
-"Tellurium" = "텔루륨";
-"Iodine" = "아이오딘";
-"Xenon" = "제논";
-"Cesium" = "세슘";
-"Barium" = "바륨";
-"Lanthanum" = "란타넘";
-"Cerium" = "세륨";
-"Praseodymium" = "프라세오디뮴";
-"Neodymium" = "네오디뮴";
-"Promethium" = "프로메튬";
-"Samarium" = "사마륨";
-"Europium" = "유로퓸";
-"Gadolinium" = "가돌리늄";
-"Terbium" = "터븀";
-"Dysprosium" = "디스프로슘";
-"Holmium" = "홀뮴";
-"Erbium" = "어븀";
-"Thulium" = "툴륨";
-"Ytterbium" = "이터븀";
-"Lutetium" = "루테튬";
-"Hafnium" = "하프늄";
-"Tantalum" = "탄탈럼";
-"Tungsten" = "텅스텐";
-"Rhenium" = "레늄";
-"Osmium" = "오스뮴";
-"Iridium" = "이리듐";
-"Platinum" = "백금";
-"Gold" = "금";
-"Mercury" = "수은";
-"Thallium" = "탈륨";
-"Lead" = "납";
-"Bismuth" = "비스무트";
-"Polonium" = "폴로늄";
-"Astatine" = "아스타틴";
-"Radon" = "라돈";
-"Francium" = "프랑슘";
-"Radium" = "라듐";
+/* (No Comment) */
 "Actinium" = "악티늄";
-"Thorium" = "토륨";
-"Protactinium" = "프로트악티늄";
-"Uranium" = "우라늄";
-"Neptunium" = "넵투늄";
-"Plutonium" = "플루토늄";
+
+/* (No Comment) */
+"Aluminum" = "알루미늄";
+
+/* (No Comment) */
 "Americium" = "아메리슘";
-"Curium" = "퀴륨";
+
+/* (No Comment) */
+"Antimony" = "안티모니";
+
+/* (No Comment) */
+"Argon" = "아르곤";
+
+/* (No Comment) */
+"Arsenic" = "비소";
+
+/* (No Comment) */
+"Astatine" = "아스타틴";
+
+/* (No Comment) */
+"Barium" = "바륨";
+
+/* (No Comment) */
 "Berkelium" = "버클륨";
-"Californium" = "킬리포늄";
-"Einsteinium" = "아인슈타이늄";
-"Fermium" = "페르뮴";
-"Mendelevium" = "멘델레븀";
-"Nobelium" = "노벨륨";
-"Lawrencium" = "로렌슘";
-"Rutherfordium" = "러더포듐";
-"Dubnium" = "두브늄";
-"Seaborgium" = "시보귬";
+
+/* (No Comment) */
+"Beryllium" = "베릴륨";
+
+/* (No Comment) */
+"Bismuth" = "비스무트";
+
+/* (No Comment) */
 "Bohrium" = "보륨";
-"Hassium" = "하슘";
-"Meitnerium" = "마이트너륨";
-"Darmstadtium" = "다름슈타튬";
-"Roentgenium" = "뢴트게늄";
+
+/* (No Comment) */
+"Boron" = "붕소";
+
+/* (No Comment) */
+"Bromine" = "브로민";
+
+/* (No Comment) */
+"Cadmium" = "카드뮴";
+
+/* (No Comment) */
+"Calcium" = "칼슘";
+
+/* (No Comment) */
+"Californium" = "킬리포늄";
+
+/* (No Comment) */
+"Carbon" = "탄소";
+
+/* (No Comment) */
+"Cerium" = "세륨";
+
+/* (No Comment) */
+"Cesium" = "세슘";
+
+/* (No Comment) */
+"Chlorine" = "염소";
+
+/* (No Comment) */
+"Chromium" = "크로뮴";
+
+/* (No Comment) */
+"Cobalt" = "코발트";
+
+/* (No Comment) */
 "Copernicium" = "코페르니슘";
-"Nihonium" = "니호늄";
+
+/* (No Comment) */
+"Copper" = "구리";
+
+/* (No Comment) */
+"Curium" = "퀴륨";
+
+/* (No Comment) */
+"Darmstadtium" = "다름슈타튬";
+
+/* (No Comment) */
+"Dubnium" = "두브늄";
+
+/* (No Comment) */
+"Dysprosium" = "디스프로슘";
+
+/* (No Comment) */
+"Einsteinium" = "아인슈타이늄";
+
+/* (No Comment) */
+"Erbium" = "어븀";
+
+/* (No Comment) */
+"Europium" = "유로퓸";
+
+/* (No Comment) */
+"Fermium" = "페르뮴";
+
+/* (No Comment) */
 "Flerovium" = "플레로븀";
-"Moscovium" = "모스코븀";
-"Livermorium" = "리버모륨";
-"Tennessine" = "테네신";
-"Oganesson" = "오가네손";
+
+/* (No Comment) */
+"Fluorine" = "플루오린";
+
+/* (No Comment) */
+"Francium" = "프랑슘";
+
+/* (No Comment) */
+"Gadolinium" = "가돌리늄";
+
+/* (No Comment) */
+"Gallium" = "갈륨";
+
+/* (No Comment) */
+"Germanium" = "저마늄";
+
+/* (No Comment) */
+"Gold" = "금";
+
+/* (No Comment) */
+"Hafnium" = "하프늄";
+
+/* (No Comment) */
+"Hassium" = "하슘";
+
+/* (No Comment) */
+"Helium" = "헬륨";
+
+/* (No Comment) */
+"Holmium" = "홀뮴";
+
+/* (No Comment) */
+"Hydrogen" = "수소";
+
+/* (No Comment) */
+"Indium" = "인듐";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "잘못된 아카이브 버전 (최신 iRASPA 버전으로 업그레이드)";
+
+/* (No Comment) */
+"Iodine" = "아이오딘";
+
+/* (No Comment) */
+"Iridium" = "이리듐";
+
+/* (No Comment) */
+"Iron" = "철";
+
+/* (No Comment) */
+"Krypton" = "크립톤";
+
+/* (No Comment) */
+"Lanthanum" = "란타넘";
+
+/* (No Comment) */
+"Lawrencium" = "로렌슘";
+
+/* (No Comment) */
+"Lead" = "납";
+
+/* (No Comment) */
+"Lithium" = "리튬";
+
+/* (No Comment) */
+"Livermorium" = "리버모륨";
+
+/* (No Comment) */
+"Lutetium" = "루테튬";
+
+/* (No Comment) */
+"Magnesium" = "마그네슘";
+
+/* (No Comment) */
+"Manganese" = "망가니즈";
+
+/* (No Comment) */
+"Meitnerium" = "마이트너륨";
+
+/* (No Comment) */
+"Mendelevium" = "멘델레븀";
+
+/* (No Comment) */
+"Mercury" = "수은";
+
+/* (No Comment) */
+"Molybdenum" = "몰리브데넘";
+
+/* (No Comment) */
+"Moscovium" = "모스코븀";
+
+/* (No Comment) */
+"Neodymium" = "네오디뮴";
+
+/* (No Comment) */
+"Neon" = "네온";
+
+/* (No Comment) */
+"Neptunium" = "넵투늄";
+
+/* (No Comment) */
+"Nickel" = "니켈";
+
+/* (No Comment) */
+"Nihonium" = "니호늄";
+
+/* (No Comment) */
+"Niobium" = "나이오븀";
+
+/* (No Comment) */
+"Nitrogen" = "질소";
+
+/* (No Comment) */
+"Nobelium" = "노벨륨";
+
+/* (No Comment) */
+"Oganesson" = "오가네손";
+
+/* (No Comment) */
+"Osmium" = "오스뮴";
+
+/* (No Comment) */
+"Oxygen" = "산소";
+
+/* (No Comment) */
+"Palladium" = "팔라듐";
+
+/* (No Comment) */
+"Phosphorus" = "인";
+
+/* (No Comment) */
+"Platinum" = "백금";
+
+/* (No Comment) */
+"Plutonium" = "플루토늄";
+
+/* (No Comment) */
+"Polonium" = "폴로늄";
+
+/* (No Comment) */
+"Potassium" = "포타슘";
+
+/* (No Comment) */
+"Praseodymium" = "프라세오디뮴";
+
+/* (No Comment) */
+"Promethium" = "프로메튬";
+
+/* (No Comment) */
+"Protactinium" = "프로트악티늄";
+
+/* (No Comment) */
+"Radium" = "라듐";
+
+/* (No Comment) */
+"Radon" = "라돈";
+
+/* (No Comment) */
+"Rhenium" = "레늄";
+
+/* (No Comment) */
+"Rhodium" = "로듐";
+
+/* (No Comment) */
+"Roentgenium" = "뢴트게늄";
+
+/* (No Comment) */
+"Rubidium" = "루비듐";
+
+/* (No Comment) */
+"Ruthenium" = "루테늄";
+
+/* (No Comment) */
+"Rutherfordium" = "러더포듐";
+
+/* (No Comment) */
+"Samarium" = "사마륨";
+
+/* (No Comment) */
+"Scandium" = "스칸듐";
+
+/* (No Comment) */
+"Seaborgium" = "시보귬";
+
+/* (No Comment) */
+"Selenium" = "셀레늄";
+
+/* (No Comment) */
+"Silicon" = "규소";
+
+/* (No Comment) */
+"Silver" = "은";
+
+/* (No Comment) */
+"Sodium" = "소듐";
+
+/* (No Comment) */
+"Strontium" = "스트론튬";
+
+/* (No Comment) */
+"Sulfur" = "황";
+
+/* (No Comment) */
+"Tantalum" = "탄탈럼";
+
+/* (No Comment) */
+"Technetium" = "테크네튬";
+
+/* (No Comment) */
+"Tellurium" = "텔루륨";
+
+/* (No Comment) */
+"Tennessine" = "테네신";
+
+/* (No Comment) */
+"Terbium" = "터븀";
+
+/* (No Comment) */
+"Thallium" = "탈륨";
+
+/* (No Comment) */
+"Thorium" = "토륨";
+
+/* (No Comment) */
+"Thulium" = "툴륨";
+
+/* (No Comment) */
+"Tin" = "주석";
+
+/* (No Comment) */
+"Titanium" = "타이타늄";
+
+/* (No Comment) */
+"Tungsten" = "텅스텐";
+
+/* (No Comment) */
+"Uranium" = "우라늄";
+
+/* (No Comment) */
+"Vanadium" = "바나듐";
+
+/* (No Comment) */
+"Xenon" = "제논";
+
+/* (No Comment) */
+"Ytterbium" = "이터븀";
+
+/* (No Comment) */
+"Yttrium" = "이트륨";
+
+/* (No Comment) */
+"Zinc" = "아연";
+
+/* (No Comment) */
+"Zirconium" = "지르코늄";
+

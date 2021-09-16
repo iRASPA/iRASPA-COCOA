@@ -1,18 +1,17 @@
+/* Class = "NSMenu"; title = "Find"; ObjectID = "1b7-l0-nxx"; */
+"1b7-l0-nxx.title" = "پیدا کردن";
 
 /* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "1O8-LR-tZG"; */
 "1O8-LR-tZG.title" = "بیضوی";
+
+/* Class = "NSMenuItem"; title = "Lower"; ObjectID = "1tx-W0-xDw"; */
+"1tx-W0-xDw.title" = "پایین تر";
 
 /* Class = "NSMenuItem"; title = "Customize Toolbar…"; ObjectID = "1UK-8n-QPP"; */
 "1UK-8n-QPP.title" = "نوار ابزار را شخصی سازی کنید";
 
 /* Class = "NSMenuItem"; title = "iRASPA"; ObjectID = "1Xt-HY-uBw"; */
 "1Xt-HY-uBw.title" = "iRASPA";
-
-/* Class = "NSMenu"; title = "Find"; ObjectID = "1b7-l0-nxx"; */
-"1b7-l0-nxx.title" = "پیدا کردن";
-
-/* Class = "NSMenuItem"; title = "Lower"; ObjectID = "1tx-W0-xDw"; */
-"1tx-W0-xDw.title" = "پایین تر";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "2fK-ne-Lfp"; */
 "2fK-ne-Lfp.title" = "Box";
@@ -38,9 +37,6 @@
 /* Class = "NSBox"; title = "Box"; ObjectID = "3x3-A1-D5u"; */
 "3x3-A1-D5u.title" = "Box";
 
-/* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
-"46P-cB-AYj.title" = "کیپ کردن";
-
 /* Class = "NSMenuItem"; title = "Find"; ObjectID = "4EN-yA-p0u"; */
 "4EN-yA-p0u.title" = "پیدا کردن";
 
@@ -50,20 +46,17 @@
 /* Class = "NSMenuItem"; title = "Quit iRASPA"; ObjectID = "4sb-4s-VLi"; */
 "4sb-4s-VLi.title" = "iRASPA را ترک کنید";
 
+/* Class = "NSMenuItem"; title = "About iRASPA"; ObjectID = "5kV-Vb-QxS"; */
+"5kV-Vb-QxS.title" = "درباره iRASPA";
+
 /* Class = "NSMenuItem"; title = "Edit"; ObjectID = "5QF-Oa-p0T"; */
 "5QF-Oa-p0T.title" = "ویرایش کنید";
 
 /* Class = "NSMenuItem"; title = "Copy Style"; ObjectID = "5Vv-lz-BsD"; */
 "5Vv-lz-BsD.title" = "سبک کپی کردن";
 
-/* Class = "NSMenuItem"; title = "About iRASPA"; ObjectID = "5kV-Vb-QxS"; */
-"5kV-Vb-QxS.title" = "درباره iRASPA";
-
 /* Class = "NSMenuItem"; title = "Redo"; ObjectID = "6dh-zS-Vam"; */
 "6dh-zS-Vam.title" = "دوباره انجام دهید";
-
-/* Class = "NSMenuItem"; title = "Correct Spelling Automatically"; ObjectID = "78Y-hA-62v"; */
-"78Y-hA-62v.title" = "تصحیح املا به صورت خودکار";
 
 /* Class = "NSMenu"; title = "Writing Direction"; ObjectID = "8mr-sm-Yjd"; */
 "8mr-sm-Yjd.title" = "جهت نوشتن";
@@ -77,26 +70,83 @@
 /* Class = "NSMenuItem"; title = "Smart Copy/Paste"; ObjectID = "9yt-4B-nSM"; */
 "9yt-4B-nSM.title" = "کپی / چسباندن هوشمند";
 
+/* Class = "NSMenuItem"; title = "Tighten"; ObjectID = "46P-cB-AYj"; */
+"46P-cB-AYj.title" = "کیپ کردن";
+
+/* Class = "NSMenuItem"; title = "Correct Spelling Automatically"; ObjectID = "78Y-hA-62v"; */
+"78Y-hA-62v.title" = "تصحیح املا به صورت خودکار";
+
+/* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "agt-UL-0e3"; */
+"agt-UL-0e3.title" = "استفاده به طور پیش فرض";
+
+/* Class = "NSMenuItem"; title = "Print…"; ObjectID = "aTl-1u-JFS"; */
+"aTl-1u-JFS.title" = "چاپ…";
+
+/* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
+"aUF-d1-5bR.title" = "پنجره";
+
+/* Class = "NSMenu"; title = "Font"; ObjectID = "aXa-aM-Jaq"; */
+"aXa-aM-Jaq.title" = "قلم";
+
 /* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
 "AYu-sK-qS6.title" = "منوی اصلی";
-
-/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "BOF-NM-1cW"; */
-"BOF-NM-1cW.title" = "ترجیحات";
 
 /* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "BgM-ve-c93"; */
 "BgM-ve-c93.title" = "\tچپ به راست";
 
+/* Class = "NSMenuItem"; title = "Show Colors"; ObjectID = "bgn-CT-cEk"; */
+"bgn-CT-cEk.title" = "نمایش رنگها";
+
+/* Class = "NSMenu"; title = "File"; ObjectID = "bib-Uj-vzu"; */
+"bib-Uj-vzu.title" = "فایل";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "BOF-NM-1cW"; */
+"BOF-NM-1cW.title" = "ترجیحات";
+
+/* Class = "NSMenuItem"; title = "Use Selection for Find"; ObjectID = "buJ-ug-pKt"; */
+"buJ-ug-pKt.title" = "برای یافتن از انتخاب استفاده کنید";
+
 /* Class = "NSMenuItem"; title = "Save As…"; ObjectID = "Bw7-FT-i3A"; */
 "Bw7-FT-i3A.title" = "ذخیره به عنوان…";
+
+/* Class = "NSMenu"; title = "Transformations"; ObjectID = "c8a-y6-VQd"; */
+"c8a-y6-VQd.title" = "ترادیسی ها";
+
+/* Class = "NSMenuItem"; title = "Use None"; ObjectID = "cDB-IK-hbR"; */
+"cDB-IK-hbR.title" = "از هیچکدام استفاده نکنید";
+
+/* Class = "NSMenuItem"; title = "16:9"; ObjectID = "cfR-kj-UKf"; */
+"cfR-kj-UKf.title" = "16:9";
 
 /* Class = "NSMenuItem"; title = "Molecule"; ObjectID = "CFt-im-cWe"; */
 "CFt-im-cWe.title" = "مولکول";
 
-/* Class = "NSMenuItem"; title = "Close"; ObjectID = "DVo-aG-piG"; */
-"DVo-aG-piG.title" = "نزدیک";
+/* Class = "NSMenuItem"; title = "Atom group"; ObjectID = "cMR-OP-H7e"; */
+"cMR-OP-H7e.title" = "گروه اتم";
+
+/* Class = "NSMenuItem"; title = "Selection"; ObjectID = "cqv-fj-IhA"; */
+"cqv-fj-IhA.title" = "انتخاب";
+
+/* Class = "NSMenuItem"; title = "Smart Links"; ObjectID = "cwL-P1-jid"; */
+"cwL-P1-jid.title" = "پیوندهای هوشمند";
+
+/* Class = "NSMenu"; title = "Text"; ObjectID = "d9c-me-L2H"; */
+"d9c-me-L2H.title" = "پیامک";
+
+/* Class = "NSMenuItem"; title = "Make Lower Case"; ObjectID = "d9M-CD-aMd"; */
+"d9M-CD-aMd.title" = "حروف کوچک";
+
+/* Class = "NSMenuItem"; title = "File"; ObjectID = "dMs-cI-mzQ"; */
+"dMs-cI-mzQ.title" = "فایل";
+
+/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
+"dRJ-4n-Yzg.title" = "واگرد";
 
 /* Class = "NSMenuItem"; title = "Spelling and Grammar"; ObjectID = "Dv1-io-Yv7"; */
 "Dv1-io-Yv7.title" = "نگارش و دستور زبان";
+
+/* Class = "NSMenuItem"; title = "Close"; ObjectID = "DVo-aG-piG"; */
+"DVo-aG-piG.title" = "نزدیک";
 
 /* Class = "NSMenuItem"; title = "Import"; ObjectID = "EH2-Bo-SW5"; */
 "EH2-Bo-SW5.title" = "وارد كردن";
@@ -107,17 +157,20 @@
 /* Class = "NSMenuItem"; title = "Export"; ObjectID = "F46-CC-yoN"; */
 "F46-CC-yoN.title" = "صادر کردن";
 
+/* Class = "NSMenuItem"; title = "Text"; ObjectID = "Fal-I4-PZk"; */
+"Fal-I4-PZk.title" = "Text";
+
+/* Class = "NSMenuItem"; title = "Workspace"; ObjectID = "fCt-M2-s9M"; */
+"fCt-M2-s9M.title" = "فضای کاری";
+
+/* Class = "NSMenu"; title = "Substitutions"; ObjectID = "FeM-D8-WVr"; */
+"FeM-D8-WVr.title" = "تعویض ها";
+
 /* Class = "NSMenuItem"; title = "iRASPA Help"; ObjectID = "FKE-Sm-Kum"; */
 "FKE-Sm-Kum.title" = "iRASPA راهنما";
 
 /* Class = "NSMenuItem"; title = "Structure project"; ObjectID = "FM9-Av-rXr"; */
 "FM9-Av-rXr.title" = "ساختار پروژه";
-
-/* Class = "NSMenuItem"; title = "Text"; ObjectID = "Fal-I4-PZk"; */
-"Fal-I4-PZk.title" = "Text";
-
-/* Class = "NSMenu"; title = "Substitutions"; ObjectID = "FeM-D8-WVr"; */
-"FeM-D8-WVr.title" = "تعویض ها";
 
 /* Class = "NSMenuItem"; title = "Bold"; ObjectID = "GB9-OM-e27"; */
 "GB9-OM-e27.title" = "پررنگ";
@@ -125,14 +178,17 @@
 /* Class = "NSMenu"; title = "Format"; ObjectID = "GEO-Iw-cKr"; */
 "GEO-Iw-cKr.title" = "قالب بندی";
 
-/* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "GUa-eO-cwY"; */
-"GUa-eO-cwY.title" = "استفاده به طور پیش فرض";
-
 /* Class = "NSMenuItem"; title = "Font"; ObjectID = "Gi5-1S-RQB"; */
 "Gi5-1S-RQB.title" = "قلم";
 
 /* Class = "NSMenu"; title = "New"; ObjectID = "Gkc-Nb-nPC"; */
 "Gkc-Nb-nPC.title" = "جدید";
+
+/* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "GUa-eO-cwY"; */
+"GUa-eO-cwY.title" = "استفاده به طور پیش فرض";
+
+/* Class = "NSMenuItem"; title = "Paste"; ObjectID = "gVA-U4-sdL"; */
+"gVA-U4-sdL.title" = "چسباندن";
 
 /* Class = "NSMenuItem"; title = "Writing Direction"; ObjectID = "H1b-Si-o9J"; */
 "H1b-Si-o9J.title" = "جهت نوشتن";
@@ -143,20 +199,38 @@
 /* Class = "NSMenuItem"; title = "Molecular crystal"; ObjectID = "H8o-f4-o3W"; */
 "H8o-f4-o3W.title" = "کریستال مولکولی";
 
+/* Class = "NSMenuItem"; title = "Show Spelling and Grammar"; ObjectID = "HFo-cy-zxI"; */
+"HFo-cy-zxI.title" = "نمایش املا و دستور زبان";
+
 /* Class = "NSMenuItem"; title = "Text Replacement"; ObjectID = "HFQ-gK-NFA"; */
 "HFQ-gK-NFA.title" = "جایگزینی متن";
 
-/* Class = "NSMenuItem"; title = "Show Spelling and Grammar"; ObjectID = "HFo-cy-zxI"; */
-"HFo-cy-zxI.title" = "نمایش املا و دستور زبان";
+/* Class = "NSMenuItem"; title = "Smart Quotes"; ObjectID = "hQb-2v-fYv"; */
+"hQb-2v-fYv.title" = "نقل قول های هوشمند";
+
+/* Class = "NSMenuItem"; title = "Atom"; ObjectID = "hUG-eb-3cj"; */
+"hUG-eb-3cj.title" = "اتم";
 
 /* Class = "NSMenu"; title = "View"; ObjectID = "HyV-fh-RgO"; */
 "HyV-fh-RgO.title" = "چشم انداز";
 
+/* Class = "NSMenuItem"; title = "Check Document Now"; ObjectID = "hz2-CU-CR7"; */
+"hz2-CU-CR7.title" = "اکنون سند را بررسی کنید";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
+"hz9-B4-Xy5.title" = "خدمات";
+
 /* Class = "NSMenuItem"; title = "Subscript"; ObjectID = "I0S-gh-46l"; */
 "I0S-gh-46l.title" = "زیرنویس";
 
+/* Class = "NSMenuItem"; title = "Smaller"; ObjectID = "i1d-Er-qST"; */
+"i1d-Er-qST.title" = "کوچکتر";
+
 /* Class = "NSMenuItem"; title = "Open…"; ObjectID = "IAo-SY-fd9"; */
 "IAo-SY-fd9.title" = "باز کن…";
+
+/* Class = "NSMenu"; title = "Baseline"; ObjectID = "ijk-EB-dga"; */
+"ijk-EB-dga.title" = "پایه";
 
 /* Class = "NSMenuItem"; title = "Crystal"; ObjectID = "IsF-P6-kfc"; */
 "IsF-P6-kfc.title" = "کریستال";
@@ -167,14 +241,26 @@
 /* Class = "NSMenuItem"; title = "Use None"; ObjectID = "J7y-lM-qPV"; */
 "J7y-lM-qPV.title" = "از هیچکدام استفاده نکنید";
 
-/* Class = "NSMenuItem"; title = "21:9"; ObjectID = "JWT-Cn-v6t"; */
-"JWT-Cn-v6t.title" = "21:9";
+/* Class = "NSMenuItem"; title = "Kern"; ObjectID = "jBQ-r6-VK2"; */
+"jBQ-r6-VK2.title" = "هسته";
+
+/* Class = "NSMenuItem"; title = "2.39:1"; ObjectID = "jF0-uJ-F9d"; */
+"jF0-uJ-F9d.title" = "2.39:1";
+
+/* Class = "NSMenuItem"; title = "\tRight to Left"; ObjectID = "jFq-tB-4Kx"; */
+"jFq-tB-4Kx.title" = "\tراست به چپ";
 
 /* Class = "NSMenuItem"; title = "Project group"; ObjectID = "JkK-8X-2kf"; */
 "JkK-8X-2kf.title" = "گروه پروژه";
 
 /* Class = "NSMenuItem"; title = "Aspect ratio"; ObjectID = "JtX-r6-bas"; */
 "JtX-r6-bas.title" = "نسبت ابعاد";
+
+/* Class = "NSMenuItem"; title = "21:9"; ObjectID = "JWT-Cn-v6t"; */
+"JWT-Cn-v6t.title" = "21:9";
+
+/* Class = "NSMenuItem"; title = "Format"; ObjectID = "jxT-CU-nIS"; */
+"jxT-CU-nIS.title" = "قالب بندی";
 
 /* Class = "NSMenuItem"; title = "Revert to Saved"; ObjectID = "KaW-ft-85H"; */
 "KaW-ft-85H.title" = "برگشت به ذخیره شده";
@@ -191,20 +277,29 @@
 /* Class = "NSSegmentedCell"; Khj-N3-fhm.ibShadowedToolTips[2] = "Hide or show the Utility area"; ObjectID = "Khj-N3-fhm"; */
 "Khj-N3-fhm.ibShadowedToolTips[2]" = "ناحیه نرم افزار را مخفی یا نشان دهید";
 
-/* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "LE2-aR-0XJ"; */
-"LE2-aR-0XJ.title" = "همه را به جلو بیاوری";
-
-/* Class = "NSMenuItem"; title = "Paste Ruler"; ObjectID = "LVM-kO-fVI"; */
-"LVM-kO-fVI.title" = "خط كش چسباندن";
+/* Class = "NSMenuItem"; title = "Show Sidebar"; ObjectID = "kIP-vf-haE"; */
+"kIP-vf-haE.title" = "نمایش نوار کناری";
 
 /* Class = "NSMenuItem"; title = "\tLeft to Right"; ObjectID = "Lbh-J2-qVU"; */
 "Lbh-J2-qVU.title" = "\tچپ به راست";
 
+/* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "LE2-aR-0XJ"; */
+"LE2-aR-0XJ.title" = "همه را به جلو بیاوری";
+
 /* Class = "NSMenuItem"; title = "1:1"; ObjectID = "Lr4-9V-B0Y"; */
 "Lr4-9V-B0Y.title" = "1:1";
 
+/* Class = "NSMenuItem"; title = "Paste Ruler"; ObjectID = "LVM-kO-fVI"; */
+"LVM-kO-fVI.title" = "خط كش چسباندن";
+
+/* Class = "NSMenuItem"; title = "Check Grammar With Spelling"; ObjectID = "mK6-2p-4JG"; */
+"mK6-2p-4JG.title" = "بررسی گرامر با املا";
+
 /* Class = "NSMenuItem"; title = "Copy Ruler"; ObjectID = "MkV-Pr-PK5"; */
 "MkV-Pr-PK5.title" = "کپی کردن خط کش";
+
+/* Class = "NSMenuItem"; title = "1.85:1"; ObjectID = "mum-mQ-dln"; */
+"mum-mQ-dln.title" = "1.85:1";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "MzS-m8-rt0"; */
 "MzS-m8-rt0.title" = "سیلندر";
@@ -215,11 +310,17 @@
 /* Class = "NSMenuItem"; title = "\tDefault"; ObjectID = "Nop-cj-93Q"; */
 "Nop-cj-93Q.title" = "\tپیش فرض";
 
-/* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "OY7-WF-poV"; */
-"OY7-WF-poV.title" = "به حداقل رساندن";
+/* Class = "NSMenuItem"; title = "Ligatures"; ObjectID = "o6e-r0-MWq"; */
+"o6e-r0-MWq.title" = "لیگاتور";
 
 /* Class = "NSMenuItem"; title = "Baseline"; ObjectID = "OaQ-X3-Vso"; */
 "OaQ-X3-Vso.title" = "پایه";
+
+/* Class = "NSMenu"; title = "Open Recent"; ObjectID = "oas-Oc-fiZ"; */
+"oas-Oc-fiZ.title" = "باز کردن اخیر";
+
+/* Class = "NSMenuItem"; title = "Loosen"; ObjectID = "ogc-rX-tC1"; */
+"ogc-rX-tC1.title" = "شل کن";
 
 /* Class = "NSMenuItem"; title = "Hide test"; ObjectID = "Olw-nP-bQN"; */
 "Olw-nP-bQN.title" = "پنهان کردن آزمون";
@@ -227,20 +328,47 @@
 /* Class = "NSMenuItem"; title = "Find Previous"; ObjectID = "OwM-mh-QMV"; */
 "OwM-mh-QMV.title" = "یافتن قبلی";
 
+/* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "OY7-WF-poV"; */
+"OY7-WF-poV.title" = "به حداقل رساندن";
+
 /* Class = "NSMenuItem"; title = "Stop Speaking"; ObjectID = "Oyz-dy-DGm"; */
 "Oyz-dy-DGm.title" = "صحبت خود را متوقف کنید";
+
+/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
+"pa3-QI-u2k.title" = "حذف";
 
 /* Class = "NSMenuItem"; title = "Bigger"; ObjectID = "Ptp-SP-VEL"; */
 "Ptp-SP-VEL.title" = "بزرگتر";
 
+/* Class = "NSMenuItem"; title = "Save…"; ObjectID = "pxx-59-PXV"; */
+"pxx-59-PXV.title" = "ذخیره کردن";
+
 /* Class = "NSMenuItem"; title = "Show Fonts"; ObjectID = "Q5e-8K-NDq"; */
 "Q5e-8K-NDq.title" = "نمایش قلم ها";
+
+/* Class = "NSMenuItem"; title = "Find Next"; ObjectID = "q09-fT-Sye"; */
+"q09-fT-Sye.title" = "بعدی را پیدا کنید";
+
+/* Class = "NSMenu"; title = "Objects"; ObjectID = "q81-1F-c5Z"; */
+"q81-1F-c5Z.title" = "اشیاء";
+
+/* Class = "NSMenuItem"; title = "Page Setup…"; ObjectID = "qIS-W8-SiK"; */
+"qIS-W8-SiK.title" = "تنظیمات صفحه…";
 
 /* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "R4o-n2-Eq4"; */
 "R4o-n2-Eq4.title" = "بزرگنمایی";
 
 /* Class = "NSMenuItem"; title = "\tRight to Left"; ObjectID = "RB4-Sm-HuC"; */
 "RB4-Sm-HuC.title" = "\tراست به چپ";
+
+/* Class = "NSMenuItem"; title = "Check Spelling While Typing"; ObjectID = "rbD-Rh-wIN"; */
+"rbD-Rh-wIN.title" = "بررسی املا هنگام تایپ";
+
+/* Class = "NSMenuItem"; title = "Protein crystal"; ObjectID = "rdX-r1-eMs"; */
+"rdX-r1-eMs.title" = "کریستال پروتئین";
+
+/* Class = "NSMenuItem"; title = "Smart Dashes"; ObjectID = "rgM-f4-ycn"; */
+"rgM-f4-ycn.title" = "خط تیره هوشمند";
 
 /* Class = "NSMenuItem"; title = "Superscript"; ObjectID = "Rqc-34-cIF"; */
 "Rqc-34-cIF.title" = "بالا نويس";
@@ -251,41 +379,83 @@
 /* Class = "NSMenuItem"; title = "Jump to Selection"; ObjectID = "S0p-oC-mLd"; */
 "S0p-oC-mLd.title" = "به قسمت انتخاب بروید";
 
+/* Class = "NSMenuItem"; title = "Show Toolbar"; ObjectID = "snW-S8-Cw5"; */
+"snW-S8-Cw5.title" = "نمایش نوار ابزار";
+
 /* Class = "NSMenuItem"; title = "3:2"; ObjectID = "Spc-qz-Euj"; */
 "Spc-qz-Euj.title" = "3:2";
 
 /* Class = "NSMenu"; title = "Window"; ObjectID = "Td7-aD-5lo"; */
 "Td7-aD-5lo.title" = "پنجره";
 
+/* Class = "NSMenuItem"; title = "Off"; ObjectID = "tjs-df-O3M"; */
+"tjs-df-O3M.title" = "خاموش";
+
+/* Class = "NSMenu"; title = "Kern"; ObjectID = "tlD-Oa-oAM"; */
+"tlD-Oa-oAM.title" = "هسته";
+
+/* Class = "NSMenuItem"; title = "Data Detectors"; ObjectID = "tRr-pd-1PS"; */
+"tRr-pd-1PS.title" = "ردیاب های داده";
+
 /* Class = "NSMenu"; title = "Aspect ratio"; ObjectID = "TrX-ZY-bLC"; */
 "TrX-ZY-bLC.title" = "نسبت ابعاد";
+
+/* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
+"tXI-mr-wws.title" = "باز کردن اخیر";
 
 /* Class = "NSMenuItem"; title = "Capitalize"; ObjectID = "UEZ-Bs-lqG"; */
 "UEZ-Bs-lqG.title" = "بزرگ کردن";
 
-/* Class = "NSMenuItem"; title = "Center"; ObjectID = "VIY-Ag-zcb"; */
-"VIY-Ag-zcb.title" = "مرکز";
+/* Class = "NSMenu"; title = "iRASPA"; ObjectID = "uQy-DD-JDr"; */
+"uQy-DD-JDr.title" = "iRASPA";
 
-/* Class = "NSMenuItem"; title = "Invert selection"; ObjectID = "VNS-yB-1c3"; */
-"VNS-yB-1c3.title" = "انتخاب معکوس";
+/* Class = "NSMenuItem"; title = "Cut"; ObjectID = "uRl-iY-unG"; */
+"uRl-iY-unG.title" = "برش";
 
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
 "Vdr-fp-XzO.title" = "بقیه را مخفی کنید";
 
+/* Class = "NSMenuItem"; title = "Center"; ObjectID = "VIY-Ag-zcb"; */
+"VIY-Ag-zcb.title" = "مرکز";
+
 /* Class = "NSMenuItem"; title = "Italic"; ObjectID = "Vjx-xi-njq"; */
 "Vjx-xi-njq.title" = "مورب";
+
+/* Class = "NSMenuItem"; title = "Paste Style"; ObjectID = "vKC-jM-MkH"; */
+"vKC-jM-MkH.title" = "سبک چسباندن";
+
+/* Class = "NSMenuItem"; title = "Show Ruler"; ObjectID = "vLm-3I-IUL"; */
+"vLm-3I-IUL.title" = "نمایش خط کش";
+
+/* Class = "NSMenuItem"; title = "Make Upper Case"; ObjectID = "vmV-6d-7jI"; */
+"vmV-6d-7jI.title" = "حروف بزرگ را بسازید";
+
+/* Class = "NSMenuItem"; title = "Invert selection"; ObjectID = "VNS-yB-1c3"; */
+"VNS-yB-1c3.title" = "انتخاب معکوس";
+
+/* Class = "NSMenuItem"; title = "Clear Menu"; ObjectID = "vNY-rz-j42"; */
+"vNY-rz-j42.title" = "پاک کردن منو";
+
+/* Class = "NSMenu"; title = "Ligatures"; ObjectID = "w0m-vy-SC9"; */
+"w0m-vy-SC9.title" = "لیگاتور";
 
 /* Class = "NSMenu"; title = "Edit"; ObjectID = "W48-6f-4Dl"; */
 "W48-6f-4Dl.title" = "ویرایش کنید";
 
+/* Class = "NSMenuItem"; title = "Align Right"; ObjectID = "wb2-vD-lq4"; */
+"wb2-vD-lq4.title" = "تراز راست";
+
 /* Class = "NSMenuItem"; title = "Protein"; ObjectID = "WJS-5R-dt1"; */
 "WJS-5R-dt1.title" = "پروتئین";
 
-/* Class = "NSMenuItem"; title = "Underline"; ObjectID = "WRG-CD-K1S"; */
-"WRG-CD-K1S.title" = "زیر خط بکشید";
-
 /* Class = "NSMenuItem"; title = "Copy"; ObjectID = "Wm2-za-IFp"; */
 "Wm2-za-IFp.title" = "کپی";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
+"wpr-3q-Mcd.title" = "کمک";
+
+/* Class = "NSMenuItem"; title = "Underline"; ObjectID = "WRG-CD-K1S"; */
+"WRG-CD-K1S.title" = "زیر خط بکشید";
 
 /* Class = "NSMenuItem"; title = "Objects"; ObjectID = "WvN-oW-JtI"; */
 "WvN-oW-JtI.title" = "اشیاء";
@@ -295,6 +465,12 @@
 
 /* Class = "NSMenuItem"; title = "New"; ObjectID = "Xa3-2R-g2O"; */
 "Xa3-2R-g2O.title" = "جدید";
+
+/* Class = "NSMenuItem"; title = "Use All"; ObjectID = "xQD-1f-W4t"; */
+"xQD-1f-W4t.title" = "از همه استفاده کنید";
+
+/* Class = "NSMenuItem"; title = "Speech"; ObjectID = "xrE-MZ-jX0"; */
+"xrE-MZ-jX0.title" = "سخن، گفتار";
 
 /* Class = "NSMenuItem"; title = "Find…"; ObjectID = "Xz5-n4-O0W"; */
 "Xz5-n4-O0W.title" = "پیدا کردن…";
@@ -311,188 +487,12 @@
 /* Class = "NSMenuItem"; title = "Start Speaking"; ObjectID = "Ynk-f8-cLZ"; */
 "Ynk-f8-cLZ.title" = "شروع به صحبت کنید";
 
+/* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
+"z6F-FW-3nz.title" = "تعویض ها را نشان دهید";
+
 /* Class = "NSMenuItem"; title = "Align Left"; ObjectID = "ZM1-6Q-yy1"; */
 "ZM1-6Q-yy1.title" = "تراز چپ";
 
 /* Class = "NSMenuItem"; title = "Paragraph"; ObjectID = "ZvO-Gk-QUH"; */
 "ZvO-Gk-QUH.title" = "پاراگراف";
 
-/* Class = "NSMenuItem"; title = "Print…"; ObjectID = "aTl-1u-JFS"; */
-"aTl-1u-JFS.title" = "چاپ…";
-
-/* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
-"aUF-d1-5bR.title" = "پنجره";
-
-/* Class = "NSMenu"; title = "Font"; ObjectID = "aXa-aM-Jaq"; */
-"aXa-aM-Jaq.title" = "قلم";
-
-/* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "agt-UL-0e3"; */
-"agt-UL-0e3.title" = "استفاده به طور پیش فرض";
-
-/* Class = "NSMenuItem"; title = "Show Colors"; ObjectID = "bgn-CT-cEk"; */
-"bgn-CT-cEk.title" = "نمایش رنگها";
-
-/* Class = "NSMenu"; title = "File"; ObjectID = "bib-Uj-vzu"; */
-"bib-Uj-vzu.title" = "فایل";
-
-/* Class = "NSMenuItem"; title = "Use Selection for Find"; ObjectID = "buJ-ug-pKt"; */
-"buJ-ug-pKt.title" = "برای یافتن از انتخاب استفاده کنید";
-
-/* Class = "NSMenu"; title = "Transformations"; ObjectID = "c8a-y6-VQd"; */
-"c8a-y6-VQd.title" = "ترادیسی ها";
-
-/* Class = "NSMenuItem"; title = "Use None"; ObjectID = "cDB-IK-hbR"; */
-"cDB-IK-hbR.title" = "از هیچکدام استفاده نکنید";
-
-/* Class = "NSMenuItem"; title = "Atom group"; ObjectID = "cMR-OP-H7e"; */
-"cMR-OP-H7e.title" = "گروه اتم";
-
-/* Class = "NSMenuItem"; title = "16:9"; ObjectID = "cfR-kj-UKf"; */
-"cfR-kj-UKf.title" = "16:9";
-
-/* Class = "NSMenuItem"; title = "Selection"; ObjectID = "cqv-fj-IhA"; */
-"cqv-fj-IhA.title" = "انتخاب";
-
-/* Class = "NSMenuItem"; title = "Smart Links"; ObjectID = "cwL-P1-jid"; */
-"cwL-P1-jid.title" = "پیوندهای هوشمند";
-
-/* Class = "NSMenuItem"; title = "Make Lower Case"; ObjectID = "d9M-CD-aMd"; */
-"d9M-CD-aMd.title" = "حروف کوچک";
-
-/* Class = "NSMenu"; title = "Text"; ObjectID = "d9c-me-L2H"; */
-"d9c-me-L2H.title" = "پیامک";
-
-/* Class = "NSMenuItem"; title = "File"; ObjectID = "dMs-cI-mzQ"; */
-"dMs-cI-mzQ.title" = "فایل";
-
-/* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
-"dRJ-4n-Yzg.title" = "واگرد";
-
-/* Class = "NSMenuItem"; title = "Workspace"; ObjectID = "fCt-M2-s9M"; */
-"fCt-M2-s9M.title" = "فضای کاری";
-
-/* Class = "NSMenuItem"; title = "Paste"; ObjectID = "gVA-U4-sdL"; */
-"gVA-U4-sdL.title" = "چسباندن";
-
-/* Class = "NSMenuItem"; title = "Smart Quotes"; ObjectID = "hQb-2v-fYv"; */
-"hQb-2v-fYv.title" = "نقل قول های هوشمند";
-
-/* Class = "NSMenuItem"; title = "Atom"; ObjectID = "hUG-eb-3cj"; */
-"hUG-eb-3cj.title" = "اتم";
-
-/* Class = "NSMenuItem"; title = "Check Document Now"; ObjectID = "hz2-CU-CR7"; */
-"hz2-CU-CR7.title" = "اکنون سند را بررسی کنید";
-
-/* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
-"hz9-B4-Xy5.title" = "خدمات";
-
-/* Class = "NSMenuItem"; title = "Smaller"; ObjectID = "i1d-Er-qST"; */
-"i1d-Er-qST.title" = "کوچکتر";
-
-/* Class = "NSMenu"; title = "Baseline"; ObjectID = "ijk-EB-dga"; */
-"ijk-EB-dga.title" = "پایه";
-
-/* Class = "NSMenuItem"; title = "Kern"; ObjectID = "jBQ-r6-VK2"; */
-"jBQ-r6-VK2.title" = "هسته";
-
-/* Class = "NSMenuItem"; title = "2.39:1"; ObjectID = "jF0-uJ-F9d"; */
-"jF0-uJ-F9d.title" = "2.39:1";
-
-/* Class = "NSMenuItem"; title = "\tRight to Left"; ObjectID = "jFq-tB-4Kx"; */
-"jFq-tB-4Kx.title" = "\tراست به چپ";
-
-/* Class = "NSMenuItem"; title = "Format"; ObjectID = "jxT-CU-nIS"; */
-"jxT-CU-nIS.title" = "قالب بندی";
-
-/* Class = "NSMenuItem"; title = "Show Sidebar"; ObjectID = "kIP-vf-haE"; */
-"kIP-vf-haE.title" = "نمایش نوار کناری";
-
-/* Class = "NSMenuItem"; title = "Check Grammar With Spelling"; ObjectID = "mK6-2p-4JG"; */
-"mK6-2p-4JG.title" = "بررسی گرامر با املا";
-
-/* Class = "NSMenuItem"; title = "1.85:1"; ObjectID = "mum-mQ-dln"; */
-"mum-mQ-dln.title" = "1.85:1";
-
-/* Class = "NSMenuItem"; title = "Ligatures"; ObjectID = "o6e-r0-MWq"; */
-"o6e-r0-MWq.title" = "لیگاتور";
-
-/* Class = "NSMenu"; title = "Open Recent"; ObjectID = "oas-Oc-fiZ"; */
-"oas-Oc-fiZ.title" = "باز کردن اخیر";
-
-/* Class = "NSMenuItem"; title = "Loosen"; ObjectID = "ogc-rX-tC1"; */
-"ogc-rX-tC1.title" = "شل کن";
-
-/* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
-"pa3-QI-u2k.title" = "حذف";
-
-/* Class = "NSMenuItem"; title = "Save…"; ObjectID = "pxx-59-PXV"; */
-"pxx-59-PXV.title" = "ذخیره کردن";
-
-/* Class = "NSMenuItem"; title = "Find Next"; ObjectID = "q09-fT-Sye"; */
-"q09-fT-Sye.title" = "بعدی را پیدا کنید";
-
-/* Class = "NSMenu"; title = "Objects"; ObjectID = "q81-1F-c5Z"; */
-"q81-1F-c5Z.title" = "اشیاء";
-
-/* Class = "NSMenuItem"; title = "Page Setup…"; ObjectID = "qIS-W8-SiK"; */
-"qIS-W8-SiK.title" = "تنظیمات صفحه…";
-
-/* Class = "NSMenuItem"; title = "Check Spelling While Typing"; ObjectID = "rbD-Rh-wIN"; */
-"rbD-Rh-wIN.title" = "بررسی املا هنگام تایپ";
-
-/* Class = "NSMenuItem"; title = "Protein crystal"; ObjectID = "rdX-r1-eMs"; */
-"rdX-r1-eMs.title" = "کریستال پروتئین";
-
-/* Class = "NSMenuItem"; title = "Smart Dashes"; ObjectID = "rgM-f4-ycn"; */
-"rgM-f4-ycn.title" = "خط تیره هوشمند";
-
-/* Class = "NSMenuItem"; title = "Show Toolbar"; ObjectID = "snW-S8-Cw5"; */
-"snW-S8-Cw5.title" = "نمایش نوار ابزار";
-
-/* Class = "NSMenuItem"; title = "Data Detectors"; ObjectID = "tRr-pd-1PS"; */
-"tRr-pd-1PS.title" = "ردیاب های داده";
-
-/* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
-"tXI-mr-wws.title" = "باز کردن اخیر";
-
-/* Class = "NSMenuItem"; title = "Off"; ObjectID = "tjs-df-O3M"; */
-"tjs-df-O3M.title" = "خاموش";
-
-/* Class = "NSMenu"; title = "Kern"; ObjectID = "tlD-Oa-oAM"; */
-"tlD-Oa-oAM.title" = "هسته";
-
-/* Class = "NSMenu"; title = "iRASPA"; ObjectID = "uQy-DD-JDr"; */
-"uQy-DD-JDr.title" = "iRASPA";
-
-/* Class = "NSMenuItem"; title = "Cut"; ObjectID = "uRl-iY-unG"; */
-"uRl-iY-unG.title" = "برش";
-
-/* Class = "NSMenuItem"; title = "Paste Style"; ObjectID = "vKC-jM-MkH"; */
-"vKC-jM-MkH.title" = "سبک چسباندن";
-
-/* Class = "NSMenuItem"; title = "Show Ruler"; ObjectID = "vLm-3I-IUL"; */
-"vLm-3I-IUL.title" = "نمایش خط کش";
-
-/* Class = "NSMenuItem"; title = "Clear Menu"; ObjectID = "vNY-rz-j42"; */
-"vNY-rz-j42.title" = "پاک کردن منو";
-
-/* Class = "NSMenuItem"; title = "Make Upper Case"; ObjectID = "vmV-6d-7jI"; */
-"vmV-6d-7jI.title" = "حروف بزرگ را بسازید";
-
-/* Class = "NSMenu"; title = "Ligatures"; ObjectID = "w0m-vy-SC9"; */
-"w0m-vy-SC9.title" = "لیگاتور";
-
-/* Class = "NSMenuItem"; title = "Align Right"; ObjectID = "wb2-vD-lq4"; */
-"wb2-vD-lq4.title" = "تراز راست";
-
-/* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
-"wpr-3q-Mcd.title" = "کمک";
-
-/* Class = "NSMenuItem"; title = "Use All"; ObjectID = "xQD-1f-W4t"; */
-"xQD-1f-W4t.title" = "از همه استفاده کنید";
-
-/* Class = "NSMenuItem"; title = "Speech"; ObjectID = "xrE-MZ-jX0"; */
-"xrE-MZ-jX0.title" = "سخن، گفتار";
-
-/* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
-"z6F-FW-3nz.title" = "تعویض ها را نشان دهید";

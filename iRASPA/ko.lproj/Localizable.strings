@@ -1,75 +1,264 @@
-"Saving to Archive (%@)" = "아카이브에 저장 (%@)";
-"Document Read (%@)" = "문서 읽기 (%@)";
-"Autosaving...." = "자동 저장....";
-"Rotate (%@)" = "회전 (%@)";
-"Loading (%@)" = "로딩 중 (%@)";
-"Select a Top-Level Directory" = "최상위 디렉토리 선택";
-"Remove Permission" = "권한 제거";
-"Could Not Read Main Database File" = "메인 데이터베이스 파일을 읽을 수 없습니다.";
-"Invalid File Format" = "잘못된 파일 형식";
-"Gallery-File Not Found" = "갤러리 파일을 찾을 수 없음";
-"Cannot Initialize from Data" = "데이터에서 초기화 할 수 없음";
-"Add Projects" = "프로젝트들 추가";
-"Remove Projects" = "프로젝트들 제거";
-"Reorder Projects" = "프로젝트들 재정렬";
-"Change Project Selection" = "프로젝트 선택 변경";
-"Change Project Name" = "프로젝트 이름 변경";
-"Insert Selection" = "선택 삽입";
-"Delete Selection" = "선택 삭제";
-"Add Movies" = "영상 추가";
-"Add Scenes" = "스냅샷 추가";
-"Change Movie Name" = "영상 이름 변경";
-"Change Scene Name" = "스냅샷 이름 변경";
-"Reorder Movies" = "영상 재정렬";
-"Clear Selection" = "모든 선택 제외";
-"Toggle Atom Selection" = "선택된 원자 전환";
-"Toggle Bond Selection" = "선택된 결합 전환";
-"Delete Atoms" = "원자 삭제";
-"Insert Atoms" = "원자 삽입";
-"Change Positions" = "위치 변경";
-"Python Console Ready\n" = "파이썬 콘솔 준비\n";
-"Change Material Type" = "재료 유형 변경";
-"Change Space Group" = "공간군 변경";
-"Reset Camera Distance" = "카메라 거리 재설정";
-"Reset Camera To" = "카메라 재설정";
-"Show Bounding Box" = "경계 상자 표시";
-"Export To" = "내보내기";
-"Compute AO High-Quality" = "고품질 AO 계산";
-"Camera Projection" = "카메라 투영방식";
-"Orthographic" = "직교";
-"Perspective" = "원근";
-"Z-Direction" = "Z 방향";
-"Y-Direction" = "Y 방향";
-"X-Direction" = "X 방향";
-"PDB" = "PDB";
-"mmCIF" = "mmCIF";
-"CIF" = "CIF";
-"XYZ" = "XYZ";
-"VASP POSCAR" = "VASP POSCAR";
+/* (No Comment) */
 "Add Atom-Group" = "원자 그룹 추가";
+
+/* Add frame */
+"Add frame(s)" = "프레임 추가";
+
+/* (No Comment) */
+"Add Movies" = "영상 추가";
+
+/* (No Comment) */
+"Add Projects" = "프로젝트들 추가";
+
+/* (No Comment) */
+"Add Scenes" = "스냅샷 추가";
+
+/* (No Comment) */
 "Adding New Atom" = "새 원자 추가";
-"Reorder Atoms" = "원자 재정렬";
-"Change Atom Selection" = "원자 선택 변경";
-"Delete Atoms" = "원자 삭제";
-"Insert Atoms" = "원자 삽입";
-"Find and Impose Symmetry" = "대칭 찾기 및 ";
-"Flatten Hierarchy" = "계층 평면화";
-"Remove Symmetry" = "대칭 제거";
-"Wrap Atoms to Cell" = "원자를 셀 (Cell)로 감싸기";
-"Find Primitive" = "원시 (primitive) 격자 찾기";
-"Make Super-Cell" = "슈퍼 셀 만들기";
-"Invert Selection" = "반전 선택";
-"Change Fix Atom" = "수정된 원자 변경";
-"Change Atom Name" = "원자 이름 변경";
-"Change Atom Element" = "원자 원소 변경";
-"Change Atom Force Field Type" = "원자 포스필드 유형 변경";
-"Change Atom X-Position" = "원자 X- 위치 변경";
-"Change Atom Y-Position" = "원자 Y- 위치 변경";
-"Change Atom Z-Position" = "원자 Z- 위치 변경";
+
+/* (No Comment) */
+"Autosaving...." = "자동 저장....";
+
+/* (No Comment) */
+"Camera Projection" = "카메라 투영방식";
+
+/* No comment provided by engineer. */
+"Camera Reset To Direction" = "카메라 레스트 방향";
+
+/* (No Comment) */
+"Cannot Initialize from Data" = "데이터에서 초기화 할 수 없음";
+
+/* (No Comment) */
 "Change Atom Charge" = "원자 전하 (charge) 변경";
-"Change Bond-Length" = "결합 길이 변경";
-"Recompute Bonds" = "결합들 재 계산";
-"Delete Bonds" = "결합 삭제";
-"Insert Bonds" = "결합 삽입";
+
+/* (No Comment) */
+"Change Atom Element" = "원자 원소 변경";
+
+/* (No Comment) */
+"Change Atom Force Field Type" = "원자 포스필드 유형 변경";
+
+/* Change atom name */
+"Change Atom Name" = "원자 이름 변경";
+
+/* No comment provided by engineer. */
+"Change Atom Occupancy" = "원자 점유 변경";
+
+/* (No Comment) */
+"Change Atom Selection" = "원자 선택 변경";
+
+/* (No Comment) */
+"Change Atom X-Position" = "원자 X- 위치 변경";
+
+/* (No Comment) */
+"Change Atom Y-Position" = "원자 Y- 위치 변경";
+
+/* No comment provided by engineer. */
+"Change Atom Z-position" = "원자 Z- 위치 변경";
+
+/* (No Comment) */
+"Change Atom Z-Position" = "원자 Z- 위치 변경";
+
+/* (No Comment) */
 "Change Bond Selection" = "결합 선택 변경";
+
+/* (No Comment) */
+"Change Bond-Length" = "결합 길이 변경";
+
+/* (No Comment) */
+"Change Fix Atom" = "수정된 원자 변경";
+
+/* Change frame name */
+"Change frame name" = "프레임 이름 변경";
+
+/* (No Comment) */
+"Change Material Type" = "재료 유형 변경";
+
+/* (No Comment) */
+"Change Movie Name" = "영상 이름 변경";
+
+/* (No Comment) */
+"Change Positions" = "위치 변경";
+
+/* (No Comment) */
+"Change Project Name" = "프로젝트 이름 변경";
+
+/* (No Comment) */
+"Change Project Selection" = "프로젝트 선택 변경";
+
+/* (No Comment) */
+"Change Scene Name" = "스냅샷 이름 변경";
+
+/* No comment provided by engineer. */
+"Change Selection" = "선택 변경";
+
+/* (No Comment) */
+"Change Space Group" = "공간군 변경";
+
+/* (No Comment) */
+"CIF" = "CIF";
+
+/* (No Comment) */
+"Clear Selection" = "모든 선택 제외";
+
+/* (No Comment) */
+"Compute AO High-Quality" = "고품질 AO 계산";
+
+/* copies */
+"copies" = "사본";
+
+/* (No Comment) */
+"Could Not Read Main Database File" = "메인 데이터베이스 파일을 읽을 수 없습니다.";
+
+/* (No Comment) */
+"Delete Atoms" = "원자 삭제";
+
+/* (No Comment) */
+"Delete Bonds" = "결합 삭제";
+
+/* Delete selection */
+"Delete selection" = "선택 삭제";
+
+/* (No Comment) */
+"Delete Selection" = "선택 삭제";
+
+/* (No Comment) */
+"Document Read (%@)" = "문서 읽기 (%@)";
+
+/* duplicates */
+"duplicates" = "중복";
+
+/* (No Comment) */
+"Export To" = "내보내기";
+
+/* (No Comment) */
+"Find and Impose Symmetry" = "대칭 찾기 및 ";
+
+/* No comment provided by engineer. */
+"Find Niggli" = "니글리 찾기";
+
+/* (No Comment) */
+"Find Primitive" = "원시 (primitive) 격자 찾기";
+
+/* (No Comment) */
+"Flatten Hierarchy" = "계층 평면화";
+
+/* (No Comment) */
+"Gallery-File Not Found" = "갤러리 파일을 찾을 수 없음";
+
+/* (No Comment) */
+"Insert Atoms" = "원자 삽입";
+
+/* (No Comment) */
+"Insert Bonds" = "결합 삽입";
+
+/* Insert selection */
+"Insert selection" = "선택 삽입";
+
+/* (No Comment) */
+"Insert Selection" = "선택 삽입";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "잘못된 아카이브 버전 (최신 iRASPA 버전으로 업그레이드)";
+
+/* (No Comment) */
+"Invalid File Format" = "잘못된 파일 형식";
+
+/* (No Comment) */
+"Invert Selection" = "반전 선택";
+
+/* (No Comment) */
+"Loading (%@)" = "로딩 중 (%@)";
+
+/* (No Comment) */
+"M.V." = "M.V.";
+
+/* (No Comment) */
+"Make Super-Cell" = "슈퍼 셀 만들기";
+
+/* (No Comment) */
+"mmCIF" = "mmCIF";
+
+/* (No Comment) */
+"Mult. V." = "Mult. V.";
+
+/* (No Comment) */
+"Mult. Val." = "Mult. Val.";
+
+/* (No Comment) */
+"Multiple Values" = "Multiple Values";
+
+/* (No Comment) */
+"Orthographic" = "직교";
+
+/* (No Comment) */
+"PDB" = "PDB";
+
+/* (No Comment) */
+"Perspective" = "원근";
+
+/* (No Comment) */
+"Recompute Bonds" = "결합들 재 계산";
+
+/* (No Comment) */
+"Remove Permission" = "권한 제거";
+
+/* (No Comment) */
+"Remove Projects" = "프로젝트들 제거";
+
+/* (No Comment) */
+"Remove Symmetry" = "대칭 제거";
+
+/* (No Comment) */
+"Reorder Atoms" = "원자 재정렬";
+
+/* Reorder frames */
+"Reorder frames" = "프레임 재정렬";
+
+/* (No Comment) */
+"Reorder Movies" = "영상 재정렬";
+
+/* (No Comment) */
+"Reorder Projects" = "프로젝트들 재정렬";
+
+/* (No Comment) */
+"Reset Camera Distance" = "카메라 거리 재설정";
+
+/* (No Comment) */
+"Reset Camera To" = "카메라 재설정";
+
+/* (No Comment) */
+"Rotate (%@)" = "회전 (%@)";
+
+/* (No Comment) */
+"Saving to Archive (%@)" = "아카이브에 저장 (%@)";
+
+/* (No Comment) */
+"Select a Top-Level Directory" = "최상위 디렉토리 선택";
+
+/* (No Comment) */
+"Show Bounding Box" = "경계 상자 표시";
+
+/* (No Comment) */
+"Toggle Atom Selection" = "선택된 원자 전환";
+
+/* (No Comment) */
+"Toggle Bond Selection" = "선택된 결합 전환";
+
+/* (No Comment) */
+"VASP POSCAR" = "VASP POSCAR";
+
+/* (No Comment) */
+"Wrap Atoms to Cell" = "원자를 셀 (Cell)로 감싸기";
+
+/* (No Comment) */
+"X-Direction" = "X 방향";
+
+/* (No Comment) */
+"XYZ" = "XYZ";
+
+/* (No Comment) */
+"Y-Direction" = "Y 방향";
+
+/* (No Comment) */
+"Z-Direction" = "Z 방향";
+

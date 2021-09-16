@@ -2880,7 +2880,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
       {
         // work around bug that causes 'reloadItem' to not do anything
-        if let column: Int = self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomPositionXColumn"))
+        if let column: Int = self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomOccupancyColumn"))
         {
           self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: column))
         }

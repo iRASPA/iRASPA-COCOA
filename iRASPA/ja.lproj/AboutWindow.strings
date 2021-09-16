@@ -1,12 +1,12 @@
-
 /* Class = "NSTextFieldCell"; title = "Label"; ObjectID = "G5h-6i-ZYk"; */
 "G5h-6i-ZYk.title" = "ラベル";
 
 /* Class = "NSTextFieldCell"; title = "Label"; ObjectID = "JPr-Uz-bHk"; */
 "JPr-Uz-bHk.title" = "ラベル";
 
+/* Class = "NSButtonCell"; title = "Acknowledgements"; ObjectID = "m2c-7A-PkS"; */
+"m2c-7A-PkS.title" = "謝礼文";
+
 /* Class = "NSWindow"; title = "Window"; ObjectID = "VhY-ac-OwR"; */
 "VhY-ac-OwR.title" = "ウインドウ";
 
-/* Class = "NSButtonCell"; title = "Acknowledgements"; ObjectID = "m2c-7A-PkS"; */
-"m2c-7A-PkS.title" = "謝礼文";

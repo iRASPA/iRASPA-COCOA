@@ -1,30 +1,14 @@
+/* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
+"dAK-62-iur.title" = "Allgemeines";
+
+/* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
+"dQ7-i1-ieW.title" = "Allgemeine Einstellungen";
 
 /* Class = "NSBox"; title = "Read permission for"; ObjectID = "DrV-v1-Dd6"; */
 "DrV-v1-Dd6.title" = "Leseberechtigung für";
 
 /* Class = "NSViewController"; title = "Command-line"; ObjectID = "ErL-rs-pho"; */
 "ErL-rs-pho.title" = "Kommandozeile";
-
-/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
-"KqL-r5-hBW.title" = "Schreibberechtigung für";
-
-/* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
-"LKB-pQ-lE8.title" = "Animationseinstellungen";
-
-/* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
-"N3b-Db-pad.title" = "Einstellungen";
-
-/* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
-"RvG-Ag-1yO.title" = "Immer an";
-
-/* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
-"V1Y-Hh-Pro.title" = "Auswahl";
-
-/* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
-"dAK-62-iur.title" = "Allgemeines";
-
-/* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
-"dQ7-i1-ieW.title" = "Allgemeine Einstellungen";
 
 /* Class = "NSViewController"; title = "Animations"; ObjectID = "eTl-7O-cbU"; */
 "eTl-7O-cbU.title" = "Animationen";
@@ -38,14 +22,30 @@
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
 "kfw-MK-t7S.placeholderString" = "Dateisystemobjekt in diesen Bereich ziehen oder klicken, um den Pfad festzulegen";
 
+/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
+"KqL-r5-hBW.title" = "Schreibberechtigung für";
+
 /* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
 "lDy-gc-II8.title" = "Einstellungen";
+
+/* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
+"LKB-pQ-lE8.title" = "Animationseinstellungen";
 
 /* Class = "NSMenuItem"; title = "When connected to power source"; ObjectID = "miP-5k-r8f"; */
 "miP-5k-r8f.title" = "Bei Anschluss an Stromquelle";
 
+/* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
+"N3b-Db-pad.title" = "Einstellungen";
+
 /* Class = "NSButtonCell"; title = "Autosaving"; ObjectID = "n57-Vp-DI4"; */
 "n57-Vp-DI4.title" = "Automatisch speichern";
 
+/* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
+"RvG-Ag-1yO.title" = "Immer an";
+
+/* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
+"V1Y-Hh-Pro.title" = "Auswahl";
+
 /* Class = "NSButtonCell"; title = "Show tooltip in renderer"; ObjectID = "zSD-B6-1hO"; */
 "zSD-B6-1hO.title" = "Tooltip im Renderer anzeigen";
+

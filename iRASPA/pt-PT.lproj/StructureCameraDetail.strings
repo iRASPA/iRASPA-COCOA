@@ -1,33 +1,32 @@
+/* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "0bK-Qa-X5f"; */
+"0bK-Qa-X5f.title" = "Ângulos de Euler";
 
 /* Class = "NSButtonCell"; title = "Inch"; ObjectID = "0BR-Ed-UAj"; */
 "0BR-Ed-UAj.title" = "Polegada";
 
-/* Class = "NSTextFieldCell"; title = "Euler Angles"; ObjectID = "0bK-Qa-X5f"; */
-"0bK-Qa-X5f.title" = "Ângulos de Euler";
-
 /* Class = "NSButtonCell"; title = "+Z"; ObjectID = "0ro-vd-hvU"; */
 "0ro-vd-hvU.title" = "+Z";
+
+/* Class = "NSTextFieldCell"; title = "Y-Text Δ"; ObjectID = "1SH-ou-ISq"; */
+"1SH-ou-ISq.title" = "Y-Text Δ";
 
 /* Class = "NSTextFieldCell"; title = "Angle of View"; ObjectID = "1zS-f8-iGq"; */
 "1zS-f8-iGq.title" = "Ângulo de visão";
 
+/* Class = "NSBox"; title = "Virtual Camera Position"; ObjectID = "2oJ-c8-LXO"; */
+"2oJ-c8-LXO.title" = "Posição da câmera virtual";
+
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "3AB-fJ-slY"; */
 "3AB-fJ-slY.title" = "Girar +90°";
+
+/* Class = "NSTextFieldCell"; title = "Border Offset"; ObjectID = "3Eb-Se-y8S"; */
+"3Eb-Se-y8S.title" = "Deslocamento de borda";
 
 /* Class = "NSButtonCell"; title = "Cm"; ObjectID = "3pH-Uc-D8j"; */
 "3pH-Uc-D8j.title" = "Cm";
 
-/* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "57t-sa-bti"; */
-"57t-sa-bti.title" = "Ângulo de rotação";
-
 /* Class = "NSTextFieldCell"; title = "From"; ObjectID = "5QT-Q5-u3Q"; */
 "5QT-Q5-u3Q.title" = "A partir de";
-
-/* Class = "NSTextFieldCell"; title = "Dots-per-Inch"; ObjectID = "6Kn-fw-14a"; */
-"6Kn-fw-14a.title" = "Pontos por polegada";
-
-/* Class = "NSTextFieldCell"; placeholderString = "w0"; ObjectID = "6Z3-l1-QCv"; */
-"6Z3-l1-QCv.placeholderString" = "w0";
 
 /* Class = "NSTextFieldCell"; title = "Reset to"; ObjectID = "6ax-JH-gEz"; */
 "6ax-JH-gEz.title" = "Reiniciar para";
@@ -35,8 +34,11 @@
 /* Class = "NSBox"; title = "Edit Dimensions"; ObjectID = "6eO-AH-Xf2"; */
 "6eO-AH-Xf2.title" = "Editar Dimensões";
 
-/* Class = "NSButtonCell"; title = "Image"; ObjectID = "76r-PN-1MB"; */
-"76r-PN-1MB.title" = "Imagem";
+/* Class = "NSTextFieldCell"; title = "Dots-per-Inch"; ObjectID = "6Kn-fw-14a"; */
+"6Kn-fw-14a.title" = "Pontos por polegada";
+
+/* Class = "NSTextFieldCell"; placeholderString = "w0"; ObjectID = "6Z3-l1-QCv"; */
+"6Z3-l1-QCv.placeholderString" = "w0";
 
 /* Class = "NSMenuItem"; title = "8-bits, RGB"; ObjectID = "7II-ou-nrF"; */
 "7II-ou-nrF.title" = "8-bits, RGB";
@@ -50,29 +52,116 @@
 /* Class = "NSMenuItem"; title = "150 dpi"; ObjectID = "8FT-Ib-RKI"; */
 "8FT-Ib-RKI.title" = "150 dpi";
 
+/* Class = "NSMenuItem"; title = "Center"; ObjectID = "8R2-VZ-FFn"; */
+"8R2-VZ-FFn.title" = "Centro";
+
+/* Class = "NSMenuItem"; title = "Squashed"; ObjectID = "9mk-bx-9Dz"; */
+"9mk-bx-9Dz.title" = "Esmagado";
+
 /* Class = "NSButtonCell"; title = "Perspective"; ObjectID = "9XT-W6-7iV"; */
 "9XT-W6-7iV.title" = "Perspectiva";
 
-/* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "A0b-wl-zfu"; */
-"A0b-wl-zfu.title" = "Luzes";
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "9XV-fV-p6P"; */
+"9XV-fV-p6P.placeholderString" = "0.0";
 
-/* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
-"AWE-1B-YAz.placeholderString" = "cx";
+/* Class = "NSTextFieldCell"; title = "Z-Text Δ"; ObjectID = "21V-3m-Qlr"; */
+"21V-3m-Qlr.title" = "Z-Text Δ";
+
+/* Class = "NSMenuItem"; title = "Top-left"; ObjectID = "43w-Ai-xcb"; */
+"43w-Ai-xcb.title" = "Superior esquerdo";
+
+/* Class = "NSTextFieldCell"; title = "Rotation Angle"; ObjectID = "57t-sa-bti"; */
+"57t-sa-bti.title" = "Ângulo de rotação";
+
+/* Class = "NSButtonCell"; title = "Image"; ObjectID = "76r-PN-1MB"; */
+"76r-PN-1MB.title" = "Imagem";
 
 /* Class = "NSMenuItem"; title = "300 dpi"; ObjectID = "Abc-jz-2v1"; */
 "Abc-jz-2v1.title" = "300 dpi";
 
-/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "Ac4-9i-94c"; */
-"Ac4-9i-94c.title" = "Intensidade de luz difusa";
+/* Class = "NSButtonCell"; title = "Color"; ObjectID = "aLW-k0-vrB"; */
+"aLW-k0-vrB.title" = "Cor";
 
-/* Class = "NSTextFieldCell"; title = "Virtual Camera Position"; ObjectID = "BVw-iu-XbK"; */
-"2oJ-c8-LXO.title" = "Posição da câmera virtual";
+/* Class = "NSTextFieldCell"; placeholderString = "cx"; ObjectID = "AWE-1B-YAz"; */
+"AWE-1B-YAz.placeholderString" = "cx";
 
-/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "DsX-mM-8X0"; */
-"DsX-mM-8X0.title" = "Brilho";
+/* Class = "NSButtonCell"; title = "-Y"; ObjectID = "bAt-Aw-Vk1"; */
+"bAt-Aw-Vk1.title" = "-Y";
+
+/* Class = "NSMenuItem"; title = "Beam RGB"; ObjectID = "bEC-wj-yhU"; */
+"bEC-wj-yhU.title" = "Feixe RGB";
+
+/* Class = "NSTextFieldCell"; title = "X-Text Δ"; ObjectID = "brz-kR-IzY"; */
+"brz-kR-IzY.title" = "X-Text Δ";
+
+/* Class = "NSMenuItem"; title = "Beam Arrow RGB"; ObjectID = "BTA-jH-BJm"; */
+"BTA-jH-BJm.title" = "Seta de feixe RGB";
+
+/* Class = "NSTextFieldCell"; title = "%"; ObjectID = "BVy-9D-lyv"; */
+"BVy-9D-lyv.title" = "%";
+
+/* Class = "NSTextFieldCell"; title = "Physical Width"; ObjectID = "c0g-Es-8K7"; */
+"c0g-Es-8K7.title" = "Largura Física";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "C62-Ao-wsZ"; */
+"C62-Ao-wsZ.placeholderString" = "0.0";
+
+/* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "cBz-Hl-la6"; */
+"cBz-Hl-la6.placeholderString" = "az";
+
+/* Class = "NSTextFieldCell"; title = "Camera"; ObjectID = "ccJ-oG-yZH"; */
+"ccJ-oG-yZH.title" = "Câmera";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "cCw-C3-6Um"; */
+"cCw-C3-6Um.placeholderString" = "0.0";
+
+/* Class = "NSTextFieldCell"; title = "Background Additional Size"; ObjectID = "ci9-Ya-jv4"; */
+"ci9-Ya-jv4.title" = "Suze adicional de fundo";
+
+/* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "cLR-D8-6iw"; */
+"cLR-D8-6iw.title" = "Girar -90°";
+
+/* Class = "NSMenuItem"; title = "Bottom-right"; ObjectID = "cLV-HY-dhE"; */
+"cLV-HY-dhE.title" = "Canto inferior direito";
+
+/* Class = "NSMenuItem"; title = "Squashed RGB"; ObjectID = "dCG-I4-yhQ"; */
+"dCG-I4-yhQ.title" = "Esmagado RGB";
+
+/* Class = "NSTextFieldCell"; title = "To"; ObjectID = "dnF-bb-iSR"; */
+"dnF-bb-iSR.title" = "Para";
+
+/* Class = "NSTextFieldCell"; title = "Background"; ObjectID = "dor-ov-Wkd"; */
+"dor-ov-Wkd.title" = "Fundo";
+
+/* Class = "NSMenuItem"; title = "Beam"; ObjectID = "dyH-7V-dSt"; */
+"dyH-7V-dSt.title" = "Feixe";
+
+/* Class = "NSTextFieldCell"; title = "Shininess"; ObjectID = "edj-Iv-wfd"; */
+"edj-Iv-wfd.title" = "Brilho";
+
+/* Class = "NSTabViewItem"; label = "Linear Gradient"; ObjectID = "enh-gY-DeN"; */
+"enh-gY-DeN.label" = "Gradiente linear";
+
+/* Class = "NSMenuItem"; title = "Thin"; ObjectID = "EOA-uu-4t6"; */
+"EOA-uu-4t6.title" = "Afinar";
 
 /* Class = "NSTextFieldCell"; title = "Pixel Width"; ObjectID = "F9Y-qR-A6U"; */
 "F9Y-qR-A6U.title" = "Largura do Pixel";
+
+/* Class = "NSMenuItem"; title = "Thin RGB"; ObjectID = "ffz-rn-y2O"; */
+"ffz-rn-y2O.title" = "Afinar RGB";
+
+/* Class = "NSMenuItem"; title = "Filled Circle"; ObjectID = "fhj-3a-a9M"; */
+"fhj-3a-a9M.title" = "Círculo preenchido";
+
+/* Class = "NSBox"; title = "Projection"; ObjectID = "fM1-LC-a88"; */
+"fM1-LC-a88.title" = "Projeção";
+
+/* Class = "NSBox"; title = "Reset Direction"; ObjectID = "fU4-qD-Ex2"; */
+"fU4-qD-Ex2.title" = "Redefinir direção";
+
+/* Class = "NSTextFieldCell"; title = "Roundness"; ObjectID = "fXK-FR-6i0"; */
+"fXK-FR-6i0.title" = "Redondez";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ax"; ObjectID = "G3V-jP-oz6"; */
 "G3V-jP-oz6.placeholderString" = "ax";
@@ -80,23 +169,77 @@
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "G71-xR-yVF"; */
 "G71-xR-yVF.title" = "Girar +90°";
 
+/* Class = "NSTextFieldCell"; title = "Style"; ObjectID = "gru-eQ-QHe"; */
+"gru-eQ-QHe.title" = "Estilo";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "heo-jf-KT6"; */
+"heo-jf-KT6.placeholderString" = "0.0";
+
+/* Class = "NSMenuItem"; title = "Circle"; ObjectID = "hse-Qg-ZEb"; */
+"hse-Qg-ZEb.title" = "Círculo";
+
 /* Class = "NSButtonCell"; title = "Linear Gradient"; ObjectID = "I7e-iR-yaY"; */
 "I7e-iR-yaY.title" = "Gradiente linear";
+
+/* Class = "NSMenuItem"; title = "16-bits, CMYK"; ObjectID = "ilw-zG-CvO"; */
+"ilw-zG-CvO.title" = "16-bits, CMYK";
+
+/* Class = "NSTextFieldCell"; placeholderString = "cw"; ObjectID = "ios-n2-EM2"; */
+"ios-n2-EM2.placeholderString" = "cw";
+
+/* Class = "NSTextFieldCell"; title = "Pixel Height"; ObjectID = "iXA-YM-Nj6"; */
+"iXA-YM-Nj6.title" = "Altura do Pixel";
+
+/* Class = "NSMenuItem"; title = "Mid-right"; ObjectID = "JAc-IP-gOO"; */
+"JAc-IP-gOO.title" = "Meio-direito";
+
+/* Class = "NSTextFieldCell"; title = "Position"; ObjectID = "jEJ-um-9V1"; */
+"jEJ-um-9V1.title" = "Posição";
 
 /* Class = "NSMenuItem"; title = "8-bits, CMYK"; ObjectID = "JiR-AU-7kF"; */
 "JiR-AU-7kF.title" = "8-bits, CMYK";
 
+/* Class = "NSMenuItem"; title = "Beam Arrow"; ObjectID = "jQp-YY-b9R"; */
+"jQp-YY-b9R.title" = "Seta de feixe";
+
 /* Class = "NSButtonCell"; title = "Create Movie"; ObjectID = "Juc-g9-TL7"; */
 "Juc-g9-TL7.title" = "Criar Filme";
 
-/* Class = "NSBox"; title = "Camera Light"; ObjectID = "Jzl-ba-QmS"; */
-"Jzl-ba-QmS.title" = "Luz da câmera";
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "K1a-Tk-rjR"; */
+"K1a-Tk-rjR.placeholderString" = "0.0";
+
+/* Class = "NSTextFieldCell"; title = "Physical Height"; ObjectID = "kIf-EY-uff"; */
+"kIf-EY-uff.title" = "Altura Física";
+
+/* Class = "NSMenuItem"; title = "Thick RGB"; ObjectID = "kL7-xR-1dO"; */
+"kL7-xR-1dO.title" = "Grosso RGB";
+
+/* Class = "NSTextFieldCell"; title = "Axes"; ObjectID = "KwP-ct-eoZ"; */
+"KwP-ct-eoZ.title" = "Machados";
 
 /* Class = "NSTextFieldCell"; title = "From"; ObjectID = "Kzo-ya-Jtv"; */
 "Kzo-ya-Jtv.title" = "A partir de";
 
+/* Class = "NSButtonCell"; title = "-Z"; ObjectID = "l7h-Ex-PBb"; */
+"l7h-Ex-PBb.title" = "-Z";
+
+/* Class = "NSButtonCell"; title = "Physical Dimensions"; ObjectID = "lDC-eo-YDn"; */
+"lDC-eo-YDn.title" = "Dimensões Físicas";
+
+/* Class = "NSTextFieldCell"; title = "Background Shape"; ObjectID = "lj8-fx-9ec"; */
+"lj8-fx-9ec.title" = "Forma de fundo";
+
+/* Class = "NSBox"; title = "Center of Scene"; ObjectID = "loi-gG-s0z"; */
+"loi-gG-s0z.title" = "Centro de cena";
+
 /* Class = "NSTextFieldCell"; placeholderString = "bz"; ObjectID = "LQP-iH-ONP"; */
 "LQP-iH-ONP.placeholderString" = "bz";
+
+/* Class = "NSBox"; title = "View Matrix"; ObjectID = "lws-F1-am6"; */
+"lws-F1-am6.title" = "Matriz de visualização";
+
+/* Class = "NSTextFieldCell"; title = "%"; ObjectID = "lzg-hj-yor"; */
+"lzg-hj-yor.title" = "%";
 
 /* Class = "NSTextFieldCell"; title = "Pictures/Movies"; ObjectID = "MBE-Ci-b6w"; */
 "MBE-Ci-b6w.title" = "Imagens / Filmes";
@@ -104,20 +247,65 @@
 /* Class = "NSButtonCell"; title = "Rotate +90°"; ObjectID = "MEZ-QI-Kgi"; */
 "MEZ-QI-Kgi.title" = "Girar +90°";
 
+/* Class = "NSMenuItem"; title = "600 dpi"; ObjectID = "mfB-Ok-4s0"; */
+"mfB-Ok-4s0.title" = "600 dpi";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse Light Intensity"; ObjectID = "MvS-2z-nni"; */
+"MvS-2z-nni.title" = "Intensidade de luz difusa";
+
 /* Class = "NSTabViewItem"; label = "Radial Gradient"; ObjectID = "NfR-n9-0Kg"; */
 "NfR-n9-0Kg.label" = "Gradiente Radial";
+
+/* Class = "NSButtonCell"; title = "-X"; ObjectID = "nOq-8m-Ecw"; */
+"nOq-8m-Ecw.title" = "-X";
+
+/* Class = "NSTextFieldCell"; placeholderString = "by"; ObjectID = "o6h-wD-wJX"; */
+"o6h-wD-wJX.placeholderString" = "by";
 
 /* Class = "NSMenuItem"; title = "72 dpi"; ObjectID = "OgY-Mc-Pa0"; */
 "OgY-Mc-Pa0.title" = "72 dpi";
 
+/* Class = "NSBox"; title = "Camera Light"; ObjectID = "OJX-cL-3p0"; */
+"OJX-cL-3p0.title" = "Luz da câmera";
+
 /* Class = "NSButtonCell"; title = "Create Picture"; ObjectID = "Oki-uY-N6d"; */
 "Oki-uY-N6d.title" = "Criar imagem";
+
+/* Class = "NSTextFieldCell"; placeholderString = "w4"; ObjectID = "omV-gt-Y7i"; */
+"omV-gt-Y7i.placeholderString" = "w4";
+
+/* Class = "NSMenuItem"; title = "Top-right"; ObjectID = "oxV-IU-00O"; */
+"oxV-IU-00O.title" = "Canto superior direito";
 
 /* Class = "NSTextFieldCell"; placeholderString = "w1"; ObjectID = "P2r-W6-ODo"; */
 "P2r-W6-ODo.placeholderString" = "w1";
 
+/* Class = "NSTextFieldCell"; title = "Scaling"; ObjectID = "plX-f7-StS"; */
+"plX-f7-StS.title" = "Escala";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "pnN-DY-0XC"; */
+"pnN-DY-0XC.placeholderString" = "0.0";
+
+/* Class = "NSTextFieldCell"; placeholderString = "aw"; ObjectID = "pWL-mt-6EV"; */
+"pWL-mt-6EV.placeholderString" = "aw";
+
+/* Class = "NSTextFieldCell"; placeholderString = "w3"; ObjectID = "q4e-oo-581"; */
+"q4e-oo-581.placeholderString" = "w3";
+
+/* Class = "NSTextFieldCell"; title = "Size"; ObjectID = "Q6Y-jW-khH"; */
+"Q6Y-jW-khH.title" = "Tamanho";
+
 /* Class = "NSTextFieldCell"; title = "Frames per Second"; ObjectID = "Qsi-Kr-087"; */
 "Qsi-Kr-087.title" = "Fotograma por segundo";
+
+/* Class = "NSMenuItem"; title = "Default"; ObjectID = "Qty-yJ-uWI"; */
+"Qty-yJ-uWI.title" = "Predefinição";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "r0J-L3-v3h"; */
+"r0J-L3-v3h.title" = "Nenhum";
+
+/* Class = "NSButtonCell"; title = "+Y"; ObjectID = "r06-Tg-NhM"; */
+"r06-Tg-NhM.title" = "+Y";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "R6f-wb-uXg"; */
 "R6f-wb-uXg.title" = "Célula de Texto";
@@ -125,11 +313,29 @@
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "RnM-1Y-4q4"; */
 "RnM-1Y-4q4.title" = "Girar -90°";
 
+/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "RnX-oY-2qu"; */
+"RnX-oY-2qu.title" = "Intensidade de luz especula";
+
+/* Class = "NSMenuItem"; title = "75 dpi"; ObjectID = "rYg-yJ-LZh"; */
+"rYg-yJ-LZh.title" = "75 dpi";
+
+/* Class = "NSTextFieldCell"; title = "Angle"; ObjectID = "s1v-KQ-wWY"; */
+"s1v-KQ-wWY.title" = "Ângulo";
+
 /* Class = "NSTabViewItem"; label = "Color"; ObjectID = "S9f-2w-uQW"; */
 "S9f-2w-uQW.label" = "Cor";
 
 /* Class = "NSTextFieldCell"; placeholderString = "bw"; ObjectID = "STl-YE-VJv"; */
 "STl-YE-VJv.placeholderString" = "bw";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "tcr-sN-H8h"; */
+"tcr-sN-H8h.placeholderString" = "0.0";
+
+/* Class = "NSMenuItem"; title = "Rounded Box"; ObjectID = "tcu-D7-nA6"; */
+"tcu-D7-nA6.title" = "Caixa arredondada";
+
+/* Class = "NSBox"; title = "Text Properties"; ObjectID = "Ttf-lP-buf"; */
+"Ttf-lP-buf.title" = "Propriedades de teste";
 
 /* Class = "NSTextFieldCell"; placeholderString = "ay"; ObjectID = "Twg-bH-Whh"; */
 "Twg-bH-Whh.placeholderString" = "ay";
@@ -143,8 +349,20 @@
 /* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "Ume-JN-QU8"; */
 "Ume-JN-QU8.title" = "Girar -90°";
 
+/* Class = "NSMenuItem"; title = "Bottom-left"; ObjectID = "Unh-4w-MEx"; */
+"Unh-4w-MEx.title" = "Inferior esquerdo";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "Uy3-D0-vOI"; */
+"Uy3-D0-vOI.placeholderString" = "0.0";
+
+/* Class = "NSMenuItem"; title = "Filled Box"; ObjectID = "V4c-x2-Sl5"; */
+"V4c-x2-Sl5.title" = "Caixa cheia";
+
 /* Class = "NSTextFieldCell"; placeholderString = "cy"; ObjectID = "V5t-DE-51J"; */
 "V5t-DE-51J.placeholderString" = "cy";
+
+/* Class = "NSMenuItem"; title = "Mid-left"; ObjectID = "v8W-da-bgI"; */
+"v8W-da-bgI.title" = "Meio-esquerdo";
 
 /* Class = "NSButtonCell"; title = "Pixel Dimensions"; ObjectID = "VDa-dN-sUv"; */
 "VDa-dN-sUv.title" = "Dimensões do pixel";
@@ -155,119 +373,50 @@
 /* Class = "NSButtonCell"; title = "-X"; ObjectID = "Vlq-HR-Lxn"; */
 "Vlq-HR-Lxn.title" = "-X";
 
-/* Class = "NSTextFieldCell"; placeholderString = "bx"; ObjectID = "WFD-2H-apd"; */
-"WFD-2H-apd.placeholderString" = "bx";
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "vVr-jE-0yE"; */
+"vVr-jE-0yE.placeholderString" = "0.0";
 
-/* Class = "NSButtonCell"; title = "Radial Gradient"; ObjectID = "X0p-ze-Zzs"; */
-"X0p-ze-Zzs.title" = "Gradiente Radial";
-
-/* Class = "NSTextFieldCell"; title = "To"; ObjectID = "XeU-0O-MTz"; */
-"XeU-0O-MTz.title" = "To";
-
-/* Class = "NSTextFieldCell"; placeholderString = "cz"; ObjectID = "Y12-m8-sOG"; */
-"Y12-m8-sOG.placeholderString" = "cz";
-
-/* Class = "NSTextFieldCell"; title = "Quality/Type"; ObjectID = "YN2-kq-iUD"; */
-"YN2-kq-iUD.title" = "Qualidade / Tipo";
-
-/* Class = "NSButtonCell"; title = "Color"; ObjectID = "aLW-k0-vrB"; */
-"aLW-k0-vrB.title" = "Cor";
-
-/* Class = "NSButtonCell"; title = "-Y"; ObjectID = "bAt-Aw-Vk1"; */
-"bAt-Aw-Vk1.title" = "-Y";
-
-/* Class = "NSTextFieldCell"; title = "Physical Width"; ObjectID = "c0g-Es-8K7"; */
-"c0g-Es-8K7.title" = "Largura Física";
-
-/* Class = "NSTextFieldCell"; placeholderString = "az"; ObjectID = "cBz-Hl-la6"; */
-"cBz-Hl-la6.placeholderString" = "az";
-
-/* Class = "NSButtonCell"; title = "Rotate -90°"; ObjectID = "cLR-D8-6iw"; */
-"cLR-D8-6iw.title" = "Girar -90°";
-
-/* Class = "NSTextFieldCell"; title = "Camera"; ObjectID = "ccJ-oG-yZH"; */
-"ccJ-oG-yZH.title" = "Câmera";
-
-/* Class = "NSTextFieldCell"; title = "To"; ObjectID = "dnF-bb-iSR"; */
-"dnF-bb-iSR.title" = "Para";
-
-/* Class = "NSTextFieldCell"; title = "Background"; ObjectID = "dor-ov-Wkd"; */
-"dor-ov-Wkd.title" = "Fundo";
-
-/* Class = "NSTabViewItem"; label = "Linear Gradient"; ObjectID = "enh-gY-DeN"; */
-"enh-gY-DeN.label" = "Gradiente linear";
-
-/* Class = "NSBox"; title = "Projection"; ObjectID = "fM1-LC-a88"; */
-"fM1-LC-a88.title" = "Projeção";
-
-/* Class = "NSBox"; title = "Reset Direction"; ObjectID = "fU4-qD-Ex2"; */
-"fU4-qD-Ex2.title" = "Redefinir direção";
-
-/* Class = "NSTextFieldCell"; title = "Roundness"; ObjectID = "fXK-FR-6i0"; */
-"fXK-FR-6i0.title" = "Redondez";
-
-/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "fwm-RT-44D"; */
-"fwm-RT-44D.title" = "Intensidade de luz ambiente";
-
-/* Class = "NSTextFieldCell"; title = "Pixel Height"; ObjectID = "iXA-YM-Nj6"; */
-"iXA-YM-Nj6.title" = "Altura do Pixel";
-
-/* Class = "NSMenuItem"; title = "16-bits, CMYK"; ObjectID = "ilw-zG-CvO"; */
-"ilw-zG-CvO.title" = "16-bits, CMYK";
-
-/* Class = "NSTextFieldCell"; placeholderString = "cw"; ObjectID = "ios-n2-EM2"; */
-"ios-n2-EM2.placeholderString" = "cw";
-
-/* Class = "NSTextFieldCell"; title = "Physical Height"; ObjectID = "kIf-EY-uff"; */
-"kIf-EY-uff.title" = "Altura Física";
-
-/* Class = "NSButtonCell"; title = "-Z"; ObjectID = "l7h-Ex-PBb"; */
-"l7h-Ex-PBb.title" = "-Z";
-
-/* Class = "NSButtonCell"; title = "Physical Dimensions"; ObjectID = "lDC-eo-YDn"; */
-"lDC-eo-YDn.title" = "Dimensões Físicas";
-
-/* Class = "NSBox"; title = "Center of Scene"; ObjectID = "loi-gG-s0z"; */
-"loi-gG-s0z.title" = "Centro de cena";
-
-/* Class = "NSBox"; title = "View Matrix"; ObjectID = "lws-F1-am6"; */
-"lws-F1-am6.title" = "Matriz de visualização";
-
-/* Class = "NSMenuItem"; title = "600 dpi"; ObjectID = "mfB-Ok-4s0"; */
-"mfB-Ok-4s0.title" = "600 dpi";
-
-/* Class = "NSButtonCell"; title = "-X"; ObjectID = "nOq-8m-Ecw"; */
-"nOq-8m-Ecw.title" = "-X";
-
-/* Class = "NSTextFieldCell"; placeholderString = "by"; ObjectID = "o6h-wD-wJX"; */
-"o6h-wD-wJX.placeholderString" = "by";
-
-/* Class = "NSTextFieldCell"; placeholderString = "w4"; ObjectID = "omV-gt-Y7i"; */
-"omV-gt-Y7i.placeholderString" = "w4";
-
-/* Class = "NSTextFieldCell"; placeholderString = "aw"; ObjectID = "pWL-mt-6EV"; */
-"pWL-mt-6EV.placeholderString" = "aw";
-
-/* Class = "NSTextFieldCell"; placeholderString = "w3"; ObjectID = "q4e-oo-581"; */
-"q4e-oo-581.placeholderString" = "w3";
-
-/* Class = "NSButtonCell"; title = "+Y"; ObjectID = "r06-Tg-NhM"; */
-"r06-Tg-NhM.title" = "+Y";
-
-/* Class = "NSMenuItem"; title = "75 dpi"; ObjectID = "rYg-yJ-LZh"; */
-"rYg-yJ-LZh.title" = "75 dpi";
-
-/* Class = "NSTextFieldCell"; title = "Angle"; ObjectID = "s1v-KQ-wWY"; */
-"s1v-KQ-wWY.title" = "Ângulo";
-
-/* Class = "NSTextFieldCell"; title = "Distance"; ObjectID = "wZf-ug-0PD"; */
-"wZf-ug-0PD.title" = "Distância";
+/* Class = "NSMenuItem"; title = "Box"; ObjectID = "w6j-4z-jhf"; */
+"w6j-4z-jhf.title" = "Caixa";
 
 /* Class = "NSTextFieldCell"; title = "95%"; ObjectID = "wbM-MI-727"; */
 "wbM-MI-727.title" = "95%";
 
+/* Class = "NSTextFieldCell"; title = "Ambient Light Intensity"; ObjectID = "WDr-IW-LVK"; */
+"WDr-IW-LVK.title" = "Intensidade de luz ambient";
+
+/* Class = "NSTextFieldCell"; placeholderString = "bx"; ObjectID = "WFD-2H-apd"; */
+"WFD-2H-apd.placeholderString" = "bx";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "WFK-fw-WN8"; */
+"WFK-fw-WN8.title" = "Nenhum";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "wlY-4X-iGl"; */
+"wlY-4X-iGl.placeholderString" = "0.0";
+
+/* Class = "NSTextFieldCell"; title = "Distance"; ObjectID = "wZf-ug-0PD"; */
+"wZf-ug-0PD.title" = "Distância";
+
+/* Class = "NSButtonCell"; title = "Radial Gradient"; ObjectID = "X0p-ze-Zzs"; */
+"X0p-ze-Zzs.title" = "Gradiente Radial";
+
 /* Class = "NSButtonCell"; title = "Orthographic"; ObjectID = "xBp-1E-rPs"; */
 "xBp-1E-rPs.title" = "Ortográfico";
+
+/* Class = "NSTextFieldCell"; title = "To"; ObjectID = "XeU-0O-MTz"; */
+"XeU-0O-MTz.title" = "To";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "xKP-9F-adm"; */
+"xKP-9F-adm.placeholderString" = "0.0";
+
+/* Class = "NSMenuItem"; title = "Thick"; ObjectID = "XLl-ZZ-hnz"; */
+"XLl-ZZ-hnz.title" = "Grosso";
+
+/* Class = "NSMenuItem"; title = "Mid-bottom"; ObjectID = "xXh-yB-6Qk"; */
+"xXh-yB-6Qk.title" = "Meio baixo";
+
+/* Class = "NSTextFieldCell"; placeholderString = "cz"; ObjectID = "Y12-m8-sOG"; */
+"Y12-m8-sOG.placeholderString" = "cz";
 
 /* Class = "NSMenuItem"; title = "1200 dpi"; ObjectID = "yBW-uB-hCP"; */
 "yBW-uB-hCP.title" = "1200 dpi";
@@ -275,8 +424,21 @@
 /* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "yHr-tp-pfy"; */
 "yHr-tp-pfy.title" = "Seleção";
 
+/* Class = "NSTextFieldCell"; title = "Quality/Type"; ObjectID = "YN2-kq-iUD"; */
+"YN2-kq-iUD.title" = "Qualidade / Tipo";
+
+/* Class = "NSMenuItem"; title = "Mid-top"; ObjectID = "z2p-wA-Dgi"; */
+"z2p-wA-Dgi.title" = "Centro superior";
+
 /* Class = "NSTextFieldCell"; title = "Image"; ObjectID = "zBc-ll-o44"; */
 "zBc-ll-o44.title" = "Imagem";
 
-/* Class = "NSTextFieldCell"; title = "Specular Light Intensity"; ObjectID = "zor-Zk-OSK"; */
-"zor-Zk-OSK.title" = "Intensidade de luz especular";
+/* Class = "NSMenuItem"; title = "Filled Rounded Box"; ObjectID = "zGN-nt-OaU"; */
+"zGN-nt-OaU.title" = "Caixa redonda cheia";
+
+/* Class = "NSTextFieldCell"; title = "Lights"; ObjectID = "ZNY-Xx-cLv"; */
+"ZNY-Xx-cLv.title" = "Luzes";
+
+/* Class = "NSTextFieldCell"; placeholderString = "0.0"; ObjectID = "zVP-gn-8hi"; */
+"zVP-gn-8hi.placeholderString" = "0.0";
+

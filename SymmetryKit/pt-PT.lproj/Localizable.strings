@@ -1,119 +1,357 @@
-"Hydrogen" = "Hidrogénio";
-"Helium" = "Hélio";
-"Lithium" = "Lítio";
-"Beryllium" = "Berílio";
-"Boron" = "Boro";
-"Carbon" = "Carbono";
-"Nitrogen" = "Nitrogénio";
-"Oxygen" = "Oxigénio";
-"Fluorine" = "Flúor";
-"Neon" = "Néon";
-"Sodium" = "Sódio";
-"Magnesium" = "Magnésio";
-"Aluminum" = "Alumínio";
-"Silicon" = "Silício";
-"Phosphorus" = "Fósforo";
-"Sulfur" = "Enxofre";
-"Chlorine" = "Cloro";
-"Argon" = "Árgon";
-"Potassium" = "Potássio";
-"Calcium" = "Cálcio";
-"Scandium" = "Escândio";
-"Titanium" = "Titânio";
-"Vanadium" = "Vanádio";
-"Chromium" = "Cromo";
-"Manganese" = "Manganês";
-"Iron" = "Ferro";
-"Cobalt" = "Cobalto";
-"Nickel" = "Níquel";
-"Copper" = "Cobre";
-"Zinc" = "Zinco";
-"Gallium" = "Gálio";
-"Germanium" = "Germânio";
-"Arsenic" = "Arsénio";
-"Selenium" = "Selénio";
-"Bromine" = "Bromo";
-"Krypton" = "Crípton";
-"Rubidium" = "Rubídio";
-"Strontium" = "Estrôncio";
-"Yttrium" = "Ítrio";
-"Zirconium" = "Zircónio";
-"Niobium" = "Nióbio";
-"Molybdenum" = "Molibdénio";
-"Technetium" = "Tecnécio";
-"Ruthenium" = "Ruténio";
-"Rhodium" = "Ródio";
-"Palladium" = "Paládio";
-"Silver" = "Prata";
-"Cadmium" = "Cádmio";
-"Indium" = "Índio";
-"Tin" = "Estanho";
-"Antimony" = "Antimónio";
-"Tellurium" = "Telúrio";
-"Iodine" = "Iodo";
-"Xenon" = "Xénon";
-"Cesium" = "Césio";
-"Barium" = "Bário";
-"Lanthanum" = "Lantânio";
-"Cerium" = "Cério";
-"Praseodymium" = "Praseodímio";
-"Neodymium" = "Neodímio";
-"Promethium" = "Promécio";
-"Samarium" = "Samário";
-"Europium" = "Európio";
-"Gadolinium" = "Gadolínio";
-"Terbium" = "Térbio";
-"Dysprosium" = "Disprósio";
-"Holmium" = "Hólmio";
-"Erbium" = "Érbio";
-"Thulium" = "Túlio";
-"Ytterbium" = "Itérbio";
-"Lutetium" = "Lutécio";
-"Hafnium" = "Háfnio";
-"Tantalum" = "Tântalo";
-"Tungsten" = "Tungsténio";
-"Rhenium" = "Rénio";
-"Osmium" = "Ósmio";
-"Iridium" = "Irídio";
-"Platinum" = "Platina";
-"Gold" = "Ouro";
-"Mercury" = "Mercúrio";
-"Thallium" = "Tálio";
-"Lead" = "Chumbo";
-"Bismuth" = "Bismuto";
-"Polonium" = "Polónio";
-"Astatine" = "Ástato";
-"Radon" = "Rádon";
-"Francium" = "Frâncio";
-"Radium" = "Rádio";
+/* (No Comment) */
 "Actinium" = "Actínio";
-"Thorium" = "Tório";
-"Protactinium" = "Protacnídio";
-"Uranium" = "Urânio";
-"Neptunium" = "Neptúnio";
-"Plutonium" = "Plutónio";
+
+/* (No Comment) */
+"Aluminum" = "Alumínio";
+
+/* (No Comment) */
 "Americium" = "Amerício";
-"Curium" = "Cúrio";
+
+/* (No Comment) */
+"Antimony" = "Antimónio";
+
+/* (No Comment) */
+"Argon" = "Árgon";
+
+/* (No Comment) */
+"Arsenic" = "Arsénio";
+
+/* (No Comment) */
+"Astatine" = "Ástato";
+
+/* (No Comment) */
+"Barium" = "Bário";
+
+/* (No Comment) */
 "Berkelium" = "Berkélio";
-"Californium" = "Califórnio";
-"Einsteinium" = "Einsténio";
-"Fermium" = "Férmio";
-"Mendelevium" = "Mendelévio";
-"Nobelium" = "Nobélio";
-"Lawrencium" = "Lawrêncio";
-"Rutherfordium" = "Rutherfórdio";
-"Dubnium" = "Dúbnio";
-"Seaborgium" = "Seabórgio";
+
+/* (No Comment) */
+"Beryllium" = "Berílio";
+
+/* (No Comment) */
+"Bismuth" = "Bismuto";
+
+/* (No Comment) */
 "Bohrium" = "Bóhrio";
-"Hassium" = "Hássio";
-"Meitnerium" = "Meitnério";
-"Darmstadtium" = "Darmstácio";
-"Roentgenium" = "Roentgénio";
+
+/* (No Comment) */
+"Boron" = "Boro";
+
+/* (No Comment) */
+"Bromine" = "Bromo";
+
+/* (No Comment) */
+"Cadmium" = "Cádmio";
+
+/* (No Comment) */
+"Calcium" = "Cálcio";
+
+/* (No Comment) */
+"Californium" = "Califórnio";
+
+/* (No Comment) */
+"Carbon" = "Carbono";
+
+/* (No Comment) */
+"Cerium" = "Cério";
+
+/* (No Comment) */
+"Cesium" = "Césio";
+
+/* (No Comment) */
+"Chlorine" = "Cloro";
+
+/* (No Comment) */
+"Chromium" = "Cromo";
+
+/* (No Comment) */
+"Cobalt" = "Cobalto";
+
+/* (No Comment) */
 "Copernicium" = "Copernício";
-"Nihonium" = "Nipónio";
+
+/* (No Comment) */
+"Copper" = "Cobre";
+
+/* (No Comment) */
+"Curium" = "Cúrio";
+
+/* (No Comment) */
+"Darmstadtium" = "Darmstácio";
+
+/* (No Comment) */
+"Dubnium" = "Dúbnio";
+
+/* (No Comment) */
+"Dysprosium" = "Disprósio";
+
+/* (No Comment) */
+"Einsteinium" = "Einsténio";
+
+/* (No Comment) */
+"Erbium" = "Érbio";
+
+/* (No Comment) */
+"Europium" = "Európio";
+
+/* (No Comment) */
+"Fermium" = "Férmio";
+
+/* (No Comment) */
 "Flerovium" = "Fleróvio";
-"Moscovium" = "Moscóvio";
-"Livermorium" = "Livermório";
-"Tennessine" = "Tennesso";
-"Oganesson" = "Oganésson";
+
+/* (No Comment) */
+"Fluorine" = "Flúor";
+
+/* (No Comment) */
+"Francium" = "Frâncio";
+
+/* (No Comment) */
+"Gadolinium" = "Gadolínio";
+
+/* (No Comment) */
+"Gallium" = "Gálio";
+
+/* (No Comment) */
+"Germanium" = "Germânio";
+
+/* (No Comment) */
+"Gold" = "Ouro";
+
+/* (No Comment) */
+"Hafnium" = "Háfnio";
+
+/* (No Comment) */
+"Hassium" = "Hássio";
+
+/* (No Comment) */
+"Helium" = "Hélio";
+
+/* (No Comment) */
+"Holmium" = "Hólmio";
+
+/* (No Comment) */
+"Hydrogen" = "Hidrogénio";
+
+/* (No Comment) */
+"Indium" = "Índio";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Versão de arquivo inválida (atualize para a versão mais recente do iRASPA)";
+
+/* (No Comment) */
+"Iodine" = "Iodo";
+
+/* (No Comment) */
+"Iridium" = "Irídio";
+
+/* (No Comment) */
+"Iron" = "Ferro";
+
+/* (No Comment) */
+"Krypton" = "Crípton";
+
+/* (No Comment) */
+"Lanthanum" = "Lantânio";
+
+/* (No Comment) */
+"Lawrencium" = "Lawrêncio";
+
+/* (No Comment) */
+"Lead" = "Chumbo";
+
+/* (No Comment) */
+"Lithium" = "Lítio";
+
+/* (No Comment) */
+"Livermorium" = "Livermório";
+
+/* (No Comment) */
+"Lutetium" = "Lutécio";
+
+/* (No Comment) */
+"Magnesium" = "Magnésio";
+
+/* (No Comment) */
+"Manganese" = "Manganês";
+
+/* (No Comment) */
+"Meitnerium" = "Meitnério";
+
+/* (No Comment) */
+"Mendelevium" = "Mendelévio";
+
+/* (No Comment) */
+"Mercury" = "Mercúrio";
+
+/* (No Comment) */
+"Molybdenum" = "Molibdénio";
+
+/* (No Comment) */
+"Moscovium" = "Moscóvio";
+
+/* (No Comment) */
+"Neodymium" = "Neodímio";
+
+/* (No Comment) */
+"Neon" = "Néon";
+
+/* (No Comment) */
+"Neptunium" = "Neptúnio";
+
+/* (No Comment) */
+"Nickel" = "Níquel";
+
+/* (No Comment) */
+"Nihonium" = "Nipónio";
+
+/* (No Comment) */
+"Niobium" = "Nióbio";
+
+/* (No Comment) */
+"Nitrogen" = "Nitrogénio";
+
+/* (No Comment) */
+"Nobelium" = "Nobélio";
+
+/* (No Comment) */
+"Oganesson" = "Oganésson";
+
+/* (No Comment) */
+"Osmium" = "Ósmio";
+
+/* (No Comment) */
+"Oxygen" = "Oxigénio";
+
+/* (No Comment) */
+"Palladium" = "Paládio";
+
+/* (No Comment) */
+"Phosphorus" = "Fósforo";
+
+/* (No Comment) */
+"Platinum" = "Platina";
+
+/* (No Comment) */
+"Plutonium" = "Plutónio";
+
+/* (No Comment) */
+"Polonium" = "Polónio";
+
+/* (No Comment) */
+"Potassium" = "Potássio";
+
+/* (No Comment) */
+"Praseodymium" = "Praseodímio";
+
+/* (No Comment) */
+"Promethium" = "Promécio";
+
+/* (No Comment) */
+"Protactinium" = "Protacnídio";
+
+/* (No Comment) */
+"Radium" = "Rádio";
+
+/* (No Comment) */
+"Radon" = "Rádon";
+
+/* (No Comment) */
+"Rhenium" = "Rénio";
+
+/* (No Comment) */
+"Rhodium" = "Ródio";
+
+/* (No Comment) */
+"Roentgenium" = "Roentgénio";
+
+/* (No Comment) */
+"Rubidium" = "Rubídio";
+
+/* (No Comment) */
+"Ruthenium" = "Ruténio";
+
+/* (No Comment) */
+"Rutherfordium" = "Rutherfórdio";
+
+/* (No Comment) */
+"Samarium" = "Samário";
+
+/* (No Comment) */
+"Scandium" = "Escândio";
+
+/* (No Comment) */
+"Seaborgium" = "Seabórgio";
+
+/* (No Comment) */
+"Selenium" = "Selénio";
+
+/* (No Comment) */
+"Silicon" = "Silício";
+
+/* (No Comment) */
+"Silver" = "Prata";
+
+/* (No Comment) */
+"Sodium" = "Sódio";
+
+/* (No Comment) */
+"Strontium" = "Estrôncio";
+
+/* (No Comment) */
+"Sulfur" = "Enxofre";
+
+/* (No Comment) */
+"Tantalum" = "Tântalo";
+
+/* (No Comment) */
+"Technetium" = "Tecnécio";
+
+/* (No Comment) */
+"Tellurium" = "Telúrio";
+
+/* (No Comment) */
+"Tennessine" = "Tennesso";
+
+/* (No Comment) */
+"Terbium" = "Térbio";
+
+/* (No Comment) */
+"Thallium" = "Tálio";
+
+/* (No Comment) */
+"Thorium" = "Tório";
+
+/* (No Comment) */
+"Thulium" = "Túlio";
+
+/* (No Comment) */
+"Tin" = "Estanho";
+
+/* (No Comment) */
+"Titanium" = "Titânio";
+
+/* (No Comment) */
+"Tungsten" = "Tungsténio";
+
+/* (No Comment) */
+"Uranium" = "Urânio";
+
+/* (No Comment) */
+"Vanadium" = "Vanádio";
+
+/* (No Comment) */
+"Xenon" = "Xénon";
+
+/* (No Comment) */
+"Ytterbium" = "Itérbio";
+
+/* (No Comment) */
+"Yttrium" = "Ítrio";
+
+/* (No Comment) */
+"Zinc" = "Zinco";
+
+/* (No Comment) */
+"Zirconium" = "Zircónio";
+
