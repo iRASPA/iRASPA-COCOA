@@ -50,7 +50,8 @@ class PreviewViewController: NSViewController, QLPreviewingController
     projectTreeNode.unwrapLazyLocalPresentedObjectIfNeeded()
           
     if let project: ProjectStructureNode  = projectTreeNode.representedObject.loadedProjectStructureNode,
-       let device = MTLCreateSystemDefaultDevice()
+       let device = MTLCreateSystemDefaultDevice(),
+       project.sceneList.totalNumberOfAtoms < 20000
     {
       let camera: RKCamera = RKCamera()
       
