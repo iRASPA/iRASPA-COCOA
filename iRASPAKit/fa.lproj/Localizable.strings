@@ -1,13 +1,39 @@
-"GALLERY" = "گالری";
-"Gallery" = "گالری";
-"LOCAL PROJECTS" = "پروژه های محلی";
-"Local Projects" = "پروژه های محلی";
-"ICLOUD PUBLIC" = "عمومی ICLOUD";
-"iCloud Public" = "عمومی icloud";
+/* (No Comment) */
 "Could Not Determine Status of iCloud Account" = "وضعیت حساب iCloud تعیین نشد";
-"iCloud Account Available" = "حساب iCloud موجود است";
+
+/* (No Comment) */
+"Gallery" = "گالری";
+
+/* (No Comment) */
+"GALLERY" = "گالری";
+
+/* (No Comment) */
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "خطای احراز هویت حساب iCloud: iCloud و iCloud-Drive را فعال کنید";
+
+/* (No Comment) */
+"iCloud Account Available" = "حساب iCloud موجود است";
+
+/* (No Comment) */
 "iCloud Account Restricted" = "حساب iCloud محدود شده است";
-"iCloud Public Discoverability Granted" = "قابلیت کشف عمومی iCloud اعطا شده است";
+
+/* (No Comment) */
+"iCloud Public" = "عمومی icloud";
+
+/* (No Comment) */
+"ICLOUD PUBLIC" = "عمومی ICLOUD";
+
+/* (No Comment) */
 "iCloud Public Discoverability Denied" = "قابلیت کشف عمومی iCloud رد شد";
+
+/* (No Comment) */
+"iCloud Public Discoverability Granted" = "قابلیت کشف عمومی iCloud اعطا شده است";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "به جدیدترین نسخه iRASPA ارتقا دهید";
+
+/* (No Comment) */
+"Local Projects" = "پروژه های محلی";
+
+/* (No Comment) */
+"LOCAL PROJECTS" = "پروژه های محلی";
+

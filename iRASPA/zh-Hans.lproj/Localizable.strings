@@ -1,79 +1,264 @@
-"Saving to Archive (%@)" = "保存到存档 (%@)";
-"Document Read (%@)" = "文件阅读 (%@)";
-"Autosaving...." = "自动保存....";
-"Rotate (%@)" = "旋转 (%@)";
-"Loading (%@)" = "载入中 (%@)";
-"Select a Top-Level Directory" = "选择一个初级目录";
-"Remove Permission" = "删除权限";
-"Could Not Read Main Database File" = "无法读取主数据库文件";
-"Invalid File Format" = "无效的文件格式";
-"Gallery-File Not Found" = "找不到图库文件";
-"Cannot Initialize from Data" = "无法从数据初始化";
-"Add Projects" = "添加项目";
-"Remove Projects" = "删除项目";
-"Reorder Projects" = "重新订购项目";
-"Change Project Selection" = "更改项目选择";
-"Change Project Name" = "更改项目名称";
-"Insert Selection" = "插入选择";
-"Delete Selection" = "删除选择";
-"Add Movies" = "添加影片";
-"Add Scenes" = "添加场景";
-"Change Movie Name" = "更改影片名称";
-"Change Scene Name" = "更改场景名称";
-"Reorder Movies" = "重新排列影片";
-"Clear Selection" = "清空选项";
-"Toggle Atom Selection" = "切换原子选择";
-"Toggle Bond Selection" = "切换键选择";
-"Delete Atoms" = "删除原子";
-"Insert Atoms" = "插入原子";
-"Change Positions" = "换位置";
-"Python Console Ready\n" = "Python控制台已准备就绪\n";
-"Change Material Type" = "更改物料类型";
-"Change Space Group" = "更改空间组";
-"Reset Camera Distance" = "重置相机距离";
-"Reset Camera To" = "将相机重置为";
-"Show Bounding Box" = "显示边界框";
-"Export To" = "导出到";
-"Compute AO High-Quality" = "计算AO高质量";
-"Camera Projection" = "相机投影";
-"Orthographic" = "正视投影";
-"Perspective" = "透视投影";
-"Z-Direction" = "Z向";
-"Y-Direction" = "Y向";
-"X-Direction" = "X向";
-"PDB" = "PDB";
-"mmCIF" = "mmCIF";
-"CIF" = "CIF";
-"XYZ" = "XYZ";
-"VASP POSCAR" = "VASP POSCAR";
+/* (No Comment) */
 "Add Atom-Group" = "添加原子组";
+
+/* Add frame */
+"Add frame(s)" = "添加帧";
+
+/* (No Comment) */
+"Add Movies" = "添加影片";
+
+/* (No Comment) */
+"Add Projects" = "添加项目";
+
+/* (No Comment) */
+"Add Scenes" = "添加场景";
+
+/* (No Comment) */
 "Adding New Atom" = "添加新原子";
-"Reorder Atoms" = "重新排列原子";
-"Change Atom Selection" = "更改原子选择";
-"Delete Atoms" = "删除原子";
-"Insert Atoms" = "插入原子";
-"Find and Impose Symmetry" = "查找并施加对称";
-"Flatten Hierarchy" = "展平层次结构";
-"Remove Symmetry" = "消除对称";
-"Wrap Atoms to Cell" = "将原子包裹到元胞";
-"Find Primitive" = "查找原始";
-"Make Super-Cell" = "生成超级晶胞";
-"Invert Selection" = "反转选择";
-"Change Fix Atom" = "更改修复原子";
-"Change Atom Name" = "更改原子名称";
-"Change Atom Element" = "更改原子元素";
-"Change Atom Force Field Type" = "更改原子力场类型";
-"Change Atom X-Position" = "更改原子的X位置";
-"Change Atom Y-Position" = "更改原子的Y位置";
-"Change Atom Z-Position" = "更改原子的Z位置";
+
+/* (No Comment) */
+"Autosaving...." = "自动保存....";
+
+/* (No Comment) */
+"Camera Projection" = "相机投影";
+
+/* No comment provided by engineer. */
+"Camera Reset To Direction" = "相机重置为方向";
+
+/* (No Comment) */
+"Cannot Initialize from Data" = "无法从数据初始化";
+
+/* (No Comment) */
 "Change Atom Charge" = "更改原子电荷";
-"Change Bond-Length" = "更改键长";
-"Recompute Bonds" = "删除化学键";
-"Delete Bonds" = "删除债券";
-"Insert Bonds" = "插入化学键";
+
+/* (No Comment) */
+"Change Atom Element" = "更改原子元素";
+
+/* (No Comment) */
+"Change Atom Force Field Type" = "更改原子力场类型";
+
+/* Change atom name */
+"Change Atom Name" = "更改原子名称";
+
+/* No comment provided by engineer. */
+"Change Atom Occupancy" = "更改原子占有率";
+
+/* (No Comment) */
+"Change Atom Selection" = "更改原子选择";
+
+/* (No Comment) */
+"Change Atom X-Position" = "更改原子的X位置";
+
+/* (No Comment) */
+"Change Atom Y-Position" = "更改原子的Y位置";
+
+/* No comment provided by engineer. */
+"Change Atom Z-position" = "更改原子的Z位置";
+
+/* (No Comment) */
+"Change Atom Z-Position" = "更改原子的Z位置";
+
+/* (No Comment) */
 "Change Bond Selection" = "更改化学键选择";
+
+/* (No Comment) */
+"Change Bond-Length" = "更改键长";
+
+/* (No Comment) */
+"Change Fix Atom" = "更改修复原子";
+
+/* Change frame name */
+"Change frame name" = "更改框架名称";
+
+/* (No Comment) */
+"Change Material Type" = "更改物料类型";
+
+/* (No Comment) */
+"Change Movie Name" = "更改影片名称";
+
+/* (No Comment) */
+"Change Positions" = "换位置";
+
+/* (No Comment) */
+"Change Project Name" = "更改项目名称";
+
+/* (No Comment) */
+"Change Project Selection" = "更改项目选择";
+
+/* (No Comment) */
+"Change Scene Name" = "更改场景名称";
+
+/* No comment provided by engineer. */
+"Change Selection" = "更改选择";
+
+/* (No Comment) */
+"Change Space Group" = "更改空间组";
+
+/* (No Comment) */
+"CIF" = "CIF";
+
+/* (No Comment) */
+"Clear Selection" = "清空选项";
+
+/* (No Comment) */
+"Compute AO High-Quality" = "计算AO高质量";
+
+/* copies */
+"copies" = "副本";
+
+/* (No Comment) */
+"Could Not Read Main Database File" = "无法读取主数据库文件";
+
+/* (No Comment) */
+"Delete Atoms" = "删除原子";
+
+/* (No Comment) */
+"Delete Bonds" = "删除债券";
+
+/* Delete selection */
+"Delete selection" = "删除选择";
+
+/* (No Comment) */
+"Delete Selection" = "删除选择";
+
+/* (No Comment) */
+"Document Read (%@)" = "文件阅读 (%@)";
+
+/* duplicates */
+"duplicates" = "重复";
+
+/* (No Comment) */
+"Export To" = "导出到";
+
+/* (No Comment) */
+"Find and Impose Symmetry" = "查找并施加对称";
+
+/* No comment provided by engineer. */
+"Find Niggli" = "查找 Niggli";
+
+/* (No Comment) */
+"Find Primitive" = "查找原始";
+
+/* (No Comment) */
+"Flatten Hierarchy" = "展平层次结构";
+
+/* (No Comment) */
+"Gallery-File Not Found" = "找不到图库文件";
+
+/* (No Comment) */
+"Insert Atoms" = "插入原子";
+
+/* (No Comment) */
+"Insert Bonds" = "插入化学键";
+
+/* Insert selection */
+"Insert selection" = "插入选择";
+
+/* (No Comment) */
+"Insert Selection" = "插入选择";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "无效的存档版本（升级到最新的iRASPA版本）";
-"Multiple Values" = "多个值";
-"Mult. Val." = "多个值";
-"Mult. V." = "多个值";
+
+/* (No Comment) */
+"Invalid File Format" = "无效的文件格式";
+
+/* (No Comment) */
+"Invert Selection" = "反转选择";
+
+/* (No Comment) */
+"Loading (%@)" = "载入中 (%@)";
+
+/* (No Comment) */
 "M.V." = "多个值";
+
+/* (No Comment) */
+"Make Super-Cell" = "生成超级晶胞";
+
+/* (No Comment) */
+"mmCIF" = "mmCIF";
+
+/* (No Comment) */
+"Mult. V." = "多个值";
+
+/* (No Comment) */
+"Mult. Val." = "多个值";
+
+/* (No Comment) */
+"Multiple Values" = "多个值";
+
+/* (No Comment) */
+"Orthographic" = "正视投影";
+
+/* (No Comment) */
+"PDB" = "PDB";
+
+/* (No Comment) */
+"Perspective" = "透视投影";
+
+/* (No Comment) */
+"Recompute Bonds" = "删除化学键";
+
+/* (No Comment) */
+"Remove Permission" = "删除权限";
+
+/* (No Comment) */
+"Remove Projects" = "删除项目";
+
+/* (No Comment) */
+"Remove Symmetry" = "消除对称";
+
+/* (No Comment) */
+"Reorder Atoms" = "重新排列原子";
+
+/* Reorder frames */
+"Reorder frames" = "重新排序帧";
+
+/* (No Comment) */
+"Reorder Movies" = "重新排列影片";
+
+/* (No Comment) */
+"Reorder Projects" = "重新订购项目";
+
+/* (No Comment) */
+"Reset Camera Distance" = "重置相机距离";
+
+/* (No Comment) */
+"Reset Camera To" = "将相机重置为";
+
+/* (No Comment) */
+"Rotate (%@)" = "旋转 (%@)";
+
+/* (No Comment) */
+"Saving to Archive (%@)" = "保存到存档 (%@)";
+
+/* (No Comment) */
+"Select a Top-Level Directory" = "选择一个初级目录";
+
+/* (No Comment) */
+"Show Bounding Box" = "显示边界框";
+
+/* (No Comment) */
+"Toggle Atom Selection" = "切换原子选择";
+
+/* (No Comment) */
+"Toggle Bond Selection" = "切换键选择";
+
+/* (No Comment) */
+"VASP POSCAR" = "VASP POSCAR";
+
+/* (No Comment) */
+"Wrap Atoms to Cell" = "将原子包裹到元胞";
+
+/* (No Comment) */
+"X-Direction" = "X向";
+
+/* (No Comment) */
+"XYZ" = "XYZ";
+
+/* (No Comment) */
+"Y-Direction" = "Y向";
+
+/* (No Comment) */
+"Z-Direction" = "Z向";
+

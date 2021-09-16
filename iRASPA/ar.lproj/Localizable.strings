@@ -1,79 +1,264 @@
-"Saving to Archive (%@)" = "الحفظ في الأرشيف (%@)";
-"Document Read (%@)" = "قراءة المستند (%@)";
-"Autosaving...." = "الحفظ التلقائي....";
-"Rotate (%@)" = "استدارة (%@)";
-"Loading (%@)" = "جار التحميل (%@)";
-"Select a Top-Level Directory" = "حدد دليل المستوى الأعلى";
-"Remove Permission" = "إزالة الإذن";
-"Could Not Read Main Database File" = "تعذرت قراءة ملف قاعدة البيانات الرئيسي";
-"Invalid File Format" = "تنسيق ملف غير صالح";
-"Gallery-File Not Found" = "ملف المعرض غير موجود";
-"Cannot Initialize from Data" = "لا يمكن التهيئة من البيانات";
-"Add Projects" = "أضف مشاريع";
-"Remove Projects" = "إزالة المشاريع";
-"Reorder Projects" = "إعادة ترتيب المشاريع";
-"Change Project Selection" = "تغيير اختيار المشروع";
-"Change Project Name" = "تغيير اسم المشروع";
-"Insert Selection" = "إدراج التحديد";
-"Delete Selection" = "حذف التحديد";
-"Add Movies" = "اضافة افلام";
-"Add Scenes" = "أضف مشاهد";
-"Change Movie Name" = "تغيير اسم الفيلم";
-"Change Scene Name" = "تغيير اسم المشهد";
-"Reorder Movies" = "إعادة ترتيب الأفلام";
-"Clear Selection" = "التحديد الواضح";
-"Toggle Atom Selection" = "تبديل الذرات المحددة";
-"Toggle Bond Selection" = "تبديل الروابط المحددة";
-"Delete Atoms" = "حذف الذرات";
-"Insert Atoms" = "أدخل الذرات";
-"Change Positions" = " تغيير المواضع";
-"Python Console Ready\n" = "وحدة تحكم بايثون جاهزة\n";
-"Change Material Type" = "تغيير نوع المادة";
-"Change Space Group" = "تغيير مجموعة الفضاء";
-"Reset Camera Distance" = "إعادة تعيين مسافة الكاميرا";
-"Reset Camera To" = "إعادة تعيين الكاميرا إلى";
-"Show Bounding Box" = "إظهار المربع المحيط";
-"Export To" = "تصدير الى";
-"Compute AO High-Quality" = "حساب AO عالي الجودة";
-"Camera Projection" = "إسقاط الكاميرا";
-"Orthographic" = "عامودي"; 
-"Perspective" = "إنطباع";
-"Z-Direction" = "اتجاه Z";
-"Y-Direction" = "اتجاه Y";
-"X-Direction" = "اتجاه X";
-"PDB" = "PDB";
-"mmCIF" = "mmCIF";
-"CIF" = "CIF";
-"XYZ" = "XYZ";
-"VASP POSCAR" = "VASP POSCAR";
+/* (No Comment) */
 "Add Atom-Group" = "أضف مجموعة الذرة";
+
+/* Add frame */
+"Add frame(s)" = "إضافة إطار (إطارات)";
+
+/* (No Comment) */
+"Add Movies" = "اضافة افلام";
+
+/* (No Comment) */
+"Add Projects" = "أضف مشاريع";
+
+/* (No Comment) */
+"Add Scenes" = "أضف مشاهد";
+
+/* (No Comment) */
 "Adding New Atom" = "إضافة ذرة جديدة";
-"Reorder Atoms" = "إعادة ترتيب الذرات";
-"Change Atom Selection" = "تغيير اختيار الذرة";
-"Delete Atoms" = "حذف الذرات";
-"Insert Atoms" = "أدخل الذرات";
-"Find and Impose Symmetry" = "ابحث عن التماثل وفرضه";
-"Flatten Hierarchy" = "تسطيح التسلسل الهرمي";
-"Remove Symmetry" = "إزالة التناظر";
-"Wrap Atoms to Cell" = " التفاف الذرات في الخلية";
-"Find Primitive" = "ابحث عن بدائي";
-"Make Super-Cell" = "اصنع خلية خارقة";
-"Invert Selection" = "إعكس الاختيار";
-"Change Fix Atom" = "تغيير الذرة الثابتة";
-"Change Atom Name" = "تغيير اسم الذرة";
-"Change Atom Element" = "تغيير عنصر الذرة";
-"Change Atom Force Field Type" = "تغيير نوع حقل قوة الذرة";
-"Change Atom X-Position" = "تغيير موقع الذرة X";
-"Change Atom Y-Position" = "تغيير موقع الذرة Y";
-"Change Atom Z-Position" = "تغيير موقع الذرة Z";
+
+/* (No Comment) */
+"Autosaving...." = "الحفظ التلقائي....";
+
+/* (No Comment) */
+"Camera Projection" = "إسقاط الكاميرا";
+
+/* No comment provided by engineer. */
+"Camera Reset To Direction" = "إعادة تعيين الكامير إلى الاتجاه";
+
+/* (No Comment) */
+"Cannot Initialize from Data" = "لا يمكن التهيئة من البيانات";
+
+/* (No Comment) */
 "Change Atom Charge" = "تغيير شحنة الذرة";
-"Change Bond-Length" = "تغيير طول الرابطة";
-"Recompute Bonds" = "إعادة حساب الروابط";
-"Delete Bonds" = "حذف الروابط";
-"Insert Bonds" = "أدخل الروابط";
+
+/* (No Comment) */
+"Change Atom Element" = "تغيير عنصر الذرة";
+
+/* (No Comment) */
+"Change Atom Force Field Type" = "تغيير نوع حقل قوة الذرة";
+
+/* Change atom name */
+"Change Atom Name" = "تغيير اسم الذرة";
+
+/* No comment provided by engineer. */
+"Change Atom Occupancy" = "تغيير إشغال الذرة";
+
+/* (No Comment) */
+"Change Atom Selection" = "تغيير اختيار الذرة";
+
+/* (No Comment) */
+"Change Atom X-Position" = "تغيير موقع الذرة X";
+
+/* (No Comment) */
+"Change Atom Y-Position" = "تغيير موقع الذرة Y";
+
+/* No comment provided by engineer. */
+"Change Atom Z-position" = "تغيير موقع الذرة Z";
+
+/* (No Comment) */
+"Change Atom Z-Position" = "تغيير موقع الذرة Z";
+
+/* (No Comment) */
 "Change Bond Selection" = "تغيير اختيار الروابط";
+
+/* (No Comment) */
+"Change Bond-Length" = "تغيير طول الرابطة";
+
+/* (No Comment) */
+"Change Fix Atom" = "تغيير الذرة الثابتة";
+
+/* Change frame name */
+"Change frame name" = "تغيير اسم الإطار";
+
+/* (No Comment) */
+"Change Material Type" = "تغيير نوع المادة";
+
+/* (No Comment) */
+"Change Movie Name" = "تغيير اسم الفيلم";
+
+/* (No Comment) */
+"Change Positions" = " تغيير المواضع";
+
+/* (No Comment) */
+"Change Project Name" = "تغيير اسم المشروع";
+
+/* (No Comment) */
+"Change Project Selection" = "تغيير اختيار المشروع";
+
+/* (No Comment) */
+"Change Scene Name" = "تغيير اسم المشهد";
+
+/* No comment provided by engineer. */
+"Change Selection" = "تغيير الاختيار";
+
+/* (No Comment) */
+"Change Space Group" = "تغيير مجموعة الفضاء";
+
+/* (No Comment) */
+"CIF" = "CIF";
+
+/* (No Comment) */
+"Clear Selection" = "التحديد الواضح";
+
+/* (No Comment) */
+"Compute AO High-Quality" = "حساب AO عالي الجودة";
+
+/* copies */
+"copies" = "نسخ";
+
+/* (No Comment) */
+"Could Not Read Main Database File" = "تعذرت قراءة ملف قاعدة البيانات الرئيسي";
+
+/* (No Comment) */
+"Delete Atoms" = "حذف الذرات";
+
+/* (No Comment) */
+"Delete Bonds" = "حذف الروابط";
+
+/* Delete selection */
+"Delete selection" = "حذف التحديد";
+
+/* (No Comment) */
+"Delete Selection" = "حذف التحديد";
+
+/* (No Comment) */
+"Document Read (%@)" = "قراءة المستند (%@)";
+
+/* duplicates */
+"duplicates" = "مكرر";
+
+/* (No Comment) */
+"Export To" = "تصدير الى";
+
+/* (No Comment) */
+"Find and Impose Symmetry" = "ابحث عن التماثل وفرضه";
+
+/* No comment provided by engineer. */
+"Find Niggli" = "البحث عن خلية Niggli";
+
+/* (No Comment) */
+"Find Primitive" = "ابحث عن بدائي";
+
+/* (No Comment) */
+"Flatten Hierarchy" = "تسطيح التسلسل الهرمي";
+
+/* (No Comment) */
+"Gallery-File Not Found" = "ملف المعرض غير موجود";
+
+/* (No Comment) */
+"Insert Atoms" = "أدخل الذرات";
+
+/* (No Comment) */
+"Insert Bonds" = "أدخل الروابط";
+
+/* Insert selection */
+"Insert selection" = "إدراج التحديد";
+
+/* (No Comment) */
+"Insert Selection" = "إدراج التحديد";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "إصدار أرشيف غير صالح (قم بالترقية إلى أحدث إصدار من iRASPA)";
-"Multiple Values" = "قيم متعددة";
-"Mult. Val." = "قيم متعددة";
-"Mult. V." = "قيم متعددة";
+
+/* (No Comment) */
+"Invalid File Format" = "تنسيق ملف غير صالح";
+
+/* (No Comment) */
+"Invert Selection" = "إعكس الاختيار";
+
+/* (No Comment) */
+"Loading (%@)" = "جار التحميل (%@)";
+
+/* (No Comment) */
 "M.V." = "M.V.";
+
+/* (No Comment) */
+"Make Super-Cell" = "اصنع خلية خارقة";
+
+/* (No Comment) */
+"mmCIF" = "mmCIF";
+
+/* (No Comment) */
+"Mult. V." = "قيم متعددة";
+
+/* (No Comment) */
+"Mult. Val." = "قيم متعددة";
+
+/* (No Comment) */
+"Multiple Values" = "قيم متعددة";
+
+/* (No Comment) */
+"Orthographic" = "عامودي";
+
+/* (No Comment) */
+"PDB" = "PDB";
+
+/* (No Comment) */
+"Perspective" = "إنطباع";
+
+/* (No Comment) */
+"Recompute Bonds" = "إعادة حساب الروابط";
+
+/* (No Comment) */
+"Remove Permission" = "إزالة الإذن";
+
+/* (No Comment) */
+"Remove Projects" = "إزالة المشاريع";
+
+/* (No Comment) */
+"Remove Symmetry" = "إزالة التناظر";
+
+/* (No Comment) */
+"Reorder Atoms" = "إعادة ترتيب الذرات";
+
+/* Reorder frames */
+"Reorder frames" = "إعادة ترتيب الإطارات";
+
+/* (No Comment) */
+"Reorder Movies" = "إعادة ترتيب الأفلام";
+
+/* (No Comment) */
+"Reorder Projects" = "إعادة ترتيب المشاريع";
+
+/* (No Comment) */
+"Reset Camera Distance" = "إعادة تعيين مسافة الكاميرا";
+
+/* (No Comment) */
+"Reset Camera To" = "إعادة تعيين الكاميرا إلى";
+
+/* (No Comment) */
+"Rotate (%@)" = "استدارة (%@)";
+
+/* (No Comment) */
+"Saving to Archive (%@)" = "الحفظ في الأرشيف (%@)";
+
+/* (No Comment) */
+"Select a Top-Level Directory" = "حدد دليل المستوى الأعلى";
+
+/* (No Comment) */
+"Show Bounding Box" = "إظهار المربع المحيط";
+
+/* (No Comment) */
+"Toggle Atom Selection" = "تبديل الذرات المحددة";
+
+/* (No Comment) */
+"Toggle Bond Selection" = "تبديل الروابط المحددة";
+
+/* (No Comment) */
+"VASP POSCAR" = "VASP POSCAR";
+
+/* (No Comment) */
+"Wrap Atoms to Cell" = " التفاف الذرات في الخلية";
+
+/* (No Comment) */
+"X-Direction" = "اتجاه X";
+
+/* (No Comment) */
+"XYZ" = "XYZ";
+
+/* (No Comment) */
+"Y-Direction" = "اتجاه Y";
+
+/* (No Comment) */
+"Z-Direction" = "اتجاه Z";
+

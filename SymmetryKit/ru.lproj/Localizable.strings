@@ -1,119 +1,357 @@
-"Hydrogen" = "Водород";
-"Helium" = "Гелий";
-"Lithium" = "Литий";
-"Beryllium" = "Бериллий";
-"Boron" = "Бор";
-"Carbon" = "Углерод";
-"Nitrogen" = "Азот";
-"Oxygen" = "Кислород";
-"Fluorine" = "Фтор";
-"Neon" = "Неон";
-"Sodium" = "Натрий";
-"Magnesium" = "Магний";
-"Aluminum" = "Алюминий";
-"Silicon" = "Кремний";
-"Phosphorus" = "Фосфор";
-"Sulfur" = "Сера";
-"Chlorine" = "Хлор";
-"Argon" = "Аргон";
-"Potassium" = "Калий";
-"Calcium" = "Кальций";
-"Scandium" = "Скандий";
-"Titanium" = "Титан";
-"Vanadium" = "Ванадий";
-"Chromium" = "Хром";
-"Manganese" = "Марганец";
-"Iron" = "Железо";
-"Cobalt" = "Кобальт";
-"Nickel" = "Никель";
-"Copper" = "Медь";
-"Zinc" = "Цинк";
-"Gallium" = "Галлий";
-"Germanium" = "Германий";
-"Arsenic" = "Мышьяк";
-"Selenium" = "Селен";
-"Bromine" = "Бром";
-"Krypton" = "Криптон";
-"Rubidium" = "Рубидий";
-"Strontium" = "Стронций";
-"Yttrium" = "Иттрий";
-"Zirconium" = "Цирконий";
-"Niobium" = "Ниобий";
-"Molybdenum" = "Молибден";
-"Technetium" = "Технеций";
-"Ruthenium" = "Рутений";
-"Rhodium" = "Родий";
-"Palladium" = "Палладий";
-"Silver" = "Серебро";
-"Cadmium" = "Кадмий";
-"Indium" = "Индий";
-"Tin" = "Олово";
-"Antimony" = "Сурьма";
-"Tellurium" = "Теллур";
-"Iodine" = "Йод";
-"Xenon" = "Ксенон";
-"Cesium" = "Цезий";
-"Barium" = "Барий";
-"Lanthanum" = "Лантан";
-"Cerium" = "Церий";
-"Praseodymium" = "Празеодим";
-"Neodymium" = "Неодим";
-"Promethium" = "Прометий";
-"Samarium" = "Самарий";
-"Europium" = "Европий";
-"Gadolinium" = "Гадолиний";
-"Terbium" = "Тербий";
-"Dysprosium" = "Диспрозий";
-"Holmium" = "Гольмий";
-"Erbium" = "Эрбий";
-"Thulium" = "Тулий";
-"Ytterbium" = "Иттербий";
-"Lutetium" = "Лютеций";
-"Hafnium" = "Гафний";
-"Tantalum" = "Тантал";
-"Tungsten" = "Вольфрам";
-"Rhenium" = "Рений";
-"Osmium" = "Осмий";
-"Iridium" = "Иридий";
-"Platinum" = "Платина";
-"Gold" = "Золото";
-"Mercury" = "Ртуть";
-"Thallium" = "Таллий";
-"Lead" = "Свинец";
-"Bismuth" = "Висмут";
-"Polonium" = "Полоний";
-"Astatine" = "Астат(ин)";
-"Radon" = "Радон";
-"Francium" = "Франций";
-"Radium" = "Радий";
+/* (No Comment) */
 "Actinium" = "Актиний";
-"Thorium" = "Торий";
-"Protactinium" = "Протактиний";
-"Uranium" = "Уран";
-"Neptunium" = "Нептуний";
-"Plutonium" = "Плутоний";
+
+/* (No Comment) */
+"Aluminum" = "Алюминий";
+
+/* (No Comment) */
 "Americium" = "Америций";
-"Curium" = "Кюрий";
+
+/* (No Comment) */
+"Antimony" = "Сурьма";
+
+/* (No Comment) */
+"Argon" = "Аргон";
+
+/* (No Comment) */
+"Arsenic" = "Мышьяк";
+
+/* (No Comment) */
+"Astatine" = "Астат(ин)";
+
+/* (No Comment) */
+"Barium" = "Барий";
+
+/* (No Comment) */
 "Berkelium" = "Берклий";
-"Californium" = "Калифорний";
-"Einsteinium" = "Эйнштейний";
-"Fermium" = "Фермий";
-"Mendelevium" = "Менделевий";
-"Nobelium" = "Нобелий";
-"Lawrencium" = "Лоуренсий";
-"Rutherfordium" = "Резерфордий";
-"Dubnium" = "Дубний";
-"Seaborgium" = "Сиборгий";
+
+/* (No Comment) */
+"Beryllium" = "Бериллий";
+
+/* (No Comment) */
+"Bismuth" = "Висмут";
+
+/* (No Comment) */
 "Bohrium" = "Борий";
-"Hassium" = "Хассий";
-"Meitnerium" = "Майтнерий";
-"Darmstadtium" = "Дармштадтий";
-"Roentgenium" = "Рентгений";
+
+/* (No Comment) */
+"Boron" = "Бор";
+
+/* (No Comment) */
+"Bromine" = "Бром";
+
+/* (No Comment) */
+"Cadmium" = "Кадмий";
+
+/* (No Comment) */
+"Calcium" = "Кальций";
+
+/* (No Comment) */
+"Californium" = "Калифорний";
+
+/* (No Comment) */
+"Carbon" = "Углерод";
+
+/* (No Comment) */
+"Cerium" = "Церий";
+
+/* (No Comment) */
+"Cesium" = "Цезий";
+
+/* (No Comment) */
+"Chlorine" = "Хлор";
+
+/* (No Comment) */
+"Chromium" = "Хром";
+
+/* (No Comment) */
+"Cobalt" = "Кобальт";
+
+/* (No Comment) */
 "Copernicium" = "Коперниций";
-"Nihonium" = "Нихоний";
+
+/* (No Comment) */
+"Copper" = "Медь";
+
+/* (No Comment) */
+"Curium" = "Кюрий";
+
+/* (No Comment) */
+"Darmstadtium" = "Дармштадтий";
+
+/* (No Comment) */
+"Dubnium" = "Дубний";
+
+/* (No Comment) */
+"Dysprosium" = "Диспрозий";
+
+/* (No Comment) */
+"Einsteinium" = "Эйнштейний";
+
+/* (No Comment) */
+"Erbium" = "Эрбий";
+
+/* (No Comment) */
+"Europium" = "Европий";
+
+/* (No Comment) */
+"Fermium" = "Фермий";
+
+/* (No Comment) */
 "Flerovium" = "Флеровий";
-"Moscovium" = "Московий";
-"Livermorium" = "Ливерморий";
-"Tennessine" = "Теннессин";
-"Oganesson" = "Оганесон";
+
+/* (No Comment) */
+"Fluorine" = "Фтор";
+
+/* (No Comment) */
+"Francium" = "Франций";
+
+/* (No Comment) */
+"Gadolinium" = "Гадолиний";
+
+/* (No Comment) */
+"Gallium" = "Галлий";
+
+/* (No Comment) */
+"Germanium" = "Германий";
+
+/* (No Comment) */
+"Gold" = "Золото";
+
+/* (No Comment) */
+"Hafnium" = "Гафний";
+
+/* (No Comment) */
+"Hassium" = "Хассий";
+
+/* (No Comment) */
+"Helium" = "Гелий";
+
+/* (No Comment) */
+"Holmium" = "Гольмий";
+
+/* (No Comment) */
+"Hydrogen" = "Водород";
+
+/* (No Comment) */
+"Indium" = "Индий";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Неверная версия архива (обновите до последней версии iRASPA)";
+
+/* (No Comment) */
+"Iodine" = "Йод";
+
+/* (No Comment) */
+"Iridium" = "Иридий";
+
+/* (No Comment) */
+"Iron" = "Железо";
+
+/* (No Comment) */
+"Krypton" = "Криптон";
+
+/* (No Comment) */
+"Lanthanum" = "Лантан";
+
+/* (No Comment) */
+"Lawrencium" = "Лоуренсий";
+
+/* (No Comment) */
+"Lead" = "Свинец";
+
+/* (No Comment) */
+"Lithium" = "Литий";
+
+/* (No Comment) */
+"Livermorium" = "Ливерморий";
+
+/* (No Comment) */
+"Lutetium" = "Лютеций";
+
+/* (No Comment) */
+"Magnesium" = "Магний";
+
+/* (No Comment) */
+"Manganese" = "Марганец";
+
+/* (No Comment) */
+"Meitnerium" = "Майтнерий";
+
+/* (No Comment) */
+"Mendelevium" = "Менделевий";
+
+/* (No Comment) */
+"Mercury" = "Ртуть";
+
+/* (No Comment) */
+"Molybdenum" = "Молибден";
+
+/* (No Comment) */
+"Moscovium" = "Московий";
+
+/* (No Comment) */
+"Neodymium" = "Неодим";
+
+/* (No Comment) */
+"Neon" = "Неон";
+
+/* (No Comment) */
+"Neptunium" = "Нептуний";
+
+/* (No Comment) */
+"Nickel" = "Никель";
+
+/* (No Comment) */
+"Nihonium" = "Нихоний";
+
+/* (No Comment) */
+"Niobium" = "Ниобий";
+
+/* (No Comment) */
+"Nitrogen" = "Азот";
+
+/* (No Comment) */
+"Nobelium" = "Нобелий";
+
+/* (No Comment) */
+"Oganesson" = "Оганесон";
+
+/* (No Comment) */
+"Osmium" = "Осмий";
+
+/* (No Comment) */
+"Oxygen" = "Кислород";
+
+/* (No Comment) */
+"Palladium" = "Палладий";
+
+/* (No Comment) */
+"Phosphorus" = "Фосфор";
+
+/* (No Comment) */
+"Platinum" = "Платина";
+
+/* (No Comment) */
+"Plutonium" = "Плутоний";
+
+/* (No Comment) */
+"Polonium" = "Полоний";
+
+/* (No Comment) */
+"Potassium" = "Калий";
+
+/* (No Comment) */
+"Praseodymium" = "Празеодим";
+
+/* (No Comment) */
+"Promethium" = "Прометий";
+
+/* (No Comment) */
+"Protactinium" = "Протактиний";
+
+/* (No Comment) */
+"Radium" = "Радий";
+
+/* (No Comment) */
+"Radon" = "Радон";
+
+/* (No Comment) */
+"Rhenium" = "Рений";
+
+/* (No Comment) */
+"Rhodium" = "Родий";
+
+/* (No Comment) */
+"Roentgenium" = "Рентгений";
+
+/* (No Comment) */
+"Rubidium" = "Рубидий";
+
+/* (No Comment) */
+"Ruthenium" = "Рутений";
+
+/* (No Comment) */
+"Rutherfordium" = "Резерфордий";
+
+/* (No Comment) */
+"Samarium" = "Самарий";
+
+/* (No Comment) */
+"Scandium" = "Скандий";
+
+/* (No Comment) */
+"Seaborgium" = "Сиборгий";
+
+/* (No Comment) */
+"Selenium" = "Селен";
+
+/* (No Comment) */
+"Silicon" = "Кремний";
+
+/* (No Comment) */
+"Silver" = "Серебро";
+
+/* (No Comment) */
+"Sodium" = "Натрий";
+
+/* (No Comment) */
+"Strontium" = "Стронций";
+
+/* (No Comment) */
+"Sulfur" = "Сера";
+
+/* (No Comment) */
+"Tantalum" = "Тантал";
+
+/* (No Comment) */
+"Technetium" = "Технеций";
+
+/* (No Comment) */
+"Tellurium" = "Теллур";
+
+/* (No Comment) */
+"Tennessine" = "Теннессин";
+
+/* (No Comment) */
+"Terbium" = "Тербий";
+
+/* (No Comment) */
+"Thallium" = "Таллий";
+
+/* (No Comment) */
+"Thorium" = "Торий";
+
+/* (No Comment) */
+"Thulium" = "Тулий";
+
+/* (No Comment) */
+"Tin" = "Олово";
+
+/* (No Comment) */
+"Titanium" = "Титан";
+
+/* (No Comment) */
+"Tungsten" = "Вольфрам";
+
+/* (No Comment) */
+"Uranium" = "Уран";
+
+/* (No Comment) */
+"Vanadium" = "Ванадий";
+
+/* (No Comment) */
+"Xenon" = "Ксенон";
+
+/* (No Comment) */
+"Ytterbium" = "Иттербий";
+
+/* (No Comment) */
+"Yttrium" = "Иттрий";
+
+/* (No Comment) */
+"Zinc" = "Цинк";
+
+/* (No Comment) */
+"Zirconium" = "Цирконий";
+

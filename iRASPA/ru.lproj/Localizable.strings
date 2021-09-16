@@ -1,79 +1,264 @@
-"Saving to Archive (%@)" = "Сохранение в архив (%@)";
-"Document Read (%@)" = "Документ Читать (%@)";
-"Autosaving...." = "Автосохранение....";
-"Rotate (%@)" = "Повернуть (%@)";
-"Loading (%@)" = "Загрузка (%@)";
-"Select a Top-Level Directory" = "Выберите каталог верхнего уровня";
-"Remove Permission" = "Удалить разрешение";
-"Could Not Read Main Database File" = "Не удалось прочитать основной файл базы данных";
-"Invalid File Format" = "Недействительный формат файла";
-"Gallery-File Not Found" = "Файл галереи не найден";
-"Cannot Initialize from Data" = "Невозможно инициализировать данные";
-"Add Projects" = "Добавить проекты";
-"Remove Projects" = "Удалить проекты";
-"Reorder Projects" = "Изменить порядок проектов";
-"Change Project Selection" = "Изменить выбор проекта";
-"Change Project Name" = "Изменить название проекта";
-"Insert Selection" = "Вставить выбор";
-"Delete Selection" = "Удалить выбор";
-"Add Movies" = "Добавить фильмы";
-"Add Scenes" = "Добавить сцены";
-"Change Movie Name" = "Изменить название фильма";
-"Change Scene Name" = "Изменить название сцены";
-"Reorder Movies" = "Изменить порядок фильмов";
-"Clear Selection" = "Отменить выбор";
-"Toggle Atom Selection" = "Переключить выбор атома";
-"Toggle Bond Selection" = "Переключить выбор облигаций";
-"Delete Atoms" = "Удалить атомы";
-"Insert Atoms" = "Вставить атомы";
-"Change Positions" = "Изменить позиции";
-"Python Console Ready\n" = "Консоль Python готов\n";
-"Change Material Type" = "Изменить тип материала";
-"Change Space Group" = "Изменить группу пространств";
-"Reset Camera Distance" = "Сбросить расстояние до камеры";
-"Reset Camera To" = "Сбросить камеру на";
-"Show Bounding Box" = "Показать ограничивающую рамку";
-"Export To" = "Экспортировать";
-"Compute AO High-Quality" = "Вычислить AO высокого качества";
-"Camera Projection" = "Проекция камеры";
-"Orthographic" = "Орфографический";
-"Perspective" = "Перспектива";
-"Z-Direction" = "Z-направление";
-"Y-Direction" = "Y-направление";
-"X-Direction" = "X-направление";
-"PDB" = "PDB";
-"mmCIF" = "mmCIF";
-"CIF" = "CIF";
-"XYZ" = "XYZ";
-"VASP POSCAR" = "VASP POSCAR";
+/* (No Comment) */
 "Add Atom-Group" = "Добавить Атом-Группy";
+
+/* Add frame */
+"Add frame(s)" = "Добавить рамки";
+
+/* (No Comment) */
+"Add Movies" = "Добавить фильмы";
+
+/* (No Comment) */
+"Add Projects" = "Добавить проекты";
+
+/* (No Comment) */
+"Add Scenes" = "Добавить сцены";
+
+/* (No Comment) */
 "Adding New Atom" = "Добавление нового атома";
-"Reorder Atoms" = "Переупорядочить атомы";
-"Change Atom Selection" = "Изменить выбор атома";
-"Delete Atoms" = "Удалить атомы";
-"Insert Atoms" = "Вставить атомы";
-"Find and Impose Symmetry" = "Найдите и наложите симметрию";
-"Flatten Hierarchy" = "Выровнять иерархию";
-"Remove Symmetry" = "Удалить симметрию";
-"Wrap Atoms to Cell" = "Обернуть атомы в ячейку";
-"Find Primitive" = "Найти примитив";
-"Make Super-Cell" = "Сделать супер-ячейку";
-"Invert Selection" = "Инвертировать выбор";
-"Change Fix Atom" = "Изменить обездвижимые атомы";
-"Change Atom Name" = "Изменить имя атома";
-"Change Atom Element" = "Изменить элемент атома";
-"Change Atom Force Field Type" = "Изменить тип силового поля атома";
-"Change Atom X-Position" = "Изменить положение атома по оси X";
-"Change Atom Y-Position" = "Изменить положение атома по оси Y";
-"Change Atom Z-Position" = "Изменить положение атома по оси Z";
+
+/* (No Comment) */
+"Autosaving...." = "Автосохранение....";
+
+/* (No Comment) */
+"Camera Projection" = "Проекция камеры";
+
+/* No comment provided by engineer. */
+"Camera Reset To Direction" = "Камера сброшена в нужное направление";
+
+/* (No Comment) */
+"Cannot Initialize from Data" = "Невозможно инициализировать данные";
+
+/* (No Comment) */
 "Change Atom Charge" = "Изменить заряд атома";
-"Change Bond-Length" = "Изменить длину цвязи";
-"Recompute Bonds" = "Перерасчет цвязи";
-"Delete Bonds" = "Удалить цвязи";
-"Insert Bonds" = "Вставить цвязи";
+
+/* (No Comment) */
+"Change Atom Element" = "Изменить элемент атома";
+
+/* (No Comment) */
+"Change Atom Force Field Type" = "Изменить тип силового поля атома";
+
+/* Change atom name */
+"Change Atom Name" = "Изменить имя атома";
+
+/* No comment provided by engineer. */
+"Change Atom Occupancy" = "Изменить занятость Atom";
+
+/* (No Comment) */
+"Change Atom Selection" = "Изменить выбор атома";
+
+/* (No Comment) */
+"Change Atom X-Position" = "Изменить положение атома по оси X";
+
+/* (No Comment) */
+"Change Atom Y-Position" = "Изменить положение атома по оси Y";
+
+/* No comment provided by engineer. */
+"Change Atom Z-position" = "Изменить положение атома по оси Z";
+
+/* (No Comment) */
+"Change Atom Z-Position" = "Изменить положение атома по оси Z";
+
+/* (No Comment) */
 "Change Bond Selection" = "Изменить выбор облигаций";
+
+/* (No Comment) */
+"Change Bond-Length" = "Изменить длину цвязи";
+
+/* (No Comment) */
+"Change Fix Atom" = "Изменить обездвижимые атомы";
+
+/* Change frame name */
+"Change frame name" = "Изменить имя фрейма";
+
+/* (No Comment) */
+"Change Material Type" = "Изменить тип материала";
+
+/* (No Comment) */
+"Change Movie Name" = "Изменить название фильма";
+
+/* (No Comment) */
+"Change Positions" = "Изменить позиции";
+
+/* (No Comment) */
+"Change Project Name" = "Изменить название проекта";
+
+/* (No Comment) */
+"Change Project Selection" = "Изменить выбор проекта";
+
+/* (No Comment) */
+"Change Scene Name" = "Изменить название сцены";
+
+/* No comment provided by engineer. */
+"Change Selection" = "Изменить выбор";
+
+/* (No Comment) */
+"Change Space Group" = "Изменить группу пространств";
+
+/* (No Comment) */
+"CIF" = "CIF";
+
+/* (No Comment) */
+"Clear Selection" = "Отменить выбор";
+
+/* (No Comment) */
+"Compute AO High-Quality" = "Вычислить AO высокого качества";
+
+/* copies */
+"copies" = "Копии";
+
+/* (No Comment) */
+"Could Not Read Main Database File" = "Не удалось прочитать основной файл базы данных";
+
+/* (No Comment) */
+"Delete Atoms" = "Удалить атомы";
+
+/* (No Comment) */
+"Delete Bonds" = "Удалить цвязи";
+
+/* Delete selection */
+"Delete selection" = "Удалить выбор";
+
+/* (No Comment) */
+"Delete Selection" = "Удалить выбор";
+
+/* (No Comment) */
+"Document Read (%@)" = "Документ Читать (%@)";
+
+/* duplicates */
+"duplicates" = "Дубликат";
+
+/* (No Comment) */
+"Export To" = "Экспортировать";
+
+/* (No Comment) */
+"Find and Impose Symmetry" = "Найдите и наложите симметрию";
+
+/* No comment provided by engineer. */
+"Find Niggli" = "Найди Ниггли";
+
+/* (No Comment) */
+"Find Primitive" = "Найти примитив";
+
+/* (No Comment) */
+"Flatten Hierarchy" = "Выровнять иерархию";
+
+/* (No Comment) */
+"Gallery-File Not Found" = "Файл галереи не найден";
+
+/* (No Comment) */
+"Insert Atoms" = "Вставить атомы";
+
+/* (No Comment) */
+"Insert Bonds" = "Вставить цвязи";
+
+/* Insert selection */
+"Insert selection" = "Вставить выбор";
+
+/* (No Comment) */
+"Insert Selection" = "Вставить выбор";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Неверная версия архива (обновите до последней версии iRASPA)";
-"Multiple Values" = "Несколько значений";
-"Mult. Val." = "Неск. знач.";
-"Mult. V." = "Неск. зн.";
+
+/* (No Comment) */
+"Invalid File Format" = "Недействительный формат файла";
+
+/* (No Comment) */
+"Invert Selection" = "Инвертировать выбор";
+
+/* (No Comment) */
+"Loading (%@)" = "Загрузка (%@)";
+
+/* (No Comment) */
 "M.V." = "Н.зн.";
+
+/* (No Comment) */
+"Make Super-Cell" = "Сделать супер-ячейку";
+
+/* (No Comment) */
+"mmCIF" = "mmCIF";
+
+/* (No Comment) */
+"Mult. V." = "Неск. зн.";
+
+/* (No Comment) */
+"Mult. Val." = "Неск. знач.";
+
+/* (No Comment) */
+"Multiple Values" = "Несколько значений";
+
+/* (No Comment) */
+"Orthographic" = "Орфографический";
+
+/* (No Comment) */
+"PDB" = "PDB";
+
+/* (No Comment) */
+"Perspective" = "Перспектива";
+
+/* (No Comment) */
+"Recompute Bonds" = "Перерасчет цвязи";
+
+/* (No Comment) */
+"Remove Permission" = "Удалить разрешение";
+
+/* (No Comment) */
+"Remove Projects" = "Удалить проекты";
+
+/* (No Comment) */
+"Remove Symmetry" = "Удалить симметрию";
+
+/* (No Comment) */
+"Reorder Atoms" = "Переупорядочить атомы";
+
+/* Reorder frames */
+"Reorder frames" = "Изменить порядок кадров";
+
+/* (No Comment) */
+"Reorder Movies" = "Изменить порядок фильмов";
+
+/* (No Comment) */
+"Reorder Projects" = "Изменить порядок проектов";
+
+/* (No Comment) */
+"Reset Camera Distance" = "Сбросить расстояние до камеры";
+
+/* (No Comment) */
+"Reset Camera To" = "Сбросить камеру на";
+
+/* (No Comment) */
+"Rotate (%@)" = "Повернуть (%@)";
+
+/* (No Comment) */
+"Saving to Archive (%@)" = "Сохранение в архив (%@)";
+
+/* (No Comment) */
+"Select a Top-Level Directory" = "Выберите каталог верхнего уровня";
+
+/* (No Comment) */
+"Show Bounding Box" = "Показать ограничивающую рамку";
+
+/* (No Comment) */
+"Toggle Atom Selection" = "Переключить выбор атома";
+
+/* (No Comment) */
+"Toggle Bond Selection" = "Переключить выбор облигаций";
+
+/* (No Comment) */
+"VASP POSCAR" = "VASP POSCAR";
+
+/* (No Comment) */
+"Wrap Atoms to Cell" = "Обернуть атомы в ячейку";
+
+/* (No Comment) */
+"X-Direction" = "X-направление";
+
+/* (No Comment) */
+"XYZ" = "XYZ";
+
+/* (No Comment) */
+"Y-Direction" = "Y-направление";
+
+/* (No Comment) */
+"Z-Direction" = "Z-направление";
+

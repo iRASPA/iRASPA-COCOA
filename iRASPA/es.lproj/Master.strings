@@ -1,15 +1,8 @@
-
-/* Class = "NSMenuItem"; title = "Add Structure project"; ObjectID = "17P-ML-bef"; */
-"17P-ML-bef.title" = "Agregar proyecto de estructura";
-
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "1Xb-ls-pt9"; */
 "1Xb-ls-pt9.title" = "Text Cell";
 
 /* Class = "NSMenuItem"; title = "Compute properties for selection"; ObjectID = "2Jt-NB-sPl"; */
 "2Jt-NB-sPl.title" = "Calcular propiedades para la selección";
-
-/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "39L-RF-she"; */
-"39L-RF-she.title" = "Agregar molécula";
 
 /* Class = "NSMenuItem"; title = "Save IZA Database"; ObjectID = "4Wl-iP-Pbc"; */
 "4Wl-iP-Pbc.title" = "Guardar la base de datos del IZA";
@@ -23,17 +16,38 @@
 /* Class = "NSMenuItem"; title = "Delete Selection"; ObjectID = "7fp-uc-cJb"; */
 "7fp-uc-cJb.title" = "Eliminar selección";
 
+/* Class = "NSMenuItem"; title = "Add Structure project"; ObjectID = "17P-ML-bef"; */
+"17P-ML-bef.title" = "Agregar proyecto de estructura";
+
+/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "39L-RF-she"; */
+"39L-RF-she.title" = "Agregar molécula";
+
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "A2b-v0-dYs"; */
 "A2b-v0-dYs.title" = "Table View Cell";
 
-/* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "DOk-0m-owF"; */
-"DOk-0m-owF.title" = "Agregar cristal molecular";
+/* Class = "NSMenuItem"; title = "Load from Cloud/make editable"; ObjectID = "buF-AA-E4m"; */
+"buF-AA-E4m.title" = "Cargar desde la nube / hacer editable";
+
+/* Class = "NSMenu"; title = "Add Objects"; ObjectID = "d98-LF-qMp"; */
+"d98-LF-qMp.title" = "Agregar objetos";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "Dl8-Oq-8Mi"; */
 "Dl8-Oq-8Mi.title" = "Table View Cell";
 
+/* Class = "NSMenuItem"; title = "Add Molecular crystal"; ObjectID = "DOk-0m-owF"; */
+"DOk-0m-owF.title" = "Agregar cristal molecular";
+
+/* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "dYh-5W-YT9"; */
+"dYh-5W-YT9.title" = "Agregar cristal";
+
+/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
+"eMF-nr-fbD.title" = "Prisma poligonal";
+
 /* Class = "NSMenuItem"; title = "Add Group project"; ObjectID = "Fyj-yE-B9G"; */
 "Fyj-yE-B9G.title" = "Agregar proyecto de grupo";
+
+/* Class = "NSMenuItem"; title = "Save CoREMOF Database"; ObjectID = "guV-7k-U3c"; */
+"guV-7k-U3c.title" = "Guardar la base de datos de CoREMOF";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "J49-HP-IXW"; */
 "J49-HP-IXW.title" = "Table View Cell";
@@ -43,6 +57,9 @@
 
 /* Class = "NSMenuItem"; title = "Add Project group"; ObjectID = "K8j-Rb-vrc"; */
 "K8j-Rb-vrc.title" = "Agregar grupo de proyectos";
+
+/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "muR-Z9-sae"; */
+"muR-Z9-sae.title" = "Agregar molécula";
 
 /* Class = "NSSearchFieldCell"; placeholderString = "Filter"; ObjectID = "NQW-mX-NqP"; */
 "NQW-mX-NqP.placeholderString" = "Filtrar";
@@ -62,6 +79,9 @@
 /* Class = "NSBox"; title = "Box"; ObjectID = "PBb-Do-JMr"; */
 "PBb-Do-JMr.title" = "Caja";
 
+/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "pCe-xU-zfX"; */
+"pCe-xU-zfX.title" = "Agregar proteína";
+
 /* Class = "NSSegmentedCell"; PS8-Ne-mbi.ibShadowedToolTips[0] = "Shows the Project Navigator"; ObjectID = "PS8-Ne-mbi"; */
 "PS8-Ne-mbi.ibShadowedToolTips[0]" = "Muestra el navegador de proyectos";
 
@@ -74,50 +94,14 @@
 /* Class = "NSBox"; title = "Box"; ObjectID = "QFA-05-Kql"; */
 "QFA-05-Kql.title" = "Caja";
 
-/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
-"RMC-nN-w7D.title" = "Agregar proteína";
-
-/* Class = "NSMenuItem"; title = "Crystal polygonal prism"; ObjectID = "RXK-7F-kYl"; */
-"RXK-7F-kYl.title" = "Prisma poligonal de cristal";
-
 /* Class = "NSMenuItem"; title = "Crystal ellipsoid"; ObjectID = "RaT-FZ-Ofn"; */
 "RaT-FZ-Ofn.title" = "Elipsoide de cristal";
 
 /* Class = "NSMenuItem"; title = "Cylinder"; ObjectID = "Rj0-p0-TFM"; */
 "Rj0-p0-TFM.title" = "Cilindro";
 
-/* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "TAX-Oq-9O2"; */
-"TAX-Oq-9O2.title" = "Elipsoide";
-
-/* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
-"Toa-8e-8sy.title" = "Caja";
-
-/* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
-"VoW-P5-q6k.title" = "Caja";
-
-/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
-"Ypv-d2-rqY.title" = "Text Cell";
-
-/* Class = "NSMenuItem"; title = "Load from Cloud/make editable"; ObjectID = "buF-AA-E4m"; */
-"buF-AA-E4m.title" = "Cargar desde la nube / hacer editable";
-
-/* Class = "NSMenu"; title = "Add Objects"; ObjectID = "d98-LF-qMp"; */
-"d98-LF-qMp.title" = "Agregar objetos";
-
-/* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "dYh-5W-YT9"; */
-"dYh-5W-YT9.title" = "Agregar cristal";
-
-/* Class = "NSMenuItem"; title = "Polygonal prism"; ObjectID = "eMF-nr-fbD"; */
-"eMF-nr-fbD.title" = "Prisma poligonal";
-
-/* Class = "NSMenuItem"; title = "Save CoREMOF Database"; ObjectID = "guV-7k-U3c"; */
-"guV-7k-U3c.title" = "Guardar la base de datos de CoREMOF";
-
-/* Class = "NSMenuItem"; title = "Add Molecule"; ObjectID = "muR-Z9-sae"; */
-"muR-Z9-sae.title" = "Agregar molécula";
-
-/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "pCe-xU-zfX"; */
-"pCe-xU-zfX.title" = "Agregar proteína";
+/* Class = "NSMenuItem"; title = "Add Protein"; ObjectID = "RMC-nN-w7D"; */
+"RMC-nN-w7D.title" = "Agregar proteína";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "rpD-Za-uPb"; */
 "rpD-Za-uPb.title" = "Table View Cell";
@@ -125,11 +109,23 @@
 /* Class = "NSMenuItem"; title = "Add Structure Project"; ObjectID = "rwA-at-3T8"; */
 "rwA-at-3T8.title" = "Agregar proyecto de estructura";
 
+/* Class = "NSMenuItem"; title = "Crystal polygonal prism"; ObjectID = "RXK-7F-kYl"; */
+"RXK-7F-kYl.title" = "Prisma poligonal de cristal";
+
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "sxb-xU-PUp"; */
 "sxb-xU-PUp.title" = "Table View Cell";
 
+/* Class = "NSMenuItem"; title = "Ellipsoid"; ObjectID = "TAX-Oq-9O2"; */
+"TAX-Oq-9O2.title" = "Elipsoide";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "Toa-8e-8sy"; */
+"Toa-8e-8sy.title" = "Caja";
+
 /* Class = "NSMenuItem"; title = "Add Protein crystal"; ObjectID = "uN8-UC-za6"; */
 "uN8-UC-za6.title" = "Añadir cristal de proteína";
+
+/* Class = "NSBox"; title = "Box"; ObjectID = "VoW-P5-q6k"; */
+"VoW-P5-q6k.title" = "Caja";
 
 /* Class = "NSMenuItem"; title = "Save selected to cloud"; ObjectID = "w2Z-Qn-qLb"; */
 "w2Z-Qn-qLb.title" = "Guardar seleccionados en la nube";
@@ -139,3 +135,7 @@
 
 /* Class = "NSMenuItem"; title = "Add Crystal"; ObjectID = "xX5-m0-Lkz"; */
 "xX5-m0-Lkz.title" = "Agregar cristal";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "Ypv-d2-rqY"; */
+"Ypv-d2-rqY.title" = "Text Cell";
+

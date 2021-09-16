@@ -1,119 +1,357 @@
-"Hydrogen" = "氢";
-"Helium" = "氦";
-"Lithium" = "锂";
-"Beryllium" = "铍";
-"Boron" = "硼";
-"Carbon" = "碳";
-"Nitrogen" = "氮";
-"Oxygen" = "氧";
-"Fluorine" = "氟";
-"Neon" = "氖";
-"Sodium" = "钠";
-"Magnesium" = "镁";
-"Aluminum" = "铝";
-"Silicon" = "硅";
-"Phosphorus" = "磷";
-"Sulfur" = "硫";
-"Chlorine" = "氯";
-"Argon" = "氩";
-"Potassium" = "钾";
-"Calcium" = "钙";
-"Scandium" = "钪";
-"Titanium" = "钛";
-"Vanadium" = "钒";
-"Chromium" = "铬";
-"Manganese" = "锰";
-"Iron" = "铁";
-"Cobalt" = "钴";
-"Nickel" = "镍";
-"Copper" = "铜";
-"Zinc" = "锌";
-"Gallium" = "镓";
-"Germanium" = "锗";
-"Arsenic" = "砷";
-"Selenium" = "硒";
-"Bromine" = "溴";
-"Krypton" = "氪";
-"Rubidium" = "铷";
-"Strontium" = "锶";
-"Yttrium" = "钇";
-"Zirconium" = "锆";
-"Niobium" = "铌";
-"Molybdenum" = "钼";
-"Technetium" = "锝";
-"Ruthenium" = "钌";
-"Rhodium" = "铑";
-"Palladium" = "钯";
-"Silver" = "银";
-"Cadmium" = "镉";
-"Indium" = "铟";
-"Tin" = "锡";
-"Antimony" = "锑";
-"Tellurium" = "碲";
-"Iodine" = "碘";
-"Xenon" = "氙";
-"Cesium" = "铯";
-"Barium" = "钡";
-"Lanthanum" = "镧";
-"Cerium" = "铈";
-"Praseodymium" = "镨";
-"Neodymium" = "钕";
-"Promethium" = "钷";
-"Samarium" = "钐";
-"Europium" = "铕";
-"Gadolinium" = "钆";
-"Terbium" = "铽";
-"Dysprosium" = "镝";
-"Holmium" = "钬";
-"Erbium" = "铒";
-"Thulium" = "铥";
-"Ytterbium" = "镱";
-"Lutetium" = "镥";
-"Hafnium" = "铪";
-"Tantalum" = "钽";
-"Tungsten" = "钨";
-"Rhenium" = "铼";
-"Osmium" = "锇";
-"Iridium" = "铱";
-"Platinum" = "铂";
-"Gold" = "金";
-"Mercury" = "汞";
-"Thallium" = "铊";
-"Lead" = "铅";
-"Bismuth" = "铋";
-"Polonium" = "钋";
-"Astatine" = "砹";
-"Radon" = "氡";
-"Francium" = "钫";
-"Radium" = "镭";
+/* (No Comment) */
 "Actinium" = "锕";
-"Thorium" = "钍";
-"Protactinium" = "镤";
-"Uranium" = "铀";
-"Neptunium" = "镎";
-"Plutonium" = "钚";
+
+/* (No Comment) */
+"Aluminum" = "铝";
+
+/* (No Comment) */
 "Americium" = "镅";
-"Curium" = "锔";
+
+/* (No Comment) */
+"Antimony" = "锑";
+
+/* (No Comment) */
+"Argon" = "氩";
+
+/* (No Comment) */
+"Arsenic" = "砷";
+
+/* (No Comment) */
+"Astatine" = "砹";
+
+/* (No Comment) */
+"Barium" = "钡";
+
+/* (No Comment) */
 "Berkelium" = "锫";
-"Californium" = "锎";
-"Einsteinium" = "锿";
-"Fermium" = "镄";
-"Mendelevium" = "钔";
-"Nobelium" = "锘";
-"Lawrencium" = "铹";
-"Rutherfordium" = "𬬻";
-"Dubnium" = "𬭊";
-"Seaborgium" = "𬭳";
+
+/* (No Comment) */
+"Beryllium" = "铍";
+
+/* (No Comment) */
+"Bismuth" = "铋";
+
+/* (No Comment) */
 "Bohrium" = "𬭛";
-"Hassium" = "𬭶";
-"Meitnerium" = "鿏";
-"Darmstadtium" = "𫟼";
-"Roentgenium" = "𬬭";
+
+/* (No Comment) */
+"Boron" = "硼";
+
+/* (No Comment) */
+"Bromine" = "溴";
+
+/* (No Comment) */
+"Cadmium" = "镉";
+
+/* (No Comment) */
+"Calcium" = "钙";
+
+/* (No Comment) */
+"Californium" = "锎";
+
+/* (No Comment) */
+"Carbon" = "碳";
+
+/* (No Comment) */
+"Cerium" = "铈";
+
+/* (No Comment) */
+"Cesium" = "铯";
+
+/* (No Comment) */
+"Chlorine" = "氯";
+
+/* (No Comment) */
+"Chromium" = "铬";
+
+/* (No Comment) */
+"Cobalt" = "钴";
+
+/* (No Comment) */
 "Copernicium" = "鎶";
-"Nihonium" = "鉨";
+
+/* (No Comment) */
+"Copper" = "铜";
+
+/* (No Comment) */
+"Curium" = "锔";
+
+/* (No Comment) */
+"Darmstadtium" = "𫟼";
+
+/* (No Comment) */
+"Dubnium" = "𬭊";
+
+/* (No Comment) */
+"Dysprosium" = "镝";
+
+/* (No Comment) */
+"Einsteinium" = "锿";
+
+/* (No Comment) */
+"Erbium" = "铒";
+
+/* (No Comment) */
+"Europium" = "铕";
+
+/* (No Comment) */
+"Fermium" = "镄";
+
+/* (No Comment) */
 "Flerovium" = "𫓧";
-"Moscovium" = "镆";
-"Livermorium" = "鉝";
-"Tennessine" = "石田";
-"Oganesson" = "气奧";
+
+/* (No Comment) */
+"Fluorine" = "氟";
+
+/* (No Comment) */
+"Francium" = "钫";
+
+/* (No Comment) */
+"Gadolinium" = "钆";
+
+/* (No Comment) */
+"Gallium" = "镓";
+
+/* (No Comment) */
+"Germanium" = "锗";
+
+/* (No Comment) */
+"Gold" = "金";
+
+/* (No Comment) */
+"Hafnium" = "铪";
+
+/* (No Comment) */
+"Hassium" = "𬭶";
+
+/* (No Comment) */
+"Helium" = "氦";
+
+/* (No Comment) */
+"Holmium" = "钬";
+
+/* (No Comment) */
+"Hydrogen" = "氢";
+
+/* (No Comment) */
+"Indium" = "铟";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "无效的存档版本（升级到最新的iRASPA版本）";
+
+/* (No Comment) */
+"Iodine" = "碘";
+
+/* (No Comment) */
+"Iridium" = "铱";
+
+/* (No Comment) */
+"Iron" = "铁";
+
+/* (No Comment) */
+"Krypton" = "氪";
+
+/* (No Comment) */
+"Lanthanum" = "镧";
+
+/* (No Comment) */
+"Lawrencium" = "铹";
+
+/* (No Comment) */
+"Lead" = "铅";
+
+/* (No Comment) */
+"Lithium" = "锂";
+
+/* (No Comment) */
+"Livermorium" = "鉝";
+
+/* (No Comment) */
+"Lutetium" = "镥";
+
+/* (No Comment) */
+"Magnesium" = "镁";
+
+/* (No Comment) */
+"Manganese" = "锰";
+
+/* (No Comment) */
+"Meitnerium" = "鿏";
+
+/* (No Comment) */
+"Mendelevium" = "钔";
+
+/* (No Comment) */
+"Mercury" = "汞";
+
+/* (No Comment) */
+"Molybdenum" = "钼";
+
+/* (No Comment) */
+"Moscovium" = "镆";
+
+/* (No Comment) */
+"Neodymium" = "钕";
+
+/* (No Comment) */
+"Neon" = "氖";
+
+/* (No Comment) */
+"Neptunium" = "镎";
+
+/* (No Comment) */
+"Nickel" = "镍";
+
+/* (No Comment) */
+"Nihonium" = "鉨";
+
+/* (No Comment) */
+"Niobium" = "铌";
+
+/* (No Comment) */
+"Nitrogen" = "氮";
+
+/* (No Comment) */
+"Nobelium" = "锘";
+
+/* (No Comment) */
+"Oganesson" = "气奧";
+
+/* (No Comment) */
+"Osmium" = "锇";
+
+/* (No Comment) */
+"Oxygen" = "氧";
+
+/* (No Comment) */
+"Palladium" = "钯";
+
+/* (No Comment) */
+"Phosphorus" = "磷";
+
+/* (No Comment) */
+"Platinum" = "铂";
+
+/* (No Comment) */
+"Plutonium" = "钚";
+
+/* (No Comment) */
+"Polonium" = "钋";
+
+/* (No Comment) */
+"Potassium" = "钾";
+
+/* (No Comment) */
+"Praseodymium" = "镨";
+
+/* (No Comment) */
+"Promethium" = "钷";
+
+/* (No Comment) */
+"Protactinium" = "镤";
+
+/* (No Comment) */
+"Radium" = "镭";
+
+/* (No Comment) */
+"Radon" = "氡";
+
+/* (No Comment) */
+"Rhenium" = "铼";
+
+/* (No Comment) */
+"Rhodium" = "铑";
+
+/* (No Comment) */
+"Roentgenium" = "𬬭";
+
+/* (No Comment) */
+"Rubidium" = "铷";
+
+/* (No Comment) */
+"Ruthenium" = "钌";
+
+/* (No Comment) */
+"Rutherfordium" = "𬬻";
+
+/* (No Comment) */
+"Samarium" = "钐";
+
+/* (No Comment) */
+"Scandium" = "钪";
+
+/* (No Comment) */
+"Seaborgium" = "𬭳";
+
+/* (No Comment) */
+"Selenium" = "硒";
+
+/* (No Comment) */
+"Silicon" = "硅";
+
+/* (No Comment) */
+"Silver" = "银";
+
+/* (No Comment) */
+"Sodium" = "钠";
+
+/* (No Comment) */
+"Strontium" = "锶";
+
+/* (No Comment) */
+"Sulfur" = "硫";
+
+/* (No Comment) */
+"Tantalum" = "钽";
+
+/* (No Comment) */
+"Technetium" = "锝";
+
+/* (No Comment) */
+"Tellurium" = "碲";
+
+/* (No Comment) */
+"Tennessine" = "石田";
+
+/* (No Comment) */
+"Terbium" = "铽";
+
+/* (No Comment) */
+"Thallium" = "铊";
+
+/* (No Comment) */
+"Thorium" = "钍";
+
+/* (No Comment) */
+"Thulium" = "铥";
+
+/* (No Comment) */
+"Tin" = "锡";
+
+/* (No Comment) */
+"Titanium" = "钛";
+
+/* (No Comment) */
+"Tungsten" = "钨";
+
+/* (No Comment) */
+"Uranium" = "铀";
+
+/* (No Comment) */
+"Vanadium" = "钒";
+
+/* (No Comment) */
+"Xenon" = "氙";
+
+/* (No Comment) */
+"Ytterbium" = "镱";
+
+/* (No Comment) */
+"Yttrium" = "钇";
+
+/* (No Comment) */
+"Zinc" = "锌";
+
+/* (No Comment) */
+"Zirconium" = "锆";
+

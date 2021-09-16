@@ -1,13 +1,39 @@
-"GALLERY" = "GALERIA";
-"Gallery" = "Galeria";
-"LOCAL PROJECTS" = "PROJETOS LOCAIS";
-"Local Projects" = "Projetos Locais";
-"ICLOUD PUBLIC" = "ICLOUD PÚBLICA";
-"iCloud Public" = "iCloud pública";
+/* (No Comment) */
 "Could Not Determine Status of iCloud Account" = "Não foi possível determinar o status da conta iCloud";
-"iCloud Account Available" = "conta iCloud disponível";
+
+/* (No Comment) */
+"Gallery" = "Galeria";
+
+/* (No Comment) */
+"GALLERY" = "GALERIA";
+
+/* (No Comment) */
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "Erro de autenticação da conta iCloud: ative iCloud e iCloud-drive";
+
+/* (No Comment) */
+"iCloud Account Available" = "conta iCloud disponível";
+
+/* (No Comment) */
 "iCloud Account Restricted" = "conta iCloud está restrita";
-"iCloud Public Discoverability Granted" = "A descoberta pública na iCloud foi concedida. Você pode ser descoberto (através do seu endereço de e-mail) por outros usuários do aplicativo. Você pode alterar isso nas configurações da aplicação, iCloud, iCloud drive, descobrir por e-mail.";
+
+/* (No Comment) */
+"iCloud Public" = "iCloud pública";
+
+/* (No Comment) */
+"ICLOUD PUBLIC" = "ICLOUD PÚBLICA";
+
+/* (No Comment) */
 "iCloud Public Discoverability Denied" = "A descoberta pública do iCloud foi negada. Você não pode ser descoberto (através do seu endereço de e-mail) por outros usuários do aplicativo. Você pode alterar isso nas configurações do aplicativo, iCloud, iCloud drive, descobrir por e-mail.";
+
+/* (No Comment) */
+"iCloud Public Discoverability Granted" = "A descoberta pública na iCloud foi concedida. Você pode ser descoberto (através do seu endereço de e-mail) por outros usuários do aplicativo. Você pode alterar isso nas configurações da aplicação, iCloud, iCloud drive, descobrir por e-mail.";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Versão de arquivo inválida (atualize para a versão mais recente do iRASPA)";
+
+/* (No Comment) */
+"Local Projects" = "Projetos Locais";
+
+/* (No Comment) */
+"LOCAL PROJECTS" = "PROJETOS LOCAIS";
+

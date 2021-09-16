@@ -1,0 +1,9 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "iRASPAQuickLookExtension";
+
+/* Bundle name */
+"CFBundleName" = "iRASPAQuickLookExtension";
+
+/* Copyright (human-readable) */
+"NSHumanReadableCopyright" = "Copyright © 2020 David Dubbeldam. All rights reserved.";
+

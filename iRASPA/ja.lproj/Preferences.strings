@@ -1,30 +1,14 @@
+/* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
+"dAK-62-iur.title" = "一般";
+
+/* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
+"dQ7-i1-ieW.title" = "一般設定";
 
 /* Class = "NSBox"; title = "Read permission for"; ObjectID = "DrV-v1-Dd6"; */
 "DrV-v1-Dd6.title" = "読み取り許可";
 
 /* Class = "NSViewController"; title = "Command-line"; ObjectID = "ErL-rs-pho"; */
 "ErL-rs-pho.title" = "コマンドライン";
-
-/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
-"KqL-r5-hBW.title" = "書き込み許可";
-
-/* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
-"LKB-pQ-lE8.title" = "アニメーション設定";
-
-/* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
-"N3b-Db-pad.title" = "環境設定";
-
-/* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
-"RvG-Ag-1yO.title" = "常にオン";
-
-/* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
-"V1Y-Hh-Pro.title" = "選択";
-
-/* Class = "NSViewController"; title = "General"; ObjectID = "dAK-62-iur"; */
-"dAK-62-iur.title" = "一般";
-
-/* Class = "NSBox"; title = "General settings"; ObjectID = "dQ7-i1-ieW"; */
-"dQ7-i1-ieW.title" = "一般設定";
 
 /* Class = "NSViewController"; title = "Animations"; ObjectID = "eTl-7O-cbU"; */
 "eTl-7O-cbU.title" = "アニメーション";
@@ -38,14 +22,30 @@
 /* Class = "NSPathCell"; placeholderString = "Drag a file system object to this area or click to set path"; ObjectID = "kfw-MK-t7S"; */
 "kfw-MK-t7S.placeholderString" = "ファイルシステムオブジェクトをこの領域にドラッグするか、クリックしてパスを設定する";
 
+/* Class = "NSBox"; title = "Write permission for"; ObjectID = "KqL-r5-hBW"; */
+"KqL-r5-hBW.title" = "書き込み許可";
+
 /* Class = "NSViewController"; title = "Preferences"; ObjectID = "lDy-gc-II8"; */
 "lDy-gc-II8.title" = "環境設定";
+
+/* Class = "NSBox"; title = "Animation settings"; ObjectID = "LKB-pQ-lE8"; */
+"LKB-pQ-lE8.title" = "アニメーション設定";
 
 /* Class = "NSMenuItem"; title = "When connected to power source"; ObjectID = "miP-5k-r8f"; */
 "miP-5k-r8f.title" = "電源に接続した場合";
 
+/* Class = "NSTabViewController"; title = "Preferences"; ObjectID = "N3b-Db-pad"; */
+"N3b-Db-pad.title" = "環境設定";
+
 /* Class = "NSButtonCell"; title = "Autosaving"; ObjectID = "n57-Vp-DI4"; */
 "n57-Vp-DI4.title" = "自動保存";
 
+/* Class = "NSMenuItem"; title = "Always on"; ObjectID = "RvG-Ag-1yO"; */
+"RvG-Ag-1yO.title" = "常にオン";
+
+/* Class = "NSTextFieldCell"; title = "Selection"; ObjectID = "V1Y-Hh-Pro"; */
+"V1Y-Hh-Pro.title" = "選択";
+
 /* Class = "NSButtonCell"; title = "Show tooltip in renderer"; ObjectID = "zSD-B6-1hO"; */
 "zSD-B6-1hO.title" = "レンダラーにツールチップを表示する";
+

@@ -1,79 +1,264 @@
-"Saving to Archive (%@)" = "Opslaan in archief (%@)";
-"Document Read (%@)" = "Document gelezen (%@)";
-"Autosaving...." = "Automatisch opslaan....";
-"Rotate (%@)" = "Roteer (%@)";
-"Loading (%@)" = "Bezig met laden (%@)";
-"Select a Top-Level Directory" = "Selecteer een hoofddirectory";
-"Remove Permission" = "Toestemming verwijderen";
-"Could Not Read Main Database File" = "Kan hoofddatabasebestand niet lezen";
-"Invalid File Format" = "Ongeldig bestandsformaat";
-"Gallery-File Not Found" = "Galerij-bestand niet gevonden";
-"Cannot Initialize from Data" = "Kan niet initialiseren vanuit gegevens";
-"Add Projects" = "Projecten toevoegen";
-"Remove Projects" = "Projecten verwijderen";
-"Reorder Projects" = "Projecten herordenen";
-"Change Project Selection" = "Wijzig projectselectie";
-"Change Project Name" = "Wijzig projectnaam";
-"Insert Selection" = "Selectie invoegen";
-"Delete Selection" = "Selectie verwijderen";
-"Add Movies" = "Voeg movies toe";
-"Add Scenes" = "Scènes toevoegen";
-"Change Movie Name" = "Verander de movienaam";
-"Change Scene Name" = "Wijzig de scènenaam";
-"Reorder Movies" = "Films herordenen";
-"Clear Selection" = "Duidelijke selectie";
-"Toggle Atom Selection" = "Atoomselectie in/uit-schakelen";
-"Toggle Bond Selection" = "Bondselectie in/uit-schakelen";
-"Delete Atoms" = "Atomen verwijderen";
-"Insert Atoms" = "Atomen invoegen";
-"Change Positions" = "Verander posities";
-"Python Console Ready\n" = "Klaar voor python-console\n";
-"Change Material Type" = "Wijzig het materiaaltype";
-"Change Space Group" = "Verander space group";
-"Reset Camera Distance" = "Camera-afstand resetten";
-"Reset Camera To" = "Camera resetten naar";
-"Show Bounding Box" = "Toon begrenzingsvak";
-"Export To" = "Exporteren naar";
-"Compute AO High-Quality" = "Bereken AO van hoge-kwaliteit";
-"Camera Projection" = "Cameraprojectie";
-"Orthographic" = "Orthografisch";
-"Perspective" = "Perspectief";
-"Z-Direction" = "Z-Richting";
-"Y-Direction" = "Y-Richting";
-"X-Direction" = "X-Richting";
-"PDB" = "PDB";
-"mmCIF" = "mmCIF";
-"CIF" = "CIF";
-"XYZ" = "XYZ";
-"VASP POSCAR" = "VASP POSCAR";
+/* (No Comment) */
 "Add Atom-Group" = "Atoomgroep toevoegen";
+
+/* Add frame */
+"Add frame(s)" = "Frames toevoegen";
+
+/* (No Comment) */
+"Add Movies" = "Voeg movies toe";
+
+/* (No Comment) */
+"Add Projects" = "Projecten toevoegen";
+
+/* (No Comment) */
+"Add Scenes" = "Scènes toevoegen";
+
+/* (No Comment) */
 "Adding New Atom" = "Nieuw atoom toevoegen";
-"Reorder Atoms" = "Atomen herordenen";
-"Change Atom Selection" = "Verander atoomselectie";
-"Delete Atoms" = "Atomen verwijderen";
-"Insert Atoms" = "Atomen invoegen";
-"Find and Impose Symmetry" = "Zoek en leg symmetrie op";
-"Flatten Hierarchy" = "Hiërarchie platslaan";
-"Remove Symmetry" = "Symmetry verwijderen";
-"Wrap Atoms to Cell" = "Wikkel atomen in cel";
-"Find Primitive" = "Zoek primitieve cel";
-"Make Super-Cell" = "Maak super-cel";
-"Invert Selection" = "Inverteer Selectie";
-"Change Fix Atom" = "Wijzig vastheid atoom";
-"Change Atom Name" = "Verander atoomnaam";
-"Change Atom Element" = "Verander atoomelement";
-"Change Atom Force Field Type" = "Wijzig atoom krachtveld type";
-"Change Atom X-Position" = "Verander atoom x-positie";
-"Change Atom Y-Position" = "Verander atoom y-positie";
-"Change Atom Z-Position" = "Verander atoom z-positie";
+
+/* (No Comment) */
+"Autosaving...." = "Automatisch opslaan....";
+
+/* (No Comment) */
+"Camera Projection" = "Cameraprojectie";
+
+/* No comment provided by engineer. */
+"Camera Reset To Direction" = "Camera reset naar richting";
+
+/* (No Comment) */
+"Cannot Initialize from Data" = "Kan niet initialiseren vanuit gegevens";
+
+/* (No Comment) */
 "Change Atom Charge" = "Verander atoom lading";
-"Change Bond-Length" = "Verander bond-lengte";
-"Recompute Bonds" = "Herbereken bonds";
+
+/* (No Comment) */
+"Change Atom Element" = "Verander atoomelement";
+
+/* (No Comment) */
+"Change Atom Force Field Type" = "Wijzig atoom krachtveld type";
+
+/* Change atom name */
+"Change Atom Name" = "Wijzig atoomnaam";
+
+/* No comment provided by engineer. */
+"Change Atom Occupancy" = "Wijzig atoombezetting";
+
+/* (No Comment) */
+"Change Atom Selection" = "Wijzig atoomselectie";
+
+/* (No Comment) */
+"Change Atom X-Position" = "Wijzig atoom x-positie";
+
+/* (No Comment) */
+"Change Atom Y-Position" = "Wijzig atoom y-positie";
+
+/* No comment provided by engineer. */
+"Change Atom Z-position" = "Wijzig atoom z-positie";
+
+/* (No Comment) */
+"Change Atom Z-Position" = "Wijzig atoom z-positie";
+
+/* (No Comment) */
+"Change Bond Selection" = "Wijzig bond selectie";
+
+/* (No Comment) */
+"Change Bond-Length" = "Wijzig bond-lengte";
+
+/* (No Comment) */
+"Change Fix Atom" = "Wijzig vastheid atoom";
+
+/* Change frame name */
+"Change frame name" = "Wijzig de framenaam";
+
+/* (No Comment) */
+"Change Material Type" = "Wijzig het materiaaltype";
+
+/* (No Comment) */
+"Change Movie Name" = "Wijzig de movienaam";
+
+/* (No Comment) */
+"Change Positions" = "Wijzig posities";
+
+/* (No Comment) */
+"Change Project Name" = "Wijzig projectnaam";
+
+/* (No Comment) */
+"Change Project Selection" = "Wijzig projectselectie";
+
+/* (No Comment) */
+"Change Scene Name" = "Wijzig scènenaam";
+
+/* No comment provided by engineer. */
+"Change Selection" = "Wijzig selectie";
+
+/* (No Comment) */
+"Change Space Group" = "Wijzig space group";
+
+/* (No Comment) */
+"CIF" = "CIF";
+
+/* (No Comment) */
+"Clear Selection" = "Duidelijke selectie";
+
+/* (No Comment) */
+"Compute AO High-Quality" = "Bereken AO van hoge-kwaliteit";
+
+/* copies */
+"copies" = "Kopieën";
+
+/* (No Comment) */
+"Could Not Read Main Database File" = "Kan hoofddatabasebestand niet lezen";
+
+/* (No Comment) */
+"Delete Atoms" = "Atomen verwijderen";
+
+/* (No Comment) */
 "Delete Bonds" = "Verwijder bonds";
+
+/* Delete selection */
+"Delete selection" = "Selectie verwijderen";
+
+/* (No Comment) */
+"Delete Selection" = "Selectie verwijderen";
+
+/* (No Comment) */
+"Document Read (%@)" = "Document gelezen (%@)";
+
+/* duplicates */
+"duplicates" = "Duplicaten";
+
+/* (No Comment) */
+"Export To" = "Exporteren naar";
+
+/* (No Comment) */
+"Find and Impose Symmetry" = "Zoek en leg symmetrie op";
+
+/* No comment provided by engineer. */
+"Find Niggli" = "Zoek Niggli cel";
+
+/* (No Comment) */
+"Find Primitive" = "Zoek primitieve cel";
+
+/* (No Comment) */
+"Flatten Hierarchy" = "Hiërarchie platslaan";
+
+/* (No Comment) */
+"Gallery-File Not Found" = "Galerij-bestand niet gevonden";
+
+/* (No Comment) */
+"Insert Atoms" = "Atomen invoegen";
+
+/* (No Comment) */
 "Insert Bonds" = "Inserteer bonds";
-"Change Bond Selection" = "Verander bond selectie";
+
+/* Insert selection */
+"Insert selection" = "Selectie invoegen";
+
+/* (No Comment) */
+"Insert Selection" = "Selectie invoegen";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "Ongeldige Archiefversie (upgrade naar de nieuwste iRASPA-versie)";
-"Multiple Values" = "Meerdere waarden";
-"Mult. Val." = "Meer. Waar.";
-"Mult. V." = "Meer. W.";
+
+/* (No Comment) */
+"Invalid File Format" = "Ongeldig bestandsformaat";
+
+/* (No Comment) */
+"Invert Selection" = "Inverteer Selectie";
+
+/* (No Comment) */
+"Loading (%@)" = "Bezig met laden (%@)";
+
+/* (No Comment) */
 "M.V." = "M.W.";
+
+/* (No Comment) */
+"Make Super-Cell" = "Maak super-cel";
+
+/* (No Comment) */
+"mmCIF" = "mmCIF";
+
+/* (No Comment) */
+"Mult. V." = "Meer. W.";
+
+/* (No Comment) */
+"Mult. Val." = "Meer. Waar.";
+
+/* (No Comment) */
+"Multiple Values" = "Meerdere waarden";
+
+/* (No Comment) */
+"Orthographic" = "Orthografisch";
+
+/* (No Comment) */
+"PDB" = "PDB";
+
+/* (No Comment) */
+"Perspective" = "Perspectief";
+
+/* (No Comment) */
+"Recompute Bonds" = "Herbereken bonds";
+
+/* (No Comment) */
+"Remove Permission" = "Toestemming verwijderen";
+
+/* (No Comment) */
+"Remove Projects" = "Projecten verwijderen";
+
+/* (No Comment) */
+"Remove Symmetry" = "Symmetry verwijderen";
+
+/* (No Comment) */
+"Reorder Atoms" = "Atomen herordenen";
+
+/* Reorder frames */
+"Reorder frames" = "Frames herordenen";
+
+/* (No Comment) */
+"Reorder Movies" = "Films herordenen";
+
+/* (No Comment) */
+"Reorder Projects" = "Projecten herordenen";
+
+/* (No Comment) */
+"Reset Camera Distance" = "Camera-afstand resetten";
+
+/* (No Comment) */
+"Reset Camera To" = "Camera resetten naar";
+
+/* (No Comment) */
+"Rotate (%@)" = "Roteer (%@)";
+
+/* (No Comment) */
+"Saving to Archive (%@)" = "Opslaan in archief (%@)";
+
+/* (No Comment) */
+"Select a Top-Level Directory" = "Selecteer een hoofddirectory";
+
+/* (No Comment) */
+"Show Bounding Box" = "Toon begrenzingsvak";
+
+/* (No Comment) */
+"Toggle Atom Selection" = "Atoomselectie in/uit-schakelen";
+
+/* (No Comment) */
+"Toggle Bond Selection" = "Bondselectie in/uit-schakelen";
+
+/* (No Comment) */
+"VASP POSCAR" = "VASP POSCAR";
+
+/* (No Comment) */
+"Wrap Atoms to Cell" = "Wikkel atomen in cel";
+
+/* (No Comment) */
+"X-Direction" = "X-Richting";
+
+/* (No Comment) */
+"XYZ" = "XYZ";
+
+/* (No Comment) */
+"Y-Direction" = "Y-Richting";
+
+/* (No Comment) */
+"Z-Direction" = "Z-Richting";
+

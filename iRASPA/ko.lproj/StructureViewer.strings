@@ -1,9 +1,11 @@
-
 /* Class = "NSTabViewItem"; label = "Item 1"; ObjectID = "0Aa-TO-Uin"; */
 "0Aa-TO-Uin.label" = "아이템 1";
 
 /* Class = "NSBox"; title = "Box"; ObjectID = "8jm-NB-F14"; */
 "8jm-NB-F14.title" = "상자";
+
+/* Class = "NSTabViewItem"; label = "Item 2"; ObjectID = "hLV-ao-VrN"; */
+"hLV-ao-VrN.label" = "아이템 2";
 
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[0] = "Camera"; ObjectID = "KMJ-Zm-flM"; */
 "KMJ-Zm-flM.ibShadowedLabels[0]" = "카메라";
@@ -26,11 +28,9 @@
 /* Class = "NSSegmentedCell"; KMJ-Zm-flM.ibShadowedLabels[6] = "Bonds"; ObjectID = "KMJ-Zm-flM"; */
 "KMJ-Zm-flM.ibShadowedLabels[6]" = "결합";
 
+/* Class = "NSBox"; title = "Box"; ObjectID = "w1T-pF-1Dy"; */
+"w1T-pF-1Dy.title" = "상자";
+
 /* Class = "NSTabViewItem"; label = "Tab"; ObjectID = "Xel-Em-yJ8"; */
 "Xel-Em-yJ8.label" = "Tab";
 
-/* Class = "NSTabViewItem"; label = "Item 2"; ObjectID = "hLV-ao-VrN"; */
-"hLV-ao-VrN.label" = "아이템 2";
-
-/* Class = "NSBox"; title = "Box"; ObjectID = "w1T-pF-1Dy"; */
-"w1T-pF-1Dy.title" = "상자";

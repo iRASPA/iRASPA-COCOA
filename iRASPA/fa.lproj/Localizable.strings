@@ -1,76 +1,264 @@
-"Saving to Archive (%@)" = "در حال ذخیره در بایگانی (%@)";
-"Document Read (%@)" = "سند خوانده شده (%@)";
-"Autosaving...." = "ذخیره خودکار....";
-"Rotate (%@)" = "چرخش (%@)";
-"Loading (%@)" = "بارگذاری (%@)";
-"Select a Top-Level Directory" = "یک فهرست سطح بالا انتخاب کنید";
-"Remove Permission" = "حذف مجوز";
-"Could Not Read Main Database File" = "فایل پایگاه داده اصلی قابل خواندن نیست";
-"Invalid File Format" = "فرمت فایل نامعتبر است";
-"Gallery-File Not Found" = "گالری-فایل یافت نشد";
-"Cannot Initialize from Data" = "مقدار دهی اولیه از داده امکان پذیر نمی باشد";
-"Add Projects" = "اضافه کردن پروژه ها";
-"Remove Projects" = "حذف پروژه ها";
-"Reorder Projects" = "پروژه ها را دوباره مرتب کنید";
-"Change Project Selection" = "انتخاب پروژه را تغییر دهید";
-"Change Project Name" = "تغییر نام پروژه";
-"Insert Selection" = "وارد کردن انتخاب";
-"Delete Selection" = "حذف کردن انتخاب";
-"Add Movies" = "اضافه کردن فیلم";
-"Add Scenes" = "اضافه کردن صحنه";
-"Change Movie Name" = "تغییر نام فیلم";
-"Change Scene Name" = "تغییر نام صحنه";
-"Reorder Movies" = "ترتیب مجدد فیلم ها";
-"Clear Selection" = "پاک کردن انتخاب";
-"Toggle Atom Selection" = "تغییر انتخاب اتم";
-"Toggle Bond Selection" = "تغییر انتخاب پیوند";
-"Delete Atoms" = "پاک کردن اتم";
-"Insert Atoms" = "قرار دادن اتم";
-"Change Positions" = "تغییر موقعیت ها";
-"Python Console Ready\n" = "کنسول پایتون آماده\n";
-"Change Material Type" = "تغییر نوع ماده";
-"Change Space Group" = "تغییر گروه فضایی";
-"Reset Camera Distance" = "فاصله دوربین را بازنشانی کنید";
-"Reset Camera To" = "تنظیم مجدد دوربین به";
-"Show Bounding Box" = "جعبه محصور کننده را نشان دهید";
-"Export To" = "صادر به";
-"Compute AO High-Quality" = "AO را با کیفیت بالا محاسبه کنید";
-"Camera Projection" = "پروجکشن دوربین";
-"Orthographic" = "ارتوگرافیک";
-"Perspective" = "ژرفانمایی";
-"Z-Direction" = "جهت Z";
-"Y-Direction" = "جهت Y";
-"X-Direction" = "جهت X";
-"PDB" = "PDB";
-"mmCIF" = "mmCIF";
-"CIF" = "CIF";
-"XYZ" = "XYZ";
-"VASP POSCAR" = "VASP POSCAR";
+/* (No Comment) */
 "Add Atom-Group" = "گروه اتم را اضافه کنید";
+
+/* Add frame */
+"Add frame(s)" = "افزودن قاب (ها)";
+
+/* (No Comment) */
+"Add Movies" = "اضافه کردن فیلم";
+
+/* (No Comment) */
+"Add Projects" = "اضافه کردن پروژه ها";
+
+/* (No Comment) */
+"Add Scenes" = "اضافه کردن صحنه";
+
+/* (No Comment) */
 "Adding New Atom" = "اضافه کردن اتم جدید";
-"Reorder Atoms" = "دوباره اتم ها را مرتب کنید";
-"Change Atom Selection" = "انتخاب اتم را تغییر دهید";
-"Delete Atoms" = "اتم ها را حذف کنید";
-"Insert Atoms" = "اتم ها را وارد کنید";
-"Find and Impose Symmetry" = "تقارن را پیدا کنید و اعمال کنید";
-"Flatten Hierarchy" = "مسطح کردن سلسله مراتب";
-"Remove Symmetry" = "تقارن را بردارید";
-"Wrap Atoms to Cell" = "اتم ها را به سلول بپیچید";
-"Find Primitive" = "بدوی پیدا کنید";
-"Make Super-Cell" = "ابر سلول بسازید";
-"Invert Selection" = "انتخاب معکوس";
-"Change Fix Atom" = "تغییر اتم";
-"Change Atom Name" = "تغییر نام اتم";
-"Change Atom Element" = "عنصر اتم را تغییر دهید";
-"Change Atom Force Field Type" = "نوع فیلد نیروی اتمی را تغییر دهید";
-"Change Atom X-Position" = "تغییر موقعیت X اتم";
-"Change Atom Y-Position" = "تغییر موقعیت Y اتم";
-"Change Atom Z-Position" = "تغییر موقعیت Z اتم";
+
+/* (No Comment) */
+"Autosaving...." = "ذخیره خودکار....";
+
+/* (No Comment) */
+"Camera Projection" = "پروجکشن دوربین";
+
+/* No comment provided by engineer. */
+"Camera Reset To Direction" = "تنظیم مجدد دوربین به جهت";
+
+/* (No Comment) */
+"Cannot Initialize from Data" = "مقدار دهی اولیه از داده امکان پذیر نمی باشد";
+
+/* (No Comment) */
 "Change Atom Charge" = "شارژ اتم را تغییر دهید";
-"Change Bond-Length" = "تغییر طول باند";
-"Recompute Bonds" = "پیوندها را دوباره محاسبه کنید";
-"Delete Bonds" = "پیوندها را حذف کنید";
-"Insert Bonds" = "پیوندها را وارد کنید";
+
+/* (No Comment) */
+"Change Atom Element" = "عنصر اتم را تغییر دهید";
+
+/* (No Comment) */
+"Change Atom Force Field Type" = "نوع فیلد نیروی اتمی را تغییر دهید";
+
+/* Change atom name */
+"Change Atom Name" = "تغییر نام اتم";
+
+/* No comment provided by engineer. */
+"Change Atom Occupancy" = "تغییر اشغال اتم";
+
+/* (No Comment) */
+"Change Atom Selection" = "انتخاب اتم را تغییر دهید";
+
+/* (No Comment) */
+"Change Atom X-Position" = "تغییر موقعیت X اتم";
+
+/* (No Comment) */
+"Change Atom Y-Position" = "تغییر موقعیت Y اتم";
+
+/* No comment provided by engineer. */
+"Change Atom Z-position" = "تغییر موقعیت Z اتم";
+
+/* (No Comment) */
+"Change Atom Z-Position" = "تغییر موقعیت Z اتم";
+
+/* (No Comment) */
 "Change Bond Selection" = "انتخاب پیوند را تغییر دهید";
+
+/* (No Comment) */
+"Change Bond-Length" = "تغییر طول باند";
+
+/* (No Comment) */
+"Change Fix Atom" = "تغییر اتم";
+
+/* Change frame name */
+"Change frame name" = "تغییر نام قاب";
+
+/* (No Comment) */
+"Change Material Type" = "تغییر نوع ماده";
+
+/* (No Comment) */
+"Change Movie Name" = "تغییر نام فیلم";
+
+/* (No Comment) */
+"Change Positions" = "تغییر موقعیت ها";
+
+/* (No Comment) */
+"Change Project Name" = "تغییر نام پروژه";
+
+/* (No Comment) */
+"Change Project Selection" = "انتخاب پروژه را تغییر دهید";
+
+/* (No Comment) */
+"Change Scene Name" = "تغییر نام صحنه";
+
+/* No comment provided by engineer. */
+"Change Selection" = "تغییر انتخاب";
+
+/* (No Comment) */
+"Change Space Group" = "تغییر گروه فضایی";
+
+/* (No Comment) */
+"CIF" = "CIF";
+
+/* (No Comment) */
+"Clear Selection" = "پاک کردن انتخاب";
+
+/* (No Comment) */
+"Compute AO High-Quality" = "AO را با کیفیت بالا محاسبه کنید";
+
+/* copies */
+"copies" = "کپی";
+
+/* (No Comment) */
+"Could Not Read Main Database File" = "فایل پایگاه داده اصلی قابل خواندن نیست";
+
+/* (No Comment) */
+"Delete Atoms" = "اتم ها را حذف کنید";
+
+/* (No Comment) */
+"Delete Bonds" = "پیوندها را حذف کنید";
+
+/* Delete selection */
+"Delete selection" = "حذف کردن انتخاب";
+
+/* (No Comment) */
+"Delete Selection" = "حذف کردن انتخاب";
+
+/* (No Comment) */
+"Document Read (%@)" = "سند خوانده شده (%@)";
+
+/* duplicates */
+"duplicates" = "تکراری";
+
+/* (No Comment) */
+"Export To" = "صادر به";
+
+/* (No Comment) */
+"Find and Impose Symmetry" = "تقارن را پیدا کنید و اعمال کنید";
+
+/* No comment provided by engineer. */
+"Find Niggli" = " Niggli را پیدا کنید";
+
+/* (No Comment) */
+"Find Primitive" = "بدوی پیدا کنید";
+
+/* (No Comment) */
+"Flatten Hierarchy" = "مسطح کردن سلسله مراتب";
+
+/* (No Comment) */
+"Gallery-File Not Found" = "گالری-فایل یافت نشد";
+
+/* (No Comment) */
+"Insert Atoms" = "اتم ها را وارد کنید";
+
+/* (No Comment) */
+"Insert Bonds" = "پیوندها را وارد کنید";
+
+/* Insert selection */
+"Insert selection" = "وارد کردن انتخاب";
+
+/* (No Comment) */
+"Insert Selection" = "وارد کردن انتخاب";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "نسخه بایگانی نامعتبر (ارتقا به آخرین نسخه iRASPA)";
+
+/* (No Comment) */
+"Invalid File Format" = "فرمت فایل نامعتبر است";
+
+/* (No Comment) */
+"Invert Selection" = "انتخاب معکوس";
+
+/* (No Comment) */
+"Loading (%@)" = "بارگذاری (%@)";
+
+/* (No Comment) */
+"M.V." = "M.V.";
+
+/* (No Comment) */
+"Make Super-Cell" = "ابر سلول بسازید";
+
+/* (No Comment) */
+"mmCIF" = "mmCIF";
+
+/* (No Comment) */
+"Mult. V." = "Mult. V.";
+
+/* (No Comment) */
+"Mult. Val." = "Mult. Val.";
+
+/* (No Comment) */
 "Multiple Values" = "چند ارزش";
+
+/* (No Comment) */
+"Orthographic" = "ارتوگرافیک";
+
+/* (No Comment) */
+"PDB" = "PDB";
+
+/* (No Comment) */
+"Perspective" = "ژرفانمایی";
+
+/* (No Comment) */
+"Recompute Bonds" = "پیوندها را دوباره محاسبه کنید";
+
+/* (No Comment) */
+"Remove Permission" = "حذف مجوز";
+
+/* (No Comment) */
+"Remove Projects" = "حذف پروژه ها";
+
+/* (No Comment) */
+"Remove Symmetry" = "تقارن را بردارید";
+
+/* (No Comment) */
+"Reorder Atoms" = "دوباره اتم ها را مرتب کنید";
+
+/* Reorder frames */
+"Reorder frames" = "تغییر فریم ها";
+
+/* (No Comment) */
+"Reorder Movies" = "ترتیب مجدد فیلم ها";
+
+/* (No Comment) */
+"Reorder Projects" = "پروژه ها را دوباره مرتب کنید";
+
+/* (No Comment) */
+"Reset Camera Distance" = "فاصله دوربین را بازنشانی کنید";
+
+/* (No Comment) */
+"Reset Camera To" = "تنظیم مجدد دوربین به";
+
+/* (No Comment) */
+"Rotate (%@)" = "چرخش (%@)";
+
+/* (No Comment) */
+"Saving to Archive (%@)" = "در حال ذخیره در بایگانی (%@)";
+
+/* (No Comment) */
+"Select a Top-Level Directory" = "یک فهرست سطح بالا انتخاب کنید";
+
+/* (No Comment) */
+"Show Bounding Box" = "جعبه محصور کننده را نشان دهید";
+
+/* (No Comment) */
+"Toggle Atom Selection" = "تغییر انتخاب اتم";
+
+/* (No Comment) */
+"Toggle Bond Selection" = "تغییر انتخاب پیوند";
+
+/* (No Comment) */
+"VASP POSCAR" = "VASP POSCAR";
+
+/* (No Comment) */
+"Wrap Atoms to Cell" = "اتم ها را به سلول بپیچید";
+
+/* (No Comment) */
+"X-Direction" = "جهت X";
+
+/* (No Comment) */
+"XYZ" = "XYZ";
+
+/* (No Comment) */
+"Y-Direction" = "جهت Y";
+
+/* (No Comment) */
+"Z-Direction" = "جهت Z";
+

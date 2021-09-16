@@ -1,13 +1,39 @@
-"GALLERY" = "ギャラリー";
-"Gallery" = "ギャラリー";
-"LOCAL PROJECTS" = "ローカルプロジェクト";
-"Local Projects" = "ローカルプロジェクト";
-"ICLOUD PUBLIC" = "ICLOUD パブリック";
-"iCloud Public" = "iCloud パブリック";
+/* (No Comment) */
 "Could Not Determine Status of iCloud Account" = "iCloudアカウントのステータスを確認できませんでした";
-"iCloud Account Available" = "利用可能なiCloudアカウント";
+
+/* (No Comment) */
+"Gallery" = "ギャラリー";
+
+/* (No Comment) */
+"GALLERY" = "ギャラリー";
+
+/* (No Comment) */
 "iCloud Account Authentication Error: Enable iCloud and iCloud-Drive" = "iCloudアカウント認証エラー：iCloudとiCloudドライブを有効にする";
+
+/* (No Comment) */
+"iCloud Account Available" = "利用可能なiCloudアカウント";
+
+/* (No Comment) */
 "iCloud Account Restricted" = "iCloudアカウントが制限されています";
-"iCloud Public Discoverability Granted" = "iCloudの公開発見可能性が認められました。あなたはアプリの他のユーザーから（メールアドレスを介して）発見されます。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます。";
+
+/* (No Comment) */
+"iCloud Public" = "iCloud パブリック";
+
+/* (No Comment) */
+"ICLOUD PUBLIC" = "ICLOUD パブリック";
+
+/* (No Comment) */
 "iCloud Public Discoverability Denied" = "iCloudの公開発見可能性は否定されました。あなたはアプリの他のユーザーから（メールアドレスを介して）発見されません。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます。";
+
+/* (No Comment) */
+"iCloud Public Discoverability Granted" = "iCloudの公開発見可能性が認められました。あなたはアプリの他のユーザーから（メールアドレスを介して）発見されます。これは、設定アプリ、iCloud、iCloudドライブで変更でき、メールで検出できます。";
+
+/* (No Comment) */
 "Invalid Archive Version (Upgrade to latest iRASPA version)" = "無効なアーカイブバージョン（最新版のiRASPAにアップグレードしてください）";
+
+/* (No Comment) */
+"Local Projects" = "ローカルプロジェクト";
+
+/* (No Comment) */
+"LOCAL PROJECTS" = "ローカルプロジェクト";
+
