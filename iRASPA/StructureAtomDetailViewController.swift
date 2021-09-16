@@ -334,13 +334,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         // group-row
         if tableColumn == nil
         {
-          if let checkBox: NSButton = localview!.viewWithTag(10) as? NSButton
+          if let checkBox: NSButton = localview?.viewWithTag(10) as? NSButton
           {
             checkBox.state = atomNode.isVisible ? NSControl.StateValue.on : NSControl.StateValue.off
             checkBox.isEnabled = atomNode.isVisibleEnabled && proxyProject.isEnabled
             
           }
-          if let textField: NSTextField = localview!.viewWithTag(11) as? NSTextField
+          if let textField: NSTextField = localview?.viewWithTag(11) as? NSTextField
           {
             textField.isBezeled = false
             textField.drawsBackground = false
@@ -363,7 +363,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           }
         case NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"):
           view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixed"), owner: self) as? NSTableCellView
-          if let segmentedControl: NSLabelSegmentedControl = view!.viewWithTag(11) as? NSLabelSegmentedControl
+          if let segmentedControl: NSLabelSegmentedControl = view?.viewWithTag(11) as? NSLabelSegmentedControl
           {
             segmentedControl.label = NSString(string: String(atomNode.tag))
             segmentedControl.setLabel(String(atomNode.tag), forSegment: 0)
@@ -387,7 +387,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
          
           view?.textField?.stringValue = PredefinedElements.sharedInstance.elementSet[node.representedObject.elementIdentifier].chemicalSymbol
           view?.textField?.textColor = NSColor.controlTextColor
-          view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.regular)
+          view?.textField?.font = NSFont.systemFont(ofSize: view?.textField?.font?.pointSize ?? 18.0, weight: NSFont.Weight.regular)
           
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
           if let _ = (self.representedObject as? iRASPAStructure)?.structure as? RKRenderObjectSource
@@ -401,12 +401,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           if let _ : SKForceFieldType = document.forceFieldSets[structure.atomForceFieldIdentifier]?[node.representedObject.uniqueForceFieldName]
           {
             view?.textField?.textColor = NSColor.controlTextColor
-            view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.regular)
+            view?.textField?.font = NSFont.systemFont(ofSize: view?.textField?.font?.pointSize ?? 18.0, weight: NSFont.Weight.regular)
           }
           else
           {
             view?.textField?.textColor = NSColor.red
-            view?.textField?.font = NSFont.systemFont(ofSize: view!.textField!.font!.pointSize, weight: NSFont.Weight.bold)
+            view?.textField?.font = NSFont.systemFont(ofSize: view?.textField?.font?.pointSize ?? 18.0, weight: NSFont.Weight.bold)
           }
           
           view?.textField?.isEditable = node.isEditable && proxyProject.isEnabled
@@ -736,7 +736,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
                outlineView.numberOfRows >= 0
         {
           outlineView.insertItems(at: IndexSet(integer: atIndex), inParent: inItem, withAnimation: .slideRight)
-          outlineView.selectRowIndexes(IndexSet(integer: self.atomOutlineView!.row(forItem: node)), byExtendingSelection: true)
+          outlineView.selectRowIndexes(IndexSet(integer: outlineView.row(forItem: node)), byExtendingSelection: true)
         }
       }
       
@@ -895,9 +895,10 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure
+      let structure: Structure = (self.representedObject as? iRASPAStructure)?.structure,
+      let draggingSource = info.draggingSource
     {
-      if (outlineView === info.draggingSource! as AnyObject)
+      if (outlineView === draggingSource as AnyObject)
       {
         // drag&drop is reordering in the same outlineView
         for node in self.draggedNodes
@@ -1032,9 +1033,10 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           }
           
            // keep the selection outlineView automatically in sync without having to call 'programmaticallySetSelection()'
-          if structure.atomTreeController.selectedTreeNodes.contains(move.node)
+          if structure.atomTreeController.selectedTreeNodes.contains(move.node),
+             let outlineView = self.atomOutlineView
           {
-            self.atomOutlineView?.selectRowIndexes(IndexSet(integer: self.atomOutlineView!.row(forItem: move.node)), byExtendingSelection: true)
+            self.atomOutlineView?.selectRowIndexes(IndexSet(integer: outlineView.row(forItem: move.node)), byExtendingSelection: true)
           }
         }
       }
@@ -1133,12 +1135,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         
         info.enumerateDraggingItems(options: NSDraggingItemEnumerationOptions.concurrent, for: outlineView, classes: [SKAtomTreeNode.self], searchOptions: [:], using: { (draggingItem , idx, stop)  in
           
-          if let node: SKAtomTreeNode = (draggingItem as NSDraggingItem).item as? SKAtomTreeNode
+          if let node: SKAtomTreeNode = (draggingItem as NSDraggingItem).item as? SKAtomTreeNode,
+             let outlineView = self.atomOutlineView
           {
             self.addNode(node, inItem: toItem, atIndex: childIndex, inStructure: structure)
             //treeController.updateFilteredNode(node)
             // keep the selected node selected
-            self.atomOutlineView?.selectRowIndexes(NSIndexSet(index: self.atomOutlineView!.row(forItem: node)) as IndexSet, byExtendingSelection: true)
+            outlineView.selectRowIndexes(NSIndexSet(index: outlineView.row(forItem: node)) as IndexSet, byExtendingSelection: true)
             
             childIndex = childIndex + 1
           }
@@ -2903,7 +2906,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func changedOccupancy(_ sender: NSTextField)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
+       let superView = sender.superview,
+       let row: Int = self.atomOutlineView?.row(for: superView), row >= 0,
        let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
     {
       let atom = node.representedObject
@@ -2965,7 +2969,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func changedPositionX(_ sender: NSTextField)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
+       let superView = sender.superview,
+       let row: Int = self.atomOutlineView?.row(for: superView), row >= 0,
        let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
     {
       let atom = node.representedObject
@@ -3027,7 +3032,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func changedPositionY(_ sender: NSTextField)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
+       let superView = sender.superview,
+       let row: Int = self.atomOutlineView?.row(for: superView), row >= 0,
        let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
     {
       let atom = node.representedObject
@@ -3089,7 +3095,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func changedPositionZ(_ sender: NSTextField)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
+       let superView = sender.superview,
+       let row: Int = self.atomOutlineView?.row(for: superView), row >= 0,
        let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
     {
       let atom = node.representedObject
@@ -3143,7 +3150,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func changedCharge(_ sender: NSTextField)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let row: Int = self.atomOutlineView?.row(for: sender.superview!), row >= 0,
+       let superView = sender.superview,
+       let row: Int = self.atomOutlineView?.row(for: superView), row >= 0,
        let node: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
     {
       setAtomCharge(node, to: sender.doubleValue)

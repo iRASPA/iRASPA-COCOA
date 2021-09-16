@@ -338,7 +338,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         countries.removeAllItems()
         let locale: Locale = NSLocale.current
-        let sortedCountries = Locale.isoRegionCodes.map { locale.localizedString(forRegionCode: $0)! }.sorted()
+        let sortedCountries = Locale.isoRegionCodes.compactMap { locale.localizedString(forRegionCode: $0)}.sorted()
         countries.addItems(withTitles: sortedCountries)
         
         countries.isEditable = false

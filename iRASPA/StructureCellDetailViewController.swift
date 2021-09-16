@@ -3556,9 +3556,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   @IBAction func changeFrameworkProbeMolecule(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var cellViewer: [CellViewer] = representedObject as? [CellViewer]
+      var cellViewer: [CellViewer] = representedObject as? [CellViewer],
+      let renderFrameworkProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
     {
-      cellViewer.renderFrameworkProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)!
+      cellViewer.renderFrameworkProbeMolecule = renderFrameworkProbeMolecule
       
       cellViewer.renderRecomputeDensityProperties()
       

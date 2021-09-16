@@ -899,9 +899,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
             if let imageView: NSButton = view.viewWithTag(40) as? NSButton
             {
               buttonImage.state = NSControl.StateValue.on
-              if (project.renderBackgroundImage != nil)
+              if (project.renderBackgroundImage != nil),
+                 let renderBackgroundImage = project.renderBackgroundImage
               {
-                imageView.image = NSImage(cgImage: project.renderBackgroundImage!, size: NSSize(width: 100.0, height: 100.0))
+                imageView.image = NSImage(cgImage: renderBackgroundImage, size: NSSize(width: 100.0, height: 100.0))
               }
               else
               {
@@ -1489,9 +1490,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   @IBAction func changeAxesBackgroundStyle(_ sender: NSPopUpButton)
   {
-    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode,
+       let axesBackgroundStyle = RKGlobalAxes.BackgroundStyle(rawValue: sender.indexOfSelectedItem)
     {
-      crystals.renderAxes.axesBackgroundStyle = RKGlobalAxes.BackgroundStyle(rawValue: sender.indexOfSelectedItem)!
+      crystals.renderAxes.axesBackgroundStyle = axesBackgroundStyle
      
       self.updateOutlineView(identifiers: [self.cameraAxesTextCell])
       
@@ -2440,7 +2442,8 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
         if result == NSApplication.ModalResponse.OK
         {
           // make imageSource of selected picture
-          if let imageSource = CGImageSourceCreateWithURL(openPanel.url! as CFURL, nil),
+          if let url = openPanel.url,
+             let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil),
              let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
           {
             // set the background of the project
@@ -2593,9 +2596,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   @IBAction func changeDPI(_ sender: NSPopUpButton)
   {
-    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode,
+       let imageDPI = ProjectStructureNode.DPI(rawValue: sender.indexOfSelectedItem)
     {
-      crystals.imageDPI = ProjectStructureNode.DPI(rawValue: sender.indexOfSelectedItem)!
+      crystals.imageDPI = imageDPI
       
       switch(crystals.imageDimensions)
       {
@@ -2619,9 +2623,10 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
   
   @IBAction func changeOfflineImageQuality(_ sender: NSPopUpButton)
   {
-    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode
+    if let crystals: ProjectStructureNode = self.representedObject as? ProjectStructureNode,
+       let renderImageQuality = RKImageQuality(rawValue: sender.indexOfSelectedItem)
     {
-      crystals.renderImageQuality = RKImageQuality(rawValue: sender.indexOfSelectedItem)!
+      crystals.renderImageQuality = renderImageQuality
       
       self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
       

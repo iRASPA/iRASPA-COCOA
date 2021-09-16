@@ -395,7 +395,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        document.forceFieldSets[selectedForceFieldSetIndex].editable,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldData: SKForceFieldSet = document.forceFieldSets[selectedForceFieldSetIndex]
       let forceFieldType: SKForceFieldType = forceFieldData.atomTypeList[row]
@@ -431,7 +432,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     
     if let document: iRASPADocument = self.windowController?.currentDocument,
        document.forceFieldSets[selectedForceFieldSetIndex].editable,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldData: SKForceFieldSet = document.forceFieldSets[selectedForceFieldSetIndex]
       let uniqueForceFieldName = forceFieldData.atomTypeList[row].forceFieldStringIdentifier
@@ -458,7 +460,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     if let document: iRASPADocument = self.windowController?.currentDocument,
        document.forceFieldSets[selectedForceFieldSetIndex].editable,
        let project: ProjectStructureNode = representedObject as? ProjectStructureNode,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldData: SKForceFieldSet = document.forceFieldSets[selectedForceFieldSetIndex]
       let uniqueForceFieldName = forceFieldData.atomTypeList[row].forceFieldStringIdentifier
@@ -486,7 +489,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     if let document: iRASPADocument = self.windowController?.currentDocument,
        document.colorSets[selectedColorSetIndex].editable,
        let project: ProjectStructureNode = representedObject as? ProjectStructureNode,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldData: SKForceFieldSet = document.forceFieldSets[selectedForceFieldSetIndex]
       let uniqueForceFieldName = forceFieldData.atomTypeList[row].forceFieldStringIdentifier
@@ -570,7 +574,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        document.forceFieldSets[selectedForceFieldSetIndex].editable,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldSet: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
@@ -589,7 +594,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        document.forceFieldSets[selectedForceFieldSetIndex].editable,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldSet: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
@@ -610,7 +616,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = representedObject as? ProjectStructureNode,
        document.forceFieldSets[selectedForceFieldSetIndex].editable,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldSet: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
@@ -631,7 +638,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     if let document: iRASPADocument = self.windowController?.currentDocument,
        document.forceFieldSets[selectedForceFieldSetIndex].editable,
        let project: ProjectStructureNode = representedObject as? ProjectStructureNode,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldSet: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
@@ -655,7 +663,8 @@ class StructureElementDetailViewController: NSViewController, NSMenuItemValidati
     if let document: iRASPADocument = self.windowController?.currentDocument,
        document.forceFieldSets[selectedForceFieldSetIndex].editable,
        let project: ProjectStructureNode = representedObject as? ProjectStructureNode,
-       let row: Int = self.forceFieldTableView?.row(for: sender.superview!), row >= 0
+       let superView = sender.superview,
+       let row: Int = self.forceFieldTableView?.row(for: superView), row >= 0
     {
       let forceFieldSets: SKForceFieldSets = document.forceFieldSets
       let forceFieldSet: SKForceFieldSet = forceFieldSets[selectedForceFieldSetIndex]
