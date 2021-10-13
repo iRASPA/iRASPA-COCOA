@@ -35,6 +35,16 @@ import MathKit
 import SimulationKit
 import SymmetryKit
 
+public enum RKEnergySurfaceType: Int
+{
+  case isoSurface = 0
+  case volumeRendering = 1
+}
+
+public enum RKPredefinedVolumeRenderingTransferFunction: Int
+{
+  case `default` = 0
+}
 
 public enum RKBackgroundType: Int
 {

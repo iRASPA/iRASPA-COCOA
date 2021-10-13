@@ -260,9 +260,16 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   // MARK: protocol RKRenderAdsorptionSurfaceSource implementation
   // =====================================================================
   
+  public var adsorptionSurfaceProbeMolecule: ProbeMolecule = .helium
+  
   public var potentialParameters: [SIMD2<Double>] {return []}
   
   public var drawAdsorptionSurface: Bool = false
+  
+  public var adsorptionSurfaceRenderingMethod: RKEnergySurfaceType = RKEnergySurfaceType.isoSurface // NEW
+  public var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction = RKPredefinedVolumeRenderingTransferFunction.default
+  public var adsorptionVolumeStepLength: Double = 0.001
+  
   public var adsorptionSurfaceOpacity: Double = 1.0
   public var adsorptionSurfaceIsoValue: Double = 0.0
   public var adsorptionSurfaceSize: Int = 128
@@ -407,7 +414,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   // MARK: other variables
   // =====================================================================
   
-  public var adsorptionSurfaceProbeMolecule: ProbeMolecule = .helium
+ 
   
   public var scaling: SIMD3<Double> = SIMD3<Double>(x: 1.0, y: 1.0, z: 1.0)
   

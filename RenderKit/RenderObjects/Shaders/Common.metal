@@ -97,5 +97,21 @@ float3 hsv2rgb(float3 c)
   return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
+// Slab method for ray-box intersection
+float2 rayBoxIntersection(Ray ray, AABB box)
+{
+  float t_0=0.0;
+  float t_1=0.0;
+  float3 direction_inv = 1.0 / ray.direction;
+  float3 t_top = direction_inv * (box.top - ray.origin);
+  float3 t_bottom = direction_inv * (box.bottom - ray.origin);
+  float3 t_min = min(t_top, t_bottom);
+  float2 t = max(t_min.xx, t_min.yz);
+  t_0 = max(0.0, max(t.x, t.y));
+  float3 t_max = max(t_top, t_bottom);
+  t = min(t_max.xx, t_max.yz);
+  t_1 = min(t.x, t.y);
+  return float2(t_0,t_1);
+}
 
 

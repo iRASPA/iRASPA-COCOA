@@ -2727,6 +2727,52 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
+      // Rendering Method
+      if let popUpbuttonRenderingType: iRASPAPopUpButton = view.viewWithTag(52) as? iRASPAPopUpButton
+      {
+        popUpbuttonRenderingType.isEditable = false
+        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        {
+          popUpbuttonRenderingType.isEditable = enabled && adsorptionSurfaceOn
+          if let renderingType: RKEnergySurfaceType = representedStructure.renderAdsorptionRenderingMethod
+          {
+            popUpbuttonRenderingType.selectItem(at: renderingType.rawValue)
+          }
+        }
+      }
+      
+      // Steplength
+      if let textFieldStepLength: NSTextField = view.viewWithTag(53) as? NSTextField
+      {
+        textFieldStepLength.isEditable = false
+        textFieldStepLength.stringValue = ""
+        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        {
+          textFieldStepLength.isEditable = enabled && adsorptionSurfaceOn
+          if let stepLength = representedStructure.renderAdsorptionVolumeStepLength
+          {
+            textFieldStepLength.doubleValue = stepLength
+          }
+          else
+          {
+            textFieldStepLength.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      
+      // Transfer Function
+      if let popUpbuttonTransferFunction: iRASPAPopUpButton = view.viewWithTag(54) as? iRASPAPopUpButton
+      {
+        popUpbuttonTransferFunction.isEditable = false
+        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        {
+          popUpbuttonTransferFunction.isEditable = enabled && adsorptionSurfaceOn
+          if let transferFunction: RKPredefinedVolumeRenderingTransferFunction = representedStructure.renderAdsorptionVolumeTransferFunction
+          {
+            popUpbuttonTransferFunction.selectItem(at: transferFunction.rawValue)
+          }
+        }
+      }
       
       
       // Probe molecule
@@ -7092,6 +7138,23 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
+  @IBAction func changeAdsorptionRenderingType(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer],
+       let adsorptionSurfaceRenderingMethod = RKEnergySurfaceType(rawValue: sender.indexOfSelectedItem)
+    {
+      representedStructure.renderAdsorptionRenderingMethod = adsorptionSurfaceRenderingMethod
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: representedStructure.selectedFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
   @IBAction func changeAdsorptionSurfaceProbeMolecule(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
@@ -7104,6 +7167,40 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAdsorptionTransferFunction(_ sender: NSPopUpButton)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer],
+       let adsorptionVolumeTransferFunction = RKPredefinedVolumeRenderingTransferFunction(rawValue: sender.indexOfSelectedItem)
+    {
+      representedStructure.renderAdsorptionVolumeTransferFunction = adsorptionVolumeTransferFunction
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: representedStructure.selectedFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAdsorptionVolumeStepLengthTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
+       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    {
+      representedStructure.renderAdsorptionVolumeStepLength = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
     }

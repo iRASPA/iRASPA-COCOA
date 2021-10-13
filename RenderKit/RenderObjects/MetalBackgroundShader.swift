@@ -43,9 +43,11 @@ public class MetalBackgroundShader
   var renderPassDescriptor: MTLRenderPassDescriptor! = nil
   
   var sceneRenderPassDescriptor: MTLRenderPassDescriptor! = nil
+  var sceneRenderTransparentPassDescriptor: MTLRenderPassDescriptor! = nil
   var sceneTexture: MTLTexture! = nil
   var sceneDepthTexture: MTLTexture! = nil
   var sceneResolveTexture: MTLTexture! = nil
+  var sceneResolvedDepthTexture: MTLTexture! = nil
   
   public var vertexBuffer: MTLBuffer! = nil
   public var indexBuffer: MTLBuffer! = nil
@@ -148,33 +150,63 @@ public class MetalBackgroundShader
     sceneResolveTexture = device.makeTexture(descriptor: sceneResolveTextureDescriptor)
     sceneResolveTexture.label = "scene resolved texture"
     
-    
     let sceneDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float_stencil8, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
     sceneDepthTextureDescriptor.textureType = MTLTextureType.type2DMultisample
     sceneDepthTextureDescriptor.sampleCount = maximumNumberOfSamples
     sceneDepthTextureDescriptor.storageMode = MTLStorageMode.private
     sceneDepthTextureDescriptor.usage = MTLTextureUsage.renderTarget
+    //sceneDepthTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
     sceneDepthTexture = device.makeTexture(descriptor: sceneDepthTextureDescriptor)
     sceneDepthTexture.label = "scene multisampled depth texture"
     
+    let sceneResolveDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float_stencil8, width: max(Int(size.width),1), height: max(Int(size.height),1), mipmapped: false)
+    sceneResolveDepthTextureDescriptor.textureType = MTLTextureType.type2D
+    sceneResolveDepthTextureDescriptor.storageMode = MTLStorageMode.private
+    sceneResolveDepthTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
+    sceneResolvedDepthTexture = device.makeTexture(descriptor: sceneResolveDepthTextureDescriptor)
+    sceneResolvedDepthTexture.label = "scene multisampled resolved depth texture"
+    
+    
+    // Opaque scene descriptor
+    // =================================================================================================================
     sceneRenderPassDescriptor = MTLRenderPassDescriptor()
     let sceneMSAAcolorAttachment: MTLRenderPassColorAttachmentDescriptor = sceneRenderPassDescriptor.colorAttachments[0]
     sceneMSAAcolorAttachment.texture = sceneTexture
     sceneMSAAcolorAttachment.loadAction = MTLLoadAction.load
-    sceneMSAAcolorAttachment.resolveTexture = sceneResolveTexture
-    sceneMSAAcolorAttachment.storeAction = MTLStoreAction.multisampleResolve
-    
+    //sceneMSAAcolorAttachment.resolveTexture = sceneResolveTexture
+    sceneMSAAcolorAttachment.storeAction =  .store // MTLStoreAction.multisampleResolve
     
     let sceneMSAAdepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderPassDescriptor.depthAttachment
     sceneMSAAdepthAttachment.texture = sceneDepthTexture
     sceneMSAAdepthAttachment.loadAction = MTLLoadAction.clear
-    sceneMSAAdepthAttachment.storeAction = MTLStoreAction.store  // TODO: check whether it could be dontCare
+    sceneMSAAdepthAttachment.storeAction = .storeAndMultisampleResolve
+    sceneMSAAdepthAttachment.resolveTexture = sceneResolvedDepthTexture
     sceneMSAAdepthAttachment.clearDepth = 1.0
     
     let sceneMSAAstencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderPassDescriptor.stencilAttachment
     sceneMSAAstencilAttachment.texture = sceneDepthTexture
     sceneMSAAstencilAttachment.loadAction = MTLLoadAction.clear
     sceneMSAAstencilAttachment.storeAction = MTLStoreAction.dontCare
+    sceneMSAAstencilAttachment.clearStencil = 0
+    
+    // Transparent scene descriptor
+    // =================================================================================================================
+    sceneRenderTransparentPassDescriptor = MTLRenderPassDescriptor()
+    let sceneTransparentMSAAcolorAttachment: MTLRenderPassColorAttachmentDescriptor = sceneRenderTransparentPassDescriptor.colorAttachments[0]
+    sceneTransparentMSAAcolorAttachment.texture = sceneTexture
+    sceneTransparentMSAAcolorAttachment.loadAction = MTLLoadAction.load
+    sceneTransparentMSAAcolorAttachment.resolveTexture = sceneResolveTexture
+    sceneTransparentMSAAcolorAttachment.storeAction = MTLStoreAction.multisampleResolve
+    
+    let sceneTransparentMSAAdepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderTransparentPassDescriptor.depthAttachment
+    sceneTransparentMSAAdepthAttachment.texture = sceneDepthTexture
+    sceneTransparentMSAAdepthAttachment.loadAction = MTLLoadAction.load
+    sceneTransparentMSAAdepthAttachment.storeAction = .dontCare
+    
+    let sceneTransparentMSAAstencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderTransparentPassDescriptor.stencilAttachment
+    sceneTransparentMSAAstencilAttachment.texture = sceneDepthTexture
+    sceneTransparentMSAAstencilAttachment.loadAction = MTLLoadAction.dontCare
+    sceneTransparentMSAAstencilAttachment.storeAction = MTLStoreAction.dontCare
     sceneMSAAstencilAttachment.clearStencil = 0
   }
   

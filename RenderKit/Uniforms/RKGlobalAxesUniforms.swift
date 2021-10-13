@@ -35,7 +35,7 @@ import simd
 
 public struct RKGlobalAxesUniforms
 {
-  public var axesBackgroundColor: SIMD4<Float> = SIMD4<Float>(x: 0.8, y: 0.8, z: 0.8, w: 0.05)
+  public var axesBackgroundColor: SIMD4<Float> = SIMD4<Float>(x: 0.8, y: 0.8, z: 0.8, w: 0.25)
   public var textColor: float3x4 = float3x4(SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0), SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0), SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0))
   public var textDisplacement: float3x4 = float3x4(SIMD4<Float>(0.0,0.0,0.0,0.0), SIMD4<Float>(0.0,0.0,0.0,0.0), SIMD4<Float>(0.0,0.0,0.0,0.0))
   public var axesBackGroundStyle: Int32 = 1

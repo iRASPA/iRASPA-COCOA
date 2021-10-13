@@ -56,21 +56,25 @@ public struct RKTransformationUniforms
   public var axesMvpMatrix: float4x4 = float4x4()
   public var padMatrix: float4x4 = float4x4()
   
+  var cameraPosition: SIMD4<Float> = SIMD4<Float>()
+  var padVector3: SIMD4<Float> = SIMD4<Float>()
   // moved 'numberOfMultiSamplePoints' to here (for downsampling when no structures are present)
   public var numberOfMultiSamplePoints: Int32 = 8;
+  var padvector41: Float = 0.0
+  var padvector42: Float = 0.0
+  var padvector43: Float = 0.0
+  
   public var bloomLevel: Float = 1.0
   public var bloomPulse: Float = 1.0
   public var maximumEDRvalue: Float = 1.0
-  var padVector2: SIMD4<Float> = SIMD4<Float>()
-  var padVector3: SIMD4<Float> = SIMD4<Float>()
-  var padvector4: SIMD4<Float> = SIMD4<Float>()
+  var padvector44: Float = 0.0
   
   public init()
   {
     
   }
   
-  public init(projectionMatrix: double4x4, viewMatrix: double4x4, axesProjectionMatrix: double4x4, axesViewMatrix: double4x4, bloomLevel: Double, bloomPulse: Double, maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat)
+  public init(camera: RKCamera?, projectionMatrix: double4x4, viewMatrix: double4x4, modelMatrix: double4x4, axesProjectionMatrix: double4x4, axesViewMatrix: double4x4, isOrthographic: Bool, bloomLevel: Double, bloomPulse: Double, maximumExtendedDynamicRangeColorComponentValue maximumEDRvalue: CGFloat)
   {
     let OpenGLToMetalMatrix:double4x4 = double4x4([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.5, 0.0], [0.0, 0.0, 0.5, 1.0]])
     let mvpMatrix: double4x4 = OpenGLToMetalMatrix * projectionMatrix * viewMatrix
@@ -91,6 +95,17 @@ public struct RKTransformationUniforms
     self.bloomLevel = Float(bloomLevel)
     self.bloomPulse = Float(bloomPulse)
     self.maximumEDRvalue = Float(maximumEDRvalue)
+    
+    if let camera = camera
+    {
+      var modifiedCameraViewMatrix: double4x4 = camera.viewMatrix;
+      if(isOrthographic)
+      {
+        modifiedCameraViewMatrix[3][2] = -10000.0
+      }
+      let camera_position: SIMD4<Double> = (modifiedCameraViewMatrix * camera.modelMatrix).inverse * SIMD4<Double>(0.0, 0.0, 0.0, 1.0)
+      self.cameraPosition = SIMD4<Float>(x: camera_position.x,y: camera_position.y,z: camera_position.z,w: 1.0)
+    }
   }
 }
 

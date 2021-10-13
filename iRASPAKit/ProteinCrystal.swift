@@ -122,7 +122,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
@@ -358,7 +358,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
@@ -886,7 +886,7 @@ public final class ProteinCrystal: Structure, RKRenderAtomSource, RKRenderBondSo
   
   public override func numberOfReplicas() -> Int
   {
-    return self.cell.numberOfReplicas
+    return self.cell.totalNumberOfReplicas
   }
   
   public override func computeChangedBondLength(asymmetricBond bond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>, to bondLength: Double) -> (SIMD3<Double>, SIMD3<Double>)

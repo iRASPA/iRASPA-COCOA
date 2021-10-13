@@ -161,6 +161,20 @@ struct AtomSphereImposterVertexShaderOut
   float4 ambientOcclusionTransformMatrix4 [[ flat ]];
 };
 
+// Ray
+struct Ray
+{
+  float3 origin;
+  float3 direction;
+};
+
+// Axis-aligned bounding box
+struct AABB
+{
+  float3 top;
+  float3 bottom;
+};
+
 typedef struct
 {
   float4x4 projectionMatrix;
@@ -177,14 +191,17 @@ typedef struct
   float4x4 axesMvpMatrix;
   float4x4 padMatrix;
   
+  float4 cameraPosition;
+  float4 padVector3;
   int numberOfMultiSamplePoints;
+  float padVector41;
+  float padVector42;
+  float padVector43;
+  
   float bloomLevel;
   float bloomPulse;
   float maximumEDRvalue;
-  
-  float4 padVector2;
-  float4 padVector3;
-  float4 padVector4;
+  float padVector44;
 } FrameUniforms;
 
 
@@ -320,7 +337,7 @@ typedef struct
   float pad9;
   
   float4 localAxesPosition;
-  float4 pad10;
+  float4 numberOfReplicas;
   float4 pad11;
   float4 pad12;
   float4x4 pad13;
@@ -330,7 +347,11 @@ typedef struct
 typedef struct
 {
   float4x4 unitCellMatrix;
+  float4x4 inverseUnitCellMatrix;
   float4x4 unitCellNormalMatrix;
+  
+  float4x4 boxMatrix;
+  float4x4 inverseBoxMatrix;
   
   float4 ambientFrontSide;
   float4 diffuseFrontSide;
@@ -351,15 +372,10 @@ typedef struct
   float hue;
   float saturation;
   float value;
-  float pad3;
+  float stepLength;
   float4 pad4;
   float4 pad5;
   float4 pad6;
-  float4x4 pad7;
-  
-  float4x4 pad8;
-  float4x4 pad9;
-  
 } IsosurfaceUniforms;
 
 typedef struct
@@ -422,5 +438,7 @@ float frontFacing(float4 pos0, float4 pos1, float4 pos2);
 
 float2 cellular2D(float2 P, float jitter);
 float2 cellular3D(float3 P, float jitter);
+
+float2 rayBoxIntersection(Ray ray, AABB box);
 
 #endif /* Common_h */

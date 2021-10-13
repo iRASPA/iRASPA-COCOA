@@ -38,8 +38,6 @@ import LogViewKit
 import SimulationKit
 import SymmetryKit
 
-
-
 // Notes:
 // Mac GPUs only support combined depth and stencil formats -> MTLPixelFormat.Depth32Float_Stencil8 supported on all devices
 
@@ -63,7 +61,8 @@ public class MetalRenderer
   var boundingBoxCylinderShader: MetalBoundingBoxCylinderShader = MetalBoundingBoxCylinderShader()
   var boundingBoxSphereShader: MetalBoundingBoxSphereShader = MetalBoundingBoxSphereShader()
   
-  var isosurfaceShader: MetalIsosurfaceShader = MetalIsosurfaceShader()
+  var isosurfaceShader: MetalEnergyIsosurfaceShader = MetalEnergyIsosurfaceShader()
+  var volumeRenderedSurfaceShader: MetalEnergyVolumeRenderedSurfaceShader = MetalEnergyVolumeRenderedSurfaceShader()
   
   var textShader: MetalTextShader = MetalTextShader()
   
@@ -220,6 +219,9 @@ public class MetalRenderer
     
     isosurfaceShader.renderDataSource = renderDataSource
     isosurfaceShader.renderStructures = renderStructures
+    
+    volumeRenderedSurfaceShader.renderDataSource = renderDataSource
+    volumeRenderedSurfaceShader.renderStructures = renderStructures
     
     textShader.renderDataSource = renderDataSource
     textShader.renderStructures = renderStructures
@@ -479,6 +481,7 @@ public class MetalRenderer
     boundingBoxSphereShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     isosurfaceShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    volumeRenderedSurfaceShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     pickingShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
@@ -558,7 +561,7 @@ public class MetalRenderer
   // MARK: Build textures
   // =====================================================================
   
-  
+  // Used also on resizing the view
   public func buildTextures(device: MTLDevice, size: CGSize, maximumNumberOfSamples: Int)
   {
     self.pickingShader.buildTextures(device: device, size: size, maximumNumberOfSamples: maximumNumberOfSamples)
@@ -600,6 +603,7 @@ public class MetalRenderer
     
     isosurfaceShader.buildInstanceBuffers(device: device)
     isosurfaceShader.buildVertexBuffers()
+    volumeRenderedSurfaceShader.buildVertexBuffers(device: device)
     
     textShader.buildVertexBuffers(device: device)
     
@@ -765,15 +769,17 @@ public class MetalRenderer
     {
       let projectionMatrix = camera.projectionMatrix
       let viewMatrix = camera.modelViewMatrix
+      let modelMatrix = camera.modelMatrix
       let totalAxesSize: Double = project.renderAxes.totalAxesSize
       let axesProjectionMatrix = camera.axesProjectionMatrix(axesSize: totalAxesSize)
       let axesViewMatrix = camera.axesModelViewMatrix
+      let isOrthographic = camera.isOrthographic
       
-      return RKTransformationUniforms(projectionMatrix: projectionMatrix, viewMatrix: viewMatrix, axesProjectionMatrix: axesProjectionMatrix, axesViewMatrix: axesViewMatrix, bloomLevel: camera.bloomLevel, bloomPulse: camera.bloomPulse, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
+      return RKTransformationUniforms(camera: camera, projectionMatrix: projectionMatrix, viewMatrix: viewMatrix, modelMatrix: modelMatrix,  axesProjectionMatrix: axesProjectionMatrix, axesViewMatrix: axesViewMatrix, isOrthographic: isOrthographic, bloomLevel: camera.bloomLevel, bloomPulse: camera.bloomPulse, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
     }
     else
     {
-      return RKTransformationUniforms(projectionMatrix: double4x4(), viewMatrix: double4x4(), axesProjectionMatrix: double4x4(), axesViewMatrix: double4x4(), bloomLevel: 1.0, bloomPulse: 1.0, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
+      return RKTransformationUniforms(camera: nil, projectionMatrix: double4x4(), viewMatrix: double4x4(), modelMatrix: double4x4(), axesProjectionMatrix: double4x4(), axesViewMatrix: double4x4(), isOrthographic: true, bloomLevel: 1.0, bloomPulse: 1.0, maximumExtendedDynamicRangeColorComponentValue: maximumEDRvalue)
     }
   }
   
@@ -792,8 +798,6 @@ public class MetalRenderer
     backgroundShader.renderBackgroundWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, transparentBackground: transparentBackground)
     
     self.isosurfaceShader.renderOpaqueIsosurfaceWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
-    
-  
     
     self.localAxesShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
@@ -876,10 +880,22 @@ public class MetalRenderer
         self.measurementPerspectiveImposterShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
       }
     }
-    
+   
     self.textShader.renderWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
     
-     self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
+    commandEncoder.endEncoding()
+  }
+  
+  public func renderSceneTransparentWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool = false)
+  {
+    let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+    commandEncoder.label = "Scene transparent command encoder"
+    commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
+    commandEncoder.setCullMode(MTLCullMode.back)
+    commandEncoder.setFrontFacing(MTLWinding.clockwise)
+    self.volumeRenderedSurfaceShader.renderVolumeRenderedSurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
+    
+    self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
   
     self.metalCrystalEllipsoidShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
     self.metalCrystalCylinderShader.renderTransparentWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, lightUniformBuffers: lightUniformBuffers, ambientOcclusionTextures: ambientOcclusionShader.textures, size: size)
@@ -932,6 +948,7 @@ public class MetalRenderer
   func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool)
   {
     renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
+    renderSceneTransparentWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderTransparentPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
     
     if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)
     {
@@ -998,6 +1015,7 @@ public class MetalRenderer
       self.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .picture, atomShader: self.atomShader, atomOrthographicImposterShader: self.atomOrthographicImposterShader)
     
       self.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
+      self.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: nil, completionHandler: {})
       
       self.drawOffScreen(commandBuffer: commandBuffer, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
       

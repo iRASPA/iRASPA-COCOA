@@ -156,7 +156,7 @@ class MetalPickingShader
     let pickingDepthTextureDescriptor: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float, width: max(16, Int(size.width)), height: max(16, Int(size.height)), mipmapped: false)
     pickingDepthTextureDescriptor.textureType = MTLTextureType.type2D
     pickingDepthTextureDescriptor.storageMode = MTLStorageMode.private
-    pickingDepthTextureDescriptor.usage = MTLTextureUsage.renderTarget
+    pickingDepthTextureDescriptor.usage = MTLTextureUsage(rawValue: MTLTextureUsage.shaderRead.rawValue | MTLTextureUsage.renderTarget.rawValue)
     depthTexture = device.makeTexture(descriptor: pickingDepthTextureDescriptor)
     depthTexture.label = "picking depth texture"
     
@@ -283,6 +283,9 @@ class MetalPickingShader
               commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomOrthographicImposterShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomOrthographicImposterShader.indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
             }
           }
+          
+          /*
+           // forget why we do this
           if let structure: RKRenderBondSource = structure as? RKRenderBondSource,
              let buffer: MTLBuffer = self.metalBuffer(atomShader.instanceBuffer, sceneIndex: i, movieIndex: j)
           {
@@ -296,7 +299,7 @@ class MetalPickingShader
               commandEncoder.setFragmentBufferOffset(index * MemoryLayout<RKStructureUniforms>.stride, index: 1)
               commandEncoder.drawIndexedPrimitives(type: .triangleStrip, indexCount: atomOrthographicImposterShader.indexBuffer.length / MemoryLayout<UInt16>.stride, indexType: .uint16, indexBuffer: atomOrthographicImposterShader.indexBuffer, indexBufferOffset: 0, instanceCount: instanceCount)
             }
-          }
+          }*/
           index = index + 1
         }
       }

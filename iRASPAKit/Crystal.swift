@@ -138,7 +138,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public override func numberOfReplicas() -> Int
   {
-    return self.cell.numberOfReplicas
+    return self.cell.totalNumberOfReplicas
   }
   
   
@@ -165,7 +165,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
@@ -556,7 +556,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
@@ -1911,7 +1911,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
           // Type atom as 'Double'
           if (bondLength < 0.1)
           {
-            if(atoms[i].asymmetricIndex != atomList[j].asymmetricIndex)
+            // a duplicate when: (a) both occupancies are 1.0, or (b) when they are the same asymmetric type
+            if(!(atoms[i].asymmetricParentAtom.occupancy < 1.0 || atomList[j].asymmetricParentAtom.occupancy < 1.0) || (atoms[i].asymmetricIndex == atomList[j].asymmetricIndex))
             {
               atoms[i].type = .duplicate
             }
@@ -1939,8 +1940,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   // MARK: -
   // MARK: Compute bonds
-  
- 
   
   public override func reComputeBonds()
   {
@@ -2040,8 +2039,8 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
                       // Type atom as 'Double'
                       if (bondLength < 0.1)
                       {
+                        // a duplicate when: (a) both occupancies are 1.0, or (b) when they are the same asymmetric type
                         if(!(atoms[i].asymmetricParentAtom.occupancy < 1.0 || atoms[j].asymmetricParentAtom.occupancy < 1.0) || (atoms[i].asymmetricIndex == atoms[j].asymmetricIndex))
-                        //if(atoms[i].asymmetricParentAtom.elementIdentifier == atoms[j].asymmetricParentAtom.elementIdentifier)
                         {
                           atoms[i].type = .duplicate
                         }
@@ -2104,9 +2103,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
             // Type atom as 'Double'
             if (bondLength < 0.1)
             {
-              //if(atoms[i].asymmetricIndex != atoms[j].asymmetricIndex)
-              //if(atoms[i].asymmetricParentAtom.elementIdentifier == atoms[j].asymmetricParentAtom.elementIdentifier)
-              //if(!(atoms[i].asymmetricParentAtom.occupancy < 1.0 || atoms[j].asymmetricParentAtom.occupancy < 1.0))
+              // a duplicate when: (a) both occupancies are 1.0, or (b) when they are the same asymmetric type
               if(!(atoms[i].asymmetricParentAtom.occupancy < 1.0 || atoms[j].asymmetricParentAtom.occupancy < 1.0) || (atoms[i].asymmetricIndex == atoms[j].asymmetricIndex))
               {
                 atoms[i].type = .duplicate
