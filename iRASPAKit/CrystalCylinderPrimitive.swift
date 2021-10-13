@@ -106,7 +106,7 @@ public final class CrystalCylinderPrimitive: Structure, RKRenderCrystalCylinderO
   
   public override func numberOfReplicas() -> Int
   {
-    return self.cell.numberOfReplicas
+    return self.cell.totalNumberOfReplicas
   }
   
   // MARK: Rendering
@@ -116,7 +116,7 @@ public final class CrystalCylinderPrimitive: Structure, RKRenderCrystalCylinderO
   {
     var index: Int
     
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
@@ -176,7 +176,7 @@ public final class CrystalCylinderPrimitive: Structure, RKRenderCrystalCylinderO
   {
     var index: Int
     
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)

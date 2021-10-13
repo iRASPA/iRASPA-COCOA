@@ -199,17 +199,20 @@ public class RenderViewController: NSViewController, MTKViewDelegate
        let view: MetalView = self.view as? MetalView,
        let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
-      renderer.reloadData(device: device, view.drawableSize, maximumNumberOfSamples: maximumNumberOfSamples)
+      self.renderer.reloadData(device: device, view.drawableSize, maximumNumberOfSamples: maximumNumberOfSamples)
     
-      renderer.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
+      self.renderer.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
     
-      renderer.buildStructureUniforms(device: device)
+      self.renderer.buildStructureUniforms(device: device)
     
-      renderer.isosurfaceShader.buildVertexBuffers()
+      self.renderer.isosurfaceShader.buildVertexBuffers()
+      self.renderer.volumeRenderedSurfaceShader.buildVertexBuffers(device: device)
 
-      renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
+      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: .medium, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
     
-      renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
+      self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
+      
+      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
 
       view.renderQuality = RKRenderQuality.high
       self.view.layer?.setNeedsDisplay()
@@ -224,17 +227,19 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       view.renderCameraSource?.renderCamera?.trackBallRotation = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
     
-      renderer.reloadData(device: device, view.drawableSize, maximumNumberOfSamples: maximumNumberOfSamples)
+      self.renderer.reloadData(device: device, view.drawableSize, maximumNumberOfSamples: maximumNumberOfSamples)
     
-      renderer.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
+      self.renderer.ambientOcclusionShader.adjustAmbientOcclusionTextureSize()
     
-      renderer.buildStructureUniforms(device: device)
+      self.renderer.buildStructureUniforms(device: device)
     
-      renderer.isosurfaceShader.buildVertexBuffers()
+      self.renderer.isosurfaceShader.buildVertexBuffers()
     
-      renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: ambientOcclusionQuality, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
+      self.renderer.ambientOcclusionShader.updateAmbientOcclusionTextures(device: device, commandQueue, quality: ambientOcclusionQuality, atomShader: renderer.atomShader, atomOrthographicImposterShader: renderer.atomOrthographicImposterShader)
     
-      renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
+      self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
+      
+      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: {})
     
       view.renderQuality = RKRenderQuality.high
       self.view.layer?.setNeedsDisplay()
@@ -407,6 +412,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
        let commandQueue: MTLCommandQueue = self.renderCommandQueue
     {
       self.renderer.isosurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: completionHandler)
+      self.renderer.volumeRenderedSurfaceShader.updateAdsorptionSurface(device: device, commandQueue: commandQueue, windowController: self.view.window?.windowController, completionHandler: completionHandler)
     }
   }
   
@@ -430,6 +436,9 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   {
     self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeAllObjects()
     self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[256]?.removeAllObjects()
+    
+    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[128]?.removeAllObjects()
+    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[256]?.removeAllObjects()
   }
   
   public func invalidateIsosurface(_ structures: [RKRenderStructure])
@@ -438,6 +447,9 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     {
       self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeObject(forKey: structure)
       self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[256]?.removeObject(forKey: structure)
+      
+      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[128]?.removeObject(forKey: structure)
+      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[256]?.removeObject(forKey: structure)
     }
   }
   

@@ -122,7 +122,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
@@ -361,7 +361,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
-    let numberOfReplicas: Int = self.cell.numberOfReplicas
+    let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
     let minimumReplicaY: Int = Int(self.cell.minimumReplica.y)
@@ -664,7 +664,7 @@ public final class MolecularCrystal: Structure, RKRenderAtomSource, RKRenderBond
   
   public override func numberOfReplicas() -> Int
   {
-    return self.cell.numberOfReplicas
+    return self.cell.totalNumberOfReplicas
   }
   
   public override var canRemoveSymmetry: Bool

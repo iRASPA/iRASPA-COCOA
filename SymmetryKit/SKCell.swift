@@ -327,17 +327,22 @@ public struct SKCell: BinaryDecodable, BinaryEncodable
     return vectors
   }
   
-  
-  public var numberOfReplicas: Int
+  public var numberOfReplicas: SIMD3<Int32>
   {
-    get
-    {
-      let dx = maximumReplica.x - minimumReplica.x + 1
-      let dy = maximumReplica.y - minimumReplica.y + 1
-      let dz = maximumReplica.z - minimumReplica.z + 1
+    let dx = maximumReplica.x - minimumReplica.x + 1
+    let dy = maximumReplica.y - minimumReplica.y + 1
+    let dz = maximumReplica.z - minimumReplica.z + 1
       
-      return Int(dx * dy * dz)
-    }
+    return SIMD3<Int32>(dx,dy,dz)
+  }
+  
+  public var totalNumberOfReplicas: Int
+  {
+    let dx = maximumReplica.x - minimumReplica.x + 1
+    let dy = maximumReplica.y - minimumReplica.y + 1
+    let dz = maximumReplica.z - minimumReplica.z + 1
+      
+    return Int(dx * dy * dz)
   }
   
   public var minimumReplicaX: Int

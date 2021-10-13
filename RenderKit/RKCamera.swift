@@ -96,7 +96,10 @@ public class RKCamera: BinaryDecodable, BinaryEncodable
   
   public var viewMatrix: double4x4 = double4x4()
   
-  
+  public var isOrthographic: Bool
+  {
+    return frustrumType == .orthographic
+  }
   
   private var cameraBoundingBox: SKBoundingBox
   {

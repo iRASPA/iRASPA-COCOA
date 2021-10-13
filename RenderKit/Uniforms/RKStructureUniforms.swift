@@ -157,7 +157,7 @@ public struct RKStructureUniforms
   public var pad9: Float = 0.0;
 
   public var localAxisPosition: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var pad10: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
+  public var numberOfReplicas: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var pad11: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var pad12: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var pad13: float4x4 = float4x4(Double4x4: double4x4(1.0))
@@ -178,6 +178,9 @@ public struct RKStructureUniforms
     
     let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: centerOfRotation, withTranslation: structure.origin)
     self.modelMatrix = float4x4(Double4x4: modelMatrix)
+    
+    let numberOfReplicas: SIMD3<Int32> = structure.cell.numberOfReplicas
+    self.numberOfReplicas = SIMD4<Float>(Float(numberOfReplicas.x),Float(numberOfReplicas.y),Float(numberOfReplicas.z),0.0)
     
     if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource
     {

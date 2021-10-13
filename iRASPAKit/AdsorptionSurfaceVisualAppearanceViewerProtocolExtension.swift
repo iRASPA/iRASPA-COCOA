@@ -107,7 +107,44 @@ extension AdsorptionSurfaceVisualAppearanceViewer
     }
   }
   
+  public var renderAdsorptionRenderingMethod: RKEnergySurfaceType?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceRenderingMethod.rawValue })
+      return Set(set).count == 1 ? RKEnergySurfaceType(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceRenderingMethod = newValue ?? RKEnergySurfaceType.isoSurface}
+    }
+  }
   
+  public var renderAdsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.adsorptionVolumeTransferFunction.rawValue })
+      return Set(set).count == 1 ? RKPredefinedVolumeRenderingTransferFunction(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionVolumeTransferFunction = newValue ?? RKPredefinedVolumeRenderingTransferFunction.default}
+    }
+  }
+  
+  public var renderAdsorptionVolumeStepLength: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionVolumeStepLength })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionVolumeStepLength = newValue ?? 1.0}
+    }
+  }
   
   public var renderAdsorptionSurfaceProbeMolecule: Structure.ProbeMolecule?
   {
@@ -494,6 +531,45 @@ extension Array where Iterator.Element == AdsorptionSurfaceVisualAppearanceViewe
     set(newValue)
     {
       self.allStructures.forEach{$0.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
+    }
+  }
+  
+  public var renderAdsorptionRenderingMethod: RKEnergySurfaceType?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.adsorptionSurfaceRenderingMethod.rawValue })
+      return Set(set).count == 1 ? RKEnergySurfaceType(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionSurfaceRenderingMethod = newValue ?? RKEnergySurfaceType.isoSurface}
+    }
+  }
+  
+  public var renderAdsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.allStructures.compactMap{ return $0.adsorptionVolumeTransferFunction.rawValue })
+      return Set(set).count == 1 ? RKPredefinedVolumeRenderingTransferFunction(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionVolumeTransferFunction = newValue ?? RKPredefinedVolumeRenderingTransferFunction.default}
+    }
+  }
+  
+  public var renderAdsorptionVolumeStepLength: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.allStructures.compactMap{ return $0.adsorptionVolumeStepLength })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.allStructures.forEach{$0.adsorptionVolumeStepLength = newValue ?? 1.0}
     }
   }
   

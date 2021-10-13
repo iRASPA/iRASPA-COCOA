@@ -36,7 +36,7 @@ import SymmetryKit
 import SimulationKit
 import simd
 
-class MetalIsosurfaceShader
+class MetalEnergyIsosurfaceShader
 {
   var renderDataSource: RKRenderDataSource? = nil
   var renderStructures: [[RKRenderStructure]] = [[]]
@@ -47,9 +47,6 @@ class MetalIsosurfaceShader
   var instanceBuffer: [[MTLBuffer?]] = [[]]
   var transparentDepthState: MTLDepthStencilState! = nil
   var depthState: MTLDepthStencilState! = nil
-  
-  // fix
-  //var energyGridUnitCell: SKMetalFramework?
   
   let cachedAdsorptionSurfaces: [Int: NSCache<AnyObject, AnyObject>] = [32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
   
@@ -177,7 +174,8 @@ class MetalIsosurfaceShader
         if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource,
            let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
            let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
-           structure.drawAdsorptionSurface
+           structure.drawAdsorptionSurface,
+           structure.adsorptionSurfaceRenderingMethod == .isoSurface
         {
           let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
           if (structure.isVisible &&  structure.adsorptionSurfaceOpacity>0.99999 && vertexCount>0)
@@ -229,7 +227,8 @@ class MetalIsosurfaceShader
           if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource,
              let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
             let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
-            structure.drawAdsorptionSurface
+            structure.drawAdsorptionSurface,
+            structure.adsorptionSurfaceRenderingMethod == .isoSurface
           {
             let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
             if (structure.isVisible &&  structure.adsorptionSurfaceOpacity<=0.99999 && vertexCount>0)

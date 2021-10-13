@@ -36,7 +36,11 @@ import simd
 public struct RKIsosurfaceUniforms
 {
   public var unitCellMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  public var inverseUnitCellMatrix: float4x4 = float4x4(Double4x4: double4x4())
   public var unitCellNormalMatrix: float4x4 = float4x4(Double4x4: double4x4())
+
+  public var boxMatrix: float4x4 = float4x4(Double4x4: double4x4())
+  public var inverseBoxMatrix: float4x4 = float4x4(Double4x4: double4x4())
   
   public var ambientFrontSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var diffuseFrontSide: SIMD4<Float> = SIMD4<Float>(x: 0.588235, y: 0.670588, z: 0.729412, w:1.0)
@@ -57,15 +61,11 @@ public struct RKIsosurfaceUniforms
   public var hue: Float = 1.0
   public var saturation: Float = 1.0
   public var value: Float = 1.0
-  public var pad3: Float = 0.0
+  public var stepLength: Float = 0.001
   public var pad4: SIMD4<Float> = SIMD4<Float>()
   public var pad5: SIMD4<Float> = SIMD4<Float>()
   public var pad6: SIMD4<Float> = SIMD4<Float>()
-  public var pad7: float4x4 = float4x4(Double4x4: double4x4())
-  
-  public var pad8: float4x4 = float4x4(Double4x4: double4x4())
-  public var pad9: float4x4 = float4x4(Double4x4: double4x4())
-  
+
   public init()
   {
     
@@ -74,11 +74,19 @@ public struct RKIsosurfaceUniforms
   public init(structure: RKRenderStructure)
   {
     let unitCellMatrix: double3x3 = structure.cell.unitCell
+    let boxMatrix: double3x3 = structure.cell.box
+    
     self.unitCellMatrix = float4x4(Double3x3: unitCellMatrix)
+    self.inverseUnitCellMatrix = float4x4(Double3x3: unitCellMatrix.inverse)
     self.unitCellNormalMatrix = float4x4(Double3x3: unitCellMatrix.inverse.transpose)
+    
+    self.boxMatrix = float4x4(Double3x3: boxMatrix)
+    self.inverseBoxMatrix = float4x4(Double3x3: boxMatrix.inverse)
     
     if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource
     {
+      self.stepLength = Float(structure.adsorptionVolumeStepLength)
+      
       self.hue = Float(structure.adsorptionSurfaceHue);
       self.saturation = Float(structure.adsorptionSurfaceSaturation);
       self.value = Float(structure.adsorptionSurfaceValue);

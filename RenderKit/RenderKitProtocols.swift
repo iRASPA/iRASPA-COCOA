@@ -160,6 +160,11 @@ public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
   
   // adsorption surface
   var drawAdsorptionSurface: Bool {get}
+  
+  var adsorptionSurfaceRenderingMethod: RKEnergySurfaceType {get}
+  var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction {get}
+  var adsorptionVolumeStepLength: Double {get}
+  
   var adsorptionSurfaceOpacity: Double {get}
   var adsorptionSurfaceIsoValue: Double {get}
   var adsorptionSurfaceSize: Int {get}

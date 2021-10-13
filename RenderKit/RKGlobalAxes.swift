@@ -88,7 +88,7 @@ public class RKGlobalAxes: BinaryDecodable, BinaryEncodable
   public var borderOffsetScreenFraction: Double = 1.0/32.0
   public var sizeScreenFraction: Double = 1.0/5.0
   
-  public var axesBackgroundColor: NSColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 0.05)
+  public var axesBackgroundColor: NSColor = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 0.1882)
   public var axesBackgroundAdditionalSize: Double = 0.0
   public var axesBackgroundStyle: BackgroundStyle = .filledCircle
   
