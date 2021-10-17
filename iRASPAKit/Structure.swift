@@ -47,19 +47,22 @@ fileprivate func ==~ (left: Double, right: Double) -> Bool
 
 public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
-public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceStructure,  BinaryDecodable, BinaryEncodable, Cloning
+public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
 {
-  private static var classVersionNumber: Int = 8
+  private static var classVersionNumber: Int = 9
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   public var bondController: SKBondSetController = SKBondSetController()
   
-    
+    /*
   // MARK: protocol RKRenderStructure implementation
   // =====================================================================
   public var displayName: String = "uninitialized"
   public var isVisible: Bool = true
    
+     
+     public var periodic: Bool = false
+     
   public var origin: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
   public var orientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
   
@@ -73,7 +76,7 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public func absoluteCartesianScenePosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
   {
     return SIMD3<Double>()
-  }
+  }*/
   
   // MARK: protocol RKRenderAtomSource implementation
   // =====================================================================
@@ -234,28 +237,8 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   public var bondSelectionWorleyNoise3DJitter: Double = 1.0
   public var bondSelectionIntensity: Double = 0.5
   
-  // MARK: protocol RKRenderUnitCellSource implementation
-  // =====================================================================
   
-  public var drawUnitCell: Bool = false
-  public var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms]
-  {
-    return []
-  }
-
-  public var renderUnitCellCylinders:[RKInPerInstanceAttributesBonds]
-  {
-    return []
-  }
-  
-  public var unitCellScaleFactor: Double = 1.0
-  public var unitCellDiffuseColor: NSColor = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-  public var unitCellDiffuseIntensity: Double = 1.0
-  
-  // MARK: protocol RKRenderStructure implementation
-  // =====================================================================
-  
-  public var renderLocalAxis: RKLocalAxes = RKLocalAxes()
+ 
    
   // MARK: protocol RKRenderAdsorptionSurfaceSource implementation
   // =====================================================================
@@ -414,13 +397,6 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   // MARK: other variables
   // =====================================================================
   
- 
-  
-  public var scaling: SIMD3<Double> = SIMD3<Double>(x: 1.0, y: 1.0, z: 1.0)
-  
-  public var rotationDelta: Double = 5.0
-  
-  public var periodic: Bool = false
   public var isFractional: Bool
   {
     return false
@@ -647,8 +623,8 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   
   public init(name: String)
   {
-    self.displayName = name
     super.init()
+    self.displayName = name
   }
   
   public required init(original: Structure)
@@ -3181,22 +3157,22 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
   // MARK: -
   // MARK: Binary Encodable support
   
-  public func binaryEncode(to encoder: BinaryEncoder)
+  public override func binaryEncode(to encoder: BinaryEncoder)
   {
     let calendar = Calendar.current
     
     encoder.encode(Structure.classVersionNumber)
     
-    encoder.encode(self.displayName)
-    encoder.encode(isVisible)
+    //encoder.encode(self.displayName)
+    //encoder.encode(isVisible)
     
     encoder.encode(self.spaceGroupHallNumber ?? Int(1))
-    encoder.encode(cell)
-    encoder.encode(periodic)
-    encoder.encode(origin)
-    encoder.encode(scaling)
-    encoder.encode(orientation)
-    encoder.encode(rotationDelta)
+    //encoder.encode(cell)
+    //encoder.encode(periodic)
+    //encoder.encode(origin)
+    //encoder.encode(scaling)
+    //encoder.encode(orientation)
+    //encoder.encode(rotationDelta)
     
     encoder.encode(primitiveTransformationMatrix)
     encoder.encode(primitiveOrientation)
@@ -3334,13 +3310,13 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     encoder.encode(bondAmbientOcclusion)
     
     // unit cell
-    encoder.encode(self.drawUnitCell)
-    encoder.encode(self.unitCellScaleFactor)
-    encoder.encode(self.unitCellDiffuseColor)
-    encoder.encode(self.unitCellDiffuseIntensity)
+    //encoder.encode(self.drawUnitCell)
+    //encoder.encode(self.unitCellScaleFactor)
+    //encoder.encode(self.unitCellDiffuseColor)
+    //encoder.encode(self.unitCellDiffuseIntensity)
     
     // local axes
-    encoder.encode(self.renderLocalAxis)
+    //encoder.encode(self.renderLocalAxis)
     
     // adsorption surface
     encoder.encode(self.drawAdsorptionSurface)
@@ -3476,23 +3452,47 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     components.minute = 0
     components.second = 0
     
+    var legacyDisplayName: String = ""
+    var legacyIsVisible: Bool = false
+    
+    var legacyCell: SKCell = SKCell()
+    var legacyPeriodic: Bool = false
+    var legacyOrigin: SIMD3<Double> = SIMD3<Double>()
+    var legacyScaling: SIMD3<Double> = SIMD3<Double>()
+    var legacyOrientation: simd_quatd = simd_quatd()
+    var legacyRotationDelta: Double = 0.0
+    
+    var legacyDrawUnitCell: Bool = false
+    var legacyUnitCellScaleFactor: Double = 0.0
+    var legacyUnitCellDiffuseColor: NSColor = NSColor()
+    var legacyUnitCellDiffuseIntensity: Double = 0.0
+  
+    var legacyRenderLocalAxis: RKLocalAxes = RKLocalAxes()
+    
     let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > Structure.classVersionNumber
     {
       throw BinaryDecodableError.invalidArchiveVersion
     }
-    
-    self.displayName = try decoder.decode(String.self)
-    self.isVisible = try decoder.decode(Bool.self)
+  
+    if readVersionNumber <= 8
+    {
+      legacyDisplayName = try decoder.decode(String.self)
+      legacyIsVisible = try decoder.decode(Bool.self)
+    }
     
     let number = try decoder.decode(Int.self)
     self.spaceGroup = SKSpacegroup(HallNumber: number)
-    self.cell = try decoder.decode(SKCell.self)
-    self.periodic = try decoder.decode(Bool.self)
-    self.origin = try decoder.decode(SIMD3<Double>.self)
-    self.scaling = try decoder.decode(SIMD3<Double>.self)
-    self.orientation = try decoder.decode(simd_quatd.self)
-    self.rotationDelta = try decoder.decode(Double.self)
+    
+    if readVersionNumber <= 8
+    {
+      legacyCell = try decoder.decode(SKCell.self)
+      legacyPeriodic = try decoder.decode(Bool.self)
+      legacyOrigin = try decoder.decode(SIMD3<Double>.self)
+      legacyScaling = try decoder.decode(SIMD3<Double>.self)
+      legacyOrientation = try decoder.decode(simd_quatd.self)
+      legacyRotationDelta = try decoder.decode(Double.self)
+    }
     
     if readVersionNumber >= 2 // introduced in version 2
     {
@@ -3659,15 +3659,21 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.bondAmbientOcclusion = try decoder.decode(Bool.self)
     
     // unit cell
-    self.drawUnitCell = try decoder.decode(Bool.self)
-    self.unitCellScaleFactor = try decoder.decode(Double.self)
-    self.unitCellDiffuseColor = try decoder.decode(NSColor.self)
-    self.unitCellDiffuseIntensity = try decoder.decode(Double.self)
+    if readVersionNumber <= 8
+    {
+      legacyDrawUnitCell = try decoder.decode(Bool.self)
+      legacyUnitCellScaleFactor = try decoder.decode(Double.self)
+      legacyUnitCellDiffuseColor = try decoder.decode(NSColor.self)
+      legacyUnitCellDiffuseIntensity = try decoder.decode(Double.self)
+    }
     
     // local axes
     if readVersionNumber >= 8 // introduced in version 8
     {
-      self.renderLocalAxis = try decoder.decode(RKLocalAxes.self)
+      if readVersionNumber <= 8
+      {
+        legacyRenderLocalAxis = try decoder.decode(RKLocalAxes.self)
+      }
     }
     
     // adsorption surface
@@ -3816,7 +3822,32 @@ public class Structure: NSObject, RKRenderStructure, SKRenderAdsorptionSurfaceSt
     self.citationPublicationDate = calendar.date(from: components) ?? Date()
     self.citationDatebaseCodes = try decoder.decode(String.self)
     
-    super.init()
+    
+    if readVersionNumber >= 9
+    {
+      try super.init(fromBinary: decoder)
+    }
+    else
+    {
+      super.init()
+      
+      self.displayName = legacyDisplayName
+      self.isVisible = legacyIsVisible
+      
+      self.cell = legacyCell
+      self.periodic = legacyPeriodic
+      self.origin = legacyOrigin
+      self.scaling = legacyScaling
+      self.orientation = legacyOrientation
+      self.rotationDelta = legacyRotationDelta
+      
+      self.drawUnitCell = legacyDrawUnitCell
+      self.unitCellScaleFactor = legacyUnitCellScaleFactor
+      self.unitCellDiffuseColor = legacyUnitCellDiffuseColor
+      self.unitCellDiffuseIntensity = legacyUnitCellDiffuseIntensity
+    
+      self.renderLocalAxis = legacyRenderLocalAxis
+    }
     
     self.setRepresentationStyle(style: self.atomRepresentationStyle)
     

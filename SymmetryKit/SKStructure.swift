@@ -54,6 +54,8 @@ public class SKStructure
     case ellipsoidPrimitive = 13
     case cylinderPrimitive = 14
     case polygonalPrismPrimitive = 15
+    
+    //case densityVolume = 16
   }
   
   public var kind: Kind = .crystal

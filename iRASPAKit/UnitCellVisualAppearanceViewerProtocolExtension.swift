@@ -95,7 +95,7 @@ extension UnitCellVisualAppearanceViewer
 
 extension Array where Iterator.Element == UnitCellVisualAppearanceViewer
 {
-  public var allStructures: [Structure]
+  public var allStructures: [Object]
   {
     return self.flatMap{$0.allStructures}
   }

@@ -780,6 +780,7 @@
 		93F7511A26C91379005796C4 /* GlobalAxesBackgroundShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93F7511926C91379005796C4 /* GlobalAxesBackgroundShader.metal */; };
 		93F7511C26C914A3005796C4 /* RKGlobalAxesUniforms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7511B26C914A3005796C4 /* RKGlobalAxesUniforms.swift */; };
 		93F7511E26C9246E005796C4 /* GlobalAxesTextShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93F7511D26C9246E005796C4 /* GlobalAxesTextShader.metal */; };
+		93F86E4F271C0A7B0060E250 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E4E271C0A7B0060E250 /* Object.swift */; };
 		93F9362F1EB8FEF10094C509 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F9362E1EB8FEF10094C509 /* String.swift */; };
 		93F936311EB8FFC30094C509 /* NSSquareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F936301EB8FFC30094C509 /* NSSquareButton.swift */; };
 		93F936331EB900080094C509 /* NSAlphaColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F936321EB900080094C509 /* NSAlphaColorWell.swift */; };
@@ -2270,6 +2271,7 @@
 		93F7511926C91379005796C4 /* GlobalAxesBackgroundShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = GlobalAxesBackgroundShader.metal; sourceTree = "<group>"; };
 		93F7511B26C914A3005796C4 /* RKGlobalAxesUniforms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKGlobalAxesUniforms.swift; sourceTree = "<group>"; };
 		93F7511D26C9246E005796C4 /* GlobalAxesTextShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = GlobalAxesTextShader.metal; sourceTree = "<group>"; };
+		93F86E4E271C0A7B0060E250 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		93F9362E1EB8FEF10094C509 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		93F936301EB8FFC30094C509 /* NSSquareButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSSquareButton.swift; sourceTree = "<group>"; };
 		93F936321EB900080094C509 /* NSAlphaColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAlphaColorWell.swift; sourceTree = "<group>"; };
@@ -2702,6 +2704,7 @@
 				93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */,
 				9399E6302459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift */,
 				93518DE226FC8A32009A7B8D /* DensityVolume.swift */,
+				93F86E4E271C0A7B0060E250 /* Object.swift */,
 			);
 			name = Structures;
 			sourceTree = "<group>";
@@ -4984,6 +4987,7 @@
 				930DD65E1E26BAD400B8FE9B /* ProjectStructureNode.swift in Sources */,
 				9399E6312459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift in Sources */,
 				938B44FC1EB8F7B4006B7704 /* Reachability.swift in Sources */,
+				93F86E4F271C0A7B0060E250 /* Object.swift in Sources */,
 				93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */,
 				933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */,
 				9354FE4A1F45A6A400155DC3 /* CartesianNumberFormatter.swift in Sources */,

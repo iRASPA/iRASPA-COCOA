@@ -68,6 +68,10 @@ class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
         {
           return true
         }
+        if type.conforms(to: .vtk)
+        {
+          return true
+        }
       }
     }
     else
@@ -92,6 +96,10 @@ class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
           return true
         }
         if UTTypeConformsTo(type as CFString, typeXYZ)
+        {
+          return true
+        }
+        if UTTypeConformsTo(type as CFString, typeVTK)
         {
           return true
         }
