@@ -86,12 +86,17 @@ public final class SKVTKParser: SKParser, ProgressReporting
   
   public override func startParsing() throws
   {
-    var scannedLine: NSString?
+    var scannedLine: NSString? = ""
     
     // skip "# vtk DataFile Version 1.0" line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
       LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
+      return
+    }
+    if(scannedLine?.lowercased != "# vtk dataFile version")
+    {
+      LogQueue.shared.error(destination: self.windowController, message: "File not a VTK file \"\(self.displayName)\"")
       return
     }
     
@@ -101,6 +106,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
       LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
       return
     }
+    // PARSE CELL_PARAMETERS COMMAND if possible
     
     // "ASCII" line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
@@ -130,6 +136,21 @@ public final class SKVTKParser: SKParser, ProgressReporting
       LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": data must be structued points")
       return
     }
+    
+    // Read all header data upto "POINT_DATA"
+    var headerData: [String] = []
+    repeat
+    {
+      if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
+      {
+        LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no header data")
+        return
+      }
+      headerData.append(String(scannedLine ?? ""))
+    }
+    while (scannedLine != nil && !scannedLine!.uppercased.starts(with: "POINT_DATA"))
+    
+    //parse header
     
     // "DIMENSIONS 150 150 150" line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
@@ -190,11 +211,6 @@ public final class SKVTKParser: SKParser, ProgressReporting
     }
     
     // "POINT_DATA 3375000" line
-    if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
-    {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
-      return
-    }
     if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 2,
        (words[0].uppercased() == "POINT_DATA"), let v: Int = Int(words[1])
     {

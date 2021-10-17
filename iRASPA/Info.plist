@@ -166,17 +166,21 @@
 			<string>$(PRODUCT_MODULE_NAME).iRASPADocument</string>
 		</dict>
 		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>vtk</string>
+			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>CrystalProject</string>
 			<key>CFBundleTypeName</key>
-			<string>Text file</string>
+			<string>VTK file</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>public.data</string>
+				<string>nl.darkwing.iraspa.vtk</string>
 			</array>
 			<key>LSTypeIsPackage</key>
 			<integer>0</integer>
@@ -381,6 +385,25 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>poscar</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>VTK Visualization ToolKit Legacy</string>
+			<key>UTTypeIcons</key>
+			<dict/>
+			<key>UTTypeIdentifier</key>
+			<string>nl.darkwing.iraspa.vtk</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>vtk</string>
 				</array>
 			</dict>
 		</dict>

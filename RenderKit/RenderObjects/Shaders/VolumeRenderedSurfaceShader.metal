@@ -62,7 +62,7 @@ vertex VolumeRenderedVertexShaderOut VolumeRenderedSurfaceVertexShader(const dev
   // Calculate normal in modelview-space
   vert.N = (frameUniforms.normalMatrix * structureUniforms.modelMatrix * isosurfaceUniforms.unitCellNormalMatrix * vertices[vid].normal).xyz;
   
-  float4 P = frameUniforms.viewMatrix * structureUniforms.modelMatrix * pos;
+  float4 P = frameUniforms.viewMatrix * pos;
   
   // Calculate light vector
   vert.L = (lightUniforms.lights[0].position - P*lightUniforms.lights[0].position.w).xyz;
@@ -100,7 +100,7 @@ fragment float4 VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOu
                                            uint sampleId [[sample_id]])
 {
   float3 numberOfReplicas = structureUniforms.numberOfReplicas.xyz;
-  const int numSamples = 10000;
+  const int numSamples = 100000;
   const float step_length = isosurfaceUniforms.stepLength/numberOfReplicas.z;
     
   // Normalize the incoming N, L and V vectors
