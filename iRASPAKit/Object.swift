@@ -29,16 +29,38 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
+import Foundation
 import Cocoa
 import RenderKit
 import SymmetryKit
 import BinaryCodable
 import simd
 
-public class Object: NSObject, RKRenderStructure, BinaryDecodable, BinaryEncodable
+public class Object: NSObject, CellViewer, RKRenderStructure, BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
- 
+  
+  
+  public var cellViewerObjects: [CellViewer]
+  {
+    return [self]
+  }
+  
+  public var allObjects: [Object]
+  {
+    return [self]
+  }
+  
+  public var selectedRenderFrames: [RKRenderStructure]
+  {
+    return [self]
+  }
+  
+  public var allRenderFrames: [RKRenderStructure]
+  {
+    return [self]
+  }
+  
   
   // MARK: protocol RKRenderStructure implementation
   // =====================================================================
@@ -66,6 +88,105 @@ public class Object: NSObject, RKRenderStructure, BinaryDecodable, BinaryEncodab
     return SIMD3<Double>()
   }
   
+  // MARK: -
+  // MARK: cell property-wrapper
+  
+  public var boundingBox: SKBoundingBox
+  {
+    return SKBoundingBox()
+  }
+  
+  public var transformedBoundingBox: SKBoundingBox
+  {
+    let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
+    
+    let transformation = double4x4.init(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
+    let transformedBoundingBox: SKBoundingBox = currentBoundingBox.adjustForTransformation(transformation)
+    
+    return transformedBoundingBox
+  }
+  
+  public func reComputeBoundingBox()
+  {
+    let boundingBox: SKBoundingBox = self.boundingBox
+    
+    // store in the cell datastructure
+    self.cell.boundingBox = boundingBox
+  }
+  
+  public var unitCell: double3x3
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.unitCell
+  }
+  
+  public var cellLengthA: Double?
+  {
+    get
+    {
+      debugPrint("reading \(displayName) \(cell.a)")
+      return cell.a
+    }
+    set(newValue)
+    {
+      cell.a = newValue ?? 0.0
+    }
+  }
+  
+  public var cellLengthB: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.b
+  }
+  
+  public var cellLengthC: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.c
+  }
+  
+  public var cellAngleAlpha: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.alpha
+  }
+  
+  public var cellAngleBeta: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.beta
+  }
+  
+  public var cellAngleGamma: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.gamma
+  }
+  
+  public var cellVolume: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.volume
+  }
+  
+  public var cellPerpendicularWidthsX: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.perpendicularWidths.x
+  }
+  
+  public var cellPerpendicularWidthsY: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.perpendicularWidths.y
+  }
+  
+  public var cellPerpendicularWidthsZ: Double
+  {
+    let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
+    return boundaryBoxCell.perpendicularWidths.z
+  }
+  
   // MARK: protocol RKRenderUnitCellSource implementation
   // =====================================================================
   
@@ -91,6 +212,19 @@ public class Object: NSObject, RKRenderStructure, BinaryDecodable, BinaryEncodab
   public var renderLocalAxis: RKLocalAxes = RKLocalAxes()
   
   
+  // MARK: Basic Info implementation
+  // =====================================================================
+  public var authorFirstName: String = ""
+  public var authorMiddleName: String = ""
+  public var authorLastName: String = ""
+  public var authorOrchidID: String = ""
+  public var authorResearcherID: String = ""
+  public var authorAffiliationUniversityName: String = ""
+  public var authorAffiliationFacultyName: String = ""
+  public var authorAffiliationInstituteName: String = ""
+  public var authorAffiliationCityName: String = ""
+  public var authorAffiliationCountryName: String = Locale.current.localizedString(forRegionCode: Locale.current.regionCode ?? "NL") ?? "Netherlands"
+  public var creationDate: Date = Date()
   
   override init()
   {
@@ -102,17 +236,19 @@ public class Object: NSObject, RKRenderStructure, BinaryDecodable, BinaryEncodab
   
   public func binaryEncode(to encoder: BinaryEncoder)
   {
+    let calendar = Calendar.current
+    
     encoder.encode(Object.classVersionNumber)
     
     encoder.encode(self.displayName)
-    encoder.encode(isVisible)
+    encoder.encode(self.isVisible)
     
-    encoder.encode(cell)
-    encoder.encode(periodic)
-    encoder.encode(origin)
-    encoder.encode(scaling)
-    encoder.encode(orientation)
-    encoder.encode(rotationDelta)
+    encoder.encode(self.cell)
+    encoder.encode(self.periodic)
+    encoder.encode(self.origin)
+    encoder.encode(self.scaling)
+    encoder.encode(self.orientation)
+    encoder.encode(self.rotationDelta)
     
     encoder.encode(self.drawUnitCell)
     encoder.encode(self.unitCellScaleFactor)
@@ -120,10 +256,37 @@ public class Object: NSObject, RKRenderStructure, BinaryDecodable, BinaryEncodab
     encoder.encode(self.unitCellDiffuseIntensity)
     
     encoder.encode(self.renderLocalAxis)
+    
+    // Info
+    encoder.encode(self.authorFirstName)
+    encoder.encode(self.authorMiddleName)
+    encoder.encode(self.authorLastName)
+    encoder.encode(self.authorOrchidID)
+    encoder.encode(self.authorResearcherID)
+    encoder.encode(self.authorAffiliationUniversityName)
+    encoder.encode(self.authorAffiliationFacultyName)
+    encoder.encode(self.authorAffiliationInstituteName)
+    encoder.encode(self.authorAffiliationCityName)
+    encoder.encode(self.authorAffiliationCountryName)
+    
+    // Creation
+    encoder.encode(UInt16(calendar.component(.day, from: self.creationDate)))
+    encoder.encode(UInt16(calendar.component(.month, from: self.creationDate)))
+    encoder.encode(UInt32(calendar.component(.year, from: self.creationDate)))
+    
+    encoder.encode(Int(0x6f6b6181))
   }
   
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
+    let calendar = Calendar.current
+    var components = DateComponents()
+    components.era = 1
+    components.quarter = 0
+    components.hour = 0
+    components.minute = 0
+    components.second = 0
+    
     let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > Object.classVersionNumber
     {
@@ -146,5 +309,29 @@ public class Object: NSObject, RKRenderStructure, BinaryDecodable, BinaryEncodab
     self.unitCellDiffuseIntensity = try decoder.decode(Double.self)
   
     self.renderLocalAxis = try decoder.decode(RKLocalAxes.self)
+    
+    // Info
+    self.authorFirstName = try decoder.decode(String.self)
+    self.authorMiddleName = try decoder.decode(String.self)
+    self.authorLastName = try decoder.decode(String.self)
+    self.authorOrchidID = try decoder.decode(String.self)
+    self.authorResearcherID = try decoder.decode(String.self)
+    self.authorAffiliationUniversityName = try decoder.decode(String.self)
+    self.authorAffiliationFacultyName = try decoder.decode(String.self)
+    self.authorAffiliationInstituteName = try decoder.decode(String.self)
+    self.authorAffiliationCityName = try decoder.decode(String.self)
+    self.authorAffiliationCountryName = try decoder.decode(String.self)
+    
+    // Creation
+    components.day = Int(try decoder.decode(UInt16.self))
+    components.month = Int(try decoder.decode(UInt16.self))
+    components.year = Int(try decoder.decode(UInt32.self))
+    self.creationDate = calendar.date(from: components) ?? Date()
+    
+    let magicNumber = try decoder.decode(Int.self)
+    if magicNumber != Int(0x6f6b6181)
+    {
+      throw BinaryDecodableError.invalidMagicNumber
+    }
   }
 }

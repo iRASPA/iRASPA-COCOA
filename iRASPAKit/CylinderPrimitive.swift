@@ -35,9 +35,9 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, RKRenderLocalAxesSource
+public final class CylinderPrimitive: Primitive, RKRenderCylinderObjectsSource, RKRenderLocalAxesSource
 {
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   
   public override init(name: String)
   {
@@ -48,14 +48,23 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
     let drawRadius: Double = 5.0
     let bondDistanceCriteria: Double = 0.0
     let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
-    self.expandSymmetry(asymmetricAtom: asymmetricAtom)
+    //self.expandSymmetry(asymmetricAtom: asymmetricAtom)
     let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
     atomTreeController.insertNode(atomTreeNode, inItem: nil, atIndex: 0)
-    reComputeBoundingBox()
+    //reComputeBoundingBox()
     
-    setRepresentationStyle(style: Structure.RepresentationStyle.objects)
+    //setRepresentationStyle(style: Structure.RepresentationStyle.objects)
   }
   
+  public required init(clone: Primitive) {
+    super.init()
+  }
+  
+  public required init(original: Primitive) {
+    super.init()
+  }
+  
+  /*
   public required init(original structure: Structure)
   {
     super.init(original: structure)
@@ -101,7 +110,7 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
     {
       super.periodic = newValue
     }
-  }
+  }*/
   
   // MARK: Rendering
   // =====================================================================
@@ -312,11 +321,7 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
     return boundaryBoxCell.unitCell
   }
   
-  public override var cellLengthA: Double
-  {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.a
-  }
+ 
   
   public override var cellLengthB: Double
   {
@@ -434,13 +439,6 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
     return absoluteCartesianPosition
   }
   
-  // MARK: -
-  // MARK: Computing bonds
-  
-  public override func reComputeBonds()
-  {
-    self.bondController.arrangedObjects = []
-  }
   
   // MARK: -
   // MARK: Binary Encodable support
@@ -448,6 +446,7 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
   public override func binaryEncode(to encoder: BinaryEncoder)
   {
     encoder.encode(CylinderPrimitive.classVersionNumber)
+    encoder.encode(Int(0x6f6b6193))
     
     super.binaryEncode(to: encoder)
   }
@@ -460,7 +459,84 @@ public final class CylinderPrimitive: Structure, RKRenderCylinderObjectsSource, 
       throw BinaryDecodableError.invalidArchiveVersion
     }
     
-    try super.init(fromBinary: decoder)
+    if(readVersionNumber <= 1)
+    {
+      super.init()
+            
+      let structure: Structure = try Structure(fromBinary: decoder)
+      
+      self.displayName = structure.displayName
+      self.isVisible = structure.isVisible
+      
+      self.cell = structure.cell
+      self.periodic = structure.periodic
+      self.origin = structure.origin
+      self.scaling = structure.scaling
+      self.orientation = structure.orientation
+      self.rotationDelta = structure.rotationDelta
+      
+      self.drawUnitCell = structure.drawUnitCell
+      self.unitCellScaleFactor = structure.unitCellScaleFactor
+      self.unitCellDiffuseColor = structure.unitCellDiffuseColor
+      self.unitCellDiffuseIntensity = structure.unitCellDiffuseIntensity
+    
+      self.renderLocalAxis = structure.renderLocalAxis
+      
+      self.drawAtoms = structure.drawAtoms
+      self.atomTreeController = structure.atomTreeController
+      
+      self.primitiveTransformationMatrix = structure.primitiveTransformationMatrix
+      self.primitiveOrientation = structure.primitiveOrientation
+      self.rotationDelta = structure.primitiveRotationDelta
+
+      self.primitiveOpacity = structure.primitiveOpacity
+      self.primitiveIsCapped = structure.primitiveIsCapped
+      self.primitiveIsFractional = structure.primitiveIsFractional
+      self.primitiveNumberOfSides = structure.primitiveNumberOfSides
+      self.primitiveThickness = structure.primitiveThickness
+      
+      self.primitiveHue = structure.primitiveHue
+      self.primitiveSaturation = structure.primitiveSaturation
+      self.primitiveValue = structure.primitiveValue
+      
+      self.primitiveSelectionStyle = structure.primitiveSelectionStyle
+      self.primitiveSelectionStripesDensity = structure.primitiveSelectionStripesDensity
+      self.primitiveSelectionStripesFrequency = structure.primitiveSelectionStripesFrequency
+      self.primitiveSelectionWorleyNoise3DFrequency = structure.primitiveSelectionWorleyNoise3DFrequency
+      self.primitiveSelectionWorleyNoise3DJitter = structure.primitiveSelectionWorleyNoise3DJitter
+      self.primitiveSelectionScaling = structure.primitiveSelectionScaling
+      self.primitiveSelectionIntensity = structure.primitiveSelectionIntensity
+      
+      self.primitiveFrontSideHDR = structure.primitiveFrontSideHDR
+      self.primitiveFrontSideHDRExposure = structure.primitiveFrontSideHDRExposure
+      self.primitiveFrontSideAmbientColor = structure.primitiveFrontSideAmbientColor
+      self.primitiveFrontSideDiffuseColor = structure.primitiveFrontSideDiffuseColor
+      self.primitiveFrontSideSpecularColor = structure.primitiveFrontSideSpecularColor
+      self.primitiveFrontSideDiffuseIntensity = structure.primitiveFrontSideDiffuseIntensity
+      self.primitiveFrontSideAmbientIntensity = structure.primitiveFrontSideAmbientIntensity
+      self.primitiveFrontSideSpecularIntensity = structure.primitiveFrontSideSpecularIntensity
+      self.primitiveFrontSideShininess = structure.primitiveFrontSideShininess
+
+      self.primitiveBackSideHDR = structure.primitiveBackSideHDR
+      self.primitiveBackSideHDRExposure = structure.primitiveBackSideHDRExposure
+      self.primitiveBackSideAmbientColor = structure.primitiveBackSideAmbientColor
+      self.primitiveBackSideDiffuseColor = structure.primitiveBackSideDiffuseColor
+      self.primitiveBackSideSpecularColor = structure.primitiveBackSideSpecularColor
+      self.primitiveBackSideDiffuseIntensity = structure.primitiveBackSideDiffuseIntensity
+      self.primitiveBackSideAmbientIntensity = structure.primitiveBackSideAmbientIntensity
+      self.primitiveBackSideSpecularIntensity = structure.primitiveBackSideSpecularIntensity
+      self.primitiveBackSideShininess = structure.primitiveBackSideShininess
+    }
+    else
+    {
+      let magicNumber = try decoder.decode(Int.self)
+      if magicNumber != Int(0x6f6b6193)
+      {
+        throw BinaryDecodableError.invalidMagicNumber
+      }
+      
+      try super.init(fromBinary: decoder)
+    }
   }
 }
 

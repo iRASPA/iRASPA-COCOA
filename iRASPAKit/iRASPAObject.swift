@@ -52,127 +52,155 @@ fileprivate let prismIcon: NSImage = NSImage(named: "PrismIcon")!
 fileprivate let prismCrystalIcon: NSImage = NSImage(named: "PrismCrystalIcon")!
 fileprivate let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
 
-public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewer, PrimitiveVisualAppearanceViewer, Copying
+public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewerLegacy, PrimitiveVisualAppearanceViewerLegacy, Copying
 {
-  
-  
-  public static func == (lhs: iRASPAStructure, rhs: iRASPAStructure) -> Bool
+  public static func == (lhs: iRASPAObject, rhs: iRASPAObject) -> Bool
   {
     return lhs.structure === rhs.structure
   }
   
   public var type: SKStructure.Kind
+  public var object: Object
+  
+  
   public var structure: Structure
+  {
+    set(newValue)
+    {
+      object = newValue
+    }
+    get
+    {
+      return object as! Structure
+    }
+  }
+  
+  var allObjects: [Object]
+  {
+    return [self.object as? Object].compactMap{$0}
+  }
   
   public init(structure: Structure)
   {
     self.type = .structure
-    self.structure = structure
+    self.object = structure
+    super.init()
   }
   
   public init(crystal: Crystal)
   {
     self.type = .crystal
-    self.structure = crystal
+    self.object = crystal
+    super.init()
   }
   
   public init(molecularCrystal: MolecularCrystal)
   {
     self.type = .molecularCrystal
-    self.structure = molecularCrystal
+    self.object = molecularCrystal
+    super.init()
   }
   
   public init(proteinCrystal: ProteinCrystal)
   {
     self.type = .proteinCrystal
-    self.structure = proteinCrystal
+    self.object = proteinCrystal
+    super.init()
   }
   
   public init(molecule: Molecule)
   {
     self.type = .molecule
-    self.structure = molecule
+    self.object = molecule
+    super.init()
   }
   
   public init(protein: Protein)
   {
     self.type = .protein
-    self.structure = protein
+    self.object = protein
+    super.init()
   }
   
   public init(crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive)
   {
     self.type = .crystalEllipsoidPrimitive
-    self.structure = crystalEllipsoidPrimitive
+    self.object = crystalEllipsoidPrimitive
+    super.init()
   }
    
   public init(crystalPolygonalPrismPrimitive: CrystalPolygonalPrismPrimitive)
   {
     self.type = .crystalPolygonalPrismPrimitive
-    self.structure = crystalPolygonalPrismPrimitive
+    self.object = crystalPolygonalPrismPrimitive
+    super.init()
   }
    
   public init(crystalCylinderPrimitive: CrystalCylinderPrimitive)
   {
     self.type = .crystalCylinderPrimitive
-    self.structure = crystalCylinderPrimitive
+    self.object = crystalCylinderPrimitive
+    super.init()
   }
 
   public init(ellipsoidPrimitive: EllipsoidPrimitive)
   {
     self.type = .ellipsoidPrimitive
-    self.structure = ellipsoidPrimitive
+    self.object = ellipsoidPrimitive
+    super.init()
   }
   
   public init(polygonalPrismPrimitive: PolygonalPrismPrimitive)
   {
     self.type = .polygonalPrismPrimitive
-    self.structure = polygonalPrismPrimitive
+    self.object = polygonalPrismPrimitive
+    super.init()
   }
   
   public init(cylinderPrimitive: CylinderPrimitive)
   {
     self.type = .cylinderPrimitive
-    self.structure = cylinderPrimitive
+    self.object = cylinderPrimitive
+    super.init()
   }
   
-  public init(frame: iRASPAStructure)
+  public init(frame: iRASPAObject)
   {
     self.type = frame.type
+    self.object = Object()
+    super.init()
     self.structure = frame.structure
   }
   
-  
-  public init(original: iRASPAStructure)
+  public init(original: iRASPAObject)
   {
     self.type = original.type
-    
-    switch(original.structure)
+    switch(original.object)
     {
     case let structure as Crystal:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as MolecularCrystal:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as Molecule:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as Protein:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as ProteinCrystal:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as CrystalEllipsoidPrimitive:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as CrystalCylinderPrimitive:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as CrystalPolygonalPrismPrimitive:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as EllipsoidPrimitive:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as CylinderPrimitive:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     case let structure as PolygonalPrismPrimitive:
-      self.structure = structure.copy()
+      self.object = structure.copy()
     default:
-      self.structure = original.structure.copy()
+      self.object = original.structure.copy()
     }
   }
   
@@ -181,7 +209,7 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
     guard let node: ProjectTreeNode = try? binaryDecoder.decode(ProjectTreeNode.self, decodeRepresentedObject: true, decodeChildren: false) else {return nil}
     guard let project: ProjectStructureNode = node.representedObject.project as? ProjectStructureNode else {return nil}
-    guard let firstFrame: iRASPAStructure = project.sceneList.scenes.first?.movies.first?.frames.first else {return nil}
+    guard let firstFrame: iRASPAObject = project.sceneList.scenes.first?.movies.first?.frames.first else {return nil}
     self.init(frame: firstFrame)
   }
   
@@ -189,14 +217,14 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
     guard let movie: Movie = try? binaryDecoder.decode(Movie.self) else {return nil}
-    guard let firstFrame: iRASPAStructure = movie.frames.first else {return nil}
+    guard let firstFrame: iRASPAObject = movie.frames.first else {return nil}
     self.init(frame: firstFrame)
   }
   
   private convenience init?(frame data: Data)
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-    guard let frame: iRASPAStructure = try? binaryDecoder.decode(iRASPAStructure.self) else {return nil}
+    guard let frame: iRASPAObject = try? binaryDecoder.decode(iRASPAObject.self) else {return nil}
     self.init(frame: frame)
   }
   
@@ -263,6 +291,7 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
   
   public var infoPanelIcon: NSImage
   {
+    /*
     switch(structure.materialType)
     {
     case .crystal:
@@ -289,61 +318,71 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
       return prismIcon
     default:
       return unknownIcon
-    }
+    }*/
+    return NSImage()
   }
   
   public var totalNumberOfAtoms: Int
   {
+    return 0
+    /*
     return self.structure.atomTreeController.flattenedLeafNodes().reduce(0, { (Result: Int, atomTreeNode: SKAtomTreeNode) -> Int in
       return Result + atomTreeNode.representedObject.copies.filter{$0.type == .copy}.count
     })
+     */
   }
   
   public var infoPanelString: String
   {
-    return structure.displayName + " (\(self.totalNumberOfAtoms) atoms)"
+    return object.displayName + " (\(self.totalNumberOfAtoms) atoms)"
   }
   
-  public var allPrimitiveStructure: [Structure]
+  public var allPrimitiveStructure: [Primitive]
   {
     switch(self.type)
     {
     case .crystalCylinderPrimitive, .crystalEllipsoidPrimitive, .crystalPolygonalPrismPrimitive,
          .cylinderPrimitive, .ellipsoidPrimitive, .polygonalPrismPrimitive:
-      return [self.structure]
+      return [self.object as! Primitive]
     default:
       return []
     }
-    
   }
   
   public var allStructures: [Structure]
   {
-    return [self.structure]
+    switch(self.type)
+    {
+    case .crystal, .molecularCrystal, .proteinCrystal,
+         .molecule, .protein:
+      return [self.object as! Structure]
+    default:
+      return []
+    }
   }
   
-  public var frames: [iRASPAStructure]
+  public var frames: [iRASPAObject]
   {
     return [self]
   }
   
-  public var allIRASPAStructures: [iRASPAStructure]
+  public var allIRASPAStructures: [iRASPAObject]
   {
     return [self]
   }
   
   public var selectedRenderFrames: [RKRenderStructure]
   {
-    return [self.structure]
+    return [self.object]
   }
   
   public var allRenderFrames: [RKRenderStructure]
   {
-    return [self.structure]
+    return [self.object]
   }
   
   
-  public func swapRepresentedObjects(structure: iRASPAStructure)
+  public func swapRepresentedObjects(structure: iRASPAObject)
   {
     let temptype = self.type
     self.type = structure.type
@@ -365,53 +404,56 @@ public final class iRASPAStructure: NSObject, BinaryDecodable, BinaryEncodable, 
     switch(type)
     {
     case .structure:
-      self.structure = try decoder.decode(Structure.self)
+      self.object = try decoder.decode(Structure.self)
     case .crystal:
-      self.structure = try decoder.decode(Crystal.self)
+      self.object = try decoder.decode(Crystal.self)
     case .molecularCrystal:
-      self.structure = try decoder.decode(MolecularCrystal.self)
+      self.object = try decoder.decode(MolecularCrystal.self)
     case .molecule:
-      self.structure = try decoder.decode(Molecule.self)
+      self.object = try decoder.decode(Molecule.self)
     case .protein:
-      self.structure = try decoder.decode(Protein.self)
+      self.object = try decoder.decode(Protein.self)
     case .proteinCrystal:
-      self.structure = try decoder.decode(ProteinCrystal.self)
+      self.object = try decoder.decode(ProteinCrystal.self)
     case .crystalEllipsoidPrimitive:
-      self.structure = try decoder.decode(CrystalEllipsoidPrimitive.self)
+      self.object = try decoder.decode(CrystalEllipsoidPrimitive.self)
     case .crystalCylinderPrimitive:
-      self.structure = try decoder.decode(CrystalCylinderPrimitive.self)
+      self.object = try decoder.decode(CrystalCylinderPrimitive.self)
     case .crystalPolygonalPrismPrimitive:
-      self.structure = try decoder.decode(CrystalPolygonalPrismPrimitive.self)
+      self.object = try decoder.decode(CrystalPolygonalPrismPrimitive.self)
     case .ellipsoidPrimitive:
-      self.structure = try decoder.decode(EllipsoidPrimitive.self)
+      self.object = try decoder.decode(EllipsoidPrimitive.self)
     case .cylinderPrimitive:
-      self.structure = try decoder.decode(CylinderPrimitive.self)
+      self.object = try decoder.decode(CylinderPrimitive.self)
     case .polygonalPrismPrimitive:
-      self.structure = try decoder.decode(PolygonalPrismPrimitive.self)
+      self.object = try decoder.decode(CylinderPrimitive.self)
     default:
       throw BinaryDecodableError.invalidArchiveVersion
     }
+    super.init()
   }
   
   public func binaryEncode(to encoder: BinaryEncoder)
   {
     encoder.encode(type.rawValue)
-    encoder.encode(structure)
+    encoder.encode(object)
   }
   
   public var renderStructure: RKRenderStructure
   {
-    return structure as RKRenderStructure
+    return object as RKRenderStructure
   }
   
   public var hasSelectedObjects: Bool
   {
-    return structure.hasSelectedObjects
+    return false;
+    //return structure.hasSelectedObjects
   }
   
   public var renderCanDrawAdsorptionSurface: Bool
   {
-    return structure.renderCanDrawAdsorptionSurface
+    return false;
+    //return structure.renderCanDrawAdsorptionSurface
   }
   
   // MARK: -

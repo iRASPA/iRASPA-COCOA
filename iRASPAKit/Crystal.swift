@@ -41,8 +41,9 @@ import LogViewKit
 
 public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
 {
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   
+  public var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
   
   public override var renderCanDrawAdsorptionSurface: Bool {return true}
   
@@ -236,7 +237,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
     let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
       
-    for (asymmetricBondIndex, asymmetricBond) in bondController.arrangedObjects.enumerated()
+    for (asymmetricBondIndex, asymmetricBond) in bondSetController.arrangedObjects.enumerated()
     {
       for bond in asymmetricBond.copies
       {
@@ -303,7 +304,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
     let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
     
-    for (asymmetricBondIndex, asymmetricBond) in bondController.arrangedObjects.enumerated()
+    for (asymmetricBondIndex, asymmetricBond) in bondSetController.arrangedObjects.enumerated()
     {
       for bond in asymmetricBond.copies
       {
@@ -630,7 +631,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
     let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
       
-    let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects[self.bondController.selectedObjects]
+    let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondSetController.arrangedObjects[self.bondSetController.selectedObjects]
     for (asymmetricBondIndex, asymmetricBond) in selectedAsymmetricBonds.enumerated()
     {
       for bond in asymmetricBond.copies
@@ -698,9 +699,9 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let maximumReplicaY: Int = Int(self.cell.maximumReplica.y)
     let maximumReplicaZ: Int = Int(self.cell.maximumReplica.z)
     
-    for asymmetricBondIndex in self.bondController.selectedObjects
+    for asymmetricBondIndex in self.bondSetController.selectedObjects
     {
-      let asymmetricBond = self.bondController.arrangedObjects[asymmetricBondIndex]
+      let asymmetricBond = self.bondSetController.arrangedObjects[asymmetricBondIndex]
       for bond in asymmetricBond.copies
       {
         if bond.boundaryType == .external
@@ -844,7 +845,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     var data: IndexSet = IndexSet()
     
     let rotationMatrix: double4x4 =  double4x4(transformation: double4x4(simd_quatd: self.orientation), aroundPoint: self.cell.boundingBox.center)
-    let asymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects
+    let asymmetricBonds: [SKAsymmetricBond] = self.bondSetController.arrangedObjects
     for (asymmetricBondIndex, asymmetricBond) in asymmetricBonds.enumerated()
     {
       for bond in asymmetricBond.copies
@@ -972,7 +973,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
         self.reComputeBonds()
         
         self.atomTreeController.tag()
-        self.bondController.tag()
+        self.bondSetController.tag()
       }
     }
   }
@@ -1046,7 +1047,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     let atomsWithRemovedSymmetry: SKAtomTreeController = crystal.atomTreeController
     atomsWithRemovedSymmetry.selectedTreeNodes = []
     
-    let bonds: [SKBondNode] = crystal.bondController.bonds
+    let bonds: [SKBondNode] = crystal.bondSetController.bonds
     let atomBonds: SKBondSetController = SKBondSetController(arrangedObjects: bonds)
     
     let atomNodes: [SKAtomTreeNode] = atomsWithRemovedSymmetry.flattenedLeafNodes()
@@ -1103,10 +1104,10 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     crystal.reComputeBonds()
     
     crystal.atomTreeController.tag()
-    crystal.bondController.tag()
+    crystal.bondSetController.tag()
     
     // set space group to P1 after removal of symmetry
-    return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atomTreeController, bonds: crystal.bondController)
+    return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atomTreeController, bonds: crystal.bondSetController)
   }
   
   public override func setSpaceGroup(number: Int) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
@@ -1117,7 +1118,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     crystal.spaceGroupHallNumber = number
     
     // set space group to P1 after removal of symmetry
-    return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atomTreeController, bonds: crystal.bondController)
+    return (cell: crystal.cell, spaceGroup: crystal.spaceGroup, atoms: crystal.atomTreeController, bonds: crystal.bondSetController)
   }
   
   
@@ -1218,7 +1219,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     }
     let atomTreeController: SKAtomTreeController = SKAtomTreeController(nodes: atomNodes)
     atomTreeController.selectedTreeNodes = []
-    return (cell: self.cell, spaceGroup: self.spaceGroup, atoms: atomTreeController, bonds: self.bondController)
+    return (cell: self.cell, spaceGroup: self.spaceGroup, atoms: atomTreeController, bonds: self.bondSetController)
   }
 
   
@@ -1410,11 +1411,6 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   public override var unitCell: double3x3
   {
     return self.cell.unitCell
-  }
-  
-  public override var cellLengthA: Double
-  {
-    return self.cell.a
   }
   
   public override var cellLengthB: Double
@@ -1944,13 +1940,13 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   public override func reComputeBonds()
   {
     let atomList: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    self.bondController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: {return false}, updateHandler: {})
+    self.bondSetController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: {return false}, updateHandler: {})
   }
   
   public override func reComputeBonds(_ node: ProjectTreeNode, cancelHandler: (()-> Bool), updateHandler: (() -> ()))
   {
     let atomList: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    self.bondController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: cancelHandler, updateHandler: updateHandler)
+    self.bondSetController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: cancelHandler, updateHandler: updateHandler)
   }
   
   public override func computeBonds(cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> [SKBondNode]
@@ -2170,7 +2166,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       
       LogQueue.shared.info(destination: windowController, message: "start computing bonds: \(structure.displayName)")
       
-      structure.bondController.bonds = Array(computedBonds)
+      structure.bondSetController.bonds = Array(computedBonds)
       structure.recomputeDensityProperties()
       
       let numberOfComputedBonds: Int =  computedBonds.filter{$0.atom1.type == .copy && $0.atom2.type == .copy}.count
@@ -2210,6 +2206,10 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   public override func binaryEncode(to encoder: BinaryEncoder)
   {
     encoder.encode(Crystal.classVersionNumber)
+    
+    encoder.encode(self.spaceGroupHallNumber ?? Int(1))
+    encoder.encode(Int(0x6f6b6183))
+    
     super.binaryEncode(to: encoder)
   }
   
@@ -2221,7 +2221,24 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
       throw BinaryDecodableError.invalidArchiveVersion
     }
     
+    if(readVersionNumber >= 2)
+    {
+      let number = try decoder.decode(Int.self)
+      self.spaceGroup = SKSpacegroup(HallNumber: number)
+      
+      let magicNumber = try decoder.decode(Int.self)
+      if magicNumber != Int(0x6f6b6183)
+      {
+        throw BinaryDecodableError.invalidMagicNumber
+      }
+    }
+    
     try super.init(fromBinary: decoder)
+    
+    if(readVersionNumber <= 1)
+    {
+      self.spaceGroup = self.legacySpaceGroup
+    }
   }
 }
 

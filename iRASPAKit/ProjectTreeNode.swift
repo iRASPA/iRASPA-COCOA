@@ -198,7 +198,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   private convenience init?(frame data: Data)
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-    guard let iraspaStructure: iRASPAStructure = try? binaryDecoder.decode(iRASPAStructure.self) else {return nil}
+    guard let iraspaStructure: iRASPAObject = try? binaryDecoder.decode(iRASPAObject.self) else {return nil}
     let displayName: String = iraspaStructure.structure.displayName
     let movie: Movie = Movie.init(name: displayName, structure: iraspaStructure)
     let scene: Scene = Scene.init(name: displayName, movies: [movie])
@@ -485,7 +485,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       unwrapLazyLocalPresentedObjectIfNeeded()
       guard let project: ProjectStructureNode = representedObject.project as? ProjectStructureNode else {return nil}
       guard let movie: Movie = project.sceneList.scenes.first?.movies.first else {return nil}
-      guard let frame: iRASPAStructure = movie.frames.first else {return nil}
+      guard let frame: iRASPAObject = movie.frames.first else {return nil}
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
       binaryEncoder.encode(frame)
       return Data(binaryEncoder.data)

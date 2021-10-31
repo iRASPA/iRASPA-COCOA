@@ -38,7 +38,7 @@ import SimulationKit
 // MARK: -
 // MARK: PrimitiveVisualAppearanceViewer protocol implementation
 
-extension PrimitiveVisualAppearanceViewer
+extension PrimitiveVisualAppearanceViewerLegacy
 {
   public var renderPrimitiveOrientation: simd_quatd?
   {
@@ -62,12 +62,12 @@ extension PrimitiveVisualAppearanceViewer
   {
     get
     {
-      let origin: [Double] = self.allPrimitiveStructure.compactMap{$0.primitiveRotationDelta}
+      let origin: [Double] = self.allPrimitiveStructure.compactMap{$0.rotationDelta}
       return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
     }
     set(newValue)
     {
-      self.allPrimitiveStructure.forEach{$0.primitiveRotationDelta = newValue ?? 5.0}
+      self.allPrimitiveStructure.forEach{$0.rotationDelta = newValue ?? 5.0}
     }
   }
   
@@ -688,9 +688,9 @@ extension PrimitiveVisualAppearanceViewer
   }
 }
 
-extension Array where Iterator.Element == PrimitiveVisualAppearanceViewer
+extension Array where Iterator.Element == PrimitiveVisualAppearanceViewerLegacy
 {
-  public var allPrimitiveStructure: [Structure]
+  public var allPrimitiveStructure: [Primitive]
   {
     return self.flatMap{$0.allPrimitiveStructure}
   }
@@ -717,12 +717,12 @@ extension Array where Iterator.Element == PrimitiveVisualAppearanceViewer
   {
     get
     {
-      let origin: [Double] = self.allPrimitiveStructure.compactMap{$0.primitiveRotationDelta}
+      let origin: [Double] = self.allPrimitiveStructure.compactMap{$0.rotationDelta}
       return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
     }
     set(newValue)
     {
-      self.allPrimitiveStructure.forEach{$0.primitiveRotationDelta = newValue ?? 5.0}
+      self.allPrimitiveStructure.forEach{$0.rotationDelta = newValue ?? 5.0}
     }
   }
   

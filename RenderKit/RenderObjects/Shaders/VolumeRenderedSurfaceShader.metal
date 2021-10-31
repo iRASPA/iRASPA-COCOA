@@ -54,7 +54,7 @@ vertex VolumeRenderedVertexShaderOut VolumeRenderedSurfaceVertexShader(const dev
 {
   VolumeRenderedVertexShaderOut vert;
   
-  float4 pos = structureUniforms.modelMatrix * isosurfaceUniforms.boxMatrix * vertices[vid].position;
+  float4 pos = structureUniforms.modelMatrix * structureUniforms.boxMatrix * vertices[vid].position;
   vert.pos = pos;
   vert.position = frameUniforms.mvpMatrix * pos;
   vert.UV = vertices[vid].position.xyz;
@@ -106,9 +106,7 @@ fragment float4 VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOu
   // Normalize the incoming N, L and V vectors
   float3 direction = normalize(vert.pos.xyz - frameUniforms.cameraPosition.xyz);
   float4 dir = float4(direction.x,direction.y,direction.z,0.0);
-  //float4 dir = float4(0,0,-1,0);
-  float3 ray_direction = (isosurfaceUniforms.inverseBoxMatrix * dir).xyz;
-  //float3 ray_direction = dir.xyz;
+  float3 ray_direction = (structureUniforms.inverseBoxMatrix * structureUniforms.inverseModelMatrix * dir).xyz;
   
   float3 ray_origin = vert.UV;
 
@@ -133,7 +131,8 @@ fragment float4 VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOu
   for (int i=0; i < numSamples && ray_length > 0 && colour.a < 1.0; i++)
   {
     float4 values = texture3D.sample(textureSampler, numberOfReplicas * position);
-    float3 normal = normalize(float3(values.gba));
+    //float3 normal = normalize(float3(values.gba));
+    float3 normal = normalize((structureUniforms.modelMatrix * float4(values.gba,0.0)).rgb);
 
     float4 c = transferFunction.sample(transferFunctionSampler,values.r);
 

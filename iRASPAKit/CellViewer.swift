@@ -33,15 +33,52 @@ import Foundation
 import SymmetryKit
 import SimulationKit
 
-public protocol SpaceGroupProtocol: AnyObject
+// derive from AnyObject (class) to allow mutability
+public protocol CellViewer: AnyObject
 {
-  var spaceGroup: SKSpacegroup {get set}
-  var canRemoveSymmetry: Bool {get}
-  var flattenedHierarchy: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
-  func primitive(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  func Niggli(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  func imposedSymmetry(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  var superCell: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
-  var removedSymmetry: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
-  var wrapAtomsToCell: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
+  var cellLengthA: Double? {get set}
+  
+  func reComputeBoundingBox()
+  
+  var cellViewerObjects: [CellViewer] {get}
 }
+
+
+extension CellViewer
+{
+  public var cellLengthA: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.cellViewerObjects.compactMap{ return $0.cellLengthA })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.cellViewerObjects.forEach{
+        $0.cellLengthA = newValue ?? 0.0
+        $0.reComputeBoundingBox()
+      }
+    }
+  }
+}
+
+extension Array where Iterator.Element == CellViewer
+{
+  public var cellLengthA: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.compactMap{ return $0.cellLengthA })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.forEach{
+        $0.cellLengthA = newValue ?? 0.0
+        $0.reComputeBoundingBox()
+      }
+    }
+  }
+}
+

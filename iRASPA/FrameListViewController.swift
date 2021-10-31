@@ -47,7 +47,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   var observeNotifications: Bool = true
   var filterContent: Bool = false
   
-  private var draggedNodes: [iRASPAStructure] = []
+  private var draggedNodes: [iRASPAObject] = []
   private var draggedIndexSet: IndexSet = IndexSet()
   
   @IBOutlet private var addContextMenu: NSMenu?
@@ -169,7 +169,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   // MARK: adding/removing 
   // =====================================================================
   
-  func removeFrame(_ frame: iRASPAStructure, atIndex index: Int)
+  func removeFrame(_ frame: iRASPAObject, atIndex index: Int)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let movie: Movie = project.sceneList.selectedScene?.selectedMovie
@@ -196,7 +196,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     }
   }
   
-  func addFrame(_ frame: iRASPAStructure, atIndex index: Int)
+  func addFrame(_ frame: iRASPAObject, atIndex index: Int)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let movie: Movie = project.sceneList.selectedScene?.selectedMovie
@@ -274,7 +274,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        let view: NSTableCellView = self.framesTableView?.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "frameName"), owner: self) as? NSTableCellView,
        row < movie.frames.count
     {
-      view.textField?.stringValue = movie.frames[row].structure.displayName
+      view.textField?.stringValue = movie.frames[row].object.displayName
       
       view.imageView?.image = movie.frames[row].infoPanelIcon
       
@@ -387,7 +387,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     }
   }
   
-  func setFrameDisplayName(_ frame: iRASPAStructure, to newValue: String)
+  func setFrameDisplayName(_ frame: iRASPAObject, to newValue: String)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
        let selectedScene: Scene = project.sceneList.selectedScene,
@@ -456,15 +456,15 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
   // MARK: Editing 
   // =====================================================================
   
-  func insertSelectedFrames(_ frames: [iRASPAStructure], at indexSet: IndexSet,  newSelectedFrame: iRASPAStructure?, newSelection: Set<iRASPAStructure>)
+  func insertSelectedFrames(_ frames: [iRASPAObject], at indexSet: IndexSet,  newSelectedFrame: iRASPAObject?, newSelection: Set<iRASPAObject>)
   {
     if let proxyProject = self.proxyProject,
        let project = proxyProject.representedObject.loadedProjectStructureNode,
        let selectedScene: Scene = project.sceneList.selectedScene,
        let selectedMovie: Movie = selectedScene.selectedMovie
     {
-      let currentSelectedFrame: iRASPAStructure? = selectedMovie.selectedFrame
-      let currentSelection: Set<iRASPAStructure> = selectedMovie.selectedFrames
+      let currentSelectedFrame: iRASPAObject? = selectedMovie.selectedFrame
+      let currentSelection: Set<iRASPAObject> = selectedMovie.selectedFrames
       
       self.framesTableView?.beginUpdates()
       
@@ -502,15 +502,15 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     }
   }
   
-  func deleteSelectedFrames(_ frames: [iRASPAStructure], from indexSet: IndexSet, newSelectedFrame: iRASPAStructure?, newSelection: Set<iRASPAStructure>)
+  func deleteSelectedFrames(_ frames: [iRASPAObject], from indexSet: IndexSet, newSelectedFrame: iRASPAObject?, newSelection: Set<iRASPAObject>)
   {
     if let proxyProject = self.proxyProject,
        let project = proxyProject.representedObject.loadedProjectStructureNode,
        let selectedScene: Scene = project.sceneList.selectedScene,
        let selectedMovie: Movie = selectedScene.selectedMovie
     {
-      let currentSelectedFrame: iRASPAStructure? = selectedMovie.selectedFrame
-      let currentSelection: Set<iRASPAStructure> = selectedMovie.selectedFrames
+      let currentSelectedFrame: iRASPAObject? = selectedMovie.selectedFrame
+      let currentSelection: Set<iRASPAObject> = selectedMovie.selectedFrames
       
       project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedFrames(frames, at: indexSet, newSelectedFrame: currentSelectedFrame, newSelection: currentSelection)})
       
@@ -556,10 +556,10 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        let selectedMovie: Movie = selectedScene.selectedMovie,
        let indexSet: IndexSet = self.framesTableView?.selectedRowIndexes
     {
-      let selectedFrames: [iRASPAStructure] = indexSet.map{selectedMovie.frames[$0]}
+      let selectedFrames: [iRASPAObject] = indexSet.map{selectedMovie.frames[$0]}
       
-      var newSelectedFrame: iRASPAStructure? = nil
-      var newSelection: Set<iRASPAStructure> = []
+      var newSelectedFrame: iRASPAObject? = nil
+      var newSelection: Set<iRASPAObject> = []
       
       if let first: Int = IndexSet(integersIn: 0..<selectedMovie.frames.count).subtracting(indexSet).first
       {
@@ -582,10 +582,10 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        let selectionMovie: Movie = selectedScene.selectedMovie
     {
       let selectedArrangedObjects: [Any] = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
-      let frames: [iRASPAStructure] = selectionMovie.allIRASPAStructures
+      let frames: [iRASPAObject] = selectionMovie.allIRASPAStructures
       let arrangedObjects: [Any] = frames.isEmpty ? [[]] : frames
       
-      if let selectedFrame: iRASPAStructure = selectionMovie.selectedFrame,
+      if let selectedFrame: iRASPAObject = selectionMovie.selectedFrame,
          let selectionIndex: Int = selectionMovie.frames.firstIndex(of: selectedFrame)
       {
         self.windowController?.setPageControllerObjects(arrangedObjects: arrangedObjects, selectedArrangedObjects: selectedArrangedObjects, selectedIndex: selectionIndex)
@@ -607,7 +607,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        let project = proxyProject.representedObject.loadedProjectStructureNode,
        let selectedScene: Scene = project.sceneList.selectedScene,
        let selectedMovie: Movie = selectedScene.selectedMovie,
-       let selectedFrame: iRASPAStructure = selectedMovie.selectedFrame,
+       let selectedFrame: iRASPAObject = selectedMovie.selectedFrame,
        let selectionIndex: Int = selectedMovie.frames.firstIndex(of: selectedFrame)
     {
       let selectedArrangedObjects: [Any] = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
@@ -853,7 +853,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie
     {
       var insertionIndex: Int = 0
-      if let selectedFrame: iRASPAStructure = movie.selectedFrame,
+      if let selectedFrame: iRASPAObject = movie.selectedFrame,
         let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
@@ -862,7 +862,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       self.framesTableView?.beginUpdates()
       let crystal = Crystal(name: "New crystal")
       crystal.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(crystal: crystal)
+      let frame: iRASPAObject = iRASPAObject(crystal: crystal)
       self.addFrame(frame, atIndex: insertionIndex)
       self.framesTableView?.endUpdates()
     }
@@ -874,7 +874,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie
     {
       var insertionIndex: Int = 0
-      if let selectedFrame: iRASPAStructure = movie.selectedFrame,
+      if let selectedFrame: iRASPAObject = movie.selectedFrame,
         let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
@@ -883,7 +883,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       self.framesTableView?.beginUpdates()
       let molecularCrystal = MolecularCrystal(name: "New molecular crystal")
       molecularCrystal.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(molecularCrystal: molecularCrystal)
+      let frame: iRASPAObject = iRASPAObject(molecularCrystal: molecularCrystal)
       self.addFrame(frame, atIndex: insertionIndex)
       self.framesTableView?.endUpdates()
     }
@@ -895,7 +895,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie
     {
       var insertionIndex: Int = 0
-      if let selectedFrame: iRASPAStructure = movie.selectedFrame,
+      if let selectedFrame: iRASPAObject = movie.selectedFrame,
         let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
@@ -904,7 +904,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       self.framesTableView?.beginUpdates()
       let molecule = Molecule(name: "New molecule")
       molecule.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(molecule: molecule)
+      let frame: iRASPAObject = iRASPAObject(molecule: molecule)
       self.addFrame(frame, atIndex: insertionIndex)
       self.framesTableView?.endUpdates()
     }
@@ -916,7 +916,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie
     {
       var insertionIndex: Int = 0
-      if let selectedFrame: iRASPAStructure = movie.selectedFrame,
+      if let selectedFrame: iRASPAObject = movie.selectedFrame,
         let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
@@ -925,7 +925,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       self.framesTableView?.beginUpdates()
       let protein = Protein(name: "New protein")
       protein.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(protein: protein)
+      let frame: iRASPAObject = iRASPAObject(protein: protein)
       self.addFrame(frame, atIndex: insertionIndex)
       self.framesTableView?.endUpdates()
     }
@@ -937,7 +937,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie
     {
       var insertionIndex: Int = 0
-      if let selectedFrame: iRASPAStructure = movie.selectedFrame,
+      if let selectedFrame: iRASPAObject = movie.selectedFrame,
         let index = movie.frames.firstIndex(of: selectedFrame)
       {
         insertionIndex = index + 1
@@ -946,7 +946,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       self.framesTableView?.beginUpdates()
       let proteinCrystal = ProteinCrystal(name: "New protein crystal")
       proteinCrystal.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(proteinCrystal: proteinCrystal)
+      let frame: iRASPAObject = iRASPAObject(proteinCrystal: proteinCrystal)
       self.addFrame(frame, atIndex: insertionIndex)
       self.framesTableView?.endUpdates()
     }
@@ -961,7 +961,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        let movie: Movie = projectStructureNode.sceneList.selectedScene?.selectedMovie
     {
       // store the dragged-node locally as an array of movies
-      self.draggedNodes = (movie.frames as NSArray).objects(at: rowIndexes).compactMap{$0 as? iRASPAStructure}
+      self.draggedNodes = (movie.frames as NSArray).objects(at: rowIndexes).compactMap{$0 as? iRASPAObject}
       self.draggedIndexSet = rowIndexes
       debugPrint("draggedNodes count: \(self.draggedNodes.count)")
     
@@ -1022,7 +1022,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       
       // drag/drop occured within the same outlineView -> reordering
       self.framesTableView?.beginUpdates()
-      for frame: iRASPAStructure in self.draggedNodes
+      for frame: iRASPAObject in self.draggedNodes
       {
         // Moving it from within the same parent! Account for the remove, if it is past the oldIndex
         
@@ -1055,8 +1055,8 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     var childIndex: Int = row
     
     self.framesTableView?.beginUpdates()
-    info.enumerateDraggingItems(options: .concurrent, for: self.framesTableView, classes: [iRASPAStructure.self], searchOptions: [:], using: { (draggingItem , idx, stop)  in
-      if let frame  = draggingItem.item as? iRASPAStructure
+    info.enumerateDraggingItems(options: .concurrent, for: self.framesTableView, classes: [iRASPAObject.self], searchOptions: [:], using: { (draggingItem , idx, stop)  in
+      if let frame  = draggingItem.item as? iRASPAObject
       {
         debugPrint("external frame: \(frame)")
         self.addFrame(frame, atIndex: childIndex)
@@ -1124,7 +1124,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       let pasteboard = NSPasteboard.general
       pasteboard.clearContents()
       
-      if let selectedFrames: [iRASPAStructure] = parentProject.sceneList.selectedScene?.selectedMovies.flatMap({$0.selectedFrames})
+      if let selectedFrames: [iRASPAObject] = parentProject.sceneList.selectedScene?.selectedMovies.flatMap({$0.selectedFrames})
       {
         pasteboard.writeObjects(selectedFrames)
       }
@@ -1140,12 +1140,12 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     }
     
     let pasteboard = NSPasteboard.general
-    if let pasteboardItems: [Any]  = pasteboard.readObjects(forClasses: [iRASPAStructure.self], options: nil)
+    if let pasteboardItems: [Any]  = pasteboard.readObjects(forClasses: [iRASPAObject.self], options: nil)
     {
       self.framesTableView?.beginUpdates()
       for pasteboardItem in pasteboardItems
       {
-        if let frame  = pasteboardItem as? iRASPAStructure
+        if let frame  = pasteboardItem as? iRASPAObject
         {
           self.addFrame(frame, atIndex: insertionIndex)
           insertionIndex += 1

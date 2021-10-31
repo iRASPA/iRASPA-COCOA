@@ -240,7 +240,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         popUpbuttonRepresentationType.isEditable = false
         popUpbuttonRepresentationType.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           popUpbuttonRepresentationType.isEnabled = enabled
           popUpbuttonRepresentationType.isEditable = enabled
@@ -300,7 +300,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMinimumX.stringValue = ""
         textFieldMinimumY.stringValue = ""
         textFieldMinimumZ.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldMaximumX.doubleValue = representedStructure.renderBoundingBox.maximum.x
           textFieldMaximumY.doubleValue = representedStructure.renderBoundingBox.maximum.y
@@ -316,14 +316,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldLengthA.isEditable = false
         textFieldLengthA.stringValue = ""
         textFieldLengthA.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+           !representedStructure.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldLengthA.isEnabled = enabled && renderPeriodic
-          }
+          //if let renderPeriodic: Bool = representedStructure.renderPeriodic
+          //{
+          //  textFieldLengthA.isEnabled = enabled && renderPeriodic
+          //}
           textFieldLengthA.isEditable = enabled
-          if let renderLengthA: Double = representedStructure.renderUnitCellLengthA
+          if let renderLengthA: Double = representedStructure.cellLengthA
           {
             textFieldLengthA.doubleValue = renderLengthA
           }
@@ -338,7 +339,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldLengthB.isEditable = false
         textFieldLengthB.stringValue = ""
         textFieldLengthB.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -360,7 +361,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldLengthC.isEditable = false
         textFieldLengthC.stringValue = ""
         textFieldLengthC.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -383,7 +384,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldAlphaAngle.isEditable = false
         textFieldAlphaAngle.stringValue = ""
         textFieldAlphaAngle.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldAlphaAngle.formatter = cellAngleFormatter
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
@@ -407,7 +408,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldBetaAngle.stringValue = ""
         textFieldBetaAngle.isEnabled = false
         textFieldBetaAngle.formatter = cellAngleFormatter
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -430,7 +431,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldGammaAngle.stringValue = ""
         textFieldGammaAngle.isEnabled = false
         textFieldGammaAngle.formatter = cellAngleFormatter
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -461,7 +462,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         stepperAngleAlpha.isEnabled = false
         stepperAngleBeta.isEnabled = false
         stepperAngleGamma.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
            let renderPeriodic: Bool = representedStructure.renderPeriodic
         {
           stepperLengthA.isEnabled = enabled && renderPeriodic
@@ -478,7 +479,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellAX.isEditable = false
         textFieldRenderUnitCellAX.stringValue = ""
         textFieldRenderUnitCellAX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -499,7 +500,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellAY.isEditable = false
         textFieldRenderUnitCellAY.stringValue = ""
         textFieldRenderUnitCellAY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -520,7 +521,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellAZ.isEditable = false
         textFieldRenderUnitCellAZ.stringValue = ""
         textFieldRenderUnitCellAZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -542,7 +543,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellBX.isEditable = false
         textFieldRenderUnitCellBX.stringValue = ""
         textFieldRenderUnitCellBX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -563,7 +564,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellBY.isEditable = false
         textFieldRenderUnitCellBY.stringValue = ""
         textFieldRenderUnitCellBY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -584,7 +585,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellBZ.isEditable = false
         textFieldRenderUnitCellBZ.stringValue = ""
         textFieldRenderUnitCellBZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -606,7 +607,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellCX.isEditable = false
         textFieldRenderUnitCellCX.stringValue = ""
         textFieldRenderUnitCellCX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -627,7 +628,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellCY.isEditable = false
         textFieldRenderUnitCellCY.stringValue = ""
         textFieldRenderUnitCellCY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -648,7 +649,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellCZ.isEditable = false
         textFieldRenderUnitCellCZ.stringValue = ""
         textFieldRenderUnitCellCZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -670,7 +671,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldVolume.isEditable = false
         textFieldVolume.stringValue = ""
         textFieldVolume.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -692,7 +693,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldPerpendicularWidthX.isEditable = false
         textFieldPerpendicularWidthX.stringValue = ""
         textFieldPerpendicularWidthX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -713,7 +714,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldPerpendicularWidthY.isEditable = false
         textFieldPerpendicularWidthY.stringValue = ""
         textFieldPerpendicularWidthY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -734,7 +735,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldPerpendicularWidthZ.isEditable = false
         textFieldPerpendicularWidthZ.stringValue = ""
         textFieldPerpendicularWidthZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -756,7 +757,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMaximumReplicaX.isEditable = false
         textFieldMaximumReplicaX.stringValue = ""
         textFieldMaximumReplicaX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -778,7 +779,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMaximumReplicaY.isEditable = false
         textFieldMaximumReplicaY.stringValue = ""
         textFieldMaximumReplicaY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -800,7 +801,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMaximumReplicaZ.isEditable = false
         textFieldMaximumReplicaZ.stringValue = ""
         textFieldMaximumReplicaZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -823,7 +824,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMinimumReplicaX.isEditable = false
         textFieldMinimumReplicaX.stringValue = ""
         textFieldMinimumReplicaX.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -845,7 +846,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMinimumReplicaY.isEditable = false
         textFieldMinimumReplicaY.stringValue = ""
         textFieldMinimumReplicaY.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -867,7 +868,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMinimumReplicaZ.isEditable = false
         textFieldMinimumReplicaZ.stringValue = ""
         textFieldMinimumReplicaZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -897,7 +898,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         stepperMinimumReplicaX.isEnabled = false
         stepperMinimumReplicaY.isEnabled = false
         stepperMinimumReplicaZ.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
            let renderPeriodic: Bool = representedStructure.renderPeriodic
         {
           stepperMaximumReplicaX.isEnabled = enabled && renderPeriodic
@@ -909,7 +910,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         }
       }
     case "BoxOrientationCell":
-      if let renderRotationDelta: Double = (self.representedObject as? [CellViewer])?.renderRotationDelta
+      if let renderRotationDelta: Double = (self.representedObject as? [CellViewerLegacy])?.renderRotationDelta
       {
         if let textFieldRotationAngle: NSTextField = view.viewWithTag(1) as? NSTextField,
           let textFieldYawPlusX: NSButton = view.viewWithTag(2) as? NSButton,
@@ -963,7 +964,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldEulerAngleY.stringValue = ""
         textFieldEulerAngleZ.stringValue = ""
         
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderEulerAngleX: Double = representedStructure.renderEulerAngleX,
              let renderEulerAngleY: Double = representedStructure.renderEulerAngleY,
@@ -995,7 +996,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldOriginX.isEditable = false
         textFieldOriginX.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldOriginX.isEditable = enabled
           if let renderOriginX: Double = representedStructure.renderOriginX
@@ -1012,7 +1013,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldOriginY.isEditable = false
         textFieldOriginY.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldOriginY.isEditable = enabled
           if let renderOriginY: Double = representedStructure.renderOriginY
@@ -1029,7 +1030,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldOriginZ.isEditable = false
         textFieldOriginZ.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldOriginZ.isEditable = enabled
           if let renderOriginZ: Double = representedStructure.renderOriginZ
@@ -1055,7 +1056,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           button.isEnabled = enabled
           if let renderContentFlipX: Bool = representedStructure.renderContentFlipX
@@ -1073,7 +1074,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let button: NSButton = view.viewWithTag(2) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           button.isEnabled = enabled
           if let renderContentFlipY: Bool = representedStructure.renderContentFlipY
@@ -1091,7 +1092,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let button: NSButton = view.viewWithTag(3) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           button.isEnabled = enabled
           if let renderContentFlipZ: Bool = representedStructure.renderContentFlipZ
@@ -1111,7 +1112,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCenterShiftX.isEditable = false
         textFieldCenterShiftX.stringValue = "test"
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldCenterShiftX.isEditable = enabled
           if let renderCenterShiftX: Double = representedStructure.renderContentShiftX
@@ -1128,7 +1129,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCenterShiftY.isEditable = false
         textFieldCenterShiftY.stringValue = "test"
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldCenterShiftY.isEditable = enabled
           if let renderCenterShiftY: Double = representedStructure.renderContentShiftY
@@ -1145,7 +1146,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCenterShiftZ.isEditable = false
         textFieldCenterShiftZ.stringValue = "test"
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldCenterShiftZ.isEditable = enabled
           if let renderCenterShiftZ: Double = representedStructure.renderContentShiftZ
@@ -1173,7 +1174,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         comboBoxRenderStructureMaterialType.isEditable = false
         comboBoxRenderStructureMaterialType.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           comboBoxRenderStructureMaterialType.isEditable = enabled
           
@@ -1195,7 +1196,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureMass.isEditable = false
         textFieldRenderStructureMass.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let structureMass: Double = representedStructure.renderStructureMass
           {
@@ -1211,7 +1212,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureDensity.isEditable = false
         textFieldRenderStructureDensity.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldRenderStructureDensity.isEnabled = false
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
@@ -1232,7 +1233,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureHeliumVoidFraction.isEditable = false
         textFieldRenderStructureHeliumVoidFraction.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldRenderStructureHeliumVoidFraction.isEnabled = false
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
@@ -1253,7 +1254,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureSpecificVolume.isEditable = false
         textFieldRenderStructureSpecificVolume.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldRenderStructureSpecificVolume.isEnabled = false
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
@@ -1274,7 +1275,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureAccessiblePoreVolume.isEditable = false
         textFieldRenderStructureAccessiblePoreVolume.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldRenderStructureAccessiblePoreVolume.isEnabled = false
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
@@ -1295,7 +1296,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let buttonComputeHeliumVoidFraction: NSButton = view.viewWithTag(10) as? NSButton
       {
         buttonComputeHeliumVoidFraction.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
           {
@@ -1314,7 +1315,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonProbeParticle.isEditable = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           popUpbuttonProbeParticle.isEditable = enabled
           if let probeMolecule: Structure.ProbeMolecule = representedStructure.renderFrameworkProbeMolecule
@@ -1329,7 +1330,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.stringValue = ""
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -1350,7 +1351,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = ""
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -1372,7 +1373,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureNumberOfChannelSystems.isEditable = false
         textFieldRenderStructureNumberOfChannelSystems.stringValue = ""
         textFieldRenderStructureNumberOfChannelSystems.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -1394,7 +1395,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = false
         textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = ""
         textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -1417,7 +1418,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let buttonComputeVolumetricSurfaceArea: NSButton = view.viewWithTag(10) as? NSButton
       {
         buttonComputeVolumetricSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
           {
@@ -1433,7 +1434,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let buttonComputeGeometricSurfaceArea: NSButton = view.viewWithTag(11) as? NSButton
       {
         buttonComputeGeometricSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
           {
@@ -1453,7 +1454,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = false
         textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = ""
         textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -1475,7 +1476,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureLargestCavityDiameter.isEditable = false
         textFieldRenderStructureLargestCavityDiameter.stringValue = ""
         textFieldRenderStructureLargestCavityDiameter.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -1497,7 +1498,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureRestrictingPoreLimitingDiameter.isEditable = false
         textFieldRenderStructureRestrictingPoreLimitingDiameter.stringValue = ""
         textFieldRenderStructureRestrictingPoreLimitingDiameter.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -1519,7 +1520,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEditable = false
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.stringValue = ""
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           if let renderPeriodic: Bool = representedStructure.renderPeriodic
           {
@@ -1581,7 +1582,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         
         SpaceGroupHolohedry.stringValue = SKSpacegroup.HolohedryString(HallNumber: 1)
         
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
           !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
         {
           HallSpaceGroupPopUpButton.isEditable = enabled
@@ -1623,7 +1624,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderPrecision.isEditable = false
         textFieldRenderPrecision.stringValue = ""
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer]
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
         {
           textFieldRenderPrecision.isEditable = enabled
           if let renderPrecision: Double = representedStructure.renderCellPrecision
@@ -1657,7 +1658,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         
         centringTextField.stringValue = SKSpacegroup.CentringString(HallNumber: 1)
         
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
           !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
         {
         
@@ -1716,7 +1717,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         symmorphicityTextField.stringValue = SKSpacegroup.SymmorphicityString(HallNumber: 1)
         numberOfElementsTextField.stringValue = SKSpacegroup.NumberOfElementsString(HallNumber: 1)
         
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
+        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
           !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
         {
           if let spaceGroupHallNumber: Int = representedStructure.spaceGroupHallNumber
@@ -1775,7 +1776,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMaterialType(_ sender: NSPopUpButton)
   {
-    if let cellViewers: [CellViewer] = self.representedObject as? [CellViewer],
+    if let cellViewers: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project = projectTreeNode.representedObject.loadedProjectStructureNode
     {
@@ -1786,8 +1787,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       // remove the measuring nodes
       project.measurementTreeNodes = []
       
-      var to: [iRASPAStructure] = []
-      var from: [iRASPAStructure] = []
+      var to: [iRASPAObject] = []
+      var from: [iRASPAObject] = []
       for cellViewer in cellViewers
       {
         for i in 0..<cellViewer.frames.count
@@ -1798,29 +1799,31 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           case .none,.unknown, .structure:
             return
           case .crystal:
-            to.append(iRASPAStructure(crystal: Crystal(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(crystal: Crystal(clone: cellViewer.frames[i].structure)))
           case .molecularCrystal:
-            to.append(iRASPAStructure(molecularCrystal: MolecularCrystal(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(molecularCrystal: MolecularCrystal(clone: cellViewer.frames[i].structure)))
           case .molecule:
-            to.append(iRASPAStructure(molecule: Molecule(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(molecule: Molecule(clone: cellViewer.frames[i].structure)))
           case .protein:
-            to.append(iRASPAStructure(protein: Protein(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(protein: Protein(clone: cellViewer.frames[i].structure)))
           case .proteinCrystal:
-            to.append(iRASPAStructure(proteinCrystal: ProteinCrystal(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(proteinCrystal: ProteinCrystal(clone: cellViewer.frames[i].structure)))
           case .proteinCrystalSolvent,.crystalSolvent,.molecularCrystalSolvent:
             return
           case .crystalEllipsoidPrimitive:
-            to.append(iRASPAStructure(crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
           case .crystalCylinderPrimitive:
-            to.append(iRASPAStructure(crystalCylinderPrimitive: CrystalCylinderPrimitive(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(crystalCylinderPrimitive: CrystalCylinderPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
           case .crystalPolygonalPrismPrimitive:
-            to.append(iRASPAStructure(crystalPolygonalPrismPrimitive: CrystalPolygonalPrismPrimitive(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(crystalPolygonalPrismPrimitive: CrystalPolygonalPrismPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
           case .ellipsoidPrimitive:
-            to.append(iRASPAStructure(ellipsoidPrimitive: EllipsoidPrimitive(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(ellipsoidPrimitive: EllipsoidPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
           case .cylinderPrimitive:
-            to.append(iRASPAStructure(cylinderPrimitive: CylinderPrimitive(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(cylinderPrimitive: CylinderPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
           case .polygonalPrismPrimitive:
-            to.append(iRASPAStructure(polygonalPrismPrimitive: PolygonalPrismPrimitive(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(polygonalPrismPrimitive: PolygonalPrismPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
+          default:
+            break
           }
         }
       }
@@ -1831,7 +1834,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     }
   }
   
-  func replaceStructure(structures from: [iRASPAStructure], to: [iRASPAStructure])
+  func replaceStructure(structures from: [iRASPAObject], to: [iRASPAObject])
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
@@ -1868,7 +1871,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderUnitCellLengthA = newValue
       structure.reComputeBoundingBox()
@@ -1896,7 +1899,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderUnitCellLengthA: Double = structure.renderUnitCellLengthA,
        let _ = structure.renderPeriodic
     {
@@ -1927,7 +1930,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderUnitCellLengthB = newValue
       structure.reComputeBoundingBox()
@@ -1953,7 +1956,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderUnitCellLengthB: Double = structure.renderUnitCellLengthB,
        let _ = structure.renderPeriodic
     {
@@ -1985,7 +1988,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderUnitCellLengthC = newValue
       structure.reComputeBoundingBox()
@@ -2011,7 +2014,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderUnitCellLengthC: Double = structure.renderUnitCellLengthC,
        let _ = structure.renderPeriodic
     {
@@ -2042,7 +2045,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderUnitCellAlphaAngle = newValue * Double.pi / 180.0
       structure.reComputeBoundingBox()
@@ -2068,7 +2071,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderUnitCellAlphaAngle: Double = structure.renderUnitCellAlphaAngle,
        let _ = structure.renderPeriodic
     {
@@ -2099,7 +2102,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue * Double.pi / 180.0
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderUnitCellBetaAngle = newValue
       structure.reComputeBoundingBox()
@@ -2125,7 +2128,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderUnitCellBetaAngle: Double = structure.renderUnitCellBetaAngle,
        let _ = structure.renderPeriodic
     {
@@ -2157,7 +2160,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue * Double.pi / 180.0
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderUnitCellGammaAngle = newValue
       structure.reComputeBoundingBox()
@@ -2183,7 +2186,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderUnitCellGammaAngle: Double = structure.renderUnitCellGammaAngle,
        let _ = structure.renderPeriodic
     {
@@ -2217,7 +2220,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = (self.representedObject as? [CellViewer]),
+       var structure: [CellViewerLegacy] = (self.representedObject as? [CellViewerLegacy]),
        let renderMaximumReplicaX: Int32 = structure.renderMaximumReplicaX,
        let _ = structure.renderPeriodic
     {
@@ -2251,7 +2254,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = (self.representedObject as? [CellViewer]),
+       var structure: [CellViewerLegacy] = (self.representedObject as? [CellViewerLegacy]),
        let renderMaximumReplicaY: Int32 = structure.renderMaximumReplicaY,
        let _ = structure.renderPeriodic
     {
@@ -2284,7 +2287,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = (self.representedObject as? [CellViewer]),
+       var structure: [CellViewerLegacy] = (self.representedObject as? [CellViewerLegacy]),
       let renderMaximumReplicaZ: Int32 = structure.renderMaximumReplicaZ,
       let _ = structure.renderPeriodic
     {
@@ -2316,7 +2319,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-      var structure: [CellViewer] = self.representedObject as? [CellViewer],
+      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
       let renderMinimumReplicaX: Int32 = structure.renderMinimumReplicaX,
       let _ = structure.renderPeriodic
     {
@@ -2348,7 +2351,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderMinimumReplicaY: Int32 = structure.renderMinimumReplicaY,
        let _ = structure.renderPeriodic
     {
@@ -2380,7 +2383,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderMinimumReplicaZ: Int32 = structure.renderMinimumReplicaZ,
        let _ = structure.renderPeriodic
     {
@@ -2415,7 +2418,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderMinimumReplicaX: Int32 = structure.renderMinimumReplicaX,
        let renderMaximumReplicaX: Int32 = structure.renderMaximumReplicaX,
        let _ = structure.renderPeriodic
@@ -2454,7 +2457,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderMinimumReplicaY: Int32 = structure.renderMinimumReplicaY,
        let renderMaximumReplicaY: Int32 = structure.renderMaximumReplicaY,
        let _ = structure.renderPeriodic
@@ -2493,7 +2496,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderMinimumReplicaZ: Int32 = structure.renderMinimumReplicaZ,
        let renderMaximumReplicaZ: Int32 = structure.renderMaximumReplicaZ,
        let _ = structure.renderPeriodic
@@ -2532,7 +2535,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderMinimumReplicaX: Int32 = structure.renderMinimumReplicaX,
        let renderMaximumReplicaX: Int32 = structure.renderMaximumReplicaX,
        let _ = structure.renderPeriodic
@@ -2570,7 +2573,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderMinimumReplicaY: Int32 = structure.renderMinimumReplicaY,
        let renderMaximumReplicaY: Int32 = structure.renderMaximumReplicaY,
        let _ = structure.renderPeriodic
@@ -2608,7 +2611,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderMinimumReplicaZ: Int32 = structure.renderMinimumReplicaZ,
        let renderMaximumReplicaZ: Int32 = structure.renderMaximumReplicaZ,
        let _ = structure.renderPeriodic
@@ -2652,7 +2655,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderOriginX = newValue
       
@@ -2680,7 +2683,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderOriginY = newValue
       
@@ -2708,7 +2711,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderOriginZ = newValue
       
@@ -2739,7 +2742,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [CellViewer] = self.representedObject as? [CellViewer]
+      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderContentShiftX = newValue
       
@@ -2766,7 +2769,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderContentShiftX: Double = structure.renderContentShiftX
     {
       let newValue: Double = renderContentShiftX + deltaValue * 0.01
@@ -2799,7 +2802,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [CellViewer] = self.representedObject as? [CellViewer]
+      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderContentShiftY = newValue
       
@@ -2826,7 +2829,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-      var structure: [CellViewer] = self.representedObject as? [CellViewer],
+      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
       let renderContentShiftY: Double = structure.renderContentShiftY
     {
       let newValue: Double = renderContentShiftY + deltaValue * 0.01
@@ -2859,7 +2862,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [CellViewer] = self.representedObject as? [CellViewer]
+      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderContentShiftZ = newValue
       
@@ -2886,7 +2889,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-      var structure: [CellViewer] = self.representedObject as? [CellViewer],
+      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
       let renderContentShiftZ: Double = structure.renderContentShiftZ
     {
       let newValue: Double = renderContentShiftZ + deltaValue * 0.01
@@ -2916,7 +2919,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   @IBAction func toggleFlipContentX(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var structure: [CellViewer] = representedObject as? [CellViewer]
+      var structure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
     {
       sender.allowsMixedState = false
       structure.renderContentFlipX = (sender.state == NSControl.StateValue.on)
@@ -2942,7 +2945,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   @IBAction func toggleFlipContentY(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var structure: [CellViewer] = representedObject as? [CellViewer]
+      var structure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
     {
       sender.allowsMixedState = false
       structure.renderContentFlipY = (sender.state == NSControl.StateValue.on)
@@ -2969,7 +2972,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   @IBAction func toggleFlipContentZ(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var structure: [CellViewer] = representedObject as? [CellViewer]
+      var structure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
     {
       sender.allowsMixedState = false
       structure.renderContentFlipZ = (sender.state == NSControl.StateValue.on)
@@ -3000,15 +3003,22 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       let oldCell: SKCell = structure.cell
-      let oldSpaceGroup: SKSpacegroup = structure.spaceGroup
+      var oldSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
+      if let spaceGroupViewer = structure as? SpaceGroupProtocol
+      {
+        oldSpaceGroup = spaceGroupViewer.spaceGroup
+      }
       let oldAtoms: SKAtomTreeController = structure.atomTreeController
-      let oldBonds: SKBondSetController = structure.bondController
+      let oldBonds: SKBondSetController = structure.bondSetController
       project.undoManager.registerUndo(withTarget: self, handler: {$0.applyCellContentShift(structure: structure, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
       
       structure.cell = cell
-      structure.spaceGroup = spaceGroup
+      if let spaceGroupViewer = structure as? SpaceGroupProtocol
+      {
+        spaceGroupViewer.spaceGroup = spaceGroup
+      }
       structure.atomTreeController = atoms
-      structure.bondController = bonds
+      structure.bondSetController = bonds
       
       structure.reComputeBoundingBox()
       
@@ -3037,7 +3047,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func applyContentShift(_ sender: NSButton)
   {
-    if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
+    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
       let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
       if let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -3078,7 +3088,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3107,7 +3117,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3135,7 +3145,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3163,7 +3173,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderRotationDelta = structure.renderRotationDelta,
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
@@ -3194,7 +3204,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderRotationDelta = structure.renderRotationDelta,
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
@@ -3225,7 +3235,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderRotationDelta = structure.renderRotationDelta,
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
@@ -3256,7 +3266,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderRotationDelta = structure.renderRotationDelta,
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
@@ -3286,7 +3296,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderRotationDelta = structure.renderRotationDelta,
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
@@ -3317,7 +3327,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderRotationDelta = structure.renderRotationDelta,
        let renderOrientation: simd_quatd = structure.renderOrientation
     {
@@ -3347,7 +3357,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderOrientation = structure.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3396,7 +3406,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderOrientation = structure.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3443,7 +3453,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer],
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let renderOrientation = structure.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3489,7 +3499,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   @IBAction func changedRotationAngle(_ sender: NSTextField)
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewer] = self.representedObject as? [CellViewer]
+       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderRotationDelta = sender.doubleValue
       
@@ -3506,7 +3516,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMaterialName(_ sender: NSComboBox)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -3518,7 +3528,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setHeliumVoidFraction(_ sender: NSTextField)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       structure.renderStructureHeliumVoidFraction = sender.doubleValue
@@ -3533,7 +3543,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func recomputeHeliumVoidFraction(_ sender: NSButton)
   {
-    if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
+    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
@@ -3556,7 +3566,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   @IBAction func changeFrameworkProbeMolecule(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var cellViewer: [CellViewer] = representedObject as? [CellViewer],
+      var cellViewer: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
       let renderFrameworkProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
     {
       cellViewer.renderFrameworkProbeMolecule = renderFrameworkProbeMolecule
@@ -3586,7 +3596,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func recomputeNitrogenSurfaceArea(_ sender: NSButton)
   {
-    if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
+    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
      do
@@ -3612,7 +3622,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setNumberOfChannelSystems(_ sender: NSTextField)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       structure.renderStructureNumberOfChannelSystems = sender.integerValue
@@ -3626,7 +3636,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setNumberOfInaccessiblePockets(_ sender: NSTextField)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer]
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
     {
       structure.renderStructureNumberOfInaccessiblePockets = sender.integerValue
       
@@ -3639,7 +3649,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setDimensionalityOfPoreSystem(_ sender: NSTextField)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       structure.renderStructureDimensionalityOfPoreSystem = sender.integerValue
@@ -3653,7 +3663,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setLargestCavityDiameter(_ sender: NSTextField)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       structure.renderStructureLargestCavityDiameter = sender.doubleValue
@@ -3668,7 +3678,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setRestrictingPoreLimitingDiameter(_ sender: NSTextField)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       structure.renderStructureRestrictingPoreLimitingDiameter = sender.doubleValue
@@ -3682,7 +3692,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setLargestCavityDiameterAlongAViablePath(_ sender: NSTextField)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       structure.renderStructureLargestCavityDiameterAlongAViablePath = sender.doubleValue
@@ -3705,15 +3715,22 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       let oldCell: SKCell = structure.cell
-      let oldSpaceGroup: SKSpacegroup = structure.spaceGroup
+      var oldSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
+      if let spaceGroupViewer = structure as? SpaceGroupProtocol
+      {
+        oldSpaceGroup = spaceGroupViewer.spaceGroup
+      }
       let oldAtoms: SKAtomTreeController = structure.atomTreeController
-      let oldBonds: SKBondSetController = structure.bondController
+      let oldBonds: SKBondSetController = structure.bondSetController
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setStructureState(structure: structure, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
       
       structure.cell = cell
-      structure.spaceGroup = spaceGroup
+      if let spaceGroupViewer = structure as? SpaceGroupProtocol
+      {
+        spaceGroupViewer.spaceGroup = spaceGroup
+      }
       structure.atomTreeController = atoms
-      structure.bondController = bonds
+      structure.bondSetController = bonds
       
       structure.reComputeBoundingBox()
       
@@ -3767,7 +3784,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setSpaceGroupHallNumber(_ sender: NSPopUpButton)
   {
-    if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
+    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -3777,7 +3794,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setSpaceGroupNumber(_ sender: NSPopUpButton)
   {
-    if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
+    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -3788,7 +3805,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setSpaceGroupQualifier(_ sender: NSPopUpButton)
   {
-    if let cellViewer: [CellViewer] = self.representedObject as? [CellViewer],
+    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
        let spaceGroupHallNumber: Int = cellViewer.spaceGroupHallNumber,
        let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
@@ -3801,7 +3818,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setSpaceGroupPrecision(_ sender: NSTextField)
   {
-    if var structure: [CellViewer] = self.representedObject as? [CellViewer],
+    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       structure.renderCellPrecision = sender.doubleValue

@@ -164,7 +164,7 @@
 		933CAA2B207253E300F74729 /* MovieTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CAA2A207253E300F74729 /* MovieTableCellView.swift */; };
 		933CEEB71F4DF273002758AB /* AnimatedPropertiesLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */; };
 		933CFE171F14B47700BC9DCA /* iRASPAProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE161F14B47700BC9DCA /* iRASPAProject.swift */; };
-		933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */; };
+		933CFE191F14E6C600BC9DCA /* iRASPAObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933CFE181F14E6C600BC9DCA /* iRASPAObject.swift */; };
 		933D6B8623CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D6B8523CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift */; };
 		933D79C126905E290023EB94 /* ConventionalCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D79C026905E290023EB94 /* ConventionalCellTests.swift */; };
 		933D93E51FD326CA0075AB92 /* StructureTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */; };
@@ -781,6 +781,12 @@
 		93F7511C26C914A3005796C4 /* RKGlobalAxesUniforms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7511B26C914A3005796C4 /* RKGlobalAxesUniforms.swift */; };
 		93F7511E26C9246E005796C4 /* GlobalAxesTextShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93F7511D26C9246E005796C4 /* GlobalAxesTextShader.metal */; };
 		93F86E4F271C0A7B0060E250 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E4E271C0A7B0060E250 /* Object.swift */; };
+		93F86E51272150D40060E250 /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E50272150D40060E250 /* Primitive.swift */; };
+		93F86E5327217ABE0060E250 /* AtomViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E5227217ABE0060E250 /* AtomViewer.swift */; };
+		93F86E5527217ACB0060E250 /* BondViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E5427217ACB0060E250 /* BondViewer.swift */; };
+		93F86E5727219A250060E250 /* CellViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E5627219A250060E250 /* CellViewer.swift */; };
+		93F86E592721BE3C0060E250 /* StructuralPropertyViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E582721BE3C0060E250 /* StructuralPropertyViewer.swift */; };
+		93F86E5B2721BE580060E250 /* PrimitiveViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E5A2721BE580060E250 /* PrimitiveViewer.swift */; };
 		93F9362F1EB8FEF10094C509 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F9362E1EB8FEF10094C509 /* String.swift */; };
 		93F936311EB8FFC30094C509 /* NSSquareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F936301EB8FFC30094C509 /* NSSquareButton.swift */; };
 		93F936331EB900080094C509 /* NSAlphaColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F936321EB900080094C509 /* NSAlphaColorWell.swift */; };
@@ -1483,7 +1489,7 @@
 		933CAA2A207253E300F74729 /* MovieTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableCellView.swift; sourceTree = "<group>"; };
 		933CEEB61F4DF273002758AB /* AnimatedPropertiesLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedPropertiesLayer.swift; sourceTree = "<group>"; };
 		933CFE161F14B47700BC9DCA /* iRASPAProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProject.swift; sourceTree = "<group>"; };
-		933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAStructure.swift; sourceTree = "<group>"; };
+		933CFE181F14E6C600BC9DCA /* iRASPAObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAObject.swift; sourceTree = "<group>"; };
 		933D6B8523CCABD600761EA0 /* AtomAndBondsChangeDataStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomAndBondsChangeDataStructure.swift; sourceTree = "<group>"; };
 		933D79C026905E290023EB94 /* ConventionalCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConventionalCellTests.swift; sourceTree = "<group>"; };
 		933D93E41FD326CA0075AB92 /* StructureTableRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureTableRowView.swift; sourceTree = "<group>"; };
@@ -2272,6 +2278,12 @@
 		93F7511B26C914A3005796C4 /* RKGlobalAxesUniforms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKGlobalAxesUniforms.swift; sourceTree = "<group>"; };
 		93F7511D26C9246E005796C4 /* GlobalAxesTextShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = GlobalAxesTextShader.metal; sourceTree = "<group>"; };
 		93F86E4E271C0A7B0060E250 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		93F86E50272150D40060E250 /* Primitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
+		93F86E5227217ABE0060E250 /* AtomViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomViewer.swift; sourceTree = "<group>"; };
+		93F86E5427217ACB0060E250 /* BondViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondViewer.swift; sourceTree = "<group>"; };
+		93F86E5627219A250060E250 /* CellViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewer.swift; sourceTree = "<group>"; };
+		93F86E582721BE3C0060E250 /* StructuralPropertyViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuralPropertyViewer.swift; sourceTree = "<group>"; };
+		93F86E5A2721BE580060E250 /* PrimitiveViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveViewer.swift; sourceTree = "<group>"; };
 		93F9362E1EB8FEF10094C509 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		93F936301EB8FFC30094C509 /* NSSquareButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSSquareButton.swift; sourceTree = "<group>"; };
 		93F936321EB900080094C509 /* NSAlphaColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAlphaColorWell.swift; sourceTree = "<group>"; };
@@ -2652,6 +2664,11 @@
 				930DD6621E26BAFC00B8FE9B /* SceneList.swift */,
 				9314E33E1E34A78E00680364 /* ViewerProtocols.swift */,
 				93F12B592034816F00FFABC3 /* SpaceGroupProtocol.swift */,
+				93F86E5227217ABE0060E250 /* AtomViewer.swift */,
+				93F86E5427217ACB0060E250 /* BondViewer.swift */,
+				93F86E5627219A250060E250 /* CellViewer.swift */,
+				93F86E582721BE3C0060E250 /* StructuralPropertyViewer.swift */,
+				93F86E5A2721BE580060E250 /* PrimitiveViewer.swift */,
 				9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */,
 				93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */,
 				93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */,
@@ -2690,19 +2707,20 @@
 		930DD62F1E26B9AA00B8FE9B /* Structures */ = {
 			isa = PBXGroup;
 			children = (
-				933CFE181F14E6C600BC9DCA /* iRASPAStructure.swift */,
+				933CFE181F14E6C600BC9DCA /* iRASPAObject.swift */,
 				930DD63F1E26BA5D00B8FE9B /* Crystal.swift */,
 				930DD6401E26BA5D00B8FE9B /* MolecularCrystal.swift */,
 				930DD6431E26BA5D00B8FE9B /* ProteinCrystal.swift */,
 				930DD6411E26BA5D00B8FE9B /* Molecule.swift */,
 				930DD6421E26BA5D00B8FE9B /* Protein.swift */,
 				930DD6441E26BA5D00B8FE9B /* Structure.swift */,
-				93274E822205AA13004031BA /* EllipsoidPrimitive.swift */,
+				93F86E50272150D40060E250 /* Primitive.swift */,
 				9399E62C2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift */,
-				93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */,
 				9399E62E2459C6E900036EBF /* CrystalCylinderPrimitive.swift */,
-				93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */,
 				9399E6302459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift */,
+				93274E822205AA13004031BA /* EllipsoidPrimitive.swift */,
+				93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */,
+				93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */,
 				93518DE226FC8A32009A7B8D /* DensityVolume.swift */,
 				93F86E4E271C0A7B0060E250 /* Object.swift */,
 			);
@@ -4928,6 +4946,7 @@
 				93F936391EB910B90094C509 /* ProgressIndicatorProtocol.swift in Sources */,
 				930DD6651E26BAFC00B8FE9B /* SceneList.swift in Sources */,
 				938B44EF1EB7B66C006B7704 /* ImportChildNodesFromCloudOperation.swift in Sources */,
+				93F86E51272150D40060E250 /* Primitive.swift in Sources */,
 				938F96BF2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				9399E62D2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift in Sources */,
 				93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */,
@@ -4948,6 +4967,7 @@
 				930DD63B1E26B9F500B8FE9B /* Timer.swift in Sources */,
 				938B44EB1EB7B258006B7704 /* RequestDiscoveryPermissionCloudUserOperation.swift in Sources */,
 				93F12B5A2034816F00FFABC3 /* SpaceGroupProtocol.swift in Sources */,
+				93F86E5527217ACB0060E250 /* BondViewer.swift in Sources */,
 				938B44E51EB7AB2F006B7704 /* FetchCurrentUserRcordOperation.swift in Sources */,
 				938F96C3220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				933CFE171F14B47700BC9DCA /* iRASPAProject.swift in Sources */,
@@ -4956,8 +4976,10 @@
 				930DD6631E26BAFC00B8FE9B /* Movie.swift in Sources */,
 				938B44F51EB7BEC0006B7704 /* FetchRecordFromCloudOperation.swift in Sources */,
 				93F9362F1EB8FEF10094C509 /* String.swift in Sources */,
+				93F86E592721BE3C0060E250 /* StructuralPropertyViewer.swift in Sources */,
 				930090EF1EB86DD00050FBC6 /* SaveProjectToCloudOperation.swift in Sources */,
 				93BF1B122609FE4500AFFCF3 /* ProjectOpenMMNode.swift in Sources */,
+				93F86E5327217ABE0060E250 /* AtomViewer.swift in Sources */,
 				93BF1B012609FE2600AFFCF3 /* ProjectGromacsNode.swift in Sources */,
 				93A31C9B1EB4CD030010101B /* ReadStructureGroupOperation.swift in Sources */,
 				9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */,
@@ -4977,19 +4999,21 @@
 				9345F86B1F3DD17D00181224 /* EmptyPasteboardItem.swift in Sources */,
 				93F936331EB900080094C509 /* NSAlphaColorWell.swift in Sources */,
 				93B8F2E31EB1DDF00052BDF8 /* Cloud.swift in Sources */,
+				93F86E5727219A250060E250 /* CellViewer.swift in Sources */,
 				9373377D1EB5FFF900E0655F /* ImportCloudProjectOperation.swift in Sources */,
 				93F936311EB8FFC30094C509 /* NSSquareButton.swift in Sources */,
 				93274E832205AA13004031BA /* EllipsoidPrimitive.swift in Sources */,
 				938B44ED1EB7B38C006B7704 /* CloudSubscribeOperation.swift in Sources */,
 				930DD64A1E26BA5D00B8FE9B /* ProteinCrystal.swift in Sources */,
 				93B8F2E51EB1DE630052BDF8 /* Notifications.swift in Sources */,
+				93F86E5B2721BE580060E250 /* PrimitiveViewer.swift in Sources */,
 				937861F01EEC6FC400E0C5DD /* ProjectTreeController.swift in Sources */,
 				930DD65E1E26BAD400B8FE9B /* ProjectStructureNode.swift in Sources */,
 				9399E6312459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift in Sources */,
 				938B44FC1EB8F7B4006B7704 /* Reachability.swift in Sources */,
 				93F86E4F271C0A7B0060E250 /* Object.swift in Sources */,
 				93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */,
-				933CFE191F14E6C600BC9DCA /* iRASPAStructure.swift in Sources */,
+				933CFE191F14E6C600BC9DCA /* iRASPAObject.swift in Sources */,
 				9354FE4A1F45A6A400155DC3 /* CartesianNumberFormatter.swift in Sources */,
 				93EFDF992205FBC400BE96CD /* CylinderPrimitive.swift in Sources */,
 			);

@@ -44,11 +44,6 @@ class StructureAppearanceDetailViewPageController: NSPageController, WindowContr
   var swipeInProgress: Bool = false
   var animationInProgress: Bool = false
   
-  deinit
-  {
-    //Swift.print("deinit: StructureAppearanceDetailViewPageController")
-  }
-  
   // ViewDidLoad: bounds are not yet set (do not do geometry-related etup here)
   override func viewDidLoad()
   {

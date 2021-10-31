@@ -100,7 +100,13 @@ public struct RKStructureUniforms
   
   //----------------------------------------  384 bytes boundary
   
+  public var inverseModelMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
   public var boxMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  
+  
+  //----------------------------------------  512 bytes boundary
+  public var inverseBoxMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  
   public var atomSelectionStripesDensity: Float = 0.25
   public var atomSelectionStripesFrequency: Float = 12.0
   public var atomSelectionWorleyNoise3DFrequency: Float = 2.0
@@ -113,10 +119,12 @@ public struct RKStructureUniforms
   public var bondSelectionScaling: Float = 1.25
   public var colorAtomsWithBondColor: Bool = false
   
-  //----------------------------------------  512 bytes boundary
+  //----------------------------------------  640 bytes boundary
   
   public var transformationMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
   public var transformationNormalMatrix: float4x4 = float4x4(Double4x4: double4x4(1.0))
+  
+  //----------------------------------------  768 bytes boundary
   
   public var primitiveAmbientFrontSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var primitiveDiffuseFrontSide: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 0.0, w:1.0)
@@ -134,7 +142,7 @@ public struct RKStructureUniforms
   public var pad6: Float = 0.0
   public var primitiveShininessBackSide: Float = 4.0
   
-  //----------------------------------------  768 bytes boundary
+  //----------------------------------------  896 bytes boundary
   
   public var bondSelectionStripesDensity: Float = 0.25
   public var bondSelectionStripesFrequency: Float = 12.0
@@ -160,8 +168,7 @@ public struct RKStructureUniforms
   public var numberOfReplicas: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var pad11: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
   public var pad12: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
-  public var pad13: float4x4 = float4x4(Double4x4: double4x4(1.0))
-  public var pad14: float4x4 = float4x4(Double4x4: double4x4(1.0))
+ 
   
   public init()
   {
@@ -178,6 +185,7 @@ public struct RKStructureUniforms
     
     let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: centerOfRotation, withTranslation: structure.origin)
     self.modelMatrix = float4x4(Double4x4: modelMatrix)
+    self.inverseModelMatrix = float4x4(Double4x4: modelMatrix.inverse)
     
     let numberOfReplicas: SIMD3<Int32> = structure.cell.numberOfReplicas
     self.numberOfReplicas = SIMD4<Float>(Float(numberOfReplicas.x),Float(numberOfReplicas.y),Float(numberOfReplicas.z),0.0)
@@ -312,6 +320,7 @@ public struct RKStructureUniforms
     self.boxMatrix[3][0] = Float(shift.x)
     self.boxMatrix[3][1] = Float(shift.y)
     self.boxMatrix[3][2] = Float(shift.z)
+    self.inverseBoxMatrix = float4x4(Double3x3: box.inverse)
     
     
     // clipping planes are in object space

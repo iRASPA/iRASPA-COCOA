@@ -759,8 +759,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       {
         if structure.isVisible
         {
-          let bondSelection: IndexSet = IndexSet(IndexSet(integersIn: 0..<structure.bondController.arrangedObjects.count).filter{structure.bondController.arrangedObjects[$0].isVisible})
-          self.setCurrentSelection(structure: structure, atomSelection: Set(structure.atomTreeController.flattenedNodes().filter{$0.representedObject.isVisible}), previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection:  bondSelection, previousBondSelection: structure.bondController.selectedObjects)
+          let bondSelection: IndexSet = IndexSet(IndexSet(integersIn: 0..<structure.bondSetController.arrangedObjects.count).filter{structure.bondSetController.arrangedObjects[$0].isVisible})
+          self.setCurrentSelection(structure: structure, atomSelection: Set(structure.atomTreeController.flattenedNodes().filter{$0.representedObject.isVisible}), previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection:  bondSelection, previousBondSelection: structure.bondSetController.selectedObjects)
         }
       }
     }
@@ -789,8 +789,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
             let selectedAtoms: [SKAtomTreeNode] = structure.atomTreeController.selectedTreeNodes.flatMap{$0.flattenedNodes()}.sorted(by: { $0.indexPath > $1.indexPath })
             let indexPaths: [IndexPath] = selectedAtoms.map{$0.indexPath}
             
-            let indexSet: IndexSet = structure.bondController.selectedObjects
-            let selectedBonds = structure.bondController.arrangedObjects[indexSet]
+            let indexSet: IndexSet = structure.bondSetController.selectedObjects
+            let selectedBonds = structure.bondSetController.arrangedObjects[indexSet]
             
             let data: AtomAndBondsChangeDataStructure = AtomAndBondsChangeDataStructure(structure: structure, atoms: selectedAtoms, indexPaths: indexPaths, selectedBonds: selectedBonds, indexSet: indexSet)
             
@@ -874,7 +874,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       project.undoManager.setActionName(NSLocalizedString("Clear Selection", comment: ""))
-      self.setCurrentSelection(structure: structure, atomSelection: [], previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: [], previousBondSelection: structure.bondController.selectedObjects)
+      self.setCurrentSelection(structure: structure, atomSelection: [], previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: [], previousBondSelection: structure.bondSetController.selectedObjects)
   
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
@@ -908,7 +908,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       showTransformationPanel(oldSelectionEmpty: structure.atomTreeController.selectedTreeNodes.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
       
       structure.atomTreeController.selectedTreeNodes = atomSelection
-      structure.bondController.selectedObjects = bondSelection
+      structure.bondSetController.selectedObjects = bondSelection
       
       // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
       structure.recomputeSelectionBodyFixedBasis(index: -1)
@@ -924,7 +924,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       var selectedAtomTreeNodes: Set<SKAtomTreeNode> = structure.atomTreeController.selectedTreeNodes
-      var selectedBonds: IndexSet = structure.bondController.selectedObjects
+      var selectedBonds: IndexSet = structure.bondSetController.selectedObjects
       if (!extending)
       {
         selectedAtomTreeNodes = []
@@ -942,7 +942,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(selectedAtomTreeNodes.map{$0.representedObject})
       
       // add also all the bonds that are connected to a selected atom
-      for (index, bond) in structure.bondController.arrangedObjects.enumerated()
+      for (index, bond) in structure.bondSetController.arrangedObjects.enumerated()
       {
         if(asymmetricAtoms.contains(bond.atom1) ||
            asymmetricAtoms.contains(bond.atom2))
@@ -952,10 +952,10 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }
       
       if selectedAtomTreeNodes != structure.atomTreeController.selectedTreeNodes ||
-         selectedBonds != structure.bondController.selectedObjects
+         selectedBonds != structure.bondSetController.selectedObjects
       {
         project.undoManager.setActionName(NSLocalizedString("Change Selection", comment: ""))
-        self.setCurrentSelection(structure: structure, atomSelection: selectedAtomTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondController.selectedObjects)
+        self.setCurrentSelection(structure: structure, atomSelection: selectedAtomTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondSetController.selectedObjects)
       }
      
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
@@ -1037,9 +1037,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           case 2:
             let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
             let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
-            let asymmetricBond: SKAsymmetricBond = selectedStructure.bondController.arrangedObjects[pickedAsymmetricAtom]
+            let asymmetricBond: SKAsymmetricBond = selectedStructure.bondSetController.arrangedObjects[pickedAsymmetricAtom]
             let selectedAtoms: Set<SKAsymmetricAtom> = Set(selectedStructure.atomTreeController.selectedTreeNodes.map{$0.representedObject})
-            if selectedStructure.bondController.selectedObjects.contains(pickedAsymmetricAtom) &&
+            if selectedStructure.bondSetController.selectedObjects.contains(pickedAsymmetricAtom) &&
               (selectedAtoms.contains(asymmetricBond.atom1) || selectedAtoms.contains(asymmetricBond.atom2))
             {
               // deselecting a selected bond while one of these atoms is selected is forbidden
@@ -1061,7 +1061,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       var selectedTreeNodes: Set<SKAtomTreeNode> = structure.atomTreeController.selectedTreeNodes
-      var selectedBonds: IndexSet = structure.bondController.selectedObjects
+      var selectedBonds: IndexSet = structure.bondSetController.selectedObjects
     
       let nodes: [SKAtomTreeNode] = structure.atomTreeController.flattenedLeafNodes()
       for index in indexSet
@@ -1071,7 +1071,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           selectedTreeNodes.remove(treeNode)
           
-          for (index, bond) in structure.bondController.arrangedObjects.enumerated()
+          for (index, bond) in structure.bondSetController.arrangedObjects.enumerated()
           {
             if((treeNode.representedObject === bond.atom1) ||
                (treeNode.representedObject === bond.atom2))
@@ -1084,7 +1084,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           selectedTreeNodes.insert(treeNode)
           
-          for (index, bond) in structure.bondController.arrangedObjects.enumerated()
+          for (index, bond) in structure.bondSetController.arrangedObjects.enumerated()
           {
             if((treeNode.representedObject === bond.atom1) ||
                (treeNode.representedObject === bond.atom2))
@@ -1097,7 +1097,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       
       // correctBondSelectionDueToAtomSelection
       let selectedAtoms: Set<SKAsymmetricAtom> = Set(selectedTreeNodes.map{$0.representedObject})
-      for (index, bond) in structure.bondController.arrangedObjects.enumerated()
+      for (index, bond) in structure.bondSetController.arrangedObjects.enumerated()
       {
         if(selectedAtoms.contains(bond.atom1) || selectedAtoms.contains(bond.atom2))
         {
@@ -1106,7 +1106,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }
     
       project.undoManager.setActionName(NSLocalizedString("Toggle Atom Selection", comment: ""))
-      self.setCurrentSelection(structure: structure, atomSelection: selectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondController.selectedObjects)
+      self.setCurrentSelection(structure: structure, atomSelection: selectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondSetController.selectedObjects)
     
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
@@ -1117,11 +1117,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
-      var selectedInternalBonds: IndexSet = structure.bondController.selectedObjects
+      var selectedInternalBonds: IndexSet = structure.bondSetController.selectedObjects
 
       for index in indexSet
       {
-        if (structure.bondController.selectedObjects.contains(index))
+        if (structure.bondSetController.selectedObjects.contains(index))
         {
           selectedInternalBonds.remove(index)
         }
@@ -1131,7 +1131,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         }
       }
       project.undoManager.setActionName(NSLocalizedString("Toggle Bond Selection", comment: ""))
-      self.setCurrentSelection(structure: structure, atomSelection: structure.atomTreeController.selectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedInternalBonds, previousBondSelection: structure.bondController.selectedObjects)
+      self.setCurrentSelection(structure: structure, atomSelection: structure.atomTreeController.selectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedInternalBonds, previousBondSelection: structure.bondSetController.selectedObjects)
     
       //(self.view as? RenderTabView)?.evaluateSelectionAnimation()
     }
@@ -1153,9 +1153,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        
       for data in deletedData
       {
-        data.structure.bondController.arrangedObjects.remove(at: data.indexSet)
-        data.structure.bondController.tag()
-        data.structure.bondController.selectedObjects = []
+        data.structure.bondSetController.arrangedObjects.remove(at: data.indexSet)
+        data.structure.bondSetController.tag()
+        data.structure.bondSetController.selectedObjects = []
          
         for atom in data.atoms
         {
@@ -1207,9 +1207,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         }
         data.structure.atomTreeController.tag()
         
-        data.structure.bondController.arrangedObjects.insertItems(data.selectedBonds, atIndexes: data.indexSet)
-        data.structure.bondController.selectedObjects.formUnion(data.indexSet)
-        data.structure.bondController.tag()
+        data.structure.bondSetController.arrangedObjects.insertItems(data.selectedBonds, atIndexes: data.indexSet)
+        data.structure.bondSetController.selectedObjects.formUnion(data.indexSet)
+        data.structure.bondSetController.tag()
          
         showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
        
@@ -1251,7 +1251,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           {
             if structure.isVisible
             {
-              self.setCurrentSelection(structure: structure, atomSelection: structure.atomTreeController.invertedSelection, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: structure.bondController.invertedSelection, previousBondSelection: structure.bondController.selectedObjects)
+              self.setCurrentSelection(structure: structure, atomSelection: structure.atomTreeController.invertedSelection, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: structure.bondSetController.invertedSelection, previousBondSelection: structure.bondSetController.selectedObjects)
             }
           }
         }
@@ -1348,11 +1348,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
     {
       let oldAtoms: SKAtomTreeController = structure.atomTreeController
-      let oldBonds: SKBondSetController = structure.bondController
+      let oldBonds: SKBondSetController = structure.bondSetController
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setStructureState(structure: structure, atoms: oldAtoms, bonds: oldBonds)})
       
       structure.atomTreeController = atoms
-      structure.bondController = bonds
+      structure.bondSetController = bonds
       
       structure.reComputeBoundingBox()
       
@@ -2094,9 +2094,9 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       }
       structure.atomTreeController.tag()
       
-      structure.bondController.replaceBonds(atoms: atoms, bonds: newbonds)
-      structure.bondController.selectedObjects = newBondSelection
-      structure.bondController.tag()
+      structure.bondSetController.replaceBonds(atoms: atoms, bonds: newbonds)
+      structure.bondSetController.selectedObjects = newBondSelection
+      structure.bondSetController.tag()
       
       structure.reComputeBoundingBox()
       
@@ -2115,8 +2115,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   func setTranslatedPositions(structure: Structure, atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>)
   {
-    let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
-    let oldBondSelection: IndexSet = structure.bondController.selectedObjects
+    let oldbonds: [SKBondNode] = structure.bondSetController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldBondSelection: IndexSet = structure.bondSetController.selectedObjects
     let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
     
     let newpositions: [SIMD3<Double>] =  structure.translatedPositionsSelectionCartesian(atoms: atoms, by: translation)
@@ -2131,7 +2131,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
     let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
     
-    let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
+    let newBondSelection: IndexSet = structure.bondSetController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
         
     self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, newBondSelection: newBondSelection, oldbonds: oldbonds, oldBondSelection: oldBondSelection)
   }
@@ -2259,8 +2259,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   func setTranslatedBodyFramePositions(structure: Structure, atoms: [SKAsymmetricAtom], by translation: SIMD3<Double>)
   {
-    let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
-    let oldBondSelection: IndexSet = structure.bondController.selectedObjects
+    let oldbonds: [SKBondNode] = structure.bondSetController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldBondSelection: IndexSet = structure.bondSetController.selectedObjects
     let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
     
     let newpositions: [SIMD3<Double>] =  structure.translatedBodyFramePositionsSelectionCartesian(atoms: atoms, by: translation)
@@ -2275,7 +2275,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     
     let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
     
-    let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
+    let newBondSelection: IndexSet = structure.bondSetController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
     
     self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, newBondSelection: newBondSelection, oldbonds: oldbonds, oldBondSelection: oldBondSelection)
   }
@@ -2402,8 +2402,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   func setRotatedPositions(structure: Structure, atoms: [SKAsymmetricAtom], by rotation: simd_quatd)
   {
-    let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
-    let oldBondSelection: IndexSet = structure.bondController.selectedObjects
+    let oldbonds: [SKBondNode] = structure.bondSetController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldBondSelection: IndexSet = structure.bondSetController.selectedObjects
     let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
     
     let newpositions: [SIMD3<Double>] =  structure.rotatedPositionsSelectionCartesian(atoms: atoms, by: rotation)
@@ -2417,7 +2417,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
     
     let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
-    let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
+    let newBondSelection: IndexSet = structure.bondSetController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
     
     self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, newBondSelection: newBondSelection, oldbonds: oldbonds, oldBondSelection: oldBondSelection)
   }
@@ -2547,8 +2547,8 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   
   func setRotatedBodyFramePositions(structure: Structure, atoms: [SKAsymmetricAtom], by rotation: simd_quatd)
   {
-    let oldbonds: [SKBondNode] = structure.bondController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
-    let oldBondSelection: IndexSet = structure.bondController.selectedObjects
+    let oldbonds: [SKBondNode] = structure.bondSetController.bonds.filter{(atoms.contains($0.atom1.asymmetricParentAtom) || atoms.contains($0.atom2.asymmetricParentAtom))}
+    let oldBondSelection: IndexSet = structure.bondSetController.selectedObjects
     let oldpositions: [SIMD3<Double>] = atoms.map{$0.position}
     
     let newpositions: [SIMD3<Double>] =  structure.rotatedBodyFramePositionsSelectionCartesian(atoms: atoms, by: rotation)
@@ -2562,7 +2562,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
     }
     
     let newbonds: [SKBondNode] = structure.bonds(subset: atoms)
-    let newBondSelection: IndexSet = structure.bondController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
+    let newBondSelection: IndexSet = structure.bondSetController.selectedAsymmetricBonds(atoms: atoms, bonds: newbonds)
     
     self.updatePositions(structure: structure, atoms: atoms, newpositions: newpositions, oldpositions: oldpositions, newbonds: newbonds, newBondSelection: newBondSelection,  oldbonds: oldbonds, oldBondSelection: oldBondSelection)
   }
