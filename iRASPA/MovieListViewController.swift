@@ -552,7 +552,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       
       let crystal: Crystal = Crystal(name: "frame")
       crystal.reComputeBoundingBox()
-      let frame = iRASPAStructure(crystal: crystal)
+      let frame = iRASPAObject(crystal: crystal)
       let movie: Movie = Movie(name: "New movie", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
@@ -609,7 +609,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       
       let molecularCrystal: MolecularCrystal = MolecularCrystal(name: "frame")
       molecularCrystal.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(molecularCrystal: molecularCrystal)
+      let frame: iRASPAObject = iRASPAObject(molecularCrystal: molecularCrystal)
       let movie: Movie = Movie(name: "New movie", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
@@ -666,7 +666,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       
       let molecule: Molecule = Molecule(name: "frame")
       molecule.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(molecule: molecule)
+      let frame: iRASPAObject = iRASPAObject(molecule: molecule)
       let movie: Movie = Movie(name: "New movie", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
@@ -724,7 +724,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       
       let protein: Protein = Protein(name: "frame")
       protein.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(protein: protein)
+      let frame: iRASPAObject = iRASPAObject(protein: protein)
       let movie: Movie = Movie(name: "New movie", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
@@ -781,7 +781,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       
       let proteinCrystal: ProteinCrystal = ProteinCrystal(name: "frame")
       proteinCrystal.reComputeBoundingBox()
-      let frame: iRASPAStructure = iRASPAStructure(proteinCrystal: proteinCrystal)
+      let frame: iRASPAObject = iRASPAObject(proteinCrystal: proteinCrystal)
       let movie: Movie = Movie(name: "New movie", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
@@ -843,8 +843,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
         }
       }
       
-      
-      let frame: iRASPAStructure = iRASPAStructure(crystalEllipsoidPrimitive: ellipsoidPrimitive)
+      let frame: iRASPAObject = iRASPAObject(crystalEllipsoidPrimitive: ellipsoidPrimitive)
       let movie: Movie = Movie(name: "New crystal ellipsoid", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
@@ -907,7 +906,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
         }
       }
       
-      let frame: iRASPAStructure = iRASPAStructure(crystalPolygonalPrismPrimitive: polygonalPrimitive)
+      let frame: iRASPAObject = iRASPAObject(crystalPolygonalPrismPrimitive: polygonalPrimitive)
       let movie: Movie = Movie(name: "New crystal polygonal prism", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
@@ -971,7 +970,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       }
       
       
-      let frame: iRASPAStructure = iRASPAStructure(crystalCylinderPrimitive: cylinderPrimitive)
+      let frame: iRASPAObject = iRASPAObject(crystalCylinderPrimitive: cylinderPrimitive)
       let movie: Movie = Movie(name: "New crystal cylinder", structure: frame)
       movie.selectedFrame = frame
       movie.selectedFrames.insert(frame)
@@ -998,8 +997,8 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   
   
   @IBAction func addEllipsoidPrimitive(_ sender: NSMenuItem)
-   {
-     if let proxyProject = self.proxyProject, proxyProject.isEditable,
+  {
+    if let proxyProject = self.proxyProject, proxyProject.isEditable,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let selectedRow=self.movieOutlineView?.selectedRow
      {
@@ -1033,8 +1032,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
          }
        }
        
-       
-       let frame: iRASPAStructure = iRASPAStructure(ellipsoidPrimitive: ellipsoidPrimitive)
+       let frame: iRASPAObject = iRASPAObject(ellipsoidPrimitive: ellipsoidPrimitive)
        let movie: Movie = Movie(name: "New Ellipsoid", structure: frame)
        movie.selectedFrame = frame
        movie.selectedFrames.insert(frame)
@@ -1096,7 +1094,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
          }
        }
        
-       let frame: iRASPAStructure = iRASPAStructure(polygonalPrismPrimitive: polygonalPrimitive)
+       let frame: iRASPAObject = iRASPAObject(polygonalPrismPrimitive: polygonalPrimitive)
        let movie: Movie = Movie(name: "New polygonal prism", structure: frame)
        movie.selectedFrame = frame
        movie.selectedFrames.insert(frame)
@@ -1158,8 +1156,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
          }
        }
        
-       
-       let frame: iRASPAStructure = iRASPAStructure(cylinderPrimitive: cylinderPrimitive)
+       let frame: iRASPAObject = iRASPAObject(cylinderPrimitive: cylinderPrimitive)
        let movie: Movie = Movie(name: "New cylinder", structure: frame)
        movie.selectedFrame = frame
        movie.selectedFrames.insert(frame)
@@ -1972,7 +1969,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
          let selectedMovie: Movie = selectedScene.selectedMovie,
          let movieIndex = selectedScene.movies.firstIndex(of: selectedMovie)
       {
-        let frames: [iRASPAStructure] = movies.compactMap{$0.selectedFrame}
+        let frames: [iRASPAObject] = movies.compactMap{$0.selectedFrame}
         let arrangedObjects: [Any] = frames.isEmpty ? [[]] : frames
                
         let selectionIndex: Int = project.sceneList.rowForSectionTuple(sceneIndex, movieIndex: movieIndex)

@@ -60,15 +60,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   weak var windowController: iRASPAWindowController?
   
-  deinit
-  {
-    //Swift.print("deinit: StructureAppearanceDetailViewController")
-  }
-  
   // MARK: protocol ProjectConsumer
   // =====================================================================
   
-
   weak var proxyProject: ProjectTreeNode?
   
   var heights : [String : CGFloat] = [:]
@@ -272,11 +266,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldYawMinusX.isEnabled = false
         textFieldYawMinusY.isEnabled = false
         textFieldYawMinusZ.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty,
           let renderRotationDelta: Double = representedStructure.renderPrimitiveRotationDelta
         {
-          
           textFieldRotationAngle.isEditable = enabled
           textFieldYawPlusX.isEnabled = enabled
           textFieldYawPlusY.isEnabled = enabled
@@ -315,7 +308,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldEulerAngleY.stringValue = "0.0"
         textFieldEulerAngleZ.stringValue = "0.0"
         
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           if let renderEulerAngleX: Double = representedStructure.renderPrimitiveEulerAngleX,
@@ -372,7 +365,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldAtomScalingCX.stringValue = "0"
         textFieldAtomScalingCY.stringValue = "0"
         textFieldAtomScalingCZ.stringValue = "1"
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldAtomScalingAX.isEditable = enabled
@@ -416,7 +409,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           button.isEnabled = enabled
@@ -437,7 +430,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldOpacity.isEditable = false
         textFieldOpacity.stringValue = "1.0"
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldOpacity.isEditable = enabled
@@ -455,7 +448,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldNumberOfSides.isEditable = false
         textFieldNumberOfSides.stringValue = "41"
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldNumberOfSides.isEditable = enabled
@@ -474,7 +467,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderOpacity: NSSlider = view.viewWithTag(4) as? NSSlider
       {
         sliderOpacity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderOpacity.isEnabled = enabled
@@ -496,7 +489,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderNumberOfSides: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderNumberOfSides.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderNumberOfSides.isEnabled = enabled
@@ -526,7 +519,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionFrequency.stringValue = ""
         textFieldSelectionDensity.isEditable = false
         textFieldSelectionDensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           popUpbuttonSelectionStyle.isEditable = enabled
           textFieldSelectionFrequency.isEditable = enabled
@@ -574,7 +567,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBondSelectionIntensityLevel.isEditable = false
         textFieldBondSelectionIntensityLevel.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           textFieldBondSelectionIntensityLevel.isEditable = enabled
           if let renderSelectionIntensityLevel: Double = representedStructure.renderPrimitiveSelectionIntensity
@@ -593,7 +586,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSelectionIntensityLevel.isEnabled = false
         sliderSelectionIntensityLevel.minValue = 0.0
         sliderSelectionIntensityLevel.maxValue = 2.0
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           sliderSelectionIntensityLevel.isEnabled = enabled
           if let renderSelectionIntensityLevel: Double = representedStructure.renderPrimitiveSelectionIntensity
@@ -608,7 +601,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldSelectionScaling.isEditable = false
         textFieldSelectionScaling.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           textFieldSelectionScaling.isEditable = enabled
           if let renderSelectionScaling: Double = representedStructure.renderPrimitiveSelectionScaling
@@ -626,7 +619,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSelectionScaling.isEnabled = false
         sliderSelectionScaling.minValue = 1.0
         sliderSelectionScaling.maxValue = 2.0
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           sliderSelectionScaling.isEnabled = enabled
           if let renderSelectionScaling: Double = representedStructure.renderPrimitiveSelectionScaling
@@ -642,7 +635,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           textFieldHue.isEditable = enabled
           if let renderBondHue: Double = representedStructure.renderPrimitiveHue
@@ -657,7 +650,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           textFieldSaturation.isEditable = enabled
           if let renderBondSaturation: Double = representedStructure.renderPrimitiveSaturation
@@ -672,7 +665,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           textFieldValue.isEditable = enabled
           if let renderBondValue: Double = representedStructure.renderPrimitiveValue
@@ -687,7 +680,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           sliderHue.isEnabled = enabled
           if let renderBondHue: Double = representedStructure.renderPrimitiveHue
@@ -702,7 +695,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           sliderSaturation.isEnabled = enabled
           if let renderBondSaturation: Double = representedStructure.renderPrimitiveSaturation
@@ -718,7 +711,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
         {
           sliderValue.isEnabled = enabled
           if let renderBondValue: Double = representedStructure.renderPrimitiveValue
@@ -734,7 +727,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           button.isEnabled = enabled
@@ -757,7 +750,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldExposure.isEditable = enabled
@@ -776,7 +769,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderExposure.isEnabled = enabled
@@ -793,7 +786,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontAmbientIntensity.isEditable = false
         textFieldFrontAmbientIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldFrontAmbientIntensity.isEditable = enabled
@@ -810,7 +803,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderFrontAmbientIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderFrontAmbientIntensity.isEnabled = enabled
@@ -826,7 +819,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientFrontSideColor.isEnabled = false
         ambientFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           ambientFrontSideColor.isEnabled = enabled
@@ -842,7 +835,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontDiffuseIntensity.isEditable = false
         textFieldFrontDiffuseIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldFrontDiffuseIntensity.isEditable = enabled
@@ -859,7 +852,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderFrontDiffuseIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderFrontDiffuseIntensity.isEnabled = enabled
@@ -875,7 +868,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseFrontSideColor.isEnabled = false
         diffuseFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           diffuseFrontSideColor.isEnabled = enabled
@@ -891,7 +884,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontSpecularIntensity.isEditable = false
         textFieldFrontSpecularIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldFrontSpecularIntensity.isEditable = enabled
@@ -908,7 +901,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderFrontSpecularIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderFrontSpecularIntensity.isEnabled = enabled
@@ -924,7 +917,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularFrontSideColor.isEnabled = false
         specularFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           specularFrontSideColor.isEnabled = enabled
@@ -941,7 +934,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontShininess.isEditable = false
         textFieldFrontShininess.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldFrontShininess.isEditable = enabled
@@ -958,7 +951,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderFrontShininess.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderFrontShininess.isEnabled = enabled
@@ -976,7 +969,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           button.isEnabled = enabled
@@ -998,7 +991,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldExposure.isEditable = enabled
@@ -1017,7 +1010,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderExposure.isEnabled = enabled
@@ -1034,7 +1027,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackAmbientIntensity.isEditable = false
         textFieldBackAmbientIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldBackAmbientIntensity.isEditable = enabled
@@ -1051,7 +1044,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderBackAmbientIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderBackAmbientIntensity.isEnabled = enabled
@@ -1067,7 +1060,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientBackSideColor.isEnabled = false
         ambientBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           ambientBackSideColor.isEnabled = enabled
@@ -1083,7 +1076,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackDiffuseIntensity.isEditable = false
         textFieldBackDiffuseIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldBackDiffuseIntensity.isEditable = enabled
@@ -1100,7 +1093,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderBackDiffuseIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderBackDiffuseIntensity.isEnabled = enabled
@@ -1116,7 +1109,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseBackSideColor.isEnabled = false
         diffuseBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           diffuseBackSideColor.isEnabled = enabled
@@ -1132,7 +1125,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackSpecularIntensity.isEditable = false
         textFieldBackSpecularIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldBackSpecularIntensity.isEditable = enabled
@@ -1149,7 +1142,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderBackSpecularIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderBackSpecularIntensity.isEnabled = enabled
@@ -1165,7 +1158,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularBackSideColor.isEnabled = false
         specularBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           specularBackSideColor.isEnabled = enabled
@@ -1181,7 +1174,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackShininess.isEditable = false
         textFieldBackShininess.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           textFieldBackShininess.isEditable = enabled
@@ -1198,7 +1191,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderBackShininess.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
           !representedStructure.allPrimitiveStructure.isEmpty
         {
           sliderBackShininess.isEnabled = enabled
@@ -3696,7 +3689,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3724,7 +3717,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3752,7 +3745,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -3780,7 +3773,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderRotationDelta = structure.renderPrimitiveRotationDelta,
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
@@ -3811,7 +3804,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderRotationDelta = structure.renderPrimitiveRotationDelta,
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
@@ -3842,7 +3835,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderRotationDelta = structure.renderPrimitiveRotationDelta,
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
@@ -3873,7 +3866,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderRotationDelta = structure.renderPrimitiveRotationDelta,
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
@@ -3903,7 +3896,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderRotationDelta = structure.renderPrimitiveRotationDelta,
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
@@ -3934,7 +3927,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderRotationDelta = structure.renderPrimitiveRotationDelta,
       let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
     {
@@ -3964,7 +3957,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderOrientation = structure.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -4013,7 +4006,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderOrientation = structure.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -4060,7 +4053,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer],
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
       let renderOrientation = structure.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
@@ -4106,7 +4099,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changedPrimitiveRotationAngle(_ sender: NSTextField)
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      var structure: [PrimitiveVisualAppearanceViewer] = self.representedObject as? [PrimitiveVisualAppearanceViewer]
+      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       structure.renderPrimitiveRotationDelta = sender.doubleValue
       
@@ -4122,7 +4115,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixAX = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4140,7 +4133,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixAY = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4158,7 +4151,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixAZ = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4176,7 +4169,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixBX = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4194,7 +4187,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixBY = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4212,7 +4205,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixBZ = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4230,7 +4223,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixCX = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4248,7 +4241,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixCY = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4266,7 +4259,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveTransformationMatrixCZ = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
@@ -4283,7 +4276,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveOpaquenessSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveOpacity = sender.doubleValue
       
@@ -4316,7 +4309,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveOpaquenessTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveOpacity = sender.doubleValue
       
@@ -4334,7 +4327,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveNumberOfSidesSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
       
@@ -4368,7 +4361,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveNumberOfSidesTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
       
@@ -4387,7 +4380,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func togglePrimitiveIsCapped(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       sender.allowsMixedState = false
       representedStructure.renderPrimitiveIsCapped = (sender.state == NSControl.StateValue.on)
@@ -4404,7 +4397,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func togglePrimitiveIsFractional(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       sender.allowsMixedState = false
       representedStructure.renderPrimitiveIsFractional = (sender.state == NSControl.StateValue.on)
@@ -4422,7 +4415,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func togglePrimitiveFrontSideHDR(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       sender.allowsMixedState = false
       representedStructure.renderPrimitiveFrontSideHDR = (sender.state == NSControl.StateValue.on)
@@ -4440,7 +4433,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveSelectionStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer],
+       var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
        let selectionStyle = RKSelectionStyle(rawValue: sender.indexOfSelectedItem)
     {
       representedStructure.renderPrimitiveSelectionStyle = selectionStyle
@@ -4460,7 +4453,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveSelectionFrequencyTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveSelectionFrequency = sender.doubleValue
       
@@ -4477,7 +4470,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveSelectionDensityTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveSelectionDensity = sender.doubleValue
       
@@ -4494,7 +4487,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveSelectionIntensityField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveSelectionIntensity = sender.doubleValue
       
@@ -4511,7 +4504,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveSelectionIntensity(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveSelectionIntensity = sender.doubleValue
       
@@ -4545,7 +4538,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveSelectionScalingTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveSelectionScaling = sender.doubleValue
       
@@ -4562,7 +4555,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveSelectionScalingSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveSelectionScaling = sender.doubleValue
       
@@ -4597,7 +4590,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    @IBAction func changePrimitiveHueTextField(_ sender: NSTextField)
    {
      if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
      {
        representedStructure.renderPrimitiveHue = sender.doubleValue
        
@@ -4615,7 +4608,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    @IBAction func changePrimitiveHueSlider(_ sender: NSSlider)
    {
      if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
      {
        representedStructure.renderPrimitiveHue = sender.doubleValue
        
@@ -4649,7 +4642,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    @IBAction func changePrimitiveSaturationTextField(_ sender: NSTextField)
    {
      if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
      {
        representedStructure.renderPrimitiveSaturation = sender.doubleValue
        
@@ -4667,7 +4660,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    @IBAction func changePrimitiveSaturationSlider(_ sender: NSSlider)
    {
      if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
      {
        representedStructure.renderPrimitiveSaturation = sender.doubleValue
        
@@ -4701,7 +4694,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    @IBAction func changePrimitiveValueTextField(_ sender: NSTextField)
    {
      if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
      {
        representedStructure.renderPrimitiveValue = sender.doubleValue
        
@@ -4719,7 +4712,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    @IBAction func changePrimitiveValueSlider(_ sender: NSSlider)
    {
      if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
      {
        representedStructure.renderPrimitiveValue = sender.doubleValue
        
@@ -4756,7 +4749,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideHDRExporeTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
       
@@ -4774,7 +4767,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideExposureSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
       
@@ -4792,7 +4785,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideAmbientTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
       
@@ -4810,7 +4803,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideAmbientIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
       
@@ -4828,7 +4821,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideAmbientColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideAmbientColor = sender.color
       
@@ -4844,7 +4837,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideDiffuseTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
       
@@ -4862,7 +4855,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideDiffuseIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
       
@@ -4881,7 +4874,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideDiffuseColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideDiffuseColor = sender.color
       
@@ -4897,7 +4890,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideSpecularTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
       
@@ -4915,7 +4908,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideSpecularIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
       
@@ -4935,7 +4928,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideSpecularColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideSpecularColor = sender.color
       
@@ -4951,7 +4944,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideShininessTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideShininess = sender.doubleValue
       
@@ -4968,7 +4961,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveFrontSideShininessSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveFrontSideShininess = sender.doubleValue
       
@@ -4986,7 +4979,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func togglePrimitiveBackSideHDR(_ sender: NSButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       sender.allowsMixedState = false
       representedStructure.renderPrimitiveBackSideHDR = (sender.state == NSControl.StateValue.on)
@@ -5003,7 +4996,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideHDRExporeTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideHDRExposure = sender.doubleValue
       
@@ -5021,7 +5014,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideExposureSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideHDRExposure = sender.doubleValue
       
@@ -5040,7 +5033,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideAmbientTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
       
@@ -5058,7 +5051,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideAmbientIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
       
@@ -5077,7 +5070,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideAmbientColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideAmbientColor = sender.color
       
@@ -5093,7 +5086,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideDiffuseTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
       
@@ -5111,7 +5104,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideDiffuseIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
       
@@ -5130,7 +5123,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideDiffuseColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideDiffuseColor = sender.color
       
@@ -5146,7 +5139,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideSpecularTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
       
@@ -5164,7 +5157,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideSpecularIntensitySlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
       
@@ -5183,7 +5176,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideSpecularColor(_ sender: NSColorWell)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideSpecularColor = sender.color
       
@@ -5200,7 +5193,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideShininessTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideShininess = sender.doubleValue
       
@@ -5217,7 +5210,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveBackSideShininessSlider(_ sender: NSSlider)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewer] = representedObject as? [PrimitiveVisualAppearanceViewer]
+      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
     {
       representedStructure.renderPrimitiveBackSideShininess = sender.doubleValue
       

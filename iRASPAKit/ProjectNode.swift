@@ -71,6 +71,7 @@ public class ProjectNode: BinaryDecodable, BinaryEncodable
   
   required public init(fromBinary decoder: BinaryDecoder) throws
   {
+    debugPrint("PROJECT-NODE")
     let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > ProjectNode.classVersionNumber
     {

@@ -280,7 +280,12 @@ typedef struct
   
   //----------------------------------------  384 bytes boundary
   
+  float4x4 inverseModelMatrix;
   float4x4 boxMatrix;
+  
+  //----------------------------------------  512 bytes boundary
+  
+  float4x4 inverseBoxMatrix;
   float atomSelectionStripesDensity;
   float atomSelectionStripesFrequency;
   float atomSelectionWorleyNoise3DFrequency;
@@ -293,10 +298,12 @@ typedef struct
   float bondSelectionScaling;
   bool colorAtomsWithBondColor;
   
-  //----------------------------------------  512 bytes boundary
+  //----------------------------------------  640 bytes boundary
   
   float4x4 transformationMatrix;
   float4x4 transformationNormalMatrix;
+  
+  //----------------------------------------  768 bytes boundary
   
   float4 primitiveAmbientFrontSide;
   float4 primitiveDiffuseFrontSide;
@@ -314,7 +321,7 @@ typedef struct
   float pad6;
   float primitiveShininessBackSide;
   
-  //----------------------------------------  768 bytes boundary
+  //----------------------------------------  896 bytes boundary
   
   float bondSelectionStripesDensity;
   float bondSelectionStripesFrequency;
@@ -340,8 +347,7 @@ typedef struct
   float4 numberOfReplicas;
   float4 pad11;
   float4 pad12;
-  float4x4 pad13;
-  float4x4 pad14;
+  //----------------------------------------  1024 bytes boundary
 } StructureUniforms;
 
 typedef struct

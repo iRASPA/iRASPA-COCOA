@@ -33,8 +33,9 @@ import Foundation
 import SymmetryKit
 import SimulationKit
 
-public protocol SpaceGroupProtocol
+public protocol SpaceGroupProtocol: AnyObject
 {
+  var spaceGroup: SKSpacegroup {get set}
   var canRemoveSymmetry: Bool {get}
   var flattenedHierarchy: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
   func primitive(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?

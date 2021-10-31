@@ -38,7 +38,7 @@ import simd
 
 
 // A scene contains a list of Movies: FKArrayController<Scene>
-public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewerLegacy, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {  
   private static var classVersionNumber: Int = 1
   public var displayName : String = ""
@@ -51,7 +51,7 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
   public var filterPredicate: (Scene) -> Bool = {_ in return true}
   var sortDescriptors: [NSSortDescriptor] = []
   
-  public var frames: [iRASPAStructure]
+  public var frames: [iRASPAObject]
   {
     return self.scenes.flatMap{$0.movies}.flatMap{$0.frames}
   }
@@ -79,14 +79,14 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
     self.scenes = scenes
   }
   
+  public var allObjects: [Object]
+  {
+    return self.scenes.flatMap{$0.allObjects}
+  }
+  
   public var renderCanDrawAdsorptionSurface: Bool
   {
     return self.scenes.reduce(into: false, {$0 = $0 || $1.renderCanDrawAdsorptionSurface})
-  }
-  
-  deinit
-  {
-    //Swift.print("Deallocing FKArrayController \(T.self)")
   }
   
   public var allAdsorptionSurfaceStructures: [SKRenderAdsorptionSurfaceStructure]
@@ -94,11 +94,11 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
     return self.scenes.flatMap{$0.movies.flatMap{$0.allStructures.map{$0 as SKRenderAdsorptionSurfaceStructure}}}
   }
   
-  public var selectedFrames: [Movie : Set<iRASPAStructure>]
+  public var selectedFrames: [Movie : Set<iRASPAObject>]
   {
     get
     {
-      var selection: [Movie : Set<iRASPAStructure>] = [:]
+      var selection: [Movie : Set<iRASPAObject>] = [:]
       
       for movie in self.scenes.flatMap({$0.movies})
       {
@@ -141,7 +141,7 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
     }
   }
   
-  public var selection: (selectedScene: Scene?, selectedMovie: [Scene : Movie?], selectedFrame: [Movie : iRASPAStructure?], selectedMovies: [Scene : Set<Movie>], selectedFrames: [Movie : Set<iRASPAStructure>])
+  public var selection: (selectedScene: Scene?, selectedMovie: [Scene : Movie?], selectedFrame: [Movie : iRASPAObject?], selectedMovies: [Scene : Set<Movie>], selectedFrames: [Movie : Set<iRASPAObject>])
   {
     get
     {
@@ -149,10 +149,10 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
       let savedSelectedScene: Scene? = self.selectedScene
       
       let savedSelectedMovie: [Scene : Movie?] = self.scenes.reduce(into: [Scene : Movie?]()) {$0[$1] = $1.selectedMovie}
-      let savedSelectedFrame: [Movie : iRASPAStructure?] = movies.reduce(into: [Movie : iRASPAStructure?]()) {$0[$1] = $1.selectedFrame}
+      let savedSelectedFrame: [Movie : iRASPAObject?] = movies.reduce(into: [Movie : iRASPAObject?]()) {$0[$1] = $1.selectedFrame}
     
       let savedSelectedMovies: [Scene : Set<Movie>]  = self.scenes.reduce(into: [Scene : Set<Movie>]()) {$0[$1] = $1.selectedMovies}
-      let savedSelectedFrames: [Movie : Set<iRASPAStructure>] = movies.reduce(into: [Movie : Set<iRASPAStructure>]()) {$0[$1] = $1.selectedFrames}
+      let savedSelectedFrames: [Movie : Set<iRASPAObject>] = movies.reduce(into: [Movie : Set<iRASPAObject>]()) {$0[$1] = $1.selectedFrames}
       
       return (selectedScene: savedSelectedScene, selectedMovie: savedSelectedMovie, selectedFrame: savedSelectedFrame, selectedMovies: savedSelectedMovies, selectedFrames: savedSelectedFrames)
     }
@@ -299,6 +299,16 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
 }
 
 
+// MARK: -
+// MARK: CellViewer protocol implementation
+
+extension SceneList: CellViewer
+{
+  public var cellViewerObjects: [CellViewer]
+  {
+    return self.scenes.flatMap{$0.cellViewerObjects}
+  }
+}
 
 
 // MARK: -
@@ -312,7 +322,7 @@ extension SceneList: StructureViewer
   }
   
   /// Returns all the structures in the sceneList
-  public var allIRASPAStructures: [iRASPAStructure]
+  public var allIRASPAStructures: [iRASPAObject]
   {
     return self.scenes.flatMap{$0.allIRASPAStructures}
   }
@@ -328,9 +338,9 @@ extension SceneList: StructureViewer
   }
 }
 
-extension SceneList: PrimitiveVisualAppearanceViewer
+extension SceneList: PrimitiveVisualAppearanceViewerLegacy
 {
-  public var allPrimitiveStructure: [Structure]
+  public var allPrimitiveStructure: [Primitive]
   {
     return self.scenes.flatMap{$0.allPrimitiveStructure}
   }

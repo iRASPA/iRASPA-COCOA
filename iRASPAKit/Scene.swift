@@ -39,7 +39,7 @@ import MathKit
 import simd
 
 // An Movie is a list of Movie's. It is a set of actors that each contain a list of frames for that actor
-public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
+public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewerLegacy, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
 {
   // a Scene has a surface for the whole scene
   // all movies in the scene add to the scene potential energy surface
@@ -55,7 +55,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
   public var filterPredicate: (Movie) -> Bool = {_ in return true}
   var sortDescriptors: [NSSortDescriptor] = []
   
-  public var frames: [iRASPAStructure]
+  public var frames: [iRASPAObject]
   {
     return self.movies.flatMap{$0.frames}
   }
@@ -113,14 +113,14 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
         
         // create the appropriate type of structure
         let displayName: String = frame.displayName ?? "new"
-        let iRASPAstructure: iRASPAStructure
+        let iRASPAstructure: iRASPAObject
         switch(frame.kind)
         {
         case .molecule:
           let molecule = Molecule(name: displayName)
           molecule.cell = cell
           molecule.drawUnitCell = false
-          iRASPAstructure = iRASPAStructure(molecule: molecule)
+          iRASPAstructure = iRASPAObject(molecule: molecule)
           for i in 0..<atoms.count
           {
             if atoms[i].fractional
@@ -134,7 +134,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           let protein = Protein(name: displayName)
           protein.cell = cell
           protein.drawUnitCell = false
-          iRASPAstructure = iRASPAStructure(protein: protein)
+          iRASPAstructure = iRASPAObject(protein: protein)
           for i in 0..<atoms.count
           {
             if atoms[i].fractional
@@ -149,7 +149,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           crystal.cell = cell
           crystal.drawUnitCell = true
           crystal.spaceGroup = spaceGroup
-          iRASPAstructure = iRASPAStructure(crystal: crystal)
+          iRASPAstructure = iRASPAObject(crystal: crystal)
           for i in 0..<atoms.count
           {
             if !atoms[i].fractional
@@ -164,7 +164,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           molecularCrystal.cell = cell
           molecularCrystal.spaceGroup = spaceGroup
           molecularCrystal.drawUnitCell = true
-          iRASPAstructure = iRASPAStructure(molecularCrystal: molecularCrystal)
+          iRASPAstructure = iRASPAObject(molecularCrystal: molecularCrystal)
           for i in 0..<atoms.count
           {
             if atoms[i].fractional
@@ -179,7 +179,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           proteinCrystal.cell = cell
           proteinCrystal.spaceGroup = spaceGroup
           proteinCrystal.drawUnitCell = true
-          iRASPAstructure = iRASPAStructure(proteinCrystal: proteinCrystal)
+          iRASPAstructure = iRASPAObject(proteinCrystal: proteinCrystal)
           for i in 0..<atoms.count
           {
             if atoms[i].fractional
@@ -195,7 +195,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           proteinCrystal.cell = cell
           proteinCrystal.spaceGroup = spaceGroup
           proteinCrystal.drawUnitCell = true
-          iRASPAstructure = iRASPAStructure(proteinCrystal: proteinCrystal)
+          iRASPAstructure = iRASPAObject(proteinCrystal: proteinCrystal)
           for i in 0..<atoms.count
           {
             if atoms[i].fractional
@@ -206,13 +206,14 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
             }
           }
         case .crystalSolvent:
-          iRASPAstructure = iRASPAStructure(structure: Structure(name: displayName))
+          iRASPAstructure = iRASPAObject(structure: Structure(name: displayName))
         case .structure:
-          iRASPAstructure = iRASPAStructure(structure: Structure(name: displayName))
+          iRASPAstructure = iRASPAObject(structure: Structure(name: displayName))
         default:
           fatalError()
         }
         
+        /*
         if let chemicalFormulaSum: String = frame.chemicalFormulaSum
         {
           iRASPAstructure.structure.chemicalFormulaSum = chemicalFormulaSum
@@ -220,7 +221,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
         if let chemicalFormulaStructural: String = frame.chemicalFormulaStructural
         {
           iRASPAstructure.structure.chemicalFormulaMoiety = chemicalFormulaStructural
-        }
+        }*/
         
         for unknownAtom in frame.unknownAtoms
         {
@@ -295,12 +296,17 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
         iRASPAstructure.structure.reComputeBonds()
         
         iRASPAstructure.structure.atomTreeController.tag()
-        iRASPAstructure.structure.bondController.tag()
+        iRASPAstructure.structure.bondSetController.tag()
         
         movie.frames.append(iRASPAstructure)
       }
       self.movies.append(movie)
     }
+  }
+  
+  public var allObjects: [Object]
+  {
+    return self.movies.flatMap{$0.allObjects}
   }
   
   public func setToCoreMOFStyle(structure: Structure)
@@ -554,6 +560,16 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
   }
 }
 
+// MARK: -
+// MARK: CellViewer protocol implementation
+
+extension Scene: CellViewer
+{
+  public var cellViewerObjects: [CellViewer]
+  {
+    return self.movies.flatMap{$0.cellViewerObjects}
+  }
+}
 
 
 // MARK: -
@@ -566,7 +582,7 @@ extension Scene: StructureViewer
     return self.movies.flatMap{$0.allStructures}
   }
   
-  public var allIRASPAStructures: [iRASPAStructure]
+  public var allIRASPAStructures: [iRASPAObject]
   {
     return self.movies.flatMap{$0.allIRASPAStructures}
   }
@@ -582,9 +598,9 @@ extension Scene: StructureViewer
   }
 }
 
-extension Scene: PrimitiveVisualAppearanceViewer
+extension Scene: PrimitiveVisualAppearanceViewerLegacy
 {
-  public var allPrimitiveStructure: [Structure]
+  public var allPrimitiveStructure: [Primitive]
   {
     return self.movies.flatMap{$0.allPrimitiveStructure}
   }

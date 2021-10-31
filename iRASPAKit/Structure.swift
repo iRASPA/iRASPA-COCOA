@@ -47,12 +47,12 @@ fileprivate func ==~ (left: Double, right: Double) -> Bool
 
 public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
-public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
+public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, Cloning
 {
   private static var classVersionNumber: Int = 9
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
-  public var bondController: SKBondSetController = SKBondSetController()
+  public var bondSetController: SKBondSetController = SKBondSetController()
   
     /*
   // MARK: protocol RKRenderStructure implementation
@@ -197,12 +197,12 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
   
   public var numberOfInternalBonds: Int
   {
-    return self.bondController.arrangedObjects.flatMap{$0.copies}.filter{$0.boundaryType == .internal}.count
+    return self.bondSetController.arrangedObjects.flatMap{$0.copies}.filter{$0.boundaryType == .internal}.count
   }
   
   public var numberOfExternalBonds: Int
   {
-    return self.bondController.arrangedObjects.flatMap{$0.copies}.filter{$0.boundaryType == .external}.count
+    return self.bondSetController.arrangedObjects.flatMap{$0.copies}.filter{$0.boundaryType == .external}.count
   }
   
   public var drawBonds: Bool = true
@@ -251,7 +251,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
   
   public var adsorptionSurfaceRenderingMethod: RKEnergySurfaceType = RKEnergySurfaceType.isoSurface // NEW
   public var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction = RKPredefinedVolumeRenderingTransferFunction.default
-  public var adsorptionVolumeStepLength: Double = 0.001
+  public var adsorptionVolumeStepLength: Double = 0.0005
   
   public var adsorptionSurfaceOpacity: Double = 1.0
   public var adsorptionSurfaceIsoValue: Double = 0.0
@@ -352,6 +352,8 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
   // MARK: protocol RKRenderObjectSource implementation
   // =====================================================================
   
+  // Can be be removed in a future version, only here for legacy file-reading purposes
+  
   public var primitiveTransformationMatrix: double3x3 = double3x3(1.0)
   public var primitiveOrientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
   public var primitiveRotationDelta: Double = 5.0
@@ -402,7 +404,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     return false
   }
   
-  public var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
+  public var legacySpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
   
   public var materialType: SKStructure.Kind
   {
@@ -445,16 +447,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
   public var structureLargestCavityDiameterAlongAViablePath : Double = 0.0
   
   
-  public var authorFirstName: String = ""
-  public var authorMiddleName: String = ""
-  public var authorLastName: String = ""
-  public var authorOrchidID: String = ""
-  public var authorResearcherID: String = ""
-  public var authorAffiliationUniversityName: String = ""
-  public var authorAffiliationFacultyName: String = ""
-  public var authorAffiliationInstituteName: String = ""
-  public var authorAffiliationCityName: String = ""
-  public var authorAffiliationCountryName: String = Locale.current.localizedString(forRegionCode: Locale.current.regionCode ?? "NL") ?? "Netherlands"
+  
   
   // MARK: enums
   // =====================================================================
@@ -566,7 +559,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     case objects = 3
   }
   
-  public var creationDate: Date = Date()
+  
   public var creationTemperature: String = ""
   public var creationTemperatureScale: TemperatureScale = .Kelvin
   public var creationPressure: String = ""
@@ -641,7 +634,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     self.isVisible = original.isVisible
     self.cell = original.cell
     self.minimumGridEnergyValue = original.minimumGridEnergyValue
-    self.spaceGroup = original.spaceGroup
+   //self.spaceGroup = original.spaceGroup
     
     self.selectionCOMTranslation = original.selectionCOMTranslation
     self.selectionRotationIndex = original.selectionRotationIndex
@@ -764,7 +757,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     
     
     // bonds
-    self.bondController = SKBondSetController()
+    self.bondSetController = SKBondSetController()
     
     self.drawBonds = original.drawBonds
     
@@ -913,7 +906,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     self.isVisible = clone.isVisible
     self.cell = clone.cell
     self.minimumGridEnergyValue = clone.minimumGridEnergyValue
-    self.spaceGroup = clone.spaceGroup
+    //self.spaceGroup = clone.spaceGroup
     
     self.selectionCOMTranslation = clone.selectionCOMTranslation
     self.selectionRotationIndex = clone.selectionRotationIndex
@@ -1164,15 +1157,15 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     let atomData: Data = Data(binaryAtomEncoder.data)
     
     let binaryBondEncoder: BinaryEncoder = BinaryEncoder()
-    binaryBondEncoder.encode(clone.bondController)
+    binaryBondEncoder.encode(clone.bondSetController)
     let bondData: Data = Data(binaryBondEncoder.data)
     
     do
     {
       self.atomTreeController = try BinaryDecoder(data: [UInt8](atomData)).decode(SKAtomTreeController.self)
-      self.bondController = try BinaryDecoder(data: [UInt8](bondData)).decode(SKBondSetController.self)
+      self.bondSetController = try BinaryDecoder(data: [UInt8](bondData)).decode(SKBondSetController.self)
       
-      self.bondController.restoreBonds(atomTreeController: self.atomTreeController)
+      self.bondSetController.restoreBonds(atomTreeController: self.atomTreeController)
     }
     catch
     {
@@ -1180,13 +1173,13 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     }
     
     // clone atoms and bonds
-    clone.bondController.tag()
+    clone.bondSetController.tag()
     
     //restore selection
     let tags: Set<Int> = Set(clone.atomTreeController.selectedTreeNodes.map{$0.representedObject.tag})
     let atomTreeNodes: [SKAtomTreeNode] = self.atomTreeController.flattenedLeafNodes()
     self.atomTreeController.selectedTreeNodes = Set(atomTreeNodes.filter{tags.contains($0.representedObject.tag)})
-    self.bondController.selectedObjects = clone.bondController.selectedObjects
+    self.bondSetController.selectedObjects = clone.bondSetController.selectedObjects
     
     self.setRepresentationStyle(style: self.atomRepresentationStyle)
  
@@ -2067,7 +2060,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
   {
     return nil
   }
- 
+ /*
   // MARK: -
   // MARK: cell property-wrapper
   
@@ -2136,7 +2129,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     let boundaryBoxCell = SKCell(boundingBox: self.cell.enclosingBoundingBox)
     return boundaryBoxCell.perpendicularWidths.z
   }
-  
+  */
   
   // MARK: -
   // MARK: general structure operations
@@ -2334,7 +2327,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
       }
     }
     
-    self.bondController.bonds = computedBonds
+    self.bondSetController.bonds = computedBonds
   }
   
   
@@ -2508,34 +2501,19 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     return self.transformedBoundingBox
   }
   
-  
+  /*
   public var boundingBox: SKBoundingBox
   {
     return SKBoundingBox()
-  }
+  }*/
   
   public var clipBonds: Bool
   {
     return false
   }
   
-  public var transformedBoundingBox: SKBoundingBox
-  {
-    let currentBoundingBox: SKBoundingBox = self.cell.boundingBox
-    
-    let transformation = double4x4.init(transformation: double4x4(self.orientation), aroundPoint: currentBoundingBox.center)
-    let transformedBoundingBox: SKBoundingBox = currentBoundingBox.adjustForTransformation(transformation)
-    
-    return transformedBoundingBox
-  }
   
-  public func reComputeBoundingBox()
-  {
-    let boundingBox: SKBoundingBox = self.boundingBox
-    
-    // store in the cell datastructure
-    self.cell.boundingBox = boundingBox
-  }
+ 
   
   public func numberOfReplicas() -> Int
   {
@@ -2966,7 +2944,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
   
   public func typeBonds()
   {
-    let allBonds: [SKBondNode] = removeOverConnections(self.bondController.bonds)
+    let allBonds: [SKBondNode] = removeOverConnections(self.bondSetController.bonds)
     
     allBonds.forEach { $0.bondOrder = 0 }
     
@@ -3166,7 +3144,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     //encoder.encode(self.displayName)
     //encoder.encode(isVisible)
     
-    encoder.encode(self.spaceGroupHallNumber ?? Int(1))
+    //encoder.encode(self.spaceGroupHallNumber ?? Int(1))
     //encoder.encode(cell)
     //encoder.encode(periodic)
     //encoder.encode(origin)
@@ -3174,47 +3152,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     //encoder.encode(orientation)
     //encoder.encode(rotationDelta)
     
-    encoder.encode(primitiveTransformationMatrix)
-    encoder.encode(primitiveOrientation)
-    encoder.encode(primitiveRotationDelta)
     
-    encoder.encode(primitiveOpacity)
-    encoder.encode(primitiveIsCapped)
-    encoder.encode(primitiveIsFractional)
-    encoder.encode(primitiveNumberOfSides)
-    encoder.encode(primitiveThickness)
-    
-    encoder.encode(primitiveHue)
-    encoder.encode(primitiveSaturation)
-    encoder.encode(primitiveValue)
-    
-    encoder.encode(primitiveSelectionStyle.rawValue)
-    encoder.encode(primitiveSelectionStripesDensity)
-    encoder.encode(primitiveSelectionStripesFrequency)
-    encoder.encode(primitiveSelectionWorleyNoise3DFrequency)
-    encoder.encode(primitiveSelectionWorleyNoise3DJitter)
-    encoder.encode(primitiveSelectionScaling)
-    encoder.encode(primitiveSelectionIntensity)
-    
-    encoder.encode(primitiveFrontSideHDR)
-    encoder.encode(primitiveFrontSideHDRExposure)
-    encoder.encode(primitiveFrontSideAmbientColor)
-    encoder.encode(primitiveFrontSideDiffuseColor)
-    encoder.encode(primitiveFrontSideSpecularColor)
-    encoder.encode(primitiveFrontSideDiffuseIntensity)
-    encoder.encode(primitiveFrontSideAmbientIntensity)
-    encoder.encode(primitiveFrontSideSpecularIntensity)
-    encoder.encode(primitiveFrontSideShininess)
-    
-    encoder.encode(primitiveBackSideHDR)
-    encoder.encode(primitiveBackSideHDRExposure)
-    encoder.encode(primitiveBackSideAmbientColor)
-    encoder.encode(primitiveBackSideDiffuseColor)
-    encoder.encode(primitiveBackSideSpecularColor)
-    encoder.encode(primitiveBackSideDiffuseIntensity)
-    encoder.encode(primitiveBackSideAmbientIntensity)
-    encoder.encode(primitiveBackSideSpecularIntensity)
-    encoder.encode(primitiveBackSideShininess)
     
     encoder.encode(frameworkProbeMolecule.rawValue)
     
@@ -3277,8 +3215,8 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     encoder.encode(self.atomTextOffset)
     
     // encode bonds using tags
-    self.bondController.tag()
-    encoder.encode(self.bondController)
+    self.bondSetController.tag()
+    encoder.encode(self.bondSetController)
     
     encoder.encode(drawBonds)
     encoder.encode(bondScaleFactor)
@@ -3323,6 +3261,10 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     encoder.encode(self.adsorptionSurfaceOpacity)
     encoder.encode(self.adsorptionSurfaceIsoValue)
     encoder.encode(Double(self.minimumGridEnergyValue ?? 0.0))
+    
+    encoder.encode(self.adsorptionSurfaceRenderingMethod.rawValue)
+    encoder.encode(self.adsorptionVolumeTransferFunction.rawValue)
+    encoder.encode(self.adsorptionVolumeStepLength)
     
     encoder.encode(self.adsorptionSurfaceSize)
     encoder.encode(Int(0))
@@ -3370,6 +3312,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     encoder.encode(self.structureRestrictingPoreLimitingDiameter)
     encoder.encode(self.structureLargestCavityDiameterAlongAViablePath)
     
+    /*
     // Info
     encoder.encode(self.authorFirstName)
     encoder.encode(self.authorMiddleName)
@@ -3386,6 +3329,9 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     encoder.encode(UInt16(calendar.component(.day, from: self.creationDate)))
     encoder.encode(UInt16(calendar.component(.month, from: self.creationDate)))
     encoder.encode(UInt32(calendar.component(.year, from: self.creationDate)))
+    */
+    
+    // Creation
     encoder.encode(self.creationTemperature)
     encoder.encode(self.creationTemperatureScale.rawValue)
     encoder.encode(self.creationPressure)
@@ -3440,6 +3386,10 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     encoder.encode(UInt16(calendar.component(.month, from: self.self.citationPublicationDate)))
     encoder.encode(UInt32(calendar.component(.year, from: self.self.citationPublicationDate)))
     encoder.encode(self.citationDatebaseCodes)
+    
+    encoder.encode(Int(0x6f6b6182))
+    
+    super.binaryEncode(to: encoder)
   }
   
   public required init(fromBinary decoder: BinaryDecoder) throws
@@ -3454,7 +3404,7 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     
     var legacyDisplayName: String = ""
     var legacyIsVisible: Bool = false
-    
+        
     var legacyCell: SKCell = SKCell()
     var legacyPeriodic: Bool = false
     var legacyOrigin: SIMD3<Double> = SIMD3<Double>()
@@ -3469,23 +3419,34 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
   
     var legacyRenderLocalAxis: RKLocalAxes = RKLocalAxes()
     
+    var legacyAuthorFirstName: String = ""
+    var legacyAuthorMiddleName: String = ""
+    var legacyAuthorLastName: String = ""
+    var legacyAuthorOrchidID: String = ""
+    var legacyAuthorResearcherID: String = ""
+    var legacyAuthorAffiliationUniversityName: String = ""
+    var legacyAuthorAffiliationFacultyName: String = ""
+    var legacyAuthorAffiliationInstituteName: String = ""
+    var legacyAuthorAffiliationCityName: String = ""
+    var legacyAuthorAffiliationCountryName: String = ""
+    
+    // Creation
+    var legacyCreationDate = Date()
+    
     let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > Structure.classVersionNumber
     {
       throw BinaryDecodableError.invalidArchiveVersion
     }
   
-    if readVersionNumber <= 8
+    if readVersionNumber < 9
     {
       legacyDisplayName = try decoder.decode(String.self)
       legacyIsVisible = try decoder.decode(Bool.self)
-    }
+  
+      let number = try decoder.decode(Int.self)
+      self.legacySpaceGroup = SKSpacegroup(HallNumber: number)
     
-    let number = try decoder.decode(Int.self)
-    self.spaceGroup = SKSpacegroup(HallNumber: number)
-    
-    if readVersionNumber <= 8
-    {
       legacyCell = try decoder.decode(SKCell.self)
       legacyPeriodic = try decoder.decode(Bool.self)
       legacyOrigin = try decoder.decode(SIMD3<Double>.self)
@@ -3494,53 +3455,56 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
       legacyRotationDelta = try decoder.decode(Double.self)
     }
     
-    if readVersionNumber >= 2 // introduced in version 2
+    if(readVersionNumber < 9)
     {
-      self.primitiveTransformationMatrix = try decoder.decode(double3x3.self)
-      self.primitiveOrientation = try decoder.decode(simd_quatd.self)
-      self.primitiveRotationDelta = try decoder.decode(Double.self)
-
-      self.primitiveOpacity = try decoder.decode(Double.self)
-      self.primitiveIsCapped = try decoder.decode(Bool.self)
-      self.primitiveIsFractional = try decoder.decode(Bool.self)
-      self.primitiveNumberOfSides = try decoder.decode(Int.self)
-      self.primitiveThickness = try decoder.decode(Double.self)
-      
-      if readVersionNumber >= 6 // introduced in version 6
+      if readVersionNumber >= 2 // introduced in version 2
       {
-        self.primitiveHue = try decoder.decode(Double.self)
-        self.primitiveSaturation = try decoder.decode(Double.self)
-        self.primitiveValue = try decoder.decode(Double.self)
+        self.primitiveTransformationMatrix = try decoder.decode(double3x3.self)
+        self.primitiveOrientation = try decoder.decode(simd_quatd.self)
+        self.primitiveRotationDelta = try decoder.decode(Double.self)
+  
+        self.primitiveOpacity = try decoder.decode(Double.self)
+        self.primitiveIsCapped = try decoder.decode(Bool.self)
+        self.primitiveIsFractional = try decoder.decode(Bool.self)
+        self.primitiveNumberOfSides = try decoder.decode(Int.self)
+        self.primitiveThickness = try decoder.decode(Double.self)
       
-        guard let primitiveSelectionStyle = RKSelectionStyle(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
-        self.primitiveSelectionStyle = primitiveSelectionStyle
-        self.primitiveSelectionStripesDensity = try decoder.decode(Double.self)
-        self.primitiveSelectionStripesFrequency = try decoder.decode(Double.self)
-        self.primitiveSelectionWorleyNoise3DFrequency = try decoder.decode(Double.self)
-        self.primitiveSelectionWorleyNoise3DJitter = try decoder.decode(Double.self)
-        self.primitiveSelectionScaling = try decoder.decode(Double.self)
-        self.primitiveSelectionIntensity = try decoder.decode(Double.self)
+        if readVersionNumber >= 6 // introduced in version 6
+        {
+          self.primitiveHue = try decoder.decode(Double.self)
+          self.primitiveSaturation = try decoder.decode(Double.self)
+          self.primitiveValue = try decoder.decode(Double.self)
+      
+          guard let primitiveSelectionStyle = RKSelectionStyle(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+          self.primitiveSelectionStyle = primitiveSelectionStyle
+          self.primitiveSelectionStripesDensity = try decoder.decode(Double.self)
+          self.primitiveSelectionStripesFrequency = try decoder.decode(Double.self)
+          self.primitiveSelectionWorleyNoise3DFrequency = try decoder.decode(Double.self)
+          self.primitiveSelectionWorleyNoise3DJitter = try decoder.decode(Double.self)
+          self.primitiveSelectionScaling = try decoder.decode(Double.self)
+          self.primitiveSelectionIntensity = try decoder.decode(Double.self)
+        }
+      
+        self.primitiveFrontSideHDR = try decoder.decode(Bool.self)
+        self.primitiveFrontSideHDRExposure = try decoder.decode(Double.self)
+        self.primitiveFrontSideAmbientColor = try decoder.decode(NSColor.self)
+        self.primitiveFrontSideDiffuseColor = try decoder.decode(NSColor.self)
+        self.primitiveFrontSideSpecularColor = try decoder.decode(NSColor.self)
+        self.primitiveFrontSideDiffuseIntensity = try decoder.decode(Double.self)
+        self.primitiveFrontSideAmbientIntensity = try decoder.decode(Double.self)
+        self.primitiveFrontSideSpecularIntensity = try decoder.decode(Double.self)
+        self.primitiveFrontSideShininess = try decoder.decode(Double.self)
+  
+        self.primitiveBackSideHDR = try decoder.decode(Bool.self)
+        self.primitiveBackSideHDRExposure = try decoder.decode(Double.self)
+        self.primitiveBackSideAmbientColor = try decoder.decode(NSColor.self)
+        self.primitiveBackSideDiffuseColor = try decoder.decode(NSColor.self)
+        self.primitiveBackSideSpecularColor = try decoder.decode(NSColor.self)
+        self.primitiveBackSideDiffuseIntensity = try decoder.decode(Double.self)
+        self.primitiveBackSideAmbientIntensity = try decoder.decode(Double.self)
+        self.primitiveBackSideSpecularIntensity = try decoder.decode(Double.self)
+        self.primitiveBackSideShininess = try decoder.decode(Double.self)
       }
-      
-      self.primitiveFrontSideHDR = try decoder.decode(Bool.self)
-      self.primitiveFrontSideHDRExposure = try decoder.decode(Double.self)
-      self.primitiveFrontSideAmbientColor = try decoder.decode(NSColor.self)
-      self.primitiveFrontSideDiffuseColor = try decoder.decode(NSColor.self)
-      self.primitiveFrontSideSpecularColor = try decoder.decode(NSColor.self)
-      self.primitiveFrontSideDiffuseIntensity = try decoder.decode(Double.self)
-      self.primitiveFrontSideAmbientIntensity = try decoder.decode(Double.self)
-      self.primitiveFrontSideSpecularIntensity = try decoder.decode(Double.self)
-      self.primitiveFrontSideShininess = try decoder.decode(Double.self)
-
-      self.primitiveBackSideHDR = try decoder.decode(Bool.self)
-      self.primitiveBackSideHDRExposure = try decoder.decode(Double.self)
-      self.primitiveBackSideAmbientColor = try decoder.decode(NSColor.self)
-      self.primitiveBackSideDiffuseColor = try decoder.decode(NSColor.self)
-      self.primitiveBackSideSpecularColor = try decoder.decode(NSColor.self)
-      self.primitiveBackSideDiffuseIntensity = try decoder.decode(Double.self)
-      self.primitiveBackSideAmbientIntensity = try decoder.decode(Double.self)
-      self.primitiveBackSideSpecularIntensity = try decoder.decode(Double.self)
-      self.primitiveBackSideShininess = try decoder.decode(Double.self)
     }
     
     if readVersionNumber >= 3 // introduced in version 3
@@ -3618,11 +3582,11 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     self.atomTextAlignment = atomTextAlignment
     self.atomTextOffset = try decoder.decode(SIMD3<Double>.self)
     
-    self.bondController = try decoder.decode(SKBondSetController.self)
+    self.bondSetController = try decoder.decode(SKBondSetController.self)
     
-    self.bondController.restoreBonds(atomTreeController: self.atomTreeController)
+    self.bondSetController.restoreBonds(atomTreeController: self.atomTreeController)
     
-    self.bondController.tag()
+    self.bondSetController.tag()
     
     self.drawBonds = try decoder.decode(Bool.self)
     self.bondScaleFactor = try decoder.decode(Double.self)
@@ -3681,6 +3645,15 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     self.adsorptionSurfaceOpacity = try decoder.decode(Double.self)
     self.adsorptionSurfaceIsoValue = try decoder.decode(Double.self)
     self.minimumGridEnergyValue = Float(try decoder.decode(Double.self))
+    
+    if readVersionNumber >= 9 // introduced in version 9
+    {
+      guard let adsorptionSurfaceRenderingMethod = RKEnergySurfaceType(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+      self.adsorptionSurfaceRenderingMethod = adsorptionSurfaceRenderingMethod
+      guard let adsorptionVolumeTransferFunction = RKPredefinedVolumeRenderingTransferFunction(rawValue: try decoder.decode(Int.self)) else {throw   BinaryCodableError.invalidArchiveData}
+      self.adsorptionVolumeTransferFunction = adsorptionVolumeTransferFunction
+      self.adsorptionVolumeStepLength = try decoder.decode(Double.self)
+    }
     
     self.adsorptionSurfaceSize = try decoder.decode(Int.self)
     let _: Int = try decoder.decode(Int.self)  // numberOfTriangles
@@ -3742,23 +3715,26 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     self.structureRestrictingPoreLimitingDiameter = try decoder.decode(Double.self)
     self.structureLargestCavityDiameterAlongAViablePath = try decoder.decode(Double.self)
     
-    // Info
-    self.authorFirstName = try decoder.decode(String.self)
-    self.authorMiddleName = try decoder.decode(String.self)
-    self.authorLastName = try decoder.decode(String.self)
-    self.authorOrchidID = try decoder.decode(String.self)
-    self.authorResearcherID = try decoder.decode(String.self)
-    self.authorAffiliationUniversityName = try decoder.decode(String.self)
-    self.authorAffiliationFacultyName = try decoder.decode(String.self)
-    self.authorAffiliationInstituteName = try decoder.decode(String.self)
-    self.authorAffiliationCityName = try decoder.decode(String.self)
-    self.authorAffiliationCountryName = try decoder.decode(String.self)
-        
-    // Creation
-    components.day = Int(try decoder.decode(UInt16.self))
-    components.month = Int(try decoder.decode(UInt16.self))
-    components.year = Int(try decoder.decode(UInt32.self))
-    self.creationDate = calendar.date(from: components) ?? Date()
+    if(readVersionNumber < 9)
+    {
+      // Info
+      legacyAuthorFirstName = try decoder.decode(String.self)
+      legacyAuthorMiddleName = try decoder.decode(String.self)
+      legacyAuthorLastName = try decoder.decode(String.self)
+      legacyAuthorOrchidID = try decoder.decode(String.self)
+      legacyAuthorResearcherID = try decoder.decode(String.self)
+      legacyAuthorAffiliationUniversityName = try decoder.decode(String.self)
+      legacyAuthorAffiliationFacultyName = try decoder.decode(String.self)
+      legacyAuthorAffiliationInstituteName = try decoder.decode(String.self)
+      legacyAuthorAffiliationCityName = try decoder.decode(String.self)
+      legacyAuthorAffiliationCountryName = try decoder.decode(String.self)
+      
+      // Creation
+      components.day = Int(try decoder.decode(UInt16.self))
+      components.month = Int(try decoder.decode(UInt16.self))
+      components.year = Int(try decoder.decode(UInt32.self))
+      legacyCreationDate = calendar.date(from: components) ?? Date()
+    }
     self.creationTemperature = try decoder.decode(String.self)
     guard let creationTemperatureScale = TemperatureScale(rawValue: try decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
     self.creationTemperatureScale = creationTemperatureScale
@@ -3825,6 +3801,12 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
     
     if readVersionNumber >= 9
     {
+      let magicNumber = try decoder.decode(Int.self)
+      if magicNumber != Int(0x6f6b6182)
+      {
+        throw BinaryDecodableError.invalidMagicNumber
+      }
+      
       try super.init(fromBinary: decoder)
     }
     else
@@ -3847,6 +3829,19 @@ public class Structure: Object, SKRenderAdsorptionSurfaceStructure, Cloning
       self.unitCellDiffuseIntensity = legacyUnitCellDiffuseIntensity
     
       self.renderLocalAxis = legacyRenderLocalAxis
+      
+      self.authorFirstName = legacyAuthorFirstName
+      self.authorMiddleName = legacyAuthorMiddleName
+      self.authorLastName = legacyAuthorLastName
+      self.authorOrchidID = legacyAuthorOrchidID
+      self.authorResearcherID = legacyAuthorResearcherID
+      self.authorAffiliationUniversityName = legacyAuthorAffiliationUniversityName
+      self.authorAffiliationFacultyName = legacyAuthorAffiliationFacultyName
+      self.authorAffiliationInstituteName = legacyAuthorAffiliationInstituteName
+      self.authorAffiliationCityName = legacyAuthorAffiliationCityName
+      self.authorAffiliationCountryName = legacyAuthorAffiliationCountryName
+      
+      self.creationDate = legacyCreationDate
     }
     
     self.setRepresentationStyle(style: self.atomRepresentationStyle)

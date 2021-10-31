@@ -44,13 +44,17 @@ public protocol ForceFieldDefiner: AnyObject
 public protocol StructureViewer: AnyObject
 {
   var allStructures: [Structure] {get}
-  var allIRASPAStructures: [iRASPAStructure] {get}
+  var allIRASPAStructures: [iRASPAObject] {get}
   var selectedRenderFrames: [RKRenderStructure] {get}
   var allRenderFrames: [RKRenderStructure] {get}
 }
 
-public protocol CellViewer: StructureViewer
+public protocol CellViewerLegacy: AnyObject
 {
+  var allStructures: [Structure] {get}
+  var selectedRenderFrames: [RKRenderStructure] {get}
+  var allRenderFrames: [RKRenderStructure] {get}
+  
   var spaceGroupHallNumber: Int? {get set}
 
   var renderUnitCellLengthA: Double? {get set}
@@ -96,7 +100,7 @@ public protocol CellViewer: StructureViewer
   var renderBoundingBox: SKBoundingBox {get}
   func reComputeBoundingBox()
   
-  var frames: [iRASPAStructure] {get}
+  var frames: [iRASPAObject] {get}
 }
 
 public protocol InfoViewer: StructureViewer
@@ -211,9 +215,9 @@ public protocol AtomVisualAppearanceViewer: StructureViewer
   var renderAtomSelectionScaling: Double? {get set}
 }
   
-public protocol PrimitiveVisualAppearanceViewer
+public protocol PrimitiveVisualAppearanceViewerLegacy
 {
-  var allPrimitiveStructure: [Structure] {get}
+  var allPrimitiveStructure: [Primitive] {get}
   
   var renderDrawAtoms: Bool? {get set}
   

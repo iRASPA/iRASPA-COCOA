@@ -35,7 +35,7 @@ import MathKit
 import RenderKit
 import SymmetryKit
 
-extension CellViewer
+extension CellViewerLegacy
 {
   public func renderRecomputeDensityProperties()
   {
@@ -884,7 +884,7 @@ extension CellViewer
   }
 }
 
-extension Array where Iterator.Element == CellViewer
+extension Array where Iterator.Element == CellViewerLegacy
 {
   public var allStructures: [Structure]
   {

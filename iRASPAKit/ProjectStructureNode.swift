@@ -38,7 +38,7 @@ import SymmetryKit
 
 public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource
 {
-  private static var classVersionNumber: Int = 3
+  private static var classVersionNumber: Int = 4
   
   public var sceneList: SceneList = SceneList()
   public var renderLights: [RKRenderLight] = [RKRenderLight(),RKRenderLight(),RKRenderLight(),RKRenderLight()]
@@ -52,7 +52,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     return self.displayName + numberOfAtomString
   }
   
-  public var allIRASPAStructures: [iRASPAStructure]
+  public var allIRASPAStructures: [iRASPAObject]
   {
     return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.flatMap{$0.allIRASPAStructures}}
   }
@@ -180,7 +180,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public var renderBoundingBox: SKBoundingBox
   {
-    let frames: [Structure] = self.sceneList.scenes.flatMap{$0.movies}.filter{$0.isVisible}.compactMap{($0.selectedFrame ?? $0.frames.first)?.structure}
+    let frames: [Object] = self.sceneList.scenes.flatMap{$0.movies}.filter{$0.isVisible}.compactMap{($0.selectedFrame ?? $0.frames.first)?.object}
       
     if(frames.isEmpty)
     {
@@ -483,6 +483,8 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     
     encoder.encode(self.sceneList)
     
+    encoder.encode(Int(0x6f6b6180))
+    
     super.binaryEncode(to: encoder)
   }
   
@@ -491,6 +493,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
+    debugPrint("PROJECTSTRUCTURENODE")
     //self.init(name: "test", sceneList: SceneList.init(scenes: []))
     let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > ProjectStructureNode.classVersionNumber
@@ -553,6 +556,19 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     }
     
     self.sceneList = try decoder.decode(SceneList.self)
+    
+    if readVersionNumber >= 4 // introduced in version 4
+    {
+      let magicNumber = try decoder.decode(Int.self)
+      if magicNumber != Int(0x6f6b6180)
+      {
+        debugPrint("ProjectStructureNode Inconsistency error (bug)")
+      }
+      else
+      {
+        debugPrint("ProjectStructureNode magic number matches")
+      }
+    }
     
     try super.init(fromBinary: decoder)
   }

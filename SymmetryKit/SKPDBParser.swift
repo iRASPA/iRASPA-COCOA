@@ -550,6 +550,29 @@ public final class SKPDBParser: SKParser, ProgressReporting
           case "ORIGX3":
             break
           case "ATOM  ", "HETATM":
+            //  COLUMNS   LENGHT  DATA TYPE       CONTENTS
+            //  --------------------------------------------------------------------------------
+            //   0 -  5   6       Record name     "ATOM  "
+            //   6 - 10   5       Integer         Atom serial number.
+            //  11        1
+            //  12 - 15   4       Atom            Atom name.
+            //  16        1       Character       Alternate location indicator.
+            //  17 - 19   3       Residue name    Residue name.
+            //  20        1
+            //  21        1       Character       Chain identifier.
+            //  22 - 25   4       Integer         Residue sequence number.
+            //  26        1       AChar           Code for insertion of residues.
+            //  27 - 29   3
+            //  30 - 37   8       Real(8.3)       Orthogonal coordinates for X in Angstroms.
+            //  38 - 45   8       Real(8.3)       Orthogonal coordinates for Y in Angstroms.
+            //  46 - 53   8       Real(8.3)       Orthogonal coordinates for Z in Angstroms.
+            //  54 - 59   6       Real(6.2)       Occupancy.
+            //  60 - 65   6       Real(6.2)       Temperature factor (Default = 0.0).
+            //  66 - 71   6
+            //  72 - 75   4       LString(4)      Segment identifier, left-justified.
+            //  76 - 77   2       LString(2)      Element symbol, right-justified.
+            //  78 - 79   2       LString(2)      Charge on the atom.
+            
             // count as nucleic acid atom
             numberOfNucleicAcidAtoms += 1
             numberOfAtoms += 1

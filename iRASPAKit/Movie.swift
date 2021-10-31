@@ -46,7 +46,7 @@ fileprivate let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
 
 public let NSPasteboardTypeMovie: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Movie")
 
-public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewer, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewerLegacy, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
   public var displayName : String = ""
@@ -55,14 +55,14 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   public weak var importOperation: Foundation.Operation? = nil
   
   /// Returns all the frames in the movie
-  public var frames: [iRASPAStructure]
+  public var frames: [iRASPAObject]
   
-  public var filteredAndSortedObjects: [iRASPAStructure] = [iRASPAStructure]()
+  public var filteredAndSortedObjects: [iRASPAObject] = [iRASPAObject]()
   
-  public var selectedFrame: iRASPAStructure? = nil
-  public var selectedFrames: Set< iRASPAStructure > = Set()
+  public var selectedFrame: iRASPAObject? = nil
+  public var selectedFrames: Set< iRASPAObject > = Set()
   
-  public var filterPredicate: (iRASPAStructure) -> Bool = {_ in return true}
+  public var filterPredicate: (iRASPAObject) -> Bool = {_ in return true}
   var sortDescriptors: [NSSortDescriptor] = []
   
   public var renderCanDrawAdsorptionSurface: Bool
@@ -76,7 +76,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     self.displayName = displayName
   }
   
-  public convenience init(name: String, structure: iRASPAStructure)
+  public convenience init(name: String, structure: iRASPAObject)
   {
     self.init()
     self.displayName = name
@@ -84,7 +84,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     self.selectedFrame = nil
   }
   
-  public convenience init(frame: iRASPAStructure)
+  public convenience init(frame: iRASPAObject)
   {
     self.init()
     self.displayName = frame.structure.displayName
@@ -92,7 +92,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     self.selectedFrame = self.frames.first
   }
   
-  public convenience init(displayName: String, frames: [iRASPAStructure])
+  public convenience init(displayName: String, frames: [iRASPAObject])
   {
     self.init()
     self.displayName = displayName
@@ -128,7 +128,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   private convenience init?(frame data: Data)
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
-    guard let frame: iRASPAStructure = try? binaryDecoder.decode(iRASPAStructure.self) else {return nil}
+    guard let frame: iRASPAObject = try? binaryDecoder.decode(iRASPAObject.self) else {return nil}
     let movie: Movie = Movie.init(name: frame.structure.displayName, structure: frame)
     self.init(movie: movie)
   }
@@ -199,6 +199,11 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     return "Movie (\(super.description)), arranged structure-objects: \(self.frames)"
   }
   
+  public var allObjects: [Object]
+  {
+    return self.frames.compactMap{$0.object}
+  }
+  
   public var infoPanelIcon: NSImage
   {
     switch(frames.count)
@@ -232,7 +237,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     {
       // Create a key for elements and their frequency
       var times: [Bool: Int] = [true:0, false:0]
-      let boolArray: [Bool] = self.frames.map{ return $0.structure.isVisible }
+      let boolArray: [Bool] = self.frames.map{ return $0.object.isVisible }
       for bool in boolArray
       {
         // Every time there is a repeat value add one to that key
@@ -244,7 +249,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     }
     set(newValue)
     {
-      self.frames.forEach{$0.structure.isVisible = newValue}
+      self.frames.forEach{$0.object.isVisible = newValue}
     }
   }
   
@@ -292,7 +297,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     switch(type)
     {
     case NSPasteboardTypeFrame:
-      guard let frame: iRASPAStructure = frames.first else {return nil}
+      guard let frame: iRASPAObject = frames.first else {return nil}
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
       binaryEncoder.encode(frame)
       return Data(binaryEncoder.data)
@@ -491,7 +496,18 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     }
     
     self.displayName = try decoder.decode(String.self)
-    self.frames = try decoder.decode([iRASPAStructure].self)
+    self.frames = try decoder.decode([iRASPAObject].self)
+  }
+}
+
+// MARK: -
+// MARK: CellViewer protocol implementation
+
+extension Movie: CellViewer
+{
+  public var cellViewerObjects: [CellViewer]
+  {
+    return self.frames.flatMap{$0.object.cellViewerObjects}
   }
 }
 
@@ -504,7 +520,7 @@ extension Movie: StructureViewer
     return self.frames.flatMap{$0.allStructures}
   }
   
-  public var allIRASPAStructures: [iRASPAStructure]
+  public var allIRASPAStructures: [iRASPAObject]
   {
     return self.frames.compactMap{$0}
   }
@@ -523,9 +539,9 @@ extension Movie: StructureViewer
 
 
 
-extension Movie: PrimitiveVisualAppearanceViewer
+extension Movie: PrimitiveVisualAppearanceViewerLegacy
 {
-  public var allPrimitiveStructure: [Structure]
+  public var allPrimitiveStructure: [Primitive]
   {
     return self.frames.flatMap{$0.allPrimitiveStructure}
   }

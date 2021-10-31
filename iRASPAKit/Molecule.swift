@@ -41,7 +41,7 @@ import BinaryCodable
 
 public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource
 {
-  private static var classVersionNumber: Int = 1
+  private static var classVersionNumber: Int = 2
   
   public override init(name: String)
   {
@@ -144,7 +144,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
-    for (asymmetricBondIndex, asymmetricBond) in bondController.arrangedObjects.enumerated()
+    for (asymmetricBondIndex, asymmetricBond) in bondSetController.arrangedObjects.enumerated()
     {
       for bond in asymmetricBond.copies
       {
@@ -237,7 +237,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
-    let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondController.arrangedObjects[self.bondController.selectedObjects]
+    let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondSetController.arrangedObjects[self.bondSetController.selectedObjects]
     for (asymmetricBondIndex, asymmetricBond) in selectedAsymmetricBonds.enumerated()
     {
       for bond in asymmetricBond.copies
@@ -321,7 +321,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   {
     var data: IndexSet = IndexSet()
     
-    for (asymmetricBondIndex, asymmetricBond) in self.bondController.arrangedObjects.enumerated()
+    for (asymmetricBondIndex, asymmetricBond) in self.bondSetController.arrangedObjects.enumerated()
     {
       let asymmetricAtom1: SKAsymmetricAtom =  asymmetricBond.atom1
       let asymmetricAtom2: SKAsymmetricAtom =  asymmetricBond.atom2
@@ -628,10 +628,17 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     return boundaryBoxCell.unitCell
   }
   
-  public override var cellLengthA: Double
+  public override var cellLengthA: Double?
   {
-    let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
-    return boundaryBoxCell.a
+    get
+    {
+      let boundaryBoxCell = SKCell(boundingBox: self.cell.boundingBox)
+      return boundaryBoxCell.a
+    }
+    set(newValue)
+    {
+      self.cell.a = newValue ?? 20.0
+    }
   }
   
   public override var cellLengthB: Double
@@ -875,13 +882,13 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   public override func reComputeBonds()
   {
     let atomList: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    self.bondController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: {return false}, updateHandler: {})
+    self.bondSetController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: {return false}, updateHandler: {})
   }
   
   public override func reComputeBonds(_ node: ProjectTreeNode, cancelHandler: (()-> Bool), updateHandler: (() -> ()))
   {
     let atomList: [SKAtomCopy] = self.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}.flatMap{$0.copies}
-    self.bondController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: cancelHandler, updateHandler: updateHandler)
+    self.bondSetController.bonds = self.computeBonds(cell: self.cell, atomList: atomList, cancelHandler: cancelHandler, updateHandler: updateHandler)
   }
   
   public override func computeBonds(cancelHandler: (()-> Bool) = {return false}, updateHandler: (() -> ()) = {}) -> [SKBondNode]
@@ -1086,6 +1093,7 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
   public override func binaryEncode(to encoder: BinaryEncoder)
   {
     encoder.encode(Molecule.classVersionNumber)
+    encoder.encode(Int(0x6f6b6186))
     super.binaryEncode(to: encoder)
   }
   
@@ -1095,6 +1103,15 @@ public final class Molecule: Structure, RKRenderAtomSource, RKRenderBondSource, 
     if readVersionNumber > Molecule.classVersionNumber
     {
       throw BinaryDecodableError.invalidArchiveVersion
+    }
+    
+    if(readVersionNumber >= 2)
+    {
+      let magicNumber = try decoder.decode(Int.self)
+      if magicNumber != Int(0x6f6b6186)
+      {
+        throw BinaryDecodableError.invalidMagicNumber
+      }
     }
     
     try super.init(fromBinary: decoder)

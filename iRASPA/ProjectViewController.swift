@@ -1924,7 +1924,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode,
              let structure = projectStructure.allIRASPAStructures.first
           {
-            
+            /*
             let VSA: NSNumber = NSNumber(value: structure.renderStructureVolumetricNitrogenSurfaceArea ?? 0.0)
             let GSA: NSNumber = NSNumber(value: structure.renderStructureGravimetricNitrogenSurfaceArea ?? 0.0)
             let helium: NSNumber = NSNumber(value: structure.renderStructureHeliumVoidFraction ?? 0.0)
@@ -1955,6 +1955,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
                 "dim" : dim,
                 "type" : type
             ]
+             */
           }
           //let parentRecordID = CKRecordID(recordName: parentId)
   
