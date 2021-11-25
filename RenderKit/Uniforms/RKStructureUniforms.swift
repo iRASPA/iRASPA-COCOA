@@ -51,7 +51,7 @@ public struct RKStructureUniforms
   public var atomHue: Float = 1.0
   public var atomSaturation: Float = 1.0
   public var atomValue: Float = 1.0
-  public var pad111: Float = 1.0
+  public var structureIdentifier: Int32 = 0
   
   public var atomHDR: Int32 = 0
   public var atomHDRExposure: Float = 1.5;
@@ -175,13 +175,14 @@ public struct RKStructureUniforms
     
   }
   
-  public init(sceneIdentifier: Int, movieIdentifier: Int, structure: RKRenderStructure)
+  public init(structureIdentifier: Int, structure: RKRenderObject)
   {
     let boundingBox: SKBoundingBox = structure.cell.boundingBox
     let centerOfRotation: SIMD3<Double> = boundingBox.center
     
-    self.sceneIdentifier = Int32(sceneIdentifier)
-    self.MovieIdentifier = Int32(movieIdentifier)
+    //self.sceneIdentifier = Int32(sceneIdentifier)
+    //self.MovieIdentifier = Int32(movieIdentifier)
+    self.structureIdentifier = Int32(structureIdentifier)
     
     let modelMatrix: double4x4 = double4x4(transformation: double4x4(simd_quatd: structure.orientation), aroundPoint: centerOfRotation, withTranslation: structure.origin)
     self.modelMatrix = float4x4(Double4x4: modelMatrix)
@@ -356,9 +357,9 @@ public struct RKStructureUniforms
     }
   }
   
-  public init(sceneIdentifier: Int, movieIdentifier: Int, structure: RKRenderStructure, inverseModelMatrix: double4x4)
+  public init(structureIdentifier: Int, structure: RKRenderObject, inverseModelMatrix: double4x4)
   {
-    self.init(sceneIdentifier: sceneIdentifier, movieIdentifier: movieIdentifier, structure: structure)
+    self.init(structureIdentifier: structureIdentifier, structure: structure)
     
     let boundingBox: SKBoundingBox = structure.cell.boundingBox
     let centerOfRotation: SIMD3<Double> = boundingBox.center

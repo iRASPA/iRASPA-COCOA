@@ -303,7 +303,7 @@ public class SKBondSetController: NSObject, BinaryDecodable, BinaryEncodable
     }
     else
     {
-      // restore references to asymmetricAtoms in the assymetricBonds
+      // restore references to asymmetricAtoms in the asymmetricBonds
       let asymmetricAtoms: [SKAsymmetricAtom] = atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       for i in 0..<self.arrangedObjects.count
       {

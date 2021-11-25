@@ -36,7 +36,7 @@ class ComputeBondsGroupOperation: FKGroupOperation
 {
   weak var windowController: NSWindowController?
   
-  public init(structures: [Structure], windowController: NSWindowController?)
+  public init(structures: [Object], windowController: NSWindowController?)
   {
     self.windowController = windowController
     
@@ -48,7 +48,7 @@ class ComputeBondsGroupOperation: FKGroupOperation
     progress.completedUnitCount = 0
     
    
-    let operations: [FKOperation] = structures.compactMap{$0.computeBondsOperation(structure: $0, windowController: windowController)}
+    let operations: [FKOperation] = structures.compactMap({$0 as? Structure}).compactMap{$0.computeBondsOperation(structure: $0, windowController: windowController)}
     for operation in operations
     {
       progress.addChild(operation.progress, withPendingUnitCount: 1)

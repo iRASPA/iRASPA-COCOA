@@ -39,7 +39,7 @@ import SimulationKit
 import LogViewKit
 import OperationKit
 
-public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource
+public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, Cloning
 {
   private static var classVersionNumber: Int = 2
   
@@ -55,32 +55,36 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     super.init(name: name)
   }
   
-  public required init(original structure: Structure)
+  public required init(copy protein: Protein)
   {
-    super.init(original: structure)
+    super.init(copy: protein)
   }
   
-  public required init(clone structure: Structure)
+  public required init(clone protein: Protein)
   {
-    super.init(clone: structure)
+    super.init(clone: protein)        
+  }
+  
+  public required init(from object: Object)
+  {
+    super.init(from: object)
     
-    switch(structure)
+    if let atomViewer: AtomViewer = object as? AtomViewer
     {
-    case is Protein, is ProteinCrystal, is Molecule, is MolecularCrystal,
-         is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
-      //nothing to do
-      break
-    case is Crystal, is CrystalEllipsoidPrimitive, is CrystalCylinderPrimitive, is CrystalPolygonalPrismPrimitive:
-      self.atomTreeController.flattenedLeafNodes().forEach{
-      let pos = $0.representedObject.position
-          $0.representedObject.position = self.cell.convertToCartesian(pos)
-        }
-    default:
-      break
+      if atomViewer.isFractional
+      {
+        self.atomTreeController.flattenedLeafNodes().forEach{
+            let pos = $0.representedObject.position
+            $0.representedObject.position = self.cell.convertToCartesian(pos)
+          }
+      }
     }
+    
     self.expandSymmetry()
     reComputeBoundingBox()
     reComputeBonds()
+    self.atomTreeController.tag()
+    self.bondSetController.tag()
   }
   
   public override var colorAtomsWithBondColor: Bool
@@ -88,7 +92,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return (self.atomRepresentationType == .unity && self.bondColorMode == .uniform)
   }
   
-  public override var materialType: SKStructure.Kind
+  public override var materialType: Object.ObjectType
   {
     return .protein
   }
@@ -105,7 +109,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     // only use leaf-nodes
@@ -148,7 +152,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
     var index: Int = 0
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds](repeating: RKInPerInstanceAttributesBonds(), count: bondSetController.arrangedObjects.count * numberOfReplicas())
       
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     index = 0
@@ -208,7 +212,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let asymmetricAtoms: [SKAsymmetricAtom] = self.atomTreeController.allSelectedNodes.compactMap{$0.representedObject}
@@ -249,7 +253,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var data: [RKInPerInstanceAttributesBonds] = []
       
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let selectedAsymmetricBonds: [SKAsymmetricBond] = self.bondSetController.arrangedObjects[self.bondSetController.selectedObjects]
@@ -300,7 +304,7 @@ public final class Protein: Structure, RKRenderAtomSource, RKRenderBondSource, R
    
   public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     // only use leaf-nodes

@@ -13,14 +13,12 @@ import MathKit
 public struct SKSymmetryOperationSet
 {
   public var operations: [SKSeitzMatrix]
-  //public var centring: SKSpacegroup.Centring
   
   public init(operations: [SKSeitzMatrix])
   {
     self.operations = operations
   }
   
-  // FIX: make the SKSymmetryOperationSet a real set
   public var rotations: OrderedSet<SKRotationMatrix>
   {
     return OrderedSet(sequence: self.operations.map{$0.rotation})

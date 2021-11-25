@@ -393,7 +393,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        let selectedScene: Scene = project.sceneList.selectedScene,
        let selectedMovie: Movie = selectedScene.selectedMovie
     {
-      let oldName: String = frame.structure.displayName
+      let oldName: String = frame.object.displayName
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setFrameDisplayName(frame, to: oldName)})
       
       if !project.undoManager.isUndoing
@@ -401,7 +401,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
         project.undoManager.setActionName(NSLocalizedString("Change frame name", comment: "Change frame name"))
       }
       
-      frame.structure.displayName = newValue
+      frame.object.displayName = newValue
       
       // reload item in the outlineView
       if let row: Int = selectedMovie.frames.firstIndex(of: frame)
@@ -425,7 +425,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       let newValue: String = sender.stringValue
       
       let frame = selectedMovie.frames[row]
-      if frame.structure.displayName != newValue
+      if frame.object.displayName != newValue
       {
         self.setFrameDisplayName(frame, to: newValue)
       }
@@ -582,7 +582,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
        let selectionMovie: Movie = selectedScene.selectedMovie
     {
       let selectedArrangedObjects: [Any] = project.sceneList.selectedScene?.selectedMovie?.selectedFrames.compactMap{$0} ?? [[]]
-      let frames: [iRASPAObject] = selectionMovie.allIRASPAStructures
+      let frames: [iRASPAObject] = selectionMovie.allIRASPObjects
       let arrangedObjects: [Any] = frames.isEmpty ? [[]] : frames
       
       if let selectedFrame: iRASPAObject = selectionMovie.selectedFrame,
@@ -1078,7 +1078,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
     {
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
-      let renderStructures: [RKRenderStructure] = project.renderStructures
+      let renderStructures: [RKRenderObject] = project.renderStructures
       if !renderStructures.isEmpty
       {
         self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)
@@ -1096,7 +1096,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       if let data: Data = node.pasteboardPropertyList(forType: NSPasteboardTypeProjectTreeNode) as? Data,
          let compressedData: Data = data.compress(withAlgorithm: .lzma)
       {
-        let displayName: String = node.structure.displayName
+        let displayName: String = node.object.displayName
         let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
         let url: URL = dropDestination.appendingPathComponent(displayName).appendingPathExtension(pathExtension)
         do
@@ -1109,7 +1109,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
         }
       }
     }
-    return self.draggedNodes.map{$0.structure.displayName}
+    return self.draggedNodes.map{$0.object.displayName}
   }
 
   // MARK: Copy / Paste / Cut / Delete
@@ -1161,7 +1161,7 @@ class FrameListViewController: NSViewController, NSMenuItemValidation, WindowCon
       {
         project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
-        let renderStructures: [RKRenderStructure] = project.renderStructures
+        let renderStructures: [RKRenderObject] = project.renderStructures
         if !renderStructures.isEmpty
         {
           self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: renderStructures)

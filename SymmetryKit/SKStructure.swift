@@ -55,7 +55,11 @@ public class SKStructure
     case cylinderPrimitive = 14
     case polygonalPrismPrimitive = 15
     
-    //case densityVolume = 16
+    case gridVolume = 16
+    case RASPADensityVolume = 17
+    case VTKDensityVolume = 18
+    case VASPDensityVolume = 19
+    case GaussianCubeVolume = 20
   }
   
   public var kind: Kind = .crystal
@@ -68,6 +72,24 @@ public class SKStructure
   public var spaceGroupHallNumber: Int?
   public var drawUnitCell: Bool? = true
   public var periodic: Bool? = true
+  
+  public var gridData: Data = Data()
+  public var dimensions: SIMD3<Int32> = SIMD3<Int32>()
+  public var spacing: SIMD3<Double> = SIMD3<Double>()
+  public enum DataType: Int
+  {
+    case Uint8 = 0
+    case Int8 = 1
+    case Uint16 = 2
+    case Int16 = 3
+    case Uint32 = 4
+    case Int32 = 5
+    case Uint64 = 6
+    case Int64 = 7
+    case Float = 8
+    case Double = 9
+  }
+  public var dataType: DataType = DataType.Double
   
   public var creationDate: String?
   public var creationMethod: String?

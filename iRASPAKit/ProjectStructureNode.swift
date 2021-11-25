@@ -54,16 +54,16 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public var allIRASPAStructures: [iRASPAObject]
   {
-    return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.flatMap{$0.allIRASPAStructures}}
+    return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.flatMap{$0.allIRASPObjects}}
   }
   
-  public var allStructures: [Structure]
+  public var allObjects: [Object]
   {
-    return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.flatMap{$0.allStructures}}
+    return sceneList.scenes.filter{$0.movies.count > 0}.flatMap{$0.movies.filter{$0.frames.count > 0}.flatMap{$0.allObjects}}
   }
   
   
-  public var measurementTreeNodes: [(structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)] = []
+  public var measurementTreeNodes: [(structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)] = []
   
   public var renderBackgroundType = RKBackgroundType.color
   public var renderBackgroundColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -294,7 +294,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     return self.sceneList.scenes[sceneIndex].movies.flatMap{$0.selectedFrames}.count
   }
   
-  public func renderStructuresForScene(_ i: Int) -> [RKRenderStructure]
+  public func renderStructuresForScene(_ i: Int) -> [RKRenderObject]
   {
     if (i>=0 && i<self.sceneList.scenes.count)
     {
@@ -303,7 +303,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     return []
   }
   
-  public var renderStructures: [RKRenderStructure]
+  public var renderStructures: [RKRenderObject]
   {
     let structures = self.sceneList.scenes.flatMap{$0.movies}.flatMap{$0.selectedRenderFrames}
     
@@ -328,8 +328,8 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     {
       if iRASPAstructure.type == .protein || iRASPAstructure.type == .proteinCrystal || iRASPAstructure.type == .proteinCrystalSolvent
       {
-        iRASPAstructure.structure.setRepresentationStyle(style: .fancy)
-        iRASPAstructure.structure.setRepresentationColorScheme(colorSet: defaultColorSet)
+        (iRASPAstructure.object as? Structure)?.setRepresentationStyle(style: .fancy)
+        (iRASPAstructure.object as? Structure)?.setRepresentationColorScheme(colorSet: defaultColorSet)
       }
     }
   }
@@ -364,7 +364,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     })
   }
   
-  public var renderMeasurementStructure: [RKRenderStructure]
+  public var renderMeasurementStructure: [RKRenderObject]
   {
     return self.measurementTreeNodes.map{$0.structure}
   }
@@ -493,7 +493,6 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
-    debugPrint("PROJECTSTRUCTURENODE")
     //self.init(name: "test", sceneList: SceneList.init(scenes: []))
     let readVersionNumber: Int = try decoder.decode(Int.self)
     if readVersionNumber > ProjectStructureNode.classVersionNumber
@@ -563,10 +562,6 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
       if magicNumber != Int(0x6f6b6180)
       {
         debugPrint("ProjectStructureNode Inconsistency error (bug)")
-      }
-      else
-      {
-        debugPrint("ProjectStructureNode magic number matches")
       }
     }
     

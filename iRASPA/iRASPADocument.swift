@@ -44,7 +44,7 @@ import Compression
 import UniformTypeIdentifiers
 
 
-class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDelegate
+class iRASPADocument: NSDocument, ForceFieldViewer, NSSharingServicePickerDelegate
 {
   var documentData: DocumentData = DocumentData()
   var colorSets: SKColorSets = SKColorSets()
@@ -384,12 +384,12 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   
   func readCIFFileFormat(url: URL) throws
   {
-    if let data: Data = try? Data.init(contentsOf: url),
-       let cifString: String = String(data: data, encoding: String.Encoding.ascii)
+    if let data: Data = try? Data.init(contentsOf: url)
     {
       let displayName: String = url.deletingPathExtension().lastPathComponent
       
-      let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: cifString, windowController: self.windowControllers.first)
+      let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data, windowController: self.windowControllers.first)
+      
       do
       {
         try cifParser.startParsing()
@@ -424,14 +424,13 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   
   func readPDBFileFormat(url: URL) throws
   {
-    if let data: Data = try? Data.init(contentsOf: url),
-      let pdbString: String = String(data: data, encoding: String.Encoding.ascii)
+    if let data: Data = try? Data.init(contentsOf: url)
     {
       let displayName: String = url.deletingPathExtension().lastPathComponent
       
-      let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: pdbString, windowController: self.windowControllers.first, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
       do
       {
+        let pdbParser: SKPDBParser = try SKPDBParser(displayName: displayName, data: data, windowController: self.windowControllers.first, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
         try pdbParser.startParsing()
         let scene: Scene = Scene(parser: pdbParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -464,14 +463,13 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   
   func readXYZFileFormat(url: URL) throws
   {
-    if let data: Data = try? Data.init(contentsOf: url),
-       let xyzString: String = String(data: data, encoding: String.Encoding.ascii)
+    if let data: Data = try? Data.init(contentsOf: url)
     {
       let displayName: String = url.deletingPathExtension().lastPathComponent
       
-      let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: xyzString, windowController: self.windowControllers.first)
       do
       {
+        let xyzParser: SKXYZParser = try SKXYZParser(displayName: displayName, data: data, windowController: self.windowControllers.first)
         try xyzParser.startParsing()
         let scene: Scene = Scene(parser: xyzParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -504,14 +502,13 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   
   func readPOSCARFileFormat(url: URL) throws
   {
-    if let data: Data = try? Data.init(contentsOf: url),
-      let VASPString: String = String(data: data, encoding: String.Encoding.ascii)
+    if let data: Data = try? Data.init(contentsOf: url)
     {
       let displayName: String = url.deletingPathExtension().lastPathComponent
       
-      let VASPParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: VASPString, windowController: self.windowControllers.first)
       do
       {
+        let VASPParser: SKPOSCARParser = try SKPOSCARParser(displayName: displayName, data: data, windowController: self.windowControllers.first)
         try VASPParser.startParsing()
         let scene: Scene = Scene(parser: VASPParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -544,14 +541,13 @@ class iRASPADocument: NSDocument, ForceFieldDefiner, NSSharingServicePickerDeleg
   
   func readXDATCARFileFormat(url: URL) throws
   {
-    if let data: Data = try? Data.init(contentsOf: url),
-      let VASPString: String = String(data: data, encoding: String.Encoding.ascii)
+    if let data: Data = try? Data.init(contentsOf: url)
     {
       let displayName: String = url.deletingPathExtension().lastPathComponent
       
-      let VASPParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: VASPString, windowController: self.windowControllers.first)
       do
       {
+        let VASPParser: SKXDATCARParser = try SKXDATCARParser(displayName: displayName, data: data, windowController: self.windowControllers.first)
         try VASPParser.startParsing()
         let scene: Scene = Scene(parser: VASPParser.scene)
         let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])

@@ -38,7 +38,7 @@ import simd
 
 
 // A scene contains a list of Movies: FKArrayController<Scene>
-public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewerLegacy, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class SceneList:  ObjectViewer, BinaryDecodable, BinaryEncodable
 {  
   private static var classVersionNumber: Int = 1
   public var displayName : String = ""
@@ -59,6 +59,25 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
   public var totalNumberOfAtoms: Int
   {
     return self.scenes.map{$0.totalNumberOfAtoms}.reduce(0,+)
+  }
+  
+  // MARK: -
+  // MARK: StructureViewer protocol implementation
+  
+  /// Returns all the structures in the sceneList
+  public var allIRASPObjects: [iRASPAObject]
+  {
+    return self.scenes.flatMap{$0.allIRASPObjects}
+  }
+  
+  public var selectedRenderFrames: [RKRenderObject]
+  {
+    return self.scenes.flatMap{$0.selectedRenderFrames}
+  }
+
+  public var allRenderFrames: [RKRenderObject]
+  {
+    return self.scenes.flatMap{$0.allRenderFrames}
   }
   
   public init()
@@ -91,7 +110,8 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
   
   public var allAdsorptionSurfaceStructures: [SKRenderAdsorptionSurfaceStructure]
   {
-    return self.scenes.flatMap{$0.movies.flatMap{$0.allStructures.map{$0 as SKRenderAdsorptionSurfaceStructure}}}
+    // FIX
+    return self.scenes.flatMap{$0.movies.flatMap{$0.allObjects.compactMap({$0 as? Structure}).map{$0 as SKRenderAdsorptionSurfaceStructure}}}
   }
   
   public var selectedFrames: [Movie : Set<iRASPAObject>]
@@ -299,52 +319,8 @@ public final class SceneList: AtomVisualAppearanceViewer, BondVisualAppearanceVi
 }
 
 
-// MARK: -
-// MARK: CellViewer protocol implementation
-
-extension SceneList: CellViewer
-{
-  public var cellViewerObjects: [CellViewer]
-  {
-    return self.scenes.flatMap{$0.cellViewerObjects}
-  }
-}
 
 
-// MARK: -
-// MARK: StructureViewer protocol implementation
-
-extension SceneList: StructureViewer
-{
-  public var allStructures: [Structure]
-  {
-    return self.scenes.flatMap{$0.allStructures}
-  }
-  
-  /// Returns all the structures in the sceneList
-  public var allIRASPAStructures: [iRASPAObject]
-  {
-    return self.scenes.flatMap{$0.allIRASPAStructures}
-  }
-  
-  public var selectedRenderFrames: [RKRenderStructure]
-  {
-    return self.scenes.flatMap{$0.selectedRenderFrames}
-  }
-
-  public var allRenderFrames: [RKRenderStructure]
-  {
-    return self.scenes.flatMap{$0.allRenderFrames}
-  }
-}
-
-extension SceneList: PrimitiveVisualAppearanceViewerLegacy
-{
-  public var allPrimitiveStructure: [Primitive]
-  {
-    return self.scenes.flatMap{$0.allPrimitiveStructure}
-  }
-}
 
 
 

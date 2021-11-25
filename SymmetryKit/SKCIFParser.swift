@@ -97,11 +97,16 @@ public final class SKCIFParser: SKParser, ProgressReporting
     return true
   }
   
-  public init(displayName: String, string: String, windowController: NSWindowController?, onlyAsymmetricUnit: Bool = false)
+  public init(displayName: String, data: Data, windowController: NSWindowController?, onlyAsymmetricUnit: Bool = false) throws
   {
     self.name = displayName
     self.windowController = windowController
     self.onlyAsymmetricUnit = onlyAsymmetricUnit
+    
+    guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
+    {
+      throw SKParserError.failedDecoding
+    }
     
     self.scanner = Scanner(string: string)
     self.scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines

@@ -33,7 +33,13 @@ import Foundation
 import SymmetryKit
 import SimulationKit
 
-public protocol BondViewer
+public protocol BondViewer: AtomViewer
 {
-  var bondSetController: SKBondSetController {get}
+  var bondSetController: SKBondSetController {get set}
+  func reComputeBonds()
+  func computeBonds(cancelHandler: (()-> Bool), updateHandler: (() -> ())) -> [SKBondNode]
+  func bonds(subset: [SKAsymmetricAtom]) -> [SKBondNode]
+  func computeChangedBondLength(asymmetricBond: SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
+  func computeChangedBondLength(bond: SKBondNode, to: Double) -> (SIMD3<Double>,SIMD3<Double>)
+  func typeBonds()
 }

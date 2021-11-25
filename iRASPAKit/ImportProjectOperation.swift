@@ -73,9 +73,9 @@ public class ImportProjectOperation: FKGroupOperation
       
       
       // set default colorset etc.
-      projectStructureNode.sceneList.allStructures.forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
+      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
       
-      let computeBondsGroupOperation: ComputeBondsGroupOperation = ComputeBondsGroupOperation(structures: projectStructureNode.sceneList.allStructures, windowController: windowController)
+      let computeBondsGroupOperation: ComputeBondsGroupOperation = ComputeBondsGroupOperation(structures: projectStructureNode.sceneList.allObjects, windowController: windowController)
       self?.progress.addChild(computeBondsGroupOperation.progress, withPendingUnitCount: 80)
       
       self?.addOperation(computeBondsGroupOperation)

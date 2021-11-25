@@ -99,7 +99,7 @@ fragment PickingFragOutput AtomSpherePickingFragmentShader(PickingVertexShaderOu
   pos = frameUniforms.projectionMatrix * pos;
   output.depth = (pos.z / pos.w);
 
-  output.albedo = uint4(1,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
+  output.albedo = uint4(1,0,structureUniforms.structureIdentifier, vert.instanceId);
   
   return output;
 
@@ -165,7 +165,7 @@ fragment PickingBondFragOutput PickingInternalBondCylinderFragmentShader(Picking
 {
   PickingBondFragOutput output;
   
-  output.albedo = uint4(2,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
+  output.albedo = uint4(2,0,structureUniforms.structureIdentifier, vert.instanceId);
   return output;
 }
 
@@ -248,7 +248,7 @@ fragment PickingBondFragOutput PickingExternalBondFragmentShader(PickingExternal
   if (vert.clipDistance4 < 0.0) discard_fragment();
   if (vert.clipDistance5 < 0.0) discard_fragment();
   
-  output.albedo = uint4(2,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
+  output.albedo = uint4(2,0,structureUniforms.structureIdentifier, vert.instanceId);
   return output;
 }
 
@@ -279,6 +279,6 @@ fragment PickingBondFragOutput PickingPolygonalPrismFragmentShader(PickingVertex
 {
   PickingBondFragOutput output;
   
-  output.albedo = uint4(1,structureUniforms.sceneIdentifier,structureUniforms.MovieIdentifier, vert.instanceId);
+  output.albedo = uint4(1,0,structureUniforms.structureIdentifier, vert.instanceId);
   return output;
 }

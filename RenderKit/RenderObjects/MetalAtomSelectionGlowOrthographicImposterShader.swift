@@ -35,7 +35,7 @@ import Foundation
 class MetalAtomSelectionGlowOrthographicImposterShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var indexBuffer: MTLBuffer! = nil
   var vertexBuffer: MTLBuffer! = nil
@@ -117,7 +117,7 @@ class MetalAtomSelectionGlowOrthographicImposterShader
       var index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
           
         for (j,structure) in structures.enumerated()
         {

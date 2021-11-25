@@ -36,7 +36,7 @@ import SymmetryKit
 class MetalInternalBondShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var pipeLine: MTLRenderPipelineState! = nil
   var instanceBufferAllBonds: [[MTLBuffer?]] = []
@@ -122,7 +122,7 @@ class MetalInternalBondShader
       instanceBufferTripleBonds = []
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = renderStructures[i]
+        let structures: [RKRenderObject] = renderStructures[i]
         var sceneInstanceAllBonds: [MTLBuffer?] = [MTLBuffer?]()
         var sceneInstanceSingleBonds: [MTLBuffer?] = [MTLBuffer?]()
         var sceneInstanceDoubleBonds: [MTLBuffer?] = [MTLBuffer?]()
@@ -186,7 +186,7 @@ class MetalInternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -211,7 +211,7 @@ class MetalInternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -236,7 +236,7 @@ class MetalInternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferDoubleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -262,7 +262,7 @@ class MetalInternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -288,7 +288,7 @@ class MetalInternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferTripleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {

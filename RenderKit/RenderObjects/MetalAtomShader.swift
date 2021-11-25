@@ -35,7 +35,7 @@ import Foundation
 class MetalAtomShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var pipeLine: MTLRenderPipelineState! = nil
   var indexBuffer: MTLBuffer! = nil
@@ -97,7 +97,7 @@ class MetalAtomShader
       instanceBuffer = []
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = renderStructures[i]
+        let structures: [RKRenderObject] = renderStructures[i]
         var sceneInstance: [MTLBuffer?] = [MTLBuffer?]()
         
         if structures.isEmpty
@@ -138,7 +138,7 @@ class MetalAtomShader
       var index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
             
         for (j,structure) in structures.enumerated()
         {

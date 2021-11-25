@@ -199,7 +199,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
     guard let iraspaStructure: iRASPAObject = try? binaryDecoder.decode(iRASPAObject.self) else {return nil}
-    let displayName: String = iraspaStructure.structure.displayName
+    let displayName: String = iraspaStructure.object.displayName
     let movie: Movie = Movie.init(name: displayName, structure: iraspaStructure)
     let scene: Scene = Scene.init(name: displayName, movies: [movie])
     let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
@@ -276,8 +276,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, pdb data: Data, preview: Bool)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true, preview: preview)
+    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true, preview: preview) else {return nil}
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
@@ -288,8 +287,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, cif data: Data, preview: Bool)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? cifParser.startParsing()
     let scene: Scene = Scene(parser: cifParser.scene)
     let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
@@ -300,8 +298,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, xyz data: Data, preview: Bool)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? xyzParser.startParsing()
     let scene: Scene = Scene(parser: xyzParser.scene)
     let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -312,8 +309,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, poscar data: Data, preview: Bool)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let poscarParser: SKXDATCARParser = try? SKXDATCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -324,8 +320,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
   
   private convenience init?(displayName: String, xdatcar data: Data, preview: Bool)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let poscarParser: SKXDATCARParser = try? SKXDATCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
@@ -1161,7 +1156,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
               self.representedObject = iRASPAProject(structureProject: projectStructureNode)
               self.representedObject.nodeType = .leaf
               self.representedObject.lazyStatus = .loaded
-              self.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
+              self.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
             case .group:
               let projectGroupNode: ProjectGroup = try BinaryDecoder(data: [UInt8](data)).decode(ProjectGroup.self)
               
@@ -1212,7 +1207,7 @@ public final class ProjectTreeNode:  NSObject, NSPasteboardReading, NSPasteboard
       break
     }
     
-    self.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
+    self.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
   }
   
   // used to unwrap when deleting for undo

@@ -35,7 +35,7 @@ import Foundation
 class MetalCrystalEllipsoidShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var opaquePipeLine: MTLRenderPipelineState! = nil
   var transparentPipeLine: MTLRenderPipelineState! = nil
@@ -134,7 +134,7 @@ class MetalCrystalEllipsoidShader
       instanceBuffers = []
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = renderStructures[i]
+        let structures: [RKRenderObject] = renderStructures[i]
         var sceneInstance: [MTLBuffer?] = [MTLBuffer?]()
         
         if structures.isEmpty
@@ -176,7 +176,7 @@ class MetalCrystalEllipsoidShader
       var index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -218,7 +218,7 @@ class MetalCrystalEllipsoidShader
       var index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {

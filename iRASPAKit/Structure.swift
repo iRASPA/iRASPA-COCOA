@@ -47,36 +47,12 @@ fileprivate func ==~ (left: Double, right: Double) -> Bool
 
 public let NSPasteboardTypeStructure: String = "nl.iRASPA.Structure"
 
-public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, Cloning
+public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfaceStructure, AtomStructureViewer, BondStructureViewer, AnnotationViewer, InfoViewer, StructuralPropertyViewer
 {
   private static var classVersionNumber: Int = 9
   
   public var atomTreeController: SKAtomTreeController = SKAtomTreeController()
   public var bondSetController: SKBondSetController = SKBondSetController()
-  
-    /*
-  // MARK: protocol RKRenderStructure implementation
-  // =====================================================================
-  public var displayName: String = "uninitialized"
-  public var isVisible: Bool = true
-   
-     
-     public var periodic: Bool = false
-     
-  public var origin: SIMD3<Double> = SIMD3<Double>(x: 0.0, y: 0.0, z: 0.0)
-  public var orientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
-  
-  public var cell: SKCell = SKCell()
-  
-  public func absoluteCartesianModelPosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
-  {
-    return SIMD3<Double>()
-  }
-  
-  public func absoluteCartesianScenePosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
-  {
-    return SIMD3<Double>()
-  }*/
   
   // MARK: protocol RKRenderAtomSource implementation
   // =====================================================================
@@ -285,28 +261,28 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   }
   public var adsorptionSurfaceNumberOfTriangles: Int = 0
   
-  public var adsorptionSurfaceHue = 1.0;
-  public var adsorptionSurfaceSaturation = 1.0;
-  public var adsorptionSurfaceValue = 1.0;
+  public var adsorptionSurfaceHue: Double = 1.0;
+  public var adsorptionSurfaceSaturation: Double = 1.0;
+  public var adsorptionSurfaceValue: Double = 1.0;
   
   public var adsorptionSurfaceFrontSideHDR: Bool = true
-  public var adsorptionSurfaceFrontSideHDRExposure: Double = 1.5
+  public var adsorptionSurfaceFrontSideHDRExposure: Double = 2.0
   public var adsorptionSurfaceFrontSideAmbientColor: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-  public var adsorptionSurfaceFrontSideDiffuseColor: NSColor = NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)
-  public var adsorptionSurfaceFrontSideSpecularColor: NSColor = NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+  public var adsorptionSurfaceFrontSideDiffuseColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var adsorptionSurfaceFrontSideSpecularColor: NSColor = NSColor(red: 0.92, green: 0.92, blue: 0.92, alpha: 1.0)
   public var adsorptionSurfaceFrontSideDiffuseIntensity: Double = 1.0
-  public var adsorptionSurfaceFrontSideAmbientIntensity: Double = 0.2
-  public var adsorptionSurfaceFrontSideSpecularIntensity: Double = 1.0
+  public var adsorptionSurfaceFrontSideAmbientIntensity: Double = 0.0
+  public var adsorptionSurfaceFrontSideSpecularIntensity: Double = 0.5
   public var adsorptionSurfaceFrontSideShininess: Double = 4.0
   
   public var adsorptionSurfaceBackSideHDR: Bool = true
-  public var adsorptionSurfaceBackSideHDRExposure: Double = 1.5
+  public var adsorptionSurfaceBackSideHDRExposure: Double = 2.0
   public var adsorptionSurfaceBackSideAmbientColor: NSColor = NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
-  public var adsorptionSurfaceBackSideDiffuseColor: NSColor = NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)
-  public var adsorptionSurfaceBackSideSpecularColor: NSColor = NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+  public var adsorptionSurfaceBackSideDiffuseColor: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+  public var adsorptionSurfaceBackSideSpecularColor: NSColor = NSColor(red: 0.92, green: 0.92, blue: 0.92, alpha: 1.0)
   public var adsorptionSurfaceBackSideDiffuseIntensity: Double = 1.0
-  public var adsorptionSurfaceBackSideAmbientIntensity: Double = 0.2
-  public var adsorptionSurfaceBackSideSpecularIntensity: Double = 1.0
+  public var adsorptionSurfaceBackSideAmbientIntensity: Double = 0.0
+  public var adsorptionSurfaceBackSideSpecularIntensity: Double = 0.5
   public var adsorptionSurfaceBackSideShininess: Double = 4.0
   
   public var atomUnitCellPositions: [SIMD3<Double>] {return []}
@@ -406,7 +382,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
   
   public var legacySpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
   
-  public var materialType: SKStructure.Kind
+  public override var materialType: Object.ObjectType
   {
     return .structure
   }
@@ -620,279 +596,495 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.displayName = name
   }
   
-  public required init(original: Structure)
+  public init(copy: Structure)
   {
     super.init()
     
-    self.displayName = original.displayName
+    self.displayName = copy.displayName
     
-    self.origin = original.origin
-    self.scaling = original.scaling
-    self.orientation = original.orientation
-    self.rotationDelta = original.rotationDelta
-    self.periodic = original.periodic
-    self.isVisible = original.isVisible
-    self.cell = original.cell
-    self.minimumGridEnergyValue = original.minimumGridEnergyValue
-   //self.spaceGroup = original.spaceGroup
+    self.origin = copy.origin
+    self.scaling = copy.scaling
+    self.orientation = copy.orientation
+    self.rotationDelta = copy.rotationDelta
+    self.periodic = copy.periodic
+    self.isVisible = copy.isVisible
+    self.cell = copy.cell
+    self.minimumGridEnergyValue = copy.minimumGridEnergyValue
+   //self.spaceGroup = copy.spaceGroup
     
-    self.selectionCOMTranslation = original.selectionCOMTranslation
-    self.selectionRotationIndex = original.selectionRotationIndex
-    self.selectionBodyFixedBasis = original.selectionBodyFixedBasis
+    self.selectionCOMTranslation = copy.selectionCOMTranslation
+    self.selectionRotationIndex = copy.selectionRotationIndex
+    self.selectionBodyFixedBasis = copy.selectionBodyFixedBasis
     
-    self.structureType = original.structureType
-    self.structureMaterialType = original.structureMaterialType
-    self.structureMass = original.structureMass
-    self.structureDensity = original.structureDensity
-    self.structureHeliumVoidFraction = original.structureHeliumVoidFraction
-    self.structureSpecificVolume = original.structureSpecificVolume
-    self.structureAccessiblePoreVolume = original.structureAccessiblePoreVolume
-    self.structureVolumetricNitrogenSurfaceArea = original.structureVolumetricNitrogenSurfaceArea
-    self.structureGravimetricNitrogenSurfaceArea = original.structureGravimetricNitrogenSurfaceArea
-    self.structureNumberOfChannelSystems = original.structureNumberOfChannelSystems
-    self.structureNumberOfInaccessiblePockets = original.structureNumberOfInaccessiblePockets
-    self.structureDimensionalityOfPoreSystem = original.structureDimensionalityOfPoreSystem
-    self.structureLargestCavityDiameter = original.structureLargestCavityDiameter
-    self.structureRestrictingPoreLimitingDiameter = original.structureRestrictingPoreLimitingDiameter
-    self.structureLargestCavityDiameterAlongAViablePath = original.structureLargestCavityDiameterAlongAViablePath
+    self.structureType = copy.structureType
+    self.structureMaterialType = copy.structureMaterialType
+    self.structureMass = copy.structureMass
+    self.structureDensity = copy.structureDensity
+    self.structureHeliumVoidFraction = copy.structureHeliumVoidFraction
+    self.structureSpecificVolume = copy.structureSpecificVolume
+    self.structureAccessiblePoreVolume = copy.structureAccessiblePoreVolume
+    self.structureVolumetricNitrogenSurfaceArea = copy.structureVolumetricNitrogenSurfaceArea
+    self.structureGravimetricNitrogenSurfaceArea = copy.structureGravimetricNitrogenSurfaceArea
+    self.structureNumberOfChannelSystems = copy.structureNumberOfChannelSystems
+    self.structureNumberOfInaccessiblePockets = copy.structureNumberOfInaccessiblePockets
+    self.structureDimensionalityOfPoreSystem = copy.structureDimensionalityOfPoreSystem
+    self.structureLargestCavityDiameter = copy.structureLargestCavityDiameter
+    self.structureRestrictingPoreLimitingDiameter = copy.structureRestrictingPoreLimitingDiameter
+    self.structureLargestCavityDiameterAlongAViablePath = copy.structureLargestCavityDiameterAlongAViablePath
     
     
-    self.authorFirstName = original.authorFirstName
-    self.authorMiddleName = original.authorMiddleName
-    self.authorLastName = original.authorLastName
-    self.authorOrchidID = original.authorOrchidID
-    self.authorResearcherID = original.authorResearcherID
-    self.authorAffiliationUniversityName = original.authorAffiliationUniversityName
-    self.authorAffiliationFacultyName = original.authorAffiliationFacultyName
-    self.authorAffiliationInstituteName = original.authorAffiliationInstituteName
-    self.authorAffiliationCityName = original.authorAffiliationCityName
-    self.authorAffiliationCountryName = original.authorAffiliationCountryName
+    self.authorFirstName = copy.authorFirstName
+    self.authorMiddleName = copy.authorMiddleName
+    self.authorLastName = copy.authorLastName
+    self.authorOrchidID = copy.authorOrchidID
+    self.authorResearcherID = copy.authorResearcherID
+    self.authorAffiliationUniversityName = copy.authorAffiliationUniversityName
+    self.authorAffiliationFacultyName = copy.authorAffiliationFacultyName
+    self.authorAffiliationInstituteName = copy.authorAffiliationInstituteName
+    self.authorAffiliationCityName = copy.authorAffiliationCityName
+    self.authorAffiliationCountryName = copy.authorAffiliationCountryName
     
     // primitive properties
-    self.primitiveTransformationMatrix = original.primitiveTransformationMatrix
-    self.primitiveOrientation = original.primitiveOrientation
-    self.primitiveRotationDelta = original.primitiveRotationDelta
+    self.primitiveTransformationMatrix = copy.primitiveTransformationMatrix
+    self.primitiveOrientation = copy.primitiveOrientation
+    self.primitiveRotationDelta = copy.primitiveRotationDelta
     
-    self.primitiveOpacity = original.primitiveOpacity
-    self.primitiveIsCapped = original.primitiveIsCapped
-    self.primitiveIsFractional = original.primitiveIsFractional
-    self.primitiveNumberOfSides = original.primitiveNumberOfSides
-    self.primitiveThickness = original.primitiveThickness
+    self.primitiveOpacity = copy.primitiveOpacity
+    self.primitiveIsCapped = copy.primitiveIsCapped
+    self.primitiveIsFractional = copy.primitiveIsFractional
+    self.primitiveNumberOfSides = copy.primitiveNumberOfSides
+    self.primitiveThickness = copy.primitiveThickness
     
-    self.primitiveHue = original.primitiveHue
-    self.primitiveSaturation = original.primitiveSaturation
-    self.primitiveValue = original.primitiveValue
+    self.primitiveHue = copy.primitiveHue
+    self.primitiveSaturation = copy.primitiveSaturation
+    self.primitiveValue = copy.primitiveValue
     
-    self.primitiveSelectionStyle = original.primitiveSelectionStyle
-    self.primitiveSelectionScaling = original.primitiveSelectionScaling
-    self.primitiveSelectionStripesDensity = original.primitiveSelectionStripesDensity
-    self.primitiveSelectionStripesFrequency = original.primitiveSelectionStripesFrequency
-    self.primitiveSelectionWorleyNoise3DFrequency = original.primitiveSelectionWorleyNoise3DFrequency
-    self.primitiveSelectionWorleyNoise3DJitter = original.primitiveSelectionWorleyNoise3DJitter
-    self.primitiveSelectionIntensity = original.primitiveSelectionIntensity
+    self.primitiveSelectionStyle = copy.primitiveSelectionStyle
+    self.primitiveSelectionScaling = copy.primitiveSelectionScaling
+    self.primitiveSelectionStripesDensity = copy.primitiveSelectionStripesDensity
+    self.primitiveSelectionStripesFrequency = copy.primitiveSelectionStripesFrequency
+    self.primitiveSelectionWorleyNoise3DFrequency = copy.primitiveSelectionWorleyNoise3DFrequency
+    self.primitiveSelectionWorleyNoise3DJitter = copy.primitiveSelectionWorleyNoise3DJitter
+    self.primitiveSelectionIntensity = copy.primitiveSelectionIntensity
     
-    self.primitiveFrontSideHDR = original.primitiveFrontSideHDR
-    self.primitiveFrontSideHDRExposure = original.primitiveFrontSideHDRExposure
-    self.primitiveFrontSideAmbientColor = original.primitiveFrontSideAmbientColor
-    self.primitiveFrontSideDiffuseColor = original.primitiveFrontSideDiffuseColor
-    self.primitiveFrontSideSpecularColor = original.primitiveFrontSideSpecularColor
-    self.primitiveFrontSideAmbientIntensity = original.primitiveFrontSideAmbientIntensity
-    self.primitiveFrontSideDiffuseIntensity = original.primitiveFrontSideDiffuseIntensity
-    self.primitiveFrontSideSpecularIntensity = original.primitiveFrontSideSpecularIntensity
-    self.primitiveFrontSideShininess = original.primitiveFrontSideShininess
+    self.primitiveFrontSideHDR = copy.primitiveFrontSideHDR
+    self.primitiveFrontSideHDRExposure = copy.primitiveFrontSideHDRExposure
+    self.primitiveFrontSideAmbientColor = copy.primitiveFrontSideAmbientColor
+    self.primitiveFrontSideDiffuseColor = copy.primitiveFrontSideDiffuseColor
+    self.primitiveFrontSideSpecularColor = copy.primitiveFrontSideSpecularColor
+    self.primitiveFrontSideAmbientIntensity = copy.primitiveFrontSideAmbientIntensity
+    self.primitiveFrontSideDiffuseIntensity = copy.primitiveFrontSideDiffuseIntensity
+    self.primitiveFrontSideSpecularIntensity = copy.primitiveFrontSideSpecularIntensity
+    self.primitiveFrontSideShininess = copy.primitiveFrontSideShininess
     
-    self.primitiveBackSideHDR = original.primitiveBackSideHDR
-    self.primitiveBackSideHDRExposure = original.primitiveBackSideHDRExposure
-    self.primitiveBackSideAmbientColor = original.primitiveBackSideAmbientColor
-    self.primitiveBackSideDiffuseColor = original.primitiveBackSideDiffuseColor
-    self.primitiveBackSideSpecularColor = original.primitiveBackSideSpecularColor
-    self.primitiveBackSideAmbientIntensity = original.primitiveBackSideAmbientIntensity
-    self.primitiveBackSideDiffuseIntensity = original.primitiveBackSideDiffuseIntensity
-    self.primitiveBackSideSpecularIntensity = original.primitiveBackSideSpecularIntensity
-    self.primitiveBackSideShininess = original.primitiveBackSideShininess
+    self.primitiveBackSideHDR = copy.primitiveBackSideHDR
+    self.primitiveBackSideHDRExposure = copy.primitiveBackSideHDRExposure
+    self.primitiveBackSideAmbientColor = copy.primitiveBackSideAmbientColor
+    self.primitiveBackSideDiffuseColor = copy.primitiveBackSideDiffuseColor
+    self.primitiveBackSideSpecularColor = copy.primitiveBackSideSpecularColor
+    self.primitiveBackSideAmbientIntensity = copy.primitiveBackSideAmbientIntensity
+    self.primitiveBackSideDiffuseIntensity = copy.primitiveBackSideDiffuseIntensity
+    self.primitiveBackSideSpecularIntensity = copy.primitiveBackSideSpecularIntensity
+    self.primitiveBackSideShininess = copy.primitiveBackSideShininess
     
     
     // atoms
     self.atomTreeController = SKAtomTreeController()
 
-    self.drawAtoms = original.drawAtoms
+    self.drawAtoms = copy.drawAtoms
     
-    self.atomRepresentationType = original.atomRepresentationType
-    self.atomRepresentationStyle = original.atomRepresentationStyle
-    self.atomForceFieldIdentifier = original.atomForceFieldIdentifier
-    self.atomForceFieldOrder = original.atomForceFieldOrder
-    self.atomColorSchemeIdentifier = original.atomColorSchemeIdentifier
-    self.atomColorSchemeOrder = original.atomColorSchemeOrder
+    self.atomRepresentationType = copy.atomRepresentationType
+    self.atomRepresentationStyle = copy.atomRepresentationStyle
+    self.atomForceFieldIdentifier = copy.atomForceFieldIdentifier
+    self.atomForceFieldOrder = copy.atomForceFieldOrder
+    self.atomColorSchemeIdentifier = copy.atomColorSchemeIdentifier
+    self.atomColorSchemeOrder = copy.atomColorSchemeOrder
     
-    self.atomSelectionStyle = original.atomSelectionStyle
-    self.atomSelectionStripesDensity = original.atomSelectionStripesDensity
-    self.atomSelectionStripesFrequency = original.atomSelectionStripesFrequency
-    self.atomSelectionWorleyNoise3DFrequency = original.atomSelectionWorleyNoise3DFrequency
-    self.atomSelectionWorleyNoise3DJitter = original.atomSelectionWorleyNoise3DJitter
-    self.atomSelectionScaling = original.atomSelectionScaling
-    self.atomSelectionIntensity = original.atomSelectionIntensity
+    self.atomSelectionStyle = copy.atomSelectionStyle
+    self.atomSelectionStripesDensity = copy.atomSelectionStripesDensity
+    self.atomSelectionStripesFrequency = copy.atomSelectionStripesFrequency
+    self.atomSelectionWorleyNoise3DFrequency = copy.atomSelectionWorleyNoise3DFrequency
+    self.atomSelectionWorleyNoise3DJitter = copy.atomSelectionWorleyNoise3DJitter
+    self.atomSelectionScaling = copy.atomSelectionScaling
+    self.atomSelectionIntensity = copy.atomSelectionIntensity
     
-    self.atomHue = original.atomHue
-    self.atomSaturation = original.atomSaturation
-    self.atomValue = original.atomValue
-    self.atomScaleFactor = original.atomScaleFactor
+    self.atomHue = copy.atomHue
+    self.atomSaturation = copy.atomSaturation
+    self.atomValue = copy.atomValue
+    self.atomScaleFactor = copy.atomScaleFactor
     
-    self.atomAmbientOcclusion = original.atomAmbientOcclusion
-    self.atomAmbientOcclusionPatchNumber = original.atomAmbientOcclusionPatchNumber
-    self.atomAmbientOcclusionTextureSize = original.atomAmbientOcclusionTextureSize
-    self.atomAmbientOcclusionPatchSize = original.atomAmbientOcclusionPatchSize
-    self.atomCacheAmbientOcclusionTexture = original.atomCacheAmbientOcclusionTexture
+    self.atomAmbientOcclusion = copy.atomAmbientOcclusion
+    self.atomAmbientOcclusionPatchNumber = copy.atomAmbientOcclusionPatchNumber
+    self.atomAmbientOcclusionTextureSize = copy.atomAmbientOcclusionTextureSize
+    self.atomAmbientOcclusionPatchSize = copy.atomAmbientOcclusionPatchSize
+    self.atomCacheAmbientOcclusionTexture = copy.atomCacheAmbientOcclusionTexture
     
-    self.atomHDR = original.atomHDR
-    self.atomHDRExposure = original.atomHDRExposure
-    self.atomSelectionIntensity = original.atomSelectionIntensity
+    self.atomHDR = copy.atomHDR
+    self.atomHDRExposure = copy.atomHDRExposure
+    self.atomSelectionIntensity = copy.atomSelectionIntensity
     
-    self.atomAmbientColor = original.atomAmbientColor
-    self.atomDiffuseColor = original.atomDiffuseColor
-    self.atomSpecularColor = original.atomSpecularColor
-    self.atomAmbientIntensity = original.atomAmbientIntensity
-    self.atomDiffuseIntensity = original.atomDiffuseIntensity
-    self.atomSpecularIntensity = original.atomSpecularIntensity
-    self.atomShininess = original.atomShininess
+    self.atomAmbientColor = copy.atomAmbientColor
+    self.atomDiffuseColor = copy.atomDiffuseColor
+    self.atomSpecularColor = copy.atomSpecularColor
+    self.atomAmbientIntensity = copy.atomAmbientIntensity
+    self.atomDiffuseIntensity = copy.atomDiffuseIntensity
+    self.atomSpecularIntensity = copy.atomSpecularIntensity
+    self.atomShininess = copy.atomShininess
     
     
     // bonds
     self.bondSetController = SKBondSetController()
     
-    self.drawBonds = original.drawBonds
+    self.drawBonds = copy.drawBonds
     
-    self.bondScaleFactor = original.bondScaleFactor
-    self.bondColorMode = original.bondColorMode
+    self.bondScaleFactor = copy.bondScaleFactor
+    self.bondColorMode = copy.bondColorMode
     
-    self.bondAmbientColor = original.bondAmbientColor
-    self.bondDiffuseColor = original.bondDiffuseColor
-    self.bondSpecularColor = original.bondSpecularColor
-    self.bondAmbientIntensity = original.bondAmbientIntensity
-    self.bondDiffuseIntensity = original.bondDiffuseIntensity
-    self.bondSpecularIntensity = original.bondSpecularIntensity
-    self.bondShininess = original.bondShininess
+    self.bondAmbientColor = copy.bondAmbientColor
+    self.bondDiffuseColor = copy.bondDiffuseColor
+    self.bondSpecularColor = copy.bondSpecularColor
+    self.bondAmbientIntensity = copy.bondAmbientIntensity
+    self.bondDiffuseIntensity = copy.bondDiffuseIntensity
+    self.bondSpecularIntensity = copy.bondSpecularIntensity
+    self.bondShininess = copy.bondShininess
 
-    self.bondHDR = original.bondHDR
-    self.bondHDRExposure = original.bondHDRExposure
+    self.bondHDR = copy.bondHDR
+    self.bondHDRExposure = copy.bondHDRExposure
     
-    self.bondSelectionStyle = original.bondSelectionStyle
-    self.bondSelectionStripesDensity = original.bondSelectionStripesDensity
-    self.bondSelectionStripesFrequency = original.bondSelectionStripesFrequency
-    self.bondSelectionWorleyNoise3DFrequency = original.bondSelectionWorleyNoise3DFrequency
-    self.bondSelectionWorleyNoise3DJitter = original.bondSelectionWorleyNoise3DJitter
-    self.bondSelectionScaling = original.bondSelectionScaling
-    self.bondSelectionIntensity = original.bondSelectionIntensity
+    self.bondSelectionStyle = copy.bondSelectionStyle
+    self.bondSelectionStripesDensity = copy.bondSelectionStripesDensity
+    self.bondSelectionStripesFrequency = copy.bondSelectionStripesFrequency
+    self.bondSelectionWorleyNoise3DFrequency = copy.bondSelectionWorleyNoise3DFrequency
+    self.bondSelectionWorleyNoise3DJitter = copy.bondSelectionWorleyNoise3DJitter
+    self.bondSelectionScaling = copy.bondSelectionScaling
+    self.bondSelectionIntensity = copy.bondSelectionIntensity
     
-    self.bondHue = original.bondHue
-    self.bondSaturation = original.bondSaturation
-    self.bondValue = original.bondValue
+    self.bondHue = copy.bondHue
+    self.bondSaturation = copy.bondSaturation
+    self.bondValue = copy.bondValue
     
-    self.bondAmbientOcclusion = original.bondAmbientOcclusion
+    self.bondAmbientOcclusion = copy.bondAmbientOcclusion
     
     // text properties
-    self.atomTextType = original.atomTextType
-    self.atomTextFont = original.atomTextFont
-    self.atomTextScaling = original.atomTextScaling
-    self.atomTextColor = original.atomTextColor
-    self.atomTextGlowColor = original.atomTextGlowColor
-    self.atomTextStyle = original.atomTextStyle
-    self.atomTextEffect = original.atomTextEffect
-    self.atomTextAlignment = original.atomTextAlignment
-    self.atomTextOffset = original.atomTextOffset
+    self.atomTextType = copy.atomTextType
+    self.atomTextFont = copy.atomTextFont
+    self.atomTextScaling = copy.atomTextScaling
+    self.atomTextColor = copy.atomTextColor
+    self.atomTextGlowColor = copy.atomTextGlowColor
+    self.atomTextStyle = copy.atomTextStyle
+    self.atomTextEffect = copy.atomTextEffect
+    self.atomTextAlignment = copy.atomTextAlignment
+    self.atomTextOffset = copy.atomTextOffset
     
     // unit cell
-    self.drawUnitCell = original.drawUnitCell
-    self.unitCellScaleFactor = original.unitCellScaleFactor
-    self.unitCellDiffuseColor = original.unitCellDiffuseColor
-    self.unitCellDiffuseIntensity = original.unitCellDiffuseIntensity
+    self.drawUnitCell = copy.drawUnitCell
+    self.unitCellScaleFactor = copy.unitCellScaleFactor
+    self.unitCellDiffuseColor = copy.unitCellDiffuseColor
+    self.unitCellDiffuseIntensity = copy.unitCellDiffuseIntensity
     
     // adsorption surface
-    self.frameworkProbeMolecule = original.frameworkProbeMolecule
+    self.frameworkProbeMolecule = copy.frameworkProbeMolecule
 
-    self.drawAdsorptionSurface = original.drawAdsorptionSurface
-    self.adsorptionSurfaceOpacity = original.adsorptionSurfaceOpacity
-    self.adsorptionSurfaceIsoValue = original.adsorptionSurfaceIsoValue
+    self.drawAdsorptionSurface = copy.drawAdsorptionSurface
+    self.adsorptionSurfaceOpacity = copy.adsorptionSurfaceOpacity
+    self.adsorptionSurfaceIsoValue = copy.adsorptionSurfaceIsoValue
     
-    self.adsorptionSurfaceSize = original.adsorptionSurfaceSize
-    self.adsorptionSurfaceNumberOfTriangles = original.adsorptionSurfaceNumberOfTriangles
+    self.adsorptionSurfaceSize = copy.adsorptionSurfaceSize
+    self.adsorptionSurfaceNumberOfTriangles = copy.adsorptionSurfaceNumberOfTriangles
     
-    self.adsorptionSurfaceProbeMolecule = original.adsorptionSurfaceProbeMolecule
+    self.adsorptionSurfaceProbeMolecule = copy.adsorptionSurfaceProbeMolecule
     
-    self.adsorptionSurfaceFrontSideHDR = original.adsorptionSurfaceFrontSideHDR
-    self.adsorptionSurfaceFrontSideHDRExposure = original.adsorptionSurfaceFrontSideHDRExposure
-    self.adsorptionSurfaceFrontSideAmbientColor = original.adsorptionSurfaceFrontSideAmbientColor
-    self.adsorptionSurfaceFrontSideDiffuseColor = original.adsorptionSurfaceFrontSideDiffuseColor
-    self.adsorptionSurfaceFrontSideSpecularColor = original.adsorptionSurfaceFrontSideSpecularColor
-    self.adsorptionSurfaceFrontSideDiffuseIntensity = original.adsorptionSurfaceFrontSideDiffuseIntensity
-    self.adsorptionSurfaceFrontSideAmbientIntensity = original.adsorptionSurfaceFrontSideAmbientIntensity
-    self.adsorptionSurfaceFrontSideSpecularIntensity = original.adsorptionSurfaceFrontSideSpecularIntensity
-    self.adsorptionSurfaceFrontSideShininess = original.adsorptionSurfaceFrontSideShininess
+    self.adsorptionSurfaceFrontSideHDR = copy.adsorptionSurfaceFrontSideHDR
+    self.adsorptionSurfaceFrontSideHDRExposure = copy.adsorptionSurfaceFrontSideHDRExposure
+    self.adsorptionSurfaceFrontSideAmbientColor = copy.adsorptionSurfaceFrontSideAmbientColor
+    self.adsorptionSurfaceFrontSideDiffuseColor = copy.adsorptionSurfaceFrontSideDiffuseColor
+    self.adsorptionSurfaceFrontSideSpecularColor = copy.adsorptionSurfaceFrontSideSpecularColor
+    self.adsorptionSurfaceFrontSideDiffuseIntensity = copy.adsorptionSurfaceFrontSideDiffuseIntensity
+    self.adsorptionSurfaceFrontSideAmbientIntensity = copy.adsorptionSurfaceFrontSideAmbientIntensity
+    self.adsorptionSurfaceFrontSideSpecularIntensity = copy.adsorptionSurfaceFrontSideSpecularIntensity
+    self.adsorptionSurfaceFrontSideShininess = copy.adsorptionSurfaceFrontSideShininess
     
-    self.adsorptionSurfaceBackSideHDR = original.adsorptionSurfaceBackSideHDR
-    self.adsorptionSurfaceBackSideHDRExposure = original.adsorptionSurfaceBackSideHDRExposure
-    self.adsorptionSurfaceBackSideAmbientColor = original.adsorptionSurfaceBackSideAmbientColor
-    self.adsorptionSurfaceBackSideDiffuseColor = original.adsorptionSurfaceBackSideDiffuseColor
-    self.adsorptionSurfaceBackSideSpecularColor = original.adsorptionSurfaceBackSideSpecularColor
-    self.adsorptionSurfaceBackSideDiffuseIntensity = original.adsorptionSurfaceBackSideDiffuseIntensity
-    self.adsorptionSurfaceBackSideAmbientIntensity = original.adsorptionSurfaceBackSideAmbientIntensity
-    self.adsorptionSurfaceBackSideSpecularIntensity = original.adsorptionSurfaceBackSideSpecularIntensity
-    self.adsorptionSurfaceBackSideShininess = original.adsorptionSurfaceBackSideShininess
+    self.adsorptionSurfaceBackSideHDR = copy.adsorptionSurfaceBackSideHDR
+    self.adsorptionSurfaceBackSideHDRExposure = copy.adsorptionSurfaceBackSideHDRExposure
+    self.adsorptionSurfaceBackSideAmbientColor = copy.adsorptionSurfaceBackSideAmbientColor
+    self.adsorptionSurfaceBackSideDiffuseColor = copy.adsorptionSurfaceBackSideDiffuseColor
+    self.adsorptionSurfaceBackSideSpecularColor = copy.adsorptionSurfaceBackSideSpecularColor
+    self.adsorptionSurfaceBackSideDiffuseIntensity = copy.adsorptionSurfaceBackSideDiffuseIntensity
+    self.adsorptionSurfaceBackSideAmbientIntensity = copy.adsorptionSurfaceBackSideAmbientIntensity
+    self.adsorptionSurfaceBackSideSpecularIntensity = copy.adsorptionSurfaceBackSideSpecularIntensity
+    self.adsorptionSurfaceBackSideShininess = copy.adsorptionSurfaceBackSideShininess
     
 
-    self.creationDate = original.creationDate
-    self.creationTemperature = original.creationTemperature
-    self.creationTemperatureScale = original.creationTemperatureScale
-    self.creationPressure = original.creationPressure
-    self.creationPressureScale = original.creationPressureScale
-    self.creationMethod = original.creationMethod
-    self.creationUnitCellRelaxationMethod = original.creationUnitCellRelaxationMethod
-    self.creationAtomicPositionsSoftwarePackage = original.creationAtomicPositionsSoftwarePackage
-    self.creationAtomicPositionsIonsRelaxationAlgorithm = original.creationAtomicPositionsIonsRelaxationAlgorithm
-    self.creationAtomicPositionsIonsRelaxationCheck = original.creationAtomicPositionsIonsRelaxationCheck
-    self.creationAtomicPositionsForcefield = original.creationAtomicPositionsForcefield
-    self.creationAtomicPositionsForcefieldDetails = original.creationAtomicPositionsForcefieldDetails
-    self.creationAtomicChargesSoftwarePackage = original.creationAtomicChargesSoftwarePackage
-    self.creationAtomicChargesAlgorithms = original.creationAtomicChargesAlgorithms
-    self.creationAtomicChargesForcefield = original.creationAtomicChargesForcefield
-    self.creationAtomicChargesForcefieldDetails = original.creationAtomicChargesForcefieldDetails
+    self.creationDate = copy.creationDate
+    self.creationTemperature = copy.creationTemperature
+    self.creationTemperatureScale = copy.creationTemperatureScale
+    self.creationPressure = copy.creationPressure
+    self.creationPressureScale = copy.creationPressureScale
+    self.creationMethod = copy.creationMethod
+    self.creationUnitCellRelaxationMethod = copy.creationUnitCellRelaxationMethod
+    self.creationAtomicPositionsSoftwarePackage = copy.creationAtomicPositionsSoftwarePackage
+    self.creationAtomicPositionsIonsRelaxationAlgorithm = copy.creationAtomicPositionsIonsRelaxationAlgorithm
+    self.creationAtomicPositionsIonsRelaxationCheck = copy.creationAtomicPositionsIonsRelaxationCheck
+    self.creationAtomicPositionsForcefield = copy.creationAtomicPositionsForcefield
+    self.creationAtomicPositionsForcefieldDetails = copy.creationAtomicPositionsForcefieldDetails
+    self.creationAtomicChargesSoftwarePackage = copy.creationAtomicChargesSoftwarePackage
+    self.creationAtomicChargesAlgorithms = copy.creationAtomicChargesAlgorithms
+    self.creationAtomicChargesForcefield = copy.creationAtomicChargesForcefield
+    self.creationAtomicChargesForcefieldDetails = copy.creationAtomicChargesForcefieldDetails
     
-    self.chemicalFormulaMoiety = original.chemicalFormulaMoiety
-    self.chemicalFormulaSum = original.chemicalFormulaSum
-    self.chemicalNameSystematic = original.chemicalNameSystematic
-    self.cellFormulaUnitsZ = original.cellFormulaUnitsZ
+    self.chemicalFormulaMoiety = copy.chemicalFormulaMoiety
+    self.chemicalFormulaSum = copy.chemicalFormulaSum
+    self.chemicalNameSystematic = copy.chemicalNameSystematic
+    self.cellFormulaUnitsZ = copy.cellFormulaUnitsZ
     
     
-    self.citationArticleTitle = original.citationArticleTitle
-    self.citationJournalTitle = original.citationJournalTitle
-    self.citationAuthors = original.citationAuthors
-    self.citationJournalVolume = original.citationJournalVolume
-    self.citationJournalNumber = original.citationJournalNumber
-    self.citationJournalPageNumbers = original.citationJournalPageNumbers
-    self.citationDOI = original.citationDOI
-    self.citationPublicationDate = original.citationPublicationDate
-    self.citationDatebaseCodes = original.citationDatebaseCodes
+    self.citationArticleTitle = copy.citationArticleTitle
+    self.citationJournalTitle = copy.citationJournalTitle
+    self.citationAuthors = copy.citationAuthors
+    self.citationJournalVolume = copy.citationJournalVolume
+    self.citationJournalNumber = copy.citationJournalNumber
+    self.citationJournalPageNumbers = copy.citationJournalPageNumbers
+    self.citationDOI = copy.citationDOI
+    self.citationPublicationDate = copy.citationPublicationDate
+    self.citationDatebaseCodes = copy.citationDatebaseCodes
     
-    self.experimentalMeasurementRadiation = original.experimentalMeasurementRadiation
-    self.experimentalMeasurementWaveLength = original.experimentalMeasurementWaveLength
-    self.experimentalMeasurementThetaMin = original.experimentalMeasurementThetaMin
-    self.experimentalMeasurementThetaMax = original.experimentalMeasurementThetaMax
-    self.experimentalMeasurementIndexLimitsHmin = original.experimentalMeasurementIndexLimitsHmin
-    self.experimentalMeasurementIndexLimitsHmax = original.experimentalMeasurementIndexLimitsHmax
-    self.experimentalMeasurementIndexLimitsKmin = original.experimentalMeasurementIndexLimitsKmin
-    self.experimentalMeasurementIndexLimitsKmax = original.experimentalMeasurementIndexLimitsKmax
-    self.experimentalMeasurementIndexLimitsLmin = original.experimentalMeasurementIndexLimitsLmin
-    self.experimentalMeasurementIndexLimitsLmax = original.experimentalMeasurementIndexLimitsLmax
-    self.experimentalMeasurementNumberOfSymmetryIndependentReflections = original.experimentalMeasurementNumberOfSymmetryIndependentReflections
-    self.experimentalMeasurementSoftware = original.experimentalMeasurementSoftware
-    self.experimentalMeasurementRefinementDetails = original.experimentalMeasurementRefinementDetails
-    self.experimentalMeasurementGoodnessOfFit = original.experimentalMeasurementGoodnessOfFit
-    self.experimentalMeasurementRFactorGt = original.experimentalMeasurementRFactorGt
-    self.experimentalMeasurementRFactorAll = original.experimentalMeasurementRFactorAll
+    self.experimentalMeasurementRadiation = copy.experimentalMeasurementRadiation
+    self.experimentalMeasurementWaveLength = copy.experimentalMeasurementWaveLength
+    self.experimentalMeasurementThetaMin = copy.experimentalMeasurementThetaMin
+    self.experimentalMeasurementThetaMax = copy.experimentalMeasurementThetaMax
+    self.experimentalMeasurementIndexLimitsHmin = copy.experimentalMeasurementIndexLimitsHmin
+    self.experimentalMeasurementIndexLimitsHmax = copy.experimentalMeasurementIndexLimitsHmax
+    self.experimentalMeasurementIndexLimitsKmin = copy.experimentalMeasurementIndexLimitsKmin
+    self.experimentalMeasurementIndexLimitsKmax = copy.experimentalMeasurementIndexLimitsKmax
+    self.experimentalMeasurementIndexLimitsLmin = copy.experimentalMeasurementIndexLimitsLmin
+    self.experimentalMeasurementIndexLimitsLmax = copy.experimentalMeasurementIndexLimitsLmax
+    self.experimentalMeasurementNumberOfSymmetryIndependentReflections = copy.experimentalMeasurementNumberOfSymmetryIndependentReflections
+    self.experimentalMeasurementSoftware = copy.experimentalMeasurementSoftware
+    self.experimentalMeasurementRefinementDetails = copy.experimentalMeasurementRefinementDetails
+    self.experimentalMeasurementGoodnessOfFit = copy.experimentalMeasurementGoodnessOfFit
+    self.experimentalMeasurementRFactorGt = copy.experimentalMeasurementRFactorGt
+    self.experimentalMeasurementRFactorAll = copy.experimentalMeasurementRFactorAll
     
     self.setRepresentationStyle(style: self.atomRepresentationStyle)
   }
   
-  public required init(clone: Structure)
+  public required init(from object: Object)
+  
+  {
+    super.init(from: object)
+  
+    if let atomViewer: AtomViewer = object as? AtomViewer
+    {
+      atomViewer.atomTreeController.tag()
+      let binaryAtomEncoder: BinaryEncoder = BinaryEncoder()
+      binaryAtomEncoder.encode(atomViewer.atomTreeController)
+      let atomData: Data = Data(binaryAtomEncoder.data)
+      
+      do
+      {
+        self.atomTreeController = try BinaryDecoder(data: [UInt8](atomData)).decode(SKAtomTreeController.self)
+      }
+      catch
+      {
+        debugPrint("Error")
+      }
+    }
+    
+    if let atomAppearanceViewer: AtomStructureViewer = object as? AtomStructureViewer
+    {
+      self.atomHue = atomAppearanceViewer.atomHue
+      self.atomSaturation = atomAppearanceViewer.atomSaturation
+      self.atomValue = atomAppearanceViewer.atomValue
+      self.atomScaleFactor = atomAppearanceViewer.atomScaleFactor
+      
+      self.drawAtoms = atomAppearanceViewer.drawAtoms
+      
+      self.atomAmbientOcclusion = atomAppearanceViewer.atomAmbientOcclusion
+      
+      self.atomHDR = atomAppearanceViewer.atomHDR
+      self.atomHDRExposure = atomAppearanceViewer.atomHDRExposure
+      
+      self.atomAmbientColor = atomAppearanceViewer.atomAmbientColor
+      self.atomDiffuseColor = atomAppearanceViewer.atomDiffuseColor
+      self.atomSpecularColor = atomAppearanceViewer.atomSpecularColor
+      self.atomAmbientIntensity = atomAppearanceViewer.atomAmbientIntensity
+      self.atomDiffuseIntensity = atomAppearanceViewer.atomDiffuseIntensity
+      self.atomSpecularIntensity = atomAppearanceViewer.atomSpecularIntensity
+      self.atomShininess = atomAppearanceViewer.atomShininess
+      
+      self.atomSelectionStyle = atomAppearanceViewer.atomSelectionStyle
+      self.atomSelectionIntensity = atomAppearanceViewer.atomSelectionIntensity
+      self.atomSelectionScaling = atomAppearanceViewer.atomSelectionScaling
+    }
+    
+    if let bondAppearanceViewer: BondStructureViewer = object as? BondStructureViewer
+    {
+      self.drawBonds = bondAppearanceViewer.drawBonds
+      self.bondScaleFactor = bondAppearanceViewer.bondScaleFactor
+      self.bondColorMode = bondAppearanceViewer.bondColorMode
+      
+      self.bondAmbientOcclusion = bondAppearanceViewer.bondAmbientOcclusion
+      
+      self.bondHDR = bondAppearanceViewer.bondHDR
+      self.bondHDRExposure = bondAppearanceViewer.bondHDRExposure
+      
+      self.bondHue = bondAppearanceViewer.bondHue
+      self.bondSaturation = bondAppearanceViewer.bondSaturation
+      self.bondValue = bondAppearanceViewer.bondValue
+      
+      self.bondAmbientColor = bondAppearanceViewer.bondAmbientColor
+      self.bondDiffuseColor = bondAppearanceViewer.bondDiffuseColor
+      self.bondSpecularColor = bondAppearanceViewer.bondSpecularColor
+      self.bondAmbientIntensity = bondAppearanceViewer.bondAmbientIntensity
+      self.bondDiffuseIntensity = bondAppearanceViewer.bondDiffuseIntensity
+      self.bondSpecularIntensity = bondAppearanceViewer.bondSpecularIntensity
+      self.bondShininess = bondAppearanceViewer.bondShininess
+      
+      self.bondSelectionStyle = bondAppearanceViewer.bondSelectionStyle
+      self.bondSelectionIntensity = bondAppearanceViewer.bondSelectionIntensity
+      self.bondSelectionScaling = bondAppearanceViewer.bondSelectionScaling
+    }
+    
+    if let adsorptionViewer: AdsorptionSurfaceViewer = object as? AdsorptionSurfaceViewer
+    {
+      self.drawAdsorptionSurface = adsorptionViewer.drawAdsorptionSurface
+      self.adsorptionSurfaceSize = adsorptionViewer.adsorptionSurfaceSize
+
+      self.adsorptionSurfaceOpacity = adsorptionViewer.adsorptionSurfaceOpacity
+      self.adsorptionSurfaceIsoValue = adsorptionViewer.adsorptionSurfaceIsoValue
+      self.adsorptionSurfaceProbeMolecule = adsorptionViewer.adsorptionSurfaceProbeMolecule
+      
+      self.adsorptionSurfaceRenderingMethod = adsorptionViewer.adsorptionSurfaceRenderingMethod
+      self.adsorptionVolumeTransferFunction = adsorptionViewer.adsorptionVolumeTransferFunction
+      self.adsorptionVolumeStepLength = adsorptionViewer.adsorptionVolumeStepLength
+      
+      self.minimumGridEnergyValue = adsorptionViewer.minimumGridEnergyValue
+      
+      self.adsorptionSurfaceHue = adsorptionViewer.adsorptionSurfaceHue
+      self.adsorptionSurfaceSaturation = adsorptionViewer.adsorptionSurfaceSaturation
+      self.adsorptionSurfaceValue = adsorptionViewer.adsorptionSurfaceValue
+      
+      self.adsorptionSurfaceFrontSideHDR = adsorptionViewer.adsorptionSurfaceFrontSideHDR
+      self.adsorptionSurfaceFrontSideHDRExposure = adsorptionViewer.adsorptionSurfaceFrontSideHDRExposure
+      self.adsorptionSurfaceFrontSideAmbientIntensity = adsorptionViewer.adsorptionSurfaceFrontSideAmbientIntensity
+      self.adsorptionSurfaceFrontSideDiffuseIntensity = adsorptionViewer.adsorptionSurfaceFrontSideDiffuseIntensity
+      self.adsorptionSurfaceFrontSideSpecularIntensity = adsorptionViewer.adsorptionSurfaceFrontSideSpecularIntensity
+      self.adsorptionSurfaceFrontSideShininess = adsorptionViewer.adsorptionSurfaceFrontSideShininess
+      self.adsorptionSurfaceFrontSideAmbientColor = adsorptionViewer.adsorptionSurfaceFrontSideAmbientColor
+      self.adsorptionSurfaceFrontSideDiffuseColor = adsorptionViewer.adsorptionSurfaceFrontSideDiffuseColor
+      self.adsorptionSurfaceFrontSideSpecularColor = adsorptionViewer.adsorptionSurfaceFrontSideSpecularColor
+      
+      self.adsorptionSurfaceBackSideHDR = adsorptionViewer.adsorptionSurfaceBackSideHDR
+      self.adsorptionSurfaceBackSideHDRExposure = adsorptionViewer.adsorptionSurfaceBackSideHDRExposure
+      self.adsorptionSurfaceBackSideAmbientIntensity = adsorptionViewer.adsorptionSurfaceBackSideAmbientIntensity
+      self.adsorptionSurfaceBackSideDiffuseIntensity = adsorptionViewer.adsorptionSurfaceBackSideDiffuseIntensity
+      self.adsorptionSurfaceBackSideSpecularIntensity = adsorptionViewer.adsorptionSurfaceBackSideSpecularIntensity
+      self.adsorptionSurfaceBackSideShininess = adsorptionViewer.adsorptionSurfaceBackSideShininess
+      self.adsorptionSurfaceBackSideAmbientColor = adsorptionViewer.adsorptionSurfaceBackSideAmbientColor
+      self.adsorptionSurfaceBackSideDiffuseColor = adsorptionViewer.adsorptionSurfaceBackSideDiffuseColor
+      self.adsorptionSurfaceBackSideSpecularColor = adsorptionViewer.adsorptionSurfaceBackSideSpecularColor
+    }
+    
+    if let cellStructureViewer: StructuralPropertyViewer = object as? StructuralPropertyViewer
+    {
+      self.structureType = cellStructureViewer.structureType
+      self.structureMaterialType = cellStructureViewer.structureMaterialType
+      self.frameworkProbeMolecule = cellStructureViewer.frameworkProbeMolecule
+      self.structureMass = cellStructureViewer.structureMass
+      self.structureDensity = cellStructureViewer.structureDensity
+      self.structureHeliumVoidFraction = cellStructureViewer.structureHeliumVoidFraction
+      self.structureSpecificVolume = cellStructureViewer.structureSpecificVolume
+      self.structureAccessiblePoreVolume = cellStructureViewer.structureAccessiblePoreVolume
+      self.structureVolumetricNitrogenSurfaceArea = cellStructureViewer.structureVolumetricNitrogenSurfaceArea
+      self.structureGravimetricNitrogenSurfaceArea = cellStructureViewer.structureGravimetricNitrogenSurfaceArea
+      self.structureNumberOfChannelSystems = cellStructureViewer.structureNumberOfChannelSystems
+      self.structureNumberOfInaccessiblePockets = cellStructureViewer.structureNumberOfInaccessiblePockets
+      self.structureDimensionalityOfPoreSystem = cellStructureViewer.structureDimensionalityOfPoreSystem
+      self.structureLargestCavityDiameter = cellStructureViewer.structureLargestCavityDiameter
+      self.structureRestrictingPoreLimitingDiameter = cellStructureViewer.structureRestrictingPoreLimitingDiameter
+      self.structureLargestCavityDiameterAlongAViablePath = cellStructureViewer.structureLargestCavityDiameterAlongAViablePath
+    }
+    
+    if let annotationViewer: AnnotationViewer = object as? AnnotationViewer
+    {
+      self.atomTextType = annotationViewer.atomTextType
+      self.atomTextFont = annotationViewer.atomTextFont
+      self.atomTextAlignment = annotationViewer.atomTextAlignment
+      self.atomTextStyle = annotationViewer.atomTextStyle
+      self.atomTextColor = annotationViewer.atomTextColor
+      self.atomTextScaling = annotationViewer.atomTextScaling
+      self.atomTextOffset = annotationViewer.atomTextOffset
+      self.atomTextGlowColor = annotationViewer.atomTextGlowColor
+      self.atomTextEffect = annotationViewer.atomTextEffect
+    }
+    
+    if let infoViewer: InfoViewer = object as? InfoViewer
+    {
+      self.authorFirstName = infoViewer.authorFirstName
+      self.authorMiddleName = infoViewer.authorMiddleName
+      self.authorLastName = infoViewer.authorLastName
+      self.authorOrchidID = infoViewer.authorOrchidID
+      self.authorResearcherID = infoViewer.authorResearcherID
+      self.authorAffiliationUniversityName = infoViewer.authorAffiliationUniversityName
+      self.authorAffiliationFacultyName = infoViewer.authorAffiliationFacultyName
+      self.authorAffiliationInstituteName = infoViewer.authorAffiliationInstituteName
+      self.authorAffiliationCityName = infoViewer.authorAffiliationCityName
+      self.authorAffiliationCountryName = infoViewer.authorAffiliationCountryName
+      
+      self.creationDate = infoViewer.creationDate
+      self.creationTemperature = infoViewer.creationTemperature
+      self.creationTemperatureScale = infoViewer.creationTemperatureScale
+      self.creationPressure = infoViewer.creationPressure
+      self.creationPressureScale = infoViewer.creationPressureScale
+      self.creationMethod = infoViewer.creationMethod
+      self.creationUnitCellRelaxationMethod = infoViewer.creationUnitCellRelaxationMethod
+      self.creationAtomicPositionsSoftwarePackage = infoViewer.creationAtomicPositionsSoftwarePackage
+      self.creationAtomicPositionsIonsRelaxationAlgorithm = infoViewer.creationAtomicPositionsIonsRelaxationAlgorithm
+      self.creationAtomicPositionsIonsRelaxationCheck = infoViewer.creationAtomicPositionsIonsRelaxationCheck
+      self.creationAtomicPositionsForcefield = infoViewer.creationAtomicPositionsForcefield
+      self.creationAtomicPositionsForcefieldDetails = infoViewer.creationAtomicPositionsForcefieldDetails
+      self.creationAtomicChargesSoftwarePackage = infoViewer.creationAtomicChargesSoftwarePackage
+      self.creationAtomicChargesAlgorithms = infoViewer.creationAtomicChargesAlgorithms
+      self.creationAtomicChargesForcefield = infoViewer.creationAtomicChargesForcefield
+      self.creationAtomicChargesForcefieldDetails = infoViewer.creationAtomicChargesForcefieldDetails
+      
+      self.experimentalMeasurementRadiation = infoViewer.experimentalMeasurementRadiation
+      self.experimentalMeasurementWaveLength = infoViewer.experimentalMeasurementWaveLength
+      self.experimentalMeasurementThetaMin = infoViewer.experimentalMeasurementThetaMin
+      self.experimentalMeasurementThetaMax = infoViewer.experimentalMeasurementThetaMax
+      self.experimentalMeasurementIndexLimitsHmin = infoViewer.experimentalMeasurementIndexLimitsHmin
+      self.experimentalMeasurementIndexLimitsHmax = infoViewer.experimentalMeasurementIndexLimitsHmax
+      self.experimentalMeasurementIndexLimitsKmin = infoViewer.experimentalMeasurementIndexLimitsKmin
+      self.experimentalMeasurementIndexLimitsKmax = infoViewer.experimentalMeasurementIndexLimitsKmax
+      self.experimentalMeasurementIndexLimitsLmin = infoViewer.experimentalMeasurementIndexLimitsLmin
+      self.experimentalMeasurementIndexLimitsLmax = infoViewer.experimentalMeasurementIndexLimitsLmax
+      self.experimentalMeasurementNumberOfSymmetryIndependentReflections = infoViewer.experimentalMeasurementNumberOfSymmetryIndependentReflections
+      self.experimentalMeasurementSoftware = infoViewer.experimentalMeasurementSoftware
+      self.experimentalMeasurementRefinementDetails = infoViewer.experimentalMeasurementRefinementDetails
+      self.experimentalMeasurementGoodnessOfFit = infoViewer.experimentalMeasurementGoodnessOfFit
+      self.experimentalMeasurementRFactorGt = infoViewer.experimentalMeasurementRFactorGt
+      self.experimentalMeasurementRFactorAll = infoViewer.experimentalMeasurementRFactorAll
+      
+      self.chemicalFormulaMoiety = infoViewer.chemicalFormulaMoiety
+      self.chemicalFormulaSum = infoViewer.chemicalFormulaSum
+      self.chemicalNameSystematic = infoViewer.chemicalNameSystematic
+      
+      self.citationArticleTitle = infoViewer.citationArticleTitle
+      self.citationAuthors = infoViewer.citationAuthors
+      self.citationJournalTitle = infoViewer.citationJournalTitle
+      self.citationJournalVolume = infoViewer.citationJournalVolume
+      self.citationJournalNumber = infoViewer.citationJournalNumber
+      self.citationDOI = infoViewer.citationDOI
+      self.citationPublicationDate = infoViewer.citationPublicationDate
+      self.citationDatebaseCodes = infoViewer.citationDatebaseCodes
+    }
+    
+    
+    
+    self.setRepresentationStyle(style: self.atomRepresentationStyle)
+  }
+  
+  public init(clone: Structure)
   {
     super.init()
     
@@ -1182,7 +1374,6 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     self.bondSetController.selectedObjects = clone.bondSetController.selectedObjects
     
     self.setRepresentationStyle(style: self.atomRepresentationStyle)
- 
   }
   
   // MARK: -
@@ -1927,7 +2118,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
      return acos(dot(vectorAB, vectorBC))
    }
   
-  public static func distance(_ atom1: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atom2: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
+  public static func distance(_ atom1: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atom2: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
   {
     var periodicLength: Double? = nil
     if(atom1.structure === atom2.structure && atom1.structure.periodic)
@@ -1945,7 +2136,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     return (length(absoluteCartesianPosition2 - absoluteCartesianPosition1), periodicLength)
   }
   
-  public static func bendAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
+  public static func bendAngle(_ atomA: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
   {
     var periodicAngle: Double? = nil
     if((atomA.structure === atomB.structure) && (atomB.structure === atomC.structure) && atomA.structure.periodic)
@@ -1976,7 +2167,7 @@ public class Structure: Object, AtomViewer, BondViewer, SKRenderAdsorptionSurfac
     return (acos(dot(vectorAB, vectorBC)), periodicAngle)
   }
   
-  public static func dihedralAngle(_ atomA: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderStructure, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
+  public static func dihedralAngle(_ atomA: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomB: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomC: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>), _ atomD: (structure: RKRenderObject, copy: SKAtomCopy, replicaPosition: SIMD3<Int32>)) -> (Double, Double?)
   {
     var periodicAngle: Double? = nil
     if((atomA.structure === atomB.structure) && (atomB.structure === atomC.structure) && atomA.structure.periodic)

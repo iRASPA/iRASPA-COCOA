@@ -305,23 +305,23 @@ extension ProjectViewController
         projectTreeNode.representedObject.storageType = .publicCloud
         
         if let projectStructure: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-           let structure = projectStructure.allIRASPAStructures.first
+           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyViewer
         {
           // if modified, take the new data
-          projectTreeNode.representedObject.volumetricSurfaceArea = structure.renderStructureVolumetricNitrogenSurfaceArea ?? 0.0
-          projectTreeNode.representedObject.gravimetricSurfaceArea = structure.renderStructureGravimetricNitrogenSurfaceArea ?? 0.0
-          projectTreeNode.representedObject.heliumVoidFraction = structure.renderStructureHeliumVoidFraction ?? 0.0
-          projectTreeNode.representedObject.largestOverallCavityDiameter = structure.renderStructureLargestCavityDiameter ?? 0.0
-          projectTreeNode.representedObject.restrictingPoreDiameter = structure.renderStructureRestrictingPoreLimitingDiameter ?? 0.0
-          projectTreeNode.representedObject.largestDiameterAlongViablePath = structure.renderStructureLargestCavityDiameterAlongAViablePath ?? 0.0
-          projectTreeNode.representedObject.density = structure.renderStructureDensity ?? 0.0
-          projectTreeNode.representedObject.mass = structure.renderStructureMass ?? 0.0
-          projectTreeNode.representedObject.specificVolume = structure.renderStructureSpecificVolume ?? 0.0
-          projectTreeNode.representedObject.accessiblePoreVolume = structure.renderStructureAccessiblePoreVolume ?? 0.0
-          projectTreeNode.representedObject.numberOfChannelSystems = structure.renderStructureNumberOfChannelSystems ?? 0
-          projectTreeNode.representedObject.numberOfInaccesiblePockets = structure.renderStructureNumberOfInaccessiblePockets ?? 0
-          projectTreeNode.representedObject.dimensionalityPoreSystem = structure.renderStructureDimensionalityOfPoreSystem ?? 0
-          projectTreeNode.representedObject.materialType = structure.renderStructureMaterialType ?? "Unspecified"
+          projectTreeNode.representedObject.volumetricSurfaceArea = structure.structureVolumetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.gravimetricSurfaceArea = structure.structureGravimetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.heliumVoidFraction = structure.structureHeliumVoidFraction
+          projectTreeNode.representedObject.largestOverallCavityDiameter = structure.structureLargestCavityDiameter
+          projectTreeNode.representedObject.restrictingPoreDiameter = structure.structureRestrictingPoreLimitingDiameter
+          projectTreeNode.representedObject.largestDiameterAlongViablePath = structure.structureLargestCavityDiameterAlongAViablePath
+          projectTreeNode.representedObject.density = structure.structureDensity
+          projectTreeNode.representedObject.mass = structure.structureMass
+          projectTreeNode.representedObject.specificVolume = structure.structureSpecificVolume
+          projectTreeNode.representedObject.accessiblePoreVolume = structure.structureAccessiblePoreVolume
+          projectTreeNode.representedObject.numberOfChannelSystems = structure.structureNumberOfChannelSystems
+          projectTreeNode.representedObject.numberOfInaccesiblePockets = structure.structureNumberOfInaccessiblePockets
+          projectTreeNode.representedObject.dimensionalityPoreSystem = structure.structureDimensionalityOfPoreSystem
+          projectTreeNode.representedObject.materialType = structure.structureMaterialType
         }
       }
       
@@ -361,23 +361,23 @@ extension ProjectViewController
         projectTreeNode.representedObject.storageType = .publicCloud
         
         if let projectStructure: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-           let structure = projectStructure.allIRASPAStructures.first
+           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyViewer
         {
           // if modified, take the new data
-          projectTreeNode.representedObject.volumetricSurfaceArea = structure.renderStructureVolumetricNitrogenSurfaceArea ?? 0.0
-          projectTreeNode.representedObject.gravimetricSurfaceArea = structure.renderStructureGravimetricNitrogenSurfaceArea ?? 0.0
-          projectTreeNode.representedObject.heliumVoidFraction = structure.renderStructureHeliumVoidFraction ?? 0.0
-          projectTreeNode.representedObject.largestOverallCavityDiameter = structure.renderStructureLargestCavityDiameter ?? 0.0
-          projectTreeNode.representedObject.restrictingPoreDiameter = structure.renderStructureRestrictingPoreLimitingDiameter ?? 0.0
-          projectTreeNode.representedObject.largestDiameterAlongViablePath = structure.renderStructureLargestCavityDiameterAlongAViablePath ?? 0.0
-          projectTreeNode.representedObject.density = structure.renderStructureDensity ?? 0.0
-          projectTreeNode.representedObject.mass = structure.renderStructureMass ?? 0.0
-          projectTreeNode.representedObject.specificVolume = structure.renderStructureSpecificVolume ?? 0.0
-          projectTreeNode.representedObject.accessiblePoreVolume = structure.renderStructureAccessiblePoreVolume ?? 0.0
-          projectTreeNode.representedObject.numberOfChannelSystems = structure.renderStructureNumberOfChannelSystems ?? 0
-          projectTreeNode.representedObject.numberOfInaccesiblePockets = structure.renderStructureNumberOfInaccessiblePockets ?? 0
-          projectTreeNode.representedObject.dimensionalityPoreSystem = structure.renderStructureDimensionalityOfPoreSystem ?? 0
-          projectTreeNode.representedObject.materialType = structure.renderStructureMaterialType ?? "Unspecified"
+          projectTreeNode.representedObject.volumetricSurfaceArea = structure.structureVolumetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.gravimetricSurfaceArea = structure.structureGravimetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.heliumVoidFraction = structure.structureHeliumVoidFraction
+          projectTreeNode.representedObject.largestOverallCavityDiameter = structure.structureLargestCavityDiameter
+          projectTreeNode.representedObject.restrictingPoreDiameter = structure.structureRestrictingPoreLimitingDiameter
+          projectTreeNode.representedObject.largestDiameterAlongViablePath = structure.structureLargestCavityDiameterAlongAViablePath
+          projectTreeNode.representedObject.density = structure.structureDensity
+          projectTreeNode.representedObject.mass = structure.structureMass
+          projectTreeNode.representedObject.specificVolume = structure.structureSpecificVolume
+          projectTreeNode.representedObject.accessiblePoreVolume = structure.structureAccessiblePoreVolume
+          projectTreeNode.representedObject.numberOfChannelSystems = structure.structureNumberOfChannelSystems
+          projectTreeNode.representedObject.numberOfInaccesiblePockets = structure.structureNumberOfInaccessiblePockets
+          projectTreeNode.representedObject.dimensionalityPoreSystem = structure.structureDimensionalityOfPoreSystem
+          projectTreeNode.representedObject.materialType = structure.structureMaterialType
         }
       }
       
@@ -417,23 +417,23 @@ extension ProjectViewController
         projectTreeNode.representedObject.storageType = .publicCloud
         
         if let projectStructure: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-           let structure = projectStructure.allIRASPAStructures.first
+           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyViewer
         {
           // if modified, take the new data
-          projectTreeNode.representedObject.volumetricSurfaceArea = structure.renderStructureVolumetricNitrogenSurfaceArea ?? 0.0
-          projectTreeNode.representedObject.gravimetricSurfaceArea = structure.renderStructureGravimetricNitrogenSurfaceArea ?? 0.0
-          projectTreeNode.representedObject.heliumVoidFraction = structure.renderStructureHeliumVoidFraction ?? 0.0
-          projectTreeNode.representedObject.largestOverallCavityDiameter = structure.renderStructureLargestCavityDiameter ?? 0.0
-          projectTreeNode.representedObject.restrictingPoreDiameter = structure.renderStructureRestrictingPoreLimitingDiameter ?? 0.0
-          projectTreeNode.representedObject.largestDiameterAlongViablePath = structure.renderStructureLargestCavityDiameterAlongAViablePath ?? 0.0
-          projectTreeNode.representedObject.density = structure.renderStructureDensity ?? 0.0
-          projectTreeNode.representedObject.mass = structure.renderStructureMass ?? 0.0
-          projectTreeNode.representedObject.specificVolume = structure.renderStructureSpecificVolume ?? 0.0
-          projectTreeNode.representedObject.accessiblePoreVolume = structure.renderStructureAccessiblePoreVolume ?? 0.0
-          projectTreeNode.representedObject.numberOfChannelSystems = structure.renderStructureNumberOfChannelSystems ?? 0
-          projectTreeNode.representedObject.numberOfInaccesiblePockets = structure.renderStructureNumberOfInaccessiblePockets ?? 0
-          projectTreeNode.representedObject.dimensionalityPoreSystem = structure.renderStructureDimensionalityOfPoreSystem ?? 0
-          projectTreeNode.representedObject.materialType = structure.renderStructureMaterialType ?? "Unspecified"
+          projectTreeNode.representedObject.volumetricSurfaceArea = structure.structureVolumetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.gravimetricSurfaceArea = structure.structureGravimetricNitrogenSurfaceArea
+          projectTreeNode.representedObject.heliumVoidFraction = structure.structureHeliumVoidFraction
+          projectTreeNode.representedObject.largestOverallCavityDiameter = structure.structureLargestCavityDiameter
+          projectTreeNode.representedObject.restrictingPoreDiameter = structure.structureRestrictingPoreLimitingDiameter
+          projectTreeNode.representedObject.largestDiameterAlongViablePath = structure.structureLargestCavityDiameterAlongAViablePath
+          projectTreeNode.representedObject.density = structure.structureDensity
+          projectTreeNode.representedObject.mass = structure.structureMass
+          projectTreeNode.representedObject.specificVolume = structure.structureSpecificVolume
+          projectTreeNode.representedObject.accessiblePoreVolume = structure.structureAccessiblePoreVolume
+          projectTreeNode.representedObject.numberOfChannelSystems = structure.structureNumberOfChannelSystems
+          projectTreeNode.representedObject.numberOfInaccesiblePockets = structure.structureNumberOfInaccessiblePockets
+          projectTreeNode.representedObject.dimensionalityPoreSystem = structure.structureDimensionalityOfPoreSystem
+          projectTreeNode.representedObject.materialType = structure.structureMaterialType
         }
       }
       

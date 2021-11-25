@@ -38,7 +38,7 @@ import simd
 class MetalLocalAxesShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var pipeLine: MTLRenderPipelineState! = nil
   var indexBuffer: [[MTLBuffer?]] = [[]]
@@ -73,7 +73,7 @@ class MetalLocalAxesShader
       indexBuffer = []
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = renderStructures[i]
+        let structures: [RKRenderObject] = renderStructures[i]
         var vertexBufferArray: [MTLBuffer?] = [MTLBuffer?]()
         var indexBufferArray: [MTLBuffer?] = [MTLBuffer?]()
         
@@ -87,7 +87,6 @@ class MetalLocalAxesShader
           for structure in structures
           {
             let boundingBox: SKBoundingBox = structure.cell.boundingBox
-            let unitCell: double3x3 = structure.cell.unitCell
             
             let axesGeometry: MetalAxesSystemDefaultGeometry
             if let structure = structure as? RKRenderLocalAxesSource
@@ -140,7 +139,7 @@ class MetalLocalAxesShader
       var index: Int = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {

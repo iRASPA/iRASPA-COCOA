@@ -36,7 +36,7 @@ import SimulationKit
 import SymmetryKit
 
 
-public protocol RKRenderStructure: AnyObject
+public protocol RKRenderObject: AnyObject
 {
   var displayName: String {get}
   var isVisible: Bool {get}
@@ -51,7 +51,7 @@ public protocol RKRenderStructure: AnyObject
   func absoluteCartesianScenePosition(for position: SIMD3<Double>, replicaPosition: SIMD3<Int32>) -> SIMD3<Double>
 }
 
-public protocol RKRenderAtomSource: RKRenderStructure
+public protocol RKRenderAtomSource: RKRenderObject
 {
   var numberOfAtoms: Int {get}
   var drawAtoms: Bool {get}
@@ -101,7 +101,7 @@ public protocol RKRenderAtomSource: RKRenderStructure
   var atomSelectionScaling: Double {get}
 }
 
-public protocol RKRenderBondSource: RKRenderStructure
+public protocol RKRenderBondSource: RKRenderObject
 {
   var numberOfInternalBonds: Int {get}
   var numberOfExternalBonds: Int {get}
@@ -143,18 +143,18 @@ public protocol RKRenderBondSource: RKRenderStructure
   var bondSelectionScaling: Double {get}
 }
 
-public protocol RKRenderUnitCellSource: RKRenderStructure
+public protocol RKRenderUnitCellSource: RKRenderObject
 {
   var drawUnitCell: Bool {get}
-  var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms] {get}
-  var renderUnitCellCylinders: [RKInPerInstanceAttributesBonds] {get}
-  
   var unitCellScaleFactor: Double {get}
   var unitCellDiffuseColor: NSColor {get}
   var unitCellDiffuseIntensity: Double {get}
+  
+  var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms] {get}
+  var renderUnitCellCylinders: [RKInPerInstanceAttributesBonds] {get}
 }
 
-public protocol RKRenderAdsorptionSurfaceSource: RKRenderStructure
+public protocol RKRenderAdsorptionSurfaceSource: RKRenderObject
 {
   var potentialParameters: [SIMD2<Double>] {get}
   
@@ -311,12 +311,12 @@ public protocol RKRenderDataSource: AnyObject
 {
   var numberOfScenes: Int {get}
   func numberOfMovies(sceneIndex: Int) -> Int
-  func renderStructuresForScene(_ i: Int) -> [RKRenderStructure]
-  var renderStructures: [RKRenderStructure] {get}
+  func renderStructuresForScene(_ i: Int) -> [RKRenderObject]
+  var renderStructures: [RKRenderObject] {get}
   var renderLights: [RKRenderLight] {get}
   
   var renderMeasurementPoints: [RKInPerInstanceAttributesAtoms] {get}
-  var renderMeasurementStructure: [RKRenderStructure] {get}
+  var renderMeasurementStructure: [RKRenderObject] {get}
   
   var renderBoundingBox: SKBoundingBox {get}
   
@@ -334,4 +334,22 @@ public protocol RKRenderDataSource: AnyObject
   var renderBoundingBoxCylinders: [RKInPerInstanceAttributesBonds] {get}
   
   var renderAxes: RKGlobalAxes {get}
+}
+
+
+public protocol RKRenderDensityVolumeSource: AnyObject
+{
+  var data: Data {get}
+  var dimensions: SIMD3<Int32> {get}
+  var spacing: SIMD3<Double> {get}
+}
+
+public protocol RKRenderRASPADensityVolumeSource: RKRenderDensityVolumeSource
+{
+
+}
+
+public protocol RKRenderVTKDensityVolumeSource: RKRenderDensityVolumeSource
+{
+
 }

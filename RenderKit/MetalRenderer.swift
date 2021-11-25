@@ -64,6 +64,8 @@ public class MetalRenderer
   var isosurfaceShader: MetalEnergyIsosurfaceShader = MetalEnergyIsosurfaceShader()
   var volumeRenderedSurfaceShader: MetalEnergyVolumeRenderedSurfaceShader = MetalEnergyVolumeRenderedSurfaceShader()
   
+  var RASPADensityVolumeShader: MetalRASPADensityVolumeShader = MetalRASPADensityVolumeShader()
+  
   var textShader: MetalTextShader = MetalTextShader()
   
   var pickingShader: MetalPickingShader = MetalPickingShader()
@@ -185,7 +187,7 @@ public class MetalRenderer
     }
   }
   
-  func setDataSources(renderDataSource: RKRenderDataSource, renderStructures: [[RKRenderStructure]])
+  func setDataSources(renderDataSource: RKRenderDataSource, renderStructures: [[RKRenderObject]])
   {
     backgroundShader.renderDataSource = renderDataSource
     
@@ -225,6 +227,9 @@ public class MetalRenderer
     
     textShader.renderDataSource = renderDataSource
     textShader.renderStructures = renderStructures
+    
+    RASPADensityVolumeShader.renderDataSource = renderDataSource
+    RASPADensityVolumeShader.renderStructures = renderStructures
     
     pickingShader.renderDataSource = renderDataSource
     pickingShader.renderStructures = renderStructures
@@ -345,14 +350,14 @@ public class MetalRenderer
   public func reloadData(device: MTLDevice, _ size: CGSize, maximumNumberOfSamples: Int)
   {
     // makes sure the rendering data is consistent
-    var renderStructures: [[RKRenderStructure]] = [[]]
+    var renderStructures: [[RKRenderObject]] = [[]]
     if let renderDataSource: RKRenderDataSource = renderDataSource
     {
       renderStructures = []
       self.textShader.renderTextFontString = []
       for i in 0..<renderDataSource.numberOfScenes
       {
-        let structures: [RKRenderStructure] = renderDataSource.renderStructuresForScene(i)
+        let structures: [RKRenderObject] = renderDataSource.renderStructuresForScene(i)
         renderStructures.append(structures)
         self.textShader.renderTextFontString.append(structures.map{($0 as? RKRenderAtomSource)?.atomTextFont ?? ""})
       }
@@ -379,7 +384,7 @@ public class MetalRenderer
   public func reloadRenderData(device: MTLDevice)
   {
     // makes sure the rendering data is consistent
-    var renderStructures: [[RKRenderStructure]] = []
+    var renderStructures: [[RKRenderObject]] = []
     self.textShader.renderTextFontString = []
     
     if let renderDataSource: RKRenderDataSource = renderDataSource
@@ -387,7 +392,7 @@ public class MetalRenderer
       renderStructures = []
       for i in 0..<renderDataSource.numberOfScenes
       {
-        let structures: [RKRenderStructure] = renderDataSource.renderStructuresForScene(i)
+        let structures: [RKRenderObject] = renderDataSource.renderStructuresForScene(i)
         renderStructures.append(structures)
         self.textShader.renderTextFontString.append(structures.map{($0 as? RKRenderAtomSource)?.atomTextFont ?? ""})
       }
@@ -486,6 +491,7 @@ public class MetalRenderer
     pickingShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     textShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
+    RASPADensityVolumeShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
     ambientOcclusionShader.buildPipeLine(device: device, library: library, vertexDescriptor: vertexDescriptor, maximumNumberOfSamples: maximumNumberOfSamples)
     
@@ -606,6 +612,7 @@ public class MetalRenderer
     volumeRenderedSurfaceShader.buildVertexBuffers(device: device)
     
     textShader.buildVertexBuffers(device: device)
+    RASPADensityVolumeShader.buildVertexBuffers(device: device)
     
     measurementShader.buildVertexBuffers(device: device)
     measurementOrthographicImposterShader.buildVertexBuffers(device: device)
@@ -703,16 +710,22 @@ public class MetalRenderer
       
       var isosurfaceUniforms: [RKIsosurfaceUniforms] = [RKIsosurfaceUniforms](repeating: RKIsosurfaceUniforms(), count: max(project.renderStructures.count,1))
       
+      /*
       var index: Int  = 0
       for i in 0..<project.numberOfScenes
       {
-        let structures: [RKRenderStructure] = project.renderStructuresForScene(i)
+        let structures: [RKRenderObject] = project.renderStructuresForScene(i)
         for (j,structure) in structures.enumerated()
         {
           structureUniforms[index] = RKStructureUniforms(sceneIdentifier: i, movieIdentifier: j, structure: structure)
           isosurfaceUniforms[index] = RKIsosurfaceUniforms(structure: structure)
           index += 1
         }
+      }*/
+      for (i,structure) in project.renderStructures.enumerated()
+      {
+        structureUniforms[i] = RKStructureUniforms(structureIdentifier: i, structure: structure)
+        isosurfaceUniforms[i] = RKIsosurfaceUniforms(structure: structure)
       }
       
       structureUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structureUniforms.count,1), options:.storageModeManaged)
@@ -728,7 +741,7 @@ public class MetalRenderer
       var index: Int  = 0
       for i in 0..<project.numberOfScenes
       {
-        let structures: [RKRenderStructure] = project.renderStructuresForScene(i)
+        let structures: [RKRenderObject] = project.renderStructuresForScene(i)
         for structure in structures
         {
           isosurfaceUniforms[index] = RKIsosurfaceUniforms(structure: structure)
@@ -886,6 +899,19 @@ public class MetalRenderer
     commandEncoder.endEncoding()
   }
   
+  public func renderSceneVolumeRenderedSurfacesWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?)
+  {
+    let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+    commandEncoder.label = "Scene transparent command encoder"
+    commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
+    commandEncoder.setCullMode(MTLCullMode.back)
+    commandEncoder.setFrontFacing(MTLWinding.clockwise)
+    
+    self.volumeRenderedSurfaceShader.renderVolumeRenderedSurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
+    
+    commandEncoder.endEncoding()
+  }
+  
   public func renderSceneTransparentWithEncoder(_ commandBuffer: MTLCommandBuffer, renderPassDescriptor: MTLRenderPassDescriptor, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool = false)
   {
     let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
@@ -893,7 +919,8 @@ public class MetalRenderer
     commandEncoder.setViewport(MTLViewport(originX: 0.0, originY: 0.0, width: Double(size.width), height: Double(size.height), znear: 0.0, zfar: 1.0))
     commandEncoder.setCullMode(MTLCullMode.back)
     commandEncoder.setFrontFacing(MTLWinding.clockwise)
-    self.volumeRenderedSurfaceShader.renderVolumeRenderedSurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
+    
+    self.RASPADensityVolumeShader.renderRASPADensityWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, depthTexture: self.backgroundShader.sceneResolvedDepthTexture, size: size)
     
     self.isosurfaceShader.renderTransparentIsosurfacesWithEncoder(commandEncoder, renderPassDescriptor: renderPassDescriptor, frameUniformBuffer: frameUniformBuffer, structureUniformBuffers: structureUniformBuffers, isosurfaceUniformBuffers: isosurfaceUniformBuffers, lightUniformBuffers: lightUniformBuffers, size: size)
   
@@ -948,6 +975,9 @@ public class MetalRenderer
   func drawOffScreen(commandBuffer: MTLCommandBuffer, frameUniformBuffer: MTLBuffer, size: CGSize, renderQuality: RKRenderQuality, camera: RKCamera?, transparentBackground: Bool)
   {
     renderSceneWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
+    
+    renderSceneVolumeRenderedSurfacesWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderVolumeRenderedSurfacesPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera)
+   
     renderSceneTransparentWithEncoder(commandBuffer, renderPassDescriptor: backgroundShader.sceneRenderTransparentPassDescriptor, frameUniformBuffer: frameUniformBuffer, size: size, renderQuality: renderQuality, camera: camera, transparentBackground: transparentBackground)
     
     if let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: atomSelectionGlowShader.atomSelectionGlowRenderPassDescriptor)

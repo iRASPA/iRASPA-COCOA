@@ -68,12 +68,12 @@ public final class SKAtomCopy: BinaryDecodable, BinaryEncodable, Copying, Hashab
     self.asymmetricParentAtom = asymmetricParentAtom
   }
   
-  required public init(original: SKAtomCopy)
+  required public init(copy: SKAtomCopy)
   {
-    self.position = original.position
-    self.tag = original.tag
-    self.type = original.type
-    self.asymmetricIndex = original.asymmetricIndex
+    self.position = copy.position
+    self.tag = copy.tag
+    self.type = copy.type
+    self.asymmetricIndex = copy.asymmetricIndex
   }
   
   public static func == (lhs: SKAtomCopy, rhs: SKAtomCopy) -> Bool

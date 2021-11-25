@@ -39,7 +39,7 @@ using namespace simd;
 typedef struct
 {
   float4 albedo [[color(0)]];
-  float  depth [[depth(less)]];
+  float  depth [[depth(any)]];
 } FragOutput;
 
 typedef struct
@@ -217,8 +217,8 @@ typedef struct
 
 typedef struct
 {
-  int sceneIdentifier;
-  int MovieIdentifier;
+  int sceneIdentifier1;
+  int MovieIdentifier1;
   float atomScaleFactor;
   int numberOfMultiSamplePoints;
   
@@ -230,7 +230,7 @@ typedef struct
   float atomHue;
   float atomSaturation;
   float atomValue;
-  float pad111;
+  int structureIdentifier;
   
   bool atomHDR;
   float atomHDRExposure;

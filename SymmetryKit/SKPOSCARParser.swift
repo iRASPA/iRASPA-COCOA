@@ -60,12 +60,16 @@ public final class SKPOSCARParser: SKParser, ProgressReporting
   var currentProgressCount: Double = 0.0
   let percentageFinishedStep: Double
   
-  public init(displayName: String, string: String, windowController: NSWindowController?)
+  public init(displayName: String, data: Data, windowController: NSWindowController?) throws
   {
     //self.ProjectTreeNode = ProjectTreeNode
     self.displayName = displayName
     self.windowController = windowController
     
+    guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
+    {
+      throw SKParserError.failedDecoding
+    }
     
     self.scanner = Scanner(string: string)
     self.scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines

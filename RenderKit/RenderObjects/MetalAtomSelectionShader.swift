@@ -35,7 +35,7 @@ import Foundation
 class MetalAtomSelectionShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   
   var instanceBuffer: [[MTLBuffer?]] = [[]]
@@ -49,7 +49,7 @@ class MetalAtomSelectionShader
       for i in 0..<self.renderStructures.count
       {
         var sceneInstance: [MTLBuffer?] = [MTLBuffer?]()
-        let structures: [RKRenderStructure] = renderStructures[i]
+        let structures: [RKRenderObject] = renderStructures[i]
         
         for structure in structures
         {

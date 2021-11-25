@@ -77,6 +77,16 @@ public class RKLocalAxes: BinaryDecodable, BinaryEncodable
     self.width = 0.5
   }
   
+  public init(axes: RKLocalAxes)
+  {
+    self.style = axes.style
+    self.position = axes.position
+    self.scalingType = axes.scalingType
+    self.offset = axes.offset
+    self.length = axes.length
+    self.width = axes.width
+  }
+  
   public func binaryEncode(to encoder: BinaryEncoder)
   {
     encoder.encode(RKLocalAxes.classVersionNumber)
@@ -88,6 +98,7 @@ public class RKLocalAxes: BinaryDecodable, BinaryEncodable
     encoder.encode(length)
     encoder.encode(width)
   }
+  
   
   public required init(fromBinary decoder: BinaryDecoder) throws
   {

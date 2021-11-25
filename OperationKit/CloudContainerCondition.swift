@@ -47,7 +47,7 @@ struct CloudContainerCondition: FKOperationCondition {
   
   let container: CKContainer // this is the container to which you need access.
   
-  let permission: CKContainer.Application.Permissions
+  let permission: CKContainer.ApplicationPermissions
   
   /**
    - parameter container: the `CKContainer` to which you need access.
@@ -55,7 +55,7 @@ struct CloudContainerCondition: FKOperationCondition {
    container. This parameter has a default value of `[]`, which would get
    you anonymized read/write access.
    */
-  init(container: CKContainer, permission: CKContainer.Application.Permissions = []) {
+  init(container: CKContainer, permission: CKContainer.ApplicationPermissions = []) {
     self.container = container
     self.permission = permission
   }
@@ -88,9 +88,9 @@ struct CloudContainerCondition: FKOperationCondition {
  */
 private class CloudKitPermissionOperation: FKOperation {
   let container: CKContainer
-  let permission: CKContainer.Application.Permissions
+  let permission: CKContainer.ApplicationPermissions
   
-  init(container: CKContainer, permission: CKContainer.Application.Permissions) {
+  init(container: CKContainer, permission: CKContainer.ApplicationPermissions) {
     self.container = container
     self.permission = permission
     super.init()

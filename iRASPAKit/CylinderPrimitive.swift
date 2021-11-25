@@ -35,9 +35,14 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class CylinderPrimitive: Primitive, RKRenderCylinderObjectsSource, RKRenderLocalAxesSource
+public final class CylinderPrimitive: Primitive, RKRenderCylinderObjectsSource, Cloning
 {
   private static var classVersionNumber: Int = 2
+  
+  public override var materialType: Object.ObjectType
+  {
+    return .cylinderPrimitive
+  }
   
   public override init(name: String)
   {
@@ -48,70 +53,28 @@ public final class CylinderPrimitive: Primitive, RKRenderCylinderObjectsSource, 
     let drawRadius: Double = 5.0
     let bondDistanceCriteria: Double = 0.0
     let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
-    //self.expandSymmetry(asymmetricAtom: asymmetricAtom)
+    self.expandSymmetry(asymmetricAtom: asymmetricAtom)
     let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
     atomTreeController.insertNode(atomTreeNode, inItem: nil, atIndex: 0)
-    //reComputeBoundingBox()
-    
-    //setRepresentationStyle(style: Structure.RepresentationStyle.objects)
-  }
-  
-  public required init(clone: Primitive) {
-    super.init()
-  }
-  
-  public required init(original: Primitive) {
-    super.init()
-  }
-  
-  /*
-  public required init(original structure: Structure)
-  {
-    super.init(original: structure)
-  }
-  
-  public required init(clone structure: Structure)
-  {
-    super.init(clone: structure)
-    
-    switch(structure)
-    {
-    case is Crystal, is CrystalEllipsoidPrimitive, is CrystalCylinderPrimitive, is CrystalPolygonalPrismPrimitive:
-      self.atomTreeController.flattenedLeafNodes().forEach{
-      let pos = $0.representedObject.position
-          $0.representedObject.position = self.cell.convertToCartesian(pos)
-        }
-    case is MolecularCrystal, is ProteinCrystal, is Molecule, is Protein,
-         is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
-      // nothing to do
-      break
-    default:
-      break
-    }
-    self.expandSymmetry()
     reComputeBoundingBox()
-    reComputeBonds()
-    
-    setRepresentationStyle(style: Structure.RepresentationStyle.objects)
   }
   
-  public override var materialType: SKStructure.Kind
+  public required init(copy cylinderPrimitive: CylinderPrimitive)
   {
-    return .cylinderPrimitive
+    super.init(copy: cylinderPrimitive)
   }
   
-  public override var periodic: Bool
+  public required init(clone cylinderPrimitive: CylinderPrimitive)
   {
-    get
-    {
-      return primitiveIsFractional
-    }
-    set(newValue)
-    {
-      super.periodic = newValue
-    }
-  }*/
+    super.init(clone: cylinderPrimitive)
+  }
   
+  public required init(from object: Object)
+  {
+    super.init(from: object)
+  }
+  
+
   // MARK: Rendering
   // =====================================================================
   
@@ -439,6 +402,23 @@ public final class CylinderPrimitive: Primitive, RKRenderCylinderObjectsSource, 
     return absoluteCartesianPosition
   }
   
+  // MARK: -
+  // MARK: Symmetry
+  
+  public override func expandSymmetry(asymmetricAtom: SKAsymmetricAtom)
+  {
+    if asymmetricAtom.copies.isEmpty
+    {
+      let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: asymmetricAtom.position)
+      newAtom.type = .copy
+      asymmetricAtom.copies = [newAtom]
+    }
+    else
+    {
+      asymmetricAtom.copies[0].type = .copy
+      asymmetricAtom.copies[0].position = asymmetricAtom.position
+    }
+  }
   
   // MARK: -
   // MARK: Binary Encodable support

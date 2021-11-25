@@ -44,15 +44,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
 {
   @IBOutlet private weak var cellOutlineView: NSStaticViewBasedOutlineView?
  
-  
   weak var windowController: iRASPAWindowController?
   
-  var cellAngleFormatter: AngleNumberFormatter = AngleNumberFormatter()
+  var iRASPAObjects: [iRASPAObject] = []
   
-  deinit
-  {
-    //Swift.print("deinit: StructureCellDetailViewController")
-  }
+  var cellAngleFormatter: AngleNumberFormatter = AngleNumberFormatter()
   
   // MARK: protocol ProjectConsumer
   // =====================================================================
@@ -240,7 +236,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         popUpbuttonRepresentationType.isEditable = false
         popUpbuttonRepresentationType.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           popUpbuttonRepresentationType.isEnabled = enabled
           popUpbuttonRepresentationType.isEditable = enabled
@@ -267,7 +263,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
             item.isEnabled = false
           }
           
-          if let rawValue = representedStructure.renderMaterialType?.rawValue
+          if let rawValue = self.renderMaterialType?.rawValue
           {
             popUpbuttonRepresentationType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonRepresentationType.selectItem(at: rawValue)
@@ -280,7 +276,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         
       }
     case "BoxBoundingBoxInfoCell":
-   
       if let textFieldMaximumX: NSTextField = view.viewWithTag(1) as? NSTextField,
          let textFieldMaximumY: NSTextField = view.viewWithTag(2) as? NSTextField,
          let textFieldMaximumZ: NSTextField = view.viewWithTag(3) as? NSTextField,
@@ -300,14 +295,16 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMinimumX.stringValue = ""
         textFieldMinimumY.stringValue = ""
         textFieldMinimumZ.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if let project = proxyProject?.representedObject.loadedProjectStructureNode,
+           let camera: RKCamera = project.renderCamera,
+          !iRASPAObjects.isEmpty
         {
-          textFieldMaximumX.doubleValue = representedStructure.renderBoundingBox.maximum.x
-          textFieldMaximumY.doubleValue = representedStructure.renderBoundingBox.maximum.y
-          textFieldMaximumZ.doubleValue = representedStructure.renderBoundingBox.maximum.z
-          textFieldMinimumX.doubleValue = representedStructure.renderBoundingBox.minimum.x
-          textFieldMinimumY.doubleValue = representedStructure.renderBoundingBox.minimum.y
-          textFieldMinimumZ.doubleValue = representedStructure.renderBoundingBox.minimum.z
+          textFieldMaximumX.doubleValue = self.renderBoundingBoxMaximumX ?? camera.boundingBox.maximum.x
+          textFieldMaximumY.doubleValue = self.renderBoundingBoxMaximumY ?? camera.boundingBox.maximum.y
+          textFieldMaximumZ.doubleValue = self.renderBoundingBoxMaximumZ ?? camera.boundingBox.maximum.z
+          textFieldMinimumX.doubleValue = self.renderBoundingBoxMinimumX ?? camera.boundingBox.minimum.x
+          textFieldMinimumY.doubleValue = self.renderBoundingBoxMinimumY ?? camera.boundingBox.minimum.y
+          textFieldMinimumZ.doubleValue = self.renderBoundingBoxMinimumZ ?? camera.boundingBox.minimum.z
         }
       }
     case "BoxUnitCellPropertiesCell":
@@ -316,15 +313,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldLengthA.isEditable = false
         textFieldLengthA.stringValue = ""
         textFieldLengthA.isEnabled = false
-        if let representedStructure: [CellViewer] = representedObject as? [CellViewer],
-           !representedStructure.isEmpty
+        if !iRASPAObjects.isEmpty
         {
-          //if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          //{
-          //  textFieldLengthA.isEnabled = enabled && renderPeriodic
-          //}
+          textFieldLengthA.isEnabled = enabled
           textFieldLengthA.isEditable = enabled
-          if let renderLengthA: Double = representedStructure.cellLengthA
+          if let renderLengthA: Double = self.renderUnitCellLengthA
           {
             textFieldLengthA.doubleValue = renderLengthA
           }
@@ -339,14 +332,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldLengthB.isEditable = false
         textFieldLengthB.stringValue = ""
         textFieldLengthB.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldLengthB.isEnabled = enabled && renderPeriodic
-          }
+          textFieldLengthB.isEnabled = enabled
           textFieldLengthB.isEditable = enabled
-          if let renderLengthB: Double = representedStructure.renderUnitCellLengthB
+          if let renderLengthB: Double = self.renderUnitCellLengthB
           {
             textFieldLengthB.doubleValue = renderLengthB
           }
@@ -361,14 +351,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldLengthC.isEditable = false
         textFieldLengthC.stringValue = ""
         textFieldLengthC.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldLengthC.isEnabled = enabled && renderPeriodic
-          }
+          textFieldLengthC.isEnabled = enabled
           textFieldLengthC.isEditable = enabled
-          if let renderLengthC: Double = representedStructure.renderUnitCellLengthC
+          if let renderLengthC: Double = self.renderUnitCellLengthC
           {
             textFieldLengthC.doubleValue = renderLengthC
           }
@@ -384,17 +371,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldAlphaAngle.isEditable = false
         textFieldAlphaAngle.stringValue = ""
         textFieldAlphaAngle.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           textFieldAlphaAngle.formatter = cellAngleFormatter
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldAlphaAngle.isEnabled = enabled && renderPeriodic
-          }
+          textFieldAlphaAngle.isEnabled = enabled
           textFieldAlphaAngle.isEditable = enabled
-          if let renderAlphaAngle: Double = representedStructure.renderUnitCellAlphaAngle
+          if let renderAlphaAngle: Double = self.renderUnitCellAlphaAngle
           {
-            textFieldAlphaAngle.doubleValue = renderAlphaAngle * 180.0/Double.pi
+            textFieldAlphaAngle.doubleValue = renderAlphaAngle
           }
           else
           {
@@ -408,16 +392,13 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldBetaAngle.stringValue = ""
         textFieldBetaAngle.isEnabled = false
         textFieldBetaAngle.formatter = cellAngleFormatter
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldBetaAngle.isEnabled = enabled && renderPeriodic
-          }
+          textFieldBetaAngle.isEnabled = enabled
           textFieldBetaAngle.isEditable = enabled
-          if let renderBetaAngle: Double = representedStructure.renderUnitCellBetaAngle
+          if let renderBetaAngle: Double = self.renderUnitCellBetaAngle
           {
-            textFieldBetaAngle.doubleValue = renderBetaAngle * 180.0/Double.pi
+            textFieldBetaAngle.doubleValue = renderBetaAngle
           }
           else
           {
@@ -431,16 +412,13 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldGammaAngle.stringValue = ""
         textFieldGammaAngle.isEnabled = false
         textFieldGammaAngle.formatter = cellAngleFormatter
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldGammaAngle.isEnabled = enabled && renderPeriodic
-          }
+          textFieldGammaAngle.isEnabled = enabled
           textFieldGammaAngle.isEditable = enabled
-          if let renderGammaAngle: Double = representedStructure.renderUnitCellGammaAngle
+          if let renderGammaAngle: Double = self.renderUnitCellGammaAngle
           {
-            textFieldGammaAngle.doubleValue = renderGammaAngle * 180.0/Double.pi
+            textFieldGammaAngle.doubleValue = renderGammaAngle
           }
           else
           {
@@ -462,15 +440,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         stepperAngleAlpha.isEnabled = false
         stepperAngleBeta.isEnabled = false
         stepperAngleGamma.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
-           let renderPeriodic: Bool = representedStructure.renderPeriodic
+        if !iRASPAObjects.isEmpty
         {
-          stepperLengthA.isEnabled = enabled && renderPeriodic
-          stepperLengthB.isEnabled = enabled && renderPeriodic
-          stepperLengthC.isEnabled = enabled && renderPeriodic
-          stepperAngleAlpha.isEnabled = enabled && renderPeriodic
-          stepperAngleBeta.isEnabled = enabled && renderPeriodic
-          stepperAngleGamma.isEnabled = enabled && renderPeriodic
+          stepperLengthA.isEnabled = enabled
+          stepperLengthB.isEnabled = enabled
+          stepperLengthC.isEnabled = enabled
+          stepperAngleAlpha.isEnabled = enabled
+          stepperAngleBeta.isEnabled = enabled
+          stepperAngleGamma.isEnabled = enabled
         }
       }
     case "BoxUnitCellInfoCell":
@@ -479,13 +456,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellAX.isEditable = false
         textFieldRenderUnitCellAX.stringValue = ""
         textFieldRenderUnitCellAX.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellAX.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellAX: Double = representedStructure.renderUnitCellAX
+          textFieldRenderUnitCellAX.isEnabled = enabled
+          if let renderUnitCellAX: Double = self.renderUnitCellAX
           {
             textFieldRenderUnitCellAX.doubleValue = renderUnitCellAX
           }
@@ -500,13 +474,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellAY.isEditable = false
         textFieldRenderUnitCellAY.stringValue = ""
         textFieldRenderUnitCellAY.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellAY.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellAY: Double = representedStructure.renderUnitCellAY
+          textFieldRenderUnitCellAY.isEnabled = enabled
+          if let renderUnitCellAY: Double = self.renderUnitCellAY
           {
             textFieldRenderUnitCellAY.doubleValue = renderUnitCellAY
           }
@@ -521,13 +492,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellAZ.isEditable = false
         textFieldRenderUnitCellAZ.stringValue = ""
         textFieldRenderUnitCellAZ.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellAZ.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellAZ: Double = representedStructure.renderUnitCellAZ
+          textFieldRenderUnitCellAZ.isEnabled = enabled
+          if let renderUnitCellAZ: Double = self.renderUnitCellAZ
           {
             textFieldRenderUnitCellAZ.doubleValue = renderUnitCellAZ
           }
@@ -543,13 +511,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellBX.isEditable = false
         textFieldRenderUnitCellBX.stringValue = ""
         textFieldRenderUnitCellBX.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellBX.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellBX: Double = representedStructure.renderUnitCellBX
+          textFieldRenderUnitCellBX.isEnabled = enabled
+          if let renderUnitCellBX: Double = self.renderUnitCellBX
           {
             textFieldRenderUnitCellBX.doubleValue = renderUnitCellBX
           }
@@ -564,13 +529,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellBY.isEditable = false
         textFieldRenderUnitCellBY.stringValue = ""
         textFieldRenderUnitCellBY.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellBY.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellBY: Double = representedStructure.renderUnitCellBY
+          textFieldRenderUnitCellBY.isEnabled = enabled
+          if let renderUnitCellBY: Double = self.renderUnitCellBY
           {
             textFieldRenderUnitCellBY.doubleValue = renderUnitCellBY
           }
@@ -585,13 +547,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellBZ.isEditable = false
         textFieldRenderUnitCellBZ.stringValue = ""
         textFieldRenderUnitCellBZ.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellBZ.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellBZ: Double = representedStructure.renderUnitCellBZ
+          textFieldRenderUnitCellBZ.isEnabled = enabled
+          if let renderUnitCellBZ: Double = self.renderUnitCellBZ
           {
             textFieldRenderUnitCellBZ.doubleValue = renderUnitCellBZ
           }
@@ -607,13 +566,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellCX.isEditable = false
         textFieldRenderUnitCellCX.stringValue = ""
         textFieldRenderUnitCellCX.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellCX.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellCX: Double = representedStructure.renderUnitCellCX
+          textFieldRenderUnitCellCX.isEnabled = enabled
+          if let renderUnitCellCX: Double = self.renderUnitCellCX
           {
             textFieldRenderUnitCellCX.doubleValue = renderUnitCellCX
           }
@@ -628,13 +584,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellCY.isEditable = false
         textFieldRenderUnitCellCY.stringValue = ""
         textFieldRenderUnitCellCY.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellCY.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellCY: Double = representedStructure.renderUnitCellCY
+          textFieldRenderUnitCellCY.isEnabled = enabled
+          if let renderUnitCellCY: Double = self.renderUnitCellCY
           {
             textFieldRenderUnitCellCY.doubleValue = renderUnitCellCY
           }
@@ -649,13 +602,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderUnitCellCZ.isEditable = false
         textFieldRenderUnitCellCZ.stringValue = ""
         textFieldRenderUnitCellCZ.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderUnitCellCZ.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellCZ: Double = representedStructure.renderUnitCellCZ
+          textFieldRenderUnitCellCZ.isEnabled = enabled
+          if let renderUnitCellCZ: Double = self.renderUnitCellCZ
           {
             textFieldRenderUnitCellCZ.doubleValue = renderUnitCellCZ
           }
@@ -671,13 +621,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldVolume.isEditable = false
         textFieldVolume.stringValue = ""
         textFieldVolume.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldVolume.isEnabled = enabled && renderPeriodic
-          }
-          if let renderUnitCellVolume: Double = representedStructure.renderCellVolume
+          textFieldVolume.isEnabled = enabled
+          if let renderUnitCellVolume: Double = self.renderCellVolume
           {
             textFieldVolume.doubleValue = renderUnitCellVolume
           }
@@ -693,13 +640,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldPerpendicularWidthX.isEditable = false
         textFieldPerpendicularWidthX.stringValue = ""
         textFieldPerpendicularWidthX.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldPerpendicularWidthX.isEnabled = enabled && renderPeriodic
-          }
-          if let renderPerpendicularWidthX: Double = representedStructure.renderCellPerpendicularWidthX
+          textFieldPerpendicularWidthX.isEnabled = enabled
+          if let renderPerpendicularWidthX: Double = self.renderCellPerpendicularWidthX
           {
             textFieldPerpendicularWidthX.doubleValue = renderPerpendicularWidthX
           }
@@ -714,13 +658,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldPerpendicularWidthY.isEditable = false
         textFieldPerpendicularWidthY.stringValue = ""
         textFieldPerpendicularWidthY.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldPerpendicularWidthY.isEnabled = enabled && renderPeriodic
-          }
-          if let renderPerpendicularWidthY: Double = representedStructure.renderCellPerpendicularWidthY
+          textFieldPerpendicularWidthY.isEnabled = enabled
+          if let renderPerpendicularWidthY: Double = self.renderCellPerpendicularWidthY
           {
             textFieldPerpendicularWidthY.doubleValue = renderPerpendicularWidthY
           }
@@ -735,13 +676,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldPerpendicularWidthZ.isEditable = false
         textFieldPerpendicularWidthZ.stringValue = ""
         textFieldPerpendicularWidthZ.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldPerpendicularWidthZ.isEnabled = enabled && renderPeriodic
-          }
-          if let renderPerpendicularWidthZ: Double = representedStructure.renderCellPerpendicularWidthZ
+          textFieldPerpendicularWidthZ.isEnabled = enabled
+          if let renderPerpendicularWidthZ: Double = self.renderCellPerpendicularWidthZ
           {
             textFieldPerpendicularWidthZ.doubleValue = renderPerpendicularWidthZ
           }
@@ -757,14 +695,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMaximumReplicaX.isEditable = false
         textFieldMaximumReplicaX.stringValue = ""
         textFieldMaximumReplicaX.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldMaximumReplicaX.isEnabled = enabled && renderPeriodic
-          }
+          textFieldMaximumReplicaX.isEnabled = enabled
           textFieldMaximumReplicaX.isEditable = enabled
-          if let maximumReplicaX: Int32 = representedStructure.renderMaximumReplicaX
+          if let maximumReplicaX: Int32 = self.renderMaximumReplicaX
           {
             textFieldMaximumReplicaX.intValue = maximumReplicaX
           }
@@ -779,14 +714,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMaximumReplicaY.isEditable = false
         textFieldMaximumReplicaY.stringValue = ""
         textFieldMaximumReplicaY.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldMaximumReplicaY.isEnabled = enabled && renderPeriodic
-          }
+          textFieldMaximumReplicaY.isEnabled = enabled
           textFieldMaximumReplicaY.isEditable = enabled
-          if let maximumReplicaY: Int32 = representedStructure.renderMaximumReplicaY
+          if let maximumReplicaY: Int32 = self.renderMaximumReplicaY
           {
             textFieldMaximumReplicaY.intValue = maximumReplicaY
           }
@@ -801,14 +733,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMaximumReplicaZ.isEditable = false
         textFieldMaximumReplicaZ.stringValue = ""
         textFieldMaximumReplicaZ.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldMaximumReplicaZ.isEnabled = enabled && renderPeriodic
-          }
+          textFieldMaximumReplicaZ.isEnabled = enabled
           textFieldMaximumReplicaZ.isEditable = enabled
-          if let maximumReplicaZ: Int32 = representedStructure.renderMaximumReplicaZ
+          if let maximumReplicaZ: Int32 = self.renderMaximumReplicaZ
           {
             textFieldMaximumReplicaZ.intValue = maximumReplicaZ
           }
@@ -824,14 +753,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMinimumReplicaX.isEditable = false
         textFieldMinimumReplicaX.stringValue = ""
         textFieldMinimumReplicaX.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldMinimumReplicaX.isEnabled = enabled && renderPeriodic
-          }
+          textFieldMinimumReplicaX.isEnabled = enabled
           textFieldMinimumReplicaX.isEditable = enabled
-          if let minimumReplicaX: Int32 = representedStructure.renderMinimumReplicaX
+          if let minimumReplicaX: Int32 = self.renderMinimumReplicaX
           {
             textFieldMinimumReplicaX.intValue =  minimumReplicaX
           }
@@ -846,14 +772,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMinimumReplicaY.isEditable = false
         textFieldMinimumReplicaY.stringValue = ""
         textFieldMinimumReplicaY.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldMinimumReplicaY.isEnabled = enabled && renderPeriodic
-          }
+          textFieldMinimumReplicaY.isEnabled = enabled
           textFieldMinimumReplicaY.isEditable = enabled
-          if let minimumReplicaY: Int32 = representedStructure.renderMinimumReplicaY
+          if let minimumReplicaY: Int32 = self.renderMinimumReplicaY
           {
             textFieldMinimumReplicaY.intValue = minimumReplicaY
           }
@@ -868,14 +791,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldMinimumReplicaZ.isEditable = false
         textFieldMinimumReplicaZ.stringValue = ""
         textFieldMinimumReplicaZ.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldMinimumReplicaZ.isEnabled = enabled && renderPeriodic
-          }
+          textFieldMinimumReplicaZ.isEnabled = enabled
           textFieldMinimumReplicaZ.isEditable = enabled
-          if let minimumReplicaZ: Int32 = representedStructure.renderMinimumReplicaZ
+          if let minimumReplicaZ: Int32 = self.renderMinimumReplicaZ
           {
             textFieldMinimumReplicaZ.intValue = minimumReplicaZ
           }
@@ -898,19 +818,18 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         stepperMinimumReplicaX.isEnabled = false
         stepperMinimumReplicaY.isEnabled = false
         stepperMinimumReplicaZ.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
-           let renderPeriodic: Bool = representedStructure.renderPeriodic
+        if !iRASPAObjects.isEmpty
         {
-          stepperMaximumReplicaX.isEnabled = enabled && renderPeriodic
-          stepperMaximumReplicaY.isEnabled = enabled && renderPeriodic
-          stepperMaximumReplicaZ.isEnabled = enabled && renderPeriodic
-          stepperMinimumReplicaX.isEnabled = enabled && renderPeriodic
-          stepperMinimumReplicaY.isEnabled = enabled && renderPeriodic
-          stepperMinimumReplicaZ.isEnabled = enabled && renderPeriodic
+          stepperMaximumReplicaX.isEnabled = enabled
+          stepperMaximumReplicaY.isEnabled = enabled
+          stepperMaximumReplicaZ.isEnabled = enabled
+          stepperMinimumReplicaX.isEnabled = enabled
+          stepperMinimumReplicaY.isEnabled = enabled
+          stepperMinimumReplicaZ.isEnabled = enabled
         }
       }
     case "BoxOrientationCell":
-      if let renderRotationDelta: Double = (self.representedObject as? [CellViewerLegacy])?.renderRotationDelta
+      if let renderRotationDelta: Double = self.renderRotationDelta
       {
         if let textFieldRotationAngle: NSTextField = view.viewWithTag(1) as? NSTextField,
           let textFieldYawPlusX: NSButton = view.viewWithTag(2) as? NSButton,
@@ -964,11 +883,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldEulerAngleY.stringValue = ""
         textFieldEulerAngleZ.stringValue = ""
         
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
-          if let renderEulerAngleX: Double = representedStructure.renderEulerAngleX,
-             let renderEulerAngleY: Double = representedStructure.renderEulerAngleY,
-             let renderEulerAngleZ: Double = representedStructure.renderEulerAngleZ
+          if let renderEulerAngleX: Double = self.renderEulerAngleX,
+             let renderEulerAngleY: Double = self.renderEulerAngleY,
+             let renderEulerAngleZ: Double = self.renderEulerAngleZ
           {
             sliderEulerAngleX.isEnabled = enabled
             sliderEulerAngleZ.isEnabled = enabled
@@ -996,10 +915,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldOriginX.isEditable = false
         textFieldOriginX.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           textFieldOriginX.isEditable = enabled
-          if let renderOriginX: Double = representedStructure.renderOriginX
+          if let renderOriginX: Double = self.renderOriginX
           {
             textFieldOriginX.doubleValue =  renderOriginX
           }
@@ -1013,10 +932,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldOriginY.isEditable = false
         textFieldOriginY.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           textFieldOriginY.isEditable = enabled
-          if let renderOriginY: Double = representedStructure.renderOriginY
+          if let renderOriginY: Double = self.renderOriginY
           {
             textFieldOriginY.doubleValue =  renderOriginY
           }
@@ -1030,10 +949,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldOriginZ.isEditable = false
         textFieldOriginZ.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           textFieldOriginZ.isEditable = enabled
-          if let renderOriginZ: Double = representedStructure.renderOriginZ
+          if let renderOriginZ: Double = self.renderOriginZ
           {
             textFieldOriginZ.doubleValue =  renderOriginZ
           }
@@ -1056,10 +975,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           button.isEnabled = enabled
-          if let renderContentFlipX: Bool = representedStructure.renderContentFlipX
+          if let renderContentFlipX: Bool = self.renderContentFlipX
           {
             button.allowsMixedState = false
             button.state = renderContentFlipX ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1074,10 +993,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let button: NSButton = view.viewWithTag(2) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           button.isEnabled = enabled
-          if let renderContentFlipY: Bool = representedStructure.renderContentFlipY
+          if let renderContentFlipY: Bool = self.renderContentFlipY
           {
             button.allowsMixedState = false
             button.state = renderContentFlipY ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1092,10 +1011,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let button: NSButton = view.viewWithTag(3) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           button.isEnabled = enabled
-          if let renderContentFlipZ: Bool = representedStructure.renderContentFlipZ
+          if let renderContentFlipZ: Bool = self.renderContentFlipZ
           {
             button.allowsMixedState = false
             button.state = renderContentFlipZ ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1112,10 +1031,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCenterShiftX.isEditable = false
         textFieldCenterShiftX.stringValue = "test"
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           textFieldCenterShiftX.isEditable = enabled
-          if let renderCenterShiftX: Double = representedStructure.renderContentShiftX
+          if let renderCenterShiftX: Double = self.renderContentShiftX
           {
             textFieldCenterShiftX.doubleValue =  renderCenterShiftX
           }
@@ -1129,10 +1048,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCenterShiftY.isEditable = false
         textFieldCenterShiftY.stringValue = "test"
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           textFieldCenterShiftY.isEditable = enabled
-          if let renderCenterShiftY: Double = representedStructure.renderContentShiftY
+          if let renderCenterShiftY: Double = self.renderContentShiftY
           {
             textFieldCenterShiftY.doubleValue =  renderCenterShiftY
           }
@@ -1146,10 +1065,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCenterShiftZ.isEditable = false
         textFieldCenterShiftZ.stringValue = "test"
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           textFieldCenterShiftZ.isEditable = enabled
-          if let renderCenterShiftZ: Double = representedStructure.renderContentShiftZ
+          if let renderCenterShiftZ: Double = self.renderContentShiftZ
           {
             textFieldCenterShiftZ.doubleValue =  renderCenterShiftZ
           }
@@ -1174,11 +1093,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         comboBoxRenderStructureMaterialType.isEditable = false
         comboBoxRenderStructureMaterialType.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer}).isEmpty
         {
           comboBoxRenderStructureMaterialType.isEditable = enabled
           
-          if let value: String = representedStructure.renderStructureMaterialType
+          if let value: String = self.renderStructureMaterialType
           {
             if comboBoxRenderStructureMaterialType.indexOfItem(withObjectValue: value) == NSNotFound
             {
@@ -1196,9 +1115,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureMass.isEditable = false
         textFieldRenderStructureMass.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer}).isEmpty
         {
-          if let structureMass: Double = representedStructure.renderStructureMass
+          if let structureMass: Double = self.renderStructureMass
           {
             textFieldRenderStructureMass.doubleValue = structureMass
           }
@@ -1212,14 +1131,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureDensity.isEditable = false
         textFieldRenderStructureDensity.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer}).isEmpty
         {
-          textFieldRenderStructureDensity.isEnabled = false
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureDensity.isEnabled = enabled && renderPeriodic
-          }
-          if let structureDensity: Double = representedStructure.renderStructureDensity
+          textFieldRenderStructureDensity.isEnabled = enabled
+          if let structureDensity: Double = self.renderStructureDensity
           {
             textFieldRenderStructureDensity.doubleValue = structureDensity
           }
@@ -1233,14 +1148,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureHeliumVoidFraction.isEditable = false
         textFieldRenderStructureHeliumVoidFraction.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          textFieldRenderStructureHeliumVoidFraction.isEnabled = false
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureHeliumVoidFraction.isEnabled = enabled && renderPeriodic
-          }
-          if let structureHeliumVoidFraction: Double = representedStructure.renderStructureHeliumVoidFraction
+          textFieldRenderStructureHeliumVoidFraction.isEnabled = enabled
+          if let structureHeliumVoidFraction: Double = self.renderStructureHeliumVoidFraction
           {
             textFieldRenderStructureHeliumVoidFraction.doubleValue = structureHeliumVoidFraction
           }
@@ -1254,14 +1165,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureSpecificVolume.isEditable = false
         textFieldRenderStructureSpecificVolume.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer}).isEmpty
         {
-          textFieldRenderStructureSpecificVolume.isEnabled = false
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureSpecificVolume.isEnabled = enabled && renderPeriodic
-          }
-          if let structureSpecificVolume: Double = representedStructure.renderStructureSpecificVolume
+          textFieldRenderStructureSpecificVolume.isEnabled = enabled
+          if let structureSpecificVolume: Double = self.renderStructureSpecificVolume
           {
             textFieldRenderStructureSpecificVolume.doubleValue = structureSpecificVolume
           }
@@ -1275,14 +1182,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderStructureAccessiblePoreVolume.isEditable = false
         textFieldRenderStructureAccessiblePoreVolume.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          textFieldRenderStructureAccessiblePoreVolume.isEnabled = false
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureAccessiblePoreVolume.isEnabled = enabled && renderPeriodic
-          }
-          if let structureAccessiblePoreVolume: Double = representedStructure.renderStructureAccessiblePoreVolume
+          textFieldRenderStructureAccessiblePoreVolume.isEnabled = enabled
+          if let structureAccessiblePoreVolume: Double = self.renderStructureAccessiblePoreVolume
           {
             textFieldRenderStructureAccessiblePoreVolume.doubleValue = structureAccessiblePoreVolume
           }
@@ -1296,29 +1199,22 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let buttonComputeHeliumVoidFraction: NSButton = view.viewWithTag(10) as? NSButton
       {
         buttonComputeHeliumVoidFraction.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
-          {
-            buttonComputeHeliumVoidFraction.isEnabled = enabled
-          }
-          else
-          {
-            buttonComputeHeliumVoidFraction.isEnabled = false
-          }
+          buttonComputeHeliumVoidFraction.isEnabled = enabled
         }
       }
       
-     
+
     case "StructuralProbeCell":
       // Probe molecule
       if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonProbeParticle.isEditable = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
           popUpbuttonProbeParticle.isEditable = enabled
-          if let probeMolecule: Structure.ProbeMolecule = representedStructure.renderFrameworkProbeMolecule
+          if let probeMolecule: Structure.ProbeMolecule = self.renderFrameworkProbeMolecule
           {
             popUpbuttonProbeParticle.selectItem(at: probeMolecule.rawValue)
           }
@@ -1330,13 +1226,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.stringValue = ""
         textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEnabled = enabled && renderPeriodic
-          }
-          if let structureVolumetricNitrogenSurfaceArea: Double = representedStructure.renderStructureVolumetricNitrogenSurfaceArea
+          textFieldRenderStructureVolumetricNitrogenSurfaceArea.isEnabled = enabled
+          if let structureVolumetricNitrogenSurfaceArea: Double = self.renderStructureVolumetricNitrogenSurfaceArea
           {
             textFieldRenderStructureVolumetricNitrogenSurfaceArea.doubleValue = structureVolumetricNitrogenSurfaceArea
           }
@@ -1351,13 +1244,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEditable = false
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.stringValue = ""
         textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEnabled = enabled && renderPeriodic
-          }
-          if let structureGravimetricNitrogenSurfaceArea: Double = representedStructure.renderStructureGravimetricNitrogenSurfaceArea
+          textFieldRenderStructureGravimetricNitrogenSurfaceArea.isEnabled = enabled
+          if let structureGravimetricNitrogenSurfaceArea: Double = self.renderStructureGravimetricNitrogenSurfaceArea
           {
             textFieldRenderStructureGravimetricNitrogenSurfaceArea.doubleValue = structureGravimetricNitrogenSurfaceArea
           }
@@ -1373,14 +1263,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureNumberOfChannelSystems.isEditable = false
         textFieldRenderStructureNumberOfChannelSystems.stringValue = ""
         textFieldRenderStructureNumberOfChannelSystems.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureNumberOfChannelSystems.isEnabled = enabled && renderPeriodic
-          }
+          textFieldRenderStructureNumberOfChannelSystems.isEnabled = enabled
           textFieldRenderStructureNumberOfChannelSystems.isEditable = enabled
-          if let structureNumberOfChannelSystems: Int = representedStructure.renderStructureNumberOfChannelSystems
+          if let structureNumberOfChannelSystems: Int = self.renderStructureNumberOfChannelSystems
           {
             textFieldRenderStructureNumberOfChannelSystems.integerValue = structureNumberOfChannelSystems
           }
@@ -1395,14 +1282,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = false
         textFieldRenderStructureNumberOfInaccessiblePockets.stringValue = ""
         textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = enabled && renderPeriodic
-          }
+          textFieldRenderStructureNumberOfInaccessiblePockets.isEnabled = enabled
           textFieldRenderStructureNumberOfInaccessiblePockets.isEditable = enabled
-          if let structureNumberOfInaccessiblePockets: Int = representedStructure.renderStructureNumberOfInaccessiblePockets
+          if let structureNumberOfInaccessiblePockets: Int = self.renderStructureNumberOfInaccessiblePockets
           {
             textFieldRenderStructureNumberOfInaccessiblePockets.integerValue = structureNumberOfInaccessiblePockets
           }
@@ -1418,32 +1302,18 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       if let buttonComputeVolumetricSurfaceArea: NSButton = view.viewWithTag(10) as? NSButton
       {
         buttonComputeVolumetricSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
-          {
-            buttonComputeVolumetricSurfaceArea.isEnabled = enabled
-          }
-          else
-          {
-            buttonComputeVolumetricSurfaceArea.isEnabled = false
-          }
+          buttonComputeVolumetricSurfaceArea.isEnabled = enabled
         }
       }
     
       if let buttonComputeGeometricSurfaceArea: NSButton = view.viewWithTag(11) as? NSButton
       {
         buttonComputeGeometricSurfaceArea.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic, renderPeriodic
-          {
-            buttonComputeGeometricSurfaceArea.isEnabled = enabled
-          }
-          else
-          {
-            buttonComputeGeometricSurfaceArea.isEnabled = false
-          }
+          buttonComputeGeometricSurfaceArea.isEnabled = enabled
         }
       }
   
@@ -1454,14 +1324,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = false
         textFieldRenderStructureDimensionalityOfPoreSystem.stringValue = ""
         textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = enabled && renderPeriodic
-          }
+          textFieldRenderStructureDimensionalityOfPoreSystem.isEnabled = enabled
           textFieldRenderStructureDimensionalityOfPoreSystem.isEditable = enabled
-          if let structureDimensionalityOfPoreSystem: Int = representedStructure.renderStructureDimensionalityOfPoreSystem
+          if let structureDimensionalityOfPoreSystem: Int = self.renderStructureDimensionalityOfPoreSystem
           {
             textFieldRenderStructureDimensionalityOfPoreSystem.integerValue = structureDimensionalityOfPoreSystem
           }
@@ -1476,14 +1343,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureLargestCavityDiameter.isEditable = false
         textFieldRenderStructureLargestCavityDiameter.stringValue = ""
         textFieldRenderStructureLargestCavityDiameter.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureLargestCavityDiameter.isEnabled = enabled && renderPeriodic
-          }
+          textFieldRenderStructureLargestCavityDiameter.isEnabled = enabled
           textFieldRenderStructureLargestCavityDiameter.isEditable = enabled
-          if let structureLargestCavityDiameterX: Double = representedStructure.renderStructureLargestCavityDiameter
+          if let structureLargestCavityDiameterX: Double = self.renderStructureLargestCavityDiameter
           {
             textFieldRenderStructureLargestCavityDiameter.doubleValue = structureLargestCavityDiameterX
           }
@@ -1498,14 +1362,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureRestrictingPoreLimitingDiameter.isEditable = false
         textFieldRenderStructureRestrictingPoreLimitingDiameter.stringValue = ""
         textFieldRenderStructureRestrictingPoreLimitingDiameter.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureRestrictingPoreLimitingDiameter.isEnabled = enabled && renderPeriodic
-          }
+          textFieldRenderStructureRestrictingPoreLimitingDiameter.isEnabled = enabled
           textFieldRenderStructureRestrictingPoreLimitingDiameter.isEditable = enabled
-          if let structureRestrictingPoreLimitingDiameter: Double = representedStructure.renderStructureRestrictingPoreLimitingDiameter
+          if let structureRestrictingPoreLimitingDiameter: Double = self.renderStructureRestrictingPoreLimitingDiameter
           {
             textFieldRenderStructureRestrictingPoreLimitingDiameter.doubleValue = structureRestrictingPoreLimitingDiameter
           }
@@ -1520,14 +1381,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEditable = false
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.stringValue = ""
         textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEnabled = false
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.filter({$0.object is StructuralPropertyViewer & AdsorptionSurfaceViewer}).isEmpty
         {
-          if let renderPeriodic: Bool = representedStructure.renderPeriodic
-          {
-            textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEnabled = enabled && renderPeriodic
-          }
+          textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEnabled = enabled
           textFieldRenderStructureLargestCavityDiameterAlongAViablePath.isEditable = enabled
-          if let structureLargestCavityDiameterAlongAViablePath: Double = representedStructure.renderStructureLargestCavityDiameterAlongAViablePath
+          if let structureLargestCavityDiameterAlongAViablePath: Double = self.renderStructureLargestCavityDiameterAlongAViablePath
           {
             textFieldRenderStructureLargestCavityDiameterAlongAViablePath.doubleValue = structureLargestCavityDiameterAlongAViablePath
           }
@@ -1537,9 +1395,6 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           }
         }
       }
-      
-      
-      
     default:
       break
     }
@@ -1582,13 +1437,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         
         SpaceGroupHolohedry.stringValue = SKSpacegroup.HolohedryString(HallNumber: 1)
         
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
-          !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
+        if !iRASPAObjects.filter({$0.object is SpaceGroupViewer}).isEmpty
         {
           HallSpaceGroupPopUpButton.isEditable = enabled
           spaceGroupNumberPopUpButton.isEditable = enabled
           
-          if let spaceGroupHallNumber: Int = representedStructure.spaceGroupHallNumber
+          if let spaceGroupHallNumber: Int = self.spaceGroupHallNumber
           {
             spaceGroupQualifierPopUpButton.isEditable = enabled
             spaceGroupQualifierPopUpButton.removeAllItems()
@@ -1624,10 +1478,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldRenderPrecision.isEditable = false
         textFieldRenderPrecision.stringValue = ""
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+        if !iRASPAObjects.isEmpty
         {
           textFieldRenderPrecision.isEditable = enabled
-          if let renderPrecision: Double = representedStructure.renderCellPrecision
+          if let renderPrecision: Double = self.renderCellPrecision
           {
             textFieldRenderPrecision.doubleValue = renderPrecision
           }
@@ -1658,11 +1512,10 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         
         centringTextField.stringValue = SKSpacegroup.CentringString(HallNumber: 1)
         
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
-          !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
-        {
         
-          if let spaceGroupHallNumber: Int = representedStructure.spaceGroupHallNumber
+        if !iRASPAObjects.filter({$0.object is SpaceGroupViewer}).isEmpty
+        {
+          if let spaceGroupHallNumber: Int = self.spaceGroupHallNumber
           {
             centringTextField.stringValue = SKSpacegroup.CentringString(HallNumber: spaceGroupHallNumber)
             let latticeTranslationStrings: [String] = SKSpacegroup.LatticeTranslationStrings(HallNumber: spaceGroupHallNumber)
@@ -1717,10 +1570,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
         symmorphicityTextField.stringValue = SKSpacegroup.SymmorphicityString(HallNumber: 1)
         numberOfElementsTextField.stringValue = SKSpacegroup.NumberOfElementsString(HallNumber: 1)
         
-        if let representedStructure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
-          !representedStructure.allStructures.filter({$0 is SpaceGroupProtocol}).isEmpty
+        if !iRASPAObjects.filter({$0.object is SpaceGroupViewer}).isEmpty
         {
-          if let spaceGroupHallNumber: Int = representedStructure.spaceGroupHallNumber
+          if let spaceGroupHallNumber: Int = self.spaceGroupHallNumber
           {
             hasInversionTextField.stringValue = SKSpacegroup.hasInversionString(HallNumber: spaceGroupHallNumber)
             inversionTextField.stringValue = SKSpacegroup.hasInversion(HallNumber: spaceGroupHallNumber) ? SKSpacegroup.InversionCenterString(HallNumber: spaceGroupHallNumber) : ""
@@ -1776,8 +1628,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMaterialType(_ sender: NSPopUpButton)
   {
-    if let cellViewers: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project = projectTreeNode.representedObject.loadedProjectStructureNode
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -1789,7 +1640,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       var to: [iRASPAObject] = []
       var from: [iRASPAObject] = []
-      for cellViewer in cellViewers
+      for cellViewer in iRASPAObjects
       {
         for i in 0..<cellViewer.frames.count
         {
@@ -1799,29 +1650,37 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
           case .none,.unknown, .structure:
             return
           case .crystal:
-            to.append(iRASPAObject(crystal: Crystal(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(crystal: Crystal(from: cellViewer.frames[i].object)))
           case .molecularCrystal:
-            to.append(iRASPAObject(molecularCrystal: MolecularCrystal(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(molecularCrystal: MolecularCrystal(from: cellViewer.frames[i].object)))
           case .molecule:
-            to.append(iRASPAObject(molecule: Molecule(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(molecule: Molecule(from: cellViewer.frames[i].object)))
           case .protein:
-            to.append(iRASPAObject(protein: Protein(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(protein: Protein(from: cellViewer.frames[i].object)))
           case .proteinCrystal:
-            to.append(iRASPAObject(proteinCrystal: ProteinCrystal(clone: cellViewer.frames[i].structure)))
+            to.append(iRASPAObject(proteinCrystal: ProteinCrystal(from: cellViewer.frames[i].object)))
           case .proteinCrystalSolvent,.crystalSolvent,.molecularCrystalSolvent:
             return
           case .crystalEllipsoidPrimitive:
-            to.append(iRASPAObject(crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
+            to.append(iRASPAObject(crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive(from: cellViewer.frames[i].object)))
           case .crystalCylinderPrimitive:
-            to.append(iRASPAObject(crystalCylinderPrimitive: CrystalCylinderPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
+            to.append(iRASPAObject(crystalCylinderPrimitive: CrystalCylinderPrimitive(from: cellViewer.frames[i].object)))
           case .crystalPolygonalPrismPrimitive:
-            to.append(iRASPAObject(crystalPolygonalPrismPrimitive: CrystalPolygonalPrismPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
+            to.append(iRASPAObject(crystalPolygonalPrismPrimitive: CrystalPolygonalPrismPrimitive(from: cellViewer.frames[i].object)))
           case .ellipsoidPrimitive:
-            to.append(iRASPAObject(ellipsoidPrimitive: EllipsoidPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
+            to.append(iRASPAObject(ellipsoidPrimitive: EllipsoidPrimitive(from: cellViewer.frames[i].object)))
           case .cylinderPrimitive:
-            to.append(iRASPAObject(cylinderPrimitive: CylinderPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
+            to.append(iRASPAObject(cylinderPrimitive: CylinderPrimitive(from: cellViewer.frames[i].object)))
           case .polygonalPrismPrimitive:
-            to.append(iRASPAObject(polygonalPrismPrimitive: PolygonalPrismPrimitive(clone: cellViewer.frames[i].object as! Primitive)))
+            to.append(iRASPAObject(polygonalPrismPrimitive: PolygonalPrismPrimitive(from: cellViewer.frames[i].object)))
+          case .RASPADensityVolume:
+            to.append(iRASPAObject(RASPADensityVolume: RASPADensityVolume(from: cellViewer.frames[i].object)))
+          case .VTKDensityVolume:
+            to.append(iRASPAObject(VTKDensityVolume: VTKDensityVolume(from: cellViewer.frames[i].object)))
+          case .VASPDensityVolume:
+            to.append(iRASPAObject(VASPDensityVolume: VASPDensityVolume(from: cellViewer.frames[i].object)))
+          case .GaussianCubeVolume:
+            to.append(iRASPAObject(GaussianCubeVolume: GaussianCubeVolume(from: cellViewer.frames[i].object)))
           default:
             break
           }
@@ -1830,7 +1689,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.replaceStructure(structures: from, to: to)
       
       project.isEdited = true
-      
+    
     }
   }
   
@@ -1850,8 +1709,8 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       self.windowController?.document?.updateChangeCount(.changeDone)
       project.isEdited = true
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: to.map{$0.structure})
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: to.map{$0.structure})
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: to.map{$0.object})
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: to.map{$0.object})
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -1870,15 +1729,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     let newValue: Double = sender.doubleValue
     
-    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
-      structure.renderUnitCellLengthA = newValue
-      structure.reComputeBoundingBox()
+      self.renderUnitCellLengthA = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       
       
@@ -1899,17 +1757,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderUnitCellLengthA: Double = structure.renderUnitCellLengthA,
-       let _ = structure.renderPeriodic
+       let renderUnitCellLengthA: Double = self.renderUnitCellLengthA
     {
       let newValue: Double = renderUnitCellLengthA + deltaValue
-      structure.renderUnitCellLengthA = newValue
-      structure.reComputeBoundingBox()
+      self.renderUnitCellLengthA = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1929,15 +1785,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     let newValue: Double = sender.doubleValue
     
-    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
-      structure.renderUnitCellLengthB = newValue
-      structure.reComputeBoundingBox()
+      self.renderUnitCellLengthB = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1956,17 +1811,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderUnitCellLengthB: Double = structure.renderUnitCellLengthB,
-       let _ = structure.renderPeriodic
+       let renderUnitCellLengthB: Double = self.renderUnitCellLengthB
     {
       let newValue: Double = renderUnitCellLengthB + deltaValue
-      structure.renderUnitCellLengthB = newValue
-      structure.reComputeBoundingBox()
+      self.renderUnitCellLengthB = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -1987,15 +1840,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     let newValue: Double = sender.doubleValue
     
-    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
-      structure.renderUnitCellLengthC = newValue
-      structure.reComputeBoundingBox()
+      self.renderUnitCellLengthC = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2014,17 +1866,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderUnitCellLengthC: Double = structure.renderUnitCellLengthC,
-       let _ = structure.renderPeriodic
+       let renderUnitCellLengthC: Double = self.renderUnitCellLengthC
     {
       let newValue: Double = renderUnitCellLengthC + deltaValue
-      structure.renderUnitCellLengthC = newValue
-      structure.reComputeBoundingBox()
+      self.renderUnitCellLengthC = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2044,15 +1894,14 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     let newValue: Double = sender.doubleValue
     
-    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
-      structure.renderUnitCellAlphaAngle = newValue * Double.pi / 180.0
-      structure.reComputeBoundingBox()
+      self.renderUnitCellAlphaAngle = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
         
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2071,17 +1920,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderUnitCellAlphaAngle: Double = structure.renderUnitCellAlphaAngle,
-       let _ = structure.renderPeriodic
+       let renderUnitCellAlphaAngle: Double = self.renderUnitCellAlphaAngle
     {
-      let newValue: Double = renderUnitCellAlphaAngle + deltaValue * Double.pi / 180.0
-      structure.renderUnitCellAlphaAngle = newValue
-      structure.reComputeBoundingBox()
+      let newValue: Double = renderUnitCellAlphaAngle + deltaValue
+      self.renderUnitCellAlphaAngle = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2099,17 +1946,16 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedCellAngleBeta(_ sender: NSTextField)
   {
-    let newValue: Double = sender.doubleValue * Double.pi / 180.0
+    let newValue: Double = sender.doubleValue
     
-    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
-      structure.renderUnitCellBetaAngle = newValue
-      structure.reComputeBoundingBox()
+      self.renderUnitCellBetaAngle = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2128,17 +1974,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderUnitCellBetaAngle: Double = structure.renderUnitCellBetaAngle,
-       let _ = structure.renderPeriodic
+       let renderUnitCellBetaAngle: Double = self.renderUnitCellBetaAngle
     {
-      let newValue: Double = renderUnitCellBetaAngle + deltaValue * Double.pi / 180.0
-      structure.renderUnitCellBetaAngle = newValue
-      structure.reComputeBoundingBox()
+      let newValue: Double = renderUnitCellBetaAngle + deltaValue
+      self.renderUnitCellBetaAngle = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2157,17 +2001,16 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedCellAngleGamma(_ sender: NSTextField)
   {
-    let newValue: Double = sender.doubleValue * Double.pi / 180.0
+    let newValue: Double = sender.doubleValue
     
-    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
-      structure.renderUnitCellGammaAngle = newValue
-      structure.reComputeBoundingBox()
+      self.renderUnitCellGammaAngle = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2186,17 +2029,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderUnitCellGammaAngle: Double = structure.renderUnitCellGammaAngle,
-       let _ = structure.renderPeriodic
+       let renderUnitCellGammaAngle: Double = self.renderUnitCellGammaAngle
     {
-      let newValue: Double = renderUnitCellGammaAngle + deltaValue * Double.pi / 180.0
-      structure.renderUnitCellGammaAngle = newValue
-      structure.reComputeBoundingBox()
+      let newValue: Double = renderUnitCellGammaAngle + deltaValue
+      self.renderUnitCellGammaAngle = newValue
+      self.reComputeBoundingBox()
       
       self.updateOutlineView(identifiers: [self.boxMaterialInfoCell, self.boxBoundingBoxInfoCell, self.boxUnitCellPropertiesCell, self.boxUnitCellInfoCell, self.boxVolumeCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       if let projectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
@@ -2220,24 +2061,20 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = (self.representedObject as? [CellViewerLegacy]),
-       let renderMaximumReplicaX: Int32 = structure.renderMaximumReplicaX,
-       let _ = structure.renderPeriodic
+       let renderMaximumReplicaX: Int32 = self.renderMaximumReplicaX
     {
       if (newValue <= renderMaximumReplicaX)
       {
-        
-        structure.renderMinimumReplicaX = newValue
+        self.renderMinimumReplicaX = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
@@ -2254,24 +2091,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = (self.representedObject as? [CellViewerLegacy]),
-       let renderMaximumReplicaY: Int32 = structure.renderMaximumReplicaY,
-       let _ = structure.renderPeriodic
+       let renderMaximumReplicaY: Int32 = self.renderMaximumReplicaY
     {
-      
       if (newValue <= renderMaximumReplicaY)
       {
-        structure.renderMinimumReplicaY = newValue
+        self.renderMinimumReplicaY = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.document?.updateChangeCount(.changeDone)
@@ -2287,23 +2121,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = (self.representedObject as? [CellViewerLegacy]),
-      let renderMaximumReplicaZ: Int32 = structure.renderMaximumReplicaZ,
-      let _ = structure.renderPeriodic
+      let renderMaximumReplicaZ: Int32 = self.renderMaximumReplicaZ
     {
       if (newValue <= renderMaximumReplicaZ)
       {
-        structure.renderMinimumReplicaZ = newValue
+        self.renderMinimumReplicaZ = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.document?.updateChangeCount(.changeDone)
@@ -2319,23 +2151,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-      let renderMinimumReplicaX: Int32 = structure.renderMinimumReplicaX,
-      let _ = structure.renderPeriodic
+      let renderMinimumReplicaX: Int32 = self.renderMinimumReplicaX
     {
       if (newValue >= renderMinimumReplicaX)
       {
-        structure.renderMaximumReplicaX = newValue
+        self.renderMaximumReplicaX = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.document?.updateChangeCount(.changeDone)
@@ -2351,23 +2181,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderMinimumReplicaY: Int32 = structure.renderMinimumReplicaY,
-       let _ = structure.renderPeriodic
+       let renderMinimumReplicaY: Int32 = self.renderMinimumReplicaY
     {
       if (newValue >= renderMinimumReplicaY)
       {
-        structure.renderMaximumReplicaY = newValue
+        self.renderMaximumReplicaY = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.document?.updateChangeCount(.changeDone)
@@ -2383,23 +2211,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Int32 = Int32(sender.doubleValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderMinimumReplicaZ: Int32 = structure.renderMinimumReplicaZ,
-       let _ = structure.renderPeriodic
+       let renderMinimumReplicaZ: Int32 = self.renderMinimumReplicaZ
     {
       if (newValue >= renderMinimumReplicaZ)
       {
-        structure.renderMaximumReplicaZ = newValue
+        self.renderMaximumReplicaZ = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         
@@ -2418,27 +2244,25 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderMinimumReplicaX: Int32 = structure.renderMinimumReplicaX,
-       let renderMaximumReplicaX: Int32 = structure.renderMaximumReplicaX,
-       let _ = structure.renderPeriodic
+       let renderMinimumReplicaX: Int32 = self.renderMinimumReplicaX,
+       let renderMaximumReplicaX: Int32 = self.renderMaximumReplicaX
     {
       
       let newValue: Int32 = renderMinimumReplicaX + deltaValue
       
       if (newValue <= renderMaximumReplicaX)
       {
-        structure.renderMinimumReplicaX = newValue
+        self.renderMinimumReplicaX = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
       
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2457,26 +2281,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderMinimumReplicaY: Int32 = structure.renderMinimumReplicaY,
-       let renderMaximumReplicaY: Int32 = structure.renderMaximumReplicaY,
-       let _ = structure.renderPeriodic
+       let renderMinimumReplicaY: Int32 = self.renderMinimumReplicaY,
+       let renderMaximumReplicaY: Int32 = self.renderMaximumReplicaY
     {
       let newValue: Int32 = renderMinimumReplicaY + deltaValue
       
       if (newValue <= renderMaximumReplicaY)
       {
-        structure.renderMinimumReplicaY = newValue
+        self.renderMinimumReplicaY = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2496,26 +2318,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderMinimumReplicaZ: Int32 = structure.renderMinimumReplicaZ,
-       let renderMaximumReplicaZ: Int32 = structure.renderMaximumReplicaZ,
-       let _ = structure.renderPeriodic
+       let renderMinimumReplicaZ: Int32 = self.renderMinimumReplicaZ,
+       let renderMaximumReplicaZ: Int32 = self.renderMaximumReplicaZ
     {
       let newValue: Int32 = renderMinimumReplicaZ + deltaValue
       
       if (newValue <= renderMaximumReplicaZ)
       {
-        structure.renderMinimumReplicaZ = newValue
+        self.renderMinimumReplicaZ = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2535,26 +2355,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderMinimumReplicaX: Int32 = structure.renderMinimumReplicaX,
-       let renderMaximumReplicaX: Int32 = structure.renderMaximumReplicaX,
-       let _ = structure.renderPeriodic
+       let renderMinimumReplicaX: Int32 = self.renderMinimumReplicaX,
+       let renderMaximumReplicaX: Int32 = self.renderMaximumReplicaX
     {
       let newValue: Int32 = renderMaximumReplicaX + deltaValue
       
       if (newValue >= renderMinimumReplicaX)
       {
-        structure.renderMaximumReplicaX = newValue
+        self.renderMaximumReplicaX = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2573,26 +2391,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderMinimumReplicaY: Int32 = structure.renderMinimumReplicaY,
-       let renderMaximumReplicaY: Int32 = structure.renderMaximumReplicaY,
-       let _ = structure.renderPeriodic
+       let renderMinimumReplicaY: Int32 = self.renderMinimumReplicaY,
+       let renderMaximumReplicaY: Int32 = self.renderMaximumReplicaY
     {
       let newValue: Int32 = renderMaximumReplicaY + deltaValue
       
       if (newValue >= renderMinimumReplicaY)
       {
-        structure.renderMaximumReplicaY = newValue
+        self.renderMaximumReplicaY = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2611,26 +2427,24 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Int32 = Int32(sender.intValue)
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderMinimumReplicaZ: Int32 = structure.renderMinimumReplicaZ,
-       let renderMaximumReplicaZ: Int32 = structure.renderMaximumReplicaZ,
-       let _ = structure.renderPeriodic
+       let renderMinimumReplicaZ: Int32 = self.renderMinimumReplicaZ,
+       let renderMaximumReplicaZ: Int32 = self.renderMaximumReplicaZ
     {
       let newValue: Int32 = renderMaximumReplicaZ + deltaValue
       
       if (newValue >= renderMinimumReplicaZ)
       {
-        structure.renderMaximumReplicaZ = newValue
+        self.renderMaximumReplicaZ = newValue
         
         if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
         {
-          structure.reComputeBoundingBox()
+          self.reComputeBoundingBox()
           project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
           project.checkValidatyOfMeasurementPoints()
         }
         
-        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: structure.allRenderFrames)
-        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+        //self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: self.iRASPAObjects.flatMap{$0.allRenderFrames})
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
         self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2654,10 +2468,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      structure.renderOriginX = newValue
+      self.renderOriginX = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -2682,10 +2495,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      structure.renderOriginY = newValue
+      self.renderOriginY = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -2710,10 +2522,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      structure.renderOriginZ = newValue
+      self.renderOriginZ = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
@@ -2741,10 +2552,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      structure.renderContentShiftX = newValue
+      self.renderContentShiftX = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
             
@@ -2769,21 +2579,20 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderContentShiftX: Double = structure.renderContentShiftX
+       let renderContentShiftX: Double = self.renderContentShiftX
     {
       let newValue: Double = renderContentShiftX + deltaValue * 0.01
       
-      structure.renderContentShiftX = newValue
+      self.renderContentShiftX = newValue
         
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
-        structure.reComputeBoundingBox()
+        self.reComputeBoundingBox()
         project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         project.checkValidatyOfMeasurementPoints()
       }
         
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2801,10 +2610,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      structure.renderContentShiftY = newValue
+      self.renderContentShiftY = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
             
@@ -2829,21 +2637,20 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-      let renderContentShiftY: Double = structure.renderContentShiftY
+      let renderContentShiftY: Double = self.renderContentShiftY
     {
       let newValue: Double = renderContentShiftY + deltaValue * 0.01
       
-      structure.renderContentShiftY = newValue
+      self.renderContentShiftY = newValue
       
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
-        structure.reComputeBoundingBox()
+        self.reComputeBoundingBox()
         project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2861,10 +2668,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let newValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      structure.renderContentShiftZ = newValue
+      self.renderContentShiftZ = newValue
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
             
@@ -2889,21 +2695,20 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     let deltaValue: Double = sender.doubleValue
     
     if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
-      var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-      let renderContentShiftZ: Double = structure.renderContentShiftZ
+      let renderContentShiftZ: Double = self.renderContentShiftZ
     {
       let newValue: Double = renderContentShiftZ + deltaValue * 0.01
       
-      structure.renderContentShiftZ = newValue
+      self.renderContentShiftZ = newValue
       
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
-        structure.reComputeBoundingBox()
+        self.reComputeBoundingBox()
         project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2918,20 +2723,19 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func toggleFlipContentX(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var structure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      structure.renderContentFlipX = (sender.state == NSControl.StateValue.on)
+      self.renderContentFlipX = (sender.state == NSControl.StateValue.on)
       
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
-        structure.reComputeBoundingBox()
+        self.reComputeBoundingBox()
         project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2944,20 +2748,19 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func toggleFlipContentY(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var structure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      structure.renderContentFlipY = (sender.state == NSControl.StateValue.on)
+      self.renderContentFlipY = (sender.state == NSControl.StateValue.on)
       
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
-        structure.reComputeBoundingBox()
+        self.reComputeBoundingBox()
         project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2971,20 +2774,19 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func toggleFlipContentZ(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var structure: [CellViewerLegacy] = representedObject as? [CellViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      structure.renderContentFlipZ = (sender.state == NSControl.StateValue.on)
+      self.renderContentFlipZ = (sender.state == NSControl.StateValue.on)
       
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
-        structure.reComputeBoundingBox()
+        self.reComputeBoundingBox()
         project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
         project.checkValidatyOfMeasurementPoints()
       }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: structure.allRenderFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: self.iRASPAObjects.flatMap{$0.allRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
@@ -2997,38 +2799,42 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   
   // undo for large-changes: completely replace all atoms and bonds by new ones
-  func applyCellContentShift(structure: Structure, cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)
+  func applyCellContentShift(object: Object, cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
-      let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+       let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
-      let oldCell: SKCell = structure.cell
+      let oldCell: SKCell = object.cell
       var oldSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
-      if let spaceGroupViewer = structure as? SpaceGroupProtocol
+      if let spaceGroupViewer = object as? SpaceGroupViewer
       {
         oldSpaceGroup = spaceGroupViewer.spaceGroup
       }
-      let oldAtoms: SKAtomTreeController = structure.atomTreeController
-      let oldBonds: SKBondSetController = structure.bondSetController
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.applyCellContentShift(structure: structure, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
+      let oldAtoms: SKAtomTreeController = atomViewer.atomTreeController
+      let oldBonds: SKBondSetController = (object as? BondViewer)?.bondSetController ?? SKBondSetController()
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.applyCellContentShift(object: object, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
       
-      structure.cell = cell
-      if let spaceGroupViewer = structure as? SpaceGroupProtocol
+      object.cell = cell
+      if let spaceGroupViewer = object as? SpaceGroupViewer
       {
         spaceGroupViewer.spaceGroup = spaceGroup
       }
-      structure.atomTreeController = atoms
-      structure.bondSetController = bonds
+      atomViewer.atomTreeController = atoms
+      (object as? BondViewer)?.bondSetController = bonds
       
-      structure.reComputeBoundingBox()
+      object.reComputeBoundingBox()
       
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
-      structure.setRepresentationColorScheme(scheme: structure.atomColorSchemeIdentifier, colorSets: document.colorSets)
-      structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
+      if let structure: Structure = object as? Structure
+      {
+        structure.setRepresentationColorScheme(scheme: structure.atomColorSchemeIdentifier, colorSets: document.colorSets)
+        structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
+      }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [object])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [object])
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
@@ -3036,7 +2842,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.cellOutlineView?.reloadData()
       
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: object)
       
       NotificationCenter.default.post(name: Notification.Name(NotificationStrings.SpaceGroupShouldReloadNotification), object: self.windowController)
     }
@@ -3047,31 +2853,30 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func applyContentShift(_ sender: NSButton)
   {
-    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-      let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
+      let structures: [Structure] = self.iRASPAObjects.compactMap({$0.object as? Structure})
+      
       if let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
       {
         project.measurementTreeNodes = []
       }
       
-      for structure in cellViewer.allStructures
+      for structure in structures
       {
         if let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.applyCellContentShift()
         {
-          self.applyCellContentShift(structure: structure, cell: state.cell, spaceGroup: state.spaceGroup, atoms: state.atoms, bonds: state.bonds)
+          self.applyCellContentShift(object: structure, cell: state.cell, spaceGroup: state.spaceGroup, atoms: state.atoms, bonds: state.bonds)
         }
       }
       
-      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: iRASPAObjects.compactMap({$0.object as? Structure}).map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
       
       for (i, result) in results.enumerated()
       {
-        cellViewer.allStructures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
-        cellViewer.allStructures[i].structureHeliumVoidFraction = result.voidFraction
+        structures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
+        structures[i].structureHeliumVoidFraction = result.voidFraction
       }
-      
-      
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3088,12 +2893,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.x = sender.doubleValue * Double.pi/180.0
-      structure.renderOrientation = simd_quatd(EulerAngles: angles)
+      self.renderOrientation = simd_quatd(EulerAngles: angles)
       
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
@@ -3117,12 +2921,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.y = sender.doubleValue * Double.pi/180.0
-      structure.renderOrientation = simd_quatd(EulerAngles: angles)
+      self.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3145,12 +2948,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.z = sender.doubleValue * Double.pi/180.0
-      structure.renderOrientation = simd_quatd(EulerAngles: angles)
+      self.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3173,13 +2975,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderRotationDelta = structure.renderRotationDelta,
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderRotationDelta = self.renderRotationDelta,
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       let dq: simd_quatd = simd_quatd(yaw: renderRotationDelta)
       
-      structure.renderOrientation = renderOrientation * dq
+      self.renderOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3204,13 +3005,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderRotationDelta = structure.renderRotationDelta,
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderRotationDelta = self.renderRotationDelta,
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       let dq: simd_quatd = simd_quatd(yaw: -renderRotationDelta)
       
-      structure.renderOrientation = renderOrientation * dq
+      self.renderOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3235,13 +3035,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderRotationDelta = structure.renderRotationDelta,
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderRotationDelta = self.renderRotationDelta,
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       let dq: simd_quatd = simd_quatd(pitch: renderRotationDelta)
       
-      structure.renderOrientation = renderOrientation * dq
+      self.renderOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3266,13 +3065,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderRotationDelta = structure.renderRotationDelta,
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderRotationDelta = self.renderRotationDelta,
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       let dq: simd_quatd = simd_quatd(pitch: -renderRotationDelta)
       
-      structure.renderOrientation = renderOrientation * dq
+      self.renderOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3296,13 +3094,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderRotationDelta = structure.renderRotationDelta,
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderRotationDelta = self.renderRotationDelta,
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       let dq: simd_quatd = simd_quatd(roll: renderRotationDelta)
       
-      structure.renderOrientation = renderOrientation * dq
+      self.renderOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3327,13 +3124,12 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderRotationDelta = structure.renderRotationDelta,
-       let renderOrientation: simd_quatd = structure.renderOrientation
+       let renderRotationDelta = self.renderRotationDelta,
+       let renderOrientation: simd_quatd = self.renderOrientation
     {
       let dq: simd_quatd = simd_quatd(roll: -renderRotationDelta)
       
-      structure.renderOrientation = renderOrientation * dq
+      self.renderOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3357,12 +3153,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderOrientation = structure.renderOrientation
+       let renderOrientation = self.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.x = sender.doubleValue * Double.pi/180.0
-      structure.renderOrientation = simd_quatd(EulerAngles: angles)
+      self.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
@@ -3406,12 +3201,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderOrientation = structure.renderOrientation
+       let renderOrientation = self.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.z = sender.doubleValue * Double.pi/180.0
-      structure.renderOrientation = simd_quatd(EulerAngles: angles)
+      self.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
@@ -3453,12 +3247,11 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
        let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let renderOrientation = structure.renderOrientation
+       let renderOrientation = self.renderOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.y = sender.doubleValue * Double.pi/180.0
-      structure.renderOrientation = simd_quatd(EulerAngles: angles)
+      self.renderOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.updateOutlineView(identifiers: [self.boxOrientationCell, self.boxBoundingBoxInfoCell])
@@ -3498,10 +3291,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedRotationAngle(_ sender: NSTextField)
   {
-    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
-      structure.renderRotationDelta = sender.doubleValue
+      self.renderRotationDelta = sender.doubleValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3516,23 +3308,21 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMaterialName(_ sender: NSComboBox)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.renderStructureMaterialType = sender.stringValue
+      self.renderStructureMaterialType = sender.stringValue
     }
   }
   
   @IBAction func setHeliumVoidFraction(_ sender: NSTextField)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.renderStructureHeliumVoidFraction = sender.doubleValue
-      structure.renderRecomputeDensityProperties()
+      self.renderStructureHeliumVoidFraction = sender.doubleValue
+      self.renderRecomputeDensityProperties()
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3543,18 +3333,18 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func recomputeHeliumVoidFraction(_ sender: NSButton)
   {
-    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+      let structures: [Structure & StructuralPropertyViewer & AdsorptionSurfaceViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyViewer & AdsorptionSurfaceViewer})
+      let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
         
       for (i, result) in results.enumerated()
       {
-        cellViewer.allStructures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
-        cellViewer.allStructures[i].structureHeliumVoidFraction = result.voidFraction
+        structures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
+        structures[i].structureHeliumVoidFraction = result.voidFraction
       }
       
-      cellViewer.renderRecomputeDensityProperties()
+      self.renderRecomputeDensityProperties()
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3566,19 +3356,19 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   @IBAction func changeFrameworkProbeMolecule(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var cellViewer: [CellViewerLegacy] = representedObject as? [CellViewerLegacy],
       let renderFrameworkProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
     {
-      cellViewer.renderFrameworkProbeMolecule = renderFrameworkProbeMolecule
+      self.renderFrameworkProbeMolecule = renderFrameworkProbeMolecule
       
-      cellViewer.renderRecomputeDensityProperties()
+      self.renderRecomputeDensityProperties()
       
       do
       {
-        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
+        let structures: [Structure] = self.iRASPAObjects.compactMap({$0.object as? Structure})
+        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
         for (i, result) in results.enumerated()
         {
-          cellViewer.allStructures[i].structureNitrogenSurfaceArea = result
+          structures[i].structureNitrogenSurfaceArea = result
         }
       }
       catch let error
@@ -3596,15 +3386,15 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func recomputeNitrogenSurfaceArea(_ sender: NSButton)
   {
-    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
      do
       {
-        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: cellViewer.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
+        let structures: [Structure & StructuralPropertyViewer & AdsorptionSurfaceViewer] = self.iRASPAObjects.compactMap({$0.object as? Structure & StructuralPropertyViewer & AdsorptionSurfaceViewer})
+        let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: $0.frameworkProbeParameters)})
         for (i, result) in results.enumerated()
         {
-          cellViewer.allStructures[i].structureNitrogenSurfaceArea = result
+          structures[i].structureNitrogenSurfaceArea = result
         }
       }
       catch let error
@@ -3622,10 +3412,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setNumberOfChannelSystems(_ sender: NSTextField)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEditable
     {
-      structure.renderStructureNumberOfChannelSystems = sender.integerValue
+      self.renderStructureNumberOfChannelSystems = sender.integerValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3636,9 +3425,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setNumberOfInaccessiblePockets(_ sender: NSTextField)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy]
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.renderStructureNumberOfInaccessiblePockets = sender.integerValue
+      self.renderStructureNumberOfInaccessiblePockets = sender.integerValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3649,10 +3438,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setDimensionalityOfPoreSystem(_ sender: NSTextField)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.renderStructureDimensionalityOfPoreSystem = sender.integerValue
+      self.renderStructureDimensionalityOfPoreSystem = sender.integerValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3663,10 +3451,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setLargestCavityDiameter(_ sender: NSTextField)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.renderStructureLargestCavityDiameter = sender.doubleValue
+      self.renderStructureLargestCavityDiameter = sender.doubleValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3678,10 +3465,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setRestrictingPoreLimitingDiameter(_ sender: NSTextField)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.renderStructureRestrictingPoreLimitingDiameter = sender.doubleValue
+      self.renderStructureRestrictingPoreLimitingDiameter = sender.doubleValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3692,10 +3478,9 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setLargestCavityDiameterAlongAViablePath(_ sender: NSTextField)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.renderStructureLargestCavityDiameterAlongAViablePath = sender.doubleValue
+      self.renderStructureLargestCavityDiameterAlongAViablePath = sender.doubleValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -3716,7 +3501,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
     {
       let oldCell: SKCell = structure.cell
       var oldSpaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
-      if let spaceGroupViewer = structure as? SpaceGroupProtocol
+      if let spaceGroupViewer = structure as? SpaceGroupViewer
       {
         oldSpaceGroup = spaceGroupViewer.spaceGroup
       }
@@ -3725,7 +3510,7 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setStructureState(structure: structure, cell: oldCell, spaceGroup: oldSpaceGroup, atoms: oldAtoms, bonds: oldBonds)})
       
       structure.cell = cell
-      if let spaceGroupViewer = structure as? SpaceGroupProtocol
+      if let spaceGroupViewer = structure as? SpaceGroupViewer
       {
         spaceGroupViewer.spaceGroup = spaceGroup
       }
@@ -3784,44 +3569,44 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func setSpaceGroupHallNumber(_ sender: NSPopUpButton)
   {
-    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
-      self.setSpaceGroupHallNumber(structures: cellViewer.allStructures, number: Array(repeating: sender.indexOfSelectedItem, count: cellViewer.allStructures.count))
+      
+      let structures: [Structure] = iRASPAObjects.compactMap({$0.object as? Structure})
+      self.setSpaceGroupHallNumber(structures: structures, number: Array(repeating: sender.indexOfSelectedItem, count: structures.count))
     }
   }
   
   @IBAction func setSpaceGroupNumber(_ sender: NSPopUpButton)
   {
-    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       let HallNumber: Int = SKSpacegroup.HallSymbolForConventionalSpaceGroupNumber(sender.indexOfSelectedItem)
-      self.setSpaceGroupHallNumber(structures: cellViewer.allStructures, number: Array(repeating: HallNumber, count: cellViewer.allStructures.count))
+      let structures: [Structure] = iRASPAObjects.compactMap({$0.object as? Structure})
+      self.setSpaceGroupHallNumber(structures: structures, number: Array(repeating: HallNumber, count: structures.count))
     }
   }
   
   @IBAction func setSpaceGroupQualifier(_ sender: NSPopUpButton)
   {
-    if let cellViewer: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-       let spaceGroupHallNumber: Int = cellViewer.spaceGroupHallNumber,
+    if let spaceGroupHallNumber: Int = self.spaceGroupHallNumber,
        let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
       let spaceGroupNumber: Int = SKSpacegroup.SpaceGroupNumberForHallNumber(spaceGroupHallNumber)
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       let HallNumber: Int = SKSpacegroup.BaseHallSymbolForSpaceGroupNumber(spaceGroupNumber) + sender.indexOfSelectedItem
-      self.setSpaceGroupHallNumber(structures: cellViewer.allStructures, number: Array(repeating: HallNumber, count: cellViewer.allStructures.count))
+      let structures: [Structure] = iRASPAObjects.compactMap({$0.object as? Structure})
+      self.setSpaceGroupHallNumber(structures: structures, number: Array(repeating: HallNumber, count: structures.count))
     }
   }
   
   @IBAction func setSpaceGroupPrecision(_ sender: NSTextField)
   {
-    if var structure: [CellViewerLegacy] = self.representedObject as? [CellViewerLegacy],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.renderCellPrecision = sender.doubleValue
+      self.renderCellPrecision = sender.doubleValue
       
       self.windowController?.window?.makeFirstResponder(self.cellOutlineView)
       
@@ -3829,6 +3614,859 @@ class StructureCellDetailViewController: NSViewController, NSOutlineViewDelegate
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  
+  // MARK: Cell Viewer
+  //===================================================================================================================================================
+  
+  func reComputeBoundingBox()
+  {
+    self.iRASPAObjects.forEach({$0.object.reComputeBoundingBox()})
+  }
+  
+  func renderRecomputeDensityProperties()
+  {
+    self.iRASPAObjects.compactMap({$0.object as? Structure}).forEach({$0.recomputeDensityProperties()})
+  }
+  
+  public var renderBoundingBoxMinimumX: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.boundingBox.minimum.x })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderBoundingBoxMinimumY: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.boundingBox.minimum.y })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderBoundingBoxMinimumZ: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.boundingBox.minimum.z })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderBoundingBoxMaximumX: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.boundingBox.maximum.x })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderBoundingBoxMaximumY: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.boundingBox.maximum.y })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderBoundingBoxMaximumZ: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.boundingBox.maximum.z })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  
+  
+  public var renderUnitCellLengthA: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.a })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.a = newValue ?? 20.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellLengthB: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.b })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.b = newValue ?? 20.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellLengthC: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.c })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.c = newValue ?? 20.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  
+  public var renderUnitCellAlphaAngle: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.alpha * 180.0/Double.pi })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.alpha = (newValue ?? 90.0)  * (Double.pi / 180.0)
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellBetaAngle: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.beta * 180.0/Double.pi })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.beta = (newValue ?? 90.0)  * (Double.pi / 180.0)
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellGammaAngle: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.gamma * 180.0/Double.pi })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.gamma = (newValue ?? 90.0)  * (Double.pi / 180.0)
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellAX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[0].x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.unitCell[0].x = newValue ?? 20.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellAY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[0].y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.unitCell[0].y = newValue ?? 0.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellAZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[0].z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.unitCell[0].z = newValue ?? 0.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellBX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[1].x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.unitCell[1].x = newValue ?? 0.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellBY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[1].y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.unitCell[1].y = newValue ?? 20.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellBZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[1].z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.cell.unitCell[1].z = newValue ?? 20.0}
+    }
+  }
+  
+  public var renderUnitCellCX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[2].x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.unitCell[2].x = newValue ?? 0.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellCY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[2].y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.unitCell[2].y = newValue ?? 0.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderUnitCellCZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.unitCell[2].z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.unitCell[2].z = newValue ?? 20.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderCellVolume: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cellVolume })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderCellPerpendicularWidthX: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cellPerpendicularWidthsX })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderCellPerpendicularWidthY: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cellPerpendicularWidthsY })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderCellPerpendicularWidthZ: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cellPerpendicularWidthsZ })
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderMinimumReplicaX: Int32?
+  {
+    get
+    {
+      let set: Set<Int32> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.minimumReplica.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.minimumReplica.x = newValue ?? 0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderMinimumReplicaY: Int32?
+  {
+    get
+    {
+      let set: Set<Int32> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.minimumReplica.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.minimumReplica.y = newValue ?? 0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderMinimumReplicaZ: Int32?
+  {
+    get
+    {
+      let set: Set<Int32> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.minimumReplica.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.minimumReplica.z = newValue ?? 0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderMaximumReplicaX: Int32?
+  {
+    get
+    {
+      let set: Set<Int32> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.maximumReplica.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.maximumReplica.x = newValue ?? 0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderMaximumReplicaY: Int32?
+  {
+    get
+    {
+      let set: Set<Int32> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.maximumReplica.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.maximumReplica.y = newValue ?? 0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderMaximumReplicaZ: Int32?
+  {
+    get
+    {
+      let set: Set<Int32> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.maximumReplica.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.maximumReplica.z = newValue ?? 0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderOrientation: simd_quatd?
+  {
+    get
+    {
+      let origin: [simd_quatd] = self.iRASPAObjects.compactMap{$0.object.orientation}
+      let q: simd_quatd = origin.reduce(simd_quatd()){return simd_add($0, $1)}
+      let averaged_vector: simd_quatd = simd_quatd(ix: q.vector.x / Double(origin.count), iy: q.vector.y / Double(origin.count), iz: q.vector.z / Double(origin.count), r: q.vector.w / Double(origin.count))
+      return origin.isEmpty ? nil : averaged_vector
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.orientation = newValue ?? simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)}
+    }
+  }
+  
+  public var renderRotationDelta: Double?
+  {
+    get
+    {
+      let origin: [Double] = self.iRASPAObjects.compactMap{$0.object.rotationDelta}
+      return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.rotationDelta = newValue ?? 5.0}
+    }
+  }
+  
+  public var renderEulerAngleX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return ($0.object.orientation.EulerAngles).x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.orientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,$0.object.orientation.EulerAngles.y,$0.object.orientation.EulerAngles.z)}
+    }
+  }
+  
+  public var renderEulerAngleY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return ($0.object.orientation.EulerAngles).y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.orientation.EulerAngles = SIMD3<Double>($0.object.orientation.EulerAngles.x, newValue ?? 0.0,$0.object.orientation.EulerAngles.z)}
+    }
+  }
+  
+  public var renderEulerAngleZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return ($0.object.orientation.EulerAngles).z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.orientation.EulerAngles = SIMD3<Double>($0.object.orientation.EulerAngles.x, $0.object.orientation.EulerAngles.y, newValue ?? 0.0)}
+    }
+  }
+  
+  public var renderOriginX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.origin.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.origin.x = newValue ?? 0.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderOriginY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.origin.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.origin.y = newValue ?? 0.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderOriginZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.origin.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.origin.z = newValue ?? 0.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  // MARK: StructuralProperty Viewer
+  //===================================================================================================================================================
+  
+  public var renderMaterialType: Object.ObjectType?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return $0.object.materialType.rawValue })
+      return Set(set).count == 1 ? Object.ObjectType(rawValue: set.first!) : nil
+    }
+  }
+  
+  public var renderStructureMaterialType: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer)?.structureMaterialType})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer)?.structureMaterialType = newValue ?? ""}
+    }
+  }
+  
+  public var renderStructureMass: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer)?.structureMass})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer)?.structureMass = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureDensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer)?.structureDensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer)?.structureDensity = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureHeliumVoidFraction: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureHeliumVoidFraction})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureHeliumVoidFraction = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureSpecificVolume: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer)?.structureSpecificVolume})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer)?.structureSpecificVolume = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureAccessiblePoreVolume: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureAccessiblePoreVolume})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureAccessiblePoreVolume = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderFrameworkProbeMolecule: Structure.ProbeMolecule?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.frameworkProbeMolecule.rawValue})
+      return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.frameworkProbeMolecule = newValue ?? .helium}
+    }
+  }
+  
+  public var renderStructureVolumetricNitrogenSurfaceArea: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureVolumetricNitrogenSurfaceArea})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureVolumetricNitrogenSurfaceArea = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureGravimetricNitrogenSurfaceArea: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureGravimetricNitrogenSurfaceArea})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureGravimetricNitrogenSurfaceArea = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureNumberOfChannelSystems: Int?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureNumberOfChannelSystems})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureNumberOfChannelSystems = newValue ?? 0}
+    }
+  }
+  
+  
+  public var renderStructureNumberOfInaccessiblePockets: Int?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureNumberOfInaccessiblePockets})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureNumberOfInaccessiblePockets = newValue ?? 0}
+    }
+  }
+  
+  public var renderStructureDimensionalityOfPoreSystem: Int?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureDimensionalityOfPoreSystem})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureDimensionalityOfPoreSystem = newValue ?? 0}
+    }
+  }
+  
+  public var renderStructureLargestCavityDiameter: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureLargestCavityDiameter})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureLargestCavityDiameter = newValue ?? 0.0}
+    }
+  }
+  
+  
+  public var renderStructureRestrictingPoreLimitingDiameter: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureRestrictingPoreLimitingDiameter})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureRestrictingPoreLimitingDiameter = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderStructureLargestCavityDiameterAlongAViablePath: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureLargestCavityDiameterAlongAViablePath})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? StructuralPropertyViewer & AdsorptionSurfaceViewer)?.structureLargestCavityDiameterAlongAViablePath = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderContentShiftX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.contentShift.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.contentShift.x = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentShiftY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.contentShift.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.contentShift.y = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentShiftZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.contentShift.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.contentShift.z = newValue ?? 0.0
+      }
+    }
+  }
+  
+  public var renderContentFlipX: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.contentFlip.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.contentFlip.x = newValue ?? false
+      }
+    }
+  }
+  
+  public var renderContentFlipY: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.contentFlip.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.contentFlip.y = newValue ?? false
+      }
+    }
+  }
+  
+  public var renderContentFlipZ: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.contentFlip.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        $0.object.cell.contentFlip.z = newValue ?? false
+      }
+    }
+  }
+  
+  // MARK: SpaceGroup Viewer
+  //===================================================================================================================================================
+  
+  public var spaceGroupHallNumber: Int?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? SpaceGroupViewer)?.spaceGroupHallNumber})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? SpaceGroupViewer)?.spaceGroupHallNumber = newValue ?? 1}
+    }
+  }
+  
+  public var renderCellPrecision: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.cell.precision })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.cell.precision = newValue ?? 1e-2}
     }
   }
 }

@@ -55,43 +55,29 @@ class ReadStructureOperation: FKOperation
         
     let displayName: String = (url.lastPathComponent as NSString).deletingPathExtension
     
-    let string: String
-    do
-    {
-      string = try String(contentsOf: self.url, encoding: String.Encoding.utf8)
-    }
-    catch
-    {
-      do
-      {
-        string = try String(contentsOf: self.url, encoding: String.Encoding.ascii)
-      }
-      catch let error
-      {
-        LogQueue.shared.warning(destination: windowController, message: "\(error.localizedDescription)")
-        return
-      }
-    }
-
+    let data: Data = try Data(contentsOf: self.url)
+    
     let fileName = url.lastPathComponent.uppercased()
     switch(url.pathExtension.uppercased())
     {
     case "CIF":
-      parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
+      parser = try SKCIFParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
     case "PDB":
-      parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
+      parser = try SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
     case "XYZ":
-      parser = SKXYZParser(displayName: displayName, string: string, windowController: nil)
+      parser = try SKXYZParser(displayName: displayName, data: data, windowController: nil)
     case "POSCAR", "CONTCAR":
-      parser = SKPOSCARParser(displayName: displayName, string: string, windowController: nil)
+      parser = try SKPOSCARParser(displayName: displayName, data: data, windowController: nil)
+    case "VTK":
+      parser = try SKVTKParser(displayName: displayName, data: data, windowController: nil)
     case "":
       if fileName == "POSCAR" || fileName == "CONTCAR"
       {
-        parser = SKPOSCARParser(displayName: displayName, string: string, windowController: nil)
+        parser = try SKPOSCARParser(displayName: displayName, data: data, windowController: nil)
       }
       else if fileName == "XDATCAR"
       {
-        parser = SKXDATCARParser(displayName: displayName, string: string, windowController: nil)
+        parser = try SKXDATCARParser(displayName: displayName, data: data, windowController: nil)
       }
     default:
       throw BinaryCodableError.unsupportedFileType

@@ -35,7 +35,7 @@ import Foundation
 class MetalPickingShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var renderPassDescriptor: MTLRenderPassDescriptor! = nil
   var texture: MTLTexture! = nil
@@ -266,7 +266,7 @@ class MetalPickingShader
       var index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -315,7 +315,7 @@ class MetalPickingShader
       commandEncoder.setVertexBuffer(internalBondShader.vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -339,7 +339,7 @@ class MetalPickingShader
       commandEncoder.setVertexBuffer(internalBondShader.vertexBufferDoubleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -363,7 +363,7 @@ class MetalPickingShader
       commandEncoder.setVertexBuffer(internalBondShader.vertexBufferTripleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -388,7 +388,7 @@ class MetalPickingShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -414,7 +414,7 @@ class MetalPickingShader
       commandEncoder.setVertexBuffer(externalBondShader.vertexBufferDoubleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -440,7 +440,7 @@ class MetalPickingShader
       commandEncoder.setVertexBuffer(externalBondShader.vertexBufferTripleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -474,7 +474,7 @@ class MetalPickingShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -509,7 +509,7 @@ class MetalPickingShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -544,7 +544,7 @@ class MetalPickingShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -579,7 +579,7 @@ class MetalPickingShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -614,7 +614,7 @@ class MetalPickingShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -649,7 +649,7 @@ class MetalPickingShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {

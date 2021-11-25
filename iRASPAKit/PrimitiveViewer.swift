@@ -30,87 +30,53 @@
  *************************************************************************************************************/
 
 import Foundation
-import SymmetryKit
-import SimulationKit
+import simd
+import RenderKit
 
-// derive from AnyObject (class) to allow mutability
 public protocol PrimitiveViewer: AnyObject
 {
-  var primitiveViewerRotationDelta: Double? {get set}
-    
-  var primitiveViewerObjects: [PrimitiveViewer] {get}
-}
-
-extension iRASPAObject: PrimitiveViewer
-{
-  public var primitiveViewerObjects: [PrimitiveViewer]
-  {
-    return self.allObjects.compactMap{$0 as? PrimitiveViewer}
-  }
-}
-
-extension Movie: PrimitiveViewer
-{
-  public var primitiveViewerObjects: [PrimitiveViewer]
-  {
-    return self.allObjects.compactMap{$0 as? PrimitiveViewer}
-  }
-}
-
-extension Scene: PrimitiveViewer
-{
-  public var primitiveViewerObjects: [PrimitiveViewer]
-  {
-    return self.allObjects.compactMap{$0 as? PrimitiveViewer}
-  }
-}
-
-extension SceneList: PrimitiveViewer
-{
-  public var primitiveViewerObjects: [PrimitiveViewer]
-  {
-    return self.allObjects.compactMap{$0 as? PrimitiveViewer}
-  }
-}
-
-extension Array where Iterator.Element == PrimitiveViewer
-{
-  public var primitiveViewerObjects: [PrimitiveViewer]
-  {
-    return self.compactMap{$0}
-  }
+  var primitiveOrientation: simd_quatd {get set}
+  var primitiveRotationDelta: Double  {get set}
+  var primitiveTransformationMatrix: double3x3  {get set}
   
-  public var primitiveViewerRotationDelta: Double?
-  {
-    get
-    {
-      let origin: [Double] = self.primitiveViewerObjects.compactMap{return $0.primitiveViewerRotationDelta}
-      return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
-    }
-    set(newValue)
-    {
-      self.primitiveViewerObjects.forEach{$0.primitiveViewerRotationDelta = newValue ?? 5.0}
-    }
-  }
+  var primitiveOpacity: Double {get set}
+  var primitiveNumberOfSides: Int {get set}
+  var primitiveIsCapped: Bool {get set}
+  var primitiveIsFractional: Bool {get set}
+  var primitiveThickness: Double {get set}
+  
+  var primitiveSelectionStyle: RKSelectionStyle {get set}
+  var primitiveSelectionScaling: Double {get set}
+  var primitiveSelectionStripesDensity: Double {get set}
+  var primitiveSelectionStripesFrequency: Double {get set}
+  var primitiveSelectionWorleyNoise3DFrequency: Double {get set}
+  var primitiveSelectionWorleyNoise3DJitter: Double {get set}
+  var primitiveSelectionIntensity: Double {get set}
+  
+  var renderPrimitiveSelectionDensity: Double {get set}
+  var renderPrimitiveSelectionFrequency: Double {get set}
+  
+  var primitiveHue: Double {get set}
+  var primitiveSaturation: Double {get set}
+  var primitiveValue: Double {get set}
+  
+  var primitiveFrontSideHDR: Bool {get set}
+  var primitiveFrontSideHDRExposure: Double {get set}
+  var primitiveFrontSideAmbientIntensity: Double {get set}
+  var primitiveFrontSideDiffuseIntensity: Double {get set}
+  var primitiveFrontSideSpecularIntensity: Double {get set}
+  var primitiveFrontSideShininess: Double {get set}
+  var primitiveFrontSideAmbientColor: NSColor {get set}
+  var primitiveFrontSideDiffuseColor: NSColor {get set}
+  var primitiveFrontSideSpecularColor: NSColor {get set}
+  
+  var primitiveBackSideHDR: Bool {get set}
+  var primitiveBackSideHDRExposure: Double {get set}
+  var primitiveBackSideAmbientIntensity: Double {get set}
+  var primitiveBackSideDiffuseIntensity: Double {get set}
+  var primitiveBackSideSpecularIntensity: Double {get set}
+  var primitiveBackSideShininess: Double {get set}
+  var primitiveBackSideAmbientColor: NSColor {get set}
+  var primitiveBackSideDiffuseColor: NSColor {get set}
+  var primitiveBackSideSpecularColor: NSColor {get set}
 }
-
-extension PrimitiveViewer
-{
-  public var primitiveViewerRotationDelta: Double?
-  {
-    get
-    {
-      let origin: [Double] = self.primitiveViewerObjects.compactMap{return $0.primitiveViewerRotationDelta}
-      return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
-    }
-    set(newValue)
-    {
-      self.primitiveViewerObjects.forEach{$0.primitiveViewerRotationDelta = newValue ?? 5.0}
-    }
-  }
-}
-
-
-
-
-
