@@ -71,7 +71,7 @@ public struct RKIsosurfaceUniforms
     
   }
   
-  public init(structure: RKRenderStructure)
+  public init(structure: RKRenderObject)
   {
     let unitCellMatrix: double3x3 = structure.cell.unitCell
     let boxMatrix: double3x3 = structure.cell.box

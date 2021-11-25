@@ -424,7 +424,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     self.renderer.ambientOcclusionShader.cachedAmbientOcclusionTextures.removeAllObjects()
   }
   
-  public func invalidateCachedAmbientOcclusionTexture(_ structures: [RKRenderStructure])
+  public func invalidateCachedAmbientOcclusionTexture(_ structures: [RKRenderObject])
   {
     for  structure in structures
     {
@@ -441,7 +441,7 @@ public class RenderViewController: NSViewController, MTKViewDelegate
     self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[256]?.removeAllObjects()
   }
   
-  public func invalidateIsosurface(_ structures: [RKRenderStructure])
+  public func invalidateIsosurface(_ structures: [RKRenderObject])
   {
     for  structure in structures
     {

@@ -1812,91 +1812,70 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           //importStructureFiles([url], asSeparateProjects: true, onlyAsymmetricUnit: false, asMolecule: false)
           
           let displayName: String = (url.lastPathComponent as NSString).deletingPathExtension
-            
-            let string: String
-            do
-            {
-              string = try String(contentsOf: url, encoding: String.Encoding.utf8)
-              debugPrint("string \(string)")
-            }
-            catch
-            {
-              do
-              {
-                string = try String(contentsOf: url, encoding: String.Encoding.ascii)
-              }
-              catch let error
-              {
-                LogQueue.shared.warning(destination: windowController, message: "\(error.localizedDescription)")
-                return
-              }
-            }
-            
-            //let  parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: false)
-            
           
-            let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: string, windowController: nil)
-            do
-            {
-              try cifParser.startParsing()
-              let scene: Scene = Scene(parser: cifParser.scene)
-              let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+          let data: Data
+          do
+          {
+            data = try Data.init(contentsOf: url)
+          }
+          catch let error
+          {
+            LogQueue.shared.warning(destination: windowController, message: "\(error.localizedDescription)")
+            return
+          }
+                    
+          do
+          {
+            let cifParser: SKCIFParser = try SKCIFParser(displayName: displayName, data: data, windowController: nil)
+            try cifParser.startParsing()
+            let scene: Scene = Scene(parser: cifParser.scene)
+            let sceneList: SceneList = SceneList.init(name: displayName, scenes: [scene])
+            
+            let uuid = node.representedObject.fileNameUUID
+            node.representedObject = iRASPAProject(structureProject:   ProjectStructureNode.init(name: displayName, sceneList: sceneList))
+            node.representedObject.fileNameUUID = uuid
+            
+            node.representedObject.storageType = .local
+            node.representedObject.nodeType = .leaf
+            node.representedObject.lazyStatus = .loaded
+            
               
-              let uuid = node.representedObject.fileNameUUID
-              node.representedObject = iRASPAProject(structureProject:   ProjectStructureNode.init(name: displayName, sceneList: sceneList))
-              node.representedObject.fileNameUUID = uuid
-              
-              node.representedObject.storageType = .local
-              node.representedObject.nodeType = .leaf
-              node.representedObject.lazyStatus = .loaded
-              
-                
-              //let loadingStatus: iRASPAProject = iRASPAProject(projectType: .structure, fileName: node.representedObject.fileNameUUID, nodeType: node.representedObject.nodeType, storageType: node.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loaded)
-              
-              
-              //node.representedObject = loadingStatus
+            //let loadingStatus: iRASPAProject = iRASPAProject(projectType: .structure, fileName: node.representedObject.fileNameUUID, nodeType: node.representedObject.nodeType, storageType: node.representedObject.storageType, lazyStatus: iRASPAProject.LazyStatus.loaded)
+            
+            
+            //node.representedObject = loadingStatus
           }
           catch
           {
             
           }
           
-          
-          
-          
-          
-            if let projectStructureNode: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
-            {
-            // if no camera present yet (e.g. after cif-import), create one
-               
-              
+          if let projectStructureNode: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
+          {
+          // if no camera present yet (e.g. after cif-import), create one
+             
+            node.representedObject.loadedProjectStructureNode?.allObjects.forEach{$0.reComputeBoundingBox()}
             
-              
-              node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBoundingBox()}
-              
-              projectStructureNode.renderCamera = RKCamera()
-                projectStructureNode.renderCamera?.initialized = true
-                projectStructureNode.allStructures.forEach{$0.reComputeBoundingBox()}
-                if let renderCamera = projectStructureNode.renderCamera
-                {
-                  renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
-                  renderCamera.resetCameraDistance()
-                }
-              
-              
-              // adjust the camera to a possible change of the window-size
+            projectStructureNode.renderCamera = RKCamera()
+              projectStructureNode.renderCamera?.initialized = true
+              projectStructureNode.allObjects.forEach{$0.reComputeBoundingBox()}
               if let renderCamera = projectStructureNode.renderCamera
               {
-                if let size: CGSize = self.windowController?.detailTabViewController?.renderViewController?.renderViewController.viewBounds
-                {
-                  renderCamera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
-                }
+                renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
+                renderCamera.resetCameraDistance()
               }
-              
-              
-              node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBonds()}
-              
-           
+            
+            
+            // adjust the camera to a possible change of the window-size
+            if let renderCamera = projectStructureNode.renderCamera
+            {
+              if let size: CGSize = self.windowController?.detailTabViewController?.renderViewController?.renderViewController.viewBounds
+              {
+                renderCamera.updateCameraForWindowResize(width: Double(size.width), height: Double(size.height))
+              }
+            }
+            
+            node.representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? BondViewer}).forEach{$0.reComputeBonds()}
           }
         }
       }
@@ -1922,23 +1901,22 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
       for node in selectedObjects
       {
           if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode,
-             let structure = projectStructure.allIRASPAStructures.first
+             let structure: StructuralPropertyViewer = projectStructure.allIRASPAStructures.first as? StructuralPropertyViewer
           {
-            /*
-            let VSA: NSNumber = NSNumber(value: structure.renderStructureVolumetricNitrogenSurfaceArea ?? 0.0)
-            let GSA: NSNumber = NSNumber(value: structure.renderStructureGravimetricNitrogenSurfaceArea ?? 0.0)
-            let helium: NSNumber = NSNumber(value: structure.renderStructureHeliumVoidFraction ?? 0.0)
-            let di: NSNumber = NSNumber(value: structure.renderStructureLargestCavityDiameter ?? 0.0)
-            let df: NSNumber = NSNumber(value: structure.renderStructureRestrictingPoreLimitingDiameter ?? 0.0)
-            let dif: NSNumber = NSNumber(value: structure.renderStructureLargestCavityDiameterAlongAViablePath ?? 0.0)
-            let density: NSNumber = NSNumber(value: structure.renderStructureDensity ?? 0.0)
-            let mass: NSNumber = NSNumber(value: structure.renderStructureMass ?? 0.0)
-            let specificV: NSNumber = NSNumber(value: structure.renderStructureSpecificVolume ?? 0.0)
-            let AccesibleV: NSNumber = NSNumber(value: structure.renderStructureAccessiblePoreVolume ?? 0.0)
-            let Nchannels: NSNumber = NSNumber(value: structure.renderStructureNumberOfChannelSystems ?? 0)
-            let Npockets: NSNumber = NSNumber(value: structure.renderStructureNumberOfInaccessiblePockets ?? 0)
-            let dim: NSNumber = NSNumber(value: structure.renderStructureDimensionalityOfPoreSystem ?? 0)
-            let type: NSString =  NSString(string: structure.renderStructureMaterialType ?? "Unspecified")
+            let VSA: NSNumber = NSNumber(value: structure.structureVolumetricNitrogenSurfaceArea)
+            let GSA: NSNumber = NSNumber(value: structure.structureGravimetricNitrogenSurfaceArea)
+            let helium: NSNumber = NSNumber(value: structure.structureHeliumVoidFraction)
+            let di: NSNumber = NSNumber(value: structure.structureLargestCavityDiameter)
+            let df: NSNumber = NSNumber(value: structure.structureRestrictingPoreLimitingDiameter)
+            let dif: NSNumber = NSNumber(value: structure.structureLargestCavityDiameterAlongAViablePath)
+            let density: NSNumber = NSNumber(value: structure.structureDensity)
+            let mass: NSNumber = NSNumber(value: structure.structureMass)
+            let specificV: NSNumber = NSNumber(value: structure.structureSpecificVolume)
+            let AccesibleV: NSNumber = NSNumber(value: structure.structureAccessiblePoreVolume)
+            let Nchannels: NSNumber = NSNumber(value: structure.structureNumberOfChannelSystems)
+            let Npockets: NSNumber = NSNumber(value: structure.structureNumberOfInaccessiblePockets)
+            let dim: NSNumber = NSNumber(value: structure.structureDimensionalityOfPoreSystem)
+            let type: NSString =  NSString(string: structure.structureMaterialType)
             node.representedObjectInfo =
               [ "vsa": VSA,
                 "gsa": GSA,
@@ -1955,7 +1933,6 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
                 "dim" : dim,
                 "type" : type
             ]
-             */
           }
           //let parentRecordID = CKRecordID(recordName: parentId)
   
@@ -2018,11 +1995,11 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
              
           
             
-            node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBoundingBox()}
+            node.representedObject.loadedProjectStructureNode?.allObjects.forEach{$0.reComputeBoundingBox()}
             
             projectStructureNode.renderCamera = RKCamera()
               projectStructureNode.renderCamera?.initialized = true
-              projectStructureNode.allStructures.forEach{$0.reComputeBoundingBox()}
+              projectStructureNode.allObjects.forEach{$0.reComputeBoundingBox()}
               if let renderCamera = projectStructureNode.renderCamera
               {
                 renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)
@@ -2040,7 +2017,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
             }
             
             
-            node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBonds()}
+            node.representedObject.loadedProjectStructureNode?.allObjects.forEach{$0.reComputeBonds()}
             
           }
           
@@ -2086,7 +2063,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         
         
         
-        node.representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
+        node.representedObject.loadedProjectStructureNode?.allObjects.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)}
       }
       
      
@@ -2228,7 +2205,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         {
           if let scene: Scene = projectStructureNode.sceneList.scenes.first
           {
-            projectStructureNode.allStructures.forEach{scene.setToCoreMOFStyle(structure: $0)}
+            projectStructureNode.allObjects.compactMap({$0 as? Structure}).forEach{scene.setToCoreMOFStyle(structure: $0)}
           }
         }
       }
@@ -2247,7 +2224,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         {
           if let scene: Scene = projectStructureNode.sceneList.scenes.first
           {
-            projectStructureNode.allStructures.forEach{scene.setToDDECStyle(structure: $0)}
+            projectStructureNode.allObjects.compactMap({$0 as? Structure}).forEach{scene.setToDDECStyle(structure: $0)}
           }
         }
       }
@@ -2308,22 +2285,24 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
           node.unwrapLazyLocalPresentedObjectIfNeeded()
           if let projectStructure: ProjectStructureNode = node.representedObject.loadedProjectStructureNode
           {
-            projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
+            projectStructure.allObjects.compactMap({$0 as? Structure}).forEach({$0.recomputeDensityProperties()})
           
-            let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
+            let structures: [Structure] = projectStructure.allObjects.compactMap({$0 as? Structure})
+            
+            let results: [(minimumEnergyValue: Double, voidFraction: Double)] = SKVoidFraction.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters)}, probeParameters: SIMD2<Double>(10.9, 2.64))
             
             for (i, result) in results.enumerated()
             {
-              projectStructure.allStructures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
-              projectStructure.allStructures[i].structureHeliumVoidFraction = result.voidFraction
+              structures[i].minimumGridEnergyValue = Float(result.minimumEnergyValue)
+              structures[i].structureHeliumVoidFraction = result.voidFraction
             }
           
             do
             {
-              let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: projectStructure.allStructures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: SIMD2<Double>(36.0,3.31))})
+              let results: [Double] = try SKNitrogenSurfaceArea.compute(structures: structures.map{($0.cell, $0.atomUnitCellPositions, $0.potentialParameters, probeParameters: SIMD2<Double>(36.0,3.31))})
               for (i, result) in results.enumerated()
               {
-                projectStructure.allStructures[i].structureNitrogenSurfaceArea = result
+                structures[i].structureNitrogenSurfaceArea = result
               }
               LogQueue.shared.info(destination: self.view.window?.windowController, message: "Computed surface area for " + projectStructure.displayName)
             }
@@ -2332,9 +2311,9 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
               LogQueue.shared.error(destination: self.view.window?.windowController, message: error.localizedDescription)
             }
           
-            projectStructure.allStructures.forEach({$0.recomputeDensityProperties()})
+            structures.forEach({$0.recomputeDensityProperties()})
           
-            projectStructure.allStructures.forEach({$0.setRepresentationStyle(style: .fancy, colorSets: document.colorSets)})
+            structures.forEach({$0.setRepresentationStyle(style: .fancy, colorSets: document.colorSets)})
       
             projectStructure.isEdited = true
           }
@@ -2954,7 +2933,7 @@ class ProjectViewController: NSViewController, NSMenuItemValidation, NSOutlineVi
         {
           projectStructureNode.renderCamera = RKCamera()
           projectStructureNode.renderCamera?.initialized = true
-          projectStructureNode.allStructures.forEach{$0.reComputeBoundingBox()}
+          projectStructureNode.allObjects.forEach{$0.reComputeBoundingBox()}
           if let renderCamera = projectStructureNode.renderCamera
           {
             renderCamera.resetForNewBoundingBox(projectStructureNode.renderBoundingBox)

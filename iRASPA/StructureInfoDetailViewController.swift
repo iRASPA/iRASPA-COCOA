@@ -36,6 +36,8 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
 {
   weak var windowController: iRASPAWindowController?
   
+  var iRASPAObjects: [iRASPAObject] = []
+  
   @IBOutlet private weak var infoOutlineView: NSStaticViewBasedOutlineView?
   
   let creatorCell: OutlineViewItem = OutlineViewItem("CreatorCell")
@@ -43,11 +45,6 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   let creationMethods: OutlineViewItem = OutlineViewItem("CreationMethods")
   let chemicalCell: OutlineViewItem = OutlineViewItem("ChemicalCell")
   let publicationCell: OutlineViewItem = OutlineViewItem("PublicationCell")
-  
-  deinit
-  {
-    //Swift.print("deinit: StructureInfoDetailViewController")
-  }
   
   // MARK: protocol ProjectConsumer
   // =====================================================================
@@ -185,10 +182,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAuthorFirstName.isEditable = false
         textFieldAuthorFirstName.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldAuthorFirstName.isEditable = enabled
-          if let authorFirstName: String = representedStructure.structureAuthorFirstName
+          if let authorFirstName: String = self.structureAuthorFirstName
           {
             textFieldAuthorFirstName.stringValue = authorFirstName
           }
@@ -202,10 +199,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAuthorMiddleName.isEditable = false
         textFieldAuthorMiddleName.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldAuthorMiddleName.isEditable = enabled
-          if let authorMiddleName: String = representedStructure.structureAuthorMiddleName
+          if let authorMiddleName: String = self.structureAuthorMiddleName
           {
             textFieldAuthorMiddleName.stringValue = authorMiddleName
           }
@@ -219,10 +216,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAuthorLastName.isEditable = false
         textFieldAuthorLastName.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldAuthorLastName.isEditable = enabled
-          if let authorFirstName: String = representedStructure.structureAuthorLastName
+          if let authorFirstName: String = self.structureAuthorLastName
           {
             textFieldAuthorLastName.stringValue = authorFirstName
           }
@@ -236,10 +233,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldOrchidID.isEditable = false
         textFieldOrchidID.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldOrchidID.isEditable = enabled
-          if let authorOrchidID: String = representedStructure.structureAuthorOrchidID
+          if let authorOrchidID: String = self.structureAuthorOrchidID
           {
             textFieldOrchidID.stringValue = authorOrchidID
           }
@@ -253,10 +250,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldResearcherID.isEditable = false
         textFieldResearcherID.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldResearcherID.isEditable = enabled
-          if let authorResearcherID: String = representedStructure.structureAuthorResearcherID
+          if let authorResearcherID: String = self.structureAuthorResearcherID
           {
             textFieldResearcherID.stringValue = authorResearcherID
           }
@@ -270,10 +267,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAffiliationUniversityName.isEditable = false
         textFieldAffiliationUniversityName.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldAffiliationUniversityName.isEditable = enabled
-          if let authorAffiliationUniversityName: String = representedStructure.structureAuthorAffiliationUniversityName
+          if let authorAffiliationUniversityName: String = self.structureAuthorAffiliationUniversityName
           {
             textFieldAffiliationUniversityName.stringValue = authorAffiliationUniversityName
           }
@@ -287,10 +284,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAffiliationFacultyName.isEditable = false
         textFieldAffiliationFacultyName.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldAffiliationFacultyName.isEditable = enabled
-          if let authorAffiliationFacultyName: String = representedStructure.structureAuthorAffiliationFacultyName
+          if let authorAffiliationFacultyName: String = self.structureAuthorAffiliationFacultyName
           {
             textFieldAffiliationFacultyName.stringValue = authorAffiliationFacultyName
           }
@@ -304,10 +301,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAffiliationInstituteName.isEditable = false
         textFieldAffiliationInstituteName.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldAffiliationInstituteName.isEditable = enabled
-          if let authorAffiliationInstituteName: String = representedStructure.structureAuthorAffiliationInstituteName
+          if let authorAffiliationInstituteName: String = self.structureAuthorAffiliationInstituteName
           {
             textFieldAffiliationInstituteName.stringValue = authorAffiliationInstituteName
           }
@@ -321,10 +318,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAffiliationCityName.isEditable = false
         textFieldAffiliationCityName.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldAffiliationCityName.isEditable = enabled
-          if let authorAffiliationCityName: String = representedStructure.structureAuthorAffiliationCityName
+          if let authorAffiliationCityName: String = self.structureAuthorAffiliationCityName
           {
             textFieldAffiliationCityName.stringValue = authorAffiliationCityName
           }
@@ -342,10 +339,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         countries.addItems(withTitles: sortedCountries)
         
         countries.isEditable = false
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           countries.isEditable = enabled
-          if let country: String = representedStructure.structureAuthorAffiliationCountryName
+          if let country: String = self.structureAuthorAffiliationCountryName
           {
             countries.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             countries.selectItem(withTitle: country)
@@ -373,10 +370,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let datePickerCreationDate: NSDatePicker = view.viewWithTag(1) as? NSDatePicker
       {
         datePickerCreationDate.isEnabled = false
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           datePickerCreationDate.isEnabled = enabled
-          if let date: Date = representedStructure.structureCreationDate
+          if let date: Date = self.structureCreationDate
           {
             datePickerCreationDate.dateValue = date
           }
@@ -390,11 +387,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCreationTemperature.isEditable = false
         textFieldCreationTemperature.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldCreationTemperature.isEditable = enabled
           
-          if let value: String = representedStructure.structureCreationTemperature
+          if let value: String = self.structureCreationTemperature
           {
             textFieldCreationTemperature.stringValue = value
           }
@@ -408,11 +405,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         popupButtonCreationTemperatureScale.isEditable = false
         popupButtonCreationTemperatureScale.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           popupButtonCreationTemperatureScale.isEditable = enabled
           
-          if let rawValue: Int = representedStructure.structureCreationTemperatureScale?.rawValue
+          if let rawValue: Int = self.structureCreationTemperatureScale?.rawValue
           {
             popupButtonCreationTemperatureScale.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popupButtonCreationTemperatureScale.selectItem(at: rawValue)
@@ -427,11 +424,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         TextFieldCreationPressure.isEditable = false
         TextFieldCreationPressure.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           TextFieldCreationPressure.isEditable = enabled
           
-          if let value: String = representedStructure.structureCreationPressure
+          if let value: String = self.structureCreationPressure
           {
             TextFieldCreationPressure.stringValue = value
           }
@@ -444,11 +441,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let popupButtonCreationPressureScale: iRASPAPopUpButton = view.viewWithTag(5) as? iRASPAPopUpButton
       {
         popupButtonCreationPressureScale.isEditable = false
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           popupButtonCreationPressureScale.isEditable = enabled
           
-          if let rawValue: Int = representedStructure.structureCreationPressureScale?.rawValue
+          if let rawValue: Int = self.structureCreationPressureScale?.rawValue
           {
             popupButtonCreationPressureScale.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popupButtonCreationPressureScale.selectItem(at: rawValue)
@@ -462,11 +459,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let popUpbuttonCreationMethod: iRASPAPopUpButton = view.viewWithTag(6) as? iRASPAPopUpButton
       {
         popUpbuttonCreationMethod.isEditable = false
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           popUpbuttonCreationMethod.isEditable = enabled
           
-          if let rawValue = representedStructure.structureCreationMethod?.rawValue
+          if let rawValue = self.structureCreationMethod?.rawValue
           {
             popUpbuttonCreationMethod.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonCreationMethod.selectItem(at: rawValue)
@@ -480,8 +477,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
     case "CreationMethods":
       if let tabView: NSTabView = getSubviewsOfView(view).filter({$0.identifier?.rawValue == "creationTabView"}).first as? NSTabView
       {
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer],
-           let structureCreationMethod = representedStructure.structureCreationMethod
+        if let structureCreationMethod = self.structureCreationMethod
         {
           switch(structureCreationMethod)
           {
@@ -490,11 +486,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             if let popUpCreationUnitCellRelaxationMethod: iRASPAPopUpButton = view.viewWithTag(10) as? iRASPAPopUpButton
             {
               popUpCreationUnitCellRelaxationMethod.isEditable = false
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 popUpCreationUnitCellRelaxationMethod.isEditable = enabled
                 
-                if let index: Int = representedStructure.structureCreationUnitCellRelaxationMethod?.rawValue
+                if let index: Int = self.structureCreationUnitCellRelaxationMethod?.rawValue
                 {
                   popUpCreationUnitCellRelaxationMethod.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
                   popUpCreationUnitCellRelaxationMethod.selectItem(at: index)
@@ -509,11 +505,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationSoftwarePackageAtomicPositions.isEditable = false
               comboBoxCreationSoftwarePackageAtomicPositions.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 comboBoxCreationSoftwarePackageAtomicPositions.isEditable = enabled
                 
-                if let value: String = representedStructure.structureCreationAtomicPositionsSoftwarePackage
+                if let value: String = self.structureCreationAtomicPositionsSoftwarePackage
                 {
                   if comboBoxCreationSoftwarePackageAtomicPositions.indexOfItem(withObjectValue: value) == NSNotFound
                   {
@@ -530,11 +526,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             if let textFieldCreationIonsRelaxationAlgorithm: iRASPAPopUpButton = view.viewWithTag(12) as? iRASPAPopUpButton
             {
               textFieldCreationIonsRelaxationAlgorithm.isEditable = false
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldCreationIonsRelaxationAlgorithm.isEditable = enabled
                 
-                if let index: Int = representedStructure.structureCreationAtomicPositionsIonsRelaxationAlgorithm?.rawValue
+                if let index: Int = self.structureCreationAtomicPositionsIonsRelaxationAlgorithm?.rawValue
                 {
                   textFieldCreationIonsRelaxationAlgorithm.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
                   textFieldCreationIonsRelaxationAlgorithm.selectItem(at: index)
@@ -548,11 +544,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             if let textFieldCreationIonsRelaxationCheck: iRASPAPopUpButton = view.viewWithTag(13) as? iRASPAPopUpButton
             {
               textFieldCreationIonsRelaxationCheck.isEditable = false
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldCreationIonsRelaxationCheck.isEditable = enabled
                 
-                if let index: Int = representedStructure.structureCreationAtomicPositionsIonsRelaxationCheck?.rawValue
+                if let index: Int = self.structureCreationAtomicPositionsIonsRelaxationCheck?.rawValue
                 {
                   textFieldCreationIonsRelaxationCheck.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
                   textFieldCreationIonsRelaxationCheck.selectItem(at: index)
@@ -567,11 +563,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldCreationAtomicPositionsForceField.isEditable = false
               textFieldCreationAtomicPositionsForceField.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldCreationAtomicPositionsForceField.isEditable = enabled
                 
-                if let value: String = representedStructure.structureCreationAtomicPositionsForcefield
+                if let value: String = self.structureCreationAtomicPositionsForcefield
                 {
                   if textFieldCreationAtomicPositionsForceField.indexOfItem(withObjectValue: value) == NSNotFound
                   {
@@ -589,11 +585,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationAtomicPositionsForceFieldDetails.isEditable = false
               comboBoxCreationAtomicPositionsForceFieldDetails.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 comboBoxCreationAtomicPositionsForceFieldDetails.isEditable = enabled
                 
-                if let value: String = representedStructure.structureCreationAtomicPositionsForcefieldDetails
+                if let value: String = self.structureCreationAtomicPositionsForcefieldDetails
                 {
                   if comboBoxCreationAtomicPositionsForceFieldDetails.indexOfItem(withObjectValue: value) == NSNotFound
                   {
@@ -611,11 +607,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationSoftwarePackageAtomicCharges.isEditable = false
               comboBoxCreationSoftwarePackageAtomicCharges.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 comboBoxCreationSoftwarePackageAtomicCharges.isEditable = enabled
                 
-                if let value: String = representedStructure.structureCreationAtomicChargesSoftwarePackage
+                if let value: String = self.structureCreationAtomicChargesSoftwarePackage
                 {
                   if comboBoxCreationSoftwarePackageAtomicCharges.indexOfItem(withObjectValue: value) == NSNotFound
                   {
@@ -633,11 +629,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationAtomicChargesAlgorithms.isEditable = false
               comboBoxCreationAtomicChargesAlgorithms.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 comboBoxCreationAtomicChargesAlgorithms.isEditable = enabled
                 
-                if let value: String = representedStructure.structureCreationAtomicChargesAlgorithms
+                if let value: String = self.structureCreationAtomicChargesAlgorithms
                 {
                   if comboBoxCreationAtomicChargesAlgorithms.indexOfItem(withObjectValue: value) == NSNotFound
                   {
@@ -655,11 +651,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationAtomicChargesForcefield.isEditable = false
               comboBoxCreationAtomicChargesForcefield.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 comboBoxCreationAtomicChargesForcefield.isEditable = enabled
                 
-                if let value: String = representedStructure.structureCreationAtomicChargesForcefield
+                if let value: String = self.structureCreationAtomicChargesForcefield
                 {
                   if comboBoxCreationAtomicChargesForcefield.indexOfItem(withObjectValue: value) == NSNotFound
                   {
@@ -677,11 +673,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationAtomicChargesForcefieldDetails.isEditable = false
               comboBoxCreationAtomicChargesForcefieldDetails.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 comboBoxCreationAtomicChargesForcefieldDetails.isEditable = enabled
                 
-                if let value: String = representedStructure.structureCreationAtomicChargesForcefieldDetails
+                if let value: String = self.structureCreationAtomicChargesForcefieldDetails
                 {
                   if comboBoxCreationAtomicChargesForcefieldDetails.indexOfItem(withObjectValue: value) == NSNotFound
                   {
@@ -701,11 +697,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementRadiation.isEditable = false
               textFieldMeasurementRadiation.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementRadiation.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementRadiation
+                if let value: String = self.structureExperimentalMeasurementRadiation
                 {
                   textFieldMeasurementRadiation.stringValue = value
                 }
@@ -719,11 +715,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementWaveLength.isEditable = false
               textFieldMeasurementWaveLength.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementWaveLength.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementWaveLength
+                if let value: String = self.structureExperimentalMeasurementWaveLength
                 {
                   textFieldMeasurementWaveLength.stringValue = value
                 }
@@ -737,11 +733,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementThetaMin.isEditable = false
               textFieldMeasurementThetaMin.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementThetaMin.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementThetaMin
+                if let value: String = self.structureExperimentalMeasurementThetaMin
                 {
                   textFieldMeasurementThetaMin.stringValue = value
                 }
@@ -755,11 +751,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementThetaMax.isEditable = false
               textFieldMeasurementThetaMax.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementThetaMax.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementThetaMax
+                if let value: String = self.structureExperimentalMeasurementThetaMax
                 {
                   textFieldMeasurementThetaMax.stringValue = value
                 }
@@ -773,11 +769,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsHmin.isEditable = false
               textFieldMeasurementIndexLimitsHmin.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementIndexLimitsHmin.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementIndexLimitsHmin
+                if let value: String = self.structureExperimentalMeasurementIndexLimitsHmin
                 {
                   textFieldMeasurementIndexLimitsHmin.stringValue = value
                 }
@@ -791,11 +787,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsHmax.isEditable = false
               textFieldMeasurementIndexLimitsHmax.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementIndexLimitsHmax.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementIndexLimitsHmax
+                if let value: String = self.structureExperimentalMeasurementIndexLimitsHmax
                 {
                   textFieldMeasurementIndexLimitsHmax.stringValue = value
                 }
@@ -809,11 +805,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsKmin.isEditable = false
               textFieldMeasurementIndexLimitsKmin.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementIndexLimitsKmin.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementIndexLimitsKmin
+                if let value: String = self.structureExperimentalMeasurementIndexLimitsKmin
                 {
                   textFieldMeasurementIndexLimitsKmin.stringValue = value
                 }
@@ -827,11 +823,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsKmax.isEditable = false
               textFieldMeasurementIndexLimitsKmax.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementIndexLimitsKmax.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementIndexLimitsKmax
+                if let value: String = self.structureExperimentalMeasurementIndexLimitsKmax
                 {
                   textFieldMeasurementIndexLimitsKmax.stringValue = value
                 }
@@ -845,11 +841,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsLmin.isEditable = false
               textFieldMeasurementIndexLimitsLmin.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementIndexLimitsLmin.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementIndexLimitsLmin
+                if let value: String = self.structureExperimentalMeasurementIndexLimitsLmin
                 {
                   textFieldMeasurementIndexLimitsLmin.stringValue = value
                 }
@@ -863,11 +859,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsLmax.isEditable = false
               textFieldMeasurementIndexLimitsLmax.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementIndexLimitsLmax.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementIndexLimitsLmax
+                if let value: String = self.structureExperimentalMeasurementIndexLimitsLmax
                 {
                   textFieldMeasurementIndexLimitsLmax.stringValue = value
                 }
@@ -881,11 +877,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementNumberOfSymmetryIndependentReflections.isEditable = false
               textFieldMeasurementNumberOfSymmetryIndependentReflections.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementNumberOfSymmetryIndependentReflections.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementNumberOfSymmetryIndependentReflections
+                if let value: String = self.structureExperimentalMeasurementNumberOfSymmetryIndependentReflections
                 {
                   textFieldMeasurementNumberOfSymmetryIndependentReflections.stringValue = value
                 }
@@ -899,11 +895,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementSoftware.isEditable = false
               textFieldMeasurementSoftware.stringValue = ""
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textFieldMeasurementSoftware.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementSoftware
+                if let value: String = self.structureExperimentalMeasurementSoftware
                 {
                   textFieldMeasurementSoftware.stringValue = value
                 }
@@ -920,11 +916,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
               textViewRefinementDetails.isEditable = false
               textViewRefinementDetails.typingAttributes = [.foregroundColor : NSColor.textColor]
               textViewRefinementDetails.textStorage?.setAttributedString(NSAttributedString(string: "",  attributes: [.foregroundColor : NSColor.textColor]))
-              if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
               {
                 textViewRefinementDetails.isEditable = enabled
                 
-                if let value: String = representedStructure.structureExperimentalMeasurementRefinementDetails
+                if let value: String = self.structureExperimentalMeasurementRefinementDetails
                 {
                   textViewRefinementDetails.textStorage?.setAttributedString(NSAttributedString(string: value))
                 }
@@ -941,11 +937,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         {
           textFieldMeasurementGoodnessOfFit.isEditable = false
           textFieldMeasurementGoodnessOfFit.stringValue = ""
-          if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+          if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
           {
             textFieldMeasurementGoodnessOfFit.isEditable = enabled
             
-            if let value: String = representedStructure.structureExperimentalMeasurementGoodnessOfFit
+            if let value: String = self.structureExperimentalMeasurementGoodnessOfFit
             {
               textFieldMeasurementGoodnessOfFit.stringValue = value
             }
@@ -959,11 +955,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         {
           textFieldMeasurementRFactorGt.isEditable = false
           textFieldMeasurementRFactorGt.stringValue = ""
-          if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+          if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
           {
             textFieldMeasurementRFactorGt.isEditable = enabled
             
-            if let value: String = representedStructure.structureExperimentalMeasurementRFactorGt
+            if let value: String = self.structureExperimentalMeasurementRFactorGt
             {
               textFieldMeasurementRFactorGt.stringValue = value
             }
@@ -977,11 +973,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         {
           textFieldMeasurementRFactorAll.isEditable = false
           textFieldMeasurementRFactorAll.stringValue = ""
-          if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+          if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
           {
             textFieldMeasurementRFactorAll.isEditable = enabled
             
-            if let value: String = representedStructure.structureExperimentalMeasurementRFactorAll
+            if let value: String = self.structureExperimentalMeasurementRFactorAll
             {
               textFieldMeasurementRFactorAll.stringValue = value
             }
@@ -1006,11 +1002,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldChemicalFormulaMoiety.isEditable = false
         textFieldChemicalFormulaMoiety.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldChemicalFormulaMoiety.isEditable = enabled
           
-          if let value: String = representedStructure.structureChemicalFormulaMoiety
+          if let value: String = self.structureChemicalFormulaMoiety
           {
             textFieldChemicalFormulaMoiety.stringValue = value
           }
@@ -1024,11 +1020,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldChemicalFormulaSum.isEditable = false
         textFieldChemicalFormulaSum.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldChemicalFormulaSum.isEditable = enabled
           
-          if let value: String = representedStructure.structureChemicalFormulaSum
+          if let value: String = self.structureChemicalFormulaSum
           {
             textFieldChemicalFormulaSum.stringValue = value
           }
@@ -1042,11 +1038,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldChemicalNameSystematic.isEditable = false
         textFieldChemicalNameSystematic.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldChemicalNameSystematic.isEditable = enabled
           
-          if let value: String = representedStructure.structureChemicalNameSystematic
+          if let value: String = self.structureChemicalNameSystematic
           {
             textFieldChemicalNameSystematic.stringValue = value
           }
@@ -1071,11 +1067,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         textViewCitationArticleTitle.isEditable = false
         textViewCitationArticleTitle.typingAttributes = [.foregroundColor : NSColor.textColor]
         textViewCitationArticleTitle.textStorage?.setAttributedString(NSAttributedString(string: "", attributes: [.foregroundColor : NSColor.textColor]))
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textViewCitationArticleTitle.isEditable = enabled
           
-          if let value: String = representedStructure.structureCitationArticleTitle
+          if let value: String = self.structureCitationArticleTitle
           {
             textViewCitationArticleTitle.textStorage?.setAttributedString(NSAttributedString(string: value,  attributes: [.foregroundColor : NSColor.textColor]))
           }
@@ -1090,11 +1086,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let textFieldCitationJournalTitle: iRASPAComboBox = view.viewWithTag(1) as? iRASPAComboBox
       {
         textFieldCitationJournalTitle.isEditable = false
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldCitationJournalTitle.isEditable = enabled
           
-          if let value: String = representedStructure.structureCitationJournalTitle
+          if let value: String = self.structureCitationJournalTitle
           {
             if textFieldCitationJournalTitle.indexOfItem(withObjectValue: value) == NSNotFound
             {
@@ -1114,11 +1110,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         textViewCitationArticleAuthors.isEditable = false
         textViewCitationArticleAuthors.typingAttributes = [.foregroundColor : NSColor.textColor]
         textViewCitationArticleAuthors.textStorage?.setAttributedString(NSAttributedString(string: "", attributes: [.foregroundColor : NSColor.textColor]))
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textViewCitationArticleAuthors.isEditable = enabled
           
-          if let value: String = representedStructure.structureCitationAuthors
+          if let value: String = self.structureCitationAuthors
           {
             textViewCitationArticleAuthors.textStorage?.setAttributedString(NSAttributedString(string: value,  attributes: [.foregroundColor : NSColor.textColor]))
           }
@@ -1134,11 +1130,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCitationJournalVolume.isEditable = false
         textFieldCitationJournalVolume.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldCitationJournalVolume.isEditable = enabled
           
-          if let value: String = representedStructure.structureCitationJournalVolume
+          if let value: String = self.structureCitationJournalVolume
           {
             textFieldCitationJournalVolume.stringValue = value
           }
@@ -1153,11 +1149,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCitationJournalNumber.isEditable = false
         textFieldCitationJournalNumber.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldCitationJournalNumber.isEditable = enabled
           
-          if let value: String = representedStructure.structureCitationJournalNumber
+          if let value: String = self.structureCitationJournalNumber
           {
             textFieldCitationJournalNumber.stringValue = value
           }
@@ -1171,10 +1167,10 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let datePickerCitationPublicationDate: NSDatePicker = view.viewWithTag(5) as? NSDatePicker
       {
         datePickerCitationPublicationDate.isEnabled = false
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           datePickerCitationPublicationDate.isEnabled = enabled
-          if let date: Date = representedStructure.structureCitationPublicationDate
+          if let date: Date = self.structureCitationPublicationDate
           {
             datePickerCitationPublicationDate.dateValue = date
           }
@@ -1189,11 +1185,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCitationDOI.isEditable = false
         textFieldCitationDOI.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldCitationDOI.isEditable = enabled
           
-          if let value: String = representedStructure.structureCitationDOI
+          if let value: String = self.structureCitationDOI
           {
             textFieldCitationDOI.stringValue = value
           }
@@ -1208,11 +1204,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCitationDatebaseCodes.isEditable = false
         textFieldCitationDatebaseCodes.stringValue = ""
-        if let representedStructure: [InfoViewer] = representedObject as? [InfoViewer]
+        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
         {
           textFieldCitationDatebaseCodes.isEditable = enabled
           
-          if let value: String = representedStructure.structureCitationDatebaseCodes
+          if let value: String = self.structureCitationDatebaseCodes
           {
             textFieldCitationDatebaseCodes.stringValue = value
           }
@@ -1271,10 +1267,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
 
   @IBAction func changedAuthorFirstName(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorFirstName = sender.stringValue
+      self.structureAuthorFirstName = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1285,10 +1280,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorMiddleName(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorMiddleName = sender.stringValue
+      self.structureAuthorMiddleName = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1299,10 +1293,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorLastName(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorLastName = sender.stringValue
+      self.structureAuthorLastName = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1313,10 +1306,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorOrchidID(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorOrchidID = sender.stringValue
+      self.structureAuthorOrchidID = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1328,10 +1320,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorResearcherID(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorResearcherID = sender.stringValue
+      self.structureAuthorResearcherID = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1343,10 +1334,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorAffilitionUniversityName(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorAffiliationUniversityName = sender.stringValue
+      self.structureAuthorAffiliationUniversityName = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1358,10 +1348,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorAffilitionFacultyName(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorAffiliationFacultyName = sender.stringValue
+      self.structureAuthorAffiliationFacultyName = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1373,10 +1362,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorAffilitionInstituteName(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorAffiliationInstituteName = sender.stringValue
+      self.structureAuthorAffiliationInstituteName = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1388,10 +1376,9 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorAffilitionCityName(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
-      structure.structureAuthorAffiliationCityName = sender.stringValue
+      self.structureAuthorAffiliationCityName = sender.stringValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
@@ -1403,15 +1390,14 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changedAuthorAffilitionCountryName(_ sender: NSPopUpButton)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       if let countryName: String = sender.titleOfSelectedItem
       {
         self.windowController?.document?.updateChangeCount(.changeDone)
         ProjectTreeNode.representedObject.isEdited = true
-        structure.structureAuthorAffiliationCountryName = countryName
+        self.structureAuthorAffiliationCountryName = countryName
         
         self.updateOutlineView(identifiers: [self.creatorCell])
       }
@@ -1420,13 +1406,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
 
   @IBAction func changeCreationDate(_ sender: NSDatePicker)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationDate = sender.dateValue
+      self.structureCreationDate = sender.dateValue
       
       self.updateOutlineView(identifiers: [self.creatorCell])
     }
@@ -1434,12 +1419,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationTemperature(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationTemperature = sender.stringValue
+      self.structureCreationTemperature = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creatorCell])
     }
@@ -1447,13 +1431,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationTemperatureScale(_ sender: NSPopUpButton)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationTemperatureScale =  Structure.TemperatureScale(rawValue: sender.indexOfSelectedItem)
+      self.structureCreationTemperatureScale =  Structure.TemperatureScale(rawValue: sender.indexOfSelectedItem)
       
       self.updateOutlineView(identifiers: [self.creatorCell])
     }
@@ -1461,12 +1444,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationPressure(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationPressure = sender.stringValue
+      self.structureCreationPressure = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creatorCell])
     }
@@ -1474,13 +1456,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationPressureScale(_ sender: NSPopUpButton)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationPressureScale =  Structure.PressureScale(rawValue: sender.indexOfSelectedItem)
+      self.structureCreationPressureScale =  Structure.PressureScale(rawValue: sender.indexOfSelectedItem)
       
       self.updateOutlineView(identifiers: [self.creatorCell])
     }
@@ -1493,13 +1474,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationMethod(_ sender: NSPopUpButton)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationMethod = Structure.CreationMethod(rawValue: sender.indexOfSelectedItem)
+      self.structureCreationMethod = Structure.CreationMethod(rawValue: sender.indexOfSelectedItem)
       
       self.updateOutlineView(identifiers: [self.creationCell, self.creationMethods])
     }
@@ -1507,13 +1487,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationUnitCellRelaxationMethod(_ sender: NSPopUpButton)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationUnitCellRelaxationMethod = Structure.UnitCellRelaxationMethod(rawValue: sender.indexOfSelectedItem)
+      self.structureCreationUnitCellRelaxationMethod = Structure.UnitCellRelaxationMethod(rawValue: sender.indexOfSelectedItem)
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1521,13 +1500,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationSoftwarePackageAtomicPositions(_ sender: NSComboBox)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicPositionsSoftwarePackage = sender.stringValue
+      self.structureCreationAtomicPositionsSoftwarePackage = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1535,13 +1513,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationIonsRelaxationAlgorithm(_ sender: NSPopUpButton)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicPositionsIonsRelaxationAlgorithm = Structure.IonsRelaxationAlgorithm(rawValue: sender.indexOfSelectedItem)
+      self.structureCreationAtomicPositionsIonsRelaxationAlgorithm = Structure.IonsRelaxationAlgorithm(rawValue: sender.indexOfSelectedItem)
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1549,13 +1526,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationIonsRelaxationCheck(_ sender: NSPopUpButton)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicPositionsIonsRelaxationCheck = Structure.IonsRelaxationCheck(rawValue: sender.indexOfSelectedItem)
+      self.structureCreationAtomicPositionsIonsRelaxationCheck = Structure.IonsRelaxationCheck(rawValue: sender.indexOfSelectedItem)
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1563,13 +1539,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationAtomicPositionsForcefield(_ sender: NSComboBox)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicPositionsForcefield = sender.stringValue
+      self.structureCreationAtomicPositionsForcefield = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1577,13 +1552,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationAtomicPositionsForcefieldDetails(_ sender: NSComboBox)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicPositionsForcefieldDetails = sender.stringValue
+      self.structureCreationAtomicPositionsForcefieldDetails = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1592,13 +1566,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationAtomicChargesSoftwarePackage(_ sender: NSComboBox)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicChargesSoftwarePackage = sender.stringValue
+      self.structureCreationAtomicChargesSoftwarePackage = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1606,13 +1579,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationAtomicChargesAlgorithms(_ sender: NSComboBox)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicChargesAlgorithms = sender.stringValue
+      self.structureCreationAtomicChargesAlgorithms = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1620,13 +1592,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationAtomicChargesForcefield(_ sender: NSComboBox)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicChargesForcefield = sender.stringValue
+      self.structureCreationAtomicChargesForcefield = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1634,13 +1605,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCreationAtomicChargesForcefieldDetail(_ sender: NSComboBox)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCreationAtomicChargesForcefieldDetails = sender.stringValue
+      self.structureCreationAtomicChargesForcefieldDetails = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1649,12 +1619,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementRadiation(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementRadiation = sender.stringValue
+      self.structureExperimentalMeasurementRadiation = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1662,12 +1631,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementWaveLength(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementWaveLength = sender.stringValue
+      self.structureExperimentalMeasurementWaveLength = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1675,12 +1643,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementThetaMin(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementThetaMin = sender.stringValue
+      self.structureExperimentalMeasurementThetaMin = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1688,12 +1655,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementThetaMax(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementThetaMax = sender.stringValue
+      self.structureExperimentalMeasurementThetaMax = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1701,12 +1667,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementIndexLimitsHmin(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementIndexLimitsHmin = sender.stringValue
+      self.structureExperimentalMeasurementIndexLimitsHmin = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1714,12 +1679,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementIndexLimitsHmax(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementIndexLimitsHmax = sender.stringValue
+      self.structureExperimentalMeasurementIndexLimitsHmax = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1727,12 +1691,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementIndexLimitsKmin(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementIndexLimitsKmin = sender.stringValue
+      self.structureExperimentalMeasurementIndexLimitsKmin = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1740,12 +1703,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementIndexLimitsKmax(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementIndexLimitsKmax = sender.stringValue
+      self.structureExperimentalMeasurementIndexLimitsKmax = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1753,12 +1715,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementIndexLimitsLmin(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementIndexLimitsLmin = sender.stringValue
+      self.structureExperimentalMeasurementIndexLimitsLmin = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1766,12 +1727,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementIndexLimitsLmax(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementIndexLimitsLmax = sender.stringValue
+      self.structureExperimentalMeasurementIndexLimitsLmax = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1779,12 +1739,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementNumberOfSymmetryIndependentReflections(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementNumberOfSymmetryIndependentReflections = sender.stringValue
+      self.structureExperimentalMeasurementNumberOfSymmetryIndependentReflections = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1792,12 +1751,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementSoftware(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementSoftware = sender.stringValue
+      self.structureExperimentalMeasurementSoftware = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1808,8 +1766,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     guard let textView = notification.object as? NSTextView else { return }
     
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-       let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
        let identifier: String = textView.identifier?.rawValue
     {
       let textString: String = textView.string
@@ -1817,11 +1774,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       switch(identifier)
       {
       case "ExperimentalRefinementDetails":
-        structure.structureExperimentalMeasurementRefinementDetails = textString
+        self.structureExperimentalMeasurementRefinementDetails = textString
       case "citationArticleAuthors":
-        structure.structureCitationAuthors = textString
+        self.structureCitationAuthors = textString
       case "citationArticleTitle":
-        structure.structureCitationArticleTitle = textString
+        self.structureCitationArticleTitle = textString
       default:
         break
       }
@@ -1834,12 +1791,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementGoodnessOfFit(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementGoodnessOfFit = sender.stringValue
+      self.structureExperimentalMeasurementGoodnessOfFit = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1847,12 +1803,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementRFactorGt(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementRFactorGt = sender.stringValue
+      self.structureExperimentalMeasurementRFactorGt = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1860,12 +1815,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeMeasurementRFactorAll(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureExperimentalMeasurementRFactorAll = sender.stringValue
+      self.structureExperimentalMeasurementRFactorAll = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.creationCell])
     }
@@ -1877,12 +1831,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
 
   @IBAction func changeChemicalFormulaMoiety(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureChemicalFormulaMoiety = sender.stringValue
+      self.structureChemicalFormulaMoiety = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.chemicalCell])
     }
@@ -1890,12 +1843,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeChemicalFormulaSum(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureChemicalFormulaSum = sender.stringValue
+      self.structureChemicalFormulaSum = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.chemicalCell])
     }
@@ -1903,12 +1855,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
 
   @IBAction func changeChemicalNameSystematic(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureChemicalNameSystematic = sender.stringValue
+      self.structureChemicalNameSystematic = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.chemicalCell])
     }
@@ -1920,14 +1871,13 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
 
   @IBAction func changeCitationJournalTitle(_ sender: NSComboBox)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled,
       !sender.stringValue.isEmpty
     {
       self.windowController?.window?.makeFirstResponder(self.infoOutlineView)
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCitationJournalTitle = sender.stringValue
+      self.structureCitationJournalTitle = sender.stringValue
      
       self.updateOutlineView(identifiers: [self.publicationCell])
     }
@@ -1935,12 +1885,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCitationJournalVolume(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCitationJournalVolume = sender.stringValue
+      self.structureCitationJournalVolume = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.publicationCell])
     }
@@ -1948,12 +1897,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCitationJournalNumber(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCitationJournalNumber = sender.stringValue
+      self.structureCitationJournalNumber = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.publicationCell])
     }
@@ -1961,12 +1909,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCitationPublicationDate(_ sender: NSDatePicker)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCitationPublicationDate = sender.dateValue
+      self.structureCitationPublicationDate = sender.dateValue
       
       self.updateOutlineView(identifiers: [self.publicationCell])
     }
@@ -1975,12 +1922,11 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCitationDOI(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCitationDOI = sender.stringValue
+      self.structureCitationDOI = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.publicationCell])
     }
@@ -1988,15 +1934,689 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   
   @IBAction func changeCitationDatebaseCodes(_ sender: NSTextField)
   {
-    if var structure: [InfoViewer] = self.representedObject as? [InfoViewer],
-      let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
+    if let ProjectTreeNode: ProjectTreeNode = self.proxyProject, ProjectTreeNode.isEnabled
     {
       self.windowController?.document?.updateChangeCount(.changeDone)
       ProjectTreeNode.representedObject.isEdited = true
-      structure.structureCitationDatebaseCodes = sender.stringValue
+      self.structureCitationDatebaseCodes = sender.stringValue
       
       self.updateOutlineView(identifiers: [self.publicationCell])
     }
   }
 
+  
+  // MARK: Infor Viewer
+  //===================================================================================================================================================
+  
+  public var structureAuthorFirstName: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorFirstName}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorFirstName = newValue ?? ""})
+    }
+  }
+  
+  public var structureAuthorMiddleName: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorMiddleName}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorMiddleName = newValue ?? ""})
+    }
+  }
+  
+  public var structureAuthorLastName: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorLastName}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorLastName = newValue ?? ""})
+    }
+  }
+  
+  public var structureAuthorOrchidID: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorOrchidID}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorOrchidID = newValue ?? ""})
+    }
+  }
+ 
+  public var structureAuthorResearcherID: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorResearcherID}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorResearcherID = newValue ?? ""})
+    }
+  }
+  
+  public var structureAuthorAffiliationUniversityName: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationUniversityName}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationUniversityName = newValue ?? ""})
+    }
+  }
+  
+  public var structureAuthorAffiliationFacultyName: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationFacultyName}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationFacultyName = newValue ?? ""})
+    }
+  }
+  
+  public var structureAuthorAffiliationInstituteName: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationInstituteName}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationInstituteName = newValue ?? ""})
+    }
+  }
+  
+  public var structureAuthorAffiliationCityName: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationCityName}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationCityName = newValue ?? ""})
+    }
+  }
+  
+  public var structureAuthorAffiliationCountryName: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationCountryName}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationCountryName = newValue ?? ""})
+    }
+  }
+  
+  public var structureCreationDate: Date?
+  {
+    get
+    {
+      let set: Set<Date> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationDate}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationDate = newValue ?? Date()})
+    }
+  }
+  
+  public var structureCreationTemperature: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationTemperature}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationTemperature = newValue ?? ""})
+    }
+  }
+  
+  public var structureCreationTemperatureScale: Structure.TemperatureScale?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationTemperatureScale.rawValue}))
+      return Set(set).count == 1 ? Structure.TemperatureScale(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationTemperatureScale = newValue ?? .Kelvin})
+    }
+  }
+  
+  public var structureCreationPressure: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationPressure}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationPressure = newValue ?? ""})
+    }
+  }
+
+  public var structureCreationPressureScale: Structure.PressureScale?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationPressureScale.rawValue}))
+      return Set(set).count == 1 ? Structure.PressureScale(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationPressureScale = newValue ?? .Pascal})
+    }
+  }
+  
+  public var structureCreationMethod: Structure.CreationMethod?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationMethod.rawValue}))
+      return Set(set).count == 1 ? Structure.CreationMethod(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationMethod = newValue ?? .unknown})
+    }
+  }
+  
+  public var structureCreationUnitCellRelaxationMethod: Structure.UnitCellRelaxationMethod?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationUnitCellRelaxationMethod.rawValue}))
+      return Set(set).count == 1 ? Structure.UnitCellRelaxationMethod(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationUnitCellRelaxationMethod = newValue ?? .unknown})
+    }
+  }
+  
+  public var structureCreationAtomicPositionsSoftwarePackage: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsSoftwarePackage}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsSoftwarePackage = newValue ?? ""})
+    }
+  }
+
+  
+  public var structureCreationAtomicPositionsIonsRelaxationAlgorithm: Structure.IonsRelaxationAlgorithm?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsIonsRelaxationAlgorithm.rawValue}))
+      return Set(set).count == 1 ? Structure.IonsRelaxationAlgorithm(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsIonsRelaxationAlgorithm = newValue ?? .unknown})
+    }
+  }
+  
+  public var structureCreationAtomicPositionsIonsRelaxationCheck: Structure.IonsRelaxationCheck?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsIonsRelaxationCheck.rawValue}))
+      return Set(set).count == 1 ? Structure.IonsRelaxationCheck(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsIonsRelaxationCheck = newValue ?? .unknown})
+    }
+  }
+  
+  public var structureCreationAtomicPositionsForcefield: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsForcefield}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsForcefield = newValue ?? ""})
+    }
+  }
+  
+  public var structureCreationAtomicPositionsForcefieldDetails: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsForcefieldDetails}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsForcefieldDetails = newValue ?? ""})
+    }
+  }
+  
+  public var structureCreationAtomicChargesSoftwarePackage: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicChargesSoftwarePackage}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicChargesSoftwarePackage = newValue ?? ""})
+    }
+  }
+  
+  public var structureCreationAtomicChargesAlgorithms: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicChargesAlgorithms}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicChargesAlgorithms = newValue ?? ""})
+    }
+  }
+  
+  public var structureCreationAtomicChargesForcefield: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicChargesForcefield}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicChargesForcefield = newValue ?? ""})
+    }
+  }
+  
+  public var structureCreationAtomicChargesForcefieldDetails: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicChargesForcefieldDetails}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicChargesForcefieldDetails = newValue ?? ""})
+    }
+  }
+  
+  // Experimental
+  
+  public var structureExperimentalMeasurementRadiation: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementRadiation}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementRadiation = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementWaveLength: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementWaveLength}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementWaveLength = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementThetaMin: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementThetaMin}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementThetaMin = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementThetaMax: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementThetaMax}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementThetaMax = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementIndexLimitsHmin: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsHmin}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsHmin = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementIndexLimitsHmax: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsHmax}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsHmax = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementIndexLimitsKmin: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsKmin}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsKmin = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementIndexLimitsKmax: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsKmax}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsKmax = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementIndexLimitsLmin: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsLmin}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsLmin = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementIndexLimitsLmax: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsLmax}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsLmax = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementNumberOfSymmetryIndependentReflections: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementNumberOfSymmetryIndependentReflections}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementNumberOfSymmetryIndependentReflections = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementSoftware: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementSoftware}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementSoftware = newValue ?? ""})
+    }
+  }
+
+  public var structureExperimentalMeasurementRefinementDetails: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementRefinementDetails}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementRefinementDetails = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementGoodnessOfFit: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementGoodnessOfFit}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementGoodnessOfFit = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementRFactorGt: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementRFactorGt}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementRFactorGt = newValue ?? ""})
+    }
+  }
+  public var structureExperimentalMeasurementRFactorAll: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementRFactorAll}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementRFactorAll = newValue ?? ""})
+    }
+  }
+  
+  // chemical
+  public var structureChemicalFormulaMoiety: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.chemicalFormulaMoiety}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.chemicalFormulaMoiety = newValue ?? ""})
+    }
+  }
+  public var structureChemicalFormulaSum: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.chemicalFormulaSum}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.chemicalFormulaSum = newValue ?? ""})
+    }
+  }
+  public var structureChemicalNameSystematic: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.chemicalNameSystematic}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.chemicalNameSystematic = newValue ?? ""})
+    }
+  }
+  
+  
+  // citation
+  public var structureCitationArticleTitle: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationArticleTitle}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationArticleTitle = newValue ?? ""})
+    }
+  }
+  public var structureCitationAuthors: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationAuthors}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationAuthors = newValue ?? ""})
+    }
+  }
+  public var structureCitationJournalTitle: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationJournalTitle}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationJournalTitle = newValue ?? ""})
+    }
+  }
+  public var structureCitationJournalVolume: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationJournalVolume}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationJournalVolume = newValue ?? ""})
+    }
+  }
+  public var structureCitationJournalNumber: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationJournalNumber}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationJournalNumber = newValue ?? ""})
+    }
+  }
+  public var structureCitationDOI: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationDOI}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationDOI = newValue ?? ""})
+    }
+  }
+  public var structureCitationPublicationDate: Date?
+  {
+    get
+    {
+      let set: Set<Date> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationPublicationDate}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationPublicationDate = newValue ?? Date()})
+    }
+  }
+  public var structureCitationDatebaseCodes: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationDatebaseCodes}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationDatebaseCodes = newValue ?? ""})
+    }
+  }
 }

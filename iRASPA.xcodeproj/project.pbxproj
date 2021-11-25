@@ -127,8 +127,7 @@
 		931000842485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931000832485068D009CD836 /* MetalPolygonalPrismPrimitiveSelectionGlowShader.swift */; };
 		9310008624850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9310008524850699009CD836 /* MetalCrystalPolygonalPrismPrimitiveSelectionGlowShader.swift */; };
 		9311CDEB2566EA630080AFA4 /* python3.9 in Resources */ = {isa = PBXBuildFile; fileRef = 9311CDDB2566EA620080AFA4 /* python3.9 */; };
-		9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */; };
-		9314E33F1E34A78E00680364 /* ViewerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33E1E34A78E00680364 /* ViewerProtocols.swift */; };
+		9314E33F1E34A78E00680364 /* ObjectViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9314E33E1E34A78E00680364 /* ObjectViewer.swift */; };
 		93159FDE1F54235200D8700E /* SKXYZParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93159FDD1F54235200D8700E /* SKXYZParser.swift */; };
 		9316B18622004B1A00B59F97 /* MetalCappedCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */; };
 		931BE3D6269F586B00587034 /* TransformationMatrixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931BE3D5269F586B00587034 /* TransformationMatrixTests.swift */; };
@@ -211,7 +210,7 @@
 		93518DDD26FC7094009A7B8D /* MetalVolumeRenderedSurfaceShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93518DDC26FC7094009A7B8D /* MetalVolumeRenderedSurfaceShader.swift */; };
 		93518DDF26FC7433009A7B8D /* VolumeRenderedSurfaceShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93518DDE26FC7433009A7B8D /* VolumeRenderedSurfaceShader.metal */; };
 		93518DE126FC8112009A7B8D /* SKVTKParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93518DE026FC8112009A7B8D /* SKVTKParser.swift */; };
-		93518DE326FC8A32009A7B8D /* DensityVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93518DE226FC8A32009A7B8D /* DensityVolume.swift */; };
+		93518DE326FC8A32009A7B8D /* GridVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93518DE226FC8A32009A7B8D /* GridVolume.swift */; };
 		9354FE4A1F45A6A400155DC3 /* CartesianNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9354FE491F45A6A400155DC3 /* CartesianNumberFormatter.swift */; };
 		9356D04C1F921BA90063A349 /* SymmetryKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930DD4BF1E26AA0100B8FE9B /* SymmetryKit.framework */; };
 		9357FA60262D97B300F42F47 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9357FA62262D97B300F42F47 /* Localizable.strings */; };
@@ -237,7 +236,6 @@
 		93604A6A1F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93604A691F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift */; };
 		93604A6E1F4EFCBB0053ADE2 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93604A6D1F4EFCBB0053ADE2 /* Preferences.swift */; };
 		9362837F26EF6614005BF5C3 /* RKLocalAxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9362837E26EF6614005BF5C3 /* RKLocalAxes.swift */; };
-		9362838126F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9362838026F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift */; };
 		936411D82421452E00BAFE9C /* MetalDoubleCylinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */; };
 		936411DA2421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */; };
 		936411DC2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */; };
@@ -384,9 +382,6 @@
 		938B44F51EB7BEC0006B7704 /* FetchRecordFromCloudOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B44F41EB7BEC0006B7704 /* FetchRecordFromCloudOperation.swift */; };
 		938B44F71EB7BF81006B7704 /* ChildrenOfParentQueryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B44F61EB7BF81006B7704 /* ChildrenOfParentQueryOperation.swift */; };
 		938B44FC1EB8F7B4006B7704 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B44FB1EB8F7B4006B7704 /* Reachability.swift */; };
-		938F96BF2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938F96BE2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift */; };
-		938F96C12203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938F96C02203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift */; };
-		938F96C3220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938F96C2220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift */; };
 		939155741E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939155731E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift */; };
 		93915C411FCD99B7006188F0 /* iRASPAProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93915C401FCD99B7006188F0 /* iRASPAProtocols.swift */; };
 		939208822002190B009F0E16 /* AtomMeasurementShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 939208812002190B009F0E16 /* AtomMeasurementShader.metal */; };
@@ -433,7 +428,6 @@
 		93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A31CA01EB5F75E0010101B /* ImportProjectOperation.swift */; };
 		93A576842606742D00B09DD6 /* Archive+MemoryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */; };
 		93ACDD451FBF266900D6527C /* CommandLinePreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */; };
-		93B07D321EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */; };
 		93B0BF1D1E2BCEB40089D292 /* iRASPAHelp.help in Resources */ = {isa = PBXBuildFile; fileRef = 930DD75C1E280F1300B8FE9B /* iRASPAHelp.help */; };
 		93B1ECAF261E0FAF002E9069 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93B1ECB1261E0FAF002E9069 /* Localizable.strings */; };
 		93B1ED66261E3866002E9069 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93B1ED68261E3866002E9069 /* Localizable.strings */; };
@@ -691,7 +685,6 @@
 		93CD2D94256C1D7900E26C20 /* pycore_dtoa.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CD2D73256C1D7900E26C20 /* pycore_dtoa.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CD2D95256C1D7900E26C20 /* pycore_interp.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CD2D74256C1D7900E26C20 /* pycore_interp.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CD2E69256C40C100E26C20 /* PythonRefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CD2E68256C40C100E26C20 /* PythonRefined.swift */; };
-		93CE77E01E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */; };
 		93CE77EE1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93CE77F11EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; };
 		93CE77F21EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -704,6 +697,21 @@
 		93D1C7BD26F2034A00B76FE0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93D1C7BB26F2034A00B76FE0 /* InfoPlist.strings */; };
 		93D1C7C026F2034A00B76FE0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93D1C7BE26F2034A00B76FE0 /* Localizable.strings */; };
 		93D397AA260F2C700010BDDC /* ActionCALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D397A9260F2C700010BDDC /* ActionCALayer.swift */; };
+		93D70EEA27454AC500FBD919 /* RASPADensityVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EE927454AC500FBD919 /* RASPADensityVolume.swift */; };
+		93D70EEC27454B1A00FBD919 /* VTKDensityVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EEB27454B1A00FBD919 /* VTKDensityVolume.swift */; };
+		93D70EEE27454B4600FBD919 /* VASPDensityVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EED27454B4600FBD919 /* VASPDensityVolume.swift */; };
+		93D70EF027454B5C00FBD919 /* GaussianCubeVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EEF27454B5C00FBD919 /* GaussianCubeVolume.swift */; };
+		93D70EF2274586C800FBD919 /* RASPADensityVolumeShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EF1274586C800FBD919 /* RASPADensityVolumeShader.metal */; };
+		93D70EF42745890100FBD919 /* MetalRASPADensityVolumeShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EF32745890100FBD919 /* MetalRASPADensityVolumeShader.swift */; };
+		93D70EF6274CD35E00FBD919 /* PrimitiveViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EF5274CD35E00FBD919 /* PrimitiveViewer.swift */; };
+		93D70EF8274CD3BD00FBD919 /* UnitCellViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EF7274CD3BD00FBD919 /* UnitCellViewer.swift */; };
+		93D70EFA274CD40900FBD919 /* AtomStructureViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EF9274CD40900FBD919 /* AtomStructureViewer.swift */; };
+		93D70EFC274CED1D00FBD919 /* AnnotationViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EFB274CED1D00FBD919 /* AnnotationViewer.swift */; };
+		93D70EFE274CF1D600FBD919 /* BondStructureViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EFD274CF1D600FBD919 /* BondStructureViewer.swift */; };
+		93D70F00274CF21900FBD919 /* LocalAxesViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70EFF274CF21900FBD919 /* LocalAxesViewer.swift */; };
+		93D70F02274CF23800FBD919 /* AdsorptionSurfaceViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F01274CF23800FBD919 /* AdsorptionSurfaceViewer.swift */; };
+		93D70F04274E3C7900FBD919 /* InfoViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F03274E3C7900FBD919 /* InfoViewer.swift */; };
+		93D70F07274FB9A200FBD919 /* ForceFieldViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D70F06274FB9A200FBD919 /* ForceFieldViewer.swift */; };
 		93DA78251F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */; };
 		93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */; };
 		93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */; };
@@ -733,11 +741,10 @@
 		93EACCBA2204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCB92204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift */; };
 		93EACCBC2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCBB2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift */; };
 		93EACCBE2206022B00AB8026 /* MetalCylinderShader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCBD2206022B00AB8026 /* MetalCylinderShader.swift */; };
-		93EACCC022061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EACCBF22061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift */; };
 		93EE6F461F122F1400986876 /* ProjectSlideBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE6F451F122F1400986876 /* ProjectSlideBorderView.swift */; };
 		93EF65411F21DBD10062816E /* CloudCoREMOFDDECDatabase_v1.0.data in Resources */ = {isa = PBXBuildFile; fileRef = 93EF65401F21DBC60062816E /* CloudCoREMOFDDECDatabase_v1.0.data */; };
 		93EFDF992205FBC400BE96CD /* CylinderPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */; };
-		93F12B5A2034816F00FFABC3 /* SpaceGroupProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F12B592034816F00FFABC3 /* SpaceGroupProtocol.swift */; };
+		93F12B5A2034816F00FFABC3 /* SpaceGroupViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F12B592034816F00FFABC3 /* SpaceGroupViewer.swift */; };
 		93F12B5C203830B500FFABC3 /* SymmetryKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F12B5B203830B500FFABC3 /* SymmetryKitErrors.swift */; };
 		93F1E7FB20244A060050ECAC /* SKCIFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F1E7FA20244A060050ECAC /* SKCIFWriter.swift */; };
 		93F1E7FD20244A120050ECAC /* SKPDBWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F1E7FC20244A120050ECAC /* SKPDBWriter.swift */; };
@@ -784,9 +791,7 @@
 		93F86E51272150D40060E250 /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E50272150D40060E250 /* Primitive.swift */; };
 		93F86E5327217ABE0060E250 /* AtomViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E5227217ABE0060E250 /* AtomViewer.swift */; };
 		93F86E5527217ACB0060E250 /* BondViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E5427217ACB0060E250 /* BondViewer.swift */; };
-		93F86E5727219A250060E250 /* CellViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E5627219A250060E250 /* CellViewer.swift */; };
 		93F86E592721BE3C0060E250 /* StructuralPropertyViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E582721BE3C0060E250 /* StructuralPropertyViewer.swift */; };
-		93F86E5B2721BE580060E250 /* PrimitiveViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F86E5A2721BE580060E250 /* PrimitiveViewer.swift */; };
 		93F9362F1EB8FEF10094C509 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F9362E1EB8FEF10094C509 /* String.swift */; };
 		93F936311EB8FFC30094C509 /* NSSquareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F936301EB8FFC30094C509 /* NSSquareButton.swift */; };
 		93F936331EB900080094C509 /* NSAlphaColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F936321EB900080094C509 /* NSAlphaColorWell.swift */; };
@@ -1421,8 +1426,7 @@
 		9311CE28256707140080AFA4 /* libreadline.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libreadline.a; path = PythonKit/libreadline.a; sourceTree = "<group>"; };
 		9311CE29256707140080AFA4 /* libformw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libformw.a; path = PythonKit/libformw.a; sourceTree = "<group>"; };
 		9311CE2A256707140080AFA4 /* libpython3.9.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpython3.9.a; path = PythonKit/libpython3.9.a; sourceTree = "<group>"; };
-		9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellViewerProtocolExtension.swift; sourceTree = "<group>"; };
-		9314E33E1E34A78E00680364 /* ViewerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewerProtocols.swift; sourceTree = "<group>"; };
+		9314E33E1E34A78E00680364 /* ObjectViewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectViewer.swift; sourceTree = "<group>"; };
 		93159FDD1F54235200D8700E /* SKXYZParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKXYZParser.swift; sourceTree = "<group>"; };
 		9316B18522004B1A00B59F97 /* MetalCappedCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedCylinderGeometry.swift; sourceTree = "<group>"; };
 		9317A9F1265CDD97006689ED /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/AboutWindow.strings; sourceTree = "<group>"; };
@@ -1561,7 +1565,7 @@
 		93518DDC26FC7094009A7B8D /* MetalVolumeRenderedSurfaceShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalVolumeRenderedSurfaceShader.swift; sourceTree = "<group>"; };
 		93518DDE26FC7433009A7B8D /* VolumeRenderedSurfaceShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = VolumeRenderedSurfaceShader.metal; sourceTree = "<group>"; };
 		93518DE026FC8112009A7B8D /* SKVTKParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKVTKParser.swift; sourceTree = "<group>"; };
-		93518DE226FC8A32009A7B8D /* DensityVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensityVolume.swift; sourceTree = "<group>"; };
+		93518DE226FC8A32009A7B8D /* GridVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridVolume.swift; sourceTree = "<group>"; };
 		9354FE491F45A6A400155DC3 /* CartesianNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartesianNumberFormatter.swift; sourceTree = "<group>"; };
 		9357FA33262B244300F42F47 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Preferences.strings; sourceTree = "<group>"; };
 		9357FA61262D97B300F42F47 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1596,7 +1600,6 @@
 		93604A691F4EF37F0053ADE2 /* AnimationPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationPreferenceViewController.swift; sourceTree = "<group>"; };
 		93604A6D1F4EFCBB0053ADE2 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		9362837E26EF6614005BF5C3 /* RKLocalAxes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RKLocalAxes.swift; sourceTree = "<group>"; };
-		9362838026F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAxesVisualAppearanceViewer.swift; sourceTree = "<group>"; };
 		936411D72421452E00BAFE9C /* MetalDoubleCylinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalDoubleCylinder.swift; sourceTree = "<group>"; };
 		936411D92421483F00BAFE9C /* MetalCappedDoubleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedDoubleBondCylinderGeometry.swift; sourceTree = "<group>"; };
 		936411DB2422142100BAFE9C /* MetalCappedTripleBondCylinderGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedTripleBondCylinderGeometry.swift; sourceTree = "<group>"; };
@@ -1745,9 +1748,6 @@
 		938B44F41EB7BEC0006B7704 /* FetchRecordFromCloudOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchRecordFromCloudOperation.swift; sourceTree = "<group>"; };
 		938B44F61EB7BF81006B7704 /* ChildrenOfParentQueryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildrenOfParentQueryOperation.swift; sourceTree = "<group>"; };
 		938B44FB1EB8F7B4006B7704 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
-		938F96BE2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
-		938F96C02203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitCellVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
-		938F96C2220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		939155731E5C3BD4002FA9A6 /* LogAndInterpreterSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogAndInterpreterSplitViewController.swift; sourceTree = "<group>"; };
 		93915C401FCD99B7006188F0 /* iRASPAProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iRASPAProtocols.swift; sourceTree = "<group>"; };
 		939208812002190B009F0E16 /* AtomMeasurementShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = AtomMeasurementShader.metal; sourceTree = "<group>"; };
@@ -1836,7 +1836,6 @@
 		93A576832606742D00B09DD6 /* Archive+MemoryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Archive+MemoryFile.swift"; sourceTree = "<group>"; };
 		93ACDD431FBB5DC200D6527C /* iRASPA-CLI.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "iRASPA-CLI.entitlements"; sourceTree = "<group>"; };
 		93ACDD441FBF266900D6527C /* CommandLinePreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandLinePreferenceViewController.swift; sourceTree = "<group>"; };
-		93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		93B1EC72261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AboutWindow.strings; sourceTree = "<group>"; };
 		93B1EC73261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Preferences.strings; sourceTree = "<group>"; };
 		93B1EC74261DD6DF002E9069 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Main.strings; sourceTree = "<group>"; };
@@ -2131,7 +2130,6 @@
 		93CDAA8825680A11004D900E /* libpanelw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpanelw.a; sourceTree = "<group>"; };
 		93CDAA8925680A11004D900E /* libgdbm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libgdbm.a; sourceTree = "<group>"; };
 		93CDAA8A25680A11004D900E /* libncursesw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libncursesw.a; sourceTree = "<group>"; };
-		93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		93CE77EA1EA0EA3900D068E1 /* CatchObjectiveCExceptions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CatchObjectiveCExceptions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93CE77EC1EA0EA3900D068E1 /* CatchObjectiveCExceptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CatchObjectiveCExceptions.h; sourceTree = "<group>"; };
 		93CE77ED1EA0EA3900D068E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2204,6 +2202,21 @@
 		93D1C7E726F344C500B76FE0 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		93D1C7E826F344C500B76FE0 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		93D397A9260F2C700010BDDC /* ActionCALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCALayer.swift; sourceTree = "<group>"; };
+		93D70EE927454AC500FBD919 /* RASPADensityVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RASPADensityVolume.swift; sourceTree = "<group>"; };
+		93D70EEB27454B1A00FBD919 /* VTKDensityVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VTKDensityVolume.swift; sourceTree = "<group>"; };
+		93D70EED27454B4600FBD919 /* VASPDensityVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VASPDensityVolume.swift; sourceTree = "<group>"; };
+		93D70EEF27454B5C00FBD919 /* GaussianCubeVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianCubeVolume.swift; sourceTree = "<group>"; };
+		93D70EF1274586C800FBD919 /* RASPADensityVolumeShader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = RASPADensityVolumeShader.metal; sourceTree = "<group>"; };
+		93D70EF32745890100FBD919 /* MetalRASPADensityVolumeShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRASPADensityVolumeShader.swift; sourceTree = "<group>"; };
+		93D70EF5274CD35E00FBD919 /* PrimitiveViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveViewer.swift; sourceTree = "<group>"; };
+		93D70EF7274CD3BD00FBD919 /* UnitCellViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitCellViewer.swift; sourceTree = "<group>"; };
+		93D70EF9274CD40900FBD919 /* AtomStructureViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomStructureViewer.swift; sourceTree = "<group>"; };
+		93D70EFB274CED1D00FBD919 /* AnnotationViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationViewer.swift; sourceTree = "<group>"; };
+		93D70EFD274CF1D600FBD919 /* BondStructureViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondStructureViewer.swift; sourceTree = "<group>"; };
+		93D70EFF274CF21900FBD919 /* LocalAxesViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAxesViewer.swift; sourceTree = "<group>"; };
+		93D70F01274CF23800FBD919 /* AdsorptionSurfaceViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsorptionSurfaceViewer.swift; sourceTree = "<group>"; };
+		93D70F03274E3C7900FBD919 /* InfoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewer.swift; sourceTree = "<group>"; };
+		93D70F06274FB9A200FBD919 /* ForceFieldViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceFieldViewer.swift; sourceTree = "<group>"; };
 		93DA78241F45B1D3009AE718 /* FullPrecisionNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPrecisionNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78261F45B3A3009AE718 /* FractionalNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionalNumberFormatter.swift; sourceTree = "<group>"; };
 		93DA78281F45B3E5009AE718 /* ChargeNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2234,11 +2247,10 @@
 		93EACCB92204AE0C00AB8026 /* MetalNSidedPrismGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalNSidedPrismGeometry.swift; sourceTree = "<group>"; };
 		93EACCBB2204AE2A00AB8026 /* MetalCappedNSidedPrismGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCappedNSidedPrismGeometry.swift; sourceTree = "<group>"; };
 		93EACCBD2206022B00AB8026 /* MetalCylinderShader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalCylinderShader.swift; sourceTree = "<group>"; };
-		93EACCBF22061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveVisualAppearanceViewerProtocolExtension.swift; sourceTree = "<group>"; };
 		93EE6F451F122F1400986876 /* ProjectSlideBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSlideBorderView.swift; sourceTree = "<group>"; };
 		93EF65401F21DBC60062816E /* CloudCoREMOFDDECDatabase_v1.0.data */ = {isa = PBXFileReference; lastKnownFileType = file; path = CloudCoREMOFDDECDatabase_v1.0.data; sourceTree = "<group>"; };
 		93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylinderPrimitive.swift; sourceTree = "<group>"; };
-		93F12B592034816F00FFABC3 /* SpaceGroupProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupProtocol.swift; sourceTree = "<group>"; };
+		93F12B592034816F00FFABC3 /* SpaceGroupViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceGroupViewer.swift; sourceTree = "<group>"; };
 		93F12B5B203830B500FFABC3 /* SymmetryKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymmetryKitErrors.swift; sourceTree = "<group>"; };
 		93F1E7FA20244A060050ECAC /* SKCIFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCIFWriter.swift; sourceTree = "<group>"; };
 		93F1E7FC20244A120050ECAC /* SKPDBWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPDBWriter.swift; sourceTree = "<group>"; };
@@ -2281,9 +2293,7 @@
 		93F86E50272150D40060E250 /* Primitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
 		93F86E5227217ABE0060E250 /* AtomViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomViewer.swift; sourceTree = "<group>"; };
 		93F86E5427217ACB0060E250 /* BondViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondViewer.swift; sourceTree = "<group>"; };
-		93F86E5627219A250060E250 /* CellViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewer.swift; sourceTree = "<group>"; };
 		93F86E582721BE3C0060E250 /* StructuralPropertyViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuralPropertyViewer.swift; sourceTree = "<group>"; };
-		93F86E5A2721BE580060E250 /* PrimitiveViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveViewer.swift; sourceTree = "<group>"; };
 		93F9362E1EB8FEF10094C509 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		93F936301EB8FFC30094C509 /* NSSquareButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSSquareButton.swift; sourceTree = "<group>"; };
 		93F936321EB900080094C509 /* NSAlphaColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAlphaColorWell.swift; sourceTree = "<group>"; };
@@ -2645,8 +2655,9 @@
 				930C4ECB261070BF00FA49BB /* UniformTypeIdentifiers.swift */,
 				93F936381EB910B90094C509 /* ProgressIndicatorProtocol.swift */,
 				933F4F231FB1C24D00753D08 /* Errors.swift */,
+				93D70F05274E8D0400FBD919 /* Protocols */,
 				930DD62C1E26B98200B8FE9B /* Model */,
-				930DD62F1E26B9AA00B8FE9B /* Structures */,
+				930DD62F1E26B9AA00B8FE9B /* Objects */,
 				930DD62D1E26B99500B8FE9B /* Projects */,
 				938B44E11EB77F09006B7704 /* Operations */,
 				938B44FA1EB8F616006B7704 /* Extensions */,
@@ -2662,21 +2673,6 @@
 				930DD6601E26BAFC00B8FE9B /* Movie.swift */,
 				930DD6611E26BAFC00B8FE9B /* Scene.swift */,
 				930DD6621E26BAFC00B8FE9B /* SceneList.swift */,
-				9314E33E1E34A78E00680364 /* ViewerProtocols.swift */,
-				93F12B592034816F00FFABC3 /* SpaceGroupProtocol.swift */,
-				93F86E5227217ABE0060E250 /* AtomViewer.swift */,
-				93F86E5427217ACB0060E250 /* BondViewer.swift */,
-				93F86E5627219A250060E250 /* CellViewer.swift */,
-				93F86E582721BE3C0060E250 /* StructuralPropertyViewer.swift */,
-				93F86E5A2721BE580060E250 /* PrimitiveViewer.swift */,
-				9314E33C1E34A45800680364 /* CellViewerProtocolExtension.swift */,
-				93CE77DF1E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift */,
-				93B07D311EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift */,
-				938F96C2220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift */,
-				938F96C02203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift */,
-				938F96BE2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift */,
-				93EACCBF22061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift */,
-				9362838026F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2704,10 +2700,11 @@
 			name = Projects;
 			sourceTree = "<group>";
 		};
-		930DD62F1E26B9AA00B8FE9B /* Structures */ = {
+		930DD62F1E26B9AA00B8FE9B /* Objects */ = {
 			isa = PBXGroup;
 			children = (
 				933CFE181F14E6C600BC9DCA /* iRASPAObject.swift */,
+				93F86E4E271C0A7B0060E250 /* Object.swift */,
 				930DD63F1E26BA5D00B8FE9B /* Crystal.swift */,
 				930DD6401E26BA5D00B8FE9B /* MolecularCrystal.swift */,
 				930DD6431E26BA5D00B8FE9B /* ProteinCrystal.swift */,
@@ -2721,10 +2718,13 @@
 				93274E822205AA13004031BA /* EllipsoidPrimitive.swift */,
 				93EFDF982205FBC400BE96CD /* CylinderPrimitive.swift */,
 				93274E842205AA54004031BA /* PolygonalPrismPrimitive.swift */,
-				93518DE226FC8A32009A7B8D /* DensityVolume.swift */,
-				93F86E4E271C0A7B0060E250 /* Object.swift */,
+				93518DE226FC8A32009A7B8D /* GridVolume.swift */,
+				93D70EE927454AC500FBD919 /* RASPADensityVolume.swift */,
+				93D70EEB27454B1A00FBD919 /* VTKDensityVolume.swift */,
+				93D70EED27454B4600FBD919 /* VASPDensityVolume.swift */,
+				93D70EEF27454B5C00FBD919 /* GaussianCubeVolume.swift */,
 			);
-			name = Structures;
+			name = Objects;
 			sourceTree = "<group>";
 		};
 		930DD68C1E26BEB300B8FE9B /* Extensions */ = {
@@ -3440,6 +3440,7 @@
 				93793AF021C7CB0D004CAD9C /* MetalBoundingBoxSphereShader.swift */,
 				93793AF421C7D04A004CAD9C /* MetalEnergyIsosurfaceShader.swift */,
 				93518DDC26FC7094009A7B8D /* MetalVolumeRenderedSurfaceShader.swift */,
+				93D70EF32745890100FBD919 /* MetalRASPADensityVolumeShader.swift */,
 				93793AF621C7D0A2004CAD9C /* MetalMeasurementShader.swift */,
 				93793B1021C833ED004CAD9C /* MetalMeasurementOrthographicImposterShader.swift */,
 				93793B1221C83406004CAD9C /* MetalMeasurementPerspectiveImposterShader.swift */,
@@ -3537,6 +3538,7 @@
 				932B98A42425340400033AA7 /* ExternalBondSelectionShaders.metal */,
 				930DD5E01E26B62E00B8FE9B /* IsosurfaceShader.metal */,
 				93518DDE26FC7433009A7B8D /* VolumeRenderedSurfaceShader.metal */,
+				93D70EF1274586C800FBD919 /* RASPADensityVolumeShader.metal */,
 				930DD5E11E26B62E00B8FE9B /* PickingShader.metal */,
 				930DD5E21E26B62E00B8FE9B /* QuadShader.metal */,
 				93793B1E21CA4F7D004CAD9C /* BackgroundShader.metal */,
@@ -3638,6 +3640,27 @@
 				93CEEFBD1F42193700EAF673 /* DirectoryMasterViewController.swift */,
 			);
 			name = DirectoryTabView;
+			sourceTree = "<group>";
+		};
+		93D70F05274E8D0400FBD919 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				9314E33E1E34A78E00680364 /* ObjectViewer.swift */,
+				93D70F06274FB9A200FBD919 /* ForceFieldViewer.swift */,
+				93D70F03274E3C7900FBD919 /* InfoViewer.swift */,
+				93D70EF5274CD35E00FBD919 /* PrimitiveViewer.swift */,
+				93D70EF9274CD40900FBD919 /* AtomStructureViewer.swift */,
+				93D70EFD274CF1D600FBD919 /* BondStructureViewer.swift */,
+				93D70EF7274CD3BD00FBD919 /* UnitCellViewer.swift */,
+				93D70EFF274CF21900FBD919 /* LocalAxesViewer.swift */,
+				93D70F01274CF23800FBD919 /* AdsorptionSurfaceViewer.swift */,
+				93D70EFB274CED1D00FBD919 /* AnnotationViewer.swift */,
+				93F86E582721BE3C0060E250 /* StructuralPropertyViewer.swift */,
+				93F12B592034816F00FFABC3 /* SpaceGroupViewer.swift */,
+				93F86E5227217ABE0060E250 /* AtomViewer.swift */,
+				93F86E5427217ACB0060E250 /* BondViewer.swift */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 		93EAABA61ED9786300FE61D8 /* Parsers */ = {
@@ -4865,6 +4888,7 @@
 				932B989F2425335300033AA7 /* MetalExternalBondSelectionWorleyNoise3DShader.swift in Sources */,
 				93584CD720011FC6005F01A7 /* Noise2D.metal in Sources */,
 				936AF6DF26BC2B6700E91649 /* MetalCapsuleGeometry.swift in Sources */,
+				93D70EF42745890100FBD919 /* MetalRASPADensityVolumeShader.swift in Sources */,
 				93793B2921D943CC004CAD9C /* RKVertex.swift in Sources */,
 				930DD7591E280A3C00B8FE9B /* BondCylinderShader.metal in Sources */,
 				936AF6E726BED5E800E91649 /* MetalArrowXGeometry.swift in Sources */,
@@ -4905,6 +4929,7 @@
 				93F7511A26C91379005796C4 /* GlobalAxesBackgroundShader.metal in Sources */,
 				9310006824841BD5009CD836 /* MetalCylinderPrimitiveSelectionStripedShader.swift in Sources */,
 				931000822485067E009CD836 /* MetalCrystalCylinderPrimitiveSelectionGlowShader.swift in Sources */,
+				93D70EF2274586C800FBD919 /* RASPADensityVolumeShader.metal in Sources */,
 				930DD5F51E26B65C00B8FE9B /* MetalQuadGeometry.swift in Sources */,
 				93793B1321C83406004CAD9C /* MetalMeasurementPerspectiveImposterShader.swift in Sources */,
 				93EA79E924236CC60027D14B /* InternalBondSelectionShaders.metal in Sources */,
@@ -4936,28 +4961,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				930DD64B1E26BA5D00B8FE9B /* Structure.swift in Sources */,
-				93EACCC022061EE000AB8026 /* PrimitiveVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				930DD6641E26BAFC00B8FE9B /* Scene.swift in Sources */,
 				932A1C941F967D62000A0037 /* AngleNumberFormatter.swift in Sources */,
 				93F9363F1EBCDC500094C509 /* ProjectRASPANode.swift in Sources */,
 				937337731EB3238900E0655F /* DocumentData.swift in Sources */,
-				9314E33F1E34A78E00680364 /* ViewerProtocols.swift in Sources */,
+				9314E33F1E34A78E00680364 /* ObjectViewer.swift in Sources */,
 				938B44F71EB7BF81006B7704 /* ChildrenOfParentQueryOperation.swift in Sources */,
+				93D70F04274E3C7900FBD919 /* InfoViewer.swift in Sources */,
 				93F936391EB910B90094C509 /* ProgressIndicatorProtocol.swift in Sources */,
 				930DD6651E26BAFC00B8FE9B /* SceneList.swift in Sources */,
 				938B44EF1EB7B66C006B7704 /* ImportChildNodesFromCloudOperation.swift in Sources */,
 				93F86E51272150D40060E250 /* Primitive.swift in Sources */,
-				938F96BF2203210000B067FA /* AdsorptionSurfaceVisualAppearanceViewerProtocolExtension.swift in Sources */,
+				93D70EEC27454B1A00FBD919 /* VTKDensityVolume.swift in Sources */,
 				9399E62D2459C6D300036EBF /* CrystalEllipsoidPrimitive.swift in Sources */,
 				93DA78291F45B3E5009AE718 /* ChargeNumberFormatter.swift in Sources */,
 				93A31CA11EB5F75E0010101B /* ImportProjectOperation.swift in Sources */,
+				93D70F02274CF23800FBD919 /* AdsorptionSurfaceViewer.swift in Sources */,
 				938B44E71EB7AE74006B7704 /* ImportNodesFromCloud.swift in Sources */,
 				93F936411EBCE2600094C509 /* ProjectGULPNode.swift in Sources */,
-				938F96C12203216400B067FA /* UnitCellVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				930DD6461E26BA5D00B8FE9B /* Crystal.swift in Sources */,
-				93B07D321EA8AEAE00BBDF65 /* AtomVisualAppearanceViewerProtocolExtension.swift in Sources */,
+				93D70EFA274CD40900FBD919 /* AtomStructureViewer.swift in Sources */,
 				930DD65F1E26BAD400B8FE9B /* ProjectVaspNode.swift in Sources */,
-				9362838126F0DD9D005BF5C3 /* LocalAxesVisualAppearanceViewer.swift in Sources */,
+				93D70EFE274CF1D600FBD919 /* BondStructureViewer.swift in Sources */,
+				93D70EEE27454B4600FBD919 /* VASPDensityVolume.swift in Sources */,
 				930DD6491E26BA5D00B8FE9B /* Protein.swift in Sources */,
 				930DD65B1E26BAAD00B8FE9B /* ProjectNode.swift in Sources */,
 				93A31C9F1EB4EFFC0010101B /* ComputeBondsGroupOperation.swift in Sources */,
@@ -4966,10 +4992,9 @@
 				93F936431EBCE26E0094C509 /* ProjectCP2KNode.swift in Sources */,
 				930DD63B1E26B9F500B8FE9B /* Timer.swift in Sources */,
 				938B44EB1EB7B258006B7704 /* RequestDiscoveryPermissionCloudUserOperation.swift in Sources */,
-				93F12B5A2034816F00FFABC3 /* SpaceGroupProtocol.swift in Sources */,
+				93F12B5A2034816F00FFABC3 /* SpaceGroupViewer.swift in Sources */,
 				93F86E5527217ACB0060E250 /* BondViewer.swift in Sources */,
 				938B44E51EB7AB2F006B7704 /* FetchCurrentUserRcordOperation.swift in Sources */,
-				938F96C3220321A100B067FA /* BondVisualAppearanceViewerProtocolExtension.swift in Sources */,
 				933CFE171F14B47700BC9DCA /* iRASPAProject.swift in Sources */,
 				936E236D1F17C998007F6230 /* DeleteAllRecordsOperation.swift in Sources */,
 				937861EE1EEC6F5000E0C5DD /* ProjectTreeNode.swift in Sources */,
@@ -4982,32 +5007,35 @@
 				93F86E5327217ABE0060E250 /* AtomViewer.swift in Sources */,
 				93BF1B012609FE2600AFFCF3 /* ProjectGromacsNode.swift in Sources */,
 				93A31C9B1EB4CD030010101B /* ReadStructureGroupOperation.swift in Sources */,
-				9314E33D1E34A45800680364 /* CellViewerProtocolExtension.swift in Sources */,
-				93518DE326FC8A32009A7B8D /* DensityVolume.swift in Sources */,
+				93518DE326FC8A32009A7B8D /* GridVolume.swift in Sources */,
 				936E776E26B549130031D5A8 /* OccupancyNumberFormatter.swift in Sources */,
 				933F4F241FB1C24D00753D08 /* Errors.swift in Sources */,
 				93274E852205AA54004031BA /* PolygonalPrismPrimitive.swift in Sources */,
+				93D70EEA27454AC500FBD919 /* RASPADensityVolume.swift in Sources */,
 				938B44E91EB7AFC1006B7704 /* CloudAccountAvailableOperation.swift in Sources */,
 				930DD6481E26BA5D00B8FE9B /* Molecule.swift in Sources */,
+				93D70F07274FB9A200FBD919 /* ForceFieldViewer.swift in Sources */,
 				9373377B1EB5D60800E0655F /* ProjectProgressIndicator.swift in Sources */,
 				9399E62F2459C6E900036EBF /* CrystalCylinderPrimitive.swift in Sources */,
+				93D70F00274CF21900FBD919 /* LocalAxesViewer.swift in Sources */,
 				930C4ECC261070BF00FA49BB /* UniformTypeIdentifiers.swift in Sources */,
 				93DA78271F45B3A3009AE718 /* FractionalNumberFormatter.swift in Sources */,
 				930DD6581E26BAAD00B8FE9B /* ProjectGroup.swift in Sources */,
 				93F936371EB900A10094C509 /* MyNSClipView.swift in Sources */,
-				93CE77E01E9F7C9E00D068E1 /* InfoViewerProtocolExtension.swift in Sources */,
+				93D70EF027454B5C00FBD919 /* GaussianCubeVolume.swift in Sources */,
 				9345F86B1F3DD17D00181224 /* EmptyPasteboardItem.swift in Sources */,
 				93F936331EB900080094C509 /* NSAlphaColorWell.swift in Sources */,
 				93B8F2E31EB1DDF00052BDF8 /* Cloud.swift in Sources */,
-				93F86E5727219A250060E250 /* CellViewer.swift in Sources */,
+				93D70EFC274CED1D00FBD919 /* AnnotationViewer.swift in Sources */,
+				93D70EF8274CD3BD00FBD919 /* UnitCellViewer.swift in Sources */,
 				9373377D1EB5FFF900E0655F /* ImportCloudProjectOperation.swift in Sources */,
 				93F936311EB8FFC30094C509 /* NSSquareButton.swift in Sources */,
 				93274E832205AA13004031BA /* EllipsoidPrimitive.swift in Sources */,
 				938B44ED1EB7B38C006B7704 /* CloudSubscribeOperation.swift in Sources */,
 				930DD64A1E26BA5D00B8FE9B /* ProteinCrystal.swift in Sources */,
 				93B8F2E51EB1DE630052BDF8 /* Notifications.swift in Sources */,
-				93F86E5B2721BE580060E250 /* PrimitiveViewer.swift in Sources */,
 				937861F01EEC6FC400E0C5DD /* ProjectTreeController.swift in Sources */,
+				93D70EF6274CD35E00FBD919 /* PrimitiveViewer.swift in Sources */,
 				930DD65E1E26BAD400B8FE9B /* ProjectStructureNode.swift in Sources */,
 				9399E6312459C70000036EBF /* CrystalPolygonalPrismPrimitive.swift in Sources */,
 				938B44FC1EB8F7B4006B7704 /* Reachability.swift in Sources */,
@@ -6042,7 +6070,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6053,7 +6081,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
@@ -6073,7 +6101,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6085,7 +6113,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SimulationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6103,7 +6131,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6114,7 +6142,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6132,7 +6160,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6144,7 +6172,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.SymmetryKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6161,7 +6189,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6172,7 +6200,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				MTL_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
@@ -6192,7 +6220,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6204,7 +6232,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MTL_LANGUAGE_REVISION = UseDeploymentTarget;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.RenderKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6223,7 +6251,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6235,7 +6263,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -6255,7 +6283,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6267,7 +6295,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPAKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -6332,7 +6360,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6347,7 +6375,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
@@ -6374,7 +6402,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6389,7 +6417,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MODULEMAP_FILE = $SRCROOT/PythonKit/PythonKit.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.PythonKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -6411,7 +6439,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6423,7 +6451,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6442,7 +6470,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6454,7 +6482,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.PowerSourceKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6641,7 +6669,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6653,7 +6681,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6677,7 +6705,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -6689,7 +6717,7 @@
 					"$(PROJECT_DIR)/PythonKit",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6707,7 +6735,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6718,7 +6746,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6736,7 +6764,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6748,7 +6776,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.MathKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6768,14 +6796,14 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6794,14 +6822,14 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAThumbnailExtension/iRASPAThumbnailExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAThumbnailExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAThumbnailExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6819,14 +6847,14 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6845,14 +6873,14 @@
 				CODE_SIGN_ENTITLEMENTS = iRASPAQuickLookExtension/iRASPAQuickLookExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iRASPAQuickLookExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.iRASPA.macOS.iRASPAQuickLookExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6871,7 +6899,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6883,7 +6911,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6905,7 +6933,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6917,7 +6945,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.LogViewKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6935,7 +6963,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6946,7 +6974,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6965,7 +6993,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -6976,7 +7004,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.OperationKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -6996,7 +7024,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7006,7 +7034,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7025,7 +7053,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -7035,7 +7063,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "nl.darkwing.iRASPA-CLI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7051,7 +7079,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7063,7 +7091,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7079,7 +7107,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7092,7 +7120,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.CatchObjectiveCExceptions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -7113,7 +7141,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7125,7 +7153,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -7149,7 +7177,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7161,7 +7189,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.BinaryCodable;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -7183,7 +7211,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7195,7 +7223,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -7219,7 +7247,7 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 130;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 24U2ZRZ6SC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -7231,7 +7259,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13.4;
-				MARKETING_VERSION = 2.1.6;
+				MARKETING_VERSION = 2.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nl.darkwing.ZIPFoundation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

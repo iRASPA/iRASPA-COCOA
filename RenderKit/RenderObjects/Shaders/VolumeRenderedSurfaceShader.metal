@@ -88,7 +88,7 @@ float4 colour_transfer(float intensity)
 
 
 
-fragment float4 VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOut vert [[stage_in]],
+fragment FragOutput VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOut vert [[stage_in]],
                                            constant FrameUniforms& frameUniforms [[buffer(0)]],
                                            constant StructureUniforms& structureUniforms [[buffer(1)]],
                                            constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
@@ -99,6 +99,8 @@ fragment float4 VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOu
                                            sampler transferFunctionSampler [[ sampler(1) ]] ,
                                            uint sampleId [[sample_id]])
 {
+  FragOutput output;
+  float3 ambient, diffuse, specular;
   float3 numberOfReplicas = structureUniforms.numberOfReplicas.xyz;
   const int numSamples = 100000;
   const float step_length = isosurfaceUniforms.stepLength/numberOfReplicas.z;
@@ -126,25 +128,51 @@ fragment float4 VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOu
   
   float depth = depthTexture.read(uint2(vert.position.xy));
   float newDepth = 1.0;
-  float4x4 m = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * isosurfaceUniforms.boxMatrix;
+  float4x4 m = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * structureUniforms.boxMatrix;
   
   for (int i=0; i < numSamples && ray_length > 0 && colour.a < 1.0; i++)
   {
     float4 values = texture3D.sample(textureSampler, numberOfReplicas * position);
-    //float3 normal = normalize(float3(values.gba));
-    float3 normal = normalize((structureUniforms.modelMatrix * float4(values.gba,0.0)).rgb);
+    float3 normal = normalize((structureUniforms.modelMatrix * transpose(structureUniforms.inverseBoxMatrix) * float4(values.gba,0.0)).rgb);
 
     float4 c = transferFunction.sample(transferFunctionSampler,values.r);
 
     float3 R = reflect(-direction, normal);
-    float3 ambient = float3(0.3,0.3,0.3);
-    float3 diffuse = float3(max(abs(dot(normal, direction)),0.0));
-    float3 specular = float3(pow(max(dot(R, direction), 0.0), 0.4));
+    ambient = float3(0.1,0.1,0.1);
+    float dotProduct = dot(normal, direction);
 
-    // Alpha-blending
-    colour.rgb = c.a * (ambient+diffuse+specular) * c.rgb + (1 - c.a) * colour.a * colour.rgb;
-    //colour.rgb = c.a * c.rgb + (1 - c.a) * colour.a * colour.rgb;
-    colour.a = c.a + (1 - c.a) * colour.a;
+    if(dotProduct < 0)
+    {
+      ambient = isosurfaceUniforms.ambientBackSide.rgb;
+      diffuse = float3(max(abs(dotProduct),0.0)) * isosurfaceUniforms.diffuseBackSide.rgb;
+      specular = float3(pow(max(dot(R, direction), 0.0), isosurfaceUniforms.shininessBackSide)) * isosurfaceUniforms.specularBackSide.rgb;
+      float3 totalColor = (ambient+diffuse+specular).rgb;
+
+      if (isosurfaceUniforms.backHDR)
+      {
+        totalColor = 1.0 - exp2(-totalColor * isosurfaceUniforms.backHDRExposure);
+      }
+
+      // Alpha-blending
+      colour.rgb = c.a * totalColor * c.rgb + (1 - c.a) * colour.a * colour.rgb;
+      colour.a = c.a + (1 - c.a) * colour.a;
+    }
+    else
+    {
+      ambient = isosurfaceUniforms.ambientFrontSide.rgb;
+      diffuse = float3(max(abs(dotProduct),0.0)) * isosurfaceUniforms.diffuseFrontSide.rgb;
+      specular = float3(pow(max(dot(R, direction), 0.0), isosurfaceUniforms.shininessFrontSide)) * isosurfaceUniforms.specularFrontSide.rgb;
+      float3 totalColor = (ambient+diffuse+specular).rgb;
+
+      if (isosurfaceUniforms.frontHDR)
+      {
+        totalColor = 1.0 - exp2(-totalColor * isosurfaceUniforms.frontHDRExposure);
+      }
+
+      // Alpha-blending
+      colour.rgb = c.a * totalColor * c.rgb + (1 - c.a) * colour.a * colour.rgb;
+      colour.a = c.a + (1 - c.a) * colour.a;
+    }
 
     position = position + step_vector;
     ray_length -= step_length;
@@ -157,10 +185,19 @@ fragment float4 VolumeRenderedSurfaceFragmentShader(VolumeRenderedVertexShaderOu
     }
   }
   
-  if(colour.a<0.99)
+  if(colour.a<0.9)
   {
+    newDepth = depth;
     discard_fragment();
   }
   
-  return float4(1.0 - exp2(-colour.rgb * 1.5), colour.a);
+  float3 hsv = rgb2hsv(colour.xyz);
+  hsv.x = hsv.x * isosurfaceUniforms.hue;
+  hsv.y = hsv.y * isosurfaceUniforms.saturation;
+  hsv.z = hsv.z * isosurfaceUniforms.value;
+  
+  output.depth = newDepth;
+  output.albedo = float4(hsv2rgb(hsv),1.0);
+  
+  return output;
 }

@@ -36,14 +36,34 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public class Object: NSObject, CellViewer, RKRenderStructure, BinaryDecodable, BinaryEncodable
+public class Object: NSObject, RKRenderObject, BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
   
-  
-  public var cellViewerObjects: [CellViewer]
+  public enum ObjectType : Int
   {
-    return [self]
+    case none = -1
+    case object = 0
+    case structure = 1
+    case crystal = 2
+    case molecularCrystal = 3
+    case molecule = 4
+    case protein = 5
+    case proteinCrystal = 6
+    case proteinCrystalSolvent = 7
+    case crystalSolvent = 8
+    case molecularCrystalSolvent = 9
+    case crystalEllipsoidPrimitive = 10
+    case crystalCylinderPrimitive = 11
+    case crystalPolygonalPrismPrimitive = 12
+    case ellipsoidPrimitive = 13
+    case cylinderPrimitive = 14
+    case polygonalPrismPrimitive = 15
+    case gridVolume = 16
+    case RASPADensityVolume = 17
+    case VTKDensityVolume = 18
+    case VASPDensityVolume = 19
+    case GaussianCubeVolume = 20
   }
   
   public var allObjects: [Object]
@@ -51,16 +71,64 @@ public class Object: NSObject, CellViewer, RKRenderStructure, BinaryDecodable, B
     return [self]
   }
   
-  public var selectedRenderFrames: [RKRenderStructure]
+  public var selectedRenderFrames: [RKRenderObject]
   {
     return [self]
   }
   
-  public var allRenderFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderObject]
   {
     return [self]
   }
   
+  public var materialType: ObjectType
+  {
+    return .object
+  }
+  
+  public init(copy object: Object)
+  {
+    super.init()
+  }
+  
+  public init(clone object: Object)
+  {
+    super.init()
+  }
+  
+  public required init(from object: Object)
+  {
+    super.init()
+        
+    self.displayName = object.displayName
+    self.isVisible = object.isVisible
+    
+    self.cell = SKCell(cell: object.cell)
+    self.periodic = object.periodic
+    self.origin = object.origin
+    self.scaling = object.scaling
+    self.orientation = object.orientation
+    self.rotationDelta = object.rotationDelta
+    
+    self.drawUnitCell = object.drawUnitCell
+    self.unitCellScaleFactor = object.unitCellScaleFactor
+    self.unitCellDiffuseColor = object.unitCellDiffuseColor
+    self.unitCellDiffuseIntensity = object.unitCellDiffuseIntensity
+    
+    self.renderLocalAxis = RKLocalAxes(axes: object.renderLocalAxis)
+    
+    self.authorFirstName = object.authorFirstName
+    self.authorMiddleName = object.authorMiddleName
+    self.authorLastName = object.authorLastName
+    self.authorOrchidID = object.authorOrchidID
+    self.authorResearcherID = object.authorResearcherID
+    self.authorAffiliationUniversityName = object.authorAffiliationUniversityName
+    self.authorAffiliationFacultyName = object.authorAffiliationFacultyName
+    self.authorAffiliationInstituteName = object.authorAffiliationInstituteName
+    self.authorAffiliationCityName = object.authorAffiliationCityName
+    self.authorAffiliationCountryName = object.authorAffiliationCountryName
+    self.creationDate = object.creationDate
+  }
   
   // MARK: protocol RKRenderStructure implementation
   // =====================================================================

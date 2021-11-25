@@ -32,6 +32,20 @@
 import Foundation
 import simd
 
+public struct SKParserError
+{
+  public static var domain = "nl.darkwing.iRASPA"
+  
+  public enum code: Int
+  {
+    case failedDecoding
+  }
+  
+  public static let failedDecoding: NSError = NSError.init(domain: SKParserError.domain, code: SKParserError.code.failedDecoding.rawValue, userInfo: [NSLocalizedDescriptionKey : NSLocalizedString("Failed UTF-8 and ASCII decoding", bundle: Bundle(for: SKParser.self), comment: "")])
+  
+}
+
+
 public class SKParser: NSObject
 {
   public var scene: [[SKStructure]] = []

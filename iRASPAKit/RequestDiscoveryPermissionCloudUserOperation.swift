@@ -39,7 +39,7 @@ public class RequestDiscoveryPermissionCloudUserOperation: Operation
   
   public override func main()
   {
-    CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").requestApplicationPermission(CKContainer.Application.Permissions.userDiscoverability) { (status: CKContainer.Application.PermissionStatus, error: Error?) in
+    CKContainer(identifier: "iCloud.nl.darkwing.iRASPA").requestApplicationPermission(CKContainer.ApplicationPermissions.userDiscoverability) { (status: CKContainer.ApplicationPermissionStatus, error: Error?) in
       
       if let error: CKError = error as? CKError
       {

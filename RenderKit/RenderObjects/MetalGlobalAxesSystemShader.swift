@@ -35,7 +35,7 @@ import Foundation
 class MetalGlobalAxesSystemShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var axesPipeLine: MTLRenderPipelineState! = nil
   var vertexAxesBuffer: MTLBuffer! = nil

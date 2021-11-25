@@ -175,7 +175,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
     
   }
   
-  public init(displayName: String, string: String, windowController: NSWindowController?, onlyAsymmetricUnitMolecule: Bool, onlyAsymmetricUnitProtein: Bool, asMolecule: Bool, asProtein: Bool, preview: Bool = false)
+  public init(displayName: String, data: Data, windowController: NSWindowController?, onlyAsymmetricUnitMolecule: Bool, onlyAsymmetricUnitProtein: Bool, asMolecule: Bool, asProtein: Bool, preview: Bool = false) throws
   {
     self.displayName = displayName
     self.onlyAsymmetricUnitMolecule = onlyAsymmetricUnitMolecule
@@ -183,6 +183,12 @@ public final class SKPDBParser: SKParser, ProgressReporting
     self.asMolecule = asMolecule
     self.asProtein = asProtein
     self.preview = preview
+    
+    guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
+    {
+      throw SKParserError.failedDecoding
+    }
+    
     self.scanner = Scanner(string: string)
     self.scanner.charactersToBeSkipped = CharacterSet.whitespacesAndNewlines
     

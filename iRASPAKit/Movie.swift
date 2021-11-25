@@ -46,9 +46,10 @@ fileprivate let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
 
 public let NSPasteboardTypeMovie: NSPasteboard.PasteboardType = NSPasteboard.PasteboardType("nl.iRASPA.Movie")
 
-public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewerLegacy, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable
+public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPasteboardReading, BinaryDecodable, BinaryEncodable
 {
   private static var classVersionNumber: Int = 1
+  
   public var displayName : String = ""
   
   public var isLoading: Bool = false
@@ -70,6 +71,24 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     return self.frames.reduce(into: false, {$0 = ($0 || $1.renderCanDrawAdsorptionSurface)})
   }
   
+  // MARK: Protocol ObjectViewer
+  //===================================================================
+  
+  public var allIRASPObjects: [iRASPAObject]
+  {
+    return self.frames.compactMap{$0}
+  }
+  
+  public var selectedRenderFrames: [RKRenderObject]
+  {
+    return self.selectedFrames.map{$0.renderStructure}
+  }
+  
+  public var allRenderFrames: [RKRenderObject]
+  {
+    return self.frames.map{$0.renderStructure}
+  }
+  
   public convenience init(displayName: String)
   {
     self.init()
@@ -87,7 +106,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   public convenience init(frame: iRASPAObject)
   {
     self.init()
-    self.displayName = frame.structure.displayName
+    self.displayName = frame.object.displayName
     self.frames.append(frame)
     self.selectedFrame = self.frames.first
   }
@@ -129,7 +148,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   {
     let binaryDecoder: BinaryDecoder = BinaryDecoder(data: [UInt8](data))
     guard let frame: iRASPAObject = try? binaryDecoder.decode(iRASPAObject.self) else {return nil}
-    let movie: Movie = Movie.init(name: frame.structure.displayName, structure: frame)
+    let movie: Movie = Movie.init(name: frame.object.displayName, structure: frame)
     self.init(movie: movie)
   }
   
@@ -146,8 +165,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   
   private convenience init?(displayName: String, poscar data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let poscarParser: SKPOSCARParser = try? SKPOSCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -156,8 +174,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   
   private convenience init?(displayName: String, xdatcar data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let poscarParser: SKXDATCARParser = try? SKXDATCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -166,8 +183,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   
   private convenience init?(displayName: String, cif data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? cifParser.startParsing()
     let scene: Scene = Scene(parser: cifParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -176,8 +192,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   
   private convenience init?(displayName: String, pdb data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
+    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true) else {return nil}
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -186,8 +201,7 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
   
   private convenience init?(displayName: String, xyz data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? xyzParser.startParsing()
     let scene: Scene = Scene(parser: xyzParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -499,52 +513,4 @@ public final class Movie: NSObject, NSPasteboardWriting, NSPasteboardReading, At
     self.frames = try decoder.decode([iRASPAObject].self)
   }
 }
-
-// MARK: -
-// MARK: CellViewer protocol implementation
-
-extension Movie: CellViewer
-{
-  public var cellViewerObjects: [CellViewer]
-  {
-    return self.frames.flatMap{$0.object.cellViewerObjects}
-  }
-}
-
-
-
-extension Movie: StructureViewer
-{
-  public var allStructures: [Structure]
-  {
-    return self.frames.flatMap{$0.allStructures}
-  }
-  
-  public var allIRASPAStructures: [iRASPAObject]
-  {
-    return self.frames.compactMap{$0}
-  }
-  
-  public var selectedRenderFrames: [RKRenderStructure]
-  {
-    return self.selectedFrames.map{$0.renderStructure}
-  }
-  
-  public var allRenderFrames: [RKRenderStructure]
-  {
-    return self.frames.map{$0.renderStructure}
-  }
-  
-}
-
-
-
-extension Movie: PrimitiveVisualAppearanceViewerLegacy
-{
-  public var allPrimitiveStructure: [Primitive]
-  {
-    return self.frames.flatMap{$0.allPrimitiveStructure}
-  }
-}
-
 

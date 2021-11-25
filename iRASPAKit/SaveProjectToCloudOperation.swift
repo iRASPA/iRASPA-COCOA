@@ -57,7 +57,7 @@ public class SaveProjectToCloudOperation: FKGroupOperation
         let record: CKRecord = CKRecord(recordType: "ProjectNode", recordID: recordID)
         record["displayName"] = proxyProject.displayName as CKRecordValue
         record["type"] = 3 as CKRecordValue
-        record["parent"] = CKRecord.Reference(recordID: parentNode, action: CKRecord.Reference.Action.none)
+        record["parent"] = CKRecord.Reference(recordID: parentNode, action: CKRecord.ReferenceAction.none)
         
         let representedObjectInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: proxyProject.representedObjectInfo)
         record["representedObjectInfo"] = representedObjectInfoData as CKRecordValue

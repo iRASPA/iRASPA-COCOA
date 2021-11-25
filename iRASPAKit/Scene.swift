@@ -39,7 +39,7 @@ import MathKit
 import simd
 
 // An Movie is a list of Movie's. It is a set of actors that each contain a list of frames for that actor
-public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, LocalAxesVisualAppearanceViewer, CellViewerLegacy, InfoViewer, AdsorptionSurfaceVisualAppearanceViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
+public final class Scene: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodable, NSPasteboardWriting, NSPasteboardReading
 {
   // a Scene has a surface for the whole scene
   // all movies in the scene add to the scene potential energy surface
@@ -63,6 +63,24 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
   public var totalNumberOfAtoms: Int
   {
     return self.movies.map{$0.totalNumberOfAtoms}.reduce(0,+)
+  }
+  
+  // MARK: -
+  // MARK: StructureViewer protocol implementation
+  
+  public var allIRASPObjects: [iRASPAObject]
+  {
+    return self.movies.flatMap{$0.allIRASPObjects}
+  }
+  
+  public var selectedRenderFrames: [RKRenderObject]
+  {
+    return self.movies.flatMap{$0.selectedRenderFrames}
+  }
+  
+  public var allRenderFrames: [RKRenderObject]
+  {
+    return self.movies.flatMap{$0.allRenderFrames}
   }
   
   public override init()
@@ -209,6 +227,18 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           iRASPAstructure = iRASPAObject(structure: Structure(name: displayName))
         case .structure:
           iRASPAstructure = iRASPAObject(structure: Structure(name: displayName))
+        case .RASPADensityVolume:
+          let RASPADensityVolume: RASPADensityVolume = RASPADensityVolume(name: displayName, dimensions: frame.dimensions, spacing: frame.spacing, cell: cell, data: frame.gridData, dataType: frame.dataType)
+          iRASPAstructure = iRASPAObject(RASPADensityVolume: RASPADensityVolume)
+        case .VTKDensityVolume:
+          let VTKDensityVolume: VTKDensityVolume = VTKDensityVolume(name: displayName, dimensions: frame.dimensions, spacing: frame.spacing, cell: cell, data: frame.gridData, dataType: frame.dataType)
+          iRASPAstructure = iRASPAObject(VTKDensityVolume: VTKDensityVolume)
+        case .VASPDensityVolume:
+          let VASPDensityVolume: VASPDensityVolume = VASPDensityVolume(name: displayName)
+          iRASPAstructure = iRASPAObject(VASPDensityVolume: VASPDensityVolume)
+        case .GaussianCubeVolume:
+          let GaussianCubeVolume: GaussianCubeVolume = GaussianCubeVolume(name: displayName)
+          iRASPAstructure = iRASPAObject(GaussianCubeVolume: GaussianCubeVolume)
         default:
           fatalError()
         }
@@ -234,7 +264,7 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           let atomicNumber: Int = atom.elementIdentifier
           let elementString: String = PredefinedElements.sharedInstance.elementSet[atomicNumber].chemicalSymbol
           let color: NSColor = defaultColorSet[elementString] ?? NSColor.black
-          let drawRadius: Double = iRASPAstructure.structure.drawRadius(elementId: atomicNumber)
+          let drawRadius: Double = (iRASPAstructure.object as? Structure)?.drawRadius(elementId: atomicNumber) ?? 1.0
           let bondDistanceCriteria: Double = defaultForceField[displayName]?.userDefinedRadius ?? 1.0
           
           let structureAtom: SKAsymmetricAtom = SKAsymmetricAtom(modelAtom: atom, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria)
@@ -243,60 +273,81 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
           atomTreeNodes.append(node)
         }
         
-        iRASPAstructure.structure.atomTreeController.rootNodes = atomTreeNodes
-        iRASPAstructure.structure.expandSymmetry()
-        
-        if let drawUnitCell: Bool = frame.drawUnitCell
+        if let atomViewer = iRASPAstructure.object as? AtomViewer
         {
-          iRASPAstructure.structure.drawUnitCell = drawUnitCell
+          atomViewer.atomTreeController.rootNodes = atomTreeNodes
         }
         
-        if let numberOfChannels: Int = frame.numberOfChannels
+        if let structureViewer = iRASPAstructure.object as? Structure
         {
-          iRASPAstructure.structure.structureNumberOfChannelSystems = numberOfChannels
-        }
-        
-        if let numberOfPockets: Int = frame.numberOfPockets
-        {
-          iRASPAstructure.structure.structureNumberOfInaccessiblePockets = numberOfPockets
-        }
-        
-        if let dimensionality: Int = frame.dimensionality
-        {
-          iRASPAstructure.structure.structureDimensionalityOfPoreSystem = dimensionality
-        }
-        
-        if let Di: Double = frame.Di
-        {
-          iRASPAstructure.structure.structureLargestCavityDiameter = Di
-        }
-        
-        if let Df: Double = frame.Df
-        {
-          iRASPAstructure.structure.structureRestrictingPoreLimitingDiameter = Df
-        }
-        
-        if let Dif: Double = frame.Dif
-        {
-          iRASPAstructure.structure.structureLargestCavityDiameterAlongAViablePath = Dif
+          structureViewer.expandSymmetry()
+          
+          if let drawUnitCell: Bool = frame.drawUnitCell
+          {
+            structureViewer.drawUnitCell = drawUnitCell
+          }
+          
+          if let numberOfChannels: Int = frame.numberOfChannels
+          {
+            structureViewer.structureNumberOfChannelSystems = numberOfChannels
+          }
+          
+          if let numberOfPockets: Int = frame.numberOfPockets
+          {
+            structureViewer.structureNumberOfInaccessiblePockets = numberOfPockets
+          }
+          
+          if let dimensionality: Int = frame.dimensionality
+          {
+            structureViewer.structureDimensionalityOfPoreSystem = dimensionality
+          }
+          
+          if let Di: Double = frame.Di
+          {
+            structureViewer.structureLargestCavityDiameter = Di
+          }
+          
+          if let Df: Double = frame.Df
+          {
+            structureViewer.structureRestrictingPoreLimitingDiameter = Df
+          }
+          
+          if let Dif: Double = frame.Dif
+          {
+            structureViewer.structureLargestCavityDiameterAlongAViablePath = Dif
+          }
+          
+         
+          
+          // set creator etc
+          //setToCoreMOFStyle(structure: iRASPAstructure.structure)
+          //setToDDECStyle(structure: iRASPAstructure.structure)
+          structureViewer.structureMaterialType = "MOF"
+          structureViewer.setRepresentationStyle(style: .default)
+          
+          structureViewer.setRepresentationForceField(forceField: "Default", forceFieldSet: defaultForceField)
+          structureViewer.setRepresentationColorScheme(colorSet: defaultColorSet)
+          
+          //structureViewer.reComputeBonds()
+          
+          //structureViewer.atomTreeController.tag()
+          //structureViewer.bondSetController.tag()
         }
         
         // compute the bounding-box of the atoms
-        iRASPAstructure.structure.reComputeBoundingBox()
+        iRASPAstructure.object.reComputeBoundingBox()
         
-        // set creator etc
-        //setToCoreMOFStyle(structure: iRASPAstructure.structure)
-        //setToDDECStyle(structure: iRASPAstructure.structure)
-        iRASPAstructure.structure.structureMaterialType = "MOF"
-        iRASPAstructure.structure.setRepresentationStyle(style: .default)
+        if let atomViewer = iRASPAstructure.object as? AtomViewer
+        {
+          atomViewer.atomTreeController.tag()
+        }
         
-        iRASPAstructure.structure.setRepresentationForceField(forceField: "Default", forceFieldSet: defaultForceField)
-        iRASPAstructure.structure.setRepresentationColorScheme(colorSet: defaultColorSet)
+        if let bondViewer = iRASPAstructure.object as? BondViewer
+        {
+          bondViewer.bondSetController.tag()
+          bondViewer.reComputeBonds()
+        }
         
-        iRASPAstructure.structure.reComputeBonds()
-        
-        iRASPAstructure.structure.atomTreeController.tag()
-        iRASPAstructure.structure.bondSetController.tag()
         
         movie.frames.append(iRASPAstructure)
       }
@@ -563,48 +614,15 @@ public final class Scene: NSObject, AtomVisualAppearanceViewer, BondVisualAppear
 // MARK: -
 // MARK: CellViewer protocol implementation
 
+/*
 extension Scene: CellViewer
 {
   public var cellViewerObjects: [CellViewer]
   {
     return self.movies.flatMap{$0.cellViewerObjects}
   }
-}
+}*/
 
-
-// MARK: -
-// MARK: StructureViewer protocol implementation
-
-extension Scene: StructureViewer
-{
-  public var allStructures: [Structure]
-  {
-    return self.movies.flatMap{$0.allStructures}
-  }
-  
-  public var allIRASPAStructures: [iRASPAObject]
-  {
-    return self.movies.flatMap{$0.allIRASPAStructures}
-  }
-  
-  public var selectedRenderFrames: [RKRenderStructure]
-  {
-    return self.movies.flatMap{$0.selectedRenderFrames}
-  }
-  
-  public var allRenderFrames: [RKRenderStructure]
-  {
-    return self.movies.flatMap{$0.allRenderFrames}
-  }
-}
-
-extension Scene: PrimitiveVisualAppearanceViewerLegacy
-{
-  public var allPrimitiveStructure: [Primitive]
-  {
-    return self.movies.flatMap{$0.allPrimitiveStructure}
-  }
-}
 
 
 

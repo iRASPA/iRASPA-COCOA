@@ -78,12 +78,6 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
   required init?(coder aDecoder: NSCoder)
   {
     super.init(coder: aDecoder)
-
-  }
-  
-  deinit
-  {
-    //Swift.print("deinit: StructureListViewController")
   }
   
   
@@ -158,8 +152,6 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
 
   // MARK: Reloading data
   // =====================================================================
-  
-  
   
   // reload the structureViewOutlineView and the selection
   func reloadData()
@@ -821,6 +813,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       scene.displayName = "New crystal ellipsoid"
       let ellipsoidPrimitive: CrystalEllipsoidPrimitive = CrystalEllipsoidPrimitive(name: "Ellipsoid")
       ellipsoidPrimitive.cell = SKCell()
+      ellipsoidPrimitive.reComputeBoundingBox()
       
       if index < 0
       {
@@ -836,7 +829,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
         {
           toItem = scene
           index = childIndex + 1
-          if let previousCell = movie.frames.first?.structure.cell
+          if let previousCell = movie.frames.first?.object.cell
           {
             ellipsoidPrimitive.cell = previousCell
           }
@@ -884,6 +877,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       let polygonalPrimitive: CrystalPolygonalPrismPrimitive = CrystalPolygonalPrismPrimitive(name: "Polygonal prism")
       polygonalPrimitive.primitiveNumberOfSides = 4
       polygonalPrimitive.cell = SKCell()
+      polygonalPrimitive.reComputeBoundingBox()
       
       if index < 0
       {
@@ -899,7 +893,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
         {
           toItem = scene
           index = childIndex + 1
-          if let previousCell = movie.frames.first?.structure.cell
+          if let previousCell = movie.frames.first?.object.cell
           {
             polygonalPrimitive.cell = previousCell
           }
@@ -947,6 +941,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       let cylinderPrimitive: CrystalCylinderPrimitive = CrystalCylinderPrimitive(name: "Cylinder")
       cylinderPrimitive.primitiveNumberOfSides = 41
       cylinderPrimitive.cell = SKCell()
+      cylinderPrimitive.reComputeBoundingBox()
       
       if index < 0
       {
@@ -962,7 +957,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
         {
           toItem = scene
           index = childIndex + 1
-          if let previousCell = movie.frames.first?.structure.cell
+          if let previousCell = movie.frames.first?.object.cell
           {
             cylinderPrimitive.cell = previousCell
           }
@@ -1010,6 +1005,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
        let scene: Scene = Scene()
        scene.displayName = "New ellipsoid"
        let ellipsoidPrimitive: EllipsoidPrimitive = EllipsoidPrimitive(name: "Ellipsoid")
+       ellipsoidPrimitive.reComputeBoundingBox()
        
        if index < 0
        {
@@ -1025,7 +1021,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
          {
            toItem = scene
            index = childIndex + 1
-           if let previousCell = movie.frames.first?.structure.cell
+           if let previousCell = movie.frames.first?.object.cell
            {
              ellipsoidPrimitive.cell = previousCell
            }
@@ -1072,6 +1068,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
        scene.displayName = "New polygonal prism"
        let polygonalPrimitive: PolygonalPrismPrimitive = PolygonalPrismPrimitive(name: "Polygonal prism")
        polygonalPrimitive.primitiveNumberOfSides = 4
+       polygonalPrimitive.reComputeBoundingBox()
        
        if index < 0
        {
@@ -1087,7 +1084,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
          {
            toItem = scene
            index = childIndex + 1
-           if let previousCell = movie.frames.first?.structure.cell
+           if let previousCell = movie.frames.first?.object.cell
            {
              polygonalPrimitive.cell = previousCell
            }
@@ -1134,6 +1131,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
        scene.displayName = "New cylinder"
        let cylinderPrimitive: CylinderPrimitive = CylinderPrimitive(name: "Cylinder")
        cylinderPrimitive.primitiveNumberOfSides = 41
+       cylinderPrimitive.reComputeBoundingBox()
        
        if index < 0
        {
@@ -1149,7 +1147,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
          {
            toItem = scene
            index = childIndex + 1
-           if let previousCell = movie.frames.first?.structure.cell
+           if let previousCell = movie.frames.first?.object.cell
            {
              cylinderPrimitive.cell = previousCell
            }
@@ -1653,7 +1651,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
       {
         if let index: Int = project.sceneList.scenes.firstIndex(of: scene)
         {
-          if scene.allIRASPAStructures.isEmpty
+          if scene.allIRASPObjects.isEmpty
           {
             // Put the undo for the removal on the stack. The redo is 'moveMovieNode' itself
             project.undoManager.registerUndo(withTarget: self, handler: {target in

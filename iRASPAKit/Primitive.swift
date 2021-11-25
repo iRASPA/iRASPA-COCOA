@@ -35,27 +35,44 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public class Primitive: Object, AtomViewer, PrimitiveViewer, PrimitiveVisualAppearanceViewerLegacy, Cloning
+public class Primitive: Object, AtomViewer, PrimitiveViewer
 {
-  public var primitiveViewerObjects: [PrimitiveViewer]
+  private static var classVersionNumber: Int = 2
+  
+  public func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode] {
+    return []
+  }
+  
+  public func expandSymmetry(asymmetricAtom: SKAsymmetricAtom) {
+    
+  }
+  
+  public var atomColorSchemeIdentifier: String
   {
-    return [self]
+    return "Default"
+  }
+  
+  public var atomForceFieldIdentifier: String
+  {
+    return "Default"
   }
   
   public var isFractional: Bool = true
   
-  public required init(clone: Primitive) {
+  public required init(from object: Object)
+  {
+    super.init(from: object)
+  }
+  
+  public init(clone: Primitive)
+  {
     super.init()
   }
   
-  public required init(original: Primitive) {
+  public init(copy: Primitive)
+  {
     super.init()
   }
-  
-  private static var classVersionNumber: Int = 2
-  
-  public var allPrimitiveStructure: [Primitive] = []
-  
   
   public var selectionCOMTranslation: SIMD3<Double> = SIMD3<Double>(0.0, 0.0, 0.0)
   public var selectionRotationIndex: Int = 0
@@ -78,17 +95,6 @@ public class Primitive: Object, AtomViewer, PrimitiveViewer, PrimitiveVisualAppe
   public var primitiveTransformationMatrix: double3x3 = double3x3(1.0)
   public var primitiveOrientation: simd_quatd = simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
   public var primitiveRotationDelta: Double = 5.0
-  public var primitiveViewerRotationDelta: Double?
-  {
-    get
-    {
-      return primitiveRotationDelta
-    }
-    set(newValue)
-    {
-      primitiveRotationDelta = newValue ?? 0.0
-    }
-  }
   
   public var primitiveOpacity: Double = 1.0
   public var primitiveIsCapped: Bool = false
@@ -138,8 +144,6 @@ public class Primitive: Object, AtomViewer, PrimitiveViewer, PrimitiveVisualAppe
     super.init()
     self.displayName = name
   }
-  
- 
   
   public var renderPrimitiveSelectionFrequency: Double
   {

@@ -35,7 +35,7 @@ import iRASPAKit
 
 struct AtomAndBondsChangeDataStructure
 {
-  var structure: Structure
+  var object: Object
   var atoms: [SKAtomTreeNode]
   var indexPaths: [IndexPath]
   var selectedBonds: [SKAsymmetricBond<SKAsymmetricAtom,SKAsymmetricAtom>]
@@ -43,6 +43,6 @@ struct AtomAndBondsChangeDataStructure
   
   func reversed() -> AtomAndBondsChangeDataStructure
   {
-    return AtomAndBondsChangeDataStructure(structure: structure, atoms: atoms.reversed(), indexPaths: indexPaths.reversed(), selectedBonds: selectedBonds, indexSet: indexSet)
+    return AtomAndBondsChangeDataStructure(object: object, atoms: atoms.reversed(), indexPaths: indexPaths.reversed(), selectedBonds: selectedBonds, indexSet: indexSet)
   }
 }

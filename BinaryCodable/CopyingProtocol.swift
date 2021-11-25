@@ -10,14 +10,14 @@ import Foundation
 
 public protocol Copying
 {
-  init(original: Self)
+  init(copy: Self)
 }
 
 public extension Copying
 {
   func copy() -> Self
   {
-    return Self.init(original: self)
+    return Self.init(copy: self)
   }
 }
 

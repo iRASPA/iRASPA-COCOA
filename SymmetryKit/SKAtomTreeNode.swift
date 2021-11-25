@@ -100,12 +100,12 @@ public final class SKAtomTreeNode:  NSObject, NSPasteboardReading, NSPasteboardW
     }
   }
   
-  required public init(original: SKAtomTreeNode)
+  required public init(copy: SKAtomTreeNode)
   {
-    self.displayName = original.displayName
-    self.representedObject = original.representedObject.copy()
-    self.isGroup = original.isGroup
-    self.isEditable = original.isEditable
+    self.displayName = copy.displayName
+    self.representedObject = copy.representedObject.copy()
+    self.isGroup = copy.isGroup
+    self.isEditable = copy.isEditable
     self.childNodes = []
   }
   

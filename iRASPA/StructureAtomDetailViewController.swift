@@ -321,8 +321,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     var view: NSTableCellView? = nil
     
-    if let document: iRASPADocument = self.windowController?.currentDocument,
-       let proxyProject: ProjectTreeNode = self.proxyProject,
+    if let proxyProject: ProjectTreeNode = self.proxyProject,
        let atomViewer: AtomViewer = (representedObject as? iRASPAObject)?.object as? AtomViewer,
        let node: SKAtomTreeNode = item as? SKAtomTreeNode
     {
@@ -505,11 +504,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     // avoid sending notification due to selection change
     observeNotifications = false
     
-    if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+    if let atomViewer: AtomViewer = (self.representedObject as? iRASPAObject)?.object as? AtomViewer
     {
-      let selectedNodes:[SKAtomTreeNode] = structure.atomTreeController.selectedNodes
+      let selectedNodes:[SKAtomTreeNode] = atomViewer.atomTreeController.selectedNodes
       
-      structure.atomTreeController.setSelectedNodes([])
+      atomViewer.atomTreeController.setSelectedNodes([])
       
       self.atomOutlineView?.selectRowIndexes(IndexSet(), byExtendingSelection: false)
       
@@ -519,7 +518,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         {
           if (index>=0)
           {
-            structure.atomTreeController.addSelectionNode(node)
+            atomViewer.atomTreeController.addSelectionNode(node)
             self.atomOutlineView?.selectRowIndexes(NSIndexSet(index: index) as IndexSet, byExtendingSelection: true)
           }
         }
@@ -541,9 +540,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     let pasteboard = NSPasteboard.general
     pasteboard.clearContents()
     
-    if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+    if let atomViewer: AtomViewer = (self.representedObject as? iRASPAObject)?.object as? AtomViewer
     {
-      pasteboard.writeObjects(structure.readySelectedAtomsForCopyAndPaste())
+      pasteboard.writeObjects(atomViewer.readySelectedAtomsForCopyAndPaste())
     }
   }
   
@@ -555,7 +554,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
     if let proxyProject: ProjectTreeNode = self.proxyProject,
        let _: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object
     {
       if !proxyProject.isEditable
       {
@@ -581,32 +580,31 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         
         let indexPaths = Array(0..<objects.count).map{prefixIndexPath + IndexPath(index: insertionIndex + $0)}
         
-        if let document: iRASPADocument = self.windowController?.currentDocument
+        if let structure: Structure = object as? Structure
         {
-          structure.setRepresentationColorScheme(colorSets: document.colorSets, for: asymmetricAtoms)
-          structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets, for: asymmetricAtoms)
+          if let document: iRASPADocument = self.windowController?.currentDocument
+          {
+            structure.setRepresentationColorScheme(colorSets: document.colorSets, for: asymmetricAtoms)
+            structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets, for: asymmetricAtoms)
+          }
+          structure.setRepresentationType(type: structure.atomRepresentationType, for: asymmetricAtoms)
+          
+          structure.convertToNativePositions(newAtoms: objects)
         }
-        structure.setRepresentationType(type: structure.atomRepresentationType, for: asymmetricAtoms)
-        
-        structure.convertToNativePositions(newAtoms: objects)
-        
-        //let bonds = structure.bonds(newAtoms: objects)
-        
-        // FIX
-        self.insertSelectedAtomsIn(structure: structure, atoms: objects, at: indexPaths, bonds: [], at: [])
+                
+        self.insertSelectedAtomsIn(object: object, atoms: objects, at: indexPaths, bonds: [], at: [])
       }
     }
   }
   
   @objc func cut(_ sender: AnyObject)
   {
-    if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+    if let atomViewer: AtomViewer = (self.representedObject as? iRASPAObject)?.object as? AtomViewer
     {
       let pasteboard = NSPasteboard.general
       pasteboard.clearContents()
-    
-    
-      let nodes: [SKAtomTreeNode] = structure.readySelectedAtomsForCopyAndPaste()
+  
+      let nodes: [SKAtomTreeNode] = atomViewer.readySelectedAtomsForCopyAndPaste()
       pasteboard.writeObjects(nodes)
       self.deleteSelection()
     }
@@ -639,21 +637,22 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let proxyProject = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let structure = (self.representedObject as? iRASPAObject)?.structure
+       let object = (self.representedObject as? iRASPAObject)?.object,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
       var selectedNode: SKAtomTreeNode? = nil
       var atomGroupTreeNode: SKAtomTreeNode
       var atomGroupNode: SKAsymmetricAtom
       
       let displayName: String = PredefinedElements.sharedInstance.elementSet[6].chemicalSymbol
-      let color: NSColor = document.colorSets[structure.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
-      let drawRadius: Double = structure.drawRadius(elementId: 6)
-      let bondDistanceCriteria: Double = document.forceFieldSets[structure.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
+      let color: NSColor = document.colorSets[atomViewer.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
+      let drawRadius: Double = (object as? Structure)?.drawRadius(elementId: 6) ?? 1.0
+      let bondDistanceCriteria: Double = document.forceFieldSets[atomViewer.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
       
       atomGroupNode = SKAsymmetricAtom(displayName: displayName, elementId: 6, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
       atomGroupNode.displayName = "New group"
       atomGroupNode.symmetryType = .container
-      structure.expandSymmetry(asymmetricAtom: atomGroupNode)
+      atomViewer.expandSymmetry(asymmetricAtom: atomGroupNode)
       atomGroupTreeNode = SKAtomTreeNode(representedObject: atomGroupNode, isGroup: true)
       atomGroupTreeNode.matchesFilter = true
       
@@ -670,12 +669,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           let toItem: SKAtomTreeNode? = selectedNode!.isRootNode() ? nil: selectedNode!.parentNode
           if let index: Int = selectedNode?.indexPath.last
           {
-            addNode(atomGroupTreeNode, inItem: toItem, atIndex: index + 1, inStructure: structure)
+            addNode(atomGroupTreeNode, inItem: toItem, atIndex: index + 1, inStructure: object)
           }
         }
         else
         {
-          addNode(atomGroupTreeNode, inItem: nil, atIndex: 0, inStructure: structure)
+          addNode(atomGroupTreeNode, inItem: nil, atIndex: 0, inStructure: object)
         }
       }
     }
@@ -685,13 +684,15 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure, proxyProject?.isEnabled == true
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let atomViewer: AtomViewer = object as? AtomViewer,
+       proxyProject?.isEnabled == true
     {
       self.observeNotifications = false
       
       let element: Int
       let displayName: String
-      if let _  = (self.representedObject as? iRASPAObject)?.structure as? RKRenderObjectSource
+      if let _  = (self.representedObject as? iRASPAObject)?.object as? RKRenderObjectSource
       {
         element = 0
         displayName = "center"
@@ -702,11 +703,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         displayName = PredefinedElements.sharedInstance.elementSet[element].chemicalSymbol
       }
       
-      let color: NSColor = document.colorSets[structure.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
-      let drawRadius: Double = structure.drawRadius(elementId: element)
-      let bondDistanceCriteria: Double = document.forceFieldSets[structure.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
+      let color: NSColor = document.colorSets[atomViewer.atomColorSchemeIdentifier]?[displayName] ?? NSColor.black
+      let drawRadius: Double = (object as? Structure)?.drawRadius(elementId: element) ?? 1.0
+      let bondDistanceCriteria: Double = document.forceFieldSets[atomViewer.atomForceFieldIdentifier]?[displayName]?.userDefinedRadius ?? 1.0
       let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  element, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
-      structure.expandSymmetry(asymmetricAtom: asymmetricAtom)
+      atomViewer.expandSymmetry(asymmetricAtom: asymmetricAtom)
       let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
       
       atomTreeNode.matchesFilter = true
@@ -716,22 +717,23 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         project.undoManager.setActionName(NSLocalizedString("Adding New Atom", comment: ""))
       }
       
-      self.addNode(atomTreeNode, inItem: nil, atIndex: 0, inStructure: structure)
+      self.addNode(atomTreeNode, inItem: nil, atIndex: 0, inStructure: object)
       
       self.observeNotifications = true
     }
   }
   
-  func addNode(_ node: SKAtomTreeNode, inItem: SKAtomTreeNode?, atIndex: Int, inStructure: Structure)
+  func addNode(_ node: SKAtomTreeNode, inItem: SKAtomTreeNode?, atIndex: Int, inStructure object: Object)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure , proxyProject?.isEnabled == true
+       let atomViewer: AtomViewer = object as? AtomViewer,
+       proxyProject?.isEnabled == true
     {
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.removeNode(node, fromItem: inItem, atIndex: atIndex, inStructure: structure)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.removeNode(node, fromItem: inItem, atIndex: atIndex, inStructure: object)})
       
-      structure.atomTreeController.insertNode(node, inItem: inItem, atIndex: atIndex)
-      structure.atomTreeController.selectedTreeNodes.insert(node)
+      atomViewer.atomTreeController.insertNode(node, inItem: inItem, atIndex: atIndex)
+      atomViewer.atomTreeController.selectedTreeNodes.insert(node)
       
       if (!filterContent)
       {
@@ -743,7 +745,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
       
-      structure.atomTreeController.tag()
+      atomViewer.atomTreeController.tag()
 
       if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
         let numberOfRows: Int = self.atomOutlineView?.numberOfRows
@@ -754,21 +756,27 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if (self.filterContent)
       {
-        structure.atomTreeController.updateFilteredNodes()
+        atomViewer.atomTreeController.updateFilteredNodes()
         
         self.atomOutlineView?.reloadData()
         self.programmaticallySetSelection()
       }
       
-      structure.reComputeBoundingBox()
-      structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
-      structure.setRepresentationStyle(style: structure.atomRepresentationStyle, colorSets: document.colorSets)
+      object.reComputeBoundingBox()
+      project.renderCamera?.boundingBox = project.renderBoundingBox
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      if let structure: Structure = object as? Structure
+      {
+        structure.setRepresentationForceField(forceField: structure.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
+        structure.setRepresentationStyle(style: structure.atomRepresentationStyle, colorSets: document.colorSets)
+      }
+      
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [object])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [object])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: object)
       
       project.isEdited = true
       self.windowController?.currentDocument?.updateChangeCount(.changeDone)
@@ -777,20 +785,19 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-  
 
-  
-  func removeNode(_ node: SKAtomTreeNode, fromItem: SKAtomTreeNode?, atIndex: Int, inStructure structure: Structure)
+  func removeNode(_ node: SKAtomTreeNode, fromItem: SKAtomTreeNode?, atIndex: Int, inStructure object: Object)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure , proxyProject?.isEnabled == true
+       let atomViewer: AtomViewer = object as? AtomViewer,
+       proxyProject?.isEnabled == true
     {
       let index: Int = node.indexPath.last ?? 0
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.addNode(node, inItem: fromItem, atIndex: index, inStructure: structure)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.addNode(node, inItem: fromItem, atIndex: index, inStructure: object)})
       
       let fromItem: SKAtomTreeNode? = node.isRootNode() ? nil: node.parentNode
-      structure.atomTreeController.removeNode(node)
-      structure.atomTreeController.selectedTreeNodes.remove(node)
+      atomViewer.atomTreeController.removeNode(node)
+      atomViewer.atomTreeController.selectedTreeNodes.remove(node)
       
       if (!filterContent)
       {
@@ -801,7 +808,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
       
-      structure.atomTreeController.tag()
+      atomViewer.atomTreeController.tag()
 
       if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
          let numberOfRows: Int = self.atomOutlineView?.numberOfRows
@@ -811,18 +818,20 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       
       if (self.filterContent)
       {
-        structure.atomTreeController.updateFilteredNodes()
+        atomViewer.atomTreeController.updateFilteredNodes()
         
         self.atomOutlineView?.reloadData()
         self.programmaticallySetSelection()
       }
       
-      structure.reComputeBoundingBox()
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      object.reComputeBoundingBox()
+      project.renderCamera?.boundingBox = project.renderBoundingBox
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [object])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [object])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: object)
       
       project.isEdited = true
     }
@@ -898,8 +907,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure,
-      let draggingSource = info.draggingSource
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure,
+       let draggingSource = info.draggingSource
     {
       if (outlineView === draggingSource as AnyObject)
       {
@@ -963,7 +973,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   func itemsAreSiblings(_ node: SKAtomTreeNode, item: SKAtomTreeNode?) -> Bool
   {
-    if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+    if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       return structure.atomTreeController.nodeIsChildOfItem(node, item: item)
     }
@@ -975,7 +986,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let observeNotificationsStored: Bool = self.observeNotifications
       self.observeNotifications = false
@@ -1086,7 +1098,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     var childIndex: Int = index
     
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let toItem: SKAtomTreeNode? = item as? SKAtomTreeNode
       
@@ -1127,7 +1140,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           // move the selected nodes to the destination
           self.moveNodes(moves, inStructure: structure)
         }
-    self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       }
       else
@@ -1150,7 +1163,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           }
         })
         
-    self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+        self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
         
         self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -1168,7 +1181,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   func restoreSelectedItems(_ parent: SKAtomTreeNode)
   {
-    if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+    if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let updatedSelectedIndex: NSMutableIndexSet = NSMutableIndexSet()
       for node in parent.childNodes
@@ -1193,7 +1207,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func outlineViewItemDidExpand(_ notification:Notification)
   {
     
-    if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure,
+    if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure,
        let treeNode: SKAtomTreeNode = notification.userInfo?["NSObject"] as? SKAtomTreeNode
     {
       self.atomOutlineView?.reloadItem(treeNode)
@@ -1263,8 +1278,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       atomViewer.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
       
       // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
-      // FIX
-      //atomViewer.recomputeSelectionBodyFixedBasis(index: -1)
+      atomViewer.recomputeSelectionBodyFixedBasis(index: -1)
       
       self.atomOutlineView?.enumerateAvailableRowViews({ (rowView,row) in
         if let item: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
@@ -1279,33 +1293,34 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-  func setCurrentSelection(structure: Structure, atomSelection: Set<SKAtomTreeNode>, previousAtomSelection: Set<SKAtomTreeNode>, bondSelection: IndexSet, previousBondSelection: IndexSet)
+  func setCurrentSelection(object: Object, atomSelection: Set<SKAtomTreeNode>, previousAtomSelection: Set<SKAtomTreeNode>, bondSelection: IndexSet, previousBondSelection: IndexSet)
   {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
       if project.undoManager.isUndoing
       {
         project.undoManager.setActionName(NSLocalizedString("Change Atom Selection", comment: ""))
       }
       // save off the current selectedNode and current selection for undo/redo
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(structure: structure, atomSelection: previousAtomSelection, previousAtomSelection: atomSelection, bondSelection: previousBondSelection, previousBondSelection: bondSelection)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.setCurrentSelection(object: object, atomSelection: previousAtomSelection, previousAtomSelection: atomSelection, bondSelection: previousBondSelection, previousBondSelection: bondSelection)})
     
-      structure.atomTreeController.selectedTreeNodes = atomSelection
-      structure.bondSetController.selectedObjects = bondSelection
+      atomViewer.atomTreeController.selectedTreeNodes = atomSelection
+      (object as? BondViewer)?.bondSetController.selectedObjects = bondSelection
     
       // reload the selection in the renderere
       self.windowController?.detailTabViewController?.renderViewController?.reloadRenderDataSelectedAtoms()
       
-      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: structure.atomTreeController.selectedTreeNodes.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
+      self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: atomViewer.atomTreeController.selectedTreeNodes.isEmpty,newSelectionEmpty: atomSelection.isEmpty)
       
       // set the basis for the selected atoms once the selection is set and use that for subsequent translations and rotations
-      structure.recomputeSelectionBodyFixedBasis(index: -1)
+      atomViewer.recomputeSelectionBodyFixedBasis(index: -1)
     
       
       // reload the selection in the atom-outlineview
       self.programmaticallySetSelection()
       
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: object)
     }
   }
 
@@ -1326,11 +1341,10 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func outlineViewSelectionDidChange(_ aNotification: Notification)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object
     {
       if (self.observeNotifications && !project.undoManager.isUndoing && !project.undoManager.isRedoing)
       {
-        
         var selectedAtomTreeNodes: Set<SKAtomTreeNode> = []
         if let selectedRows: IndexSet = self.atomOutlineView?.selectedRowIndexes
         {
@@ -1347,20 +1361,25 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         
         // add also all the bonds that are connected to a selected atom
         var selectedBonds: IndexSet = []
-        for (index, bond) in structure.bondSetController.arrangedObjects.enumerated()
+        if let bondViewer = object as? BondViewer
         {
-          if(asymmetricAtoms.contains(bond.atom1) ||
-             asymmetricAtoms.contains(bond.atom2))
+          for (index, bond) in bondViewer.bondSetController.arrangedObjects.enumerated()
           {
-            selectedBonds.insert(index)
+            if(asymmetricAtoms.contains(bond.atom1) ||
+               asymmetricAtoms.contains(bond.atom2))
+            {
+              selectedBonds.insert(index)
+            }
           }
         }
         
-        setCurrentSelection(structure: structure, atomSelection: selectedAtomTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: selectedBonds, previousBondSelection: structure.bondSetController.selectedObjects)
+        let previousAtomSelection = (object as? AtomViewer)?.atomTreeController.selectedTreeNodes ?? []
+        let previousBondSelection = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+        setCurrentSelection(object: object, atomSelection: selectedAtomTreeNodes, previousAtomSelection: previousAtomSelection, bondSelection: selectedBonds, previousBondSelection: previousBondSelection)
         
         // draw implicitely seleceted nodes as 'light blue'
-        structure.atomTreeController.flattenedNodes().forEach({$0.isImplicitelySelected = false})
-        structure.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
+        (object as? AtomViewer)?.atomTreeController.flattenedNodes().forEach({$0.isImplicitelySelected = false})
+        (object as? AtomViewer)?.atomTreeController.allSelectedNodes.forEach({$0.isImplicitelySelected = true})
         
         self.atomOutlineView?.enumerateAvailableRowViews({ (rowView,row) in
           if let item: SKAtomTreeNode = self.atomOutlineView?.item(atRow: row) as? SKAtomTreeNode
@@ -1376,20 +1395,24 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     }
   }
   
-  func deleteSelectedAtomsFor(structure: Structure, atoms: [SKAtomTreeNode], from indexPaths: [IndexPath], bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>], from indexSet: IndexSet)
+  func deleteSelectedAtomsFor(object: Object, atoms: [SKAtomTreeNode], from indexPaths: [IndexPath], bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>], from indexSet: IndexSet)
   {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedAtomsIn(structure: structure, atoms: atoms.reversed(), at: indexPaths.reversed(), bonds: bonds, at: indexSet)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.insertSelectedAtomsIn(object: object, atoms: atoms.reversed(), at: indexPaths.reversed(), bonds: bonds, at: indexSet)})
       
       if !project.undoManager.isUndoing
       {
         project.undoManager.setActionName(NSLocalizedString("Delete Atoms", comment: ""))
       }
       
-      structure.bondSetController.arrangedObjects.remove(at: indexSet)
-      structure.bondSetController.selectedObjects = []
-      structure.bondSetController.tag()
+      if let bondViewer: BondViewer = object as? BondViewer
+      {
+        bondViewer.bondSetController.arrangedObjects.remove(at: indexSet)
+        bondViewer.bondSetController.selectedObjects = []
+        bondViewer.bondSetController.tag()
+      }
       
       let observeNotificationsStored: Bool = self.observeNotifications
       self.observeNotifications = false
@@ -1420,7 +1443,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       {
         let toItem: SKAtomTreeNode? = atom.isRootNode() ? nil: atom.parentNode
         let index: Int = atom.indexPath.last ?? 0
-        structure.atomTreeController.removeNode(atom)
+        atomViewer.atomTreeController.removeNode(atom)
       
         if (!self.filterContent)
         {
@@ -1432,9 +1455,10 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
     
-      structure.atomTreeController.selectedTreeNodes = []
-      structure.atomTreeController.tag()
-      structure.reComputeBoundingBox()
+      atomViewer.atomTreeController.selectedTreeNodes = []
+      atomViewer.atomTreeController.tag()
+      object.reComputeBoundingBox()
+      project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
     
       if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
          let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
@@ -1450,7 +1474,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
       if (self.filterContent)
       {
-        structure.atomTreeController.updateFilteredNodes()
+        atomViewer.atomTreeController.updateFilteredNodes()
       
         self.atomOutlineView?.reloadData()
         self.programmaticallySetSelection()
@@ -1463,14 +1487,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integersIn: 0..<numberOfRows), columnIndexes: IndexSet(integer: column))
       }
       
-      
       project.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       
       project.isEdited = true
       self.windowController?.currentDocument?.updateChangeCount(.changeDone)
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [object])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [object])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.windowController?.detailTabViewController?.renderViewController?.clearMeasurement()
@@ -1479,16 +1502,16 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
       self.updateNetChargeTextField()
     
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: object)
     }
   }
   
-  func insertSelectedAtomsIn(structure: Structure, atoms: [SKAtomTreeNode], at indexPaths: [IndexPath], bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>], at indexSet: IndexSet)
+  func insertSelectedAtomsIn(object: Object, atoms: [SKAtomTreeNode], at indexPaths: [IndexPath], bonds: [SKAsymmetricBond<SKAsymmetricAtom, SKAsymmetricAtom>], at indexSet: IndexSet)
   {
-    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
+    if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
-      
-      project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(structure: structure, atoms: atoms.reversed(), from: indexPaths.reversed(), bonds: bonds, from: indexSet)})
+      project.undoManager.registerUndo(withTarget: self, handler: {$0.deleteSelectedAtomsFor(object: object, atoms: atoms.reversed(), from: indexPaths.reversed(), bonds: bonds, from: indexSet)})
       
       if !project.undoManager.isUndoing
       {
@@ -1499,8 +1522,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.atomOutlineView?.beginUpdates()
       for (index, atom) in atoms.enumerated()
       {
-        structure.atomTreeController.insertNode(atom, atArrangedObjectIndexPath: indexPaths[index])
-        structure.atomTreeController.selectedTreeNodes.insert(atom)
+        atomViewer.atomTreeController.insertNode(atom, atArrangedObjectIndexPath: indexPaths[index])
+        atomViewer.atomTreeController.selectedTreeNodes.insert(atom)
         
         let toItem: SKAtomTreeNode? = atom.isRootNode() ? nil: atom.parentNode
         let index: Int = atom.indexPath.last ?? 0
@@ -1515,8 +1538,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
           }
         }
       }
-      
-      structure.atomTreeController.tag()
+      atomViewer.atomTreeController.tag()
+      object.reComputeBoundingBox()
       
       if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn"))),
         let numberOfRows: Int = self.atomOutlineView?.numberOfRows,
@@ -1527,14 +1550,16 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       self.atomOutlineView?.endUpdates()
       self.observeNotifications = observeNotificationsStored
       
-      
-      structure.bondSetController.arrangedObjects.insertItems(bonds, atIndexes: indexSet)
-      structure.bondSetController.selectedObjects.formUnion(indexSet)
-      structure.bondSetController.tag()
+      if let bondViewer: BondViewer = object as? BondViewer
+      {
+        bondViewer.bondSetController.arrangedObjects.insertItems(bonds, atIndexes: indexSet)
+        bondViewer.bondSetController.selectedObjects.formUnion(indexSet)
+        bondViewer.bondSetController.tag()
+      }
       
       if (self.filterContent)
       {
-        structure.atomTreeController.updateFilteredNodes()
+        atomViewer.atomTreeController.updateFilteredNodes()
         
         self.atomOutlineView?.reloadData()
         self.programmaticallySetSelection()
@@ -1549,23 +1574,26 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       
       // after a delete, and before an undo, the style, colors, and forcefields potentially could change and update. Therefore: re-apply these at undo.
-      structure.applyRepresentationStyle()
+      (object as? Structure)?.applyRepresentationStyle()
       if let document: iRASPADocument = self.windowController?.currentDocument
       {
-        structure.applyRepresentationColorOrder(colorSets: document.colorSets)
-        structure.applyRepresentationForceField(forceFieldSets: document.forceFieldSets)
+        (object as? Structure)?.applyRepresentationColorOrder(colorSets: document.colorSets)
+        (object as? Structure)?.applyRepresentationForceField(forceFieldSets: document.forceFieldSets)
       }
+      
+      project.renderCamera?.boundingBox = project.renderBoundingBox
       
       project.isEdited = true
       self.windowController?.currentDocument?.updateChangeCount(.changeDone)
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [object])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [object])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       self.updateNetChargeTextField()
       self.windowController?.detailTabViewController?.renderViewController?.showTransformationPanel(oldSelectionEmpty: true, newSelectionEmpty: false)
       
-      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: structure)
+      NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: object)
     }
   }
 
@@ -1573,30 +1601,37 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func deleteSelection()
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
       // get all selected atom tree nodes _and_ the children that are implicitly selected
       // sort the selected nodes accoording to the index-paths
       // the deepest nodes should be deleted first!
-      let selectedAtomTreeNodes: [SKAtomTreeNode] = structure.atomTreeController.selectedTreeNodes.flatMap{$0.flattenedNodes()}.sorted(by: { $0.indexPath > $1.indexPath })
+      let selectedAtomTreeNodes: [SKAtomTreeNode] = atomViewer.atomTreeController.selectedTreeNodes.flatMap{$0.flattenedNodes()}.sorted(by: { $0.indexPath > $1.indexPath })
       let indexPaths: [IndexPath] = selectedAtomTreeNodes.map{$0.indexPath}
       
-      var indexSet: IndexSet = structure.bondSetController.selectedObjects
-      
       let asymmetricAtoms: Set<SKAsymmetricAtom> = Set(selectedAtomTreeNodes.map{$0.representedObject})
-      
-      // add also all the bonds that are connected to a selected atom
-      for (index, bond) in structure.bondSetController.arrangedObjects.enumerated()
+            
+      if let bondViewer: BondViewer = object as? BondViewer
       {
-        if(asymmetricAtoms.contains(bond.atom1) ||
-           asymmetricAtoms.contains(bond.atom2))
+        var indexSet: IndexSet = bondViewer.bondSetController.selectedObjects
+        
+        // add also all the bonds that are connected to a selected atom
+        for (index, bond) in bondViewer.bondSetController.arrangedObjects.enumerated()
         {
-          indexSet.insert(index)
+          if(asymmetricAtoms.contains(bond.atom1) ||
+             asymmetricAtoms.contains(bond.atom2))
+          {
+            indexSet.insert(index)
+          }
         }
+        let selectedBonds: [SKAsymmetricBond] = bondViewer.bondSetController.arrangedObjects[indexSet]
+        deleteSelectedAtomsFor(object: object, atoms: selectedAtomTreeNodes, from: indexPaths, bonds: selectedBonds, from: indexSet)
       }
-      let selectedBonds: [SKAsymmetricBond] = structure.bondSetController.arrangedObjects[indexSet]
-      
-      deleteSelectedAtomsFor(structure: structure, atoms: selectedAtomTreeNodes, from: indexPaths, bonds: selectedBonds, from: indexSet)
+      else
+      {
+        deleteSelectedAtomsFor(object: object, atoms: selectedAtomTreeNodes, from: indexPaths, bonds: [], from: [])
+      }
     }
   }
 
@@ -1615,7 +1650,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-      let crystal: Structure & SpaceGroupProtocol = (representedObject as? iRASPAObject)?.structure as? Structure & SpaceGroupProtocol
+       let crystal: Structure & SpaceGroupViewer = (representedObject as? iRASPAObject)?.object as? Structure & SpaceGroupViewer
     {
       let oldCell: SKCell = crystal.cell
       let oldSpaceGroup: SKSpacegroup = crystal.spaceGroup
@@ -1636,7 +1671,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       crystal.setRepresentationForceField(forceField: crystal.atomForceFieldIdentifier, forceFieldSets: document.forceFieldSets)
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [crystal])
-  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [crystal])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [crystal])
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
@@ -1656,7 +1691,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol
+       let crystal: SpaceGroupViewer = (self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer
     {
       project.undoManager.setActionName(NSLocalizedString("Find and Impose Symmetry", comment: ""))
       
@@ -1678,7 +1713,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol
+       let crystal: SpaceGroupViewer = (self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer
     {
       project.undoManager.setActionName(NSLocalizedString("Flatten Hierarchy", comment: ""))
       
@@ -1697,7 +1732,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol
+       let crystal: SpaceGroupViewer = (self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer
     {
       project.undoManager.setActionName(NSLocalizedString("Remove Symmetry", comment: ""))
       
@@ -1716,7 +1751,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
       let outlineView: AtomOutlineView = self.atomOutlineView,
-      let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol
+      let crystal: SpaceGroupViewer = (self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer
     {
       project.undoManager.setActionName(NSLocalizedString("Wrap Atoms to Cell", comment: ""))
       
@@ -1736,7 +1771,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-      let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol
+      let crystal: SpaceGroupViewer = (self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer
     {
       project.undoManager.setActionName(NSLocalizedString("Find Primitive", comment: ""))
       
@@ -1757,7 +1792,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-      let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol
+      let crystal: SpaceGroupViewer = (self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer
     {
       project.undoManager.setActionName(NSLocalizedString("Find Niggli", comment: ""))
       
@@ -1777,7 +1812,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
        let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
        let outlineView: AtomOutlineView = self.atomOutlineView,
-       let crystal: SpaceGroupProtocol = (self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol
+       let crystal: SpaceGroupViewer = (self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer
     {
       project.undoManager.setActionName(NSLocalizedString("Make Super-Cell", comment: ""))
       
@@ -1801,12 +1836,12 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
     if (menuItem.action == #selector(addAtom))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure) != nil)
+      return ((self.representedObject as? iRASPAObject)?.object is AtomViewer)
     }
     
     if (menuItem.action == #selector(addGroupAtom))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure) != nil)
+      return ((self.representedObject as? iRASPAObject)?.object is AtomViewer)
     }
     
     if (menuItem.action == #selector(visibilityInversion))
@@ -1838,37 +1873,42 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
     if (menuItem.action == #selector(FlattenHierarchy))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure) != nil)
+      return (((self.representedObject as? iRASPAObject)?.object) != nil)
     }
     
     if (menuItem.action == #selector(WrapAtomsToCell))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol) != nil)
+      return (((self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer) != nil)
     }
     
     if (menuItem.action == #selector(FindAndImposeSymmetry))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol) != nil)
+      return (((self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer) != nil)
     }
     
     if (menuItem.action == #selector(RemoveSymmetry))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol) != nil)
+      return (((self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer) != nil)
     }
     
     if (menuItem.action == #selector(FindPrimitive))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol) != nil)
+      return (((self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer) != nil)
+    }
+    
+    if (menuItem.action == #selector(FindNiggli))
+    {
+      return (((self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer) != nil)
     }
     
     if (menuItem.action == #selector(makeSuperCell))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol) != nil)
+      return (((self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer) != nil)
     }
     
     if (menuItem.action == #selector(RemoveSymmetry))
     {
-      return (((self.representedObject as? iRASPAObject)?.structure as? SpaceGroupProtocol) != nil)
+      return (((self.representedObject as? iRASPAObject)?.object as? SpaceGroupViewer) != nil)
     }
     
     if(menuItem.action == #selector(scrollToTop))
@@ -1891,7 +1931,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
     if(menuItem.action == #selector(scrollToFirstSelected))
     {
-      if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+      if let structure: Structure = (self.representedObject as? iRASPAObject)?.object as? Structure
       {
         return structure.atomTreeController.selectedTreeNodes.count > 0
       }
@@ -1900,7 +1940,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
     if(menuItem.action == #selector(scrollToLastSelected))
     {
-      if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+      if let structure: Structure = (self.representedObject as? iRASPAObject)?.object as? Structure
       {
         return structure.atomTreeController.selectedTreeNodes.count > 0
       }
@@ -1910,7 +1950,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     
     if (menuItem.action == #selector(selectionInversion))
     {
-      if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+      if let structure: Structure = (self.representedObject as? iRASPAObject)?.object as? Structure
       {
         return structure.atomTreeController.selectedTreeNodes.count > 0
       }
@@ -1924,7 +1964,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
       let project: ProjectStructureNode = proxyProject.representedObject.loadedProjectStructureNode,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+      let structure: Structure = (self.representedObject as? iRASPAObject)?.object as? Structure
     {
       project.undoManager.setActionName(NSLocalizedString("Invert Selection", comment:""))
       
@@ -1942,7 +1982,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
       
-      setCurrentSelection(structure: structure, atomSelection: invertedSelectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: invertedSelectedBonds, previousBondSelection: structure.bondSetController.selectedObjects)
+      setCurrentSelection(object: structure, atomSelection: invertedSelectedTreeNodes, previousAtomSelection: structure.atomTreeController.selectedTreeNodes, bondSelection: invertedSelectedBonds, previousBondSelection: structure.bondSetController.selectedObjects)
     }
   }
   
@@ -2022,11 +2062,11 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         structure.bondSetController.tag()
       }
       
-      if let newstructure = movie.frames.first?.frames.first?.structure
+      if let newstructure = movie.frames.first?.frames.first?.object as? Structure
       {
         for (index, atom) in atoms.enumerated()
         {
-          let assymetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(original: atom.representedObject.copy())
+          let assymetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(copy: atom.representedObject.copy())
           let treeNode: SKAtomTreeNode = SKAtomTreeNode(name: atom.displayName, representedObject: assymetricAtom)
           newstructure.atomTreeController.insertNode(treeNode, atArrangedObjectIndexPath: [index])
           newstructure.expandSymmetry(asymmetricAtom: assymetricAtom)
@@ -2094,9 +2134,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let iRASPAStructure: iRASPAObject = self.representedObject as? iRASPAObject,
        let currentSelectedScene: Scene = project.sceneList.selectedScene,
        let currentSelectedMovie: Movie = currentSelectedScene.selectedMovie,
-       let index: Int = currentSelectedScene.movies.firstIndex(of: currentSelectedMovie)
+       let index: Int = currentSelectedScene.movies.firstIndex(of: currentSelectedMovie),
+       let structure: Structure = iRASPAStructure.object as? Structure
     {
-      let structure = iRASPAStructure.structure
       let frame: iRASPAObject = iRASPAStructure.copy()
       let movie: Movie = Movie(frame: frame)
       
@@ -2119,9 +2159,9 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
        let iRASPAStructure: iRASPAObject = self.representedObject as? iRASPAObject,
        let currentSelectedScene: Scene = project.sceneList.selectedScene,
        let currentSelectedMovie: Movie = currentSelectedScene.selectedMovie,
-       let index: Int = currentSelectedScene.movies.firstIndex(of: currentSelectedMovie)
+       let index: Int = currentSelectedScene.movies.firstIndex(of: currentSelectedMovie),
+       let structure: Structure = iRASPAStructure.object as? Structure
     {
-      let structure: Structure = iRASPAStructure.structure
       let frame: iRASPAObject = iRASPAStructure.copy()
       let movie: Movie = Movie(frame: frame)
       
@@ -2141,15 +2181,13 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func visibilityInversion(_ sender: NSMenuItem)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       asymmetricAtoms.forEach{$0.isVisible = !$0.isVisible}
       
-      if let structure = (self.representedObject as? iRASPAObject)?.structure
-      {
-        structure.atomTreeController.tag()
-      }
+      structure.atomTreeController.tag()
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
@@ -2164,7 +2202,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func visibilityMatchSelection(_ sender: NSMenuItem)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-      let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       asymmetricAtoms.forEach{$0.isVisible = false}
@@ -2172,10 +2211,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       let selectedAsymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.selectedTreeNodes.compactMap{$0.representedObject}
       selectedAsymmetricAtoms.forEach{$0.isVisible = true}
       
-      if let structure = (self.representedObject as? iRASPAObject)?.structure
-      {
-        structure.atomTreeController.tag()
-      }
+      structure.atomTreeController.tag()
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
@@ -2190,16 +2226,15 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   @IBAction func checkBoxAction(_ sender: NSButton)
   {
     if let proxyProject: ProjectTreeNode = self.proxyProject, proxyProject.isEnabled,
-       let row: Int = self.atomOutlineView?.row(for: sender)
+       let row: Int = self.atomOutlineView?.row(for: sender),
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let toggledState: Bool = sender.state == NSControl.StateValue.on
       if NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
       {
-        if let structure = (self.representedObject as? iRASPAObject)?.structure
-        {
-          let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
-          asymmetricAtoms.forEach{$0.isVisible = toggledState}
-        }
+        let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+        asymmetricAtoms.forEach{$0.isVisible = toggledState}
       }
       else
       {
@@ -2211,10 +2246,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
       
-      if let structure = (self.representedObject as? iRASPAObject)?.structure
-      {
-        structure.atomTreeController.tag()
-      }
+      structure.atomTreeController.tag()
         
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         
@@ -2262,7 +2294,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   @IBAction func exportAsPDB(_ sender: NSMenuItem)
   {
-    if let structure = (self.representedObject as? iRASPAObject)?.structure
+    if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let state: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) = structure.superCell
       
@@ -2327,7 +2360,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   @IBAction func exportAsMMCIF(_ sender: NSMenuItem)
   {
-    if let structure = (self.representedObject as? iRASPAObject)?.structure
+    if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let atoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       
@@ -2378,7 +2412,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   @IBAction func exportAsCIF(_ sender: NSMenuItem)
   {
-    if let structure = (self.representedObject as? iRASPAObject)?.structure
+    if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let atoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       
@@ -2429,7 +2464,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   
   @IBAction func exportAsXYZ(_ sender: NSMenuItem)
   {
-    if let structure = (self.representedObject as? iRASPAObject)?.structure
+    if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       let atoms: [(Int, SIMD3<Double>)] = asymmetricAtoms.flatMap{$0.copies}.compactMap{($0.asymmetricParentAtom.elementIdentifier,structure.absoluteCartesianModelPosition(for: $0.position, replicaPosition: SIMD3<Int32>()) )}
@@ -2502,7 +2538,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   // if "atomsAreFractional" is true, then fractional positions are written, otherwise Cartesian
   @IBAction func exportAsVASP(_ sender: NSMenuItem)
   {
-    if let structure = (self.representedObject as? iRASPAObject)?.structure
+    if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let asymmetricAtoms: [SKAsymmetricAtom] = structure.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
       let atomCopies: [SKAtomCopy] = asymmetricAtoms.flatMap{$0.copies}.filter{$0.type == .copy}
@@ -2577,7 +2614,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     if (searchString.isEmpty)
     {
       // restore no filtering
-      if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+      if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+         let structure: Structure = object as? Structure
       {
         structure.atomTreeController.filterPredicate = {_ in return true}
         structure.atomTreeController.updateFilteredNodes()
@@ -2597,7 +2635,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
     else
     {
       // filter
-      if let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+      if let object: Object = (self.representedObject as? iRASPAObject)?.object,
+         let structure: Structure = object as? Structure
       {
         structure.atomTreeController.filterPredicate = {
           atomTreeNode in
@@ -2651,7 +2690,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       DispatchQueue.main.async(execute: {
         if let column: Int = (self.atomOutlineView?.column(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "atomFixedColumn")))
         {
-          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: (self.representedObject as? iRASPAObject)?.structure)
+          NotificationCenter.default.post(name: Notification.Name(NotificationStrings.BondsShouldReloadNotification), object: (self.representedObject as? iRASPAObject)?.object)
           self.atomOutlineView?.reloadData(forRowIndexes: IndexSet(integer: row), columnIndexes: IndexSet(integer: column))
         }
       })
@@ -2745,7 +2784,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let atom = atomTreeNode.representedObject
       let oldId: Int = atom.elementIdentifier
@@ -2788,7 +2828,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let atom = atomTreeNode.representedObject
       let oldId: String = atom.uniqueForceFieldName
@@ -2869,7 +2910,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func setAtomOccupancy(_ atomTreeNode: SKAtomTreeNode, to newValue: Double)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let structure: Structure = object as? Structure
     {
       let atom = atomTreeNode.representedObject
       let oldOccupancy: Double = atom.occupancy
@@ -2932,9 +2974,10 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func setAtomPositionX(_ atomTreeNode: SKAtomTreeNode, to newValue: Double)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
-        let atom = atomTreeNode.representedObject
+      let atom = atomTreeNode.representedObject
       let oldPosition: Double = atom.position.x
       project.undoManager.registerUndo(withTarget: self, handler: {$0.setAtomPositionX(atomTreeNode, to: oldPosition)})
       
@@ -2944,7 +2987,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       atom.position.x = newValue
       
-      structure.expandSymmetry(asymmetricAtom: atom)
+      atomViewer.expandSymmetry(asymmetricAtom: atom)
       
       // reload item in the outlineView
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
@@ -2956,13 +2999,16 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
       
-      structure.reComputeBoundingBox()
+      object.reComputeBoundingBox()
       
-      structure.bondSetController.selectedObjects = []
-      structure.reComputeBonds()
+      if let bondViewer: BondViewer = object as? BondViewer
+      {
+        bondViewer.bondSetController.selectedObjects = []
+        bondViewer.reComputeBonds()
+      }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [object])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [object])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       project.isEdited = true
@@ -2996,7 +3042,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func setAtomPositionY(_ atomTreeNode: SKAtomTreeNode, to newValue: Double)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
       let atom = atomTreeNode.representedObject
       let oldPosition: Double = atom.position.y
@@ -3008,7 +3055,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       atom.position.y = newValue
       
-      structure.expandSymmetry(asymmetricAtom: atom)
+      atomViewer.expandSymmetry(asymmetricAtom: atom)
       
       // reload item in the outlineView
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
@@ -3020,13 +3067,16 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
       
-      structure.reComputeBoundingBox()
+      object.reComputeBoundingBox()
       
-      structure.bondSetController.selectedObjects = []
-      structure.reComputeBonds()
+      if let bondViewer: BondViewer = object as? BondViewer
+      {
+        bondViewer.bondSetController.selectedObjects = []
+        bondViewer.reComputeBonds()
+      }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-  self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [object])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [object])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       project.isEdited = true
@@ -3059,7 +3109,8 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
   func setAtomPositionZ(_ atomTreeNode: SKAtomTreeNode, to newValue: Double)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let structure: Structure = (self.representedObject as? iRASPAObject)?.structure
+       let object: Object = (self.representedObject as? iRASPAObject)?.object,
+       let atomViewer: AtomViewer = object as? AtomViewer
     {
       let atom = atomTreeNode.representedObject
       let oldPosition: Double = atom.position.z
@@ -3071,7 +3122,7 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
       }
       atom.position.z = newValue
      
-      structure.expandSymmetry(asymmetricAtom: atom)
+      atomViewer.expandSymmetry(asymmetricAtom: atom)
       
       // reload item in the outlineView
       if let row: Int = self.atomOutlineView?.row(forItem: atomTreeNode), row >= 0
@@ -3083,13 +3134,16 @@ class StructureAtomDetailViewController: NSViewController, NSMenuItemValidation,
         }
       }
       
-      structure.reComputeBoundingBox()
+      object.reComputeBoundingBox()
       
-      structure.bondSetController.selectedObjects = []
-      structure.reComputeBonds()
+      if let bondViewer: BondViewer = object as? BondViewer
+      {
+        bondViewer.bondSetController.selectedObjects = []
+        bondViewer.reComputeBonds()
+      }
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [structure])
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [structure])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [object])
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [object])
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       
       project.isEdited = true

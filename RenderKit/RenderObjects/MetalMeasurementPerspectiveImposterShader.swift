@@ -35,10 +35,10 @@ import Foundation
 class MetalMeasurementPerspectiveImposterShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var numberOfDrawnMeasurementAtoms: Int = 0
-  var renderMeasurementStructure: [RKRenderStructure] = []
+  var renderMeasurementStructure: [RKRenderObject] = []
   
   var pipeLine: MTLRenderPipelineState! = nil
   var indexBuffer: MTLBuffer! = nil
@@ -123,7 +123,7 @@ class MetalMeasurementPerspectiveImposterShader
             var index = 0
             for i in 0..<self.renderStructures.count
             {
-              let structures: [RKRenderStructure] = self.renderStructures[i]
+              let structures: [RKRenderObject] = self.renderStructures[i]
               
               for structure in structures
               {

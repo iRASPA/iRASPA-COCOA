@@ -106,9 +106,9 @@ public class ImportProjectFromCloudOperation: FKGroupOperation
           projectTreeNode.representedObject = representedObject
           projectTreeNode.representedObject.fileNameUUID = fileName
           
-          representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
+          representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationForceField(forceField: $0.atomForceFieldIdentifier, forceFieldSets: forceFieldSets)}
           
-          representedObject.loadedProjectStructureNode?.allStructures.forEach{$0.reComputeBoundingBox()}
+          representedObject.loadedProjectStructureNode?.allObjects.compactMap({$0 as? Structure}).forEach{$0.reComputeBoundingBox()}
           
         }
         

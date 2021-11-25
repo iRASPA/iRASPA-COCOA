@@ -65,6 +65,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   weak var proxyProject: ProjectTreeNode?
   
+  var iRASPAObjects: [iRASPAObject] = []
+    
   var heights : [String : CGFloat] = [:]
   
   let primitiveOrientationPropertiesCell: OutlineViewItem = OutlineViewItem("PrimitiveOrientationPropertiesCell")
@@ -75,9 +77,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   let primitiveFrontPropertiesCell: OutlineViewItem = OutlineViewItem("PrimitiveFrontPropertiesCell")
   let primitiveBackPropertiesCell: OutlineViewItem = OutlineViewItem("PrimitiveBackPropertiesCell")
   
+  let atomsScalingCell: OutlineViewItem = OutlineViewItem("AtomsScalingCell")
   let atomsRepresentationStyleCell: OutlineViewItem = OutlineViewItem("AtomsRepresentationCell")
   let atomsSelectionCell: OutlineViewItem = OutlineViewItem("AtomsSelectionCell")
-  let atomsScalingCell: OutlineViewItem = OutlineViewItem("AtomsScalingCell")
   let atomsHDRCell: OutlineViewItem = OutlineViewItem("AtomsHDRCell")
   let atomsLightingCell: OutlineViewItem = OutlineViewItem("AtomsLightingCell")
   
@@ -107,17 +109,19 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     
     self.surfaceUpdateBlock = { [weak self] in
       DispatchQueue.main.async(execute: {
-        if let row: Int = self?.appearanceOutlineView?.row(forItem: self?.adsorptionPropertiesCell), row >= 0
+        if let self = self,
+           let row: Int = self.appearanceOutlineView?.row(forItem: self.adsorptionPropertiesCell), row >= 0
         {
           // fast way of updating: get the current-view, set properties on it, and update the rect to redraw
-          if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = self?.representedObject as? [AdsorptionSurfaceVisualAppearanceViewer],
-             let view: NSTableCellView = self?.appearanceOutlineView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
-             let isovalue: Double = representedStructure.renderAdsorptionSurfaceIsovalue,
+          if let proxyProject = self.proxyProject, proxyProject.isEditable,
+             !self.iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty,
+             let view: NSTableCellView = self.appearanceOutlineView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
+             let isovalue: Double = self.renderAdsorptionSurfaceIsovalue,
              let sliderIsovalue: NSSlider = view.viewWithTag(4) as? NSSlider,
              let textFieldIsovalue: NSTextField = view.viewWithTag(3) as? NSTextField
           {
             //sliderIsovalue.isEnabled = enabled
-            let minValue: Double = Double(representedStructure.renderMinimumGridEnergyValue ?? -1000.0)
+            let minValue: Double = Double(self.renderMinimumGridEnergyValue ?? -1000.0)
             sliderIsovalue.minValue = minValue
             sliderIsovalue.maxValue = 0.0
             sliderIsovalue.doubleValue = max(isovalue, minValue)
@@ -135,7 +139,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     self.view.autoresizingMask = [.height, .width, .maxXMargin]
     
     let primitiveVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "PrimitiveVisualAppearanceGroup", children: [primitiveOrientationPropertiesCell, primitiveTransformationPropertiesCell, primitiveOpacityPropertiesCell, primitiveSelectionPropertiesCell, primitiveHSVPropertiesCell, primitiveFrontPropertiesCell, primitiveBackPropertiesCell])
-    let atomsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AtomsVisualAppearanceGroup", children: [atomsRepresentationStyleCell, atomsSelectionCell, atomsScalingCell, atomsHDRCell, atomsLightingCell])
+    let atomsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "AtomsVisualAppearanceGroup", children: [atomsScalingCell, atomsRepresentationStyleCell, atomsSelectionCell, atomsHDRCell, atomsLightingCell])
     let bondsVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "BondsVisualAppearanceGroup", children: [bondsScalingCell, bondsSelectionCell, bondsHDRCell, bondsLightingCell])
     let unitCellVisualAppearanceItem: OutlineViewItem = OutlineViewItem(title: "UnitCellVisualAppearanceGroup", children: [unitCellScalingCell])
     let localAxesAppearanceItem: OutlineViewItem = OutlineViewItem(title: "LocalAxesVisualAppearanceGroup", children: [localAxesCell])
@@ -266,9 +270,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldYawMinusX.isEnabled = false
         textFieldYawMinusY.isEnabled = false
         textFieldYawMinusZ.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty,
-          let renderRotationDelta: Double = representedStructure.renderPrimitiveRotationDelta
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldRotationAngle.isEditable = enabled
           textFieldYawPlusX.isEnabled = enabled
@@ -278,13 +281,16 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldYawMinusY.isEnabled = enabled
           textFieldYawMinusZ.isEnabled = enabled
           
-          textFieldRotationAngle.doubleValue = renderRotationDelta
-          textFieldYawPlusX.title =  "Rotate +\(renderRotationDelta)°"
-          textFieldYawPlusY.title =  "Rotate -\(renderRotationDelta)°"
-          textFieldYawPlusZ.title =  "Rotate +\(renderRotationDelta)°"
-          textFieldYawMinusX.title =  "Rotate -\(renderRotationDelta)°"
-          textFieldYawMinusY.title =  "Rotate +\(renderRotationDelta)°"
-          textFieldYawMinusZ.title =  "Rotate -\(renderRotationDelta)°"
+          if let renderRotationDelta: Double = self.renderPrimitiveRotationDelta
+          {
+            textFieldRotationAngle.doubleValue = renderRotationDelta
+            textFieldYawPlusX.title =  "Rotate +\(renderRotationDelta)°"
+            textFieldYawPlusY.title =  "Rotate -\(renderRotationDelta)°"
+            textFieldYawPlusZ.title =  "Rotate +\(renderRotationDelta)°"
+            textFieldYawMinusX.title =  "Rotate -\(renderRotationDelta)°"
+            textFieldYawMinusY.title =  "Rotate +\(renderRotationDelta)°"
+            textFieldYawMinusZ.title =  "Rotate -\(renderRotationDelta)°"
+          }
         }
       }
       
@@ -308,12 +314,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldEulerAngleY.stringValue = "0.0"
         textFieldEulerAngleZ.stringValue = "0.0"
         
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
-          if let renderEulerAngleX: Double = representedStructure.renderPrimitiveEulerAngleX,
-            let renderEulerAngleY: Double = representedStructure.renderPrimitiveEulerAngleY,
-            let renderEulerAngleZ: Double = representedStructure.renderPrimitiveEulerAngleZ
+          if let renderEulerAngleX: Double = self.renderPrimitiveEulerAngleX,
+             let renderEulerAngleY: Double = self.renderPrimitiveEulerAngleY,
+             let renderEulerAngleZ: Double = self.renderPrimitiveEulerAngleZ
           {
             sliderEulerAngleX.isEnabled = enabled
             sliderEulerAngleZ.isEnabled = enabled
@@ -365,8 +371,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldAtomScalingCX.stringValue = "0"
         textFieldAtomScalingCY.stringValue = "0"
         textFieldAtomScalingCZ.stringValue = "1"
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldAtomScalingAX.isEditable = enabled
           textFieldAtomScalingAY.isEditable = enabled
@@ -377,8 +383,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldAtomScalingCX.isEditable = enabled
           textFieldAtomScalingCY.isEditable = enabled
           textFieldAtomScalingCZ.isEditable = enabled
-          if let renderPrimitiveTransformationMatrix: double3x3 = representedStructure.renderPrimitiveTransformationMatrix,
-            !representedStructure.allPrimitiveStructure.isEmpty
+          if let renderPrimitiveTransformationMatrix: double3x3 = self.renderPrimitiveTransformationMatrix
           {
             textFieldAtomScalingAX.doubleValue = renderPrimitiveTransformationMatrix[0,0]
             textFieldAtomScalingAY.doubleValue = renderPrimitiveTransformationMatrix[0,1]
@@ -409,12 +414,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           button.isEnabled = enabled
           
-          if let renderPrimitiveIsCapped: Bool = representedStructure.renderPrimitiveIsCapped
+          if let renderPrimitiveIsCapped: Bool = self.renderPrimitiveIsCapped
           {
             button.allowsMixedState = false
             button.state = renderPrimitiveIsCapped ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -430,11 +435,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldOpacity.isEditable = false
         textFieldOpacity.stringValue = "1.0"
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldOpacity.isEditable = enabled
-          if let opacity = representedStructure.renderPrimitiveOpacity
+          if let opacity = self.renderPrimitiveOpacity
           {
             textFieldOpacity.doubleValue = opacity
           }
@@ -448,11 +453,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldNumberOfSides.isEditable = false
         textFieldNumberOfSides.stringValue = "41"
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldNumberOfSides.isEditable = enabled
-          if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
+          if let numberOfSides = self.renderPrimitiveNumberOfSides
           {
             textFieldNumberOfSides.integerValue = numberOfSides
           }
@@ -463,15 +468,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      
       if let sliderOpacity: NSSlider = view.viewWithTag(4) as? NSSlider
       {
         sliderOpacity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderOpacity.isEnabled = enabled
-          if let opacity = representedStructure.renderPrimitiveOpacity
+          if let opacity = self.renderPrimitiveOpacity
           {
             sliderOpacity.minValue = 0.0
             sliderOpacity.maxValue = 1.0
@@ -489,11 +493,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderNumberOfSides: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderNumberOfSides.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderNumberOfSides.isEnabled = enabled
-          if let numberOfSides = representedStructure.renderPrimitiveNumberOfSides
+          if let numberOfSides = self.renderPrimitiveNumberOfSides
           {
             sliderNumberOfSides.minValue = 2
             sliderNumberOfSides.maxValue = 41
@@ -519,13 +523,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionFrequency.stringValue = ""
         textFieldSelectionDensity.isEditable = false
         textFieldSelectionDensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           popUpbuttonSelectionStyle.isEditable = enabled
           textFieldSelectionFrequency.isEditable = enabled
           textFieldSelectionDensity.isEditable = enabled
           
-          if let selectionStyle: RKSelectionStyle = representedStructure.renderPrimitiveSelectionStyle
+          if let selectionStyle: RKSelectionStyle = self.renderPrimitiveSelectionStyle
           {
             popUpbuttonSelectionStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
@@ -543,7 +548,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
-          if let renderSelectionFrequency: Double = representedStructure.renderPrimitiveSelectionFrequency
+          if let renderSelectionFrequency: Double = self.renderPrimitiveSelectionFrequency
           {
             textFieldSelectionFrequency.doubleValue = renderSelectionFrequency
           }
@@ -552,7 +557,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
-          if let renderSelectionDensity: Double = representedStructure.renderPrimitiveSelectionDensity
+          if let renderSelectionDensity: Double = self.renderPrimitiveSelectionDensity
           {
             textFieldSelectionDensity.doubleValue = renderSelectionDensity
           }
@@ -567,10 +572,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBondSelectionIntensityLevel.isEditable = false
         textFieldBondSelectionIntensityLevel.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldBondSelectionIntensityLevel.isEditable = enabled
-          if let renderSelectionIntensityLevel: Double = representedStructure.renderPrimitiveSelectionIntensity
+          if let renderSelectionIntensityLevel: Double = self.renderPrimitiveSelectionIntensity
           {
             textFieldBondSelectionIntensityLevel.doubleValue = renderSelectionIntensityLevel
           }
@@ -586,10 +592,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSelectionIntensityLevel.isEnabled = false
         sliderSelectionIntensityLevel.minValue = 0.0
         sliderSelectionIntensityLevel.maxValue = 2.0
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderSelectionIntensityLevel.isEnabled = enabled
-          if let renderSelectionIntensityLevel: Double = representedStructure.renderPrimitiveSelectionIntensity
+          if let renderSelectionIntensityLevel: Double = self.renderPrimitiveSelectionIntensity
           {
             sliderSelectionIntensityLevel.doubleValue = renderSelectionIntensityLevel
           }
@@ -601,10 +608,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldSelectionScaling.isEditable = false
         textFieldSelectionScaling.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldSelectionScaling.isEditable = enabled
-          if let renderSelectionScaling: Double = representedStructure.renderPrimitiveSelectionScaling
+          if let renderSelectionScaling: Double = self.renderPrimitiveSelectionScaling
           {
             textFieldSelectionScaling.doubleValue = renderSelectionScaling
           }
@@ -619,10 +627,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSelectionScaling.isEnabled = false
         sliderSelectionScaling.minValue = 1.0
         sliderSelectionScaling.maxValue = 2.0
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderSelectionScaling.isEnabled = enabled
-          if let renderSelectionScaling: Double = representedStructure.renderPrimitiveSelectionScaling
+          if let renderSelectionScaling: Double = self.renderPrimitiveSelectionScaling
           {
             sliderSelectionScaling.doubleValue = renderSelectionScaling
           }
@@ -635,10 +644,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldHue.isEditable = enabled
-          if let renderBondHue: Double = representedStructure.renderPrimitiveHue
+          if let renderBondHue: Double = self.renderPrimitiveHue
           {
             textFieldHue.doubleValue = renderBondHue
           }
@@ -650,10 +660,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldSaturation.isEditable = enabled
-          if let renderBondSaturation: Double = representedStructure.renderPrimitiveSaturation
+          if let renderBondSaturation: Double = self.renderPrimitiveSaturation
           {
             textFieldSaturation.doubleValue = renderBondSaturation
           }
@@ -665,10 +676,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldValue.isEditable = enabled
-          if let renderBondValue: Double = representedStructure.renderPrimitiveValue
+          if let renderBondValue: Double = self.renderPrimitiveValue
           {
             textFieldValue.doubleValue = renderBondValue
           }
@@ -680,10 +692,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderHue.isEnabled = enabled
-          if let renderBondHue: Double = representedStructure.renderPrimitiveHue
+          if let renderBondHue: Double = self.renderPrimitiveHue
           {
             sliderHue.doubleValue = renderBondHue
           }
@@ -695,10 +708,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderSaturation.isEnabled = enabled
-          if let renderBondSaturation: Double = representedStructure.renderPrimitiveSaturation
+          if let renderBondSaturation: Double = self.renderPrimitiveSaturation
           {
             sliderSaturation.doubleValue = renderBondSaturation
           }
@@ -711,10 +725,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderValue.isEnabled = enabled
-          if let renderBondValue: Double = representedStructure.renderPrimitiveValue
+          if let renderBondValue: Double = self.renderPrimitiveValue
           {
             sliderValue.doubleValue = renderBondValue
           }
@@ -727,12 +742,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           button.isEnabled = enabled
           
-          if let renderPrimitiveFrontSideHDR: Bool = representedStructure.renderPrimitiveFrontSideHDR
+          if let renderPrimitiveFrontSideHDR: Bool = self.renderPrimitiveFrontSideHDR
           {
             button.allowsMixedState = false
             button.state = renderPrimitiveFrontSideHDR ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -750,11 +765,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled
-          if let renderPrimitiveFrontSideHDRExposure: Double = representedStructure.renderPrimitiveFrontSideHDRExposure
+          if let renderPrimitiveFrontSideHDRExposure: Double = self.renderPrimitiveFrontSideHDRExposure
           {
             textFieldExposure.doubleValue = renderPrimitiveFrontSideHDRExposure
           }
@@ -769,11 +784,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled
-          if let renderPrimitiveFrontSideHDRExposure: Double = representedStructure.renderPrimitiveFrontSideHDRExposure
+          if let renderPrimitiveFrontSideHDRExposure: Double = self.renderPrimitiveFrontSideHDRExposure
           {
             sliderExposure.doubleValue = renderPrimitiveFrontSideHDRExposure
           }
@@ -786,11 +801,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontAmbientIntensity.isEditable = false
         textFieldFrontAmbientIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldFrontAmbientIntensity.isEditable = enabled
-          if let ambientIntensity = representedStructure.renderPrimitiveFrontSideAmbientIntensity
+          if let ambientIntensity = self.renderPrimitiveFrontSideAmbientIntensity
           {
             textFieldFrontAmbientIntensity.doubleValue = ambientIntensity
           }
@@ -803,11 +818,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderFrontAmbientIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderFrontAmbientIntensity.isEnabled = enabled
-          if let ambientIntensity = representedStructure.renderPrimitiveFrontSideAmbientIntensity
+          if let ambientIntensity = self.renderPrimitiveFrontSideAmbientIntensity
           {
             sliderFrontAmbientIntensity.minValue = 0.0
             sliderFrontAmbientIntensity.maxValue = 1.0
@@ -819,11 +834,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientFrontSideColor.isEnabled = false
         ambientFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           ambientFrontSideColor.isEnabled = enabled
-          if let color = representedStructure.renderPrimitiveFrontSideAmbientColor
+          if let color = self.renderPrimitiveFrontSideAmbientColor
           {
             ambientFrontSideColor.color = color
           }
@@ -835,11 +850,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontDiffuseIntensity.isEditable = false
         textFieldFrontDiffuseIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldFrontDiffuseIntensity.isEditable = enabled
-          if let diffuseIntensity = representedStructure.renderPrimitiveFrontSideDiffuseIntensity
+          if let diffuseIntensity = self.renderPrimitiveFrontSideDiffuseIntensity
           {
             textFieldFrontDiffuseIntensity.doubleValue = diffuseIntensity
           }
@@ -852,11 +867,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderFrontDiffuseIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderFrontDiffuseIntensity.isEnabled = enabled
-          if let diffuseIntensity = representedStructure.renderPrimitiveFrontSideDiffuseIntensity
+          if let diffuseIntensity = self.renderPrimitiveFrontSideDiffuseIntensity
           {
             sliderFrontDiffuseIntensity.minValue = 0.0
             sliderFrontDiffuseIntensity.maxValue = 1.0
@@ -868,11 +883,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseFrontSideColor.isEnabled = false
         diffuseFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           diffuseFrontSideColor.isEnabled = enabled
-          if let color = representedStructure.renderPrimitiveFrontSideDiffuseColor
+          if let color = self.renderPrimitiveFrontSideDiffuseColor
           {
             diffuseFrontSideColor.color = color
           }
@@ -884,11 +899,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontSpecularIntensity.isEditable = false
         textFieldFrontSpecularIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldFrontSpecularIntensity.isEditable = enabled
-          if let specularIntensity = representedStructure.renderPrimitiveFrontSideSpecularIntensity
+          if let specularIntensity = self.renderPrimitiveFrontSideSpecularIntensity
           {
             textFieldFrontSpecularIntensity.doubleValue = specularIntensity
           }
@@ -901,11 +916,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderFrontSpecularIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderFrontSpecularIntensity.isEnabled = enabled
-          if let specularIntensity = representedStructure.renderPrimitiveFrontSideSpecularIntensity
+          if let specularIntensity = self.renderPrimitiveFrontSideSpecularIntensity
           {
             sliderFrontSpecularIntensity.minValue = 0.0
             sliderFrontSpecularIntensity.maxValue = 1.0
@@ -917,11 +932,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularFrontSideColor.isEnabled = false
         specularFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           specularFrontSideColor.isEnabled = enabled
-          if let color = representedStructure.renderPrimitiveFrontSideSpecularColor
+          if let color = self.renderPrimitiveFrontSideSpecularColor
           {
             specularFrontSideColor.color = color
           }
@@ -934,11 +949,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontShininess.isEditable = false
         textFieldFrontShininess.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldFrontShininess.isEditable = enabled
-          if let shininess = representedStructure.renderPrimitiveFrontSideShininess
+          if let shininess = self.renderPrimitiveFrontSideShininess
           {
             textFieldFrontShininess.doubleValue = shininess
           }
@@ -951,11 +966,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderFrontShininess.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderFrontShininess.isEnabled = enabled
-          if let shininess = representedStructure.renderPrimitiveFrontSideShininess
+          if let shininess = self.renderPrimitiveFrontSideShininess
           {
             sliderFrontShininess.minValue = 0.0
             sliderFrontShininess.maxValue = 256.0
@@ -969,11 +984,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           button.isEnabled = enabled
-          if let renderPrimitiveHDR: Bool = representedStructure.renderPrimitiveBackSideHDR
+          if let renderPrimitiveHDR: Bool = self.renderPrimitiveBackSideHDR
           {
             button.allowsMixedState = false
             button.state = renderPrimitiveHDR ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -991,11 +1006,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled
-          if let renderPrimitiveBackSideHDRExposure: Double = representedStructure.renderPrimitiveBackSideHDRExposure
+          if let renderPrimitiveBackSideHDRExposure: Double = self.renderPrimitiveBackSideHDRExposure
           {
             textFieldExposure.doubleValue = renderPrimitiveBackSideHDRExposure
           }
@@ -1010,11 +1025,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled
-          if let renderPrimitiveBackSideHDRExposure: Double = representedStructure.renderPrimitiveBackSideHDRExposure
+          if let renderPrimitiveBackSideHDRExposure: Double = self.renderPrimitiveBackSideHDRExposure
           {
             sliderExposure.doubleValue = renderPrimitiveBackSideHDRExposure
           }
@@ -1027,11 +1042,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackAmbientIntensity.isEditable = false
         textFieldBackAmbientIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldBackAmbientIntensity.isEditable = enabled
-          if let ambientIntensity = representedStructure.renderPrimitiveBackSideAmbientIntensity
+          if let ambientIntensity = self.renderPrimitiveBackSideAmbientIntensity
           {
             textFieldBackAmbientIntensity.doubleValue = ambientIntensity
           }
@@ -1044,11 +1059,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderBackAmbientIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderBackAmbientIntensity.isEnabled = enabled
-          if let ambientIntensity = representedStructure.renderPrimitiveBackSideAmbientIntensity
+          if let ambientIntensity = self.renderPrimitiveBackSideAmbientIntensity
           {
             sliderBackAmbientIntensity.minValue = 0.0
             sliderBackAmbientIntensity.maxValue = 1.0
@@ -1060,11 +1075,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientBackSideColor.isEnabled = false
         ambientBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           ambientBackSideColor.isEnabled = enabled
-          if let color = representedStructure.renderPrimitiveBackSideAmbientColor
+          if let color = self.renderPrimitiveBackSideAmbientColor
           {
             ambientBackSideColor.color = color
           }
@@ -1076,11 +1091,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackDiffuseIntensity.isEditable = false
         textFieldBackDiffuseIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldBackDiffuseIntensity.isEditable = enabled
-          if let diffuseIntensity = representedStructure.renderPrimitiveBackSideDiffuseIntensity
+          if let diffuseIntensity = self.renderPrimitiveBackSideDiffuseIntensity
           {
             textFieldBackDiffuseIntensity.doubleValue = diffuseIntensity
           }
@@ -1093,11 +1108,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderBackDiffuseIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderBackDiffuseIntensity.isEnabled = enabled
-          if let diffuseIntensity = representedStructure.renderPrimitiveBackSideDiffuseIntensity
+          if let diffuseIntensity = self.renderPrimitiveBackSideDiffuseIntensity
           {
             sliderBackDiffuseIntensity.minValue = 0.0
             sliderBackDiffuseIntensity.maxValue = 1.0
@@ -1109,11 +1124,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseBackSideColor.isEnabled = false
         diffuseBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           diffuseBackSideColor.isEnabled = enabled
-          if let color = representedStructure.renderPrimitiveBackSideDiffuseColor
+          if let color = self.renderPrimitiveBackSideDiffuseColor
           {
             diffuseBackSideColor.color = color
           }
@@ -1125,11 +1140,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackSpecularIntensity.isEditable = false
         textFieldBackSpecularIntensity.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldBackSpecularIntensity.isEditable = enabled
-          if let specularIntensity = representedStructure.renderPrimitiveBackSideSpecularIntensity
+          if let specularIntensity = self.renderPrimitiveBackSideSpecularIntensity
           {
             textFieldBackSpecularIntensity.doubleValue = specularIntensity
           }
@@ -1142,11 +1157,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderBackSpecularIntensity.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderBackSpecularIntensity.isEnabled = enabled
-          if let specularIntensity = representedStructure.renderPrimitiveBackSideSpecularIntensity
+          if let specularIntensity = self.renderPrimitiveBackSideSpecularIntensity
           {
             sliderBackSpecularIntensity.minValue = 0.0
             sliderBackSpecularIntensity.maxValue = 1.0
@@ -1158,11 +1173,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularBackSideColor.isEnabled = false
         specularBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           specularBackSideColor.isEnabled = enabled
-          if let color = representedStructure.renderPrimitiveBackSideSpecularColor
+          if let color = self.renderPrimitiveBackSideSpecularColor
           {
             specularBackSideColor.color = color
           }
@@ -1174,11 +1189,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackShininess.isEditable = false
         textFieldBackShininess.stringValue = ""
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           textFieldBackShininess.isEditable = enabled
-          if let shininess = representedStructure.renderPrimitiveBackSideShininess
+          if let shininess = self.renderPrimitiveBackSideShininess
           {
             textFieldBackShininess.doubleValue = shininess
           }
@@ -1191,11 +1206,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderBackShininess.isEnabled = false
-        if let representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-          !representedStructure.allPrimitiveStructure.isEmpty
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
         {
           sliderBackShininess.isEnabled = enabled
-          if let shininess = representedStructure.renderPrimitiveBackSideShininess
+          if let shininess = self.renderPrimitiveBackSideShininess
           {
             sliderBackShininess.minValue = 0.0
             sliderBackShininess.maxValue = 256.0
@@ -1217,11 +1232,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonRepresentationType: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonRepresentationType.isEditable = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           popUpbuttonRepresentationType.isEditable = enabled
           
-          if let rawValue = representedStructure.getRepresentationType()?.rawValue
+          if let rawValue = self.getRepresentationType()?.rawValue
           {
             popUpbuttonRepresentationType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonRepresentationType.selectItem(at: rawValue)
@@ -1237,11 +1253,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonRepresentationStyle: iRASPAPopUpButton = view.viewWithTag(2) as? iRASPAPopUpButton
       {
         popUpbuttonRepresentationStyle.isEditable = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           popUpbuttonRepresentationStyle.isEditable = enabled
           
-          if let representationStyle = representedStructure.getRepresentationStyle()
+          if let representationStyle = self.getRepresentationStyle()
           {
             popUpbuttonRepresentationStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonRepresentationStyle.removeItem(withTitle: "Custom")
@@ -1276,11 +1293,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
         
         popUpbuttonColorScheme.isEditable = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           popUpbuttonColorScheme.isEditable = enabled
           
-          if let rawValue: String = representedStructure.getRepresentationColorScheme()
+          if let rawValue: String = self.getRepresentationColorScheme()
           {
             popUpbuttonColorScheme.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonColorScheme.selectItem(withTitle: rawValue)
@@ -1306,11 +1324,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
         
         popUpbuttonForceField.isEditable = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           popUpbuttonForceField.isEditable = enabled
           
-          if let rawValue: String = representedStructure.getRepresentationForceField()
+          if let rawValue: String = self.getRepresentationForceField()
           {
             popUpbuttonForceField.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonForceField.selectItem(withTitle: rawValue)
@@ -1327,11 +1346,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonColorOrder: iRASPAPopUpButton = view.viewWithTag(5) as? iRASPAPopUpButton
       {
         popUpbuttonColorOrder.isEditable = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           popUpbuttonColorOrder.isEditable = enabled
           
-          if let rawValue: Int = representedStructure.getRepresentationColorOrder()?.rawValue
+          if let rawValue: Int = self.getRepresentationColorOrder()?.rawValue
           {
             popUpbuttonColorOrder.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonColorOrder.selectItem(at: rawValue)
@@ -1347,11 +1367,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonForceFieldOrder: iRASPAPopUpButton = view.viewWithTag(6) as? iRASPAPopUpButton
       {
         popUpbuttonForceFieldOrder.isEditable = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           popUpbuttonForceFieldOrder.isEditable = enabled
           
-          if let rawValue: Int = representedStructure.getRepresentationForceFieldOrder()?.rawValue
+          if let rawValue: Int = self.getRepresentationForceFieldOrder()?.rawValue
           {
             popUpbuttonForceFieldOrder.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonForceFieldOrder.selectItem(at: rawValue)
@@ -1373,13 +1394,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionFrequency.stringValue = ""
         textFieldSelectionDensity.isEditable = false
         textFieldSelectionDensity.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           popUpbuttonSelectionStyle.isEditable = enabled
           textFieldSelectionFrequency.isEditable = enabled
           textFieldSelectionDensity.isEditable = enabled
           
-          if let selectionStyle: RKSelectionStyle = representedStructure.renderAtomSelectionStyle
+          if let selectionStyle: RKSelectionStyle = self.renderAtomSelectionStyle
           {
             popUpbuttonSelectionStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
@@ -1397,7 +1419,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
-          if let renderSelectionFrequency: Double = representedStructure.renderAtomSelectionFrequency
+          if let renderSelectionFrequency: Double = self.renderAtomSelectionFrequency
           {
             textFieldSelectionFrequency.doubleValue = renderSelectionFrequency
           }
@@ -1406,7 +1428,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
-          if let renderSelectionDensity: Double = representedStructure.renderAtomSelectionDensity
+          if let renderSelectionDensity: Double = self.renderAtomSelectionDensity
           {
             textFieldSelectionDensity.doubleValue = renderSelectionDensity
           }
@@ -1421,10 +1443,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldAtomSelectionIntensityLevel.isEditable = false
         textFieldAtomSelectionIntensityLevel.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           textFieldAtomSelectionIntensityLevel.isEditable = enabled
-          if let renderAtomSelectionIntensityLevel: Double = representedStructure.renderAtomSelectionIntensity
+          if let renderAtomSelectionIntensityLevel: Double = self.renderAtomSelectionIntensity
           {
             textFieldAtomSelectionIntensityLevel.doubleValue = renderAtomSelectionIntensityLevel
           }
@@ -1440,10 +1463,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderAtomSelectionIntensityLevel.isEnabled = false
         sliderAtomSelectionIntensityLevel.minValue = 0.0
         sliderAtomSelectionIntensityLevel.maxValue = 1.0
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderAtomSelectionIntensityLevel.isEnabled = enabled
-          if let renderAtomSelectionIntensityLevel: Double = representedStructure.renderAtomSelectionIntensity
+          if let renderAtomSelectionIntensityLevel: Double = self.renderAtomSelectionIntensity
           {
             sliderAtomSelectionIntensityLevel.doubleValue = renderAtomSelectionIntensityLevel
           }
@@ -1455,10 +1479,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldSelectionScaling.isEditable = false
         textFieldSelectionScaling.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           textFieldSelectionScaling.isEditable = enabled
-          if let renderAtomSelectionIntensityLevel: Double = representedStructure.renderAtomSelectionScaling
+          if let renderAtomSelectionIntensityLevel: Double = self.renderAtomSelectionScaling
           {
             textFieldSelectionScaling.doubleValue = renderAtomSelectionIntensityLevel
           }
@@ -1473,10 +1498,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSelectionScaling.isEnabled = false
         sliderSelectionScaling.minValue = 1.0
         sliderSelectionScaling.maxValue = 2.0
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderSelectionScaling.isEnabled = enabled
-          if let renderSelectionScaling: Double = representedStructure.renderAtomSelectionScaling
+          if let renderSelectionScaling: Double = self.renderAtomSelectionScaling
           {
             sliderSelectionScaling.doubleValue = renderSelectionScaling
           }
@@ -1488,11 +1514,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           button.isEnabled = enabled
           
-          if let renderAtomHDR: Bool = representedStructure.renderAtomHDR
+          if let renderAtomHDR: Bool = self.renderAtomHDR
           {
             button.allowsMixedState = false
             button.state = renderAtomHDR ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1510,10 +1537,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled
-          if let renderAtomHDRExposure: Double = representedStructure.renderAtomHDRExposure
+          if let renderAtomHDRExposure: Double = self.renderAtomHDRExposure
           {
             textFieldExposure.doubleValue = renderAtomHDRExposure
           }
@@ -1528,10 +1556,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled
-          if let renderAtomHDRExposure: Double = representedStructure.renderAtomHDRExposure
+          if let renderAtomHDRExposure: Double = self.renderAtomHDRExposure
           {
             sliderExposure.doubleValue = renderAtomHDRExposure
           }
@@ -1543,10 +1572,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           textFieldHue.isEditable = enabled
-          if let renderHue: Double = representedStructure.renderAtomHue
+          if let renderHue: Double = self.renderAtomHue
           {
             textFieldHue.doubleValue = renderHue
           }
@@ -1561,10 +1591,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderHue.isEnabled = enabled
-          if let renderHue: Double = representedStructure.renderAtomHue
+          if let renderHue: Double = self.renderAtomHue
           {
             sliderHue.doubleValue = renderHue
           }
@@ -1576,10 +1607,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           textFieldSaturation.isEditable = enabled
-          if let renderSaturation = representedStructure.renderAtomSaturation
+          if let renderSaturation = self.renderAtomSaturation
           {
             textFieldSaturation.doubleValue = renderSaturation
           }
@@ -1594,10 +1626,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderSaturation.isEnabled = enabled
-          if let renderSaturation = representedStructure.renderAtomSaturation
+          if let renderSaturation = self.renderAtomSaturation
           {
             sliderSaturation.doubleValue = renderSaturation
           }
@@ -1609,10 +1642,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           textFieldValue.isEditable = enabled
-          if let renderValue: Double = representedStructure.renderAtomValue
+          if let renderValue: Double = self.renderAtomValue
           {
             textFieldValue.doubleValue = renderValue
           }
@@ -1627,10 +1661,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderValue.isEnabled = enabled
-          if let renderValue: Double = representedStructure.renderAtomValue
+          if let renderValue: Double = self.renderAtomValue
           {
             sliderValue.doubleValue = renderValue
           }
@@ -1643,10 +1678,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let checkDrawAtomsbutton: NSButton = view.viewWithTag(1) as? NSButton
       {
         checkDrawAtomsbutton.isEnabled = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           checkDrawAtomsbutton.isEnabled = enabled
-          if let renderDrawAtoms: Bool = representedStructure.renderDrawAtoms
+          if let renderDrawAtoms: Bool = self.renderDrawAtoms
           {
             checkDrawAtomsbutton.allowsMixedState = false
             checkDrawAtomsbutton.state = renderDrawAtoms ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1664,10 +1700,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldAtomScaling.isEditable = false
         textFieldAtomScaling.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           textFieldAtomScaling.isEditable = enabled
-          if let renderAtomScaleFactor: Double = representedStructure.renderAtomScaleFactor
+          if let renderAtomScaleFactor: Double = self.renderAtomScaleFactor
           {
             textFieldAtomScaling.doubleValue = renderAtomScaleFactor
           }
@@ -1683,10 +1720,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderAtomScaling.isEnabled = false
         sliderAtomScaling.minValue = 0.1
         sliderAtomScaling.maxValue = 2.0
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderAtomScaling.isEnabled = enabled
-          if let renderAtomScaleFactor: Double = representedStructure.renderAtomScaleFactor
+          if let renderAtomScaleFactor: Double = self.renderAtomScaleFactor
           {
             sliderAtomScaling.doubleValue = renderAtomScaleFactor
           }
@@ -1697,10 +1735,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let buttonAmbientOcclusion: NSButton = view.viewWithTag(1) as? NSButton
       {
         buttonAmbientOcclusion.isEnabled = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           buttonAmbientOcclusion.isEnabled = enabled
-          if let renderAtomAmbientOcclusion: Bool = representedStructure.renderAtomAmbientOcclusion
+          if let renderAtomAmbientOcclusion: Bool = self.renderAtomAmbientOcclusion
           {
             buttonAmbientOcclusion.allowsMixedState = false
             buttonAmbientOcclusion.state = renderAtomAmbientOcclusion ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1718,10 +1757,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientLightIntensitity.isEditable = false
         ambientLightIntensitity.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           ambientLightIntensitity.isEditable = enabled
-          if let renderAtomAmbientIntensity: Double = representedStructure.renderAtomAmbientIntensity
+          if let renderAtomAmbientIntensity: Double = self.renderAtomAmbientIntensity
           {
             ambientLightIntensitity.doubleValue = renderAtomAmbientIntensity
           }
@@ -1737,10 +1777,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderAmbientLightIntensitity.isEnabled = false
         sliderAmbientLightIntensitity.minValue = 0.0
         sliderAmbientLightIntensitity.maxValue = 1.0
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderAmbientLightIntensitity.isEnabled = enabled
-          if let renderAtomAmbientIntensity: Double = representedStructure.renderAtomAmbientIntensity
+          if let renderAtomAmbientIntensity: Double = self.renderAtomAmbientIntensity
           {
             sliderAmbientLightIntensitity.doubleValue = renderAtomAmbientIntensity
           }
@@ -1750,10 +1791,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientColor.isEnabled = false
         ambientColor.color = NSColor.lightGray
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           ambientColor.isEnabled = enabled
-          if let renderAtomAmbientColor: NSColor = representedStructure.renderAtomAmbientColor
+          if let renderAtomAmbientColor: NSColor = self.renderAtomAmbientColor
           {
             ambientColor.color = renderAtomAmbientColor
           }
@@ -1769,11 +1811,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseLightIntensitity.isEditable = false
         diffuseLightIntensitity.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
-          
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           diffuseLightIntensitity.isEditable = enabled
-          if let renderAtomDiffuseIntensity: Double = representedStructure.renderAtomDiffuseIntensity
+          if let renderAtomDiffuseIntensity: Double = self.renderAtomDiffuseIntensity
           {
             diffuseLightIntensitity.doubleValue = renderAtomDiffuseIntensity
           }
@@ -1788,10 +1830,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderDiffuseLightIntensitity.isEnabled = false
         sliderDiffuseLightIntensitity.minValue = 0.0
         sliderDiffuseLightIntensitity.maxValue = 1.0
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderDiffuseLightIntensitity.isEnabled = enabled
-          if let renderAtomDiffuseIntensity: Double = representedStructure.renderAtomDiffuseIntensity
+          if let renderAtomDiffuseIntensity: Double = self.renderAtomDiffuseIntensity
           {
             sliderDiffuseLightIntensitity.doubleValue = renderAtomDiffuseIntensity
           }
@@ -1801,10 +1844,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseColor.isEnabled = false
         diffuseColor.color = NSColor.lightGray
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           diffuseColor.isEnabled = enabled
-          if let renderAtomDiffuseColor: NSColor = representedStructure.renderAtomDiffuseColor
+          if let renderAtomDiffuseColor: NSColor = self.renderAtomDiffuseColor
           {
             diffuseColor.color = renderAtomDiffuseColor
           }
@@ -1820,11 +1864,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularLightIntensitity.isEditable = false
         specularLightIntensitity.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
-          
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           specularLightIntensitity.isEditable = enabled
-          if let renderAtomSpecularIntensity: Double = representedStructure.renderAtomSpecularIntensity
+          if let renderAtomSpecularIntensity: Double = self.renderAtomSpecularIntensity
           {
             specularLightIntensitity.doubleValue = renderAtomSpecularIntensity
           }
@@ -1839,10 +1883,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSpecularLightIntensitity.isEnabled = false
         sliderSpecularLightIntensitity.minValue = 0.0
         sliderSpecularLightIntensitity.maxValue = 1.0
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderSpecularLightIntensitity.isEnabled = enabled
-          if let renderAtomSpecularIntensity: Double = representedStructure.renderAtomSpecularIntensity
+          if let renderAtomSpecularIntensity: Double = self.renderAtomSpecularIntensity
           {
             sliderSpecularLightIntensitity.doubleValue = renderAtomSpecularIntensity
           }
@@ -1852,10 +1897,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularColor.isEnabled = false
         specularColor.color = NSColor.lightGray
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           specularColor.isEnabled = enabled
-          if let renderAtomSpecularColor: NSColor = representedStructure.renderAtomSpecularColor
+          if let renderAtomSpecularColor: NSColor = self.renderAtomSpecularColor
           {
             specularColor.color = renderAtomSpecularColor
           }
@@ -1867,10 +1913,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         shininess.isEditable = false
         shininess.stringValue = ""
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           shininess.isEditable = enabled
-          if let renderAtomShininess: Double = representedStructure.renderAtomShininess
+          if let renderAtomShininess: Double = self.renderAtomShininess
           {
             shininess.doubleValue = renderAtomShininess
           }
@@ -1885,10 +1932,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderShininess.isEnabled = false
         sliderShininess.minValue = 0.1
         sliderShininess.maxValue = 128.0
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
         {
           sliderShininess.isEnabled = enabled
-          if let renderAtomShininess: Double = representedStructure.renderAtomShininess
+          if let renderAtomShininess: Double = self.renderAtomShininess
           {
             sliderShininess.doubleValue = renderAtomShininess
           }
@@ -1908,10 +1956,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let checkDrawBondsbutton: NSButton = view.viewWithTag(1) as? NSButton
       {
         checkDrawBondsbutton.isEnabled = false
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           checkDrawBondsbutton.isEnabled = enabled
-          if let renderDrawBonds: Bool = representedStructure.renderDrawBonds
+          if let renderDrawBonds: Bool = self.renderDrawBonds
           {
             checkDrawBondsbutton.allowsMixedState = false
             checkDrawBondsbutton.state = renderDrawBonds ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -1929,10 +1978,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBondScaling.isEditable = false
         textFieldBondScaling.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           textFieldBondScaling.isEditable = enabled
-          if let renderBondScaleFactor: Double = representedStructure.renderBondScaleFactor
+          if let renderBondScaleFactor: Double = self.renderBondScaleFactor
           {
             textFieldBondScaling.doubleValue = renderBondScaleFactor
           }
@@ -1943,10 +1993,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderBondScaling.isEnabled = false
         sliderBondScaling.minValue = 0.1
         sliderBondScaling.maxValue = 1.0
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderBondScaling.isEnabled = enabled
-          if let renderBondScaleFactor: Double = representedStructure.renderBondScaleFactor
+          if let renderBondScaleFactor: Double = self.renderBondScaleFactor
           {
             sliderBondScaling.doubleValue = renderBondScaleFactor
           }
@@ -1957,10 +2008,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonBondColorMode: iRASPAPopUpButton = view.viewWithTag(4) as? iRASPAPopUpButton
       {
         popUpbuttonBondColorMode.isEditable = false
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           popUpbuttonBondColorMode.isEditable = enabled
-          if let rawValue: Int = representedStructure.renderBondColorMode?.rawValue
+          if let rawValue: Int = self.renderBondColorMode?.rawValue
           {
             popUpbuttonBondColorMode.selectItem(at: rawValue)
           }
@@ -1977,13 +2029,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionFrequency.stringValue = ""
         textFieldSelectionDensity.isEditable = false
         textFieldSelectionDensity.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           popUpbuttonSelectionStyle.isEditable = enabled
           textFieldSelectionFrequency.isEditable = enabled
           textFieldSelectionDensity.isEditable = enabled
           
-          if let selectionStyle: RKSelectionStyle = representedStructure.renderBondSelectionStyle
+          if let selectionStyle: RKSelectionStyle = self.renderBondSelectionStyle
           {
             popUpbuttonSelectionStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSelectionStyle.selectItem(at: selectionStyle.rawValue)
@@ -2001,7 +2054,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             textFieldSelectionDensity.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
-          if let renderSelectionFrequency: Double = representedStructure.renderBondSelectionFrequency
+          if let renderSelectionFrequency: Double = self.renderBondSelectionFrequency
           {
             textFieldSelectionFrequency.doubleValue = renderSelectionFrequency
           }
@@ -2010,7 +2063,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
             textFieldSelectionFrequency.stringValue = NSLocalizedString("Mult. Val.", comment: "")
           }
           
-          if let renderSelectionDensity: Double = representedStructure.renderBondSelectionDensity
+          if let renderSelectionDensity: Double = self.renderBondSelectionDensity
           {
             textFieldSelectionDensity.doubleValue = renderSelectionDensity
           }
@@ -2022,13 +2075,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       if let textFieldBondSelectionIntensityLevel: NSTextField = view.viewWithTag(4) as? NSTextField
-        {
-          textFieldBondSelectionIntensityLevel.isEditable = false
-          textFieldBondSelectionIntensityLevel.stringValue = ""
-          if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+      {
+        textFieldBondSelectionIntensityLevel.isEditable = false
+        textFieldBondSelectionIntensityLevel.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
           {
             textFieldBondSelectionIntensityLevel.isEditable = enabled
-            if let renderBondSelectionIntensityLevel: Double = representedStructure.renderBondSelectionIntensity
+            if let renderBondSelectionIntensityLevel: Double = self.renderBondSelectionIntensity
             {
               textFieldBondSelectionIntensityLevel.doubleValue = renderBondSelectionIntensityLevel
             }
@@ -2044,10 +2098,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           sliderBondSelectionIntensityLevel.isEnabled = false
           sliderBondSelectionIntensityLevel.minValue = 0.0
           sliderBondSelectionIntensityLevel.maxValue = 1.0
-          if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
           {
             sliderBondSelectionIntensityLevel.isEnabled = enabled
-            if let renderBondSelectionIntensityLevel: Double = representedStructure.renderBondSelectionIntensity
+            if let renderBondSelectionIntensityLevel: Double = self.renderBondSelectionIntensity
             {
               sliderBondSelectionIntensityLevel.doubleValue = renderBondSelectionIntensityLevel
             }
@@ -2059,10 +2114,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldBondSelectionScaling.isEditable = false
           textFieldBondSelectionScaling.stringValue = ""
-          if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
           {
             textFieldBondSelectionScaling.isEditable = enabled
-            if let renderBondSelectionScaling: Double = representedStructure.renderBondSelectionScaling
+            if let renderBondSelectionScaling: Double = self.renderBondSelectionScaling
             {
               textFieldBondSelectionScaling.doubleValue = renderBondSelectionScaling
             }
@@ -2077,10 +2133,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           sliderBondSelectionScaling.isEnabled = false
           sliderBondSelectionScaling.minValue = 1.0
           sliderBondSelectionScaling.maxValue = 2.0
-          if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
           {
             sliderBondSelectionScaling.isEnabled = enabled
-            if let renderBondSelectionScaling: Double = representedStructure.renderBondSelectionScaling
+            if let renderBondSelectionScaling: Double = self.renderBondSelectionScaling
             {
               sliderBondSelectionScaling.doubleValue = renderBondSelectionScaling
             }
@@ -2091,10 +2148,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let checkDrawHDRButton: NSButton = view.viewWithTag(1) as? NSButton
       {
         checkDrawHDRButton.isEnabled = false
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           checkDrawHDRButton.isEnabled = enabled
-          if let renderHighDynamicRange: Bool = representedStructure.renderBondHDR
+          if let renderHighDynamicRange: Bool = self.renderBondHDR
           {
             checkDrawHDRButton.allowsMixedState = false
             checkDrawHDRButton.state = renderHighDynamicRange ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -2113,10 +2171,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled
-          if let renderBondHDRExposure: Double = representedStructure.renderBondHDRExposure
+          if let renderBondHDRExposure: Double = self.renderBondHDRExposure
           {
             textFieldExposure.doubleValue = renderBondHDRExposure
           }
@@ -2127,10 +2186,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled
-          if let renderBondHDRExposure: Double = representedStructure.renderBondHDRExposure
+          if let renderBondHDRExposure: Double = self.renderBondHDRExposure
           {
             sliderExposure.doubleValue = renderBondHDRExposure
           }
@@ -2142,10 +2202,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           textFieldHue.isEditable = enabled
-          if let renderBondHue: Double = representedStructure.renderBondHue
+          if let renderBondHue: Double = self.renderBondHue
           {
             textFieldHue.doubleValue = renderBondHue
           }
@@ -2156,10 +2217,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderHue.isEnabled = enabled
-          if let renderBondHue: Double = representedStructure.renderBondHue
+          if let renderBondHue: Double = self.renderBondHue
           {
             sliderHue.doubleValue = renderBondHue
           }
@@ -2171,10 +2233,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           textFieldSaturation.isEditable = enabled
-          if let renderBondSaturation: Double = representedStructure.renderBondSaturation
+          if let renderBondSaturation: Double = self.renderBondSaturation
           {
             textFieldSaturation.doubleValue = renderBondSaturation
           }
@@ -2185,10 +2248,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderSaturation.isEnabled = enabled
-          if let renderBondSaturation: Double = representedStructure.renderBondSaturation
+          if let renderBondSaturation: Double = self.renderBondSaturation
           {
             sliderSaturation.doubleValue = renderBondSaturation
           }
@@ -2200,10 +2264,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           textFieldValue.isEditable = enabled
-          if let renderBondValue: Double = representedStructure.renderBondValue
+          if let renderBondValue: Double = self.renderBondValue
           {
             textFieldValue.doubleValue = renderBondValue
           }
@@ -2214,10 +2279,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderValue.isEnabled = enabled
-          if let renderBondValue: Double = representedStructure.renderBondValue
+          if let renderBondValue: Double = self.renderBondValue
           {
             sliderValue.doubleValue = renderBondValue
           }
@@ -2229,11 +2295,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let buttonAmbientOcclusion: NSButton = view.viewWithTag(1) as? NSButton
       {
         buttonAmbientOcclusion.isEnabled = false
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           buttonAmbientOcclusion.isEnabled = enabled
           
-          if let renderBondAmbientOcclusion: Bool = representedStructure.renderBondAmbientOcclusion
+          if let renderBondAmbientOcclusion: Bool = self.renderBondAmbientOcclusion
           {
             buttonAmbientOcclusion.allowsMixedState = false
             buttonAmbientOcclusion.state = renderBondAmbientOcclusion ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -2253,10 +2320,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientLightIntensitity.isEditable = false
         ambientLightIntensitity.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           ambientLightIntensitity.isEditable = enabled
-          if let renderBondAmbientIntensity: Double = representedStructure.renderBondAmbientIntensity
+          if let renderBondAmbientIntensity: Double = self.renderBondAmbientIntensity
           {
             ambientLightIntensitity.doubleValue = renderBondAmbientIntensity
           }
@@ -2267,10 +2335,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderAmbientLightIntensitity.isEnabled = false
         sliderAmbientLightIntensitity.minValue = 0.0
         sliderAmbientLightIntensitity.maxValue = 1.0
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderAmbientLightIntensitity.isEnabled = enabled
-          if let renderBondAmbientIntensity: Double = representedStructure.renderBondAmbientIntensity
+          if let renderBondAmbientIntensity: Double = self.renderBondAmbientIntensity
           {
             sliderAmbientLightIntensitity.doubleValue = renderBondAmbientIntensity
           }
@@ -2280,10 +2349,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientColor.isEnabled = false
         ambientColor.color = NSColor.lightGray
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           ambientColor.isEnabled = enabled
-          if let renderBondAmbientColor: NSColor = representedStructure.renderBondAmbientColor
+          if let renderBondAmbientColor: NSColor = self.renderBondAmbientColor
           {
             ambientColor.color = renderBondAmbientColor
           }
@@ -2295,10 +2365,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseLightIntensitity.isEditable = false
         diffuseLightIntensitity.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           diffuseLightIntensitity.isEditable = enabled
-          if let renderBondDiffuseIntensity: Double = representedStructure.renderBondDiffuseIntensity
+          if let renderBondDiffuseIntensity: Double = self.renderBondDiffuseIntensity
           {
             diffuseLightIntensitity.doubleValue = renderBondDiffuseIntensity
           }
@@ -2309,10 +2380,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderDiffuseLightIntensitity.isEnabled = false
         sliderDiffuseLightIntensitity.minValue = 0.0
         sliderDiffuseLightIntensitity.maxValue = 1.0
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderDiffuseLightIntensitity.isEnabled = enabled
-          if let renderBondDiffuseIntensity: Double = representedStructure.renderBondDiffuseIntensity
+          if let renderBondDiffuseIntensity: Double = self.renderBondDiffuseIntensity
           {
             sliderDiffuseLightIntensitity.doubleValue = renderBondDiffuseIntensity
           }
@@ -2322,10 +2394,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseColor.isEnabled = false
         diffuseColor.color = NSColor.lightGray
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           diffuseColor.isEnabled = enabled
-          if let renderBondDiffuseColor: NSColor = representedStructure.renderBondDiffuseColor
+          if let renderBondDiffuseColor: NSColor = self.renderBondDiffuseColor
           {
             diffuseColor.color = renderBondDiffuseColor
           }
@@ -2337,10 +2410,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularLightIntensitity.isEditable = false
         specularLightIntensitity.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           specularLightIntensitity.isEditable = enabled
-          if let renderBondSpecularIntensity: Double = representedStructure.renderBondSpecularIntensity
+          if let renderBondSpecularIntensity: Double = self.renderBondSpecularIntensity
           {
             specularLightIntensitity.doubleValue = renderBondSpecularIntensity
           }
@@ -2351,10 +2425,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSpecularLightIntensitity.isEnabled = false
         sliderSpecularLightIntensitity.minValue = 0.0
         sliderSpecularLightIntensitity.maxValue = 1.0
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderSpecularLightIntensitity.isEnabled = enabled
-          if let renderBondSpecularIntensity: Double = representedStructure.renderBondSpecularIntensity
+          if let renderBondSpecularIntensity: Double = self.renderBondSpecularIntensity
           {
             sliderSpecularLightIntensitity.doubleValue = renderBondSpecularIntensity
           }
@@ -2364,10 +2439,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularColor.isEnabled = false
         specularColor.color = NSColor.lightGray
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           specularColor.isEnabled = enabled
-          if let renderBondSpecularColor: NSColor = representedStructure.renderBondSpecularColor
+          if let renderBondSpecularColor: NSColor = self.renderBondSpecularColor
           {
             specularColor.color = renderBondSpecularColor
           }
@@ -2379,10 +2455,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         shininess.isEditable = false
         shininess.stringValue = ""
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           shininess.isEditable = enabled
-          if let renderBondShininess: Double = representedStructure.renderBondShininess
+          if let renderBondShininess: Double = self.renderBondShininess
           {
             shininess.doubleValue = renderBondShininess
           }
@@ -2393,10 +2470,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderShininess.isEnabled = false
         sliderShininess.minValue = 0.1
         sliderShininess.maxValue = 128.0
-        if let representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
         {
           sliderShininess.isEnabled = enabled
-          if let renderBondShininess: Double = representedStructure.renderBondShininess
+          if let renderBondShininess: Double = self.renderBondShininess
           {
             sliderShininess.doubleValue = renderBondShininess
           }
@@ -2412,15 +2490,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     switch(identifier)
     {
     case "UnitCellScalingCell":
-      // Use unit cell yes/no
       if let checkDrawUnitCellButton: NSButton = view.viewWithTag(1) as? NSButton
       {
         checkDrawUnitCellButton.isEnabled = false
-        if let representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
         {
           checkDrawUnitCellButton.isEnabled = enabled
           
-          if let renderDrawUnitCell: Bool = representedStructure.renderDrawUnitCell
+          if let renderDrawUnitCell: Bool = self.renderDrawUnitCell
           {
             checkDrawUnitCellButton.allowsMixedState = false
             checkDrawUnitCellButton.state = renderDrawUnitCell ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -2433,73 +2511,77 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      
-      // Atom specular shininess
       if let unitCellScaling: NSTextField = view.viewWithTag(2) as? NSTextField
       {
         unitCellScaling.isEditable = false
         unitCellScaling.stringValue = ""
-        if let representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
         {
           unitCellScaling.isEditable = enabled
-          if let renderUnitCellScaleFactor: Double = representedStructure.renderUnitCellScaleFactor
+          if let renderUnitCellScaleFactor: Double = self.renderUnitCellScaleFactor
           {
             unitCellScaling.doubleValue = renderUnitCellScaleFactor
           }
         }
       }
+      
       if let sliderUnitCellScaling: NSSlider = view.viewWithTag(3) as? NSSlider
       {
         sliderUnitCellScaling.isEnabled = false
         sliderUnitCellScaling.minValue = 0.0
         sliderUnitCellScaling.maxValue = 2.0
-        if let representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
         {
           sliderUnitCellScaling.isEnabled = enabled
-          if let renderUnitCellScaleFactor: Double = representedStructure.renderUnitCellScaleFactor
+          if let renderUnitCellScaleFactor: Double = self.renderUnitCellScaleFactor
           {
             sliderUnitCellScaling.doubleValue = renderUnitCellScaleFactor
           }
         }
       }
       
-      
-      // Unit cell light intensity
       if let unitCellLightIntensitity: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         unitCellLightIntensitity.isEditable = false
         unitCellLightIntensitity.stringValue = ""
-        if let representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
         {
           unitCellLightIntensitity.isEditable = enabled
-          if let renderUnitCellDiffuseIntensity: Double = representedStructure.renderUnitCellDiffuseIntensity
+          if let renderUnitCellDiffuseIntensity: Double = self.renderUnitCellDiffuseIntensity
           {
             unitCellLightIntensitity.doubleValue = renderUnitCellDiffuseIntensity
           }
         }
       }
+      
       if let sliderUnitCellLightIntensitity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderUnitCellLightIntensitity.isEnabled = false
         sliderUnitCellLightIntensitity.minValue = 0.0
         sliderUnitCellLightIntensitity.maxValue = 1.0
-        if let representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
         {
           sliderUnitCellLightIntensitity.isEnabled = enabled
-          if let renderUnitCellDiffuseIntensity: Double = representedStructure.renderUnitCellDiffuseIntensity
+          if let renderUnitCellDiffuseIntensity: Double = self.renderUnitCellDiffuseIntensity
           {
             sliderUnitCellLightIntensitity.doubleValue = renderUnitCellDiffuseIntensity
           }
         }
       }
+      
       if let unitCellColor: NSColorWell = view.viewWithTag(6) as? NSColorWell
       {
         unitCellColor.isEnabled = false
         unitCellColor.color = NSColor.lightGray
-        if let representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
         {
           unitCellColor.isEnabled = enabled
-          if let renderUnitCellDiffuseColor: NSColor = representedStructure.renderUnitCellDiffuseColor
+          if let renderUnitCellDiffuseColor: NSColor = self.renderUnitCellDiffuseColor
           {
             unitCellColor.color = renderUnitCellDiffuseColor
           }
@@ -2519,11 +2601,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonPosition: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonPosition.isEditable = false
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           popUpbuttonPosition.isEditable = enabled
           
-          if let rawValue = representedStructure.renderLocalAxesPosition?.rawValue
+          if let rawValue = self.renderLocalAxesPosition?.rawValue
           {
             popUpbuttonPosition.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonPosition.selectItem(at: rawValue)
@@ -2537,11 +2619,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonStyle: iRASPAPopUpButton = view.viewWithTag(2) as? iRASPAPopUpButton
       {
         popUpbuttonStyle.isEditable = false
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           popUpbuttonStyle.isEditable = enabled
           
-          if let rawValue = representedStructure.renderLocalAxesStyle?.rawValue
+          if let rawValue = self.renderLocalAxesStyle?.rawValue
           {
             popUpbuttonStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonStyle.selectItem(at: rawValue)
@@ -2555,11 +2637,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonScalingType: iRASPAPopUpButton = view.viewWithTag(3) as? iRASPAPopUpButton
       {
         popUpbuttonScalingType.isEditable = false
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           popUpbuttonScalingType.isEditable = enabled
           
-          if let rawValue = representedStructure.renderLocalAxesScalingType?.rawValue
+          if let rawValue = self.renderLocalAxesScalingType?.rawValue
           {
             popUpbuttonScalingType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonScalingType.selectItem(at: rawValue)
@@ -2574,10 +2656,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldLength.isEditable = false
         textFieldLength.stringValue = ""
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           textFieldLength.isEditable = enabled
-          if let value = representedStructure.renderLocalAxesLength
+          if let value = self.renderLocalAxesLength
           {
             textFieldLength.doubleValue = value
           }
@@ -2592,10 +2674,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderLength.isEnabled = false
         sliderLength.minValue = 0.0
         sliderLength.maxValue = 10.0
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           sliderLength.isEnabled = enabled
-          if let renderLengthFactor: Double = representedStructure.renderLocalAxesLength
+          if let renderLengthFactor: Double = self.renderLocalAxesLength
           {
             sliderLength.doubleValue = renderLengthFactor
           }
@@ -2605,10 +2687,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldWidth.isEditable = false
         textFieldWidth.stringValue = ""
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           textFieldWidth.isEditable = enabled
-          if let value = representedStructure.renderLocalAxesWidth
+          if let value = self.renderLocalAxesWidth
           {
             textFieldWidth.doubleValue = value
           }
@@ -2623,10 +2705,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderWidth.isEnabled = false
         sliderWidth.minValue = 0.0
         sliderWidth.maxValue = 2.0
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           sliderWidth.isEnabled = enabled
-          if let renderWidthFactor: Double = representedStructure.renderLocalAxesWidth
+          if let renderWidthFactor: Double = self.renderLocalAxesWidth
           {
             sliderWidth.doubleValue = renderWidthFactor
           }
@@ -2636,10 +2718,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldOffsetX.isEditable = false
         textFieldOffsetX.stringValue = ""
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           textFieldOffsetX.isEditable = enabled
-          if let value = representedStructure.renderLocalAxesOffsetX
+          if let value = self.renderLocalAxesOffsetX
           {
             textFieldOffsetX.doubleValue = value
           }
@@ -2653,10 +2735,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldOffsetY.isEditable = false
         textFieldOffsetY.stringValue = ""
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           textFieldOffsetY.isEditable = enabled
-          if let value = representedStructure.renderLocalAxesOffsetY
+          if let value = self.renderLocalAxesOffsetY
           {
             textFieldOffsetY.doubleValue = value
           }
@@ -2670,10 +2752,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldOffsetZ.isEditable = false
         textFieldOffsetZ.stringValue = ""
-        if let representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable
         {
           textFieldOffsetZ.isEditable = enabled
-          if let value = representedStructure.renderLocalAxesOffsetZ
+          if let value = self.renderLocalAxesOffsetZ
           {
             textFieldOffsetZ.doubleValue = value
           }
@@ -2691,9 +2773,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   func setPropertiesAdsorptionTableCells(on view: NSTableCellView, identifier: String, enabled: Bool)
   {
     var adsorptionSurfaceOn: Bool = false
-    if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let proxyProject = proxyProject, proxyProject.isEditable,
+       !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
     {
-      adsorptionSurfaceOn = representedStructure.renderAdsorptionSurfaceOn ?? false
+      adsorptionSurfaceOn = self.renderAdsorptionSurfaceOn ?? false
     }
     
     switch(identifier)
@@ -2703,11 +2786,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let checkDrawAdsorptionSurfacebutton: NSButton = view.viewWithTag(1) as? NSButton
       {
         checkDrawAdsorptionSurfacebutton.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer], representedStructure.renderCanDrawAdsorptionSurface
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           checkDrawAdsorptionSurfacebutton.isEnabled = enabled
           
-          if let renderDrawAdsorptionSurface: Bool = representedStructure.renderAdsorptionSurfaceOn
+          if let renderDrawAdsorptionSurface: Bool = self.renderAdsorptionSurfaceOn
           {
             checkDrawAdsorptionSurfacebutton.allowsMixedState = false
             checkDrawAdsorptionSurfacebutton.state = renderDrawAdsorptionSurface ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -2724,10 +2808,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonRenderingType: iRASPAPopUpButton = view.viewWithTag(52) as? iRASPAPopUpButton
       {
         popUpbuttonRenderingType.isEditable = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           popUpbuttonRenderingType.isEditable = enabled && adsorptionSurfaceOn
-          if let renderingType: RKEnergySurfaceType = representedStructure.renderAdsorptionRenderingMethod
+          if let renderingType: RKEnergySurfaceType = self.renderAdsorptionRenderingMethod
           {
             popUpbuttonRenderingType.selectItem(at: renderingType.rawValue)
           }
@@ -2739,10 +2824,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldStepLength.isEditable = false
         textFieldStepLength.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldStepLength.isEditable = enabled && adsorptionSurfaceOn
-          if let stepLength = representedStructure.renderAdsorptionVolumeStepLength
+          if let stepLength = self.renderAdsorptionVolumeStepLength
           {
             textFieldStepLength.doubleValue = stepLength
           }
@@ -2757,10 +2843,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonTransferFunction: iRASPAPopUpButton = view.viewWithTag(54) as? iRASPAPopUpButton
       {
         popUpbuttonTransferFunction.isEditable = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           popUpbuttonTransferFunction.isEditable = enabled && adsorptionSurfaceOn
-          if let transferFunction: RKPredefinedVolumeRenderingTransferFunction = representedStructure.renderAdsorptionVolumeTransferFunction
+          if let transferFunction: RKPredefinedVolumeRenderingTransferFunction = self.renderAdsorptionVolumeTransferFunction
           {
             popUpbuttonTransferFunction.selectItem(at: transferFunction.rawValue)
           }
@@ -2772,10 +2859,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonProbeParticle: iRASPAPopUpButton = view.viewWithTag(2) as? iRASPAPopUpButton
       {
         popUpbuttonProbeParticle.isEditable = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           popUpbuttonProbeParticle.isEditable = enabled && adsorptionSurfaceOn
-          if let probeMolecule: Structure.ProbeMolecule = representedStructure.renderAdsorptionSurfaceProbeMolecule
+          if let probeMolecule: Structure.ProbeMolecule = self.renderAdsorptionSurfaceProbeMolecule
           {
             popUpbuttonProbeParticle.selectItem(at: probeMolecule.rawValue)
           }
@@ -2787,10 +2875,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldIsovalue.isEditable = false
         textFieldIsovalue.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldIsovalue.isEditable = enabled && adsorptionSurfaceOn
-          if let isovalue = representedStructure.renderAdsorptionSurfaceIsovalue
+          if let isovalue = self.renderAdsorptionSurfaceIsovalue
           {
             textFieldIsovalue.doubleValue = isovalue
           }
@@ -2803,12 +2892,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderIsovalue: NSSlider = view.viewWithTag(4) as? NSSlider
       {
         sliderIsovalue.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderIsovalue.isEnabled = enabled && adsorptionSurfaceOn
-          if let isovalue = representedStructure.renderAdsorptionSurfaceIsovalue
+          if let isovalue = self.renderAdsorptionSurfaceIsovalue
           {
-            sliderIsovalue.minValue = Double(representedStructure.renderMinimumGridEnergyValue ?? -1000.0)
+            sliderIsovalue.minValue = Double(self.renderMinimumGridEnergyValue ?? -1000.0)
             sliderIsovalue.maxValue = 0.0
             sliderIsovalue.doubleValue = isovalue
           }
@@ -2820,10 +2910,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldOpacity.isEditable = false
         textFieldOpacity.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldOpacity.isEditable = enabled && adsorptionSurfaceOn
-          if let opacity = representedStructure.renderAdsorptionSurfaceOpacity
+          if let opacity = self.renderAdsorptionSurfaceOpacity
           {
             textFieldOpacity.doubleValue = opacity
           }
@@ -2836,10 +2927,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderOpacity: NSSlider = view.viewWithTag(6) as? NSSlider
       {
         sliderOpacity.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderOpacity.isEnabled = enabled && adsorptionSurfaceOn
-          if let opacity = representedStructure.renderAdsorptionSurfaceOpacity
+          if let opacity = self.renderAdsorptionSurfaceOpacity
           {
             sliderOpacity.minValue = 0.0
             sliderOpacity.maxValue = 1.0
@@ -2857,10 +2949,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonSurfaceSize: iRASPAPopUpButton = view.viewWithTag(7) as? iRASPAPopUpButton
       {
         popUpbuttonSurfaceSize.isEditable = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           popUpbuttonSurfaceSize.isEditable = enabled && adsorptionSurfaceOn
-          if let structureSize: Int = representedStructure.renderAdsorptionSurfaceSize
+          if let structureSize: Int = self.renderAdsorptionSurfaceSize
           {
             popUpbuttonSurfaceSize.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             popUpbuttonSurfaceSize.selectItem(withTitle: "\(structureSize)x\(structureSize)x\(structureSize)")
@@ -2878,10 +2971,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldHue.isEditable = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceHue: Double = representedStructure.renderAdsorptionSurfaceHue
+          if let renderAdsorptionSurfaceHue: Double = self.renderAdsorptionSurfaceHue
           {
             textFieldHue.doubleValue = renderAdsorptionSurfaceHue
           }
@@ -2892,10 +2986,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.isEnabled = false
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderHue.isEnabled = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceHue: Double = representedStructure.renderAdsorptionSurfaceHue
+          if let renderAdsorptionSurfaceHue: Double = self.renderAdsorptionSurfaceHue
           {
             sliderHue.doubleValue = renderAdsorptionSurfaceHue
           }
@@ -2907,10 +3002,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldSaturation.isEditable = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceSaturation: Double = representedStructure.renderAdsorptionSurfaceSaturation
+          if let renderAdsorptionSurfaceSaturation: Double = self.renderAdsorptionSurfaceSaturation
           {
             textFieldSaturation.doubleValue = renderAdsorptionSurfaceSaturation
           }
@@ -2921,10 +3017,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.isEnabled = false
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderSaturation.isEnabled = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceSaturation: Double = representedStructure.renderAdsorptionSurfaceSaturation
+          if let renderAdsorptionSurfaceSaturation: Double = self.renderAdsorptionSurfaceSaturation
           {
             sliderSaturation.doubleValue = renderAdsorptionSurfaceSaturation
           }
@@ -2936,10 +3033,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldValue.isEditable = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceValue: Double = representedStructure.renderAdsorptionSurfaceValue
+          if let renderAdsorptionSurfaceValue: Double = self.renderAdsorptionSurfaceValue
           {
             textFieldValue.doubleValue = renderAdsorptionSurfaceValue
           }
@@ -2950,10 +3048,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.isEnabled = false
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderValue.isEnabled = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceValue: Double = representedStructure.renderAdsorptionSurfaceValue
+          if let renderAdsorptionSurfaceValue: Double = self.renderAdsorptionSurfaceValue
           {
             sliderValue.doubleValue = renderAdsorptionSurfaceValue
           }
@@ -2965,11 +3064,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           button.isEnabled = enabled && adsorptionSurfaceOn
           
-          if let renderAdsorptionSurfaceHDR: Bool = representedStructure.renderAdsorptionSurfaceFrontSideHDR
+          if let renderAdsorptionSurfaceHDR: Bool = self.renderAdsorptionSurfaceFrontSideHDR
           {
             button.allowsMixedState = false
             button.state = renderAdsorptionSurfaceHDR ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -2987,10 +3087,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure
+          if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = self.renderAdsorptionSurfaceFrontSideHDRExposure
           {
             textFieldExposure.doubleValue = renderAdsorptionSurfaceFrontSideHDRExposure
           }
@@ -3005,10 +3106,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure
+          if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = self.renderAdsorptionSurfaceFrontSideHDRExposure
           {
             sliderExposure.doubleValue = renderAdsorptionSurfaceFrontSideHDRExposure
           }
@@ -3021,10 +3123,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontAmbientIntensity.isEditable = false
         textFieldFrontAmbientIntensity.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldFrontAmbientIntensity.isEditable = enabled && adsorptionSurfaceOn
-          if let ambientIntensity = representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity
+          if let ambientIntensity = self.renderAdsorptionSurfaceFrontSideAmbientIntensity
           {
             textFieldFrontAmbientIntensity.doubleValue = ambientIntensity
           }
@@ -3037,10 +3140,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderFrontAmbientIntensity.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderFrontAmbientIntensity.isEnabled = enabled && adsorptionSurfaceOn
-          if let ambientIntensity = representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity
+          if let ambientIntensity = self.renderAdsorptionSurfaceFrontSideAmbientIntensity
           {
             sliderFrontAmbientIntensity.minValue = 0.0
             sliderFrontAmbientIntensity.maxValue = 1.0
@@ -3052,10 +3156,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientFrontSideColor.isEnabled = false
         ambientFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           ambientFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
-          if let color = representedStructure.renderAdsorptionSurfaceFrontSideAmbientColor
+          if let color = self.renderAdsorptionSurfaceFrontSideAmbientColor
           {
             ambientFrontSideColor.color = color
           }
@@ -3067,10 +3172,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontDiffuseIntensity.isEditable = false
         textFieldFrontDiffuseIntensity.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldFrontDiffuseIntensity.isEditable = enabled && adsorptionSurfaceOn
-          if let diffuseIntensity = representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity
+          if let diffuseIntensity = self.renderAdsorptionSurfaceFrontSideDiffuseIntensity
           {
             textFieldFrontDiffuseIntensity.doubleValue = diffuseIntensity
           }
@@ -3083,10 +3189,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderFrontDiffuseIntensity.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderFrontDiffuseIntensity.isEnabled = enabled && adsorptionSurfaceOn
-          if let diffuseIntensity = representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity
+          if let diffuseIntensity = self.renderAdsorptionSurfaceFrontSideDiffuseIntensity
           {
             sliderFrontDiffuseIntensity.minValue = 0.0
             sliderFrontDiffuseIntensity.maxValue = 1.0
@@ -3098,10 +3205,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseFrontSideColor.isEnabled = false
         diffuseFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           diffuseFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
-          if let color = representedStructure.renderAdsorptionSurfaceFrontSideDiffuseColor
+          if let color = self.renderAdsorptionSurfaceFrontSideDiffuseColor
           {
             diffuseFrontSideColor.color = color
           }
@@ -3113,10 +3221,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontSpecularIntensity.isEditable = false
         textFieldFrontSpecularIntensity.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldFrontSpecularIntensity.isEditable = enabled && adsorptionSurfaceOn
-          if let specularIntensity = representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity
+          if let specularIntensity = self.renderAdsorptionSurfaceFrontSideSpecularIntensity
           {
             textFieldFrontSpecularIntensity.doubleValue = specularIntensity
           }
@@ -3129,10 +3238,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderFrontSpecularIntensity.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderFrontSpecularIntensity.isEnabled = enabled && adsorptionSurfaceOn
-          if let specularIntensity = representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity
+          if let specularIntensity = self.renderAdsorptionSurfaceFrontSideSpecularIntensity
           {
             sliderFrontSpecularIntensity.minValue = 0.0
             sliderFrontSpecularIntensity.maxValue = 1.0
@@ -3144,10 +3254,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularFrontSideColor.isEnabled = false
         specularFrontSideColor.color = NSColor.lightGray
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           specularFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
-          if let color = representedStructure.renderAdsorptionSurfaceFrontSideSpecularColor
+          if let color = self.renderAdsorptionSurfaceFrontSideSpecularColor
           {
             specularFrontSideColor.color = color
           }
@@ -3160,10 +3271,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldFrontShininess.isEditable = false
         textFieldFrontShininess.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldFrontShininess.isEditable = enabled && adsorptionSurfaceOn
-          if let shininess = representedStructure.renderAdsorptionSurfaceFrontSideShininess
+          if let shininess = self.renderAdsorptionSurfaceFrontSideShininess
           {
             textFieldFrontShininess.doubleValue = shininess
           }
@@ -3176,10 +3288,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderFrontShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderFrontShininess.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderFrontShininess.isEnabled = enabled && adsorptionSurfaceOn
-          if let shininess = representedStructure.renderAdsorptionSurfaceFrontSideShininess
+          if let shininess = self.renderAdsorptionSurfaceFrontSideShininess
           {
             sliderFrontShininess.minValue = 0.0
             sliderFrontShininess.maxValue = 256.0
@@ -3194,10 +3307,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let button: NSButton = view.viewWithTag(1) as? NSButton
       {
         button.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           button.isEnabled = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceHDR: Bool = representedStructure.renderAdsorptionSurfaceBackSideHDR
+          if let renderAdsorptionSurfaceHDR: Bool = self.renderAdsorptionSurfaceBackSideHDR
           {
             button.allowsMixedState = false
             button.state = renderAdsorptionSurfaceHDR ? NSControl.StateValue.on : NSControl.StateValue.off
@@ -3215,10 +3329,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceBackSideHDRExposure: Double = representedStructure.renderAdsorptionSurfaceBackSideHDRExposure
+          if let renderAdsorptionSurfaceBackSideHDRExposure: Double = self.renderAdsorptionSurfaceBackSideHDRExposure
           {
             textFieldExposure.doubleValue = renderAdsorptionSurfaceBackSideHDRExposure
           }
@@ -3233,10 +3348,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.isEnabled = false
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled && adsorptionSurfaceOn
-          if let renderAdsorptionSurfaceBackSideHDRExposure: Double = representedStructure.renderAdsorptionSurfaceBackSideHDRExposure
+          if let renderAdsorptionSurfaceBackSideHDRExposure: Double = self.renderAdsorptionSurfaceBackSideHDRExposure
           {
             sliderExposure.doubleValue = renderAdsorptionSurfaceBackSideHDRExposure
           }
@@ -3244,15 +3360,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       }
       
       
-      // Ambient color
       if let textFieldBackAmbientIntensity: NSTextField = view.viewWithTag(4) as? NSTextField
       {
         textFieldBackAmbientIntensity.isEditable = false
         textFieldBackAmbientIntensity.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldBackAmbientIntensity.isEditable = enabled && adsorptionSurfaceOn
-          if let ambientIntensity = representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity
+          if let ambientIntensity = self.renderAdsorptionSurfaceBackSideAmbientIntensity
           {
             textFieldBackAmbientIntensity.doubleValue = ambientIntensity
           }
@@ -3265,10 +3381,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackAmbientIntensity: NSSlider = view.viewWithTag(5) as? NSSlider
       {
         sliderBackAmbientIntensity.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderBackAmbientIntensity.isEnabled = enabled && adsorptionSurfaceOn
-          if let ambientIntensity = representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity
+          if let ambientIntensity = self.renderAdsorptionSurfaceBackSideAmbientIntensity
           {
             sliderBackAmbientIntensity.minValue = 0.0
             sliderBackAmbientIntensity.maxValue = 1.0
@@ -3280,10 +3397,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         ambientBackSideColor.isEnabled = false
         ambientBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           ambientBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
-          if let color = representedStructure.renderAdsorptionSurfaceBackSideAmbientColor
+          if let color = self.renderAdsorptionSurfaceBackSideAmbientColor
           {
             ambientBackSideColor.color = color
           }
@@ -3295,10 +3413,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackDiffuseIntensity.isEditable = false
         textFieldBackDiffuseIntensity.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldBackDiffuseIntensity.isEditable = enabled && adsorptionSurfaceOn
-          if let diffuseIntensity = representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity
+          if let diffuseIntensity = self.renderAdsorptionSurfaceBackSideDiffuseIntensity
           {
             textFieldBackDiffuseIntensity.doubleValue = diffuseIntensity
           }
@@ -3311,10 +3430,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackDiffuseIntensity: NSSlider = view.viewWithTag(8) as? NSSlider
       {
         sliderBackDiffuseIntensity.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderBackDiffuseIntensity.isEnabled = enabled && adsorptionSurfaceOn
-          if let diffuseIntensity = representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity
+          if let diffuseIntensity = self.renderAdsorptionSurfaceBackSideDiffuseIntensity
           {
             sliderBackDiffuseIntensity.minValue = 0.0
             sliderBackDiffuseIntensity.maxValue = 1.0
@@ -3326,10 +3446,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         diffuseBackSideColor.isEnabled = false
         diffuseBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           diffuseBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
-          if let color = representedStructure.renderAdsorptionSurfaceBackSideDiffuseColor
+          if let color = self.renderAdsorptionSurfaceBackSideDiffuseColor
           {
             diffuseBackSideColor.color = color
           }
@@ -3341,10 +3462,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackSpecularIntensity.isEditable = false
         textFieldBackSpecularIntensity.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldBackSpecularIntensity.isEditable = enabled && adsorptionSurfaceOn
-          if let specularIntensity = representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity
+          if let specularIntensity = self.renderAdsorptionSurfaceBackSideSpecularIntensity
           {
             textFieldBackSpecularIntensity.doubleValue = specularIntensity
           }
@@ -3357,10 +3479,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackSpecularIntensity: NSSlider = view.viewWithTag(11) as? NSSlider
       {
         sliderBackSpecularIntensity.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderBackSpecularIntensity.isEnabled = enabled && adsorptionSurfaceOn
-          if let specularIntensity = representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity
+          if let specularIntensity = self.renderAdsorptionSurfaceBackSideSpecularIntensity
           {
             sliderBackSpecularIntensity.minValue = 0.0
             sliderBackSpecularIntensity.maxValue = 1.0
@@ -3372,10 +3495,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         specularBackSideColor.isEnabled = false
         specularBackSideColor.color = NSColor.lightGray
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           specularBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
-          if let color = representedStructure.renderAdsorptionSurfaceBackSideSpecularColor
+          if let color = self.renderAdsorptionSurfaceBackSideSpecularColor
           {
             specularBackSideColor.color = color
           }
@@ -3387,10 +3511,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textFieldBackShininess.isEditable = false
         textFieldBackShininess.stringValue = ""
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           textFieldBackShininess.isEditable = enabled && adsorptionSurfaceOn
-          if let shininess = representedStructure.renderAdsorptionSurfaceBackSideShininess
+          if let shininess = self.renderAdsorptionSurfaceBackSideShininess
           {
             textFieldBackShininess.doubleValue = shininess
           }
@@ -3403,10 +3528,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let sliderBackShininess: NSSlider = view.viewWithTag(14) as? NSSlider
       {
         sliderBackShininess.isEnabled = false
-        if let representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
         {
           sliderBackShininess.isEnabled = enabled && adsorptionSurfaceOn
-          if let shininess = representedStructure.renderAdsorptionSurfaceBackSideShininess
+          if let shininess = self.renderAdsorptionSurfaceBackSideShininess
           {
             sliderBackShininess.minValue = 0.0
             sliderBackShininess.maxValue = 256.0
@@ -3429,10 +3555,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       if let popUpbuttonAnnotationType: iRASPAPopUpButton = view.viewWithTag(1) as? iRASPAPopUpButton
       {
         popUpbuttonAnnotationType.isEditable = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
         {
           popUpbuttonAnnotationType.isEditable = enabled
-          if let rawValue: Int = representedStructure.renderTextType?.rawValue
+          if let rawValue: Int = self.renderTextType?.rawValue
           {
             popUpbuttonAnnotationType.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
             
@@ -3449,10 +3576,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         textColor.isEnabled = false
         textColor.color = NSColor.lightGray
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
         {
           textColor.isEnabled = enabled
-          if let renderAtomAmbientColor: NSColor = representedStructure.renderTextColor
+          if let renderAtomAmbientColor: NSColor = self.renderTextColor
           {
             textColor.color = renderAtomAmbientColor
           }
@@ -3468,7 +3596,8 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonFontFamily.isEditable = false
         popUpbuttonFontFamilyMembers.isEditable = false
-        if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
         {
           popUpbuttonFontFamily.isEditable = enabled
           popUpbuttonFontFamilyMembers.isEditable = enabled
@@ -3479,7 +3608,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           
           popUpbuttonFontFamilyMembers.removeAllItems()
           
-          if let fontFamilyName: String = representedStructure.renderTextFontFamily
+          if let fontFamilyName: String = self.renderTextFontFamily
           {
             popUpbuttonFontFamily.selectItem(withTitle: fontFamilyName)
             
@@ -3488,7 +3617,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
               let members = availableMembers.compactMap{$0[1] as? String}
               popUpbuttonFontFamilyMembers.addItems(withTitles: members)
               
-              if let fontName: String = representedStructure.renderTextFont,
+              if let fontName: String = self.renderTextFont,
                  let font: NSFont = NSFont(name: fontName, size: 32),
                  let memberName: String = NSFontManager.shared.memberName(of: font)
               {
@@ -3510,10 +3639,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let popUpbuttonAnnotationAlignment: iRASPAPopUpButton = view.viewWithTag(5) as? iRASPAPopUpButton
         {
           popUpbuttonAnnotationAlignment.isEditable = false
-          if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
           {
             popUpbuttonAnnotationAlignment.isEditable = enabled
-            if let rawValue: Int = representedStructure.renderTextAlignment?.rawValue
+            if let rawValue: Int = self.renderTextAlignment?.rawValue
             {
               popUpbuttonAnnotationAlignment.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
               
@@ -3529,10 +3659,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if let popUpbuttonAnnotationStyle: iRASPAPopUpButton = view.viewWithTag(6) as? iRASPAPopUpButton
         {
           popUpbuttonAnnotationStyle.isEditable = false
-          if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
           {
             popUpbuttonAnnotationStyle.isEditable = enabled
-            if let rawValue: Int = representedStructure.renderTextStyle?.rawValue
+            if let rawValue: Int = self.renderTextStyle?.rawValue
             {
               popUpbuttonAnnotationStyle.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
               
@@ -3551,10 +3682,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldScaling.isEditable = false
           textFieldScaling.stringValue = ""
-          if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
           {
             textFieldScaling.isEditable = enabled
-            if let renderTextScaling: Double = representedStructure.renderTextScaling
+            if let renderTextScaling: Double = self.renderTextScaling
             {
               textFieldScaling.doubleValue = renderTextScaling
             }
@@ -3569,10 +3701,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           sliderScaling.isEnabled = false
           sliderScaling.minValue = 0.0
           sliderScaling.maxValue = 3.0
-          if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
           {
             sliderScaling.isEnabled = enabled
-            if let renderTextScaling: Double = representedStructure.renderTextScaling
+            if let renderTextScaling: Double = self.renderTextScaling
             {
               sliderScaling.doubleValue = renderTextScaling
             }
@@ -3583,10 +3716,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldAnnotionTextDisplacementX.isEditable = false
           textFieldAnnotionTextDisplacementX.stringValue = ""
-          if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
           {
             textFieldAnnotionTextDisplacementX.isEditable = enabled
-            if let renderTextOffsetX: Double = representedStructure.renderTextOffsetX
+            if let renderTextOffsetX: Double = self.renderTextOffsetX
             {
               textFieldAnnotionTextDisplacementX.doubleValue =  renderTextOffsetX
             }
@@ -3601,10 +3735,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldAnnotionTextDisplacementY.isEditable = false
           textFieldAnnotionTextDisplacementY.stringValue = ""
-          if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
           {
             textFieldAnnotionTextDisplacementY.isEditable = enabled
-            if let renderTextOffsetY: Double = representedStructure.renderTextOffsetY
+            if let renderTextOffsetY: Double = self.renderTextOffsetY
             {
               textFieldAnnotionTextDisplacementY.doubleValue =  renderTextOffsetY
             }
@@ -3619,10 +3754,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           textFieldAnnotionTextDisplacementZ.isEditable = false
           textFieldAnnotionTextDisplacementZ.stringValue = ""
-          if let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+          if let proxyProject = proxyProject, proxyProject.isEditable,
+             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
           {
             textFieldAnnotionTextDisplacementZ.isEditable = enabled
-            if let renderTextOffsetZ: Double = representedStructure.renderTextOffsetZ
+            if let renderTextOffsetZ: Double = self.renderTextOffsetZ
             {
               textFieldAnnotionTextDisplacementZ.doubleValue =  renderTextOffsetZ
             }
@@ -3689,12 +3825,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.x = sender.doubleValue * Double.pi/180.0
-      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      self.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3717,12 +3852,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.y = sender.doubleValue * Double.pi/180.0
-      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      self.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3745,12 +3879,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.z = sender.doubleValue * Double.pi/180.0
-      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      self.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3773,13 +3906,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderRotationDelta = self.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       let dq: simd_quatd = simd_quatd(yaw: renderRotationDelta)
       
-      structure.renderPrimitiveOrientation = renderOrientation * dq
+      self.renderPrimitiveOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3804,13 +3936,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderRotationDelta = self.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       let dq: simd_quatd = simd_quatd(yaw: -renderRotationDelta)
       
-      structure.renderPrimitiveOrientation = renderOrientation * dq
+      self.renderPrimitiveOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3835,13 +3966,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderRotationDelta = self.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       let dq: simd_quatd = simd_quatd(pitch: renderRotationDelta)
       
-      structure.renderPrimitiveOrientation = renderOrientation * dq
+      self.renderPrimitiveOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3866,13 +3996,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderRotationDelta = self.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       let dq: simd_quatd = simd_quatd(pitch: -renderRotationDelta)
       
-      structure.renderPrimitiveOrientation = renderOrientation * dq
+      self.renderPrimitiveOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3896,13 +4025,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderRotationDelta = self.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       let dq: simd_quatd = simd_quatd(roll: renderRotationDelta)
       
-      structure.renderPrimitiveOrientation = renderOrientation * dq
+      self.renderPrimitiveOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3927,13 +4055,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderRotationDelta = structure.renderPrimitiveRotationDelta,
-      let renderOrientation: simd_quatd = structure.renderPrimitiveOrientation
+      let renderRotationDelta = self.renderPrimitiveRotationDelta,
+      let renderOrientation: simd_quatd = self.renderPrimitiveOrientation
     {
       let dq: simd_quatd = simd_quatd(roll: -renderRotationDelta)
       
-      structure.renderPrimitiveOrientation = renderOrientation * dq
+      self.renderPrimitiveOrientation = renderOrientation * dq
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       if let renderStructures = project.sceneList.selectedScene?.movies.flatMap({$0.selectedFrames}).compactMap({$0.renderStructure})
@@ -3957,12 +4084,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderOrientation = structure.renderPrimitiveOrientation
+      let renderOrientation = self.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.x = sender.doubleValue * Double.pi/180.0
-      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      self.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
@@ -4006,12 +4132,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderOrientation = structure.renderPrimitiveOrientation
+      let renderOrientation = self.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.z = sender.doubleValue * Double.pi/180.0
-      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      self.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
@@ -4053,12 +4178,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
-      let renderOrientation = structure.renderPrimitiveOrientation
+      let renderOrientation = self.renderPrimitiveOrientation
     {
       var angles: SIMD3<Double> = renderOrientation.EulerAngles
       angles.y = sender.doubleValue * Double.pi/180.0
-      structure.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
+      self.renderPrimitiveOrientation = simd_quatd(EulerAngles: angles)
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
@@ -4098,10 +4222,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changedPrimitiveRotationAngle(_ sender: NSTextField)
   {
-    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      var structure: [PrimitiveVisualAppearanceViewerLegacy] = self.representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled
     {
-      structure.renderPrimitiveRotationDelta = sender.doubleValue
+      self.renderPrimitiveRotationDelta = sender.doubleValue
       
       self.windowController?.document?.updateChangeCount(.changeDone)
       self.proxyProject?.representedObject.isEdited = true
@@ -4114,10 +4237,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationAXTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixAX = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixAX = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4132,10 +4254,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationAYTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+       let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixAY = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixAY = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4150,10 +4271,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationAZTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixAZ = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixAZ = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4168,10 +4288,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationBXTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixBX = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixBX = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4186,10 +4305,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationBYTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixBY = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixBY = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4204,10 +4322,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationBZTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixBZ = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixBZ = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4222,10 +4339,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationCXTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixCX = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixCX = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4240,10 +4356,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationCYTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixCY = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixCY = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4258,10 +4373,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeTransformationCZTextField(_ sender: NSTextField)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+      let project: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode
     {
-      representedStructure.renderPrimitiveTransformationMatrixCZ = sender.doubleValue
+      self.renderPrimitiveTransformationMatrixCZ = sender.doubleValue
       project.renderCamera?.boundingBox = project.renderBoundingBox
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -4275,10 +4389,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveOpaquenessSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveOpacity = sender.doubleValue
+      self.renderPrimitiveOpacity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveOpacityPropertiesCell])
       
@@ -4308,10 +4421,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveOpaquenessTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveOpacity = sender.doubleValue
+      self.renderPrimitiveOpacity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveOpacityPropertiesCell])
       
@@ -4326,10 +4438,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveNumberOfSidesSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
+      self.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
       
       self.updateOutlineView(identifiers: [self.primitiveOpacityPropertiesCell])
       
@@ -4360,10 +4471,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveNumberOfSidesTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
+      self.renderPrimitiveNumberOfSides = max(2,sender.integerValue)
       
       self.updateOutlineView(identifiers: [self.primitiveOpacityPropertiesCell])
       
@@ -4379,11 +4489,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func togglePrimitiveIsCapped(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderPrimitiveIsCapped = (sender.state == NSControl.StateValue.on)
+      self.renderPrimitiveIsCapped = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4396,11 +4505,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func togglePrimitiveIsFractional(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderPrimitiveIsFractional = (sender.state == NSControl.StateValue.on)
+      self.renderPrimitiveIsFractional = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4414,11 +4522,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // High dynamic range
   @IBAction func togglePrimitiveFrontSideHDR(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderPrimitiveFrontSideHDR = (sender.state == NSControl.StateValue.on)
+      self.renderPrimitiveFrontSideHDR = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4433,10 +4540,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changePrimitiveSelectionStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy],
        let selectionStyle = RKSelectionStyle(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderPrimitiveSelectionStyle = selectionStyle
+      self.renderPrimitiveSelectionStyle = selectionStyle
       
       self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
@@ -4452,10 +4558,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveSelectionFrequencyTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveSelectionFrequency = sender.doubleValue
+      self.renderPrimitiveSelectionFrequency = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
@@ -4469,10 +4574,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveSelectionDensityTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveSelectionDensity = sender.doubleValue
+      self.renderPrimitiveSelectionDensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
@@ -4486,10 +4590,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveSelectionIntensityField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveSelectionIntensity = sender.doubleValue
+      self.renderPrimitiveSelectionIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
@@ -4503,10 +4606,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveSelectionIntensity(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveSelectionIntensity = sender.doubleValue
+      self.renderPrimitiveSelectionIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
@@ -4537,10 +4639,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveSelectionScalingTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveSelectionScaling = sender.doubleValue
+      self.renderPrimitiveSelectionScaling = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
@@ -4554,10 +4655,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveSelectionScalingSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveSelectionScaling = sender.doubleValue
+      self.renderPrimitiveSelectionScaling = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveSelectionPropertiesCell])
       
@@ -4589,10 +4689,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Hue textfield
    @IBAction func changePrimitiveHueTextField(_ sender: NSTextField)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderPrimitiveHue = sender.doubleValue
+       self.renderPrimitiveHue = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
@@ -4607,10 +4706,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Hue slider
    @IBAction func changePrimitiveHueSlider(_ sender: NSSlider)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderPrimitiveHue = sender.doubleValue
+       self.renderPrimitiveHue = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
@@ -4641,10 +4739,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Saturation textfield
    @IBAction func changePrimitiveSaturationTextField(_ sender: NSTextField)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderPrimitiveSaturation = sender.doubleValue
+       self.renderPrimitiveSaturation = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
@@ -4659,10 +4756,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Saturation slider
    @IBAction func changePrimitiveSaturationSlider(_ sender: NSSlider)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderPrimitiveSaturation = sender.doubleValue
+       self.renderPrimitiveSaturation = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
@@ -4693,10 +4789,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Value textfield
    @IBAction func changePrimitiveValueTextField(_ sender: NSTextField)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderPrimitiveValue = sender.doubleValue
+       self.renderPrimitiveValue = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
@@ -4711,10 +4806,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Value slider
    @IBAction func changePrimitiveValueSlider(_ sender: NSSlider)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderPrimitiveValue = sender.doubleValue
+       self.renderPrimitiveValue = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.primitiveHSVPropertiesCell])
        
@@ -4748,10 +4842,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideHDRExporeTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
+      self.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
@@ -4766,10 +4859,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Exposure slider
   @IBAction func changePrimitiveFrontSideExposureSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
+      self.renderPrimitiveFrontSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
@@ -4784,10 +4876,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideAmbientTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
+      self.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
@@ -4802,10 +4893,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideAmbientIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
+      self.renderPrimitiveFrontSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
@@ -4820,10 +4910,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideAmbientColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideAmbientColor = sender.color
+      self.renderPrimitiveFrontSideAmbientColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4836,10 +4925,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideDiffuseTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
+      self.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
@@ -4854,10 +4942,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideDiffuseIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
+      self.renderPrimitiveFrontSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
       
@@ -4873,10 +4960,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideDiffuseColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideDiffuseColor = sender.color
+      self.renderPrimitiveFrontSideDiffuseColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4889,10 +4975,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideSpecularTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
+      self.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
@@ -4907,10 +4992,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideSpecularIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
+      self.renderPrimitiveFrontSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveOrientationPropertiesCell])
       
@@ -4927,10 +5011,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideSpecularColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideSpecularColor = sender.color
+      self.renderPrimitiveFrontSideSpecularColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4943,10 +5026,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideShininessTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideShininess = sender.doubleValue
+      self.renderPrimitiveFrontSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
@@ -4960,10 +5042,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveFrontSideShininessSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveFrontSideShininess = sender.doubleValue
+      self.renderPrimitiveFrontSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveFrontPropertiesCell])
       
@@ -4978,11 +5059,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func togglePrimitiveBackSideHDR(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderPrimitiveBackSideHDR = (sender.state == NSControl.StateValue.on)
+      self.renderPrimitiveBackSideHDR = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -4995,10 +5075,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideHDRExporeTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideHDRExposure = sender.doubleValue
+      self.renderPrimitiveBackSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5013,10 +5092,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Exposure slider
   @IBAction func changePrimitiveBackSideExposureSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideHDRExposure = sender.doubleValue
+      self.renderPrimitiveBackSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5032,10 +5110,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideAmbientTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
+      self.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5050,10 +5127,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideAmbientIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
+      self.renderPrimitiveBackSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5069,10 +5145,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideAmbientColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideAmbientColor = sender.color
+      self.renderPrimitiveBackSideAmbientColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5085,10 +5160,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideDiffuseTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
+      self.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5103,10 +5177,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideDiffuseIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
+      self.renderPrimitiveBackSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5122,10 +5195,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideDiffuseColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideDiffuseColor = sender.color
+      self.renderPrimitiveBackSideDiffuseColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5138,10 +5210,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideSpecularTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
+      self.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5156,10 +5227,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideSpecularIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
+      self.renderPrimitiveBackSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5175,10 +5245,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideSpecularColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideSpecularColor = sender.color
+      self.renderPrimitiveBackSideSpecularColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5192,10 +5261,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideShininessTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideShininess = sender.doubleValue
+      self.renderPrimitiveBackSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5209,10 +5277,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changePrimitiveBackSideShininessSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [PrimitiveVisualAppearanceViewerLegacy] = representedObject as? [PrimitiveVisualAppearanceViewerLegacy]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderPrimitiveBackSideShininess = sender.doubleValue
+      self.renderPrimitiveBackSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.primitiveBackPropertiesCell])
       
@@ -5232,16 +5299,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeRepresentation(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
        let representationType = Structure.RepresentationType(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.setRepresentationType(type: representationType)
+      self.setRepresentationType(type: representationType)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: representedStructure.selectedFrames)
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: representedStructure.selectedFrames)
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: iRASPAObjects.flatMap{$0.selectedRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5257,12 +5323,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
        let representationStyle = Crystal.RepresentationStyle(rawValue: sender.indexOfSelectedItem), representationStyle.rawValue >= 0
     {
-      representedStructure.setRepresentationStyle(style: representationStyle, colorSets: document.colorSets)
+      self.setRepresentationStyle(style: representationStyle, colorSets: document.colorSets)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.atomsSelectionCell, self.atomsScalingCell, self.atomsHDRCell, self.atomsLightingCell, self.bondsScalingCell, self.bondsSelectionCell, self.bondsHDRCell, self.bondsLightingCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
@@ -5281,12 +5346,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeColorScheme(_ sender: NSPopUpButton)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
-       let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+       let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.setRepresentationColorScheme(scheme: sender.titleOfSelectedItem ?? SKColorSets.ColorScheme.jmol.rawValue, colorSets: document.colorSets)
+      self.setRepresentationColorScheme(scheme: sender.titleOfSelectedItem ?? SKColorSets.ColorScheme.jmol.rawValue, colorSets: document.colorSets)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -5302,12 +5366,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeForceField(_ sender: NSPopUpButton)
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
-       let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+       let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.setRepresentationForceField(forceField: sender.titleOfSelectedItem ?? "Default", forceFieldSets: document.forceFieldSets)
+      self.setRepresentationForceField(forceField: sender.titleOfSelectedItem ?? "Default", forceFieldSets: document.forceFieldSets)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
@@ -5328,12 +5391,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
        let representationColorOrder = SKColorSets.ColorOrder(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.setRepresentationColorOrder(order: representationColorOrder, colorSets: document.colorSets)
+      self.setRepresentationColorOrder(order: representationColorOrder, colorSets: document.colorSets)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
@@ -5353,12 +5415,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     if let document: iRASPADocument = self.windowController?.currentDocument,
        let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       let representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
        let representationForceFieldOrder = SKForceFieldSets.ForceFieldOrder(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.setRepresentationForceFieldOrder(order:  representationForceFieldOrder, forceFieldSets: document.forceFieldSets)
+      self.setRepresentationForceFieldOrder(order:  representationForceFieldOrder, forceFieldSets: document.forceFieldSets)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
@@ -5377,10 +5438,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAtomSelectionStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
        let selectionStyle = RKSelectionStyle(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderAtomSelectionStyle = selectionStyle
+      self.renderAtomSelectionStyle = selectionStyle
       
       self.updateOutlineView(identifiers: [self.atomsSelectionCell, self.atomsRepresentationStyleCell])
       
@@ -5396,12 +5456,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomSelectionFrequencyTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSelectionFrequency = sender.doubleValue
+      self.renderAtomSelectionFrequency = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.bondsSelectionCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5414,12 +5473,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomSelectionDensityTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSelectionDensity = sender.doubleValue
+      self.renderAtomSelectionDensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsSelectionCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5432,12 +5490,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomSelectionIntensityLevelField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSelectionIntensity = sender.doubleValue
+      self.renderAtomSelectionIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsSelectionCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5450,12 +5507,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomSelectionIntensityLevel(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSelectionIntensity = sender.doubleValue
+      self.renderAtomSelectionIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsSelectionCell, self.atomsRepresentationStyleCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
@@ -5485,12 +5541,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomSelectionScalingTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSelectionScaling = sender.doubleValue
+      self.renderAtomSelectionScaling = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsSelectionCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5503,12 +5558,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomSelectionScalingSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSelectionScaling = sender.doubleValue
+      self.renderAtomSelectionScaling = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsSelectionCell, self.atomsRepresentationStyleCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
@@ -5539,13 +5593,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // High dynamic range
   @IBAction func toggleHDR(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderAtomHDR = (sender.state == NSControl.StateValue.on)
+      self.renderAtomHDR = (sender.state == NSControl.StateValue.on)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -5559,12 +5612,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomHDRExporeTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomHDRExposure = sender.doubleValue
+      self.renderAtomHDRExposure = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsHDRCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5579,12 +5631,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Exposure slider
   @IBAction func changeExposureSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomHDRExposure = sender.doubleValue
+      self.renderAtomHDRExposure = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsHDRCell, self.atomsRepresentationStyleCell])
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -5598,12 +5649,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Hue textfield
   @IBAction func changeHueTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomHue = sender.doubleValue
+      self.renderAtomHue = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsHDRCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5617,12 +5667,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Hue slider
   @IBAction func changeHueSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomHue = sender.doubleValue
+      self.renderAtomHue = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsHDRCell, self.atomsRepresentationStyleCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
@@ -5652,12 +5701,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Saturation textfield
   @IBAction func changeSaturationTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSaturation = sender.doubleValue
+      self.renderAtomSaturation = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsHDRCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5671,12 +5719,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Saturation slider
   @IBAction func changeSaturationSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSaturation = sender.doubleValue
+      self.renderAtomSaturation = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsHDRCell, self.atomsRepresentationStyleCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
@@ -5706,12 +5753,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Value textfield
   @IBAction func changeValueTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomValue = sender.doubleValue
+      self.renderAtomValue = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsHDRCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5725,12 +5771,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Value slider
   @IBAction func changeValueSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomValue = sender.doubleValue
+      self.renderAtomValue = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsHDRCell, self.atomsRepresentationStyleCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
@@ -5759,12 +5804,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomScalingSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomScaleFactor = sender.doubleValue
+      self.renderAtomScaleFactor = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsScalingCell, self.atomsRepresentationStyleCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
@@ -5779,10 +5823,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         if endingDrag
         {
          
-          representedStructure.renderAtomScaleFactorCompleted = sender.doubleValue
+          self.renderAtomScaleFactorCompleted = sender.doubleValue
           self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
           
-          if let renderAtomAmbientOcclusion = representedStructure.renderAtomAmbientOcclusion , renderAtomAmbientOcclusion == true
+          if let renderAtomAmbientOcclusion = self.renderAtomAmbientOcclusion , renderAtomAmbientOcclusion == true
           {
             
             self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
@@ -5805,15 +5849,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomScalingTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomScaleFactorCompleted = sender.doubleValue
+      self.renderAtomScaleFactorCompleted = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsScalingCell, self.atomsRepresentationStyleCell])
       
-      if let renderAtomAmbientOcclusion: Bool = representedStructure.renderAtomAmbientOcclusion , renderAtomAmbientOcclusion == true
+      if let renderAtomAmbientOcclusion: Bool = self.renderAtomAmbientOcclusion , renderAtomAmbientOcclusion == true
       {
         self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
         self.windowController?.detailTabViewController?.renderViewController?.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: [])
@@ -5831,13 +5874,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
  
   @IBAction func toggleAmbientOcclusion(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderAtomAmbientOcclusion = (sender.state == NSControl.StateValue.on)
+      self.renderAtomAmbientOcclusion = (sender.state == NSControl.StateValue.on)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: [])
@@ -5855,12 +5897,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAmbientTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomAmbientIntensity = sender.doubleValue
+      self.renderAtomAmbientIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5874,12 +5915,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAmbientIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomAmbientIntensity = sender.doubleValue
+      self.renderAtomAmbientIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5893,10 +5933,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomAmbientColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomAmbientColor = sender.color
+      self.renderAtomAmbientColor = sender.color
       
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -5912,12 +5951,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeDiffuseTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomDiffuseIntensity = sender.doubleValue
+      self.renderAtomDiffuseIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5930,12 +5968,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeDiffuseIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomDiffuseIntensity = sender.doubleValue
+      self.renderAtomDiffuseIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5949,10 +5986,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomDiffuseColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomDiffuseColor = sender.color
+      self.renderAtomDiffuseColor = sender.color
       
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -5967,12 +6003,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeSpecularTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSpecularIntensity = sender.doubleValue
+      self.renderAtomSpecularIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -5986,10 +6021,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeSpecularIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSpecularIntensity = sender.doubleValue
+      self.renderAtomSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6004,12 +6038,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomSpecularColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomSpecularColor = sender.color
+      self.renderAtomSpecularColor = sender.color
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6023,12 +6056,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeShininessTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomShininess = sender.doubleValue
+      self.renderAtomShininess = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6041,12 +6073,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeShininessSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAtomShininess = sender.doubleValue
+      self.renderAtomShininess = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsLightingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6063,13 +6094,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func toggleAtomBonds(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderDrawAtoms=(sender.state == NSControl.StateValue.on)
+      self.renderDrawAtoms=(sender.state == NSControl.StateValue.on)
       
-      representedStructure.recheckRepresentationStyle()
+      self.recheckRepresentationStyle()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6087,12 +6117,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func toggleDrawBonds(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderDrawBonds = (sender.state == NSControl.StateValue.on)
+      self.renderDrawBonds = (sender.state == NSControl.StateValue.on)
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6108,12 +6137,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeBondColorMode(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer],
        let renderBondColorMode = RKBondColorMode(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderBondColorMode = renderBondColorMode
+      self.renderBondColorMode = renderBondColorMode
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6127,10 +6155,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondScalingSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondScaleFactor = sender.doubleValue
+      self.renderBondScaleFactor = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsScalingCell, self.atomsRepresentationStyleCell])
       
@@ -6161,12 +6188,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondScalingTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondScaleFactor = sender.doubleValue
+      self.renderBondScaleFactor = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.bondsScalingCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6182,10 +6208,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeBondSelectionStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer],
        let selectionStyle = RKSelectionStyle(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderBondSelectionStyle = selectionStyle
+      self.renderBondSelectionStyle = selectionStyle
       
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell, self.bondsSelectionCell])
       
@@ -6201,12 +6226,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSelectionFrequencyTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSelectionFrequency = sender.doubleValue
+      self.renderBondSelectionFrequency = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.bondsSelectionCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6219,12 +6243,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSelectionDensityTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSelectionDensity = sender.doubleValue
+      self.renderBondSelectionDensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.bondsSelectionCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6237,12 +6260,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSelectionIntensityField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSelectionIntensity = sender.doubleValue
+      self.renderBondSelectionIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.bondsSelectionCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6255,12 +6277,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSelectionIntensity(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSelectionIntensity = sender.doubleValue
+      self.renderBondSelectionIntensity = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.bondsSelectionCell, self.atomsRepresentationStyleCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
@@ -6290,12 +6311,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSelectionScalingTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSelectionScaling = sender.doubleValue
+      self.renderBondSelectionScaling = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.bondsSelectionCell, self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -6308,12 +6328,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSelectionScalingSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSelectionScaling = sender.doubleValue
+      self.renderBondSelectionScaling = sender.doubleValue
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.bondsSelectionCell, self.atomsRepresentationStyleCell])
       
       if let event: NSEvent = NSApplication.shared.currentEvent
@@ -6345,12 +6364,11 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // High dynamic range
   @IBAction func toggleBondHDR(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondHDR = (sender.state == NSControl.StateValue.on)
+      self.renderBondHDR = (sender.state == NSControl.StateValue.on)
       
-      representedStructure.recheckRepresentationStyleBond()
+      self.recheckRepresentationStyleBond()
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
@@ -6365,10 +6383,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Exposure slider
   @IBAction func changeBondExposureSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondHDRExposure = sender.doubleValue
+      self.renderBondHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsHDRCell])
       
@@ -6384,10 +6401,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Hue textfield
   @IBAction func changeBondHueTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondHue = sender.doubleValue
+      self.renderBondHue = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsHDRCell, self.atomsRepresentationStyleCell])
       
@@ -6402,10 +6418,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Hue slider
   @IBAction func changeBondHueSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondHue = sender.doubleValue
+      self.renderBondHue = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsHDRCell, self.atomsRepresentationStyleCell])
       
@@ -6436,10 +6451,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Saturation textfield
   @IBAction func changeBondSaturationTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSaturation = sender.doubleValue
+      self.renderBondSaturation = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsHDRCell, self.atomsRepresentationStyleCell])
       
@@ -6454,10 +6468,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Saturation slider
   @IBAction func changeBondSaturationSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSaturation = sender.doubleValue
+      self.renderBondSaturation = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsHDRCell, self.atomsRepresentationStyleCell])
       
@@ -6488,10 +6501,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Value textfield
   @IBAction func changeBondValueTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondValue = sender.doubleValue
+      self.renderBondValue = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsHDRCell, self.atomsRepresentationStyleCell])
       
@@ -6506,10 +6518,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Value slider
   @IBAction func changeBondValueSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondValue = sender.doubleValue
+      self.renderBondValue = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsHDRCell, self.atomsRepresentationStyleCell])
       
@@ -6537,17 +6548,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  
-  
-  
-  
-  
+
   @IBAction func changeBondAmbientTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondAmbientIntensity = sender.doubleValue
+      self.renderBondAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6562,10 +6568,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondAmbientIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondAmbientIntensity = sender.doubleValue
+      self.renderBondAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6580,10 +6585,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondAmbientColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondAmbientColor = sender.color
+      self.renderBondAmbientColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6596,10 +6600,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondDiffuseTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondDiffuseIntensity = sender.doubleValue
+      self.renderBondDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6613,10 +6616,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondDiffuseIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondDiffuseIntensity = sender.doubleValue
+      self.renderBondDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6631,10 +6633,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondDiffuseColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondDiffuseColor = sender.color
+      self.renderBondDiffuseColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6647,10 +6648,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSpecularTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSpecularIntensity = sender.doubleValue
+      self.renderBondSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6665,10 +6665,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSpecularIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSpecularIntensity = sender.doubleValue
+      self.renderBondSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6683,10 +6682,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondSpecularColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondSpecularColor = sender.color
+      self.renderBondSpecularColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6699,10 +6697,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondShininessTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondShininess = sender.doubleValue
+      self.renderBondShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6716,10 +6713,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeBondShininessSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [BondVisualAppearanceViewer] = representedObject as? [BondVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderBondShininess = sender.doubleValue
+      self.renderBondShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.bondsLightingCell, self.atomsRepresentationStyleCell])
       
@@ -6740,14 +6736,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func toggleDrawUnitCell(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderDrawUnitCell = (sender.state == NSControl.StateValue.on)
+      self.renderDrawUnitCell = (sender.state == NSControl.StateValue.on)
       
       if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode
       {
-        project.allStructures.forEach{$0.reComputeBoundingBox()}
+        project.allObjects.forEach{$0.reComputeBoundingBox()}
         (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
       }
       
@@ -6763,10 +6758,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeUnitCellScalingSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderUnitCellScaleFactor = sender.doubleValue
+      self.renderUnitCellScaleFactor = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.unitCellScalingCell])
       
@@ -6796,10 +6790,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeUnitCellScalingTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderUnitCellScaleFactor = sender.doubleValue
+      self.renderUnitCellScaleFactor = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.unitCellScalingCell])
       
@@ -6814,10 +6807,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeUnitCellDiffuseTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderUnitCellDiffuseIntensity = sender.doubleValue
+      self.renderUnitCellDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.unitCellScalingCell])
       
@@ -6831,10 +6823,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeUnitCellDiffuseIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderUnitCellDiffuseIntensity = sender.doubleValue
+      self.renderUnitCellDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.unitCellScalingCell])
       
@@ -6849,10 +6840,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeUnitCellDiffuseColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [UnitCellVisualAppearanceViewer] = representedObject as? [UnitCellVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderUnitCellDiffuseColor = sender.color
+      self.renderUnitCellDiffuseColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6870,10 +6860,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeLocalAxesPosition(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer],
        let position: RKLocalAxes.Position = RKLocalAxes.Position(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderLocalAxesPosition = position
+      self.renderLocalAxesPosition = position
       
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6887,10 +6876,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeLocalAxesStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer],
        let presentationStyle: RKLocalAxes.Style = RKLocalAxes.Style(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderLocalAxesStyle = presentationStyle
+      self.renderLocalAxesStyle = presentationStyle
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6904,10 +6892,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeLocalAxesScalingStyle(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer],
        let scalingsType: RKLocalAxes.ScalingType = RKLocalAxes.ScalingType(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderLocalAxesScalingType = scalingsType
+      self.renderLocalAxesScalingType = scalingsType
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadLocalAxesSystem()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -6920,10 +6907,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeLocalAxisLengthTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderLocalAxesLength  = sender.doubleValue
+      self.renderLocalAxesLength  = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -6937,10 +6923,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeLocalAxesLengthSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderLocalAxesLength = sender.doubleValue
+      self.renderLocalAxesLength = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -6955,10 +6940,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeLocalAxisWidthTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderLocalAxesWidth  = sender.doubleValue
+      self.renderLocalAxesWidth  = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -6972,10 +6956,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeLocalAxesWidthSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderLocalAxesWidth = sender.doubleValue
+      self.renderLocalAxesWidth = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -6991,10 +6974,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeLocalAxisOffsetXTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderLocalAxesOffsetX  = sender.doubleValue
+      self.renderLocalAxesOffsetX  = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -7008,10 +6990,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeLocalAxisOffsetYTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderLocalAxesOffsetY  = sender.doubleValue
+      self.renderLocalAxesOffsetY  = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -7025,10 +7006,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeLocalAxisOffsetZTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [LocalAxesVisualAppearanceViewer] = representedObject as? [LocalAxesVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderLocalAxesOffsetZ  = sender.doubleValue
+      self.renderLocalAxesOffsetZ  = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -7045,11 +7025,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      var structure: [LocalAxesVisualAppearanceViewer] = self.representedObject as? [LocalAxesVisualAppearanceViewer],
-      let renderTextOffsetX: Double = structure.renderLocalAxesOffsetX
+      let renderTextOffsetX: Double = self.renderLocalAxesOffsetX
     {
       let newValue: Double = renderTextOffsetX + deltaValue * 0.5
-      structure.renderLocalAxesOffsetX = newValue
+      self.renderLocalAxesOffsetX = newValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -7068,11 +7047,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      var structure: [LocalAxesVisualAppearanceViewer] = self.representedObject as? [LocalAxesVisualAppearanceViewer],
-      let renderTextOffsetY: Double = structure.renderLocalAxesOffsetY
+       let renderTextOffsetY: Double = self.renderLocalAxesOffsetY
     {
       let newValue: Double = renderTextOffsetY + deltaValue * 0.5
-      structure.renderLocalAxesOffsetY = newValue
+      self.renderLocalAxesOffsetY = newValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -7091,11 +7069,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      var structure: [LocalAxesVisualAppearanceViewer] = self.representedObject as? [LocalAxesVisualAppearanceViewer],
-      let renderTextOffsetZ: Double = structure.renderLocalAxesOffsetZ
+      let renderTextOffsetZ: Double = self.renderLocalAxesOffsetZ
     {
       let newValue: Double = renderTextOffsetZ + deltaValue * 0.5
-      structure.renderLocalAxesOffsetZ = newValue
+      self.renderLocalAxesOffsetZ = newValue
       
       self.updateOutlineView(identifiers: [self.localAxesCell])
       
@@ -7109,15 +7086,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     sender.doubleValue = 0
   }
   
-  // MARK: adsorption surface
+  // MARK: Adsorption surface
   // =====================================================================
   
   @IBAction func toggleAdsorptionSurface(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceOn = (sender.state == NSControl.StateValue.on)
+      self.renderAdsorptionSurfaceOn = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
@@ -7134,11 +7110,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAdsorptionRenderingType(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer],
        let adsorptionSurfaceRenderingMethod = RKEnergySurfaceType(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderAdsorptionRenderingMethod = adsorptionSurfaceRenderingMethod
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: representedStructure.selectedFrames)
+      self.renderAdsorptionRenderingMethod = adsorptionSurfaceRenderingMethod
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -7151,11 +7126,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAdsorptionSurfaceProbeMolecule(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer],
        let adsorptionSurfaceProbeMolecule = Structure.ProbeMolecule(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderAdsorptionSurfaceProbeMolecule = adsorptionSurfaceProbeMolecule
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: representedStructure.selectedFrames)
+      self.renderAdsorptionSurfaceProbeMolecule = adsorptionSurfaceProbeMolecule
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -7168,11 +7142,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAdsorptionTransferFunction(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer],
        let adsorptionVolumeTransferFunction = RKPredefinedVolumeRenderingTransferFunction(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderAdsorptionVolumeTransferFunction = adsorptionVolumeTransferFunction
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: representedStructure.selectedFrames)
+      self.renderAdsorptionVolumeTransferFunction = adsorptionVolumeTransferFunction
+      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -7184,10 +7157,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionVolumeStepLengthTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionVolumeStepLength = sender.doubleValue
+      self.renderAdsorptionVolumeStepLength = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
@@ -7201,10 +7173,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceIsovalueSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceIsovalue = sender.doubleValue
+      self.renderAdsorptionSurfaceIsovalue = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
       
@@ -7239,10 +7210,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceIsovalueTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceIsovalue = sender.doubleValue
+      self.renderAdsorptionSurfaceIsovalue = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
       
@@ -7259,10 +7229,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceOpaquenessSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceOpacity = sender.doubleValue
+      self.renderAdsorptionSurfaceOpacity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
       
@@ -7292,10 +7261,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceOpaquenessTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceOpacity = sender.doubleValue
+      self.renderAdsorptionSurfaceOpacity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
       
@@ -7309,16 +7277,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceSize(_ sender: NSPopUpButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       switch(sender.indexOfSelectedItem)
       {
       case 0:
-        representedStructure.renderAdsorptionSurfaceSize = 128
+        self.renderAdsorptionSurfaceSize = 128
         break
       case 1:
-        representedStructure.renderAdsorptionSurfaceSize = 256
+        self.renderAdsorptionSurfaceSize = 256
         break
       default:
         break
@@ -7335,14 +7302,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Hue textfield
    @IBAction func changeAdsorptionSurfaceHueTextField(_ sender: NSTextField)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderAdsorptionSurfaceHue = sender.doubleValue
+       self.renderAdsorptionSurfaceHue = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
        
        self.windowController?.document?.updateChangeCount(.changeDone)
@@ -7353,10 +7320,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Hue slider
    @IBAction func changeAdsorptionSurfaceHueSlider(_ sender: NSSlider)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderAdsorptionSurfaceHue = sender.doubleValue
+       self.renderAdsorptionSurfaceHue = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
@@ -7376,6 +7342,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
        }
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
        
        self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
@@ -7387,14 +7354,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Saturation textfield
    @IBAction func changeAdsorptionSurfaceSaturationTextField(_ sender: NSTextField)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderAdsorptionSurfaceSaturation = sender.doubleValue
+       self.renderAdsorptionSurfaceSaturation = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
        
        self.windowController?.document?.updateChangeCount(.changeDone)
@@ -7405,10 +7372,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Saturation slider
    @IBAction func changeAdsorptionSurfaceSaturationSlider(_ sender: NSSlider)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderAdsorptionSurfaceSaturation = sender.doubleValue
+       self.renderAdsorptionSurfaceSaturation = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
@@ -7428,6 +7394,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
        }
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
        
        self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
@@ -7439,14 +7406,14 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Value textfield
    @IBAction func changeAdsorptionSurfaceValueTextField(_ sender: NSTextField)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderAdsorptionSurfaceValue = sender.doubleValue
+       self.renderAdsorptionSurfaceValue = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
        
        self.windowController?.document?.updateChangeCount(.changeDone)
@@ -7457,10 +7424,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    // Value slider
    @IBAction func changeAdsorptionSurfaceValueSlider(_ sender: NSSlider)
    {
-     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-        var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
      {
-       representedStructure.renderAdsorptionSurfaceValue = sender.doubleValue
+       self.renderAdsorptionSurfaceValue = sender.doubleValue
        
        self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
        
@@ -7480,6 +7446,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
        }
        
        self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
+       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
        self.windowController?.detailTabViewController?.renderViewController?.redraw()
        
        self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
@@ -7492,11 +7459,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // High dynamic range
   @IBAction func toggleAdsorptionSurfaceFrontSideHDR(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderAdsorptionSurfaceFrontSideHDR = (sender.state == NSControl.StateValue.on)
+      self.renderAdsorptionSurfaceFrontSideHDR = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7509,10 +7475,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideHDRExporeTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionHSVCell])
       
@@ -7527,10 +7492,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Exposure slider
   @IBAction func changeAdsorptionSurfaceFrontSideExposureSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideHDRExposure = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7545,10 +7509,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideAmbientTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7563,10 +7526,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideAmbientIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideAmbientIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7581,10 +7543,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideAmbientColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideAmbientColor = sender.color
+      self.renderAdsorptionSurfaceFrontSideAmbientColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7597,10 +7558,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideDiffuseTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7615,10 +7575,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideDiffuseIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideDiffuseIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7634,10 +7593,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideDiffuseColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideDiffuseColor = sender.color
+      self.renderAdsorptionSurfaceFrontSideDiffuseColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7650,10 +7608,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideSpecularTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7668,10 +7625,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideSpecularIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideSpecularIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7688,10 +7644,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideSpecularColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideSpecularColor = sender.color
+      self.renderAdsorptionSurfaceFrontSideSpecularColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7704,10 +7659,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideShininessTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideShininess = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7721,10 +7675,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceFrontSideShininessSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceFrontSideShininess = sender.doubleValue
+      self.renderAdsorptionSurfaceFrontSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionFrontSurfaceCell])
       
@@ -7739,11 +7692,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func toggleAdsorptionSurfaceBackSideHDR(_ sender: NSButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
       sender.allowsMixedState = false
-      representedStructure.renderAdsorptionSurfaceBackSideHDR = (sender.state == NSControl.StateValue.on)
+      self.renderAdsorptionSurfaceBackSideHDR = (sender.state == NSControl.StateValue.on)
       
       self.windowController?.detailTabViewController?.renderViewController?.reloadData()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7756,10 +7708,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideHDRExporeTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideHDRExposure = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7774,10 +7725,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Exposure slider
   @IBAction func changeAdsorptionSurfaceBackSideExposureSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideHDRExposure = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideHDRExposure = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7793,10 +7743,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideAmbientTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7811,10 +7760,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideAmbientIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideAmbientIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideAmbientIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7830,10 +7778,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideAmbientColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideAmbientColor = sender.color
+      self.renderAdsorptionSurfaceBackSideAmbientColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7846,10 +7793,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideDiffuseTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7864,10 +7810,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideDiffuseIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideDiffuseIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideDiffuseIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7883,10 +7828,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideDiffuseColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideDiffuseColor = sender.color
+      self.renderAdsorptionSurfaceBackSideDiffuseColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7899,10 +7843,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideSpecularTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7917,10 +7860,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideSpecularIntensitySlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideSpecularIntensity = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideSpecularIntensity = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7936,10 +7878,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideSpecularColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideSpecularColor = sender.color
+      self.renderAdsorptionSurfaceBackSideSpecularColor = sender.color
       
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
@@ -7953,10 +7894,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideShininessTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideShininess = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7970,10 +7910,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAdsorptionSurfaceBackSideShininessSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-       var representedStructure: [AdsorptionSurfaceVisualAppearanceViewer] = representedObject as? [AdsorptionSurfaceVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderAdsorptionSurfaceBackSideShininess = sender.doubleValue
+      self.renderAdsorptionSurfaceBackSideShininess = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.adsorptionBackSurfaceCell])
       
@@ -7986,16 +7925,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
-  // MARK: annotation
+  // MARK: Annotation
   // =====================================================================
   
   @IBAction func changeAtomTextAnnotationStyle(_ sender: iRASPAPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
       let renderTextType = RKTextType(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderTextType = renderTextType
+      self.renderTextType = renderTextType
       
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
@@ -8012,10 +7950,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomTextColor(_ sender: NSColorWell)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderTextColor = sender.color
+      self.renderTextColor = sender.color
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8030,10 +7967,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomTextAnnotationFontFamily(_ sender: iRASPAPopUpButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderTextFont = sender.titleOfSelectedItem
+      self.renderTextFont = sender.titleOfSelectedItem
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8054,14 +7990,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeAtomTextAnnotationFontMember(_ sender: iRASPAPopUpButton)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      if let fontFamilyName = representedStructure.renderTextFontFamily,
+      if let fontFamilyName = self.renderTextFontFamily,
          let availableMembers: [[Any]] = NSFontManager.shared.availableMembers(ofFontFamily: fontFamilyName)
       {
         let fontNames = availableMembers.compactMap{$0[0] as? String}
-        representedStructure.renderTextFont = fontNames[sender.indexOfSelectedItem]
+        self.renderTextFont = fontNames[sender.indexOfSelectedItem]
         
         LogQueue.shared.info(destination: self.windowController, message: "Creating new font-atlas for font \(fontNames[sender.indexOfSelectedItem])", completionHandler: {
           
@@ -8082,10 +8017,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   @IBAction func changeAtomTextAnnotationAlignment(_ sender: iRASPAPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer],
       let renderTextAlignment = RKTextAlignment(rawValue: sender.indexOfSelectedItem)
     {
-      representedStructure.renderTextAlignment = renderTextAlignment
+      self.renderTextAlignment = renderTextAlignment
       
       self.updateOutlineView(identifiers: [self.atomsRepresentationStyleCell])
       
@@ -8103,10 +8037,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeTextScalingTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderTextScaling = sender.doubleValue
+      self.renderTextScaling = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8122,10 +8055,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   // Text scaling slider
   @IBAction func changeTextScalingSlider(_ sender: NSSlider)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderTextScaling = sender.doubleValue
+      self.renderTextScaling = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       self.windowController?.detailTabViewController?.renderViewController?.updateStructureUniforms()
@@ -8140,10 +8072,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeTextOffsetXTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderTextOffsetX = sender.doubleValue
+      self.renderTextOffsetX = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8161,11 +8092,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      var structure: [AtomVisualAppearanceViewer] = self.representedObject as? [AtomVisualAppearanceViewer],
-      let renderTextOffsetX: Double = structure.renderTextOffsetX
+      let renderTextOffsetX: Double = self.renderTextOffsetX
     {
       let newValue: Double = renderTextOffsetX + deltaValue * 0.1
-      structure.renderTextOffsetX = newValue
+      self.renderTextOffsetX = newValue
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8182,10 +8112,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeTextOffsetYTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderTextOffsetY = sender.doubleValue
+      self.renderTextOffsetY = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8203,11 +8132,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-      var structure: [AtomVisualAppearanceViewer] = self.representedObject as? [AtomVisualAppearanceViewer],
-      let renderTextOffsetY: Double = structure.renderTextOffsetY
+      let renderTextOffsetY: Double = self.renderTextOffsetY
     {
       let newValue: Double = renderTextOffsetY + deltaValue * 0.1
-      structure.renderTextOffsetY = newValue
+      self.renderTextOffsetY = newValue
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8224,10 +8152,9 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   @IBAction func changeTextOffsetZTextField(_ sender: NSTextField)
   {
-    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable,
-      var representedStructure: [AtomVisualAppearanceViewer] = representedObject as? [AtomVisualAppearanceViewer]
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      representedStructure.renderTextOffsetZ = sender.doubleValue
+      self.renderTextOffsetZ = sender.doubleValue
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8245,11 +8172,10 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     let deltaValue: Double = sender.doubleValue
     
     if let projectTreeNode: ProjectTreeNode = self.proxyProject, projectTreeNode.isEnabled,
-       var structure: [AtomVisualAppearanceViewer] = self.representedObject as? [AtomVisualAppearanceViewer],
-       let renderTextOffsetZ: Double = structure.renderTextOffsetZ
+       let renderTextOffsetZ: Double = self.renderTextOffsetZ
     {
       let newValue: Double = renderTextOffsetZ + deltaValue * 0.1
-      structure.renderTextOffsetZ = newValue
+      self.renderTextOffsetZ = newValue
       
       self.updateOutlineView(identifiers: [self.annotationVisualAppearanceCell])
       
@@ -8262,5 +8188,2001 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
     
     sender.doubleValue = 0
+  }
+  
+ 
+  
+  // MARK: Primitive Visual Appearance
+  //===================================================================================================================================================
+  
+  public var renderPrimitiveOrientation: simd_quatd?
+  {
+    get
+    {
+      let origin: [simd_quatd] = self.iRASPAObjects.compactMap{($0.object as? PrimitiveViewer)?.primitiveOrientation}
+      let q: simd_quatd = origin.reduce(simd_quatd()){return simd_add($0, $1)}
+      let averaged_vector: simd_quatd = simd_quatd(ix: q.vector.x / Double(origin.count), iy: q.vector.y / Double(origin.count), iz: q.vector.z / Double(origin.count), r: q.vector.w / Double(origin.count))
+      return origin.isEmpty ? nil : averaged_vector
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveOrientation = newValue ?? simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveRotationDelta: Double?
+  {
+    get
+    {
+      let origin: [Double] = self.iRASPAObjects.compactMap{($0.object as? PrimitiveViewer)?.primitiveRotationDelta}
+      return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? PrimitiveViewer)?.primitiveRotationDelta = newValue ?? 5.0}
+    }
+  }
+  
+  public var renderPrimitiveEulerAngleX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles.x}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.y,($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.z)
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveEulerAngleY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles.y}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles = SIMD3<Double>(($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.x, newValue ?? 0.0,($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.z)
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveEulerAngleZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles.z}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles = SIMD3<Double>(($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.x, ($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  
+  public var renderPrimitiveTransformationMatrix: double3x3?
+  {
+    get
+    {
+      let set: Set<double3x3> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix = newValue ?? double3x3(1.0)
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixAX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].x}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].x = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixAY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].y}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].y = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixAZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].z}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].z = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixBX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].x}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].x = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixBY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].y}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].y = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixBZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].z}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].z = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixCX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].x}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].x = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixCY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].y}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].y = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveTransformationMatrixCZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].z}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].z = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderPrimitiveOpacity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveOpacity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveOpacity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderPrimitiveNumberOfSides: Int?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveNumberOfSides}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveNumberOfSides = newValue ?? 6})
+    }
+  }
+  
+  public var renderPrimitiveIsCapped: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveIsCapped}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveIsCapped = newValue ?? false})
+    }
+  }
+  
+  public var renderPrimitiveIsFractional: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveIsFractional}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveIsFractional = newValue ?? false})
+    }
+  }
+  
+  public var renderPrimitiveThickness: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveThickness}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveThickness = newValue ?? 0.05})
+    }
+  }
+  
+  public var renderPrimitiveSelectionStyle: RKSelectionStyle?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveSelectionStyle.rawValue}))
+      return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveSelectionStyle = newValue ?? .glow})
+    }
+  }
+  
+  public var renderPrimitiveSelectionFrequency: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.renderPrimitiveSelectionFrequency}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.renderPrimitiveSelectionFrequency = newValue ?? 4.0})
+    }
+  }
+  
+  public var renderPrimitiveSelectionDensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.renderPrimitiveSelectionDensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.renderPrimitiveSelectionDensity = newValue ?? 4.0})
+    }
+  }
+  
+  public var renderPrimitiveSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveSelectionIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveSelectionIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderPrimitiveSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveSelectionScaling}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveSelectionScaling = newValue ?? 1.0})
+    }
+  }
+  
+  
+  public var renderPrimitiveHue: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveHue}))
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveHue = newValue ?? 1.0})
+     }
+   }
+   
+   public var renderPrimitiveSaturation: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveSaturation}))
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveSaturation = newValue ?? 1.0})
+     }
+   }
+   
+   public var renderPrimitiveValue: Double?
+   {
+     get
+     {
+       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveValue}))
+       return Set(set).count == 1 ? set.first! : nil
+     }
+     set(newValue)
+     {
+       self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveValue = newValue ?? 1.0})
+     }
+   }
+  
+  public var renderPrimitiveFrontSideHDR: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideHDR}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideHDR = newValue ?? true})
+    }
+  }
+  
+  public var renderPrimitiveFrontSideHDRExposure: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideHDRExposure}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideHDRExposure = newValue ?? 1.5})
+    }
+  }
+  
+  public var renderPrimitiveFrontSideAmbientIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideAmbientIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideAmbientIntensity = newValue ?? 0.2})
+    }
+  }
+  
+  
+  public var renderPrimitiveFrontSideAmbientColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideAmbientColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)})
+    }
+  }
+  
+  public var renderPrimitiveFrontSideDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideDiffuseIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideDiffuseIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderPrimitiveFrontSideDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideDiffuseColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)})
+    }
+  }
+  
+  public var renderPrimitiveFrontSideSpecularIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideSpecularIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideSpecularIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderPrimitiveFrontSideSpecularColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideSpecularColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)})
+    }
+  }
+  
+  public var renderPrimitiveFrontSideShininess: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideShininess}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideShininess = newValue ?? 4.0})
+    }
+  }
+  
+  public var renderPrimitiveBackSideHDR: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideHDR}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideHDR = newValue ?? true})
+    }
+  }
+  
+  public var renderPrimitiveBackSideHDRExposure: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideHDRExposure}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideHDRExposure = newValue ?? 1.5})
+    }
+  }
+  
+  
+  public var renderPrimitiveBackSideAmbientIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideAmbientIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideAmbientIntensity = newValue ?? 0.2})
+    }
+  }
+  
+  public var renderPrimitiveBackSideAmbientColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideAmbientColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)})
+    }
+  }
+  
+  
+  public var renderPrimitiveBackSideDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideDiffuseIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideDiffuseIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderPrimitiveBackSideDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideDiffuseColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)})
+    }
+  }
+  
+  public var renderPrimitiveBackSideSpecularIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideSpecularIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideSpecularIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderPrimitiveBackSideSpecularColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideSpecularColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)})
+    }
+  }
+  
+  public var renderPrimitiveBackSideShininess: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideShininess}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideShininess = newValue ?? 4.0})
+    }
+  }
+  
+  // MARK: Atom Visual Appearance
+  //===================================================================================================================================================
+  
+  public func recheckRepresentationStyle()
+  {
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.recheckRepresentationStyle()}
+  }
+  
+  public func getRepresentationType() -> Structure.RepresentationType?
+  {
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationType()?.rawValue })
+    return Set(set).count == 1 ? Structure.RepresentationType(rawValue: set.first!) : nil
+  }
+  
+  public func setRepresentationType(type: Structure.RepresentationType?)
+  {
+    self.iRASPAObjects.forEach{
+      ($0.object as? AtomStructureViewer)?.setRepresentationType(type: type)
+      $0.object.reComputeBoundingBox()
+    }
+  }
+  
+  
+  public func getRepresentationStyle() -> Structure.RepresentationStyle?
+  {
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationStyle()?.rawValue })
+    return Set(set).count == 1 ? Structure.RepresentationStyle(rawValue: set.first!) : nil
+  }
+  
+  public func setRepresentationStyle(style: Structure.RepresentationStyle?, colorSets: SKColorSets)
+  {
+    self.iRASPAObjects.forEach{
+      ($0.object as? AtomStructureViewer)?.setRepresentationStyle(style: style, colorSets: colorSets)
+      $0.object.reComputeBoundingBox()
+    }
+  }
+  
+  public func getRepresentationColorScheme() -> String?
+  {
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationColorScheme() })
+    return Set(set).count == 1 ?  set.first! : nil
+  }
+  
+  public func setRepresentationColorScheme(scheme: String?, colorSets: SKColorSets)
+  {
+  self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.setRepresentationColorScheme(scheme: scheme ?? "Default", colorSets: colorSets)}
+  }
+  
+  public func getRepresentationColorOrder() -> SKColorSets.ColorOrder?
+  {
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationColorOrder()?.rawValue })
+    return Set(set).count == 1 ?  SKColorSets.ColorOrder(rawValue: set.first!) : nil
+  }
+  
+  public func setRepresentationColorOrder(order: SKColorSets.ColorOrder?, colorSets: SKColorSets)
+  {
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.setRepresentationColorOrder(order: order ?? SKColorSets.ColorOrder.elementOnly, colorSets: colorSets)}
+  }
+  
+  public func getRepresentationForceField() -> String?
+  {
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationForceField() })
+      return Set(set).count == 1 ?  set.first! : nil
+  }
+  
+  public func setRepresentationForceField(forceField: String?, forceFieldSets: SKForceFieldSets)
+  {
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.setRepresentationForceField(forceField: forceField ?? "Default", forceFieldSets: forceFieldSets)}
+  }
+  
+  public func getRepresentationForceFieldOrder() -> SKForceFieldSets.ForceFieldOrder?
+  {
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationForceFieldOrder()?.rawValue })
+    return Set(set).count == 1 ?  SKForceFieldSets.ForceFieldOrder(rawValue: set.first!) : nil
+  }
+  
+  public func setRepresentationForceFieldOrder(order: SKForceFieldSets.ForceFieldOrder?, forceFieldSets: SKForceFieldSets)
+  {
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.setRepresentationForceFieldOrder(order: order, forceFieldSets: forceFieldSets)}
+  }
+  
+  public var renderAtomHue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomHue})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomHue = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomSaturation: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSaturation})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSaturation = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomValue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomValue})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomValue = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomScaleFactor: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomScaleFactor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? AtomStructureViewer)?.atomScaleFactor = newValue ?? 1.0
+      }
+    }
+  }
+  
+  public var renderAtomScaleFactorCompleted: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomScaleFactor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? AtomStructureViewer)?.atomScaleFactor = newValue ?? 1.0
+        $0.object.reComputeBoundingBox()
+      }
+    }
+  }
+  
+  public var renderDrawAtoms: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.drawAtoms})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.drawAtoms = newValue ?? true}
+    }
+  }
+  
+  public var renderAtomAmbientOcclusion: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomAmbientOcclusion})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomAmbientOcclusion = newValue ?? true}
+    }
+  }
+  
+  public var renderAtomHDR: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomHDR})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomHDR = newValue ?? true}
+    }
+  }
+  
+  
+  public var renderAtomHDRExposure: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomHDRExposure})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomHDRExposure = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomAmbientColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomAmbientColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+    }
+  }
+  
+  public var renderAtomDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomDiffuseColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+    }
+  }
+  
+  public var renderAtomSpecularColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSpecularColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+    }
+  }
+  
+  
+  public var renderAtomAmbientIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomAmbientIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomAmbientIntensity = newValue ?? 0.2}
+    }
+  }
+  
+  public var renderAtomDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomDiffuseIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomDiffuseIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomSpecularIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSpecularIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSpecularIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomShininess: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomShininess})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomShininess = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderAtomSelectionStyle: RKSelectionStyle?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSelectionStyle.rawValue})
+      return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSelectionStyle = newValue ?? .glow}
+    }
+  }
+  
+  public var renderAtomSelectionFrequency: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.renderAtomSelectionFrequency})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.renderAtomSelectionFrequency = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderAtomSelectionDensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.renderAtomSelectionDensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.renderAtomSelectionDensity = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderAtomSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSelectionIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSelectionIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAtomSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSelectionScaling})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSelectionScaling = newValue ?? 1.0}
+    }
+  }
+  
+  // MARK: Bond Visual Appearance
+  //===================================================================================================================================================
+  
+  public func recheckRepresentationStyleBond()
+  {
+    self.iRASPAObjects.forEach{($0.object as? BondStructureViewer)?.recheckRepresentationStyle()}
+  }
+  
+  public var renderDrawBonds: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.drawBonds}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.drawBonds = newValue ?? false})
+    }
+  }
+  
+  public var renderBondScaleFactor: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondScaleFactor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{
+        ($0.object as? BondStructureViewer)?.bondScaleFactor = newValue ?? 1.0
+        //if(($0.object as? BondVisualAppearanceViewer)?.atomRepresentationType == .unity)
+        //{
+        //  let asymmetricAtoms: [SKAsymmetricAtom] = ($0.object as? BondVisualAppearanceViewer)?.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
+        //  asymmetricAtoms.forEach{($0.object as? BondVisualAppearanceViewer)?.drawRadius = newValue ?? 1.0}
+        //}
+      }
+    }
+  }
+  
+  public var renderBondColorMode: RKBondColorMode?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondColorMode.rawValue}))
+      return Set(set).count == 1 ? RKBondColorMode(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondColorMode = newValue ?? .split})
+    }
+  }
+  
+  public var renderBondAmbientOcclusion: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondAmbientOcclusion}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondAmbientOcclusion = newValue ?? false})
+    }
+  }
+  
+  public var renderBondHDR: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondHDR}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondHDR = newValue ?? false})
+    }
+  }
+  
+  public var renderBondHDRExposure: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondHDRExposure}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondHDRExposure = newValue ?? 1.5})
+    }
+  }
+  
+  public var renderBondHue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondHue}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondHue = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderBondSaturation: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSaturation}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSaturation = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderBondValue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondValue}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondValue = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderBondAmbientColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondAmbientColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+    }
+  }
+  
+  public var renderBondDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondDiffuseColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondDiffuseColor = newValue ?? NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)})
+    }
+  }
+  
+  public var renderBondSpecularColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSpecularColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+    }
+  }
+  
+  public var renderBondAmbientIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondAmbientIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondAmbientIntensity = newValue ?? 0.2})
+    }
+  }
+  
+  public var renderBondDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondDiffuseIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondDiffuseIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderBondSpecularIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSpecularIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSpecularIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderBondShininess: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondShininess}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondShininess = newValue ?? 4.0})
+    }
+  }
+  
+  public var renderBondSelectionStyle: RKSelectionStyle?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSelectionStyle.rawValue}))
+      return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSelectionStyle = newValue ?? .glow})
+    }
+  }
+  
+  public var renderBondSelectionFrequency: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.renderBondSelectionFrequency}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.renderBondSelectionFrequency = newValue ?? 4.0})
+    }
+  }
+  
+  public var renderBondSelectionDensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.renderBondSelectionDensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.renderBondSelectionDensity = newValue ?? 4.0})
+    }
+  }
+  
+  public var renderBondSelectionIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSelectionIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSelectionIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderBondSelectionScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSelectionScaling}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSelectionScaling = newValue ?? 1.0})
+    }
+  }
+
+  
+  // MARK: Unit Cell Visual Appearance
+  //===================================================================================================================================================
+  
+  public var renderDrawUnitCell: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellViewer)?.drawUnitCell}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? UnitCellViewer)?.drawUnitCell = newValue ?? false})
+    }
+  }
+  
+  public var renderUnitCellScaleFactor: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellViewer)?.unitCellScaleFactor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? UnitCellViewer)?.unitCellScaleFactor = newValue ?? 1.0})
+    }
+  }
+  
+  public var renderUnitCellDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellViewer)?.unitCellDiffuseColor}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? UnitCellViewer)?.unitCellDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+    }
+  }
+  
+  public var renderUnitCellDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellViewer)?.unitCellDiffuseIntensity}))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach({($0.object as? UnitCellViewer)?.unitCellDiffuseIntensity = newValue ?? 1.0})
+    }
+  }
+  
+  // MARK: Local Axes Visual Appearance
+  //===================================================================================================================================================
+  
+  public var renderLocalAxesPosition: RKLocalAxes.Position?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return $0.object.renderLocalAxis.position.rawValue })
+      return Set(set).count == 1 ? RKLocalAxes.Position(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.renderLocalAxis.position = newValue ?? .none}
+    }
+  }
+  
+  public var renderLocalAxesStyle: RKLocalAxes.Style?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return $0.object.renderLocalAxis.style.rawValue })
+      return Set(set).count == 1 ? RKLocalAxes.Style(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.renderLocalAxis.style = newValue ?? .default}
+    }
+  }
+  
+  public var renderLocalAxesScalingType: RKLocalAxes.ScalingType?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return $0.object.renderLocalAxis.scalingType.rawValue })
+      return Set(set).count == 1 ? RKLocalAxes.ScalingType(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.renderLocalAxis.scalingType = newValue ?? .absolute}
+    }
+  }
+  
+  public var renderLocalAxesLength: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.renderLocalAxis.length })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.renderLocalAxis.length = newValue ?? 5.0}
+    }
+  }
+  
+  public var renderLocalAxesWidth: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.renderLocalAxis.width })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.renderLocalAxis.width = newValue ?? 5.0}
+    }
+  }
+  
+  public var renderLocalAxesOffsetX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.renderLocalAxis.offset.x })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.renderLocalAxis.offset.x = newValue ?? 5.0}
+    }
+  }
+  
+  public var renderLocalAxesOffsetY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.renderLocalAxis.offset.y })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.renderLocalAxis.offset.y = newValue ?? 5.0}
+    }
+  }
+  
+  public var renderLocalAxesOffsetZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{ return $0.object.renderLocalAxis.offset.z })
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{$0.object.renderLocalAxis.offset.z = newValue ?? 5.0}
+    }
+  }
+  
+  
+  // MARK: Adsorption SurfaceVisual Appearance
+  //===================================================================================================================================================
+  
+
+  public var renderMinimumGridEnergyValue: Float?
+  {
+    get
+    {
+      let set: Set<Float> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.minimumGridEnergyValue})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.minimumGridEnergyValue = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceOn: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.drawAdsorptionSurface})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.drawAdsorptionSurface = newValue ?? false}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceOpacity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceOpacity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceOpacity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceIsovalue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceIsoValue})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceIsoValue = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceSize: Int?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceSize})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceSize = newValue ?? 128}
+    }
+  }
+  
+  public var renderAdsorptionRenderingMethod: RKEnergySurfaceType?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceRenderingMethod.rawValue})
+      return Set(set).count == 1 ? RKEnergySurfaceType(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceRenderingMethod = newValue ?? RKEnergySurfaceType.isoSurface}
+    }
+  }
+  
+  public var renderAdsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionVolumeTransferFunction.rawValue})
+      return Set(set).count == 1 ? RKPredefinedVolumeRenderingTransferFunction(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionVolumeTransferFunction = newValue ?? RKPredefinedVolumeRenderingTransferFunction.default}
+    }
+  }
+  
+  public var renderAdsorptionVolumeStepLength: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionVolumeStepLength})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionVolumeStepLength = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceProbeMolecule: Structure.ProbeMolecule?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceProbeMolecule.rawValue})
+      return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceHue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceHue})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceHue = newValue ?? 1.0}
+    }
+  }
+    
+  public var renderAdsorptionSurfaceSaturation: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceSaturation})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceSaturation = newValue ?? 1.0}
+    }
+  }
+    
+  public var renderAdsorptionSurfaceValue: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceValue})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceValue = newValue ?? 1.0}
+    }
+  }
+   
+  
+  public var renderAdsorptionSurfaceFrontSideHDR: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideHDR})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideHDR = newValue ?? true}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceFrontSideHDRExposure: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideHDRExposure})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceFrontSideAmbientIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceFrontSideDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceFrontSideSpecularIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideSpecularIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceFrontSideShininess: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideShininess})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceFrontSideAmbientColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideAmbientColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceFrontSideDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideHDR: Bool?
+  {
+    get
+    {
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideHDR})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideHDR = newValue ?? true}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideHDRExposure: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideHDRExposure})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideAmbientIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideDiffuseIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideDiffuseIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideSpecularIntensity: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideSpecularIntensity})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideShininess: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideShininess})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceFrontSideSpecularColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideSpecularColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideAmbientColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideDiffuseColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideDiffuseColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+    }
+  }
+  
+  public var renderAdsorptionSurfaceBackSideSpecularColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideSpecularColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+    }
+  }
+
+  
+  // MARK: Annotation Visual Appearance
+  //===================================================================================================================================================
+  
+  public var renderTextType: RKTextType?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextType.rawValue})
+      return Set(set).count == 1 ? RKTextType(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextType = newValue ?? .none}
+    }
+  }
+  
+  public var renderTextStyle: RKTextStyle?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextStyle.rawValue})
+      return Set(set).count == 1 ? RKTextStyle(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextStyle = newValue ?? .flatBillboard}
+    }
+  }
+  
+  public var renderTextAlignment: RKTextAlignment?
+  {
+    get
+    {
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextAlignment.rawValue})
+      return Set(set).count == 1 ? RKTextAlignment(rawValue: set.first!) : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextAlignment = newValue ?? .center}
+    }
+  }
+  
+  public var renderTextFont: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextFont})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextFont = newValue ?? "Helvetica"}
+    }
+  }
+  
+  public var renderTextFontFamily: String?
+  {
+    get
+    {
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({ (structure) -> String? in
+        if let font: NSFont = NSFont(name: (structure.object as? AnnotationViewer)?.atomTextFont ?? "Helvetica", size: 32)
+        {
+          return font.familyName
+        }
+        return nil
+      }))
+      return Set(set).count == 1 ? set.first! : nil
+    }
+  }
+  
+  public var renderTextColor: NSColor?
+  {
+    get
+    {
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextColor})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextColor = newValue ?? NSColor.black}
+    }
+  }
+  
+  public var renderTextScaling: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextScaling})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextScaling = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderTextOffsetX: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextOffset.x})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextOffset.x = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderTextOffsetY: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextOffset.y})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextOffset.y = newValue ?? 0.0}
+    }
+  }
+  
+  public var renderTextOffsetZ: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextOffset.z})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextOffset.z = newValue ?? 0.0}
+    }
   }
 }

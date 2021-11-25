@@ -190,40 +190,40 @@ public final class SKAsymmetricAtom: Hashable, Equatable, CustomStringConvertibl
     self.bondDistanceCriteria = bondDistanceCriteria
   }
   
-  required public init(original: SKAsymmetricAtom)
+  required public init(copy: SKAsymmetricAtom)
   {
-    self.displayName = original.displayName
-    self.position = original.position
-    self.charge = original.charge
-    self.fractional = original.fractional
+    self.displayName = copy.displayName
+    self.position = copy.position
+    self.charge = copy.charge
+    self.fractional = copy.fractional
     
-    self.hybridization = original.hybridization
+    self.hybridization = copy.hybridization
     
-    self.uniqueForceFieldName = original.uniqueForceFieldName
-    self.elementIdentifier = original.elementIdentifier
+    self.uniqueForceFieldName = copy.uniqueForceFieldName
+    self.elementIdentifier = copy.elementIdentifier
     
-    self.isFixed = original.isFixed
+    self.isFixed = copy.isFixed
     
-    self.serialNumber = original.serialNumber
-    self.remotenessIndicator = original.remotenessIndicator
-    self.branchDesignator = original.branchDesignator
-    self.alternateLocationIndicator = original.alternateLocationIndicator
-    self.residueName = original.residueName
-    self.chainIdentifier = original.chainIdentifier
-    self.residueSequenceNumber = original.residueSequenceNumber
-    self.codeForInsertionOfResidues = original.codeForInsertionOfResidues
-    self.occupancy = original.occupancy
-    self.temperaturefactor = original.temperaturefactor
-    self.segmentIdentifier = original.segmentIdentifier
+    self.serialNumber = copy.serialNumber
+    self.remotenessIndicator = copy.remotenessIndicator
+    self.branchDesignator = copy.branchDesignator
+    self.alternateLocationIndicator = copy.alternateLocationIndicator
+    self.residueName = copy.residueName
+    self.chainIdentifier = copy.chainIdentifier
+    self.residueSequenceNumber = copy.residueSequenceNumber
+    self.codeForInsertionOfResidues = copy.codeForInsertionOfResidues
+    self.occupancy = copy.occupancy
+    self.temperaturefactor = copy.temperaturefactor
+    self.segmentIdentifier = copy.segmentIdentifier
     
-    self.ligandAtom = original.ligandAtom
-    self.backBoneAtom = original.backBoneAtom
+    self.ligandAtom = copy.ligandAtom
+    self.backBoneAtom = copy.backBoneAtom
     
-    self.color = original.color
-    self.drawRadius = original.drawRadius
-    self.bondDistanceCriteria = original.bondDistanceCriteria
+    self.color = copy.color
+    self.drawRadius = copy.drawRadius
+    self.bondDistanceCriteria = copy.bondDistanceCriteria
   
-    self.copies = original.copies.copy()
+    self.copies = copy.copies.copy()
     
     for copy in copies
     {

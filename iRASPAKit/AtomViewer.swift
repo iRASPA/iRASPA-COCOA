@@ -33,10 +33,18 @@ import Foundation
 import SymmetryKit
 import SimulationKit
 
-public protocol AtomViewer
+public protocol AtomViewer: AnyObject
 {
-  var atomTreeController: SKAtomTreeController {get}
+  func recomputeSelectionBodyFixedBasis(index: Int)
   
+  var atomTreeController: SKAtomTreeController {get set}
+  
+  var atomColorSchemeIdentifier: String {get}
+  var atomForceFieldIdentifier: String {get}
+  
+  func expandSymmetry(asymmetricAtom: SKAsymmetricAtom)
   var isFractional: Bool {get}
+  
+  func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode]
 }
 

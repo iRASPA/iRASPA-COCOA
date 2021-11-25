@@ -189,11 +189,13 @@ class StructureInfoDetailViewPageController: NSPageController, WindowControllerC
       if swipeStartingPhase
       {
         viewController.representedObject = [object]
+        viewController.iRASPAObjects = [object].compactMap({($0 as? ObjectViewer)}).flatMap{$0.allIRASPObjects}
         swipeStartingPhase = false
       }
       else
       {
         viewController.representedObject = selectedArrangedObjects
+        viewController.iRASPAObjects = selectedArrangedObjects.compactMap({($0 as? ObjectViewer)}).flatMap{$0.allIRASPObjects}
       }
       
       viewController.proxyProject = self.proxyProject

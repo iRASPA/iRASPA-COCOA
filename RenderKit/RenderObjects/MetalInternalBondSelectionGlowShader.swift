@@ -35,7 +35,7 @@ import Foundation
 class MetalInternalBondSelectionGlowShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var vertexBufferSingleBonds: MTLBuffer! = nil
   var indexBufferSingleBonds: MTLBuffer! = nil
@@ -136,7 +136,7 @@ class MetalInternalBondSelectionGlowShader
       commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
           
         for (j,structure) in structures.enumerated()
         {
@@ -161,7 +161,7 @@ class MetalInternalBondSelectionGlowShader
       commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
           
         for (j,structure) in structures.enumerated()
         {
@@ -186,7 +186,7 @@ class MetalInternalBondSelectionGlowShader
       commandEncoder.setVertexBuffer(vertexBufferDoubleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
           
         for (j,structure) in structures.enumerated()
         {
@@ -211,7 +211,7 @@ class MetalInternalBondSelectionGlowShader
       commandEncoder.setVertexBuffer(vertexBufferTripleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
           
         for (j,structure) in structures.enumerated()
         {

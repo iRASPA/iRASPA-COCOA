@@ -184,12 +184,14 @@ class StructureAppearanceDetailViewPageController: NSPageController, WindowContr
       viewController.windowController = windowController
       if swipeStartingPhase
       {
-        viewController.representedObject = [object]
+        viewController.representedObject = [object].compactMap({($0 as? ObjectViewer)?.allObjects})
+        viewController.iRASPAObjects = [object].compactMap({($0 as? ObjectViewer)}).flatMap{$0.allIRASPObjects}
         swipeStartingPhase = false
       }
       else
       {
-        viewController.representedObject = selectedArrangedObjects
+        viewController.representedObject = selectedArrangedObjects.compactMap({($0 as? ObjectViewer)?.allObjects})
+        viewController.iRASPAObjects = selectedArrangedObjects.compactMap({($0 as? ObjectViewer)}).flatMap{$0.allIRASPObjects}
       }
       
       viewController.proxyProject = self.proxyProject

@@ -52,32 +52,14 @@ fileprivate let prismIcon: NSImage = NSImage(named: "PrismIcon")!
 fileprivate let prismCrystalIcon: NSImage = NSImage(named: "PrismCrystalIcon")!
 fileprivate let unknownIcon: NSImage = NSImage(named: "UnknownIcon")!
 
-public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, AtomVisualAppearanceViewer, BondVisualAppearanceViewer, UnitCellVisualAppearanceViewer, AdsorptionSurfaceVisualAppearanceViewer, InfoViewer, CellViewerLegacy, PrimitiveVisualAppearanceViewerLegacy, Copying
+public final class iRASPAObject: NSObject, ObjectViewer, BinaryDecodable, BinaryEncodable, NSPasteboardReading, NSPasteboardWriting, Copying
 {
-  public static func == (lhs: iRASPAObject, rhs: iRASPAObject) -> Bool
-  {
-    return lhs.structure === rhs.structure
-  }
-  
   public var type: SKStructure.Kind
   public var object: Object
   
-  
-  public var structure: Structure
+  public var allObjects: [Object]
   {
-    set(newValue)
-    {
-      object = newValue
-    }
-    get
-    {
-      return object as! Structure
-    }
-  }
-  
-  var allObjects: [Object]
-  {
-    return [self.object as? Object].compactMap{$0}
+    return [self.object]
   }
   
   public init(structure: Structure)
@@ -164,18 +146,45 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
     super.init()
   }
   
+  public init(RASPADensityVolume: RASPADensityVolume)
+  {
+    self.type = .RASPADensityVolume
+    self.object = RASPADensityVolume
+    super.init()
+  }
+  
+  public init(VTKDensityVolume: VTKDensityVolume)
+  {
+    self.type = .VTKDensityVolume
+    self.object = VTKDensityVolume
+    super.init()
+  }
+  
+  public init(VASPDensityVolume: VASPDensityVolume)
+  {
+    self.type = .VASPDensityVolume
+    self.object = VASPDensityVolume
+    super.init()
+  }
+  
+  public init(GaussianCubeVolume: GaussianCubeVolume)
+  {
+    self.type = .GaussianCubeVolume
+    self.object = GaussianCubeVolume
+    super.init()
+  }
+  
   public init(frame: iRASPAObject)
   {
     self.type = frame.type
-    self.object = Object()
+    self.object = frame.object
     super.init()
-    self.structure = frame.structure
   }
   
-  public init(original: iRASPAObject)
+  public init(copy: iRASPAObject)
   {
-    self.type = original.type
-    switch(original.object)
+    self.type = copy.type
+    switch(copy.object)
     {
     case let structure as Crystal:
       self.object = structure.copy()
@@ -200,7 +209,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
     case let structure as PolygonalPrismPrimitive:
       self.object = structure.copy()
     default:
-      self.object = original.structure.copy()
+      self.object = Object()
     }
   }
   
@@ -241,8 +250,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
   
   private convenience init?(displayName: String, poscar data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let poscarParser: SKPOSCARParser = SKPOSCARParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let poscarParser: SKPOSCARParser = try? SKPOSCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -251,8 +259,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
   
   private convenience init?(displayName: String, xdatcar data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let poscarParser: SKXDATCARParser = SKXDATCARParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let poscarParser: SKXDATCARParser = try? SKXDATCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -261,8 +268,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
   
   private convenience init?(displayName: String, cif data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let cifParser: SKCIFParser = SKCIFParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? cifParser.startParsing()
     let scene: Scene = Scene(parser: cifParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -271,8 +277,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
   
   private convenience init?(displayName: String, pdb data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let pdbParser: SKPDBParser = SKPDBParser(displayName: displayName, string: dataString, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true)
+    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true) else {return nil}
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -281,8 +286,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
   
   private convenience init?(displayName: String, xyz data: Data)
   {
-    guard let dataString: String = String(data: data, encoding: String.Encoding.ascii) else {return nil}
-    let xyzParser: SKXYZParser = SKXYZParser(displayName: displayName, string: dataString, windowController: nil)
+    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data, windowController: nil) else {return nil}
     try? xyzParser.startParsing()
     let scene: Scene = Scene(parser: xyzParser.scene)
     guard let frame = scene.movies.first?.frames.first else {return nil}
@@ -291,8 +295,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
   
   public var infoPanelIcon: NSImage
   {
-    /*
-    switch(structure.materialType)
+    switch(object.materialType)
     {
     case .crystal:
       return crystalIcon
@@ -318,65 +321,37 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
       return prismIcon
     default:
       return unknownIcon
-    }*/
-    return NSImage()
+    }
   }
   
   public var totalNumberOfAtoms: Int
   {
-    return 0
-    /*
-    return self.structure.atomTreeController.flattenedLeafNodes().reduce(0, { (Result: Int, atomTreeNode: SKAtomTreeNode) -> Int in
+    return (self.object as? AtomViewer)?.atomTreeController.flattenedLeafNodes().reduce(0, { (Result: Int, atomTreeNode: SKAtomTreeNode) -> Int in
       return Result + atomTreeNode.representedObject.copies.filter{$0.type == .copy}.count
-    })
-     */
+    }) ?? 0
   }
   
   public var infoPanelString: String
   {
     return object.displayName + " (\(self.totalNumberOfAtoms) atoms)"
   }
-  
-  public var allPrimitiveStructure: [Primitive]
-  {
-    switch(self.type)
-    {
-    case .crystalCylinderPrimitive, .crystalEllipsoidPrimitive, .crystalPolygonalPrismPrimitive,
-         .cylinderPrimitive, .ellipsoidPrimitive, .polygonalPrismPrimitive:
-      return [self.object as! Primitive]
-    default:
-      return []
-    }
-  }
-  
-  public var allStructures: [Structure]
-  {
-    switch(self.type)
-    {
-    case .crystal, .molecularCrystal, .proteinCrystal,
-         .molecule, .protein:
-      return [self.object as! Structure]
-    default:
-      return []
-    }
-  }
-  
+ 
   public var frames: [iRASPAObject]
   {
     return [self]
   }
   
-  public var allIRASPAStructures: [iRASPAObject]
+  public var allIRASPObjects: [iRASPAObject]
   {
     return [self]
   }
   
-  public var selectedRenderFrames: [RKRenderStructure]
+  public var selectedRenderFrames: [RKRenderObject]
   {
     return [self.object]
   }
   
-  public var allRenderFrames: [RKRenderStructure]
+  public var allRenderFrames: [RKRenderObject]
   {
     return [self.object]
   }
@@ -384,17 +359,9 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
   
   public func swapRepresentedObjects(structure: iRASPAObject)
   {
-    let temptype = self.type
-    self.type = structure.type
-    structure.type = temptype
-    
-    let temp = self.structure
-    self.structure = structure.structure
-    structure.structure = temp
+    swap(&self.type, &structure.type)
+    swap(&self.object, &structure.object)
   }
-  
- 
-  
   
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
@@ -427,6 +394,14 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
       self.object = try decoder.decode(CylinderPrimitive.self)
     case .polygonalPrismPrimitive:
       self.object = try decoder.decode(CylinderPrimitive.self)
+    case .RASPADensityVolume:
+      self.object = try decoder.decode(RASPADensityVolume.self)
+    case .VTKDensityVolume:
+      self.object = try decoder.decode(VTKDensityVolume.self)
+    case .VASPDensityVolume:
+      self.object = try decoder.decode(VASPDensityVolume.self)
+    case .GaussianCubeVolume:
+      self.object = try decoder.decode(GaussianCubeVolume.self)
     default:
       throw BinaryDecodableError.invalidArchiveVersion
     }
@@ -439,9 +414,9 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
     encoder.encode(object)
   }
   
-  public var renderStructure: RKRenderStructure
+  public var renderStructure: RKRenderObject
   {
-    return object as RKRenderStructure
+    return object as RKRenderObject
   }
   
   public var hasSelectedObjects: Bool
@@ -452,7 +427,8 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
   
   public var renderCanDrawAdsorptionSurface: Bool
   {
-    return false;
+    // FIX
+    return true;
     //return structure.renderCanDrawAdsorptionSurface
   }
   
@@ -582,13 +558,13 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
       binaryEncoder.encode(self)
       return Data(binaryEncoder.data)
     case NSPasteboardTypeMovie:
-      let displayName: String = structure.displayName
+      let displayName: String = object.displayName
       let movie: Movie = Movie(name: displayName, structure: self)
       let binaryEncoder: BinaryEncoder = BinaryEncoder()
       binaryEncoder.encode(movie)
       return Data(binaryEncoder.data)
     case NSPasteboardTypeProjectTreeNode:
-      let displayName: String = structure.displayName
+      let displayName: String = object.displayName
       let movie: Movie = Movie(name: displayName, structure: self)
       let scene: Scene = Scene(name: displayName, movies: [movie])
       let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
@@ -600,7 +576,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
     case NSPasteboard.PasteboardType.fileURL:
       // used for (1) writing to NSSharingService (email-attachment)
       //          (2) used to 'paste' into the Finder
-      let displayName: String = structure.displayName
+      let displayName: String = object.displayName
       let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
       let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(displayName).appendingPathExtension(pathExtension)
       let movie: Movie = Movie(name: displayName, structure: self)
@@ -636,7 +612,7 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
       if let string: String = pasteboard.string(forType: NSPasteboard.PasteboardType(rawValue: "com.apple.pastelocation")),
         let directoryURL: URL = URL(string: string)
       {
-        let displayName: String = structure.displayName
+        let displayName: String = object.displayName
         let pathExtension: String = URL(fileURLWithPath: NSPasteboardTypeProjectTreeNode.rawValue).pathExtension
         let finalURL:URL = directoryURL.appendingPathComponent(displayName).appendingPathExtension(pathExtension)
         
@@ -667,5 +643,10 @@ public final class iRASPAObject: NSObject, BinaryDecodable, BinaryEncodable, NSP
     default:
       return nil
     }
+  }
+  
+  public static func == (lhs: iRASPAObject, rhs: iRASPAObject) -> Bool
+  {
+    return lhs.object === rhs.object
   }
 }

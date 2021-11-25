@@ -36,7 +36,7 @@ import SymmetryKit
 class MetalExternalBondShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var pipeLine: MTLRenderPipelineState! = nil
   var stencilPipeLine: MTLRenderPipelineState! = nil
@@ -200,7 +200,7 @@ class MetalExternalBondShader
       instanceBufferTripleBonds = []
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = renderStructures[i]
+        let structures: [RKRenderObject] = renderStructures[i]
         var sceneInstanceAllBonds: [MTLBuffer?] = [MTLBuffer?]()
         var sceneInstanceSingleBonds: [MTLBuffer?] = [MTLBuffer?]()
         var sceneInstanceDoubleBonds: [MTLBuffer?] = [MTLBuffer?]()
@@ -268,7 +268,7 @@ class MetalExternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         // draw everything as single bonds in 'unity'-mode
         for (j,structure) in structures.enumerated()
@@ -295,7 +295,7 @@ class MetalExternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -321,7 +321,7 @@ class MetalExternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferDoubleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -347,7 +347,7 @@ class MetalExternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferSingleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -373,7 +373,7 @@ class MetalExternalBondShader
       commandEncoder.setVertexBuffer(vertexBufferTripleBonds, offset: 0, index: 0)
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -402,7 +402,7 @@ class MetalExternalBondShader
       var index: Int = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -455,7 +455,7 @@ class MetalExternalBondShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -508,7 +508,7 @@ class MetalExternalBondShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -561,7 +561,7 @@ class MetalExternalBondShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {
@@ -614,7 +614,7 @@ class MetalExternalBondShader
       index = 0
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {

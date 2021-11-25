@@ -35,7 +35,7 @@ import Foundation
 class MetalTextShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   var pipeLine: MTLRenderPipelineState! = nil
   var vertexBuffer: MTLBuffer! = nil
@@ -94,9 +94,24 @@ class MetalTextShader
       textInstanceBuffer = []
       fontTextures = [:]
       
+      
+      // always include "Helvetica" used for global axes
+      let fontAtlasSize: Int = RKCachedFontAtlas.shared.fontAtlasSize
+      let fontAtlas: RKFontAtlas = RKCachedFontAtlas.shared.fontAtlas(for: "Helvetica")
+    
+      let textureDesc: MTLTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.r8Unorm, width: fontAtlasSize, height: fontAtlasSize, mipmapped: false)
+      let region: MTLRegion = MTLRegionMake2D(0, 0, fontAtlasSize, fontAtlasSize)
+    
+      if let fontTexture = device.makeTexture(descriptor: textureDesc)
+      {
+        fontTexture.label = "Font Atlas"
+        fontTexture.replace(region: region, mipmapLevel: 0, withBytes: fontAtlas.textureData!.bytes, bytesPerRow: fontAtlasSize)
+        fontTextures["Helvetica"] = fontTexture
+      }
+      
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = renderStructures[i]
+        let structures: [RKRenderObject] = renderStructures[i]
         
         var localTextInstanceBuffer: [MTLBuffer?] = []
         
@@ -118,7 +133,6 @@ class MetalTextShader
               fontTexture.replace(region: region, mipmapLevel: 0, withBytes: fontAtlas.textureData!.bytes, bytesPerRow: fontAtlasSize)
               fontTextures[structure.atomTextFont] = fontTexture
             }
-          
           
             let instanceBuffer: MTLBuffer?
             if (atomData.count > 0)
@@ -162,7 +176,7 @@ class MetalTextShader
       
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j,structure) in structures.enumerated()
         {

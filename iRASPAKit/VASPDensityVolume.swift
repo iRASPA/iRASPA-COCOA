@@ -29,19 +29,69 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Foundation
+import Cocoa
+import RenderKit
 import SymmetryKit
-import SimulationKit
+import BinaryCodable
+import simd
 
-public protocol SpaceGroupProtocol: AnyObject
+public class VASPDensityVolume: GridVolume
 {
-  var spaceGroup: SKSpacegroup {get set}
-  var canRemoveSymmetry: Bool {get}
-  var flattenedHierarchy: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
-  func primitive(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  func Niggli(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  func imposedSymmetry(colorSets: SKColorSets, forceFieldSets: SKForceFieldSets) -> (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController)?
-  var superCell: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
-  var removedSymmetry: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
-  var wrapAtomsToCell: (cell: SKCell, spaceGroup: SKSpacegroup, atoms: SKAtomTreeController, bonds: SKBondSetController) {get}
+  private static var classVersionNumber: Int = 1
+  
+  public override var materialType: Object.ObjectType
+  {
+    return .VASPDensityVolume
+  }
+  
+  public required init(copy VASPDensityVolume: VASPDensityVolume)
+  {
+    super.init(copy: VASPDensityVolume)
+  }
+  
+  public required init(clone VASPDensityVolume: VASPDensityVolume)
+  {
+    super.init(clone: VASPDensityVolume)
+  }
+  
+  public required init(from object: Object)
+  {
+    super.init(from: object)
+  }
+  
+  public init(name: String)
+  {
+    super.init()
+    self.displayName = name
+  }
+  
+  // MARK: -
+  // MARK: Binary Encodable support
+  
+  public override func binaryEncode(to encoder: BinaryEncoder)
+  {
+    encoder.encode(VASPDensityVolume.classVersionNumber)
+    
+   
+    encoder.encode(Int(0x6f6b6198))
+    
+    super.binaryEncode(to: encoder)
+  }
+  
+  public required init(fromBinary decoder: BinaryDecoder) throws
+  {
+    let readVersionNumber: Int = try decoder.decode(Int.self)
+    if readVersionNumber > VASPDensityVolume.classVersionNumber
+    {
+      throw BinaryDecodableError.invalidArchiveVersion
+    }
+    
+    let magicNumber = try decoder.decode(Int.self)
+    if magicNumber != Int(0x6f6b6198)
+    {
+      throw BinaryDecodableError.invalidMagicNumber
+    }
+    
+    try super.init(fromBinary: decoder)
+  }
 }

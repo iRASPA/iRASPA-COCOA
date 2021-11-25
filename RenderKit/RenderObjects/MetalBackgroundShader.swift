@@ -43,6 +43,7 @@ public class MetalBackgroundShader
   var renderPassDescriptor: MTLRenderPassDescriptor! = nil
   
   var sceneRenderPassDescriptor: MTLRenderPassDescriptor! = nil
+  var sceneRenderVolumeRenderedSurfacesPassDescriptor: MTLRenderPassDescriptor! = nil
   var sceneRenderTransparentPassDescriptor: MTLRenderPassDescriptor! = nil
   var sceneTexture: MTLTexture! = nil
   var sceneDepthTexture: MTLTexture! = nil
@@ -173,8 +174,7 @@ public class MetalBackgroundShader
     let sceneMSAAcolorAttachment: MTLRenderPassColorAttachmentDescriptor = sceneRenderPassDescriptor.colorAttachments[0]
     sceneMSAAcolorAttachment.texture = sceneTexture
     sceneMSAAcolorAttachment.loadAction = MTLLoadAction.load
-    //sceneMSAAcolorAttachment.resolveTexture = sceneResolveTexture
-    sceneMSAAcolorAttachment.storeAction =  .store // MTLStoreAction.multisampleResolve
+    sceneMSAAcolorAttachment.storeAction =  MTLStoreAction.store
     
     let sceneMSAAdepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderPassDescriptor.depthAttachment
     sceneMSAAdepthAttachment.texture = sceneDepthTexture
@@ -189,6 +189,27 @@ public class MetalBackgroundShader
     sceneMSAAstencilAttachment.storeAction = MTLStoreAction.dontCare
     sceneMSAAstencilAttachment.clearStencil = 0
     
+    // Volume-rendered surfaces scene descriptor
+    // =================================================================================================================
+    sceneRenderVolumeRenderedSurfacesPassDescriptor = MTLRenderPassDescriptor()
+    let sceneVolumeRenderedSurfacesColorAttachment: MTLRenderPassColorAttachmentDescriptor = sceneRenderVolumeRenderedSurfacesPassDescriptor.colorAttachments[0]
+    sceneVolumeRenderedSurfacesColorAttachment.texture = sceneTexture
+    sceneVolumeRenderedSurfacesColorAttachment.loadAction = MTLLoadAction.load
+    sceneVolumeRenderedSurfacesColorAttachment.storeAction = MTLStoreAction.store
+    
+    let sceneVolumeRenderedSurfacesDepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderVolumeRenderedSurfacesPassDescriptor.depthAttachment
+    sceneVolumeRenderedSurfacesDepthAttachment.texture = sceneDepthTexture
+    sceneVolumeRenderedSurfacesDepthAttachment.loadAction = MTLLoadAction.load
+    sceneVolumeRenderedSurfacesDepthAttachment.storeAction = .storeAndMultisampleResolve
+    sceneVolumeRenderedSurfacesDepthAttachment.resolveTexture = sceneResolvedDepthTexture
+    
+    let sceneVolumeRenderedSurfaceStencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderVolumeRenderedSurfacesPassDescriptor.stencilAttachment
+    sceneVolumeRenderedSurfaceStencilAttachment.texture = sceneDepthTexture
+    sceneVolumeRenderedSurfaceStencilAttachment.loadAction = MTLLoadAction.dontCare
+    sceneVolumeRenderedSurfaceStencilAttachment.storeAction = MTLStoreAction.dontCare
+    sceneVolumeRenderedSurfaceStencilAttachment.clearStencil = 0
+    
+    
     // Transparent scene descriptor
     // =================================================================================================================
     sceneRenderTransparentPassDescriptor = MTLRenderPassDescriptor()
@@ -201,7 +222,7 @@ public class MetalBackgroundShader
     let sceneTransparentMSAAdepthAttachment: MTLRenderPassDepthAttachmentDescriptor = sceneRenderTransparentPassDescriptor.depthAttachment
     sceneTransparentMSAAdepthAttachment.texture = sceneDepthTexture
     sceneTransparentMSAAdepthAttachment.loadAction = MTLLoadAction.load
-    sceneTransparentMSAAdepthAttachment.storeAction = .dontCare
+    sceneTransparentMSAAdepthAttachment.storeAction = MTLStoreAction.dontCare
     
     let sceneTransparentMSAAstencilAttachment: MTLRenderPassStencilAttachmentDescriptor = sceneRenderTransparentPassDescriptor.stencilAttachment
     sceneTransparentMSAAstencilAttachment.texture = sceneDepthTexture

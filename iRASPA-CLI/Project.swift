@@ -47,21 +47,21 @@ class Project
   {
     let displayName: String = (url.lastPathComponent as NSString).deletingPathExtension
     
-    let string: String
+    guard let data: Data = try? Data(contentsOf: url) else {return nil}
+    
     do
-    {
-      string = try String(contentsOf: url, encoding: String.Encoding.utf8)
-      
+    {      
       switch(url.pathExtension)
       {
       case "cif":
-        parser = SKCIFParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit)
+        guard let parser = try? SKCIFParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnit: onlyAsymmetricUnit) else {return nil}
+        self.parser = parser
       case "pdb":
-        parser = SKPDBParser(displayName: displayName, string: string, windowController: nil, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule)
-        break
+        guard let parser = try? SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: onlyAsymmetricUnit, onlyAsymmetricUnitProtein: onlyAsymmetricUnit, asMolecule: asMolecule, asProtein: asMolecule) else {return nil}
+        self.parser = parser
       case "xyz":
-        parser = SKXYZParser(displayName: displayName, string: string, windowController: nil)
-        break
+        guard let parser = try? SKXYZParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+        self.parser = parser
       default:
         fatalError("Unknown structure")
       }
@@ -72,12 +72,12 @@ class Project
       let sceneList: SceneList = SceneList(name: displayName, scenes: [scene])
       projectStructureNode=ProjectStructureNode(name: displayName, sceneList: sceneList)
       
-      projectStructureNode.sceneList.allStructures.forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
-      projectStructureNode.sceneList.allStructures.forEach{$0.setRepresentationForceField(forceField: "Default", forceFieldSets: forceFieldSets)}
+      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationStyle(style: .default, colorSets: colorSets)}
+      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.setRepresentationForceField(forceField: "Default", forceFieldSets: forceFieldSets)}
       
-      projectStructureNode.sceneList.allStructures.forEach{$0.reComputeBonds()}
+      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.reComputeBonds()}
       
-      projectStructureNode.sceneList.allStructures.forEach{$0.recomputeDensityProperties()}
+      projectStructureNode.sceneList.allObjects.compactMap({$0 as? Structure}).forEach{$0.recomputeDensityProperties()}
       
     }
     catch let error

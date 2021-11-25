@@ -35,9 +35,9 @@ import Foundation
 class MetalMeasurementShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   var numberOfDrawnMeasurementAtoms: Int = 0
-  var renderMeasurementStructure: [RKRenderStructure] = []
+  var renderMeasurementStructure: [RKRenderObject] = []
   
   var pipeLine: MTLRenderPipelineState! = nil
   var instanceBuffer: MTLBuffer? = nil

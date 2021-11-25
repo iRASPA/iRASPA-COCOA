@@ -56,6 +56,8 @@ class CloudAccountAvailableOperation: Operation
           LogQueue.shared.warning(destination: nil, message: NSLocalizedString("iCloud Account Authentication Error: Enable iCloud and iCloud-Drive", bundle: bundle, comment: ""))
         case .restricted:
           LogQueue.shared.warning(destination: nil, message: NSLocalizedString("iCloud Account Restricted", bundle: bundle, comment: ""))
+        case .temporarilyUnavailable:
+          LogQueue.shared.warning(destination: nil, message: NSLocalizedString("Temporarily unavailable", bundle: bundle, comment: ""))
         @unknown default:
            fatalError()
         }

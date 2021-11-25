@@ -39,7 +39,7 @@ import OperationKit
 import MathKit
 import LogViewKit
 
-public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource, SpaceGroupProtocol
+public final class Crystal: Structure, UnitCellViewer, AdsorptionSurfaceViewer, SpaceGroupViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource, Cloning
 {
   private static var classVersionNumber: Int = 2
   
@@ -60,33 +60,44 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     reComputeBoundingBox()
   }
   
-  public required init(original structure: Structure)
+  public required init(copy crystal: Crystal)
   {
-    super.init(original: structure)
-    
+    super.init(copy: crystal)
   }
   
-  public required init(clone structure: Structure)
+  public required init(clone crystal: Crystal)
   {
-    super.init(clone: structure)
+    super.init(clone: crystal)
     
-    switch(structure)
+    self.spaceGroup = crystal.spaceGroup
+  }
+  
+  public required init(from object: Object)
+  {
+    super.init(from: object)
+    
+    if let atomViewer: AtomViewer = object as? AtomViewer
     {
-    case is Protein, is ProteinCrystal, is Molecule, is MolecularCrystal,
-         is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
-      self.atomTreeController.flattenedLeafNodes().forEach{
-      let pos = $0.representedObject.position
-          $0.representedObject.position = self.cell.convertToFractional(pos)
-        }
-    case is Crystal, is CrystalEllipsoidPrimitive, is CrystalCylinderPrimitive, is CrystalPolygonalPrismPrimitive:
-      // nothing to do
-      break
-    default:
-      break
+      if !atomViewer.isFractional
+      {
+        self.atomTreeController.flattenedLeafNodes().forEach{
+        let pos = $0.representedObject.position
+            $0.representedObject.position = self.cell.convertToFractional(pos)
+          }
+      }
     }
+    
+    if let spaceGroupView: SpaceGroupViewer = object as? SpaceGroupViewer
+    {
+      self.spaceGroup = spaceGroupView.spaceGroup
+    }
+    
+    self.drawUnitCell = true
     self.expandSymmetry()
     reComputeBoundingBox()
     reComputeBonds()
+    self.atomTreeController.tag()
+    self.bondSetController.tag()
   }
   
   public override var colorAtomsWithBondColor: Bool
@@ -105,7 +116,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
     return true
   }
   
-  public override var materialType: SKStructure.Kind
+  public override var materialType: Object.ObjectType
   {
     return .crystal
   }
@@ -163,7 +174,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -226,7 +237,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
      
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -293,7 +304,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -554,7 +565,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var index: Int
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let numberOfReplicas: Int = self.cell.totalNumberOfReplicas
@@ -620,7 +631,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var data: [RKInPerInstanceAttributesBonds] = []
      
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -688,7 +699,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   {
     var data: [RKInPerInstanceAttributesBonds] = []
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
     
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -777,7 +788,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   public override func filterCartesianAtomPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
     
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
       
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)
@@ -831,7 +842,7 @@ public final class Crystal: Structure, RKRenderAtomSource, RKRenderBondSource, R
   
   public override func filterCartesianBondPositions(_ filter: (SIMD3<Double>) -> Bool) -> IndexSet
   {
-    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldDefiner)?.forceFieldSets
+    let forceFieldSets: SKForceFieldSets? = (NSDocumentController.shared.currentDocument as? ForceFieldViewer)?.forceFieldSets
     let forceFieldSet: SKForceFieldSet? = forceFieldSets?[self.atomForceFieldIdentifier]
         
     let minimumReplicaX: Int = Int(self.cell.minimumReplica.x)

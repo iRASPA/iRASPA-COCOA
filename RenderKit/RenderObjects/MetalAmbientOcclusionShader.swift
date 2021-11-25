@@ -37,7 +37,7 @@ import simd
 class MetalAmbientOcclusionShader
 {
   var renderDataSource: RKRenderDataSource? = nil
-  var renderStructures: [[RKRenderStructure]] = [[]]
+  var renderStructures: [[RKRenderObject]] = [[]]
   
   public let cachedAmbientOcclusionTextures: NSCache<AnyObject, AnyObject> = NSCache()
   
@@ -126,7 +126,7 @@ class MetalAmbientOcclusionShader
     {
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         for structure in structures
         {
           if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource
@@ -169,7 +169,7 @@ class MetalAmbientOcclusionShader
       for i in 0..<self.renderStructures.count
       {
         var localTextures: [MTLTexture] = []
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         for structure in structures
         {
           let textureSize: Int = (structure as? RKRenderAtomSource)?.atomAmbientOcclusionTextureSize ?? 1
@@ -208,7 +208,7 @@ class MetalAmbientOcclusionShader
       
       for i in 0..<self.renderStructures.count
       {
-        let structures: [RKRenderStructure] = self.renderStructures[i]
+        let structures: [RKRenderObject] = self.renderStructures[i]
         
         for (j, structure) in structures.enumerated()
         {
@@ -218,12 +218,11 @@ class MetalAmbientOcclusionShader
           
           for (k,structure) in structures.enumerated()
           {
-            structureUniforms[k] = RKStructureUniforms(sceneIdentifier: i, movieIdentifier: k, structure: structure, inverseModelMatrix: modelMatrix.inverse)
+            // FIX/CHECK
+            structureUniforms[k] = RKStructureUniforms(structureIdentifier: i, structure: structure, inverseModelMatrix: modelMatrix.inverse)
           }
           
           structureAmbientOcclusionUniformBuffers = device.makeBuffer(bytes: structureUniforms, length: MemoryLayout<RKStructureUniforms>.stride * max(structures.count,1), options:.storageModeManaged)
-          
-          
           
           if let structure: RKRenderAtomSource = structure as? RKRenderAtomSource,
              structure.atomAmbientOcclusion && structure.isVisible

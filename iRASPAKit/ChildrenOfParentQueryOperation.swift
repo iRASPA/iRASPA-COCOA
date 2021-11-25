@@ -45,7 +45,7 @@ public class ChildrenOfParentQueryOperation: FKGroupOperation
   {
     super.init()
     
-    let recordToMatch: CKRecord.Reference = CKRecord.Reference(record: parentRecord, action: CKRecord.Reference.Action.none)
+    let recordToMatch: CKRecord.Reference = CKRecord.Reference(record: parentRecord, action: CKRecord.ReferenceAction.none)
     let predicate = NSPredicate(format: "parent == %@", recordToMatch)
     let sortDescriptor = NSSortDescriptor(key: "displayName", ascending: true)
     let query: CKQuery = CKQuery(recordType: "ProjectNode", predicate: predicate)

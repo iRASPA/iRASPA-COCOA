@@ -35,10 +35,14 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class CrystalEllipsoidPrimitive: Primitive, RKRenderCrystalEllipsoidObjectsSource   //, RKRenderLocalAxesSource
+public final class CrystalEllipsoidPrimitive: Primitive, UnitCellViewer, RKRenderCrystalEllipsoidObjectsSource, RKRenderUnitCellSource, Cloning
 {
   private static var classVersionNumber: Int = 2
   
+  public override var materialType: Object.ObjectType
+  {
+    return .crystalEllipsoidPrimitive
+  }
   
   public override init(name: String)
   {
@@ -49,74 +53,30 @@ public final class CrystalEllipsoidPrimitive: Primitive, RKRenderCrystalEllipsoi
     let drawRadius: Double = 5.0
     let bondDistanceCriteria: Double = 0.0
     let asymmetricAtom: SKAsymmetricAtom = SKAsymmetricAtom(displayName: displayName, elementId:  0, uniqueForceFieldName: displayName, position: SIMD3<Double>(0,0,0), charge: 0.0, color: color, drawRadius: drawRadius, bondDistanceCriteria: bondDistanceCriteria, occupancy: 1.0)
-    //self.expandSymmetry(asymmetricAtom: asymmetricAtom)
+    self.expandSymmetry(asymmetricAtom: asymmetricAtom)
     let atomTreeNode: SKAtomTreeNode = SKAtomTreeNode(representedObject: asymmetricAtom)
     atomTreeController.insertNode(atomTreeNode, inItem: nil, atIndex: 0)
-    //reComputeBoundingBox()
     
-    //setRepresentationStyle(style: Structure.RepresentationStyle.objects)
-  }
-  
-  public required init(clone: Primitive) {
-    super.init()
-  }
-  
-  public required init(original: Primitive) {
-    super.init()
-  }
-  
-   /*
-  public required init(original structure: Structure)
-  {
-    super.init(original: structure)
-  }
-  
-  public required init(clone structure: Structure)
-  {
-    super.init(clone: structure)
-    
-    switch(structure)
-    {
-    case is Crystal, is CrystalEllipsoidPrimitive, is CrystalCylinderPrimitive, is CrystalPolygonalPrismPrimitive:
-      // nothing to do
-      break
-    case is MolecularCrystal, is ProteinCrystal, is Molecule, is Protein,
-         is EllipsoidPrimitive, is CylinderPrimitive, is PolygonalPrismPrimitive:
-      self.atomTreeController.flattenedLeafNodes().forEach{
-      let pos = $0.representedObject.position
-          $0.representedObject.position = self.cell.convertToFractional(pos)
-        }
-      break
-    default:
-      break
-    }
-    self.expandSymmetry()
+    self.atomTreeController.tag()
+    drawUnitCell = true
     reComputeBoundingBox()
-    
-    setRepresentationStyle(style: Structure.RepresentationStyle.objects)
   }
   
-  public override var materialType: SKStructure.Kind
+  public required init(copy crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive)
   {
-    return .crystalEllipsoidPrimitive
+    super.init(copy: crystalEllipsoidPrimitive)
   }
   
-  public override var periodic: Bool
+  public required init(clone crystalEllipsoidPrimitive: CrystalEllipsoidPrimitive)
   {
-    get
-    {
-      return primitiveIsFractional
-    }
-    set(newValue)
-    {
-      super.periodic = newValue
-    }
+    super.init(clone: crystalEllipsoidPrimitive)
   }
   
-  public override func numberOfReplicas() -> Int
+  public required init(from object: Object)
   {
-    return self.cell.totalNumberOfReplicas
-  }*/
+    super.init(from: object)
+  }
+
   
   // MARK: Rendering
   // =====================================================================
@@ -479,6 +439,18 @@ public final class CrystalEllipsoidPrimitive: Primitive, RKRenderCrystalEllipsoi
     return SKBoundingBox(minimum: minimum, maximum: maximum)
   }
   
+  public override var periodic: Bool
+  {
+    get
+    {
+      return true
+    }
+    set(newValue)
+    {
+      super.periodic = newValue
+    }
+  }
+  
   
   // MARK: Measuring distance, angle, and dihedral-angles
   // =====================================================================
@@ -504,6 +476,126 @@ public final class CrystalEllipsoidPrimitive: Primitive, RKRenderCrystalEllipsoi
     return absoluteCartesianPosition
   }
   
+  // MARK: -
+  // MARK: Symmetry
+  
+  public override func expandSymmetry(asymmetricAtom: SKAsymmetricAtom)
+  {
+    if asymmetricAtom.copies.isEmpty
+    {
+      let newAtom: SKAtomCopy = SKAtomCopy(asymmetricParentAtom: asymmetricAtom, position: asymmetricAtom.position)
+      newAtom.type = .copy
+      asymmetricAtom.copies = [newAtom]
+    }
+    else
+    {
+      asymmetricAtom.copies[0].type = .copy
+      asymmetricAtom.copies[0].position = asymmetricAtom.position
+    }
+  }
+  
+  // MARK: -
+  // MARK: RKRenderUnitCellSource protocol
+  
+  public override var renderUnitCellSpheres: [RKInPerInstanceAttributesAtoms]
+  {
+    var data: [RKInPerInstanceAttributesAtoms] = [RKInPerInstanceAttributesAtoms]()
+     
+    let boundingBoxWidths: SIMD3<Double> = self.cell.boundingBox.widths
+     
+    let scale: Double = 0.0025 * max(boundingBoxWidths.x,boundingBoxWidths.y,boundingBoxWidths.z)
+     
+    for k1 in self.cell.minimumReplica.x...self.cell.maximumReplica.x+1
+    {
+      for k2 in self.cell.minimumReplica.y...self.cell.maximumReplica.y+1
+      {
+        for k3 in self.cell.minimumReplica.z...self.cell.maximumReplica.z+1
+        {
+          let cartesianPosition: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
+          let spherePosition: SIMD4<Float> = SIMD4<Float>(x: Float(cartesianPosition.x), y: Float(cartesianPosition.y), z: Float(cartesianPosition.z), w: 1.0)
+           
+          let ambient: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+          let diffuse: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+          let specular: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+           
+          data.append(RKInPerInstanceAttributesAtoms(position: spherePosition, ambient: SIMD4<Float>(color: ambient), diffuse: SIMD4<Float>(color: diffuse), specular: SIMD4<Float>(color: specular), scale: Float(scale), tag: UInt32(0)))
+        }
+      }
+    }
+     
+    return data
+  }
+
+  public override var renderUnitCellCylinders: [RKInPerInstanceAttributesBonds]
+  {
+    var data: [RKInPerInstanceAttributesBonds] = [RKInPerInstanceAttributesBonds]()
+     
+    let color1: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    let color2: NSColor = NSColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+     
+    let boundingBoxWidths: SIMD3<Double> = self.cell.boundingBox.widths
+    let scale: Double = 0.0025 * max(boundingBoxWidths.x,boundingBoxWidths.y,boundingBoxWidths.z)
+    
+    for k1 in self.cell.minimumReplica.x...self.cell.maximumReplica.x+1
+    {
+      for k2 in self.cell.minimumReplica.y...self.cell.maximumReplica.y+1
+      {
+        for k3 in self.cell.minimumReplica.z...self.cell.maximumReplica.z+1
+        {
+          if(k1 <= self.cell.maximumReplica[0])
+          {
+            var cylinder: RKBondVertex = RKBondVertex()
+             
+            let pos1: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
+            cylinder.position1=SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
+            let pos2: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1+1), y: Double(k2), z: Double(k3)))
+            cylinder.position2=SIMD4<Float>(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
+             
+            data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
+               position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
+               color1: SIMD4<Float>(color: color1),
+               color2: SIMD4<Float>(color: color2),
+               scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0), tag: 0, type: 0))
+          }
+           
+          if(k2 <= self.cell.maximumReplica[1])
+          {
+            var cylinder: RKBondVertex = RKBondVertex()
+             
+            let pos1: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
+            cylinder.position1=SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
+            let pos2: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2+1), z: Double(k3)))
+            cylinder.position2=SIMD4<Float>(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
+             
+            data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
+               position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
+               color1: SIMD4<Float>(color: color1),
+               color2: SIMD4<Float>(color: color2),
+               scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0), tag: 0, type: 0))
+          }
+           
+          if(k3 <= self.cell.maximumReplica[2])
+          {
+            var cylinder: RKBondVertex = RKBondVertex()
+             
+            let pos1: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3)))
+            cylinder.position1=SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0)
+            let pos2: SIMD3<Double> = cell.convertToCartesian(SIMD3<Double>(x: Double(k1), y: Double(k2), z: Double(k3+1)))
+            cylinder.position2=SIMD4<Float>(x: Float(pos2.x), y: Float(pos2.y), z: Float(pos2.z), w: 1.0)
+             
+            data.append(RKInPerInstanceAttributesBonds(position1: SIMD4<Float>(x: Float(pos1.x), y: Float(pos1.y), z: Float(pos1.z), w: 1.0),
+               position2: SIMD4<Float>(x: pos2.x, y: pos2.y, z: pos2.z, w: 1.0),
+               color1: SIMD4<Float>(color: color1),
+               color2: SIMD4<Float>(color: color2),
+               scale: SIMD4<Float>(x: Float(scale), y: 1.0, z: Float(scale), w: 1.0), tag: 0, type: 0))
+          }
+        }
+      }
+    }
+     
+    return data
+  }
+   
   
   // MARK: -
   // MARK: Binary Encodable support
