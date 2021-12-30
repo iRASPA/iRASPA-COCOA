@@ -1778,6 +1778,7 @@ class MovieListViewController: NSViewController, NSMenuItemValidation, NSOutline
         
         self.windowController?.detailTabViewController?.renderViewController?.reloadData()
         (self.proxyProject?.representedObject.project as? ProjectStructureNode)?.renderCamera?.resetForNewBoundingBox(project.renderBoundingBox)
+        self.updateDetailViewController()
       })
       return true
     }

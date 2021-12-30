@@ -434,22 +434,38 @@ public class RenderViewController: NSViewController, MTKViewDelegate
   
   public func invalidateIsosurfaces()
   {
+    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[16]?.removeAllObjects()
+    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[32]?.removeAllObjects()
+    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[64]?.removeAllObjects()
     self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeAllObjects()
     self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[256]?.removeAllObjects()
+    self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[512]?.removeAllObjects()
     
+    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[16]?.removeAllObjects()
+    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[32]?.removeAllObjects()
+    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[64]?.removeAllObjects()
     self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[128]?.removeAllObjects()
     self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[256]?.removeAllObjects()
+    self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[512]?.removeAllObjects()
   }
   
   public func invalidateIsosurface(_ structures: [RKRenderObject])
   {
     for  structure in structures
     {
+      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[16]?.removeObject(forKey: structure)
+      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[32]?.removeObject(forKey: structure)
+      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[64]?.removeObject(forKey: structure)
       self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[128]?.removeObject(forKey: structure)
       self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[256]?.removeObject(forKey: structure)
+      self.renderer.isosurfaceShader.cachedAdsorptionSurfaces[512]?.removeObject(forKey: structure)
       
+      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[16]?.removeObject(forKey: structure)
+      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[32]?.removeObject(forKey: structure)
+      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[64]?.removeObject(forKey: structure)
       self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[128]?.removeObject(forKey: structure)
       self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[256]?.removeObject(forKey: structure)
+      self.renderer.volumeRenderedSurfaceShader.cachedEnergyGrids[512]?.removeObject(forKey: structure)
     }
   }
   

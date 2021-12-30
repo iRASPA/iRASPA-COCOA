@@ -39,14 +39,12 @@ import OperationKit
 import MathKit
 import LogViewKit
 
-public final class Crystal: Structure, UnitCellViewer, AdsorptionSurfaceViewer, SpaceGroupViewer, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource, Cloning
+public final class Crystal: Structure, AtomEditor, BondEditor, UnitCellEditor, IsosurfaceEditor, SpaceGroupEditor, RKRenderAtomSource, RKRenderBondSource, RKRenderUnitCellSource, RKRenderLocalAxesSource, RKRenderAdsorptionSurfaceSource, Cloning
 {
   private static var classVersionNumber: Int = 2
   
   public var spaceGroup: SKSpacegroup = SKSpacegroup(HallNumber: 1)
-  
-  public override var renderCanDrawAdsorptionSurface: Bool {return true}
-  
+    
   public override init()
   {
     super.init()
@@ -87,7 +85,7 @@ public final class Crystal: Structure, UnitCellViewer, AdsorptionSurfaceViewer, 
       }
     }
     
-    if let spaceGroupView: SpaceGroupViewer = object as? SpaceGroupViewer
+    if let spaceGroupView: SpaceGroupEditor = object as? SpaceGroupEditor
     {
       self.spaceGroup = spaceGroupView.spaceGroup
     }
@@ -141,10 +139,7 @@ public final class Crystal: Structure, UnitCellViewer, AdsorptionSurfaceViewer, 
   
   public override var hasExternalBonds: Bool
   {
-    get
-    {
-      return true
-    }
+    return true
   }
 
   
@@ -2209,6 +2204,125 @@ public final class Crystal: Structure, UnitCellViewer, AdsorptionSurfaceViewer, 
       index = index + 1
     }
     return data
+  }
+  
+  public var dimensions: SIMD3<Int32> = SIMD3<Int32>(128,128,128)
+  
+  public var range: (Double, Double) = (0.0,0.0)
+  
+  public var spacing: SIMD3<Double> = SIMD3<Double>(0.1,0.1,0.1)
+  
+  public var data: Data = Data()
+  
+  public var average: Double = 0.0
+  
+  public var variance: Double = 0.0
+  
+  public override var encompassingPowerOfTwoCubicGridSize: Int
+  {
+    get
+    {
+      return super.encompassingPowerOfTwoCubicGridSize
+    }
+    set(newValue)
+    {
+      super.encompassingPowerOfTwoCubicGridSize = newValue
+      let size: Int32 = Int32(pow(2.0,Double(newValue)))
+      self.dimensions = SIMD3<Int32>(size,size,size)
+    }
+  }
+  
+  public var isImmutable: Bool
+  {
+    return false
+  }
+  
+  public var gridData: [Float]
+  {
+    let cell: SKCell = self.cell
+    let positions: [SIMD3<Double>] = self.atomUnitCellPositions
+    let potentialParameters: [SIMD2<Double>] = self.potentialParameters
+    let probeParameters: SIMD2<Double> = self.adsorptionSurfaceProbeParameters
+    let size: Int32 = Int32(pow(2.0,Double(self.encompassingPowerOfTwoCubicGridSize)))
+    self.dimensions = SIMD3<Int32>(size,size,size)
+    
+    let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
+    
+    if let device: MTLDevice = MTLCreateSystemDefaultDevice(),
+       let commandQueue: MTLCommandQueue = device.makeCommandQueue()
+    {
+      let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell:   cell.unitCell, numberOfReplicas: numberOfReplicas)
+      
+      let data: [Float] = framework.ComputeEnergyGrid(Int(size), sizeY: Int(size), sizeZ: Int(size), probeParameter: probeParameters)
+                  
+      self.minimumGridEnergyValue = data.min()
+      self.range = (Double(minimumGridEnergyValue!),0.0)
+      
+      self.adsorptionVolumeStepLength = 0.25 / Double(size)
+   
+      return data
+    }
+    return []
+  }
+  
+  public var gridValueAndGradientData: [SIMD4<Float>]
+  {
+    var copiedData: [Float] = gridData
+    
+    for i in 0..<copiedData.count
+    {
+      let temp: Float = 1000.0*(1.0/300.0)*(copiedData[i]-Float(range.0))
+      var value: Float = 0.0;
+      if(temp>54000)
+      {
+        value = 1.0;
+      }
+      else
+      {
+        value=temp/65535.0;
+      }
+      copiedData[i] = value
+    }
+    
+    let encompassingCubicGridSize: Int32 = Int32(pow(2.0, Double(self.encompassingPowerOfTwoCubicGridSize)))
+    let numberOfValues: Int32 = encompassingCubicGridSize * encompassingCubicGridSize * encompassingCubicGridSize
+    var newdata = Array<SIMD4<Float>>(repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: Int(numberOfValues))
+        
+    for x: Int32 in 0..<dimensions.x
+    {
+      for y: Int32 in 0..<dimensions.y
+      {
+        for z: Int32 in 0..<dimensions.z
+        {
+          let index: Int = Int(x+encompassingCubicGridSize*y+z*encompassingCubicGridSize*encompassingCubicGridSize)
+          let value = copiedData[Int(x + dimensions.x*y + z*dimensions.x*dimensions.y)]
+          
+          let xi: Int32 = Int32(Float(x) + 0.5)
+          let xf: Float = Float(x) + 0.5 - Float(xi)
+          let xd0: Float = copiedData[Int(((xi-1 + dimensions.x) % dimensions.x)+y*dimensions.x+z*dimensions.x*dimensions.y)]
+          let xd1: Float = copiedData[Int((xi)+y*dimensions.x+z*dimensions.x*dimensions.y)]
+          let xd2: Float = copiedData[Int(((xi+1 + dimensions.x) % dimensions.x)+y*dimensions.x+z*dimensions.x*dimensions.y)]
+          let gx: Float = (xd1 - xd0) * (1.0 - xf) + (xd2 - xd1) * xf
+
+          let yi: Int32 = Int32(Float(y) + 0.5)
+          let yf: Float = Float(y) + 0.5 - Float(yi)
+          let yd0: Float = copiedData[Int(x + ((yi-1+dimensions.y) % dimensions.y)*dimensions.x+z*dimensions.x*dimensions.y)]
+          let yd1: Float = copiedData[Int(x + (yi)*dimensions.x+z*dimensions.x*dimensions.y)]
+          let yd2: Float = copiedData[Int(x + ((yi+1+dimensions.y) % dimensions.y)*dimensions.x+z*dimensions.x*dimensions.y)]
+          let gy: Float = (yd1 - yd0) * (1.0 - yf) + (yd2 - yd1) * yf
+
+          let zi: Int32 = Int32(Float(z) + 0.5)
+          let zf: Float = Float(z) + 0.5 - Float(zi)
+          let zd0: Float =  copiedData[Int(x+y*dimensions.x+((zi-1+dimensions.z) % dimensions.z)*dimensions.x*dimensions.y)]
+          let zd1: Float =  copiedData[Int(x+y*dimensions.x+(zi)*dimensions.x*dimensions.y)]
+          let zd2: Float =  copiedData[Int(x+y*dimensions.x+((zi+1+dimensions.z) % dimensions.z)*dimensions.x*dimensions.y)]
+          let gz: Float =  (zd1 - zd0) * (1.0 - zf) + (zd2 - zd1) * zf
+          
+          newdata[index] = SIMD4<Float>(value,gx,gy,gz)
+        }
+      }
+    }
+    return newdata
   }
   
   // MARK: -

@@ -103,11 +103,31 @@ class iRASPADocumentController: NSDocumentController, NSOpenSavePanelDelegate
         {
           return true
         }
+        
+        if UTTypeConformsTo(type as CFString, typeGAUSSIANCUBE)
+        {
+          return true
+        }
       }
     }
     
     if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "POSCAR" ||
                                      url.lastPathComponent.uppercased() == "CONTCAR")
+    {
+      return true
+    }
+    
+    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "CHGCAR")
+    {
+      return true
+    }
+    
+    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "LOCPOT")
+    {
+      return true
+    }
+    
+    if url.pathExtension.isEmpty && (url.lastPathComponent.uppercased() == "ELFCAR")
     {
       return true
     }

@@ -29,69 +29,17 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
-import RenderKit
-import SymmetryKit
-import BinaryCodable
+import Foundation
 import simd
+import RenderKit
 
-public class GaussianCubeVolume: GridVolume
+public protocol LocalAxesViewer: AnyObject
 {
-  private static var classVersionNumber: Int = 1
-  
-  public override var materialType: Object.ObjectType
-  {
-    return .GaussianCubeVolume
-  }
-  
-  public required init(copy GaussianCubeVolume: GaussianCubeVolume)
-  {
-    super.init(copy: GaussianCubeVolume)
-  }
-  
-  public required init(clone GaussianCubeVolume: GaussianCubeVolume)
-  {
-    super.init(clone: GaussianCubeVolume)
-  }
-  
-  public required init(from object: Object)
-  {
-    super.init(from: object)
-  }
-  
-  public init(name: String)
-  {
-    super.init()
-    self.displayName = name
-  }
-  
-  // MARK: -
-  // MARK: Binary Encodable support
-  
-  public override func binaryEncode(to encoder: BinaryEncoder)
-  {
-    encoder.encode(GaussianCubeVolume.classVersionNumber)
-    
-   
-    encoder.encode(Int(0x6f6b6199))
-    
-    super.binaryEncode(to: encoder)
-  }
-  
-  public required init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let readVersionNumber: Int = try decoder.decode(Int.self)
-    if readVersionNumber > GaussianCubeVolume.classVersionNumber
-    {
-      throw BinaryDecodableError.invalidArchiveVersion
-    }
-    
-    let magicNumber = try decoder.decode(Int.self)
-    if magicNumber != Int(0x6f6b6199)
-    {
-      throw BinaryDecodableError.invalidMagicNumber
-    }
-    
-    try super.init(fromBinary: decoder)
-  }
+  var renderLocalAxis: RKLocalAxes {get}
+}
+
+
+public protocol LocalAxesEditor: LocalAxesViewer
+{
+  var renderLocalAxis: RKLocalAxes {get set}
 }

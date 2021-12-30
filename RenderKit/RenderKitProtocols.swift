@@ -156,18 +156,21 @@ public protocol RKRenderUnitCellSource: RKRenderObject
 
 public protocol RKRenderAdsorptionSurfaceSource: RKRenderObject
 {
-  var potentialParameters: [SIMD2<Double>] {get}
-  
-  // adsorption surface
   var drawAdsorptionSurface: Bool {get}
+  
+  var dimensions: SIMD3<Int32> {get}
+  var gridData: [Float] {get}
+  var gridValueAndGradientData: [SIMD4<Float>] {get}
+  var isImmutable: Bool {get}
   
   var adsorptionSurfaceRenderingMethod: RKEnergySurfaceType {get}
   var adsorptionVolumeTransferFunction: RKPredefinedVolumeRenderingTransferFunction {get}
   var adsorptionVolumeStepLength: Double {get}
   
   var adsorptionSurfaceOpacity: Double {get}
+  var adsorptionTransparencyThreshold: Double {get}
   var adsorptionSurfaceIsoValue: Double {get}
-  var adsorptionSurfaceSize: Int {get}
+  var encompassingPowerOfTwoCubicGridSize: Int {get}
   var adsorptionSurfaceProbeParameters: SIMD2<Double> { get }
   var adsorptionSurfaceNumberOfTriangles: Int {get set}
   
@@ -194,13 +197,6 @@ public protocol RKRenderAdsorptionSurfaceSource: RKRenderObject
   var adsorptionSurfaceBackSideAmbientIntensity: Double {get}
   var adsorptionSurfaceBackSideSpecularIntensity: Double {get}
   var adsorptionSurfaceBackSideShininess: Double {get}
-  
-  var atomUnitCellPositions: [SIMD3<Double>] {get}
-  var minimumGridEnergyValue: Float? {get set}
-  
-  var frameworkProbeParameters: SIMD2<Double> {get}
-  var structureHeliumVoidFraction: Double {get set}
-  var structureNitrogenSurfaceArea: Double {get set}
 }
 
 public protocol RKRenderObjectSource //: RKRenderStructure
@@ -336,7 +332,7 @@ public protocol RKRenderDataSource: AnyObject
   var renderAxes: RKGlobalAxes {get}
 }
 
-
+/*
 public protocol RKRenderDensityVolumeSource: AnyObject
 {
   var data: Data {get}
@@ -352,4 +348,4 @@ public protocol RKRenderRASPADensityVolumeSource: RKRenderDensityVolumeSource
 public protocol RKRenderVTKDensityVolumeSource: RKRenderDensityVolumeSource
 {
 
-}
+}*/

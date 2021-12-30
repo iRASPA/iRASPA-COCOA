@@ -841,6 +841,15 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
           framesPerSecondTextField.integerValue = project.numberOfFramesPerSecond
         }
       }
+      if let popUpbuttonMovieType: NSPopUpButton = view.viewWithTag(2) as? NSPopUpButton
+      {
+        popUpbuttonMovieType.isEnabled = false
+        if let project = representedObject as? ProjectStructureNode
+        {
+          popUpbuttonMovieType.isEnabled = true
+          popUpbuttonMovieType.selectItem(at: project.movieType.rawValue)
+        }
+      }
     default:
       break
     }
@@ -2676,6 +2685,20 @@ class StructureCameraDetailViewController: NSViewController, NSOutlineViewDelega
     }
   }
   
+  @IBAction func changeMovieType(_ sender: NSPopUpButton)
+  {
+    if let crystalProject: ProjectStructureNode = self.representedObject as? ProjectStructureNode,
+       let movieType: ProjectStructureNode.MovieType = ProjectStructureNode.MovieType(rawValue: sender.indexOfSelectedItem)
+    {
+      crystalProject.movieType = movieType
+      
+      self.updateOutlineView(identifiers: [self.cameraMovieCell])
+      
+      self.windowController?.window?.makeFirstResponder(self.cameraOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
   
   
   

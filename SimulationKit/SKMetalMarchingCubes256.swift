@@ -43,7 +43,7 @@ public class SKMetalMarchingCubes256
   
   public var opacity: Double = 0.0
   public var isoValue: Float = 0.0
-  
+  public var dimensions: SIMD3<UInt32> = SIMD3<UInt32>(0,0,0)
   
   var device: MTLDevice
   var commandQueue: MTLCommandQueue
@@ -67,16 +67,17 @@ public class SKMetalMarchingCubes256
   var image7: MTLTexture? = nil
   var rawDataTexture: MTLTexture? = nil
   
-  public init(device: MTLDevice, commandQueue: MTLCommandQueue)
+  public init(device: MTLDevice, commandQueue: MTLCommandQueue, dimensions: SIMD3<Int32>)
   {
     self.device = device
     self.commandQueue = commandQueue
+    self.dimensions = SIMD3<UInt32>(UInt32(dimensions.x),UInt32(dimensions.y),UInt32(dimensions.z))
     
     let bundle: Bundle = Bundle(for: SKMetalMarchingCubes256.self)
     let file: String = bundle.path(forResource: "default", ofType: "metallib")!
     defaultLibrary = try! self.device.makeLibrary(filepath: file)
     
-    constructHPLevelKernel = defaultLibrary.makeFunction(name: "constructHPLevel256")
+    constructHPLevelKernel = defaultLibrary.makeFunction(name: "constructHPLevel")
     if let constructHPLevelKernel = constructHPLevelKernel
     {
       do
@@ -89,7 +90,7 @@ public class SKMetalMarchingCubes256
       }
     }
     
-    classifyCubesKernel = defaultLibrary.makeFunction(name: "classifyCubes256")
+    classifyCubesKernel = defaultLibrary.makeFunction(name: "classifyCubes")
     
     if let classifyCubesKernel = classifyCubesKernel
     {
@@ -118,25 +119,7 @@ public class SKMetalMarchingCubes256
     }
   }
   
-  private func determineThreadGroups(size: Int, threadExecutionWidth: Int) -> MTLSize
-  {
-    if (size < threadExecutionWidth)
-    {
-      let width: Int = size
-      let height: Int = min(max(1,threadExecutionWidth/size),size)
-      let depth: Int = min(max(1,threadExecutionWidth / (width * height)),size)
-      return MTLSize(width: width, height: height, depth: depth)
-    }
-    else // 256x256x256  32
-    {
-      let width: Int = threadExecutionWidth
-      let height: Int = min(max(1, size / threadExecutionWidth),threadExecutionWidth)
-      let depth: Int = min(max(1, (width * height) / threadExecutionWidth),threadExecutionWidth)
-      return MTLSize(width: width, height: height, depth: depth)
-    }
-  }
-  
-  public func prepareHistoPyramids(_ voxels: [Float], isosurfaceVertexBuffer: inout MTLBuffer?, numberOfTriangles: inout Int) throws
+  public func prepareHistoPyramids(_ voxels: [Float]) throws -> MTLBuffer?
   {
     
     if let classifyCubesPipelineState = classifyCubesPipelineState,
@@ -248,10 +231,15 @@ public class SKMetalMarchingCubes256
       
       let region: MTLRegion = MTLRegionMake3D(0, 0, 0, 256, 256, 256)
       rawDataTexture.replace(region: region, mipmapLevel: 0, slice: 0, withBytes: voxels, bytesPerRow: MemoryLayout<Float>.stride * region.size.width, bytesPerImage: MemoryLayout<Float>.stride * region.size.width * region.size.height)
+      
       guard let isoValueBufferData: MTLBuffer = device.makeBuffer(bytes: &isoValue, length: MemoryLayout<Float>.stride, options: .storageModeManaged) else {
        throw SimulationKitError.couldNotCreateBuffer
       }
       
+      guard let dimensionsBufferData: MTLBuffer = device.makeBuffer(bytes: &dimensions, length: MemoryLayout<SIMD3<UInt32>>.stride, options: .storageModeManaged) else {
+       throw SimulationKitError.couldNotCreateBuffer
+      }
+            
       guard let commandBuffer = commandQueue.makeCommandBuffer() else {
         throw SimulationKitError.couldNotMakeCommandBuffer
       }
@@ -263,23 +251,25 @@ public class SKMetalMarchingCubes256
       commandEncoder0.setTexture(rawDataTexture, index: 0)
       commandEncoder0.setTexture(image0, index: 1)
       commandEncoder0.setBuffer(isoValueBufferData, offset: 0, index: 0)
-      let threadExecutionWidthClassifyCubes: Int = classifyCubesPipelineState.threadExecutionWidth
-      let threadsPerGroup256: MTLSize = determineThreadGroups(size: 256, threadExecutionWidth: threadExecutionWidthClassifyCubes)
-      let threadGroups256: MTLSize = MTLSizeMake(256 / threadsPerGroup256.width, 256 / threadsPerGroup256.height, 256 / threadsPerGroup256.depth)
-      commandEncoder0.dispatchThreadgroups(threadGroups256, threadsPerThreadgroup: threadsPerGroup256)
+      commandEncoder0.setBuffer(dimensionsBufferData, offset: 0, index: 1)
+      let threadsPerGrid256 = MTLSize(width: 256, height: 256, depth: 256)
+      let w256: Int = classifyCubesPipelineState.threadExecutionWidth
+      let h256: Int = classifyCubesPipelineState.maxTotalThreadsPerThreadgroup / w256
+      let threadsPerThreadgroup256: MTLSize = MTLSizeMake(w256, h256, 1)
+      commandEncoder0.dispatchThreads(threadsPerGrid256, threadsPerThreadgroup: threadsPerThreadgroup256)
       commandEncoder0.endEncoding()
-      
-      let threadExecutionWidth: Int = constructHPLevelPipelineState.threadExecutionWidth
-      
+            
       guard let commandEncoder1 = commandBuffer.makeComputeCommandEncoder() else {
         throw SimulationKitError.couldNotMakeCommandBuffer
       }
       commandEncoder1.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder1.setTexture(image0, index: 0)
       commandEncoder1.setTexture(image1, index: 1)
-      let threadsPerGroup128: MTLSize = determineThreadGroups(size: 128, threadExecutionWidth: threadExecutionWidth)
-      let threadGroups128: MTLSize = MTLSizeMake(128 / threadsPerGroup128.width, 128 / threadsPerGroup128.height, 128 / threadsPerGroup128.depth)
-      commandEncoder1.dispatchThreadgroups(threadGroups128, threadsPerThreadgroup: threadsPerGroup128)
+      let threadsPerGrid128 = MTLSize(width: 128, height: 128, depth: 128)
+      let w128: Int = constructHPLevelPipelineState.threadExecutionWidth
+      let h128: Int = constructHPLevelPipelineState.maxTotalThreadsPerThreadgroup / w128
+      let threadsPerThreadgroup128: MTLSize = MTLSizeMake(w128, h128, 1)
+      commandEncoder1.dispatchThreads(threadsPerGrid128, threadsPerThreadgroup: threadsPerThreadgroup128)
       commandEncoder1.endEncoding()
       
       guard let commandEncoder2 = commandBuffer.makeComputeCommandEncoder() else {
@@ -288,9 +278,11 @@ public class SKMetalMarchingCubes256
       commandEncoder2.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder2.setTexture(image1, index: 0)
       commandEncoder2.setTexture(image2, index: 1)
-      let threadsPerGroup64: MTLSize = determineThreadGroups(size: 64, threadExecutionWidth: threadExecutionWidth)
-      let threadGroups64: MTLSize = MTLSizeMake(64 / threadsPerGroup64.width, 64 / threadsPerGroup64.height, 64 / threadsPerGroup64.depth)
-      commandEncoder2.dispatchThreadgroups(threadGroups64, threadsPerThreadgroup: threadsPerGroup64)
+      let threadsPerGrid64 = MTLSize(width: 64, height: 64, depth: 64)
+      let w64: Int = constructHPLevelPipelineState.threadExecutionWidth
+      let h64: Int = constructHPLevelPipelineState.maxTotalThreadsPerThreadgroup / w64
+      let threadsPerThreadgroup64: MTLSize = MTLSizeMake(w64, h64, 1)
+      commandEncoder2.dispatchThreads(threadsPerGrid64, threadsPerThreadgroup: threadsPerThreadgroup64)
       commandEncoder2.endEncoding()
       
       guard let commandEncoder3 = commandBuffer.makeComputeCommandEncoder() else {
@@ -299,9 +291,11 @@ public class SKMetalMarchingCubes256
       commandEncoder3.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder3.setTexture(image2, index: 0)
       commandEncoder3.setTexture(image3, index: 1)
-      let threadsPerGroup32: MTLSize = determineThreadGroups(size: 32, threadExecutionWidth: threadExecutionWidth)
-      let threadGroups32: MTLSize = MTLSizeMake(32 / threadsPerGroup32.width, 32 / threadsPerGroup32.height, 32 / threadsPerGroup32.depth)
-      commandEncoder3.dispatchThreadgroups(threadGroups32, threadsPerThreadgroup: threadsPerGroup32)
+      let threadsPerGrid32 = MTLSize(width: 32, height: 32, depth: 32)
+      let w32: Int = constructHPLevelPipelineState.threadExecutionWidth
+      let h32: Int = constructHPLevelPipelineState.maxTotalThreadsPerThreadgroup / w32
+      let threadsPerThreadgroup32: MTLSize = MTLSizeMake(w32, h32, 1)
+      commandEncoder3.dispatchThreads(threadsPerGrid32, threadsPerThreadgroup: threadsPerThreadgroup32)
       commandEncoder3.endEncoding()
       
       guard let commandEncoder4 = commandBuffer.makeComputeCommandEncoder() else {
@@ -310,9 +304,11 @@ public class SKMetalMarchingCubes256
       commandEncoder4.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder4.setTexture(image3, index: 0)
       commandEncoder4.setTexture(image4, index: 1)
-      let threadsPerGroup16: MTLSize = determineThreadGroups(size: 16, threadExecutionWidth: threadExecutionWidth)
-      let threadGroups16: MTLSize = MTLSizeMake(16 / threadsPerGroup16.width, 16 / threadsPerGroup16.height, 16 / threadsPerGroup16.depth)
-      commandEncoder4.dispatchThreadgroups(threadGroups16, threadsPerThreadgroup: threadsPerGroup16)
+      let threadsPerGrid16 = MTLSize(width: 16, height: 16, depth: 16)
+      let w16: Int = constructHPLevelPipelineState.threadExecutionWidth
+      let h16: Int = constructHPLevelPipelineState.maxTotalThreadsPerThreadgroup / w16
+      let threadsPerThreadgroup16: MTLSize = MTLSizeMake(w16, h16, 1)
+      commandEncoder4.dispatchThreads(threadsPerGrid16, threadsPerThreadgroup: threadsPerThreadgroup16)
       commandEncoder4.endEncoding()
       
       guard let commandEncoder5 = commandBuffer.makeComputeCommandEncoder() else {
@@ -321,9 +317,11 @@ public class SKMetalMarchingCubes256
       commandEncoder5.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder5.setTexture(image4, index: 0)
       commandEncoder5.setTexture(image5, index: 1)
-      let threadsPerGroup8: MTLSize = determineThreadGroups(size: 8, threadExecutionWidth: threadExecutionWidth)
-      let threadGroups8: MTLSize = MTLSizeMake(8 / threadsPerGroup8.width, 8 / threadsPerGroup8.height, 8 / threadsPerGroup8.depth)
-      commandEncoder5.dispatchThreadgroups(threadGroups8, threadsPerThreadgroup: threadsPerGroup8)
+      let threadsPerGrid8 = MTLSize(width: 8, height: 8, depth: 8)
+      let w8: Int = constructHPLevelPipelineState.threadExecutionWidth
+      let h8: Int = constructHPLevelPipelineState.maxTotalThreadsPerThreadgroup / w8
+      let threadsPerThreadgroup8: MTLSize = MTLSizeMake(w8, h8, 1)
+      commandEncoder5.dispatchThreads(threadsPerGrid8, threadsPerThreadgroup: threadsPerThreadgroup8)
       commandEncoder5.endEncoding()
       
       guard let commandEncoder6 = commandBuffer.makeComputeCommandEncoder() else {
@@ -332,9 +330,11 @@ public class SKMetalMarchingCubes256
       commandEncoder6.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder6.setTexture(image5, index: 0)
       commandEncoder6.setTexture(image6, index: 1)
-      let threadsPerGroup4: MTLSize = determineThreadGroups(size: 4, threadExecutionWidth: threadExecutionWidth)
-      let threadGroups4: MTLSize = MTLSizeMake(4 / threadsPerGroup4.width, 4 / threadsPerGroup4.height, 4 / threadsPerGroup4.depth)
-      commandEncoder6.dispatchThreadgroups(threadGroups4, threadsPerThreadgroup: threadsPerGroup4)
+      let threadsPerGrid4 = MTLSize(width: 4, height: 4, depth: 4)
+      let w4: Int = constructHPLevelPipelineState.threadExecutionWidth
+      let h4: Int = constructHPLevelPipelineState.maxTotalThreadsPerThreadgroup / w4
+      let threadsPerThreadgroup4: MTLSize = MTLSizeMake(w4, h4, 1)
+      commandEncoder6.dispatchThreads(threadsPerGrid4, threadsPerThreadgroup: threadsPerThreadgroup4)
       commandEncoder6.endEncoding()
       
       guard let commandEncoder7 = commandBuffer.makeComputeCommandEncoder() else {
@@ -343,9 +343,11 @@ public class SKMetalMarchingCubes256
       commandEncoder7.setComputePipelineState(constructHPLevelPipelineState)
       commandEncoder7.setTexture(image6, index: 0)
       commandEncoder7.setTexture(image7, index: 1)
-      let threadsPerGroup2: MTLSize = determineThreadGroups(size: 2, threadExecutionWidth: threadExecutionWidth)
-      let threadGroups2: MTLSize = MTLSizeMake(2 / threadsPerGroup2.width, 2 / threadsPerGroup2.height, 2 / threadsPerGroup2.width)
-      commandEncoder7.dispatchThreadgroups(threadGroups2, threadsPerThreadgroup: threadsPerGroup2)
+      let threadsPerGrid2 = MTLSize(width: 2, height: 2, depth: 2)
+      let w2: Int = constructHPLevelPipelineState.threadExecutionWidth
+      let h2: Int = constructHPLevelPipelineState.maxTotalThreadsPerThreadgroup / w2
+      let threadsPerThreadgroup2: MTLSize = MTLSizeMake(w2, h2, 1)
+      commandEncoder7.dispatchThreads(threadsPerGrid2, threadsPerThreadgroup: threadsPerThreadgroup2)
       commandEncoder7.endEncoding()
       
       
@@ -368,25 +370,23 @@ public class SKMetalMarchingCubes256
       let region3d2x2 = MTLRegionMake3D(0, 0, 0, 2, 2, 2)
       image7.getBytes(&imageBytes2x2, bytesPerRow: 2 * MemoryLayout<UInt32>.stride, bytesPerImage: MemoryLayout<UInt32>.stride * 2 * 2, from: region3d2x2, mipmapLevel: 0, slice: 0)
       
-      var sum2: UInt32 = 0
+      var numberOfTriangles: UInt32 = 0
       for i in 0..<8
       {
-        sum2 += imageBytes2x2[i]
+        numberOfTriangles += imageBytes2x2[i]
       }
-      
-      numberOfTriangles = Int(sum2)
-      
+            
       if numberOfTriangles > 0
       {
         // 3 points consisting of a position, a normal, and texture coordinates
-        isosurfaceVertexBuffer = device.makeBuffer(length: Int(sum2) * 3 * 3 * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeShared)
+        let isosurfaceVertexBuffer: MTLBuffer? = device.makeBuffer(length: Int(numberOfTriangles) * 3 * 3 * MemoryLayout<SIMD4<Float>>.stride, options: .storageModeShared)
         
         if isosurfaceVertexBuffer == nil
         {
           throw SimulationKitError.couldNotCreateBuffer
         }
         
-        if sum2>0
+        if numberOfTriangles>0
         {
           guard let commandBuffer2 = commandQueue.makeCommandBuffer() else {
             throw SimulationKitError.couldNotMakeCommandBuffer
@@ -394,14 +394,11 @@ public class SKMetalMarchingCubes256
           guard let commandEncoder2 = commandBuffer2.makeComputeCommandEncoder() else {
             throw SimulationKitError.couldNotMakeCommandEncoder
           }
-          
-          let threadExecutionWidth: Int = traverseHPPipelineState.threadExecutionWidth
-          
-          commandEncoder2.setComputePipelineState(traverseHPPipelineState)
-          
-          var dataSize: UInt32 = UInt32(sum2)
+                  
+          var dataSize: UInt32 = UInt32(numberOfTriangles)
           let sumBufferData: MTLBuffer = device.makeBuffer(bytes: &dataSize, length: MemoryLayout<UInt32>.stride, options: .storageModeManaged)!
           
+          commandEncoder2.setComputePipelineState(traverseHPPipelineState)
           commandEncoder2.setTexture(image0, index: 0)
           commandEncoder2.setTexture(image1, index: 1)
           commandEncoder2.setTexture(image2, index: 2)
@@ -414,13 +411,12 @@ public class SKMetalMarchingCubes256
           commandEncoder2.setBuffer(isosurfaceVertexBuffer!, offset: 0, index: 0)
           commandEncoder2.setBuffer(isoValueBufferData, offset: 0, index: 1)
           commandEncoder2.setBuffer(sumBufferData, offset: 0, index: 2)
+          commandEncoder2.setBuffer(dimensionsBufferData, offset: 0, index: 3)
           
-          let global_work_size: Int = (Int(sum2) + threadExecutionWidth - (Int(sum2) - threadExecutionWidth*(Int(sum2) / threadExecutionWidth)))
-          
-          let threadsPerGroupSum: MTLSize = MTLSizeMake(threadExecutionWidth, 1, 1)
-          let threadGroupsSum: MTLSize = MTLSizeMake(global_work_size / threadsPerGroupSum.width, 1,1)
-          
-          commandEncoder2.dispatchThreadgroups(threadGroupsSum, threadsPerThreadgroup: threadsPerGroupSum)
+          let threadsPerGrid = MTLSize(width: Int(numberOfTriangles), height: 1, depth: 1)
+          let threadExecutionWidth: Int = traverseHPPipelineState.threadExecutionWidth
+          let threadsPerThreadgroup: MTLSize = MTLSizeMake(threadExecutionWidth, 1, 1)
+          commandEncoder2.dispatchThreads(threadsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
           
           commandEncoder2.endEncoding()
           
@@ -432,9 +428,12 @@ public class SKMetalMarchingCubes256
           {
             throw NSError(domain: SimulationKitError.domain, code: SimulationKitError.code.genericMetalError.rawValue, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription])
           }
+          
+          return isosurfaceVertexBuffer
         }
       }
     }
+    return nil
   }
 }
 

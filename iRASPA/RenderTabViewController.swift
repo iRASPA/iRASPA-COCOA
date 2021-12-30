@@ -635,7 +635,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
       let pasteboard = NSPasteboard.general
       pasteboard.clearContents()
       
-      pasteboard.writeObjects(project.allObjects.compactMap({$0 as? AtomViewer}).flatMap{$0.readySelectedAtomsForCopyAndPaste()})
+      pasteboard.writeObjects(project.allObjects.compactMap({$0 as? AtomEditor}).flatMap{$0.readySelectedAtomsForCopyAndPaste()})
     }
   }
   
@@ -667,7 +667,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         let objects: [Object] = project.allObjects.filter{$0.isVisible}
         for object in objects
         {
-          if let atomViewer: AtomViewer = object as? AtomViewer
+          if let atomViewer: AtomEditor = object as? AtomEditor
           {
             // create new sets of objects for each structure
             let objects: [SKAtomTreeNode] = atoms.copy()
@@ -769,7 +769,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           var bondSelection: IndexSet = []
           var previousBondSelection: IndexSet = []
-          if let bondViewer: BondViewer = object as? BondViewer
+          if let bondViewer: BondEditor = object as? BondEditor
           {
             bondSelection = IndexSet(IndexSet(integersIn: 0..<bondViewer.bondSetController.arrangedObjects.count).filter{bondViewer.bondSetController.arrangedObjects[$0].isVisible})
             previousBondSelection = bondViewer.bondSetController.selectedObjects
@@ -798,7 +798,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           for object in movie.allObjects
           {
-            if let atomViewer: AtomViewer = object as? AtomViewer
+            if let atomViewer: AtomEditor = object as? AtomEditor
             {
               // get all selected atom tree nodes _and_ the children that are implicitly selected
               // sort the selected nodes accoording to the index-paths
@@ -808,7 +808,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
               
               var indexSet: IndexSet = []
               var selectedBonds: [SKAsymmetricBond<SKAsymmetricAtom,SKAsymmetricAtom>] = []
-              if let bondViewer: BondViewer = object as? BondViewer
+              if let bondViewer: BondEditor = object as? BondEditor
               {
                 indexSet = bondViewer.bondSetController.selectedObjects
                 selectedBonds = bondViewer.bondSetController.arrangedObjects[indexSet]
@@ -895,11 +895,11 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
   public func clearSelectionFor(object: Object)
   {
     if let project: ProjectStructureNode = self.proxyProject?.representedObject.loadedProjectStructureNode,
-       let atomViewer: AtomViewer = object as? AtomViewer
+       let atomViewer: AtomEditor = object as? AtomEditor
     {
       project.undoManager.setActionName(NSLocalizedString("Clear Selection", comment: ""))
       let previousAtomSelection = atomViewer.atomTreeController.selectedTreeNodes
-      let previousBondSelection = (object as? BondViewer)?.bondSetController.selectedObjects ?? []
+      let previousBondSelection = (object as? BondEditor)?.bondSetController.selectedObjects ?? []
       self.setCurrentSelection(object: object, atomSelection: [], previousAtomSelection: previousAtomSelection, bondSelection: [], previousBondSelection: previousBondSelection)
   
       (self.view as? RenderTabView)?.evaluateSelectionAnimation()
@@ -1077,7 +1077,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           case 2:
             let atomCopy: SKAtomCopy = atoms[pickedObject / numberOfReplicas]
             let pickedAsymmetricAtom: Int = atomCopy.asymmetricIndex
-            if let bondViewer = selectedStructure as? BondViewer
+            if let bondViewer = selectedStructure as? BondEditor
             {
               let asymmetricBond: SKAsymmetricBond = bondViewer.bondSetController.arrangedObjects[pickedAsymmetricAtom]
               let selectedAtoms: Set<SKAsymmetricAtom> = Set(bondViewer.atomTreeController.selectedTreeNodes.map{$0.representedObject})
@@ -1115,7 +1115,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
         {
           selectedTreeNodes.remove(treeNode)
           
-          if let bondViewer: BondViewer = object as? BondViewer
+          if let bondViewer: BondEditor = object as? BondEditor
           {
             for (index, bond) in bondViewer.bondSetController.arrangedObjects.enumerated()
             {
@@ -1210,14 +1210,14 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        
       for data in deletedData
       {
-        if let bondViewer: BondViewer = data.object as? BondViewer
+        if let bondViewer: BondEditor = data.object as? BondEditor
         {
           bondViewer.bondSetController.arrangedObjects.remove(at: data.indexSet)
           bondViewer.bondSetController.tag()
           bondViewer.bondSetController.selectedObjects = []
         }
         
-        if let atomViewer: AtomViewer = data.object as? AtomViewer
+        if let atomViewer: AtomEditor = data.object as? AtomEditor
         {
           for atom in data.atoms
           {
@@ -1264,7 +1264,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
        
       for data in insertedData
       {
-        if let atomViewer: AtomViewer = data.object as? AtomViewer
+        if let atomViewer: AtomEditor = data.object as? AtomEditor
         {
           for (index, atom) in data.atoms.enumerated()
           {
@@ -1274,7 +1274,7 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
           atomViewer.atomTreeController.tag()
         }
         
-        if let bondViewer: BondViewer = data.object as? BondViewer
+        if let bondViewer: BondEditor = data.object as? BondEditor
         {
           bondViewer.bondSetController.arrangedObjects.insertItems(data.selectedBonds, atIndexes: data.indexSet)
           bondViewer.bondSetController.selectedObjects.formUnion(data.indexSet)
@@ -2880,18 +2880,32 @@ class RenderTabViewController: NSTabViewController, NSMenuItemValidation, Window
             let savedSelection = project.sceneList.selection
             
             movie.beginEncoding()
-            project.sceneList.setAllMovieFramesToBeginning()
-            self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
-            for _ in 0..<maximumNumberOfFrames
+            switch(project.movieType)
             {
-              // only recompute ambient occlusion when there is more than 1 frame in the movie to avoid flickering
-              // when there are two movie in a scene we need to recompute all anyway
+            case .frames:
+              project.sceneList.setAllMovieFramesToBeginning()
               self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
+              for _ in 0..<maximumNumberOfFrames
+              {
+                // only recompute ambient occlusion when there is more than 1 frame in the movie to avoid flickering
+                // when there are two movie in a scene we need to recompute all anyway
+                self.invalidateCachedAmbientOcclusionTexture(cachedAmbientOcclusionTextures: project.renderStructures)
+                renderViewController.reloadData(ambientOcclusionQuality: .picture)
+                movie.addFrameToVideo()
+                project.sceneList.advanceAllMovieFrames()
+              }
+            case .rotationY:
               renderViewController.reloadData(ambientOcclusionQuality: .picture)
-              movie.addFrameToVideo()
-              project.sceneList.advanceAllMovieFrames()
+              for _ in stride(from: 0, through: 360, by: 3)
+              {
+                movie.addFrameToVideo()
+                let theta: Double = -3.0 * Double.pi/180.0
+                project.renderCamera?.rotateCameraAroundAxisY(angle: theta)
+              }
+              break
+            case .rotationXYlemniscate:
+              break
             }
-          
             movie.endEncoding()
             
             project.sceneList.selection = savedSelection

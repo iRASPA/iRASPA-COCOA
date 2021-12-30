@@ -35,34 +35,28 @@ import RenderKit
 import SymmetryKit
 import SimulationKit
 
-public protocol BondStructureViewer: AnyObject
+public protocol AnnotationViewer: AnyObject
 {
-  func recheckRepresentationStyle()
-  
-  var drawBonds: Bool {get set}
-  var bondScaleFactor: Double {get set}
-  var bondColorMode: RKBondColorMode {get set}
-  
-  var bondAmbientOcclusion: Bool {get set}
-  
-  var bondHDR: Bool {get set}
-  var bondHDRExposure: Double {get set}
-  
-  var bondHue: Double {get set}
-  var bondSaturation: Double {get set}
-  var bondValue: Double {get set}
-  
-  var bondAmbientColor: NSColor {get set}
-  var bondDiffuseColor: NSColor {get set}
-  var bondSpecularColor: NSColor {get set}
-  var bondAmbientIntensity: Double {get set}
-  var bondDiffuseIntensity: Double {get set}
-  var bondSpecularIntensity: Double {get set}
-  var bondShininess: Double {get set}
-  
-  var bondSelectionStyle: RKSelectionStyle {get set}
-  var renderBondSelectionFrequency: Double {get set}
-  var renderBondSelectionDensity: Double {get set}
-  var bondSelectionIntensity: Double {get set}
-  var bondSelectionScaling: Double {get set}
+  var atomTextType: RKTextType {get}
+  var atomTextFont: String {get}
+  var atomTextAlignment: RKTextAlignment {get}
+  var atomTextStyle: RKTextStyle {get}
+  var atomTextColor: NSColor {get}
+  var atomTextScaling: Double {get}
+  var atomTextOffset: SIMD3<Double> {get}
+  var atomTextGlowColor: NSColor {get}
+  var atomTextEffect: RKTextEffect {get}
+}
+
+public protocol AnnotationEditor: AnnotationViewer
+{ 
+  var atomTextType: RKTextType {get set}
+  var atomTextFont: String {get set}
+  var atomTextAlignment: RKTextAlignment {get set}
+  var atomTextStyle: RKTextStyle {get set}
+  var atomTextColor: NSColor {get set}
+  var atomTextScaling: Double {get set}
+  var atomTextOffset: SIMD3<Double> {get set}
+  var atomTextGlowColor: NSColor {get set}
+  var atomTextEffect: RKTextEffect {get set}
 }

@@ -34,9 +34,8 @@ import simd
 import MathKit
 import LogViewKit
 
-public final class SKXDATCARParser: SKParser, ProgressReporting
+public final class SKVASPXDATCARParser: SKParser, ProgressReporting
 {
-  weak var windowController: NSWindowController? = nil
   var cellFormulaUnitsZ: Int = 0
   var scanner: Scanner
   let letterSet: CharacterSet
@@ -63,10 +62,9 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
   var currentProgressCount: Double = 0.0
   let percentageFinishedStep: Double
   
-  public init(displayName: String, data: Data, windowController: NSWindowController?) throws
+  public init(displayName: String, data: Data) throws
   {
     self.displayName = displayName
-    self.windowController = windowController
     
     guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
     {
@@ -105,7 +103,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
       progress.completedUnitCount += 1
     }
     
-    while let cellInformation: (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int]) = readHeader()
+    while let cellInformation: (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int]) = try readHeader()
     {
       var atoms: [SKAsymmetricAtom] = []
       for (index,chemicalElement) in cellInformation.elements.enumerated()
@@ -145,7 +143,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     }
   }
   
-  func readHeader() -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
+  func readHeader() throws -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
   {
     var scannedLine: NSString?
     
@@ -165,7 +163,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
          firstCharacter == "d"
     {
       self.scanner.scanLocation = previousScanLocation
-      return readCellInformation()
+      return try readCellInformation()
     }
     
     self.scanner.scanLocation = previousScanLocation
@@ -205,15 +203,14 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     }
   }
   
-  func readCellInformation() -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
+  func readCellInformation() throws -> (cell: SKCell, elements: [String], numberOfAtomsForElement: [Int])?
   {
     var scannedLine: NSString?
     
     // skip commentline
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": contains no data")
-      return nil
+      throw SKParserError.containsNoData
     }
     
     // scan scaleFactor
@@ -225,8 +222,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     }
     else
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 2nd line should be the scale factor.")
-      return nil
+      throw SKParserError.VASPMissingScaleFactor
     }
     
     // read box first vector
@@ -237,8 +233,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     }
     else
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 3nd line should be the first vector of the box.")
-      return nil
+      throw SKParserError.MissingCellParameters
     }
     
     // read box second vector
@@ -251,8 +246,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     }
     else
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 4nd line should be the third vector of the box.")
-      return nil
+      throw SKParserError.MissingCellParameters
     }
     
     // read box third vector
@@ -263,8 +257,7 @@ public final class SKXDATCARParser: SKParser, ProgressReporting
     }
     else
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VASP file \"\(self.displayName)\": 5nd line should be the third vector of the box.")
-      return nil
+      throw SKParserError.MissingCellParameters
     }
     
     let cell = SKCell(unitCell: double3x3(a, b, c))

@@ -364,7 +364,7 @@ typedef struct
   float4 specularFrontSide;
   bool  frontHDR;
   float frontHDRExposure;
-  float pad1;
+  float transparencyThreshold;
   float shininessFrontSide;
   
   float4 ambientBackSide;
@@ -372,14 +372,14 @@ typedef struct
   float4 specularBackSide;
   bool  backHDR;
   float backHDRExposure;
-  float pad2;
+  int transferFunctionIndex;
   float shininessBackSide;
   
   float hue;
   float saturation;
   float value;
   float stepLength;
-  float4 pad4;
+  float4 encompassingScaleFactor;
   float4 pad5;
   float4 pad6;
 } IsosurfaceUniforms;

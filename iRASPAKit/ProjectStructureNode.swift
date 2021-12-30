@@ -38,7 +38,14 @@ import SymmetryKit
 
 public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRenderCameraSource
 {
-  private static var classVersionNumber: Int = 4
+  private static var classVersionNumber: Int = 5
+  
+  public enum MovieType: Int
+  {
+    case frames = 0
+    case rotationY = 1
+    case rotationXYlemniscate = 2
+  }
   
   public var sceneList: SceneList = SceneList()
   public var renderLights: [RKRenderLight] = [RKRenderLight(),RKRenderLight(),RKRenderLight(),RKRenderLight()]
@@ -86,6 +93,8 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
   public var renderImageQuality : RKImageQuality = .rgb_8_bits
   
   public var numberOfFramesPerSecond: Int = 15
+  
+  public var movieType: MovieType = .rotationY
   
   public var renderCamera: RKCamera?
   
@@ -476,6 +485,7 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     encoder.encode(self.renderImageQuality.rawValue)
     
     encoder.encode(self.numberOfFramesPerSecond)
+    encoder.encode(self.movieType.rawValue)
     
     encoder.encode(self.renderCamera ?? RKCamera())
     
@@ -546,6 +556,11 @@ public final class ProjectStructureNode: ProjectNode, RKRenderDataSource, RKRend
     self.renderImageQuality = renderImageQuality
     
     self.numberOfFramesPerSecond = try decoder.decode(Int.self)
+    if readVersionNumber >= 5 // introduced in version 5
+    {
+      guard let movieType = try MovieType(rawValue: decoder.decode(Int.self)) else {throw BinaryCodableError.invalidArchiveData}
+      self.movieType = movieType
+    }
     
     self.renderCamera = try decoder.decode(RKCamera.self)
     

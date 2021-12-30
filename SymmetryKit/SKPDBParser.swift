@@ -175,7 +175,7 @@ public final class SKPDBParser: SKParser, ProgressReporting
     
   }
   
-  public init(displayName: String, data: Data, windowController: NSWindowController?, onlyAsymmetricUnitMolecule: Bool, onlyAsymmetricUnitProtein: Bool, asMolecule: Bool, asProtein: Bool, preview: Bool = false) throws
+  public init(displayName: String, data: Data, onlyAsymmetricUnitMolecule: Bool, onlyAsymmetricUnitProtein: Bool, asMolecule: Bool, asProtein: Bool, preview: Bool = false) throws
   {
     self.displayName = displayName
     self.onlyAsymmetricUnitMolecule = onlyAsymmetricUnitMolecule

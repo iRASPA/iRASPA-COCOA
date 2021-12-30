@@ -33,7 +33,7 @@ import Foundation
 import simd
 import RenderKit
 
-public protocol PrimitiveViewer: AnyObject
+public protocol PrimitiveEditor: AnyObject
 {
   var primitiveOrientation: simd_quatd {get set}
   var primitiveRotationDelta: Double  {get set}

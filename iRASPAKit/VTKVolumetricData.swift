@@ -35,21 +35,21 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public class VTKDensityVolume: GridVolume, RKRenderRASPADensityVolumeSource, UnitCellViewer, Cloning
+public class VTKVolumetricData: VolumetricData, RKRenderAdsorptionSurfaceSource, UnitCellEditor, Cloning
 {
   private static var classVersionNumber: Int = 1
   
   public override var materialType: Object.ObjectType
   {
-    return .VTKDensityVolume
+    return .VTKVolumetricData
   }
   
-  public required init(copy VTKDensityVolume: VTKDensityVolume)
+  public required init(copy VTKDensityVolume: VTKVolumetricData)
   {
     super.init(copy: VTKDensityVolume)
   }
   
-  public required init(clone VTKDensityVolume: VTKDensityVolume)
+  public required init(clone VTKDensityVolume: VTKVolumetricData)
   {
     super.init(clone: VTKDensityVolume)
   }
@@ -57,8 +57,10 @@ public class VTKDensityVolume: GridVolume, RKRenderRASPADensityVolumeSource, Uni
   public required init(from object: Object)
   {
     super.init(from: object)
+    
+    
   }
-  
+    
   public init(name: String, dimensions: SIMD3<Int32>, spacing: SIMD3<Double>, cell: SKCell, data: Data, dataType: SKStructure.DataType)
   {
     super.init()
@@ -69,7 +71,7 @@ public class VTKDensityVolume: GridVolume, RKRenderRASPADensityVolumeSource, Uni
     self.cell = cell
     
     let size: Int = Int(dimensions.x * dimensions.y * dimensions.z)
-    var densityData: [SIMD4<Float>] = Array<SIMD4<Float>>(repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: Int(size))
+    var densityData: [Float] = Array<Float>(repeating: Float(0.0), count: Int(size))
     
     var arr2: [Float] = []
     
@@ -117,6 +119,10 @@ public class VTKDensityVolume: GridVolume, RKRenderRASPADensityVolumeSource, Uni
       arr2 = convertedData.map{Float($0)}
     }
     
+    var maximum: Float = Float.leastNormalMagnitude
+    var minimum: Float = Float.greatestFiniteMagnitude
+    var sum: Float = 0.0
+    var sumSquared: Float = 0.0
     for x in 0..<Int(dimensions.z)
     {
       for y in 0..<Int(dimensions.y)
@@ -125,43 +131,128 @@ public class VTKDensityVolume: GridVolume, RKRenderRASPADensityVolumeSource, Uni
         {
           let value: Float = arr2[x+Int(dimensions.x)*y+z*Int(dimensions.x)*Int(dimensions.y)];
           
-          let xi: Int = Int(Float(x) + 0.5)
-          let xf: Float = Float(x) + 0.5 - Float(xi)
-          let xd0: Float = arr2[((xi-1 + Int(dimensions.x)) % Int(dimensions.x))+y*Int(dimensions.y)+z*Int(dimensions.x)*Int(dimensions.y)]
-          let xd1: Float = arr2[(xi)+y*Int(dimensions.x)+z*Int(dimensions.x)*Int(dimensions.y)]
-          let xd2: Float = arr2[((xi+1 + Int(dimensions.x)) % Int(dimensions.x))+y*Int(dimensions.y)+z*Int(dimensions.x)*Int(dimensions.y)]
-          let gx: Float = (xd1 - xd0) * (1.0 - xf) + (xd2 - xd1) * xf
-
-          let yi: Int = Int(Float(y) + 0.5)
-          let yf: Float = Float(y) + 0.5 - Float(yi)
-          let yd0: Float = arr2[x + ((yi-1+Int(dimensions.y)) % Int(dimensions.y))*Int(dimensions.y)+z*Int(dimensions.x)*Int(dimensions.y)]
-          let yd1: Float = arr2[x + (yi)*Int(dimensions.y)+z*Int(dimensions.x)*Int(dimensions.y)]
-          let yd2: Float = arr2[x + ((yi+1+Int(dimensions.y)) % Int(dimensions.y))*Int(dimensions.y)+z*Int(dimensions.x)*Int(dimensions.y)]
-          let gy: Float = (yd1 - yd0) * (1.0 - yf) + (yd2 - yd1) * yf
-
-          let zi: Int = Int(Float(z) + 0.5)
-          let zf: Float = Float(z) + 0.5 - Float(zi)
-          let zd0: Float =  arr2[x+y*Int(dimensions.x)+((zi-1+Int(dimensions.z)) % Int(dimensions.z))*Int(dimensions.x)*Int(dimensions.y)]
-          let zd1: Float =  arr2[x+y*Int(dimensions.x)+(zi)*Int(dimensions.x)*Int(dimensions.y)]
-          let zd2: Float =  arr2[x+y*Int(dimensions.x)+((zi+1+Int(dimensions.z)) % Int(dimensions.z))*Int(dimensions.x)*Int(dimensions.y)]
-          let gz: Float =  (zd1 - zd0) * (1.0 - zf) + (zd2 - zd1) * zf
+          sum += value
+          sumSquared += value * value
           
-          densityData[x+Int(dimensions.x)*y+z*Int(dimensions.x)*Int(dimensions.y)] = SIMD4<Float>(value, gx, gy, gz)
+          if(value > maximum)
+          {
+            maximum = value
+          }
+          if(value < minimum)
+          {
+            minimum = value
+          }
+          
+          densityData[x+Int(dimensions.x)*y+z*Int(dimensions.x)*Int(dimensions.y)] = value
         }
       }
     }
+    self.range = (Double(minimum), Double(maximum))
+    self.average = Double(sum) / Double(dimensions.x * dimensions.y * dimensions.z)
     self.data = densityData.withUnsafeBufferPointer {Data(buffer: $0)}
+    
+    let largestSize: Int = Int(max(dimensions.x,dimensions.y,dimensions.z))
+    var k: Int = 1
+    while(largestSize > Int(pow(2.0,Double(k))))
+    {
+      k += 1
+    }
+    self.encompassingPowerOfTwoCubicGridSize = k
+    self.adsorptionVolumeStepLength = 0.5 / pow(2.0,Double(k))
+    self.adsorptionSurfaceIsoValue = average
+    self.adsorptionSurfaceRenderingMethod = .volumeRendering
+    self.adsorptionVolumeTransferFunction = .CoolWarmDiverging
+    self.drawAdsorptionSurface = true
   }
   
+  public var isImmutable: Bool
+  {
+    return true
+  }
+  
+  public var gridData: [Float]
+  {
+    var copiedData = [Float](repeating: Float(0.0), count: data.count / MemoryLayout<Float>.stride)
+    let _ = copiedData.withUnsafeMutableBytes { data.copyBytes(to: $0, from: 0..<data.count) }
+    
+    let encompassingCubicGridSize: Int32 = Int32(pow(2.0, Double(self.encompassingPowerOfTwoCubicGridSize)))
+    let numberOfValues: Int32 = encompassingCubicGridSize * encompassingCubicGridSize * encompassingCubicGridSize
+    var newdata = Array<Float>(repeating: 0.0, count: Int(numberOfValues))
+    
+    for x: Int32 in 0..<dimensions.x
+    {
+      for y: Int32 in 0..<dimensions.y
+      {
+        for z: Int32 in 0..<dimensions.z
+        {
+          let index: Int = Int(x+encompassingCubicGridSize*y+z*encompassingCubicGridSize*encompassingCubicGridSize)
+          newdata[index] = copiedData[Int(x + dimensions.x*y + z*dimensions.x*dimensions.y)]
+        }
+      }
+    }
+
+    return newdata
+  }
+  
+  public var gridValueAndGradientData: [SIMD4<Float>]
+  {
+    var copiedData = [Float](repeating: Float(0.0), count: data.count / MemoryLayout<Float>.stride)
+    let _ = copiedData.withUnsafeMutableBytes { data.copyBytes(to: $0, from: 0..<data.count) }
+    
+    for i in 0..<data.count / MemoryLayout<Float>.stride
+    {
+      let value = copiedData[i]
+      copiedData[i] = Float((Double(value) - range.0) / (range.1 - range.0))
+    }
+    
+    let encompassingCubicGridSize: Int32 = Int32(pow(2.0, Double(self.encompassingPowerOfTwoCubicGridSize)))
+    let numberOfValues: Int32 = encompassingCubicGridSize * encompassingCubicGridSize * encompassingCubicGridSize
+    var newdata = Array<SIMD4<Float>>(repeating: SIMD4<Float>(0.0,0.0,0.0,0.0), count: Int(numberOfValues))
+    
+    for x: Int32 in 0..<dimensions.x
+    {
+      for y: Int32 in 0..<dimensions.y
+      {
+        for z: Int32 in 0..<dimensions.z
+        {
+          let index: Int = Int(x+encompassingCubicGridSize*y+z*encompassingCubicGridSize*encompassingCubicGridSize)
+          let value = copiedData[Int(x + dimensions.x*y + z*dimensions.x*dimensions.y)]
+          
+          let xi: Int32 = Int32(Float(x) + 0.5)
+          let xf: Float = Float(x) + 0.5 - Float(xi)
+          let xd0: Float = copiedData[Int(((xi-1 + dimensions.x) % dimensions.x)+y*dimensions.x+z*dimensions.x*dimensions.y)]
+          let xd1: Float = copiedData[Int((xi)+y*dimensions.x+z*dimensions.x*dimensions.y)]
+          let xd2: Float = copiedData[Int(((xi+1 + dimensions.x) % dimensions.x)+y*dimensions.x+z*dimensions.x*dimensions.y)]
+          let gx: Float = (xd1 - xd0) * (1.0 - xf) + (xd2 - xd1) * xf
+
+          let yi: Int32 = Int32(Float(y) + 0.5)
+          let yf: Float = Float(y) + 0.5 - Float(yi)
+          let yd0: Float = copiedData[Int(x + ((yi-1+dimensions.y) % dimensions.y)*dimensions.x+z*dimensions.x*dimensions.y)]
+          let yd1: Float = copiedData[Int(x + (yi)*dimensions.x+z*dimensions.x*dimensions.y)]
+          let yd2: Float = copiedData[Int(x + ((yi+1+dimensions.y) % dimensions.y)*dimensions.x+z*dimensions.x*dimensions.y)]
+          let gy: Float = (yd1 - yd0) * (1.0 - yf) + (yd2 - yd1) * yf
+
+          let zi: Int32 = Int32(Float(z) + 0.5)
+          let zf: Float = Float(z) + 0.5 - Float(zi)
+          let zd0: Float =  copiedData[Int(x+y*dimensions.x+((zi-1+dimensions.z) % dimensions.z)*dimensions.x*dimensions.y)]
+          let zd1: Float =  copiedData[Int(x+y*dimensions.x+(zi)*dimensions.x*dimensions.y)]
+          let zd2: Float =  copiedData[Int(x+y*dimensions.x+((zi+1+dimensions.z) % dimensions.z)*dimensions.x*dimensions.y)]
+          let gz: Float =  (zd1 - zd0) * (1.0 - zf) + (zd2 - zd1) * zf
+          
+          newdata[index] = SIMD4<Float>(value,gx,gy,gz)
+        }
+      }
+    }
+    return newdata
+  }
   
   // MARK: -
   // MARK: Binary Encodable support
   
   public override func binaryEncode(to encoder: BinaryEncoder)
   {
-    encoder.encode(VTKDensityVolume.classVersionNumber)
+    encoder.encode(VTKVolumetricData.classVersionNumber)
     
-   
     encoder.encode(Int(0x6f6b6197))
     
     super.binaryEncode(to: encoder)
@@ -170,7 +261,7 @@ public class VTKDensityVolume: GridVolume, RKRenderRASPADensityVolumeSource, Uni
   public required init(fromBinary decoder: BinaryDecoder) throws
   {
     let readVersionNumber: Int = try decoder.decode(Int.self)
-    if readVersionNumber > VTKDensityVolume.classVersionNumber
+    if readVersionNumber > VTKVolumetricData.classVersionNumber
     {
       throw BinaryDecodableError.invalidArchiveVersion
     }

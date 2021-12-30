@@ -59,11 +59,11 @@ public class Object: NSObject, RKRenderObject, BinaryDecodable, BinaryEncodable
     case ellipsoidPrimitive = 13
     case cylinderPrimitive = 14
     case polygonalPrismPrimitive = 15
-    case gridVolume = 16
-    case RASPADensityVolume = 17
-    case VTKDensityVolume = 18
-    case VASPDensityVolume = 19
-    case GaussianCubeVolume = 20
+    case volumetricData = 16
+    case RASPAVolumetricData = 17
+    case VTKVolumetricData = 18
+    case VASPVolumetricData = 19
+    case GaussianCubeVolumetricData = 20
   }
   
   public var allObjects: [Object]

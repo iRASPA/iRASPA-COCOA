@@ -62,6 +62,11 @@ extension UTType
   {
     return UTType(importedAs: "nl.darkwing.iraspa.vtk")
   }
+  
+  public static var cube : UTType
+  {
+    return UTType(importedAs: "nl.darkwing.iraspa.cube")
+  }
 }
 
 
@@ -71,6 +76,7 @@ public let typeCIF: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClas
 public let typePDB: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "pdb" as CFString, kUTTypeData)?.takeRetainedValue())!
 public let typeXYZ: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "xyz" as CFString, kUTTypeData)?.takeRetainedValue())!
 public let typeVTK: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "vtk" as CFString, kUTTypeData)?.takeRetainedValue())!
+public let typeGAUSSIANCUBE: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "cube" as CFString, kUTTypeData)?.takeRetainedValue())!
 public let typePOSCAR: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "poscar" as CFString, kUTTypeData)?.takeRetainedValue())!
 public let typeProject: CFString = (UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, "iraspa" as CFString, kUTTypeData)?.takeRetainedValue())!
   

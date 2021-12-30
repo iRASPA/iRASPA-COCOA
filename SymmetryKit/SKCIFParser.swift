@@ -36,7 +36,6 @@ import LogViewKit
 
 public final class SKCIFParser: SKParser, ProgressReporting
 {
-  weak var windowController: NSWindowController? = nil
   var onlyAsymmetricUnit: Bool
   var a: Double = 0.0
   var b: Double = 0.0
@@ -97,10 +96,9 @@ public final class SKCIFParser: SKParser, ProgressReporting
     return true
   }
   
-  public init(displayName: String, data: Data, windowController: NSWindowController?, onlyAsymmetricUnit: Bool = false) throws
+  public init(displayName: String, data: Data, onlyAsymmetricUnit: Bool = false) throws
   {
     self.name = displayName
-    self.windowController = windowController
     self.onlyAsymmetricUnit = onlyAsymmetricUnit
     
     guard let string: String = String(data: data, encoding: String.Encoding.utf8) ?? String(data: data, encoding: String.Encoding.ascii) else
@@ -130,8 +128,6 @@ public final class SKCIFParser: SKParser, ProgressReporting
     
     // define 1 steps
     progress.totalUnitCount = 1
-    
-    LogQueue.shared.verbose(destination: windowController, message: "start reading CIF-file: \(name)")
     
     while(!scanner.isAtEnd)
     {

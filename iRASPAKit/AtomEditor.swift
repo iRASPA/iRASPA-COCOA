@@ -29,69 +29,28 @@
  OTHER DEALINGS IN THE SOFTWARE.
  *************************************************************************************************************/
 
-import Cocoa
-import RenderKit
+import Foundation
 import SymmetryKit
-import BinaryCodable
-import simd
+import SimulationKit
 
-public class VASPDensityVolume: GridVolume
+
+public protocol AtomViewer: AnyObject
 {
-  private static var classVersionNumber: Int = 1
+  func recomputeSelectionBodyFixedBasis(index: Int)
   
-  public override var materialType: Object.ObjectType
-  {
-    return .VASPDensityVolume
-  }
+  var atomTreeController: SKAtomTreeController {get}
   
-  public required init(copy VASPDensityVolume: VASPDensityVolume)
-  {
-    super.init(copy: VASPDensityVolume)
-  }
+  var atomColorSchemeIdentifier: String {get}
+  var atomForceFieldIdentifier: String {get}
   
-  public required init(clone VASPDensityVolume: VASPDensityVolume)
-  {
-    super.init(clone: VASPDensityVolume)
-  }
+  func expandSymmetry(asymmetricAtom: SKAsymmetricAtom)
+  var isFractional: Bool {get}
   
-  public required init(from object: Object)
-  {
-    super.init(from: object)
-  }
-  
-  public init(name: String)
-  {
-    super.init()
-    self.displayName = name
-  }
-  
-  // MARK: -
-  // MARK: Binary Encodable support
-  
-  public override func binaryEncode(to encoder: BinaryEncoder)
-  {
-    encoder.encode(VASPDensityVolume.classVersionNumber)
-    
-   
-    encoder.encode(Int(0x6f6b6198))
-    
-    super.binaryEncode(to: encoder)
-  }
-  
-  public required init(fromBinary decoder: BinaryDecoder) throws
-  {
-    let readVersionNumber: Int = try decoder.decode(Int.self)
-    if readVersionNumber > VASPDensityVolume.classVersionNumber
-    {
-      throw BinaryDecodableError.invalidArchiveVersion
-    }
-    
-    let magicNumber = try decoder.decode(Int.self)
-    if magicNumber != Int(0x6f6b6198)
-    {
-      throw BinaryDecodableError.invalidMagicNumber
-    }
-    
-    try super.init(fromBinary: decoder)
-  }
+  func readySelectedAtomsForCopyAndPaste() -> [SKAtomTreeNode]
 }
+
+public protocol AtomEditor: AtomViewer
+{
+  var atomTreeController: SKAtomTreeController {get set}
+}
+

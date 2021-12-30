@@ -47,7 +47,7 @@ public struct RKIsosurfaceUniforms
   public var specularFrontSide: SIMD4<Float> = SIMD4<Float>(x: 1.0, y: 1.0, z: 1.0, w: 1.0)
   public var frontHDR: Int32 = 1
   public var frontHDRExposure: Float = 1.5
-  public var pad1: Float = 0.0
+  public var transparencyThreshold: Float = 0.0
   public var shininessFrontSide: Float = 4.0
   
   public var ambientBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.0, y: 0.0, z: 0.0, w: 1.0)
@@ -55,14 +55,14 @@ public struct RKIsosurfaceUniforms
   public var specularBackSide: SIMD4<Float> = SIMD4<Float>(x: 0.9, y: 0.9, z: 0.9, w: 1.0)
   public var backHDR: Int32 = 1
   public var backHDRExposure: Float = 1.5
-  public var pad2: Float = 0.0
+  public var transferFunctionIndex: Int32 = 0
   public var shininessBackSide: Float = 4.0
   
   public var hue: Float = 1.0
   public var saturation: Float = 1.0
   public var value: Float = 1.0
   public var stepLength: Float = 0.001
-  public var pad4: SIMD4<Float> = SIMD4<Float>()
+  public var scaleToEncompassing: SIMD4<Float> = SIMD4<Float>()
   public var pad5: SIMD4<Float> = SIMD4<Float>()
   public var pad6: SIMD4<Float> = SIMD4<Float>()
 
@@ -104,6 +104,15 @@ public struct RKIsosurfaceUniforms
       self.diffuseFrontSide = Float(structure.adsorptionSurfaceFrontSideDiffuseIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceFrontSideDiffuseColor, opacity: structure.adsorptionSurfaceOpacity)
       self.specularFrontSide = Float(structure.adsorptionSurfaceFrontSideSpecularIntensity) * SIMD4<Float>(color: structure.adsorptionSurfaceFrontSideSpecularColor, opacity: structure.adsorptionSurfaceOpacity)
       self.shininessFrontSide = Float(structure.adsorptionSurfaceFrontSideShininess)
+      
+      let encompassingPowerOfTwoCubicGridSize: Float = Float(pow(2.0,Double(structure.encompassingPowerOfTwoCubicGridSize)))
+      let dimensions: SIMD3<Int32> = structure.dimensions
+      self.scaleToEncompassing = SIMD4<Float>(Float(dimensions.x)/encompassingPowerOfTwoCubicGridSize,
+                                              Float(dimensions.y)/encompassingPowerOfTwoCubicGridSize,
+                                              Float(dimensions.z)/encompassingPowerOfTwoCubicGridSize,
+                                              1.0)
+      self.transparencyThreshold = Float(structure.adsorptionTransparencyThreshold)
+      self.transferFunctionIndex = Int32(structure.adsorptionVolumeTransferFunction.rawValue)
     }
   }
   

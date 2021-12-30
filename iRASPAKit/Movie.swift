@@ -66,11 +66,7 @@ public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPastebo
   public var filterPredicate: (iRASPAObject) -> Bool = {_ in return true}
   var sortDescriptors: [NSSortDescriptor] = []
   
-  public var renderCanDrawAdsorptionSurface: Bool
-  {
-    return self.frames.reduce(into: false, {$0 = ($0 || $1.renderCanDrawAdsorptionSurface)})
-  }
-  
+ 
   // MARK: Protocol ObjectViewer
   //===================================================================
   
@@ -165,7 +161,7 @@ public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPastebo
   
   private convenience init?(displayName: String, poscar data: Data)
   {
-    guard let poscarParser: SKPOSCARParser = try? SKPOSCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let poscarParser: SKVASPPOSCARParser = try? SKVASPPOSCARParser(displayName: displayName, data: data) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -174,7 +170,7 @@ public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPastebo
   
   private convenience init?(displayName: String, xdatcar data: Data)
   {
-    guard let poscarParser: SKXDATCARParser = try? SKXDATCARParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let poscarParser: SKVASPXDATCARParser = try? SKVASPXDATCARParser(displayName: displayName, data: data) else {return nil}
     try? poscarParser.startParsing()
     let scene: Scene = Scene(parser: poscarParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -183,7 +179,7 @@ public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPastebo
   
   private convenience init?(displayName: String, cif data: Data)
   {
-    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let cifParser: SKCIFParser = try? SKCIFParser(displayName: displayName, data: data) else {return nil}
     try? cifParser.startParsing()
     let scene: Scene = Scene(parser: cifParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -192,7 +188,7 @@ public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPastebo
   
   private convenience init?(displayName: String, pdb data: Data)
   {
-    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, windowController: nil, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true) else {return nil}
+    guard let pdbParser: SKPDBParser = try? SKPDBParser(displayName: displayName, data: data, onlyAsymmetricUnitMolecule: false, onlyAsymmetricUnitProtein: true, asMolecule: false, asProtein: true) else {return nil}
     try? pdbParser.startParsing()
     let scene: Scene = Scene(parser: pdbParser.scene)
     guard let movie = scene.movies.first else {return nil}
@@ -201,7 +197,7 @@ public final class Movie: NSObject, ObjectViewer, NSPasteboardWriting, NSPastebo
   
   private convenience init?(displayName: String, xyz data: Data)
   {
-    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data, windowController: nil) else {return nil}
+    guard let xyzParser: SKXYZParser = try? SKXYZParser(displayName: displayName, data: data) else {return nil}
     try? xyzParser.startParsing()
     let scene: Scene = Scene(parser: xyzParser.scene)
     guard let movie = scene.movies.first else {return nil}

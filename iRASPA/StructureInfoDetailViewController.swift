@@ -182,7 +182,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAuthorFirstName.isEditable = false
         textFieldAuthorFirstName.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldAuthorFirstName.isEditable = enabled
           if let authorFirstName: String = self.structureAuthorFirstName
@@ -199,7 +199,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAuthorMiddleName.isEditable = false
         textFieldAuthorMiddleName.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldAuthorMiddleName.isEditable = enabled
           if let authorMiddleName: String = self.structureAuthorMiddleName
@@ -216,7 +216,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAuthorLastName.isEditable = false
         textFieldAuthorLastName.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldAuthorLastName.isEditable = enabled
           if let authorFirstName: String = self.structureAuthorLastName
@@ -233,7 +233,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldOrchidID.isEditable = false
         textFieldOrchidID.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldOrchidID.isEditable = enabled
           if let authorOrchidID: String = self.structureAuthorOrchidID
@@ -250,7 +250,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldResearcherID.isEditable = false
         textFieldResearcherID.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldResearcherID.isEditable = enabled
           if let authorResearcherID: String = self.structureAuthorResearcherID
@@ -267,7 +267,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAffiliationUniversityName.isEditable = false
         textFieldAffiliationUniversityName.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldAffiliationUniversityName.isEditable = enabled
           if let authorAffiliationUniversityName: String = self.structureAuthorAffiliationUniversityName
@@ -284,7 +284,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAffiliationFacultyName.isEditable = false
         textFieldAffiliationFacultyName.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldAffiliationFacultyName.isEditable = enabled
           if let authorAffiliationFacultyName: String = self.structureAuthorAffiliationFacultyName
@@ -301,7 +301,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAffiliationInstituteName.isEditable = false
         textFieldAffiliationInstituteName.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldAffiliationInstituteName.isEditable = enabled
           if let authorAffiliationInstituteName: String = self.structureAuthorAffiliationInstituteName
@@ -318,7 +318,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldAffiliationCityName.isEditable = false
         textFieldAffiliationCityName.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldAffiliationCityName.isEditable = enabled
           if let authorAffiliationCityName: String = self.structureAuthorAffiliationCityName
@@ -339,7 +339,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         countries.addItems(withTitles: sortedCountries)
         
         countries.isEditable = false
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           countries.isEditable = enabled
           if let country: String = self.structureAuthorAffiliationCountryName
@@ -370,7 +370,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let datePickerCreationDate: NSDatePicker = view.viewWithTag(1) as? NSDatePicker
       {
         datePickerCreationDate.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           datePickerCreationDate.isEnabled = enabled
           if let date: Date = self.structureCreationDate
@@ -387,7 +387,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCreationTemperature.isEditable = false
         textFieldCreationTemperature.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldCreationTemperature.isEditable = enabled
           
@@ -405,7 +405,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         popupButtonCreationTemperatureScale.isEditable = false
         popupButtonCreationTemperatureScale.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           popupButtonCreationTemperatureScale.isEditable = enabled
           
@@ -424,7 +424,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         TextFieldCreationPressure.isEditable = false
         TextFieldCreationPressure.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           TextFieldCreationPressure.isEditable = enabled
           
@@ -441,7 +441,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let popupButtonCreationPressureScale: iRASPAPopUpButton = view.viewWithTag(5) as? iRASPAPopUpButton
       {
         popupButtonCreationPressureScale.isEditable = false
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           popupButtonCreationPressureScale.isEditable = enabled
           
@@ -459,7 +459,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let popUpbuttonCreationMethod: iRASPAPopUpButton = view.viewWithTag(6) as? iRASPAPopUpButton
       {
         popUpbuttonCreationMethod.isEditable = false
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           popUpbuttonCreationMethod.isEditable = enabled
           
@@ -486,7 +486,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             if let popUpCreationUnitCellRelaxationMethod: iRASPAPopUpButton = view.viewWithTag(10) as? iRASPAPopUpButton
             {
               popUpCreationUnitCellRelaxationMethod.isEditable = false
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 popUpCreationUnitCellRelaxationMethod.isEditable = enabled
                 
@@ -505,7 +505,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationSoftwarePackageAtomicPositions.isEditable = false
               comboBoxCreationSoftwarePackageAtomicPositions.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 comboBoxCreationSoftwarePackageAtomicPositions.isEditable = enabled
                 
@@ -526,7 +526,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             if let textFieldCreationIonsRelaxationAlgorithm: iRASPAPopUpButton = view.viewWithTag(12) as? iRASPAPopUpButton
             {
               textFieldCreationIonsRelaxationAlgorithm.isEditable = false
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldCreationIonsRelaxationAlgorithm.isEditable = enabled
                 
@@ -544,7 +544,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             if let textFieldCreationIonsRelaxationCheck: iRASPAPopUpButton = view.viewWithTag(13) as? iRASPAPopUpButton
             {
               textFieldCreationIonsRelaxationCheck.isEditable = false
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldCreationIonsRelaxationCheck.isEditable = enabled
                 
@@ -563,7 +563,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldCreationAtomicPositionsForceField.isEditable = false
               textFieldCreationAtomicPositionsForceField.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldCreationAtomicPositionsForceField.isEditable = enabled
                 
@@ -585,7 +585,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationAtomicPositionsForceFieldDetails.isEditable = false
               comboBoxCreationAtomicPositionsForceFieldDetails.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 comboBoxCreationAtomicPositionsForceFieldDetails.isEditable = enabled
                 
@@ -607,7 +607,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationSoftwarePackageAtomicCharges.isEditable = false
               comboBoxCreationSoftwarePackageAtomicCharges.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 comboBoxCreationSoftwarePackageAtomicCharges.isEditable = enabled
                 
@@ -629,7 +629,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationAtomicChargesAlgorithms.isEditable = false
               comboBoxCreationAtomicChargesAlgorithms.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 comboBoxCreationAtomicChargesAlgorithms.isEditable = enabled
                 
@@ -651,7 +651,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationAtomicChargesForcefield.isEditable = false
               comboBoxCreationAtomicChargesForcefield.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 comboBoxCreationAtomicChargesForcefield.isEditable = enabled
                 
@@ -673,7 +673,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               comboBoxCreationAtomicChargesForcefieldDetails.isEditable = false
               comboBoxCreationAtomicChargesForcefieldDetails.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 comboBoxCreationAtomicChargesForcefieldDetails.isEditable = enabled
                 
@@ -697,7 +697,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementRadiation.isEditable = false
               textFieldMeasurementRadiation.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementRadiation.isEditable = enabled
                 
@@ -715,7 +715,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementWaveLength.isEditable = false
               textFieldMeasurementWaveLength.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementWaveLength.isEditable = enabled
                 
@@ -733,7 +733,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementThetaMin.isEditable = false
               textFieldMeasurementThetaMin.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementThetaMin.isEditable = enabled
                 
@@ -751,7 +751,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementThetaMax.isEditable = false
               textFieldMeasurementThetaMax.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementThetaMax.isEditable = enabled
                 
@@ -769,7 +769,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsHmin.isEditable = false
               textFieldMeasurementIndexLimitsHmin.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementIndexLimitsHmin.isEditable = enabled
                 
@@ -787,7 +787,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsHmax.isEditable = false
               textFieldMeasurementIndexLimitsHmax.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementIndexLimitsHmax.isEditable = enabled
                 
@@ -805,7 +805,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsKmin.isEditable = false
               textFieldMeasurementIndexLimitsKmin.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementIndexLimitsKmin.isEditable = enabled
                 
@@ -823,7 +823,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsKmax.isEditable = false
               textFieldMeasurementIndexLimitsKmax.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementIndexLimitsKmax.isEditable = enabled
                 
@@ -841,7 +841,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsLmin.isEditable = false
               textFieldMeasurementIndexLimitsLmin.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementIndexLimitsLmin.isEditable = enabled
                 
@@ -859,7 +859,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementIndexLimitsLmax.isEditable = false
               textFieldMeasurementIndexLimitsLmax.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementIndexLimitsLmax.isEditable = enabled
                 
@@ -877,7 +877,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementNumberOfSymmetryIndependentReflections.isEditable = false
               textFieldMeasurementNumberOfSymmetryIndependentReflections.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementNumberOfSymmetryIndependentReflections.isEditable = enabled
                 
@@ -895,7 +895,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
             {
               textFieldMeasurementSoftware.isEditable = false
               textFieldMeasurementSoftware.stringValue = ""
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textFieldMeasurementSoftware.isEditable = enabled
                 
@@ -916,7 +916,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
               textViewRefinementDetails.isEditable = false
               textViewRefinementDetails.typingAttributes = [.foregroundColor : NSColor.textColor]
               textViewRefinementDetails.textStorage?.setAttributedString(NSAttributedString(string: "",  attributes: [.foregroundColor : NSColor.textColor]))
-              if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+              if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
               {
                 textViewRefinementDetails.isEditable = enabled
                 
@@ -937,7 +937,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         {
           textFieldMeasurementGoodnessOfFit.isEditable = false
           textFieldMeasurementGoodnessOfFit.stringValue = ""
-          if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+          if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
           {
             textFieldMeasurementGoodnessOfFit.isEditable = enabled
             
@@ -955,7 +955,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         {
           textFieldMeasurementRFactorGt.isEditable = false
           textFieldMeasurementRFactorGt.stringValue = ""
-          if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+          if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
           {
             textFieldMeasurementRFactorGt.isEditable = enabled
             
@@ -973,7 +973,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         {
           textFieldMeasurementRFactorAll.isEditable = false
           textFieldMeasurementRFactorAll.stringValue = ""
-          if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+          if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
           {
             textFieldMeasurementRFactorAll.isEditable = enabled
             
@@ -1002,7 +1002,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldChemicalFormulaMoiety.isEditable = false
         textFieldChemicalFormulaMoiety.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldChemicalFormulaMoiety.isEditable = enabled
           
@@ -1020,7 +1020,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldChemicalFormulaSum.isEditable = false
         textFieldChemicalFormulaSum.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldChemicalFormulaSum.isEditable = enabled
           
@@ -1038,7 +1038,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldChemicalNameSystematic.isEditable = false
         textFieldChemicalNameSystematic.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldChemicalNameSystematic.isEditable = enabled
           
@@ -1067,7 +1067,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         textViewCitationArticleTitle.isEditable = false
         textViewCitationArticleTitle.typingAttributes = [.foregroundColor : NSColor.textColor]
         textViewCitationArticleTitle.textStorage?.setAttributedString(NSAttributedString(string: "", attributes: [.foregroundColor : NSColor.textColor]))
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textViewCitationArticleTitle.isEditable = enabled
           
@@ -1086,7 +1086,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let textFieldCitationJournalTitle: iRASPAComboBox = view.viewWithTag(1) as? iRASPAComboBox
       {
         textFieldCitationJournalTitle.isEditable = false
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldCitationJournalTitle.isEditable = enabled
           
@@ -1110,7 +1110,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
         textViewCitationArticleAuthors.isEditable = false
         textViewCitationArticleAuthors.typingAttributes = [.foregroundColor : NSColor.textColor]
         textViewCitationArticleAuthors.textStorage?.setAttributedString(NSAttributedString(string: "", attributes: [.foregroundColor : NSColor.textColor]))
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textViewCitationArticleAuthors.isEditable = enabled
           
@@ -1130,7 +1130,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCitationJournalVolume.isEditable = false
         textFieldCitationJournalVolume.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldCitationJournalVolume.isEditable = enabled
           
@@ -1149,7 +1149,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCitationJournalNumber.isEditable = false
         textFieldCitationJournalNumber.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldCitationJournalNumber.isEditable = enabled
           
@@ -1167,7 +1167,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       if let datePickerCitationPublicationDate: NSDatePicker = view.viewWithTag(5) as? NSDatePicker
       {
         datePickerCitationPublicationDate.isEnabled = false
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           datePickerCitationPublicationDate.isEnabled = enabled
           if let date: Date = self.structureCitationPublicationDate
@@ -1185,7 +1185,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCitationDOI.isEditable = false
         textFieldCitationDOI.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldCitationDOI.isEditable = enabled
           
@@ -1204,7 +1204,7 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
       {
         textFieldCitationDatebaseCodes.isEditable = false
         textFieldCitationDatebaseCodes.stringValue = ""
-        if !iRASPAObjects.filter({$0.object is InfoViewer}).isEmpty
+        if !iRASPAObjects.filter({$0.object is InfoEditor}).isEmpty
         {
           textFieldCitationDatebaseCodes.isEditable = enabled
           
@@ -1952,12 +1952,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorFirstName}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorFirstName}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorFirstName = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorFirstName = newValue ?? ""})
     }
   }
   
@@ -1965,12 +1965,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorMiddleName}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorMiddleName}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorMiddleName = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorMiddleName = newValue ?? ""})
     }
   }
   
@@ -1978,12 +1978,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorLastName}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorLastName}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorLastName = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorLastName = newValue ?? ""})
     }
   }
   
@@ -1991,12 +1991,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorOrchidID}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorOrchidID}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorOrchidID = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorOrchidID = newValue ?? ""})
     }
   }
  
@@ -2004,12 +2004,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorResearcherID}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorResearcherID}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorResearcherID = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorResearcherID = newValue ?? ""})
     }
   }
   
@@ -2017,12 +2017,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationUniversityName}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorAffiliationUniversityName}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationUniversityName = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorAffiliationUniversityName = newValue ?? ""})
     }
   }
   
@@ -2030,12 +2030,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationFacultyName}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorAffiliationFacultyName}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationFacultyName = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorAffiliationFacultyName = newValue ?? ""})
     }
   }
   
@@ -2043,12 +2043,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationInstituteName}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorAffiliationInstituteName}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationInstituteName = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorAffiliationInstituteName = newValue ?? ""})
     }
   }
   
@@ -2056,12 +2056,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationCityName}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorAffiliationCityName}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationCityName = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorAffiliationCityName = newValue ?? ""})
     }
   }
   
@@ -2069,12 +2069,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.authorAffiliationCountryName}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.authorAffiliationCountryName}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.authorAffiliationCountryName = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.authorAffiliationCountryName = newValue ?? ""})
     }
   }
   
@@ -2082,12 +2082,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Date> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationDate}))
+      let set: Set<Date> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationDate}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationDate = newValue ?? Date()})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationDate = newValue ?? Date()})
     }
   }
   
@@ -2095,12 +2095,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationTemperature}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationTemperature}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationTemperature = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationTemperature = newValue ?? ""})
     }
   }
   
@@ -2108,12 +2108,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationTemperatureScale.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationTemperatureScale.rawValue}))
       return Set(set).count == 1 ? Structure.TemperatureScale(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationTemperatureScale = newValue ?? .Kelvin})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationTemperatureScale = newValue ?? .Kelvin})
     }
   }
   
@@ -2121,12 +2121,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationPressure}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationPressure}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationPressure = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationPressure = newValue ?? ""})
     }
   }
 
@@ -2134,12 +2134,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationPressureScale.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationPressureScale.rawValue}))
       return Set(set).count == 1 ? Structure.PressureScale(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationPressureScale = newValue ?? .Pascal})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationPressureScale = newValue ?? .Pascal})
     }
   }
   
@@ -2147,12 +2147,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationMethod.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationMethod.rawValue}))
       return Set(set).count == 1 ? Structure.CreationMethod(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationMethod = newValue ?? .unknown})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationMethod = newValue ?? .unknown})
     }
   }
   
@@ -2160,12 +2160,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationUnitCellRelaxationMethod.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationUnitCellRelaxationMethod.rawValue}))
       return Set(set).count == 1 ? Structure.UnitCellRelaxationMethod(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationUnitCellRelaxationMethod = newValue ?? .unknown})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationUnitCellRelaxationMethod = newValue ?? .unknown})
     }
   }
   
@@ -2173,12 +2173,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsSoftwarePackage}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicPositionsSoftwarePackage}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsSoftwarePackage = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicPositionsSoftwarePackage = newValue ?? ""})
     }
   }
 
@@ -2187,12 +2187,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsIonsRelaxationAlgorithm.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicPositionsIonsRelaxationAlgorithm.rawValue}))
       return Set(set).count == 1 ? Structure.IonsRelaxationAlgorithm(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsIonsRelaxationAlgorithm = newValue ?? .unknown})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicPositionsIonsRelaxationAlgorithm = newValue ?? .unknown})
     }
   }
   
@@ -2200,12 +2200,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsIonsRelaxationCheck.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicPositionsIonsRelaxationCheck.rawValue}))
       return Set(set).count == 1 ? Structure.IonsRelaxationCheck(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsIonsRelaxationCheck = newValue ?? .unknown})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicPositionsIonsRelaxationCheck = newValue ?? .unknown})
     }
   }
   
@@ -2213,12 +2213,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsForcefield}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicPositionsForcefield}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsForcefield = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicPositionsForcefield = newValue ?? ""})
     }
   }
   
@@ -2226,12 +2226,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicPositionsForcefieldDetails}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicPositionsForcefieldDetails}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicPositionsForcefieldDetails = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicPositionsForcefieldDetails = newValue ?? ""})
     }
   }
   
@@ -2239,12 +2239,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicChargesSoftwarePackage}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicChargesSoftwarePackage}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicChargesSoftwarePackage = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicChargesSoftwarePackage = newValue ?? ""})
     }
   }
   
@@ -2252,12 +2252,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicChargesAlgorithms}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicChargesAlgorithms}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicChargesAlgorithms = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicChargesAlgorithms = newValue ?? ""})
     }
   }
   
@@ -2265,12 +2265,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicChargesForcefield}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicChargesForcefield}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicChargesForcefield = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicChargesForcefield = newValue ?? ""})
     }
   }
   
@@ -2278,12 +2278,12 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.creationAtomicChargesForcefieldDetails}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.creationAtomicChargesForcefieldDetails}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.creationAtomicChargesForcefieldDetails = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.creationAtomicChargesForcefieldDetails = newValue ?? ""})
     }
   }
   
@@ -2293,144 +2293,144 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementRadiation}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementRadiation}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementRadiation = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementRadiation = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementWaveLength: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementWaveLength}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementWaveLength}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementWaveLength = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementWaveLength = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementThetaMin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementThetaMin}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementThetaMin}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementThetaMin = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementThetaMin = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementThetaMax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementThetaMax}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementThetaMax}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementThetaMax = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementThetaMax = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementIndexLimitsHmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsHmin}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsHmin}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsHmin = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsHmin = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementIndexLimitsHmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsHmax}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsHmax}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsHmax = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsHmax = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementIndexLimitsKmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsKmin}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsKmin}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsKmin = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsKmin = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementIndexLimitsKmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsKmax}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsKmax}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsKmax = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsKmax = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementIndexLimitsLmin: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsLmin}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsLmin}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsLmin = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsLmin = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementIndexLimitsLmax: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsLmax}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsLmax}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementIndexLimitsLmax = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementIndexLimitsLmax = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementNumberOfSymmetryIndependentReflections: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementNumberOfSymmetryIndependentReflections}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementNumberOfSymmetryIndependentReflections}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementNumberOfSymmetryIndependentReflections = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementNumberOfSymmetryIndependentReflections = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementSoftware: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementSoftware}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementSoftware}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementSoftware = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementSoftware = newValue ?? ""})
     }
   }
 
@@ -2438,48 +2438,48 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementRefinementDetails}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementRefinementDetails}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementRefinementDetails = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementRefinementDetails = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementGoodnessOfFit: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementGoodnessOfFit}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementGoodnessOfFit}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementGoodnessOfFit = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementGoodnessOfFit = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementRFactorGt: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementRFactorGt}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementRFactorGt}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementRFactorGt = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementRFactorGt = newValue ?? ""})
     }
   }
   public var structureExperimentalMeasurementRFactorAll: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.experimentalMeasurementRFactorAll}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.experimentalMeasurementRFactorAll}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.experimentalMeasurementRFactorAll = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.experimentalMeasurementRFactorAll = newValue ?? ""})
     }
   }
   
@@ -2488,36 +2488,36 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.chemicalFormulaMoiety}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.chemicalFormulaMoiety}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.chemicalFormulaMoiety = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.chemicalFormulaMoiety = newValue ?? ""})
     }
   }
   public var structureChemicalFormulaSum: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.chemicalFormulaSum}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.chemicalFormulaSum}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.chemicalFormulaSum = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.chemicalFormulaSum = newValue ?? ""})
     }
   }
   public var structureChemicalNameSystematic: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.chemicalNameSystematic}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.chemicalNameSystematic}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.chemicalNameSystematic = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.chemicalNameSystematic = newValue ?? ""})
     }
   }
   
@@ -2527,96 +2527,96 @@ class StructureInfoDetailViewController: NSViewController, NSOutlineViewDelegate
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationArticleTitle}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.citationArticleTitle}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationArticleTitle = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.citationArticleTitle = newValue ?? ""})
     }
   }
   public var structureCitationAuthors: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationAuthors}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.citationAuthors}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationAuthors = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.citationAuthors = newValue ?? ""})
     }
   }
   public var structureCitationJournalTitle: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationJournalTitle}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.citationJournalTitle}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationJournalTitle = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.citationJournalTitle = newValue ?? ""})
     }
   }
   public var structureCitationJournalVolume: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationJournalVolume}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.citationJournalVolume}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationJournalVolume = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.citationJournalVolume = newValue ?? ""})
     }
   }
   public var structureCitationJournalNumber: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationJournalNumber}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.citationJournalNumber}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationJournalNumber = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.citationJournalNumber = newValue ?? ""})
     }
   }
   public var structureCitationDOI: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationDOI}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.citationDOI}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationDOI = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.citationDOI = newValue ?? ""})
     }
   }
   public var structureCitationPublicationDate: Date?
   {
     get
     {
-      let set: Set<Date> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationPublicationDate}))
+      let set: Set<Date> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.citationPublicationDate}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationPublicationDate = newValue ?? Date()})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.citationPublicationDate = newValue ?? Date()})
     }
   }
   public var structureCitationDatebaseCodes: String?
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoViewer)?.citationDatebaseCodes}))
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap({($0.object as? InfoEditor)?.citationDatebaseCodes}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? InfoViewer)?.citationDatebaseCodes = newValue ?? ""})
+      self.iRASPAObjects.forEach({($0.object as? InfoEditor)?.citationDatebaseCodes = newValue ?? ""})
     }
   }
 }

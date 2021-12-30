@@ -114,16 +114,17 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           // fast way of updating: get the current-view, set properties on it, and update the rect to redraw
           if let proxyProject = self.proxyProject, proxyProject.isEditable,
-             !self.iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty,
+             !self.iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty,
              let view: NSTableCellView = self.appearanceOutlineView?.view(atColumn: 0, row: row, makeIfNecessary: false) as?  NSTableCellView,
              let isovalue: Double = self.renderAdsorptionSurfaceIsovalue,
              let sliderIsovalue: NSSlider = view.viewWithTag(4) as? NSSlider,
              let textFieldIsovalue: NSTextField = view.viewWithTag(3) as? NSTextField
           {
             //sliderIsovalue.isEnabled = enabled
-            let minValue: Double = Double(self.renderMinimumGridEnergyValue ?? -1000.0)
+            let minValue: Double = Double(self.renderGridRangeMinimum ?? -1000.0)
             sliderIsovalue.minValue = minValue
-            sliderIsovalue.maxValue = 0.0
+            let maxValue: Double = Double(self.renderGridRangeMaximum ?? 0.0)
+            sliderIsovalue.maxValue = maxValue
             sliderIsovalue.doubleValue = max(isovalue, minValue)
             textFieldIsovalue.doubleValue = max(isovalue, minValue)
           }
@@ -271,7 +272,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldYawMinusY.isEnabled = false
         textFieldYawMinusZ.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldRotationAngle.isEditable = enabled
           textFieldYawPlusX.isEnabled = enabled
@@ -315,7 +316,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldEulerAngleZ.stringValue = "0.0"
         
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           if let renderEulerAngleX: Double = self.renderPrimitiveEulerAngleX,
              let renderEulerAngleY: Double = self.renderPrimitiveEulerAngleY,
@@ -372,7 +373,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldAtomScalingCY.stringValue = "0"
         textFieldAtomScalingCZ.stringValue = "1"
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldAtomScalingAX.isEditable = enabled
           textFieldAtomScalingAY.isEditable = enabled
@@ -415,7 +416,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         button.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           button.isEnabled = enabled
           
@@ -436,7 +437,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldOpacity.isEditable = false
         textFieldOpacity.stringValue = "1.0"
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldOpacity.isEditable = enabled
           if let opacity = self.renderPrimitiveOpacity
@@ -454,7 +455,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldNumberOfSides.isEditable = false
         textFieldNumberOfSides.stringValue = "41"
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldNumberOfSides.isEditable = enabled
           if let numberOfSides = self.renderPrimitiveNumberOfSides
@@ -472,7 +473,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderOpacity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderOpacity.isEnabled = enabled
           if let opacity = self.renderPrimitiveOpacity
@@ -494,7 +495,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderNumberOfSides.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderNumberOfSides.isEnabled = enabled
           if let numberOfSides = self.renderPrimitiveNumberOfSides
@@ -524,7 +525,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionDensity.isEditable = false
         textFieldSelectionDensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           popUpbuttonSelectionStyle.isEditable = enabled
           textFieldSelectionFrequency.isEditable = enabled
@@ -573,7 +574,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBondSelectionIntensityLevel.isEditable = false
         textFieldBondSelectionIntensityLevel.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldBondSelectionIntensityLevel.isEditable = enabled
           if let renderSelectionIntensityLevel: Double = self.renderPrimitiveSelectionIntensity
@@ -593,7 +594,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSelectionIntensityLevel.minValue = 0.0
         sliderSelectionIntensityLevel.maxValue = 2.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderSelectionIntensityLevel.isEnabled = enabled
           if let renderSelectionIntensityLevel: Double = self.renderPrimitiveSelectionIntensity
@@ -609,7 +610,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionScaling.isEditable = false
         textFieldSelectionScaling.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldSelectionScaling.isEditable = enabled
           if let renderSelectionScaling: Double = self.renderPrimitiveSelectionScaling
@@ -628,7 +629,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSelectionScaling.minValue = 1.0
         sliderSelectionScaling.maxValue = 2.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderSelectionScaling.isEnabled = enabled
           if let renderSelectionScaling: Double = self.renderPrimitiveSelectionScaling
@@ -645,7 +646,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldHue.isEditable = enabled
           if let renderBondHue: Double = self.renderPrimitiveHue
@@ -661,7 +662,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldSaturation.isEditable = enabled
           if let renderBondSaturation: Double = self.renderPrimitiveSaturation
@@ -677,7 +678,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldValue.isEditable = enabled
           if let renderBondValue: Double = self.renderPrimitiveValue
@@ -693,7 +694,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderHue.isEnabled = enabled
           if let renderBondHue: Double = self.renderPrimitiveHue
@@ -709,7 +710,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderSaturation.isEnabled = enabled
           if let renderBondSaturation: Double = self.renderPrimitiveSaturation
@@ -726,7 +727,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderValue.isEnabled = enabled
           if let renderBondValue: Double = self.renderPrimitiveValue
@@ -743,7 +744,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         button.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           button.isEnabled = enabled
           
@@ -766,7 +767,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldExposure.isEditable = enabled
           if let renderPrimitiveFrontSideHDRExposure: Double = self.renderPrimitiveFrontSideHDRExposure
@@ -785,7 +786,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderExposure.isEnabled = enabled
           if let renderPrimitiveFrontSideHDRExposure: Double = self.renderPrimitiveFrontSideHDRExposure
@@ -802,7 +803,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontAmbientIntensity.isEditable = false
         textFieldFrontAmbientIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldFrontAmbientIntensity.isEditable = enabled
           if let ambientIntensity = self.renderPrimitiveFrontSideAmbientIntensity
@@ -819,7 +820,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontAmbientIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderFrontAmbientIntensity.isEnabled = enabled
           if let ambientIntensity = self.renderPrimitiveFrontSideAmbientIntensity
@@ -835,7 +836,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientFrontSideColor.isEnabled = false
         ambientFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           ambientFrontSideColor.isEnabled = enabled
           if let color = self.renderPrimitiveFrontSideAmbientColor
@@ -851,7 +852,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontDiffuseIntensity.isEditable = false
         textFieldFrontDiffuseIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldFrontDiffuseIntensity.isEditable = enabled
           if let diffuseIntensity = self.renderPrimitiveFrontSideDiffuseIntensity
@@ -868,7 +869,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontDiffuseIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderFrontDiffuseIntensity.isEnabled = enabled
           if let diffuseIntensity = self.renderPrimitiveFrontSideDiffuseIntensity
@@ -884,7 +885,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseFrontSideColor.isEnabled = false
         diffuseFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           diffuseFrontSideColor.isEnabled = enabled
           if let color = self.renderPrimitiveFrontSideDiffuseColor
@@ -900,7 +901,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontSpecularIntensity.isEditable = false
         textFieldFrontSpecularIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldFrontSpecularIntensity.isEditable = enabled
           if let specularIntensity = self.renderPrimitiveFrontSideSpecularIntensity
@@ -917,7 +918,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontSpecularIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderFrontSpecularIntensity.isEnabled = enabled
           if let specularIntensity = self.renderPrimitiveFrontSideSpecularIntensity
@@ -933,7 +934,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularFrontSideColor.isEnabled = false
         specularFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           specularFrontSideColor.isEnabled = enabled
           if let color = self.renderPrimitiveFrontSideSpecularColor
@@ -950,7 +951,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontShininess.isEditable = false
         textFieldFrontShininess.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldFrontShininess.isEditable = enabled
           if let shininess = self.renderPrimitiveFrontSideShininess
@@ -967,7 +968,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontShininess.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderFrontShininess.isEnabled = enabled
           if let shininess = self.renderPrimitiveFrontSideShininess
@@ -985,7 +986,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         button.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           button.isEnabled = enabled
           if let renderPrimitiveHDR: Bool = self.renderPrimitiveBackSideHDR
@@ -1007,7 +1008,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldExposure.isEditable = enabled
           if let renderPrimitiveBackSideHDRExposure: Double = self.renderPrimitiveBackSideHDRExposure
@@ -1026,7 +1027,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderExposure.isEnabled = enabled
           if let renderPrimitiveBackSideHDRExposure: Double = self.renderPrimitiveBackSideHDRExposure
@@ -1043,7 +1044,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackAmbientIntensity.isEditable = false
         textFieldBackAmbientIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldBackAmbientIntensity.isEditable = enabled
           if let ambientIntensity = self.renderPrimitiveBackSideAmbientIntensity
@@ -1060,7 +1061,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackAmbientIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderBackAmbientIntensity.isEnabled = enabled
           if let ambientIntensity = self.renderPrimitiveBackSideAmbientIntensity
@@ -1076,7 +1077,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientBackSideColor.isEnabled = false
         ambientBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           ambientBackSideColor.isEnabled = enabled
           if let color = self.renderPrimitiveBackSideAmbientColor
@@ -1092,7 +1093,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackDiffuseIntensity.isEditable = false
         textFieldBackDiffuseIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldBackDiffuseIntensity.isEditable = enabled
           if let diffuseIntensity = self.renderPrimitiveBackSideDiffuseIntensity
@@ -1109,7 +1110,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackDiffuseIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderBackDiffuseIntensity.isEnabled = enabled
           if let diffuseIntensity = self.renderPrimitiveBackSideDiffuseIntensity
@@ -1125,7 +1126,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseBackSideColor.isEnabled = false
         diffuseBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           diffuseBackSideColor.isEnabled = enabled
           if let color = self.renderPrimitiveBackSideDiffuseColor
@@ -1141,7 +1142,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackSpecularIntensity.isEditable = false
         textFieldBackSpecularIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldBackSpecularIntensity.isEditable = enabled
           if let specularIntensity = self.renderPrimitiveBackSideSpecularIntensity
@@ -1158,7 +1159,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackSpecularIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderBackSpecularIntensity.isEnabled = enabled
           if let specularIntensity = self.renderPrimitiveBackSideSpecularIntensity
@@ -1174,7 +1175,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularBackSideColor.isEnabled = false
         specularBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           specularBackSideColor.isEnabled = enabled
           if let color = self.renderPrimitiveBackSideSpecularColor
@@ -1190,7 +1191,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackShininess.isEditable = false
         textFieldBackShininess.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           textFieldBackShininess.isEditable = enabled
           if let shininess = self.renderPrimitiveBackSideShininess
@@ -1207,7 +1208,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackShininess.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is PrimitiveViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is PrimitiveEditor}).isEmpty
         {
           sliderBackShininess.isEnabled = enabled
           if let shininess = self.renderPrimitiveBackSideShininess
@@ -1233,7 +1234,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonRepresentationType.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           popUpbuttonRepresentationType.isEditable = enabled
           
@@ -1254,7 +1255,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonRepresentationStyle.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           popUpbuttonRepresentationStyle.isEditable = enabled
           
@@ -1294,7 +1295,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         
         popUpbuttonColorScheme.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           popUpbuttonColorScheme.isEditable = enabled
           
@@ -1325,7 +1326,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         
         popUpbuttonForceField.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           popUpbuttonForceField.isEditable = enabled
           
@@ -1347,7 +1348,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonColorOrder.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           popUpbuttonColorOrder.isEditable = enabled
           
@@ -1368,7 +1369,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonForceFieldOrder.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           popUpbuttonForceFieldOrder.isEditable = enabled
           
@@ -1395,7 +1396,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionDensity.isEditable = false
         textFieldSelectionDensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           popUpbuttonSelectionStyle.isEditable = enabled
           textFieldSelectionFrequency.isEditable = enabled
@@ -1444,7 +1445,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldAtomSelectionIntensityLevel.isEditable = false
         textFieldAtomSelectionIntensityLevel.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           textFieldAtomSelectionIntensityLevel.isEditable = enabled
           if let renderAtomSelectionIntensityLevel: Double = self.renderAtomSelectionIntensity
@@ -1464,7 +1465,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderAtomSelectionIntensityLevel.minValue = 0.0
         sliderAtomSelectionIntensityLevel.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderAtomSelectionIntensityLevel.isEnabled = enabled
           if let renderAtomSelectionIntensityLevel: Double = self.renderAtomSelectionIntensity
@@ -1480,7 +1481,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionScaling.isEditable = false
         textFieldSelectionScaling.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           textFieldSelectionScaling.isEditable = enabled
           if let renderAtomSelectionIntensityLevel: Double = self.renderAtomSelectionScaling
@@ -1499,7 +1500,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSelectionScaling.minValue = 1.0
         sliderSelectionScaling.maxValue = 2.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderSelectionScaling.isEnabled = enabled
           if let renderSelectionScaling: Double = self.renderAtomSelectionScaling
@@ -1515,7 +1516,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         button.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           button.isEnabled = enabled
           
@@ -1538,7 +1539,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           textFieldExposure.isEditable = enabled
           if let renderAtomHDRExposure: Double = self.renderAtomHDRExposure
@@ -1557,7 +1558,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderExposure.isEnabled = enabled
           if let renderAtomHDRExposure: Double = self.renderAtomHDRExposure
@@ -1573,7 +1574,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           textFieldHue.isEditable = enabled
           if let renderHue: Double = self.renderAtomHue
@@ -1592,7 +1593,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderHue.isEnabled = enabled
           if let renderHue: Double = self.renderAtomHue
@@ -1608,7 +1609,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           textFieldSaturation.isEditable = enabled
           if let renderSaturation = self.renderAtomSaturation
@@ -1627,7 +1628,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderSaturation.isEnabled = enabled
           if let renderSaturation = self.renderAtomSaturation
@@ -1643,7 +1644,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           textFieldValue.isEditable = enabled
           if let renderValue: Double = self.renderAtomValue
@@ -1662,7 +1663,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderValue.isEnabled = enabled
           if let renderValue: Double = self.renderAtomValue
@@ -1679,7 +1680,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         checkDrawAtomsbutton.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           checkDrawAtomsbutton.isEnabled = enabled
           if let renderDrawAtoms: Bool = self.renderDrawAtoms
@@ -1701,7 +1702,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldAtomScaling.isEditable = false
         textFieldAtomScaling.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           textFieldAtomScaling.isEditable = enabled
           if let renderAtomScaleFactor: Double = self.renderAtomScaleFactor
@@ -1721,7 +1722,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderAtomScaling.minValue = 0.1
         sliderAtomScaling.maxValue = 2.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderAtomScaling.isEnabled = enabled
           if let renderAtomScaleFactor: Double = self.renderAtomScaleFactor
@@ -1736,7 +1737,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         buttonAmbientOcclusion.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           buttonAmbientOcclusion.isEnabled = enabled
           if let renderAtomAmbientOcclusion: Bool = self.renderAtomAmbientOcclusion
@@ -1758,7 +1759,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientLightIntensitity.isEditable = false
         ambientLightIntensitity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           ambientLightIntensitity.isEditable = enabled
           if let renderAtomAmbientIntensity: Double = self.renderAtomAmbientIntensity
@@ -1778,7 +1779,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderAmbientLightIntensitity.minValue = 0.0
         sliderAmbientLightIntensitity.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderAmbientLightIntensitity.isEnabled = enabled
           if let renderAtomAmbientIntensity: Double = self.renderAtomAmbientIntensity
@@ -1792,7 +1793,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientColor.isEnabled = false
         ambientColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           ambientColor.isEnabled = enabled
           if let renderAtomAmbientColor: NSColor = self.renderAtomAmbientColor
@@ -1812,7 +1813,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseLightIntensitity.isEditable = false
         diffuseLightIntensitity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           diffuseLightIntensitity.isEditable = enabled
           if let renderAtomDiffuseIntensity: Double = self.renderAtomDiffuseIntensity
@@ -1831,7 +1832,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderDiffuseLightIntensitity.minValue = 0.0
         sliderDiffuseLightIntensitity.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderDiffuseLightIntensitity.isEnabled = enabled
           if let renderAtomDiffuseIntensity: Double = self.renderAtomDiffuseIntensity
@@ -1845,7 +1846,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseColor.isEnabled = false
         diffuseColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           diffuseColor.isEnabled = enabled
           if let renderAtomDiffuseColor: NSColor = self.renderAtomDiffuseColor
@@ -1865,7 +1866,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularLightIntensitity.isEditable = false
         specularLightIntensitity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           specularLightIntensitity.isEditable = enabled
           if let renderAtomSpecularIntensity: Double = self.renderAtomSpecularIntensity
@@ -1884,7 +1885,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSpecularLightIntensitity.minValue = 0.0
         sliderSpecularLightIntensitity.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderSpecularLightIntensitity.isEnabled = enabled
           if let renderAtomSpecularIntensity: Double = self.renderAtomSpecularIntensity
@@ -1898,7 +1899,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularColor.isEnabled = false
         specularColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           specularColor.isEnabled = enabled
           if let renderAtomSpecularColor: NSColor = self.renderAtomSpecularColor
@@ -1914,7 +1915,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         shininess.isEditable = false
         shininess.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           shininess.isEditable = enabled
           if let renderAtomShininess: Double = self.renderAtomShininess
@@ -1933,7 +1934,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderShininess.minValue = 0.1
         sliderShininess.maxValue = 128.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AtomStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AtomStructureEditor}).isEmpty
         {
           sliderShininess.isEnabled = enabled
           if let renderAtomShininess: Double = self.renderAtomShininess
@@ -1957,7 +1958,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         checkDrawBondsbutton.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           checkDrawBondsbutton.isEnabled = enabled
           if let renderDrawBonds: Bool = self.renderDrawBonds
@@ -1979,7 +1980,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBondScaling.isEditable = false
         textFieldBondScaling.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           textFieldBondScaling.isEditable = enabled
           if let renderBondScaleFactor: Double = self.renderBondScaleFactor
@@ -1994,7 +1995,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderBondScaling.minValue = 0.1
         sliderBondScaling.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderBondScaling.isEnabled = enabled
           if let renderBondScaleFactor: Double = self.renderBondScaleFactor
@@ -2009,7 +2010,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonBondColorMode.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           popUpbuttonBondColorMode.isEditable = enabled
           if let rawValue: Int = self.renderBondColorMode?.rawValue
@@ -2030,7 +2031,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSelectionDensity.isEditable = false
         textFieldSelectionDensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           popUpbuttonSelectionStyle.isEditable = enabled
           textFieldSelectionFrequency.isEditable = enabled
@@ -2079,7 +2080,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBondSelectionIntensityLevel.isEditable = false
         textFieldBondSelectionIntensityLevel.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
           {
             textFieldBondSelectionIntensityLevel.isEditable = enabled
             if let renderBondSelectionIntensityLevel: Double = self.renderBondSelectionIntensity
@@ -2099,7 +2100,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           sliderBondSelectionIntensityLevel.minValue = 0.0
           sliderBondSelectionIntensityLevel.maxValue = 1.0
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
           {
             sliderBondSelectionIntensityLevel.isEnabled = enabled
             if let renderBondSelectionIntensityLevel: Double = self.renderBondSelectionIntensity
@@ -2115,7 +2116,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldBondSelectionScaling.isEditable = false
           textFieldBondSelectionScaling.stringValue = ""
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
           {
             textFieldBondSelectionScaling.isEditable = enabled
             if let renderBondSelectionScaling: Double = self.renderBondSelectionScaling
@@ -2134,7 +2135,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           sliderBondSelectionScaling.minValue = 1.0
           sliderBondSelectionScaling.maxValue = 2.0
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
           {
             sliderBondSelectionScaling.isEnabled = enabled
             if let renderBondSelectionScaling: Double = self.renderBondSelectionScaling
@@ -2149,7 +2150,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         checkDrawHDRButton.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           checkDrawHDRButton.isEnabled = enabled
           if let renderHighDynamicRange: Bool = self.renderBondHDR
@@ -2172,7 +2173,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           textFieldExposure.isEditable = enabled
           if let renderBondHDRExposure: Double = self.renderBondHDRExposure
@@ -2187,7 +2188,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderExposure.isEnabled = enabled
           if let renderBondHDRExposure: Double = self.renderBondHDRExposure
@@ -2203,7 +2204,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           textFieldHue.isEditable = enabled
           if let renderBondHue: Double = self.renderBondHue
@@ -2218,7 +2219,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderHue.isEnabled = enabled
           if let renderBondHue: Double = self.renderBondHue
@@ -2234,7 +2235,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           textFieldSaturation.isEditable = enabled
           if let renderBondSaturation: Double = self.renderBondSaturation
@@ -2249,7 +2250,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderSaturation.isEnabled = enabled
           if let renderBondSaturation: Double = self.renderBondSaturation
@@ -2265,7 +2266,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           textFieldValue.isEditable = enabled
           if let renderBondValue: Double = self.renderBondValue
@@ -2280,7 +2281,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderValue.isEnabled = enabled
           if let renderBondValue: Double = self.renderBondValue
@@ -2296,7 +2297,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         buttonAmbientOcclusion.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           buttonAmbientOcclusion.isEnabled = enabled
           
@@ -2321,7 +2322,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientLightIntensitity.isEditable = false
         ambientLightIntensitity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           ambientLightIntensitity.isEditable = enabled
           if let renderBondAmbientIntensity: Double = self.renderBondAmbientIntensity
@@ -2336,7 +2337,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderAmbientLightIntensitity.minValue = 0.0
         sliderAmbientLightIntensitity.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderAmbientLightIntensitity.isEnabled = enabled
           if let renderBondAmbientIntensity: Double = self.renderBondAmbientIntensity
@@ -2350,7 +2351,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientColor.isEnabled = false
         ambientColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           ambientColor.isEnabled = enabled
           if let renderBondAmbientColor: NSColor = self.renderBondAmbientColor
@@ -2366,7 +2367,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseLightIntensitity.isEditable = false
         diffuseLightIntensitity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           diffuseLightIntensitity.isEditable = enabled
           if let renderBondDiffuseIntensity: Double = self.renderBondDiffuseIntensity
@@ -2381,7 +2382,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderDiffuseLightIntensitity.minValue = 0.0
         sliderDiffuseLightIntensitity.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderDiffuseLightIntensitity.isEnabled = enabled
           if let renderBondDiffuseIntensity: Double = self.renderBondDiffuseIntensity
@@ -2395,7 +2396,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseColor.isEnabled = false
         diffuseColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           diffuseColor.isEnabled = enabled
           if let renderBondDiffuseColor: NSColor = self.renderBondDiffuseColor
@@ -2411,7 +2412,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularLightIntensitity.isEditable = false
         specularLightIntensitity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           specularLightIntensitity.isEditable = enabled
           if let renderBondSpecularIntensity: Double = self.renderBondSpecularIntensity
@@ -2426,7 +2427,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSpecularLightIntensitity.minValue = 0.0
         sliderSpecularLightIntensitity.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderSpecularLightIntensitity.isEnabled = enabled
           if let renderBondSpecularIntensity: Double = self.renderBondSpecularIntensity
@@ -2440,7 +2441,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularColor.isEnabled = false
         specularColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           specularColor.isEnabled = enabled
           if let renderBondSpecularColor: NSColor = self.renderBondSpecularColor
@@ -2456,7 +2457,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         shininess.isEditable = false
         shininess.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           shininess.isEditable = enabled
           if let renderBondShininess: Double = self.renderBondShininess
@@ -2471,7 +2472,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderShininess.minValue = 0.1
         sliderShininess.maxValue = 128.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is BondStructureViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is BondStructureEditor}).isEmpty
         {
           sliderShininess.isEnabled = enabled
           if let renderBondShininess: Double = self.renderBondShininess
@@ -2516,7 +2517,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         unitCellScaling.isEditable = false
         unitCellScaling.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is UnitCellEditor}).isEmpty
         {
           unitCellScaling.isEditable = enabled
           if let renderUnitCellScaleFactor: Double = self.renderUnitCellScaleFactor
@@ -2532,7 +2533,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderUnitCellScaling.minValue = 0.0
         sliderUnitCellScaling.maxValue = 2.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is UnitCellEditor}).isEmpty
         {
           sliderUnitCellScaling.isEnabled = enabled
           if let renderUnitCellScaleFactor: Double = self.renderUnitCellScaleFactor
@@ -2547,7 +2548,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         unitCellLightIntensitity.isEditable = false
         unitCellLightIntensitity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is UnitCellEditor}).isEmpty
         {
           unitCellLightIntensitity.isEditable = enabled
           if let renderUnitCellDiffuseIntensity: Double = self.renderUnitCellDiffuseIntensity
@@ -2563,7 +2564,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderUnitCellLightIntensitity.minValue = 0.0
         sliderUnitCellLightIntensitity.maxValue = 1.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is UnitCellEditor}).isEmpty
         {
           sliderUnitCellLightIntensitity.isEnabled = enabled
           if let renderUnitCellDiffuseIntensity: Double = self.renderUnitCellDiffuseIntensity
@@ -2578,7 +2579,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         unitCellColor.isEnabled = false
         unitCellColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is UnitCellViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is UnitCellEditor}).isEmpty
         {
           unitCellColor.isEnabled = enabled
           if let renderUnitCellDiffuseColor: NSColor = self.renderUnitCellDiffuseColor
@@ -2774,7 +2775,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     var adsorptionSurfaceOn: Bool = false
     if let proxyProject = proxyProject, proxyProject.isEditable,
-       !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+       !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
     {
       adsorptionSurfaceOn = self.renderAdsorptionSurfaceOn ?? false
     }
@@ -2787,7 +2788,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         checkDrawAdsorptionSurfacebutton.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           checkDrawAdsorptionSurfacebutton.isEnabled = enabled
           
@@ -2809,7 +2810,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonRenderingType.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           popUpbuttonRenderingType.isEditable = enabled && adsorptionSurfaceOn
           if let renderingType: RKEnergySurfaceType = self.renderAdsorptionRenderingMethod
@@ -2825,7 +2826,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldStepLength.isEditable = false
         textFieldStepLength.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldStepLength.isEditable = enabled && adsorptionSurfaceOn
           if let stepLength = self.renderAdsorptionVolumeStepLength
@@ -2844,7 +2845,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonTransferFunction.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           popUpbuttonTransferFunction.isEditable = enabled && adsorptionSurfaceOn
           if let transferFunction: RKPredefinedVolumeRenderingTransferFunction = self.renderAdsorptionVolumeTransferFunction
@@ -2860,7 +2861,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonProbeParticle.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           popUpbuttonProbeParticle.isEditable = enabled && adsorptionSurfaceOn
           if let probeMolecule: Structure.ProbeMolecule = self.renderAdsorptionSurfaceProbeMolecule
@@ -2876,7 +2877,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldIsovalue.isEditable = false
         textFieldIsovalue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldIsovalue.isEditable = enabled && adsorptionSurfaceOn
           if let isovalue = self.renderAdsorptionSurfaceIsovalue
@@ -2893,13 +2894,15 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderIsovalue.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderIsovalue.isEnabled = enabled && adsorptionSurfaceOn
-          if let isovalue = self.renderAdsorptionSurfaceIsovalue
+          if let isovalue = self.renderAdsorptionSurfaceIsovalue,
+             let minimumValue: Double = self.renderAdsorptionSurfaceMinimumValue,
+             let maximimValue: Double = self.renderAdsorptionSurfaceMaximumValue
           {
-            sliderIsovalue.minValue = Double(self.renderMinimumGridEnergyValue ?? -1000.0)
-            sliderIsovalue.maxValue = 0.0
+            sliderIsovalue.minValue = minimumValue
+            sliderIsovalue.maxValue = maximimValue
             sliderIsovalue.doubleValue = isovalue
           }
         }
@@ -2911,7 +2914,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldOpacity.isEditable = false
         textFieldOpacity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldOpacity.isEditable = enabled && adsorptionSurfaceOn
           if let opacity = self.renderAdsorptionSurfaceOpacity
@@ -2928,7 +2931,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderOpacity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderOpacity.isEnabled = enabled && adsorptionSurfaceOn
           if let opacity = self.renderAdsorptionSurfaceOpacity
@@ -2946,24 +2949,73 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         }
       }
       
-      if let popUpbuttonSurfaceSize: iRASPAPopUpButton = view.viewWithTag(7) as? iRASPAPopUpButton
+      if let textFieldTransparencyThreshold: NSTextField = view.viewWithTag(105) as? NSTextField
+      {
+        textFieldTransparencyThreshold.isEditable = false
+        textFieldTransparencyThreshold.stringValue = ""
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+        {
+          textFieldTransparencyThreshold.isEditable = enabled && adsorptionSurfaceOn
+          if let opacity = self.renderAdsorptionTransparencyThreshold
+          {
+            textFieldTransparencyThreshold.doubleValue = opacity
+          }
+          else
+          {
+            textFieldTransparencyThreshold.stringValue = NSLocalizedString("Mult. Val.", comment: "")
+          }
+        }
+      }
+      if let sliderTransparencyThreshold: NSSlider = view.viewWithTag(106) as? NSSlider
+      {
+        sliderTransparencyThreshold.isEnabled = false
+        if let proxyProject = proxyProject, proxyProject.isEditable,
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
+        {
+          sliderTransparencyThreshold.isEnabled = enabled && adsorptionSurfaceOn
+          if let opacity = self.renderAdsorptionTransparencyThreshold
+          {
+            sliderTransparencyThreshold.minValue = 0.0
+            sliderTransparencyThreshold.maxValue = 1.0
+            sliderTransparencyThreshold.doubleValue = opacity
+          }
+          else
+          {
+            sliderTransparencyThreshold.minValue = 0.0
+            sliderTransparencyThreshold.maxValue = 1.0
+            sliderTransparencyThreshold.doubleValue = 0.5
+          }
+        }
+      }
+      
+      if let popUpbuttonSurfaceSize: iRASPAPopUpButton = view.viewWithTag(7) as? iRASPAPopUpButton,
+         let dimensionTextField: NSTextField = view.viewWithTag(8) as? NSTextField
       {
         popUpbuttonSurfaceSize.isEditable = false
+        popUpbuttonSurfaceSize.autoenablesItems = false
+        
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           popUpbuttonSurfaceSize.isEditable = enabled && adsorptionSurfaceOn
-          if let structureSize: Int = self.renderAdsorptionSurfaceSize
+          if let powerOfTwo: Int = self.renderEncompassingPowerOfTwoCubicGridSize,
+             let dimensions: SIMD3<Int32> = self.renderGridDimension
           {
+            popUpbuttonSurfaceSize.isEnabled = !self.iRASPAObjects.compactMap{($0.object as? IsosurfaceEditor)}.isEmpty
             popUpbuttonSurfaceSize.removeItem(withTitle: NSLocalizedString("Multiple Values", comment: ""))
-            popUpbuttonSurfaceSize.selectItem(withTitle: "\(structureSize)x\(structureSize)x\(structureSize)")
+            popUpbuttonSurfaceSize.selectItem(at: powerOfTwo)
+            
+            dimensionTextField.stringValue = "(\(dimensions.x)x\(dimensions.y)x\(dimensions.z))"
           }
           else
           {
             popUpbuttonSurfaceSize.setTitle(NSLocalizedString("Multiple Values", comment: ""))
+            dimensionTextField.stringValue = ""
           }
         }
       }
+      
       
     case "AdsorptionHSVCell":
       // Hue
@@ -2972,7 +3024,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldHue.isEditable = false
         textFieldHue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldHue.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceHue: Double = self.renderAdsorptionSurfaceHue
@@ -2987,7 +3039,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderHue.minValue = 0.0
         sliderHue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderHue.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceHue: Double = self.renderAdsorptionSurfaceHue
@@ -3003,7 +3055,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldSaturation.isEditable = false
         textFieldSaturation.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldSaturation.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceSaturation: Double = self.renderAdsorptionSurfaceSaturation
@@ -3018,7 +3070,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderSaturation.minValue = 0.0
         sliderSaturation.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderSaturation.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceSaturation: Double = self.renderAdsorptionSurfaceSaturation
@@ -3034,7 +3086,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldValue.isEditable = false
         textFieldValue.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldValue.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceValue: Double = self.renderAdsorptionSurfaceValue
@@ -3049,7 +3101,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderValue.minValue = 0.0
         sliderValue.maxValue = 1.5
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderValue.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceValue: Double = self.renderAdsorptionSurfaceValue
@@ -3065,7 +3117,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         button.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           button.isEnabled = enabled && adsorptionSurfaceOn
           
@@ -3088,7 +3140,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = self.renderAdsorptionSurfaceFrontSideHDRExposure
@@ -3107,7 +3159,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceFrontSideHDRExposure: Double = self.renderAdsorptionSurfaceFrontSideHDRExposure
@@ -3124,7 +3176,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontAmbientIntensity.isEditable = false
         textFieldFrontAmbientIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldFrontAmbientIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let ambientIntensity = self.renderAdsorptionSurfaceFrontSideAmbientIntensity
@@ -3141,7 +3193,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontAmbientIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderFrontAmbientIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let ambientIntensity = self.renderAdsorptionSurfaceFrontSideAmbientIntensity
@@ -3157,7 +3209,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientFrontSideColor.isEnabled = false
         ambientFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           ambientFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceFrontSideAmbientColor
@@ -3173,7 +3225,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontDiffuseIntensity.isEditable = false
         textFieldFrontDiffuseIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldFrontDiffuseIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let diffuseIntensity = self.renderAdsorptionSurfaceFrontSideDiffuseIntensity
@@ -3190,7 +3242,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontDiffuseIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderFrontDiffuseIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let diffuseIntensity = self.renderAdsorptionSurfaceFrontSideDiffuseIntensity
@@ -3206,7 +3258,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseFrontSideColor.isEnabled = false
         diffuseFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           diffuseFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceFrontSideDiffuseColor
@@ -3222,7 +3274,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontSpecularIntensity.isEditable = false
         textFieldFrontSpecularIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldFrontSpecularIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let specularIntensity = self.renderAdsorptionSurfaceFrontSideSpecularIntensity
@@ -3239,7 +3291,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontSpecularIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderFrontSpecularIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let specularIntensity = self.renderAdsorptionSurfaceFrontSideSpecularIntensity
@@ -3255,7 +3307,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularFrontSideColor.isEnabled = false
         specularFrontSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           specularFrontSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceFrontSideSpecularColor
@@ -3272,7 +3324,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldFrontShininess.isEditable = false
         textFieldFrontShininess.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldFrontShininess.isEditable = enabled && adsorptionSurfaceOn
           if let shininess = self.renderAdsorptionSurfaceFrontSideShininess
@@ -3289,7 +3341,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderFrontShininess.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderFrontShininess.isEnabled = enabled && adsorptionSurfaceOn
           if let shininess = self.renderAdsorptionSurfaceFrontSideShininess
@@ -3308,7 +3360,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         button.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           button.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceHDR: Bool = self.renderAdsorptionSurfaceBackSideHDR
@@ -3330,7 +3382,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldExposure.isEditable = false
         textFieldExposure.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldExposure.isEditable = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceBackSideHDRExposure: Double = self.renderAdsorptionSurfaceBackSideHDRExposure
@@ -3349,7 +3401,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         sliderExposure.minValue = 0.0
         sliderExposure.maxValue = 3.0
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderExposure.isEnabled = enabled && adsorptionSurfaceOn
           if let renderAdsorptionSurfaceBackSideHDRExposure: Double = self.renderAdsorptionSurfaceBackSideHDRExposure
@@ -3365,7 +3417,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackAmbientIntensity.isEditable = false
         textFieldBackAmbientIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldBackAmbientIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let ambientIntensity = self.renderAdsorptionSurfaceBackSideAmbientIntensity
@@ -3382,7 +3434,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackAmbientIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderBackAmbientIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let ambientIntensity = self.renderAdsorptionSurfaceBackSideAmbientIntensity
@@ -3398,7 +3450,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         ambientBackSideColor.isEnabled = false
         ambientBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           ambientBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceBackSideAmbientColor
@@ -3414,7 +3466,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackDiffuseIntensity.isEditable = false
         textFieldBackDiffuseIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldBackDiffuseIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let diffuseIntensity = self.renderAdsorptionSurfaceBackSideDiffuseIntensity
@@ -3431,7 +3483,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackDiffuseIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderBackDiffuseIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let diffuseIntensity = self.renderAdsorptionSurfaceBackSideDiffuseIntensity
@@ -3447,7 +3499,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         diffuseBackSideColor.isEnabled = false
         diffuseBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           diffuseBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceBackSideDiffuseColor
@@ -3463,7 +3515,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackSpecularIntensity.isEditable = false
         textFieldBackSpecularIntensity.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldBackSpecularIntensity.isEditable = enabled && adsorptionSurfaceOn
           if let specularIntensity = self.renderAdsorptionSurfaceBackSideSpecularIntensity
@@ -3480,7 +3532,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackSpecularIntensity.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderBackSpecularIntensity.isEnabled = enabled && adsorptionSurfaceOn
           if let specularIntensity = self.renderAdsorptionSurfaceBackSideSpecularIntensity
@@ -3496,7 +3548,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         specularBackSideColor.isEnabled = false
         specularBackSideColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           specularBackSideColor.isEnabled = enabled && adsorptionSurfaceOn
           if let color = self.renderAdsorptionSurfaceBackSideSpecularColor
@@ -3512,7 +3564,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textFieldBackShininess.isEditable = false
         textFieldBackShininess.stringValue = ""
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           textFieldBackShininess.isEditable = enabled && adsorptionSurfaceOn
           if let shininess = self.renderAdsorptionSurfaceBackSideShininess
@@ -3529,7 +3581,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         sliderBackShininess.isEnabled = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AdsorptionSurfaceViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is IsosurfaceViewer}).isEmpty
         {
           sliderBackShininess.isEnabled = enabled && adsorptionSurfaceOn
           if let shininess = self.renderAdsorptionSurfaceBackSideShininess
@@ -3556,7 +3608,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
       {
         popUpbuttonAnnotationType.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
         {
           popUpbuttonAnnotationType.isEditable = enabled
           if let rawValue: Int = self.renderTextType?.rawValue
@@ -3577,7 +3629,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         textColor.isEnabled = false
         textColor.color = NSColor.lightGray
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
         {
           textColor.isEnabled = enabled
           if let renderAtomAmbientColor: NSColor = self.renderTextColor
@@ -3597,7 +3649,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         popUpbuttonFontFamily.isEditable = false
         popUpbuttonFontFamilyMembers.isEditable = false
         if let proxyProject = proxyProject, proxyProject.isEditable,
-           !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+           !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
         {
           popUpbuttonFontFamily.isEditable = enabled
           popUpbuttonFontFamilyMembers.isEditable = enabled
@@ -3640,7 +3692,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           popUpbuttonAnnotationAlignment.isEditable = false
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
           {
             popUpbuttonAnnotationAlignment.isEditable = enabled
             if let rawValue: Int = self.renderTextAlignment?.rawValue
@@ -3660,7 +3712,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
         {
           popUpbuttonAnnotationStyle.isEditable = false
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
           {
             popUpbuttonAnnotationStyle.isEditable = enabled
             if let rawValue: Int = self.renderTextStyle?.rawValue
@@ -3683,7 +3735,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldScaling.isEditable = false
           textFieldScaling.stringValue = ""
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
           {
             textFieldScaling.isEditable = enabled
             if let renderTextScaling: Double = self.renderTextScaling
@@ -3702,7 +3754,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           sliderScaling.minValue = 0.0
           sliderScaling.maxValue = 3.0
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
           {
             sliderScaling.isEnabled = enabled
             if let renderTextScaling: Double = self.renderTextScaling
@@ -3717,7 +3769,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldAnnotionTextDisplacementX.isEditable = false
           textFieldAnnotionTextDisplacementX.stringValue = ""
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
           {
             textFieldAnnotionTextDisplacementX.isEditable = enabled
             if let renderTextOffsetX: Double = self.renderTextOffsetX
@@ -3736,7 +3788,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldAnnotionTextDisplacementY.isEditable = false
           textFieldAnnotionTextDisplacementY.stringValue = ""
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
           {
             textFieldAnnotionTextDisplacementY.isEditable = enabled
             if let renderTextOffsetY: Double = self.renderTextOffsetY
@@ -3755,7 +3807,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
           textFieldAnnotionTextDisplacementZ.isEditable = false
           textFieldAnnotionTextDisplacementZ.stringValue = ""
           if let proxyProject = proxyProject, proxyProject.isEditable,
-             !iRASPAObjects.filter({$0.object is AnnotationViewer}).isEmpty
+             !iRASPAObjects.filter({$0.object is AnnotationEditor}).isEmpty
           {
             textFieldAnnotionTextDisplacementZ.isEditable = enabled
             if let renderTextOffsetZ: Double = self.renderTextOffsetZ
@@ -7145,8 +7197,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
        let adsorptionVolumeTransferFunction = RKPredefinedVolumeRenderingTransferFunction(rawValue: sender.indexOfSelectedItem)
     {
       self.renderAdsorptionVolumeTransferFunction = adsorptionVolumeTransferFunction
-      self.windowController?.detailTabViewController?.renderViewController?.invalidateIsosurface(cachedIsosurfaces: iRASPAObjects.flatMap{$0.selectedRenderFrames})
-      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
       self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
@@ -7275,21 +7326,63 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     }
   }
   
+  
+  @IBAction func changeAdsorptionTransparencyThresholdSlider(_ sender: NSSlider)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderAdsorptionTransparencyThreshold = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      
+      if let event: NSEvent = NSApplication.shared.currentEvent
+      {
+        let startingDrag: Bool = event.type == NSEvent.EventType.leftMouseDown
+        let endingDrag: Bool = event.type == NSEvent.EventType.leftMouseUp
+        
+        if startingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToMedium()
+        }
+        if endingDrag
+        {
+          self.windowController?.detailTabViewController?.renderViewController?.setRenderQualityToHigh()
+        }
+      }
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.window?.makeFirstResponder(self.appearanceOutlineView)
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
+  @IBAction func changeAdsorptionTransparencyThresholdTextField(_ sender: NSTextField)
+  {
+    if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
+    {
+      self.renderAdsorptionTransparencyThreshold = sender.doubleValue
+      
+      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      
+      self.windowController?.detailTabViewController?.renderViewController?.updateIsosurfaceUniforms()
+      self.windowController?.detailTabViewController?.renderViewController?.redraw()
+      
+      self.windowController?.document?.updateChangeCount(.changeDone)
+      self.proxyProject?.representedObject.isEdited = true
+    }
+  }
+  
   @IBAction func changeAdsorptionSurfaceSize(_ sender: NSPopUpButton)
   {
     if let projectTreeNode = self.proxyProject, projectTreeNode.isEditable
     {
-      switch(sender.indexOfSelectedItem)
-      {
-      case 0:
-        self.renderAdsorptionSurfaceSize = 128
-        break
-      case 1:
-        self.renderAdsorptionSurfaceSize = 256
-        break
-      default:
-        break
-      }
+      self.renderEncompassingPowerOfTwoCubicGridSize = sender.indexOfSelectedItem
+      
+      self.updateOutlineView(identifiers: [self.adsorptionPropertiesCell])
+      
       self.windowController?.detailTabViewController?.renderViewController?.updateIsosurface(completionHandler: surfaceUpdateBlock)
       self.windowController?.detailTabViewController?.renderViewController?.redraw()
       
@@ -8199,7 +8292,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let origin: [simd_quatd] = self.iRASPAObjects.compactMap{($0.object as? PrimitiveViewer)?.primitiveOrientation}
+      let origin: [simd_quatd] = self.iRASPAObjects.compactMap{($0.object as? PrimitiveEditor)?.primitiveOrientation}
       let q: simd_quatd = origin.reduce(simd_quatd()){return simd_add($0, $1)}
       let averaged_vector: simd_quatd = simd_quatd(ix: q.vector.x / Double(origin.count), iy: q.vector.y / Double(origin.count), iz: q.vector.z / Double(origin.count), r: q.vector.w / Double(origin.count))
       return origin.isEmpty ? nil : averaged_vector
@@ -8207,7 +8300,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveOrientation = newValue ?? simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
+        ($0.object as? PrimitiveEditor)?.primitiveOrientation = newValue ?? simd_quatd(ix: 0.0, iy: 0.0, iz: 0.0, r: 1.0)
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8217,12 +8310,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let origin: [Double] = self.iRASPAObjects.compactMap{($0.object as? PrimitiveViewer)?.primitiveRotationDelta}
+      let origin: [Double] = self.iRASPAObjects.compactMap{($0.object as? PrimitiveEditor)?.primitiveRotationDelta}
       return origin.isEmpty ? nil : origin.reduce(0.0){return $0 + $1} / Double(origin.count)
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? PrimitiveViewer)?.primitiveRotationDelta = newValue ?? 5.0}
+      self.iRASPAObjects.forEach{($0.object as? PrimitiveEditor)?.primitiveRotationDelta = newValue ?? 5.0}
     }
   }
   
@@ -8230,13 +8323,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles.x}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles.x}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.y,($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.z)
+        ($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles = SIMD3<Double>(newValue ?? 0.0,($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.y,($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.z)
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8246,13 +8339,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles.y}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles.y}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles = SIMD3<Double>(($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.x, newValue ?? 0.0,($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.z)
+        ($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles = SIMD3<Double>(($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.x, newValue ?? 0.0,($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.z)
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8262,13 +8355,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles.z}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles.z}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveOrientation.EulerAngles = SIMD3<Double>(($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.x, ($0.object as! PrimitiveViewer).primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
+        ($0.object as? PrimitiveEditor)?.primitiveOrientation.EulerAngles = SIMD3<Double>(($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.x, ($0.object as! PrimitiveEditor).primitiveOrientation.EulerAngles.y, newValue ?? 0.0)
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8279,13 +8372,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<double3x3> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix}))
+      let set: Set<double3x3> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix = newValue ?? double3x3(1.0)
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix = newValue ?? double3x3(1.0)
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8295,13 +8388,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].x}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[0].x}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].x = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[0].x = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8311,13 +8404,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].y}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[0].y}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].y = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[0].y = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8327,13 +8420,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].z}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[0].z}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[0].z = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[0].z = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8343,13 +8436,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].x}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[1].x}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].x = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[1].x = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8359,13 +8452,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].y}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[1].y}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].y = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[1].y = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8375,13 +8468,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].z}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[1].z}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[1].z = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[1].z = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8391,13 +8484,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].x}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[2].x}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].x = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[2].x = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8407,13 +8500,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].y}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[2].y}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].y = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[2].y = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8423,13 +8516,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].z}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[2].z}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? PrimitiveViewer)?.primitiveTransformationMatrix[2].z = newValue ?? 1.0
+        ($0.object as? PrimitiveEditor)?.primitiveTransformationMatrix[2].z = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8439,12 +8532,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveOpacity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveOpacity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveOpacity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveOpacity = newValue ?? 1.0})
     }
   }
   
@@ -8452,12 +8545,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveNumberOfSides}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveNumberOfSides}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveNumberOfSides = newValue ?? 6})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveNumberOfSides = newValue ?? 6})
     }
   }
   
@@ -8465,12 +8558,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveIsCapped}))
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveIsCapped}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveIsCapped = newValue ?? false})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveIsCapped = newValue ?? false})
     }
   }
   
@@ -8478,12 +8571,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveIsFractional}))
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveIsFractional}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveIsFractional = newValue ?? false})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveIsFractional = newValue ?? false})
     }
   }
   
@@ -8491,12 +8584,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveThickness}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveThickness}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveThickness = newValue ?? 0.05})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveThickness = newValue ?? 0.05})
     }
   }
   
@@ -8504,12 +8597,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveSelectionStyle.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveSelectionStyle.rawValue}))
       return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveSelectionStyle = newValue ?? .glow})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveSelectionStyle = newValue ?? .glow})
     }
   }
   
@@ -8517,12 +8610,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.renderPrimitiveSelectionFrequency}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.renderPrimitiveSelectionFrequency}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.renderPrimitiveSelectionFrequency = newValue ?? 4.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.renderPrimitiveSelectionFrequency = newValue ?? 4.0})
     }
   }
   
@@ -8530,12 +8623,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.renderPrimitiveSelectionDensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.renderPrimitiveSelectionDensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.renderPrimitiveSelectionDensity = newValue ?? 4.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.renderPrimitiveSelectionDensity = newValue ?? 4.0})
     }
   }
   
@@ -8543,12 +8636,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveSelectionIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveSelectionIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveSelectionIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveSelectionIntensity = newValue ?? 1.0})
     }
   }
   
@@ -8556,12 +8649,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveSelectionScaling}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveSelectionScaling}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveSelectionScaling = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveSelectionScaling = newValue ?? 1.0})
     }
   }
   
@@ -8570,12 +8663,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    {
      get
      {
-       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveHue}))
+       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveHue}))
        return Set(set).count == 1 ? set.first! : nil
      }
      set(newValue)
      {
-       self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveHue = newValue ?? 1.0})
+       self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveHue = newValue ?? 1.0})
      }
    }
    
@@ -8583,12 +8676,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    {
      get
      {
-       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveSaturation}))
+       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveSaturation}))
        return Set(set).count == 1 ? set.first! : nil
      }
      set(newValue)
      {
-       self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveSaturation = newValue ?? 1.0})
+       self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveSaturation = newValue ?? 1.0})
      }
    }
    
@@ -8596,12 +8689,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
    {
      get
      {
-       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveValue}))
+       let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveValue}))
        return Set(set).count == 1 ? set.first! : nil
      }
      set(newValue)
      {
-       self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveValue = newValue ?? 1.0})
+       self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveValue = newValue ?? 1.0})
      }
    }
   
@@ -8609,12 +8702,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideHDR}))
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideHDR}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideHDR = newValue ?? true})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideHDR = newValue ?? true})
     }
   }
   
@@ -8622,12 +8715,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideHDRExposure}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideHDRExposure}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideHDRExposure = newValue ?? 1.5})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideHDRExposure = newValue ?? 1.5})
     }
   }
   
@@ -8635,12 +8728,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideAmbientIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideAmbientIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideAmbientIntensity = newValue ?? 0.2})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideAmbientIntensity = newValue ?? 0.2})
     }
   }
   
@@ -8649,12 +8742,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideAmbientColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideAmbientColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)})
     }
   }
   
@@ -8662,12 +8755,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideDiffuseIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideDiffuseIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideDiffuseIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideDiffuseIntensity = newValue ?? 1.0})
     }
   }
   
@@ -8675,12 +8768,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideDiffuseColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideDiffuseColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)})
     }
   }
   
@@ -8688,12 +8781,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideSpecularIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideSpecularIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideSpecularIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideSpecularIntensity = newValue ?? 1.0})
     }
   }
   
@@ -8701,12 +8794,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideSpecularColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideSpecularColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)})
     }
   }
   
@@ -8714,12 +8807,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveFrontSideShininess}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveFrontSideShininess}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveFrontSideShininess = newValue ?? 4.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveFrontSideShininess = newValue ?? 4.0})
     }
   }
   
@@ -8727,12 +8820,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideHDR}))
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideHDR}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideHDR = newValue ?? true})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideHDR = newValue ?? true})
     }
   }
   
@@ -8740,12 +8833,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideHDRExposure}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideHDRExposure}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideHDRExposure = newValue ?? 1.5})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideHDRExposure = newValue ?? 1.5})
     }
   }
   
@@ -8754,12 +8847,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideAmbientIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideAmbientIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideAmbientIntensity = newValue ?? 0.2})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideAmbientIntensity = newValue ?? 0.2})
     }
   }
   
@@ -8767,12 +8860,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideAmbientColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideAmbientColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)})
     }
   }
   
@@ -8781,12 +8874,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideDiffuseIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideDiffuseIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideDiffuseIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideDiffuseIntensity = newValue ?? 1.0})
     }
   }
   
@@ -8794,12 +8887,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideDiffuseColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideDiffuseColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)})
     }
   }
   
@@ -8807,12 +8900,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideSpecularIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideSpecularIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideSpecularIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideSpecularIntensity = newValue ?? 1.0})
     }
   }
   
@@ -8820,12 +8913,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideSpecularColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideSpecularColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)})
     }
   }
   
@@ -8833,12 +8926,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveViewer)?.primitiveBackSideShininess}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? PrimitiveEditor)?.primitiveBackSideShininess}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? PrimitiveViewer)?.primitiveBackSideShininess = newValue ?? 4.0})
+      self.iRASPAObjects.forEach({($0.object as? PrimitiveEditor)?.primitiveBackSideShininess = newValue ?? 4.0})
     }
   }
   
@@ -8847,19 +8940,19 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   public func recheckRepresentationStyle()
   {
-    self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.recheckRepresentationStyle()}
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.recheckRepresentationStyle()}
   }
   
   public func getRepresentationType() -> Structure.RepresentationType?
   {
-    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationType()?.rawValue })
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureEditor)?.getRepresentationType()?.rawValue })
     return Set(set).count == 1 ? Structure.RepresentationType(rawValue: set.first!) : nil
   }
   
   public func setRepresentationType(type: Structure.RepresentationType?)
   {
     self.iRASPAObjects.forEach{
-      ($0.object as? AtomStructureViewer)?.setRepresentationType(type: type)
+      ($0.object as? AtomStructureEditor)?.setRepresentationType(type: type)
       $0.object.reComputeBoundingBox()
     }
   }
@@ -8867,72 +8960,72 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   public func getRepresentationStyle() -> Structure.RepresentationStyle?
   {
-    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationStyle()?.rawValue })
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureEditor)?.getRepresentationStyle()?.rawValue })
     return Set(set).count == 1 ? Structure.RepresentationStyle(rawValue: set.first!) : nil
   }
   
   public func setRepresentationStyle(style: Structure.RepresentationStyle?, colorSets: SKColorSets)
   {
     self.iRASPAObjects.forEach{
-      ($0.object as? AtomStructureViewer)?.setRepresentationStyle(style: style, colorSets: colorSets)
+      ($0.object as? AtomStructureEditor)?.setRepresentationStyle(style: style, colorSets: colorSets)
       $0.object.reComputeBoundingBox()
     }
   }
   
   public func getRepresentationColorScheme() -> String?
   {
-    let set: Set<String> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationColorScheme() })
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureEditor)?.getRepresentationColorScheme() })
     return Set(set).count == 1 ?  set.first! : nil
   }
   
   public func setRepresentationColorScheme(scheme: String?, colorSets: SKColorSets)
   {
-  self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.setRepresentationColorScheme(scheme: scheme ?? "Default", colorSets: colorSets)}
+  self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.setRepresentationColorScheme(scheme: scheme ?? "Default", colorSets: colorSets)}
   }
   
   public func getRepresentationColorOrder() -> SKColorSets.ColorOrder?
   {
-    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationColorOrder()?.rawValue })
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureEditor)?.getRepresentationColorOrder()?.rawValue })
     return Set(set).count == 1 ?  SKColorSets.ColorOrder(rawValue: set.first!) : nil
   }
   
   public func setRepresentationColorOrder(order: SKColorSets.ColorOrder?, colorSets: SKColorSets)
   {
-    self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.setRepresentationColorOrder(order: order ?? SKColorSets.ColorOrder.elementOnly, colorSets: colorSets)}
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.setRepresentationColorOrder(order: order ?? SKColorSets.ColorOrder.elementOnly, colorSets: colorSets)}
   }
   
   public func getRepresentationForceField() -> String?
   {
-    let set: Set<String> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationForceField() })
+    let set: Set<String> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureEditor)?.getRepresentationForceField() })
       return Set(set).count == 1 ?  set.first! : nil
   }
   
   public func setRepresentationForceField(forceField: String?, forceFieldSets: SKForceFieldSets)
   {
-    self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.setRepresentationForceField(forceField: forceField ?? "Default", forceFieldSets: forceFieldSets)}
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.setRepresentationForceField(forceField: forceField ?? "Default", forceFieldSets: forceFieldSets)}
   }
   
   public func getRepresentationForceFieldOrder() -> SKForceFieldSets.ForceFieldOrder?
   {
-    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureViewer)?.getRepresentationForceFieldOrder()?.rawValue })
+    let set: Set<Int> = Set(self.iRASPAObjects.compactMap{ return ($0.object as? AtomStructureEditor)?.getRepresentationForceFieldOrder()?.rawValue })
     return Set(set).count == 1 ?  SKForceFieldSets.ForceFieldOrder(rawValue: set.first!) : nil
   }
   
   public func setRepresentationForceFieldOrder(order: SKForceFieldSets.ForceFieldOrder?, forceFieldSets: SKForceFieldSets)
   {
-    self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.setRepresentationForceFieldOrder(order: order, forceFieldSets: forceFieldSets)}
+    self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.setRepresentationForceFieldOrder(order: order, forceFieldSets: forceFieldSets)}
   }
   
   public var renderAtomHue: Double?
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomHue})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomHue})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomHue = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomHue = newValue ?? 1.0}
     }
   }
   
@@ -8940,12 +9033,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSaturation})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomSaturation})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSaturation = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSaturation = newValue ?? 1.0}
     }
   }
   
@@ -8953,12 +9046,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomValue})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomValue})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomValue = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomValue = newValue ?? 1.0}
     }
   }
   
@@ -8966,13 +9059,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomScaleFactor})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomScaleFactor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? AtomStructureViewer)?.atomScaleFactor = newValue ?? 1.0
+        ($0.object as? AtomStructureEditor)?.atomScaleFactor = newValue ?? 1.0
       }
     }
   }
@@ -8981,13 +9074,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomScaleFactor})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomScaleFactor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? AtomStructureViewer)?.atomScaleFactor = newValue ?? 1.0
+        ($0.object as? AtomStructureEditor)?.atomScaleFactor = newValue ?? 1.0
         $0.object.reComputeBoundingBox()
       }
     }
@@ -8997,12 +9090,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.drawAtoms})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.drawAtoms})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.drawAtoms = newValue ?? true}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.drawAtoms = newValue ?? true}
     }
   }
   
@@ -9010,12 +9103,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomAmbientOcclusion})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomAmbientOcclusion})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomAmbientOcclusion = newValue ?? true}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomAmbientOcclusion = newValue ?? true}
     }
   }
   
@@ -9023,12 +9116,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomHDR})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomHDR})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomHDR = newValue ?? true}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomHDR = newValue ?? true}
     }
   }
   
@@ -9037,12 +9130,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomHDRExposure})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomHDRExposure})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomHDRExposure = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomHDRExposure = newValue ?? 1.0}
     }
   }
   
@@ -9050,12 +9143,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomAmbientColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomAmbientColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -9063,12 +9156,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomDiffuseColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomDiffuseColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -9076,12 +9169,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSpecularColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomSpecularColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)}
     }
   }
   
@@ -9090,12 +9183,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomAmbientIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomAmbientIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomAmbientIntensity = newValue ?? 0.2}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -9103,12 +9196,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomDiffuseIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomDiffuseIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomDiffuseIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -9116,12 +9209,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSpecularIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomSpecularIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSpecularIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -9129,12 +9222,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomShininess})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomShininess})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomShininess = newValue ?? 4.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomShininess = newValue ?? 4.0}
     }
   }
   
@@ -9142,12 +9235,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSelectionStyle.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomSelectionStyle.rawValue})
       return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSelectionStyle = newValue ?? .glow}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSelectionStyle = newValue ?? .glow}
     }
   }
   
@@ -9155,12 +9248,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.renderAtomSelectionFrequency})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.renderAtomSelectionFrequency})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.renderAtomSelectionFrequency = newValue ?? 4.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.renderAtomSelectionFrequency = newValue ?? 4.0}
     }
   }
   
@@ -9168,12 +9261,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.renderAtomSelectionDensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.renderAtomSelectionDensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.renderAtomSelectionDensity = newValue ?? 4.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.renderAtomSelectionDensity = newValue ?? 4.0}
     }
   }
   
@@ -9181,12 +9274,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSelectionIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomSelectionIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSelectionIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSelectionIntensity = newValue ?? 1.0}
     }
   }
   
@@ -9194,12 +9287,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureViewer)?.atomSelectionScaling})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AtomStructureEditor)?.atomSelectionScaling})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AtomStructureViewer)?.atomSelectionScaling = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AtomStructureEditor)?.atomSelectionScaling = newValue ?? 1.0}
     }
   }
   
@@ -9208,19 +9301,19 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   
   public func recheckRepresentationStyleBond()
   {
-    self.iRASPAObjects.forEach{($0.object as? BondStructureViewer)?.recheckRepresentationStyle()}
+    self.iRASPAObjects.forEach{($0.object as? BondStructureEditor)?.recheckRepresentationStyle()}
   }
   
   public var renderDrawBonds: Bool?
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.drawBonds}))
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.drawBonds}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.drawBonds = newValue ?? false})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.drawBonds = newValue ?? false})
     }
   }
   
@@ -9228,13 +9321,13 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondScaleFactor}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondScaleFactor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
       self.iRASPAObjects.forEach{
-        ($0.object as? BondStructureViewer)?.bondScaleFactor = newValue ?? 1.0
+        ($0.object as? BondStructureEditor)?.bondScaleFactor = newValue ?? 1.0
         //if(($0.object as? BondVisualAppearanceViewer)?.atomRepresentationType == .unity)
         //{
         //  let asymmetricAtoms: [SKAsymmetricAtom] = ($0.object as? BondVisualAppearanceViewer)?.atomTreeController.flattenedLeafNodes().compactMap{$0.representedObject}
@@ -9248,12 +9341,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondColorMode.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondColorMode.rawValue}))
       return Set(set).count == 1 ? RKBondColorMode(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondColorMode = newValue ?? .split})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondColorMode = newValue ?? .split})
     }
   }
   
@@ -9261,12 +9354,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondAmbientOcclusion}))
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondAmbientOcclusion}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondAmbientOcclusion = newValue ?? false})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondAmbientOcclusion = newValue ?? false})
     }
   }
   
@@ -9274,12 +9367,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondHDR}))
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondHDR}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondHDR = newValue ?? false})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondHDR = newValue ?? false})
     }
   }
   
@@ -9287,12 +9380,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondHDRExposure}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondHDRExposure}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondHDRExposure = newValue ?? 1.5})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondHDRExposure = newValue ?? 1.5})
     }
   }
   
@@ -9300,12 +9393,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondHue}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondHue}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondHue = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondHue = newValue ?? 1.0})
     }
   }
   
@@ -9313,12 +9406,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSaturation}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondSaturation}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSaturation = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSaturation = newValue ?? 1.0})
     }
   }
   
@@ -9326,12 +9419,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondValue}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondValue}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondValue = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondValue = newValue ?? 1.0})
     }
   }
   
@@ -9339,12 +9432,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondAmbientColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondAmbientColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondAmbientColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
     }
   }
   
@@ -9352,12 +9445,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondDiffuseColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondDiffuseColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondDiffuseColor = newValue ?? NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondDiffuseColor = newValue ?? NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.8, alpha: 1.0)})
     }
   }
   
@@ -9365,12 +9458,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSpecularColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondSpecularColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSpecularColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
     }
   }
   
@@ -9378,12 +9471,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondAmbientIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondAmbientIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondAmbientIntensity = newValue ?? 0.2})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondAmbientIntensity = newValue ?? 0.2})
     }
   }
   
@@ -9391,12 +9484,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondDiffuseIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondDiffuseIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondDiffuseIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondDiffuseIntensity = newValue ?? 1.0})
     }
   }
   
@@ -9404,12 +9497,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSpecularIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondSpecularIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSpecularIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSpecularIntensity = newValue ?? 1.0})
     }
   }
   
@@ -9417,12 +9510,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondShininess}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondShininess}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondShininess = newValue ?? 4.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondShininess = newValue ?? 4.0})
     }
   }
   
@@ -9430,12 +9523,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSelectionStyle.rawValue}))
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondSelectionStyle.rawValue}))
       return Set(set).count == 1 ? RKSelectionStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSelectionStyle = newValue ?? .glow})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSelectionStyle = newValue ?? .glow})
     }
   }
   
@@ -9443,12 +9536,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.renderBondSelectionFrequency}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.renderBondSelectionFrequency}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.renderBondSelectionFrequency = newValue ?? 4.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.renderBondSelectionFrequency = newValue ?? 4.0})
     }
   }
   
@@ -9456,12 +9549,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.renderBondSelectionDensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.renderBondSelectionDensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.renderBondSelectionDensity = newValue ?? 4.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.renderBondSelectionDensity = newValue ?? 4.0})
     }
   }
   
@@ -9469,12 +9562,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSelectionIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondSelectionIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSelectionIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSelectionIntensity = newValue ?? 1.0})
     }
   }
   
@@ -9482,12 +9575,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureViewer)?.bondSelectionScaling}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? BondStructureEditor)?.bondSelectionScaling}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? BondStructureViewer)?.bondSelectionScaling = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? BondStructureEditor)?.bondSelectionScaling = newValue ?? 1.0})
     }
   }
 
@@ -9512,12 +9605,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellViewer)?.unitCellScaleFactor}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellEditor)?.unitCellScaleFactor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? UnitCellViewer)?.unitCellScaleFactor = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? UnitCellEditor)?.unitCellScaleFactor = newValue ?? 1.0})
     }
   }
   
@@ -9525,12 +9618,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellViewer)?.unitCellDiffuseColor}))
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellEditor)?.unitCellDiffuseColor}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? UnitCellViewer)?.unitCellDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+      self.iRASPAObjects.forEach({($0.object as? UnitCellEditor)?.unitCellDiffuseColor = newValue ?? NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
     }
   }
   
@@ -9538,12 +9631,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellViewer)?.unitCellDiffuseIntensity}))
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap({($0.object as? UnitCellEditor)?.unitCellDiffuseIntensity}))
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach({($0.object as? UnitCellViewer)?.unitCellDiffuseIntensity = newValue ?? 1.0})
+      self.iRASPAObjects.forEach({($0.object as? UnitCellEditor)?.unitCellDiffuseIntensity = newValue ?? 1.0})
     }
   }
   
@@ -9659,29 +9752,28 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   //===================================================================================================================================================
   
 
-  public var renderMinimumGridEnergyValue: Float?
+  public var renderGridRangeMinimum: Double?
   {
-    get
-    {
-      let set: Set<Float> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.minimumGridEnergyValue})
-      return Set(set).count == 1 ? set.first! : nil
-    }
-    set(newValue)
-    {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.minimumGridEnergyValue = newValue ?? 0.0}
-    }
+    let set: Set<(Double)> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.range.0})
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderGridRangeMaximum: Double?
+  {
+    let set: Set<(Double)> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.range.1})
+    return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderAdsorptionSurfaceOn: Bool?
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.drawAdsorptionSurface})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.drawAdsorptionSurface})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.drawAdsorptionSurface = newValue ?? false}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.drawAdsorptionSurface = newValue ?? false}
     }
   }
   
@@ -9689,12 +9781,25 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceOpacity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceOpacity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceOpacity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceOpacity = newValue ?? 1.0}
+    }
+  }
+  
+  public var renderAdsorptionTransparencyThreshold: Double?
+  {
+    get
+    {
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionTransparencyThreshold})
+      return Set(set).count == 1 ? set.first! : nil
+    }
+    set(newValue)
+    {
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionTransparencyThreshold = newValue ?? 1.0}
     }
   }
   
@@ -9702,38 +9807,56 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceIsoValue})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceIsoValue})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceIsoValue = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceIsoValue = newValue ?? 0.0}
     }
   }
   
-  public var renderAdsorptionSurfaceSize: Int?
+  public var renderAdsorptionSurfaceMinimumValue: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.range.0})
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderAdsorptionSurfaceMaximumValue: Double?
+  {
+    let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.range.1})
+    return Set(set).count == 1 ? set.first! : nil
+  }
+  
+  public var renderEncompassingPowerOfTwoCubicGridSize: Int?
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceSize})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.encompassingPowerOfTwoCubicGridSize})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceSize = newValue ?? 128}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceEditor)?.encompassingPowerOfTwoCubicGridSize = newValue ?? 6}
     }
+  }
+  
+  public var renderGridDimension: SIMD3<Int32>?
+  {
+    let set: Set<SIMD3<Int32>> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.dimensions})
+    return Set(set).count == 1 ? set.first! : nil
   }
   
   public var renderAdsorptionRenderingMethod: RKEnergySurfaceType?
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceRenderingMethod.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceRenderingMethod.rawValue})
       return Set(set).count == 1 ? RKEnergySurfaceType(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceRenderingMethod = newValue ?? RKEnergySurfaceType.isoSurface}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceRenderingMethod = newValue ?? RKEnergySurfaceType.isoSurface}
     }
   }
   
@@ -9741,12 +9864,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionVolumeTransferFunction.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionVolumeTransferFunction.rawValue})
       return Set(set).count == 1 ? RKPredefinedVolumeRenderingTransferFunction(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionVolumeTransferFunction = newValue ?? RKPredefinedVolumeRenderingTransferFunction.default}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionVolumeTransferFunction = newValue ?? RKPredefinedVolumeRenderingTransferFunction.CoolWarmDiverging}
     }
   }
   
@@ -9754,12 +9877,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionVolumeStepLength})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionVolumeStepLength})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionVolumeStepLength = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionVolumeStepLength = newValue ?? 1.0}
     }
   }
   
@@ -9767,12 +9890,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceProbeMolecule.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceProbeMolecule.rawValue})
       return Set(set).count == 1 ? Structure.ProbeMolecule(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceProbeMolecule = newValue ?? .helium}
     }
   }
   
@@ -9780,12 +9903,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceHue})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceHue})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceHue = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceHue = newValue ?? 1.0}
     }
   }
     
@@ -9793,12 +9916,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceSaturation})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceSaturation})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceSaturation = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceSaturation = newValue ?? 1.0}
     }
   }
     
@@ -9806,12 +9929,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceValue})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceValue})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceValue = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceValue = newValue ?? 1.0}
     }
   }
    
@@ -9820,12 +9943,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideHDR})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideHDR})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideHDR = newValue ?? true}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideHDR = newValue ?? true}
     }
   }
   
@@ -9833,12 +9956,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideHDRExposure})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideHDRExposure})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -9846,12 +9969,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -9859,12 +9982,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -9872,12 +9995,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideSpecularIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideSpecularIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -9885,12 +10008,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideShininess})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideShininess})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideShininess = newValue ?? 4.0}
     }
   }
   
@@ -9898,12 +10021,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideAmbientColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideAmbientColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
     }
   }
   
@@ -9911,12 +10034,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
     }
   }
   
@@ -9924,12 +10047,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideHDR})
+      let set: Set<Bool> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideHDR})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideHDR = newValue ?? true}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideHDR = newValue ?? true}
     }
   }
   
@@ -9937,12 +10060,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideHDRExposure})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideHDRExposure})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideHDRExposure = newValue ?? 1.5}
     }
   }
   
@@ -9950,12 +10073,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientIntensity = newValue ?? 0.2}
     }
   }
   
@@ -9963,12 +10086,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideDiffuseIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideDiffuseIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideDiffuseIntensity = newValue ?? 1.0}
     }
   }
   
@@ -9976,12 +10099,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideSpecularIntensity})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideSpecularIntensity})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideSpecularIntensity = newValue ?? 1.0}
     }
   }
   
@@ -9989,12 +10112,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideShininess})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideShininess})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideShininess = newValue ?? 4.0}
     }
   }
   
@@ -10002,12 +10125,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideSpecularColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideSpecularColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceFrontSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
     }
   }
   
@@ -10015,12 +10138,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideAmbientColor = newValue ?? NSColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)}
     }
   }
   
@@ -10028,12 +10151,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideDiffuseColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideDiffuseColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideDiffuseColor = newValue ?? NSColor(red: 0.588235, green: 0.670588, blue: 0.729412, alpha: 1.0)}
     }
   }
   
@@ -10041,12 +10164,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideSpecularColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideSpecularColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AdsorptionSurfaceViewer)?.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
+      self.iRASPAObjects.forEach{($0.object as? IsosurfaceViewer)?.adsorptionSurfaceBackSideSpecularColor = newValue ?? NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)}
     }
   }
 
@@ -10058,12 +10181,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextType.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextType.rawValue})
       return Set(set).count == 1 ? RKTextType(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextType = newValue ?? .none}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextType = newValue ?? .none}
     }
   }
   
@@ -10071,12 +10194,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextStyle.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextStyle.rawValue})
       return Set(set).count == 1 ? RKTextStyle(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextStyle = newValue ?? .flatBillboard}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextStyle = newValue ?? .flatBillboard}
     }
   }
   
@@ -10084,12 +10207,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextAlignment.rawValue})
+      let set: Set<Int> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextAlignment.rawValue})
       return Set(set).count == 1 ? RKTextAlignment(rawValue: set.first!) : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextAlignment = newValue ?? .center}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextAlignment = newValue ?? .center}
     }
   }
   
@@ -10097,12 +10220,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<String> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextFont})
+      let set: Set<String> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextFont})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextFont = newValue ?? "Helvetica"}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextFont = newValue ?? "Helvetica"}
     }
   }
   
@@ -10111,7 +10234,7 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
     get
     {
       let set: Set<String> = Set(self.iRASPAObjects.compactMap({ (structure) -> String? in
-        if let font: NSFont = NSFont(name: (structure.object as? AnnotationViewer)?.atomTextFont ?? "Helvetica", size: 32)
+        if let font: NSFont = NSFont(name: (structure.object as? AnnotationEditor)?.atomTextFont ?? "Helvetica", size: 32)
         {
           return font.familyName
         }
@@ -10125,12 +10248,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextColor})
+      let set: Set<NSColor> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextColor})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextColor = newValue ?? NSColor.black}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextColor = newValue ?? NSColor.black}
     }
   }
   
@@ -10138,12 +10261,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextScaling})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextScaling})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextScaling = newValue ?? 1.0}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextScaling = newValue ?? 1.0}
     }
   }
   
@@ -10151,12 +10274,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextOffset.x})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextOffset.x})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextOffset.x = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextOffset.x = newValue ?? 0.0}
     }
   }
   
@@ -10164,12 +10287,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextOffset.y})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextOffset.y})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextOffset.y = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextOffset.y = newValue ?? 0.0}
     }
   }
   
@@ -10177,12 +10300,12 @@ class StructureAppearanceDetailViewController: NSViewController, NSOutlineViewDe
   {
     get
     {
-      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationViewer)?.atomTextOffset.z})
+      let set: Set<Double> = Set(self.iRASPAObjects.compactMap{($0.object as? AnnotationEditor)?.atomTextOffset.z})
       return Set(set).count == 1 ? set.first! : nil
     }
     set(newValue)
     {
-      self.iRASPAObjects.forEach{($0.object as? AnnotationViewer)?.atomTextOffset.z = newValue ?? 0.0}
+      self.iRASPAObjects.forEach{($0.object as? AnnotationEditor)?.atomTextOffset.z = newValue ?? 0.0}
     }
   }
 }

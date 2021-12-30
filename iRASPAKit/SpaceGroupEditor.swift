@@ -33,7 +33,14 @@ import Foundation
 import SymmetryKit
 import SimulationKit
 
+
 public protocol SpaceGroupViewer: AnyObject
+{
+  var spaceGroup: SKSpacegroup {get}
+  var spaceGroupHallNumber: Int? {get}
+}
+
+public protocol SpaceGroupEditor: SpaceGroupViewer
 {
   var spaceGroup: SKSpacegroup {get set}
   var spaceGroupHallNumber: Int? {get set}

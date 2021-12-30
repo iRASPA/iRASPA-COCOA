@@ -33,8 +33,17 @@ import Foundation
 import simd
 import RenderKit
 
-
-public protocol LocalAxesViewer: AnyObject
+public protocol UnitCellViewer: AnyObject
 {
-  var renderLocalAxis: RKLocalAxes {get set}
+  var drawUnitCell: Bool {get set}
+  var unitCellScaleFactor: Double {get}
+  var unitCellDiffuseColor: NSColor {get}
+  var unitCellDiffuseIntensity: Double {get}
+}
+
+public protocol UnitCellEditor: UnitCellViewer
+{
+  var unitCellScaleFactor: Double {get set}
+  var unitCellDiffuseColor: NSColor {get set}
+  var unitCellDiffuseIntensity: Double {get set}
 }

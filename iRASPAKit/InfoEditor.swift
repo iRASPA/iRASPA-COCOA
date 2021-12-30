@@ -34,7 +34,7 @@ import simd
 import RenderKit
 
 
-public protocol InfoViewer: AnyObject
+public protocol InfoEditor: AnyObject
 {
   var authorFirstName: String {get set}
   var authorMiddleName: String {get set}

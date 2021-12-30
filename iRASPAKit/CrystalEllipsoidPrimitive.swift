@@ -35,7 +35,7 @@ import SymmetryKit
 import BinaryCodable
 import simd
 
-public final class CrystalEllipsoidPrimitive: Primitive, UnitCellViewer, RKRenderCrystalEllipsoidObjectsSource, RKRenderUnitCellSource, Cloning
+public final class CrystalEllipsoidPrimitive: Primitive, UnitCellEditor, RKRenderCrystalEllipsoidObjectsSource, RKRenderUnitCellSource, Cloning
 {
   private static var classVersionNumber: Int = 2
   

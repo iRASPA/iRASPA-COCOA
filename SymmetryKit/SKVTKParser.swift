@@ -36,7 +36,6 @@ import LogViewKit
 
 public final class SKVTKParser: SKParser, ProgressReporting
 {
-  weak var windowController: NSWindowController? = nil
   var cellFormulaUnitsZ: Int = 0
   var scanner: Scanner
   let letterSet: CharacterSet
@@ -59,10 +58,9 @@ public final class SKVTKParser: SKParser, ProgressReporting
   var currentProgressCount: Double = 0.0
   let percentageFinishedStep: Double
   
-  public init(displayName: String, data: Data, windowController: NSWindowController?) throws
+  public init(displayName: String, data: Data) throws
   {
     self.displayName = displayName
-    self.windowController = windowController
     
     self.data = data
     
@@ -104,21 +102,17 @@ public final class SKVTKParser: SKParser, ProgressReporting
     // skip "# vtk DataFile Version 1.0" line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
-      return
+      throw SKParserError.containsNoData
     }
     if(scannedLine?.lowercased != "# vtk DataFile Version 1.0".lowercased())
     {
-      LogQueue.shared.error(destination: self.windowController, message: "File not a VTK file \"\(self.displayName)\"")
-      return
+      throw SKParserError.incorrectFileFormatVTK
     }
-   
     
     // skip comment line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
-      return
+      throw SKParserError.containsNoData
     }
     // PARSE CELL_PARAMETERS COMMAND if possible: CELL_PARAMETERS 13.270000 13.270000 15.050000 90.000000 90.000000 120.000000
     if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 4, words[0].uppercased() == "CELL_PARAMETERS"
@@ -126,8 +120,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
       structure.kind = .RASPADensityVolume
       guard let a: Double = Double(words[1]), let b: Double = Double(words[2]), let c: Double = Double(words[3]) else
       {
-        LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": data must be structued points")
-        return
+        throw SKParserError.MissingCellParameters
       }
       
       structure.cell = SKCell(a: a, b: b, c: c, alpha: 90.0*Double.pi/180.0, beta: 90.0*Double.pi/180.0, gamma: 90.0*Double.pi/180.0)
@@ -137,18 +130,12 @@ public final class SKVTKParser: SKParser, ProgressReporting
       {
         structure.cell = SKCell(a: a, b: b, c: c, alpha: alpha*Double.pi/180.0, beta: beta*Double.pi/180.0, gamma: gamma*Double.pi/180.0)
       }
-      else
-      {
-        LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": data must be structued points")
-        return
-      }
     }
     
     // "ASCII" line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
-      return
+      throw SKParserError.containsNoData
     }
     if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 1
     {
@@ -160,29 +147,19 @@ public final class SKVTKParser: SKParser, ProgressReporting
       {
         isBinaryData = true
       }
-      else
-      {
-        LogQueue.shared.warning(destination: self.windowController, message: "Unclear whether ASCI or BINARY data")
-      }
     }
     
     
     // "DATASET STRUCTURED_POINTS" line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
-      return
+      throw SKParserError.containsNoData
     }
     if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 2, words[0].uppercased() == "DATASET"
     {
-      if words[1].uppercased() == "STRUCTURED_POINTS"
+      if words[1].uppercased() != "STRUCTURED_POINTS"
       {
-      
-      }
-      else
-      {
-        LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": data must be structued points")
-        return
+        throw SKParserError.VTKMustBeStructuredPoints
       }
     }
     
@@ -192,8 +169,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
     {
       if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
       {
-        LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no header data")
-        return
+        throw SKParserError.containsNoData
       }
       headerData.append(String(scannedLine ?? ""))
     }
@@ -213,8 +189,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
         }
         else
         {
-          LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": data must be structured points")
-          return
+          throw SKParserError.VTKMissingDimensions
         }
       }
       
@@ -223,12 +198,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
       {
         if let x: Double = Double(words[1]), let y: Double = Double(words[2]), let z: Double = Double(words[3])
         {
-        origin = SIMD3<Double>(x, y, z)
-        }
-        else
-        {
-          LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": data must be structured points")
-          return
+          origin = SIMD3<Double>(x, y, z)
         }
       }
       
@@ -238,11 +208,6 @@ public final class SKVTKParser: SKParser, ProgressReporting
         if let x: Double = Double(words[1]), let y: Double = Double(words[2]), let z: Double = Double(words[3])
         {
           structure.spacing = SIMD3<Double>(x, y, z)
-        }
-        else
-        {
-          LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": data must be structured points")
-          return
         }
       }
       
@@ -255,8 +220,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
         }
         else
         {
-          LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": data must be structured points")
-          return
+          throw SKParserError.VTKMissingPointData
         }
       }
     }
@@ -264,8 +228,7 @@ public final class SKVTKParser: SKParser, ProgressReporting
     // "SCALARS scalars unsigned_short" line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
-      return
+      throw SKParserError.containsNoData
     }
     // "POINT_DATA 3375000" line
     if let words: [String] = scannedLine?.components(separatedBy: CharacterSet.whitespaces).filter({!$0.isEmpty}), words.count >= 2, words[0].uppercased() == "SCALARS"
@@ -312,17 +275,17 @@ public final class SKVTKParser: SKParser, ProgressReporting
       }
       else
       {
-        LogQueue.shared.warning(destination: self.windowController, message: "Unknown datatype")
+        throw SKParserError.unknownDataType
       }
     }
     
     // skip "LOOKUP_TABLE default" line
     if !scanner.scanUpToCharacters(from: newLineChararterSet, into: &scannedLine)
     {
-      LogQueue.shared.error(destination: self.windowController, message: "Error reading VTK file \"\(self.displayName)\": contains no data")
-      return
+      throw SKParserError.containsNoData
     }
     
+    // VTK data: X innerloop, Y middle loop, Z outerloop
     if(isBinaryData)
     {
       let startIndex = self.data.index(self.data.startIndex, offsetBy: self.scanner.scanLocation)

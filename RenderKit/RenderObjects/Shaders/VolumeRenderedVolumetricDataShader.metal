@@ -34,7 +34,7 @@
 using namespace metal;
 
 
-struct RASPADensityVolumeVertexShaderOut
+struct VolumeRenderedVertexShaderOut
 {
   float4 position [[position]];
   float4 pos;
@@ -45,14 +45,14 @@ struct RASPADensityVolumeVertexShaderOut
 };
 
 
-vertex RASPADensityVolumeVertexShaderOut RASPADensityVolumeVertexShader(const device InPerVertex *vertices [[buffer(0)]],
+vertex VolumeRenderedVertexShaderOut VolumeRenderedVolumetricDataVertexShader(const device InPerVertex *vertices [[buffer(0)]],
                                                 constant FrameUniforms& frameUniforms [[buffer(1)]],
                                                 constant StructureUniforms& structureUniforms [[buffer(2)]],
                                                 constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(3)]],
                                                 constant LightUniforms& lightUniforms [[buffer(4)]],
                                                 uint vid [[vertex_id]])
 {
-  RASPADensityVolumeVertexShaderOut vert;
+  VolumeRenderedVertexShaderOut vert;
   
   float4 pos = structureUniforms.modelMatrix * structureUniforms.boxMatrix * vertices[vid].position;
   vert.pos = pos;
@@ -73,31 +73,33 @@ vertex RASPADensityVolumeVertexShaderOut RASPADensityVolumeVertexShader(const de
   return vert;
 }
 
-fragment FragOutput RASPADensityVolumeFragmentShader(RASPADensityVolumeVertexShaderOut vert [[stage_in]],
+
+fragment FragOutput VolumeRenderedVolumetricDataFragmentShader(VolumeRenderedVertexShaderOut vert [[stage_in]],
                                            constant FrameUniforms& frameUniforms [[buffer(0)]],
                                            constant StructureUniforms& structureUniforms [[buffer(1)]],
                                            constant IsosurfaceUniforms& isosurfaceUniforms [[buffer(2)]],
                                            texture3d<float> texture3D [[ texture(0) ]],
-                                           texture1d<float> transferFunction [[ texture(1) ]],
-                                           depth2d<float> depthTexture [[ texture(2) ]],
+                                           depth2d<float> depthTexture [[ texture(1) ]],
+                                           texture1d_array<float,  access::sample> transferFunction [[ texture(2) ]],
                                            sampler textureSampler [[ sampler(0) ]],
                                            sampler transferFunctionSampler [[ sampler(1) ]] ,
                                            uint sampleId [[sample_id]])
 {
   FragOutput output;
+  float3 ambient, diffuse, specular;
   float3 numberOfReplicas = structureUniforms.numberOfReplicas.xyz;
   const int numSamples = 100000;
   const float step_length = isosurfaceUniforms.stepLength/numberOfReplicas.z;
     
   // Normalize the incoming N, L and V vectors
   float3 direction = normalize(vert.pos.xyz - frameUniforms.cameraPosition.xyz);
-  float4 dir = float4(direction.x,direction.y,direction.z,0.0);
+  float4 dir = float4(direction.x,direction.y,direction.z,0.0f);
   float3 ray_direction = (structureUniforms.inverseBoxMatrix * structureUniforms.inverseModelMatrix * dir).xyz;
   
   float3 ray_origin = vert.UV;
 
   Ray casting_ray{ray_origin, ray_direction};
-  AABB bounding_box{float3(1.0,1.0,1.0), float3(0.0,0.0,0.0)};
+  AABB bounding_box{float3(1.0f,1.0f,1.0f), float3(0.0f,0.0f,0.0f)};
   float2 t = rayBoxIntersection(casting_ray, bounding_box);
 
   float3 ray_start = ray_origin + ray_direction * t.x;
@@ -107,44 +109,73 @@ fragment FragOutput RASPADensityVolumeFragmentShader(RASPADensityVolumeVertexSha
   float ray_length = length(ray);
   float3 step_vector = step_length * ray / ray_length;
 
-  float4 colour = float4(0.0,0.0,0.0,0.0);
+  float4 colour = float4(0.0f,0.0f,0.0f,0.0f);
   float3 position = ray_start;
   
   float depth = depthTexture.read(uint2(vert.position.xy));
-  float newDepth = 1.0;
+  float newDepth = 1.0f;
   float4x4 m = frameUniforms.mvpMatrix * structureUniforms.modelMatrix * structureUniforms.boxMatrix;
   
-  for (int i=0; i < numSamples && ray_length > 0 && colour.a < 1.0; i++)
+  float4 scaleToEncompassing = isosurfaceUniforms.encompassingScaleFactor;
+    
+  for (int i=0; i < numSamples && ray_length > 0 && colour.a < 1.0f; i++)
   {
-    float4 values = texture3D.sample(textureSampler, numberOfReplicas * position);
-    float3 normal = normalize((structureUniforms.modelMatrix * transpose(structureUniforms.inverseBoxMatrix) * float4(values.gba,0.0)).rgb);
+    float4 values = texture3D.sample(textureSampler, numberOfReplicas * scaleToEncompassing.xyz * position);
+    float3 normal = normalize((structureUniforms.modelMatrix * transpose(structureUniforms.inverseBoxMatrix) * float4(values.gba,0.0f)).rgb);
 
-    float4 c = transferFunction.sample(transferFunctionSampler,values.r);
+    float4 c = transferFunction.sample(transferFunctionSampler,values.r,isosurfaceUniforms.transferFunctionIndex);
+
+    // allow to "zoom in" using the transparency
+    c.a = isosurfaceUniforms.diffuseFrontSide.w * smoothstep(isosurfaceUniforms.transparencyThreshold, 1.0, c.a);
 
     float3 R = reflect(-direction, normal);
-    float3 ambient = float3(0.3,0.3,0.3);
-    float3 diffuse = float3(max(abs(dot(normal, direction)),0.0));
-    float3 specular = float3(pow(max(dot(R, direction), 0.0), 0.4));
+    ambient = float3(0.1f,0.1f,0.1f);
+    float dotProduct = dot(normal, direction);
 
-    // Alpha-blending
-    colour.rgb = c.a * (ambient+diffuse+specular) * c.rgb + (1 - c.a) * colour.a * colour.rgb;
-    colour.a = c.a + (1 - c.a) * colour.a;
+    if(dotProduct < 0.0f)
+    {
+      ambient = isosurfaceUniforms.ambientBackSide.rgb;
+      diffuse = float3(max(abs(dotProduct),0.0f)) * isosurfaceUniforms.diffuseBackSide.rgb;
+      specular = float3(pow(max(dot(R, direction), 0.0f), isosurfaceUniforms.shininessBackSide)) * isosurfaceUniforms.specularBackSide.rgb;
+      float3 totalColor = (ambient+diffuse+specular).rgb;
+
+      if (isosurfaceUniforms.backHDR)
+      {
+        totalColor = 1.0f - exp2(-totalColor * isosurfaceUniforms.backHDRExposure);
+      }
+
+      // Alpha-blending
+      c.a = 1.0 - pow(1.0f - c.a, step_length*2000.0f);
+      colour.rgb += (1.0f - colour.a) * c.a * c.rgb * totalColor.rgb;
+      colour.a += (1.0f - colour.a) * c.a;
+    }
+    else
+    {
+      ambient = isosurfaceUniforms.ambientFrontSide.rgb;
+      diffuse = float3(max(abs(dotProduct),0.0f)) * isosurfaceUniforms.diffuseFrontSide.rgb;
+      specular = float3(pow(max(dot(R, direction), 0.0f), isosurfaceUniforms.shininessFrontSide)) * isosurfaceUniforms.specularFrontSide.rgb;
+      float3 totalColor = (ambient+diffuse+specular).rgb;
+
+      if (isosurfaceUniforms.frontHDR)
+      {
+        totalColor = 1.0f - exp2(-totalColor * isosurfaceUniforms.frontHDRExposure);
+      }
+
+      // Alpha-blending
+      c.a = 1.0 - pow(1.0f - c.a, step_length*2000.0f);
+      colour.rgb += (1.0f - colour.a) * c.a * c.rgb * totalColor.rgb;
+      colour.a += (1.0f - colour.a) * c.a;
+    }
 
     position = position + step_vector;
     ray_length -= step_length;
     
-    float4 clipPosition = m * float4(position,1.0);
+    float4 clipPosition = m * float4(position,1.0f);
     newDepth = (clipPosition.z / clipPosition.w);
     if(newDepth>depth)
     {
       break;
     }
-  }
-  
-  if(colour.a<0.9)
-  {
-    newDepth = depth;
-    discard_fragment();
   }
   
   float3 hsv = rgb2hsv(colour.xyz);
@@ -153,7 +184,7 @@ fragment FragOutput RASPADensityVolumeFragmentShader(RASPADensityVolumeVertexSha
   hsv.z = hsv.z * isosurfaceUniforms.value;
   
   output.depth = newDepth;
-  output.albedo = float4(colour.xyz,colour.a);
+  output.albedo = float4(hsv2rgb(hsv)*colour.a,colour.a);
   
   return output;
 }

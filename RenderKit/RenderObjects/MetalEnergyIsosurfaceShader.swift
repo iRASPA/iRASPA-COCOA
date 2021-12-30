@@ -48,7 +48,8 @@ class MetalEnergyIsosurfaceShader
   var transparentDepthState: MTLDepthStencilState! = nil
   var depthState: MTLDepthStencilState! = nil
   
-  let cachedAdsorptionSurfaces: [Int: NSCache<AnyObject, AnyObject>] = [32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
+  let cachedAdsorptionSurfaces: [Int: NSCache<AnyObject, AnyObject>] = [16: NSCache(), 32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
+  let cachedPermanentAdsorptionSurfaces: [Int: NSCache<AnyObject, AnyObject>] = [16: NSCache(), 32: NSCache(), 64: NSCache(), 128: NSCache(), 256: NSCache(), 512: NSCache()]
   
   public func buildPipeLine(device: MTLDevice, library: MTLLibrary, vertexDescriptor: MTLVertexDescriptor,  maximumNumberOfSamples: Int)
   {
@@ -226,12 +227,12 @@ class MetalEnergyIsosurfaceShader
         {
           if let structure: RKRenderAdsorptionSurfaceSource = structure as? RKRenderAdsorptionSurfaceSource,
              let isosurfaceVertexBuffer = self.metalBuffer(vertexBuffer, sceneIndex: i, movieIndex: j),
-            let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
-            structure.drawAdsorptionSurface,
-            structure.adsorptionSurfaceRenderingMethod == .isoSurface
+             let instanceIsosurfaceVertexBuffer = self.metalBuffer(instanceBuffer, sceneIndex: i, movieIndex: j),
+             structure.drawAdsorptionSurface,
+             structure.adsorptionSurfaceRenderingMethod == .isoSurface
           {
             let vertexCount: Int = 3 * structure.adsorptionSurfaceNumberOfTriangles
-            if (structure.isVisible &&  structure.adsorptionSurfaceOpacity<=0.99999 && vertexCount>0)
+            if (structure.isVisible && structure.adsorptionSurfaceOpacity<=0.99999 && vertexCount>0)
             {
               commandEncoder.setVertexBuffer(isosurfaceVertexBuffer, offset: 0, index: 0)
               commandEncoder.setVertexBuffer(instanceIsosurfaceVertexBuffer, offset: 0, index: 1)
@@ -281,79 +282,67 @@ class MetalEnergyIsosurfaceShader
           if let structure = structure as? RKRenderAdsorptionSurfaceSource, structure.drawAdsorptionSurface
           {
             var data: [Float] = []
-            let size: Int = structure.adsorptionSurfaceSize
-            if let cachedVersion: Data = cachedAdsorptionSurfaces[size]?.object(forKey: structure) as? Data
+            
+            let dimensions: SIMD3<Int32> = structure.dimensions
+            let largestSize: Int = Int(max(dimensions.x,dimensions.y,dimensions.z))
+            
+            // search for the smallest power of 2 that contains the grid (with a minimum size of 32)
+            var gridSizeType: Int = 1
+            while(largestSize > Int(pow(2.0,Double(gridSizeType))))
+            {
+              gridSizeType += 1
+            }
+            let size = max(16, Int(pow(2.0,Double(gridSizeType))))
+               
+            if let cachedVersion: Data = cachedPermanentAdsorptionSurfaces[size]?.object(forKey: structure) as? Data
             {
               data = [Float](repeating: Float(0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
-              let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count)
-              }
+              let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count) }
+              
+              LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal energy grid from cache")
+            }
+            else if let cachedVersion: Data = cachedAdsorptionSurfaces[size]?.object(forKey: structure) as? Data
+            {
+              data = [Float](repeating: Float(0.0), count: cachedVersion.count / MemoryLayout<Float>.stride)
+              let _ = data.withUnsafeMutableBytes { cachedVersion.copyBytes(to: $0, from: 0..<cachedVersion.count) }
               
               LogQueue.shared.verbose(destination: windowController, message: "Loading the \(structure.displayName)-Metal energy grid from cache")
             }
             else
             {
-              let startTime: UInt64  = mach_absolute_time()
+              data = structure.gridData
               
-              let cell: SKCell = structure.cell
-              let positions: [SIMD3<Double>] = structure.atomUnitCellPositions
-              let potentialParameters: [SIMD2<Double>] = structure.potentialParameters
-              let probeParameters: SIMD2<Double> = structure.adsorptionSurfaceProbeParameters
-              let size: Int = structure.adsorptionSurfaceSize
-              
-              let numberOfReplicas: SIMD3<Int32> = cell.numberOfReplicas(forCutoff: 12.0)
-              let framework: SKMetalFramework = SKMetalFramework(device: device, commandQueue: commandQueue, positions: positions, potentialParameters: potentialParameters, unitCell: cell.unitCell, numberOfReplicas: numberOfReplicas)
-              
-              
-              data = framework.ComputeEnergyGrid(size, sizeY: size, sizeZ: size, probeParameter: probeParameters)
-              
-              let endTime: UInt64  = mach_absolute_time()
-              
-              DispatchQueue.global().async {
-                let minimumGridEnergyValue = data.min()
-                
-                DispatchQueue.main.async {
-                  structure.minimumGridEnergyValue = minimumGridEnergyValue
-                }
-                
-                completionHandler()
-              }
-              
-              let time: Double = Double((endTime - startTime) * UInt64(info.numer)) / Double(info.denom) * 0.000001
-              LogQueue.shared.verbose(destination: windowController, message: "Time elapsed for creation of \(structure.displayName)-Metal energy grid is \(time) milliseconds")
-              
-              if let cache: NSCache = cachedAdsorptionSurfaces[size]
+              if structure.isImmutable
               {
-                let cachedData: Data = data.withUnsafeMutableBufferPointer{Data(buffer: $0)}
-                cache.setObject(cachedData as AnyObject, forKey: structure)
+                if let cache: NSCache = cachedPermanentAdsorptionSurfaces[size]
+                {
+                  let cachedData: Data = data.withUnsafeMutableBufferPointer{Data(buffer: $0)}
+                  cache.setObject(cachedData as AnyObject, forKey: structure)
+                }
+              }
+              else
+              {
+                if let cache: NSCache = cachedAdsorptionSurfaces[size]
+                {
+                  let cachedData: Data = data.withUnsafeMutableBufferPointer{Data(buffer: $0)}
+                  cache.setObject(cachedData as AnyObject, forKey: structure)
+                }
               }
             }
             
             let startTime: UInt64  = mach_absolute_time()
-            switch(size)
+            
+            do
             {
-            case 128:
-              let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
-              
-              marchingCubes.isoValue = Float(structure.adsorptionSurfaceIsoValue)
-              
-              do
+              if let buffer = try SKMetalMarchingCubes.constructIsoSurfaceVertexBuffer(device: device, commandQueue: commandQueue, data: data, isovalue: structure.adsorptionSurfaceIsoValue, dimensions: dimensions, gridSizeType: SKMetalMarchingCubes.GridSizeType(rawValue: gridSizeType))
               {
-                try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
-              } catch {
-                  LogQueue.shared.error(destination: windowController, message: error.localizedDescription)
+                vertexBuffer[i][j] = buffer
+                structure.adsorptionSurfaceNumberOfTriangles = buffer.length / (3 * 3 * MemoryLayout<SIMD4<Float>>.stride)
               }
-            case 256:
-              let marchingCubes = SKMetalMarchingCubes256(device: device, commandQueue: commandQueue)
-              
-              marchingCubes.isoValue = Float(structure.adsorptionSurfaceIsoValue)
-              do
-              {
-                try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &vertexBuffer[i][j], numberOfTriangles: &structure.adsorptionSurfaceNumberOfTriangles)
-              } catch {
-                 LogQueue.shared.error(destination: windowController, message: error.localizedDescription)
-              }
-            default:
-              break
+            }
+            catch
+            {
+              LogQueue.shared.error(destination: windowController, message: error.localizedDescription)
             }
             
             let endTime: UInt64  = mach_absolute_time()

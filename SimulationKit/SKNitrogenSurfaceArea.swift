@@ -37,15 +37,18 @@ public class SKNitrogenSurfaceArea
         
         data = framework.ComputeEnergyGrid(128, sizeY: 128, sizeZ: 128, probeParameter: structure.probeParameters)
         
-        let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue)
+        let marchingCubes = SKMetalMarchingCubes128(device: device, commandQueue: commandQueue, dimensions: SIMD3<Int32>(128,128,128))
         marchingCubes.isoValue = Float(0.0)   // modified from: -probeParameters.x (which cause artifacts)
         
         var surfaceVertexBuffer: MTLBuffer? = nil
         var numberOfTriangles: Int  = 0
         
       
-        try marchingCubes.prepareHistoPyramids(data, isosurfaceVertexBuffer: &surfaceVertexBuffer, numberOfTriangles: &numberOfTriangles)
-      
+        if let buffer = try marchingCubes.prepareHistoPyramids(data)
+        {
+          surfaceVertexBuffer = buffer
+          numberOfTriangles = buffer.length / (3 * 3 * MemoryLayout<SIMD4<Float>>.stride)
+        }      
         
         if numberOfTriangles > 0,
           let ptr: UnsafeMutableRawPointer = surfaceVertexBuffer?.contents()

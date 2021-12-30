@@ -62,6 +62,13 @@ public class SKStructure
     case GaussianCubeVolume = 20
   }
   
+  public enum VASPType: Int
+  {
+    case CHGCAR = 0
+    case LOCPOT = 1
+    case ELFCAR = 2
+  }
+  
   public var kind: Kind = .crystal
   public var atoms: [SKAsymmetricAtom] = []
   public var unknownAtoms: Set<String> = []
@@ -76,6 +83,12 @@ public class SKStructure
   public var gridData: Data = Data()
   public var dimensions: SIMD3<Int32> = SIMD3<Int32>()
   public var spacing: SIMD3<Double> = SIMD3<Double>()
+  public var range: (Double,Double) = (0.0,0.0)
+  public var average: Double = 0.0
+  public var variance: Double = 0.0
+  
+  public var VASPType: VASPType = .CHGCAR
+  
   public enum DataType: Int
   {
     case Uint8 = 0

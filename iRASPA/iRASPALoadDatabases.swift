@@ -305,7 +305,7 @@ extension ProjectViewController
         projectTreeNode.representedObject.storageType = .publicCloud
         
         if let projectStructure: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyViewer
+           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyEditor
         {
           // if modified, take the new data
           projectTreeNode.representedObject.volumetricSurfaceArea = structure.structureVolumetricNitrogenSurfaceArea
@@ -361,7 +361,7 @@ extension ProjectViewController
         projectTreeNode.representedObject.storageType = .publicCloud
         
         if let projectStructure: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyViewer
+           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyEditor
         {
           // if modified, take the new data
           projectTreeNode.representedObject.volumetricSurfaceArea = structure.structureVolumetricNitrogenSurfaceArea
@@ -417,7 +417,7 @@ extension ProjectViewController
         projectTreeNode.representedObject.storageType = .publicCloud
         
         if let projectStructure: ProjectStructureNode = projectTreeNode.representedObject.loadedProjectStructureNode,
-           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyViewer
+           let structure = projectStructure.allIRASPAStructures.first?.object as? StructuralPropertyEditor
         {
           // if modified, take the new data
           projectTreeNode.representedObject.volumetricSurfaceArea = structure.structureVolumetricNitrogenSurfaceArea
@@ -450,7 +450,7 @@ extension ProjectViewController
     do
     {
       try data.write(to: url, options: Data.WritingOptions.atomic)
-     }
+    }
     catch
     {
       print(error.localizedDescription)
